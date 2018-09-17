@@ -1,0 +1,2 @@
+# byindeks
+Oversikt over byindekspunkter
