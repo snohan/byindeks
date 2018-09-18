@@ -1,0 +1,69 @@
+---
+title: "Byindeks"
+output: html_notebook
+---
+
+```{r, echo=F, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(httr)
+library(jsonlite)
+```
+
+**Byindeks for Trondheimsområdet**
+
+```{r, echo=FALSE}
+# Definer URI og sti ####
+nvdb_url <- "https://www.vegvesen.no/nvdb/api/v2"
+sti_vegobjekter <- "/vegobjekter"
+```
+
+```{r, echo=FALSE}
+# Bygg spørring etter trafikkregistreringsstasjoner per kommune
+api_query_482 <- paste0(nvdb_url,
+                        sti_vegobjekter,
+                        "/482",
+                        "?inkluder=egenskaper,lokasjon")
+
+kommune <- "5001"
+
+hent_trafikkregistreringsstasjon_for_kommune <- function(query, kommune) {
+  api_query_482_kommune <- paste0(api_query_482,
+                                  "&kommune=",
+                                  kommune,
+                                  "&srid=wgs84")
+  
+  respons <- GET(api_query_482_kommune,
+                 add_headers("X-Client" = "trafikkdatagruppa",
+                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+                             "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
+
+  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+                      simplifyDataFrame = T,
+                      flatten = T)
+  
+  trs <- bind_rows(uthenta$objekter$egenskaper, .id = "trsid") %>% 
+    filter(id %in% c(4626, 4627, 5201, 9293)) %>% 
+    select(navn, verdi) %>% 
+    group_by(navn) %>% 
+    mutate(grouped_id = row_number()) %>% 
+    spread(navn, verdi) %>% 
+    select(-grouped_id) %>% 
+    select(1, 3, 2, 4)
+  
+  vegreferanse <- bind_rows(uthenta$objekter$lokasjon.vegreferanser, 
+                            .id = "trser") %>% 
+    select(-trser)
+  
+  koordinater <- as.data.frame(uthenta$objekter$lokasjon.geometri.wkt) %>% 
+    mutate(geometri_sub = str_sub(uthenta$objekter$lokasjon.geometri.wkt, 10, -2)) %>% 
+    separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
+             convert = T) %>% 
+    select(-1)
+  
+  trser <- bind_cols(trs, vegreferanse, koordinater)
+  
+  return(trser)
+}
+```
+
+
