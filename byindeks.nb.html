@@ -196,6 +196,9 @@ $(document).ready(function () {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3I6IGBSZWdpc3RyZXJpbmdzbml2w6VgIChgUmVnaXN0cmVyaW5nc25pdsOlID0gXCJLb250aW51ZXJsaWcgKE5pdsOlIDEpXCJgKSBtdXN0IG5vdCBiZSBuYW1lZCwgZG8geW91IG5lZWQgYD09YD9cbiJ9 -->
+<pre><code>Error: `Registreringsnivå` (`Registreringsnivå = &quot;Kontinuerlig (Nivå 1)&quot;`) must not be named, do you need `==`?</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
@@ -208,8 +211,8 @@ $(document).ready(function () {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gY2JpbmRfYWxsKHgpIDogQXJndW1lbnQgMiBtdXN0IGJlIGxlbmd0aCAyOCwgbm90IDI5XG4ifQ== -->
-<pre><code>Error in cbind_all(x) : Argument 2 must be length 28, not 29</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gY2JpbmRfYWxsKHgpIDogQXJndW1lbnQgMiBtdXN0IGJlIGxlbmd0aCAzMywgbm90IDI3OVxuIn0= -->
+<pre><code>Error in cbind_all(x) : Argument 2 must be length 33, not 279</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -228,6 +231,7 @@ $(document).ready(function () {
 <th align="left">Kommune</th>
 <th align="left">Veg</th>
 <th align="left">Type</th>
+<th align="left">Byindeks</th>
 <th align="right">ADT</th>
 <th align="right">Dekning_17</th>
 <th align="right">Dekning_18</th>
@@ -239,6 +243,7 @@ $(document).ready(function () {
 <td align="left">Trondheim</td>
 <td align="left">E6</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">37986</td>
 <td align="right">93</td>
 <td align="right">100</td>
@@ -248,15 +253,17 @@ $(document).ready(function () {
 <td align="left">Trondheim</td>
 <td align="left">E6</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">45652</td>
 <td align="right">100</td>
-<td align="right">187</td>
+<td align="right">100</td>
 </tr>
 <tr class="odd">
 <td align="left">Brattørbrua</td>
 <td align="left">Trondheim</td>
 <td align="left">E6</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
 <td align="right">0</td>
 <td align="right">28</td>
@@ -266,33 +273,137 @@ $(document).ready(function () {
 <td align="left">Trondheim</td>
 <td align="left">E6</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">30551</td>
 <td align="right">100</td>
-<td align="right">188</td>
+<td align="right">100</td>
 </tr>
 <tr class="odd">
 <td align="left">Klett - E6, S-snitt</td>
 <td align="left">Trondheim</td>
 <td align="left">E6</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
 </tr>
 <tr class="even">
 <td align="left">Moholt, O-snitt, rampe 1</td>
 <td align="left">Trondheim</td>
 <td align="left">E6</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
 </tr>
 <tr class="odd">
 <td align="left">Moholt, O-snitt, rampe 2</td>
 <td align="left">Trondheim</td>
 <td align="left">E6</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
+<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
+</tr>
+<tr class="even">
+<td align="left">MOHOLT VED VEGAMOT</td>
+<td align="left">Trondheim</td>
+<td align="left">E6</td>
+<td align="left">TRS</td>
+<td align="left">Nei</td>
+<td align="right">40684</td>
+<td align="right">98</td>
+<td align="right">100</td>
+</tr>
+<tr class="odd">
+<td align="left">MOHOLTLIA</td>
+<td align="left">Trondheim</td>
+<td align="left">E6</td>
+<td align="left">TRS</td>
+<td align="left">Nei</td>
+<td align="right">30109</td>
+<td align="right">100</td>
+<td align="right">87</td>
+</tr>
+<tr class="even">
+<td align="left">MOHOLT RAMPE 1</td>
+<td align="left">Trondheim</td>
+<td align="left">E6</td>
+<td align="left">TRS</td>
+<td align="left">Nei</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">VÆRETUNNELEN</td>
+<td align="left">Trondheim</td>
+<td align="left">E6</td>
+<td align="left">TRS</td>
+<td align="left">Nei</td>
+<td align="right">NA</td>
+<td align="right">44</td>
+<td align="right">99</td>
+</tr>
+<tr class="even">
+<td align="left">MOHOLT RAMPE 2</td>
+<td align="left">Trondheim</td>
+<td align="left">E6</td>
+<td align="left">TRS</td>
+<td align="left">Nei</td>
+<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
+</tr>
+<tr class="odd">
+<td align="left">Ranheim</td>
+<td align="left">Trondheim</td>
+<td align="left">E6</td>
+<td align="left">Bom</td>
+<td align="left">Nei</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Tonstad, T-snitt</td>
+<td align="left">Trondheim</td>
+<td align="left">E6</td>
+<td align="left">Bom</td>
+<td align="left">Nei</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Tonstad, T-snitt, rampe 1</td>
+<td align="left">Trondheim</td>
+<td align="left">E6</td>
+<td align="left">Bom</td>
+<td align="left">Nei</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Tonstad, T-snitt, rampe 2</td>
+<td align="left">Trondheim</td>
+<td align="left">E6</td>
+<td align="left">Bom</td>
+<td align="left">Nei</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Tonstad, T-snitt, rampe 3</td>
+<td align="left">Trondheim</td>
+<td align="left">E6</td>
+<td align="left">Bom</td>
+<td align="left">Nei</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
@@ -302,6 +413,7 @@ $(document).ready(function () {
 <td align="left">Trondheim</td>
 <td align="left">F6650</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">23020</td>
 <td align="right">28</td>
 <td align="right">100</td>
@@ -311,6 +423,7 @@ $(document).ready(function () {
 <td align="left">Trondheim</td>
 <td align="left">F6650</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">9464</td>
 <td align="right">85</td>
 <td align="right">0</td>
@@ -320,8 +433,9 @@ $(document).ready(function () {
 <td align="left">Trondheim</td>
 <td align="left">F6650</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">12281</td>
-<td align="right">108</td>
+<td align="right">100</td>
 <td align="right">70</td>
 </tr>
 <tr class="odd">
@@ -329,123 +443,157 @@ $(document).ready(function () {
 <td align="left">Trondheim</td>
 <td align="left">F6650</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
 </tr>
 <tr class="even">
+<td align="left">Leirbrua ved Granåsen</td>
+<td align="left">Trondheim</td>
+<td align="left">F6650</td>
+<td align="left">TRS</td>
+<td align="left">Nei</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+<td align="right">41</td>
+</tr>
+<tr class="odd">
 <td align="left">Bøckmans veg, B-snitt</td>
 <td align="left">Trondheim</td>
 <td align="left">F6656</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Thorbjørn Bratts veg, O-snitt</td>
 <td align="left">Trondheim</td>
 <td align="left">F6658</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
 </tr>
-<tr class="even">
-<td align="left">Klæbuveien, x Bratsbergvegen</td>
+<tr class="odd">
+<td align="left">Jonsvannsveien vest for Steinanvegen</td>
 <td align="left">Trondheim</td>
 <td align="left">F6660</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">10619</td>
 <td align="right">10</td>
 <td align="right">61</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Moholt, O-snitt</td>
 <td align="left">Trondheim</td>
 <td align="left">F6660</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Kong Øysteins veg ved Eberg</td>
 <td align="left">Trondheim</td>
 <td align="left">F6664</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">8143</td>
 <td align="right">100</td>
 <td align="right">46</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Bromstadvegens forlengelse</td>
 <td align="left">Trondheim</td>
 <td align="left">F6664</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">13060</td>
 <td align="right">100</td>
 <td align="right">87</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Festningsgata</td>
 <td align="left">Trondheim</td>
 <td align="left">F6666</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">10240</td>
 <td align="right">100</td>
 <td align="right">93</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Haakon VII gt øst</td>
 <td align="left">Trondheim</td>
 <td align="left">F6668</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">15864</td>
 <td align="right">100</td>
-<td align="right">125</td>
+<td align="right">100</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Haakon VII s gt , O-snitt</td>
 <td align="left">Trondheim</td>
 <td align="left">F6668</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
+</tr>
+<tr class="even">
+<td align="left">Stiklestadveien mot Jarleveien</td>
+<td align="left">Trondheim</td>
+<td align="left">F6668</td>
+<td align="left">TRS</td>
+<td align="left">Nei</td>
+<td align="right">6558</td>
+<td align="right">20</td>
+<td align="right">99</td>
 </tr>
 <tr class="odd">
 <td align="left">Tillerbrua, K-snitt</td>
 <td align="left">Trondheim</td>
 <td align="left">F6680</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
 </tr>
 <tr class="even">
 <td align="left">Bratsbergveien, O-snitt</td>
 <td align="left">Trondheim</td>
 <td align="left">F6680</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
 </tr>
 <tr class="odd">
-<td align="left">Brøsetvegen, x granåsvegen</td>
+<td align="left">Heimdalsvegen ved Esp</td>
 <td align="left">Trondheim</td>
 <td align="left">F6682</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">3891</td>
 <td align="right">54</td>
 <td align="right">52</td>
 </tr>
 <tr class="even">
-<td align="left">Olav engelbrektssons alle, nr.13</td>
+<td align="left">Østre Rosten ved Sandmoen</td>
 <td align="left">Trondheim</td>
 <td align="left">F6686</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">10683</td>
 <td align="right">93</td>
 <td align="right">87</td>
@@ -455,6 +603,7 @@ $(document).ready(function () {
 <td align="left">Trondheim</td>
 <td align="left">F6690</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
 <td align="right">108</td>
 <td align="right">93</td>
@@ -464,42 +613,67 @@ $(document).ready(function () {
 <td align="left">Trondheim</td>
 <td align="left">F6690</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">11486</td>
 <td align="right">1</td>
-<td align="right">-4</td>
+<td align="right">3</td>
 </tr>
 <tr class="odd">
 <td align="left">Kroppan bru (Nordgående), M-snitt</td>
 <td align="left">Trondheim</td>
 <td align="left">F6690</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
 </tr>
 <tr class="even">
 <td align="left">Kroppan bru (Sørgående), M-snitt</td>
 <td align="left">Trondheim</td>
 <td align="left">F6690</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
+</tr>
+<tr class="odd">
+<td align="left">Elgeseter gate ved Abels gate</td>
+<td align="left">Trondheim</td>
+<td align="left">F6690</td>
+<td align="left">TRS</td>
+<td align="left">Nei</td>
+<td align="right">21708</td>
+<td align="right">97</td>
+<td align="right">100</td>
+</tr>
+<tr class="even">
+<td align="left">Holtermanns veg nord for Bratsbergvegen</td>
+<td align="left">Trondheim</td>
+<td align="left">F6690</td>
+<td align="left">TRS</td>
+<td align="left">Nei</td>
+<td align="right">17047</td>
+<td align="right">99</td>
+<td align="right">100</td>
 </tr>
 <tr class="odd">
 <td align="left">Jernbanebrua</td>
 <td align="left">Trondheim</td>
 <td align="left">F6692</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">6631</td>
 <td align="right">87</td>
-<td align="right">106</td>
+<td align="right">100</td>
 </tr>
 <tr class="even">
 <td align="left">Innherredsveien ved Fjæregata</td>
 <td align="left">Trondheim</td>
 <td align="left">F6692</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">8558</td>
 <td align="right">100</td>
 <td align="right">100</td>
@@ -509,6 +683,7 @@ $(document).ready(function () {
 <td align="left">Trondheim</td>
 <td align="left">F6692</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">6995</td>
 <td align="right">92</td>
 <td align="right">100</td>
@@ -518,6 +693,7 @@ $(document).ready(function () {
 <td align="left">Trondheim</td>
 <td align="left">F6692</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">6995</td>
 <td align="right">92</td>
 <td align="right">100</td>
@@ -527,171 +703,220 @@ $(document).ready(function () {
 <td align="left">Trondheim</td>
 <td align="left">F704</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
 </tr>
 <tr class="even">
 <td align="left">Klett - Rv.707, S-snitt</td>
 <td align="left">Trondheim</td>
 <td align="left">F707</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
+<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
+</tr>
+<tr class="odd">
+<td align="left">NYE ILSVIKØRA</td>
+<td align="left">Trondheim</td>
+<td align="left">F715</td>
+<td align="left">TRS</td>
+<td align="left">Nei</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Være (Gml. E6), N-snitt</td>
 <td align="left">Trondheim</td>
 <td align="left">F950</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Nedre Leirfoss (Fossestuvegen), M-snitt</td>
 <td align="left">Trondheim</td>
 <td align="left">K1827</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Gamle Oslovei, B-snitt</td>
 <td align="left">Trondheim</td>
 <td align="left">K2020</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
 </tr>
-<tr class="even">
-<td align="left">NA</td>
+<tr class="odd">
+<td align="left">Jakobslivegen ved Skovgård</td>
 <td align="left">Trondheim</td>
 <td align="left">K3330</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">9478</td>
 <td align="right">17</td>
 <td align="right">91</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Landbruksvegen, O-snitt</td>
 <td align="left">Trondheim</td>
 <td align="left">K4235</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Tempeveien, O-snitt</td>
 <td align="left">Trondheim</td>
 <td align="left">K7440</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
 </tr>
-<tr class="odd">
-<td align="left">Loholt alle, nr 10</td>
+<tr class="even">
+<td align="left">Tungasletta mot I. Ystgaardsv.</td>
 <td align="left">Trondheim</td>
 <td align="left">K7703</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">9952</td>
 <td align="right">12</td>
 <td align="right">42</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Tungasletta, O-snitt</td>
 <td align="left">Trondheim</td>
 <td align="left">K7703</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">MARIENBORGTUNNELEN</td>
 <td align="left">Trondheim</td>
 <td align="left">R706</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">6793</td>
 <td align="right">100</td>
 <td align="right">89</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">OSLOVEGEN</td>
 <td align="left">Trondheim</td>
 <td align="left">R706</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">12410</td>
 <td align="right">100</td>
 <td align="right">100</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">ILADALTUNNELEN</td>
 <td align="left">Trondheim</td>
 <td align="left">R706</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">HAVNEGATA</td>
 <td align="left">Trondheim</td>
 <td align="left">R706</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">16397</td>
 <td align="right">100</td>
-<td align="right">106</td>
+<td align="right">100</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">SELSBAKK</td>
 <td align="left">Trondheim</td>
 <td align="left">R706</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">8154</td>
 <td align="right">100</td>
 <td align="right">100</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">STRINDHEIMTUNNELEN</td>
 <td align="left">Trondheim</td>
 <td align="left">R706</td>
 <td align="left">TRS</td>
+<td align="left">Ja</td>
 <td align="right">19908</td>
 <td align="right">100</td>
-<td align="right">106</td>
+<td align="right">100</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Bjørndalen (Oslovn.) M-snitt)</td>
 <td align="left">Trondheim</td>
 <td align="left">R706</td>
 <td align="left">Bom</td>
+<td align="left">Ja</td>
+<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
+</tr>
+<tr class="odd">
+<td align="left">Nord for Sluppen bru (Tempevn), M-snitt</td>
+<td align="left">Trondheim</td>
+<td align="left">R706</td>
+<td align="left">Bom</td>
+<td align="left">Ja</td>
+<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
+</tr>
+<tr class="even">
+<td align="left">Rv 706 Leangensletta, O-snitt</td>
+<td align="left">Trondheim</td>
+<td align="left">R706</td>
+<td align="left">Bom</td>
+<td align="left">Ja</td>
+<td align="right">NA</td>
+<td align="right">100</td>
+<td align="right">100</td>
+</tr>
+<tr class="odd">
+<td align="left">MARIENBORGTUNNELEN NORD</td>
+<td align="left">Trondheim</td>
+<td align="left">R706</td>
+<td align="left">TRS</td>
+<td align="left">Nei</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td align="left">Nord for Sluppen bru (Tempevn), M-snitt</td>
+<td align="left">Rotvollekra</td>
 <td align="left">Trondheim</td>
 <td align="left">R706</td>
-<td align="left">Bom</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-</tr>
-<tr class="odd">
-<td align="left">Rv 706 Leangensletta, O-snitt</td>
-<td align="left">Trondheim</td>
-<td align="left">R706</td>
-<td align="left">Bom</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="left">TRS</td>
+<td align="left">Nei</td>
+<td align="right">22611</td>
+<td align="right">100</td>
+<td align="right">100</td>
 </tr>
 </tbody>
 </table>
@@ -939,7 +1164,7 @@ $(document).ready(function () {
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkJ5aW5kZWtzIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQotLS0NCg0KYGBge3IsIGVjaG89Riwgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0NCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShodHRyKQ0KbGlicmFyeShqc29ubGl0ZSkNCmxpYnJhcnkobGVhZmxldCkNCmxpYnJhcnkoaHRtbHdpZGdldHMpDQpsaWJyYXJ5KGtuaXRyKQ0KYGBgDQoNCmBgYHtyLCBlY2hvPUZBTFNFfQ0KIyBEZWZpbmVyIFVSSSBvZyBzdGkgIyMjIw0KbnZkYl91cmwgPC0gImh0dHBzOi8vd3d3LnZlZ3Zlc2VuLm5vL252ZGIvYXBpL3YyIg0Kc3RpX3ZlZ29iamVrdGVyIDwtICIvdmVnb2JqZWt0ZXIiDQpgYGANCg0KYGBge3IsIGVjaG89RkFMU0UsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQojIEJ5Z2cgc3DDuHJyaW5nIGV0dGVyIHRyYWZpa2tyZWdpc3RyZXJpbmdzc3Rhc2pvbmVyIHBlciBrb21tdW5lDQoNCmhlbnRfa29tbXVuZSA8LSBmdW5jdGlvbihrb21tdW5lbnIpIHsNCiAgYXBpX3F1ZXJ5XzUzNiA8LSBwYXN0ZTAobnZkYl91cmwsDQogICAgICAgICAgICAgICAgICAgICAgICBzdGlfdmVnb2JqZWt0ZXIsDQogICAgICAgICAgICAgICAgICAgICAgICAiLzUzNiIsDQogICAgICAgICAgICAgICAgICAgICAgICAiP2lua2x1ZGVyPWVnZW5za2FwZXIsbG9rYXNqb24iKQ0KDQogIGFwaV9xdWVyeV81MzZfa29tbXVuZSA8LSBwYXN0ZTAoYXBpX3F1ZXJ5XzUzNiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiJmtvbW11bmU9IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBrb21tdW5lbnIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIiZzcmlkPXdnczg0IikNCiAgDQogIHJlc3BvbnMgPC0gR0VUKGFwaV9xdWVyeV81MzZfa29tbXVuZSwNCiAgICAgICAgICAgICAgICAgYWRkX2hlYWRlcnMoIlgtQ2xpZW50IiA9ICJ0cmFmaWtrZGF0YWdydXBwYSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICJYLUtvbnRha3RwZXJzb24iID0gInNub3JyZS5oYW5zZW5AdmVndmVzZW4ubm8iLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiQWNjZXB0IiA9ICJhcHBsaWNhdGlvbi92bmQudmVndmVzZW4ubnZkYi12Mitqc29uIikpDQoNCiAgdXRoZW50YSA8LSBmcm9tSlNPTihzdHJfY29udihyZXNwb25zJGNvbnRlbnQsIGVuY29kaW5nID0gIlVURi04IiksDQogICAgICAgICAgICAgICAgICAgICAgc2ltcGxpZnlEYXRhRnJhbWUgPSBULA0KICAgICAgICAgICAgICAgICAgICAgIGZsYXR0ZW4gPSBUKQ0KICANCiAga29tbXVuZSA8LSBiaW5kX3Jvd3ModXRoZW50YSRvYmpla3RlciRlZ2Vuc2thcGVyLCAuaWQgPSAia2lkIikgJT4lIA0KICAgIGZpbHRlcihpZCAlaW4lIGMoNDU4NSkpDQogIA0KICBrb21tdW5lbmF2biA8LSBrb21tdW5lJHZlcmRpDQogIA0KICBwb2x5Z29uIDwtIHV0aGVudGEkb2JqZWt0ZXIkbG9rYXNqb24uZ2VvbWV0cmkud2t0DQogIA0KICBzdmFyIDwtIGxpc3Qoa29tbXVuZW5hdm4sIHBvbHlnb24pDQogIA0KICByZXR1cm4oc3ZhcikNCn0NCg0KDQpoZW50X3RyYWZpa2tyZWdpc3RyZXJpbmdzc3Rhc2pvbl9mb3Jfa29tbXVuZSA8LSBmdW5jdGlvbihrb21tdW5lbnIpIHsNCiAgYXBpX3F1ZXJ5XzQ4MiA8LSBwYXN0ZTAobnZkYl91cmwsDQogICAgICAgICAgICAgICAgICAgICAgICBzdGlfdmVnb2JqZWt0ZXIsDQogICAgICAgICAgICAgICAgICAgICAgICAiLzQ4MiIsDQogICAgICAgICAgICAgICAgICAgICAgICAiP2lua2x1ZGVyPWVnZW5za2FwZXIsbG9rYXNqb24iKQ0KICANCiAgYXBpX3F1ZXJ5XzQ4Ml9rb21tdW5lIDwtIHBhc3RlMChhcGlfcXVlcnlfNDgyLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIma29tbXVuZT0iLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGtvbW11bmVuciwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiJnNyaWQ9d2dzODQiKQ0KICANCiAgcmVzcG9ucyA8LSBHRVQoYXBpX3F1ZXJ5XzQ4Ml9rb21tdW5lLA0KICAgICAgICAgICAgICAgICBhZGRfaGVhZGVycygiWC1DbGllbnQiID0gInRyYWZpa2tkYXRhZ3J1cHBhIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIlgtS29udGFrdHBlcnNvbiIgPSAic25vcnJlLmhhbnNlbkB2ZWd2ZXNlbi5ubyIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICJBY2NlcHQiID0gImFwcGxpY2F0aW9uL3ZuZC52ZWd2ZXNlbi5udmRiLXYyK2pzb24iKSkNCg0KICB1dGhlbnRhIDwtIGZyb21KU09OKHN0cl9jb252KHJlc3BvbnMkY29udGVudCwgZW5jb2RpbmcgPSAiVVRGLTgiKSwNCiAgICAgICAgICAgICAgICAgICAgICBzaW1wbGlmeURhdGFGcmFtZSA9IFQsDQogICAgICAgICAgICAgICAgICAgICAgZmxhdHRlbiA9IFQpDQogIA0KICB0cnMgPC0gYmluZF9yb3dzKHV0aGVudGEkb2JqZWt0ZXIkZWdlbnNrYXBlciwgLmlkID0gInRyc2lkIikgJT4lIA0KICAgIGZpbHRlcihpZCAlaW4lIGMoNDYyNiwgNDYyNywgNTIwMSwgOTI5MykpICU+JSANCiAgICBzZWxlY3QobmF2biwgdmVyZGkpICU+JSANCiAgICBncm91cF9ieShuYXZuKSAlPiUgDQogICAgbXV0YXRlKGdyb3VwZWRfaWQgPSByb3dfbnVtYmVyKCkpICU+JSANCiAgICBzcHJlYWQobmF2biwgdmVyZGkpICU+JSANCiAgICBzZWxlY3QoLWdyb3VwZWRfaWQpICU+JSANCiAgICBzZWxlY3QoMSwgMywgMiwgNCkNCiAgDQogIHZlZ3JlZmVyYW5zZSA8LSBiaW5kX3Jvd3ModXRoZW50YSRvYmpla3RlciRsb2thc2pvbi52ZWdyZWZlcmFuc2VyLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAuaWQgPSAidHJzZXIiKSAlPiUgDQogICAgc2VsZWN0KC10cnNlcikNCiAgDQogIGtvb3JkaW5hdGVyIDwtIGFzLmRhdGEuZnJhbWUodXRoZW50YSRvYmpla3RlciRsb2thc2pvbi5nZW9tZXRyaS53a3QpICU+JSANCiAgICBtdXRhdGUoZ2VvbWV0cmlfc3ViID0gDQogICAgICAgICAgICAgc3RyX3N1Yih1dGhlbnRhJG9iamVrdGVyJGxva2Fzam9uLmdlb21ldHJpLndrdCwgMTAsIC0yKSkgJT4lIA0KICAgIHNlcGFyYXRlKGdlb21ldHJpX3N1YiwgaW50byA9IGMoImxhdCIsICJsb24iLCAiYWx0IiksIHNlcCA9ICJbWzpzcGFjZTpdXSIsDQogICAgICAgICAgICAgY29udmVydCA9IFQpICU+JSANCiAgICBzZWxlY3QoLTEpDQogIA0KICB0cnNlciA8LSBiaW5kX2NvbHModHJzLCB2ZWdyZWZlcmFuc2UsIGtvb3JkaW5hdGVyKSAlPiUgDQogICAgbXV0YXRlKFZlZyA9IHBhc3RlMChrYXRlZ29yaSwgbnVtbWVyKSkgJT4lIA0KICAgIHNlbGVjdCgtU3RhdHVzLCAtVHJhZmlrYW50Z3J1cHBlLCAtZnlsa2UsIC1rb21tdW5lLCAta2F0ZWdvcmksIC1udW1tZXIsDQogICAgICAgICAgIC1zdGF0dXMsIC1ocCwgLW1ldGVyKSAlPiUgDQogICAgbXV0YXRlKEtvbW11bmUgPSBrb21tdW5lbmF2bikNCg0KICBjb2xuYW1lcyh0cnNlcikgPC0gYygiU3Rhc2pvbm5yIiwgIk5hdm4iLCAiVmVncmVmZXJhbnNlIiwgDQogICAgICAgICAgICAgICAgICAgICAgICJsYXQiLCAibG9uIiwgImFsdCIsICJWZWciLCAiS29tbXVuZSIpDQogIA0KICByZXR1cm4odHJzZXIpDQp9DQoNCmhlbnRfYm9tc3Rhc2pvbl9mb3Jfa29tbXVuZSA8LSBmdW5jdGlvbihrb21tdW5lbnIpIHsNCiAgYXBpX3F1ZXJ5XzQ1IDwtIHBhc3RlMChudmRiX3VybCwNCiAgICAgICAgICAgICAgICAgICAgICAgIHN0aV92ZWdvYmpla3RlciwNCiAgICAgICAgICAgICAgICAgICAgICAgICIvNDUiLA0KICAgICAgICAgICAgICAgICAgICAgICAgIj9pbmtsdWRlcj1lZ2Vuc2thcGVyLGxva2Fzam9uIikNCg0KICBhcGlfcXVlcnlfNDVfa29tbXVuZSA8LSBwYXN0ZTAoYXBpX3F1ZXJ5XzQ1LA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIma29tbXVuZT0iLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGtvbW11bmVuciwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiJnNyaWQ9d2dzODQiKQ0KICANCiAgcmVzcG9ucyA8LSBHRVQoYXBpX3F1ZXJ5XzQ1X2tvbW11bmUsDQogICAgICAgICAgICAgICAgIGFkZF9oZWFkZXJzKCJYLUNsaWVudCIgPSAidHJhZmlra2RhdGFncnVwcGEiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiWC1Lb250YWt0cGVyc29uIiA9ICJzbm9ycmUuaGFuc2VuQHZlZ3Zlc2VuLm5vIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkFjY2VwdCIgPSAiYXBwbGljYXRpb24vdm5kLnZlZ3Zlc2VuLm52ZGItdjIranNvbiIpKQ0KDQogIHV0aGVudGEgPC0gZnJvbUpTT04oc3RyX2NvbnYocmVzcG9ucyRjb250ZW50LCBlbmNvZGluZyA9ICJVVEYtOCIpLA0KICAgICAgICAgICAgICAgICAgICAgIHNpbXBsaWZ5RGF0YUZyYW1lID0gVCwNCiAgICAgICAgICAgICAgICAgICAgICBmbGF0dGVuID0gVCkNCiAgDQogIGJvbSA8LSBiaW5kX3Jvd3ModXRoZW50YSRvYmpla3RlciRlZ2Vuc2thcGVyLCAuaWQgPSAiYm9taWQiKSAlPiUgDQogICAgZmlsdGVyKGlkICVpbiUgYygxMDc4LCA5NTk1KSkgJT4lIA0KICAgIHNlbGVjdChuYXZuLCB2ZXJkaSkgJT4lIA0KICAgIGZpbHRlcih2ZXJkaSAhPSAiRmVyamUgRmxha2stUsO4cnZpayIpICU+JSANCiAgICBncm91cF9ieShuYXZuKSAlPiUgDQogICAgbXV0YXRlKGdyb3VwZWRfaWQgPSByb3dfbnVtYmVyKCkpICU+JSANCiAgICBzcHJlYWQobmF2biwgdmVyZGkpICU+JSANCiAgICBzZWxlY3QoLWdyb3VwZWRfaWQpDQogIA0KICB2ZWdyZWZlcmFuc2UgPC0gYmluZF9yb3dzKHV0aGVudGEkb2JqZWt0ZXIkbG9rYXNqb24udmVncmVmZXJhbnNlciwgDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgLmlkID0gImJvbWVyIikgJT4lIA0KICAgIGZpbHRlcihudW1tZXIgIT0gNzE1KSAlPiUgDQogICAgc2VsZWN0KC1ib21lcikNCiAgDQogIGtvb3JkaW5hdGVyIDwtIGFzLmRhdGEuZnJhbWUodXRoZW50YSRvYmpla3RlciRsb2thc2pvbi5nZW9tZXRyaS53a3QpICU+JSANCiAgICBtdXRhdGUoZ2VvbWV0cmlfc3ViID0gc3RyX3N1Yih1dGhlbnRhJG9iamVrdGVyJGxva2Fzam9uLmdlb21ldHJpLndrdCwgMTAsIC0yKSkgJT4lIA0KICAgIHNlcGFyYXRlKGdlb21ldHJpX3N1YiwgaW50byA9IGMoImxhdCIsICJsb24iLCAiYWx0IiksIHNlcCA9ICJbWzpzcGFjZTpdXSIsDQogICAgICAgICAgICAgY29udmVydCA9IFQpICU+JSANCiAgICBzZWxlY3QoLTEpICU+JSANCiAgICBmaWx0ZXIoYWx0ICE9IDguNzkyODApDQogIA0KICBib21lciA8LSBiaW5kX2NvbHMoYm9tLCB2ZWdyZWZlcmFuc2UsIGtvb3JkaW5hdGVyKSAlPiUgDQogICAgbXV0YXRlKFZlZyA9IHBhc3RlMChrYXRlZ29yaSwgbnVtbWVyKSkgJT4lIA0KICAgIHNlbGVjdCgtZnlsa2UsIC1rb21tdW5lLCAta2F0ZWdvcmksIC1udW1tZXIsDQogICAgICAgICAgIC1zdGF0dXMsIC1ocCwgLW1ldGVyKSAlPiUgDQogICAgbXV0YXRlKEtvbW11bmUgPSBrb21tdW5lbmF2bikNCg0KICBjb2xuYW1lcyhib21lcikgPC0gYygiU3Rhc2pvbm5yIiwgIk5hdm4iLCAiVmVncmVmZXJhbnNlIiwgDQogICAgICAgICAgICAgICAgICAgICAgICJsYXQiLCAibG9uIiwgImFsdCIsICJWZWciLCAiS29tbXVuZSIpDQogIA0KICByZXR1cm4oYm9tZXIpDQp9DQpgYGANCg0KYGBge3IsIGVjaG89RkFMU0V9DQojIExlc2VyIGlubiDDhURUIChtw6UgaGVudGVzIGZyYSBOVkRCLUFQSSBlbGxlciB0cmFmaWtrZGF0YS1BUEkgcMOlIHNpa3QpDQphZHQgPC0gcmVhZC5jc3YyKCJhZHRfMjAxN19ub3J0cmFmLmNzdiIpICU+JSANCiAgZmlsdGVyKEZlbHQgPT0gIlIwIikgJT4lIA0KICBtdXRhdGUoU3Rhc2pvbm5yID0gYXMuY2hhcmFjdGVyKFRlbGxlcHVua3QpKSAlPiUgDQogIHNlbGVjdChTdGFzam9ubnIsIEFEVCkNCmBgYA0KDQpgYGB7ciwgZWNobz1GQUxTRX0NCiMgSGVudGVyIGlubiBkZWtuaW5nc2dyYWQNCmRla25pbmcgPC0gcmVhZC5jc3YyKCJ0ZWxsZWRhZ2VyX3Ryb25kaGVpbS5jc3YiKSAlPiUgDQogIG11dGF0ZShTdGFzam9ubnIgPSBhcy5jaGFyYWN0ZXIoVHBrdG5yKSwNCiAgICAgICAgIERla25pbmdzZ3JhZCA9IHJvdW5kKDEwMCAqIChTVU0gLyBkYWdlciksIGRpZ2l0cyA9IDApKSAlPiUgDQogIHNlbGVjdChTdGFzam9ubnIsIGFhciwgRGVrbmluZ3NncmFkKQ0KDQoNCmRla25pbmdfMjAxNyA8LSBkZWtuaW5nICU+JSANCiAgZmlsdGVyKGFhciA9PSAyMDE3KSAlPiUgDQogIG11dGF0ZShEZWtuaW5nXzE3ID0gRGVrbmluZ3NncmFkKSAlPiUgDQogIHNlbGVjdChTdGFzam9ubnIsIERla25pbmdfMTcpDQoNCmRla25pbmdfMjAxOCA8LSBkZWtuaW5nICU+JSANCiAgZmlsdGVyKGFhciA9PSAyMDE4KSAlPiUgDQogIG11dGF0ZShEZWtuaW5nXzE4ID0gRGVrbmluZ3NncmFkKSAlPiUgDQogIHNlbGVjdChTdGFzam9ubnIsIERla25pbmdfMTgpDQoNCmBgYA0KDQoNCg0KYGBge3IsIGVjaG89Riwgd2FybmluZz1GLCBtZXNzYWdlPUZBTFNFfQ0KIyBVdGbDuHJlciBzcMO4cnJpbmdlciBtb3QgTlZEQiBmb3IgYWt0dWVsbGUga29tbXVuZXINCiMgVHJvbmRoZWltIDUwMDENCmtvbW11bmVuciA8LSAiNTAwMSINCmtvbW11bmVuYXZuIDwtIGhlbnRfa29tbXVuZShrb21tdW5lbnIpW1sxXV0NCmtvbW11bmVwb2x5Z29uIDwtIGhlbnRfa29tbXVuZShrb21tdW5lbnIpW1syXV0NCmtvbW11bmVfdHJzZXIgPC0gaGVudF90cmFmaWtrcmVnaXN0cmVyaW5nc3N0YXNqb25fZm9yX2tvbW11bmUoa29tbXVuZW5yKSAlPiUgDQogIG11dGF0ZShUeXBlID0gIlRSUyIpDQprb21tdW5lX2JvbWVyIDwtIGhlbnRfYm9tc3Rhc2pvbl9mb3Jfa29tbXVuZShrb21tdW5lbnIpICU+JSANCiAgbXV0YXRlKFR5cGUgPSAiQm9tIikNCmtvbW11bmVwdW5rdGVyIDwtIGJpbmRfcm93cyhrb21tdW5lX3Ryc2VyLCBrb21tdW5lX2JvbWVyKQ0KDQojIEh2aWxrZSBzdGFzam9uc251bXJlIHNrYWwgdsOmcmUgbWVkPw0KYnlpbmRla3NwdW5rdGVyX3Ryb25kaGVpbSA8LSBjKCIxNjAwMDExIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMDAxMiIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDAwNzgiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAwMDk3IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMDEwMSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDAxMDQiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAwMTIyIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMDEyMyIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDAxMjQiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAwMTI1IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMDEyNiIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDAxMjciLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAwMTI4IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMDE0OSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDAxNTQiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMiMTYwMDE1NSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDAxNTYiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAwMTU3IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMDE5MyIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDAyMDkiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAwMjEzIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMDIxNCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDAyMTgiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAwMjE5IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMTQwNSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDE0MTYiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAxNDE4IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMTQzOCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDE0NDEiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAyMzA2IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMjQwNyIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDI0MTgiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNzAwMDEyIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTcwMDAyNyIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE3MDAwMjgiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNzAwMDI5IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTcwMDA2MSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE3MDAwNjIiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI1MSIsICI1MiIsICI1MyIsICI1NCIsICI1NSIsICI1NiIsICI1NyIsICI1OCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjU5IiwgIjYwIiwgIjYxIiwgIjYyIiwgIjYzIiwgIjY0IiwgIjY1IiwgIjY2IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiNjciLCAiNjgiLCAiNjkiLCAiODUiLCAiODYiKQ0KDQprb21tdW5lcHVua3Rlcl90cm9uZGhlaW0gPC0ga29tbXVuZXB1bmt0ZXIgJT4lIA0KICBmaWx0ZXIoU3Rhc2pvbm5yICVpbiUgYnlpbmRla3NwdW5rdGVyX3Ryb25kaGVpbSkNCg0KIyBNw6UgbGVnZ2UgdGlsIMOFRFQsIGhlbnRlIGZyYSBOVkRCDQpgYGANCg0KIyBUcm9uZGhlaW0NClRhYmVsbCBvdmVyIGJ5aW5kZWtzcHVua3RlbmUuIFRSUyBzdMOlciBmb3IgdHJhZmlra3JlZ2lzdHJlcmluZ3NzdGFzam9uLg0KDQpgYGB7ciwgcmVzdWx0cz0nYXNpcycsIGVjaG89RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQojIFRhYmVsbA0Ka29tbXVuZXB1bmt0ZXJfdHJvbmRoZWltICAlPiUgDQogIGxlZnRfam9pbihhZHQpICU+JSANCiAgbGVmdF9qb2luKGRla25pbmdfMjAxNykgJT4lIA0KICBsZWZ0X2pvaW4oZGVrbmluZ18yMDE4KSAlPiUgDQogIHNlbGVjdChOYXZuLCBLb21tdW5lLCBWZWcsIFR5cGUsIEFEVCwgRGVrbmluZ18xNywgRGVrbmluZ18xOCkgJT4lIA0KICBhcnJhbmdlKFZlZykgJT4lIA0KICBrYWJsZSgpDQpgYGANCg0KYGBge3IsIHdhcm5pbmc9RkFMU0UsIGVjaG89RkFMU0UsIGluY2x1ZGU9RkFMU0V9DQpwYWwgPC0gY29sb3JGYWN0b3IoYygibmF2eSIsICJyZWQiKSwgZG9tYWluID0gYygiVFJTIiwgIkJvbSIpKQ0KDQptYXAudHJkIDwtIGtvbW11bmVwdW5rdGVyX3Ryb25kaGVpbSAlPiUgDQogIGxlYWZsZXQod2lkdGggPSAiMTAwJSIsIG9wdGlvbnMgPSBsZWFmbGV0T3B0aW9ucyhtaW5ab29tID0gMCwgbWF4Wm9vbSA9IDE4KSkgJT4lIA0KICBhZGRQcm92aWRlclRpbGVzKHByb3ZpZGVycyRFc3JpLldvcmxkU3RyZWV0TWFwKSAlPiUgDQogIGFkZENpcmNsZU1hcmtlcnMoDQogICAgcmFkaXVzID0gNiwNCiAgICBjb2xvciA9IH5wYWwoVHlwZSksDQogICAgd2VpZ2h0ID0gMywNCiAgICBmaWxsID0gRg0KICApICU+JSANCiAgYWRkTGFiZWxPbmx5TWFya2VycyhsYWJlbCA9IH5WZWcsDQogICAgICAgICAgICAgICAgICAgICAgbGFiZWxPcHRpb25zID0gbGFiZWxPcHRpb25zKG5vSGlkZSA9IFQsIGRpcmVjdGlvbiA9ICd0b3AnLCB0ZXh0T25seSA9IFQpKQ0KYGBgDQo8YnI+DQo8YnI+DQo8YnI+DQo8YnI+DQo8YnI+DQo8YnI+DQo8YnI+DQo8YnI+DQo8YnI+DQo8YnI+DQo8YnI+DQoNCkthcnRldCBvdmVyIFRyb25kaGVpbSB2aXNlciB0cmFmaWtrcmVnaXN0cmVyaW5nc3N0YXNqb25lciBpIHLDuGR0LCANCm9nIGJvbXN0YXNqb25lciBpIGJsw6V0dC4NCg0KDQoNCmBgYHtyLCBlY2hvPUZBTFNFfQ0KbWFwLnRyZA0KYGBgDQoNCiMgS2zDpmJ1DQpJbmdlbiBmb3Jlc2zDpXR0ZSBieWluZGVrc3B1bmt0ZXIuDQoNCjxicj4NCjxicj4NCjxicj4NCg0KIyBNZWxodXMNCmBgYHtyLCBlY2hvPUYsIHdhcm5pbmc9RiwgbWVzc2FnZT1GQUxTRX0NCiMgVXRmw7hyZXIgc3DDuHJyaW5nZXIgbW90IE5WREIgZm9yIGFrdHVlbGxlIGtvbW11bmVyDQojIE1lbGh1cyA1MDI4DQprb21tdW5lbnIgPC0gIjUwMjgiDQprb21tdW5lbmF2biA8LSBoZW50X2tvbW11bmUoa29tbXVuZW5yKVtbMV1dDQprb21tdW5lcG9seWdvbiA8LSBoZW50X2tvbW11bmUoa29tbXVuZW5yKVtbMl1dDQprb21tdW5lX3Ryc2VyIDwtIGhlbnRfdHJhZmlra3JlZ2lzdHJlcmluZ3NzdGFzam9uX2Zvcl9rb21tdW5lKGtvbW11bmVucikNCg0Ka29tbXVuZXB1bmt0ZXJfbWVsaHVzIDwtIGtvbW11bmVfdHJzZXIgJT4lIA0KICBmaWx0ZXIoU3Rhc2pvbm5yICVpbiUgYnlpbmRla3NwdW5rdGVyX3Ryb25kaGVpbSkNCg0KIyBNw6UgbGVnZ2UgdGlsIMOFRFQsIGhlbnRlIGZyYSBOVkRCDQpgYGANCg0KDQpgYGB7ciwgcmVzdWx0cz0nYXNpcycsIGVjaG89RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQojIFRhYmVsbA0Ka29tbXVuZXB1bmt0ZXJfbWVsaHVzICAlPiUgDQogIGxlZnRfam9pbihhZHQpICU+JSANCiAgbGVmdF9qb2luKGRla25pbmdfMjAxNykgJT4lIA0KICBsZWZ0X2pvaW4oZGVrbmluZ18yMDE4KSAlPiUgDQogIHNlbGVjdChOYXZuLCBLb21tdW5lLCBWZWcsIEFEVCwgRGVrbmluZ18xNywgRGVrbmluZ18xOCkgJT4lIA0KICBhcnJhbmdlKFZlZykgJT4lIA0KICBrYWJsZSgpDQpgYGANCg0KDQpgYGB7ciwgd2FybmluZz1GQUxTRSwgZWNobz1GQUxTRSwgaW5jbHVkZT1GQUxTRX0NCm1hcC5tZWxodXMgPC0ga29tbXVuZXB1bmt0ZXJfbWVsaHVzICU+JSANCiAgbGVhZmxldCh3aWR0aCA9ICIxMDAlIiwgb3B0aW9ucyA9IGxlYWZsZXRPcHRpb25zKG1pblpvb20gPSAwLCBtYXhab29tID0gMTgpKSAlPiUgDQogIGFkZFByb3ZpZGVyVGlsZXMocHJvdmlkZXJzJEVzcmkuV29ybGRTdHJlZXRNYXApICU+JSANCiAgYWRkQ2lyY2xlTWFya2VycygNCiAgICByYWRpdXMgPSA2LA0KICAgIGNvbG9yID0gInJlZCIsDQogICAgd2VpZ2h0ID0gMywNCiAgICBmaWxsID0gRg0KICApICU+JSANCiAgYWRkTGFiZWxPbmx5TWFya2VycyhsYWJlbCA9IH5WZWcsDQogICAgICAgICAgICAgICAgICAgICAgbGFiZWxPcHRpb25zID0gbGFiZWxPcHRpb25zKG5vSGlkZSA9IFQsIGRpcmVjdGlvbiA9ICd0b3AnLCB0ZXh0T25seSA9IFQpKQ0KYGBgDQoNCmBgYHtyLCBlY2hvPUZBTFNFfQ0KbWFwLm1lbGh1cw0KYGBgDQoNCg0KIyBNYWx2aWsNCmBgYHtyLCBlY2hvPUYsIHdhcm5pbmc9RiwgbWVzc2FnZT1GQUxTRX0NCiMgVXRmw7hyZXIgc3DDuHJyaW5nZXIgbW90IE5WREIgZm9yIGFrdHVlbGxlIGtvbW11bmVyDQojIE1hbHZpayA1MDMxDQprb21tdW5lbnIgPC0gIjUwMzEiDQprb21tdW5lbmF2biA8LSBoZW50X2tvbW11bmUoa29tbXVuZW5yKVtbMV1dDQprb21tdW5lcG9seWdvbiA8LSBoZW50X2tvbW11bmUoa29tbXVuZW5yKVtbMl1dDQprb21tdW5lX3Ryc2VyIDwtIGhlbnRfdHJhZmlra3JlZ2lzdHJlcmluZ3NzdGFzam9uX2Zvcl9rb21tdW5lKGtvbW11bmVucikNCg0Ka29tbXVuZXB1bmt0ZXJfbWFsdmlrIDwtIGtvbW11bmVfdHJzZXIgJT4lIA0KICBmaWx0ZXIoU3Rhc2pvbm5yICVpbiUgYnlpbmRla3NwdW5rdGVyX3Ryb25kaGVpbSkNCg0KIyBNw6UgbGVnZ2UgdGlsIMOFRFQsIGhlbnRlIGZyYSBOVkRCDQpgYGANCg0KDQpgYGB7ciwgcmVzdWx0cz0nYXNpcycsIGVjaG89RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQojIFRhYmVsbA0Ka29tbXVuZXB1bmt0ZXJfbWFsdmlrICAlPiUgDQogIGxlZnRfam9pbihhZHQpICU+JSANCiAgbGVmdF9qb2luKGRla25pbmdfMjAxNykgJT4lIA0KICBsZWZ0X2pvaW4oZGVrbmluZ18yMDE4KSAlPiUgDQogIHNlbGVjdChOYXZuLCBLb21tdW5lLCBWZWcsIEFEVCwgRGVrbmluZ18xNywgRGVrbmluZ18xOCkgJT4lIA0KICBhcnJhbmdlKFZlZykgJT4lIA0KICBrYWJsZSgpDQpgYGANCg0KDQpgYGB7ciwgd2FybmluZz1GQUxTRSwgZWNobz1GQUxTRSwgaW5jbHVkZT1GQUxTRX0NCm1hcC5tYWx2aWsgPC0ga29tbXVuZXB1bmt0ZXJfbWFsdmlrICU+JSANCiAgbGVhZmxldCh3aWR0aCA9ICIxMDAlIiwgb3B0aW9ucyA9IGxlYWZsZXRPcHRpb25zKG1pblpvb20gPSAwLCBtYXhab29tID0gMTgpKSAlPiUgDQogIGFkZFByb3ZpZGVyVGlsZXMocHJvdmlkZXJzJEVzcmkuV29ybGRTdHJlZXRNYXApICU+JSANCiAgYWRkQ2lyY2xlTWFya2VycygNCiAgICByYWRpdXMgPSA2LA0KICAgIGNvbG9yID0gInJlZCIsDQogICAgd2VpZ2h0ID0gMywNCiAgICBmaWxsID0gRg0KICApICU+JSANCiAgYWRkTGFiZWxPbmx5TWFya2VycyhsYWJlbCA9IH5WZWcsDQogICAgICAgICAgICAgICAgICAgICAgbGFiZWxPcHRpb25zID0gbGFiZWxPcHRpb25zKG5vSGlkZSA9IFQsIGRpcmVjdGlvbiA9ICd0b3AnLCB0ZXh0T25seSA9IFQpKQ0KYGBgDQoNCmBgYHtyLCBlY2hvPUZBTFNFfQ0KbWFwLm1hbHZpaw0KYGBgDQoNCg0KIyBTdGrDuHJkYWwNCmBgYHtyLCBlY2hvPUYsIHdhcm5pbmc9RiwgbWVzc2FnZT1GQUxTRX0NCiMgVXRmw7hyZXIgc3DDuHJyaW5nZXIgbW90IE5WREIgZm9yIGFrdHVlbGxlIGtvbW11bmVyDQojIFN0asO4cmRhbCA1MDM1DQprb21tdW5lbnIgPC0gIjUwMzUiDQprb21tdW5lbmF2biA8LSBoZW50X2tvbW11bmUoa29tbXVuZW5yKVtbMV1dDQprb21tdW5lcG9seWdvbiA8LSBoZW50X2tvbW11bmUoa29tbXVuZW5yKVtbMl1dDQprb21tdW5lX3Ryc2VyIDwtIGhlbnRfdHJhZmlra3JlZ2lzdHJlcmluZ3NzdGFzam9uX2Zvcl9rb21tdW5lKGtvbW11bmVucikNCg0Ka29tbXVuZXB1bmt0ZXJfc3Rqb3JkYWwgPC0ga29tbXVuZV90cnNlciAlPiUgDQogIGZpbHRlcihTdGFzam9ubnIgJWluJSBieWluZGVrc3B1bmt0ZXJfdHJvbmRoZWltKQ0KDQojIE3DpSBsZWdnZSB0aWwgw4VEVCwgaGVudGUgZnJhIE5WREINCmBgYA0KDQoNCmBgYHtyLCByZXN1bHRzPSdhc2lzJywgZWNobz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0NCiMgVGFiZWxsDQprb21tdW5lcHVua3Rlcl9zdGpvcmRhbCAgJT4lIA0KICBsZWZ0X2pvaW4oYWR0KSAlPiUgDQogIGxlZnRfam9pbihkZWtuaW5nXzIwMTcpICU+JSANCiAgbGVmdF9qb2luKGRla25pbmdfMjAxOCkgJT4lIA0KICBzZWxlY3QoTmF2biwgS29tbXVuZSwgVmVnLCBBRFQsIERla25pbmdfMTcsIERla25pbmdfMTgpICU+JSANCiAgYXJyYW5nZShWZWcpICU+JSANCiAga2FibGUoKQ0KYGBgDQoNCg0KYGBge3IsIHdhcm5pbmc9RkFMU0UsIGVjaG89RkFMU0UsIGluY2x1ZGU9RkFMU0V9DQptYXAuc3Rqb3JkYWwgPC0ga29tbXVuZXB1bmt0ZXJfc3Rqb3JkYWwgJT4lIA0KICBsZWFmbGV0KHdpZHRoID0gIjEwMCUiLCBvcHRpb25zID0gbGVhZmxldE9wdGlvbnMobWluWm9vbSA9IDAsIG1heFpvb20gPSAxOCkpICU+JSANCiAgYWRkUHJvdmlkZXJUaWxlcyhwcm92aWRlcnMkRXNyaS5Xb3JsZFN0cmVldE1hcCkgJT4lIA0KICBhZGRDaXJjbGVNYXJrZXJzKA0KICAgIHJhZGl1cyA9IDYsDQogICAgY29sb3IgPSAicmVkIiwNCiAgICB3ZWlnaHQgPSAzLA0KICAgIGZpbGwgPSBGDQogICkgJT4lIA0KICBhZGRMYWJlbE9ubHlNYXJrZXJzKGxhYmVsID0gflZlZywNCiAgICAgICAgICAgICAgICAgICAgICBsYWJlbE9wdGlvbnMgPSBsYWJlbE9wdGlvbnMobm9IaWRlID0gVCwgZGlyZWN0aW9uID0gJ3RvcCcsIHRleHRPbmx5ID0gVCkpDQpgYGANCg0KYGBge3IsIGVjaG89RkFMU0V9DQptYXAuc3Rqb3JkYWwNCmBgYA0KDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkJ5aW5kZWtzIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQotLS0NCg0KYGBge3IsIGVjaG89Riwgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0NCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShodHRyKQ0KbGlicmFyeShqc29ubGl0ZSkNCmxpYnJhcnkobGVhZmxldCkNCmxpYnJhcnkoaHRtbHdpZGdldHMpDQpsaWJyYXJ5KGtuaXRyKQ0KYGBgDQoNCmBgYHtyLCBlY2hvPUZBTFNFfQ0KIyBEZWZpbmVyIFVSSSBvZyBzdGkgIyMjIw0KbnZkYl91cmwgPC0gImh0dHBzOi8vd3d3LnZlZ3Zlc2VuLm5vL252ZGIvYXBpL3YyIg0Kc3RpX3ZlZ29iamVrdGVyIDwtICIvdmVnb2JqZWt0ZXIiDQpgYGANCg0KYGBge3IsIGVjaG89RkFMU0UsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQojIEJ5Z2cgc3DDuHJyaW5nIGV0dGVyIHRyYWZpa2tyZWdpc3RyZXJpbmdzc3Rhc2pvbmVyIHBlciBrb21tdW5lDQoNCmhlbnRfa29tbXVuZSA8LSBmdW5jdGlvbihrb21tdW5lbnIpIHsNCiAgYXBpX3F1ZXJ5XzUzNiA8LSBwYXN0ZTAobnZkYl91cmwsDQogICAgICAgICAgICAgICAgICAgICAgICBzdGlfdmVnb2JqZWt0ZXIsDQogICAgICAgICAgICAgICAgICAgICAgICAiLzUzNiIsDQogICAgICAgICAgICAgICAgICAgICAgICAiP2lua2x1ZGVyPWVnZW5za2FwZXIsbG9rYXNqb24iKQ0KDQogIGFwaV9xdWVyeV81MzZfa29tbXVuZSA8LSBwYXN0ZTAoYXBpX3F1ZXJ5XzUzNiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiJmtvbW11bmU9IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBrb21tdW5lbnIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIiZzcmlkPXdnczg0IikNCiAgDQogIHJlc3BvbnMgPC0gR0VUKGFwaV9xdWVyeV81MzZfa29tbXVuZSwNCiAgICAgICAgICAgICAgICAgYWRkX2hlYWRlcnMoIlgtQ2xpZW50IiA9ICJ0cmFmaWtrZGF0YWdydXBwYSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICJYLUtvbnRha3RwZXJzb24iID0gInNub3JyZS5oYW5zZW5AdmVndmVzZW4ubm8iLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiQWNjZXB0IiA9ICJhcHBsaWNhdGlvbi92bmQudmVndmVzZW4ubnZkYi12Mitqc29uIikpDQoNCiAgdXRoZW50YSA8LSBmcm9tSlNPTihzdHJfY29udihyZXNwb25zJGNvbnRlbnQsIGVuY29kaW5nID0gIlVURi04IiksDQogICAgICAgICAgICAgICAgICAgICAgc2ltcGxpZnlEYXRhRnJhbWUgPSBULA0KICAgICAgICAgICAgICAgICAgICAgIGZsYXR0ZW4gPSBUKQ0KICANCiAga29tbXVuZSA8LSBiaW5kX3Jvd3ModXRoZW50YSRvYmpla3RlciRlZ2Vuc2thcGVyLCAuaWQgPSAia2lkIikgJT4lIA0KICAgIGZpbHRlcihpZCAlaW4lIGMoNDU4NSkpDQogIA0KICBrb21tdW5lbmF2biA8LSBrb21tdW5lJHZlcmRpDQogIA0KICBwb2x5Z29uIDwtIHV0aGVudGEkb2JqZWt0ZXIkbG9rYXNqb24uZ2VvbWV0cmkud2t0DQogIA0KICBzdmFyIDwtIGxpc3Qoa29tbXVuZW5hdm4sIHBvbHlnb24pDQogIA0KICByZXR1cm4oc3ZhcikNCn0NCg0KaGVudF90cmFmaWtrcmVnaXN0cmVyaW5nc3N0YXNqb25fZm9yX2tvbW11bmUgPC0gZnVuY3Rpb24oa29tbXVuZW5yKSB7DQogIGFwaV9xdWVyeV80ODIgPC0gcGFzdGUwKG52ZGJfdXJsLA0KICAgICAgICAgICAgICAgICAgICAgICAgc3RpX3ZlZ29iamVrdGVyLA0KICAgICAgICAgICAgICAgICAgICAgICAgIi80ODIiLA0KICAgICAgICAgICAgICAgICAgICAgICAgIj9pbmtsdWRlcj1lZ2Vuc2thcGVyLGxva2Fzam9uIikNCiAgDQogIGFwaV9xdWVyeV80ODJfa29tbXVuZSA8LSBwYXN0ZTAoYXBpX3F1ZXJ5XzQ4MiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiJmtvbW11bmU9IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBrb21tdW5lbnIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIiZzcmlkPXdnczg0IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiJmVnZW5za2FwPTM5MTA9NDg5MiIpDQogIA0KICByZXNwb25zIDwtIEdFVChhcGlfcXVlcnlfNDgyX2tvbW11bmUsDQogICAgICAgICAgICAgICAgIGFkZF9oZWFkZXJzKCJYLUNsaWVudCIgPSAidHJhZmlra2RhdGFncnVwcGEiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiWC1Lb250YWt0cGVyc29uIiA9ICJzbm9ycmUuaGFuc2VuQHZlZ3Zlc2VuLm5vIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkFjY2VwdCIgPSAiYXBwbGljYXRpb24vdm5kLnZlZ3Zlc2VuLm52ZGItdjIranNvbiIpKQ0KDQogIHV0aGVudGEgPC0gZnJvbUpTT04oc3RyX2NvbnYocmVzcG9ucyRjb250ZW50LCBlbmNvZGluZyA9ICJVVEYtOCIpLA0KICAgICAgICAgICAgICAgICAgICAgIHNpbXBsaWZ5RGF0YUZyYW1lID0gVCwNCiAgICAgICAgICAgICAgICAgICAgICBmbGF0dGVuID0gVCkNCiAgDQogIHRycyA8LSBiaW5kX3Jvd3ModXRoZW50YSRvYmpla3RlciRlZ2Vuc2thcGVyLCAuaWQgPSAidHJzaWQiKSAlPiUgDQogICAgZmlsdGVyKGlkICVpbiUgYyg0NjI2LCA0NjI3LCA1MjAxLCA5MjkzLCAzOTEwKSkgJT4lIA0KICAgIHNlbGVjdChuYXZuLCB2ZXJkaSkgJT4lIA0KICAgIG11dGF0ZShuYXZuID0gYXMuZmFjdG9yKG5hdm4pKSAlPiUgDQogICAgZ3JvdXBfYnkobmF2bikgJT4lIA0KICAgIG11dGF0ZShncm91cGVkX2lkID0gcm93X251bWJlcigpKSAlPiUgDQogICAgc3ByZWFkKG5hdm4sIHZlcmRpLCBkcm9wID0gRikgJT4lIA0KICAgIHNlbGVjdCgtZ3JvdXBlZF9pZCkgJT4lIA0KICAgIHNlbGVjdCgxLCA0LCAzLCAyLCA1KQ0KICANCiAgY29sbmFtZXModHJzKSA8LSBjKCJTdGFzam9ubnIiLCAiTmF2biIsICJTdGF0dXMiLCAiTml2YWEiLCAiVHJhZmlrYW50Z3J1cHBlIikNCiAgDQogIHZlZ3JlZmVyYW5zZSA8LSBiaW5kX3Jvd3ModXRoZW50YSRvYmpla3RlciRsb2thc2pvbi52ZWdyZWZlcmFuc2VyLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAuaWQgPSAidHJzZXIiKSAlPiUgDQogICAgc2VsZWN0KC10cnNlcikNCiAgDQogIGtvb3JkaW5hdGVyIDwtIGFzLmRhdGEuZnJhbWUodXRoZW50YSRvYmpla3RlciRsb2thc2pvbi5nZW9tZXRyaS53a3QpICU+JSANCiAgICBtdXRhdGUoZ2VvbWV0cmlfc3ViID0gDQogICAgICAgICAgICAgc3RyX3N1Yih1dGhlbnRhJG9iamVrdGVyJGxva2Fzam9uLmdlb21ldHJpLndrdCwgMTAsIC0yKSkgJT4lIA0KICAgIHNlcGFyYXRlKGdlb21ldHJpX3N1YiwgaW50byA9IGMoImxhdCIsICJsb24iLCAiYWx0IiksIHNlcCA9ICJbWzpzcGFjZTpdXSIsDQogICAgICAgICAgICAgY29udmVydCA9IFQpICU+JSANCiAgICBzZWxlY3QoLTEpDQogIA0KICB0cnNlciA8LSBiaW5kX2NvbHModHJzLCB2ZWdyZWZlcmFuc2UsIGtvb3JkaW5hdGVyKSAlPiUgDQogICAgI2ZpbHRlcihOaXZhYSA9PSAiS29udGludWVybGlnIChOaXbDpSAxKSIpICU+JSANCiAgICBmaWx0ZXIoVHJhZmlrYW50Z3J1cHBlID09ICJNb3Rvcmtqw7hyZXTDuHkiKSAlPiUgDQogICAgZmlsdGVyKFN0YXR1cyAhPSAiTmVkbGFndCwgaWtrZSBsb3Ygw6UgYnJ1a2UiKSAlPiUgDQogICAgbXV0YXRlKFZlZyA9IHBhc3RlMChrYXRlZ29yaSwgbnVtbWVyKSkgJT4lIA0KICAgIHNlbGVjdCgtU3RhdHVzLCAtTml2YWEsIC1UcmFmaWthbnRncnVwcGUsIC1meWxrZSwgLWtvbW11bmUsIC1rYXRlZ29yaSwgLW51bW1lciwNCiAgICAgICAgICAgLXN0YXR1cywgLWhwLCAtbWV0ZXIpICU+JSANCiAgICBtdXRhdGUoS29tbXVuZSA9IGtvbW11bmVuYXZuKQ0KDQogIGNvbG5hbWVzKHRyc2VyKSA8LSBjKCJTdGFzam9ubnIiLCAiTmF2biIsICJWZWdyZWZlcmFuc2UiLCANCiAgICAgICAgICAgICAgICAgICAgICAgImxhdCIsICJsb24iLCAiYWx0IiwgIlZlZyIsICJLb21tdW5lIikNCiAgDQogIHJldHVybih0cnNlcikNCn0NCg0KaGVudF9ib21zdGFzam9uX2Zvcl9rb21tdW5lIDwtIGZ1bmN0aW9uKGtvbW11bmVucikgew0KICBhcGlfcXVlcnlfNDUgPC0gcGFzdGUwKG52ZGJfdXJsLA0KICAgICAgICAgICAgICAgICAgICAgICAgc3RpX3ZlZ29iamVrdGVyLA0KICAgICAgICAgICAgICAgICAgICAgICAgIi80NSIsDQogICAgICAgICAgICAgICAgICAgICAgICAiP2lua2x1ZGVyPWVnZW5za2FwZXIsbG9rYXNqb24iKQ0KDQogIGFwaV9xdWVyeV80NV9rb21tdW5lIDwtIHBhc3RlMChhcGlfcXVlcnlfNDUsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIiZrb21tdW5lPSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAga29tbXVuZW5yLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICImc3JpZD13Z3M4NCIpDQogIA0KICByZXNwb25zIDwtIEdFVChhcGlfcXVlcnlfNDVfa29tbXVuZSwNCiAgICAgICAgICAgICAgICAgYWRkX2hlYWRlcnMoIlgtQ2xpZW50IiA9ICJ0cmFmaWtrZGF0YWdydXBwYSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICJYLUtvbnRha3RwZXJzb24iID0gInNub3JyZS5oYW5zZW5AdmVndmVzZW4ubm8iLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiQWNjZXB0IiA9ICJhcHBsaWNhdGlvbi92bmQudmVndmVzZW4ubnZkYi12Mitqc29uIikpDQoNCiAgdXRoZW50YSA8LSBmcm9tSlNPTihzdHJfY29udihyZXNwb25zJGNvbnRlbnQsIGVuY29kaW5nID0gIlVURi04IiksDQogICAgICAgICAgICAgICAgICAgICAgc2ltcGxpZnlEYXRhRnJhbWUgPSBULA0KICAgICAgICAgICAgICAgICAgICAgIGZsYXR0ZW4gPSBUKQ0KICANCiAgYm9tIDwtIGJpbmRfcm93cyh1dGhlbnRhJG9iamVrdGVyJGVnZW5za2FwZXIsIC5pZCA9ICJib21pZCIpICU+JSANCiAgICBmaWx0ZXIoaWQgJWluJSBjKDEwNzgsIDk1OTUpKSAlPiUgDQogICAgc2VsZWN0KG5hdm4sIHZlcmRpKSAlPiUgDQogICAgZmlsdGVyKHZlcmRpICE9ICJGZXJqZSBGbGFray1Sw7hydmlrIikgJT4lIA0KICAgIGdyb3VwX2J5KG5hdm4pICU+JSANCiAgICBtdXRhdGUoZ3JvdXBlZF9pZCA9IHJvd19udW1iZXIoKSkgJT4lIA0KICAgIHNwcmVhZChuYXZuLCB2ZXJkaSkgJT4lIA0KICAgIHNlbGVjdCgtZ3JvdXBlZF9pZCkNCiAgDQogIHZlZ3JlZmVyYW5zZSA8LSBiaW5kX3Jvd3ModXRoZW50YSRvYmpla3RlciRsb2thc2pvbi52ZWdyZWZlcmFuc2VyLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAuaWQgPSAiYm9tZXIiKSAlPiUgDQogICAgZmlsdGVyKG51bW1lciAhPSA3MTUpICU+JSANCiAgICBzZWxlY3QoLWJvbWVyKQ0KICANCiAga29vcmRpbmF0ZXIgPC0gYXMuZGF0YS5mcmFtZSh1dGhlbnRhJG9iamVrdGVyJGxva2Fzam9uLmdlb21ldHJpLndrdCkgJT4lIA0KICAgIG11dGF0ZShnZW9tZXRyaV9zdWIgPSBzdHJfc3ViKHV0aGVudGEkb2JqZWt0ZXIkbG9rYXNqb24uZ2VvbWV0cmkud2t0LCAxMCwgLTIpKSAlPiUgDQogICAgc2VwYXJhdGUoZ2VvbWV0cmlfc3ViLCBpbnRvID0gYygibGF0IiwgImxvbiIsICJhbHQiKSwgc2VwID0gIltbOnNwYWNlOl1dIiwNCiAgICAgICAgICAgICBjb252ZXJ0ID0gVCkgJT4lIA0KICAgIHNlbGVjdCgtMSkgJT4lIA0KICAgIGZpbHRlcihhbHQgIT0gOC43OTI4MCkNCiAgDQogIGJvbWVyIDwtIGJpbmRfY29scyhib20sIHZlZ3JlZmVyYW5zZSwga29vcmRpbmF0ZXIpICU+JSANCiAgICBtdXRhdGUoVmVnID0gcGFzdGUwKGthdGVnb3JpLCBudW1tZXIpKSAlPiUgDQogICAgc2VsZWN0KC1meWxrZSwgLWtvbW11bmUsIC1rYXRlZ29yaSwgLW51bW1lciwNCiAgICAgICAgICAgLXN0YXR1cywgLWhwLCAtbWV0ZXIpICU+JSANCiAgICBtdXRhdGUoS29tbXVuZSA9IGtvbW11bmVuYXZuKQ0KDQogIGNvbG5hbWVzKGJvbWVyKSA8LSBjKCJTdGFzam9ubnIiLCAiTmF2biIsICJWZWdyZWZlcmFuc2UiLCANCiAgICAgICAgICAgICAgICAgICAgICAgImxhdCIsICJsb24iLCAiYWx0IiwgIlZlZyIsICJLb21tdW5lIikNCiAgDQogIHJldHVybihib21lcikNCn0NCmBgYA0KDQpgYGB7ciwgZWNobz1GQUxTRX0NCiMgTGVzZXIgaW5uIMOFRFQgKG3DpSBoZW50ZXMgZnJhIE5WREItQVBJIGVsbGVyIHRyYWZpa2tkYXRhLUFQSSBww6Ugc2lrdCkNCmFkdCA8LSByZWFkLmNzdjIoImFkdF8yMDE3X25vcnRyYWYuY3N2IikgJT4lIA0KICBmaWx0ZXIoRmVsdCA9PSAiUjAiKSAlPiUgDQogIG11dGF0ZShTdGFzam9ubnIgPSBhcy5jaGFyYWN0ZXIoVGVsbGVwdW5rdCkpICU+JSANCiAgc2VsZWN0KFN0YXNqb25uciwgQURUKQ0KYGBgDQoNCmBgYHtyLCBlY2hvPUZBTFNFfQ0KIyBIZW50ZXIgaW5uIGRla25pbmdzZ3JhZA0KZGVrbmluZyA8LSByZWFkLmNzdjIoInRlbGxlZGFnZXJfdHJvbmRoZWltLmNzdiIpICU+JSANCiAgbXV0YXRlKFN0YXNqb25uciA9IGFzLmNoYXJhY3RlcihUcGt0bnIpLA0KICAgICAgICAgRGVrbmluZ3NncmFkID0gcm91bmQoMTAwICogKFNVTSAvIGRhZ2VyKSwgZGlnaXRzID0gMCkpICU+JSANCiAgc2VsZWN0KFN0YXNqb25uciwgYWFyLCBEZWtuaW5nc2dyYWQpDQoNCmRla25pbmdfMjAxNyA8LSBkZWtuaW5nICU+JSANCiAgZmlsdGVyKGFhciA9PSAyMDE3KSAlPiUgDQogIG11dGF0ZShEZWtuaW5nXzE3ID0gRGVrbmluZ3NncmFkKSAlPiUgDQogIHNlbGVjdChTdGFzam9ubnIsIERla25pbmdfMTcpDQoNCmRla25pbmdfMjAxOCA8LSBkZWtuaW5nICU+JSANCiAgZmlsdGVyKGFhciA9PSAyMDE4KSAlPiUgDQogIG11dGF0ZShEZWtuaW5nXzE4ID0gRGVrbmluZ3NncmFkKSAlPiUgDQogIHNlbGVjdChTdGFzam9ubnIsIERla25pbmdfMTgpDQoNCmBgYA0KDQpgYGB7ciwgZWNobz1GLCB3YXJuaW5nPUYsIG1lc3NhZ2U9RkFMU0V9DQojIFV0ZsO4cmVyIHNww7hycmluZ2VyIG1vdCBOVkRCIGZvciBha3R1ZWxsZSBrb21tdW5lcg0KIyBUcm9uZGhlaW0gNTAwMQ0Ka29tbXVuZW5yIDwtICI1MDAxIg0Ka29tbXVuZW5hdm4gPC0gaGVudF9rb21tdW5lKGtvbW11bmVucilbWzFdXQ0Ka29tbXVuZXBvbHlnb24gPC0gaGVudF9rb21tdW5lKGtvbW11bmVucilbWzJdXQ0Ka29tbXVuZV90cnNlciA8LSBoZW50X3RyYWZpa2tyZWdpc3RyZXJpbmdzc3Rhc2pvbl9mb3Jfa29tbXVuZShrb21tdW5lbnIpICU+JSANCiAgbXV0YXRlKFR5cGUgPSAiVFJTIikNCmtvbW11bmVfYm9tZXIgPC0gaGVudF9ib21zdGFzam9uX2Zvcl9rb21tdW5lKGtvbW11bmVucikgJT4lIA0KICBtdXRhdGUoVHlwZSA9ICJCb20iKQ0Ka29tbXVuZXB1bmt0ZXIgPC0gYmluZF9yb3dzKGtvbW11bmVfdHJzZXIsIGtvbW11bmVfYm9tZXIpDQoNCiMgSHZpbGtlIHN0YXNqb25zbnVtcmUgc2thbCB2w6ZyZSBtZWQ/DQpieWluZGVrc3B1bmt0ZXJfdHJvbmRoZWltIDwtIGMoIjE2MDAwMTEiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAwMDEyIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMDA3OCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDAwOTciLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAwMTAxIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMDEwNCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDAxMjIiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAwMTIzIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMDEyNCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDAxMjUiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAwMTI2IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMDEyNyIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDAxMjgiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAwMTQ5IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMDE1NCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIyIxNjAwMTU1IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMDE1NiIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDAxNTciLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAwMTkzIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMDIwOSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDAyMTMiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAwMjE0IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMDIxOCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDAyMTkiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAxNDA1IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMTQxNiIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDE0MTgiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAxNDM4IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMTQ0MSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE2MDIzMDYiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNjAyNDA3IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTYwMjQxOCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE3MDAwMTIiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNzAwMDI3IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTcwMDAyOCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjE3MDAwMjkiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxNzAwMDYxIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMTcwMDA2MiIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjUxIiwgIjUyIiwgIjUzIiwgIjU0IiwgIjU1IiwgIjU2IiwgIjU3IiwgIjU4IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiNTkiLCAiNjAiLCAiNjEiLCAiNjIiLCAiNjMiLCAiNjQiLCAiNjUiLCAiNjYiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI2NyIsICI2OCIsICI2OSIsICI4NSIsICI4NiIpDQoNCmtvbW11bmVwdW5rdGVyX3Ryb25kaGVpbV9tZWQgPC0ga29tbXVuZXB1bmt0ZXIgJT4lIA0KICBmaWx0ZXIoU3Rhc2pvbm5yICVpbiUgYnlpbmRla3NwdW5rdGVyX3Ryb25kaGVpbSkgJT4lIA0KICBmaWx0ZXIoU3Rhc2pvbm5yICE9ICIxNjA1MDEwIikgJT4lIA0KICBtdXRhdGUoQnlpbmRla3MgPSAiSmEiKQ0KDQprb21tdW5lcHVua3Rlcl90cm9uZGhlaW1fdXRlIDwtIGtvbW11bmVwdW5rdGVyICU+JSANCiAgZmlsdGVyKCEoU3Rhc2pvbm5yICVpbiUgYnlpbmRla3NwdW5rdGVyX3Ryb25kaGVpbSkpICU+JSANCiAgZmlsdGVyKFN0YXNqb25uciAhPSAiMTYwNTAxMCIpICU+JSANCiAgbXV0YXRlKEJ5aW5kZWtzID0gIk5laSIpDQoNCmtvbW11bmVwdW5rdGVyX3Ryb25kaGVpbSA8LSBiaW5kX3Jvd3Moa29tbXVuZXB1bmt0ZXJfdHJvbmRoZWltX21lZCwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAga29tbXVuZXB1bmt0ZXJfdHJvbmRoZWltX3V0ZSkNCg0KIyBNw6UgbGVnZ2UgdGlsIMOFRFQsIGhlbnRlIGZyYSBOVkRCDQpgYGANCg0KIyBUcm9uZGhlaW0NClRhYmVsbCBvdmVyIGJ5aW5kZWtzcHVua3RlbmUuIFRSUyBzdMOlciBmb3IgdHJhZmlra3JlZ2lzdHJlcmluZ3NzdGFzam9uLg0KDQpgYGB7ciwgcmVzdWx0cz0nYXNpcycsIGVjaG89RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQojIFRhYmVsbA0Ka29tbXVuZXB1bmt0ZXJfdHJvbmRoZWltICAlPiUgDQogIGxlZnRfam9pbihhZHQpICU+JSANCiAgbGVmdF9qb2luKGRla25pbmdfMjAxNykgJT4lIA0KICBsZWZ0X2pvaW4oZGVrbmluZ18yMDE4KSAlPiUgDQogIHNlbGVjdChOYXZuLCBLb21tdW5lLCBWZWcsIFR5cGUsIEJ5aW5kZWtzLCBBRFQsIERla25pbmdfMTcsIERla25pbmdfMTgpICU+JSANCiAgYXJyYW5nZShWZWcpICU+JSANCiAga2FibGUoKQ0KYGBgDQoNCmBgYHtyLCB3YXJuaW5nPUZBTFNFLCBlY2hvPUZBTFNFLCBpbmNsdWRlPUZBTFNFfQ0KcGFsIDwtIGNvbG9yRmFjdG9yKGMoIm5hdnkiLCAicmVkIiksIGRvbWFpbiA9IGMoIlRSUyIsICJCb20iKSkNCg0KbWFwLnRyZCA8LSBrb21tdW5lcHVua3Rlcl90cm9uZGhlaW0gJT4lIA0KICBsZWFmbGV0KHdpZHRoID0gIjEwMCUiLCBvcHRpb25zID0gbGVhZmxldE9wdGlvbnMobWluWm9vbSA9IDAsIG1heFpvb20gPSAxOCkpICU+JSANCiAgYWRkUHJvdmlkZXJUaWxlcyhwcm92aWRlcnMkRXNyaS5Xb3JsZFN0cmVldE1hcCkgJT4lIA0KICBhZGRDaXJjbGVNYXJrZXJzKA0KICAgIHJhZGl1cyA9IDYsDQogICAgY29sb3IgPSB+cGFsKFR5cGUpLA0KICAgIHdlaWdodCA9IDMsDQogICAgZmlsbCA9IEYNCiAgKSAlPiUgDQogIGFkZExhYmVsT25seU1hcmtlcnMobGFiZWwgPSB+VmVnLA0KICAgICAgICAgICAgICAgICAgICAgIGxhYmVsT3B0aW9ucyA9IGxhYmVsT3B0aW9ucyhub0hpZGUgPSBULCBkaXJlY3Rpb24gPSAndG9wJywgdGV4dE9ubHkgPSBUKSkNCmBgYA0KPGJyPg0KPGJyPg0KPGJyPg0KPGJyPg0KPGJyPg0KPGJyPg0KPGJyPg0KPGJyPg0KPGJyPg0KPGJyPg0KPGJyPg0KDQpLYXJ0ZXQgb3ZlciBUcm9uZGhlaW0gdmlzZXIgdHJhZmlra3JlZ2lzdHJlcmluZ3NzdGFzam9uZXIgaSByw7hkdCwgDQpvZyBib21zdGFzam9uZXIgaSBibMOldHQuDQoNCg0KDQpgYGB7ciwgZWNobz1GQUxTRX0NCm1hcC50cmQNCmBgYA0KDQojIEtsw6ZidQ0KSW5nZW4gZm9yZXNsw6V0dGUgYnlpbmRla3NwdW5rdGVyLg0KDQo8YnI+DQo8YnI+DQo8YnI+DQoNCiMgTWVsaHVzDQpgYGB7ciwgZWNobz1GLCB3YXJuaW5nPUYsIG1lc3NhZ2U9RkFMU0V9DQojIFV0ZsO4cmVyIHNww7hycmluZ2VyIG1vdCBOVkRCIGZvciBha3R1ZWxsZSBrb21tdW5lcg0KIyBNZWxodXMgNTAyOA0Ka29tbXVuZW5yIDwtICI1MDI4Ig0Ka29tbXVuZW5hdm4gPC0gaGVudF9rb21tdW5lKGtvbW11bmVucilbWzFdXQ0Ka29tbXVuZXBvbHlnb24gPC0gaGVudF9rb21tdW5lKGtvbW11bmVucilbWzJdXQ0Ka29tbXVuZV90cnNlciA8LSBoZW50X3RyYWZpa2tyZWdpc3RyZXJpbmdzc3Rhc2pvbl9mb3Jfa29tbXVuZShrb21tdW5lbnIpDQoNCmtvbW11bmVwdW5rdGVyX21lbGh1cyA8LSBrb21tdW5lX3Ryc2VyICU+JSANCiAgZmlsdGVyKFN0YXNqb25uciAlaW4lIGJ5aW5kZWtzcHVua3Rlcl90cm9uZGhlaW0pDQoNCiMgTcOlIGxlZ2dlIHRpbCDDhURULCBoZW50ZSBmcmEgTlZEQg0KYGBgDQoNCg0KYGBge3IsIHJlc3VsdHM9J2FzaXMnLCBlY2hvPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KIyBUYWJlbGwNCmtvbW11bmVwdW5rdGVyX21lbGh1cyAgJT4lIA0KICBsZWZ0X2pvaW4oYWR0KSAlPiUgDQogIGxlZnRfam9pbihkZWtuaW5nXzIwMTcpICU+JSANCiAgbGVmdF9qb2luKGRla25pbmdfMjAxOCkgJT4lIA0KICBzZWxlY3QoTmF2biwgS29tbXVuZSwgVmVnLCBBRFQsIERla25pbmdfMTcsIERla25pbmdfMTgpICU+JSANCiAgYXJyYW5nZShWZWcpICU+JSANCiAga2FibGUoKQ0KYGBgDQoNCg0KYGBge3IsIHdhcm5pbmc9RkFMU0UsIGVjaG89RkFMU0UsIGluY2x1ZGU9RkFMU0V9DQptYXAubWVsaHVzIDwtIGtvbW11bmVwdW5rdGVyX21lbGh1cyAlPiUgDQogIGxlYWZsZXQod2lkdGggPSAiMTAwJSIsIG9wdGlvbnMgPSBsZWFmbGV0T3B0aW9ucyhtaW5ab29tID0gMCwgbWF4Wm9vbSA9IDE4KSkgJT4lIA0KICBhZGRQcm92aWRlclRpbGVzKHByb3ZpZGVycyRFc3JpLldvcmxkU3RyZWV0TWFwKSAlPiUgDQogIGFkZENpcmNsZU1hcmtlcnMoDQogICAgcmFkaXVzID0gNiwNCiAgICBjb2xvciA9ICJyZWQiLA0KICAgIHdlaWdodCA9IDMsDQogICAgZmlsbCA9IEYNCiAgKSAlPiUgDQogIGFkZExhYmVsT25seU1hcmtlcnMobGFiZWwgPSB+VmVnLA0KICAgICAgICAgICAgICAgICAgICAgIGxhYmVsT3B0aW9ucyA9IGxhYmVsT3B0aW9ucyhub0hpZGUgPSBULCBkaXJlY3Rpb24gPSAndG9wJywgdGV4dE9ubHkgPSBUKSkNCmBgYA0KDQpgYGB7ciwgZWNobz1GQUxTRX0NCm1hcC5tZWxodXMNCmBgYA0KDQoNCiMgTWFsdmlrDQpgYGB7ciwgZWNobz1GLCB3YXJuaW5nPUYsIG1lc3NhZ2U9RkFMU0V9DQojIFV0ZsO4cmVyIHNww7hycmluZ2VyIG1vdCBOVkRCIGZvciBha3R1ZWxsZSBrb21tdW5lcg0KIyBNYWx2aWsgNTAzMQ0Ka29tbXVuZW5yIDwtICI1MDMxIg0Ka29tbXVuZW5hdm4gPC0gaGVudF9rb21tdW5lKGtvbW11bmVucilbWzFdXQ0Ka29tbXVuZXBvbHlnb24gPC0gaGVudF9rb21tdW5lKGtvbW11bmVucilbWzJdXQ0Ka29tbXVuZV90cnNlciA8LSBoZW50X3RyYWZpa2tyZWdpc3RyZXJpbmdzc3Rhc2pvbl9mb3Jfa29tbXVuZShrb21tdW5lbnIpDQoNCmtvbW11bmVwdW5rdGVyX21hbHZpayA8LSBrb21tdW5lX3Ryc2VyICU+JSANCiAgZmlsdGVyKFN0YXNqb25uciAlaW4lIGJ5aW5kZWtzcHVua3Rlcl90cm9uZGhlaW0pDQoNCiMgTcOlIGxlZ2dlIHRpbCDDhURULCBoZW50ZSBmcmEgTlZEQg0KYGBgDQoNCg0KYGBge3IsIHJlc3VsdHM9J2FzaXMnLCBlY2hvPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KIyBUYWJlbGwNCmtvbW11bmVwdW5rdGVyX21hbHZpayAgJT4lIA0KICBsZWZ0X2pvaW4oYWR0KSAlPiUgDQogIGxlZnRfam9pbihkZWtuaW5nXzIwMTcpICU+JSANCiAgbGVmdF9qb2luKGRla25pbmdfMjAxOCkgJT4lIA0KICBzZWxlY3QoTmF2biwgS29tbXVuZSwgVmVnLCBBRFQsIERla25pbmdfMTcsIERla25pbmdfMTgpICU+JSANCiAgYXJyYW5nZShWZWcpICU+JSANCiAga2FibGUoKQ0KYGBgDQoNCg0KYGBge3IsIHdhcm5pbmc9RkFMU0UsIGVjaG89RkFMU0UsIGluY2x1ZGU9RkFMU0V9DQptYXAubWFsdmlrIDwtIGtvbW11bmVwdW5rdGVyX21hbHZpayAlPiUgDQogIGxlYWZsZXQod2lkdGggPSAiMTAwJSIsIG9wdGlvbnMgPSBsZWFmbGV0T3B0aW9ucyhtaW5ab29tID0gMCwgbWF4Wm9vbSA9IDE4KSkgJT4lIA0KICBhZGRQcm92aWRlclRpbGVzKHByb3ZpZGVycyRFc3JpLldvcmxkU3RyZWV0TWFwKSAlPiUgDQogIGFkZENpcmNsZU1hcmtlcnMoDQogICAgcmFkaXVzID0gNiwNCiAgICBjb2xvciA9ICJyZWQiLA0KICAgIHdlaWdodCA9IDMsDQogICAgZmlsbCA9IEYNCiAgKSAlPiUgDQogIGFkZExhYmVsT25seU1hcmtlcnMobGFiZWwgPSB+VmVnLA0KICAgICAgICAgICAgICAgICAgICAgIGxhYmVsT3B0aW9ucyA9IGxhYmVsT3B0aW9ucyhub0hpZGUgPSBULCBkaXJlY3Rpb24gPSAndG9wJywgdGV4dE9ubHkgPSBUKSkNCmBgYA0KDQpgYGB7ciwgZWNobz1GQUxTRX0NCm1hcC5tYWx2aWsNCmBgYA0KDQoNCiMgU3Rqw7hyZGFsDQpgYGB7ciwgZWNobz1GLCB3YXJuaW5nPUYsIG1lc3NhZ2U9RkFMU0V9DQojIFV0ZsO4cmVyIHNww7hycmluZ2VyIG1vdCBOVkRCIGZvciBha3R1ZWxsZSBrb21tdW5lcg0KIyBTdGrDuHJkYWwgNTAzNQ0Ka29tbXVuZW5yIDwtICI1MDM1Ig0Ka29tbXVuZW5hdm4gPC0gaGVudF9rb21tdW5lKGtvbW11bmVucilbWzFdXQ0Ka29tbXVuZXBvbHlnb24gPC0gaGVudF9rb21tdW5lKGtvbW11bmVucilbWzJdXQ0Ka29tbXVuZV90cnNlciA8LSBoZW50X3RyYWZpa2tyZWdpc3RyZXJpbmdzc3Rhc2pvbl9mb3Jfa29tbXVuZShrb21tdW5lbnIpDQoNCmtvbW11bmVwdW5rdGVyX3N0am9yZGFsIDwtIGtvbW11bmVfdHJzZXIgJT4lIA0KICBmaWx0ZXIoU3Rhc2pvbm5yICVpbiUgYnlpbmRla3NwdW5rdGVyX3Ryb25kaGVpbSkNCg0KIyBNw6UgbGVnZ2UgdGlsIMOFRFQsIGhlbnRlIGZyYSBOVkRCDQpgYGANCg0KDQpgYGB7ciwgcmVzdWx0cz0nYXNpcycsIGVjaG89RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQojIFRhYmVsbA0Ka29tbXVuZXB1bmt0ZXJfc3Rqb3JkYWwgICU+JSANCiAgbGVmdF9qb2luKGFkdCkgJT4lIA0KICBsZWZ0X2pvaW4oZGVrbmluZ18yMDE3KSAlPiUgDQogIGxlZnRfam9pbihkZWtuaW5nXzIwMTgpICU+JSANCiAgc2VsZWN0KE5hdm4sIEtvbW11bmUsIFZlZywgQURULCBEZWtuaW5nXzE3LCBEZWtuaW5nXzE4KSAlPiUgDQogIGFycmFuZ2UoVmVnKSAlPiUgDQogIGthYmxlKCkNCmBgYA0KDQoNCmBgYHtyLCB3YXJuaW5nPUZBTFNFLCBlY2hvPUZBTFNFLCBpbmNsdWRlPUZBTFNFfQ0KbWFwLnN0am9yZGFsIDwtIGtvbW11bmVwdW5rdGVyX3N0am9yZGFsICU+JSANCiAgbGVhZmxldCh3aWR0aCA9ICIxMDAlIiwgb3B0aW9ucyA9IGxlYWZsZXRPcHRpb25zKG1pblpvb20gPSAwLCBtYXhab29tID0gMTgpKSAlPiUgDQogIGFkZFByb3ZpZGVyVGlsZXMocHJvdmlkZXJzJEVzcmkuV29ybGRTdHJlZXRNYXApICU+JSANCiAgYWRkQ2lyY2xlTWFya2VycygNCiAgICByYWRpdXMgPSA2LA0KICAgIGNvbG9yID0gInJlZCIsDQogICAgd2VpZ2h0ID0gMywNCiAgICBmaWxsID0gRg0KICApICU+JSANCiAgYWRkTGFiZWxPbmx5TWFya2VycyhsYWJlbCA9IH5WZWcsDQogICAgICAgICAgICAgICAgICAgICAgbGFiZWxPcHRpb25zID0gbGFiZWxPcHRpb25zKG5vSGlkZSA9IFQsIGRpcmVjdGlvbiA9ICd0b3AnLCB0ZXh0T25seSA9IFQpKQ0KYGBgDQoNCmBgYHtyLCBlY2hvPUZBTFNFfQ0KbWFwLnN0am9yZGFsDQpgYGANCg0K</div>
 
 
 
