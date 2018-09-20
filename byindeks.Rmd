@@ -160,6 +160,36 @@ hent_bomstasjon_for_kommune <- function(kommunenr) {
 }
 ```
 
+```{r, echo=FALSE}
+# Leser inn ÅDT (må hentes fra NVDB-API eller trafikkdata-API på sikt)
+adt <- read.csv2("adt_2017_nortraf.csv") %>% 
+  filter(Felt == "R0") %>% 
+  mutate(Stasjonnr = as.character(Tellepunkt)) %>% 
+  select(Stasjonnr, ADT)
+```
+
+```{r, echo=FALSE}
+# Henter inn dekningsgrad
+dekning <- read.csv2("telledager_trondheim.csv") %>% 
+  mutate(Stasjonnr = as.character(Tpktnr),
+         Dekningsgrad = round(100 * (SUM / dager), digits = 0)) %>% 
+  select(Stasjonnr, aar, Dekningsgrad)
+
+
+dekning_2017 <- dekning %>% 
+  filter(aar == 2017) %>% 
+  mutate(Dekning_17 = Dekningsgrad) %>% 
+  select(Stasjonnr, Dekning_17)
+
+dekning_2018 <- dekning %>% 
+  filter(aar == 2018) %>% 
+  mutate(Dekning_18 = Dekningsgrad) %>% 
+  select(Stasjonnr, Dekning_18)
+
+```
+
+
+
 ```{r, echo=F, warning=F, message=FALSE}
 # Utfører spørringer mot NVDB for aktuelle kommuner
 # Trondheim 5001
@@ -224,10 +254,13 @@ kommunepunkter_trondheim <- kommunepunkter %>%
 # Trondheim
 Tabell over byindekspunktene. TRS står for trafikkregistreringsstasjon.
 
-```{r, results='asis', echo=FALSE}
+```{r, results='asis', echo=FALSE, message=FALSE}
 # Tabell
 kommunepunkter_trondheim  %>% 
-  select(Navn, Kommune, Veg, Type) %>% 
+  left_join(adt) %>% 
+  left_join(dekning_2017) %>% 
+  left_join(dekning_2018) %>% 
+  select(Navn, Kommune, Veg, Type, ADT, Dekning_17, Dekning_18) %>% 
   arrange(Veg) %>% 
   kable()
 ```
@@ -291,10 +324,13 @@ kommunepunkter_melhus <- kommune_trser %>%
 ```
 
 
-```{r, results='asis', echo=FALSE}
+```{r, results='asis', echo=FALSE, message=FALSE}
 # Tabell
 kommunepunkter_melhus  %>% 
-  select(Navn, Kommune, Veg) %>% 
+  left_join(adt) %>% 
+  left_join(dekning_2017) %>% 
+  left_join(dekning_2018) %>% 
+  select(Navn, Kommune, Veg, ADT, Dekning_17, Dekning_18) %>% 
   arrange(Veg) %>% 
   kable()
 ```
@@ -335,10 +371,13 @@ kommunepunkter_malvik <- kommune_trser %>%
 ```
 
 
-```{r, results='asis', echo=FALSE}
+```{r, results='asis', echo=FALSE, message=FALSE}
 # Tabell
 kommunepunkter_malvik  %>% 
-  select(Navn, Kommune, Veg) %>% 
+  left_join(adt) %>% 
+  left_join(dekning_2017) %>% 
+  left_join(dekning_2018) %>% 
+  select(Navn, Kommune, Veg, ADT, Dekning_17, Dekning_18) %>% 
   arrange(Veg) %>% 
   kable()
 ```
@@ -379,10 +418,13 @@ kommunepunkter_stjordal <- kommune_trser %>%
 ```
 
 
-```{r, results='asis', echo=FALSE}
+```{r, results='asis', echo=FALSE, message=FALSE}
 # Tabell
 kommunepunkter_stjordal  %>% 
-  select(Navn, Kommune, Veg) %>% 
+  left_join(adt) %>% 
+  left_join(dekning_2017) %>% 
+  left_join(dekning_2018) %>% 
+  select(Navn, Kommune, Veg, ADT, Dekning_17, Dekning_18) %>% 
   arrange(Veg) %>% 
   kable()
 ```
