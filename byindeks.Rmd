@@ -90,6 +90,8 @@ hent_trafikkregistreringsstasjon_for_kommune <- function(kommunenr) {
   vegreferanse <- bind_rows(uthenta$objekter$lokasjon.vegreferanser, 
                             .id = "trser") %>% 
     select(-trser)
+  # Ta bort fylkenr, kommunenr og mellomrom, slik at vegreferansen er på kortform
+  # som kan brukes direkte i spørring etter trafikkmengde i NVDB-API.
   
   koordinater <- as.data.frame(uthenta$objekter$lokasjon.geometri.wkt) %>% 
     mutate(geometri_sub = 
@@ -195,18 +197,7 @@ dekning_2018 <- dekning %>%
 
 ```
 
-```{r, echo=F, warning=F, message=FALSE}
-# Utfører spørringer mot NVDB for aktuelle kommuner
-# Trondheim 5001
-kommunenr <- "5001"
-kommunenavn <- hent_kommune(kommunenr)[[1]]
-kommunepolygon <- hent_kommune(kommunenr)[[2]]
-kommune_trser <- hent_trafikkregistreringsstasjon_for_kommune(kommunenr) %>% 
-  mutate(Type = "TRS")
-kommune_bomer <- hent_bomstasjon_for_kommune(kommunenr) %>% 
-  mutate(Type = "Bom")
-kommunepunkter <- bind_rows(kommune_trser, kommune_bomer)
-
+```{r, echo=FALSE}
 # Hvilke stasjonsnumre skal være med?
 byindekspunkter_trondheim <- c("1600011",
                                "1600012",
@@ -250,6 +241,20 @@ byindekspunkter_trondheim <- c("1600011",
                                "59", "60", "61", "62", "63", "64", "65", "66",
                                "67", "68", "69", "85", "86")
 
+```
+
+```{r, echo=F, warning=F, message=FALSE}
+# Utfører spørringer mot NVDB for aktuelle kommuner
+# Trondheim 5001
+kommunenr <- "5001"
+kommunenavn <- hent_kommune(kommunenr)[[1]]
+kommunepolygon <- hent_kommune(kommunenr)[[2]]
+kommune_trser <- hent_trafikkregistreringsstasjon_for_kommune(kommunenr) %>% 
+  mutate(Type = "TRS")
+kommune_bomer <- hent_bomstasjon_for_kommune(kommunenr) %>% 
+  mutate(Type = "Bom")
+kommunepunkter <- bind_rows(kommune_trser, kommune_bomer)
+
 kommunepunkter_trondheim_med <- kommunepunkter %>% 
   filter(Stasjonnr %in% byindekspunkter_trondheim) %>% 
   filter(Stasjonnr != "1605010") %>% 
@@ -266,8 +271,13 @@ kommunepunkter_trondheim <- bind_rows(kommunepunkter_trondheim_med,
 # Må legge til ÅDT, hente fra NVDB
 ```
 
+Tabell og kart over byindekspunktene. TRS står for trafikkregistreringsstasjon. 
+Kartet viser også punkter som ikke er med indeksen (små sirkler).
+
+Dekningsgrad er oppgitt som prosentvis andel dager registrert i året, for 2018
+gjelder tall til og med august.
+
 # Trondheim
-Tabell over byindekspunktene. TRS står for trafikkregistreringsstasjon.
 
 ```{r, results='asis', echo=FALSE, message=FALSE}
 # Tabell
@@ -276,7 +286,7 @@ kommunepunkter_trondheim  %>%
   left_join(dekning_2017) %>% 
   left_join(dekning_2018) %>% 
   select(Navn, Kommune, Veg, Type, Byindeks, ADT, Dekning_17, Dekning_18) %>% 
-  arrange(Veg) %>% 
+  arrange(Byindeks, Veg) %>% 
   kable(format.args = list(big.mark = " "))
 ```
 
@@ -299,8 +309,11 @@ map.trd <- kommunepunkter_trondheim %>%
                         labelOptions(noHide = T, 
                                      direction = 'top', 
                                      textOnly = T,
-                                     offset = c(0,-1))) %>% 
-  addPolygons(kommunepolygon)
+                                     offset = c(0, 7))) %>% 
+  addLegend("bottomright", pal = pal, values = ~Type,
+    title = "Type",
+    opacity = 1
+  )
 ```
 <br>
 <br>
@@ -313,22 +326,20 @@ map.trd <- kommunepunkter_trondheim %>%
 <br>
 <br>
 <br>
+<br>
+<br>
+<br>
+<br>
 
-Kartet over Trondheim viser trafikkregistreringsstasjoner i rødt, 
-og bomstasjoner i blått.
-
-
+Kartet angir byindekspunkter med stor sirkler, og øvrige punkter med små sirkler.
 
 ```{r, echo=FALSE}
 map.trd
 ```
 
 # Klæbu
-Ingen foreslåtte byindekspunkter. 
+Ingen foreslåtte byindekspunkter eller øvrige punkter. 
 
-<br>
-<br>
-<br>
 
 # Melhus
 ```{r, echo=F, warning=F, message=FALSE}
@@ -339,8 +350,18 @@ kommunenavn <- hent_kommune(kommunenr)[[1]]
 kommunepolygon <- hent_kommune(kommunenr)[[2]]
 kommune_trser <- hent_trafikkregistreringsstasjon_for_kommune(kommunenr)
 
-kommunepunkter_melhus <- kommune_trser %>% 
-  filter(Stasjonnr %in% byindekspunkter_trondheim)
+kommunepunkter_melhus_med <- kommune_trser %>% 
+  filter(Stasjonnr %in% byindekspunkter_trondheim) %>% 
+  filter(!(Stasjonnr %in% c("1600211", "1600212", "1600210", "1600265"))) %>% 
+  mutate(Byindeks = "Ja")
+
+kommunepunkter_melhus_ute <- kommune_trser %>% 
+  filter(!(Stasjonnr %in% byindekspunkter_trondheim)) %>% 
+  filter(!(Stasjonnr %in% c("1600211", "1600212", "1600210", "1600265"))) %>% 
+  mutate(Byindeks = "Nei")
+
+kommunepunkter_melhus <- bind_rows(kommunepunkter_melhus_med,
+                                      kommunepunkter_melhus_ute)
 
 # Må legge til ÅDT, hente fra NVDB
 ```
@@ -352,9 +373,9 @@ kommunepunkter_melhus  %>%
   left_join(adt) %>% 
   left_join(dekning_2017) %>% 
   left_join(dekning_2018) %>% 
-  select(Navn, Kommune, Veg, ADT, Dekning_17, Dekning_18) %>% 
-  arrange(Veg) %>% 
-  kable()
+  select(Navn, Kommune, Veg, Byindeks, ADT, Dekning_17, Dekning_18) %>% 
+  arrange(Byindeks, Veg) %>% 
+  kable(format.args = list(big.mark = " "))
 ```
 
 
@@ -363,13 +384,18 @@ map.melhus <- kommunepunkter_melhus %>%
   leaflet(width = "100%", options = leafletOptions(minZoom = 0, maxZoom = 18)) %>% 
   addProviderTiles(providers$Esri.WorldStreetMap) %>% 
   addCircleMarkers(
-    radius = 6,
+    radius = ~ifelse(Byindeks == "Ja", 6, 4),
     color = "red",
     weight = 3,
+    opacity = 0.6,
     fill = F
   ) %>% 
   addLabelOnlyMarkers(label = ~Veg,
-                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T))
+                      labelOptions = 
+                        labelOptions(noHide = T, 
+                                     direction = 'top', 
+                                     textOnly = T,
+                                     offset = c(0, 7)))
 ```
 
 ```{r, echo=FALSE}
@@ -384,10 +410,22 @@ map.melhus
 kommunenr <- "5031"
 kommunenavn <- hent_kommune(kommunenr)[[1]]
 kommunepolygon <- hent_kommune(kommunenr)[[2]]
-kommune_trser <- hent_trafikkregistreringsstasjon_for_kommune(kommunenr)
+kommune_trser <- hent_trafikkregistreringsstasjon_for_kommune(kommunenr) %>% 
+  mutate(Type = "TRS")
+kommune_bomer <- hent_bomstasjon_for_kommune(kommunenr) %>% 
+  mutate(Type = "Bom")
+kommunepunkter <- bind_rows(kommune_trser, kommune_bomer)
 
-kommunepunkter_malvik <- kommune_trser %>% 
-  filter(Stasjonnr %in% byindekspunkter_trondheim)
+kommunepunkter_malvik_med <- kommunepunkter %>% 
+  filter(Stasjonnr %in% byindekspunkter_trondheim) %>% 
+  mutate(Byindeks = "Ja")
+
+kommunepunkter_malvik_ute <- kommunepunkter %>% 
+  filter(!(Stasjonnr %in% byindekspunkter_trondheim)) %>% 
+  mutate(Byindeks = "Nei")
+
+kommunepunkter_malvik <- bind_rows(kommunepunkter_malvik_med,
+                                      kommunepunkter_malvik_ute)
 
 # Må legge til ÅDT, hente fra NVDB
 ```
@@ -398,25 +436,53 @@ kommunepunkter_malvik <- kommune_trser %>%
 kommunepunkter_malvik  %>% 
   left_join(adt) %>% 
   left_join(dekning_2017) %>% 
-  left_join(dekning_2018) %>% 
-  select(Navn, Kommune, Veg, ADT, Dekning_17, Dekning_18) %>% 
-  arrange(Veg) %>% 
-  kable()
+  left_join(dekning_2018) %>%
+  select(Navn, Kommune, Veg, Type, Byindeks, ADT, Dekning_17, Dekning_18) %>% 
+  arrange(Byindeks, Veg) %>% 
+  kable(format.args = list(big.mark = " "))
 ```
 
-
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 ```{r, warning=FALSE, echo=FALSE, include=FALSE}
 map.malvik <- kommunepunkter_malvik %>% 
   leaflet(width = "100%", options = leafletOptions(minZoom = 0, maxZoom = 18)) %>% 
   addProviderTiles(providers$Esri.WorldStreetMap) %>% 
   addCircleMarkers(
-    radius = 6,
-    color = "red",
+    radius = ~ifelse(Byindeks == "Ja", 6, 4),
+    color = ~pal(Type),
     weight = 3,
+    opacity = 0.6,
     fill = F
   ) %>% 
   addLabelOnlyMarkers(label = ~Veg,
-                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T))
+                      labelOptions = 
+                        labelOptions(noHide = T, 
+                                     direction = 'top', 
+                                     textOnly = T,
+                                     offset = c(0, 7))) %>% 
+  addLegend("bottomright", pal = pal, values = ~Type,
+    title = "Type",
+    opacity = 1
+  )
 ```
 
 ```{r, echo=FALSE}
@@ -433,8 +499,18 @@ kommunenavn <- hent_kommune(kommunenr)[[1]]
 kommunepolygon <- hent_kommune(kommunenr)[[2]]
 kommune_trser <- hent_trafikkregistreringsstasjon_for_kommune(kommunenr)
 
-kommunepunkter_stjordal <- kommune_trser %>% 
-  filter(Stasjonnr %in% byindekspunkter_trondheim)
+kommunepunkter_stjordal_med <- kommune_trser %>% 
+  filter(Stasjonnr %in% byindekspunkter_trondheim) %>% 
+  filter(!(Stasjonnr %in% c("1700429"))) %>% 
+  mutate(Byindeks = "Ja")
+
+kommunepunkter_stjordal_ute <- kommune_trser %>% 
+  filter(!(Stasjonnr %in% byindekspunkter_trondheim)) %>% 
+  filter(!(Stasjonnr %in% c("1700429"))) %>% 
+  mutate(Byindeks = "Nei")
+
+kommunepunkter_stjordal <- bind_rows(kommunepunkter_stjordal_med,
+                                      kommunepunkter_stjordal_ute)
 
 # Må legge til ÅDT, hente fra NVDB
 ```
@@ -445,10 +521,10 @@ kommunepunkter_stjordal <- kommune_trser %>%
 kommunepunkter_stjordal  %>% 
   left_join(adt) %>% 
   left_join(dekning_2017) %>% 
-  left_join(dekning_2018) %>% 
-  select(Navn, Kommune, Veg, ADT, Dekning_17, Dekning_18) %>% 
-  arrange(Veg) %>% 
-  kable()
+  left_join(dekning_2018) %>%  
+  select(Navn, Kommune, Veg, Byindeks, ADT, Dekning_17, Dekning_18) %>% 
+  arrange(Byindeks, Veg) %>% 
+  kable(format.args = list(big.mark = " "))
 ```
 
 
@@ -457,13 +533,18 @@ map.stjordal <- kommunepunkter_stjordal %>%
   leaflet(width = "100%", options = leafletOptions(minZoom = 0, maxZoom = 18)) %>% 
   addProviderTiles(providers$Esri.WorldStreetMap) %>% 
   addCircleMarkers(
-    radius = 6,
+    radius = ~ifelse(Byindeks == "Ja", 6, 4),
     color = "red",
     weight = 3,
+    opacity = 0.6,
     fill = F
   ) %>% 
   addLabelOnlyMarkers(label = ~Veg,
-                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T))
+                      labelOptions = 
+                        labelOptions(noHide = T, 
+                                     direction = 'top', 
+                                     textOnly = T,
+                                     offset = c(0, 7)))
 ```
 
 ```{r, echo=FALSE}
