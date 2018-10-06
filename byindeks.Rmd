@@ -54,19 +54,28 @@ hent_kommune <- function(kommunenr) {
   return(svar)
 }
 
-hent_trafikkregistreringsstasjon_for_kommune <- function(kommunenr) {
+hent_trafikkregistreringsstasjon_for_omraade <- function(omraadenr) {
+  # Fire siffer angir kommunenr.
+  # Ett eller to siffer angir fylkenr.
+  
   api_query_482 <- paste0(nvdb_url,
                         sti_vegobjekter,
                         "/482",
                         "?inkluder=egenskaper,lokasjon")
   
-  api_query_482_kommune <- paste0(api_query_482,
-                                  "&kommune=",
-                                  kommunenr,
+  omraadestreng <- ifelse(nchar(omraadenr) <= 2, 
+                          "&fylke=",
+                          "&kommune="
+  )
+  
+  api_query_482_omraade <- paste0(api_query_482,
+                                  omraadestreng,
+                                  omraadenr,
                                   "&srid=wgs84",
                                   "&egenskap=3910=4892")
+  # Filtrer på kontinuerlige stasjoner
   
-  respons <- GET(api_query_482_kommune,
+  respons <- GET(api_query_482_omraade,
                  add_headers("X-Client" = "trafikkdatagruppa",
                              "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
                              "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
@@ -549,5 +558,84 @@ map.stjordal <- kommunepunkter_stjordal %>%
 
 ```{r, echo=FALSE}
 map.stjordal
+```
+
+# Oslo og Akershus
+
+```{r, echo=FALSE}
+# Hvilke stasjonsnumre skal være med?
+byindekspunkter_oslo_og_akershus <- c("200006",
+                               "200025",
+                               "200106",
+                               "200119",
+                               "200120",
+                               "200135",
+                               "200160",
+                               "200200",
+                               "200209",
+                               "200211",
+                               "200229",
+                               "200801",
+                               "200820",
+                               "202077",
+                               "202082",
+                               "202182",
+                               "202188",
+                               "202194",
+                               "202200",
+                               "205310",
+                               "209676",
+                               "300016",
+                               "300022",
+                               "300030",
+                               "300086",
+                               "300093",
+                               "300096",
+                               "300108",
+                               "300225",
+                               "300231",
+                               "300233",
+                               "300349",
+                               "302137")
+
+```
+
+
+```{r, echo=F}
+# OSlo 3
+omraadenr <- "3"
+#kommunenavn <- hent_kommune(kommunenr)[[1]]
+#kommunepolygon <- hent_kommune(kommunenr)[[2]]
+oslo_trser <- hent_trafikkregistreringsstasjon_for_omraade(omraadenr) %>% 
+  mutate(Type = "TRS")
+akershus_trser <- hent_trafikkregistreringsstasjon_for_omraade("2") %>% 
+  mutate(Type = "TRS")
+
+oslo_og_akershus_trser <- bind_rows(oslo_trser, akershus_trser) %>% 
+  filter(Stasjonnr %in% byindekspunkter_oslo_og_akershus) %>% 
+  mutate(Byindeks = "Ja")
+```
+
+```{r, warning=FALSE, echo=FALSE, include=FALSE}
+map.oslo <- oslo_og_akershus_trser %>% 
+  leaflet(width = "100%", options = leafletOptions(minZoom = 0, maxZoom = 18)) %>% 
+  addProviderTiles(providers$Esri.WorldStreetMap) %>% 
+  addCircleMarkers(
+    radius = ~ifelse(Byindeks == "Ja", 6, 4),
+    color = "red",
+    weight = 3,
+    opacity = 0.6,
+    fill = F
+  ) %>% 
+  addLabelOnlyMarkers(label = ~Veg,
+                      labelOptions = 
+                        labelOptions(noHide = T, 
+                                     direction = 'top', 
+                                     textOnly = T,
+                                     offset = c(0, 7)))
+```
+
+```{r, echo=FALSE}
+map.oslo
 ```
 
