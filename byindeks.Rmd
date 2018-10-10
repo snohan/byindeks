@@ -616,6 +616,19 @@ oslo_og_akershus_trser <- bind_rows(oslo_trser, akershus_trser) %>%
   mutate(Byindeks = "Ja")
 ```
 
+```{r, results='asis', echo=FALSE, message=FALSE}
+# Tabell
+punkter_oslo_og_akershus <- oslo_og_akershus_trser %>% 
+  left_join(adt) %>% 
+#  left_join(dekning_2017) %>% 
+#  left_join(dekning_2018) %>%  
+  select(Navn, Veg, ADT) %>% 
+  arrange(Veg) #%>% 
+#  kable(format.args = list(big.mark = " "))
+
+write.csv2(punkter_oslo_og_akershus, file = "punkter_oslo_akershus.csv", row.names = F)
+```
+
 ```{r, warning=FALSE, echo=FALSE, include=FALSE}
 map.oslo <- oslo_og_akershus_trser %>% 
   leaflet(width = "100%", options = leafletOptions(minZoom = 0, maxZoom = 18)) %>% 
