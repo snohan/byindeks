@@ -213,7 +213,7 @@ byindekspunkter_trondheim <- c("1600011",
                                "1600078",
                                "1600097",
                                "1600101",
-                               "1600104",
+                               #"1600104",
                                "1600122",
                                "1600123",
                                "1600124",
@@ -233,22 +233,24 @@ byindekspunkter_trondheim <- c("1600011",
                                "1600218",
                                "1600219",
                                "1601405",
-                               "1601416",
+                               #"1601416",
                                "1601418",
-                               "1601438",
-                               "1601441",
+                               #"1601438",
+                               #"1601441",
                                "1602306",
                                "1602407",
                                "1602418",
-                               "1700012",
-                               "1700027",
-                               "1700028",
-                               "1700029",
-                               "1700061",
-                               "1700062",
+                               #"1700012",
+                               #"1700027",
+                               #"1700028",
+                               #"1700029",
+                               #"1700061",
+                               #"1700062",
                                "51", "52", "53", "54", "55", "56", "57", "58",
                                "59", "60", "61", "62", "63", "64", "65", "66",
-                               "67", "68", "69", "85", "86")
+                               "67", "68", "69", "72", "74", "85", "86",
+                               # tre nye forslag fra kommunene:
+                               "1603001", "1603002", "1603003")
 
 ```
 
@@ -257,21 +259,60 @@ byindekspunkter_trondheim <- c("1600011",
 # Trondheim 5001
 kommunenr <- "5001"
 kommunenavn <- hent_kommune(kommunenr)[[1]]
-kommunepolygon <- hent_kommune(kommunenr)[[2]]
-kommune_trser <- hent_trafikkregistreringsstasjon_for_kommune(kommunenr) %>% 
+#kommunepolygon <- hent_kommune(kommunenr)[[2]]
+kommune_trser_5001 <- hent_trafikkregistreringsstasjon_for_kommune(kommunenr) %>% 
   mutate(Type = "TRS")
 kommune_bomer <- hent_bomstasjon_for_kommune(kommunenr) %>% 
   mutate(Type = "Bom")
-kommunepunkter <- bind_rows(kommune_trser, kommune_bomer)
 
-kommunepunkter_trondheim_med <- kommunepunkter %>% 
+# Melhus 5028
+kommunenr <- "5028"
+kommunenavn <- hent_kommune(kommunenr)[[1]]
+#kommunepolygon <- hent_kommune(kommunenr)[[2]]
+kommune_trser_5028 <- hent_trafikkregistreringsstasjon_for_kommune(kommunenr) %>% 
+  mutate(Type = "TRS")
+
+# Malvik 5031
+kommunenr <- "5031"
+kommunenavn <- hent_kommune(kommunenr)[[1]]
+#kommunepolygon <- hent_kommune(kommunenr)[[2]]
+kommune_trser_5031 <- hent_trafikkregistreringsstasjon_for_kommune(kommunenr) %>% 
+  mutate(Type = "TRS")
+kommune_bomer_5031 <- hent_bomstasjon_for_kommune(kommunenr) %>% 
+  mutate(Type = "Bom")
+
+kommunepunkter <- bind_rows(kommune_trser_5001,
+                            kommune_trser_5028, 
+                            kommune_trser_5031,
+                            kommune_bomer,
+                            kommune_bomer_5031) %>% 
+  filter(!(Stasjonnr %in% 
+             c("1605010", "1600211", "1600212", "1600210", 
+               "1600265", "1600158", "1602315"))) 
+
+
+# Legger til forslag til nye! Legge de inn i dekning og ådt.
+#write.csv2(kommunepunkter, file = "kommunepunkter.csv",
+#           row.names = F)
+kommunepunkter_nye_forslag <- read.csv2("nye_forslag.csv",
+                                        colClasses = c("character",
+                                                       "character",
+                                                       "character",
+                                                       "numeric",
+                                                       "numeric",
+                                                       "numeric",
+                                                       "character",
+                                                       "character",
+                                                       "character"))
+
+kommunepunkter_2 <- bind_rows(kommunepunkter, kommunepunkter_nye_forslag)
+
+kommunepunkter_trondheim_med <- kommunepunkter_2 %>% 
   filter(Stasjonnr %in% byindekspunkter_trondheim) %>% 
-  filter(Stasjonnr != "1605010") %>% 
   mutate(Byindeks = "Ja")
 
-kommunepunkter_trondheim_ute <- kommunepunkter %>% 
+kommunepunkter_trondheim_ute <- kommunepunkter_2 %>% 
   filter(!(Stasjonnr %in% byindekspunkter_trondheim)) %>% 
-  filter(Stasjonnr != "1605010") %>% 
   mutate(Byindeks = "Nei")
 
 kommunepunkter_trondheim <- bind_rows(kommunepunkter_trondheim_med,
@@ -307,7 +348,7 @@ map.trd <- kommunepunkter_trondheim %>%
           options = leafletOptions(minZoom = 0, maxZoom = 18)) %>% 
   addProviderTiles(providers$Esri.WorldStreetMap) %>% 
   addCircleMarkers(
-    radius = ~ifelse(Byindeks == "Ja", 6, 4),
+    radius = ~ifelse(Byindeks == "Ja", 6, 3),
     color = ~pal(Type),
     weight = 3,
     opacity = 0.6,
@@ -324,32 +365,13 @@ map.trd <- kommunepunkter_trondheim %>%
     opacity = 1
   )
 ```
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Kartet angir byindekspunkter med stor sirkler, og øvrige punkter med små sirkler.
 
 ```{r, echo=FALSE}
 map.trd
 ```
-
-# Klæbu
-Ingen foreslåtte byindekspunkter eller øvrige punkter. 
-
-
+<!--
 # Melhus
 ```{r, echo=F, warning=F, message=FALSE}
 # Utfører spørringer mot NVDB for aktuelle kommuner
@@ -411,7 +433,7 @@ map.melhus <- kommunepunkter_melhus %>%
 map.melhus
 ```
 
-
+<!--
 # Malvik
 ```{r, echo=F, warning=F, message=FALSE}
 # Utfører spørringer mot NVDB for aktuelle kommuner
@@ -451,26 +473,7 @@ kommunepunkter_malvik  %>%
   kable(format.args = list(big.mark = " "))
 ```
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
 ```{r, warning=FALSE, echo=FALSE, include=FALSE}
 map.malvik <- kommunepunkter_malvik %>% 
   leaflet(width = "100%", options = leafletOptions(minZoom = 0, maxZoom = 18)) %>% 
@@ -497,8 +500,8 @@ map.malvik <- kommunepunkter_malvik %>%
 ```{r, echo=FALSE}
 map.malvik
 ```
-
-
+-->
+<!--
 # Stjørdal
 ```{r, echo=F, warning=F, message=FALSE}
 # Utfører spørringer mot NVDB for aktuelle kommuner
@@ -557,10 +560,13 @@ map.stjordal <- kommunepunkter_stjordal %>%
 ```
 
 ```{r, echo=FALSE}
-map.stjordal
+#map.stjordal
 ```
+-->
 
+<!--
 # Oslo og Akershus
+
 
 ```{r, echo=FALSE}
 # Hvilke stasjonsnumre skal være med?
@@ -649,6 +655,6 @@ map.oslo <- oslo_og_akershus_trser %>%
 ```
 
 ```{r, echo=FALSE}
-map.oslo
+#map.oslo
 ```
-
+-->
