@@ -11,6 +11,8 @@ library(leaflet)
 library(htmlwidgets)
 library(knitr)
 library(sf)
+library(mapview)
+#knitr::opts_chunk$set( cache = T)
 ```
 
 ```{r, echo=FALSE}
@@ -73,7 +75,7 @@ hent_trafikkregistreringsstasjon_for_omraade <- function(omraadenr) {
                                   omraadenr,
                                   "&srid=wgs84",
                                   "&egenskap=3910=4892")
-  # Filtrer på kontinuerlige stasjoner
+  # Over: Filtrerer på kontinuerlige stasjoner
   
   respons <- GET(api_query_482_omraade,
                  add_headers("X-Client" = "trafikkdatagruppa",
@@ -125,6 +127,7 @@ hent_trafikkregistreringsstasjon_for_omraade <- function(omraadenr) {
 }
 
 hent_bomstasjon_for_kommune <- function(kommunenr) {
+  # Laget for Trondheim
   api_query_45 <- paste0(nvdb_url,
                         sti_vegobjekter,
                         "/45",
@@ -241,13 +244,14 @@ byindekspunkter_trondheim <- c("1600011",
                                "1602407",
                                "1602418",
                                #"1700012",
-                               #"1700027",
-                               #"1700028",
+                               "1700027",
+                               "1700008",
                                #"1700029",
                                #"1700061",
                                #"1700062",
                                "51", "52", "53", "54", "55", "56", "57", "58",
-                               "59", "60", "61", "62", "63", "64", "65", "66",
+                               "59", "60", "61", "62", #"63", 
+                               "64", "65", "66",
                                "67", "68", "69", "72", "74", "85", "86",
                                # tre nye forslag fra kommunene:
                                "1603001", "1603002", "1603003")
@@ -322,7 +326,7 @@ kommunepunkter_trondheim <- bind_rows(kommunepunkter_trondheim_med,
 ```
 
 Tabell og kart over byindekspunktene. TRS står for trafikkregistreringsstasjon. 
-Kartet viser også punkter som ikke er med indeksen (små sirkler).
+Kartet viser også punkter som ikke er med i indeksen (små sirkler).
 
 Dekningsgrad er oppgitt som prosentvis andel dager registrert i året, for 2018
 gjelder tall til og med august.
@@ -366,7 +370,7 @@ map.trd <- kommunepunkter_trondheim %>%
   )
 ```
 
-Kartet angir byindekspunkter med stor sirkler, og øvrige punkter med små sirkler.
+Kartet angir byindekspunkter med store sirkler, og øvrige punkter med små sirkler.
 
 ```{r, echo=FALSE}
 map.trd
