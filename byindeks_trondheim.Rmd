@@ -221,5 +221,46 @@ map.trd
 ```
 
 ```{r, warning=FALSE, echo=FALSE, include=FALSE}
-mapshot(map.trd, file = "byindeks_trondheim.pdf")
+mapshot(map.trd, file = "byindeks_trondheim.png")
+```
+
+Lager eget kart zoomet inn på byen.
+
+```{r, warning=FALSE, echo=FALSE, include=FALSE}
+map.trd_sentrum <- kommunepunkter_trondheim %>% 
+  filter(Byindeks == "Ja") %>% 
+  filter(!(Stasjonnr %in% c("1600213", "1600209", "1602306",
+                            "1700008", "1700027", "72", "58",
+                            "53", "51", "85", "86", "74",
+                            "1603001", "1603002", "1603003",
+                            "1600097"))) %>% 
+  leaflet(width = "100%", 
+          options = leafletOptions(minZoom = 0, maxZoom = 18)) %>% 
+  addProviderTiles(providers$Esri.WorldStreetMap) %>% 
+  addCircleMarkers(
+    radius = ~ifelse(Byindeks == "Ja", 6, 3),
+    color = ~pal(Type),
+    weight = 3,
+    opacity = 0.6,
+    fill = F
+  ) %>% 
+  addLabelOnlyMarkers(label = ~Veg,
+                      labelOptions = 
+                        labelOptions(noHide = T, 
+                                     direction = 'top', 
+                                     textOnly = T,
+                                     offset = c(0, 7))) %>% 
+  addLegend("bottomright", pal = pal, values = ~Type,
+    title = "Type",
+    opacity = 1
+  )
+```
+
+```{r, echo=FALSE}
+map.trd_sentrum
+```
+
+
+```{r, warning=FALSE, echo=FALSE, include=FALSE}
+mapshot(map.trd_sentrum, file = "byindeks_trondheim_s.png")
 ```
