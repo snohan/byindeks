@@ -169,7 +169,6 @@ kommunepunkter_trondheim <- bind_rows(kommunepunkter_trondheim_med,
 ```
 
 Tabell og kart over byindekspunktene. TRS står for trafikkregistreringsstasjon. 
-Kartet viser også punkter som ikke er med i indeksen (små sirkler).
 
 Dekningsgrad er oppgitt som prosentvis andel dager registrert i året, for 2018
 gjelder tall til og med august.
@@ -215,17 +214,15 @@ map.trd <- kommunepunkter_trondheim %>%
   )
 ```
 
-Kartet angir byindekspunkter med store sirkler, og øvrige punkter med små sirkler.
 
 ```{r, echo=FALSE}
-map.trd
+#map.trd
 ```
 
 ```{r, warning=FALSE, echo=FALSE, include=FALSE}
 mapshot(map.trd, file = "byindeks_trondheim.png")
 ```
 
-Lager eget kart zoomet inn på byen.
 
 ```{r, warning=FALSE, echo=FALSE, include=FALSE}
 map.trd_sentrum <- kommunepunkter_trondheim %>% 
@@ -259,7 +256,7 @@ map.trd_sentrum <- kommunepunkter_trondheim %>%
 ```
 
 ```{r, echo=FALSE}
-map.trd_sentrum
+#map.trd_sentrum
 ```
 
 
