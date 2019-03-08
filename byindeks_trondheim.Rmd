@@ -163,7 +163,8 @@ kommunepunkter_trondheim_ute <- kommunepunkter_2 %>%
   mutate(Byindeks = "Nei")
 
 kommunepunkter_trondheim <- bind_rows(kommunepunkter_trondheim_med,
-                                      kommunepunkter_trondheim_ute)
+                                      kommunepunkter_trondheim_ute) %>% 
+  filter(Navn != "Innherredsveien vest for Persaunvegen")
 
 # Må legge til ÅDT, hente fra NVDB
 ```
