@@ -178,13 +178,18 @@ gjelder tall til og med august.
 
 ```{r, results='asis', echo=FALSE, message=FALSE}
 # Tabell
-kommunepunkter_trondheim  %>% 
+byindekspunkter_trondheim <- kommunepunkter_trondheim  %>% 
   filter(Byindeks == "Ja") %>% 
   left_join(adt) %>% 
   left_join(dekning_2017) %>% 
   left_join(dekning_2018) %>% 
   select(Navn, Kommune, Veg, Type, Byindeks, ADT, Dekning_17, Dekning_18) %>% 
-  arrange(Byindeks, Veg) %>% 
+  arrange(Byindeks, Veg)
+
+# write.csv2(byindekspunkter_trondheim, file = "byindekspunkter_trondheim_20190307.csv",
+#            row.names = F)
+
+byindekspunkter_trondheim %>% 
   kable(format.args = list(big.mark = " "))
 ```
 

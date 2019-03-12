@@ -1,0 +1,55 @@
+"Navn";"Kommune";"Veg";"Type";"Byindeks";"ADT";"Dekning_17";"Dekning_18"
+"Kvassråsmoen";"Stjørdal";"E14";"TRS";"Ja";2800;NA;NA
+"ØYSAND";"Melhus";"E39";"TRS";"Ja";13100;100;88
+"SUNDLAND";"Trondheim";"E6";"TRS";"Ja";38000;93;100
+"KROPPAN BRU";"Trondheim";"E6";"TRS";"Ja";45700;100;100
+"Brattørbrua";"Trondheim";"E6";"TRS";"Ja";7000;0;28
+"Grillstadtunnelen vest";"Trondheim";"E6";"TRS";"Ja";30600;100;100
+"Ranheim";"Trondheim";"E6";"Bom";"Ja";19500;100;100
+"Klett - E6, S-snitt";"Trondheim";"E6";"Bom";"Ja";23400;100;100
+"Hommelvik";"Malvik";"E6";"Bom";"Ja";16100;100;100
+"Jaktøysletta";"Melhus";"E6";"TRS";"Ja";16100;0;0
+"Skjerlandet";"Stjørdal";"E6";"TRS";"Ja";8800;NA;NA
+"Bjørndalsbrua vest";"Trondheim";"F6650";"TRS";"Ja";23000;28;100
+"Søndre Ilevollen";"Trondheim";"F6650";"TRS";"Ja";9500;85;0
+"Byåsveien ved Nyveibakken";"Trondheim";"F6650";"TRS";"Ja";12300;100;70
+"Byåsveien, B-snitt";"Trondheim";"F6650";"Bom";"Ja";10200;100;100
+"Bøckmans veg, B-snitt";"Trondheim";"F6656";"Bom";"Ja";5200;100;100
+"Thorbjørn Bratts veg, O-snitt";"Trondheim";"F6658";"Bom";"Ja";13200;100;100
+"Jonsvannsveien vest for Steinanvegen";"Trondheim";"F6660";"TRS";"Ja";10600;10;61
+"Kong Øysteins veg ved Eberg";"Trondheim";"F6664";"TRS";"Ja";8100;100;46
+"Bromstadvegens forlengelse";"Trondheim";"F6664";"TRS";"Ja";13100;100;87
+"Festningsgata";"Trondheim";"F6666";"TRS";"Ja";10200;100;93
+"Haakon VII gt øst";"Trondheim";"F6668";"TRS";"Ja";15900;100;100
+"Haakon VII s gt , O-snitt";"Trondheim";"F6668";"Bom";"Ja";11800;100;100
+"Tillerbrua, K-snitt";"Trondheim";"F6680";"Bom";"Ja";2000;100;100
+"Bratsbergveien, O-snitt";"Trondheim";"F6680";"Bom";"Ja";6800;100;100
+"Heimdalsvegen ved Esp";"Trondheim";"F6682";"TRS";"Ja";3900;54;52
+"Østre Rosten ved Sandmoen";"Trondheim";"F6686";"TRS";"Ja";10700;93;87
+"PRINSENS GT LIKE NOR";"Trondheim";"F6690";"TRS";"Ja";21200;100;93
+"Innherredsveien ved Bakke kirke";"Trondheim";"F6690";"TRS";"Ja";11500;1;3
+"Kroppan bru (Nordgående), M-snitt";"Trondheim";"F6690";"Bom";"Ja";8000;100;100
+"Kroppan bru (Sørgående), M-snitt";"Trondheim";"F6690";"Bom";"Ja";8000;100;100
+"Jernbanebrua";"Trondheim";"F6692";"TRS";"Ja";6600;87;100
+"Innherredsveien ved Fjæregata";"Trondheim";"F6692";"TRS";"Ja";8600;100;100
+"Innherredsveien ved Saxenborg alle";"Trondheim";"F6692";"TRS";"Ja";7000;92;100
+"Fv 704 Torgårdsletta. K-snitt";"Trondheim";"F704";"Bom";"Ja";7500;100;100
+"Klett - Rv.707, S-snitt";"Trondheim";"F707";"Bom";"Ja";6700;100;100
+"Være (Gml. E6), N-snitt";"Trondheim";"F950";"Bom";"Ja";9400;100;100
+"Storsand";"Malvik";"F950";"TRS";"Ja";4000;0;0
+"Muruvik øst";"Malvik";"F950";"TRS";"Ja";4700;0;0
+"Nedre Leirfoss (Fossestuvegen), M-snitt";"Trondheim";"K1827";"Bom";"Ja";2100;100;100
+"Gamle Oslovei, B-snitt";"Trondheim";"K2020";"Bom";"Ja";4700;100;100
+"Jakobslivegen ved Skovgård";"Trondheim";"K3330";"TRS";"Ja";9500;17;91
+"Landbruksvegen, O-snitt";"Trondheim";"K4235";"Bom";"Ja";4400;100;100
+"Tempeveien, O-snitt";"Trondheim";"K7440";"Bom";"Ja";4300;100;100
+"Tungasletta mot I. Ystgaardsv.";"Trondheim";"K7703";"TRS";"Ja";10000;12;42
+"Tungasletta, O-snitt";"Trondheim";"K7703";"Bom";"Ja";10300;100;100
+"MARIENBORGTUNNELEN";"Trondheim";"R706";"TRS";"Ja";6800;100;89
+"OSLOVEGEN";"Trondheim";"R706";"TRS";"Ja";12400;100;100
+"ILADALTUNNELEN";"Trondheim";"R706";"TRS";"Ja";11800;0;0
+"HAVNEGATA";"Trondheim";"R706";"TRS";"Ja";16400;100;100
+"STRINDHEIMTUNNELEN";"Trondheim";"R706";"TRS";"Ja";19900;100;100
+"Bjørndalen (Oslovn.) M-snitt)";"Trondheim";"R706";"Bom";"Ja";9800;100;100
+"Nord for Sluppen bru (Tempevn), M-snitt";"Trondheim";"R706";"Bom";"Ja";10400;100;100
+"Rv 706 Leangensletta, O-snitt";"Trondheim";"R706";"Bom";"Ja";24300;100;100
