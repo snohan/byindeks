@@ -1,0 +1,31 @@
+---
+output: 
+  word_document:
+    reference_docx: svv_notatmal.docx
+    toc: TRUE
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Bakgrunn
+
+Litt om bakgrunnen for området, geografi o.l.
+
+```{r}
+
+```
+
+## Kart over byindekspunktene
+
+## Liste over byindekspunktene
+
+# Resultater
+
+## Tabell med byindeksen
+
+## Graf med punktindeksene
+
+## Kommentarer
