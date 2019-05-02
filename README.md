@@ -1,23 +1,23 @@
-# byindeks
-Informasjon om byindeks.
+# Byindeks
+Informasjon om formidling av byindeks.
 
 # Bakgrunn
 Årsrapporter for byindeksen skal legges ut på vegvesen.no som PDF-dokumenter. Hvert avtaleområde får sin egen rapport, som har Statens vegvesens generelle forside som mal (https://www.vegvesen.no/intranett/Etat/Støttefunksjoner/Visuell+kommunikasjon/Grafiske+maler/Forsider/Generelle+forsider).
 
-I koden blir dette en rmd-fil per område, som genererer innholdet som PDF. Alle funksjoner samles i ett felles skript.
+I koden blir dette en Rmd-fil per område, som genererer innholdet som MS Word. Alle funksjoner samles i ett felles skript.
 
 # Årsrapportenes innhold
-Egne årsrapporter lages for hvert avtaleområde, samt for alle områdene i en samlerapport som inneholder kun hovedtallene.
+Egne årsrapporter lages for hvert avtaleområde. I tillegg lages en samlerapport med hovedtallene for alle avtaleområdene.
 
 ## Kart over punktene
 Basert på punktene som inngår i avtalene, og som oppdateres manuelt i koden med liste over punkter (trp-id), hentes punktinfo fra trafikkdata-API.
 
 Kart, om nødvendig på flere zoom-nivå, med fargeskala basert på indeksverdi og størrelse basert på ÅDT i basisår.
 
-Bakgrunnskart som viser vegnettet tydelig.
+Bakgrunnskart som viser vegnettet tydelig: OpenStreetMap.
 
 ## Liste over punkter
-En enkel liste med punktene som inneholder navn, vegreferanse og ÅDT i basisår.
+En enkel tabell med punktene som inneholder navn, vegreferanse og ÅDT i basisår og indeks.
 
 ## Grafisk visning av punktindeksenes årsverdier
 En graf for å vise spredningen av punktenes årsindekser. Vises som et boksplott per år.
