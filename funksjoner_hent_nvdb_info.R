@@ -71,42 +71,41 @@ hent_trafikkregistreringsstasjon_for_omraade <- function(omraadenr) {
                       simplifyDataFrame = T,
                       flatten = T)
 
-  trs <- bind_rows(uthenta$objekter$egenskaper, .id = "trsid") %>%
-    filter(id %in% c(4626, 4627, 5201, 9293, 3910)) %>%
-    select(navn, verdi) %>%
-    mutate(navn = as.factor(navn)) %>%
-    group_by(navn) %>%
-    mutate(grouped_id = row_number()) %>%
-    spread(navn, verdi, drop = F) %>%
-    select(-grouped_id) %>%
-    select(1, 4, 3, 2, 5)
+  trs <- uthenta$objekter %>%
+    select(id, egenskaper) %>%
+    unnest() %>%
+    filter(id1 %in% c(4626, 4627, 5201, 9293, 3910)) %>%
+    select(id, navn, verdi) %>%
+    spread(navn, verdi)
 
-  colnames(trs) <- c("Stasjonnr", "Navn", "Status", "Nivaa", "Trafikantgruppe")
+  vegreferanser <- uthenta$objekter %>%
+    select(id, lokasjon.vegreferanser) %>%
+    unnest()
 
-  vegreferanse <- bind_rows(uthenta$objekter$lokasjon.vegreferanser,
-                            .id = "trser") %>%
-    select(-trser)
-  # Ta bort fylkenr, kommunenr og mellomrom, slik at vegreferansen er på kortform
+  # TODO: Ta bort fylkenr, kommunenr og mellomrom, slik at vegreferansen er på kortform
   # som kan brukes direkte i spørring etter trafikkmengde i NVDB-API.
 
-  koordinater <- as.data.frame(uthenta$objekter$lokasjon.geometri.wkt) %>%
-    mutate(geometri_sub =
-             str_sub(uthenta$objekter$lokasjon.geometri.wkt, 10, -2)) %>%
+  koordinater <- uthenta$objekter %>%
+    select(id, lokasjon.geometri.wkt) %>%
+    unnest() %>%
+    mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 10, -2)) %>%
     separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
              convert = T) %>%
-    select(-1)
+    select(id, lat, lon)
 
-  trser <- bind_cols(trs, vegreferanse, koordinater) %>%
+  trser <- trs %>%
+    left_join(vegreferanser) %>%
+    left_join(koordinater) %>%
     #filter(Nivaa == "Kontinuerlig (Nivå 1)") %>%
     filter(Trafikantgruppe == "Motorkjøretøy") %>%
     filter(Status != "Nedlagt, ikke lov å bruke") %>%
     mutate(Veg = paste0(kategori, nummer)) %>%
-    select(-Status, -Nivaa, -Trafikantgruppe, -fylke, -kommune, -kategori, -nummer,
+    select(-id, -Status, -Registreringsnivå, -Trafikantgruppe, -fylke, -kommune, -kategori, -nummer,
            -status, -hp, -meter) %>%
     mutate(Kommune = kommunenavn)
 
   colnames(trser) <- c("Stasjonnr", "Navn", "Vegreferanse",
-                       "lat", "lon", "alt", "Veg", "Kommune")
+                       "lat", "lon", "Veg", "Kommune")
 
   return(trser)
 }
@@ -132,35 +131,35 @@ hent_bomstasjon_for_kommune <- function(kommunenr) {
                       simplifyDataFrame = T,
                       flatten = T)
 
-  bom <- bind_rows(uthenta$objekter$egenskaper, .id = "bomid") %>%
-    filter(id %in% c(1078, 9595)) %>%
-    select(navn, verdi) %>%
-    filter(verdi != "Ferje Flakk-Rørvik") %>%
-    group_by(navn) %>%
-    mutate(grouped_id = row_number()) %>%
-    spread(navn, verdi) %>%
-    select(-grouped_id)
+  bom <- uthenta$objekter %>%
+    select(id, egenskaper) %>%
+    unnest() %>%
+    filter(id1 %in% c(1078, 9595)) %>%
+    select(id, navn, verdi) %>%
+    spread(navn, verdi)
 
-  vegreferanse <- bind_rows(uthenta$objekter$lokasjon.vegreferanser,
-                            .id = "bomer") %>%
-    filter(nummer != 715) %>%
-    select(-bomer)
+  vegreferanser <- uthenta$objekter %>%
+    select(id, lokasjon.vegreferanser) %>%
+    unnest()
 
-  koordinater <- as.data.frame(uthenta$objekter$lokasjon.geometri.wkt) %>%
-    mutate(geometri_sub = str_sub(uthenta$objekter$lokasjon.geometri.wkt, 10, -2)) %>%
+  koordinater <- uthenta$objekter %>%
+    select(id, lokasjon.geometri.wkt) %>%
+    unnest() %>%
+    mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 10, -2)) %>%
     separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
              convert = T) %>%
-    select(-1) %>%
-    filter(alt != 8.79280)
+    select(id, lat, lon)
 
-  bomer <- bind_cols(bom, vegreferanse, koordinater) %>%
+  bomer <- bom %>%
+    left_join(vegreferanser) %>%
+    left_join(koordinater) %>%
     mutate(Veg = paste0(kategori, nummer)) %>%
-    select(-fylke, -kommune, -kategori, -nummer,
+    select(-id, -fylke, -kommune, -kategori, -nummer,
            -status, -hp, -meter) %>%
     mutate(Kommune = kommunenavn)
 
   colnames(bomer) <- c("Stasjonnr", "Navn", "Vegreferanse",
-                       "lat", "lon", "alt", "Veg", "Kommune")
+                       "lat", "lon", "Veg", "Kommune")
 
   return(bomer)
 }

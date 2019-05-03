@@ -6,10 +6,6 @@ output:
     toc_depth: 2
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
-```
-
 ```{r library, include = FALSE}
 library(tidyverse)
 library(httr)
@@ -21,9 +17,14 @@ library(sf)
 library(mapview)
 ```
 
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
+                      error = FALSE)
+```
+
 ```{r sources, include = FALSE}
 source("funksjoner_hent_nvdb_info.R")
-source("get_calls_from_trafficdata_api.R")
+# TODO: source("get_calls_from_trafficdata_api.R")
 ```
 
 
@@ -31,16 +32,57 @@ source("get_calls_from_trafficdata_api.R")
 # Fetching index traffic registration points (TRPs).
 # TODO: From a manually edited CSV-file.
 # TODO: Get metadata from Trafficdata-API.
+
+# Get all TRS in the municipalities from NVDB
+# Trondheim 5001
+kommunenr <- "5001"
+
+kommunenavn <- hent_kommune(kommunenr)[[1]]
+
+kommune_trser_5001 <- 
+  hent_trafikkregistreringsstasjon_for_omraade(kommunenr) %>% 
+  mutate(Type = "TRS")
+
+kommune_bomer <- 
+  hent_bomstasjon_for_kommune(kommunenr) %>% 
+  mutate(Type = "Bom")
+
+kommunepunkter <- bind_rows(kommune_trser_5001, kommune_bomer)
+
+# The points chosen for the index
+byindekspunkter_valgte <- read.csv2("byindekspunkter_vedtatte.csv") %>% 
+  dplyr::filter(city_area_name == "Trondheim")
+
 ```
 
 ```{r aadt, include = FALSE}
-# TODO: Get AADT for the index TRPs.
+# TODO: Get AADT with coverage for the index TRPs.
+adt <- read.csv2("adt_2017_nortraf.csv") %>% 
+  filter(Felt == "R0") %>% 
+  mutate(Stasjonnr = as.character(Tellepunkt),
+         ADT = round(ADT, digits = -2)) %>% 
+  select(Stasjonnr, ADT)
 ```
+
+```{r indexresults, include = FALSE}
+# Read index results from CSV-files.
+indekstall <- 
+  read.csv2("punktindeks_trondheim_alle_punkter_jan-des18.csv") %>% 
+  mutate(trs = as.numeric(msnr),
+         trs = if_else(trs > 9916000, trs - 9916000, trs)) %>% 
+  select(-msnr)
+```
+
 
 
 # Bakgrunn
 
-Litt om bakgrunnen for området, geografi o.l.
+Bymiljøavtalen som ble inngått i 2016 mellom Trondheim kommune, Sør-Trøndelag fylkeskommune og Staten gjaldt for perioden 2016-2023. Målet med avtalen er at veksten i persontransporten skal tas med kollektivtrafikk, sykling og gåing («nullvekstmålet»). Området avtalen gjaldt for var Trondheim kommune.
+
+Byindeksen er en av målindikatorene og estimerer endringen i biltrafikk for "lette" biler. Byindeksen er en trafikkindeks for vegtrafikk basert på registreringer fra faste trafikkregistreringspunkter fordelt på riksveger, fylkesveger og kommunale veger. Trafikkindeksen skal gi et representativt bilde av trafikkutviklingen i avtaleområdet. Lettere næringstransport er
+tatt ut av trafikkindeksen da det er unntatt fra nullvekstmålet. Det samme gjelder for gjennomgangstrafikk.
+
+(Bymiljøavtalen ble i 2019 erstattet av en byvekstavtale for Trondheimsområdet som gjelder for 2019-2029.)
 
 
 ## Kart over byindekspunktene
