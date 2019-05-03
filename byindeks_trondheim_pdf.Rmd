@@ -47,12 +47,24 @@ kommune_bomer <-
   hent_bomstasjon_for_kommune(kommunenr) %>% 
   mutate(Type = "Bom")
 
-kommunepunkter <- bind_rows(kommune_trser_5001, kommune_bomer)
+# Må legge til for 52 som er borte fra API-et.
+bom_52 <- data.frame(
+  "Stasjonnr" = "52", 
+  "Navn" = "Klett - E6, S-snitt",
+  "Vegreferanse" = "5000 Ev6 hp9 m1252",
+  "lat" = 63.32590,
+  "lon" = 10.32702,
+  "Veg" = "E6",
+  "Kommune" = "Trondheim",
+  "Type" = "Bom")
+
+kommunepunkter <- bind_rows(kommune_trser_5001, kommune_bomer, bom_52)
 
 # The points chosen for the index
 byindekspunkter_valgte <- read.csv2("byindekspunkter_vedtatte.csv") %>% 
-  dplyr::filter(city_area_name == "Trondheim")
-
+  dplyr::filter(city_area_name == "Trondheim") %>% 
+  mutate(Stasjonnr = as.character(legacyNortrafMpn)) %>% 
+  select(Stasjonnr)
 ```
 
 ```{r aadt, include = FALSE}
@@ -70,8 +82,26 @@ indekstall <-
   read.csv2("punktindeks_trondheim_alle_punkter_jan-des18.csv") %>% 
   mutate(trs = as.numeric(msnr),
          trs = if_else(trs > 9916000, trs - 9916000, trs)) %>% 
-  select(-msnr)
+  select(-msnr) %>% 
+  group_by(trs) %>% 
+  summarise(trafikkmengde_basisaar = sum(trafikkmengde.basisaar),
+            trafikkmengde_indeksaar = sum(trafikkmengde.indeksaar),
+            Indeks = round((trafikkmengde_indeksaar/
+                     trafikkmengde_basisaar - 1) * 100,
+                     digits = 1)) %>% 
+  mutate(trs = as.character(trs)) %>% 
+  rename(Stasjonnr = trs) %>% 
+  select(Stasjonnr, Indeks)
 ```
+
+```{r point_with_all_info, include = FALSE}
+# Joining tables
+indekspunktene <- byindekspunkter_valgte %>% 
+  left_join(kommunepunkter) %>% 
+  left_join(adt) %>% 
+  left_join(indekstall)
+```
+
 
 
 
@@ -94,7 +124,11 @@ tatt ut av trafikkindeksen da det er unntatt fra nullvekstmålet. Det samme gjel
 
 ## Tabell med byindekspunktene
 ```{r table}
-
+indekspunktene %>% 
+  select(Stasjonnr, Navn, Veg, Kommune, Type, ADT, Indeks) %>% 
+  arrange(Veg) %>% 
+  kable(format.args = list(big.mark = " "))
+# TODO: kableExtra?
 ```
 
 

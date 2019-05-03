@@ -96,12 +96,10 @@ hent_trafikkregistreringsstasjon_for_omraade <- function(omraadenr) {
   trser <- trs %>%
     left_join(vegreferanser) %>%
     left_join(koordinater) %>%
-    #filter(Nivaa == "Kontinuerlig (Nivå 1)") %>%
     filter(Trafikantgruppe == "Motorkjøretøy") %>%
     filter(Status != "Nedlagt, ikke lov å bruke") %>%
     mutate(Veg = paste0(kategori, nummer)) %>%
-    select(-id, -Status, -Registreringsnivå, -Trafikantgruppe, -fylke, -kommune, -kategori, -nummer,
-           -status, -hp, -meter) %>%
+    select(2, 5, 14:17) %>%
     mutate(Kommune = kommunenavn)
 
   colnames(trser) <- c("Stasjonnr", "Navn", "Vegreferanse",
