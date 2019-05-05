@@ -19,9 +19,9 @@ kommunenr <- "5001"
 
 kommunenavn <- hent_kommune(kommunenr)[[1]]
 
-# kommune_trser_5001 <-
-#   hent_trafikkregistreringsstasjon_for_omraade(kommunenr) %>%
-#   mutate(Type = "TRS")
+kommune_trser_5001 <-
+  hent_trafikkregistreringsstasjon_for_omraade(kommunenr) %>%
+  mutate(Type = "TRS")
 
 kommune_bomer <-
   hent_bomstasjon_for_kommune(kommunenr) %>%
