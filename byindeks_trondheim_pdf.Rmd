@@ -14,8 +14,7 @@ library(leaflet)
 library(mapview)
 library(knitr)
 library(flextable)
-# AIzaSyCRq-TfJKi_l_9U7K1Xy5sFMjbR5A8V6LM
-ggmap::register_google(key = "AIzaSyCRq-TfJKi_l_9U7K1Xy5sFMjbR5A8V6LM")
+source("api_keys.R")
 ```
 
 ```{r setup, include = FALSE}
@@ -26,7 +25,8 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
 
 ```{r point_with_all_info, include = FALSE}
 all_point_info <- read.csv2("indekspunktene_trondheim_2018.csv") %>% 
-  arrange(Vegreferanse)
+  arrange(Vegreferanse) %>% 
+  rename(Stasjonstype = Type)
 ```
 
 
@@ -42,43 +42,73 @@ tatt ut av trafikkindeksen da det er unntatt fra nullvekstmålet. Det samme gjel
 
 ## Kart over byindekspunktene
 ```{r map}
-# ggmap - alt for dårlig oppløsning!!!
-# trondheimskart <- 
-#   get_map(location = c(10.4, 63.4), zoom = 12,
-#           source = "google",
-#           scale = 4,
-#           maptype = "roadmap")
-# ggmap(trondheimskart)
+# ggmap - begrenset til 640x640 piksler.
+trondheimskart <-
+  ggmap(get_map(location = c(10.42, 63.37), zoom = 11,
+          maptype = "roadmap")) +
+  geom_point(data = all_point_info,
+             aes(x = lon, y = lat, 
+                 color = ADT,
+                 shape = Stasjonstype)) +
+  scale_colour_viridis_c(name = "ÅDT") +
+  ggtitle(label = "Byindekspunkter i Trondheim", 
+          subtitle = "Hele området") +
+  xlab("") +
+  ylab("") +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+trondheimskart
 
 # leaflet
-pal <- colorFactor(c("navy", "red"), domain = c("TRS", "Bom"))
-
-trondheimskart <- all_point_info %>% 
-  leaflet(width = "100%",
-          options = leafletOptions(minZoom = 0, maxZoom = 18)) %>% 
-  addProviderTiles(providers$Esri.WorldStreetMap) %>% 
-  addCircleMarkers(
-    color = ~pal(Type),
-    weight = 3,
-    opacity = 0.6,
-    fill = F
-  ) %>% 
-  addLabelOnlyMarkers(label = ~Veg,
-                      labelOptions = 
-                        labelOptions(noHide = T, 
-                                     direction = 'top', 
-                                     textOnly = T,
-                                     offset = c(0, 7))) %>% 
-  addLegend("bottomright", pal = pal, values = ~Type,
-    title = "Type",
-    opacity = 1
-  )
-
-mapshot(trondheimskart, file = "trondheimskart.png")
+# pal <- colorFactor(c("navy", "red"), domain = c("TRS", "Bom"))
+# 
+# trondheimskart <- all_point_info %>% 
+#   leaflet(width = "100%",
+#           options = leafletOptions(minZoom = 0, maxZoom = 18)) %>% 
+#   addProviderTiles(providers$Esri.WorldStreetMap) %>% 
+#   addCircleMarkers(
+#     color = ~pal(Type),
+#     weight = 3,
+#     opacity = 0.6,
+#     fill = F
+#   ) %>% 
+#   addLabelOnlyMarkers(label = ~Veg,
+#                       labelOptions = 
+#                         labelOptions(noHide = T, 
+#                                      direction = 'top', 
+#                                      textOnly = T,
+#                                      offset = c(0, 7))) %>% 
+#   addLegend("bottomright", pal = pal, values = ~Type,
+#     title = "Type",
+#     opacity = 1
+#   )
+# 
+# mapshot(trondheimskart, file = "trondheimskart.png")
 
 ```
 
-![Bildetekst.]("trondheimskart.png")
+
+```{r map2}
+trondheimskart_sentrum <-
+  ggmap(get_map(location = c(10.42, 63.41), zoom = 12,
+          maptype = "roadmap")) +
+  geom_point(data = all_point_info,
+             aes(x = lon, y = lat, 
+                 color = ADT,
+                 shape = Stasjonstype)) +
+  scale_colour_viridis_c(name = "ÅDT") +
+  ggtitle(label = "Byindekspunkter i Trondheim", 
+          subtitle = "Sentrum") +
+  xlab("") +
+  ylab("") +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+trondheimskart_sentrum
+```
+
+
 
 ## Tabell med byindekspunktene
 ```{r table}
