@@ -46,11 +46,12 @@ tatt ut av trafikkindeksen da det er unntatt fra nullvekstmålet. Det samme gjel
 trondheimskart <-
   ggmap(get_map(location = c(10.42, 63.37), zoom = 11,
           maptype = "roadmap")) +
-  geom_point(data = all_point_info,
+  geom_point(data = all_point_info, size = 4, stroke = .4, shape = 22,
              aes(x = lon, y = lat, 
-                 color = ADT,
-                 shape = Stasjonstype)) +
-  scale_colour_viridis_c(name = "ÅDT") +
+                 fill = ADT,
+                 color = Stasjonstype)) +
+  scale_fill_viridis_c(name = "ÅDT") +
+  scale_color_manual(values = c("Bom" = "red", "TRS" = "white")) +
   ggtitle(label = "Byindekspunkter i Trondheim", 
           subtitle = "Hele området") +
   xlab("") +
@@ -93,11 +94,12 @@ trondheimskart
 trondheimskart_sentrum <-
   ggmap(get_map(location = c(10.42, 63.41), zoom = 12,
           maptype = "roadmap")) +
-  geom_point(data = all_point_info,
+  geom_point(data = all_point_info, size = 4, stroke = .4, shape = 22,
              aes(x = lon, y = lat, 
-                 color = ADT,
-                 shape = Stasjonstype)) +
-  scale_colour_viridis_c(name = "ÅDT") +
+                 fill = ADT,
+                 color = Stasjonstype)) +
+  scale_fill_viridis_c(name = "ÅDT") +
+  scale_color_manual(values = c("Bom" = "red", "TRS" = "white")) +
   ggtitle(label = "Byindekspunkter i Trondheim", 
           subtitle = "Sentrum") +
   xlab("") +
