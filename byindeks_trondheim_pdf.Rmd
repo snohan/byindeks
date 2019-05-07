@@ -112,7 +112,22 @@ I figuren nedenfor er punktindeksene illustrert. Den horisontale streken viser b
 \newline
 
 ```{r graph, fig.cap = "Graf over punktindeksene."}
+all_point_info_index <- all_point_info %>% 
+  dplyr::filter(!is.na(Indeks)) %>% 
+  dplyr::mutate(Navn = as.character(Navn)) %>% 
+  dplyr::arrange(desc(Navn))
 
+all_point_info_index_plot <-
+  ggplot2::ggplot() +
+  geom_point(data = all_point_info_index, aes(x = Navn, y = Indeks, size = ADT)) +
+  geom_hline(yintercept = 0) +
+  coord_flip() +
+  scale_size(name = "ÅDT") +
+  geom_rect(aes(xmin = -Inf, xmax = Inf, ymin = -3.2, ymax = 3.2),
+            alpha = 0.1, fill = "blue")
+
+
+all_point_info_index_plot
 ```
 
 
