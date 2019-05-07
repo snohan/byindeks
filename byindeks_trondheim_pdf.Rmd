@@ -4,14 +4,12 @@ output:
     reference_docx: svv_notatmal.docx
     toc: TRUE
     toc_depth: 2
+    fig_caption: true
 ---
 
 ```{r library, include = FALSE}
 library(tidyverse)
 library(ggmap)
-library(htmlwidgets)
-library(leaflet)
-library(mapview)
 library(knitr)
 library(flextable)
 source("api_keys.R")
@@ -41,11 +39,15 @@ tatt ut av trafikkindeksen da det er unntatt fra nullvekstmålet. Det samme gjel
 
 
 ## Kart over byindekspunktene
-```{r map}
+Kartet viser plasseringen av byindekspunktene, først over hele byen og så zoomet inn på sentrum.
+
+\newline
+
+```{r map, fig.cap = "Alle byindekspunktene i Trondheim."}
 # ggmap - begrenset til 640x640 piksler.
 trondheimskart <-
   ggmap(get_map(location = c(10.42, 63.37), zoom = 11,
-          maptype = "roadmap")) +
+                maptype = "roadmap")) +
   geom_point(data = all_point_info, size = 4, stroke = .4, shape = 22,
              aes(x = lon, y = lat, 
                  fill = ADT,
@@ -60,37 +62,10 @@ trondheimskart <-
         axis.ticks = element_blank())
 
 trondheimskart
-
-# leaflet
-# pal <- colorFactor(c("navy", "red"), domain = c("TRS", "Bom"))
-# 
-# trondheimskart <- all_point_info %>% 
-#   leaflet(width = "100%",
-#           options = leafletOptions(minZoom = 0, maxZoom = 18)) %>% 
-#   addProviderTiles(providers$Esri.WorldStreetMap) %>% 
-#   addCircleMarkers(
-#     color = ~pal(Type),
-#     weight = 3,
-#     opacity = 0.6,
-#     fill = F
-#   ) %>% 
-#   addLabelOnlyMarkers(label = ~Veg,
-#                       labelOptions = 
-#                         labelOptions(noHide = T, 
-#                                      direction = 'top', 
-#                                      textOnly = T,
-#                                      offset = c(0, 7))) %>% 
-#   addLegend("bottomright", pal = pal, values = ~Type,
-#     title = "Type",
-#     opacity = 1
-#   )
-# 
-# mapshot(trondheimskart, file = "trondheimskart.png")
-
 ```
 
 
-```{r map2}
+```{r map2, fig.cap = "Byindekspunktene i sentrum av Trondheim."}
 trondheimskart_sentrum <-
   ggmap(get_map(location = c(10.42, 63.41), zoom = 12,
           maptype = "roadmap")) +
@@ -112,7 +87,9 @@ trondheimskart_sentrum
 
 
 
-## Tabell med byindekspunktene
+Tabellen nedenfor viser byindekspunktene og indeksen for 2018. ÅDT er fra 2017.
+\newline
+
 ```{r table}
 all_point_info %>% 
   select(Stasjonnr, Navn, Veg, Type, ADT, Indeks) %>% 
@@ -131,9 +108,13 @@ all_point_info %>%
 
 
 # Resultater
+I figuren nedenfor er punktindeksene illustrert. Den horisontale streken viser byindeksens samlede verdi for 2018.
+\newline
 
-## Tabell med byindeksen
+```{r graph, fig.cap = "Graf over punktindeksene."}
 
-## Graf med punktindeksene
+```
+
 
 ## Kommentarer
+Blant punktindeksene skiller Tillerbrua på Fv6680 seg ut med sine 68,5 %. Dette skyldes delvis anleggsarbeid på Fv6680 i 2017, samt på Fv704 mellom Trondheim og Klæbu gjennom hele året unntatt desember. Fv704 var helt stengt i 8 uker på sommeren 2017 og 2018. Mye av trafikken gikk derfor via Fv6680 og Tillerbrua. Vi ser en tilsvarende nedgang på Torgårdsletta på Fv704 med -10,9 %. Til sammen fanger de to bomstasjonene her opp den totale trafikken mellom Trondheim og Klæbu.
