@@ -1,0 +1,152 @@
+---
+output: 
+  word_document:
+    reference_docx: svv_notatmal.docx
+    toc: true
+    toc_depth: 2
+    fig_caption: true
+    fig_width: 7
+---
+
+```{r library, include = FALSE}
+library(tidyverse)
+library(ggmap)
+library(knitr)
+library(flextable)
+source("api_keys.R")
+```
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
+                      error = FALSE, cache = TRUE)
+```
+
+
+```{r point_with_all_info, include = FALSE}
+# Henter inn all nødvendig info om punktene, laget i eget skript.
+all_point_info <- read.csv2("indekspunktene_trondheim_2018.csv") %>% 
+  arrange(Vegreferanse) %>% 
+  rename(Stasjonstype = Type)
+```
+
+
+# Bakgrunn
+
+Bymiljøavtalen som ble inngått i 2016 mellom Trondheim kommune, Sør-Trøndelag fylkeskommune og Staten gjaldt for perioden 2016-2023. Målet med avtalen var at veksten i persontransporten skal tas med kollektivtrafikk, sykling og gåing («nullvekstmålet»). Området avtalen gjaldt for var Trondheim kommune.
+
+Byindeksen er en av målindikatorene og den estimerer endringen i biltrafikk. Byindeksen er en trafikkindeks for vegtrafikk basert på registreringer fra faste trafikkregistreringspunkter og bomstasjoner fordelt på riksveger, fylkesveger og kommunale veger. Trafikkindeksen skal gi et representativt bilde av trafikkutviklingen i avtaleområdet.
+
+Byindeksen gjelder for "lette" biler. Lette biler er her definert å være målt til kortere enn 5,6 m i Statens vegvesens trafikkregistreringsstasjoner, og i data fra bomstasjonene er det kategorien "lette kjøretøy" som benyttes. Lettere næringstransport skal i teorien være er tatt ut av trafikkindeksen da det er unntatt fra nullvekstmålet. Det samme gjelder for gjennomgangstrafikk. Disse to kategoriene trafikk er likevel ikke mulig å skille ut av datamaterialet da det ikke foreligger noe informasjon i registreringene som skiller de fra øvrig trafikk med lette biler.
+
+(Bymiljøavtalen for Trondheim kommune ble i 2019 erstattet av en byvekstavtale for Trondheimsområdet som gjelder for 2019-2029.)
+
+\newline
+
+## Byindekspunktenes plassering
+I Trondheim er det benyttet et utvalg av eksisterende trafikkregistreringsstasjoner og bomstasjoner som til sammen dekker det meste av vegnettet. Kartene nedenfor viser plasseringen av byindekspunktene.
+
+\newline
+\newline
+
+```{r map}
+# ggmap - begrenset til 640x640 piksler.
+trondheimskart <-
+  ggmap(get_map(location = c(10.42, 63.37), zoom = 11,
+                maptype = "roadmap")) +
+  geom_point(data = all_point_info, size = 4, stroke = .4, shape = 22,
+             aes(x = lon, y = lat, 
+                 fill = ADT,
+                 color = Stasjonstype)) +
+  scale_fill_viridis_c(name = "ÅDT") +
+  scale_color_manual(values = c("Bom" = "red", "TRS" = "white")) +
+  ggtitle(label = "Byindekspunkter i Trondheim", 
+          subtitle = "Hele området") +
+  xlab("") +
+  ylab("") +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+trondheimskart
+```
+
+
+```{r map2}
+trondheimskart_sentrum <-
+  ggmap(get_map(location = c(10.42, 63.41), zoom = 12,
+          maptype = "roadmap")) +
+  geom_point(data = all_point_info, size = 4, stroke = .4, shape = 22,
+             aes(x = lon, y = lat, 
+                 fill = ADT,
+                 color = Stasjonstype)) +
+  scale_fill_viridis_c(name = "ÅDT") +
+  scale_color_manual(values = c("Bom" = "red", "TRS" = "white")) +
+  ggtitle(label = "Byindekspunkter i Trondheim", 
+          subtitle = "Sentrum") +
+  xlab("") +
+  ylab("") +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+trondheimskart_sentrum
+```
+
+# Byindeksen 2018
+
+Byindeksen for Trondheim ble i 2018 på 0,0 % med et 95 %-konfidensintervall på ± 3,2 %. Tabellen nedenfor viser byindekspunktene og deres indeksverdi for 2018. ÅDT er fra 2017.
+
+\newline
+
+```{r table}
+all_point_info %>% 
+  select(Stasjonnr, Navn, Veg, Stasjonstype, ADT, Indeks) %>% 
+  flextable() %>% 
+  colformat_num(col_keys = "ADT", 
+                big.mark = " ", digits = 0) %>%
+  colformat_num(col_keys = c("Indeks"), digits = 1) %>%
+  set_header_labels(ADT = "ÅDT") %>% 
+  bold(part = "header") %>% 
+  fontsize(size = 9, part = "all") %>% 
+  font(fontname = "Lucida Sans Unicode", part = "all") %>% 
+  bg(bg = "#ED9300", part = "header") %>% 
+  autofit() %>% 
+  height_all(height = .2) %>% 
+  padding(padding.top = .3,
+          padding.bottom = .3)
+```
+
+# 
+
+I figuren nedenfor er punktindeksene illustrert. Den horisontale streken viser byindeksens samlede verdi for 2018.
+
+\newline
+
+```{r graph}
+all_point_info_index <- all_point_info %>% 
+  dplyr::filter(!is.na(Indeks)) %>% 
+  dplyr::mutate(Navn = as.character(Navn)) %>% 
+  dplyr::arrange(desc(Navn))
+
+all_point_info_index_plot <-
+  ggplot2::ggplot() +
+  geom_point(data = all_point_info_index, 
+             aes(x = Navn, y = Indeks, size = ADT),
+             color = "#ED9300") +
+  geom_hline(yintercept = 0, color = "#58B02C") +
+  xlab("Registreringspunkt") +
+  ylab("Indeks (%)") +
+  ggtitle(label = "Endring i trafikkmengde",
+          subtitle = "Fra 2017 til 2018") +
+  coord_flip() +
+  scale_size(name = "ÅDT 2017") +
+  geom_rect(aes(xmin = -Inf, xmax = Inf, ymin = -3.2, ymax = 3.2),
+            alpha = 0.1, fill = "#008EC2") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+
+all_point_info_index_plot
+```
+
+Blant punktindeksene skiller Tillerbrua på Fv6680 seg ut med sine 68,5 %. Dette skyldes delvis anleggsarbeid på Fv6680 i 2017, samt på Fv704 mellom Trondheim og Klæbu gjennom hele året unntatt desember. Fv704 var helt stengt i 8 uker på sommeren 2017 og 2018. Mye av trafikken gikk derfor via Fv6680 og Tillerbrua. Vi ser en tilsvarende nedgang på Torgårdsletta på Fv704 med -10,9 %. Til sammen fanger de to bomstasjonene her opp den totale trafikken mellom Trondheim og Klæbu.
+
+De øvrige punktindeksverdiene ligger relativt nært samlet rundt byindeksens samlede verdi på 0,0 %, illustrert med den vertikale, grønne streken. Byindeksen har et konfidensintervall på ± 3,2 %, og dette er illustrert med det lyseblå området.
