@@ -43,43 +43,25 @@ getPoints <- function() {
   myqueries$query("points", query_points)
 
   points <- cli$exec(myqueries$queries$points) %>%
-    fromJSON(simplifyDataFrame = T, flatten = T) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
     as.data.frame() %>%
-    rename(point_id = data.trafficRegistrationPoints.id,
-           point_name = data.trafficRegistrationPoints.name,
+    tidyr::unnest() %>%
+    dplyr::rename(trp_id =
+             data.trafficRegistrationPoints.id,
+           name =
+             data.trafficRegistrationPoints.name,
            traffic_type =
-             data.trafficRegistrationPoints.trafficRegistrationType)
+             data.trafficRegistrationPoints.trafficRegistrationType,
+           lat =
+             data.trafficRegistrationPoints.location.coordinates.latLon.lat,
+           lon =
+             data.trafficRegistrationPoints.location.coordinates.latLon.lon,
+           road_reference =
+             roadReference532.shortForm) %>%
+    dplyr::filter(is.na(validTo)) %>%
+    dplyr::select(-starts_with("valid"))
 
   return(points)
 }
-
-# test
-points <- getPoints() %>%
-  unnest()
-
-# Get points ####
-query allPoints{
-  trafficRegistrationPoints{
-    id
-    name
-    location{
-      coordinates{
-        latLon{
-          lat
-          lon
-        }
-      }
-      roadReferences{
-        validFrom
-        validTo
-        roadReference532{
-          shortForm
-        }
-      }
-    }
-  }
-}
-
-
 
 # Hent ÅDT ####

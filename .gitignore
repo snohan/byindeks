@@ -4,4 +4,7 @@
 .Ruserdata
 Thumbs.db
 api_keys.R
-byindeks_trondheim_pdf_cache/
+*cache/
+*.docx
+*pdf
+*tmp*
