@@ -3,7 +3,7 @@ title: "Ny byindeks for Oslo og Akershus"
 output: html_notebook
 ---
 
-```{r, echo=F, warning=FALSE, message=FALSE}
+```{r library, include = FALSE}
 library(tidyverse)
 library(httr)
 library(jsonlite)
@@ -12,163 +12,23 @@ library(htmlwidgets)
 library(knitr)
 library(sf)
 library(mapview)
+library(flextable)
 source("funksjoner_hent_nvdb_info.R")
 ```
 
-```{r, echo=FALSE}
-# TODO: ÅDT 2018 fra TD-API.
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
+                      error = FALSE, cache = TRUE)
+```
+
+```{r adt, include = FALSE}
+# TODO: ÅDT (med dekingsgrad) 2018 fra TD-API.
 # Leser inn ÅDT (må hentes fra NVDB-API eller trafikkdata-API på sikt)
-adt <- read.csv2("adt_2017_nortraf.csv") %>% 
-  filter(Felt == "R0") %>% 
-  mutate(Stasjonnr = as.character(Tellepunkt),
-         ADT = round(ADT, digits = -2)) %>% 
-  select(Stasjonnr, ADT)
-```
-
-```{r, echo=FALSE}
-# TODO: Dekningsgrad fra TD-API.
-# Henter inn dekningsgrad
-dekning <- read.csv2("telledager_trondheim.csv") %>% 
-  mutate(Stasjonnr = as.character(Tpktnr),
-         Dekningsgrad = round(100 * (SUM / dager), digits = 0)) %>% 
-  select(Stasjonnr, aar, Dekningsgrad)
-
-dekning_2017 <- dekning %>% 
-  filter(aar == 2017) %>% 
-  mutate(Dekning_17 = Dekningsgrad) %>% 
-  select(Stasjonnr, Dekning_17)
-
-dekning_2018 <- dekning %>% 
-  filter(aar == 2018) %>% 
-  mutate(Dekning_18 = Dekningsgrad) %>% 
-  select(Stasjonnr, Dekning_18)
-
-```
-
-```{r, echo=FALSE}
-# Hvilke stasjonsnumre skal være med?
-byindekspunkter_trondheim <- c("1600011",
-                               "1600012",
-                               "1600078",
-                               "1600097",
-                               "1600101",
-                               #"1600104",
-                               "1600122",
-                               "1600123",
-                               "1600124",
-                               "1600125",
-                               "1600126",
-                               "1600127",
-                               "1600128",
-                               "1600149",
-                               "1600154",
-                               #"1600155",
-                               "1600156",
-                               "1600157",
-                               "1600193",
-                               "1600209",
-                               "1600213",
-                               "1600214",
-                               "1600218",
-                               "1600219",
-                               "1601405",
-                               #"1601416",
-                               "1601418",
-                               #"1601438",
-                               #"1601441",
-                               "1602306",
-                               "1602407",
-                               "1602418",
-                               #"1700012",
-                               #"1700027",
-                               #"1700008",
-                               #"1700029",
-                               #"1700061",
-                               #"1700062",
-                               "51", "52", "53", "54", "55", "56", "57", "58",
-                               "59", "60", "61", "62", #"63", 
-                               "64", "65", "66",
-                               "67", "68", "69", "72", "74", "85", "86",
-                               # tre nye forslag fra kommunene:
-                               "1603001", "1603002", "1603003",
-                               "1603004", "1603005")
-
-```
-
-```{r, echo=F, warning=F, message=FALSE}
-# Utfører spørringer mot NVDB for aktuelle kommuner
-# Trondheim 5001
-kommunenr <- "5001"
-kommunenavn <- hent_kommune(kommunenr)[[1]]
-#kommunepolygon <- hent_kommune(kommunenr)[[2]]
-kommune_trser_5001 <- hent_trafikkregistreringsstasjon_for_omraade(kommunenr) %>% 
-  mutate(Type = "TRS")
-kommune_bomer <- hent_bomstasjon_for_kommune(kommunenr) %>% 
-  mutate(Type = "Bom")
-
-# Melhus 5028
-kommunenr <- "5028"
-kommunenavn <- hent_kommune(kommunenr)[[1]]
-#kommunepolygon <- hent_kommune(kommunenr)[[2]]
-kommune_trser_5028 <- hent_trafikkregistreringsstasjon_for_omraade(kommunenr) %>% 
-  mutate(Type = "TRS")
-
-# Malvik 5031
-kommunenr <- "5031"
-kommunenavn <- hent_kommune(kommunenr)[[1]]
-#kommunepolygon <- hent_kommune(kommunenr)[[2]]
-kommune_trser_5031 <- hent_trafikkregistreringsstasjon_for_omraade(kommunenr) %>% 
-  mutate(Type = "TRS")
-kommune_bomer_5031 <- hent_bomstasjon_for_kommune(kommunenr) %>% 
-  mutate(Type = "Bom")
-
-# Stjørdal 5035
-kommunenr <- "5035"
-kommunenavn <- hent_kommune(kommunenr)[[1]]
-#kommunepolygon <- hent_kommune(kommunenr)[[2]]
-kommune_trser_5035 <- hent_trafikkregistreringsstasjon_for_omraade(kommunenr) %>% 
-  mutate(Type = "TRS")
-
-kommunepunkter <- bind_rows(kommune_trser_5001,
-                            kommune_trser_5028, 
-                            kommune_trser_5031,
-                            kommune_trser_5035,
-                            kommune_bomer,
-                            kommune_bomer_5031) %>% 
-  filter(!(Stasjonnr %in% 
-             c("1605010", "1600211", "1600212", "1600210", 
-               "1600265", "1600158", "1602315"))) 
-
-
-# Legger til forslag til nye! Legge de inn i dekning og ådt.
-#write.csv2(kommunepunkter, file = "kommunepunkter.csv",
-#           row.names = F)
-kommunepunkter_nye_forslag <- read.csv2("nye_forslag.csv",
-                                        colClasses = c("character",
-                                                       "character",
-                                                       "character",
-                                                       "numeric",
-                                                       "numeric",
-                                                       "numeric",
-                                                       "character",
-                                                       "character",
-                                                       "character"))
-
-kommunepunkter_2 <- bind_rows(kommunepunkter, kommunepunkter_nye_forslag)
-
-kommunepunkter_trondheim_med <- kommunepunkter_2 %>% 
-  filter(Stasjonnr %in% byindekspunkter_trondheim) %>% 
-  mutate(Byindeks = "Ja")
-
-kommunepunkter_trondheim_ute <- kommunepunkter_2 %>% 
-  filter(!(Stasjonnr %in% byindekspunkter_trondheim)) %>% 
-  mutate(Byindeks = "Nei")
-
-kommunepunkter_trondheim <- bind_rows(kommunepunkter_trondheim_med,
-                                      kommunepunkter_trondheim_ute) %>% 
-  filter(Navn != "Innherredsveien vest for Persaunvegen")
-
-# Må legge til ÅDT, hente fra NVDB
+# adt <- read.csv2("adt_2017_nortraf.csv") %>% 
+#   filter(Felt == "R0") %>% 
+#   mutate(Stasjonnr = as.character(Tellepunkt),
+#          ADT = round(ADT, digits = -2)) %>% 
+#  select(Stasjonnr, ADT)
 ```
 
 Tabell og kart over byindekspunktene. TRS står for trafikkregistreringsstasjon. 
@@ -176,55 +36,48 @@ Tabell og kart over byindekspunktene. TRS står for trafikkregistreringsstasjon.
 Dekningsgrad er oppgitt som prosentvis andel dager registrert i året, for 2018
 gjelder tall til og med august.
 
-# Trondheim
-
-```{r, results='asis', echo=FALSE, message=FALSE}
-# Tabell
-byindekspunkter_trondheim <- kommunepunkter_trondheim  %>% 
-  filter(Byindeks == "Ja") %>% 
-  left_join(adt) %>% 
-  left_join(dekning_2017) %>% 
-  left_join(dekning_2018) %>% 
-  select(Navn, Kommune, Veg, Type, Byindeks, ADT, Dekning_17, Dekning_18) %>% 
-  arrange(Byindeks, Veg)
-
-# write.csv2(byindekspunkter_trondheim, file = "byindekspunkter_trondheim_20190307.csv",
-#            row.names = F)
-
-byindekspunkter_trondheim %>% 
-  kable(format.args = list(big.mark = " "))
+```{r table}
+indekspunktene_oslo %>% 
+  dplyr::select(name, road_reference) %>% 
+  dplyr::arrange(road_reference) %>% 
+  flextable::flextable() %>% 
+  flextable::set_header_labels(name = "Navn",
+                               road_reference = "Vegreferanse") %>% 
+  flextable::bold(part = "header") %>% 
+  flextable::fontsize(size = 9, part = "all") %>% 
+  flextable::font(fontname = "Lucida Sans Unicode", part = "all") %>% 
+  flextable::bg(bg = "#ED9300", part = "header") %>% 
+  flextable::align(part = "all") %>% 
+  flextable::autofit() %>% 
+  flextable::height_all(height = .2) %>% 
+  flextable::padding(padding.top = .3,
+                     padding.bottom = .3)
 ```
 
-```{r, warning=FALSE, echo=FALSE, include=FALSE}
-pal <- colorFactor(c("navy", "red"), domain = c("TRS", "Bom"))
+```{r mapcode, include=FALSE}
+#pal <- colorFactor(c("navy", "red"), domain = c("TRS", "Bom"))
 
-map.trd <- kommunepunkter_trondheim %>% 
-  filter(Byindeks == "Ja") %>% 
+map.oslo <- indekspunktene_oslo %>% 
   leaflet(width = "100%", 
           options = leafletOptions(minZoom = 0, maxZoom = 18)) %>% 
   addProviderTiles(providers$Esri.WorldStreetMap) %>% 
   addCircleMarkers(
-    radius = ~ifelse(Byindeks == "Ja", 6, 3),
-    color = ~pal(Type),
+    radius = 6,
     weight = 3,
     opacity = 0.6,
     fill = F
-  ) %>% 
-  addLabelOnlyMarkers(label = ~Veg,
-                      labelOptions = 
-                        labelOptions(noHide = T, 
-                                     direction = 'top', 
-                                     textOnly = T,
-                                     offset = c(0, 7))) %>% 
-  addLegend("bottomright", pal = pal, values = ~Type,
-    title = "Type",
-    opacity = 1
-  )
+  ) #%>% 
+  #addLabelOnlyMarkers(label = ~Veg,
+  #                    labelOptions = 
+  #                      labelOptions(noHide = T, 
+  #                                   direction = 'top', 
+  #                                   textOnly = T,
+  #                                   offset = c(0, 7)))
 ```
 
 
 ```{r, echo=FALSE}
-#map.trd
+map.oslo
 ```
 
 ```{r, warning=FALSE, echo=FALSE, include=FALSE}
