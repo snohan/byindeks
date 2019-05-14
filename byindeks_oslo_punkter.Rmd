@@ -31,10 +31,9 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
 #  select(Stasjonnr, ADT)
 ```
 
-Tabellen viser de valgte byindekspunktene. 
 
-```{r table}
-#indekspunktene_oslo <- read.csv2("indekspunktene_oslo.csv")
+```{r table, include=FALSE}
+indekspunktene_oslo <- read.csv2("indekspunktene_oslo.csv")
 
 indekspunktene_oslo %>% 
   dplyr::select(name, road_reference) %>% 
@@ -56,11 +55,11 @@ indekspunktene_oslo %>%
 ```{r mapcode, include=FALSE, cache=FALSE}
 #pal <- colorFactor(c("navy", "red"), domain = c("TRS", "Bom"))
 
-#map.oslo <- indekspunktene_oslo %>% 
-#  leaflet(width = "100%") %>% 
-#  addTiles() %>% 
-  #addProviderTiles(providers$Esri.WorldStreetMap) %>% 
- # addCircles(lng = ~lon, lat = ~lat)
+map.oslo <- indekspunktene_oslo %>% 
+  leaflet(width = "100%") %>% 
+  #addTiles() %>% 
+  addProviderTiles(providers$Esri.WorldStreetMap) %>% 
+  addCircles(lng = ~lon, lat = ~lat)
   #leaflet(width = "100%", 
   #        options = leafletOptions(minZoom = 0, maxZoom = 18)) %>% 
   #addProviderTiles(providers$Esri.WorldStreetMap) %>% 
@@ -80,9 +79,9 @@ indekspunktene_oslo %>%
 
 
 ```{r, echo=FALSE, cache=FALSE, message=TRUE}
-#map.oslo
-m <- leaflet() %>% setView(lng = 10.45, lat = 63.45, zoom = 2)
-m %>% addTiles()
+map.oslo
+#m <- leaflet() %>% setView(lng = 10.45, lat = 63.45, zoom = 2)
+#m %>% addTiles()
 #m %>% addProviderTiles(providers$Esri.WorldStreetMap)
 #m %>% addTiles(urlTemplate = "https://nvdbcache.geodataonline.no/arcgis/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer/tile/{z}/{x}/{y}")
 ```
