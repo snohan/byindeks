@@ -13,3 +13,7 @@ indekspunktene_oslo <- dplyr::left_join(oslopunkter, points)
 
 write.csv2(indekspunktene_oslo, file = "indekspunktene_oslo.csv",
            row.names = F)
+
+
+# ADT
+oslo_adt <- getAdtForpoints(indekspunktene_oslo$trp_id)

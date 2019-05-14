@@ -31,7 +31,7 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
 #  select(Stasjonnr, ADT)
 ```
 
-Tabell og kart over byindekspunktene.
+Tabellen viser de valgte byindekspunktene. 
 
 ```{r table}
 #indekspunktene_oslo <- read.csv2("indekspunktene_oslo.csv")
@@ -43,24 +43,24 @@ indekspunktene_oslo %>%
   flextable::set_header_labels(name = "Navn",
                                road_reference = "Vegreferanse") %>% 
   flextable::bold(part = "header") %>% 
-  flextable::fontsize(size = 11, part = "all") %>% 
+  flextable::fontsize(size = 12, part = "all") %>% 
   flextable::font(fontname = "Lucida Sans Unicode", part = "all") %>% 
   flextable::bg(bg = "#ED9300", part = "header") %>% 
   flextable::align(part = "all") %>% 
   flextable::autofit() %>% 
   flextable::height_all(height = .2) %>% 
-  flextable::padding(padding.top = .3,
-                     padding.bottom = .3)
+  flextable::padding(padding.top = .4,
+                     padding.bottom = .4)
 ```
 
 ```{r mapcode, include=FALSE, cache=FALSE}
 #pal <- colorFactor(c("navy", "red"), domain = c("TRS", "Bom"))
 
-map.oslo <- indekspunktene_oslo %>% 
-  leaflet(width = "100%") %>% 
-  addTiles() %>% 
+#map.oslo <- indekspunktene_oslo %>% 
+#  leaflet(width = "100%") %>% 
+#  addTiles() %>% 
   #addProviderTiles(providers$Esri.WorldStreetMap) %>% 
-  addCircles(lng = ~lon, lat = ~lat)
+ # addCircles(lng = ~lon, lat = ~lat)
   #leaflet(width = "100%", 
   #        options = leafletOptions(minZoom = 0, maxZoom = 18)) %>% 
   #addProviderTiles(providers$Esri.WorldStreetMap) %>% 
@@ -79,11 +79,12 @@ map.oslo <- indekspunktene_oslo %>%
 ```
 
 
-```{r mapshow, echo=FALSE, cache=FALSE}
+```{r, echo=FALSE, cache=FALSE, message=TRUE}
 #map.oslo
-m <- leaflet() %>% setView(lng = 10.45, lat = 63.45, zoom = 12)
+#m <- leaflet() %>% setView(lng = 10.45, lat = 63.45, zoom = 12)
+#m %>% addTiles()
 #m %>% addProviderTiles(providers$Esri.WorldStreetMap)
-m %>% addTiles(urlTemplate = "https://nvdbcache.geodataonline.no/arcgis/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer/tile/{z}/{x}/{y}")
+#m %>% addTiles(urlTemplate = "https://nvdbcache.geodataonline.no/arcgis/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer/tile/{z}/{x}/{y}")
 ```
 
 

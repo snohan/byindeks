@@ -65,3 +65,58 @@ getPoints <- function() {
 }
 
 # Hent ÅDT ####
+getTrpAadt <- function(trp_id) {
+  # Get all AADTs for a trp
+  query_aadt <- paste0(
+  "query trp_adt{
+    trafficData(trafficRegistrationPointId: \"", trp_id,"\"){
+      trafficRegistrationPoint{
+        id
+      }
+      volume{
+        average{
+          daily{
+            byYear{
+              year
+              total{
+                volume
+              }
+            }
+          }
+        }
+      }
+    }
+  }")
+
+  myqueries <- Query$new()
+  myqueries$query("aadts", query_aadt)
+
+  trp_aadt <- cli$exec(myqueries$queries$aadts) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
+    as.data.frame() %>%
+    tidyr::unnest() %>%
+    dplyr::rename(trp_id = 1,
+                  year = 2,
+                  adt = 3) %>%
+    dplyr::mutate(trp_id = as.character(trp_id))
+
+  return(trp_aadt)
+}
+
+# Hente ÅDt for mange punkter
+trp_list <- indekspunktene_oslo$trp_id
+
+# TODO: hva når svaret er tomt for et punkt?
+getAdtForpoints <- function(trp_list) {
+  number_of_points <- length(trp_list)
+  data_points <- data.frame()
+  trp_count <- 1
+
+  while (trp_count <= number_of_points) {
+    data_points <- bind_rows(data_points,
+                             getTrpAadt(trp_list[trp_count]))
+    trp_count <- trp_count + 1
+  }
+  return(data_points)
+}
+
