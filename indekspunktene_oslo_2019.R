@@ -10,3 +10,6 @@ oslopunkter <- read_csv2("byindeks_trp.csv") %>%
                 agreement_start == 2019)
 
 indekspunktene_oslo <- dplyr::left_join(oslopunkter, points)
+
+write.csv2(indekspunktene_oslo, file = "indekspunktene_oslo.csv",
+           row.names = F)

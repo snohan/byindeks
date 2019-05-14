@@ -5,15 +5,15 @@ output: html_notebook
 
 ```{r library, include = FALSE}
 library(tidyverse)
-library(httr)
-library(jsonlite)
+#library(httr)
+#library(jsonlite)
 library(leaflet)
-library(htmlwidgets)
+#library(htmlwidgets)
 library(knitr)
-library(sf)
-library(mapview)
+#library(sf)
+#library(mapview)
 library(flextable)
-source("funksjoner_hent_nvdb_info.R")
+#source("funksjoner_hent_nvdb_info.R")
 ```
 
 ```{r setup, include = FALSE}
@@ -31,12 +31,11 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
 #  select(Stasjonnr, ADT)
 ```
 
-Tabell og kart over byindekspunktene. TRS står for trafikkregistreringsstasjon. 
-
-Dekningsgrad er oppgitt som prosentvis andel dager registrert i året, for 2018
-gjelder tall til og med august.
+Tabell og kart over byindekspunktene.
 
 ```{r table}
+#indekspunktene_oslo <- read.csv2("indekspunktene_oslo.csv")
+
 indekspunktene_oslo %>% 
   dplyr::select(name, road_reference) %>% 
   dplyr::arrange(road_reference) %>% 
@@ -44,7 +43,7 @@ indekspunktene_oslo %>%
   flextable::set_header_labels(name = "Navn",
                                road_reference = "Vegreferanse") %>% 
   flextable::bold(part = "header") %>% 
-  flextable::fontsize(size = 9, part = "all") %>% 
+  flextable::fontsize(size = 11, part = "all") %>% 
   flextable::font(fontname = "Lucida Sans Unicode", part = "all") %>% 
   flextable::bg(bg = "#ED9300", part = "header") %>% 
   flextable::align(part = "all") %>% 
@@ -54,19 +53,23 @@ indekspunktene_oslo %>%
                      padding.bottom = .3)
 ```
 
-```{r mapcode, include=FALSE}
+```{r mapcode, include=FALSE, cache=FALSE}
 #pal <- colorFactor(c("navy", "red"), domain = c("TRS", "Bom"))
 
 map.oslo <- indekspunktene_oslo %>% 
-  leaflet(width = "100%", 
-          options = leafletOptions(minZoom = 0, maxZoom = 18)) %>% 
-  addProviderTiles(providers$Esri.WorldStreetMap) %>% 
-  addCircleMarkers(
-    radius = 6,
-    weight = 3,
-    opacity = 0.6,
-    fill = F
-  ) #%>% 
+  leaflet(width = "100%") %>% 
+  addTiles() %>% 
+  #addProviderTiles(providers$Esri.WorldStreetMap) %>% 
+  addCircles(lng = ~lon, lat = ~lat)
+  #leaflet(width = "100%", 
+  #        options = leafletOptions(minZoom = 0, maxZoom = 18)) %>% 
+  #addProviderTiles(providers$Esri.WorldStreetMap) %>% 
+  #addCircleMarkers(
+  #  radius = 6,
+  #  weight = 3,
+  #  opacity = 0.6,
+  #  fill = F
+  #) #%>% 
   #addLabelOnlyMarkers(label = ~Veg,
   #                    labelOptions = 
   #                      labelOptions(noHide = T, 
@@ -76,51 +79,11 @@ map.oslo <- indekspunktene_oslo %>%
 ```
 
 
-```{r, echo=FALSE}
-map.oslo
-```
-
-```{r, warning=FALSE, echo=FALSE, include=FALSE}
-mapshot(map.trd, file = "byindeks_trondheim.png")
-```
-
-
-```{r, warning=FALSE, echo=FALSE, include=FALSE}
-map.trd_sentrum <- kommunepunkter_trondheim %>% 
-  filter(Byindeks == "Ja") %>% 
-  filter(!(Stasjonnr %in% c("1600213", "1600209", "1602306",
-                            "72", "58", "52",
-                            "53", "51", "85", "86", "74",
-                            "1603001", "1603002", "1603003",
-                            "1603004", "1603005",
-                            "1600097"))) %>% 
-  leaflet(width = "100%", 
-          options = leafletOptions(minZoom = 0, maxZoom = 18)) %>% 
-  addProviderTiles(providers$Esri.WorldStreetMap) %>% 
-  addCircleMarkers(
-    radius = ~ifelse(Byindeks == "Ja", 6, 3),
-    color = ~pal(Type),
-    weight = 3,
-    opacity = 0.6,
-    fill = F
-  ) %>% 
-  addLabelOnlyMarkers(label = ~Veg,
-                      labelOptions = 
-                        labelOptions(noHide = T, 
-                                     direction = 'top', 
-                                     textOnly = T,
-                                     offset = c(0, 7))) %>% 
-  addLegend("bottomright", pal = pal, values = ~Type,
-    title = "Type",
-    opacity = 1
-  )
-```
-
-```{r, echo=FALSE}
-#map.trd_sentrum
+```{r mapshow, echo=FALSE, cache=FALSE}
+#map.oslo
+m <- leaflet() %>% setView(lng = 10.45, lat = 63.45, zoom = 12)
+#m %>% addProviderTiles(providers$Esri.WorldStreetMap)
+m %>% addTiles(urlTemplate = "https://nvdbcache.geodataonline.no/arcgis/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer/tile/{z}/{x}/{y}")
 ```
 
 
-```{r, warning=FALSE, echo=FALSE, include=FALSE}
-mapshot(map.trd_sentrum, file = "byindeks_trondheim_s.png")
-```
