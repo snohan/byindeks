@@ -17,4 +17,9 @@ write.csv2(indekspunktene_oslo, file = "indekspunktene_oslo.csv",
 
 # ADT
 oslo_adt <- getAdtForpoints(indekspunktene_oslo$trp_id)
-# obs! mangler håndtering av trper uten ådt
+# TODO: filtrere ut 2018
+# TODO: join
+# TODO: hente fra NVDB de so mangler?
+
+# TEst
+#uten_adt <- getTrpAadt("32135V604101")

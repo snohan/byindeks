@@ -79,11 +79,13 @@ map.oslo <- indekspunktene_oslo %>%
 
 
 ```{r, echo=FALSE, cache=FALSE, message=TRUE}
-map.oslo
-#m <- leaflet() %>% setView(lng = 10.45, lat = 63.45, zoom = 2)
+#map.oslo
+m <- leaflet() %>% setView(lng = 10.45, lat = 63.45, zoom = 7)
+# TODO: Finne ut hvordan senter skal oppgis. Er det UTM33?
 #m %>% addTiles()
 #m %>% addProviderTiles(providers$Esri.WorldStreetMap)
-#m %>% addTiles(urlTemplate = "https://nvdbcache.geodataonline.no/arcgis/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer/tile/{z}/{x}/{y}")
+m %>% addTiles(urlTemplate = "https://nvdbcache.geodataonline.no/arcgis/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer/tile/{z}/{y}/{x}",
+               attribution = "NVDB, Geovekst, kommunene og Open Street Map contributors (utenfor Norge)")
 ```
 
 
