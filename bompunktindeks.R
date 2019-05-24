@@ -4,8 +4,7 @@
 # Snorre Hansen
 #
 
-library(readr)
-library(stringr)
+library(tidyverse)
 
 # Funkjsoner ####
 lesInnAllMaanedstrafikkForEtAar <- function(bomaaret) {
@@ -18,8 +17,8 @@ lesInnAllMaanedstrafikkForEtAar <- function(bomaaret) {
 }
 
 # Leser inn ####
-bombasisaar <- "2017"
-bomindeksaar <- "2018"
+bombasisaar <- "2018"
+bomindeksaar <- "2019"
 
 maanedstrafikk.bombasisaar <- lesInnAllMaanedstrafikkForEtAar(bombasisaar)
 maanedstrafikk.bomindeksaar <- lesInnAllMaanedstrafikkForEtAar(bomindeksaar)
@@ -55,12 +54,24 @@ maanedstrafikk.byindeks.punkt <-
 
 # Slå sammen med ordinære punkter
 # Leser inn punktindeks fra Datainn:
-byindeks.datainn <- read.csv2("pointindex-trondheim-2018-12_2017.csv",
+byindeks.datainn <- read.csv2("pointindex-2019-04_2018.csv",
                               stringsAsFactors = F) %>%
 #                              locale = locale(encoding = 'ISO-8859-1'))
-  select(2, 3, 11:17) %>%
-  filter(indeks != "-")
-# TODO: numeriske verdier på indekstall og måneder som tall
+  dplyr::select(2, 3, 11:17) %>%
+  dplyr::filter(indeks != "-") %>%
+  dplyr::mutate(indeks = as.numeric(stringr::str_replace(indeks, ",", ".")),
+                periode = dplyr::case_when(periode == "Januar" ~ 1,
+                                           periode == "Februar" ~ 2,
+                                           periode == "Mars" ~ 3,
+                                           periode == "April" ~ 4,
+                                           periode == "Mai" ~ 5,
+                                           periode == "Juni" ~ 6,
+                                           periode == "Juli" ~ 7,
+                                           periode == "August" ~ 8,
+                                           periode == "September" ~ 9,
+                                           periode == "Oktober" ~ 10,
+                                           periode == "November" ~ 11,
+                                           periode == "Desember" ~ 12))
 
 colnames(byindeks.datainn) <- c("msnr", "msnavn", "dogn", "lengdeklasse",
                                 "maaned", "indeks", "dekningsgrad",
@@ -69,7 +80,7 @@ colnames(byindeks.datainn) <- c("msnr", "msnavn", "dogn", "lengdeklasse",
 
 byindeks.datainn.filtrert <- byindeks.datainn %>%
   filter(dogn == "Alle" & lengdeklasse == "< 5,6m") %>%
-  filter(!str_detect(maaned, "Hittil|Siste")) %>%
+  filter(!is.na(maaned)) %>%
   select(msnr, msnavn, maaned,
          trafikkmengde.basisaar,
          trafikkmengde.indeksaar, indeks, dekningsgrad)
@@ -83,22 +94,64 @@ byindeks.bomdata.filtrert <- maanedstrafikk.byindeks.punkt %>%
          msnavn = Bomstasjon,
          maaned = Maaned)
 
+# Punktindeks per måned ####
 byindeks.trondheim <- rbind(byindeks.datainn.filtrert,
                             byindeks.bomdata.filtrert) %>%
   mutate(trafikkmengde.basisaar = as.numeric(trafikkmengde.basisaar),
          trafikkmengde.indeksaar = as.numeric(trafikkmengde.indeksaar)) %>%
   filter(!is.na(trafikkmengde.indeksaar))
 
-write.csv2(byindeks.trondheim,
-           file = "punktindeks_trondheim_alle_punkter_jan-des18.csv",
+# Plotter ####
+index_plot <-
+  ggplot2::ggplot() +
+  geom_point(data = byindeks.trondheim,
+             aes(x = msnavn, y = indeks, size = trafikkmengde.basisaar),
+             color = "#ED9300") +
+  facet_grid(maaned ~ .) +
+  geom_hline(yintercept = -4.1, color = "#58B02C") +
+  xlab("Registreringspunkt") +
+  ylab("Indeks (%)") +
+  ggtitle(label = "Endring i trafikkmengde",
+          subtitle = "Fra 2018 til 2019") +
+  coord_flip() +
+  scale_size(name = "Trafikkmengde basisår") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+# Ekskluderinger av bompunkter ####
+byindeks.trondheim.etter.ekskluderinger <- byindeks.trondheim %>%
+  dplyr::filter(!(msnr %in% c(9916052)))
+
+write.csv2(byindeks.trondheim.etter.ekskluderinger,
+           file = "punktindeks_trondheim_alle_punkter_jan-apr19.csv",
            row.names = F)
 
-# byindeks.trondheim <- read.csv2("punktindeks_trondheim_alle_punkter.csv",
-#                                 stringsAsFactors = F) %>%
-#   mutate(trafikkmengde.basisaar = as.numeric(trafikkmengde.basisaar),
-#          trafikkmengde.indeksaar = as.numeric(trafikkmengde.indeksaar))
+# Hittil i år per punkt ####
+byindeks.trondheim.punkt.aar <- byindeks.trondheim.etter.ekskluderinger %>%
+  group_by(msnavn) %>%
+  summarise(trafikkmengde_basisaar = sum(trafikkmengde.basisaar),
+            trafikkmengde_indeksaar = sum(trafikkmengde.indeksaar),
+            indeks = round((trafikkmengde_indeksaar/
+                              trafikkmengde_basisaar - 1) * 100,
+                           digits = 1))
 
-# Beregner årsindeks for Trondheim
+  ggplot2::ggplot() +
+  geom_point(data = byindeks.trondheim.punkt.aar,
+             aes(x = msnavn, y = indeks, size = trafikkmengde_basisaar),
+             color = "#ED9300") +
+  geom_rect(aes(xmin = -Inf, xmax = Inf, ymin = -8.1, ymax = 8.1),
+             alpha = 0.1, fill = "#008EC2") +
+  geom_hline(yintercept = -4.1, color = "#58B02C") +
+  xlab("Registreringspunkt") +
+  ylab("Indeks (%)") +
+  ggtitle(label = "Endring i trafikkmengde",
+          subtitle = "Fra 2018 til 2019") +
+  coord_flip() +
+  scale_size(name = "Trafikkmengde basisår") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+# Beregner årsindeks for Trondheim ####
 byindeks.trondheim.aar <- byindeks.trondheim %>%
   summarise(trafikkmengde.basisaar.sum = sum(trafikkmengde.basisaar,
                                              na.rm = T),

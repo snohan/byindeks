@@ -13,11 +13,11 @@ library(readxl)
 # Leser inn ####
 # Angir mappen som rådatafilene ligger i:
 Mappe <-
-  "O:/landsdekkende/Prosjekt/Handlingsplan Trafikkdata/12 Organisering og kompetanse/09 Grunnlagsmateriale/Byindeks/Byindeks med R/Byindeks Trondheim/Bomstasjondata/"
+  "O:/landsdekkende/Prosjekt/Handlingsplan Trafikkdata/12 Organisering og kompetanse/09 Grunnlagsmateriale/Byindeks/Punkter/Trondheim/Bomstasjondata/"
 setwd(Mappe)
 
-bomaar <- "2018"
-bommaaned <- "12"
+bomaar <- "2019"
+bommaaned <- "04"
 #bomfila <- paste("Bomtrafikk_", bomaar, "-", bommaaned, ".csv", sep = "")
 bomfila <- paste("bom", bomaar, bommaaned, ".xlsx", sep = "")
 
@@ -62,7 +62,7 @@ colnames(Bomdata) <- c("Dato", "Time", "Bomstasjon", "Felt",
 # Fjerner rampene på Kroppan:
 #Bomdata <- filter(Bomdata, Felt != "KROP-N-1" & Felt != "KROP-S-1")
 
-# Forteller R hva som er formatet p? datokolonnen:
+# Forteller R hva som er formatet paa datokolonnen:
 Bomdata$Dato <- strptime(Bomdata$Dato, "%d.%m.%Y")
 
 # Legger til en kolonne som viser m?ned, dag og time:
@@ -122,7 +122,6 @@ Maanedstrafikk_slank_koder <- merge(Maanedstrafikk_slank, Bomstasjonkoder,
                                     by = "Felt")
 
 # Summerer opp månedstrafikken:
-
 maanedstrafikk <- summarise(
   group_by(Maanedstrafikk_slank_koder, punktnr, Bomstasjon, Maaned),
                 Liten_bil = sum(Liten_bil),
