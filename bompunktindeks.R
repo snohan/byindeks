@@ -104,7 +104,7 @@ byindeks.trondheim <- rbind(byindeks.datainn.filtrert,
 # Plotter ####
 index_plot <-
   ggplot2::ggplot() +
-  geom_point(data = byindeks.trondheim,
+  geom_point(data = byindeks.trondheim.etter.ekskluderinger,
              aes(x = msnavn, y = indeks, size = trafikkmengde.basisaar),
              color = "#ED9300") +
   facet_grid(maaned ~ .) +
@@ -139,9 +139,9 @@ byindeks.trondheim.punkt.aar <- byindeks.trondheim.etter.ekskluderinger %>%
   geom_point(data = byindeks.trondheim.punkt.aar,
              aes(x = msnavn, y = indeks, size = trafikkmengde_basisaar),
              color = "#ED9300") +
-  geom_rect(aes(xmin = -Inf, xmax = Inf, ymin = -8.1, ymax = 8.1),
+  geom_rect(aes(xmin = -Inf, xmax = Inf, ymin = -4.7, ymax = -0.3),
              alpha = 0.1, fill = "#008EC2") +
-  geom_hline(yintercept = -4.1, color = "#58B02C") +
+  geom_hline(yintercept = -2.5, color = "#58B02C") +
   xlab("Registreringspunkt") +
   ylab("Indeks (%)") +
   ggtitle(label = "Endring i trafikkmengde",
@@ -152,7 +152,7 @@ byindeks.trondheim.punkt.aar <- byindeks.trondheim.etter.ekskluderinger %>%
   theme(legend.position = "bottom")
 
 # Beregner årsindeks for Trondheim ####
-byindeks.trondheim.aar <- byindeks.trondheim %>%
+byindeks.trondheim.aar <- byindeks.trondheim.etter.ekskluderinger %>%
   summarise(trafikkmengde.basisaar.sum = sum(trafikkmengde.basisaar,
                                              na.rm = T),
             trafikkmengde.indeksaar.sum = sum(trafikkmengde.indeksaar,
@@ -161,7 +161,7 @@ byindeks.trondheim.aar <- byindeks.trondheim %>%
                          trafikkmengde.basisaar.sum - 1) * 100)
 
 # Parallell beregning for å få inn KFI
-byindeks.trondheim.hittil.kfi <- byindeks.trondheim %>%
+byindeks.trondheim.hittil.kfi <- byindeks.trondheim.etter.ekskluderinger %>%
   group_by(msnr) %>%
   summarise(trafikkmengde.basisaar.sum = sum(trafikkmengde.basisaar,
                                              na.rm = T),
