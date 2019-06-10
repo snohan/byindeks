@@ -16,6 +16,8 @@ Hver årsrapport inneholder informasjon om punktene som er bestemt å inngå i g
 
 Hvilke punktene som inngår i avtalene må oppdateres manuelt i koden med liste over punkter (trp-id), og øvrig punktinfo hentes fra trafikkdata-API.
 
+Hvilke punkter som inngår kan variere fra år til år.
+
 Kart, om nødvendig på flere zoom-nivå, med fargeskala basert på indeksverdi og størrelse basert på ÅDT i basisår. Bakgrunnskart som viser vegnettet tydelig: "NVDB"-kartet.
 
 ## Liste over punkter

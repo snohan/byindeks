@@ -101,7 +101,16 @@ byindeks.trondheim <- rbind(byindeks.datainn.filtrert,
          trafikkmengde.indeksaar = as.numeric(trafikkmengde.indeksaar)) %>%
   filter(!is.na(trafikkmengde.indeksaar))
 
+# Ekskluderinger av bompunkter ####
+byindeks.trondheim.etter.ekskluderinger <- byindeks.trondheim %>%
+  dplyr::filter(!(msnr %in% c(9916052)))
+
+write.csv2(byindeks.trondheim.etter.ekskluderinger,
+           file = "punktindeks_trondheim_alle_punkter_jan-apr19.csv",
+           row.names = F)
+
 # Plotter ####
+# TODO: size = adt_basisaar
 index_plot <-
   ggplot2::ggplot() +
   geom_point(data = byindeks.trondheim.etter.ekskluderinger,
@@ -117,14 +126,7 @@ index_plot <-
   scale_size(name = "Trafikkmengde basisår") +
   theme_minimal() +
   theme(legend.position = "bottom")
-
-# Ekskluderinger av bompunkter ####
-byindeks.trondheim.etter.ekskluderinger <- byindeks.trondheim %>%
-  dplyr::filter(!(msnr %in% c(9916052)))
-
-write.csv2(byindeks.trondheim.etter.ekskluderinger,
-           file = "punktindeks_trondheim_alle_punkter_jan-apr19.csv",
-           row.names = F)
+index_plot
 
 # Hittil i år per punkt ####
 byindeks.trondheim.punkt.aar <- byindeks.trondheim.etter.ekskluderinger %>%
@@ -139,9 +141,9 @@ byindeks.trondheim.punkt.aar <- byindeks.trondheim.etter.ekskluderinger %>%
   geom_point(data = byindeks.trondheim.punkt.aar,
              aes(x = msnavn, y = indeks, size = trafikkmengde_basisaar),
              color = "#ED9300") +
-  geom_rect(aes(xmin = -Inf, xmax = Inf, ymin = -4.7, ymax = -0.3),
+  geom_rect(aes(xmin = -Inf, xmax = Inf, ymin = -4.5, ymax = 0.1),
              alpha = 0.1, fill = "#008EC2") +
-  geom_hline(yintercept = -2.5, color = "#58B02C") +
+  geom_hline(yintercept = -2.2, color = "#58B02C") +
   xlab("Registreringspunkt") +
   ylab("Indeks (%)") +
   ggtitle(label = "Endring i trafikkmengde",
@@ -192,6 +194,10 @@ byindeks.trondheim.hittil.kfi <- byindeks.trondheim.etter.ekskluderinger %>%
   rename(trafikkmengde_basisaar = sum.trafikkmengde_basisaar,
          trafikkmengde_indeksaar = sum.trafikkmengde_indeksaar,
          indeks = indeksen)
+
+write.csv2(byindeks.trondheim.hittil.kfi,
+           file = "byindeks_trondheim_hittil_201904.csv",
+           row.names = F)
 
 # Tilpasning til PG (gammel versjon) ####
 
