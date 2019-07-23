@@ -10,6 +10,7 @@ output:
 
 ```{r library, include = FALSE}
 library(tidyverse)
+library(leaflet)
 library(ggmap)
 library(knitr)
 library(flextable)
@@ -46,6 +47,12 @@ I Trondheim er det benyttet et utvalg av eksisterende trafikkregistreringsstasjo
 
 \newline
 \newline
+
+```{r map_leaflet}
+#TODO: Recreate plot with Leaflet!
+
+```
+
 
 ```{r map}
 # ggmap - begrenset til 640x640 piksler.
