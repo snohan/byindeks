@@ -4,6 +4,11 @@
 .Ruserdata
 Thumbs.db
 api_keys.R
+*files/
 *cache/
 *.docx
+*.pdf
+*.html
+*.nb.html
 *tmp*
+arkiv
