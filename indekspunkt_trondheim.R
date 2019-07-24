@@ -1,9 +1,10 @@
 # Gathering info on all points.
 
 # Packages ####
-library(tidyverse)
-library(httr)
-library(jsonlite)
+# library(tidyverse)
+# library(httr)
+# library(jsonlite)
+# Packages are to be loaded through sourcing rmd_setup.R in the Rmd report file.
 
 # NVDB API calls ####
 # To get tolling stations

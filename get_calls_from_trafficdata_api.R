@@ -1,11 +1,11 @@
 # Fetching data from Trafikkdata-API.
 
 # Packages ####
-library(ghql)
-library(jsonlite)
-library(httr)
-library(tidyverse)
-library(lubridate)
+# library(ghql)
+# library(jsonlite)
+# library(httr)
+# library(tidyverse)
+# library(lubridate)
 
 # Functions ####
 

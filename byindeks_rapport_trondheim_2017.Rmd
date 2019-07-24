@@ -12,17 +12,9 @@ output:
   #   fig_width: 7
 ---
 
-```{r library, include = FALSE}
-library(tidyverse)
-library(leaflet)
-library(knitr)
-library(flextable)
-```
-
 ```{r setup, include = FALSE}
 source("rmd_setup.R")
 ```
-
 
 ```{r points, include = FALSE}
 all_point_info <- read.csv2("indekspunktene_trondheim_2018.csv") %>% 
@@ -30,7 +22,6 @@ all_point_info <- read.csv2("indekspunktene_trondheim_2018.csv") %>%
   dplyr::rename(Stasjonstype = Type)
 # TODO: hent info fra API. Avventer punktifisering av indeks!
 ```
-
 
 # Bakgrunn
 
