@@ -112,7 +112,7 @@ getTrpAadt <- function(trp_id) {
   return(trp_aadt)
 }
 
-# TEst: Hente ÅDt for mange punkter
+# Test: Hente ÅDt for mange punkter
 #trp_list <- indekspunktene_oslo$trp_id
 
 getAdtForpoints <- function(trp_list) {

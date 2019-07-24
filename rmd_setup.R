@@ -29,4 +29,5 @@ nvdb_crs <- leafletCRS(crsClass = "L.Proj.CRS", code = "EPSG:25833",
                          0.33072982812632296,
                          0.16536491406316148
                        ),
+
                        origin = c(-2500000.0, 9045984.0))

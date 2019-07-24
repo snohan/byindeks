@@ -14,11 +14,11 @@ I tillegg lages en samlerapport med hovedtallene for alle avtaleområdene, også
 ## Kart over punktene
 Hver årsrapport inneholder informasjon om punktene som er bestemt å inngå i grunnlaget for byindeks, selv om de eventuelt ikke har bidratt med data i perioden.
 
-Hvilke punktene som inngår i avtalene må oppdateres manuelt i koden med liste over punkter (trp-id), og øvrig punktinfo hentes fra trafikkdata-API.
+Hvilke punkter som inngår i avtalene må oppdateres manuelt i koden med liste over punkter (**byindeks_trp.csv**), og øvrig punktinfo hentes fra trafikkdata-API (**get_calls_from_trafficdata_api.R**).
 
 Hvilke punkter som inngår kan variere fra år til år.
 
-Kart, om nødvendig på flere zoom-nivå, med fargeskala basert på indeksverdi og størrelse basert på ÅDT i basisår. Bakgrunnskart som viser vegnettet tydelig: "NVDB"-kartet.
+Kart, om nødvendig på flere zoom-nivå, med fargeskala basert på ÅDT i basisår. Bakgrunnskart som viser vegnettet tydelig: "NVDB"-kartet.
 
 ## Liste over punkter
 En enkel tabell med punktene som inneholder navn, vegreferanse og ÅDT i basisår og indeksverdi hittil i år, samt hittil i perioden.

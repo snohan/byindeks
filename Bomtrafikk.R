@@ -133,7 +133,3 @@ maanedstrafikk <- summarise(
 write.csv2(maanedstrafikk, paste("Maanedstrafikk_", bomaar,
                                  "_", bommaaned, ".csv", sep = ""),
            row.names = F)
-
-#
-# Slutt.
-#
