@@ -65,7 +65,7 @@ getPoints <- function() {
 }
 
 #trp_id = "32135V604101"
-# Hent ÅDT ####
+
 getTrpAadt <- function(trp_id) {
   # Get all AADTs for a trp
   query_aadt <- paste0(

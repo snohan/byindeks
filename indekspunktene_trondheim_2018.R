@@ -1,16 +1,18 @@
-# Samler all skripting for å lage grunnlaget for rapporten her.
+# Gathering info on all points.
 
-# Library ####
+# Packages ####
 library(tidyverse)
 library(httr)
 library(jsonlite)
 
 # NVDB API calls ####
+# To get tolling stations
 source("funksjoner_hent_nvdb_info.R")
 
 # Get point information ####
 # Fetching index traffic registration points (TRPs).
-# TODO: From a manually edited CSV-file.
+# TODO: From a manually edited CSV-file being the master for which points are to
+# be included.
 # TODO: Get metadata from Trafficdata-API.
 
 # Get all TRS in the municipalities from NVDB
@@ -48,7 +50,7 @@ byindekspunkter_valgte <- read.csv2("byindekspunkter_vedtatte.csv") %>%
   select(Stasjonnr)
 
 # ADT ####
-# TODO: Get AADT with coverage for the index TRPs.
+# TODO: Get AADT with coverage from TD-API.
 adt <- read.csv2("adt_2017_nortraf.csv") %>%
   filter(Felt == "R0") %>%
   mutate(Stasjonnr = as.character(Tellepunkt),

@@ -1,14 +1,12 @@
-# Funksjoner for å hente nødvendig info fra NVDB-API.
-# Bruker v2.
-# Erstattes av Trafikkdata-API for henting av ÅDT og punkter.
+# Funksjoner for å hente nødvendig info fra NVDB-API v2.
+# ERSTATTES av Trafikkdata-API for henting av ÅDT og punkter.
 
 
 # Definer URI og sti ####
 nvdb_url <- "https://www.vegvesen.no/nvdb/api/v2"
 sti_vegobjekter <- "/vegobjekter"
 
-# Bygger spørring etter trafikkregistreringsstasjoner per kommune
-
+# Hent trafikkregistreringsstasjoner i en kommune
 hent_kommune <- function(kommunenr) {
   api_query_536 <- paste0(nvdb_url,
                           sti_vegobjekter,
