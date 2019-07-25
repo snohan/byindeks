@@ -11,4 +11,6 @@ api_keys.R
 *.html
 *.nb.html
 *tmp*
-arkiv
+archive
+data_index_raw
+data_points_raw

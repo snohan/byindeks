@@ -1,21 +1,26 @@
-# Gathering info on all points.
+# Gathering info on all points and indexes
 
-# Packages ####
-# library(tidyverse)
-# library(httr)
-# library(jsonlite)
+# Setup ####
+
 # Packages are to be loaded through sourcing rmd_setup.R in the Rmd report file.
+source("rmd_setup.R")
 
-# NVDB API calls ####
-# To get tolling stations
-source("funksjoner_hent_nvdb_info.R")
+# Traffic Data API calls to get points metadata and aadt
+source("get_from_trafficdata_api.R")
 
-# Get point information ####
-# Fetching index traffic registration points (TRPs).
-# TODO: From a manually edited CSV-file being the master for which points are to
-# be included.
-# TODO: Get metadata from Trafficdata-API.
+# NVDB API calls to get tolling stations
+source("get_from_nvdb_api.R")
 
+# Points ####
+
+# Points used in each city
+cities_points <- read_csv2("data_points_raw/cities_points.csv")
+
+# All points from Traffic Data API
+points <- getPoints()
+
+
+# Trondheim ####
 # Get all TRS in the municipalities from NVDB
 # Trondheim 5001
 kommunenr <- "5001"
@@ -44,13 +49,13 @@ bom_52 <- data.frame(
 kommunepunkter <- bind_rows(kommune_trser_5001, kommune_bomer, bom_52) %>%
   mutate(Vegreferanse = str_sub(Vegreferanse, 5))
 
-# The points chosen for the index ####
+# The points chosen for the index
 byindekspunkter_valgte <- read.csv2("byindekspunkter_vedtatte.csv") %>%
   dplyr::filter(city_area_name == "Trondheim") %>%
   mutate(Stasjonnr = as.character(legacyNortrafMpn)) %>%
   select(Stasjonnr)
 
-# ADT ####
+# ADT
 # TODO: Get AADT with coverage from TD-API.
 adt <- read.csv2("adt_2017_nortraf.csv") %>%
   filter(Felt == "R0") %>%
@@ -58,9 +63,9 @@ adt <- read.csv2("adt_2017_nortraf.csv") %>%
          ADT = round(ADT, digits = -2)) %>%
   select(Stasjonnr, ADT)
 
-# Read index results from CSV-files ####
+# Read index results from CSV-files
 indekstall <-
-  read.csv2("punktindeks_trondheim_alle_punkter_jan-des18.csv") %>%
+  read.csv2("indeksdata/punktindeks_trondheim_alle_punkter_jan-des18.csv") %>%
   mutate(trs = as.numeric(msnr),
          trs = if_else(trs > 9916000, trs - 9916000, trs)) %>%
   select(-msnr) %>%
@@ -74,14 +79,47 @@ indekstall <-
   rename(Stasjonnr = trs) %>%
   select(Stasjonnr, Indeks)
 
-# Final table ####
+# Final table
 indekspunktene <- byindekspunkter_valgte %>%
   left_join(kommunepunkter) %>%
   left_join(adt) %>%
   left_join(indekstall)
 
-  write.csv2(indekspunktene, file = "indekspunktene_trondheim_2018.csv",
+write.csv2(indekspunktene,
+           file = "punkter/indekspunktene_trondheim_2018.csv",
            row.names = F)
 
 
-# End
+# Oslo og Akershus ####
+
+oslopunkter <- cities_points %>%
+  dplyr::filter(city_area_name == "Oslo og Akershus",
+                agreement_start == 2019) %>%
+  dplyr::mutate(established = "Ja" )
+
+# Adding metadata
+indekspunkter_oslo <- dplyr::left_join(oslopunkter, points) %>%
+  dplyr::select(1:5, 7:11, 6)
+
+# Legger inn ikke-etablerte punkter
+indekspunkter_oslo_kunstige <-
+  read.csv2("points_not_yet_established.csv") %>%
+  dplyr::filter(city_area_name == "Oslo og Akershus",
+                agreement_start == 2019) %>%
+  dplyr::mutate(established = "Nei" )
+
+indekspunktene_oslo <- bind_rows(indekspunkter_oslo,
+                                 indekspunkter_oslo_kunstige)
+
+write.csv2(indekspunktene_oslo, file = "indekspunktene_oslo.csv",
+           row.names = F)
+
+
+# ADT
+oslo_adt <- getAdtForpoints(indekspunktene_oslo$trp_id)
+# TODO: filtrere ut 2018
+# TODO: join
+# TODO: hente fra NVDB de som mangler?
+
+# Test
+#uten_adt <- getTrpAadt("32135V604101")
