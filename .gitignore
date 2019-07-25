@@ -3,7 +3,6 @@
 .RData
 .Ruserdata
 Thumbs.db
-api_keys.R
 *files/
 *cache/
 *.docx
@@ -12,5 +11,3 @@ api_keys.R
 *.nb.html
 *tmp*
 archive
-data_index_raw
-data_points_raw

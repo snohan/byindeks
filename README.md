@@ -4,14 +4,14 @@ Mal for formidling av byindeks.
 # Årsrapporter
 Årsrapporter for byindeks skal legges ut på vegvesen.no som PDF-dokumenter. Hvert avtaleområde får sin egen rapport, som har Statens vegvesens generelle forside som mal (https://www.vegvesen.no/intranett/Etat/Støttefunksjoner/Visuell+kommunikasjon/Grafiske+maler/Forsider/Generelle+forsider).
 
-Egne årsrapporter lages for hvert avtaleområde. I kode er dette en Rmd-fil kalt **byindeks_rapport_områdenavn_referanseår.Rmd**. Disse genererer innholdet som MS Word. Felles funksjoner samles i et kildeskript. Datagrunnlaget er csv-filer fra indeksmodulen og metainformasjon om punktene fra Trafikkdata-API-et.
+Egne årsrapporter lages for hvert avtaleområde. I kode er dette en Rmd-fil kalt **byindeks_rapport_områdenavn_referanseår.Rmd**. Disse genererer innholdet som MS Word. Felles funksjoner samles i kildeskript. Datagrunnlaget er csv-filer fra indeksmodulen og metainformasjon om punktene fra Trafikkdata-API-et.
 
 I tillegg lages en samlerapport med hovedtallene for alle avtaleområdene, også her med tall fra og med hver avtales basisår. Denne omtaler ikke punktindeksene.
 
 ## Kart over punktene
 Hver årsrapport inneholder informasjon om punktene som er bestemt å inngå i grunnlaget for byindeks.
 
-Hvilke punkter som inngår i avtalene oppdateres manuelt i **byindeks_trp.csv**, og øvrig punktinfo hentes fra trafikkdata-API via **get_calls_from_trafficdata_api.R**. Punktinfo per område prepareres i filene **indekspunkt_områdenavn.R** og lagres som **indekspunkt_områdenavn_beregningsår.csv**, klart til bruk i rapporten.
+Hvilke punkter som inngår i avtalene oppdateres manuelt i **cities_points.csv**, og øvrig punktinfo hentes fra trafikkdata-API via **get_from_trafficdata_api.R**. Punktinfo per område prepareres i **indexpoint_tidying.R** og lagres som **indekspunkt_områdenavn_beregningsår.csv**, klart til bruk i rapporten.
 
 Kart, om nødvendig på flere zoom-nivå, med fargeskala basert på ÅDT i referanseår. Bakgrunnskart som viser vegnettet tydelig: "NVDB"-kartet.
 
