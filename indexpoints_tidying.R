@@ -8,6 +8,10 @@ source("rmd_setup.R")
 # Traffic Data API calls to get points metadata and aadt
 source("get_from_trafficdata_api.R")
 
+# If necessary, get all TRPs from TRP API
+# TRPs without commissions are not i TD-API!
+source("get_from_trp_api.R")
+
 # NVDB API calls to get tolling stations
 source("get_from_nvdb_api.R")
 
@@ -21,8 +25,10 @@ cities_points_unestablished <-
 # All points from Traffic Data API
 points <- getPoints()
 
-# Oslo og Akershus 2019 ####
+# All points from TRP API (if needed)
+points_trp <- getPointsFromTRPAPI()
 
+# Oslo og Akershus 2019 ####
 oslopunkter <- cities_points %>%
   dplyr::filter(city_area_name == "Oslo og Akershus",
                 agreement_start == 2019) %>%
@@ -58,15 +64,24 @@ oslo_adt <- getAdtForpoints(indekspunktene_oslo$trp_id)
 
 
 # Trondheim 2017 ####
-# Get all TRS in the municipalities from NVDB
-# Trondheim 5001
-kommunenr <- "5001"
+trp_trondheim_2017_ids <- cities_points %>%
+  dplyr::filter(city_area_name == "Trondheim",
+                agreement_start == 2017)
 
+# Adding metadata
+# Bruker trp fra trp-aåi, da noen mangler igangsetting.
+trp_trondheim_2017 <- dplyr::left_join(trp_trondheim_2017_ids, points_trp) %>%
+  dplyr::select(1:5, 7:11, 6) %>%
+# Må ta vekk ene punktet i Strindheimtunnelen
+  dplyr::filter(trp_id != "21571V2394246")
+
+# Bompunkter i Trondheim
+kommunenr <- "5001"
 kommunenavn <- hent_kommune(kommunenr)[[1]]
 
-kommune_trser_5001 <-
-  hent_trafikkregistreringsstasjon_for_omraade(kommunenr) %>%
-  mutate(Type = "TRS")
+# kommune_trser_5001 <-
+#   hent_trafikkregistreringsstasjon_for_omraade(kommunenr) %>%
+#   mutate(Type = "TRS")
 
 kommune_bomer <-
   hent_bomstasjon_for_kommune(kommunenr) %>%
@@ -83,6 +98,8 @@ bom_52 <- data.frame(
   "Kommune" = "Trondheim",
   "Type" = "Bom")
 
+# HIT
+# TODO: endre til td-api-format på tabellen
 kommunepunkter <- bind_rows(kommune_trser_5001, kommune_bomer, bom_52) %>%
   mutate(Vegreferanse = str_sub(Vegreferanse, 5))
 
@@ -93,7 +110,7 @@ byindekspunkter_valgte <- read.csv2("byindekspunkter_vedtatte.csv") %>%
   select(Stasjonnr)
 
 # ADT
-# TODO: Get AADT with coverage from TD-API.
+# TODO: Get AADT for reference year with coverage from TD-API.
 adt <- read.csv2("adt_2017_nortraf.csv") %>%
   filter(Felt == "R0") %>%
   mutate(Stasjonnr = as.character(Tellepunkt),
@@ -102,7 +119,7 @@ adt <- read.csv2("adt_2017_nortraf.csv") %>%
 
 # Read index results from CSV-files
 indekstall <-
-  read.csv2("indeksdata/punktindeks_trondheim_alle_punkter_jan-des18.csv") %>%
+  read.csv2("data_index_raw/punktindeks_trondheim_alle_punkter_jan-des18.csv") %>%
   mutate(trs = as.numeric(msnr),
          trs = if_else(trs > 9916000, trs - 9916000, trs)) %>%
   select(-msnr) %>%
@@ -123,7 +140,7 @@ indekspunktene <- byindekspunkter_valgte %>%
   left_join(indekstall)
 
 write.csv2(indekspunktene,
-           file = "punkter/indekspunktene_trondheim_2018.csv",
+           file = "data_indexpoints_tidy/indekspunktene_trondheim_2018.csv",
            row.names = F)
 
 

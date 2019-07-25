@@ -1,13 +1,4 @@
-# Fetching data from Trafikkdata-API.
-
-# Packages ####
-# library(ghql)
-# library(jsonlite)
-# library(httr)
-# library(tidyverse)
-# library(lubridate)
-
-# Functions ####
+# Fetching data from Trafikkdata-API or TRP-API
 
 cli <- GraphqlClient$new(
   url = "https://www.vegvesen.no/trafikkdata/api/?query="
@@ -28,9 +19,7 @@ getPoints <- function() {
           lon
         }
       }
-      roadReferences{
-        validFrom
-        validTo
+      currentRoadReference{
         roadReference532{
           shortForm
         }
@@ -47,19 +36,17 @@ getPoints <- function() {
     as.data.frame() %>%
     tidyr::unnest() %>%
     dplyr::rename(trp_id =
-             data.trafficRegistrationPoints.id,
-           name =
-             data.trafficRegistrationPoints.name,
-           traffic_type =
-             data.trafficRegistrationPoints.trafficRegistrationType,
-           lat =
-             data.trafficRegistrationPoints.location.coordinates.latLon.lat,
-           lon =
-             data.trafficRegistrationPoints.location.coordinates.latLon.lon,
-           road_reference =
-             roadReference532.shortForm) %>%
-    dplyr::filter(is.na(validTo)) %>%
-    dplyr::select(-starts_with("valid"))
+                    data.trafficRegistrationPoints.id,
+                  name =
+                    data.trafficRegistrationPoints.name,
+                  traffic_type =
+                    data.trafficRegistrationPoints.trafficRegistrationType,
+                  lat =
+                    data.trafficRegistrationPoints.location.coordinates.latLon.lat,
+                  lon =
+                    data.trafficRegistrationPoints.location.coordinates.latLon.lon,
+                  road_reference =
+                    data.trafficRegistrationPoints.location.currentRoadReference.roadReference532.shortForm)
 
   return(points)
 }
