@@ -15,12 +15,49 @@ source("get_from_nvdb_api.R")
 
 # Points used in each city
 cities_points <- read_csv2("data_points_raw/cities_points.csv")
+cities_points_unestablished <-
+  read_csv2("data_points_raw/points_unestablished.csv")
 
 # All points from Traffic Data API
 points <- getPoints()
 
+# Oslo og Akershus 2019 ####
 
-# Trondheim ####
+oslopunkter <- cities_points %>%
+  dplyr::filter(city_area_name == "Oslo og Akershus",
+                agreement_start == 2019) %>%
+  dplyr::mutate(established = "Ja" )
+
+# Adding metadata
+indekspunkter_oslo <- dplyr::left_join(oslopunkter, points) %>%
+  dplyr::select(1:5, 7:11, 6)
+
+# Legger inn uetablerte punkter
+indekspunkter_oslo_uetablerte <-
+  read.csv2("points_not_yet_established.csv") %>%
+  dplyr::filter(city_area_name == "Oslo og Akershus",
+                agreement_start == 2019) %>%
+  dplyr::mutate(established = "Nei" )
+
+indekspunktene_oslo <- bind_rows(indekspunkter_oslo,
+                                 indekspunkter_oslo_uetablerte)
+
+write.csv2(indekspunktene_oslo,
+           file = "data_indexpoints_tidy/indekspunktene_oslo_2019.csv",
+           row.names = F)
+
+
+# ADT
+oslo_adt <- getAdtForpoints(indekspunktene_oslo$trp_id)
+# TODO: filtrere ut 2018
+# TODO: join
+# TODO: hente fra NVDB de som mangler?
+
+# Test
+#uten_adt <- getTrpAadt("32135V604101")
+
+
+# Trondheim 2017 ####
 # Get all TRS in the municipalities from NVDB
 # Trondheim 5001
 kommunenr <- "5001"
@@ -90,36 +127,3 @@ write.csv2(indekspunktene,
            row.names = F)
 
 
-# Oslo og Akershus ####
-
-oslopunkter <- cities_points %>%
-  dplyr::filter(city_area_name == "Oslo og Akershus",
-                agreement_start == 2019) %>%
-  dplyr::mutate(established = "Ja" )
-
-# Adding metadata
-indekspunkter_oslo <- dplyr::left_join(oslopunkter, points) %>%
-  dplyr::select(1:5, 7:11, 6)
-
-# Legger inn ikke-etablerte punkter
-indekspunkter_oslo_kunstige <-
-  read.csv2("points_not_yet_established.csv") %>%
-  dplyr::filter(city_area_name == "Oslo og Akershus",
-                agreement_start == 2019) %>%
-  dplyr::mutate(established = "Nei" )
-
-indekspunktene_oslo <- bind_rows(indekspunkter_oslo,
-                                 indekspunkter_oslo_kunstige)
-
-write.csv2(indekspunktene_oslo, file = "indekspunktene_oslo.csv",
-           row.names = F)
-
-
-# ADT
-oslo_adt <- getAdtForpoints(indekspunktene_oslo$trp_id)
-# TODO: filtrere ut 2018
-# TODO: join
-# TODO: hente fra NVDB de som mangler?
-
-# Test
-#uten_adt <- getTrpAadt("32135V604101")

@@ -17,7 +17,7 @@ source("rmd_setup.R")
 ```
 
 ```{r points, include = FALSE}
-all_point_info <- read.csv2("indekspunktene_trondheim_2018.csv") %>% 
+all_point_info <- read.csv2("data_indexpoints_tidy/indekspunktene_trondheim_2018.csv") %>% 
   dplyr::arrange(Vegreferanse) %>% 
   dplyr::rename(Stasjonstype = Type)
 # TODO: hent info fra API. Avventer punktifisering av indeks!
