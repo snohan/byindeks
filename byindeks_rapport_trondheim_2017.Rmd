@@ -18,9 +18,7 @@ source("rmd_setup.R")
 
 ```{r points, include = FALSE}
 all_point_info <- 
-  read.csv2("data_indexpoints_tidy/indekspunktene_trondheim_2018.csv") %>% 
-  dplyr::arrange(Vegreferanse) %>% 
-  dplyr::rename(Stasjonstype = Type)
+  read.csv2("data_indexpoints_tidy/indekspunkt_trondheim_2017_2018.csv")
 ```
 
 # Bakgrunn
@@ -60,20 +58,20 @@ all_point_info %>%
     radius = 6,
     stroke = T,
     weight = 2,
-    color = ~palett_stasjonstype(Stasjonstype),
+    color = ~palett_stasjonstype(station_type),
     opacity = 0.8,
     fill = T,
-    fillColor = ~palett_adt(ADT),
+    fillColor = ~palett_adt(adt),
     fillOpacity = 0.8
   ) %>%
   addLegend("bottomleft",
             pal = palett_stasjonstype,
-            values = ~Stasjonstype,
+            values = ~station_type,
             title = "Stasjonstype",
             opacity = 0.7) %>%
   addLegend("bottomright",
             pal = palett_adt,
-            values = ~ADT,
+            values = ~adt,
             title = "ÅDT",
             opacity = 0.7,
             labFormat = labelFormat(big.mark = " "))
@@ -97,12 +95,12 @@ all_point_info %>%
     color = "#444f55",
     opacity = 0.8,
     fill = T,
-    fillColor = ~palett_adt(Indeks),
+    fillColor = ~palett_adt(index),
     fillOpacity = 0.8
   ) %>%
   addLegend("bottomright",
             pal = palett_adt,
-            values = ~Indeks,
+            values = ~index,
             title = "Indeks",
             opacity = 0.7,
             labFormat = labelFormat(big.mark = " "))
@@ -115,12 +113,17 @@ Tabellen nedenfor gjengir byindekspunktene og deres indeksverdi for 2018. ÅDT e
 
 ```{r table}
 all_point_info %>% 
-  select(Stasjonnr, Navn, Veg, Stasjonstype, ADT, Indeks) %>% 
+  select(msnr, name, road_reference, station_type, adt, index) %>% 
   flextable() %>% 
-  colformat_num(col_keys = "ADT", 
+  colformat_num(col_keys = "adt", 
                 big.mark = " ", digits = 0) %>%
-  colformat_num(col_keys = c("Indeks"), digits = 1) %>%
-  set_header_labels(ADT = "ÅDT") %>% 
+  colformat_num(col_keys = c("index"), digits = 1) %>%
+  set_header_labels(msnr = "Stasjonsnr.",
+                    name = "Navn",
+                    road_reference = "Vegreferanse",
+                    station_type = "Stasjonstype",
+                    adt = "ÅDT",
+                    index = "Indeks") %>% 
   bold(part = "header") %>% 
   fontsize(size = 9, part = "all") %>% 
   font(fontname = "Lucida Sans Unicode", part = "all") %>% 
@@ -138,11 +141,11 @@ I figuren nedenfor er spredningen i punktindeksene illustrert. Den horisontale g
 
 ```{r graph, fig.cap = "Spredningen i punktindeksene."}
 all_point_info_index <- all_point_info %>% 
-  dplyr::filter(!is.na(Indeks)) 
+  dplyr::filter(!is.na(index)) 
 
 ggplot2::ggplot() +
   geom_point(data = all_point_info_index, 
-             aes(x = reorder(Navn, Indeks), y = Indeks, size = ADT),
+             aes(x = reorder(name, index), y = index, size = adt),
              color = "#ED9300") +
   geom_hline(yintercept = 0, color = "#58B02C") +
   xlab("") +
