@@ -66,59 +66,54 @@ oslo_adt <- getAdtForpoints(indekspunktene_oslo$trp_id)
 # Trondheim 2017 ####
 trp_trondheim_2017_ids <- cities_points %>%
   dplyr::filter(city_area_name == "Trondheim",
-                agreement_start == 2017)
+                agreement_start == 2017) %>%
+  dplyr::select(trp_id, legacyNortrafMpn) %>%
+  dplyr::rename(msnr = legacyNortrafMpn)
 
 # Adding metadata
-# Bruker trp fra trp-aåi, da noen mangler igangsetting.
+# Bruker trp fra trp-api, da noen mangler igangsetting.
 trp_trondheim_2017 <- dplyr::left_join(trp_trondheim_2017_ids, points_trp) %>%
-  dplyr::select(1:5, 7:11, 6) %>%
-# Må ta vekk ene punktet i Strindheimtunnelen
-  dplyr::filter(trp_id != "21571V2394246")
+  # Må ta vekk ene punktet i Strindheimtunnelen
+  dplyr::filter(trp_id != "21571V2394246") %>%
+  # Må skille trs fra bom
+  dplyr::mutate(station_type = "TRS")
 
 # Bompunkter i Trondheim
 kommunenr <- "5001"
 kommunenavn <- hent_kommune(kommunenr)[[1]]
 
-# kommune_trser_5001 <-
-#   hent_trafikkregistreringsstasjon_for_omraade(kommunenr) %>%
-#   mutate(Type = "TRS")
-
 kommune_bomer <-
-  hent_bomstasjon_for_kommune(kommunenr) %>%
-  mutate(Type = "Bom")
+  get_tolling_stations(kommunenr) %>%
+  dplyr::mutate(station_type = "Bom") %>%
+  dplyr::select(-kommune, -road) %>%
+  dplyr::mutate(trp_id = msnr,
+                msnr = as.numeric(msnr)) %>%
+  dplyr::select(trp_id, everything()) %>%
+  dplyr::filter(trp_id %in% c("51", "52", "53", "54", "55", "56", "58",
+                              "59", "60", "61", "62", "64", "65", "66",
+                              "67", "68", "69", "85", "86")) %>%
+  dplyr::mutate(name = str_sub(name, 1, -10))
+
+# Må endre navn på Kroppan bru, dvs. ta bor retningsangivelse, da de to
+# bomstasjonene er slått sammen i indeksberegningen.
+kommune_bomer$name[kommune_bomer$trp_id == 56] <- "Kroppan bru"
 
 # Må legge til for 52 som er borte fra API-et.
 bom_52 <- data.frame(
-  "Stasjonnr" = "52",
-  "Navn" = "Klett - E6, S-snitt",
-  "Vegreferanse" = "5000 Ev6 hp9 m1252",
+  "trp_id" = "52",
+  "msnr" = 52,
+  "name" = "Klett - E6, S-snitt",
+  "road_reference" = "Ev6 hp9 m1252",
   "lat" = 63.32590,
   "lon" = 10.32702,
-  "Veg" = "E6",
-  "Kommune" = "Trondheim",
-  "Type" = "Bom")
+  "station_type" = "Bom",
+  stringsAsFactors = F)
 
-# HIT
-# TODO: endre til td-api-format på tabellen
-kommunepunkter <- bind_rows(kommune_trser_5001, kommune_bomer, bom_52) %>%
-  mutate(Vegreferanse = str_sub(Vegreferanse, 5))
+trp_trondheim_2017_alle <-
+  bind_rows(trp_trondheim_2017, kommune_bomer, bom_52)
 
-# The points chosen for the index
-byindekspunkter_valgte <- read.csv2("byindekspunkter_vedtatte.csv") %>%
-  dplyr::filter(city_area_name == "Trondheim") %>%
-  mutate(Stasjonnr = as.character(legacyNortrafMpn)) %>%
-  select(Stasjonnr)
-
-# ADT
-# TODO: Get AADT for reference year with coverage from TD-API.
-adt <- read.csv2("adt_2017_nortraf.csv") %>%
-  filter(Felt == "R0") %>%
-  mutate(Stasjonnr = as.character(Tellepunkt),
-         ADT = round(ADT, digits = -2)) %>%
-  select(Stasjonnr, ADT)
-
-# Read index results from CSV-files
-indekstall <-
+# Add index results from CSV-files
+pointindex <-
   read.csv2("data_index_raw/punktindeks_trondheim_alle_punkter_jan-des18.csv") %>%
   mutate(trs = as.numeric(msnr),
          trs = if_else(trs > 9916000, trs - 9916000, trs)) %>%
@@ -126,21 +121,43 @@ indekstall <-
   group_by(trs) %>%
   summarise(trafikkmengde_basisaar = sum(trafikkmengde.basisaar),
             trafikkmengde_indeksaar = sum(trafikkmengde.indeksaar),
-            Indeks = round((trafikkmengde_indeksaar/
-                              trafikkmengde_basisaar - 1) * 100,
-                           digits = 1)) %>%
-  mutate(trs = as.character(trs)) %>%
-  rename(Stasjonnr = trs) %>%
-  select(Stasjonnr, Indeks)
+            index = round((trafikkmengde_indeksaar/
+                             trafikkmengde_basisaar - 1) * 100,
+                          digits = 1)) %>%
+  #mutate(trs = as.character(trs)) %>%
+  rename(msnr = trs) %>%
+  select(msnr, index)
+
+# Get AADT for reference year with coverage from TD-API.
+# TODO: Add coverage when available through API!
+adt <- getAdtForpoints(trp_trondheim_2017$trp_id) %>%
+  dplyr::filter(year == 2017) %>%
+  dplyr::select(-year)
+
+# adt <- read.csv2("adt_2017_nortraf.csv") %>%
+#   filter(Felt == "R0") %>%
+#   mutate(Stasjonnr = as.character(Tellepunkt),
+#          ADT = round(ADT, digits = -2)) %>%
+#   select(Stasjonnr, ADT)
 
 # Final table
-indekspunktene <- byindekspunkter_valgte %>%
-  left_join(kommunepunkter) %>%
+trp_trondheim_2017_alle_adt <- trp_trondheim_2017_alle %>%
   left_join(adt) %>%
-  left_join(indekstall)
+  left_join(pointindex)
 
-write.csv2(indekspunktene,
-           file = "data_indexpoints_tidy/indekspunktene_trondheim_2018.csv",
+# Must supply missing AADTs from NVDB based on road reference
+missing_aadt <- trp_trondheim_2017_alle_adt %>%
+  dplyr::filter(adt == 0 | is.na(adt)) %>%
+  dplyr::mutate(roadref_short = str_remove_all(road_reference, " "),
+                adt = mapply(getAadtByRoadReference, roadref_short)) %>%
+  dplyr::select(-roadref_short)
+
+with_aadt <- trp_trondheim_2017_alle_adt %>%
+  dplyr::filter(adt > 0)
+
+trp_trondheim_2017_final <- bind_rows(with_aadt, missing_aadt) %>%
+  dplyr::arrange(road_reference)
+
+write.csv2(trp_trondheim_2017_final,
+           file = "data_indexpoints_tidy/indekspunkt_trondheim_2017_2018.csv",
            row.names = F)
-
-

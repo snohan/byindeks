@@ -11,7 +11,6 @@ getPoints <- function() {
   trafficRegistrationPoints{
     id
     name
-    trafficRegistrationType
     location{
       coordinates{
         latLon{
@@ -39,14 +38,15 @@ getPoints <- function() {
                     data.trafficRegistrationPoints.id,
                   name =
                     data.trafficRegistrationPoints.name,
-                  traffic_type =
-                    data.trafficRegistrationPoints.trafficRegistrationType,
                   lat =
                     data.trafficRegistrationPoints.location.coordinates.latLon.lat,
                   lon =
                     data.trafficRegistrationPoints.location.coordinates.latLon.lon,
                   road_reference =
-                    data.trafficRegistrationPoints.location.currentRoadReference.roadReference532.shortForm)
+                    data.trafficRegistrationPoints.location.currentRoadReference.roadReference532.shortForm) %>%
+    dplyr::select(trp_id, name, road_reference, lat, lon) %>%
+    dplyr::mutate(road_reference = str_replace(road_reference, "HP ", "hp")) %>%
+    dplyr::mutate(road_reference = str_replace(road_reference, "Meter ", "m"))
 
   return(points)
 }
@@ -56,7 +56,7 @@ getPoints <- function() {
 getTrpAadt <- function(trp_id) {
   # Get all AADTs for a trp
   query_aadt <- paste0(
-  "query trp_adt{
+    "query trp_adt{
     trafficData(trafficRegistrationPointId: \"", trp_id,"\"){
       trafficRegistrationPoint{
         id
@@ -88,20 +88,18 @@ getTrpAadt <- function(trp_id) {
     trp_aadt <- data.frame()
   }else{
     trp_aadt <- trp_aadt %>%
-    as.data.frame() %>%
-    tidyr::unnest() %>%
-    dplyr::rename(trp_id = 1,
-                  year = 2,
-                  adt = 3) %>%
-    dplyr::mutate(trp_id = as.character(trp_id))
+      as.data.frame() %>%
+      tidyr::unnest() %>%
+      dplyr::rename(trp_id = 1,
+                    year = 2,
+                    adt = 3) %>%
+      dplyr::mutate(trp_id = as.character(trp_id))
   }
 
   return(trp_aadt)
 }
 
-# Test: Hente ÅDt for mange punkter
-#trp_list <- indekspunktene_oslo$trp_id
-
+# Hente ÅDt for mange punkter
 getAdtForpoints <- function(trp_list) {
   number_of_points <- length(trp_list)
   data_points <- data.frame()
@@ -112,5 +110,9 @@ getAdtForpoints <- function(trp_list) {
                              getTrpAadt(trp_list[trp_count]))
     trp_count <- trp_count + 1
   }
-  return(data_points)
+
+  trp_adt <- data_points %>%
+    dplyr::mutate(adt = round(adt, digits = -2))
+
+  return(trp_adt)
 }

@@ -106,6 +106,7 @@ hent_trafikkregistreringsstasjon_for_omraade <- function(omraadenr) {
   return(trser)
 }
 
+# Deprecated
 hent_bomstasjon_for_kommune <- function(kommunenr) {
   # Laget for Trondheim
   api_query_45 <- paste0(nvdb_url,
@@ -158,4 +159,89 @@ hent_bomstasjon_for_kommune <- function(kommunenr) {
                        "lat", "lon", "Veg", "Kommune")
 
   return(bomer)
+}
+
+get_tolling_stations <- function(kommunenr) {
+  # Laget for Trondheim
+  api_query_45 <- paste0(nvdb_url,
+                         sti_vegobjekter,
+                         "/45",
+                         "?inkluder=egenskaper,lokasjon")
+
+  api_query_45_kommune <- paste0(api_query_45,
+                                 "&kommune=",
+                                 kommunenr,
+                                 "&srid=wgs84")
+
+  respons <- GET(api_query_45_kommune,
+                 add_headers("X-Client" = "trafikkdatagruppa",
+                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+                             "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
+
+  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+                      simplifyDataFrame = T,
+                      flatten = T)
+
+  bom <- uthenta$objekter %>%
+    select(id, egenskaper) %>%
+    unnest() %>%
+    filter(id1 %in% c(1078, 9595)) %>%
+    select(id, navn, verdi) %>%
+    spread(navn, verdi)
+
+  vegreferanser <- uthenta$objekter %>%
+    select(id, lokasjon.vegreferanser) %>%
+    unnest()
+
+  koordinater <- uthenta$objekter %>%
+    select(id, lokasjon.geometri.wkt) %>%
+    unnest() %>%
+    mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 10, -2)) %>%
+    separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
+             convert = T) %>%
+    select(id, lat, lon)
+
+  bomer <- bom %>%
+    left_join(vegreferanser) %>%
+    left_join(koordinater) %>%
+    mutate(Veg = paste0(kategori, nummer)) %>%
+    select(-id, -fylke, -kommune, -kategori, -nummer,
+           -status, -hp, -meter) %>%
+    mutate(Kommune = kommunenavn,
+           kortform = str_sub(kortform, 6))
+
+  colnames(bomer) <- c("msnr", "name", "road_reference",
+                       "lat", "lon", "road", "kommune")
+
+  return(bomer)
+}
+
+getAadtByRoadReference <- function(roadref) {
+  api_query_540 <- paste0(nvdb_url,
+                         sti_vegobjekter,
+                         "/540",
+                         "?inkluder=egenskaper")
+
+  api_query_540_vegref <- paste0(api_query_540,
+                                 "&vegreferanse=",
+                                 roadref)
+
+  respons <- GET(api_query_540_vegref,
+                 add_headers("X-Client" = "trafikkdatagruppa",
+                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+                             "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
+
+  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+                      simplifyDataFrame = T,
+                      flatten = T)
+
+  adt_total <- uthenta$objekter %>%
+    select(id, egenskaper) %>%
+    unnest() %>%
+    filter(id1 %in% c(4623)) %>%
+    select(verdi)
+
+  adt_verdi <- round(as.numeric(adt_total[1, 1]), digits = -2)
+
+  return(adt_verdi)
 }

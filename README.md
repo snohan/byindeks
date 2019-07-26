@@ -11,7 +11,7 @@ I tillegg lages en samlerapport med hovedtallene for alle avtaleområdene, også
 ## Kart over punktene
 Hver årsrapport inneholder informasjon om punktene som er bestemt å inngå i grunnlaget for byindeks.
 
-Hvilke punkter som inngår i avtalene oppdateres manuelt i **cities_points.csv**, og øvrig punktinfo hentes fra trafikkdata-API via **get_from_trafficdata_api.R**. Punktinfo per område prepareres i **indexpoint_tidying.R** og lagres som **indekspunkt_områdenavn_beregningsår.csv**, klart til bruk i rapporten.
+Hvilke punkter som inngår i avtalene oppdateres manuelt i **cities_points.csv**, og øvrig punktinfo hentes fra trafikkdata-API via **get_from_trafficdata_api.R**. Punktinfo per område prepareres i **indexpoint_tidying.R** og lagres som **indekspunkt_områdenavn_referanseår_beregningsår.csv**, klart til bruk i rapporten.
 
 Kart, om nødvendig på flere zoom-nivå, med fargeskala basert på ÅDT i referanseår. Bakgrunnskart som viser vegnettet tydelig: "NVDB"-kartet.
 
