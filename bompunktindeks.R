@@ -17,8 +17,8 @@ lesInnAllMaanedstrafikkForEtAar <- function(bomaaret) {
 }
 
 # Leser inn ####
-bombasisaar <- "2018"
-bomindeksaar <- "2019"
+bombasisaar <- "2017"
+bomindeksaar <- "2018"
 
 maanedstrafikk.bombasisaar <- lesInnAllMaanedstrafikkForEtAar(bombasisaar)
 maanedstrafikk.bomindeksaar <- lesInnAllMaanedstrafikkForEtAar(bomindeksaar)
@@ -54,7 +54,7 @@ maanedstrafikk.byindeks.punkt <-
 
 # Slå sammen med ordinære punkter
 # Leser inn punktindeks fra Datainn:
-byindeks.datainn <- read.csv2("pointindex-2019-04_2018.csv",
+byindeks.datainn <- read.csv2("pointindex-2018-12_2017.csv",
                               stringsAsFactors = F) %>%
 #                              locale = locale(encoding = 'ISO-8859-1'))
   dplyr::select(2, 3, 11:17) %>%
@@ -102,8 +102,8 @@ byindeks.trondheim <- rbind(byindeks.datainn.filtrert,
   filter(!is.na(trafikkmengde.indeksaar))
 
 # Ekskluderinger av bompunkter ####
-byindeks.trondheim.etter.ekskluderinger <- byindeks.trondheim %>%
-  dplyr::filter(!(msnr %in% c(9916052)))
+byindeks.trondheim.etter.ekskluderinger <- byindeks.trondheim #%>%
+  #dplyr::filter(!(msnr %in% c(9916052))) # gjelder ikke 17-18
 
 write.csv2(byindeks.trondheim.etter.ekskluderinger,
            file = "punktindeks_trondheim_alle_punkter_jan-apr19.csv",
@@ -196,9 +196,10 @@ byindeks.trondheim.hittil.kfi <- byindeks.trondheim.etter.ekskluderinger %>%
          indeks = indeksen)
 
 write.csv2(byindeks.trondheim.hittil.kfi,
-           file = "byindeks_trondheim_hittil_201904.csv",
+           file = "byindeks_trondheim_2018.csv",
            row.names = F)
 
+#
 # Tilpasning til PG (gammel versjon) ####
 
 

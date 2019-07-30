@@ -191,3 +191,17 @@ trp_trondheim_2017_final <- bind_rows(with_aadt, missing_aadt) %>%
 write.csv2(trp_trondheim_2017_final,
            file = "data_indexpoints_tidy/indekspunkt_trondheim_2017.csv",
            row.names = F)
+
+# City index
+trondheim_2018 <- read.csv2("data_index_raw/byindeks_trondheim_2018.csv") %>%
+  mutate(indexyear = 2018)
+trondheim_2019 <- read.csv2("data_index_raw/byindeks_trondheim_201904.csv") %>%
+  mutate(indexyear = 2019)
+city_index_trondheim <- bind_rows(trondheim_2018, trondheim_2019) %>%
+  mutate(index_i = index_converter(indeks))
+
+city_index_trondheim_across_years <- 100 * (city_index_trondheim$index_i[1] *
+  city_index_trondheim$index_i[2] - 1)
+
+# calculate index across years
+# TODO: find the compound CI

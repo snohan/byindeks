@@ -1,18 +1,18 @@
 ---
 #title: Trafikkutvikling i byområder
 output: 
-  html_document:
-    toc: true
-    fig_caption: true
-  # word_document:
-  #   reference_docx: svv_notatmal.docx
+  # html_document:
   #   toc: true
-  #   toc_depth: 2
   #   fig_caption: true
-  #   fig_width: 7
+  word_document:
+    reference_docx: svv_notatmal.docx
+    toc: true
+    toc_depth: 2
+    fig_caption: true
+    fig_width: 7
 ---
 
-```{r setup, include = FALSE}
+```{r setup, include = FALSE, echo = FALSE}
 source("rmd_setup.R")
 ```
 
@@ -77,9 +77,9 @@ all_point_info %>%
             labFormat = labelFormat(big.mark = " "))
 ```
 
-# Byindeksen 2018
+# Byindeksen: endring i trafikkmengde for "lette" biler
 
-**Byindeksen for Trondheim estimerer endringen i trafikkmengden fra 2017 til 2018 til 0,0 % med et 95 %-konfidensintervall på ± 3,2 %.** 
+**Byindeksen for Trondheim estimerer endringen i trafikkmengden fra 2017 til 2018 til 0,0 % med et 95 %-konfidensintervall på ± 3,2 %.** For perioden januar-april i 2019 har endringen fra 2018 vært på XXX. Til sammen 
 
 ```{r city_index}
 # TODO: point-line plot for the city index
@@ -135,24 +135,31 @@ Tabellen nedenfor gjengir byindekspunktene og deres indeksverdi for 2018. ÅDT e
 \newline
 
 ```{r table}
-# TODO: show all indexcolumns
 all_point_info %>% 
-  select(msnr, name, road_reference, station_type, adt, 
-         index) %>% 
+  select(name, road_reference, station_type, adt, 
+         index_17_18, index_18_19, index) %>% 
   flextable() %>% 
   colformat_num(col_keys = "adt", 
                 big.mark = " ", digits = 0) %>%
-  colformat_num(col_keys = c("index"), digits = 1) %>%
-  set_header_labels(msnr = "Stasjonsnr.",
-                    name = "Navn",
+  colformat_num(col_keys = c("index", 
+                             "index_17_18", "index_18_19"), digits = 1) %>%
+  set_header_labels(name = "Navn",
                     road_reference = "Vegreferanse",
                     station_type = "Stasjonstype",
                     adt = "ÅDT",
-                    index = "Indeks") %>% 
+                    index_17_18 = "Endring i prosent",
+                    index_18_19 = "Endring",
+                    index = "Endring") %>% 
+  add_header_row(values = c("", "", "", "2017", "2017-2018", "2018-2019",
+                            "2017-2019"), top = F) %>% 
+  merge_at(i = 1, j = 5:7, part = "header") %>% 
+  align(i = 1, j = 5, align = "center", part = "header") %>% 
+  align(i = 2, j = 4:7, align = "right", part = "header") %>% 
   bold(part = "header") %>% 
   fontsize(size = 9, part = "all") %>% 
   font(fontname = "Lucida Sans Unicode", part = "all") %>% 
   bg(bg = "#ED9300", part = "header") %>% 
+  border_remove() %>% 
   autofit() %>% 
   height_all(height = .2) %>% 
   padding(padding.top = .3,
@@ -176,7 +183,7 @@ ggplot2::ggplot() +
   xlab("") +
   ylab("Endring (%)") +
   ggtitle(label = "Endring i trafikkmengde",
-          subtitle = "Fra 2017 til 2018") +
+          subtitle = "Fra 2017 til 2019") +
   coord_flip() +
   scale_size(name = "ÅDT 2017") +
   geom_rect(aes(xmin = -Inf, xmax = Inf, ymin = -3.2, ymax = 3.2),

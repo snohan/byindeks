@@ -10,6 +10,7 @@ library(jsonlite)
 library(httr)
 library(lubridate)
 library(RColorBrewer)
+library(webshot)
 
 # knitr options ####
 knitr::opts_chunk$set(echo = FALSE,
