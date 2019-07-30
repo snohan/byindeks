@@ -113,7 +113,7 @@ trp_trondheim_2017_alle <-
   bind_rows(trp_trondheim_2017, kommune_bomer, bom_52)
 
 # Add index results from CSV-files
-pointindex <-
+pointindex_17_18 <-
   read.csv2("data_index_raw/punktindeks_trondheim_alle_punkter_jan-des18.csv") %>%
   mutate(trs = as.numeric(msnr),
          trs = if_else(trs > 9916000, trs - 9916000, trs)) %>%
@@ -121,12 +121,25 @@ pointindex <-
   group_by(trs) %>%
   summarise(trafikkmengde_basisaar = sum(trafikkmengde.basisaar),
             trafikkmengde_indeksaar = sum(trafikkmengde.indeksaar),
-            index = round((trafikkmengde_indeksaar/
+            index_17_18 = round((trafikkmengde_indeksaar/
                              trafikkmengde_basisaar - 1) * 100,
                           digits = 1)) %>%
-  #mutate(trs = as.character(trs)) %>%
   rename(msnr = trs) %>%
-  select(msnr, index)
+  select(msnr, index_17_18)
+
+pointindex_18_19 <-
+  read.csv2("data_index_raw/punktindeks_trondheim_alle_punkter_jan-apr19.csv") %>%
+  mutate(trs = as.numeric(msnr),
+         trs = if_else(trs > 9916000, trs - 9916000, trs)) %>%
+  select(-msnr) %>%
+  group_by(trs) %>%
+  summarise(trafikkmengde_basisaar = sum(trafikkmengde.basisaar),
+            trafikkmengde_indeksaar = sum(trafikkmengde.indeksaar),
+            index_18_19 = round((trafikkmengde_indeksaar/
+                             trafikkmengde_basisaar - 1) * 100,
+                          digits = 1)) %>%
+  rename(msnr = trs) %>%
+  select(msnr, index_18_19)
 
 # Get AADT for reference year with coverage from TD-API.
 # TODO: Add coverage when available through API!
@@ -140,10 +153,27 @@ adt <- getAdtForpoints(trp_trondheim_2017$trp_id) %>%
 #          ADT = round(ADT, digits = -2)) %>%
 #   select(Stasjonnr, ADT)
 
+index_converter <- function(index) {
+  ifelse(
+    is.na(index),
+    1,
+    index/100 + 1)
+}
+
 # Final table
 trp_trondheim_2017_alle_adt <- trp_trondheim_2017_alle %>%
   left_join(adt) %>%
-  left_join(pointindex)
+  left_join(pointindex_17_18) %>%
+  left_join(pointindex_18_19) %>%
+  mutate(index_17_18_i = index_converter(index_17_18),
+         index_18_19_i = index_converter(index_18_19)) %>%
+  # TODO: keep original columns
+  mutate(index = 100 * (index_17_18_i * index_18_19_i - 1)) %>%
+  mutate(index = ifelse(index == 0, NA, index)) %>%
+  select(-index_17_18_i, -index_18_19_i)
+
+# TODO: If NA all years, the result must be NA.
+# Lazy solution: if equals 0, then NA!
 
 # Must supply missing AADTs from NVDB based on road reference
 missing_aadt <- trp_trondheim_2017_alle_adt %>%
@@ -159,5 +189,5 @@ trp_trondheim_2017_final <- bind_rows(with_aadt, missing_aadt) %>%
   dplyr::arrange(road_reference)
 
 write.csv2(trp_trondheim_2017_final,
-           file = "data_indexpoints_tidy/indekspunkt_trondheim_2017_2018.csv",
+           file = "data_indexpoints_tidy/indekspunkt_trondheim_2017.csv",
            row.names = F)

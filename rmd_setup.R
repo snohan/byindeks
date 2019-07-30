@@ -9,6 +9,7 @@ library(ghql)
 library(jsonlite)
 library(httr)
 library(lubridate)
+library(RColorBrewer)
 
 # knitr options ####
 knitr::opts_chunk$set(echo = FALSE,

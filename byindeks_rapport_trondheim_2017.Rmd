@@ -18,7 +18,7 @@ source("rmd_setup.R")
 
 ```{r points, include = FALSE}
 all_point_info <- 
-  read.csv2("data_indexpoints_tidy/indekspunkt_trondheim_2017_2018.csv")
+  read.csv2("data_indexpoints_tidy/indekspunkt_trondheim_2017.csv")
 ```
 
 # Bakgrunn
@@ -79,9 +79,32 @@ all_point_info %>%
 
 # Byindeksen 2018
 
-**Byindeksen for Trondheim estimerer endringen i trafikkmengden fra 2017 til 2018 til 0,0 % med et 95 %-konfidensintervall på ± 3,2 %.** Figuren nedenfor viser endringen i byindekspunktene.
+**Byindeksen for Trondheim estimerer endringen i trafikkmengden fra 2017 til 2018 til 0,0 % med et 95 %-konfidensintervall på ± 3,2 %.** 
+
+```{r city_index}
+# TODO: point-line plot for the city index
+```
+
+
+Figuren nedenfor viser endringen i byindekspunktene.
 
 ```{r map_trp_index, fig.cap="Endring i trafikkmengde på punktene."}
+# Create a red-green scale based on index values
+negative_value <- round(abs(min(all_point_info$index, na.rm = T)), digits = 0) + 1
+positive_value <- round(max(all_point_info$index, na.rm = T), digits = 0) + 1
+
+rc1 <- colorRampPalette(colors = c("red", "white"), space = "Lab")(negative_value)
+
+## Make vector of colors for values larger than 0 (180 colors)
+rc2 <- colorRampPalette(colors = c("white", "green"), space = "Lab")(positive_value)
+
+## Combine the two color palettes
+rampcols <- c(rc1, rc2)
+
+palett_index <-
+ colorNumeric(palette = rampcols,
+              domain = NULL)
+
 all_point_info %>%
   leaflet(width = "100%",
           options = leafletOptions(crs = nvdb_crs,
@@ -95,11 +118,11 @@ all_point_info %>%
     color = "#444f55",
     opacity = 0.8,
     fill = T,
-    fillColor = ~palett_adt(index),
+    fillColor = ~palett_index(index),
     fillOpacity = 0.8
   ) %>%
   addLegend("bottomright",
-            pal = palett_adt,
+            pal = palett_index,
             values = ~index,
             title = "Indeks",
             opacity = 0.7,
@@ -112,8 +135,10 @@ Tabellen nedenfor gjengir byindekspunktene og deres indeksverdi for 2018. ÅDT e
 \newline
 
 ```{r table}
+# TODO: show all indexcolumns
 all_point_info %>% 
-  select(msnr, name, road_reference, station_type, adt, index) %>% 
+  select(msnr, name, road_reference, station_type, adt, 
+         index) %>% 
   flextable() %>% 
   colformat_num(col_keys = "adt", 
                 big.mark = " ", digits = 0) %>%
