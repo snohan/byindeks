@@ -1,0 +1,1009 @@
+Område;Vegkategori;døgn;lengdeklasse;periode;indeks;dekning;trafikkmengde indeksår;trafikkmengde basisår;standardavvik;konfidensintervall
+Grenland;R;Alle;Alle;Januar;-5,780;98,000;1202230;1275985;5.151;9.464
+Grenland;R;Alle;< 5,6m;Januar;-5,067;98,000;1107133;1166226;4.797;8.813
+Grenland;R;Alle;> 5,6m;Januar;-13,206;98,000;94979;109430;9.405;17.281
+Grenland;R;Alle;5,6m - 7,6m;Januar;-19,705;98,000;30223;37640;11.669;21.440
+Grenland;R;Alle;7,6m - 12,5m;Januar;0,935;98,000;39297;38933;6.827;12.544
+Grenland;R;Alle;12,5m - 16,0m;Januar;-28,716;98,000;12412;17412;12.789;23.499
+Grenland;R;Alle;> 16,0m;Januar;-15,526;98,000;13047;15445;21.029;38.638
+Grenland;R;Yrkesdøgn;Alle;Januar;-5,595;98,000;964473;1021637;5.542;10.182
+Grenland;R;Yrkesdøgn;< 5,6m;Januar;-4,756;98,000;879136;923035;5.144;9.452
+Grenland;R;Yrkesdøgn;> 5,6m;Januar;-13,283;98,000;85225;98280;9.670;17.767
+Grenland;R;Yrkesdøgn;5,6m - 7,6m;Januar;-19,862;98,000;26739;33366;11.770;21.626
+Grenland;R;Yrkesdøgn;7,6m - 12,5m;Januar;1,326;98,000;34689;34235;6.682;12.277
+Grenland;R;Yrkesdøgn;12,5m - 16,0m;Januar;-28,443;98,000;11422;15962;13.344;24.517
+Grenland;R;Yrkesdøgn;> 16,0m;Januar;-15,914;98,000;12375;14717;21.205;38.961
+Grenland;R;Helgedøgn;Alle;Januar;-6,523;99,000;237757;254348;3.992;7.335
+Grenland;R;Helgedøgn;< 5,6m;Januar;-6,248;99,000;227997;243191;3.975;7.304
+Grenland;R;Helgedøgn;> 5,6m;Januar;-12,520;99,000;9754;11150;7.673;14.098
+Grenland;R;Helgedøgn;5,6m - 7,6m;Januar;-18,484;99,000;3484;4274;11.576;21.269
+Grenland;R;Helgedøgn;7,6m - 12,5m;Januar;-1,916;99,000;4608;4698;8.539;15.689
+Grenland;R;Helgedøgn;12,5m - 16,0m;Januar;-31,724;99,000;990;1450;10.699;19.658
+Grenland;R;Helgedøgn;> 16,0m;Januar;-7,692;99,000;672;728;16.161;29.694
+Grenland;R;Alle;Alle;Februar;-7,228;95,000;1039608;1120606;5.234;9.616
+Grenland;R;Alle;< 5,6m;Februar;-6,567;95,000;957357;1024644;4.596;8.444
+Grenland;R;Alle;> 5,6m;Februar;-14,195;95,000;82163;95755;12.104;22.239
+Grenland;R;Alle;5,6m - 7,6m;Februar;-20,625;95,000;26181;32984;16.289;29.929
+Grenland;R;Alle;7,6m - 12,5m;Februar;1,332;95,000;34319;33868;2.782;5.112
+Grenland;R;Alle;12,5m - 16,0m;Februar;-35,949;95,000;9632;15038;14.091;25.890
+Grenland;R;Alle;> 16,0m;Februar;-13,228;95,000;12031;13865;26.000;47.773
+Grenland;R;Yrkesdøgn;Alle;Februar;-7,315;97,000;848723;915709;5.668;10.413
+Grenland;R;Yrkesdøgn;< 5,6m;Februar;-6,586;97,000;774186;828765;4.993;9.174
+Grenland;R;Yrkesdøgn;> 5,6m;Februar;-14,164;97,000;74455;86741;12.152;22.329
+Grenland;R;Yrkesdøgn;5,6m - 7,6m;Februar;-21,177;97,000;23341;29612;16.790;30.849
+Grenland;R;Yrkesdøgn;7,6m - 12,5m;Februar;2,492;97,000;30760;30012;2.605;4.787
+Grenland;R;Yrkesdøgn;12,5m - 16,0m;Februar;-35,701;97,000;8953;13924;13.774;25.309
+Grenland;R;Yrkesdøgn;> 16,0m;Februar;-13,583;97,000;11401;13193;25.474;46.806
+Grenland;R;Helgedøgn;Alle;Februar;-6,839;90,000;190885;204897;4.135;7.598
+Grenland;R;Helgedøgn;< 5,6m;Februar;-6,488;90,000;183171;195879;3.922;7.207
+Grenland;R;Helgedøgn;> 5,6m;Februar;-14,489;90,000;7708;9014;12.183;22.386
+Grenland;R;Helgedøgn;5,6m - 7,6m;Februar;-15,777;90,000;2840;3372;12.048;22.137
+Grenland;R;Helgedøgn;7,6m - 12,5m;Februar;-7,702;90,000;3559;3856;5.875;10.795
+Grenland;R;Helgedøgn;12,5m - 16,0m;Februar;-39,048;90,000;679;1114;22.287;40.950
+Grenland;R;Helgedøgn;> 16,0m;Februar;-6,250;90,000;630;672;34.879;64.087
+Grenland;R;Alle;Alle;Mars;-3,973;98,000;1221295;1271831;2.682;4.928
+Grenland;R;Alle;< 5,6m;Mars;-3,563;98,000;1126515;1168131;2.193;4.029
+Grenland;R;Alle;> 5,6m;Mars;-8,493;98,000;94650;103435;9.384;17.243
+Grenland;R;Alle;5,6m - 7,6m;Mars;-12,087;98,000;29676;33756;13.149;24.161
+Grenland;R;Alle;7,6m - 12,5m;Mars;12,899;98,000;41976;37180;7.098;13.042
+Grenland;R;Alle;12,5m - 16,0m;Mars;-39,938;98,000;10001;16651;11.827;21.731
+Grenland;R;Alle;> 16,0m;Mars;-17,990;98,000;12997;15848;23.598;43.358
+Grenland;R;Yrkesdøgn;Alle;Mars;-1,660;98,000;939608;955472;3.386;6.221
+Grenland;R;Yrkesdøgn;< 5,6m;Mars;-0,935;98,000;856912;865003;2.867;5.267
+Grenland;R;Yrkesdøgn;> 5,6m;Mars;-8,480;98,000;82567;90217;9.597;17.633
+Grenland;R;Yrkesdøgn;5,6m - 7,6m;Mars;-10,340;98,000;25745;28714;12.617;23.183
+Grenland;R;Yrkesdøgn;7,6m - 12,5m;Mars;12,565;98,000;35727;31739;8.027;14.749
+Grenland;R;Yrkesdøgn;12,5m - 16,0m;Mars;-39,266;98,000;9056;14911;11.249;20.669
+Grenland;R;Yrkesdøgn;> 16,0m;Mars;-18,946;98,000;12039;14853;24.775;45.521
+Grenland;R;Helgedøgn;Alle;Mars;-10,960;98,000;281687;316359;1.591;2.924
+Grenland;R;Helgedøgn;< 5,6m;Mars;-11,060;98,000;269603;303128;1.307;2.402
+Grenland;R;Helgedøgn;> 5,6m;Mars;-8,587;98,000;12083;13218;10.083;18.527
+Grenland;R;Helgedøgn;5,6m - 7,6m;Mars;-22,035;98,000;3931;5042;17.022;31.276
+Grenland;R;Helgedøgn;7,6m - 12,5m;Mars;14,850;98,000;6249;5441;3.840;7.056
+Grenland;R;Helgedøgn;12,5m - 16,0m;Mars;-45,690;98,000;945;1740;18.931;34.784
+Grenland;R;Helgedøgn;> 16,0m;Mars;-3,719;98,000;958;995;14.051;25.816
+Grenland;R;Alle;Alle;April;-10,339;97,000;1151266;1284024;7.396;13.589
+Grenland;R;Alle;< 5,6m;April;-10,060;97,000;1046995;1164100;6.701;12.312
+Grenland;R;Alle;> 5,6m;April;-13,120;97,000;103865;119550;13.809;25.373
+Grenland;R;Alle;5,6m - 7,6m;April;-17,130;97,000;30593;36917;13.527;24.854
+Grenland;R;Alle;7,6m - 12,5m;April;0,479;97,000;49122;48888;14.455;26.559
+Grenland;R;Alle;12,5m - 16,0m;April;-38,037;97,000;10318;16652;12.076;22.189
+Grenland;R;Alle;> 16,0m;April;-19,078;97,000;13832;17093;21.718;39.904
+Grenland;R;Yrkesdøgn;Alle;April;-13,005;97,000;852826;980316;6.411;11.780
+Grenland;R;Yrkesdøgn;< 5,6m;April;-12,742;97,000;765114;876842;5.667;10.413
+Grenland;R;Yrkesdøgn;> 5,6m;April;-15,310;97,000;87327;103114;12.378;22.743
+Grenland;R;Yrkesdøgn;5,6m - 7,6m;April;-20,072;97,000;25075;31372;12.722;23.375
+Grenland;R;Yrkesdøgn;7,6m - 12,5m;April;-1,040;97,000;40265;40688;11.775;21.636
+Grenland;R;Yrkesdøgn;12,5m - 16,0m;April;-39,635;97,000;9100;15075;12.122;22.274
+Grenland;R;Yrkesdøgn;> 16,0m;April;-19,350;97,000;12887;15979;21.972;40.372
+Grenland;R;Helgedøgn;Alle;April;-1,735;98,000;298440;303708;9.812;18.028
+Grenland;R;Helgedøgn;< 5,6m;April;-1,872;98,000;281881;287258;9.214;16.929
+Grenland;R;Helgedøgn;> 5,6m;April;0,621;98,000;16538;16436;19.153;35.191
+Grenland;R;Helgedøgn;5,6m - 7,6m;April;-0,487;98,000;5518;5545;16.103;29.588
+Grenland;R;Helgedøgn;7,6m - 12,5m;April;8,012;98,000;8857;8200;24.856;45.670
+Grenland;R;Helgedøgn;12,5m - 16,0m;April;-22,765;98,000;1218;1577;19.808;36.395
+Grenland;R;Helgedøgn;> 16,0m;April;-15,171;98,000;945;1114;18.995;34.901
+Grenland;R;Alle;Alle;Mai;-1,877;97,000;1241545;1265298;5.777;10.615
+Grenland;R;Alle;< 5,6m;Mai;-0,850;97,000;1120738;1130344;5.572;10.237
+Grenland;R;Alle;> 5,6m;Mai;-10,278;97,000;120529;134336;8.558;15.725
+Grenland;R;Alle;5,6m - 7,6m;Mai;-14,070;97,000;34500;40149;7.108;13.060
+Grenland;R;Alle;7,6m - 12,5m;Mai;-2,409;97,000;58183;59619;7.770;14.276
+Grenland;R;Alle;12,5m - 16,0m;Mai;-28,681;97,000;12314;17266;6.571;12.073
+Grenland;R;Alle;> 16,0m;Mai;-10,230;97,000;15532;17302;23.997;44.092
+Grenland;R;Yrkesdøgn;Alle;Mai;2,553;97,000;934900;911622;8.568;15.743
+Grenland;R;Yrkesdøgn;< 5,6m;Mai;3,964;97,000;833164;801399;8.466;15.555
+Grenland;R;Yrkesdøgn;> 5,6m;Mai;-7,452;97,000;101475;109646;10.178;18.702
+Grenland;R;Yrkesdøgn;5,6m - 7,6m;Mai;-10,533;97,000;28411;31756;8.983;16.505
+Grenland;R;Yrkesdøgn;7,6m - 12,5m;Mai;1,060;97,000;47744;47243;9.723;17.865
+Grenland;R;Yrkesdøgn;12,5m - 16,0m;Mai;-27,159;97,000;11031;15144;6.729;12.364
+Grenland;R;Yrkesdøgn;> 16,0m;Mai;-7,831;97,000;14289;15503;25.417;46.701
+Grenland;R;Helgedøgn;Alle;Mai;-13,298;97,000;306645;353676;4.277;7.859
+Grenland;R;Helgedøgn;< 5,6m;Mai;-12,577;97,000;287574;328945;4.023;7.392
+Grenland;R;Helgedøgn;> 5,6m;Mai;-22,827;97,000;19054;24690;10.491;19.277
+Grenland;R;Helgedøgn;5,6m - 7,6m;Mai;-27,451;97,000;6089;8393;8.616;15.831
+Grenland;R;Helgedøgn;7,6m - 12,5m;Mai;-15,651;97,000;10439;12376;10.138;18.628
+Grenland;R;Helgedøgn;12,5m - 16,0m;Mai;-39,538;97,000;1283;2122;24.883;45.720
+Grenland;R;Helgedøgn;> 16,0m;Mai;-30,906;97,000;1243;1799;16.813;30.893
+Grenland;R;Alle;Alle;Juni;-4,343;99,000;1246318;1302905;8.189;15.047
+Grenland;R;Alle;< 5,6m;Juni;-3,039;99,000;1122696;1157879;7.852;14.427
+Grenland;R;Alle;> 5,6m;Juni;-14,330;99,000;123428;144073;13.119;24.105
+Grenland;R;Alle;5,6m - 7,6m;Juni;-16,653;99,000;37216;44652;11.861;21.793
+Grenland;R;Alle;7,6m - 12,5m;Juni;-3,808;99,000;59811;62179;10.624;19.520
+Grenland;R;Alle;12,5m - 16,0m;Juni;-39,070;99,000;11893;19519;16.808;30.883
+Grenland;R;Alle;> 16,0m;Juni;-18,140;99,000;14508;17723;25.628;47.088
+Grenland;R;Yrkesdøgn;Alle;Juni;-10,054;99,000;921755;1024789;7.128;13.097
+Grenland;R;Yrkesdøgn;< 5,6m;Juni;-8,793;99,000;820821;899953;6.872;12.626
+Grenland;R;Yrkesdøgn;> 5,6m;Juni;-18,768;99,000;100760;124040;10.838;19.914
+Grenland;R;Yrkesdøgn;5,6m - 7,6m;Juni;-21,485;99,000;29648;37761;8.774;16.122
+Grenland;R;Yrkesdøgn;7,6m - 12,5m;Juni;-8,747;99,000;47407;51951;7.702;14.152
+Grenland;R;Yrkesdøgn;12,5m - 16,0m;Juni;-40,980;99,000;10420;17655;15.500;28.480
+Grenland;R;Yrkesdøgn;> 16,0m;Juni;-20,320;99,000;13285;16673;25.106;46.129
+Grenland;R;Helgedøgn;Alle;Juni;16,701;99,000;324563;278116;9.448;17.360
+Grenland;R;Helgedøgn;< 5,6m;Juni;17,039;99,000;301875;257926;8.862;16.282
+Grenland;R;Helgedøgn;> 5,6m;Juni;13,153;99,000;22668;20033;19.318;35.494
+Grenland;R;Helgedøgn;5,6m - 7,6m;Juni;9,824;99,000;7568;6891;19.481;35.793
+Grenland;R;Helgedøgn;7,6m - 12,5m;Juni;21,275;99,000;12404;10228;20.272;37.248
+Grenland;R;Helgedøgn;12,5m - 16,0m;Juni;-20,976;99,000;1473;1864;29.082;53.435
+Grenland;R;Helgedøgn;> 16,0m;Juni;16,476;99,000;1223;1050;30.256;55.591
+Grenland;R;Alle;Alle;Siste 12 måneder;-5,563;97,000;7102262;7520649;5.532;10.165
+Grenland;R;Alle;< 5,6m;Siste 12 måneder;-4,843;97,000;6481434;6811324;5.078;9.331
+Grenland;R;Alle;> 5,6m;Siste 12 måneder;-12,308;97,000;619614;706579;10.752;19.756
+Grenland;R;Alle;5,6m - 7,6m;Siste 12 måneder;-16,678;97,000;188389;226098;11.780;21.645
+Grenland;R;Alle;7,6m - 12,5m;Siste 12 måneder;0,727;97,000;282708;280667;8.084;14.853
+Grenland;R;Alle;12,5m - 16,0m;Siste 12 måneder;-35,078;97,000;66570;102538;12.194;22.404
+Grenland;R;Alle;> 16,0m;Siste 12 måneder;-15,758;97,000;81947;97276;22.951;42.170
+Grenland;R;Yrkesdøgn;Alle;Siste 12 måneder;-5,977;98,000;5462285;5809545;5.583;10.258
+Grenland;R;Yrkesdøgn;< 5,6m;Siste 12 måneder;-5,114;98,000;4929333;5194997;5.125;9.416
+Grenland;R;Yrkesdøgn;> 5,6m;Siste 12 måneder;-13,108;98,000;531809;612038;10.274;18.877
+Grenland;R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;-17,459;98,000;158959;192581;11.328;20.815
+Grenland;R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;0,307;98,000;236592;235868;7.419;13.631
+Grenland;R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-35,274;98,000;59982;92671;11.813;21.705
+Grenland;R;Yrkesdøgn;> 16,0m;Siste 12 måneder;-16,105;98,000;76276;90918;23.186;42.602
+Grenland;R;Helgedøgn;Alle;Siste 12 måneder;-4,157;97,000;1639977;1711104;5.249;9.645
+Grenland;R;Helgedøgn;< 5,6m;Siste 12 måneder;-3,974;97,000;1552101;1616327;4.873;8.953
+Grenland;R;Helgedøgn;> 5,6m;Siste 12 måneder;-7,125;97,000;87805;94541;12.804;23.527
+Grenland;R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;-12,194;97,000;29430;33517;13.406;24.632
+Grenland;R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;2,940;97,000;46116;44799;12.391;22.767
+Grenland;R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-33,232;97,000;6588;9867;21.361;39.249
+Grenland;R;Helgedøgn;> 16,0m;Siste 12 måneder;-10,805;97,000;5671;6358;19.986;36.722
+Grenland;R;Alle;Alle;Hittil i år;-5,563;97,000;7102262;7520649;5.532;10.165
+Grenland;R;Alle;< 5,6m;Hittil i år;-4,843;97,000;6481434;6811324;5.078;9.331
+Grenland;R;Alle;> 5,6m;Hittil i år;-12,308;97,000;619614;706579;10.752;19.756
+Grenland;R;Alle;5,6m - 7,6m;Hittil i år;-16,678;97,000;188389;226098;11.780;21.645
+Grenland;R;Alle;7,6m - 12,5m;Hittil i år;0,727;97,000;282708;280667;8.084;14.853
+Grenland;R;Alle;12,5m - 16,0m;Hittil i år;-35,078;97,000;66570;102538;12.194;22.404
+Grenland;R;Alle;> 16,0m;Hittil i år;-15,758;97,000;81947;97276;22.951;42.170
+Grenland;R;Yrkesdøgn;Alle;Hittil i år;-5,977;98,000;5462285;5809545;5.583;10.258
+Grenland;R;Yrkesdøgn;< 5,6m;Hittil i år;-5,114;98,000;4929333;5194997;5.125;9.416
+Grenland;R;Yrkesdøgn;> 5,6m;Hittil i år;-13,108;98,000;531809;612038;10.274;18.877
+Grenland;R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;-17,459;98,000;158959;192581;11.328;20.815
+Grenland;R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;0,307;98,000;236592;235868;7.419;13.631
+Grenland;R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-35,274;98,000;59982;92671;11.813;21.705
+Grenland;R;Yrkesdøgn;> 16,0m;Hittil i år;-16,105;98,000;76276;90918;23.186;42.602
+Grenland;R;Helgedøgn;Alle;Hittil i år;-4,157;97,000;1639977;1711104;5.249;9.645
+Grenland;R;Helgedøgn;< 5,6m;Hittil i år;-3,974;97,000;1552101;1616327;4.873;8.953
+Grenland;R;Helgedøgn;> 5,6m;Hittil i år;-7,125;97,000;87805;94541;12.804;23.527
+Grenland;R;Helgedøgn;5,6m - 7,6m;Hittil i år;-12,194;97,000;29430;33517;13.406;24.632
+Grenland;R;Helgedøgn;7,6m - 12,5m;Hittil i år;2,940;97,000;46116;44799;12.391;22.767
+Grenland;R;Helgedøgn;12,5m - 16,0m;Hittil i år;-33,232;97,000;6588;9867;21.361;39.249
+Grenland;R;Helgedøgn;> 16,0m;Hittil i år;-10,805;97,000;5671;6358;19.986;36.722
+Grenland;E;Alle;Alle;Januar;7,900;98,000;891338;826079;9.874;30.041
+Grenland;E;Alle;< 5,6m;Januar;7,551;98,000;740696;688690;10.649;32.400
+Grenland;E;Alle;> 5,6m;Januar;9,645;98,000;150609;137361;6.056;18.423
+Grenland;E;Alle;5,6m - 7,6m;Januar;12,264;98,000;28780;25636;4.449;13.536
+Grenland;E;Alle;7,6m - 12,5m;Januar;7,478;98,000;36235;33714;7.196;21.894
+Grenland;E;Alle;12,5m - 16,0m;Januar;5,913;98,000;14078;13292;17.728;53.938
+Grenland;E;Alle;> 16,0m;Januar;10,502;98,000;71516;64719;3.756;11.426
+Grenland;E;Yrkesdøgn;Alle;Januar;8,999;97,000;696021;638556;10.733;32.653
+Grenland;E;Yrkesdøgn;< 5,6m;Januar;8,724;97,000;562122;517016;11.785;35.854
+Grenland;E;Yrkesdøgn;> 5,6m;Januar;10,164;97,000;133867;121516;6.316;19.217
+Grenland;E;Yrkesdøgn;5,6m - 7,6m;Januar;14,385;97,000;25231;22058;5.804;17.659
+Grenland;E;Yrkesdøgn;7,6m - 12,5m;Januar;7,484;97,000;31035;28874;7.731;23.522
+Grenland;E;Yrkesdøgn;12,5m - 16,0m;Januar;5,623;97,000;12341;11684;13.272;40.380
+Grenland;E;Yrkesdøgn;> 16,0m;Januar;10,798;97,000;65260;58900;4.224;12.852
+Grenland;E;Helgedøgn;Alle;Januar;4,156;98,000;195317;187523;6.902;20.998
+Grenland;E;Helgedøgn;< 5,6m;Januar;4,019;98,000;178574;171674;7.126;21.679
+Grenland;E;Helgedøgn;> 5,6m;Januar;5,661;98,000;16742;15845;4.394;13.367
+Grenland;E;Helgedøgn;5,6m - 7,6m;Januar;-0,811;98,000;3549;3578;2.339;7.117
+Grenland;E;Helgedøgn;7,6m - 12,5m;Januar;7,438;98,000;5200;4840;4.067;12.374
+Grenland;E;Helgedøgn;12,5m - 16,0m;Januar;8,022;98,000;1737;1608;55.687;169.424
+Grenland;E;Helgedøgn;> 16,0m;Januar;7,510;98,000;6256;5819;0.499;1.517
+Grenland;E;Alle;Alle;Februar;7,430;98,000;863159;803460;9.453;28.760
+Grenland;E;Alle;< 5,6m;Februar;6,997;98,000;719237;672206;9.847;29.958
+Grenland;E;Alle;> 5,6m;Februar;9,640;98,000;143883;131232;7.539;22.937
+Grenland;E;Alle;5,6m - 7,6m;Februar;12,355;98,000;27990;24912;5.916;18.000
+Grenland;E;Alle;7,6m - 12,5m;Februar;5,394;98,000;33918;32182;8.489;25.829
+Grenland;E;Alle;12,5m - 16,0m;Februar;5,696;98,000;13880;13132;5.171;15.734
+Grenland;E;Alle;> 16,0m;Februar;11,620;98,000;68095;61006;7.719;23.484
+Grenland;E;Yrkesdøgn;Alle;Februar;8,479;98,000;673483;620839;10.543;32.076
+Grenland;E;Yrkesdøgn;< 5,6m;Februar;8,034;98,000;545606;505033;11.126;33.849
+Grenland;E;Yrkesdøgn;> 5,6m;Februar;10,412;98,000;127842;115786;8.116;24.691
+Grenland;E;Yrkesdøgn;5,6m - 7,6m;Februar;13,918;98,000;24326;21354;6.682;20.329
+Grenland;E;Yrkesdøgn;7,6m - 12,5m;Februar;7,469;98,000;29236;27204;10.164;30.922
+Grenland;E;Yrkesdøgn;12,5m - 16,0m;Februar;5,035;98,000;12182;11598;0.165;0.503
+Grenland;E;Yrkesdøgn;> 16,0m;Februar;11,627;98,000;62098;55630;8.705;26.484
+Grenland;E;Helgedøgn;Alle;Februar;3,863;98,000;189676;182621;5.715;17.388
+Grenland;E;Helgedøgn;< 5,6m;Februar;3,863;98,000;173631;167173;5.896;17.939
+Grenland;E;Helgedøgn;> 5,6m;Februar;3,852;98,000;16041;15446;3.792;11.537
+Grenland;E;Helgedøgn;5,6m - 7,6m;Februar;2,979;98,000;3664;3558;2.245;6.829
+Grenland;E;Helgedøgn;7,6m - 12,5m;Februar;-5,946;98,000;4682;4978;0.297;0.905
+Grenland;E;Helgedøgn;12,5m - 16,0m;Februar;10,691;98,000;1698;1534;52.644;160.165
+Grenland;E;Helgedøgn;> 16,0m;Februar;11,551;98,000;5997;5376;2.180;6.634
+Grenland;E;Alle;Alle;Mars;7,519;98,000;991864;922498;5.673;17.260
+Grenland;E;Alle;< 5,6m;Mars;6,369;98,000;829955;780262;6.040;18.377
+Grenland;E;Alle;> 5,6m;Mars;13,811;98,000;161858;142217;3.809;11.588
+Grenland;E;Alle;5,6m - 7,6m;Mars;17,941;98,000;33165;28120;0.662;2.013
+Grenland;E;Alle;7,6m - 12,5m;Mars;13,677;98,000;41434;36449;4.886;14.867
+Grenland;E;Alle;12,5m - 16,0m;Mars;11,601;98,000;14882;13335;5.987;18.214
+Grenland;E;Alle;> 16,0m;Mars;12,539;98,000;72377;64313;3.935;11.973
+Grenland;E;Yrkesdøgn;Alle;Mars;11,358;98,000;731768;657130;5.532;16.830
+Grenland;E;Yrkesdøgn;< 5,6m;Mars;10,738;98,000;592587;535126;6.160;18.742
+Grenland;E;Yrkesdøgn;> 5,6m;Mars;14,059;98,000;139136;121986;2.890;8.794
+Grenland;E;Yrkesdøgn;5,6m - 7,6m;Mars;19,674;98,000;27634;23091;0.688;2.092
+Grenland;E;Yrkesdøgn;7,6m - 12,5m;Mars;12,764;98,000;33545;29748;3.624;11.025
+Grenland;E;Yrkesdøgn;12,5m - 16,0m;Mars;11,683;98,000;12733;11401;0.123;0.373
+Grenland;E;Yrkesdøgn;> 16,0m;Mars;12,950;98,000;65224;57746;4.094;12.454
+Grenland;E;Helgedøgn;Alle;Mars;-1,987;97,000;260096;265368;5.500;16.732
+Grenland;E;Helgedøgn;< 5,6m;Mars;-3,169;97,000;237368;245136;5.131;15.612
+Grenland;E;Helgedøgn;> 5,6m;Mars;12,313;97,000;22722;20231;9.354;28.459
+Grenland;E;Helgedøgn;5,6m - 7,6m;Mars;9,982;97,000;5531;5029;6.771;20.600
+Grenland;E;Helgedøgn;7,6m - 12,5m;Mars;17,729;97,000;7889;6701;10.403;31.651
+Grenland;E;Helgedøgn;12,5m - 16,0m;Mars;11,117;97,000;2149;1934;48.404;147.267
+Grenland;E;Helgedøgn;> 16,0m;Mars;8,923;97,000;7153;6567;2.947;8.967
+Grenland;E;Alle;Alle;April;10,538;94,000;1046035;946314;8.917;27.129
+Grenland;E;Alle;< 5,6m;April;12,041;94,000;879776;785230;8.791;26.747
+Grenland;E;Alle;> 5,6m;April;3,222;94,000;166229;161041;9.307;28.316
+Grenland;E;Alle;5,6m - 7,6m;April;12,523;94,000;36841;32741;6.570;19.988
+Grenland;E;Alle;7,6m - 12,5m;April;6,971;94,000;50809;47498;9.484;28.855
+Grenland;E;Alle;12,5m - 16,0m;April;8,607;94,000;15862;14605;23.086;70.237
+Grenland;E;Alle;> 16,0m;April;-5,257;94,000;62717;66197;8.548;26.008
+Grenland;E;Yrkesdøgn;Alle;April;2,683;93,000;701093;682771;13.376;40.694
+Grenland;E;Yrkesdøgn;< 5,6m;April;3,560;93,000;567290;547788;13.824;42.060
+Grenland;E;Yrkesdøgn;> 5,6m;April;-0,864;93,000;133777;134943;11.430;34.776
+Grenland;E;Yrkesdøgn;5,6m - 7,6m;April;5,457;93,000;27637;26207;9.955;30.289
+Grenland;E;Yrkesdøgn;7,6m - 12,5m;April;1,160;93,000;37340;36912;12.247;37.261
+Grenland;E;Yrkesdøgn;12,5m - 16,0m;April;3,986;93,000;12784;12294;20.197;61.449
+Grenland;E;Yrkesdøgn;> 16,0m;April;-5,903;93,000;56016;59530;10.484;31.897
+Grenland;E;Helgedøgn;Alle;April;30,886;95,000;344942;263543;2.772;8.432
+Grenland;E;Helgedøgn;< 5,6m;April;31,605;95,000;312486;237442;2.813;8.558
+Grenland;E;Helgedøgn;> 5,6m;April;24,347;95,000;32452;26098;2.414;7.346
+Grenland;E;Helgedøgn;5,6m - 7,6m;April;40,863;95,000;9204;6534;6.203;18.873
+Grenland;E;Helgedøgn;7,6m - 12,5m;April;27,234;95,000;13469;10586;0.355;1.080
+Grenland;E;Helgedøgn;12,5m - 16,0m;April;33,189;95,000;3078;2311;43.777;133.189
+Grenland;E;Helgedøgn;> 16,0m;April;0,510;95,000;6701;6667;9.435;28.706
+Grenland;E;Alle;Alle;Mai;6,470;98,000;1179165;1107512;13.041;39.676
+Grenland;E;Alle;< 5,6m;Mai;6,750;98,000;980889;918865;14.091;42.872
+Grenland;E;Alle;> 5,6m;Mai;5,109;98,000;198220;188586;7.876;23.961
+Grenland;E;Alle;5,6m - 7,6m;Mai;7,024;98,000;43199;40364;9.633;29.306
+Grenland;E;Alle;7,6m - 12,5m;Mai;1,914;98,000;63035;61851;7.523;22.889
+Grenland;E;Alle;12,5m - 16,0m;Mai;15,151;98,000;19388;16837;25.363;77.165
+Grenland;E;Alle;> 16,0m;Mai;4,406;98,000;72598;69534;4.974;15.133
+Grenland;E;Yrkesdøgn;Alle;Mai;13,690;97,000;816764;718414;14.533;44.214
+Grenland;E;Yrkesdøgn;< 5,6m;Mai;14,692;97,000;658783;574392;16.115;49.029
+Grenland;E;Yrkesdøgn;> 5,6m;Mai;9,699;97,000;157932;143968;8.053;24.500
+Grenland;E;Yrkesdøgn;5,6m - 7,6m;Mai;13,684;97,000;33056;29077;9.078;27.619
+Grenland;E;Yrkesdøgn;7,6m - 12,5m;Mai;6,581;97,000;45930;43094;8.363;25.445
+Grenland;E;Yrkesdøgn;12,5m - 16,0m;Mai;18,912;97,000;15952;13415;22.484;68.406
+Grenland;E;Yrkesdøgn;> 16,0m;Mai;7,900;97,000;62994;58382;5.615;17.084
+Grenland;E;Helgedøgn;Alle;Mai;-6,861;99,000;362401;389098;10.868;33.065
+Grenland;E;Helgedøgn;< 5,6m;Mai;-6,493;99,000;322106;344473;11.164;33.967
+Grenland;E;Helgedøgn;> 5,6m;Mai;-9,705;99,000;40288;44618;8.655;26.332
+Grenland;E;Helgedøgn;5,6m - 7,6m;Mai;-10,136;99,000;10143;11287;10.937;33.276
+Grenland;E;Helgedøgn;7,6m - 12,5m;Mai;-8,807;99,000;17105;18757;6.513;19.816
+Grenland;E;Helgedøgn;12,5m - 16,0m;Mai;0,409;99,000;3436;3422;37.169;113.085
+Grenland;E;Helgedøgn;> 16,0m;Mai;-13,881;99,000;9604;11152;4.519;13.749
+Grenland;E;Alle;Alle;Juni;10,636;98,000;1302368;1177165;15.751;47.920
+Grenland;E;Alle;< 5,6m;Juni;11,890;98,000;1094588;978270;16.462;50.086
+Grenland;E;Alle;> 5,6m;Juni;4,482;98,000;207737;198826;12.097;36.805
+Grenland;E;Alle;5,6m - 7,6m;Juni;8,810;98,000;49427;45425;9.982;30.370
+Grenland;E;Alle;7,6m - 12,5m;Juni;3,597;98,000;66954;64629;12.474;37.951
+Grenland;E;Alle;12,5m - 16,0m;Juni;17,017;98,000;22555;19275;25.782;78.441
+Grenland;E;Alle;> 16,0m;Juni;-1,001;98,000;68801;69497;11.253;34.238
+Grenland;E;Yrkesdøgn;Alle;Juni;0,514;98,000;862217;857804;16.247;49.431
+Grenland;E;Yrkesdøgn;< 5,6m;Juni;1,093;98,000;700246;692672;17.235;52.436
+Grenland;E;Yrkesdøgn;> 5,6m;Juni;-1,901;98,000;161936;165074;12.013;36.547
+Grenland;E;Yrkesdøgn;5,6m - 7,6m;Juni;-1,194;98,000;35591;36021;9.767;29.717
+Grenland;E;Yrkesdøgn;7,6m - 12,5m;Juni;-5,112;98,000;47151;49691;12.738;38.754
+Grenland;E;Yrkesdøgn;12,5m - 16,0m;Juni;12,297;98,000;18356;16346;23.179;70.519
+Grenland;E;Yrkesdøgn;> 16,0m;Juni;-3,456;98,000;60838;63016;11.796;35.889
+Grenland;E;Helgedøgn;Alle;Juni;37,822;98,000;440151;319361;13.609;41.406
+Grenland;E;Helgedøgn;< 5,6m;Juni;38,076;98,000;394342;285598;14.050;42.746
+Grenland;E;Helgedøgn;> 5,6m;Juni;35,699;98,000;45801;33752;9.961;30.307
+Grenland;E;Helgedøgn;5,6m - 7,6m;Juni;47,129;98,000;13836;9404;10.326;31.416
+Grenland;E;Helgedøgn;7,6m - 12,5m;Juni;32,568;98,000;19803;14938;9.888;30.085
+Grenland;E;Helgedøgn;12,5m - 16,0m;Juni;43,360;98,000;4199;2929;38.665;117.634
+Grenland;E;Helgedøgn;> 16,0m;Juni;22,867;98,000;7963;6481;1.896;5.768
+Grenland;E;Alle;Alle;Siste 12 måneder;8,489;97,000;6273929;5783028;10.783;32.805
+Grenland;E;Alle;< 5,6m;Siste 12 måneder;8,741;97,000;5245141;4823523;11.317;34.430
+Grenland;E;Alle;> 5,6m;Siste 12 måneder;7,221;97,000;1028536;959263;8.056;24.508
+Grenland;E;Alle;5,6m - 7,6m;Siste 12 måneder;11,260;97,000;219402;197198;6.886;20.951
+Grenland;E;Alle;7,6m - 12,5m;Siste 12 måneder;5,813;97,000;292385;276323;8.701;26.472
+Grenland;E;Alle;12,5m - 16,0m;Siste 12 måneder;11,239;97,000;100645;90476;18.133;55.167
+Grenland;E;Alle;> 16,0m;Siste 12 måneder;5,272;97,000;416104;395266;6.700;20.383
+Grenland;E;Yrkesdøgn;Alle;Siste 12 måneder;7,324;97,000;4481346;4175514;12.091;36.786
+Grenland;E;Yrkesdøgn;< 5,6m;Siste 12 måneder;7,551;97,000;3626634;3372027;12.965;39.444
+Grenland;E;Yrkesdøgn;> 5,6m;Siste 12 måneder;6,376;97,000;854490;803273;8.372;25.470
+Grenland;E;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;9,928;97,000;173475;157808;7.300;22.211
+Grenland;E;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;4,043;97,000;224237;215523;9.448;28.745
+Grenland;E;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;9,917;97,000;84348;76738;13.843;42.118
+Grenland;E;Yrkesdøgn;> 16,0m;Siste 12 måneder;5,443;97,000;372430;353204;7.531;22.913
+Grenland;E;Helgedøgn;Alle;Siste 12 måneder;11,513;97,000;1792583;1607514;7.376;22.440
+Grenland;E;Helgedøgn;< 5,6m;Siste 12 måneder;11,506;97,000;1618507;1451496;7.504;22.831
+Grenland;E;Helgedøgn;> 5,6m;Siste 12 måneder;11,575;97,000;174046;155990;6.177;18.792
+Grenland;E;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;16,596;97,000;45927;39390;5.196;15.808
+Grenland;E;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;12,086;97,000;68148;60800;5.705;17.358
+Grenland;E;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;18,627;97,000;16297;13738;44.028;133.953
+Grenland;E;Helgedøgn;> 16,0m;Siste 12 måneder;3,832;97,000;43674;42062;0.121;0.367
+Grenland;E;Alle;Alle;Hittil i år;8,489;97,000;6273929;5783028;10.783;32.805
+Grenland;E;Alle;< 5,6m;Hittil i år;8,741;97,000;5245141;4823523;11.317;34.430
+Grenland;E;Alle;> 5,6m;Hittil i år;7,221;97,000;1028536;959263;8.056;24.508
+Grenland;E;Alle;5,6m - 7,6m;Hittil i år;11,260;97,000;219402;197198;6.886;20.951
+Grenland;E;Alle;7,6m - 12,5m;Hittil i år;5,813;97,000;292385;276323;8.701;26.472
+Grenland;E;Alle;12,5m - 16,0m;Hittil i år;11,239;97,000;100645;90476;18.133;55.167
+Grenland;E;Alle;> 16,0m;Hittil i år;5,272;97,000;416104;395266;6.700;20.383
+Grenland;E;Yrkesdøgn;Alle;Hittil i år;7,324;97,000;4481346;4175514;12.091;36.786
+Grenland;E;Yrkesdøgn;< 5,6m;Hittil i år;7,551;97,000;3626634;3372027;12.965;39.444
+Grenland;E;Yrkesdøgn;> 5,6m;Hittil i år;6,376;97,000;854490;803273;8.372;25.470
+Grenland;E;Yrkesdøgn;5,6m - 7,6m;Hittil i år;9,928;97,000;173475;157808;7.300;22.211
+Grenland;E;Yrkesdøgn;7,6m - 12,5m;Hittil i år;4,043;97,000;224237;215523;9.448;28.745
+Grenland;E;Yrkesdøgn;12,5m - 16,0m;Hittil i år;9,917;97,000;84348;76738;13.843;42.118
+Grenland;E;Yrkesdøgn;> 16,0m;Hittil i år;5,443;97,000;372430;353204;7.531;22.913
+Grenland;E;Helgedøgn;Alle;Hittil i år;11,513;97,000;1792583;1607514;7.376;22.440
+Grenland;E;Helgedøgn;< 5,6m;Hittil i år;11,506;97,000;1618507;1451496;7.504;22.831
+Grenland;E;Helgedøgn;> 5,6m;Hittil i år;11,575;97,000;174046;155990;6.177;18.792
+Grenland;E;Helgedøgn;5,6m - 7,6m;Hittil i år;16,596;97,000;45927;39390;5.196;15.808
+Grenland;E;Helgedøgn;7,6m - 12,5m;Hittil i år;12,086;97,000;68148;60800;5.705;17.358
+Grenland;E;Helgedøgn;12,5m - 16,0m;Hittil i år;18,627;97,000;16297;13738;44.028;133.953
+Grenland;E;Helgedøgn;> 16,0m;Hittil i år;3,832;97,000;43674;42062;0.121;0.367
+Grenland;E+R+F+K;Alle;Alle;Januar;1,595;94,000;7360017;7244442;8.514;3.672
+Grenland;E+R+F+K;Alle;< 5,6m;Januar;1,614;94,000;6722608;6615830;8.435;3.638
+Grenland;E+R+F+K;Alle;> 5,6m;Januar;2,307;94,000;634324;620023;16.002;6.902
+Grenland;E+R+F+K;Alle;5,6m - 7,6m;Januar;2,122;94,000;203308;199084;28.022;12.087
+Grenland;E+R+F+K;Alle;7,6m - 12,5m;Januar;4,105;94,000;228891;219866;11.761;5.073
+Grenland;E+R+F+K;Alle;12,5m - 16,0m;Januar;-4,351;94,000;86074;89989;26.799;11.560
+Grenland;E+R+F+K;Alle;> 16,0m;Januar;4,471;94,000;116051;111084;29.410;12.686
+Grenland;E+R+F+K;Yrkesdøgn;Alle;Januar;2,048;94,000;5940088;5820881;8.792;3.793
+Grenland;E+R+F+K;Yrkesdøgn;< 5,6m;Januar;2,144;94,000;5371393;5258664;8.691;3.749
+Grenland;E+R+F+K;Yrkesdøgn;> 5,6m;Januar;2,153;94,000;565691;553770;15.871;6.846
+Grenland;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Januar;1,857;94,000;180161;176877;26.087;11.253
+Grenland;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Januar;3,595;94,000;200555;193596;12.054;5.200
+Grenland;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Januar;-3,689;94,000;77053;80004;28.283;12.200
+Grenland;E+R+F+K;Yrkesdøgn;> 16,0m;Januar;4,481;94,000;107922;103293;30.088;12.978
+Grenland;E+R+F+K;Helgedøgn;Alle;Januar;-0,255;94,000;1419929;1423561;7.812;3.370
+Grenland;E+R+F+K;Helgedøgn;< 5,6m;Januar;-0,438;94,000;1351215;1357166;7.967;3.437
+Grenland;E+R+F+K;Helgedøgn;> 5,6m;Januar;3,592;94,000;68633;66253;19.716;8.504
+Grenland;E+R+F+K;Helgedøgn;5,6m - 7,6m;Januar;4,233;94,000;23147;22207;44.239;19.082
+Grenland;E+R+F+K;Helgedøgn;7,6m - 12,5m;Januar;7,864;94,000;28336;26270;12.559;5.417
+Grenland;E+R+F+K;Helgedøgn;12,5m - 16,0m;Januar;-9,654;94,000;9021;9985;24.545;10.587
+Grenland;E+R+F+K;Helgedøgn;> 16,0m;Januar;4,338;94,000;8129;7791;-;-
+Grenland;E+R+F+K;Alle;Alle;Februar;2,918;94,000;6107274;5934094;8.640;3.921
+Grenland;E+R+F+K;Alle;< 5,6m;Februar;2,946;94,000;5575426;5415895;8.640;3.921
+Grenland;E+R+F+K;Alle;> 5,6m;Februar;3,319;94,000;529981;512955;13.993;6.350
+Grenland;E+R+F+K;Alle;5,6m - 7,6m;Februar;5,254;94,000;169291;160841;22.372;10.153
+Grenland;E+R+F+K;Alle;7,6m - 12,5m;Februar;4,525;94,000;185097;177084;9.597;4.355
+Grenland;E+R+F+K;Alle;12,5m - 16,0m;Februar;-8,375;94,000;67765;73959;20.943;9.504
+Grenland;E+R+F+K;Alle;> 16,0m;Februar;6,685;94,000;107828;101071;27.108;12.302
+Grenland;E+R+F+K;Yrkesdøgn;Alle;Februar;3,234;94,000;4913644;4759695;9.391;4.262
+Grenland;E+R+F+K;Yrkesdøgn;< 5,6m;Februar;3,269;94,000;4437843;4297367;9.378;4.256
+Grenland;E+R+F+K;Yrkesdøgn;> 5,6m;Februar;3,683;94,000;474007;457171;14.314;6.496
+Grenland;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Februar;4,925;94,000;149648;142624;21.648;9.824
+Grenland;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Februar;5,500;94,000;163710;155175;10.235;4.645
+Grenland;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Februar;-7,449;94,000;60546;65419;21.194;9.618
+Grenland;E+R+F+K;Yrkesdøgn;> 16,0m;Februar;6,546;94,000;100103;93953;27.244;12.364
+Grenland;E+R+F+K;Helgedøgn;Alle;Februar;1,638;94,000;1193630;1174399;7.582;3.441
+Grenland;E+R+F+K;Helgedøgn;< 5,6m;Februar;1,704;94,000;1137583;1118528;7.703;3.496
+Grenland;E+R+F+K;Helgedøgn;> 5,6m;Februar;0,341;94,000;55974;55784;16.473;7.475
+Grenland;E+R+F+K;Helgedøgn;5,6m - 7,6m;Februar;7,828;94,000;19643;18217;32.545;14.769
+Grenland;E+R+F+K;Helgedøgn;7,6m - 12,5m;Februar;-2,383;94,000;21387;21909;11.382;5.165
+Grenland;E+R+F+K;Helgedøgn;12,5m - 16,0m;Februar;-15,468;94,000;7219;8540;29.871;13.556
+Grenland;E+R+F+K;Helgedøgn;> 16,0m;Februar;8,528;94,000;7725;7118;28.549;12.956
+Grenland;E+R+F+K;Alle;Alle;Mars;6,847;98,000;6745853;6313549;9.463;4.544
+Grenland;E+R+F+K;Alle;< 5,6m;Mars;6,400;98,000;6163010;5792295;9.238;4.436
+Grenland;E+R+F+K;Alle;> 5,6m;Mars;12,496;98,000;580961;516426;16.396;7.873
+Grenland;E+R+F+K;Alle;5,6m - 7,6m;Mars;15,643;98,000;179054;154834;19.470;9.349
+Grenland;E+R+F+K;Alle;7,6m - 12,5m;Mars;21,133;98,000;220916;182374;15.703;7.540
+Grenland;E+R+F+K;Alle;12,5m - 16,0m;Mars;-9,505;98,000;65363;72228;25.561;12.274
+Grenland;E+R+F+K;Alle;> 16,0m;Mars;8,074;98,000;115628;106990;26.717;12.829
+Grenland;E+R+F+K;Yrkesdøgn;Alle;Mars;9,221;99,000;5198401;4759523;9.802;4.707
+Grenland;E+R+F+K;Yrkesdøgn;< 5,6m;Mars;8,940;99,000;4691908;4306862;9.553;4.587
+Grenland;E+R+F+K;Yrkesdøgn;> 5,6m;Mars;12,678;99,000;504707;447920;16.492;7.919
+Grenland;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Mars;16,635;99,000;154637;132582;18.899;9.075
+Grenland;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Mars;20,201;99,000;186430;155099;15.199;7.298
+Grenland;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Mars;-7,645;99,000;57584;62351;26.348;12.651
+Grenland;E+R+F+K;Yrkesdøgn;> 16,0m;Mars;8,344;99,000;106056;97888;27.453;13.182
+Grenland;E+R+F+K;Helgedøgn;Alle;Mars;-0,423;97,000;1547452;1554026;9.005;4.324
+Grenland;E+R+F+K;Helgedøgn;< 5,6m;Mars;-0,965;97,000;1471102;1485433;8.926;4.286
+Grenland;E+R+F+K;Helgedøgn;> 5,6m;Mars;11,310;97,000;76254;68506;17.405;8.357
+Grenland;E+R+F+K;Helgedøgn;5,6m - 7,6m;Mars;9,729;97,000;24417;22252;24.993;12.001
+Grenland;E+R+F+K;Helgedøgn;7,6m - 12,5m;Mars;26,438;97,000;34486;27275;21.196;10.178
+Grenland;E+R+F+K;Helgedøgn;12,5m - 16,0m;Mars;-21,241;97,000;7779;9877;29.280;14.060
+Grenland;E+R+F+K;Helgedøgn;> 16,0m;Mars;5,164;97,000;9572;9102;-;-
+Grenland;E+R+F+K;Alle;Alle;April;-0,715;97,000;6900808;6950481;10.334;4.820
+Grenland;E+R+F+K;Alle;< 5,6m;April;-0,925;97,000;6232940;6291110;10.220;4.767
+Grenland;E+R+F+K;Alle;> 5,6m;April;1,737;97,000;663687;652358;15.401;7.184
+Grenland;E+R+F+K;Alle;5,6m - 7,6m;April;3,471;97,000;200292;193574;18.208;8.493
+Grenland;E+R+F+K;Alle;7,6m - 12,5m;April;6,191;97,000;286499;269797;13.772;6.424
+Grenland;E+R+F+K;Alle;12,5m - 16,0m;April;-8,903;97,000;68568;75269;26.255;12.246
+Grenland;E+R+F+K;Alle;> 16,0m;April;-4,740;97,000;108328;113718;28.110;13.111
+Grenland;E+R+F+K;Yrkesdøgn;Alle;April;-4,001;96,000;5098830;5311363;9.976;4.653
+Grenland;E+R+F+K;Yrkesdøgn;< 5,6m;April;-4,388;96,000;4539427;4747744;9.648;4.500
+Grenland;E+R+F+K;Yrkesdøgn;> 5,6m;April;-0,257;96,000;555441;556870;15.980;7.454
+Grenland;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;April;0,575;96,000;165078;164134;18.282;8.527
+Grenland;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;April;4,390;96,000;233385;223571;13.928;6.496
+Grenland;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;April;-10,655;96,000;57948;64859;25.511;11.899
+Grenland;E+R+F+K;Yrkesdøgn;> 16,0m;April;-5,058;96,000;99030;104306;29.052;13.551
+Grenland;E+R+F+K;Helgedøgn;Alle;April;9,936;97,000;1801978;1639118;13.329;6.217
+Grenland;E+R+F+K;Helgedøgn;< 5,6m;April;9,729;97,000;1693513;1543366;13.418;6.259
+Grenland;E+R+F+K;Helgedøgn;> 5,6m;April;13,361;97,000;108246;95488;15.602;7.277
+Grenland;E+R+F+K;Helgedøgn;5,6m - 7,6m;April;19,613;97,000;35214;29440;20.506;9.565
+Grenland;E+R+F+K;Helgedøgn;7,6m - 12,5m;April;14,901;97,000;53114;46226;17.216;8.030
+Grenland;E+R+F+K;Helgedøgn;12,5m - 16,0m;April;2,017;97,000;10620;10410;40.086;18.697
+Grenland;E+R+F+K;Helgedøgn;> 16,0m;April;-1,211;97,000;9298;9412;21.340;9.954
+Grenland;E+R+F+K;Alle;Alle;Mai;5,238;95,000;6844814;6504107;14.295;7.079
+Grenland;E+R+F+K;Alle;< 5,6m;Mai;5,524;95,000;6124588;5803956;14.083;6.974
+Grenland;E+R+F+K;Alle;> 5,6m;Mai;3,411;95,000;715412;691811;18.514;9.168
+Grenland;E+R+F+K;Alle;5,6m - 7,6m;Mai;7,622;95,000;212458;197412;23.185;11.481
+Grenland;E+R+F+K;Alle;7,6m - 12,5m;Mai;1,447;95,000;305783;301421;16.690;8.265
+Grenland;E+R+F+K;Alle;12,5m - 16,0m;Mai;-0,705;95,000;76643;77187;26.438;13.092
+Grenland;E+R+F+K;Alle;> 16,0m;Mai;4,091;95,000;120528;115791;31.483;15.590
+Grenland;E+R+F+K;Yrkesdøgn;Alle;Mai;10,978;93,000;5085022;4582009;16.076;7.961
+Grenland;E+R+F+K;Yrkesdøgn;< 5,6m;Mai;11,602;93,000;4484994;4018755;16.015;7.930
+Grenland;E+R+F+K;Yrkesdøgn;> 5,6m;Mai;7,228;93,000;595681;555528;19.388;9.601
+Grenland;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Mai;12,159;93,000;175085;156104;23.512;11.643
+Grenland;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Mai;5,069;93,000;246916;235003;17.865;8.846
+Grenland;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Mai;3,174;93,000;65993;63963;27.024;13.382
+Grenland;E+R+F+K;Yrkesdøgn;> 16,0m;Mai;7,196;93,000;107687;100458;32.781;16.233
+Grenland;E+R+F+K;Helgedøgn;Alle;Mai;-8,444;97,000;1759792;1922098;12.462;6.171
+Grenland;E+R+F+K;Helgedøgn;< 5,6m;Mai;-8,156;97,000;1639594;1785201;12.207;6.045
+Grenland;E+R+F+K;Helgedøgn;> 5,6m;Mai;-12,145;97,000;119731;136283;17.530;8.680
+Grenland;E+R+F+K;Helgedøgn;5,6m - 7,6m;Mai;-9,526;97,000;37373;41308;24.488;12.126
+Grenland;E+R+F+K;Helgedøgn;7,6m - 12,5m;Mai;-11,369;97,000;58867;66418;14.908;7.382
+Grenland;E+R+F+K;Helgedøgn;12,5m - 16,0m;Mai;-19,465;97,000;10650;13224;30.804;15.254
+Grenland;E+R+F+K;Helgedøgn;> 16,0m;Mai;-16,253;97,000;12841;15333;23.933;11.851
+Grenland;E+R+F+K;Alle;Alle;Juni;0,414;94,000;6655868;6628431;15.553;7.702
+Grenland;E+R+F+K;Alle;< 5,6m;Juni;0,931;94,000;5964894;5909896;15.317;7.585
+Grenland;E+R+F+K;Alle;> 5,6m;Juni;-3,801;94,000;686770;713903;19.660;9.735
+Grenland;E+R+F+K;Alle;5,6m - 7,6m;Juni;-1,885;94,000;204711;208645;24.215;11.991
+Grenland;E+R+F+K;Alle;7,6m - 12,5m;Juni;-1,321;94,000;298252;302246;16.955;8.396
+Grenland;E+R+F+K;Alle;12,5m - 16,0m;Juni;-11,578;94,000;75453;85333;30.793;15.248
+Grenland;E+R+F+K;Alle;> 16,0m;Juni;-7,924;94,000;108354;117679;31.541;15.619
+Grenland;E+R+F+K;Yrkesdøgn;Alle;Juni;-6,554;94,000;4818498;5156444;14.078;6.971
+Grenland;E+R+F+K;Yrkesdøgn;< 5,6m;Juni;-6,261;94,000;4258604;4543035;13.756;6.812
+Grenland;E+R+F+K;Yrkesdøgn;> 5,6m;Juni;-8,726;94,000;555927;609076;18.569;9.195
+Grenland;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Juni;-7,903;94,000;162171;176088;22.409;11.097
+Grenland;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Juni;-6,858;94,000;233174;250342;15.771;7.810
+Grenland;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Juni;-14,570;94,000;63003;73748;29.248;14.483
+Grenland;E+R+F+K;Yrkesdøgn;> 16,0m;Juni;-10,394;94,000;97579;108898;31.081;15.391
+Grenland;E+R+F+K;Helgedøgn;Alle;Juni;24,822;95,000;1837370;1471987;20.319;10.062
+Grenland;E+R+F+K;Helgedøgn;< 5,6m;Juni;24,833;95,000;1706290;1366861;20.063;9.935
+Grenland;E+R+F+K;Helgedøgn;> 5,6m;Juni;24,818;95,000;130843;104827;25.284;12.520
+Grenland;E+R+F+K;Helgedøgn;5,6m - 7,6m;Juni;30,663;95,000;42540;32557;33.669;16.673
+Grenland;E+R+F+K;Helgedøgn;7,6m - 12,5m;Juni;25,381;95,000;65078;51904;23.075;11.427
+Grenland;E+R+F+K;Helgedøgn;12,5m - 16,0m;Juni;7,467;95,000;12450;11585;42.574;21.082
+Grenland;E+R+F+K;Helgedøgn;> 16,0m;Juni;22,708;95,000;10775;8781;41.968;20.782
+Grenland;E+R+F+K;Alle;Alle;Siste 12 måneder;2,627;95,000;40614634;39575104;9.915;4.277
+Grenland;E+R+F+K;Alle;< 5,6m;Siste 12 måneder;2,664;95,000;36783466;35828982;9.668;4.170
+Grenland;E+R+F+K;Alle;> 5,6m;Siste 12 måneder;2,796;95,000;3811135;3707476;15.626;6.740
+Grenland;E+R+F+K;Alle;5,6m - 7,6m;Siste 12 måneder;4,911;95,000;1169114;1114390;21.380;9.222
+Grenland;E+R+F+K;Alle;7,6m - 12,5m;Siste 12 måneder;5,001;95,000;1525438;1452788;13.055;5.631
+Grenland;E+R+F+K;Alle;12,5m - 16,0m;Siste 12 måneder;-7,194;95,000;439866;473965;23.727;10.235
+Grenland;E+R+F+K;Alle;> 16,0m;Siste 12 måneder;1,558;95,000;676717;666333;28.029;12.090
+Grenland;E+R+F+K;Yrkesdøgn;Alle;Siste 12 måneder;2,187;95,000;31054483;30389915;10.258;4.425
+Grenland;E+R+F+K;Yrkesdøgn;< 5,6m;Siste 12 måneder;2,251;95,000;27784169;27172427;10.030;4.326
+Grenland;E+R+F+K;Yrkesdøgn;> 5,6m;Siste 12 måneder;2,236;95,000;3251454;3180335;15.689;6.767
+Grenland;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;4,046;95,000;986780;948409;20.668;8.915
+Grenland;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;4,237;95,000;1264170;1212786;13.139;5.668
+Grenland;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-6,876;95,000;382127;410344;23.326;10.061
+Grenland;E+R+F+K;Yrkesdøgn;> 16,0m;Siste 12 måneder;1,574;95,000;618377;608796;28.552;12.316
+Grenland;E+R+F+K;Helgedøgn;Alle;Siste 12 måneder;4,082;96,000;9560151;9185189;9.412;4.060
+Grenland;E+R+F+K;Helgedøgn;< 5,6m;Siste 12 måneder;3,959;96,000;8999297;8656555;9.253;3.991
+Grenland;E+R+F+K;Helgedøgn;> 5,6m;Siste 12 måneder;6,173;96,000;559681;527141;16.431;7.087
+Grenland;E+R+F+K;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;9,852;96,000;182334;165981;26.713;11.523
+Grenland;E+R+F+K;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;8,861;96,000;261268;240002;13.570;5.854
+Grenland;E+R+F+K;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-9,245;96,000;57739;63621;31.580;13.622
+Grenland;E+R+F+K;Helgedøgn;> 16,0m;Siste 12 måneder;1,396;96,000;58340;57537;23.872;10.297
+Grenland;E+R+F+K;Alle;Alle;Hittil i år;2,627;95,000;40614634;39575104;9.915;4.277
+Grenland;E+R+F+K;Alle;< 5,6m;Hittil i år;2,664;95,000;36783466;35828982;9.668;4.170
+Grenland;E+R+F+K;Alle;> 5,6m;Hittil i år;2,796;95,000;3811135;3707476;15.626;6.740
+Grenland;E+R+F+K;Alle;5,6m - 7,6m;Hittil i år;4,911;95,000;1169114;1114390;21.380;9.222
+Grenland;E+R+F+K;Alle;7,6m - 12,5m;Hittil i år;5,001;95,000;1525438;1452788;13.055;5.631
+Grenland;E+R+F+K;Alle;12,5m - 16,0m;Hittil i år;-7,194;95,000;439866;473965;23.727;10.235
+Grenland;E+R+F+K;Alle;> 16,0m;Hittil i år;1,558;95,000;676717;666333;28.029;12.090
+Grenland;E+R+F+K;Yrkesdøgn;Alle;Hittil i år;2,187;95,000;31054483;30389915;10.258;4.425
+Grenland;E+R+F+K;Yrkesdøgn;< 5,6m;Hittil i år;2,251;95,000;27784169;27172427;10.030;4.326
+Grenland;E+R+F+K;Yrkesdøgn;> 5,6m;Hittil i år;2,236;95,000;3251454;3180335;15.689;6.767
+Grenland;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Hittil i år;4,046;95,000;986780;948409;20.668;8.915
+Grenland;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Hittil i år;4,237;95,000;1264170;1212786;13.139;5.668
+Grenland;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-6,876;95,000;382127;410344;23.326;10.061
+Grenland;E+R+F+K;Yrkesdøgn;> 16,0m;Hittil i år;1,574;95,000;618377;608796;28.552;12.316
+Grenland;E+R+F+K;Helgedøgn;Alle;Hittil i år;4,082;96,000;9560151;9185189;9.412;4.060
+Grenland;E+R+F+K;Helgedøgn;< 5,6m;Hittil i år;3,959;96,000;8999297;8656555;9.253;3.991
+Grenland;E+R+F+K;Helgedøgn;> 5,6m;Hittil i år;6,173;96,000;559681;527141;16.431;7.087
+Grenland;E+R+F+K;Helgedøgn;5,6m - 7,6m;Hittil i år;9,852;96,000;182334;165981;26.713;11.523
+Grenland;E+R+F+K;Helgedøgn;7,6m - 12,5m;Hittil i år;8,861;96,000;261268;240002;13.570;5.854
+Grenland;E+R+F+K;Helgedøgn;12,5m - 16,0m;Hittil i år;-9,245;96,000;57739;63621;31.580;13.622
+Grenland;E+R+F+K;Helgedøgn;> 16,0m;Hittil i år;1,396;96,000;58340;57537;23.872;10.297
+Grenland;K;Alle;Alle;Januar;-7,751;95,000;453203;491280;4.945;15.044
+Grenland;K;Alle;< 5,6m;Januar;-7,735;95,000;422008;457385;5.732;17.440
+Grenland;K;Alle;> 5,6m;Januar;-5,395;95,000;30951;32716;10.336;31.446
+Grenland;K;Alle;5,6m - 7,6m;Januar;-2,225;95,000;11559;11822;13.715;41.726
+Grenland;K;Alle;7,6m - 12,5m;Januar;-13,244;95,000;14366;16559;1.593;4.845
+Grenland;K;Alle;12,5m - 16,0m;Januar;30,664;95,000;4568;3496;49.916;151.868
+Grenland;K;Alle;> 16,0m;Januar;-45,411;95,000;458;839;6.361;19.354
+Grenland;K;Yrkesdøgn;Alle;Januar;-6,828;95,000;360839;387284;3.843;11.693
+Grenland;K;Yrkesdøgn;< 5,6m;Januar;-6,586;95,000;333510;357024;4.695;14.285
+Grenland;K;Yrkesdøgn;> 5,6m;Januar;-6,903;95,000;27095;29104;12.171;37.031
+Grenland;K;Yrkesdøgn;5,6m - 7,6m;Januar;-3,716;95,000;10105;10495;15.465;47.052
+Grenland;K;Yrkesdøgn;7,6m - 12,5m;Januar;-14,647;95,000;12558;14713;3.911;11.899
+Grenland;K;Yrkesdøgn;12,5m - 16,0m;Januar;29,695;95,000;3992;3078;48.739;148.286
+Grenland;K;Yrkesdøgn;> 16,0m;Januar;-46,210;95,000;440;818;5.929;18.038
+Grenland;K;Helgedøgn;Alle;Januar;-11,185;97,000;92364;103996;8.897;27.067
+Grenland;K;Helgedøgn;< 5,6m;Januar;-11,820;97,000;88498;100361;9.166;27.886
+Grenland;K;Helgedøgn;> 5,6m;Januar;6,755;97,000;3856;3612;9.823;29.887
+Grenland;K;Helgedøgn;5,6m - 7,6m;Januar;9,570;97,000;1454;1327;2.802;8.525
+Grenland;K;Helgedøgn;7,6m - 12,5m;Januar;-2,059;97,000;1808;1846;24.792;75.427
+Grenland;K;Helgedøgn;12,5m - 16,0m;Januar;37,799;97,000;576;418;72.306;219.986
+Grenland;K;Helgedøgn;> 16,0m;Januar;-14,286;97,000;18;21;15.713;47.807
+Grenland;K;Alle;Alle;Februar;-1,290;100,000;162047;164165;-;-
+Grenland;K;Alle;< 5,6m;Februar;-0,714;100,000;155111;156226;-;-
+Grenland;K;Alle;> 5,6m;Februar;-12,667;100,000;6929;7934;-;-
+Grenland;K;Alle;5,6m - 7,6m;Februar;-5,331;100,000;3516;3714;-;-
+Grenland;K;Alle;7,6m - 12,5m;Februar;-17,927;100,000;3246;3955;-;-
+Grenland;K;Alle;12,5m - 16,0m;Februar;-29,457;100,000;91;129;-;-
+Grenland;K;Alle;> 16,0m;Februar;-44,118;100,000;76;136;-;-
+Grenland;K;Yrkesdøgn;Alle;Februar;-1,594;100,000;129554;131653;-;-
+Grenland;K;Yrkesdøgn;< 5,6m;Februar;-0,869;100,000;123373;124455;-;-
+Grenland;K;Yrkesdøgn;> 5,6m;Februar;-14,151;100,000;6176;7194;-;-
+Grenland;K;Yrkesdøgn;5,6m - 7,6m;Februar;-7,192;100,000;3097;3337;-;-
+Grenland;K;Yrkesdøgn;7,6m - 12,5m;Februar;-19,028;100,000;2915;3600;-;-
+Grenland;K;Yrkesdøgn;12,5m - 16,0m;Februar;-26,829;100,000;90;123;-;-
+Grenland;K;Yrkesdøgn;> 16,0m;Februar;-44,776;100,000;74;134;-;-
+Grenland;K;Helgedøgn;Alle;Februar;-0,058;100,000;32493;32512;-;-
+Grenland;K;Helgedøgn;< 5,6m;Februar;-0,104;100,000;31738;31771;-;-
+Grenland;K;Helgedøgn;> 5,6m;Februar;1,757;100,000;753;740;-;-
+Grenland;K;Helgedøgn;5,6m - 7,6m;Februar;11,141;100,000;419;377;-;-
+Grenland;K;Helgedøgn;7,6m - 12,5m;Februar;-6,761;100,000;331;355;-;-
+Grenland;K;Helgedøgn;12,5m - 16,0m;Februar;-83,333;100,000;1;6;-;-
+Grenland;K;Helgedøgn;> 16,0m;Februar;0,000;100,000;2;2;-;-
+Grenland;K;Alle;Alle;Mars;1,439;99,000;185197;182570;-;-
+Grenland;K;Alle;< 5,6m;Mars;0,665;99,000;176332;175168;-;-
+Grenland;K;Alle;> 5,6m;Mars;19,722;99,000;8857;7398;-;-
+Grenland;K;Alle;5,6m - 7,6m;Mars;11,705;99,000;3951;3537;-;-
+Grenland;K;Alle;7,6m - 12,5m;Mars;25,745;99,000;4601;3659;-;-
+Grenland;K;Alle;12,5m - 16,0m;Mars;59,794;99,000;155;97;-;-
+Grenland;K;Alle;> 16,0m;Mars;42,857;99,000;150;105;-;-
+Grenland;K;Yrkesdøgn;Alle;Mars;4,016;99,000;143358;137823;-;-
+Grenland;K;Yrkesdøgn;< 5,6m;Mars;3,368;99,000;135670;131249;-;-
+Grenland;K;Yrkesdøgn;> 5,6m;Mars;16,890;99,000;7682;6572;-;-
+Grenland;K;Yrkesdøgn;5,6m - 7,6m;Mars;11,929;99,000;3453;3085;-;-
+Grenland;K;Yrkesdøgn;7,6m - 12,5m;Mars;19,150;99,000;3926;3295;-;-
+Grenland;K;Yrkesdøgn;12,5m - 16,0m;Mars;68,132;99,000;153;91;-;-
+Grenland;K;Yrkesdøgn;> 16,0m;Mars;48,515;99,000;150;101;-;-
+Grenland;K;Helgedøgn;Alle;Mars;-6,499;100,000;41839;44747;-;-
+Grenland;K;Helgedøgn;< 5,6m;Mars;-7,416;100,000;40662;43919;-;-
+Grenland;K;Helgedøgn;> 5,6m;Mars;42,252;100,000;1175;826;-;-
+Grenland;K;Helgedøgn;5,6m - 7,6m;Mars;10,177;100,000;498;452;-;-
+Grenland;K;Helgedøgn;7,6m - 12,5m;Mars;85,440;100,000;675;364;-;-
+Grenland;K;Helgedøgn;12,5m - 16,0m;Mars;-66,667;100,000;2;6;-;-
+Grenland;K;Helgedøgn;> 16,0m;Mars;-100,000;100,000;0;4;-;-
+Grenland;K;Alle;Alle;April;-1,232;99,000;522085;528596;5.418;16.485
+Grenland;K;Alle;< 5,6m;April;-2,379;99,000;479983;491679;4.567;13.894
+Grenland;K;Alle;> 5,6m;April;14,572;99,000;40815;35624;14.643;44.549
+Grenland;K;Alle;5,6m - 7,6m;April;21,995;99,000;14482;11871;30.666;93.299
+Grenland;K;Alle;7,6m - 12,5m;April;2,932;99,000;20153;19579;0.671;2.041
+Grenland;K;Alle;12,5m - 16,0m;April;56,687;99,000;5108;3260;15.521;47.221
+Grenland;K;Alle;> 16,0m;April;17,287;99,000;1072;914;43.788;133.223
+Grenland;K;Yrkesdøgn;Alle;April;-2,310;100,000;392566;401848;6.032;18.353
+Grenland;K;Yrkesdøgn;< 5,6m;April;-3,671;100,000;356357;369938;5.083;15.464
+Grenland;K;Yrkesdøgn;> 5,6m;April;13,778;100,000;34972;30737;14.306;43.526
+Grenland;K;Yrkesdøgn;5,6m - 7,6m;April;20,296;100,000;12334;10253;32.117;97.713
+Grenland;K;Yrkesdøgn;7,6m - 12,5m;April;3,072;100,000;17277;16762;2.308;7.021
+Grenland;K;Yrkesdøgn;12,5m - 16,0m;April;52,159;100,000;4335;2849;0.099;0.302
+Grenland;K;Yrkesdøgn;> 16,0m;April;17,526;100,000;1026;873;41.273;125.571
+Grenland;K;Helgedøgn;Alle;April;2,186;99,000;129519;126748;3.168;9.638
+Grenland;K;Helgedøgn;< 5,6m;April;1,548;99,000;123626;121741;2.606;7.929
+Grenland;K;Helgedøgn;> 5,6m;April;19,562;99,000;5843;4887;16.638;50.621
+Grenland;K;Helgedøgn;5,6m - 7,6m;April;32,756;99,000;2148;1618;18.873;57.421
+Grenland;K;Helgedøgn;7,6m - 12,5m;April;2,094;99,000;2876;2817;8.750;26.621
+Grenland;K;Helgedøgn;12,5m - 16,0m;April;88,078;99,000;773;411;490.501;1492.317
+Grenland;K;Helgedøgn;> 16,0m;April;12,195;99,000;46;41;98.566;299.882
+Grenland;K;Alle;Alle;Mai;22,425;99,000;676586;552654;24.315;73.975
+Grenland;K;Alle;< 5,6m;Mai;21,699;99,000;618416;508153;22.961;69.856
+Grenland;K;Alle;> 5,6m;Mai;32,276;99,000;55724;42127;43.040;130.945
+Grenland;K;Alle;5,6m - 7,6m;Mai;50,311;99,000;21233;14126;55.293;168.226
+Grenland;K;Alle;7,6m - 12,5m;Mai;12,674;99,000;26226;23276;30.104;91.589
+Grenland;K;Alle;12,5m - 16,0m;Mai;79,948;99,000;6228;3461;18.794;57.180
+Grenland;K;Alle;> 16,0m;Mai;61,155;99,000;2037;1264;80.992;246.412
+Grenland;K;Yrkesdøgn;Alle;Mai;24,400;99,000;500779;402557;25.524;77.656
+Grenland;K;Yrkesdøgn;< 5,6m;Mai;23,773;99,000;451701;364944;24.013;73.058
+Grenland;K;Yrkesdøgn;> 5,6m;Mai;31,968;99,000;46900;35539;44.033;133.966
+Grenland;K;Yrkesdøgn;5,6m - 7,6m;Mai;48,824;99,000;17405;11695;55.206;167.960
+Grenland;K;Yrkesdøgn;7,6m - 12,5m;Mai;13,057;99,000;22279;19706;31.416;95.581
+Grenland;K;Yrkesdøgn;12,5m - 16,0m;Mai;81,373;99,000;5336;2942;34.093;103.725
+Grenland;K;Yrkesdøgn;> 16,0m;Mai;57,191;99,000;1880;1196;79.594;242.159
+Grenland;K;Helgedøgn;Alle;Mai;17,129;100,000;175807;150097;21.431;65.202
+Grenland;K;Helgedøgn;< 5,6m;Mai;16,414;100,000;166715;143209;20.734;63.083
+Grenland;K;Helgedøgn;> 5,6m;Mai;33,940;100,000;8824;6588;37.297;113.475
+Grenland;K;Helgedøgn;5,6m - 7,6m;Mai;57,466;100,000;3828;2431;55.072;167.553
+Grenland;K;Helgedøgn;7,6m - 12,5m;Mai;10,560;100,000;3947;3570;22.788;69.330
+Grenland;K;Helgedøgn;12,5m - 16,0m;Mai;71,869;100,000;892;519;141.003;428.992
+Grenland;K;Helgedøgn;> 16,0m;Mai;130,882;100,000;157;68;47.503;144.525
+Grenland;K;Alle;Alle;Juni;22,431;99,000;631946;516163;26.929;81.929
+Grenland;K;Alle;< 5,6m;Juni;21,862;99,000;579089;475202;26.034;79.207
+Grenland;K;Alle;> 5,6m;Juni;30,944;99,000;50589;38634;40.770;124.040
+Grenland;K;Alle;5,6m - 7,6m;Juni;51,939;99,000;19550;12867;60.266;183.355
+Grenland;K;Alle;7,6m - 12,5m;Juni;10,297;99,000;23770;21551;24.139;73.440
+Grenland;K;Alle;12,5m - 16,0m;Juni;71,834;99,000;5576;3245;48.014;146.080
+Grenland;K;Alle;> 16,0m;Juni;74,356;99,000;1693;971;86.453;263.028
+Grenland;K;Yrkesdøgn;Alle;Juni;14,280;99,000;462984;405131;24.515;74.585
+Grenland;K;Yrkesdøgn;< 5,6m;Juni;13,448;99,000;418756;369116;23.331;70.984
+Grenland;K;Yrkesdøgn;> 5,6m;Juni;24,769;99,000;42072;33720;39.863;121.282
+Grenland;K;Yrkesdøgn;5,6m - 7,6m;Juni;43,010;99,000;16010;11195;57.657;175.418
+Grenland;K;Yrkesdøgn;7,6m - 12,5m;Juni;5,664;99,000;19794;18733;24.377;74.165
+Grenland;K;Yrkesdøgn;12,5m - 16,0m;Juni;65,016;99,000;4698;2847;44.230;134.566
+Grenland;K;Yrkesdøgn;> 16,0m;Juni;66,138;99,000;1570;945;79.914;243.132
+Grenland;K;Helgedøgn;Alle;Juni;52,174;99,000;168962;111032;33.726;102.610
+Grenland;K;Helgedøgn;< 5,6m;Juni;51,135;99,000;160333;106086;33.011;100.434
+Grenland;K;Helgedøgn;> 5,6m;Juni;73,321;99,000;8517;4914;45.438;138.241
+Grenland;K;Helgedøgn;5,6m - 7,6m;Juni;111,722;99,000;3540;1672;70.719;215.158
+Grenland;K;Helgedøgn;7,6m - 12,5m;Juni;41,093;99,000;3976;2818;22.753;69.223
+Grenland;K;Helgedøgn;12,5m - 16,0m;Juni;120,603;99,000;878;398;71.290;216.895
+Grenland;K;Helgedøgn;> 16,0m;Juni;373,077;99,000;123;26;274.357;834.715
+Grenland;K;Alle;Alle;Siste 12 måneder;8,033;99,000;2631064;2435428;12.830;39.033
+Grenland;K;Alle;< 5,6m;Siste 12 måneder;7,383;99,000;2430939;2263813;11.886;36.162
+Grenland;K;Alle;> 5,6m;Siste 12 måneder;17,899;99,000;193865;164433;26.079;79.343
+Grenland;K;Alle;5,6m - 7,6m;Siste 12 måneder;28,227;99,000;74291;57937;39.743;120.916
+Grenland;K;Alle;7,6m - 12,5m;Siste 12 måneder;4,271;99,000;92362;88579;12.643;38.466
+Grenland;K;Alle;12,5m - 16,0m;Siste 12 måneder;58,723;99,000;21726;13688;33.821;102.899
+Grenland;K;Alle;> 16,0m;Siste 12 måneder;29,723;99,000;5486;4229;54.416;165.558
+Grenland;K;Yrkesdøgn;Alle;Siste 12 måneder;6,633;98,000;1990080;1866296;12.129;36.901
+Grenland;K;Yrkesdøgn;< 5,6m;Siste 12 måneder;5,979;98,000;1819367;1716726;11.007;33.487
+Grenland;K;Yrkesdøgn;> 5,6m;Siste 12 måneder;15,421;98,000;164897;142866;26.209;79.739
+Grenland;K;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;24,658;98,000;62404;50060;38.998;118.650
+Grenland;K;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;2,526;98,000;78749;76809;13.334;40.569
+Grenland;K;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;55,943;98,000;18604;11930;36.170;110.045
+Grenland;K;Yrkesdøgn;> 16,0m;Siste 12 måneder;26,383;98,000;5140;4067;51.150;155.620
+Grenland;K;Helgedøgn;Alle;Siste 12 måneder;12,625;99,000;640984;569132;14.819;45.085
+Grenland;K;Helgedøgn;< 5,6m;Siste 12 måneder;11,787;99,000;611572;547087;14.300;43.505
+Grenland;K;Helgedøgn;> 5,6m;Siste 12 måneder;34,316;99,000;28968;21567;23.148;70.426
+Grenland;K;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;50,908;99,000;11887;7877;41.026;124.819
+Grenland;K;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;15,658;99,000;13613;11770;6.735;20.490
+Grenland;K;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;77,588;99,000;3122;1758;20.755;63.147
+Grenland;K;Helgedøgn;> 16,0m;Siste 12 måneder;113,580;99,000;346;162;134.830;410.212
+Grenland;K;Alle;Alle;Hittil i år;8,033;99,000;2631064;2435428;12.830;39.033
+Grenland;K;Alle;< 5,6m;Hittil i år;7,383;99,000;2430939;2263813;11.886;36.162
+Grenland;K;Alle;> 5,6m;Hittil i år;17,899;99,000;193865;164433;26.079;79.343
+Grenland;K;Alle;5,6m - 7,6m;Hittil i år;28,227;99,000;74291;57937;39.743;120.916
+Grenland;K;Alle;7,6m - 12,5m;Hittil i år;4,271;99,000;92362;88579;12.643;38.466
+Grenland;K;Alle;12,5m - 16,0m;Hittil i år;58,723;99,000;21726;13688;33.821;102.899
+Grenland;K;Alle;> 16,0m;Hittil i år;29,723;99,000;5486;4229;54.416;165.558
+Grenland;K;Yrkesdøgn;Alle;Hittil i år;6,633;98,000;1990080;1866296;12.129;36.901
+Grenland;K;Yrkesdøgn;< 5,6m;Hittil i år;5,979;98,000;1819367;1716726;11.007;33.487
+Grenland;K;Yrkesdøgn;> 5,6m;Hittil i år;15,421;98,000;164897;142866;26.209;79.739
+Grenland;K;Yrkesdøgn;5,6m - 7,6m;Hittil i år;24,658;98,000;62404;50060;38.998;118.650
+Grenland;K;Yrkesdøgn;7,6m - 12,5m;Hittil i år;2,526;98,000;78749;76809;13.334;40.569
+Grenland;K;Yrkesdøgn;12,5m - 16,0m;Hittil i år;55,943;98,000;18604;11930;36.170;110.045
+Grenland;K;Yrkesdøgn;> 16,0m;Hittil i år;26,383;98,000;5140;4067;51.150;155.620
+Grenland;K;Helgedøgn;Alle;Hittil i år;12,625;99,000;640984;569132;14.819;45.085
+Grenland;K;Helgedøgn;< 5,6m;Hittil i år;11,787;99,000;611572;547087;14.300;43.505
+Grenland;K;Helgedøgn;> 5,6m;Hittil i år;34,316;99,000;28968;21567;23.148;70.426
+Grenland;K;Helgedøgn;5,6m - 7,6m;Hittil i år;50,908;99,000;11887;7877;41.026;124.819
+Grenland;K;Helgedøgn;7,6m - 12,5m;Hittil i år;15,658;99,000;13613;11770;6.735;20.490
+Grenland;K;Helgedøgn;12,5m - 16,0m;Hittil i år;77,588;99,000;3122;1758;20.755;63.147
+Grenland;K;Helgedøgn;> 16,0m;Hittil i år;113,580;99,000;346;162;134.830;410.212
+Grenland;E+R;Alle;Alle;Januar;-0,404;98,000;2093568;2102064;9.719;11.173
+Grenland;E+R;Alle;< 5,6m;Januar;-0,382;98,000;1847829;1854916;9.288;10.678
+Grenland;E+R;Alle;> 5,6m;Januar;-0,487;98,000;245588;246791;14.584;16.766
+Grenland;E+R;Alle;5,6m - 7,6m;Januar;-6,753;98,000;59003;63276;19.625;22.561
+Grenland;E+R;Alle;7,6m - 12,5m;Januar;3,971;98,000;75532;72647;6.961;8.002
+Grenland;E+R;Alle;12,5m - 16,0m;Januar;-13,725;98,000;26490;30704;23.096;26.551
+Grenland;E+R;Alle;> 16,0m;Januar;5,488;98,000;84563;80164;15.928;18.311
+Grenland;E+R;Yrkesdøgn;Alle;Januar;0,018;97,000;1660494;1660193;10.396;11.952
+Grenland;E+R;Yrkesdøgn;< 5,6m;Januar;0,084;97,000;1441258;1440051;9.976;11.469
+Grenland;E+R;Yrkesdøgn;> 5,6m;Januar;-0,320;97,000;219092;219796;14.995;17.238
+Grenland;E+R;Yrkesdøgn;5,6m - 7,6m;Januar;-6,232;97,000;51970;55424;20.871;23.994
+Grenland;E+R;Yrkesdøgn;7,6m - 12,5m;Januar;4,144;97,000;65724;63109;6.944;7.982
+Grenland;E+R;Yrkesdøgn;12,5m - 16,0m;Januar;-14,045;97,000;23763;27646;22.203;25.524
+Grenland;E+R;Yrkesdøgn;> 16,0m;Januar;5,458;97,000;77635;73617;16.490;18.956
+Grenland;E+R;Helgedøgn;Alle;Januar;-1,991;99,000;433074;441871;7.462;8.578
+Grenland;E+R;Helgedøgn;< 5,6m;Januar;-1,999;99,000;406571;414865;7.304;8.396
+Grenland;E+R;Helgedøgn;> 5,6m;Januar;-1,848;99,000;26496;26995;11.510;13.232
+Grenland;E+R;Helgedøgn;5,6m - 7,6m;Januar;-10,430;99,000;7033;7852;12.556;14.434
+Grenland;E+R;Helgedøgn;7,6m - 12,5m;Januar;2,831;99,000;9808;9538;7.933;9.120
+Grenland;E+R;Helgedøgn;12,5m - 16,0m;Januar;-10,824;99,000;2727;3058;37.244;42.816
+Grenland;E+R;Helgedøgn;> 16,0m;Januar;5,819;99,000;6928;6547;8.390;9.646
+Grenland;E+R;Alle;Alle;Februar;-1,107;96,000;1902767;1924066;10.153;11.672
+Grenland;E+R;Alle;< 5,6m;Februar;-1,194;96,000;1676594;1696850;9.531;10.957
+Grenland;E+R;Alle;> 5,6m;Februar;-0,415;96,000;226046;226987;15.921;18.302
+Grenland;E+R;Alle;5,6m - 7,6m;Februar;-6,434;96,000;54171;57896;21.668;24.910
+Grenland;E+R;Alle;7,6m - 12,5m;Februar;3,311;96,000;68237;66050;5.508;6.332
+Grenland;E+R;Alle;12,5m - 16,0m;Februar;-16,535;96,000;23512;28170;25.652;29.489
+Grenland;E+R;Alle;> 16,0m;Februar;7,019;96,000;80126;74871;17.470;20.084
+Grenland;E+R;Yrkesdøgn;Alle;Februar;-0,933;97,000;1522206;1536548;10.984;12.627
+Grenland;E+R;Yrkesdøgn;< 5,6m;Februar;-1,050;97,000;1319792;1333798;10.335;11.881
+Grenland;E+R;Yrkesdøgn;> 5,6m;Februar;-0,114;97,000;202297;202527;16.413;18.869
+Grenland;E+R;Yrkesdøgn;5,6m - 7,6m;Februar;-6,473;97,000;47667;50966;22.905;26.331
+Grenland;E+R;Yrkesdøgn;7,6m - 12,5m;Februar;4,859;97,000;59996;57216;6.427;7.388
+Grenland;E+R;Yrkesdøgn;12,5m - 16,0m;Februar;-17,189;97,000;21135;25522;24.916;28.643
+Grenland;E+R;Yrkesdøgn;> 16,0m;Februar;6,794;97,000;73499;68823;17.891;20.568
+Grenland;E+R;Helgedøgn;Alle;Februar;-1,795;93,000;380561;387518;7.303;8.396
+Grenland;E+R;Helgedøgn;< 5,6m;Februar;-1,722;93,000;356802;363052;7.115;8.180
+Grenland;E+R;Helgedøgn;> 5,6m;Februar;-2,907;93,000;23749;24460;12.547;14.424
+Grenland;E+R;Helgedøgn;5,6m - 7,6m;Februar;-6,147;93,000;6504;6930;13.083;15.041
+Grenland;E+R;Helgedøgn;7,6m - 12,5m;Februar;-6,713;93,000;8241;8834;3.708;4.263
+Grenland;E+R;Helgedøgn;12,5m - 16,0m;Februar;-10,234;93,000;2377;2648;42.908;49.327
+Grenland;E+R;Helgedøgn;> 16,0m;Februar;9,573;93,000;6627;6048;14.289;16.426
+Grenland;E+R;Alle;Alle;Mars;0,858;98,000;2213159;2194329;7.287;8.377
+Grenland;E+R;Alle;< 5,6m;Mars;0,415;98,000;1956470;1948393;6.475;7.444
+Grenland;E+R;Alle;> 5,6m;Mars;4,419;98,000;256508;245652;13.961;16.049
+Grenland;E+R;Alle;5,6m - 7,6m;Mars;1,560;98,000;62841;61876;18.987;21.827
+Grenland;E+R;Alle;7,6m - 12,5m;Mars;13,284;98,000;83410;73629;5.294;6.086
+Grenland;E+R;Alle;12,5m - 16,0m;Mars;-17,018;98,000;24883;29986;30.531;35.098
+Grenland;E+R;Alle;> 16,0m;Mars;6,503;98,000;85374;80161;18.517;21.288
+Grenland;E+R;Yrkesdøgn;Alle;Mars;3,645;98,000;1671376;1612602;8.113;9.327
+Grenland;E+R;Yrkesdøgn;< 5,6m;Mars;3,526;98,000;1449499;1400129;7.396;8.502
+Grenland;E+R;Yrkesdøgn;> 5,6m;Mars;4,477;98,000;221703;212203;14.064;16.168
+Grenland;E+R;Yrkesdøgn;5,6m - 7,6m;Mars;3,038;98,000;53379;51805;18.828;21.645
+Grenland;E+R;Yrkesdøgn;7,6m - 12,5m;Mars;12,661;98,000;69272;61487;5.511;6.335
+Grenland;E+R;Yrkesdøgn;12,5m - 16,0m;Mars;-17,190;98,000;21789;26312;29.867;34.335
+Grenland;E+R;Yrkesdøgn;> 16,0m;Mars;6,424;98,000;77263;72599;19.574;22.502
+Grenland;E+R;Helgedøgn;Alle;Mars;-6,866;97,000;541783;581727;5.940;6.829
+Grenland;E+R;Helgedøgn;< 5,6m;Mars;-7,532;97,000;506971;548264;5.273;6.062
+Grenland;E+R;Helgedøgn;> 5,6m;Mars;4,054;97,000;34805;33449;14.355;16.503
+Grenland;E+R;Helgedøgn;5,6m - 7,6m;Mars;-6,047;97,000;9462;10071;21.411;24.614
+Grenland;E+R;Helgedøgn;7,6m - 12,5m;Mars;16,439;97,000;14138;12142;6.780;7.794
+Grenland;E+R;Helgedøgn;12,5m - 16,0m;Mars;-15,787;97,000;3094;3674;42.839;49.247
+Grenland;E+R;Helgedøgn;> 16,0m;Mars;7,260;97,000;8111;7562;7.987;9.182
+Grenland;E+R;Alle;Alle;April;-1,481;96,000;2197301;2230338;13.515;15.536
+Grenland;E+R;Alle;< 5,6m;April;-1,157;96,000;1926771;1949330;13.850;15.922
+Grenland;E+R;Alle;> 5,6m;April;-3,741;96,000;270094;280591;13.555;15.582
+Grenland;E+R;Alle;5,6m - 7,6m;April;-3,193;96,000;67434;69658;19.229;22.106
+Grenland;E+R;Alle;7,6m - 12,5m;April;3,678;96,000;99931;96386;11.217;12.896
+Grenland;E+R;Alle;12,5m - 16,0m;April;-16,243;96,000;26180;31257;30.177;34.691
+Grenland;E+R;Alle;> 16,0m;April;-8,093;96,000;76549;83290;13.609;15.644
+Grenland;E+R;Yrkesdøgn;Alle;April;-6,564;96,000;1553919;1663087;11.928;13.713
+Grenland;E+R;Yrkesdøgn;< 5,6m;April;-6,474;96,000;1332404;1424630;11.984;13.777
+Grenland;E+R;Yrkesdøgn;> 5,6m;April;-7,121;96,000;221104;238057;12.972;14.913
+Grenland;E+R;Yrkesdøgn;5,6m - 7,6m;April;-8,453;96,000;52712;57579;17.461;20.073
+Grenland;E+R;Yrkesdøgn;7,6m - 12,5m;April;0,006;96,000;77605;77600;10.194;11.719
+Grenland;E+R;Yrkesdøgn;12,5m - 16,0m;April;-20,041;96,000;21884;27369;27.979;32.165
+Grenland;E+R;Yrkesdøgn;> 16,0m;April;-8,749;96,000;68903;75509;14.450;16.612
+Grenland;E+R;Helgedøgn;Alle;April;13,421;97,000;643382;567251;19.532;22.453
+Grenland;E+R;Helgedøgn;< 5,6m;April;13,277;97,000;594367;524700;19.847;22.817
+Grenland;E+R;Helgedøgn;> 5,6m;April;15,178;97,000;48990;42534;17.316;19.907
+Grenland;E+R;Helgedøgn;5,6m - 7,6m;April;21,881;97,000;14722;12079;25.649;29.486
+Grenland;E+R;Helgedøgn;7,6m - 12,5m;April;18,844;97,000;22326;18786;18.570;21.348
+Grenland;E+R;Helgedøgn;12,5m - 16,0m;April;10,494;97,000;4296;3888;42.358;48.694
+Grenland;E+R;Helgedøgn;> 16,0m;April;-1,735;97,000;7646;7781;12.810;14.726
+Grenland;E+R;Alle;Alle;Mai;2,019;97,000;2420710;2372810;9.285;10.674
+Grenland;E+R;Alle;< 5,6m;Mai;2,558;97,000;2101627;2049209;9.371;10.773
+Grenland;E+R;Alle;> 5,6m;Mai;-1,292;97,000;318749;322922;11.140;12.806
+Grenland;E+R;Alle;5,6m - 7,6m;Mai;-3,495;97,000;77699;80513;13.863;15.937
+Grenland;E+R;Alle;7,6m - 12,5m;Mai;-0,207;97,000;121218;121470;6.953;7.993
+Grenland;E+R;Alle;12,5m - 16,0m;Mai;-7,040;97,000;31702;34103;28.648;32.933
+Grenland;E+R;Alle;> 16,0m;Mai;1,490;97,000;88130;86836;13.485;15.503
+Grenland;E+R;Yrkesdøgn;Alle;Mai;7,462;97,000;1751664;1630036;11.394;13.099
+Grenland;E+R;Yrkesdøgn;< 5,6m;Mai;8,443;97,000;1491947;1375791;11.697;13.447
+Grenland;E+R;Yrkesdøgn;> 5,6m;Mai;2,284;97,000;259407;253614;12.436;14.297
+Grenland;E+R;Yrkesdøgn;5,6m - 7,6m;Mai;1,042;97,000;61467;60833;15.677;18.023
+Grenland;E+R;Yrkesdøgn;7,6m - 12,5m;Mai;3,694;97,000;93674;90337;8.382;9.636
+Grenland;E+R;Yrkesdøgn;12,5m - 16,0m;Mai;-5,518;97,000;26983;28559;28.971;33.305
+Grenland;E+R;Yrkesdøgn;> 16,0m;Mai;4,599;97,000;77283;73885;14.656;16.848
+Grenland;E+R;Helgedøgn;Alle;Mai;-9,926;97,000;669046;742774;7.724;8.879
+Grenland;E+R;Helgedøgn;< 5,6m;Mai;-9,465;97,000;609680;673418;7.661;8.807
+Grenland;E+R;Helgedøgn;> 5,6m;Mai;-14,379;97,000;59342;69308;10.925;12.559
+Grenland;E+R;Helgedøgn;5,6m - 7,6m;Mai;-17,520;97,000;16232;19680;12.883;14.810
+Grenland;E+R;Helgedøgn;7,6m - 12,5m;Mai;-11,528;97,000;27544;31133;8.169;9.391
+Grenland;E+R;Helgedøgn;12,5m - 16,0m;Mai;-14,881;97,000;4719;5544;34.893;40.113
+Grenland;E+R;Helgedøgn;> 16,0m;Mai;-16,246;97,000;10847;12951;10.578;12.161
+Grenland;E+R;Alle;Alle;Juni;2,767;99,000;2548686;2480070;13.172;15.143
+Grenland;E+R;Alle;< 5,6m;Juni;3,798;99,000;2217284;2136149;13.235;15.215
+Grenland;E+R;Alle;> 5,6m;Juni;-3,422;99,000;331165;342899;15.080;17.336
+Grenland;E+R;Alle;5,6m - 7,6m;Juni;-3,812;99,000;86643;90077;17.202;19.775
+Grenland;E+R;Alle;7,6m - 12,5m;Juni;-0,034;99,000;126765;126808;10.614;12.202
+Grenland;E+R;Alle;12,5m - 16,0m;Juni;-11,203;99,000;34448;38794;36.502;41.963
+Grenland;E+R;Alle;> 16,0m;Juni;-4,484;99,000;83309;87220;16.731;19.234
+Grenland;E+R;Yrkesdøgn;Alle;Juni;-5,239;98,000;1783972;1882593;11.513;13.235
+Grenland;E+R;Yrkesdøgn;< 5,6m;Juni;-4,493;98,000;1521067;1592625;11.520;13.243
+Grenland;E+R;Yrkesdøgn;> 5,6m;Juni;-9,138;98,000;262696;289114;13.605;15.641
+Grenland;E+R;Yrkesdøgn;5,6m - 7,6m;Juni;-11,579;98,000;65239;73782;13.882;15.958
+Grenland;E+R;Yrkesdøgn;7,6m - 12,5m;Juni;-6,970;98,000;94558;101642;8.853;10.177
+Grenland;E+R;Yrkesdøgn;12,5m - 16,0m;Juni;-15,367;98,000;28776;34001;34.243;39.366
+Grenland;E+R;Yrkesdøgn;> 16,0m;Juni;-6,985;98,000;74123;79689;16.810;19.325
+Grenland;E+R;Helgedøgn;Alle;Juni;27,991;99,000;764714;597477;15.490;17.808
+Grenland;E+R;Helgedøgn;< 5,6m;Juni;28,093;99,000;696217;543524;15.433;17.742
+Grenland;E+R;Helgedøgn;> 5,6m;Juni;27,301;99,000;68469;53785;17.894;20.571
+Grenland;E+R;Helgedøgn;5,6m - 7,6m;Juni;31,353;99,000;21404;16295;24.850;28.567
+Grenland;E+R;Helgedøgn;7,6m - 12,5m;Juni;27,978;99,000;32207;25166;14.899;17.128
+Grenland;E+R;Helgedøgn;12,5m - 16,0m;Juni;18,339;99,000;5672;4793;46.536;53.498
+Grenland;E+R;Helgedøgn;> 16,0m;Juni;21,976;99,000;9186;7531;12.118;13.930
+Grenland;E+R;Alle;Alle;Siste 12 måneder;0,545;97,000;13376191;13303677;10.377;11.929
+Grenland;E+R;Alle;< 5,6m;Siste 12 måneder;0,788;97,000;11726575;11634847;10.144;11.661
+Grenland;E+R;Alle;> 5,6m;Siste 12 måneder;-1,062;97,000;1648150;1665842;13.648;15.690
+Grenland;E+R;Alle;5,6m - 7,6m;Siste 12 måneder;-3,663;97,000;407791;423296;17.922;20.603
+Grenland;E+R;Alle;7,6m - 12,5m;Siste 12 måneder;3,250;97,000;575093;556990;7.645;8.789
+Grenland;E+R;Alle;12,5m - 16,0m;Siste 12 måneder;-13,366;97,000;167215;193014;29.138;33.497
+Grenland;E+R;Alle;> 16,0m;Siste 12 måneder;1,118;97,000;498051;492542;15.394;17.697
+Grenland;E+R;Yrkesdøgn;Alle;Siste 12 måneder;-0,415;97,000;9943631;9985059;10.397;11.953
+Grenland;E+R;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,129;97,000;8555967;8567024;10.185;11.708
+Grenland;E+R;Yrkesdøgn;> 5,6m;Siste 12 måneder;-2,050;97,000;1386299;1415311;13.582;15.614
+Grenland;E+R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;-5,124;97,000;332434;350389;17.564;20.192
+Grenland;E+R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;2,091;97,000;460829;451391;7.356;8.456
+Grenland;E+R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-14,804;97,000;144330;169409;27.777;31.932
+Grenland;E+R;Yrkesdøgn;> 16,0m;Siste 12 måneder;1,032;97,000;448706;444122;16.008;18.403
+Grenland;E+R;Helgedøgn;Alle;Siste 12 måneder;3,433;97,000;3432560;3318618;10.322;11.866
+Grenland;E+R;Helgedøgn;< 5,6m;Siste 12 måneder;3,350;97,000;3170608;3067823;10.161;11.681
+Grenland;E+R;Helgedøgn;> 5,6m;Siste 12 måneder;4,518;97,000;261851;250531;13.342;15.338
+Grenland;E+R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;3,360;97,000;75357;72907;18.504;21.273
+Grenland;E+R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;8,206;97,000;114264;105599;9.705;11.157
+Grenland;E+R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-3,050;97,000;22885;23605;40.892;47.009
+Grenland;E+R;Helgedøgn;> 16,0m;Siste 12 måneder;1,910;97,000;49345;48420;9.815;11.284
+Grenland;E+R;Alle;Alle;Hittil i år;0,545;97,000;13376191;13303677;10.377;11.929
+Grenland;E+R;Alle;< 5,6m;Hittil i år;0,788;97,000;11726575;11634847;10.144;11.661
+Grenland;E+R;Alle;> 5,6m;Hittil i år;-1,062;97,000;1648150;1665842;13.648;15.690
+Grenland;E+R;Alle;5,6m - 7,6m;Hittil i år;-3,663;97,000;407791;423296;17.922;20.603
+Grenland;E+R;Alle;7,6m - 12,5m;Hittil i år;3,250;97,000;575093;556990;7.645;8.789
+Grenland;E+R;Alle;12,5m - 16,0m;Hittil i år;-13,366;97,000;167215;193014;29.138;33.497
+Grenland;E+R;Alle;> 16,0m;Hittil i år;1,118;97,000;498051;492542;15.394;17.697
+Grenland;E+R;Yrkesdøgn;Alle;Hittil i år;-0,415;97,000;9943631;9985059;10.397;11.953
+Grenland;E+R;Yrkesdøgn;< 5,6m;Hittil i år;-0,129;97,000;8555967;8567024;10.185;11.708
+Grenland;E+R;Yrkesdøgn;> 5,6m;Hittil i år;-2,050;97,000;1386299;1415311;13.582;15.614
+Grenland;E+R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;-5,124;97,000;332434;350389;17.564;20.192
+Grenland;E+R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;2,091;97,000;460829;451391;7.356;8.456
+Grenland;E+R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-14,804;97,000;144330;169409;27.777;31.932
+Grenland;E+R;Yrkesdøgn;> 16,0m;Hittil i år;1,032;97,000;448706;444122;16.008;18.403
+Grenland;E+R;Helgedøgn;Alle;Hittil i år;3,433;97,000;3432560;3318618;10.322;11.866
+Grenland;E+R;Helgedøgn;< 5,6m;Hittil i år;3,350;97,000;3170608;3067823;10.161;11.681
+Grenland;E+R;Helgedøgn;> 5,6m;Hittil i år;4,518;97,000;261851;250531;13.342;15.338
+Grenland;E+R;Helgedøgn;5,6m - 7,6m;Hittil i år;3,360;97,000;75357;72907;18.504;21.273
+Grenland;E+R;Helgedøgn;7,6m - 12,5m;Hittil i år;8,206;97,000;114264;105599;9.705;11.157
+Grenland;E+R;Helgedøgn;12,5m - 16,0m;Hittil i år;-3,050;97,000;22885;23605;40.892;47.009
+Grenland;E+R;Helgedøgn;> 16,0m;Hittil i år;1,910;97,000;49345;48420;9.815;11.284
+Grenland;F;Alle;Alle;Januar;3,486;92,000;4813246;4651098;7.923;4.199
+Grenland;F;Alle;< 5,6m;Januar;3,468;92,000;4452771;4303529;7.975;4.227
+Grenland;F;Alle;> 5,6m;Januar;5,071;92,000;357785;340516;17.906;9.490
+Grenland;F;Alle;5,6m - 7,6m;Januar;7,065;92,000;132746;123986;32.324;17.131
+Grenland;F;Alle;7,6m - 12,5m;Januar;6,378;92,000;138993;130660;12.974;6.876
+Grenland;F;Alle;12,5m - 16,0m;Januar;-1,386;92,000;55016;55789;27.989;14.833
+Grenland;F;Alle;> 16,0m;Januar;3,155;92,000;31030;30081;48.618;25.766
+Grenland;F;Yrkesdøgn;Alle;Januar;3,852;93,000;3918755;3773404;8.210;4.351
+Grenland;F;Yrkesdøgn;< 5,6m;Januar;3,901;93,000;3596625;3461589;8.258;4.377
+Grenland;F;Yrkesdøgn;> 5,6m;Januar;4,800;93,000;319504;304870;17.414;9.229
+Grenland;F;Yrkesdøgn;5,6m - 7,6m;Januar;6,424;93,000;118086;110958;29.255;15.504
+Grenland;F;Yrkesdøgn;7,6m - 12,5m;Januar;5,614;93,000;122273;115774;13.240;7.017
+Grenland;F;Yrkesdøgn;12,5m - 16,0m;Januar;0,037;93,000;49298;49280;30.510;16.170
+Grenland;F;Yrkesdøgn;> 16,0m;Januar;3,427;93,000;29847;28858;49.087;26.015
+Grenland;F;Helgedøgn;Alle;Januar;1,914;91,000;894491;877694;7.146;3.787
+Grenland;F;Helgedøgn;< 5,6m;Januar;1,687;91,000;856146;841940;7.402;3.923
+Grenland;F;Helgedøgn;> 5,6m;Januar;7,392;91,000;38281;35646;24.591;13.033
+Grenland;F;Helgedøgn;5,6m - 7,6m;Januar;12,527;91,000;14660;13028;55.788;29.566
+Grenland;F;Helgedøgn;7,6m - 12,5m;Januar;12,320;91,000;16720;14886;13.100;6.943
+Grenland;F;Helgedøgn;12,5m - 16,0m;Januar;-12,152;91,000;5718;6509;15.443;8.184
+Grenland;F;Helgedøgn;> 16,0m;Januar;-3,271;91,000;1183;1223;-;-
+Grenland;F;Alle;Alle;Februar;5,112;93,000;4042460;3845863;7.710;4.243
+Grenland;F;Alle;< 5,6m;Februar;5,077;93,000;3743721;3562819;8.077;4.445
+Grenland;F;Alle;> 5,6m;Februar;6,824;93,000;297006;278034;12.657;6.965
+Grenland;F;Alle;5,6m - 7,6m;Februar;12,469;93,000;111604;99231;21.208;11.672
+Grenland;F;Alle;7,6m - 12,5m;Februar;6,103;93,000;113614;107079;10.759;5.921
+Grenland;F;Alle;12,5m - 16,0m;Februar;-3,281;93,000;44162;45660;17.694;9.737
+Grenland;F;Alle;> 16,0m;Februar;5,993;93,000;27626;26064;43.949;24.187
+Grenland;F;Yrkesdøgn;Alle;Februar;5,512;92,000;3261884;3091494;8.505;4.681
+Grenland;F;Yrkesdøgn;< 5,6m;Februar;5,479;92,000;2994678;2839114;8.859;4.876
+Grenland;F;Yrkesdøgn;> 5,6m;Februar;7,308;92,000;265534;247450;12.759;7.022
+Grenland;F;Yrkesdøgn;5,6m - 7,6m;Februar;11,960;92,000;98884;88321;19.408;10.681
+Grenland;F;Yrkesdøgn;7,6m - 12,5m;Februar;6,825;92,000;100799;94359;11.300;6.219
+Grenland;F;Yrkesdøgn;12,5m - 16,0m;Februar;-1,139;92,000;39321;39774;17.612;9.692
+Grenland;F;Yrkesdøgn;> 16,0m;Februar;6,137;92,000;26530;24996;43.459;23.917
+Grenland;F;Helgedøgn;Alle;Februar;3,474;94,000;780576;754369;7.615;4.191
+Grenland;F;Helgedøgn;< 5,6m;Februar;3,501;94,000;749043;723705;7.893;4.344
+Grenland;F;Helgedøgn;> 5,6m;Februar;2,903;94,000;31472;30584;19.499;10.731
+Grenland;F;Helgedøgn;5,6m - 7,6m;Februar;16,590;94,000;12720;10910;38.688;21.292
+Grenland;F;Helgedøgn;7,6m - 12,5m;Februar;0,747;94,000;12815;12720;13.901;7.650
+Grenland;F;Helgedøgn;12,5m - 16,0m;Februar;-17,754;94,000;4841;5886;25.388;13.972
+Grenland;F;Helgedøgn;> 16,0m;Februar;2,622;94,000;1096;1068;59.408;32.694
+Grenland;F;Alle;Alle;Mars;10,436;98,000;4347497;3936650;9.215;5.522
+Grenland;F;Alle;< 5,6m;Mars;9,853;98,000;4030208;3668734;9.165;5.492
+Grenland;F;Alle;> 5,6m;Mars;19,827;98,000;315596;263376;15.958;9.562
+Grenland;F;Alle;5,6m - 7,6m;Mars;25,543;98,000;112262;89421;14.182;8.498
+Grenland;F;Alle;7,6m - 12,5m;Mars;26,473;98,000;132905;105086;18.506;11.088
+Grenland;F;Alle;12,5m - 16,0m;Mars;-4,318;98,000;40325;42145;22.496;13.479
+Grenland;F;Alle;> 16,0m;Mars;12,648;98,000;30104;26724;42.900;25.705
+Grenland;F;Yrkesdøgn;Alle;Mars;12,448;99,000;3383667;3009098;9.758;5.847
+Grenland;F;Yrkesdøgn;< 5,6m;Mars;11,935;99,000;3106739;2775484;9.728;5.829
+Grenland;F;Yrkesdøgn;> 5,6m;Mars;20,152;99,000;275322;229145;15.981;9.575
+Grenland;F;Yrkesdøgn;5,6m - 7,6m;Mars;25,888;99,000;97805;77692;13.906;8.332
+Grenland;F;Yrkesdøgn;7,6m - 12,5m;Mars;25,372;99,000;113232;90317;17.815;10.675
+Grenland;F;Yrkesdøgn;12,5m - 16,0m;Mars;-0,851;99,000;35642;35948;23.345;13.988
+Grenland;F;Yrkesdøgn;> 16,0m;Mars;13,717;99,000;28643;25188;42.989;25.758
+Grenland;F;Helgedøgn;Alle;Mars;3,911;97,000;963830;927552;8.342;4.998
+Grenland;F;Helgedøgn;< 5,6m;Mars;3,383;97,000;923469;893250;8.343;4.999
+Grenland;F;Helgedøgn;> 5,6m;Mars;17,654;97,000;40274;34231;17.864;10.704
+Grenland;F;Helgedøgn;5,6m - 7,6m;Mars;23,259;97,000;14457;11729;20.939;12.546
+Grenland;F;Helgedøgn;7,6m - 12,5m;Mars;33,205;97,000;19673;14769;24.076;14.426
+Grenland;F;Helgedøgn;12,5m - 16,0m;Mars;-24,431;97,000;4683;6197;21.932;13.141
+Grenland;F;Helgedøgn;> 16,0m;Mars;-4,883;97,000;1461;1536;-;-
+Grenland;F;Alle;Alle;April;-0,242;96,000;4181422;4191547;9.869;5.913
+Grenland;F;Alle;< 5,6m;April;-0,621;96,000;3826186;3850101;9.579;5.739
+Grenland;F;Alle;> 5,6m;April;4,949;96,000;352778;336143;16.551;9.917
+Grenland;F;Alle;5,6m - 7,6m;April;5,650;96,000;118376;112045;16.402;9.828
+Grenland;F;Alle;7,6m - 12,5m;April;8,180;96,000;166415;153832;16.299;9.766
+Grenland;F;Alle;12,5m - 16,0m;April;-8,520;96,000;37280;40752;17.059;10.221
+Grenland;F;Alle;> 16,0m;April;4,042;96,000;30707;29514;48.083;28.810
+Grenland;F;Yrkesdøgn;Alle;April;-2,898;96,000;3152345;3246428;9.918;5.943
+Grenland;F;Yrkesdøgn;< 5,6m;April;-3,471;96,000;2850666;2953176;9.531;5.711
+Grenland;F;Yrkesdøgn;> 5,6m;April;3,919;96,000;299365;288076;17.134;10.266
+Grenland;F;Yrkesdøgn;5,6m - 7,6m;April;3,873;96,000;100032;96302;16.306;9.770
+Grenland;F;Yrkesdøgn;7,6m - 12,5m;April;7,193;96,000;138503;129209;16.476;9.872
+Grenland;F;Yrkesdøgn;12,5m - 16,0m;April;-8,406;96,000;31729;34641;16.955;10.159
+Grenland;F;Yrkesdøgn;> 16,0m;April;4,215;96,000;29101;27924;48.836;29.261
+Grenland;F;Helgedøgn;Alle;April;8,883;97,000;1029077;945119;10.146;6.079
+Grenland;F;Helgedøgn;< 5,6m;April;8,763;97,000;975520;896925;10.135;6.073
+Grenland;F;Helgedøgn;> 5,6m;April;11,122;97,000;53413;48067;15.707;9.411
+Grenland;F;Helgedøgn;5,6m - 7,6m;April;16,522;97,000;18344;15743;18.068;10.826
+Grenland;F;Helgedøgn;7,6m - 12,5m;April;13,357;97,000;27912;24623;17.534;10.506
+Grenland;F;Helgedøgn;12,5m - 16,0m;April;-9,164;97,000;5551;6111;28.364;16.995
+Grenland;F;Helgedøgn;> 16,0m;April;1,006;97,000;1606;1590;40.446;24.234
+Grenland;F;Alle;Alle;Mai;4,719;92,000;3747518;3578643;15.219;10.100
+Grenland;F;Alle;< 5,6m;Mai;4,865;92,000;3404545;3246594;15.049;9.987
+Grenland;F;Alle;> 5,6m;Mai;4,339;92,000;340939;326762;19.679;13.060
+Grenland;F;Alle;5,6m - 7,6m;Mai;10,463;92,000;113526;102773;18.506;12.281
+Grenland;F;Alle;7,6m - 12,5m;Mai;1,062;92,000;158339;156675;20.873;13.852
+Grenland;F;Alle;12,5m - 16,0m;Mai;-2,297;92,000;38713;39623;10.981;7.287
+Grenland;F;Alle;> 16,0m;Mai;9,642;92,000;30361;27691;55.818;37.042
+Grenland;F;Yrkesdøgn;Alle;Mai;11,107;91,000;2832579;2549416;17.836;11.836
+Grenland;F;Yrkesdøgn;< 5,6m;Mai;11,559;91,000;2541346;2278020;17.849;11.845
+Grenland;F;Yrkesdøgn;> 5,6m;Mai;8,634;91,000;289374;266375;21.046;13.967
+Grenland;F;Yrkesdøgn;5,6m - 7,6m;Mai;15,120;91,000;96213;83576;19.748;13.105
+Grenland;F;Yrkesdøgn;7,6m - 12,5m;Mai;4,804;91,000;130963;124960;22.177;14.717
+Grenland;F;Yrkesdøgn;12,5m - 16,0m;Mai;3,734;91,000;33674;32462;12.129;8.049
+Grenland;F;Yrkesdøgn;> 16,0m;Mai;12,401;91,000;28524;25377;57.086;37.883
+Grenland;F;Helgedøgn;Alle;Mai;-11,104;96,000;914939;1029227;10.732;7.122
+Grenland;F;Helgedøgn;< 5,6m;Mai;-10,879;96,000;863199;968574;10.474;6.951
+Grenland;F;Helgedøgn;> 5,6m;Mai;-14,609;96,000;51565;60387;15.957;10.589
+Grenland;F;Helgedøgn;5,6m - 7,6m;Mai;-9,814;96,000;17313;19197;17.402;11.549
+Grenland;F;Helgedøgn;7,6m - 12,5m;Mai;-13,681;96,000;27376;31715;18.165;12.055
+Grenland;F;Helgedøgn;12,5m - 16,0m;Mai;-29,633;96,000;5039;7161;11.808;7.836
+Grenland;F;Helgedøgn;> 16,0m;Mai;-20,614;96,000;1837;2314;44.944;29.826
+Grenland;F;Alle;Alle;Juni;-4,321;91,000;3475236;3632198;14.074;9.340
+Grenland;F;Alle;< 5,6m;Juni;-3,942;91,000;3168521;3298545;13.653;9.060
+Grenland;F;Alle;> 5,6m;Juni;-8,230;91,000;305016;332370;19.677;13.058
+Grenland;F;Alle;5,6m - 7,6m;Juni;-6,796;91,000;98518;105701;18.428;12.229
+Grenland;F;Alle;7,6m - 12,5m;Juni;-4,009;91,000;147717;153887;20.896;13.867
+Grenland;F;Alle;12,5m - 16,0m;Juni;-18,166;91,000;35429;43294;16.091;10.678
+Grenland;F;Alle;> 16,0m;Juni;-20,808;91,000;23352;29488;50.408;33.452
+Grenland;F;Yrkesdøgn;Alle;Juni;-10,359;91,000;2571542;2868720;12.890;8.554
+Grenland;F;Yrkesdøgn;< 5,6m;Juni;-10,170;91,000;2318781;2581294;12.434;8.251
+Grenland;F;Yrkesdøgn;> 5,6m;Juni;-12,256;91,000;251159;286242;18.678;12.395
+Grenland;F;Yrkesdøgn;5,6m - 7,6m;Juni;-11,183;91,000;80922;91111;17.021;11.295
+Grenland;F;Yrkesdøgn;7,6m - 12,5m;Juni;-8,575;91,000;118822;129967;19.400;12.874
+Grenland;F;Yrkesdøgn;12,5m - 16,0m;Juni;-19,976;91,000;29529;36900;15.603;10.355
+Grenland;F;Yrkesdøgn;> 16,0m;Juni;-22,566;91,000;21886;28264;49.187;32.641
+Grenland;F;Helgedøgn;Alle;Juni;18,365;92,000;903694;763478;20.133;13.361
+Grenland;F;Helgedøgn;< 5,6m;Juni;18,472;92,000;849740;717251;19.805;13.143
+Grenland;F;Helgedøgn;> 5,6m;Juni;16,756;92,000;53857;46128;26.623;17.667
+Grenland;F;Helgedøgn;5,6m - 7,6m;Juni;20,603;92,000;17596;14590;28.042;18.609
+Grenland;F;Helgedøgn;7,6m - 12,5m;Juni;20,798;92,000;28895;23920;29.884;19.832
+Grenland;F;Helgedøgn;12,5m - 16,0m;Juni;-7,726;92,000;5900;6394;27.832;18.470
+Grenland;F;Helgedøgn;> 16,0m;Juni;19,771;92,000;1466;1224;82.085;54.473
+Grenland;F;Alle;Alle;Siste 12 måneder;3,236;94,000;24607379;23835999;10.055;5.329
+Grenland;F;Alle;< 5,6m;Siste 12 måneder;3,172;94,000;22625952;21930322;9.888;5.240
+Grenland;F;Alle;> 5,6m;Siste 12 måneder;4,897;94,000;1969120;1877201;16.742;8.873
+Grenland;F;Alle;5,6m - 7,6m;Siste 12 måneder;8,509;94,000;687032;633157;21.033;11.147
+Grenland;F;Alle;7,6m - 12,5m;Siste 12 måneder;6,289;94,000;857983;807219;16.322;8.650
+Grenland;F;Alle;12,5m - 16,0m;Siste 12 måneder;-6,113;94,000;250925;267263;14.959;7.928
+Grenland;F;Alle;> 16,0m;Siste 12 måneder;2,134;94,000;173180;169562;47.737;25.299
+Grenland;F;Yrkesdøgn;Alle;Siste 12 måneder;3,141;94,000;19120772;18538560;10.607;5.621
+Grenland;F;Yrkesdøgn;< 5,6m;Siste 12 måneder;3,080;94,000;17408835;16888677;10.467;5.547
+Grenland;F;Yrkesdøgn;> 5,6m;Siste 12 måneder;4,815;94,000;1700258;1622158;16.832;8.921
+Grenland;F;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;8,026;94,000;591942;547960;19.936;10.566
+Grenland;F;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;5,844;94,000;724592;684586;16.315;8.647
+Grenland;F;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-4,285;94,000;219193;229005;14.968;7.933
+Grenland;F;Yrkesdøgn;> 16,0m;Siste 12 måneder;2,443;94,000;164531;160607;47.883;25.377
+Grenland;F;Helgedøgn;Alle;Siste 12 måneder;3,571;95,000;5486607;5297439;8.894;4.714
+Grenland;F;Helgedøgn;< 5,6m;Siste 12 måneder;3,480;95,000;5217117;5041645;8.821;4.675
+Grenland;F;Helgedøgn;> 5,6m;Siste 12 måneder;5,418;95,000;268862;255043;17.905;9.489
+Grenland;F;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;11,612;95,000;95090;85197;29.613;15.694
+Grenland;F;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;8,773;95,000;133391;122633;17.048;9.035
+Grenland;F;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-17,058;95,000;31732;38258;19.613;10.394
+Grenland;F;Helgedøgn;> 16,0m;Siste 12 måneder;-3,417;95,000;8649;8955;47.951;25.413
+Grenland;F;Alle;Alle;Hittil i år;3,236;94,000;24607379;23835999;10.055;5.329
+Grenland;F;Alle;< 5,6m;Hittil i år;3,172;94,000;22625952;21930322;9.888;5.240
+Grenland;F;Alle;> 5,6m;Hittil i år;4,897;94,000;1969120;1877201;16.742;8.873
+Grenland;F;Alle;5,6m - 7,6m;Hittil i år;8,509;94,000;687032;633157;21.033;11.147
+Grenland;F;Alle;7,6m - 12,5m;Hittil i år;6,289;94,000;857983;807219;16.322;8.650
+Grenland;F;Alle;12,5m - 16,0m;Hittil i år;-6,113;94,000;250925;267263;14.959;7.928
+Grenland;F;Alle;> 16,0m;Hittil i år;2,134;94,000;173180;169562;47.737;25.299
+Grenland;F;Yrkesdøgn;Alle;Hittil i år;3,141;94,000;19120772;18538560;10.607;5.621
+Grenland;F;Yrkesdøgn;< 5,6m;Hittil i år;3,080;94,000;17408835;16888677;10.467;5.547
+Grenland;F;Yrkesdøgn;> 5,6m;Hittil i år;4,815;94,000;1700258;1622158;16.832;8.921
+Grenland;F;Yrkesdøgn;5,6m - 7,6m;Hittil i år;8,026;94,000;591942;547960;19.936;10.566
+Grenland;F;Yrkesdøgn;7,6m - 12,5m;Hittil i år;5,844;94,000;724592;684586;16.315;8.647
+Grenland;F;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-4,285;94,000;219193;229005;14.968;7.933
+Grenland;F;Yrkesdøgn;> 16,0m;Hittil i år;2,443;94,000;164531;160607;47.883;25.377
+Grenland;F;Helgedøgn;Alle;Hittil i år;3,571;95,000;5486607;5297439;8.894;4.714
+Grenland;F;Helgedøgn;< 5,6m;Hittil i år;3,480;95,000;5217117;5041645;8.821;4.675
+Grenland;F;Helgedøgn;> 5,6m;Hittil i år;5,418;95,000;268862;255043;17.905;9.489
+Grenland;F;Helgedøgn;5,6m - 7,6m;Hittil i år;11,612;95,000;95090;85197;29.613;15.694
+Grenland;F;Helgedøgn;7,6m - 12,5m;Hittil i år;8,773;95,000;133391;122633;17.048;9.035
+Grenland;F;Helgedøgn;12,5m - 16,0m;Hittil i år;-17,058;95,000;31732;38258;19.613;10.394
+Grenland;F;Helgedøgn;> 16,0m;Hittil i år;-3,417;95,000;8649;8955;47.951;25.413

@@ -1,0 +1,180 @@
+---
+#title: Trafikkutvikling i byområder
+output: 
+  # html_document:
+  #   toc: true
+  #   fig_caption: true
+  word_document:
+    reference_docx: svv_notatmal.docx
+    toc: true
+    toc_depth: 2
+    fig_caption: true
+    fig_width: 7
+---
+
+```{r setup, include = FALSE, echo = FALSE}
+source("rmd_setup.R")
+```
+
+```{r points, include = FALSE}
+all_point_info <- 
+  read.csv2("data_indexpoints_tidy/indekspunkt_grenland_2017.csv") %>% 
+  rename(index = index_18_19)
+```
+
+# Bakgrunn
+
+
+\newline
+
+## Byindekspunktenes plassering
+Kartene nedenfor viser plasseringen av byindekspunktene.
+
+\newline
+\newline
+
+```{r map_trp, fig.cap = "Plasseringen av byindekspunktene."}
+palett_adt <-
+ colorNumeric(palette = "Greens",
+              domain = NULL)
+
+all_point_info %>%
+  leaflet(width = "100%",
+          options = leafletOptions(crs = nvdb_crs,
+                                   zoomControl = F)) %>%
+  addTiles(urlTemplate = nvdb_map_url,
+           attribution = nvdb_map_attribution) %>%
+  addCircleMarkers(
+    radius = 6,
+    stroke = T,
+    weight = 2,
+    color = "#444f55",
+    opacity = 0.8,
+    fill = T,
+    fillColor = ~palett_adt(adt),
+    fillOpacity = 0.8
+  ) %>%
+  addLegend("bottomright",
+            pal = palett_adt,
+            values = ~adt,
+            title = "ÅDT",
+            opacity = 0.7,
+            labFormat = labelFormat(big.mark = " "))
+```
+
+# Byindeksen: endring i trafikkmengde for "lette" biler
+
+**Byindeksen for Grenland estimerer endringen i trafikkmengden fra 2018 og til og med til juni 2019 til 2,7 % med et 95 %-konfidensintervall på ± 4,2 %.**
+
+```{r city_index}
+# TODO: point-line plot for the city index
+```
+
+
+Figuren nedenfor viser endringen i byindekspunktene.
+
+```{r map_trp_index, fig.cap="Endring i trafikkmengde på punktene."}
+# Create a red-green scale based on index values
+negative_value <- round(abs(min(all_point_info$index, na.rm = T)), digits = 0) + 1
+positive_value <- round(max(all_point_info$index, na.rm = T), digits = 0) + 1
+
+rc1 <- colorRampPalette(colors = c("red", "white"), space = "Lab")(negative_value)
+
+## Make vector of colors for values larger than 0 (180 colors)
+rc2 <- colorRampPalette(colors = c("white", "green"), space = "Lab")(positive_value)
+
+## Combine the two color palettes
+rampcols <- c(rc1, rc2)
+
+palett_index <-
+ colorNumeric(palette = rampcols,
+              domain = NULL)
+
+all_point_info %>%
+  leaflet(width = "100%",
+          options = leafletOptions(crs = nvdb_crs,
+                                   zoomControl = F)) %>%
+  addTiles(urlTemplate = nvdb_map_url,
+           attribution = nvdb_map_attribution) %>%
+  addCircleMarkers(
+    radius = 6,
+    stroke = T,
+    weight = 2,
+    color = "#444f55",
+    opacity = 0.8,
+    fill = T,
+    fillColor = ~palett_index(index),
+    fillOpacity = 0.8
+  ) %>%
+  addLegend("bottomright",
+            pal = palett_index,
+            values = ~index,
+            title = "Indeks",
+            opacity = 0.7,
+            labFormat = labelFormat(big.mark = " "))
+```
+
+
+Tabellen nedenfor gjengir byindekspunktene og deres indeksverdi for 2019. ÅDT er fra 2017.
+
+\newline
+
+```{r table}
+all_point_info %>% 
+  select(name, road_reference, adt, 
+         #index_17_18, index_18_19, 
+         index) %>% 
+  flextable() %>% 
+  colformat_num(col_keys = "adt", 
+                big.mark = " ", digits = 0) %>%
+  colformat_num(col_keys = c("index"#, 
+                             #"index_17_18", "index_18_19"
+                             ), digits = 1) %>%
+  set_header_labels(name = "Navn",
+                    road_reference = "Vegreferanse",
+                    adt = "ÅDT",
+                    #index_17_18 = "Endring i prosent",
+                    #index_18_19 = "Endring",
+                    index = "Endring") %>% 
+  #add_header_row(values = c("", "", "", "2017", "2017-2018", "2018-2019",
+  #                          "2017-2019"), top = F) %>% 
+  #merge_at(i = 1, j = 5:7, part = "header") %>% 
+  #align(i = 1, j = 5, align = "center", part = "header") %>% 
+  #align(i = 2, j = 4:7, align = "right", part = "header") %>% 
+  bold(part = "header") %>% 
+  fontsize(size = 9, part = "all") %>% 
+  font(fontname = "Lucida Sans Unicode", part = "all") %>% 
+  bg(bg = "#ED9300", part = "header") %>% 
+  border_remove() %>% 
+  autofit() %>% 
+  height_all(height = .2) %>% 
+  padding(padding.top = .3,
+          padding.bottom = .3)
+```
+
+
+I figuren nedenfor er spredningen i punktindeksene illustrert. Den horisontale grønne streken viser byindeksens samlede verdi for 2019.
+
+\newline
+
+```{r graph, fig.cap = "Spredningen i punktindeksene."}
+all_point_info_index <- all_point_info %>% 
+  dplyr::filter(!is.na(index)) 
+
+ggplot2::ggplot() +
+  geom_point(data = all_point_info_index, 
+             aes(x = reorder(name, index), y = index, size = adt),
+             color = "#ED9300") +
+  geom_hline(yintercept = 2.7, color = "#58B02C") +
+  xlab("") +
+  ylab("Endring (%)") +
+  ggtitle(label = "Endring i trafikkmengde",
+          subtitle = "Fra 2018 til 2019") +
+  coord_flip() +
+  scale_size(name = "ÅDT 2017") +
+  geom_rect(aes(xmin = -Inf, xmax = Inf, ymin = -1.5, ymax = 6.9),
+            alpha = 0.1, fill = "#008EC2") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+

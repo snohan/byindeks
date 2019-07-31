@@ -194,14 +194,80 @@ write.csv2(trp_trondheim_2017_final,
 
 # City index
 trondheim_2018 <- read.csv2("data_index_raw/byindeks_trondheim_2018.csv") %>%
-  mutate(indexyear = 2018)
+  mutate(index_period = "2017-2018")
 trondheim_2019 <- read.csv2("data_index_raw/byindeks_trondheim_201904.csv") %>%
-  mutate(indexyear = 2019)
+  mutate(index_period = "2018-2019")
 city_index_trondheim <- bind_rows(trondheim_2018, trondheim_2019) %>%
   mutate(index_i = index_converter(indeks))
 
-city_index_trondheim_across_years <- 100 * (city_index_trondheim$index_i[1] *
-  city_index_trondheim$index_i[2] - 1)
+city_index_trondheim_across_years <-
+  100 * (prod(city_index_trondheim$index_i) - 1) %>%
+  as.data.frame() %>%
+  rename(indeks = 1)
 
-# calculate index across years
-# TODO: find the compound CI
+city_index_trondheim_across_years$index_period <- "2017-2019"
+
+city_index_trondheim_all <- city_index_trondheim %>%
+  select(indeks, index_period) %>%
+  bind_rows(city_index_trondheim_across_years)
+
+# TODO: find the compound CI (later)
+
+# Grenland 2017 ####
+trp_grenland_2017_ids <- cities_points %>%
+  dplyr::filter(city_area_name == "Grenland",
+                agreement_start == 2017) %>%
+  dplyr::select(trp_id, legacyNortrafMpn) %>%
+  dplyr::rename(msnr = legacyNortrafMpn)
+
+# Adding metadata
+# Bruker trp fra trp-api, da noen mangler igangsetting.
+trp_grenland_2017 <- dplyr::left_join(trp_grenland_2017_ids, points) %>%
+  filter(!is.na(road_reference))
+
+# Add index results from CSV-files
+pointindex_grenland_18_19 <-
+  read.csv2("data_index_raw/pointindex_grenland-2019-06_2018.csv") %>%
+  filter(døgn == "Alle",
+         lengdeklasse == "< 5,6m",
+         periode == "Hittil i år") %>%
+  mutate(trs = as.numeric(msnr),
+         trafikkmengde.basisaar = as.numeric(
+           as.character(trafikkmengde.basisår)),
+         trafikkmengde.indeksaar = as.numeric(
+           as.character(trafikkmengde.indeksår))) %>%
+  group_by(trs) %>%
+  summarise(trafikkmengde_basisaar = sum(trafikkmengde.basisaar),
+            trafikkmengde_indeksaar = sum(trafikkmengde.indeksaar),
+            index_18_19 = round((trafikkmengde_indeksaar/
+                                   trafikkmengde_basisaar - 1) * 100,
+                                digits = 1)) %>%
+  rename(msnr = trs) %>%
+  select(msnr, index_18_19)
+
+adt <- getAdtForpoints(trp_grenland_2017$trp_id) %>%
+  dplyr::filter(year == 2017) %>%
+  dplyr::select(-year)
+
+# Final table
+trp_grenland_2017_alle_adt <- trp_grenland_2017 %>%
+  left_join(adt) %>%
+  #left_join(pointindex_17_18) %>%
+  left_join(pointindex_grenland_18_19)
+
+# Must supply missing AADTs from NVDB based on road reference
+missing_aadt <- trp_grenland_2017_alle_adt %>%
+  dplyr::filter(adt == 0 | is.na(adt)) %>%
+  dplyr::mutate(roadref_short = str_remove_all(road_reference, " "),
+                adt = mapply(getAadtByRoadReference, roadref_short)) %>%
+  dplyr::select(-roadref_short)
+
+with_aadt <- trp_grenland_2017_alle_adt %>%
+  dplyr::filter(adt > 0)
+
+trp_grenland_2017_final <- bind_rows(with_aadt, missing_aadt) %>%
+  dplyr::arrange(road_reference)
+
+write.csv2(trp_grenland_2017_final,
+           file = "data_indexpoints_tidy/indekspunkt_grenland_2017.csv",
+           row.names = F)
