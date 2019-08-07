@@ -17,6 +17,7 @@ source("rmd_setup.R")
 ```
 
 ```{r points, include = FALSE}
+# TODO: Add 2016!
 all_point_info <- 
   read.csv2("data_indexpoints_tidy/indekspunkt_trondheim_2017.csv")
 ```
@@ -25,7 +26,7 @@ all_point_info <-
 
 Bymiljøavtalen som ble inngått i 2016 mellom Trondheim kommune, Sør-Trøndelag fylkeskommune og Staten gjaldt for perioden 2016-2023. Målet med avtalen var at veksten i persontransporten skal tas med kollektivtrafikk, sykling og gåing («nullvekstmålet»). Området avtalen gjaldt for var Trondheim kommune.
 
-Byindeksen er en av målindikatorene og den estimerer endringen i biltrafikk. Byindeksen er en trafikkindeks for vegtrafikk basert på registreringer fra faste trafikkregistreringspunkter og bomstasjoner fordelt på riksveger, fylkesveger og kommunale veger. Trafikkindeksen skal gi et representativt bilde av trafikkutviklingen i avtaleområdet.
+Byindeksen er en av målindikatorene og den estimerer endringen i biltrafikk. Byindeksen er en trafikkindeks for vegtrafikk basert på registreringer fra faste trafikkregistreringspunkter og bomstasjoner fordelt på riksveger, fylkesveger og kommunale veger. Trafikkindeksen skal gi et representativt bilde av trafikkutviklingen i avtaleområdet. Byindeksen benytter 2016 som referanseår.
 
 Byindeksen gjelder for "lette" biler. Lette biler er her definert å være målt til kortere enn 5,6 m i Statens vegvesens trafikkregistreringsstasjoner, og i data fra bomstasjonene er det kategorien "lette kjøretøy" som benyttes. Lettere næringstransport skal i teorien være er tatt ut av trafikkindeksen da det er unntatt fra nullvekstmålet. Det samme gjelder for gjennomgangstrafikk. Disse to kategoriene trafikk er likevel ikke mulig å skille ut av datamaterialet da det ikke foreligger noe informasjon i registreringene som skiller de fra øvrig trafikk med lette biler.
 

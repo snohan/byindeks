@@ -15,6 +15,36 @@ source("get_from_trp_api.R")
 # NVDB API calls to get tolling stations
 source("get_from_nvdb_api.R")
 
+# Functions ####
+
+readPointindexCSV <- function(filename) {
+  # Read standard csv export from Datainn
+  read.csv2(filename) %>%
+    filter(døgn == "Alle",
+           lengdeklasse == "< 5,6m",
+           periode == "Hittil i år") %>%
+    mutate(trs = as.numeric(msnr),
+           trafikkmengde.basisaar = as.numeric(
+             as.character(trafikkmengde.basisår)),
+           trafikkmengde.indeksaar = as.numeric(
+             as.character(trafikkmengde.indeksår))) %>%
+    group_by(trs) %>%
+    summarise(trafikkmengde_basisaar = sum(trafikkmengde.basisaar),
+              trafikkmengde_indeksaar = sum(trafikkmengde.indeksaar),
+              index = round((trafikkmengde_indeksaar/
+                                  trafikkmengde_basisaar - 1) * 100,
+                                  digits = 1)) %>%
+    rename(msnr = trs) %>%
+    select(msnr, index)
+}
+
+index_converter <- function(index) {
+  ifelse(
+    is.na(index),
+    1,
+    index/100 + 1)
+}
+
 # Points ####
 
 # Points used in each city
@@ -153,12 +183,7 @@ adt <- getAdtForpoints(trp_trondheim_2017$trp_id) %>%
 #          ADT = round(ADT, digits = -2)) %>%
 #   select(Stasjonnr, ADT)
 
-index_converter <- function(index) {
-  ifelse(
-    is.na(index),
-    1,
-    index/100 + 1)
-}
+
 
 # Final table
 trp_trondheim_2017_alle_adt <- trp_trondheim_2017_alle %>%
@@ -222,28 +247,21 @@ trp_grenland_2017_ids <- cities_points %>%
 
 # Adding metadata
 # Bruker trp fra trp-api, da noen mangler igangsetting.
-trp_grenland_2017 <- dplyr::left_join(trp_grenland_2017_ids, points) %>%
+trp_grenland_2017 <- dplyr::left_join(trp_grenland_2017_ids, points_trp) %>%
   filter(!is.na(road_reference))
 
 # Add index results from CSV-files
+pointindex_grenland_16_17 <-
+  readPointindexCSV("data_index_raw/pointindex_grenland-2017-12_2016.csv") %>%
+  rename(index_16_17 = index)
+
+pointindex_grenland_17_18 <-
+  readPointindexCSV("data_index_raw/pointindex_grenland-2018-12_2017.csv") %>%
+  rename(index_17_18 = index)
+
 pointindex_grenland_18_19 <-
-  read.csv2("data_index_raw/pointindex_grenland-2019-06_2018.csv") %>%
-  filter(døgn == "Alle",
-         lengdeklasse == "< 5,6m",
-         periode == "Hittil i år") %>%
-  mutate(trs = as.numeric(msnr),
-         trafikkmengde.basisaar = as.numeric(
-           as.character(trafikkmengde.basisår)),
-         trafikkmengde.indeksaar = as.numeric(
-           as.character(trafikkmengde.indeksår))) %>%
-  group_by(trs) %>%
-  summarise(trafikkmengde_basisaar = sum(trafikkmengde.basisaar),
-            trafikkmengde_indeksaar = sum(trafikkmengde.indeksaar),
-            index_18_19 = round((trafikkmengde_indeksaar/
-                                   trafikkmengde_basisaar - 1) * 100,
-                                digits = 1)) %>%
-  rename(msnr = trs) %>%
-  select(msnr, index_18_19)
+  readPointindexCSV("data_index_raw/pointindex_grenland-2019-06_2018.csv") %>%
+  rename(index_18_19 = index)
 
 adt <- getAdtForpoints(trp_grenland_2017$trp_id) %>%
   dplyr::filter(year == 2017) %>%
@@ -252,7 +270,8 @@ adt <- getAdtForpoints(trp_grenland_2017$trp_id) %>%
 # Final table
 trp_grenland_2017_alle_adt <- trp_grenland_2017 %>%
   left_join(adt) %>%
-  #left_join(pointindex_17_18) %>%
+  left_join(pointindex_grenland_16_17) %>%
+  left_join(pointindex_grenland_17_18) %>%
   left_join(pointindex_grenland_18_19)
 
 # Must supply missing AADTs from NVDB based on road reference
@@ -267,6 +286,11 @@ with_aadt <- trp_grenland_2017_alle_adt %>%
 
 trp_grenland_2017_final <- bind_rows(with_aadt, missing_aadt) %>%
   dplyr::arrange(road_reference)
+
+# Index from refyear
+refyear <- trp_grenland_2017_final %>%
+  select(trp_id, starts_with("index")) %>%
+  mutate_if(is.numeric, list(index_converter))
 
 write.csv2(trp_grenland_2017_final,
            file = "data_indexpoints_tidy/indekspunkt_grenland_2017.csv",

@@ -1,0 +1,1135 @@
+fylkenr;msnr;msnavn;Vegkategori;vegnr;hp;meter;ant_kjørefelt;ådt;første_igangsetting_datainn;døgn;lengdeklasse;periode;indeks;dekning;trafikkmengde indeksår;trafikkmengde basisår
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Alle;Alle;Juli;-;0,000;-;-
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Alle;Alle;August;-;0,000;-;-
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Alle;Alle;September;-;0,000;-;-
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Alle;Alle;Oktober;-;0,000;-;-
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Alle;Alle;November;39,857;89,000;2344;1676
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Alle;Alle;Desember;0,808;100,000;998;990
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Alle;Alle;Januar;20,735;100,000;1019;844
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Alle;Alle;Februar;66,779;90,000;989;593
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Alle;Alle;Mars;156,243;99,000;2442;953
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Alle;Alle;April;22,372;99,000;5158;4215
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Alle;Alle;Mai;-21,699;92,000;5990;7650
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Alle;Alle;Juni;-22,459;85,000;5607;7231
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Alle;Alle;Siste 12 måneder;1,635;94,000;24547;24152
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Alle;Alle;Hittil i år;-1,308;94,000;21205;21486
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Yrkesdøgn;Alle;Juli;-;0,000;-;-
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Yrkesdøgn;Alle;August;-;0,000;-;-
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Yrkesdøgn;Alle;September;-;0,000;-;-
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Yrkesdøgn;Alle;Oktober;-;0,000;-;-
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Yrkesdøgn;Alle;November;55,383;87,000;2107;1356
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Yrkesdøgn;Alle;Desember;2,580;100,000;835;814
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Yrkesdøgn;Alle;Januar;23,885;100,000;944;762
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Yrkesdøgn;Alle;Februar;59,049;94,000;870;547
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Yrkesdøgn;Alle;Mars;151,323;98,000;1900;756
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Yrkesdøgn;Alle;April;20,760;99,000;3653;3025
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Yrkesdøgn;Alle;Mai;-19,542;90,000;4319;5368
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Yrkesdøgn;Alle;Juni;-30,805;88,000;4151;5999
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Yrkesdøgn;Alle;Siste 12 måneder;0,816;94,000;18779;18627
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Yrkesdøgn;Alle;Hittil i år;-3,767;95,000;15837;16457
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Helgedøgn;Alle;Juli;-;0,000;-;-
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Helgedøgn;Alle;August;-;0,000;-;-
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Helgedøgn;Alle;September;-;0,000;-;-
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Helgedøgn;Alle;Oktober;-;0,000;-;-
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Helgedøgn;Alle;November;-25,938;93,000;237;320
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Helgedøgn;Alle;Desember;-7,386;100,000;163;176
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Helgedøgn;Alle;Januar;-8,537;100,000;75;82
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Helgedøgn;Alle;Februar;158,696;81,000;119;46
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Helgedøgn;Alle;Mars;175,127;100,000;542;197
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Helgedøgn;Alle;April;26,471;99,000;1505;1190
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Helgedøgn;Alle;Mai;-26,775;95,000;1671;2282
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Helgedøgn;Alle;Juni;18,182;80,000;1456;1232
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Helgedøgn;Alle;Siste 12 måneder;4,398;94,000;5768;5525
+8;800535;Vallermyrene sykkeltellepunkt;F;32;204;5886;2;;;Helgedøgn;Alle;Hittil i år;6,741;93,000;5368;5029
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Alle;Alle;Juli;10,125;100,000;1762;1600
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Alle;Alle;August;1,626;100,000;2687;2644
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Alle;Alle;September;13,627;100,000;2885;2539
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Alle;Alle;Oktober;12,573;99,000;1737;1543
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Alle;Alle;November;102,888;97,000;1124;554
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Alle;Alle;Desember;41,837;100,000;278;196
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Alle;Alle;Januar;11,043;100,000;181;163
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Alle;Alle;Februar;129,032;100,000;142;62
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Alle;Alle;Mars;-;-;-;-
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Alle;Alle;April;61,609;100,000;2471;1529
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Alle;Alle;Mai;-23,466;100,000;2769;3618
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Alle;Alle;Juni;-13,781;99,000;2759;3200
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Alle;Alle;Siste 12 måneder;6,499;99,000;18795;17648
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Alle;Alle;Hittil i år;-2,916;99,000;8322;8572
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Yrkesdøgn;Alle;Juli;26,969;100,000;1370;1079
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Yrkesdøgn;Alle;August;4,002;100,000;2261;2174
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Yrkesdøgn;Alle;September;15,217;100,000;2491;2162
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Yrkesdøgn;Alle;Oktober;14,064;99,000;1541;1351
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Yrkesdøgn;Alle;November;105,812;97,000;1027;499
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Yrkesdøgn;Alle;Desember;47,977;100,000;256;173
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Yrkesdøgn;Alle;Januar;10,323;100,000;171;155
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Yrkesdøgn;Alle;Februar;136,842;100,000;135;57
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Yrkesdøgn;Alle;Mars;-;-;-;-
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Yrkesdøgn;Alle;April;54,355;100,000;1843;1194
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Yrkesdøgn;Alle;Mai;-20,654;100,000;2209;2784
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Yrkesdøgn;Alle;Juni;-23,969;99,000;2046;2691
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Yrkesdøgn;Alle;Siste 12 måneder;7,200;99,000;15350;14319
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Yrkesdøgn;Alle;Hittil i år;-6,932;99,000;6404;6881
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Helgedøgn;Alle;Juli;-24,760;100,000;392;521
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Helgedøgn;Alle;August;-9,362;100,000;426;470
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Helgedøgn;Alle;September;4,509;100,000;394;377
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Helgedøgn;Alle;Oktober;2,083;100,000;196;192
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Helgedøgn;Alle;November;76,364;100,000;97;55
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Helgedøgn;Alle;Desember;-4,348;100,000;22;23
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Helgedøgn;Alle;Januar;25,000;100,000;10;8
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Helgedøgn;Alle;Februar;40,000;100,000;7;5
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Helgedøgn;Alle;Mars;-;-;-;-
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Helgedøgn;Alle;April;87,463;100,000;628;335
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Helgedøgn;Alle;Mai;-32,854;100,000;560;834
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Helgedøgn;Alle;Juni;40,079;100,000;713;509
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Helgedøgn;Alle;Siste 12 måneder;3,485;100,000;3445;3329
+8;800520;Lundedalen sykkeltellepunkt;K;67200;1;344;1;;;Helgedøgn;Alle;Hittil i år;13,424;100,000;1918;1691
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Alle;Alle;Juli;4,490;100,000;4678;4477
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Alle;Alle;August;6,088;100,000;6517;6143
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Alle;Alle;September;12,814;100,000;4983;4417
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Alle;Alle;Oktober;11,983;100,000;3766;3363
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Alle;Alle;November;19,922;100,000;2155;1797
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Alle;Alle;Desember;-14,981;100,000;874;1028
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Alle;Alle;Januar;41,322;99,000;1197;847
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Alle;Alle;Februar;116,501;100,000;1089;503
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Alle;Alle;Mars;230,665;100,000;2437;737
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Alle;Alle;April;13,674;100,000;4830;4249
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Alle;Alle;Mai;-17,771;100,000;5756;7000
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Alle;Alle;Juni;-19,144;100,000;5364;6634
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Alle;Alle;Siste 12 måneder;5,950;99,000;43646;41195
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Alle;Alle;Hittil i år;3,520;99,000;20673;19970
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Yrkesdøgn;Alle;Juli;9,389;100,000;3402;3110
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Yrkesdøgn;Alle;August;7,922;100,000;5231;4847
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Yrkesdøgn;Alle;September;13,660;100,000;3919;3448
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Yrkesdøgn;Alle;Oktober;13,140;100,000;3160;2793
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Yrkesdøgn;Alle;November;17,817;100,000;1878;1594
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Yrkesdøgn;Alle;Desember;-16,352;100,000;752;899
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Yrkesdøgn;Alle;Januar;41,741;99,000;1107;781
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Yrkesdøgn;Alle;Februar;103,950;100,000;981;481
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Yrkesdøgn;Alle;Mars;232,247;100,000;1937;583
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Yrkesdøgn;Alle;April;7,330;100,000;3236;3015
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Yrkesdøgn;Alle;Mai;-11,803;100,000;4364;4948
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Yrkesdøgn;Alle;Juni;-24,896;100,000;3970;5286
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Yrkesdøgn;Alle;Siste 12 måneder;6,770;99,000;33937;31785
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Yrkesdøgn;Alle;Hittil i år;3,319;99,000;15595;15094
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Helgedøgn;Alle;Juli;-6,657;100,000;1276;1367
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Helgedøgn;Alle;August;-0,772;100,000;1286;1296
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Helgedøgn;Alle;September;9,804;100,000;1064;969
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Helgedøgn;Alle;Oktober;6,316;100,000;606;570
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Helgedøgn;Alle;November;36,453;100,000;277;203
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Helgedøgn;Alle;Desember;-5,426;100,000;122;129
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Helgedøgn;Alle;Januar;36,364;100,000;90;66
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Helgedøgn;Alle;Februar;390,909;100,000;108;22
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Helgedøgn;Alle;Mars;224,675;100,000;500;154
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Helgedøgn;Alle;April;29,173;100,000;1594;1234
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Helgedøgn;Alle;Mai;-32,164;100,000;1392;2052
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Helgedøgn;Alle;Juni;3,412;100,000;1394;1348
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Helgedøgn;Alle;Siste 12 måneder;3,177;100,000;9709;9410
+8;800509;Ballestad sykkeltellepunkt;F;31;2;3500;1;;;Helgedøgn;Alle;Hittil i år;4,143;100,000;5078;4876
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Alle;Alle;Juli;8,851;99,000;7994;7344
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Alle;Alle;August;-2,663;99,000;9761;10028
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Alle;Alle;September;10,024;99,000;7727;7023
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Alle;Alle;Oktober;15,968;100,000;6478;5586
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Alle;Alle;November;21,225;99,000;4135;3411
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Alle;Alle;Desember;-21,553;99,000;1525;1944
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Alle;Alle;Januar;15,648;99,000;1855;1604
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Alle;Alle;Februar;66,210;99,000;1697;1021
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Alle;Alle;Mars;163,800;99,000;3374;1279
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Alle;Alle;April;10,573;99,000;6641;6006
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Alle;Alle;Mai;-26,979;99,000;7741;10601
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Alle;Alle;Juni;-32,132;100,000;7458;10989
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Alle;Alle;Siste 12 måneder;-0,673;99,000;66386;66836
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Alle;Alle;Hittil i år;-8,679;99,000;28766;31500
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Yrkesdøgn;Alle;Juli;15,982;99,000;6379;5500
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Yrkesdøgn;Alle;August;-3,501;99,000;8104;8398
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Yrkesdøgn;Alle;September;8,622;100,000;6387;5880
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Yrkesdøgn;Alle;Oktober;14,746;100,000;5657;4930
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Yrkesdøgn;Alle;November;21,263;99,000;3724;3071
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Yrkesdøgn;Alle;Desember;-21,694;99,000;1350;1724
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Yrkesdøgn;Alle;Januar;15,984;99,000;1756;1514
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Yrkesdøgn;Alle;Februar;63,515;99,000;1591;973
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Yrkesdøgn;Alle;Mars;161,349;99,000;2867;1097
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Yrkesdøgn;Alle;April;8,769;99,000;5098;4687
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Yrkesdøgn;Alle;Mai;-27,576;99,000;5967;8239
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Yrkesdøgn;Alle;Juni;-39,478;100,000;5450;9005
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Yrkesdøgn;Alle;Siste 12 måneder;-1,250;99,000;54330;55018
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Yrkesdøgn;Alle;Hittil i år;-10,919;99,000;22729;25515
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Helgedøgn;Alle;Juli;-12,419;99,000;1615;1844
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Helgedøgn;Alle;August;1,656;99,000;1657;1630
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Helgedøgn;Alle;September;17,235;99,000;1340;1143
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Helgedøgn;Alle;Oktober;25,152;100,000;821;656
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Helgedøgn;Alle;November;20,882;100,000;411;340
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Helgedøgn;Alle;Desember;-20,455;100,000;175;220
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Helgedøgn;Alle;Januar;10,000;100,000;99;90
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Helgedøgn;Alle;Februar;120,833;100,000;106;48
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Helgedøgn;Alle;Mars;178,571;99,000;507;182
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Helgedøgn;Alle;April;16,983;100,000;1543;1319
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Helgedøgn;Alle;Mai;-24,894;99,000;1774;2362
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Helgedøgn;Alle;Juni;1,210;100,000;2008;1984
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Helgedøgn;Alle;Siste 12 måneder;2,014;99,000;12056;11818
+8;800503;Borgestad sykkeltellepunkt;F;32;204;2360;1;;;Helgedøgn;Alle;Hittil i år;0,869;99,000;6037;5985
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Alle;Alle;Juli;2,816;100,000;6133;5965
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Alle;Alle;August;0,690;100,000;7583;7531
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Alle;Alle;September;15,838;100,000;5873;5070
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Alle;Alle;Oktober;14,502;100,000;4840;4227
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Alle;Alle;November;14,308;100,000;2980;2607
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Alle;Alle;Desember;-29,440;100,000;1196;1695
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Alle;Alle;Januar;13,831;99,000;1465;1287
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Alle;Alle;Februar;66,623;100,000;1278;767
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Alle;Alle;Mars;158,532;99,000;2712;1049
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Alle;Alle;April;14,650;100,000;5259;4587
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Alle;Alle;Mai;-27,488;100,000;6004;8280
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Alle;Alle;Juni;-31,103;100,000;5704;8279
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Alle;Alle;Siste 12 måneder;-0,617;99,000;51027;51344
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Alle;Alle;Hittil i år;-7,534;99,000;22422;24249
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Yrkesdøgn;Alle;Juli;9,688;100,000;4880;4449
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Yrkesdøgn;Alle;August;1,518;100,000;6285;6191
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Yrkesdøgn;Alle;September;16,095;100,000;4840;4169
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Yrkesdøgn;Alle;Oktober;13,504;100,000;4169;3673
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Yrkesdøgn;Alle;November;13,646;100,000;2615;2301
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Yrkesdøgn;Alle;Desember;-31,129;100,000;1031;1497
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Yrkesdøgn;Alle;Januar;14,405;99,000;1366;1194
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Yrkesdøgn;Alle;Februar;64,797;100,000;1175;713
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Yrkesdøgn;Alle;Mars;153,750;99,000;2233;880
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Yrkesdøgn;Alle;April;12,824;100,000;4003;3548
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Yrkesdøgn;Alle;Mai;-27,955;100,000;4626;6421
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Yrkesdøgn;Alle;Juni;-38,334;100,000;4176;6772
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Yrkesdøgn;Alle;Siste 12 måneder;-0,978;99,000;41399;41808
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Yrkesdøgn;Alle;Hittil i år;-9,981;99,000;17579;19528
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Helgedøgn;Alle;Juli;-17,348;100,000;1253;1516
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Helgedøgn;Alle;August;-3,134;100,000;1298;1340
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Helgedøgn;Alle;September;14,650;100,000;1033;901
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Helgedøgn;Alle;Oktober;21,119;100,000;671;554
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Helgedøgn;Alle;November;19,281;100,000;365;306
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Helgedøgn;Alle;Desember;-16,667;100,000;165;198
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Helgedøgn;Alle;Januar;6,452;100,000;99;93
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Helgedøgn;Alle;Februar;90,741;100,000;103;54
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Helgedøgn;Alle;Mars;183,432;100,000;479;169
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Helgedøgn;Alle;April;20,885;100,000;1256;1039
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Helgedøgn;Alle;Mai;-25,874;100,000;1378;1859
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Helgedøgn;Alle;Juni;1,393;100,000;1528;1507
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Helgedøgn;Alle;Siste 12 måneder;0,965;100,000;9628;9536
+8;800507;Menstad sykkeltellepunkt;F;32;204;120;1;;;Helgedøgn;Alle;Hittil i år;2,584;100,000;4843;4721
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Alle;Alle;Juli;-;0,000;-;-
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Alle;Alle;August;7,581;100,000;22564;20974
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Alle;Alle;September;36,793;100,000;20560;15030
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Alle;Alle;Oktober;45,129;100,000;17282;11908
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Alle;Alle;November;69,226;100,000;10910;6447
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Alle;Alle;Desember;12,670;99,000;3806;3378
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Alle;Alle;Januar;66,625;100,000;3974;2385
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Alle;Alle;Februar;140,182;94,000;3425;1426
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Alle;Alle;Mars;255,468;99,000;8549;2405
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Alle;Alle;April;38,287;100,000;16181;11701
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Alle;Alle;Mai;-13,180;90,000;16830;19385
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Alle;Alle;Juni;-;0,000;-;-
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Alle;Alle;Siste 12 måneder;30,558;98,000;124081;95039
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Alle;Alle;Hittil i år;31,250;97,000;48959;37302
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Yrkesdøgn;Alle;Juli;-;0,000;-;-
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Yrkesdøgn;Alle;August;10,094;100,000;18814;17089
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Yrkesdøgn;Alle;September;42,024;100,000;17236;12136
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Yrkesdøgn;Alle;Oktober;50,345;100,000;15239;10136
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Yrkesdøgn;Alle;November;72,078;100,000;9762;5673
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Yrkesdøgn;Alle;Desember;14,924;99,000;3319;2888
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Yrkesdøgn;Alle;Januar;67,749;100,000;3667;2186
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Yrkesdøgn;Alle;Februar;141,628;96,000;3146;1302
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Yrkesdøgn;Alle;Mars;262,760;99,000;7150;1971
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Yrkesdøgn;Alle;April;42,736;100,000;12655;8866
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Yrkesdøgn;Alle;Mai;-3,783;87,000;13047;13560
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Yrkesdøgn;Alle;Juni;-;0,000;-;-
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Yrkesdøgn;Alle;Siste 12 måneder;37,237;98,000;104035;75807
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Yrkesdøgn;Alle;Hittil i år;42,245;96,000;39665;27885
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Helgedøgn;Alle;Juli;-;0,000;-;-
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Helgedøgn;Alle;August;-3,475;100,000;3750;3885
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Helgedøgn;Alle;September;14,858;100,000;3324;2894
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Helgedøgn;Alle;Oktober;15,293;100,000;2043;1772
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Helgedøgn;Alle;November;48,320;100,000;1148;774
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Helgedøgn;Alle;Desember;-0,612;100,000;487;490
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Helgedøgn;Alle;Januar;54,271;100,000;307;199
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Helgedøgn;Alle;Februar;125,000;90,000;279;124
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Helgedøgn;Alle;Mars;222,350;100,000;1399;434
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Helgedøgn;Alle;April;24,374;100,000;3526;2835
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Helgedøgn;Alle;Mai;-35,056;95,000;3783;5825
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Helgedøgn;Alle;Juni;-;0,000;-;-
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Helgedøgn;Alle;Siste 12 måneder;4,233;98,000;20046;19232
+8;800504;Smieøya sykkeltellepunkt;F;59;201;2095;1;;;Helgedøgn;Alle;Hittil i år;-1,306;97,000;9294;9417
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Alle;Alle;Juli;2,240;100,000;2419;2366
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Alle;Alle;August;4,404;100,000;2892;2770
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Alle;Alle;September;17,886;99,000;2320;1968
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Alle;Alle;Oktober;24,443;100,000;2011;1616
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Alle;Alle;November;43,191;93,000;1104;771
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Alle;Alle;Desember;-;-;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Alle;Alle;Januar;-;-;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Alle;Alle;Februar;-;0,000;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Alle;Alle;Mars;-;0,000;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Alle;Alle;April;-;0,000;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Alle;Alle;Mai;-;0,000;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Alle;Alle;Juni;-24,797;100,000;2408;3202
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Alle;Alle;Siste 12 måneder;3,632;98,000;13154;12693
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Alle;Alle;Hittil i år;-24,797;100,000;2408;3202
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Yrkesdøgn;Alle;Juli;3,316;100,000;1994;1930
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Yrkesdøgn;Alle;August;7,043;100,000;2538;2371
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Yrkesdøgn;Alle;September;17,755;99,000;1983;1684
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Yrkesdøgn;Alle;Oktober;25,818;100,000;1769;1406
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Yrkesdøgn;Alle;November;47,493;90,000;1000;678
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Yrkesdøgn;Alle;Desember;-;-;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Yrkesdøgn;Alle;Januar;-;-;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Yrkesdøgn;Alle;Februar;-;0,000;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Yrkesdøgn;Alle;Mars;-;0,000;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Yrkesdøgn;Alle;April;-;0,000;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Yrkesdøgn;Alle;Mai;-;0,000;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Yrkesdøgn;Alle;Juni;-27,860;100,000;1955;2710
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Yrkesdøgn;Alle;Siste 12 måneder;4,268;98,000;11239;10779
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Yrkesdøgn;Alle;Hittil i år;-27,860;100,000;1955;2710
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Helgedøgn;Alle;Juli;-2,523;100,000;425;436
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Helgedøgn;Alle;August;-11,278;100,000;354;399
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Helgedøgn;Alle;September;18,662;99,000;337;284
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Helgedøgn;Alle;Oktober;15,238;100,000;242;210
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Helgedøgn;Alle;November;11,828;100,000;104;93
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Helgedøgn;Alle;Desember;-;-;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Helgedøgn;Alle;Januar;-;-;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Helgedøgn;Alle;Februar;-;0,000;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Helgedøgn;Alle;Mars;-;0,000;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Helgedøgn;Alle;April;-;0,000;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Helgedøgn;Alle;Mai;-;0,000;-;-
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Helgedøgn;Alle;Juni;-7,927;100,000;453;492
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Helgedøgn;Alle;Siste 12 måneder;0,052;99,000;1915;1914
+8;800529;Øyekastvegen sykkeltellepunkt;F;356;50;1018;1;;;Helgedøgn;Alle;Hittil i år;-7,927;100,000;453;492
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Alle;Alle;Juli;-3,008;97,000;7675;7913
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Alle;Alle;August;1,070;99,000;10206;10098
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Alle;Alle;September;18,764;100,000;9646;8122
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Alle;Alle;Oktober;21,375;100,000;7819;6442
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Alle;Alle;November;25,304;99,000;4744;3786
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Alle;Alle;Desember;-12,693;100,000;1637;1875
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Alle;Alle;Januar;14,892;99,000;1543;1343
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Alle;Alle;Februar;-;0,000;-;-
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Alle;Alle;Mars;-;0,000;-;-
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Alle;Alle;April;16,809;87,000;7102;6080
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Alle;Alle;Mai;-34,569;99,000;7537;11519
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Alle;Alle;Juni;-61,299;100,000;4405;11382
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Alle;Alle;Siste 12 måneder;-9,110;98,000;62314;68560
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Alle;Alle;Hittil i år;-32,110;96,000;20587;30324
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Yrkesdøgn;Alle;Juli;2,541;98,000;6134;5982
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Yrkesdøgn;Alle;August;1,309;99,000;8434;8325
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Yrkesdøgn;Alle;September;18,395;100,000;7910;6681
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Yrkesdøgn;Alle;Oktober;22,703;100,000;6756;5506
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Yrkesdøgn;Alle;November;27,370;99,000;4272;3354
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Yrkesdøgn;Alle;Desember;-9,627;100,000;1455;1610
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Yrkesdøgn;Alle;Januar;15,751;99,000;1411;1219
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Yrkesdøgn;Alle;Februar;-;0,000;-;-
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Yrkesdøgn;Alle;Mars;-;0,000;-;-
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Yrkesdøgn;Alle;April;9,573;86,000;5231;4774
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Yrkesdøgn;Alle;Mai;-33,129;99,000;5880;8793
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Yrkesdøgn;Alle;Juni;-62,611;100,000;3463;9262
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Yrkesdøgn;Alle;Siste 12 måneder;-8,215;98,000;50946;55506
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Yrkesdøgn;Alle;Hittil i år;-33,529;96,000;15985;24048
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Helgedøgn;Alle;Juli;-20,197;94,000;1541;1931
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Helgedøgn;Alle;August;-0,056;98,000;1772;1773
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Helgedøgn;Alle;September;20,472;100,000;1736;1441
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Helgedøgn;Alle;Oktober;13,568;100,000;1063;936
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Helgedøgn;Alle;November;9,259;100,000;472;432
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Helgedøgn;Alle;Desember;-31,321;100,000;182;265
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Helgedøgn;Alle;Januar;6,452;100,000;132;124
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Helgedøgn;Alle;Februar;-;0,000;-;-
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Helgedøgn;Alle;Mars;-;0,000;-;-
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Helgedøgn;Alle;April;43,262;89,000;1871;1306
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Helgedøgn;Alle;Mai;-39,215;98,000;1657;2726
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Helgedøgn;Alle;Juni;-55,566;100,000;942;2120
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Helgedøgn;Alle;Siste 12 måneder;-12,916;98,000;11368;13054
+8;800521;Gråten sykkeltellepunkt;F;59;1;513;1;;;Helgedøgn;Alle;Hittil i år;-26,673;96,000;4602;6276
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Alle;Alle;Juli;-;0,000;-;-
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Alle;Alle;August;-;0,000;-;-
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Alle;Alle;September;-;0,000;-;-
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Alle;Alle;Oktober;-;0,000;-;-
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Alle;Alle;November;41,844;86,000;1800;1269
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Alle;Alle;Desember;-6,457;77,000;594;635
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Alle;Alle;Januar;25,133;81,000;707;565
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Alle;Alle;Februar;67,083;98,000;802;480
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Alle;Alle;Mars;242,391;100,000;2205;644
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Alle;Alle;April;31,617;99,000;4217;3204
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Alle;Alle;Mai;-16,791;100,000;5005;6015
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Alle;Alle;Juni;-20,735;100,000;4618;5826
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Alle;Alle;Siste 12 måneder;7,029;92,000;19948;18638
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Alle;Alle;Hittil i år;4,900;96,000;17554;16734
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Yrkesdøgn;Alle;Juli;-;0,000;-;-
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Yrkesdøgn;Alle;August;-;0,000;-;-
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Yrkesdøgn;Alle;September;-;0,000;-;-
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Yrkesdøgn;Alle;Oktober;-;0,000;-;-
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Yrkesdøgn;Alle;November;53,200;85,000;1604;1047
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Yrkesdøgn;Alle;Desember;-8,042;87,000;526;572
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Yrkesdøgn;Alle;Januar;31,176;81,000;669;510
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Yrkesdøgn;Alle;Februar;64,189;98,000;729;444
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Yrkesdøgn;Alle;Mars;224,064;100,000;1818;561
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Yrkesdøgn;Alle;April;30,644;99,000;3287;2516
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Yrkesdøgn;Alle;Mai;-18,509;100,000;3892;4776
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Yrkesdøgn;Alle;Juni;-27,849;100,000;3495;4844
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Yrkesdøgn;Alle;Siste 12 måneder;4,912;93,000;16020;15270
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Yrkesdøgn;Alle;Hittil i år;1,751;96,000;13890;13651
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Helgedøgn;Alle;Juli;-;0,000;-;-
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Helgedøgn;Alle;August;-;0,000;-;-
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Helgedøgn;Alle;September;-;0,000;-;-
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Helgedøgn;Alle;Oktober;-;0,000;-;-
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Helgedøgn;Alle;November;-11,712;91,000;196;222
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Helgedøgn;Alle;Desember;7,937;62,000;68;63
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Helgedøgn;Alle;Januar;-30,909;81,000;38;55
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Helgedøgn;Alle;Februar;102,778;100,000;73;36
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Helgedøgn;Alle;Mars;366,265;100,000;387;83
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Helgedøgn;Alle;April;35,174;99,000;930;688
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Helgedøgn;Alle;Mai;-10,169;100,000;1113;1239
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Helgedøgn;Alle;Juni;14,358;100,000;1123;982
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Helgedøgn;Alle;Siste 12 måneder;16,627;91,000;3928;3368
+8;800528;Deichmannsgate sykkeltellepunkt;K;1730;1;218;1;;;Helgedøgn;Alle;Hittil i år;18,845;97,000;3664;3083
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Alle;Alle;Juli;9,349;100,000;11392;10418
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Alle;Alle;August;2,709;100,000;13990;13621
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Alle;Alle;September;9,724;100,000;12164;11086
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Alle;Alle;Oktober;11,777;100,000;9254;8279
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Alle;Alle;November;35,446;100,000;6133;4528
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Alle;Alle;Desember;-17,008;99,000;2269;2734
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Alle;Alle;Januar;42,086;99,000;2738;1927
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Alle;Alle;Februar;264,172;94,000;2287;628
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Alle;Alle;Mars;-;-;-;-
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Alle;Alle;April;36,504;99,000;10822;7928
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Alle;Alle;Mai;-18,638;98,000;12983;15957
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Alle;Alle;Juni;-19,896;100,000;12002;14983
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Alle;Alle;Siste 12 måneder;4,284;99,000;96034;92089
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Alle;Alle;Hittil i år;-1,427;98,000;40832;41423
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Yrkesdøgn;Alle;Juli;14,428;100,000;9200;8040
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Yrkesdøgn;Alle;August;3,803;100,000;11983;11544
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Yrkesdøgn;Alle;September;8,712;100,000;10132;9320
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Yrkesdøgn;Alle;Oktober;11,165;100,000;8095;7282
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Yrkesdøgn;Alle;November;35,851;100,000;5521;4064
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Yrkesdøgn;Alle;Desember;-16,792;99,000;1997;2400
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Yrkesdøgn;Alle;Januar;46,027;99,000;2573;1762
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Yrkesdøgn;Alle;Februar;255,424;92,000;2097;590
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Yrkesdøgn;Alle;Mars;-;-;-;-
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Yrkesdøgn;Alle;April;33,468;99,000;8283;6206
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Yrkesdøgn;Alle;Mai;-16,993;97,000;10253;12352
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Yrkesdøgn;Alle;Juni;-27,081;100,000;9190;12603
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Yrkesdøgn;Alle;Siste 12 måneder;4,150;99,000;79324;76163
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Yrkesdøgn;Alle;Hittil i år;-3,333;97,000;32396;33513
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Helgedøgn;Alle;Juli;-7,822;100,000;2192;2378
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Helgedøgn;Alle;August;-3,370;100,000;2007;2077
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Helgedøgn;Alle;September;15,062;100,000;2032;1766
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Helgedøgn;Alle;Oktober;16,249;100,000;1159;997
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Helgedøgn;Alle;November;31,897;100,000;612;464
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Helgedøgn;Alle;Desember;-18,563;100,000;272;334
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Helgedøgn;Alle;Januar;0,000;100,000;165;165
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Helgedøgn;Alle;Februar;400,000;99,000;190;38
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Helgedøgn;Alle;Mars;-;-;-;-
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Helgedøgn;Alle;April;47,445;99,000;2539;1722
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Helgedøgn;Alle;Mai;-24,272;100,000;2730;3605
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Helgedøgn;Alle;Juni;18,151;100,000;2812;2380
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Helgedøgn;Alle;Siste 12 måneder;4,923;99,000;16710;15926
+8;800511;Elstrømbrua sykkeltellepunkt;F;357;250;270;1;;;Helgedøgn;Alle;Hittil i år;6,650;99,000;8436;7910
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Alle;Alle;Juli;12,655;99,000;7380;6551
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Alle;Alle;August;6,285;99,000;8810;8289
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Alle;Alle;September;20,673;99,000;7460;6182
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Alle;Alle;Oktober;26,871;100,000;6544;5158
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Alle;Alle;November;33,161;100,000;4132;3103
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Alle;Alle;Desember;-12,653;99,000;1712;1960
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Alle;Alle;Januar;27,505;99,000;1794;1407
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Alle;Alle;Februar;76,408;99,000;1660;941
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Alle;Alle;Mars;149,403;99,000;3549;1423
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Alle;Alle;April;28,739;99,000;6679;5188
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Alle;Alle;Mai;-18,073;99,000;7543;9207
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Alle;Alle;Juni;-26,227;99,000;7139;9677
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Alle;Alle;Siste 12 måneder;8,997;99,000;64402;59086
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Alle;Alle;Hittil i år;1,871;99,000;28364;27843
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Yrkesdøgn;Alle;Juli;17,749;99,000;5984;5082
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Yrkesdøgn;Alle;August;6,269;99,000;7442;7003
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Yrkesdøgn;Alle;September;21,587;99,000;6252;5142
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Yrkesdøgn;Alle;Oktober;27,494;100,000;5699;4470
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Yrkesdøgn;Alle;November;33,587;100,000;3683;2757
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Yrkesdøgn;Alle;Desember;-12,862;99,000;1504;1726
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Yrkesdøgn;Alle;Januar;27,671;99,000;1661;1301
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Yrkesdøgn;Alle;Februar;75,404;99,000;1519;866
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Yrkesdøgn;Alle;Mars;148,161;99,000;2968;1196
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Yrkesdøgn;Alle;April;25,434;99,000;5198;4144
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Yrkesdøgn;Alle;Mai;-17,630;99,000;5957;7232
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Yrkesdøgn;Alle;Juni;-31,846;99,000;5483;8045
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Yrkesdøgn;Alle;Siste 12 måneder;8,958;99,000;53350;48964
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Yrkesdøgn;Alle;Hittil i år;0,009;99,000;22786;22784
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Helgedøgn;Alle;Juli;-4,969;98,000;1396;1469
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Helgedøgn;Alle;August;6,376;100,000;1368;1286
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Helgedøgn;Alle;September;16,154;99,000;1208;1040
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Helgedøgn;Alle;Oktober;22,820;100,000;845;688
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Helgedøgn;Alle;November;29,769;100,000;449;346
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Helgedøgn;Alle;Desember;-11,111;100,000;208;234
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Helgedøgn;Alle;Januar;25,472;100,000;133;106
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Helgedøgn;Alle;Februar;88,000;99,000;141;75
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Helgedøgn;Alle;Mars;155,947;100,000;581;227
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Helgedøgn;Alle;April;41,858;99,000;1481;1044
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Helgedøgn;Alle;Mai;-19,696;99,000;1586;1975
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Helgedøgn;Alle;Juni;1,471;100,000;1656;1632
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Helgedøgn;Alle;Siste 12 måneder;9,188;99,000;11052;10122
+8;800524;Menstadbrua sykkeltellepunkt;F;32;50;585;1;;;Helgedøgn;Alle;Hittil i år;10,259;99,000;5578;5059
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Alle;Alle;Juli;-0,473;100,000;6736;6768
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Alle;Alle;August;-4,116;100,000;7735;8067
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Alle;Alle;September;10,882;100,000;6440;5808
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Alle;Alle;Oktober;16,165;99,000;6101;5252
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Alle;Alle;November;-20,555;100,000;3409;4291
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Alle;Alle;Desember;-;-;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Alle;Alle;Januar;-;-;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Alle;Alle;Februar;-;0,000;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Alle;Alle;Mars;-;0,000;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Alle;Alle;April;-;0,000;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Alle;Alle;Mai;-;0,000;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Alle;Alle;Juni;-;0,000;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Alle;Alle;Siste 12 måneder;0,779;99,000;30421;30186
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Alle;Alle;Hittil i år;-;-;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Yrkesdøgn;Alle;Juli;0,892;100,000;5766;5715
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Yrkesdøgn;Alle;August;-4,837;100,000;6847;7195
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Yrkesdøgn;Alle;September;11,374;100,000;5601;5029
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Yrkesdøgn;Alle;Oktober;16,813;98,000;5572;4770
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Yrkesdøgn;Alle;November;-20,885;100,000;3148;3979
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Yrkesdøgn;Alle;Desember;-;-;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Yrkesdøgn;Alle;Januar;-;-;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Yrkesdøgn;Alle;Februar;-;0,000;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Yrkesdøgn;Alle;Mars;-;0,000;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Yrkesdøgn;Alle;April;-;0,000;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Yrkesdøgn;Alle;Mai;-;0,000;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Yrkesdøgn;Alle;Juni;-;0,000;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Yrkesdøgn;Alle;Siste 12 måneder;0,922;99,000;26934;26688
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Yrkesdøgn;Alle;Hittil i år;-;-;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Helgedøgn;Alle;Juli;-7,882;100,000;970;1053
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Helgedøgn;Alle;August;1,835;100,000;888;872
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Helgedøgn;Alle;September;7,702;100,000;839;779
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Helgedøgn;Alle;Oktober;9,751;99,000;529;482
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Helgedøgn;Alle;November;-16,346;100,000;261;312
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Helgedøgn;Alle;Desember;-;-;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Helgedøgn;Alle;Januar;-;-;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Helgedøgn;Alle;Februar;-;0,000;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Helgedøgn;Alle;Mars;-;0,000;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Helgedøgn;Alle;April;-;0,000;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Helgedøgn;Alle;Mai;-;0,000;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Helgedøgn;Alle;Juni;-;0,000;-;-
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Helgedøgn;Alle;Siste 12 måneder;-0,314;99,000;3487;3498
+8;800513;Sundjordet sykkeltellepunkt;K;4640;1;370;1;;;Helgedøgn;Alle;Hittil i år;-;-;-;-
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Alle;Alle;Juli;12,576;99,000;3330;2958
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Alle;Alle;August;0,535;99,000;3759;3739
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Alle;Alle;September;15,868;88,000;2636;2275
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Alle;Alle;Oktober;24,973;99,000;2332;1866
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Alle;Alle;November;-;0,000;-;-
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Alle;Alle;Desember;-19,710;96,000;387;482
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Alle;Alle;Januar;21,858;100,000;446;366
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Alle;Alle;Februar;82,000;100,000;455;250
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Alle;Alle;Mars;168,934;100,000;1186;441
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Alle;Alle;April;19,200;99,000;2533;2125
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Alle;Alle;Mai;-27,915;100,000;3011;4177
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Alle;Alle;Juni;-30,372;98,000;2900;4165
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Alle;Alle;Siste 12 måneder;0,573;98,000;22975;22844
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Alle;Alle;Hittil i år;-8,617;99,000;10531;11524
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Yrkesdøgn;Alle;Juli;17,670;99,000;2697;2292
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Yrkesdøgn;Alle;August;2,360;99,000;3210;3136
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Yrkesdøgn;Alle;September;10,048;86,000;2081;1891
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Yrkesdøgn;Alle;Oktober;29,668;98,000;2028;1564
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Yrkesdøgn;Alle;November;-;0,000;-;-
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Yrkesdøgn;Alle;Desember;-15,345;97,000;331;391
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Yrkesdøgn;Alle;Januar;15,942;100,000;400;345
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Yrkesdøgn;Alle;Februar;75,556;100,000;395;225
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Yrkesdøgn;Alle;Mars;180,523;100,000;965;344
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Yrkesdøgn;Alle;April;23,407;99,000;1956;1585
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Yrkesdøgn;Alle;Mai;-27,298;100,000;2333;3209
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Yrkesdøgn;Alle;Juni;-35,132;99,000;2212;3410
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Yrkesdøgn;Alle;Siste 12 måneder;1,174;98,000;18608;18392
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Yrkesdøgn;Alle;Hittil i år;-9,399;99,000;8261;9118
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Helgedøgn;Alle;Juli;-4,955;100,000;633;666
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Helgedøgn;Alle;August;-8,955;99,000;549;603
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Helgedøgn;Alle;September;44,531;91,000;555;384
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Helgedøgn;Alle;Oktober;0,662;100,000;304;302
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Helgedøgn;Alle;November;-;0,000;-;-
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Helgedøgn;Alle;Desember;-38,462;95,000;56;91
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Helgedøgn;Alle;Januar;119,048;100,000;46;21
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Helgedøgn;Alle;Februar;140,000;100,000;60;25
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Helgedøgn;Alle;Mars;127,835;100,000;221;97
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Helgedøgn;Alle;April;6,852;98,000;577;540
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Helgedøgn;Alle;Mai;-29,959;100,000;678;968
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Helgedøgn;Alle;Juni;-8,874;98,000;688;755
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Helgedøgn;Alle;Siste 12 måneder;-1,909;98,000;4367;4452
+8;800506;Klevstrand sykkeltellepunkt;R;36;201;3595;1;;;Helgedøgn;Alle;Hittil i år;-5,653;99,000;2270;2406
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Alle;Alle;Juli;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Alle;Alle;August;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Alle;Alle;September;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Alle;Alle;Oktober;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Alle;Alle;November;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Alle;Alle;Desember;-;-;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Alle;Alle;Januar;-;-;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Alle;Alle;Februar;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Alle;Alle;Mars;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Alle;Alle;April;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Alle;Alle;Mai;-25,756;100,000;2505;3374
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Alle;Alle;Juni;-31,482;100,000;2529;3691
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Alle;Alle;Siste 12 måneder;-28,747;100,000;5034;7065
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Alle;Alle;Hittil i år;-28,747;100,000;5034;7065
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Yrkesdøgn;Alle;Juli;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Yrkesdøgn;Alle;August;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Yrkesdøgn;Alle;September;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Yrkesdøgn;Alle;Oktober;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Yrkesdøgn;Alle;November;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Yrkesdøgn;Alle;Desember;-;-;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Yrkesdøgn;Alle;Januar;-;-;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Yrkesdøgn;Alle;Februar;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Yrkesdøgn;Alle;Mars;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Yrkesdøgn;Alle;April;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Yrkesdøgn;Alle;Mai;-28,550;100,000;1927;2697
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Yrkesdøgn;Alle;Juni;-35,906;100,000;1960;3058
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Yrkesdøgn;Alle;Siste 12 måneder;-32,459;100,000;3887;5755
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Yrkesdøgn;Alle;Hittil i år;-32,459;100,000;3887;5755
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Helgedøgn;Alle;Juli;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Helgedøgn;Alle;August;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Helgedøgn;Alle;September;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Helgedøgn;Alle;Oktober;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Helgedøgn;Alle;November;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Helgedøgn;Alle;Desember;-;-;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Helgedøgn;Alle;Januar;-;-;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Helgedøgn;Alle;Februar;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Helgedøgn;Alle;Mars;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Helgedøgn;Alle;April;-;0,000;-;-
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Helgedøgn;Alle;Mai;-14,623;100,000;578;677
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Helgedøgn;Alle;Juni;-10,111;100,000;569;633
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Helgedøgn;Alle;Siste 12 måneder;-12,443;100,000;1147;1310
+8;800537;Bedriftsvegen sykkeltellepunkt;K;13300;3;457;1;;;Helgedøgn;Alle;Hittil i år;-12,443;100,000;1147;1310
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Alle;Alle;Juli;14,685;100,000;3038;2649
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Alle;Alle;August;20,300;100,000;4806;3995
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Alle;Alle;September;-9,253;100,000;3060;3372
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Alle;Alle;Oktober;-;-;-;-
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Alle;Alle;November;-94,097;99,000;66;1118
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Alle;Alle;Desember;-63,048;99,000;177;479
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Alle;Alle;Januar;42,915;100,000;353;247
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Alle;Alle;Februar;225,203;100,000;400;123
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Alle;Alle;Mars;-;-;-;-
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Alle;Alle;April;27,931;100,000;3481;2721
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Alle;Alle;Mai;-21,796;100,000;4015;5134
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Alle;Alle;Juni;-83,985;100,000;819;5114
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Alle;Alle;Siste 12 måneder;-18,984;99,000;20215;24952
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Alle;Alle;Hittil i år;-32,019;100,000;9068;13339
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Yrkesdøgn;Alle;Juli;24,929;100,000;2215;1773
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Yrkesdøgn;Alle;August;23,923;100,000;3854;3110
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Yrkesdøgn;Alle;September;-7,667;100,000;2553;2765
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Yrkesdøgn;Alle;Oktober;-;-;-;-
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Yrkesdøgn;Alle;November;-93,320;98,000;65;973
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Yrkesdøgn;Alle;Desember;-64,938;98,000;142;405
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Yrkesdøgn;Alle;Januar;50,239;100,000;314;209
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Yrkesdøgn;Alle;Februar;285,417;100,000;370;96
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Yrkesdøgn;Alle;Mars;-;-;-;-
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Yrkesdøgn;Alle;April;28,889;100,000;2552;1980
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Yrkesdøgn;Alle;Mai;-22,113;100,000;2941;3776
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Yrkesdøgn;Alle;Juni;-85,104;100,000;593;3981
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Yrkesdøgn;Alle;Siste 12 måneder;-18,193;99,000;15599;19068
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Yrkesdøgn;Alle;Hittil i år;-32,583;100,000;6770;10042
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Helgedøgn;Alle;Juli;-6,050;100,000;823;876
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Helgedøgn;Alle;August;7,571;100,000;952;885
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Helgedøgn;Alle;September;-16,474;100,000;507;607
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Helgedøgn;Alle;Oktober;-;-;-;-
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Helgedøgn;Alle;November;-99,310;100,000;1;145
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Helgedøgn;Alle;Desember;-52,703;100,000;35;74
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Helgedøgn;Alle;Januar;2,632;100,000;39;38
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Helgedøgn;Alle;Februar;11,111;100,000;30;27
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Helgedøgn;Alle;Mars;-;-;-;-
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Helgedøgn;Alle;April;25,371;100,000;929;741
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Helgedøgn;Alle;Mai;-20,913;100,000;1074;1358
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Helgedøgn;Alle;Juni;-80,053;100,000;226;1133
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Helgedøgn;Alle;Siste 12 måneder;-21,550;100,000;4616;5884
+8;800527;Luksefjellvegen sykkeltellepunkt;F;31;3;27;1;;;Helgedøgn;Alle;Hittil i år;-30,300;100,000;2298;3297
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Alle;Alle;Juli;9,577;95,000;7506;6850
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Alle;Alle;August;-4,069;99,000;9101;9487
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Alle;Alle;September;-0,246;100,000;7712;7731
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Alle;Alle;Oktober;7,558;100,000;5991;5570
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Alle;Alle;November;41,583;99,000;3793;2679
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Alle;Alle;Desember;-13,046;100,000;1253;1441
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Alle;Alle;Januar;6,119;95,000;1214;1144
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Alle;Alle;Februar;68,305;97,000;993;590
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Alle;Alle;Mars;-;-;-;-
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Alle;Alle;April;-;0,000;-;-
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Alle;Alle;Mai;-24,189;99,000;7763;10240
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Alle;Alle;Juni;-24,508;100,000;7935;10511
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Alle;Alle;Siste 12 måneder;-5,302;98,000;53261;56243
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Alle;Alle;Hittil i år;-20,369;98,000;17905;22485
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Yrkesdøgn;Alle;Juli;16,442;96,000;6034;5182
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Yrkesdøgn;Alle;August;-6,027;99,000;7391;7865
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Yrkesdøgn;Alle;September;-2,573;100,000;6096;6257
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Yrkesdøgn;Alle;Oktober;7,004;100,000;5057;4726
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Yrkesdøgn;Alle;November;37,892;99,000;3297;2391
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Yrkesdøgn;Alle;Desember;-15,655;100,000;1056;1252
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Yrkesdøgn;Alle;Januar;4,576;99,000;1097;1049
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Yrkesdøgn;Alle;Februar;59,563;96,000;876;549
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Yrkesdøgn;Alle;Mars;-;-;-;-
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Yrkesdøgn;Alle;April;-;0,000;-;-
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Yrkesdøgn;Alle;Mai;-25,042;99,000;5747;7667
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Yrkesdøgn;Alle;Juni;-29,862;100,000;5940;8469
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Yrkesdøgn;Alle;Siste 12 måneder;-6,202;99,000;42591;45407
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Yrkesdøgn;Alle;Hittil i år;-22,973;98,000;13660;17734
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Helgedøgn;Alle;Juli;-11,751;94,000;1472;1668
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Helgedøgn;Alle;August;5,425;100,000;1710;1622
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Helgedøgn;Alle;September;9,634;100,000;1616;1474
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Helgedøgn;Alle;Oktober;10,664;100,000;934;844
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Helgedøgn;Alle;November;72,222;100,000;496;288
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Helgedøgn;Alle;Desember;4,233;100,000;197;189
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Helgedøgn;Alle;Januar;23,158;87,000;117;95
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Helgedøgn;Alle;Februar;185,366;100,000;117;41
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Helgedøgn;Alle;Mars;-;-;-;-
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Helgedøgn;Alle;April;-;0,000;-;-
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Helgedøgn;Alle;Mai;-21,648;99,000;2016;2573
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Helgedøgn;Alle;Juni;-2,302;100,000;1995;2042
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Helgedøgn;Alle;Siste 12 måneder;-1,532;98,000;10670;10836
+8;800526;Jonassens bru sykkeltellepunkt;K;64045;1;160;1;;;Helgedøgn;Alle;Hittil i år;-10,650;96,000;4245;4751
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Alle;Alle;Juli;3,817;100,000;6663;6418
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Alle;Alle;August;5,926;100,000;8866;8370
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Alle;Alle;September;8,669;100,000;7233;6656
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Alle;Alle;Oktober;16,166;99,000;5648;4862
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Alle;Alle;November;34,224;100,000;3416;2545
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Alle;Alle;Desember;-10,826;100,000;1252;1404
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Alle;Alle;Januar;26,941;99,000;1357;1069
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Alle;Alle;Februar;90,441;100,000;1295;680
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Alle;Alle;Mars;229,212;100,000;3009;914
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Alle;Alle;April;32,357;99,000;6369;4812
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Alle;Alle;Mai;-18,833;100,000;8098;9977
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Alle;Alle;Juni;-17,742;100,000;7831;9520
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Alle;Alle;Siste 12 måneder;6,658;99,000;61037;57227
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Alle;Alle;Hittil i år;3,659;99,000;27959;26972
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Yrkesdøgn;Alle;Juli;9,784;100,000;5229;4763
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Yrkesdøgn;Alle;August;7,485;100,000;7338;6827
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Yrkesdøgn;Alle;September;7,248;100,000;5904;5505
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Yrkesdøgn;Alle;Oktober;16,275;99,000;4794;4123
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Yrkesdøgn;Alle;November;33,602;100,000;2986;2235
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Yrkesdøgn;Alle;Desember;-10,966;100,000;1088;1222
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Yrkesdøgn;Alle;Januar;27,984;99,000;1276;997
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Yrkesdøgn;Alle;Februar;85,981;100,000;1194;642
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Yrkesdøgn;Alle;Mars;223,667;100,000;2489;769
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Yrkesdøgn;Alle;April;28,889;99,000;4863;3773
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Yrkesdøgn;Alle;Mai;-13,945;100,000;6307;7329
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Yrkesdøgn;Alle;Juni;-24,577;100,000;5843;7747
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Yrkesdøgn;Alle;Siste 12 måneder;7,357;99,000;49311;45932
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Yrkesdøgn;Alle;Hittil i år;3,364;99,000;21972;21257
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Helgedøgn;Alle;Juli;-13,353;100,000;1434;1655
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Helgedøgn;Alle;August;-0,972;100,000;1528;1543
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Helgedøgn;Alle;September;15,465;100,000;1329;1151
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Helgedøgn;Alle;Oktober;15,562;100,000;854;739
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Helgedøgn;Alle;November;38,710;100,000;430;310
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Helgedøgn;Alle;Desember;-9,890;100,000;164;182
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Helgedøgn;Alle;Januar;12,500;100,000;81;72
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Helgedøgn;Alle;Februar;165,789;100,000;101;38
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Helgedøgn;Alle;Mars;258,621;100,000;520;145
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Helgedøgn;Alle;April;44,947;99,000;1506;1039
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Helgedøgn;Alle;Mai;-32,364;100,000;1791;2648
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Helgedøgn;Alle;Juni;12,126;100,000;1988;1773
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Helgedøgn;Alle;Siste 12 måneder;3,816;99,000;11726;11295
+8;800522;Falkumbrua sykkeltellepunkt;F;357;1;1120;1;;;Helgedøgn;Alle;Hittil i år;4,759;99,000;5987;5715
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Alle;Alle;Juli;16,969;100,000;6576;5622
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Alle;Alle;August;6,300;100,000;7036;6619
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Alle;Alle;September;5,508;100,000;5325;5047
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Alle;Alle;Oktober;7,180;100,000;4553;4248
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Alle;Alle;November;13,993;100,000;3112;2730
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Alle;Alle;Desember;-22,444;100,000;1479;1907
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Alle;Alle;Januar;34,172;100,000;1814;1352
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Alle;Alle;Februar;123,868;100,000;1632;729
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Alle;Alle;Mars;-;-;-;-
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Alle;Alle;April;-;0,000;-;-
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Alle;Alle;Mai;-;-;-;-
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Alle;Alle;Juni;12,117;100,000;5450;4861
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Alle;Alle;Siste 12 måneder;11,662;100,000;36977;33115
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Alle;Alle;Hittil i år;28,148;100,000;8896;6942
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Yrkesdøgn;Alle;Juli;21,201;100,000;5368;4429
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Yrkesdøgn;Alle;August;7,306;100,000;6022;5612
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Yrkesdøgn;Alle;September;4,703;100,000;4453;4253
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Yrkesdøgn;Alle;Oktober;6,221;100,000;3927;3697
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Yrkesdøgn;Alle;November;12,627;100,000;2774;2463
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Yrkesdøgn;Alle;Desember;-24,926;100,000;1268;1689
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Yrkesdøgn;Alle;Januar;33,067;100,000;1666;1252
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Yrkesdøgn;Alle;Februar;116,568;100,000;1464;676
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Yrkesdøgn;Alle;Mars;-;-;-;-
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Yrkesdøgn;Alle;April;-;0,000;-;-
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Yrkesdøgn;Alle;Mai;-;-;-;-
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Yrkesdøgn;Alle;Juni;-1,321;100,000;4107;4162
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Yrkesdøgn;Alle;Siste 12 måneder;9,974;100,000;31049;28233
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Yrkesdøgn;Alle;Hittil i år;18,834;100,000;7237;6090
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Helgedøgn;Alle;Juli;1,257;100,000;1208;1193
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Helgedøgn;Alle;August;0,695;100,000;1014;1007
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Helgedøgn;Alle;September;9,824;100,000;872;794
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Helgedøgn;Alle;Oktober;13,612;100,000;626;551
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Helgedøgn;Alle;November;26,592;100,000;338;267
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Helgedøgn;Alle;Desember;-3,211;100,000;211;218
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Helgedøgn;Alle;Januar;48,000;100,000;148;100
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Helgedøgn;Alle;Februar;216,981;100,000;168;53
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Helgedøgn;Alle;Mars;-;-;-;-
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Helgedøgn;Alle;April;-;0,000;-;-
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Helgedøgn;Alle;Mai;-;-;-;-
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Helgedøgn;Alle;Juni;92,132;100,000;1343;699
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Helgedøgn;Alle;Siste 12 måneder;21,426;100,000;5928;4882
+8;800523;Klosterskogen sykkeltellepunkt;R;36;2;6108;1;;;Helgedøgn;Alle;Hittil i år;94,718;100,000;1659;852
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Alle;Alle;Juli;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Alle;Alle;August;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Alle;Alle;September;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Alle;Alle;Oktober;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Alle;Alle;November;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Alle;Alle;Desember;-;-;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Alle;Alle;Januar;-;-;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Alle;Alle;Februar;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Alle;Alle;Mars;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Alle;Alle;April;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Alle;Alle;Mai;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Alle;Alle;Juni;-24,224;99,000;2074;2737
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Alle;Alle;Siste 12 måneder;-24,224;99,000;2074;2737
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Alle;Alle;Hittil i år;-24,224;99,000;2074;2737
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Yrkesdøgn;Alle;Juli;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Yrkesdøgn;Alle;August;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Yrkesdøgn;Alle;September;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Yrkesdøgn;Alle;Oktober;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Yrkesdøgn;Alle;November;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Yrkesdøgn;Alle;Desember;-;-;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Yrkesdøgn;Alle;Januar;-;-;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Yrkesdøgn;Alle;Februar;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Yrkesdøgn;Alle;Mars;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Yrkesdøgn;Alle;April;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Yrkesdøgn;Alle;Mai;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Yrkesdøgn;Alle;Juni;-30,921;98,000;1432;2073
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Yrkesdøgn;Alle;Siste 12 måneder;-30,921;98,000;1432;2073
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Yrkesdøgn;Alle;Hittil i år;-30,921;98,000;1432;2073
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Helgedøgn;Alle;Juli;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Helgedøgn;Alle;August;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Helgedøgn;Alle;September;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Helgedøgn;Alle;Oktober;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Helgedøgn;Alle;November;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Helgedøgn;Alle;Desember;-;-;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Helgedøgn;Alle;Januar;-;-;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Helgedøgn;Alle;Februar;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Helgedøgn;Alle;Mars;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Helgedøgn;Alle;April;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Helgedøgn;Alle;Mai;-;0,000;-;-
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Helgedøgn;Alle;Juni;-3,313;99,000;642;664
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Helgedøgn;Alle;Siste 12 måneder;-3,313;99,000;642;664
+8;800515;Nystrand sykkeltellepunkt;F;30;4;100;1;;;Helgedøgn;Alle;Hittil i år;-3,313;99,000;642;664
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Alle;Alle;Juli;20,753;100,000;1763;1460
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Alle;Alle;August;18,969;100,000;2747;2309
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Alle;Alle;September;11,721;100,000;2888;2585
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Alle;Alle;Oktober;34,373;100,000;2111;1571
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Alle;Alle;November;62,277;96,000;1183;729
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Alle;Alle;Desember;35,531;99,000;370;273
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Alle;Alle;Januar;75,330;100,000;398;227
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Alle;Alle;Februar;179,851;100,000;375;134
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Alle;Alle;Mars;246,897;69,000;503;145
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Alle;Alle;April;8,065;86,000;1983;1835
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Alle;Alle;Mai;-22,665;100,000;2641;3415
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Alle;Alle;Juni;-20,292;100,000;2459;3085
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Alle;Alle;Siste 12 måneder;9,303;96,000;19421;17768
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Alle;Alle;Hittil i år;-5,452;92,000;8359;8841
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Yrkesdøgn;Alle;Juli;29,907;100,000;1251;963
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Yrkesdøgn;Alle;August;24,986;100,000;2256;1805
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Yrkesdøgn;Alle;September;10,726;100,000;2457;2219
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Yrkesdøgn;Alle;Oktober;33,066;100,000;1823;1370
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Yrkesdøgn;Alle;November;69,889;95,000;1072;631
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Yrkesdøgn;Alle;Desember;32,743;99,000;300;226
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Yrkesdøgn;Alle;Januar;73,430;100,000;359;207
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Yrkesdøgn;Alle;Februar;162,602;100,000;323;123
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Yrkesdøgn;Alle;Mars;229,851;75,000;442;134
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Yrkesdøgn;Alle;April;-1,190;84,000;1411;1428
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Yrkesdøgn;Alle;Mai;-22,201;100,000;2008;2581
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Yrkesdøgn;Alle;Juni;-26,944;100,000;1860;2546
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Yrkesdøgn;Alle;Siste 12 måneder;9,337;96,000;15562;14233
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Yrkesdøgn;Alle;Hittil i år;-8,776;93,000;6403;7019
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Helgedøgn;Alle;Juli;3,018;100,000;512;497
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Helgedøgn;Alle;August;-2,579;100,000;491;504
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Helgedøgn;Alle;September;17,760;100,000;431;366
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Helgedøgn;Alle;Oktober;43,284;100,000;288;201
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Helgedøgn;Alle;November;13,265;100,000;111;98
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Helgedøgn;Alle;Desember;48,936;100,000;70;47
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Helgedøgn;Alle;Januar;95,000;100,000;39;20
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Helgedøgn;Alle;Februar;372,727;100,000;52;11
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Helgedøgn;Alle;Mars;454,545;57,000;61;11
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Helgedøgn;Alle;April;40,541;90,000;572;407
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Helgedøgn;Alle;Mai;-24,101;100,000;633;834
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Helgedøgn;Alle;Juni;11,132;100,000;599;539
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Helgedøgn;Alle;Siste 12 måneder;9,165;95,000;3859;3535
+8;800525;Siljanvegen sykkeltellepunkt;F;32;202;11188;1;;;Helgedøgn;Alle;Hittil i år;7,355;90,000;1956;1822
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Alle;Alle;Juli;13,438;100,000;3959;3490
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Alle;Alle;August;0,192;100,000;3660;3653
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Alle;Alle;September;10,510;100,000;2902;2626
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Alle;Alle;Oktober;10,417;99,000;1961;1776
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Alle;Alle;November;23,844;99,000;1018;822
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Alle;Alle;Desember;2,895;99,000;391;380
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Alle;Alle;Januar;10,891;99,000;336;303
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Alle;Alle;Februar;89,552;100,000;381;201
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Alle;Alle;Mars;184,985;95,000;949;333
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Alle;Alle;April;0,506;100,000;2187;2176
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Alle;Alle;Mai;-34,212;100,000;2719;4133
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Alle;Alle;Juni;-40,071;100,000;2532;4225
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Alle;Alle;Siste 12 måneder;-4,656;99,000;22995;24118
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Alle;Alle;Hittil i år;-19,937;99,000;9104;11371
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Yrkesdøgn;Alle;Juli;16,921;100,000;3061;2618
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Yrkesdøgn;Alle;August;2,603;100,000;3075;2997
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Yrkesdøgn;Alle;September;15,289;100,000;2330;2021
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Yrkesdøgn;Alle;Oktober;15,701;99,000;1717;1484
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Yrkesdøgn;Alle;November;27,286;99,000;891;700
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Yrkesdøgn;Alle;Desember;4,792;99,000;328;313
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Yrkesdøgn;Alle;Januar;17,939;99,000;309;262
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Yrkesdøgn;Alle;Februar;71,728;100,000;328;191
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Yrkesdøgn;Alle;Mars;160,517;95,000;706;271
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Yrkesdøgn;Alle;April;-5,144;100,000;1586;1672
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Yrkesdøgn;Alle;Mai;-34,110;100,000;2121;3219
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Yrkesdøgn;Alle;Juni;-45,505;100,000;1867;3426
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Yrkesdøgn;Alle;Siste 12 måneder;-4,459;99,000;18319;19174
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Yrkesdøgn;Alle;Hittil i år;-23,493;99,000;6917;9041
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Helgedøgn;Alle;Juli;2,982;100,000;898;872
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Helgedøgn;Alle;August;-10,823;100,000;585;656
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Helgedøgn;Alle;September;-5,455;100,000;572;605
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Helgedøgn;Alle;Oktober;-16,438;100,000;244;292
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Helgedøgn;Alle;November;4,098;100,000;127;122
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Helgedøgn;Alle;Desember;-5,970;100,000;63;67
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Helgedøgn;Alle;Januar;-34,146;100,000;27;41
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Helgedøgn;Alle;Februar;430,000;100,000;53;10
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Helgedøgn;Alle;Mars;291,935;95,000;243;62
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Helgedøgn;Alle;April;19,246;100,000;601;504
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Helgedøgn;Alle;Mai;-34,573;100,000;598;914
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Helgedøgn;Alle;Juni;-16,771;100,000;665;799
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Helgedøgn;Alle;Siste 12 måneder;-5,421;99,000;4676;4944
+8;800514;Stathelle sykkeltellepunkt;F;352;201;380;1;;;Helgedøgn;Alle;Hittil i år;-6,137;99,000;2187;2330
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Alle;Alle;Juli;10,796;100,000;3356;3029
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Alle;Alle;August;-1,095;100,000;4066;4111
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Alle;Alle;September;13,173;99,000;2878;2543
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Alle;Alle;Oktober;13,458;100,000;2369;2088
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Alle;Alle;November;111,293;100,000;1422;673
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Alle;Alle;Desember;-24,328;100,000;535;707
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Alle;Alle;Januar;27,254;100,000;621;488
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Alle;Alle;Februar;105,970;100,000;552;268
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Alle;Alle;Mars;217,664;89,000;1115;351
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Alle;Alle;April;13,630;86,000;2351;2069
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Alle;Alle;Mai;-;0,000;-;-
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Alle;Alle;Juni;-;0,000;-;-
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Alle;Alle;Siste 12 måneder;17,995;97,000;19265;16327
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Alle;Alle;Hittil i år;46,064;93,000;4639;3176
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Yrkesdøgn;Alle;Juli;20,912;100,000;2625;2171
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Yrkesdøgn;Alle;August;-1,184;100,000;3254;3293
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Yrkesdøgn;Alle;September;16,451;99,000;2336;2006
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Yrkesdøgn;Alle;Oktober;13,248;100,000;2026;1789
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Yrkesdøgn;Alle;November;115,437;100,000;1256;583
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Yrkesdøgn;Alle;Desember;-27,874;100,000;458;635
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Yrkesdøgn;Alle;Januar;30,455;100,000;574;440
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Yrkesdøgn;Alle;Februar;103,187;100,000;510;251
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Yrkesdøgn;Alle;Mars;191,875;95,000;934;320
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Yrkesdøgn;Alle;April;1,512;84,000;1611;1587
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Yrkesdøgn;Alle;Mai;-;0,000;-;-
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Yrkesdøgn;Alle;Juni;-;0,000;-;-
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Yrkesdøgn;Alle;Siste 12 måneder;19,189;98,000;15584;13075
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Yrkesdøgn;Alle;Hittil i år;39,684;95,000;3629;2598
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Helgedøgn;Alle;Juli;-14,802;100,000;731;858
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Helgedøgn;Alle;August;-0,733;100,000;812;818
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Helgedøgn;Alle;September;0,931;100,000;542;537
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Helgedøgn;Alle;Oktober;14,716;100,000;343;299
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Helgedøgn;Alle;November;84,444;100,000;166;90
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Helgedøgn;Alle;Desember;6,944;100,000;77;72
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Helgedøgn;Alle;Januar;-2,083;100,000;47;48
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Helgedøgn;Alle;Februar;147,059;100,000;42;17
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Helgedøgn;Alle;Mars;483,871;76,000;181;31
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Helgedøgn;Alle;April;53,527;90,000;740;482
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Helgedøgn;Alle;Mai;-;0,000;-;-
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Helgedøgn;Alle;Juni;-;0,000;-;-
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Helgedøgn;Alle;Siste 12 måneder;13,192;96,000;3681;3252
+8;800518;Bøle sykkeltellepunkt;F;32;203;4583;1;;;Helgedøgn;Alle;Hittil i år;74,740;90,000;1010;578
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Alle;Alle;Juli;8,551;100,000;4824;4444
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Alle;Alle;August;3,624;100,000;4947;4774
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Alle;Alle;September;21,559;100,000;3648;3001
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Alle;Alle;Oktober;9,885;100,000;2857;2600
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Alle;Alle;November;7,979;100,000;1854;1717
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Alle;Alle;Desember;-18,507;92,000;797;978
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Alle;Alle;Januar;3,102;100,000;1130;1096
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Alle;Alle;Februar;39,700;100,000;1024;733
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Alle;Alle;Mars;113,253;100,000;1947;913
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Alle;Alle;April;26,578;100,000;3348;2645
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Alle;Alle;Mai;-27,562;100,000;3979;5493
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Alle;Alle;Juni;-27,317;100,000;3914;5385
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Alle;Alle;Siste 12 måneder;1,451;99,000;34269;33779
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Alle;Alle;Hittil i år;-5,675;100,000;15342;16265
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Yrkesdøgn;Alle;Juli;14,767;100,000;3917;3413
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Yrkesdøgn;Alle;August;4,435;100,000;4239;4059
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Yrkesdøgn;Alle;September;21,584;100,000;3025;2488
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Yrkesdøgn;Alle;Oktober;12,356;100,000;2537;2258
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Yrkesdøgn;Alle;November;8,997;100,000;1684;1545
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Yrkesdøgn;Alle;Desember;-20,327;87,000;682;856
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Yrkesdøgn;Alle;Januar;1,947;100,000;1047;1027
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Yrkesdøgn;Alle;Februar;34,488;100,000;932;693
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Yrkesdøgn;Alle;Mars;106,146;100,000;1610;781
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Yrkesdøgn;Alle;April;22,732;100,000;2543;2072
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Yrkesdøgn;Alle;Mai;-25,377;100,000;3120;4181
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Yrkesdøgn;Alle;Juni;-31,546;100,000;3038;4438
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Yrkesdøgn;Alle;Siste 12 måneder;2,024;99,000;28374;27811
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Yrkesdøgn;Alle;Hittil i år;-6,837;100,000;12290;13192
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Helgedøgn;Alle;Juli;-12,027;100,000;907;1031
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Helgedøgn;Alle;August;-0,979;100,000;708;715
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Helgedøgn;Alle;September;21,442;100,000;623;513
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Helgedøgn;Alle;Oktober;-6,433;100,000;320;342
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Helgedøgn;Alle;November;-1,163;100,000;170;172
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Helgedøgn;Alle;Desember;-5,738;100,000;115;122
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Helgedøgn;Alle;Januar;20,290;100,000;83;69
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Helgedøgn;Alle;Februar;130,000;100,000;92;40
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Helgedøgn;Alle;Mars;155,303;100,000;337;132
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Helgedøgn;Alle;April;40,489;100,000;805;573
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Helgedøgn;Alle;Mai;-34,527;100,000;859;1312
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Helgedøgn;Alle;Juni;-7,497;100,000;876;947
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Helgedøgn;Alle;Siste 12 måneder;-1,223;100,000;5895;5968
+8;800517;Skjelsvikdalen sykkeltellepunkt;R;36;201;818;1;;;Helgedøgn;Alle;Hittil i år;-0,683;100,000;3052;3073
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Alle;Alle;Juli;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Alle;Alle;August;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Alle;Alle;September;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Alle;Alle;Oktober;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Alle;Alle;November;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Alle;Alle;Desember;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Alle;Alle;Januar;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Alle;Alle;Februar;-;0,000;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Alle;Alle;Mars;223,077;100,000;84;26
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Alle;Alle;April;33,968;100,000;422;315
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Alle;Alle;Mai;-52,774;99,000;366;775
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Alle;Alle;Juni;-36,707;100,000;419;662
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Alle;Alle;Siste 12 måneder;-27,390;99,000;1291;1778
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Alle;Alle;Hittil i år;-27,390;99,000;1291;1778
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Yrkesdøgn;Alle;Juli;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Yrkesdøgn;Alle;August;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Yrkesdøgn;Alle;September;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Yrkesdøgn;Alle;Oktober;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Yrkesdøgn;Alle;November;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Yrkesdøgn;Alle;Desember;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Yrkesdøgn;Alle;Januar;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Yrkesdøgn;Alle;Februar;-;0,000;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Yrkesdøgn;Alle;Mars;152,381;100,000;53;21
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Yrkesdøgn;Alle;April;17,467;100,000;269;229
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Yrkesdøgn;Alle;Mai;-54,301;99,000;255;558
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Yrkesdøgn;Alle;Juni;-39,841;100,000;302;502
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Yrkesdøgn;Alle;Siste 12 måneder;-32,901;99,000;879;1310
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Yrkesdøgn;Alle;Hittil i år;-32,901;99,000;879;1310
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Helgedøgn;Alle;Juli;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Helgedøgn;Alle;August;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Helgedøgn;Alle;September;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Helgedøgn;Alle;Oktober;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Helgedøgn;Alle;November;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Helgedøgn;Alle;Desember;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Helgedøgn;Alle;Januar;-;-;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Helgedøgn;Alle;Februar;-;0,000;-;-
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Helgedøgn;Alle;Mars;520,000;100,000;31;5
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Helgedøgn;Alle;April;77,907;100,000;153;86
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Helgedøgn;Alle;Mai;-48,848;99,000;111;217
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Helgedøgn;Alle;Juni;-26,875;100,000;117;160
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Helgedøgn;Alle;Siste 12 måneder;-11,966;99,000;412;468
+8;800519;Siljan sentrum sykkeltellepunkt;K;1039;2;45;1;;;Helgedøgn;Alle;Hittil i år;-11,966;99,000;412;468
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Alle;Alle;Juli;7,880;100,000;9145;8477
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Alle;Alle;August;0,538;100,000;10094;10040
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Alle;Alle;September;9,536;100,000;7834;7152
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Alle;Alle;Oktober;16,275;100,000;6780;5831
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Alle;Alle;November;18,170;100,000;4442;3759
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Alle;Alle;Desember;-22,179;100,000;1821;2340
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Alle;Alle;Januar;28,868;99,000;2232;1732
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Alle;Alle;Februar;114,784;100,000;2034;947
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Alle;Alle;Mars;182,600;100,000;4174;1477
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Alle;Alle;April;15,813;100,000;7280;6286
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Alle;Alle;Mai;-27,102;99,000;8341;11442
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Alle;Alle;Juni;-28,244;100,000;7947;11075
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Alle;Alle;Siste 12 måneder;2,219;99,000;72124;70558
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Alle;Alle;Hittil i år;-2,885;99,000;32008;32959
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Yrkesdøgn;Alle;Juli;13,458;100,000;7326;6457
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Yrkesdøgn;Alle;August;0,239;100,000;8391;8371
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Yrkesdøgn;Alle;September;11,403;100,000;6311;5665
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Yrkesdøgn;Alle;Oktober;18,269;100,000;5807;4910
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Yrkesdøgn;Alle;November;19,789;100,000;3977;3320
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Yrkesdøgn;Alle;Desember;-21,887;100,000;1581;2024
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Yrkesdøgn;Alle;Januar;28,438;99,000;2055;1600
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Yrkesdøgn;Alle;Februar;110,984;100,000;1844;874
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Yrkesdøgn;Alle;Mars;183,711;100,000;3379;1191
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Yrkesdøgn;Alle;April;14,886;100,000;5464;4756
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Yrkesdøgn;Alle;Mai;-25,291;99,000;6351;8501
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Yrkesdøgn;Alle;Juni;-34,146;100,000;5996;9105
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Yrkesdøgn;Alle;Siste 12 måneder;3,008;99,000;58482;56774
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Yrkesdøgn;Alle;Hittil i år;-3,604;99,000;25089;26027
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Helgedøgn;Alle;Juli;-9,950;100,000;1819;2020
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Helgedøgn;Alle;August;2,037;100,000;1703;1669
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Helgedøgn;Alle;September;2,421;100,000;1523;1487
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Helgedøgn;Alle;Oktober;5,646;100,000;973;921
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Helgedøgn;Alle;November;5,923;100,000;465;439
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Helgedøgn;Alle;Desember;-24,051;100,000;240;316
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Helgedøgn;Alle;Januar;34,091;100,000;177;132
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Helgedøgn;Alle;Februar;160,274;100,000;190;73
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Helgedøgn;Alle;Mars;177,972;100,000;795;286
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Helgedøgn;Alle;April;18,693;100,000;1816;1530
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Helgedøgn;Alle;Mai;-32,336;100,000;1990;2941
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Helgedøgn;Alle;Juni;-0,964;100,000;1951;1970
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Helgedøgn;Alle;Siste 12 måneder;-1,030;100,000;13642;13784
+8;800508;Nenset sykkeltellepunkt;R;36;202;2813;1;;;Helgedøgn;Alle;Hittil i år;-0,188;100,000;6919;6932
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Alle;Alle;Juli;-;0,000;-;-
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Alle;Alle;August;0,397;54,000;2779;2768
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Alle;Alle;September;18,978;100,000;3423;2877
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Alle;Alle;Oktober;11,019;100,000;2549;2296
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Alle;Alle;November;31,470;100,000;1529;1163
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Alle;Alle;Desember;11,693;99,000;640;573
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Alle;Alle;Januar;23,228;98,000;626;508
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Alle;Alle;Februar;93,537;100,000;569;294
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Alle;Alle;Mars;213,787;98,000;1707;544
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Alle;Alle;April;32,880;100,000;3516;2646
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Alle;Alle;Mai;-33,622;100,000;4059;6115
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Alle;Alle;Juni;-33,052;100,000;3972;5933
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Alle;Alle;Siste 12 måneder;-1,353;95,000;25369;25717
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Alle;Alle;Hittil i år;-9,919;99,000;14449;16040
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Yrkesdøgn;Alle;Juli;-;0,000;-;-
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Yrkesdøgn;Alle;August;4,116;56,000;2403;2308
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Yrkesdøgn;Alle;September;18,459;100,000;2676;2259
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Yrkesdøgn;Alle;Oktober;11,871;100,000;2111;1887
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Yrkesdøgn;Alle;November;35,132;100,000;1327;982
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Yrkesdøgn;Alle;Desember;20,044;99,000;545;454
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Yrkesdøgn;Alle;Januar;33,028;98,000;580;436
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Yrkesdøgn;Alle;Februar;112,185;100,000;505;238
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Yrkesdøgn;Alle;Mars;259,626;97,000;1345;374
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Yrkesdøgn;Alle;April;25,387;100,000;2267;1808
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Yrkesdøgn;Alle;Mai;-32,867;100,000;2972;4427
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Yrkesdøgn;Alle;Juni;-39,266;100,000;2863;4714
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Yrkesdøgn;Alle;Siste 12 måneder;-1,473;95,000;19594;19887
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Yrkesdøgn;Alle;Hittil i år;-12,211;99,000;10532;11997
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Helgedøgn;Alle;Juli;-;0,000;-;-
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Helgedøgn;Alle;August;-18,261;50,000;376;460
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Helgedøgn;Alle;September;20,874;100,000;747;618
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Helgedøgn;Alle;Oktober;7,090;100,000;438;409
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Helgedøgn;Alle;November;11,602;100,000;202;181
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Helgedøgn;Alle;Desember;-20,168;100,000;95;119
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Helgedøgn;Alle;Januar;-36,111;98,000;46;72
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Helgedøgn;Alle;Februar;14,286;100,000;64;56
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Helgedøgn;Alle;Mars;112,941;98,000;362;170
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Helgedøgn;Alle;April;49,045;100,000;1249;838
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Helgedøgn;Alle;Mai;-35,604;100,000;1087;1688
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Helgedøgn;Alle;Juni;-9,024;100,000;1109;1219
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Helgedøgn;Alle;Siste 12 måneder;-0,943;95,000;5775;5830
+8;800510;Ørviksletta sykkeltellepunkt;R;354;201;5666;1;;;Helgedøgn;Alle;Hittil i år;-3,116;99,000;3917;4043
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Alle;Alle;Juli;2,540;100,000;3351;3268
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Alle;Alle;August;2,776;100,000;4405;4286
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Alle;Alle;September;12,421;99,000;4444;3953
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Alle;Alle;Oktober;26,653;100,000;3830;3024
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Alle;Alle;November;58,422;99,000;2530;1597
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Alle;Alle;Desember;8,791;100,000;891;819
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Alle;Alle;Januar;27,412;99,000;832;653
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Alle;Alle;Februar;77,037;100,000;717;405
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Alle;Alle;Mars;268,138;100,000;1918;521
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Alle;Alle;April;-;0,000;-;-
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Alle;Alle;Mai;-;0,000;-;-
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Alle;Alle;Juni;39,527;100,000;4010;2874
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Alle;Alle;Siste 12 måneder;25,832;99,000;26928;21400
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Alle;Alle;Hittil i år;67,909;99,000;7477;4453
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Yrkesdøgn;Alle;Juli;5,425;100,000;2701;2562
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Yrkesdøgn;Alle;August;6,228;100,000;3838;3613
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Yrkesdøgn;Alle;September;16,167;99,000;3837;3303
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Yrkesdøgn;Alle;Oktober;32,437;100,000;3495;2639
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Yrkesdøgn;Alle;November;64,124;99,000;2324;1416
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Yrkesdøgn;Alle;Desember;9,504;100,000;772;705
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Yrkesdøgn;Alle;Januar;32,363;99,000;773;584
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Yrkesdøgn;Alle;Februar;75,532;100,000;660;376
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Yrkesdøgn;Alle;Mars;262,443;100,000;1602;442
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Yrkesdøgn;Alle;April;-;0,000;-;-
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Yrkesdøgn;Alle;Mai;-;0,000;-;-
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Yrkesdøgn;Alle;Juni;30,732;100,000;3216;2460
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Yrkesdøgn;Alle;Siste 12 måneder;28,276;99,000;23218;18100
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Yrkesdøgn;Alle;Hittil i år;61,859;99,000;6251;3862
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Helgedøgn;Alle;Juli;-7,932;100,000;650;706
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Helgedøgn;Alle;August;-15,750;100,000;567;673
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Helgedøgn;Alle;September;-6,615;99,000;607;650
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Helgedøgn;Alle;Oktober;-12,987;100,000;335;385
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Helgedøgn;Alle;November;13,812;100,000;206;181
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Helgedøgn;Alle;Desember;4,386;100,000;119;114
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Helgedøgn;Alle;Januar;-14,493;100,000;59;69
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Helgedøgn;Alle;Februar;96,552;100,000;57;29
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Helgedøgn;Alle;Mars;300,000;100,000;316;79
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Helgedøgn;Alle;April;-;0,000;-;-
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Helgedøgn;Alle;Mai;-;0,000;-;-
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Helgedøgn;Alle;Juni;91,787;100,000;794;414
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Helgedøgn;Alle;Siste 12 måneder;12,424;99,000;3710;3300
+8;800512;Moflata sykkeltellepunkt;F;59;250;1320;1;;;Helgedøgn;Alle;Hittil i år;107,445;100,000;1226;591

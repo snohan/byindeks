@@ -1,15 +1,15 @@
 ---
 #title: Trafikkutvikling i byområder
 output: 
-  # html_document:
-  #   toc: true
-  #   fig_caption: true
-  word_document:
-    reference_docx: svv_notatmal.docx
+  html_document:
     toc: true
-    toc_depth: 2
     fig_caption: true
-    fig_width: 7
+  # word_document:
+  #   reference_docx: svv_notatmal.docx
+  #   toc: true
+  #   toc_depth: 2
+  #   fig_caption: true
+  #   fig_width: 7
 ---
 
 ```{r setup, include = FALSE, echo = FALSE}
@@ -23,12 +23,12 @@ all_point_info <-
 ```
 
 # Bakgrunn
-
+Gjeldende avtale om Bypakke Grenland har 2016 som referanseår, og byindeksen er beregnet med utgangspunkt i dette.
 
 \newline
 
 ## Byindekspunktenes plassering
-Kartene nedenfor viser plasseringen av byindekspunktene.
+Kartet nedenfor viser plasseringen av byindekspunktene.
 
 \newline
 \newline
@@ -64,14 +64,21 @@ all_point_info %>%
 
 # Byindeksen: endring i trafikkmengde for "lette" biler
 
+TABELL
+
 **Byindeksen for Grenland estimerer endringen i trafikkmengden fra 2018 og til og med til juni 2019 til 2,7 % med et 95 %-konfidensintervall på ± 4,2 %.**
 
 ```{r city_index}
 # TODO: point-line plot for the city index
+# Horizontal dot-plot with four dots:
+# 2016-2017
+# 2017-2018
+# 2018-2019
+# 2016-2019
 ```
 
 
-Figuren nedenfor viser endringen i byindekspunktene.
+Kartet nedenfor viser endringen i byindekspunktene fra referanseåret 2016 til og med juni 2019.
 
 ```{r map_trp_index, fig.cap="Endring i trafikkmengde på punktene."}
 # Create a red-green scale based on index values
@@ -120,6 +127,7 @@ Tabellen nedenfor gjengir byindekspunktene og deres indeksverdi for 2019. ÅDT e
 \newline
 
 ```{r table}
+# TODO: One column per year and one from refyear
 all_point_info %>% 
   select(name, road_reference, adt, 
          #index_17_18, index_18_19, 
@@ -158,6 +166,7 @@ I figuren nedenfor er spredningen i punktindeksene illustrert. Den horisontale g
 \newline
 
 ```{r graph, fig.cap = "Spredningen i punktindeksene."}
+# TODO: One per year and one per refyear
 all_point_info_index <- all_point_info %>% 
   dplyr::filter(!is.na(index)) 
 
