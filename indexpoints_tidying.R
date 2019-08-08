@@ -38,6 +38,20 @@ readPointindexCSV <- function(filename) {
     select(msnr, index)
 }
 
+read_city_index_csv <- function(filename) {
+  # Read standard csv export from Datainn
+  read.csv2(filename) %>%
+    filter(Vegkategori == "E+R+F+K",
+           døgn == "Alle",
+           lengdeklasse == "< 5,6m",
+           periode == "Hittil i år") %>%
+    mutate(index = as.numeric(str_replace(indeks, ",", ".")),
+           standardavvik = as.numeric(as.character(standardavvik)),
+           konfidensintervall = as.numeric(as.character(konfidensintervall))) %>%
+    select(index, dekning, standardavvik, konfidensintervall) %>%
+    as_tibble()
+}
+
 index_converter <- function(index) {
   ifelse(
     is.na(index),
@@ -239,6 +253,7 @@ city_index_trondheim_all <- city_index_trondheim %>%
 # TODO: find the compound CI (later)
 
 # Grenland 2017 ####
+# Point index
 trp_grenland_2017_ids <- cities_points %>%
   dplyr::filter(city_area_name == "Grenland",
                 agreement_start == 2017) %>%
@@ -264,7 +279,7 @@ pointindex_grenland_18_19 <-
   rename(index_18_19 = index)
 
 adt <- getAdtForpoints(trp_grenland_2017$trp_id) %>%
-  dplyr::filter(year == 2017) %>%
+  dplyr::filter(year == 2016) %>%
   dplyr::select(-year)
 
 # Final table
@@ -289,9 +304,66 @@ trp_grenland_2017_final <- bind_rows(with_aadt, missing_aadt) %>%
 
 # Index from refyear
 refyear <- trp_grenland_2017_final %>%
-  select(trp_id, starts_with("index")) %>%
-  mutate_if(is.numeric, list(index_converter))
+  select(starts_with("index")) %>%
+  mutate_all(list(index_converter)) %>%
+  transmute(index = purrr::pmap_dbl(., prod)) %>%
+  # Lazily changing from 1 to NA (risky?)
+  mutate(index = round(ifelse(index == 1, NA,  100 * (index - 1)),
+                       digits = 1))
 
-write.csv2(trp_grenland_2017_final,
+trp_grenland_2017_final_all <- trp_grenland_2017_final %>%
+  bind_cols(refyear)
+
+write.csv2(trp_grenland_2017_final_all,
            file = "data_indexpoints_tidy/indekspunkt_grenland_2017.csv",
+           row.names = F)
+
+# City index
+grenland_2017 <-
+  read_city_index_csv("data_index_raw/Grenland-2017-12_2016.csv") %>%
+  mutate(year = "2016-2017")
+grenland_2018 <-
+  read_city_index_csv("data_index_raw/Grenland-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+grenland_2019 <-
+  read_city_index_csv("data_index_raw/Grenland-2019-06_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+city_index_grenland <- bind_rows(grenland_2017,
+                                 grenland_2018,
+                                 grenland_2019) %>%
+  mutate(index_i = index_converter(index),
+         variance = (konfidensintervall / 1.96)^2)
+
+# TODO: get a compound ci, need to iterate pairwise through the years!
+#index_from_refyear <- 100*(prod(city_index_grenland$index_i)-1)
+calculate_two_year_index <- function(city_index_df) {
+
+two_years <- city_index_df %>%
+  select(index, index_i, variance) %>%
+  slice(1:2)
+
+two_years_to_one <- list(
+  index = 100 * (prod(two_years$index_i) - 1),
+  index_i = prod(two_years$index_i),
+  variance = two_years$variance[1] * two_years$variance[2] +
+    two_years$variance[1] * two_years$index[2]^2 +
+    two_years$variance[2] * two_years$index[1]^2
+) %>%
+  as_tibble()
+}
+
+first_two_years <- calculate_two_year_index(city_index_grenland)
+next_two_years <- bind_rows(first_two_years, slice(city_index_grenland, 3)) %>%
+  calculate_two_year_index() %>%
+  mutate(dekning = mean(city_index_grenland$dekning),
+         year = "2016-2019",
+         konfidensintervall = 1.96 * sqrt(variance))
+
+city_index_grenland_all <- city_index_grenland %>%
+  select(-standardavvik) %>%
+  bind_rows(next_two_years)
+
+write.csv2(city_index_grenland_all,
+           file = "data_indexpoints_tidy/byindeks_grenland_2017.csv",
            row.names = F)

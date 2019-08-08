@@ -18,8 +18,10 @@ source("rmd_setup.R")
 
 ```{r points, include = FALSE}
 all_point_info <- 
-  read.csv2("data_indexpoints_tidy/indekspunkt_grenland_2017.csv") %>% 
-  rename(index = index_18_19)
+  read.csv2("data_indexpoints_tidy/indekspunkt_grenland_2017.csv")
+
+city_info <-
+    read.csv2("data_indexpoints_tidy/byindeks_grenland_2017.csv")
 ```
 
 # Bakgrunn
@@ -64,7 +66,11 @@ all_point_info %>%
 
 # Byindeksen: endring i trafikkmengde for "lette" biler
 
-TABELL
+```{r city_table}
+city_info %>% 
+  flextable()
+```
+
 
 **Byindeksen for Grenland estimerer endringen i trafikkmengden fra 2018 og til og med til juni 2019 til 2,7 % med et 95 %-konfidensintervall på ± 4,2 %.**
 
@@ -128,27 +134,29 @@ Tabellen nedenfor gjengir byindekspunktene og deres indeksverdi for 2019. ÅDT e
 
 ```{r table}
 # TODO: One column per year and one from refyear
+
+index_column_names <- all_point_info %>% 
+  select(starts_with("index")) %>% 
+  names()
+
 all_point_info %>% 
   select(name, road_reference, adt, 
-         #index_17_18, index_18_19, 
-         index) %>% 
+         starts_with("index")) %>% 
   flextable() %>% 
   colformat_num(col_keys = "adt", 
                 big.mark = " ", digits = 0) %>%
-  colformat_num(col_keys = c("index"#, 
-                             #"index_17_18", "index_18_19"
-                             ), digits = 1) %>%
+  colformat_num(col_keys = index_column_names, 
+                digits = 1) %>%
   set_header_labels(name = "Navn",
                     road_reference = "Vegreferanse",
                     adt = "ÅDT",
-                    #index_17_18 = "Endring i prosent",
-                    #index_18_19 = "Endring",
-                    index = "Endring") %>% 
-  #add_header_row(values = c("", "", "", "2017", "2017-2018", "2018-2019",
-  #                          "2017-2019"), top = F) %>% 
-  #merge_at(i = 1, j = 5:7, part = "header") %>% 
-  #align(i = 1, j = 5, align = "center", part = "header") %>% 
-  #align(i = 2, j = 4:7, align = "right", part = "header") %>% 
+                    index_16_17 = "Endring i trafikkmengde (%)") %>% 
+  add_header_row(values = c("", "", "2016", 
+                            "2016-2017", "2017-2018", "2018-2019",
+                            "2016-2019"), top = F) %>% 
+  merge_at(i = 1, j = 4:7, part = "header") %>% 
+  align(i = 1, j = 4, align = "center", part = "header") %>% 
+  align(i = 2, j = 3:7, align = "right", part = "header") %>% 
   bold(part = "header") %>% 
   fontsize(size = 9, part = "all") %>% 
   font(fontname = "Lucida Sans Unicode", part = "all") %>% 
@@ -157,7 +165,8 @@ all_point_info %>%
   autofit() %>% 
   height_all(height = .2) %>% 
   padding(padding.top = .3,
-          padding.bottom = .3)
+          padding.bottom = .3) %>% 
+  width(j = 4, width = 1)
 ```
 
 
