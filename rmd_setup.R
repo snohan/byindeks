@@ -11,6 +11,7 @@ library(httr)
 library(lubridate)
 library(RColorBrewer)
 library(webshot)
+library(officer)
 
 # knitr options ####
 knitr::opts_chunk$set(echo = FALSE,
