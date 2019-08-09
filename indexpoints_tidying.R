@@ -38,6 +38,16 @@ readPointindexCSV <- function(filename) {
     select(msnr, index)
 }
 
+read_bikepointindex_csv <- function(filename) {
+  # Read standard csv export from Datainn
+  read.csv2(filename) %>%
+    filter(døgn == "Alle",
+           periode == "Hittil i år") %>%
+    mutate(msnr = as.numeric(msnr),
+           index = as.numeric(str_replace(indeks, ",", "."))) %>%
+    select(msnr, index)
+}
+
 read_city_index_csv <- function(filename) {
   # Read standard csv export from Datainn
   read.csv2(filename) %>%
@@ -51,6 +61,21 @@ read_city_index_csv <- function(filename) {
     select(index, dekning, standardavvik, konfidensintervall) %>%
     as_tibble()
 }
+
+read_bike_index_csv <- function(filename) {
+  # Read standard csv export from Datainn
+  read.csv2(filename) %>%
+    filter(Vegkategori == "E+R+F+K",
+           døgn == "Alle",
+           lengdeklasse == "Alle",
+           periode == "Hittil i år") %>%
+    mutate(index = as.numeric(str_replace(indeks, ",", ".")),
+           standardavvik = as.numeric(as.character(standardavvik)),
+           konfidensintervall = as.numeric(as.character(konfidensintervall))) %>%
+    select(index, dekning, standardavvik, konfidensintervall) %>%
+    as_tibble()
+}
+
 
 index_converter <- function(index) {
   ifelse(
@@ -366,4 +391,96 @@ city_index_grenland_all <- city_index_grenland %>%
 
 write.csv2(city_index_grenland_all,
            file = "data_indexpoints_tidy/byindeks_grenland_2017.csv",
+           row.names = F)
+
+# Grenland sykkel 2016 ####
+# Point index
+bike_trp_grenland_2016_ids <- cities_points %>%
+  dplyr::filter(city_area_name == "Grenland sykkel",
+                agreement_start == 2016) %>%
+  dplyr::select(trp_id, legacyNortrafMpn) %>%
+  dplyr::rename(msnr = legacyNortrafMpn)
+
+bike_trp_grenland_2016 <- dplyr::left_join(bike_trp_grenland_2016_ids,
+                                           points_trp) %>%
+  filter(!is.na(road_reference))
+
+# Add index results from CSV-files
+bike_pointindex_grenland_16_17 <-
+  read_bikepointindex_csv(
+    "data_index_raw/bikepointindex_grenland-2017-12_2016-12.csv") %>%
+  rename(index_16_17 = index)
+
+bike_pointindex_grenland_17_18 <-
+  read_bikepointindex_csv(
+    "data_index_raw/bikepointindex_grenland-2018-12_2017-12.csv") %>%
+  rename(index_17_18 = index)
+
+bike_pointindex_grenland_18_19 <-
+  read_bikepointindex_csv(
+    "data_index_raw/bikepointindex_grenland-2019-06_2018-06.csv") %>%
+  rename(index_18_19 = index)
+
+adt <- getAdtForpoints(bike_trp_grenland_2016$trp_id) %>%
+  dplyr::filter(year >= 2016) %>%
+  dplyr::group_by(trp_id) %>%
+  # Pick the oldest AADT available:
+  dplyr::slice(which.min(year)) %>%
+  dplyr::select(-year)
+
+# Missing AADTs: no bike-AADTs in NVDB where we don't have it in TD-API!
+
+bike_trp_grenland_2016_all_adt <- bike_trp_grenland_2016 %>%
+  left_join(adt) %>%
+  left_join(bike_pointindex_grenland_16_17) %>%
+  left_join(bike_pointindex_grenland_17_18) %>%
+  left_join(bike_pointindex_grenland_18_19)
+
+# Index from refyear
+refyear <- bike_trp_grenland_2016_all_adt %>%
+  select(starts_with("index")) %>%
+  mutate_all(list(index_converter)) %>%
+  transmute(index = purrr::pmap_dbl(., prod)) %>%
+  # Lazily changing from 1 to NA (risky?)
+  mutate(index = round(ifelse(index == 1, NA,  100 * (index - 1)),
+                       digits = 1))
+
+bike_trp_grenland_2016_final <- bike_trp_grenland_2016_all_adt %>%
+  bind_cols(refyear)
+
+write.csv2(bike_trp_grenland_2016_final,
+           file = "data_indexpoints_tidy/sykkelindekspunkt_grenland_2016.csv",
+           row.names = F)
+
+# City index
+grenland_bike_2017 <-
+  read_bike_index_csv("data_index_raw/bike_Grenland-2017-12_2016-12.csv") %>%
+  mutate(year = "2016-2017")
+grenland_bike_2018 <-
+  read_bike_index_csv("data_index_raw/bike_Grenland-2018-12_2017-12.csv") %>%
+  mutate(year = "2017-2018")
+grenland_bike_2019 <-
+  read_bike_index_csv("data_index_raw/bike_Grenland-2019-06_2018-06.csv") %>%
+  mutate(year = "2018-2019")
+
+bike_index_grenland <- bind_rows(grenland_bike_2017,
+                                 grenland_bike_2018,
+                                 grenland_bike_2019) %>%
+  mutate(index_i = index_converter(index),
+         variance = (konfidensintervall / 1.96)^2)
+
+# TODO: get a compound ci
+first_two_years <- calculate_two_year_index(bike_index_grenland)
+next_two_years <- bind_rows(first_two_years, slice(bike_index_grenland, 3)) %>%
+  calculate_two_year_index() %>%
+  mutate(dekning = mean(bike_index_grenland$dekning),
+         year = "2016-2019",
+         konfidensintervall = 1.96 * sqrt(variance))
+
+bike_index_grenland_all <- bike_index_grenland %>%
+  select(-standardavvik) %>%
+  bind_rows(next_two_years)
+
+write.csv2(bike_index_grenland_all,
+           file = "data_indexpoints_tidy/sykkelindeks_grenland_2016.csv",
            row.names = F)

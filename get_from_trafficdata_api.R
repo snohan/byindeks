@@ -67,7 +67,10 @@ getTrpAadt <- function(trp_id) {
             byYear{
               year
               total{
-                volume
+                volume{
+                  standardDeviation
+                  average
+                }
               }
             }
           }
@@ -92,7 +95,8 @@ getTrpAadt <- function(trp_id) {
       tidyr::unnest() %>%
       dplyr::rename(trp_id = 1,
                     year = 2,
-                    adt = 3) %>%
+                    adt = 3,
+                    sd = 4) %>%
       dplyr::mutate(trp_id = as.character(trp_id))
   }
 
@@ -112,7 +116,7 @@ getAdtForpoints <- function(trp_list) {
   }
 
   trp_adt <- data_points %>%
-    dplyr::mutate(adt = round(adt, digits = -2))
+    dplyr::mutate(adt = round(adt, digits = -1))
 
   return(trp_adt)
 }
