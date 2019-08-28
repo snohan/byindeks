@@ -84,6 +84,24 @@ index_converter <- function(index) {
     index/100 + 1)
 }
 
+# TODO: get a compound ci, need to iterate pairwise through the years!
+#index_from_refyear <- 100*(prod(city_index_grenland$index_i)-1)
+calculate_two_year_index <- function(city_index_df) {
+
+  two_years <- city_index_df %>%
+    select(index, index_i, variance) %>%
+    slice(1:2)
+
+  two_years_to_one <- list(
+    index = 100 * (prod(two_years$index_i) - 1),
+    index_i = prod(two_years$index_i),
+    variance = two_years$variance[1] * two_years$variance[2] +
+      two_years$variance[1] * two_years$index[2]^2 +
+      two_years$variance[2] * two_years$index[1]^2
+  ) %>%
+    as_tibble()
+}
+
 # Points ####
 
 # Points used in each city
@@ -92,7 +110,9 @@ cities_points_unestablished <-
   read_csv2("data_points_raw/points_unestablished.csv")
 
 # All points from Traffic Data API
-points <- getPoints()
+points <- getPoints() %>%
+  dplyr::select(trp_id, name, road_reference, lat, lon) %>%
+  dplyr::distinct(trp_id, .keep_all = T)
 
 # All points from TRP API (if needed)
 points_trp <- getPointsFromTRPAPI()
@@ -317,15 +337,17 @@ trp_grenland_2017_alle_adt <- trp_grenland_2017 %>%
 # Must supply missing AADTs from NVDB based on road reference
 missing_aadt <- trp_grenland_2017_alle_adt %>%
   dplyr::filter(adt == 0 | is.na(adt)) %>%
-  dplyr::mutate(roadref_short = str_remove_all(road_reference, " "),
-                adt = mapply(getAadtByRoadReference, roadref_short)) %>%
-  dplyr::select(-roadref_short)
+  # TODO: change lookup variable to roadlinkposition
+  dplyr::mutate(#roadref_short = str_remove_all(road_reference, " "),
+                adt = mapply(getAadtByRoadlinkposition, road_link_position))# %>%
+  #dplyr::select(-roadref_short)
 
 with_aadt <- trp_grenland_2017_alle_adt %>%
   dplyr::filter(adt > 0)
 
 trp_grenland_2017_final <- bind_rows(with_aadt, missing_aadt) %>%
-  dplyr::arrange(road_reference)
+  dplyr::arrange(road_reference) %>%
+  dplyr::select(-road_link_position, -sd)
 
 # Index from refyear
 refyear <- trp_grenland_2017_final %>%
@@ -359,24 +381,6 @@ city_index_grenland <- bind_rows(grenland_2017,
                                  grenland_2019) %>%
   mutate(index_i = index_converter(index),
          variance = (konfidensintervall / 1.96)^2)
-
-# TODO: get a compound ci, need to iterate pairwise through the years!
-#index_from_refyear <- 100*(prod(city_index_grenland$index_i)-1)
-calculate_two_year_index <- function(city_index_df) {
-
-two_years <- city_index_df %>%
-  select(index, index_i, variance) %>%
-  slice(1:2)
-
-two_years_to_one <- list(
-  index = 100 * (prod(two_years$index_i) - 1),
-  index_i = prod(two_years$index_i),
-  variance = two_years$variance[1] * two_years$variance[2] +
-    two_years$variance[1] * two_years$index[2]^2 +
-    two_years$variance[2] * two_years$index[1]^2
-) %>%
-  as_tibble()
-}
 
 first_two_years <- calculate_two_year_index(city_index_grenland)
 next_two_years <- bind_rows(first_two_years, slice(city_index_grenland, 3)) %>%

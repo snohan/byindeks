@@ -1,5 +1,8 @@
 # Fetching data from Trafikkdata-API or TRP-API
 
+library(ghql)
+library(lubridate)
+
 cli <- GraphqlClient$new(
   url = "https://www.vegvesen.no/trafikkdata/api/?query="
 )
@@ -11,6 +14,7 @@ getPoints <- function() {
   trafficRegistrationPoints{
     id
     name
+    trafficRegistrationType
     location{
       coordinates{
         latLon{
@@ -23,6 +27,14 @@ getPoints <- function() {
           shortForm
         }
       }
+      roadNetworkReference{
+        atPosition
+        networkElementId
+      }
+    }
+    commissions{
+      validFrom
+      validTo
     }
   }
 }"
@@ -38,15 +50,31 @@ getPoints <- function() {
                     data.trafficRegistrationPoints.id,
                   name =
                     data.trafficRegistrationPoints.name,
+                  traffic_type =
+                    data.trafficRegistrationPoints.trafficRegistrationType,
                   lat =
                     data.trafficRegistrationPoints.location.coordinates.latLon.lat,
                   lon =
                     data.trafficRegistrationPoints.location.coordinates.latLon.lon,
                   road_reference =
-                    data.trafficRegistrationPoints.location.currentRoadReference.roadReference532.shortForm) %>%
-    dplyr::select(trp_id, name, road_reference, lat, lon) %>%
-    dplyr::mutate(road_reference = str_replace(road_reference, "HP ", "hp")) %>%
-    dplyr::mutate(road_reference = str_replace(road_reference, "Meter ", "m"))
+                    data.trafficRegistrationPoints.location.currentRoadReference.roadReference532.shortForm,
+                  road_network_position =
+                    data.trafficRegistrationPoints.location.roadNetworkReference.atPosition,
+                  road_network_link =
+                    data.trafficRegistrationPoints.location.roadNetworkReference.networkElementId
+                    ) %>%
+    dplyr::select(trp_id, name, traffic_type, road_reference, lat, lon,
+                  road_network_position, road_network_link, validFrom, validTo
+                  ) %>%
+    dplyr::mutate(road_reference = str_replace(road_reference, "HP ", "hp")
+                  ) %>%
+    dplyr::mutate(road_reference = str_replace(road_reference, "Meter ", "m"),
+                  road_link_position = paste0(road_network_position, "@",
+                                              road_network_link),
+                  validFrom =
+                    floor_date(with_tz(ymd_hms(validFrom)), unit = "day"),
+                  validTo = floor_date(with_tz(ymd_hms(validTo)), unit = "day")
+                  )
 
   return(points)
 }
@@ -119,4 +147,9 @@ getAdtForpoints <- function(trp_list) {
     dplyr::mutate(adt = round(adt, digits = -1))
 
   return(trp_adt)
+}
+
+getTrpSpeed <- function() {
+  # Get speed limit for TRP
+
 }

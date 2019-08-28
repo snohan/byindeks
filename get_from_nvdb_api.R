@@ -1,6 +1,6 @@
 # Funksjoner for å hente nødvendig info fra NVDB-API v2.
-# ERSTATTES av Trafikkdata-API for henting av ÅDT og punkter.
 
+library(httr)
 
 # Definer URI og sti ####
 nvdb_url <- "https://www.vegvesen.no/nvdb/api/v2"
@@ -244,4 +244,108 @@ getAadtByRoadReference <- function(roadref) {
   adt_verdi <- round(as.numeric(adt_total[1, 1]), digits = -2)
 
   return(adt_verdi)
+}
+
+getAadtByRoadlinkposition <- function(roadlink) {
+  api_query_540 <- paste0(nvdb_url,
+                          sti_vegobjekter,
+                          "/540",
+                          "?inkluder=egenskaper")
+
+  api_query_540_vegref <- paste0(api_query_540,
+                                 "&veglenke=",
+                                 roadlink)
+
+  respons <- GET(api_query_540_vegref,
+                 add_headers("X-Client" = "trafikkdatagruppa",
+                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+                             "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
+
+  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+                      simplifyDataFrame = T,
+                      flatten = T)
+
+  adt_total <- uthenta$objekter %>%
+    select(id, egenskaper) %>%
+    unnest() %>%
+    filter(id1 %in% c(4623)) %>%
+    select(verdi)
+
+  adt_verdi <- round(as.numeric(adt_total[1, 1]), digits = -2)
+
+  return(adt_verdi)
+}
+
+
+#roadref <- "1200EV39hp74m14171"
+
+getSpeedLimit <- function(roadref) {
+  api_query_105 <- paste0(nvdb_url,
+                          sti_vegobjekter,
+                          "/105",
+                          "?inkluder=egenskaper")
+
+  api_query_105_vegref <- paste0(api_query_105,
+                                 "&vegreferanse=",
+                                 roadref)
+
+  respons <- GET(api_query_105_vegref,
+                 add_headers("X-Client" = "trafikkdatagruppa",
+                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+                             "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
+
+  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+                      simplifyDataFrame = T,
+                      flatten = T)
+
+  speed_limit <- uthenta$objekter %>%
+    select(id, egenskaper) %>%
+    unnest() %>%
+    filter(id1 %in% c(2021)) %>%
+    select(verdi)
+
+  verdi <- speed_limit[1, 1]
+
+  return(verdi)
+}
+
+#roadlink <- "0.38722@2037772"
+
+getSpeedLimit_roadlink <- function(roadlink) {
+  api_query_105 <- paste0(nvdb_url,
+                          sti_vegobjekter,
+                          "/105",
+                          "?inkluder=egenskaper")
+
+  api_query_105_vegref <- paste0(api_query_105,
+                                 "&veglenke=",
+                                 roadlink)
+
+  respons <- GET(api_query_105_vegref,
+                 add_headers("X-Client" = "trafikkdatagruppa",
+                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+                             "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
+
+  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+                      simplifyDataFrame = T,
+                      flatten = T)
+
+  objekter <- uthenta$objekter
+
+  if(length(objekter) == 0) {
+    verdi = NA
+  }else{
+    speed_limit <- objekter %>%
+      select(id, egenskaper) %>%
+      # If more than one response, choosing the first (lazily avoiding
+      # unnest to crash). Not sure what would be the right response to choose.
+      slice(1) %>%
+      unnest() %>%
+      filter(id1 %in% c(2021)) %>%
+      select(verdi)
+
+    verdi <- speed_limit[1, 1]
+  }
+
+  return(verdi)
 }
