@@ -79,7 +79,7 @@ getPoints <- function() {
   return(points)
 }
 
-#trp_id = "32135V604101"
+trp_id = "55265V521064"
 
 getTrpAadt <- function(trp_id) {
   # Get all AADTs for a trp
@@ -121,10 +121,11 @@ getTrpAadt <- function(trp_id) {
     trp_aadt <- trp_aadt %>%
       as.data.frame() %>%
       tidyr::unnest() %>%
-      dplyr::rename(trp_id = 1,
-                    year = 2,
-                    adt = 3,
-                    sd = 4) %>%
+      dplyr::rename(
+        trp_id = data.trafficData.id,
+        year = data.trafficData.volume.average.daily.byYear.year,
+        adt = data.trafficData.volume.average.daily.byYear.total.volume.average,
+        sd = data.trafficData.volume.average.daily.byYear.total.volume.standardDeviation) %>%
       dplyr::mutate(trp_id = as.character(trp_id))
   }
 
