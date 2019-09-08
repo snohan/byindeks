@@ -1,0 +1,1765 @@
+Område;Vegkategori;døgn;lengdeklasse;periode;indeks;dekning;trafikkmengde indeksår;trafikkmengde basisår;standardavvik;konfidensintervall
+Nedre Glomma;E+R+F+K;Alle;Alle;Januar;4,448;92,000;4319239;4135308;1.437;1.028
+Nedre Glomma;E+R+F+K;Alle;< 5,6m;Januar;4,120;92,000;4037603;3877832;1.375;0.984
+Nedre Glomma;E+R+F+K;Alle;>= 5,6m;Januar;9,374;92,000;281057;256969;5.000;3.577
+Nedre Glomma;E+R+F+K;Alle;5,6m - 7,6m;Januar;5,772;92,000;106085;100296;6.329;4.527
+Nedre Glomma;E+R+F+K;Alle;7,6m - 12,5m;Januar;11,191;92,000;94988;85428;6.279;4.491
+Nedre Glomma;E+R+F+K;Alle;12,5m - 16,0m;Januar;9,998;92,000;41324;37568;13.277;9.498
+Nedre Glomma;E+R+F+K;Alle;>= 16,0m;Januar;14,796;92,000;38660;33677;8.291;5.931
+Nedre Glomma;E+R+F+K;Yrkesdøgn;Alle;Januar;12,184;92,000;3473793;3096507;2.258;1.615
+Nedre Glomma;E+R+F+K;Yrkesdøgn;< 5,6m;Januar;12,104;92,000;3219177;2871599;2.078;1.487
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 5,6m;Januar;13,200;92,000;254063;224438;5.639;4.034
+Nedre Glomma;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Januar;9,330;92,000;94519;86453;7.248;5.185
+Nedre Glomma;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Januar;15,364;92,000;84952;73638;6.174;4.417
+Nedre Glomma;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Januar;15,751;92,000;37015;31978;16.678;11.930
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 16,0m;Januar;16,089;92,000;37577;32369;8.718;6.237
+Nedre Glomma;E+R+F+K;Helgedøgn;Alle;Januar;-18,613;93,000;845446;1038801;4.972;3.557
+Nedre Glomma;E+R+F+K;Helgedøgn;< 5,6m;Januar;-18,664;93,000;818426;1006233;5.012;3.585
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 5,6m;Januar;-17,021;93,000;26994;32531;5.081;3.635
+Nedre Glomma;E+R+F+K;Helgedøgn;5,6m - 7,6m;Januar;-16,449;93,000;11566;13843;6.946;4.969
+Nedre Glomma;E+R+F+K;Helgedøgn;7,6m - 12,5m;Januar;-14,877;93,000;10036;11790;9.706;6.943
+Nedre Glomma;E+R+F+K;Helgedøgn;12,5m - 16,0m;Januar;-22,916;93,000;4309;5590;5.551;3.971
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 16,0m;Januar;-17,202;93,000;1083;1308;19.784;14.152
+Nedre Glomma;E+R+F+K;Alle;Alle;Februar;0,168;98,000;4183479;4176479;1.952;1.311
+Nedre Glomma;E+R+F+K;Alle;< 5,6m;Februar;0,099;98,000;3910717;3906835;1.986;1.334
+Nedre Glomma;E+R+F+K;Alle;>= 5,6m;Februar;1,178;98,000;272291;269122;3.558;2.390
+Nedre Glomma;E+R+F+K;Alle;5,6m - 7,6m;Februar;0,385;98,000;104161;103762;4.496;3.021
+Nedre Glomma;E+R+F+K;Alle;7,6m - 12,5m;Februar;-0,099;98,000;91254;91344;5.446;3.659
+Nedre Glomma;E+R+F+K;Alle;12,5m - 16,0m;Februar;2,652;98,000;40181;39143;4.748;3.190
+Nedre Glomma;E+R+F+K;Alle;>= 16,0m;Februar;5,225;98,000;36695;34873;9.219;6.193
+Nedre Glomma;E+R+F+K;Yrkesdøgn;Alle;Februar;0,734;98,000;3352847;3328430;2.340;1.572
+Nedre Glomma;E+R+F+K;Yrkesdøgn;< 5,6m;Februar;0,710;98,000;3107690;3085769;2.438;1.638
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 5,6m;Februar;1,044;98,000;244724;242195;3.754;2.522
+Nedre Glomma;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Februar;-0,076;98,000;92179;92249;4.764;3.200
+Nedre Glomma;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Februar;-0,017;98,000;81709;81723;5.837;3.921
+Nedre Glomma;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Februar;2,883;98,000;35398;34406;5.574;3.744
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 16,0m;Februar;4,793;98,000;35438;33817;9.288;6.240
+Nedre Glomma;E+R+F+K;Helgedøgn;Alle;Februar;-2,054;98,000;830632;848049;2.832;1.903
+Nedre Glomma;E+R+F+K;Helgedøgn;< 5,6m;Februar;-2,197;98,000;803027;821066;2.810;1.888
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 5,6m;Februar;2,377;98,000;27567;26927;6.293;4.228
+Nedre Glomma;E+R+F+K;Helgedøgn;5,6m - 7,6m;Februar;4,074;98,000;11982;11513;10.061;6.759
+Nedre Glomma;E+R+F+K;Helgedøgn;7,6m - 12,5m;Februar;-0,790;98,000;9545;9621;8.894;5.975
+Nedre Glomma;E+R+F+K;Helgedøgn;12,5m - 16,0m;Februar;0,971;98,000;4783;4737;12.677;8.517
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 16,0m;Februar;19,034;98,000;1257;1056;28.774;19.331
+Nedre Glomma;E+R+F+K;Alle;Alle;Mars;11,401;93,000;4337093;3893237;4.024;2.879
+Nedre Glomma;E+R+F+K;Alle;< 5,6m;Mars;10,962;93,000;4036759;3637967;4.208;3.010
+Nedre Glomma;E+R+F+K;Alle;>= 5,6m;Mars;18,157;93,000;299815;253743;4.274;3.058
+Nedre Glomma;E+R+F+K;Alle;5,6m - 7,6m;Mars;15,884;93,000;111198;95956;6.510;4.657
+Nedre Glomma;E+R+F+K;Alle;7,6m - 12,5m;Mars;18,706;93,000;104448;87989;6.168;4.412
+Nedre Glomma;E+R+F+K;Alle;12,5m - 16,0m;Mars;20,132;93,000;43549;36251;9.539;6.824
+Nedre Glomma;E+R+F+K;Alle;>= 16,0m;Mars;21,084;93,000;40620;33547;13.284;9.503
+Nedre Glomma;E+R+F+K;Yrkesdøgn;Alle;Mars;22,393;92,000;3548506;2899265;6.354;4.546
+Nedre Glomma;E+R+F+K;Yrkesdøgn;< 5,6m;Mars;22,383;92,000;3276261;2677051;6.644;4.753
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 5,6m;Mars;22,968;92,000;271754;220996;5.015;3.587
+Nedre Glomma;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Mars;22,273;92,000;99650;81498;7.114;5.089
+Nedre Glomma;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Mars;22,634;92,000;93680;76390;6.916;4.947
+Nedre Glomma;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Mars;24,538;92,000;38963;31286;10.831;7.748
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 16,0m;Mars;24,005;92,000;39461;31822;12.290;8.792
+Nedre Glomma;E+R+F+K;Helgedøgn;Alle;Mars;-20,663;96,000;788587;993972;4.074;2.914
+Nedre Glomma;E+R+F+K;Helgedøgn;< 5,6m;Mars;-20,857;96,000;760498;960916;4.134;2.957
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 5,6m;Mars;-14,310;96,000;28061;32747;5.218;3.732
+Nedre Glomma;E+R+F+K;Helgedøgn;5,6m - 7,6m;Mars;-20,127;96,000;11548;14458;4.327;3.095
+Nedre Glomma;E+R+F+K;Helgedøgn;7,6m - 12,5m;Mars;-7,164;96,000;10768;11599;9.043;6.469
+Nedre Glomma;E+R+F+K;Helgedøgn;12,5m - 16,0m;Mars;-7,633;96,000;4586;4965;14.886;10.649
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 16,0m;Mars;-32,812;96,000;1159;1725;29.149;20.852
+Nedre Glomma;E+R+F+K;Alle;Alle;April;-8,749;94,000;3955525;4334765;3.403;2.434
+Nedre Glomma;E+R+F+K;Alle;< 5,6m;April;-8,087;94,000;3684029;4008176;3.777;2.702
+Nedre Glomma;E+R+F+K;Alle;>= 5,6m;April;-15,690;94,000;271063;321509;3.959;2.832
+Nedre Glomma;E+R+F+K;Alle;5,6m - 7,6m;April;-14,994;94,000;99602;117171;3.565;2.550
+Nedre Glomma;E+R+F+K;Alle;7,6m - 12,5m;April;-14,969;94,000;102464;120502;5.047;3.611
+Nedre Glomma;E+R+F+K;Alle;12,5m - 16,0m;April;-17,183;94,000;35854;43293;6.423;4.595
+Nedre Glomma;E+R+F+K;Alle;>= 16,0m;April;-18,252;94,000;33143;40543;15.851;11.339
+Nedre Glomma;E+R+F+K;Yrkesdøgn;Alle;April;-18,770;93,000;2726332;3356298;3.622;2.591
+Nedre Glomma;E+R+F+K;Yrkesdøgn;< 5,6m;April;-18,479;93,000;2503589;3071115;4.095;2.930
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 5,6m;April;-20,866;93,000;222366;281001;3.722;2.663
+Nedre Glomma;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;April;-22,231;93,000;78811;101340;3.072;2.198
+Nedre Glomma;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;April;-20,038;93,000;82620;103324;4.916;3.517
+Nedre Glomma;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;April;-20,650;93,000;29638;37351;6.803;4.867
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 16,0m;April;-19,722;93,000;31297;38986;14.122;10.102
+Nedre Glomma;E+R+F+K;Helgedøgn;Alle;April;25,624;95,000;1229193;978467;4.669;3.340
+Nedre Glomma;E+R+F+K;Helgedøgn;< 5,6m;April;25,973;95,000;1180440;937061;4.831;3.456
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 5,6m;April;20,216;95,000;48697;40508;7.485;5.355
+Nedre Glomma;E+R+F+K;Helgedøgn;5,6m - 7,6m;April;31,331;95,000;20791;15831;6.347;4.540
+Nedre Glomma;E+R+F+K;Helgedøgn;7,6m - 12,5m;April;15,520;95,000;19844;17178;7.933;5.675
+Nedre Glomma;E+R+F+K;Helgedøgn;12,5m - 16,0m;April;4,611;95,000;6216;5942;17.525;12.537
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 16,0m;April;18,561;95,000;1846;1557;70.181;50.204
+Nedre Glomma;E+R+F+K;Alle;Alle;Mai;0,237;95,000;3036875;3029690;3.590;3.001
+Nedre Glomma;E+R+F+K;Alle;< 5,6m;Mai;0,196;95,000;2810483;2804989;3.442;2.878
+Nedre Glomma;E+R+F+K;Alle;>= 5,6m;Mai;0,893;95,000;225755;223757;5.849;4.890
+Nedre Glomma;E+R+F+K;Alle;5,6m - 7,6m;Mai;2,464;95,000;79787;77868;4.709;3.937
+Nedre Glomma;E+R+F+K;Alle;7,6m - 12,5m;Mai;1,359;95,000;86280;85123;7.978;6.670
+Nedre Glomma;E+R+F+K;Alle;12,5m - 16,0m;Mai;-0,454;95,000;29413;29547;8.835;7.387
+Nedre Glomma;E+R+F+K;Alle;>= 16,0m;Mai;-3,024;95,000;30275;31219;19.500;16.302
+Nedre Glomma;E+R+F+K;Yrkesdøgn;Alle;Mai;4,982;95,000;2256404;2149316;4.937;4.128
+Nedre Glomma;E+R+F+K;Yrkesdøgn;< 5,6m;Mai;5,240;95,000;2064435;1961649;4.725;3.951
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 5,6m;Mai;2,437;95,000;191414;186861;7.386;6.175
+Nedre Glomma;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Mai;4,737;95,000;66048;63061;5.091;4.256
+Nedre Glomma;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Mai;3,374;95,000;71748;69406;10.186;8.516
+Nedre Glomma;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Mai;0,507;95,000;24980;24854;10.734;8.973
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 16,0m;Mai;-3,053;95,000;28638;29540;19.597;16.384
+Nedre Glomma;E+R+F+K;Helgedøgn;Alle;Mai;-11,348;95,000;780471;880374;3.362;2.811
+Nedre Glomma;E+R+F+K;Helgedøgn;< 5,6m;Mai;-11,537;95,000;746048;843340;3.343;2.795
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 5,6m;Mai;-6,925;95,000;34341;36896;5.447;4.554
+Nedre Glomma;E+R+F+K;Helgedøgn;5,6m - 7,6m;Mai;-7,213;95,000;13739;14807;6.613;5.528
+Nedre Glomma;E+R+F+K;Helgedøgn;7,6m - 12,5m;Mai;-7,540;95,000;14532;15717;6.852;5.728
+Nedre Glomma;E+R+F+K;Helgedøgn;12,5m - 16,0m;Mai;-5,540;95,000;4433;4693;20.480;17.122
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 16,0m;Mai;-2,501;95,000;1637;1679;24.208;20.238
+Nedre Glomma;E+R+F+K;Alle;Alle;Juni;1,457;93,000;3676341;3623559;6.481;4.982
+Nedre Glomma;E+R+F+K;Alle;< 5,6m;Juni;1,942;93,000;3409127;3344167;6.445;4.954
+Nedre Glomma;E+R+F+K;Alle;>= 5,6m;Juni;-4,263;93,000;266463;278327;7.572;5.820
+Nedre Glomma;E+R+F+K;Alle;5,6m - 7,6m;Juni;-3,123;93,000;95053;98117;4.655;3.578
+Nedre Glomma;E+R+F+K;Alle;7,6m - 12,5m;Juni;-1,230;93,000;105237;106548;7.785;5.984
+Nedre Glomma;E+R+F+K;Alle;12,5m - 16,0m;Juni;-4,588;93,000;34234;35880;10.997;8.453
+Nedre Glomma;E+R+F+K;Alle;>= 16,0m;Juni;-15,465;93,000;31939;37782;22.830;17.549
+Nedre Glomma;E+R+F+K;Yrkesdøgn;Alle;Juni;-1,793;92,000;2858640;2910838;6.040;4.643
+Nedre Glomma;E+R+F+K;Yrkesdøgn;< 5,6m;Juni;-1,392;92,000;2625451;2662507;6.025;4.631
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 5,6m;Juni;-6,008;92,000;232526;247388;7.289;5.602
+Nedre Glomma;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Juni;-4,845;92,000;81405;85550;4.166;3.202
+Nedre Glomma;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Juni;-2,803;92,000;90579;93191;7.441;5.719
+Nedre Glomma;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Juni;-5,939;92,000;29857;31742;9.968;7.662
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 16,0m;Juni;-16,854;92,000;30685;36905;22.707;17.454
+Nedre Glomma;E+R+F+K;Helgedøgn;Alle;Juni;14,729;94,000;817701;712721;9.612;7.388
+Nedre Glomma;E+R+F+K;Helgedøgn;< 5,6m;Juni;14,966;94,000;783676;681660;9.573;7.359
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 5,6m;Juni;9,690;94,000;33937;30939;13.939;10.715
+Nedre Glomma;E+R+F+K;Helgedøgn;5,6m - 7,6m;Juni;8,602;94,000;13648;12567;10.886;8.368
+Nedre Glomma;E+R+F+K;Helgedøgn;7,6m - 12,5m;Juni;9,740;94,000;14658;13357;14.469;11.122
+Nedre Glomma;E+R+F+K;Helgedøgn;12,5m - 16,0m;Juni;5,776;94,000;4377;4138;41.033;31.541
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 16,0m;Juni;42,987;94,000;1254;877;29.366;22.573
+Nedre Glomma;E+R+F+K;Alle;Alle;Juli;0,452;94,000;3465439;3449861;2.826;2.021
+Nedre Glomma;E+R+F+K;Alle;< 5,6m;Juli;0,473;94,000;3219434;3204277;2.932;2.097
+Nedre Glomma;E+R+F+K;Alle;>= 5,6m;Juli;0,233;94,000;245664;245094;3.675;2.629
+Nedre Glomma;E+R+F+K;Alle;5,6m - 7,6m;Juli;-0,424;94,000;85999;86365;3.533;2.528
+Nedre Glomma;E+R+F+K;Alle;7,6m - 12,5m;Juli;1,194;94,000;102422;101214;3.533;2.527
+Nedre Glomma;E+R+F+K;Alle;12,5m - 16,0m;Juli;-1,273;94,000;30333;30724;7.463;5.339
+Nedre Glomma;E+R+F+K;Alle;>= 16,0m;Juli;0,444;94,000;26910;26791;13.997;10.013
+Nedre Glomma;E+R+F+K;Yrkesdøgn;Alle;Juli;0,958;94,000;2605734;2581012;2.613;1.869
+Nedre Glomma;E+R+F+K;Yrkesdøgn;< 5,6m;Juli;1,043;94,000;2396646;2371913;2.722;1.947
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 5,6m;Juli;0,053;94,000;208797;208686;3.672;2.627
+Nedre Glomma;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Juli;-0,198;94,000;71009;71150;3.314;2.371
+Nedre Glomma;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Juli;0,673;94,000;86704;86124;3.521;2.519
+Nedre Glomma;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Juli;-1,451;94,000;25205;25576;8.651;6.189
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 16,0m;Juli;0,166;94,000;25879;25836;13.303;9.517
+Nedre Glomma;E+R+F+K;Helgedøgn;Alle;Juli;-1,052;94,000;859705;868849;4.122;2.948
+Nedre Glomma;E+R+F+K;Helgedøgn;< 5,6m;Juli;-1,150;94,000;822788;832364;4.200;3.005
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 5,6m;Juli;1,261;94,000;36867;36408;4.882;3.493
+Nedre Glomma;E+R+F+K;Helgedøgn;5,6m - 7,6m;Juli;-1,479;94,000;14990;15215;6.990;5.001
+Nedre Glomma;E+R+F+K;Helgedøgn;7,6m - 12,5m;Juli;4,162;94,000;15718;15090;4.844;3.465
+Nedre Glomma;E+R+F+K;Helgedøgn;12,5m - 16,0m;Juli;-0,389;94,000;5128;5148;4.517;3.231
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 16,0m;Juli;7,958;94,000;1031;955;37.849;27.076
+Nedre Glomma;E+R+F+K;Alle;Alle;August;0,724;92,000;3995808;3967078;1.963;1.404
+Nedre Glomma;E+R+F+K;Alle;< 5,6m;August;0,891;92,000;3704232;3671512;2.001;1.431
+Nedre Glomma;E+R+F+K;Alle;>= 5,6m;August;-1,340;92,000;290736;294686;3.877;2.773
+Nedre Glomma;E+R+F+K;Alle;5,6m - 7,6m;August;-1,265;92,000;102564;103878;5.286;3.781
+Nedre Glomma;E+R+F+K;Alle;7,6m - 12,5m;August;-0,589;92,000;115458;116142;3.883;2.777
+Nedre Glomma;E+R+F+K;Alle;12,5m - 16,0m;August;-2,706;92,000;37387;38427;9.791;7.004
+Nedre Glomma;E+R+F+K;Alle;>= 16,0m;August;-2,517;92,000;35327;36239;8.348;5.972
+Nedre Glomma;E+R+F+K;Yrkesdøgn;Alle;August;1,104;93,000;3277655;3241879;2.827;2.022
+Nedre Glomma;E+R+F+K;Yrkesdøgn;< 5,6m;August;1,336;93,000;3016321;2976561;2.845;2.035
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 5,6m;August;-1,496;93,000;260561;264519;4.486;3.209
+Nedre Glomma;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;August;-1,434;93,000;90638;91957;5.726;4.096
+Nedre Glomma;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;August;-0,453;93,000;102569;103036;4.527;3.239
+Nedre Glomma;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;August;-3,173;93,000;33141;34227;10.668;7.631
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 16,0m;August;-3,077;93,000;34213;35299;8.410;6.016
+Nedre Glomma;E+R+F+K;Helgedøgn;Alle;August;-0,972;90,000;718153;725199;4.739;3.390
+Nedre Glomma;E+R+F+K;Helgedøgn;< 5,6m;August;-1,013;90,000;687911;694951;4.878;3.489
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 5,6m;August;0,027;90,000;30175;30167;2.097;1.500
+Nedre Glomma;E+R+F+K;Helgedøgn;5,6m - 7,6m;August;0,042;90,000;11926;11921;3.993;2.856
+Nedre Glomma;E+R+F+K;Helgedøgn;7,6m - 12,5m;August;-1,656;90,000;12889;13106;5.634;4.030
+Nedre Glomma;E+R+F+K;Helgedøgn;12,5m - 16,0m;August;1,095;90,000;4246;4200;8.604;6.155
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 16,0m;August;18,511;90,000;1114;940;30.169;21.581
+Nedre Glomma;E+R+F+K;Alle;Alle;September;0,126;96,000;4286941;4281557;2.918;2.088
+Nedre Glomma;E+R+F+K;Alle;< 5,6m;September;0,515;96,000;3974825;3954469;3.029;2.167
+Nedre Glomma;E+R+F+K;Alle;>= 5,6m;September;-4,530;96,000;311219;325985;4.148;2.968
+Nedre Glomma;E+R+F+K;Alle;5,6m - 7,6m;September;-5,502;96,000;110736;117183;6.202;4.436
+Nedre Glomma;E+R+F+K;Alle;7,6m - 12,5m;September;-3,944;96,000;121178;126154;4.869;3.483
+Nedre Glomma;E+R+F+K;Alle;12,5m - 16,0m;September;-4,233;96,000;42040;43898;4.033;2.885
+Nedre Glomma;E+R+F+K;Alle;>= 16,0m;September;-3,832;96,000;37265;38750;7.288;5.214
+Nedre Glomma;E+R+F+K;Yrkesdøgn;Alle;September;-2,487;96,000;3356601;3442226;3.486;2.494
+Nedre Glomma;E+R+F+K;Yrkesdøgn;< 5,6m;September;-2,128;96,000;3083950;3150995;3.652;2.612
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 5,6m;September;-6,344;96,000;271833;290245;4.269;3.054
+Nedre Glomma;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;September;-6,532;96,000;96217;102941;6.133;4.387
+Nedre Glomma;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;September;-6,938;96,000;102832;110498;5.140;3.677
+Nedre Glomma;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;September;-6,031;96,000;36817;39180;4.247;3.038
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 16,0m;September;-4,409;96,000;35967;37626;7.350;5.258
+Nedre Glomma;E+R+F+K;Helgedøgn;Alle;September;10,843;96,000;930340;839331;6.072;4.343
+Nedre Glomma;E+R+F+K;Helgedøgn;< 5,6m;September;10,878;96,000;890875;803474;6.028;4.312
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 5,6m;September;10,201;96,000;39386;35740;8.810;6.302
+Nedre Glomma;E+R+F+K;Helgedøgn;5,6m - 7,6m;September;1,945;96,000;14519;14242;12.113;8.665
+Nedre Glomma;E+R+F+K;Helgedøgn;7,6m - 12,5m;September;17,182;96,000;18346;15656;10.162;7.269
+Nedre Glomma;E+R+F+K;Helgedøgn;12,5m - 16,0m;September;10,704;96,000;5223;4718;8.765;6.270
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 16,0m;September;15,480;96,000;1298;1124;18.781;13.435
+Nedre Glomma;E+R+F+K;Alle;Alle;Oktober;1,638;100,000;4553621;4480218;1.600;1.145
+Nedre Glomma;E+R+F+K;Alle;< 5,6m;Oktober;1,767;100,000;4231613;4158122;1.538;1.100
+Nedre Glomma;E+R+F+K;Alle;>= 5,6m;Oktober;-0,059;100,000;321083;321274;3.480;2.489
+Nedre Glomma;E+R+F+K;Alle;5,6m - 7,6m;Oktober;-0,525;100,000;116811;117428;8.080;5.780
+Nedre Glomma;E+R+F+K;Alle;7,6m - 12,5m;Oktober;0,683;100,000;122295;121465;4.211;3.013
+Nedre Glomma;E+R+F+K;Alle;12,5m - 16,0m;Oktober;-1,332;100,000;43346;43931;15.855;11.342
+Nedre Glomma;E+R+F+K;Alle;>= 16,0m;Oktober;0,471;100,000;38631;38450;6.294;4.503
+Nedre Glomma;E+R+F+K;Yrkesdøgn;Alle;Oktober;5,458;100,000;3611646;3424737;1.777;1.271
+Nedre Glomma;E+R+F+K;Yrkesdøgn;< 5,6m;Oktober;5,730;100,000;3326039;3145787;1.692;1.211
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 5,6m;Oktober;2,355;100,000;284761;278210;3.829;2.739
+Nedre Glomma;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Oktober;1,829;100,000;102641;100797;9.017;6.450
+Nedre Glomma;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Oktober;3,998;100,000;106405;102314;3.878;2.774
+Nedre Glomma;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Oktober;1,144;100,000;38444;38009;17.717;12.674
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 16,0m;Oktober;0,488;100,000;37271;37090;6.192;4.430
+Nedre Glomma;E+R+F+K;Helgedøgn;Alle;Oktober;-10,754;100,000;941975;1055481;1.286;0.920
+Nedre Glomma;E+R+F+K;Helgedøgn;< 5,6m;Oktober;-10,546;100,000;905574;1012335;1.301;0.931
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 5,6m;Oktober;-15,656;100,000;36322;43064;2.891;2.068
+Nedre Glomma;E+R+F+K;Helgedøgn;5,6m - 7,6m;Oktober;-14,798;100,000;14170;16631;3.345;2.393
+Nedre Glomma;E+R+F+K;Helgedøgn;7,6m - 12,5m;Oktober;-17,028;100,000;15890;19151;5.846;4.182
+Nedre Glomma;E+R+F+K;Helgedøgn;12,5m - 16,0m;Oktober;-17,224;100,000;4902;5922;5.632;4.029
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 16,0m;Oktober;0,000;100,000;1360;1360;31.777;22.732
+Nedre Glomma;E+R+F+K;Alle;Alle;November;-0,204;100,000;4946151;4956245;2.015;1.354
+Nedre Glomma;E+R+F+K;Alle;< 5,6m;November;-0,076;100,000;4606281;4609780;2.089;1.403
+Nedre Glomma;E+R+F+K;Alle;>= 5,6m;November;-1,917;100,000;338915;345538;3.805;2.556
+Nedre Glomma;E+R+F+K;Alle;5,6m - 7,6m;November;-4,143;100,000;124278;129650;4.736;3.182
+Nedre Glomma;E+R+F+K;Alle;7,6m - 12,5m;November;-0,701;100,000;120930;121784;6.688;4.493
+Nedre Glomma;E+R+F+K;Alle;12,5m - 16,0m;November;-3,510;100,000;48327;50085;5.619;3.775
+Nedre Glomma;E+R+F+K;Alle;>= 16,0m;November;3,092;100,000;45380;44019;8.377;5.628
+Nedre Glomma;E+R+F+K;Yrkesdøgn;Alle;November;-0,547;100,000;4001043;4023036;1.648;1.107
+Nedre Glomma;E+R+F+K;Yrkesdøgn;< 5,6m;November;-0,408;100,000;3694949;3710086;1.702;1.144
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 5,6m;November;-2,173;100,000;305300;312081;3.801;2.554
+Nedre Glomma;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;November;-3,917;100,000;110857;115376;4.986;3.350
+Nedre Glomma;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;November;-1,775;100,000;107255;109193;5.948;3.996
+Nedre Glomma;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;November;-3,746;100,000;43220;44902;6.140;4.125
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 16,0m;November;3,187;100,000;43968;42610;8.909;5.985
+Nedre Glomma;E+R+F+K;Helgedøgn;Alle;November;1,275;100,000;945108;933209;4.048;2.720
+Nedre Glomma;E+R+F+K;Helgedøgn;< 5,6m;November;1,294;100,000;911332;899694;4.151;2.789
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 5,6m;November;0,472;100,000;33615;33457;4.781;3.212
+Nedre Glomma;E+R+F+K;Helgedøgn;5,6m - 7,6m;November;-5,976;100,000;13421;14274;6.199;4.165
+Nedre Glomma;E+R+F+K;Helgedøgn;7,6m - 12,5m;November;8,609;100,000;13675;12591;14.436;9.698
+Nedre Glomma;E+R+F+K;Helgedøgn;12,5m - 16,0m;November;-1,466;100,000;5107;5183;13.280;8.921
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 16,0m;November;0,213;100,000;1412;1409;24.394;16.388
+Nedre Glomma;E+R+F+K;Alle;Alle;Desember;-2,320;99,000;5341736;5468632;1.986;1.262
+Nedre Glomma;E+R+F+K;Alle;< 5,6m;Desember;-2,118;99,000;5030960;5139841;2.031;1.290
+Nedre Glomma;E+R+F+K;Alle;>= 5,6m;Desember;-5,450;99,000;310194;328074;4.222;2.683
+Nedre Glomma;E+R+F+K;Alle;5,6m - 7,6m;Desember;-5,629;99,000;117326;124324;3.897;2.476
+Nedre Glomma;E+R+F+K;Alle;7,6m - 12,5m;Desember;-5,645;99,000;109412;115958;5.037;3.200
+Nedre Glomma;E+R+F+K;Alle;12,5m - 16,0m;Desember;-5,304;99,000;45192;47723;10.317;6.555
+Nedre Glomma;E+R+F+K;Alle;>= 16,0m;Desember;-4,505;99,000;38264;40069;11.593;7.366
+Nedre Glomma;E+R+F+K;Yrkesdøgn;Alle;Desember;-8,498;99,000;3865429;4224442;2.012;1.278
+Nedre Glomma;E+R+F+K;Yrkesdøgn;< 5,6m;Desember;-8,507;99,000;3597609;3932102;2.085;1.325
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 5,6m;Desember;-8,365;99,000;267292;291691;4.333;2.753
+Nedre Glomma;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Desember;-8,019;99,000;98165;106723;4.373;2.779
+Nedre Glomma;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Desember;-9,329;99,000;94175;103865;4.498;2.858
+Nedre Glomma;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Desember;-9,924;99,000;38120;42320;10.451;6.640
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 16,0m;Desember;-5,031;99,000;36832;38783;11.575;7.355
+Nedre Glomma;E+R+F+K;Helgedøgn;Alle;Desember;18,656;100,000;1476307;1244190;2.954;1.877
+Nedre Glomma;E+R+F+K;Helgedøgn;< 5,6m;Desember;18,681;100,000;1433351;1207739;2.960;1.881
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 5,6m;Desember;17,918;100,000;42902;36383;5.041;3.203
+Nedre Glomma;E+R+F+K;Helgedøgn;5,6m - 7,6m;Desember;8,863;100,000;19161;17601;4.396;2.793
+Nedre Glomma;E+R+F+K;Helgedøgn;7,6m - 12,5m;Desember;25,999;100,000;15237;12093;11.037;7.013
+Nedre Glomma;E+R+F+K;Helgedøgn;12,5m - 16,0m;Desember;30,890;100,000;7072;5403;11.728;7.452
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 16,0m;Desember;11,353;100,000;1432;1286;24.328;15.457
+Nedre Glomma;E+R+F+K;Alle;Alle;Siste 12 måneder;0,606;96,000;50098248;49796629;1.726;1.096
+Nedre Glomma;E+R+F+K;Alle;< 5,6m;Siste 12 måneder;0,730;96,000;46656063;46317967;1.778;1.130
+Nedre Glomma;E+R+F+K;Alle;>= 5,6m;Siste 12 måneder;-0,861;96,000;3434255;3464078;3.085;1.960
+Nedre Glomma;E+R+F+K;Alle;5,6m - 7,6m;Siste 12 måneder;-1,446;96,000;1253600;1271998;3.440;2.186
+Nedre Glomma;E+R+F+K;Alle;7,6m - 12,5m;Siste 12 måneder;-0,257;96,000;1276366;1279651;4.042;2.568
+Nedre Glomma;E+R+F+K;Alle;12,5m - 16,0m;Siste 12 måneder;-1,110;96,000;471180;476470;3.976;2.526
+Nedre Glomma;E+R+F+K;Alle;>= 16,0m;Siste 12 måneder;-0,654;96,000;433109;435959;8.580;5.451
+Nedre Glomma;E+R+F+K;Yrkesdøgn;Alle;Siste 12 måneder;0,664;95,000;38934630;38677986;1.778;1.130
+Nedre Glomma;E+R+F+K;Yrkesdøgn;< 5,6m;Siste 12 måneder;0,828;95,000;35912117;35617134;1.847;1.174
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 5,6m;Siste 12 måneder;-1,080;95,000;3015391;3048311;3.199;2.032
+Nedre Glomma;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;-1,543;95,000;1082139;1099095;3.578;2.273
+Nedre Glomma;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;-0,672;95,000;1105228;1112702;4.154;2.639
+Nedre Glomma;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-1,210;95,000;410798;415831;4.255;2.703
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 16,0m;Siste 12 måneder;-0,822;95,000;417226;420683;8.326;5.290
+Nedre Glomma;E+R+F+K;Helgedøgn;Alle;Siste 12 måneder;0,405;96,000;11163618;11118643;2.031;1.290
+Nedre Glomma;E+R+F+K;Helgedøgn;< 5,6m;Siste 12 måneder;0,403;96,000;10743946;10700833;2.042;1.298
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 5,6m;Siste 12 måneder;0,745;96,000;418864;415767;2.790;1.773
+Nedre Glomma;E+R+F+K;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;-0,834;96,000;171461;172903;3.084;1.960
+Nedre Glomma;E+R+F+K;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;2,509;96,000;171138;166949;3.834;2.436
+Nedre Glomma;E+R+F+K;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-0,424;96,000;60382;60639;3.279;2.083
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 16,0m;Siste 12 måneder;3,974;96,000;15883;15276;19.760;12.555
+Nedre Glomma;E+R+F+K;Alle;Alle;Hittil i år;0,606;96,000;50098248;49796629;1.726;1.096
+Nedre Glomma;E+R+F+K;Alle;< 5,6m;Hittil i år;0,730;96,000;46656063;46317967;1.778;1.130
+Nedre Glomma;E+R+F+K;Alle;>= 5,6m;Hittil i år;-0,861;96,000;3434255;3464078;3.085;1.960
+Nedre Glomma;E+R+F+K;Alle;5,6m - 7,6m;Hittil i år;-1,446;96,000;1253600;1271998;3.440;2.186
+Nedre Glomma;E+R+F+K;Alle;7,6m - 12,5m;Hittil i år;-0,257;96,000;1276366;1279651;4.042;2.568
+Nedre Glomma;E+R+F+K;Alle;12,5m - 16,0m;Hittil i år;-1,110;96,000;471180;476470;3.976;2.526
+Nedre Glomma;E+R+F+K;Alle;>= 16,0m;Hittil i år;-0,654;96,000;433109;435959;8.580;5.451
+Nedre Glomma;E+R+F+K;Yrkesdøgn;Alle;Hittil i år;0,664;95,000;38934630;38677986;1.778;1.130
+Nedre Glomma;E+R+F+K;Yrkesdøgn;< 5,6m;Hittil i år;0,828;95,000;35912117;35617134;1.847;1.174
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 5,6m;Hittil i år;-1,080;95,000;3015391;3048311;3.199;2.032
+Nedre Glomma;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Hittil i år;-1,543;95,000;1082139;1099095;3.578;2.273
+Nedre Glomma;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Hittil i år;-0,672;95,000;1105228;1112702;4.154;2.639
+Nedre Glomma;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-1,210;95,000;410798;415831;4.255;2.703
+Nedre Glomma;E+R+F+K;Yrkesdøgn;>= 16,0m;Hittil i år;-0,822;95,000;417226;420683;8.326;5.290
+Nedre Glomma;E+R+F+K;Helgedøgn;Alle;Hittil i år;0,405;96,000;11163618;11118643;2.031;1.290
+Nedre Glomma;E+R+F+K;Helgedøgn;< 5,6m;Hittil i år;0,403;96,000;10743946;10700833;2.042;1.298
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 5,6m;Hittil i år;0,745;96,000;418864;415767;2.790;1.773
+Nedre Glomma;E+R+F+K;Helgedøgn;5,6m - 7,6m;Hittil i år;-0,834;96,000;171461;172903;3.084;1.960
+Nedre Glomma;E+R+F+K;Helgedøgn;7,6m - 12,5m;Hittil i år;2,509;96,000;171138;166949;3.834;2.436
+Nedre Glomma;E+R+F+K;Helgedøgn;12,5m - 16,0m;Hittil i år;-0,424;96,000;60382;60639;3.279;2.083
+Nedre Glomma;E+R+F+K;Helgedøgn;>= 16,0m;Hittil i år;3,974;96,000;15883;15276;19.760;12.555
+Nedre Glomma;E;Alle;Alle;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Alle;< 5,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 5,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Alle;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Alle;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Alle;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 16,0m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;Alle;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;< 5,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 5,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 16,0m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;Alle;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;< 5,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 5,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 16,0m;Januar;-;-;-;-;-;-
+Nedre Glomma;E;Alle;Alle;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Alle;< 5,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 5,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Alle;5,6m - 7,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Alle;7,6m - 12,5m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Alle;12,5m - 16,0m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 16,0m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;Alle;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;< 5,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 5,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;5,6m - 7,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;7,6m - 12,5m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;12,5m - 16,0m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 16,0m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;Alle;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;< 5,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 5,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;5,6m - 7,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;7,6m - 12,5m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;12,5m - 16,0m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 16,0m;Februar;-;-;-;-;-;-
+Nedre Glomma;E;Alle;Alle;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Alle;< 5,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 5,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Alle;5,6m - 7,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Alle;7,6m - 12,5m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Alle;12,5m - 16,0m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 16,0m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;Alle;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;< 5,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 5,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;5,6m - 7,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;7,6m - 12,5m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;12,5m - 16,0m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 16,0m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;Alle;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;< 5,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 5,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;5,6m - 7,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;7,6m - 12,5m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;12,5m - 16,0m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 16,0m;Mars;-;-;-;-;-;-
+Nedre Glomma;E;Alle;Alle;April;-;-;-;-;-;-
+Nedre Glomma;E;Alle;< 5,6m;April;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 5,6m;April;-;-;-;-;-;-
+Nedre Glomma;E;Alle;5,6m - 7,6m;April;-;-;-;-;-;-
+Nedre Glomma;E;Alle;7,6m - 12,5m;April;-;-;-;-;-;-
+Nedre Glomma;E;Alle;12,5m - 16,0m;April;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 16,0m;April;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;Alle;April;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;< 5,6m;April;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 5,6m;April;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;5,6m - 7,6m;April;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;7,6m - 12,5m;April;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;12,5m - 16,0m;April;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 16,0m;April;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;Alle;April;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;< 5,6m;April;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 5,6m;April;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;5,6m - 7,6m;April;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;7,6m - 12,5m;April;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;12,5m - 16,0m;April;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 16,0m;April;-;-;-;-;-;-
+Nedre Glomma;E;Alle;Alle;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Alle;< 5,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 5,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Alle;5,6m - 7,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Alle;7,6m - 12,5m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Alle;12,5m - 16,0m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 16,0m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;Alle;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;< 5,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 5,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;5,6m - 7,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;7,6m - 12,5m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;12,5m - 16,0m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 16,0m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;Alle;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;< 5,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 5,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;5,6m - 7,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;7,6m - 12,5m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;12,5m - 16,0m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 16,0m;Mai;-;-;-;-;-;-
+Nedre Glomma;E;Alle;Alle;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Alle;< 5,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 5,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Alle;5,6m - 7,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Alle;7,6m - 12,5m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Alle;12,5m - 16,0m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 16,0m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;Alle;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;< 5,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 5,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;5,6m - 7,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;7,6m - 12,5m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;12,5m - 16,0m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 16,0m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;Alle;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;< 5,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 5,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;5,6m - 7,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;7,6m - 12,5m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;12,5m - 16,0m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 16,0m;Juni;-;-;-;-;-;-
+Nedre Glomma;E;Alle;Alle;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Alle;< 5,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 5,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Alle;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Alle;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Alle;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 16,0m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;Alle;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;< 5,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 5,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 16,0m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;Alle;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;< 5,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 5,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 16,0m;Juli;-;-;-;-;-;-
+Nedre Glomma;E;Alle;Alle;August;-;-;-;-;-;-
+Nedre Glomma;E;Alle;< 5,6m;August;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 5,6m;August;-;-;-;-;-;-
+Nedre Glomma;E;Alle;5,6m - 7,6m;August;-;-;-;-;-;-
+Nedre Glomma;E;Alle;7,6m - 12,5m;August;-;-;-;-;-;-
+Nedre Glomma;E;Alle;12,5m - 16,0m;August;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 16,0m;August;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;Alle;August;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;< 5,6m;August;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 5,6m;August;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;5,6m - 7,6m;August;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;7,6m - 12,5m;August;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;12,5m - 16,0m;August;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 16,0m;August;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;Alle;August;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;< 5,6m;August;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 5,6m;August;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;5,6m - 7,6m;August;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;7,6m - 12,5m;August;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;12,5m - 16,0m;August;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 16,0m;August;-;-;-;-;-;-
+Nedre Glomma;E;Alle;Alle;September;-;-;-;-;-;-
+Nedre Glomma;E;Alle;< 5,6m;September;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 5,6m;September;-;-;-;-;-;-
+Nedre Glomma;E;Alle;5,6m - 7,6m;September;-;-;-;-;-;-
+Nedre Glomma;E;Alle;7,6m - 12,5m;September;-;-;-;-;-;-
+Nedre Glomma;E;Alle;12,5m - 16,0m;September;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 16,0m;September;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;Alle;September;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;< 5,6m;September;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 5,6m;September;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;5,6m - 7,6m;September;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;7,6m - 12,5m;September;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;12,5m - 16,0m;September;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 16,0m;September;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;Alle;September;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;< 5,6m;September;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 5,6m;September;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;5,6m - 7,6m;September;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;7,6m - 12,5m;September;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;12,5m - 16,0m;September;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 16,0m;September;-;-;-;-;-;-
+Nedre Glomma;E;Alle;Alle;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Alle;< 5,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 5,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Alle;5,6m - 7,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Alle;7,6m - 12,5m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Alle;12,5m - 16,0m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 16,0m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;Alle;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;< 5,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 5,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;5,6m - 7,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;7,6m - 12,5m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;12,5m - 16,0m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 16,0m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;Alle;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;< 5,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 5,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;5,6m - 7,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;7,6m - 12,5m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;12,5m - 16,0m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 16,0m;Oktober;-;-;-;-;-;-
+Nedre Glomma;E;Alle;Alle;November;-;-;-;-;-;-
+Nedre Glomma;E;Alle;< 5,6m;November;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 5,6m;November;-;-;-;-;-;-
+Nedre Glomma;E;Alle;5,6m - 7,6m;November;-;-;-;-;-;-
+Nedre Glomma;E;Alle;7,6m - 12,5m;November;-;-;-;-;-;-
+Nedre Glomma;E;Alle;12,5m - 16,0m;November;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 16,0m;November;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;Alle;November;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;< 5,6m;November;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 5,6m;November;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;5,6m - 7,6m;November;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;7,6m - 12,5m;November;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;12,5m - 16,0m;November;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 16,0m;November;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;Alle;November;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;< 5,6m;November;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 5,6m;November;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;5,6m - 7,6m;November;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;7,6m - 12,5m;November;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;12,5m - 16,0m;November;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 16,0m;November;-;-;-;-;-;-
+Nedre Glomma;E;Alle;Alle;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Alle;< 5,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 5,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Alle;5,6m - 7,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Alle;7,6m - 12,5m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Alle;12,5m - 16,0m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 16,0m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;Alle;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;< 5,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 5,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;5,6m - 7,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;7,6m - 12,5m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;12,5m - 16,0m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 16,0m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;Alle;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;< 5,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 5,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;5,6m - 7,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;7,6m - 12,5m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;12,5m - 16,0m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 16,0m;Desember;-;-;-;-;-;-
+Nedre Glomma;E;Alle;Alle;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Alle;< 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Alle;5,6m - 7,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Alle;7,6m - 12,5m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Alle;12,5m - 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;Alle;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;< 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;Alle;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;< 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;E;Alle;Alle;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Alle;< 5,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 5,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Alle;5,6m - 7,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Alle;7,6m - 12,5m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Alle;12,5m - 16,0m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Alle;>= 16,0m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;Alle;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;< 5,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 5,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;5,6m - 7,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;7,6m - 12,5m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Yrkesdøgn;>= 16,0m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;Alle;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;< 5,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 5,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;5,6m - 7,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;7,6m - 12,5m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;12,5m - 16,0m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;E;Helgedøgn;>= 16,0m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;R;Alle;Alle;Januar;4,512;74,000;624944;597965;2.380;21.384
+Nedre Glomma;R;Alle;< 5,6m;Januar;3,455;74,000;564710;545852;2.228;20.020
+Nedre Glomma;R;Alle;>= 5,6m;Januar;15,517;74,000;60182;52098;2.936;26.379
+Nedre Glomma;R;Alle;5,6m - 7,6m;Januar;8,994;74,000;14578;13375;1.081;9.709
+Nedre Glomma;R;Alle;7,6m - 12,5m;Januar;17,419;74,000;19946;16987;6.733;60.495
+Nedre Glomma;R;Alle;12,5m - 16,0m;Januar;20,453;74,000;8669;7197;38.562;346.470
+Nedre Glomma;R;Alle;>= 16,0m;Januar;16,851;74,000;16989;14539;18.079;162.429
+Nedre Glomma;R;Yrkesdøgn;Alle;Januar;14,848;73,000;503709;438587;2.099;18.857
+Nedre Glomma;R;Yrkesdøgn;< 5,6m;Januar;14,287;73,000;447877;391889;2.035;18.284
+Nedre Glomma;R;Yrkesdøgn;>= 5,6m;Januar;19,486;73,000;55782;46685;6.165;55.394
+Nedre Glomma;R;Yrkesdøgn;5,6m - 7,6m;Januar;13,344;73,000;13183;11631;1.687;15.161
+Nedre Glomma;R;Yrkesdøgn;7,6m - 12,5m;Januar;21,689;73,000;18117;14888;4.739;42.574
+Nedre Glomma;R;Yrkesdøgn;12,5m - 16,0m;Januar;27,385;73,000;7945;6237;50.208;451.105
+Nedre Glomma;R;Yrkesdøgn;>= 16,0m;Januar;18,724;73,000;16537;13929;19.788;177.792
+Nedre Glomma;R;Helgedøgn;Alle;Januar;-23,932;77,000;121235;159378;8.178;73.480
+Nedre Glomma;R;Helgedøgn;< 5,6m;Januar;-24,116;77,000;116833;153963;8.134;73.082
+Nedre Glomma;R;Helgedøgn;>= 5,6m;Januar;-18,714;77,000;4400;5413;7.934;71.286
+Nedre Glomma;R;Helgedøgn;5,6m - 7,6m;Januar;-20,011;77,000;1395;1744;12.305;110.552
+Nedre Glomma;R;Helgedøgn;7,6m - 12,5m;Januar;-12,863;77,000;1829;2099;13.488;121.184
+Nedre Glomma;R;Helgedøgn;12,5m - 16,0m;Januar;-24,583;77,000;724;960;1.721;15.463
+Nedre Glomma;R;Helgedøgn;>= 16,0m;Januar;-25,902;77,000;452;610;17.925;161.053
+Nedre Glomma;R;Alle;Alle;Februar;2,216;98,000;265220;259471;-;-
+Nedre Glomma;R;Alle;< 5,6m;Februar;1,419;98,000;228115;224923;-;-
+Nedre Glomma;R;Alle;>= 5,6m;Februar;7,415;98,000;37098;34537;-;-
+Nedre Glomma;R;Alle;5,6m - 7,6m;Februar;1,193;98,000;7042;6959;-;-
+Nedre Glomma;R;Alle;7,6m - 12,5m;Februar;8,232;98,000;9926;9171;-;-
+Nedre Glomma;R;Alle;12,5m - 16,0m;Februar;0,940;98,000;5689;5636;-;-
+Nedre Glomma;R;Alle;>= 16,0m;Februar;13,077;98,000;14441;12771;-;-
+Nedre Glomma;R;Yrkesdøgn;Alle;Februar;2,782;99,000;216871;211001;-;-
+Nedre Glomma;R;Yrkesdøgn;< 5,6m;Februar;1,969;99,000;182256;178737;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 5,6m;Februar;7,308;99,000;34610;32253;-;-
+Nedre Glomma;R;Yrkesdøgn;5,6m - 7,6m;Februar;1,825;99,000;6415;6300;-;-
+Nedre Glomma;R;Yrkesdøgn;7,6m - 12,5m;Februar;7,721;99,000;9069;8419;-;-
+Nedre Glomma;R;Yrkesdøgn;12,5m - 16,0m;Februar;1,152;99,000;5180;5121;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 16,0m;Februar;12,350;99,000;13946;12413;-;-
+Nedre Glomma;R;Helgedøgn;Alle;Februar;-0,250;98,000;48349;48470;-;-
+Nedre Glomma;R;Helgedøgn;< 5,6m;Februar;-0,708;98,000;45859;46186;-;-
+Nedre Glomma;R;Helgedøgn;>= 5,6m;Februar;8,932;98,000;2488;2284;-;-
+Nedre Glomma;R;Helgedøgn;5,6m - 7,6m;Februar;-4,856;98,000;627;659;-;-
+Nedre Glomma;R;Helgedøgn;7,6m - 12,5m;Februar;13,963;98,000;857;752;-;-
+Nedre Glomma;R;Helgedøgn;12,5m - 16,0m;Februar;-1,165;98,000;509;515;-;-
+Nedre Glomma;R;Helgedøgn;>= 16,0m;Februar;38,268;98,000;495;358;-;-
+Nedre Glomma;R;Alle;Alle;Mars;10,790;94,000;292967;264434;-;-
+Nedre Glomma;R;Alle;< 5,6m;Mars;9,439;94,000;251346;229668;-;-
+Nedre Glomma;R;Alle;>= 5,6m;Mars;19,710;94,000;41610;34759;-;-
+Nedre Glomma;R;Alle;5,6m - 7,6m;Mars;7,120;94,000;7899;7374;-;-
+Nedre Glomma;R;Alle;7,6m - 12,5m;Mars;22,639;94,000;11674;9519;-;-
+Nedre Glomma;R;Alle;12,5m - 16,0m;Mars;13,954;94,000;5994;5260;-;-
+Nedre Glomma;R;Alle;>= 16,0m;Mars;27,265;94,000;16043;12606;-;-
+Nedre Glomma;R;Yrkesdøgn;Alle;Mars;21,047;93,000;242528;200358;-;-
+Nedre Glomma;R;Yrkesdøgn;< 5,6m;Mars;20,784;93,000;203730;168673;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 5,6m;Mars;22,441;93,000;38787;31678;-;-
+Nedre Glomma;R;Yrkesdøgn;5,6m - 7,6m;Mars;11,898;93,000;7157;6396;-;-
+Nedre Glomma;R;Yrkesdøgn;7,6m - 12,5m;Mars;25,231;93,000;10552;8426;-;-
+Nedre Glomma;R;Yrkesdøgn;12,5m - 16,0m;Mars;16,336;93,000;5505;4732;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 16,0m;Mars;28,448;93,000;15573;12124;-;-
+Nedre Glomma;R;Helgedøgn;Alle;Mars;-21,283;97,000;50439;64076;-;-
+Nedre Glomma;R;Helgedøgn;< 5,6m;Mars;-21,935;97,000;47616;60995;-;-
+Nedre Glomma;R;Helgedøgn;>= 5,6m;Mars;-8,374;97,000;2823;3081;-;-
+Nedre Glomma;R;Helgedøgn;5,6m - 7,6m;Mars;-24,131;97,000;742;978;-;-
+Nedre Glomma;R;Helgedøgn;7,6m - 12,5m;Mars;2,653;97,000;1122;1093;-;-
+Nedre Glomma;R;Helgedøgn;12,5m - 16,0m;Mars;-7,386;97,000;489;528;-;-
+Nedre Glomma;R;Helgedøgn;>= 16,0m;Mars;-2,490;97,000;470;482;-;-
+Nedre Glomma;R;Alle;Alle;April;-7,990;95,000;264507;287477;-;-
+Nedre Glomma;R;Alle;< 5,6m;April;-7,385;95,000;227994;246175;-;-
+Nedre Glomma;R;Alle;>= 5,6m;April;-11,583;95,000;36502;41284;-;-
+Nedre Glomma;R;Alle;5,6m - 7,6m;April;-18,981;95,000;7222;8914;-;-
+Nedre Glomma;R;Alle;7,6m - 12,5m;April;-9,341;95,000;11054;12193;-;-
+Nedre Glomma;R;Alle;12,5m - 16,0m;April;-10,279;95,000;5150;5740;-;-
+Nedre Glomma;R;Alle;>= 16,0m;April;-9,427;95,000;13076;14437;-;-
+Nedre Glomma;R;Yrkesdøgn;Alle;April;-19,062;95,000;184869;228408;-;-
+Nedre Glomma;R;Yrkesdøgn;< 5,6m;April;-19,657;95,000;153391;190919;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 5,6m;April;-16,024;95,000;31469;37474;-;-
+Nedre Glomma;R;Yrkesdøgn;5,6m - 7,6m;April;-25,906;95,000;5766;7782;-;-
+Nedre Glomma;R;Yrkesdøgn;7,6m - 12,5m;April;-15,130;95,000;9009;10615;-;-
+Nedre Glomma;R;Yrkesdøgn;12,5m - 16,0m;April;-13,164;95,000;4413;5082;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 16,0m;April;-12,247;95,000;12281;13995;-;-
+Nedre Glomma;R;Helgedøgn;Alle;April;34,822;95,000;79638;59069;-;-
+Nedre Glomma;R;Helgedøgn;< 5,6m;April;35,013;95,000;74603;55256;-;-
+Nedre Glomma;R;Helgedøgn;>= 5,6m;April;32,100;95,000;5033;3810;-;-
+Nedre Glomma;R;Helgedøgn;5,6m - 7,6m;April;28,622;95,000;1456;1132;-;-
+Nedre Glomma;R;Helgedøgn;7,6m - 12,5m;April;29,594;95,000;2045;1578;-;-
+Nedre Glomma;R;Helgedøgn;12,5m - 16,0m;April;12,006;95,000;737;658;-;-
+Nedre Glomma;R;Helgedøgn;>= 16,0m;April;79,864;95,000;795;442;-;-
+Nedre Glomma;R;Alle;Alle;Mai;1,556;96,000;297681;293119;-;-
+Nedre Glomma;R;Alle;< 5,6m;Mai;0,849;96,000;254327;252185;-;-
+Nedre Glomma;R;Alle;>= 5,6m;Mai;5,924;96,000;43339;40915;-;-
+Nedre Glomma;R;Alle;5,6m - 7,6m;Mai;-0,034;96,000;8920;8923;-;-
+Nedre Glomma;R;Alle;7,6m - 12,5m;Mai;4,357;96,000;12957;12416;-;-
+Nedre Glomma;R;Alle;12,5m - 16,0m;Mai;8,609;96,000;6043;5564;-;-
+Nedre Glomma;R;Alle;>= 16,0m;Mai;10,041;96,000;15419;14012;-;-
+Nedre Glomma;R;Yrkesdøgn;Alle;Mai;7,720;95,000;225359;209208;-;-
+Nedre Glomma;R;Yrkesdøgn;< 5,6m;Mai;7,593;95,000;186657;173485;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 5,6m;Mai;8,352;95,000;38688;35706;-;-
+Nedre Glomma;R;Yrkesdøgn;5,6m - 7,6m;Mai;3,797;95,000;7600;7322;-;-
+Nedre Glomma;R;Yrkesdøgn;7,6m - 12,5m;Mai;8,368;95,000;11086;10230;-;-
+Nedre Glomma;R;Yrkesdøgn;12,5m - 16,0m;Mai;10,457;95,000;5345;4839;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 16,0m;Mai;10,079;95,000;14657;13315;-;-
+Nedre Glomma;R;Helgedøgn;Alle;Mai;-13,811;98,000;72322;83911;-;-
+Nedre Glomma;R;Helgedøgn;< 5,6m;Mai;-14,015;98,000;67670;78700;-;-
+Nedre Glomma;R;Helgedøgn;>= 5,6m;Mai;-10,712;98,000;4651;5209;-;-
+Nedre Glomma;R;Helgedøgn;5,6m - 7,6m;Mai;-17,552;98,000;1320;1601;-;-
+Nedre Glomma;R;Helgedøgn;7,6m - 12,5m;Mai;-14,410;98,000;1871;2186;-;-
+Nedre Glomma;R;Helgedøgn;12,5m - 16,0m;Mai;-3,724;98,000;698;725;-;-
+Nedre Glomma;R;Helgedøgn;>= 16,0m;Mai;9,326;98,000;762;697;-;-
+Nedre Glomma;R;Alle;Alle;Juni;2,551;96,000;299812;292354;-;-
+Nedre Glomma;R;Alle;< 5,6m;Juni;2,982;96,000;255334;247941;-;-
+Nedre Glomma;R;Alle;>= 5,6m;Juni;0,160;96,000;44465;44394;-;-
+Nedre Glomma;R;Alle;5,6m - 7,6m;Juni;-2,713;96,000;9037;9289;-;-
+Nedre Glomma;R;Alle;7,6m - 12,5m;Juni;4,883;96,000;13982;13331;-;-
+Nedre Glomma;R;Alle;12,5m - 16,0m;Juni;-5,803;96,000;6120;6497;-;-
+Nedre Glomma;R;Alle;>= 16,0m;Juni;0,321;96,000;15326;15277;-;-
+Nedre Glomma;R;Yrkesdøgn;Alle;Juni;-1,943;95,000;234531;239179;-;-
+Nedre Glomma;R;Yrkesdøgn;< 5,6m;Juni;-2,053;95,000;194118;198186;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 5,6m;Juni;-1,398;95,000;40402;40975;-;-
+Nedre Glomma;R;Yrkesdøgn;5,6m - 7,6m;Juni;-5,247;95,000;7802;8234;-;-
+Nedre Glomma;R;Yrkesdøgn;7,6m - 12,5m;Juni;3,362;95,000;12237;11839;-;-
+Nedre Glomma;R;Yrkesdøgn;12,5m - 16,0m;Juni;-6,286;95,000;5591;5966;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 16,0m;Juni;-1,098;95,000;14772;14936;-;-
+Nedre Glomma;R;Helgedøgn;Alle;Juni;22,766;98,000;65281;53175;-;-
+Nedre Glomma;R;Helgedøgn;< 5,6m;Juni;23,035;98,000;61216;49755;-;-
+Nedre Glomma;R;Helgedøgn;>= 5,6m;Juni;18,836;98,000;4063;3419;-;-
+Nedre Glomma;R;Helgedøgn;5,6m - 7,6m;Juni;17,062;98,000;1235;1055;-;-
+Nedre Glomma;R;Helgedøgn;7,6m - 12,5m;Juni;16,957;98,000;1745;1492;-;-
+Nedre Glomma;R;Helgedøgn;12,5m - 16,0m;Juni;-0,377;98,000;529;531;-;-
+Nedre Glomma;R;Helgedøgn;>= 16,0m;Juni;62,463;98,000;554;341;-;-
+Nedre Glomma;R;Alle;Alle;Juli;1,031;97,000;244773;242275;-;-
+Nedre Glomma;R;Alle;< 5,6m;Juli;0,369;97,000;207914;207150;-;-
+Nedre Glomma;R;Alle;>= 5,6m;Juli;4,927;97,000;36840;35110;-;-
+Nedre Glomma;R;Alle;5,6m - 7,6m;Juli;-2,247;97,000;7439;7610;-;-
+Nedre Glomma;R;Alle;7,6m - 12,5m;Juli;1,590;97,000;11370;11192;-;-
+Nedre Glomma;R;Alle;12,5m - 16,0m;Juli;5,335;97,000;5390;5117;-;-
+Nedre Glomma;R;Alle;>= 16,0m;Juli;12,957;97,000;12641;11191;-;-
+Nedre Glomma;R;Yrkesdøgn;Alle;Juli;1,731;97,000;186052;182886;-;-
+Nedre Glomma;R;Yrkesdøgn;< 5,6m;Juli;1,024;97,000;152931;151381;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 5,6m;Juli;5,119;97,000;33102;31490;-;-
+Nedre Glomma;R;Yrkesdøgn;5,6m - 7,6m;Juli;-1,778;97,000;6296;6410;-;-
+Nedre Glomma;R;Yrkesdøgn;7,6m - 12,5m;Juli;1,672;97,000;9849;9687;-;-
+Nedre Glomma;R;Yrkesdøgn;12,5m - 16,0m;Juli;5,868;97,000;4763;4499;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 16,0m;Juli;11,933;97,000;12194;10894;-;-
+Nedre Glomma;R;Helgedøgn;Alle;Juli;-1,125;97,000;58721;59389;-;-
+Nedre Glomma;R;Helgedøgn;< 5,6m;Juli;-1,409;97,000;54983;55769;-;-
+Nedre Glomma;R;Helgedøgn;>= 5,6m;Juli;3,260;97,000;3738;3620;-;-
+Nedre Glomma;R;Helgedøgn;5,6m - 7,6m;Juli;-4,750;97,000;1143;1200;-;-
+Nedre Glomma;R;Helgedøgn;7,6m - 12,5m;Juli;1,063;97,000;1521;1505;-;-
+Nedre Glomma;R;Helgedøgn;12,5m - 16,0m;Juli;1,456;97,000;627;618;-;-
+Nedre Glomma;R;Helgedøgn;>= 16,0m;Juli;50,505;97,000;447;297;-;-
+Nedre Glomma;R;Alle;Alle;August;1,715;96,000;292110;287186;-;-
+Nedre Glomma;R;Alle;< 5,6m;August;1,872;96,000;247979;243421;-;-
+Nedre Glomma;R;Alle;>= 5,6m;August;0,846;96,000;44117;43747;-;-
+Nedre Glomma;R;Alle;5,6m - 7,6m;August;-3,942;96,000;8773;9133;-;-
+Nedre Glomma;R;Alle;7,6m - 12,5m;August;2,745;96,000;13663;13298;-;-
+Nedre Glomma;R;Alle;12,5m - 16,0m;August;-2,429;96,000;6146;6299;-;-
+Nedre Glomma;R;Alle;>= 16,0m;August;3,449;96,000;15535;15017;-;-
+Nedre Glomma;R;Yrkesdøgn;Alle;August;1,442;96,000;240041;236628;-;-
+Nedre Glomma;R;Yrkesdøgn;< 5,6m;August;1,559;96,000;199349;196289;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 5,6m;August;0,890;96,000;40680;40321;-;-
+Nedre Glomma;R;Yrkesdøgn;5,6m - 7,6m;August;-3,850;96,000;7792;8104;-;-
+Nedre Glomma;R;Yrkesdøgn;7,6m - 12,5m;August;3,296;96,000;12191;11802;-;-
+Nedre Glomma;R;Yrkesdøgn;12,5m - 16,0m;August;-2,972;96,000;5616;5788;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 16,0m;August;3,104;96,000;15081;14627;-;-
+Nedre Glomma;R;Helgedøgn;Alle;August;2,989;97,000;52069;50558;-;-
+Nedre Glomma;R;Helgedøgn;< 5,6m;August;3,178;97,000;48630;47132;-;-
+Nedre Glomma;R;Helgedøgn;>= 5,6m;August;0,321;97,000;3437;3426;-;-
+Nedre Glomma;R;Helgedøgn;5,6m - 7,6m;August;-4,665;97,000;981;1029;-;-
+Nedre Glomma;R;Helgedøgn;7,6m - 12,5m;August;-1,604;97,000;1472;1496;-;-
+Nedre Glomma;R;Helgedøgn;12,5m - 16,0m;August;3,718;97,000;530;511;-;-
+Nedre Glomma;R;Helgedøgn;>= 16,0m;August;16,410;97,000;454;390;-;-
+Nedre Glomma;R;Alle;Alle;September;0,182;98,000;304234;303680;-;-
+Nedre Glomma;R;Alle;< 5,6m;September;0,100;98,000;259487;259228;-;-
+Nedre Glomma;R;Alle;>= 5,6m;September;0,666;98,000;44740;44444;-;-
+Nedre Glomma;R;Alle;5,6m - 7,6m;September;-1,742;98,000;8970;9129;-;-
+Nedre Glomma;R;Alle;7,6m - 12,5m;September;3,638;98,000;13647;13168;-;-
+Nedre Glomma;R;Alle;12,5m - 16,0m;September;-4,036;98,000;6254;6517;-;-
+Nedre Glomma;R;Alle;>= 16,0m;September;1,529;98,000;15869;15630;-;-
+Nedre Glomma;R;Yrkesdøgn;Alle;September;-2,559;97,000;240475;246791;-;-
+Nedre Glomma;R;Yrkesdøgn;< 5,6m;September;-2,991;97,000;199933;206098;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 5,6m;September;-0,371;97,000;40536;40687;-;-
+Nedre Glomma;R;Yrkesdøgn;5,6m - 7,6m;September;-1,396;97,000;7841;7952;-;-
+Nedre Glomma;R;Yrkesdøgn;7,6m - 12,5m;September;1,045;97,000;11705;11584;-;-
+Nedre Glomma;R;Yrkesdøgn;12,5m - 16,0m;September;-5,518;97,000;5616;5944;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 16,0m;September;1,098;97,000;15374;15207;-;-
+Nedre Glomma;R;Helgedøgn;Alle;September;12,076;98,000;63759;56889;-;-
+Nedre Glomma;R;Helgedøgn;< 5,6m;September;12,091;98,000;59554;53130;-;-
+Nedre Glomma;R;Helgedøgn;>= 5,6m;September;11,898;98,000;4204;3757;-;-
+Nedre Glomma;R;Helgedøgn;5,6m - 7,6m;September;-4,078;98,000;1129;1177;-;-
+Nedre Glomma;R;Helgedøgn;7,6m - 12,5m;September;22,601;98,000;1942;1584;-;-
+Nedre Glomma;R;Helgedøgn;12,5m - 16,0m;September;11,344;98,000;638;573;-;-
+Nedre Glomma;R;Helgedøgn;>= 16,0m;September;17,021;98,000;495;423;-;-
+Nedre Glomma;R;Alle;Alle;Oktober;1,729;100,000;316216;310843;-;-
+Nedre Glomma;R;Alle;< 5,6m;Oktober;1,536;100,000;269880;265798;-;-
+Nedre Glomma;R;Alle;>= 5,6m;Oktober;2,856;100,000;46319;45033;-;-
+Nedre Glomma;R;Alle;5,6m - 7,6m;Oktober;5,325;100,000;9237;8770;-;-
+Nedre Glomma;R;Alle;7,6m - 12,5m;Oktober;2,550;100,000;13675;13335;-;-
+Nedre Glomma;R;Alle;12,5m - 16,0m;Oktober;0,433;100,000;6734;6705;-;-
+Nedre Glomma;R;Alle;>= 16,0m;Oktober;2,774;100,000;16673;16223;-;-
+Nedre Glomma;R;Yrkesdøgn;Alle;Oktober;4,657;100,000;254310;242994;-;-
+Nedre Glomma;R;Yrkesdøgn;< 5,6m;Oktober;4,719;100,000;211548;202014;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 5,6m;Oktober;4,342;100,000;42748;40969;-;-
+Nedre Glomma;R;Yrkesdøgn;5,6m - 7,6m;Oktober;8,733;100,000;8292;7626;-;-
+Nedre Glomma;R;Yrkesdøgn;7,6m - 12,5m;Oktober;4,332;100,000;12162;11657;-;-
+Nedre Glomma;R;Yrkesdøgn;12,5m - 16,0m;Oktober;3,057;100,000;6203;6019;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 16,0m;Oktober;2,706;100,000;16091;15667;-;-
+Nedre Glomma;R;Helgedøgn;Alle;Oktober;-8,759;100,000;61906;67849;-;-
+Nedre Glomma;R;Helgedøgn;< 5,6m;Oktober;-8,548;100,000;58332;63784;-;-
+Nedre Glomma;R;Helgedøgn;>= 5,6m;Oktober;-12,131;100,000;3571;4064;-;-
+Nedre Glomma;R;Helgedøgn;5,6m - 7,6m;Oktober;-17,395;100,000;945;1144;-;-
+Nedre Glomma;R;Helgedøgn;7,6m - 12,5m;Oktober;-9,833;100,000;1513;1678;-;-
+Nedre Glomma;R;Helgedøgn;12,5m - 16,0m;Oktober;-22,595;100,000;531;686;-;-
+Nedre Glomma;R;Helgedøgn;>= 16,0m;Oktober;4,676;100,000;582;556;-;-
+Nedre Glomma;R;Alle;Alle;November;0,958;100,000;313581;310605;-;-
+Nedre Glomma;R;Alle;< 5,6m;November;1,222;100,000;268301;265063;-;-
+Nedre Glomma;R;Alle;>= 5,6m;November;-0,558;100,000;45266;45520;-;-
+Nedre Glomma;R;Alle;5,6m - 7,6m;November;-6,198;100,000;8309;8858;-;-
+Nedre Glomma;R;Alle;7,6m - 12,5m;November;-3,421;100,000;12621;13068;-;-
+Nedre Glomma;R;Alle;12,5m - 16,0m;November;-1,639;100,000;6843;6957;-;-
+Nedre Glomma;R;Alle;>= 16,0m;November;5,145;100,000;17493;16637;-;-
+Nedre Glomma;R;Yrkesdøgn;Alle;November;0,206;100,000;258028;257497;-;-
+Nedre Glomma;R;Yrkesdøgn;< 5,6m;November;0,342;100,000;215607;214872;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 5,6m;November;-0,462;100,000;42408;42605;-;-
+Nedre Glomma;R;Yrkesdøgn;5,6m - 7,6m;November;-6,474;100,000;7555;8078;-;-
+Nedre Glomma;R;Yrkesdøgn;7,6m - 12,5m;November;-4,248;100,000;11540;12052;-;-
+Nedre Glomma;R;Yrkesdøgn;12,5m - 16,0m;November;-1,344;100,000;6311;6397;-;-
+Nedre Glomma;R;Yrkesdøgn;>= 16,0m;November;5,747;100,000;17002;16078;-;-
+Nedre Glomma;R;Helgedøgn;Alle;November;4,604;100,000;55553;53108;-;-
+Nedre Glomma;R;Helgedøgn;< 5,6m;November;4,987;100,000;52694;50191;-;-
+Nedre Glomma;R;Helgedøgn;>= 5,6m;November;-1,955;100,000;2858;2915;-;-
+Nedre Glomma;R;Helgedøgn;5,6m - 7,6m;November;-3,333;100,000;754;780;-;-
+Nedre Glomma;R;Helgedøgn;7,6m - 12,5m;November;6,398;100,000;1081;1016;-;-
+Nedre Glomma;R;Helgedøgn;12,5m - 16,0m;November;-5,000;100,000;532;560;-;-
+Nedre Glomma;R;Helgedøgn;>= 16,0m;November;-12,165;100,000;491;559;-;-
+Nedre Glomma;R;Alle;Alle;Desember;-2,722;99,000;958422;985240;2.147;19.294
+Nedre Glomma;R;Alle;< 5,6m;Desember;-2,364;99,000;884654;906071;2.129;19.125
+Nedre Glomma;R;Alle;>= 5,6m;Desember;-6,822;99,000;73671;79065;4.772;42.876
+Nedre Glomma;R;Alle;5,6m - 7,6m;Desember;-7,056;99,000;19890;21400;0.559;5.025
+Nedre Glomma;R;Alle;7,6m - 12,5m;Desember;-6,282;99,000;27076;28891;0.078;0.697
+Nedre Glomma;R;Alle;12,5m - 16,0m;Desember;-11,710;99,000;9515;10777;13.058;117.325
+Nedre Glomma;R;Alle;>= 16,0m;Desember;-4,484;99,000;17190;17997;15.590;140.071
+Nedre Glomma;R;Yrkesdøgn;Alle;Desember;-9,248;99,000;683489;753140;2.233;20.064
+Nedre Glomma;R;Yrkesdøgn;< 5,6m;Desember;-9,229;99,000;618223;681083;1.851;16.628
+Nedre Glomma;R;Yrkesdøgn;>= 5,6m;Desember;-9,433;99,000;65172;71960;5.578;50.114
+Nedre Glomma;R;Yrkesdøgn;5,6m - 7,6m;Desember;-9,967;99,000;16775;18632;1.013;9.103
+Nedre Glomma;R;Yrkesdøgn;7,6m - 12,5m;Desember;-9,484;99,000;23612;26086;0.300;2.691
+Nedre Glomma;R;Yrkesdøgn;12,5m - 16,0m;Desember;-15,412;99,000;8271;9778;13.834;124.298
+Nedre Glomma;R;Yrkesdøgn;>= 16,0m;Desember;-5,440;99,000;16514;17464;14.977;134.564
+Nedre Glomma;R;Helgedøgn;Alle;Desember;18,455;100,000;274933;232100;5.321;47.807
+Nedre Glomma;R;Helgedøgn;< 5,6m;Desember;18,420;100,000;266431;224988;5.270;47.347
+Nedre Glomma;R;Helgedøgn;>= 5,6m;Desember;19,620;100,000;8499;7105;6.481;58.229
+Nedre Glomma;R;Helgedøgn;5,6m - 7,6m;Desember;12,536;100,000;3115;2768;2.235;20.078
+Nedre Glomma;R;Helgedøgn;7,6m - 12,5m;Desember;23,494;100,000;3464;2805;3.752;33.707
+Nedre Glomma;R;Helgedøgn;12,5m - 16,0m;Desember;24,525;100,000;1244;999;7.918;71.143
+Nedre Glomma;R;Helgedøgn;>= 16,0m;Desember;26,829;100,000;676;533;32.840;295.057
+Nedre Glomma;R;Alle;Alle;Siste 12 måneder;0,898;94,000;4474467;4434649;2.170;19.496
+Nedre Glomma;R;Alle;< 5,6m;Siste 12 måneder;0,682;94,000;3920041;3893475;2.022;18.168
+Nedre Glomma;R;Alle;>= 5,6m;Siste 12 måneder;2,448;94,000;554149;540906;3.059;27.486
+Nedre Glomma;R;Alle;5,6m - 7,6m;Siste 12 måneder;-2,019;94,000;117316;119734;0.318;2.859
+Nedre Glomma;R;Alle;7,6m - 12,5m;Siste 12 måneder;3,015;94,000;171591;166569;2.883;25.904
+Nedre Glomma;R;Alle;12,5m - 16,0m;Siste 12 måneder;0,359;94,000;78547;78266;0.393;3.528
+Nedre Glomma;R;Alle;>= 16,0m;Siste 12 måneder;5,874;94,000;186695;176337;7.074;63.557
+Nedre Glomma;R;Yrkesdøgn;Alle;Siste 12 måneder;0,684;94,000;3470262;3446677;2.456;22.064
+Nedre Glomma;R;Yrkesdøgn;< 5,6m;Siste 12 måneder;0,406;94,000;2965620;2953626;2.278;20.468
+Nedre Glomma;R;Yrkesdøgn;>= 5,6m;Siste 12 måneder;2,350;94,000;504384;492803;3.288;29.542
+Nedre Glomma;R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;-1,908;94,000;102474;104467;0.570;5.124
+Nedre Glomma;R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;2,610;94,000;151129;147285;3.251;29.210
+Nedre Glomma;R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;0,507;94,000;70759;70402;0.692;6.215
+Nedre Glomma;R;Yrkesdøgn;>= 16,0m;Siste 12 måneder;5,493;94,000;180022;170649;6.287;56.487
+Nedre Glomma;R;Helgedøgn;Alle;Siste 12 måneder;1,643;95,000;1004205;987972;1.476;13.265
+Nedre Glomma;R;Helgedøgn;< 5,6m;Siste 12 måneder;1,550;95,000;954421;939849;1.437;12.908
+Nedre Glomma;R;Helgedøgn;>= 5,6m;Siste 12 måneder;3,455;95,000;49765;48103;1.552;13.949
+Nedre Glomma;R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;-2,784;95,000;14842;15267;1.311;11.780
+Nedre Glomma;R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;6,109;95,000;20462;19284;0.197;1.768
+Nedre Glomma;R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-0,966;95,000;7788;7864;2.010;18.055
+Nedre Glomma;R;Helgedøgn;>= 16,0m;Siste 12 måneder;17,317;95,000;6673;5688;31.816;285.853
+Nedre Glomma;R;Alle;Alle;Hittil i år;0,898;94,000;4474467;4434649;2.170;19.496
+Nedre Glomma;R;Alle;< 5,6m;Hittil i år;0,682;94,000;3920041;3893475;2.022;18.168
+Nedre Glomma;R;Alle;>= 5,6m;Hittil i år;2,448;94,000;554149;540906;3.059;27.486
+Nedre Glomma;R;Alle;5,6m - 7,6m;Hittil i år;-2,019;94,000;117316;119734;0.318;2.859
+Nedre Glomma;R;Alle;7,6m - 12,5m;Hittil i år;3,015;94,000;171591;166569;2.883;25.904
+Nedre Glomma;R;Alle;12,5m - 16,0m;Hittil i år;0,359;94,000;78547;78266;0.393;3.528
+Nedre Glomma;R;Alle;>= 16,0m;Hittil i år;5,874;94,000;186695;176337;7.074;63.557
+Nedre Glomma;R;Yrkesdøgn;Alle;Hittil i år;0,684;94,000;3470262;3446677;2.456;22.064
+Nedre Glomma;R;Yrkesdøgn;< 5,6m;Hittil i år;0,406;94,000;2965620;2953626;2.278;20.468
+Nedre Glomma;R;Yrkesdøgn;>= 5,6m;Hittil i år;2,350;94,000;504384;492803;3.288;29.542
+Nedre Glomma;R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;-1,908;94,000;102474;104467;0.570;5.124
+Nedre Glomma;R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;2,610;94,000;151129;147285;3.251;29.210
+Nedre Glomma;R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;0,507;94,000;70759;70402;0.692;6.215
+Nedre Glomma;R;Yrkesdøgn;>= 16,0m;Hittil i år;5,493;94,000;180022;170649;6.287;56.487
+Nedre Glomma;R;Helgedøgn;Alle;Hittil i år;1,643;95,000;1004205;987972;1.476;13.265
+Nedre Glomma;R;Helgedøgn;< 5,6m;Hittil i år;1,550;95,000;954421;939849;1.437;12.908
+Nedre Glomma;R;Helgedøgn;>= 5,6m;Hittil i år;3,455;95,000;49765;48103;1.552;13.949
+Nedre Glomma;R;Helgedøgn;5,6m - 7,6m;Hittil i år;-2,784;95,000;14842;15267;1.311;11.780
+Nedre Glomma;R;Helgedøgn;7,6m - 12,5m;Hittil i år;6,109;95,000;20462;19284;0.197;1.768
+Nedre Glomma;R;Helgedøgn;12,5m - 16,0m;Hittil i år;-0,966;95,000;7788;7864;2.010;18.055
+Nedre Glomma;R;Helgedøgn;>= 16,0m;Hittil i år;17,317;95,000;6673;5688;31.816;285.853
+Nedre Glomma;K;Alle;Alle;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Alle;< 5,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 5,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Alle;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Alle;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Alle;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 16,0m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;Alle;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;< 5,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 5,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 16,0m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;Alle;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;< 5,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 5,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 16,0m;Januar;-;-;-;-;-;-
+Nedre Glomma;K;Alle;Alle;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Alle;< 5,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 5,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Alle;5,6m - 7,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Alle;7,6m - 12,5m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Alle;12,5m - 16,0m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 16,0m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;Alle;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;< 5,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 5,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;5,6m - 7,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;7,6m - 12,5m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;12,5m - 16,0m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 16,0m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;Alle;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;< 5,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 5,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;5,6m - 7,6m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;7,6m - 12,5m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;12,5m - 16,0m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 16,0m;Februar;-;-;-;-;-;-
+Nedre Glomma;K;Alle;Alle;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Alle;< 5,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 5,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Alle;5,6m - 7,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Alle;7,6m - 12,5m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Alle;12,5m - 16,0m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 16,0m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;Alle;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;< 5,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 5,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;5,6m - 7,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;7,6m - 12,5m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;12,5m - 16,0m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 16,0m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;Alle;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;< 5,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 5,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;5,6m - 7,6m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;7,6m - 12,5m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;12,5m - 16,0m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 16,0m;Mars;-;-;-;-;-;-
+Nedre Glomma;K;Alle;Alle;April;-;-;-;-;-;-
+Nedre Glomma;K;Alle;< 5,6m;April;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 5,6m;April;-;-;-;-;-;-
+Nedre Glomma;K;Alle;5,6m - 7,6m;April;-;-;-;-;-;-
+Nedre Glomma;K;Alle;7,6m - 12,5m;April;-;-;-;-;-;-
+Nedre Glomma;K;Alle;12,5m - 16,0m;April;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 16,0m;April;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;Alle;April;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;< 5,6m;April;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 5,6m;April;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;5,6m - 7,6m;April;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;7,6m - 12,5m;April;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;12,5m - 16,0m;April;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 16,0m;April;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;Alle;April;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;< 5,6m;April;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 5,6m;April;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;5,6m - 7,6m;April;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;7,6m - 12,5m;April;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;12,5m - 16,0m;April;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 16,0m;April;-;-;-;-;-;-
+Nedre Glomma;K;Alle;Alle;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Alle;< 5,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 5,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Alle;5,6m - 7,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Alle;7,6m - 12,5m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Alle;12,5m - 16,0m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 16,0m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;Alle;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;< 5,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 5,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;5,6m - 7,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;7,6m - 12,5m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;12,5m - 16,0m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 16,0m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;Alle;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;< 5,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 5,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;5,6m - 7,6m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;7,6m - 12,5m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;12,5m - 16,0m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 16,0m;Mai;-;-;-;-;-;-
+Nedre Glomma;K;Alle;Alle;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Alle;< 5,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 5,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Alle;5,6m - 7,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Alle;7,6m - 12,5m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Alle;12,5m - 16,0m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 16,0m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;Alle;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;< 5,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 5,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;5,6m - 7,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;7,6m - 12,5m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;12,5m - 16,0m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 16,0m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;Alle;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;< 5,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 5,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;5,6m - 7,6m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;7,6m - 12,5m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;12,5m - 16,0m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 16,0m;Juni;-;-;-;-;-;-
+Nedre Glomma;K;Alle;Alle;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Alle;< 5,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 5,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Alle;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Alle;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Alle;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 16,0m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;Alle;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;< 5,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 5,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 16,0m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;Alle;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;< 5,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 5,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 16,0m;Juli;-;-;-;-;-;-
+Nedre Glomma;K;Alle;Alle;August;-;-;-;-;-;-
+Nedre Glomma;K;Alle;< 5,6m;August;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 5,6m;August;-;-;-;-;-;-
+Nedre Glomma;K;Alle;5,6m - 7,6m;August;-;-;-;-;-;-
+Nedre Glomma;K;Alle;7,6m - 12,5m;August;-;-;-;-;-;-
+Nedre Glomma;K;Alle;12,5m - 16,0m;August;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 16,0m;August;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;Alle;August;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;< 5,6m;August;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 5,6m;August;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;5,6m - 7,6m;August;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;7,6m - 12,5m;August;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;12,5m - 16,0m;August;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 16,0m;August;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;Alle;August;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;< 5,6m;August;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 5,6m;August;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;5,6m - 7,6m;August;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;7,6m - 12,5m;August;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;12,5m - 16,0m;August;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 16,0m;August;-;-;-;-;-;-
+Nedre Glomma;K;Alle;Alle;September;-;-;-;-;-;-
+Nedre Glomma;K;Alle;< 5,6m;September;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 5,6m;September;-;-;-;-;-;-
+Nedre Glomma;K;Alle;5,6m - 7,6m;September;-;-;-;-;-;-
+Nedre Glomma;K;Alle;7,6m - 12,5m;September;-;-;-;-;-;-
+Nedre Glomma;K;Alle;12,5m - 16,0m;September;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 16,0m;September;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;Alle;September;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;< 5,6m;September;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 5,6m;September;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;5,6m - 7,6m;September;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;7,6m - 12,5m;September;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;12,5m - 16,0m;September;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 16,0m;September;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;Alle;September;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;< 5,6m;September;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 5,6m;September;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;5,6m - 7,6m;September;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;7,6m - 12,5m;September;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;12,5m - 16,0m;September;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 16,0m;September;-;-;-;-;-;-
+Nedre Glomma;K;Alle;Alle;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Alle;< 5,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 5,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Alle;5,6m - 7,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Alle;7,6m - 12,5m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Alle;12,5m - 16,0m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 16,0m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;Alle;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;< 5,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 5,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;5,6m - 7,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;7,6m - 12,5m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;12,5m - 16,0m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 16,0m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;Alle;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;< 5,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 5,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;5,6m - 7,6m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;7,6m - 12,5m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;12,5m - 16,0m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 16,0m;Oktober;-;-;-;-;-;-
+Nedre Glomma;K;Alle;Alle;November;-;-;-;-;-;-
+Nedre Glomma;K;Alle;< 5,6m;November;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 5,6m;November;-;-;-;-;-;-
+Nedre Glomma;K;Alle;5,6m - 7,6m;November;-;-;-;-;-;-
+Nedre Glomma;K;Alle;7,6m - 12,5m;November;-;-;-;-;-;-
+Nedre Glomma;K;Alle;12,5m - 16,0m;November;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 16,0m;November;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;Alle;November;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;< 5,6m;November;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 5,6m;November;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;5,6m - 7,6m;November;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;7,6m - 12,5m;November;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;12,5m - 16,0m;November;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 16,0m;November;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;Alle;November;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;< 5,6m;November;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 5,6m;November;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;5,6m - 7,6m;November;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;7,6m - 12,5m;November;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;12,5m - 16,0m;November;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 16,0m;November;-;-;-;-;-;-
+Nedre Glomma;K;Alle;Alle;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Alle;< 5,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 5,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Alle;5,6m - 7,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Alle;7,6m - 12,5m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Alle;12,5m - 16,0m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 16,0m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;Alle;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;< 5,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 5,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;5,6m - 7,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;7,6m - 12,5m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;12,5m - 16,0m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 16,0m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;Alle;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;< 5,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 5,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;5,6m - 7,6m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;7,6m - 12,5m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;12,5m - 16,0m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 16,0m;Desember;-;-;-;-;-;-
+Nedre Glomma;K;Alle;Alle;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Alle;< 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Alle;5,6m - 7,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Alle;7,6m - 12,5m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Alle;12,5m - 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;Alle;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;< 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;Alle;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;< 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nedre Glomma;K;Alle;Alle;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Alle;< 5,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 5,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Alle;5,6m - 7,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Alle;7,6m - 12,5m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Alle;12,5m - 16,0m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Alle;>= 16,0m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;Alle;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;< 5,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 5,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;5,6m - 7,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;7,6m - 12,5m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Yrkesdøgn;>= 16,0m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;Alle;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;< 5,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 5,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;5,6m - 7,6m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;7,6m - 12,5m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;12,5m - 16,0m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;K;Helgedøgn;>= 16,0m;Hittil i år;-;-;-;-;-;-
+Nedre Glomma;F;Alle;Alle;Januar;4,437;97,000;3694295;3537343;1.394;1.165
+Nedre Glomma;F;Alle;< 5,6m;Januar;4,229;97,000;3472893;3331980;1.308;1.093
+Nedre Glomma;F;Alle;>= 5,6m;Januar;7,812;97,000;220875;204871;4.147;3.467
+Nedre Glomma;F;Alle;5,6m - 7,6m;Januar;5,276;97,000;91507;86921;6.752;5.645
+Nedre Glomma;F;Alle;7,6m - 12,5m;Januar;9,645;97,000;75042;68441;5.513;4.609
+Nedre Glomma;F;Alle;12,5m - 16,0m;Januar;7,520;97,000;32655;30371;5.832;4.876
+Nedre Glomma;F;Alle;>= 16,0m;Januar;13,235;97,000;21671;19138;6.782;5.670
+Nedre Glomma;F;Yrkesdøgn;Alle;Januar;11,745;96,000;2970084;2657920;2.028;1.696
+Nedre Glomma;F;Yrkesdøgn;< 5,6m;Januar;11,759;96,000;2771300;2479710;1.940;1.622
+Nedre Glomma;F;Yrkesdøgn;>= 5,6m;Januar;11,549;96,000;198281;177753;4.576;3.826
+Nedre Glomma;F;Yrkesdøgn;5,6m - 7,6m;Januar;8,706;96,000;81336;74822;7.696;6.434
+Nedre Glomma;F;Yrkesdøgn;7,6m - 12,5m;Januar;13,762;96,000;66835;58750;5.606;4.687
+Nedre Glomma;F;Yrkesdøgn;12,5m - 16,0m;Januar;12,933;96,000;29070;25741;7.536;6.301
+Nedre Glomma;F;Yrkesdøgn;>= 16,0m;Januar;14,100;96,000;21040;18440;6.460;5.401
+Nedre Glomma;F;Helgedøgn;Alle;Januar;-17,649;97,000;724211;879423;4.051;3.387
+Nedre Glomma;F;Helgedøgn;< 5,6m;Januar;-17,679;97,000;701593;852270;4.084;3.414
+Nedre Glomma;F;Helgedøgn;>= 5,6m;Januar;-16,683;97,000;22594;27118;4.894;4.091
+Nedre Glomma;F;Helgedøgn;5,6m - 7,6m;Januar;-15,935;97,000;10171;12099;6.476;5.414
+Nedre Glomma;F;Helgedøgn;7,6m - 12,5m;Januar;-15,313;97,000;8207;9691;9.755;8.155
+Nedre Glomma;F;Helgedøgn;12,5m - 16,0m;Januar;-22,570;97,000;3585;4630;6.158;5.148
+Nedre Glomma;F;Helgedøgn;>= 16,0m;Januar;-9,599;97,000;631;698;21.656;18.104
+Nedre Glomma;F;Alle;Alle;Februar;0,032;98,000;3918259;3917008;1.943;1.390
+Nedre Glomma;F;Alle;< 5,6m;Februar;0,019;98,000;3682602;3681912;2.026;1.449
+Nedre Glomma;F;Alle;>= 5,6m;Februar;0,259;98,000;235193;234585;2.685;1.921
+Nedre Glomma;F;Alle;5,6m - 7,6m;Februar;0,326;98,000;97119;96803;4.682;3.350
+Nedre Glomma;F;Alle;7,6m - 12,5m;Februar;-1,028;98,000;81328;82173;4.859;3.476
+Nedre Glomma;F;Alle;12,5m - 16,0m;Februar;2,940;98,000;34492;33507;5.114;3.658
+Nedre Glomma;F;Alle;>= 16,0m;Februar;0,688;98,000;22254;22102;7.810;5.587
+Nedre Glomma;F;Yrkesdøgn;Alle;Februar;0,595;98,000;3135976;3117429;2.361;1.689
+Nedre Glomma;F;Yrkesdøgn;< 5,6m;Februar;0,633;98,000;2925434;2907032;2.503;1.791
+Nedre Glomma;F;Yrkesdøgn;>= 5,6m;Februar;0,082;98,000;210114;209942;2.921;2.090
+Nedre Glomma;F;Yrkesdøgn;5,6m - 7,6m;Februar;-0,215;98,000;85764;85949;4.938;3.533
+Nedre Glomma;F;Yrkesdøgn;7,6m - 12,5m;Februar;-0,906;98,000;72640;73304;5.460;3.906
+Nedre Glomma;F;Yrkesdøgn;12,5m - 16,0m;Februar;3,186;98,000;30218;29285;6.035;4.317
+Nedre Glomma;F;Yrkesdøgn;>= 16,0m;Februar;0,411;98,000;21492;21404;8.223;5.882
+Nedre Glomma;F;Helgedøgn;Alle;Februar;-2,163;98,000;782283;799579;2.893;2.070
+Nedre Glomma;F;Helgedøgn;< 5,6m;Februar;-2,286;98,000;757168;774880;2.882;2.062
+Nedre Glomma;F;Helgedøgn;>= 5,6m;Februar;1,769;98,000;25079;24643;6.242;4.466
+Nedre Glomma;F;Helgedøgn;5,6m - 7,6m;Februar;4,616;98,000;11355;10854;10.141;7.255
+Nedre Glomma;F;Helgedøgn;7,6m - 12,5m;Februar;-2,041;98,000;8688;8869;8.004;5.726
+Nedre Glomma;F;Helgedøgn;12,5m - 16,0m;Februar;1,232;98,000;4274;4222;13.560;9.700
+Nedre Glomma;F;Helgedøgn;>= 16,0m;Februar;9,169;98,000;762;698;29.554;21.142
+Nedre Glomma;F;Alle;Alle;Mars;11,445;93,000;4044126;3628803;4.195;3.224
+Nedre Glomma;F;Alle;< 5,6m;Mars;11,065;93,000;3785413;3408299;4.355;3.348
+Nedre Glomma;F;Alle;>= 5,6m;Mars;17,910;93,000;258205;218984;4.587;3.526
+Nedre Glomma;F;Alle;5,6m - 7,6m;Mars;16,614;93,000;103299;88582;6.217;4.779
+Nedre Glomma;F;Alle;7,6m - 12,5m;Mars;18,229;93,000;92774;78470;6.408;4.926
+Nedre Glomma;F;Alle;12,5m - 16,0m;Mars;21,180;93,000;37555;30991;9.981;7.672
+Nedre Glomma;F;Alle;>= 16,0m;Mars;17,363;93,000;24577;20941;14.940;11.484
+Nedre Glomma;F;Yrkesdøgn;Alle;Mars;22,493;92,000;3305978;2698907;6.622;5.090
+Nedre Glomma;F;Yrkesdøgn;< 5,6m;Mars;22,491;92,000;3072531;2508378;6.896;5.301
+Nedre Glomma;F;Yrkesdøgn;>= 5,6m;Mars;23,056;92,000;232967;189318;5.461;4.198
+Nedre Glomma;F;Yrkesdøgn;5,6m - 7,6m;Mars;23,157;92,000;92493;75102;6.656;5.116
+Nedre Glomma;F;Yrkesdøgn;7,6m - 12,5m;Mars;22,312;92,000;83128;67964;7.332;5.636
+Nedre Glomma;F;Yrkesdøgn;12,5m - 16,0m;Mars;26,000;92,000;33458;26554;11.150;8.570
+Nedre Glomma;F;Yrkesdøgn;>= 16,0m;Mars;21,271;92,000;23888;19698;14.359;11.037
+Nedre Glomma;F;Helgedøgn;Alle;Mars;-20,620;96,000;738148;929896;4.238;3.258
+Nedre Glomma;F;Helgedøgn;< 5,6m;Mars;-20,784;96,000;712882;899921;4.290;3.297
+Nedre Glomma;F;Helgedøgn;>= 5,6m;Mars;-14,926;96,000;25238;29666;5.090;3.913
+Nedre Glomma;F;Helgedøgn;5,6m - 7,6m;Mars;-19,837;96,000;10806;13480;4.352;3.345
+Nedre Glomma;F;Helgedøgn;7,6m - 12,5m;Mars;-8,186;96,000;9646;10506;8.893;6.836
+Nedre Glomma;F;Helgedøgn;12,5m - 16,0m;Mars;-7,663;96,000;4097;4437;15.905;12.226
+Nedre Glomma;F;Helgedøgn;>= 16,0m;Mars;-44,570;96,000;689;1243;24.256;18.645
+Nedre Glomma;F;Alle;Alle;April;-8,803;94,000;3691018;4047288;3.541;2.721
+Nedre Glomma;F;Alle;< 5,6m;April;-8,133;94,000;3456035;3762001;3.921;3.014
+Nedre Glomma;F;Alle;>= 5,6m;April;-16,295;94,000;234561;280225;3.876;2.980
+Nedre Glomma;F;Alle;5,6m - 7,6m;April;-14,666;94,000;92380;108257;3.513;2.701
+Nedre Glomma;F;Alle;7,6m - 12,5m;April;-15,603;94,000;91410;108309;4.928;3.788
+Nedre Glomma;F;Alle;12,5m - 16,0m;April;-18,238;94,000;30704;37553;6.224;4.785
+Nedre Glomma;F;Alle;>= 16,0m;April;-23,133;94,000;20067;26106;17.147;13.181
+Nedre Glomma;F;Yrkesdøgn;Alle;April;-18,748;93,000;2541463;3127890;3.779;2.904
+Nedre Glomma;F;Yrkesdøgn;< 5,6m;April;-18,401;93,000;2350198;2880196;4.245;3.263
+Nedre Glomma;F;Yrkesdøgn;>= 5,6m;April;-21,612;93,000;190897;243527;3.386;2.603
+Nedre Glomma;F;Yrkesdøgn;5,6m - 7,6m;April;-21,925;93,000;73045;93558;2.998;2.304
+Nedre Glomma;F;Yrkesdøgn;7,6m - 12,5m;April;-20,600;93,000;73611;92709;4.889;3.758
+Nedre Glomma;F;Yrkesdøgn;12,5m - 16,0m;April;-21,829;93,000;25225;32269;6.538;5.026
+Nedre Glomma;F;Yrkesdøgn;>= 16,0m;April;-23,909;93,000;19016;24991;15.466;11.888
+Nedre Glomma;F;Helgedøgn;Alle;April;25,033;95,000;1149555;919398;4.105;3.155
+Nedre Glomma;F;Helgedøgn;< 5,6m;April;25,406;95,000;1105837;881805;4.343;3.339
+Nedre Glomma;F;Helgedøgn;>= 5,6m;April;18,982;95,000;43664;36698;6.650;5.111
+Nedre Glomma;F;Helgedøgn;5,6m - 7,6m;April;31,540;95,000;19335;14699;6.585;5.062
+Nedre Glomma;F;Helgedøgn;7,6m - 12,5m;April;14,096;95,000;17799;15600;6.704;5.153
+Nedre Glomma;F;Helgedøgn;12,5m - 16,0m;April;3,690;95,000;5479;5284;18.567;14.272
+Nedre Glomma;F;Helgedøgn;>= 16,0m;April;-5,740;95,000;1051;1115;66.469;51.093
+Nedre Glomma;F;Alle;Alle;Mai;0,096;95,000;2739194;2736571;3.790;3.505
+Nedre Glomma;F;Alle;< 5,6m;Mai;0,131;95,000;2556156;2552804;3.642;3.368
+Nedre Glomma;F;Alle;>= 5,6m;Mai;-0,233;95,000;182416;182842;5.896;5.453
+Nedre Glomma;F;Alle;5,6m - 7,6m;Mai;2,788;95,000;70867;68945;4.963;4.590
+Nedre Glomma;F;Alle;7,6m - 12,5m;Mai;0,847;95,000;73323;72707;8.659;8.008
+Nedre Glomma;F;Alle;12,5m - 16,0m;Mai;-2,556;95,000;23370;23983;8.408;7.776
+Nedre Glomma;F;Alle;>= 16,0m;Mai;-13,663;95,000;14856;17207;18.148;16.784
+Nedre Glomma;F;Yrkesdøgn;Alle;Mai;4,687;95,000;2031045;1940108;5.157;4.769
+Nedre Glomma;F;Yrkesdøgn;< 5,6m;Mai;5,012;95,000;1877778;1788164;4.935;4.564
+Nedre Glomma;F;Yrkesdøgn;>= 5,6m;Mai;1,039;95,000;152726;151155;7.559;6.991
+Nedre Glomma;F;Yrkesdøgn;5,6m - 7,6m;Mai;4,860;95,000;58448;55739;5.476;5.064
+Nedre Glomma;F;Yrkesdøgn;7,6m - 12,5m;Mai;2,511;95,000;60662;59176;10.955;10.131
+Nedre Glomma;F;Yrkesdøgn;12,5m - 16,0m;Mai;-1,899;95,000;19635;20015;10.564;9.770
+Nedre Glomma;F;Yrkesdøgn;>= 16,0m;Mai;-13,831;95,000;13981;16225;18.172;16.806
+Nedre Glomma;F;Helgedøgn;Alle;Mai;-11,088;95,000;708149;796463;3.457;3.197
+Nedre Glomma;F;Helgedøgn;< 5,6m;Mai;-11,281;95,000;678378;764640;3.433;3.175
+Nedre Glomma;F;Helgedøgn;>= 5,6m;Mai;-6,302;95,000;29690;31687;5.678;5.251
+Nedre Glomma;F;Helgedøgn;5,6m - 7,6m;Mai;-5,959;95,000;12419;13206;5.739;5.308
+Nedre Glomma;F;Helgedøgn;7,6m - 12,5m;Mai;-6,430;95,000;12661;13531;6.746;6.239
+Nedre Glomma;F;Helgedøgn;12,5m - 16,0m;Mai;-5,872;95,000;3735;3968;22.604;20.905
+Nedre Glomma;F;Helgedøgn;>= 16,0m;Mai;-10,896;95,000;875;982;27.458;25.395
+Nedre Glomma;F;Alle;Alle;Juni;1,361;92,000;3376529;3331205;6.814;5.697
+Nedre Glomma;F;Alle;< 5,6m;Juni;1,859;92,000;3153793;3096226;6.749;5.643
+Nedre Glomma;F;Alle;>= 5,6m;Juni;-5,102;92,000;221998;233933;8.045;6.725
+Nedre Glomma;F;Alle;5,6m - 7,6m;Juni;-3,166;92,000;86016;88828;4.944;4.133
+Nedre Glomma;F;Alle;7,6m - 12,5m;Juni;-2,105;92,000;91255;93217;7.992;6.681
+Nedre Glomma;F;Alle;12,5m - 16,0m;Juni;-4,319;92,000;28114;29383;12.293;10.277
+Nedre Glomma;F;Alle;>= 16,0m;Juni;-26,181;92,000;16613;22505;22.068;18.449
+Nedre Glomma;F;Yrkesdøgn;Alle;Juni;-1,780;92,000;2624109;2671659;6.365;5.321
+Nedre Glomma;F;Yrkesdøgn;< 5,6m;Juni;-1,339;92,000;2431333;2464321;6.315;5.279
+Nedre Glomma;F;Yrkesdøgn;>= 5,6m;Juni;-6,923;92,000;192124;206413;7.700;6.437
+Nedre Glomma;F;Yrkesdøgn;5,6m - 7,6m;Juni;-4,802;92,000;73603;77316;4.429;3.703
+Nedre Glomma;F;Yrkesdøgn;7,6m - 12,5m;Juni;-3,700;92,000;78342;81352;7.590;6.345
+Nedre Glomma;F;Yrkesdøgn;12,5m - 16,0m;Juni;-5,858;92,000;24266;25776;11.199;9.363
+Nedre Glomma;F;Yrkesdøgn;>= 16,0m;Juni;-27,566;92,000;15913;21969;21.886;18.297
+Nedre Glomma;F;Helgedøgn;Alle;Juni;14,082;93,000;752420;659546;9.749;8.150
+Nedre Glomma;F;Helgedøgn;< 5,6m;Juni;14,330;93,000;722460;631905;9.703;8.112
+Nedre Glomma;F;Helgedøgn;>= 5,6m;Juni;8,554;93,000;29874;27520;14.483;12.108
+Nedre Glomma;F;Helgedøgn;5,6m - 7,6m;Juni;7,827;93,000;12413;11512;11.115;9.292
+Nedre Glomma;F;Helgedøgn;7,6m - 12,5m;Juni;8,833;93,000;12913;11865;15.262;12.759
+Nedre Glomma;F;Helgedøgn;12,5m - 16,0m;Juni;6,681;93,000;3848;3607;44.543;37.239
+Nedre Glomma;F;Helgedøgn;>= 16,0m;Juni;30,597;93,000;700;536;29.545;24.700
+Nedre Glomma;F;Alle;Alle;Juli;0,408;94,000;3220666;3207586;2.948;2.266
+Nedre Glomma;F;Alle;< 5,6m;Juli;0,480;94,000;3011520;2997127;3.053;2.347
+Nedre Glomma;F;Alle;>= 5,6m;Juli;-0,552;94,000;208824;209984;3.326;2.557
+Nedre Glomma;F;Alle;5,6m - 7,6m;Juli;-0,248;94,000;78560;78755;3.679;2.828
+Nedre Glomma;F;Alle;7,6m - 12,5m;Juli;1,144;94,000;91052;90022;3.784;2.909
+Nedre Glomma;F;Alle;12,5m - 16,0m;Juli;-2,593;94,000;24943;25607;7.480;5.750
+Nedre Glomma;F;Alle;>= 16,0m;Juli;-8,532;94,000;14269;15600;8.840;6.795
+Nedre Glomma;F;Yrkesdøgn;Alle;Juli;0,899;94,000;2419682;2398126;2.721;2.092
+Nedre Glomma;F;Yrkesdøgn;< 5,6m;Juli;1,044;94,000;2243715;2220532;2.834;2.178
+Nedre Glomma;F;Yrkesdøgn;>= 5,6m;Juli;-0,847;94,000;175695;177196;3.151;2.422
+Nedre Glomma;F;Yrkesdøgn;5,6m - 7,6m;Juli;-0,042;94,000;64713;64740;3.462;2.661
+Nedre Glomma;F;Yrkesdøgn;7,6m - 12,5m;Juli;0,547;94,000;76855;76437;3.757;2.888
+Nedre Glomma;F;Yrkesdøgn;12,5m - 16,0m;Juli;-3,013;94,000;20442;21077;8.735;6.715
+Nedre Glomma;F;Yrkesdøgn;>= 16,0m;Juli;-8,413;94,000;13685;14942;8.438;6.486
+Nedre Glomma;F;Helgedøgn;Alle;Juli;-1,047;94,000;800984;809460;4.302;3.307
+Nedre Glomma;F;Helgedøgn;< 5,6m;Juli;-1,132;94,000;767805;776595;4.380;3.366
+Nedre Glomma;F;Helgedøgn;>= 5,6m;Juli;1,040;94,000;33129;32788;5.139;3.950
+Nedre Glomma;F;Helgedøgn;5,6m - 7,6m;Juli;-1,199;94,000;13847;14015;7.266;5.585
+Nedre Glomma;F;Helgedøgn;7,6m - 12,5m;Juli;4,505;94,000;14197;13585;5.022;3.861
+Nedre Glomma;F;Helgedøgn;12,5m - 16,0m;Juli;-0,640;94,000;4501;4530;4.818;3.704
+Nedre Glomma;F;Helgedøgn;>= 16,0m;Juli;-11,246;94,000;584;658;25.182;19.356
+Nedre Glomma;F;Alle;Alle;August;0,647;91,000;3703698;3679892;2.031;1.561
+Nedre Glomma;F;Alle;< 5,6m;August;0,822;91,000;3456253;3428091;2.066;1.588
+Nedre Glomma;F;Alle;>= 5,6m;August;-1,722;91,000;246619;250939;4.108;3.158
+Nedre Glomma;F;Alle;5,6m - 7,6m;August;-1,007;91,000;93791;94745;5.508;4.234
+Nedre Glomma;F;Alle;7,6m - 12,5m;August;-1,020;91,000;101795;102844;3.937;3.026
+Nedre Glomma;F;Alle;12,5m - 16,0m;August;-2,761;91,000;31241;32128;10.830;8.325
+Nedre Glomma;F;Alle;>= 16,0m;August;-6,738;91,000;19792;21222;7.670;5.895
+Nedre Glomma;F;Yrkesdøgn;Alle;August;1,077;92,000;3037614;3005251;2.957;2.273
+Nedre Glomma;F;Yrkesdøgn;< 5,6m;August;1,320;92,000;2816972;2780272;2.965;2.279
+Nedre Glomma;F;Yrkesdøgn;>= 5,6m;August;-1,926;92,000;219881;224198;4.777;3.672
+Nedre Glomma;F;Yrkesdøgn;5,6m - 7,6m;August;-1,201;92,000;82846;83853;5.995;4.608
+Nedre Glomma;F;Yrkesdøgn;7,6m - 12,5m;August;-0,938;92,000;90378;91234;4.611;3.544
+Nedre Glomma;F;Yrkesdøgn;12,5m - 16,0m;August;-3,214;92,000;27525;28439;11.830;9.093
+Nedre Glomma;F;Yrkesdøgn;>= 16,0m;August;-7,450;92,000;19132;20672;7.527;5.786
+Nedre Glomma;F;Helgedøgn;Alle;August;-1,268;89,000;666084;674641;4.802;3.691
+Nedre Glomma;F;Helgedøgn;< 5,6m;August;-1,318;89,000;639281;647819;4.932;3.791
+Nedre Glomma;F;Helgedøgn;>= 5,6m;August;-0,011;89,000;26738;26741;2.247;1.727
+Nedre Glomma;F;Helgedøgn;5,6m - 7,6m;August;0,487;89,000;10945;10892;3.887;2.988
+Nedre Glomma;F;Helgedøgn;7,6m - 12,5m;August;-1,662;89,000;11417;11610;6.049;4.650
+Nedre Glomma;F;Helgedøgn;12,5m - 16,0m;August;0,732;89,000;3716;3689;9.250;7.110
+Nedre Glomma;F;Helgedøgn;>= 16,0m;August;20,000;89,000;660;550;38.069;29.262
+Nedre Glomma;F;Alle;Alle;September;0,121;96,000;3982707;3977877;3.052;2.346
+Nedre Glomma;F;Alle;< 5,6m;September;0,544;96,000;3715338;3695241;3.155;2.425
+Nedre Glomma;F;Alle;>= 5,6m;September;-5,350;96,000;266479;281541;3.818;2.935
+Nedre Glomma;F;Alle;5,6m - 7,6m;September;-5,819;96,000;101766;108054;6.400;4.920
+Nedre Glomma;F;Alle;7,6m - 12,5m;September;-4,828;96,000;107531;112986;4.273;3.284
+Nedre Glomma;F;Alle;12,5m - 16,0m;September;-4,267;96,000;35786;37381;4.423;3.400
+Nedre Glomma;F;Alle;>= 16,0m;September;-7,457;96,000;21396;23120;6.652;5.113
+Nedre Glomma;F;Yrkesdøgn;Alle;September;-2,482;96,000;3116126;3195435;3.647;2.803
+Nedre Glomma;F;Yrkesdøgn;< 5,6m;September;-2,067;96,000;2884017;2944897;3.798;2.919
+Nedre Glomma;F;Yrkesdøgn;>= 5,6m;September;-7,317;96,000;231297;249558;3.705;2.848
+Nedre Glomma;F;Yrkesdøgn;5,6m - 7,6m;September;-6,962;96,000;88376;94989;6.222;4.783
+Nedre Glomma;F;Yrkesdøgn;7,6m - 12,5m;September;-7,872;96,000;91127;98914;4.512;3.468
+Nedre Glomma;F;Yrkesdøgn;12,5m - 16,0m;September;-6,123;96,000;31201;33236;4.659;3.581
+Nedre Glomma;F;Yrkesdøgn;>= 16,0m;September;-8,145;96,000;20593;22419;6.584;5.061
+Nedre Glomma;F;Helgedøgn;Alle;September;10,753;96,000;866581;782442;6.326;4.863
+Nedre Glomma;F;Helgedøgn;< 5,6m;September;10,792;96,000;831321;750344;6.275;4.823
+Nedre Glomma;F;Helgedøgn;>= 5,6m;September;10,002;96,000;35182;31983;9.384;7.213
+Nedre Glomma;F;Helgedøgn;5,6m - 7,6m;September;2,488;96,000;13390;13065;12.598;9.684
+Nedre Glomma;F;Helgedøgn;7,6m - 12,5m;September;16,572;96,000;16404;14072;10.629;8.170
+Nedre Glomma;F;Helgedøgn;12,5m - 16,0m;September;10,615;96,000;4585;4145;9.482;7.288
+Nedre Glomma;F;Helgedøgn;>= 16,0m;September;14,551;96,000;803;701;23.245;17.867
+Nedre Glomma;F;Alle;Alle;Oktober;1,632;100,000;4237405;4169375;1.672;1.285
+Nedre Glomma;F;Alle;< 5,6m;Oktober;1,783;100,000;3961733;3892324;1.600;1.230
+Nedre Glomma;F;Alle;>= 5,6m;Oktober;-0,535;100,000;274764;276241;3.536;2.718
+Nedre Glomma;F;Alle;5,6m - 7,6m;Oktober;-0,998;100,000;107574;108658;8.267;6.354
+Nedre Glomma;F;Alle;7,6m - 12,5m;Oktober;0,453;100,000;108620;108130;4.450;3.420
+Nedre Glomma;F;Alle;12,5m - 16,0m;Oktober;-1,649;100,000;36612;37226;17.415;13.386
+Nedre Glomma;F;Alle;>= 16,0m;Oktober;-1,210;100,000;21958;22227;7.444;5.722
+Nedre Glomma;F;Yrkesdøgn;Alle;Oktober;5,519;100,000;3357336;3181743;1.842;1.416
+Nedre Glomma;F;Yrkesdøgn;< 5,6m;Oktober;5,799;100,000;3114491;2943773;1.738;1.336
+Nedre Glomma;F;Yrkesdøgn;>= 5,6m;Oktober;2,011;100,000;242013;237241;4.077;3.134
+Nedre Glomma;F;Yrkesdøgn;5,6m - 7,6m;Oktober;1,264;100,000;94349;93171;9.200;7.072
+Nedre Glomma;F;Yrkesdøgn;7,6m - 12,5m;Oktober;3,956;100,000;94243;90657;4.164;3.201
+Nedre Glomma;F;Yrkesdøgn;12,5m - 16,0m;Oktober;0,785;100,000;32241;31990;19.515;15.000
+Nedre Glomma;F;Yrkesdøgn;>= 16,0m;Oktober;-1,134;100,000;21180;21423;7.348;5.648
+Nedre Glomma;F;Helgedøgn;Alle;Oktober;-10,891;100,000;880069;987632;1.206;0.927
+Nedre Glomma;F;Helgedøgn;< 5,6m;Oktober;-10,680;100,000;847242;948551;1.225;0.942
+Nedre Glomma;F;Helgedøgn;>= 5,6m;Oktober;-16,023;100,000;32751;39000;2.783;2.139
+Nedre Glomma;F;Helgedøgn;5,6m - 7,6m;Oktober;-14,606;100,000;13225;15487;3.405;2.617
+Nedre Glomma;F;Helgedøgn;7,6m - 12,5m;Oktober;-17,719;100,000;14377;17473;5.641;4.336
+Nedre Glomma;F;Helgedøgn;12,5m - 16,0m;Oktober;-16,520;100,000;4371;5236;5.636;4.332
+Nedre Glomma;F;Helgedøgn;>= 16,0m;Oktober;-3,234;100,000;778;804;39.489;30.354
+Nedre Glomma;F;Alle;Alle;November;-0,281;100,000;4632570;4645640;2.068;1.479
+Nedre Glomma;F;Alle;< 5,6m;November;-0,155;100,000;4337980;4344717;2.136;1.528
+Nedre Glomma;F;Alle;>= 5,6m;November;-2,123;100,000;293649;300018;4.071;2.913
+Nedre Glomma;F;Alle;5,6m - 7,6m;November;-3,993;100,000;115969;120792;4.903;3.508
+Nedre Glomma;F;Alle;7,6m - 12,5m;November;-0,374;100,000;108309;108716;7.061;5.051
+Nedre Glomma;F;Alle;12,5m - 16,0m;November;-3,812;100,000;41484;43128;6.049;4.328
+Nedre Glomma;F;Alle;>= 16,0m;November;1,844;100,000;27887;27382;10.071;7.204
+Nedre Glomma;F;Yrkesdøgn;Alle;November;-0,598;100,000;3743015;3765539;1.700;1.216
+Nedre Glomma;F;Yrkesdøgn;< 5,6m;November;-0,454;100,000;3479342;3495214;1.752;1.254
+Nedre Glomma;F;Yrkesdøgn;>= 5,6m;November;-2,443;100,000;262892;269476;4.049;2.896
+Nedre Glomma;F;Yrkesdøgn;5,6m - 7,6m;November;-3,724;100,000;103302;107298;5.149;3.684
+Nedre Glomma;F;Yrkesdøgn;7,6m - 12,5m;November;-1,468;100,000;95715;97141;6.286;4.496
+Nedre Glomma;F;Yrkesdøgn;12,5m - 16,0m;November;-4,145;100,000;36909;38505;6.593;4.717
+Nedre Glomma;F;Yrkesdøgn;>= 16,0m;November;1,636;100,000;26966;26532;10.612;7.592
+Nedre Glomma;F;Helgedøgn;Alle;November;1,074;100,000;889555;880101;4.096;2.930
+Nedre Glomma;F;Helgedøgn;< 5,6m;November;1,075;100,000;858638;849503;4.182;2.992
+Nedre Glomma;F;Helgedøgn;>= 5,6m;November;0,704;100,000;30757;30542;4.974;3.558
+Nedre Glomma;F;Helgedøgn;5,6m - 7,6m;November;-6,129;100,000;12667;13494;6.377;4.562
+Nedre Glomma;F;Helgedøgn;7,6m - 12,5m;November;8,803;100,000;12594;11575;15.163;10.847
+Nedre Glomma;F;Helgedøgn;12,5m - 16,0m;November;-1,038;100,000;4575;4623;14.155;10.126
+Nedre Glomma;F;Helgedøgn;>= 16,0m;November;8,353;100,000;921;850;26.869;19.221
+Nedre Glomma;F;Alle;Alle;Desember;-2,232;99,000;4383314;4483392;2.098;1.501
+Nedre Glomma;F;Alle;< 5,6m;Desember;-2,066;99,000;4146306;4233770;2.160;1.545
+Nedre Glomma;F;Alle;>= 5,6m;Desember;-5,014;99,000;236523;249009;4.375;3.130
+Nedre Glomma;F;Alle;5,6m - 7,6m;Desember;-5,332;99,000;97436;102924;4.271;3.055
+Nedre Glomma;F;Alle;7,6m - 12,5m;Desember;-5,434;99,000;82336;87067;5.877;4.204
+Nedre Glomma;F;Alle;12,5m - 16,0m;Desember;-3,435;99,000;35677;36946;9.777;6.994
+Nedre Glomma;F;Alle;>= 16,0m;Desember;-4,522;99,000;21074;22072;12.348;8.833
+Nedre Glomma;F;Yrkesdøgn;Alle;Desember;-8,336;99,000;3181940;3471302;2.087;1.493
+Nedre Glomma;F;Yrkesdøgn;< 5,6m;Desember;-8,355;99,000;2979386;3251019;2.214;1.584
+Nedre Glomma;F;Yrkesdøgn;>= 5,6m;Desember;-8,015;99,000;202120;219731;4.386;3.138
+Nedre Glomma;F;Yrkesdøgn;5,6m - 7,6m;Desember;-7,607;99,000;81390;88091;4.754;3.401
+Nedre Glomma;F;Yrkesdøgn;7,6m - 12,5m;Desember;-9,278;99,000;70563;77779;5.270;3.770
+Nedre Glomma;F;Yrkesdøgn;12,5m - 16,0m;Desember;-8,275;99,000;29849;32542;10.004;7.156
+Nedre Glomma;F;Yrkesdøgn;>= 16,0m;Desember;-4,695;99,000;20318;21319;12.566;8.989
+Nedre Glomma;F;Helgedøgn;Alle;Desember;18,702;100,000;1201374;1012090;2.850;2.039
+Nedre Glomma;F;Helgedøgn;< 5,6m;Desember;18,740;100,000;1166920;982751;2.870;2.053
+Nedre Glomma;F;Helgedøgn;>= 5,6m;Desember;17,505;100,000;34403;29278;5.112;3.657
+Nedre Glomma;F;Helgedøgn;5,6m - 7,6m;Desember;8,178;100,000;16046;14833;4.434;3.172
+Nedre Glomma;F;Helgedøgn;7,6m - 12,5m;Desember;26,755;100,000;11773;9288;12.567;8.990
+Nedre Glomma;F;Helgedøgn;12,5m - 16,0m;Desember;32,334;100,000;5828;4404;12.404;8.874
+Nedre Glomma;F;Helgedøgn;>= 16,0m;Desember;0,398;100,000;756;753;19.030;13.613
+Nedre Glomma;F;Alle;Alle;Siste 12 måneder;0,577;96,000;45623781;45361980;1.769;1.266
+Nedre Glomma;F;Alle;< 5,6m;Siste 12 måneder;0,734;96,000;42736022;42424492;1.831;1.310
+Nedre Glomma;F;Alle;>= 5,6m;Siste 12 måneder;-1,473;96,000;2880106;2923172;2.890;2.067
+Nedre Glomma;F;Alle;5,6m - 7,6m;Siste 12 måneder;-1,387;96,000;1136284;1152264;3.643;2.606
+Nedre Glomma;F;Alle;7,6m - 12,5m;Siste 12 måneder;-0,746;96,000;1104775;1113082;4.088;2.924
+Nedre Glomma;F;Alle;12,5m - 16,0m;Siste 12 måneder;-1,399;96,000;392633;398204;4.328;3.096
+Nedre Glomma;F;Alle;>= 16,0m;Siste 12 måneder;-5,087;96,000;246414;259622;7.467;5.342
+Nedre Glomma;F;Yrkesdøgn;Alle;Siste 12 måneder;0,662;96,000;35464368;35231309;1.817;1.300
+Nedre Glomma;F;Yrkesdøgn;< 5,6m;Siste 12 måneder;0,866;96,000;32946497;32663508;1.890;1.352
+Nedre Glomma;F;Yrkesdøgn;>= 5,6m;Siste 12 måneder;-1,741;96,000;2511007;2555508;2.980;2.131
+Nedre Glomma;F;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;-1,504;96,000;979665;994628;3.795;2.714
+Nedre Glomma;F;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;-1,172;96,000;954099;965417;4.204;3.008
+Nedre Glomma;F;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-1,560;96,000;340039;345429;4.626;3.309
+Nedre Glomma;F;Yrkesdøgn;>= 16,0m;Siste 12 måneder;-5,131;96,000;237204;250034;7.282;5.209
+Nedre Glomma;F;Helgedøgn;Alle;Siste 12 måneder;0,284;96,000;10159413;10130671;2.080;1.488
+Nedre Glomma;F;Helgedøgn;< 5,6m;Siste 12 måneder;0,292;96,000;9789525;9760984;2.099;1.502
+Nedre Glomma;F;Helgedøgn;>= 5,6m;Siste 12 måneder;0,390;96,000;369099;367664;2.765;1.978
+Nedre Glomma;F;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;-0,645;96,000;156619;157636;3.178;2.274
+Nedre Glomma;F;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;2,039;96,000;150676;147665;3.845;2.751
+Nedre Glomma;F;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-0,343;96,000;52594;52775;3.534;2.528
+Nedre Glomma;F;Helgedøgn;>= 16,0m;Siste 12 måneder;-3,942;96,000;9210;9588;18.759;13.419
+Nedre Glomma;F;Alle;Alle;Hittil i år;0,577;96,000;45623781;45361980;1.769;1.266
+Nedre Glomma;F;Alle;< 5,6m;Hittil i år;0,734;96,000;42736022;42424492;1.831;1.310
+Nedre Glomma;F;Alle;>= 5,6m;Hittil i år;-1,473;96,000;2880106;2923172;2.890;2.067
+Nedre Glomma;F;Alle;5,6m - 7,6m;Hittil i år;-1,387;96,000;1136284;1152264;3.643;2.606
+Nedre Glomma;F;Alle;7,6m - 12,5m;Hittil i år;-0,746;96,000;1104775;1113082;4.088;2.924
+Nedre Glomma;F;Alle;12,5m - 16,0m;Hittil i år;-1,399;96,000;392633;398204;4.328;3.096
+Nedre Glomma;F;Alle;>= 16,0m;Hittil i år;-5,087;96,000;246414;259622;7.467;5.342
+Nedre Glomma;F;Yrkesdøgn;Alle;Hittil i år;0,662;96,000;35464368;35231309;1.817;1.300
+Nedre Glomma;F;Yrkesdøgn;< 5,6m;Hittil i år;0,866;96,000;32946497;32663508;1.890;1.352
+Nedre Glomma;F;Yrkesdøgn;>= 5,6m;Hittil i år;-1,741;96,000;2511007;2555508;2.980;2.131
+Nedre Glomma;F;Yrkesdøgn;5,6m - 7,6m;Hittil i år;-1,504;96,000;979665;994628;3.795;2.714
+Nedre Glomma;F;Yrkesdøgn;7,6m - 12,5m;Hittil i år;-1,172;96,000;954099;965417;4.204;3.008
+Nedre Glomma;F;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-1,560;96,000;340039;345429;4.626;3.309
+Nedre Glomma;F;Yrkesdøgn;>= 16,0m;Hittil i år;-5,131;96,000;237204;250034;7.282;5.209
+Nedre Glomma;F;Helgedøgn;Alle;Hittil i år;0,284;96,000;10159413;10130671;2.080;1.488
+Nedre Glomma;F;Helgedøgn;< 5,6m;Hittil i år;0,292;96,000;9789525;9760984;2.099;1.502
+Nedre Glomma;F;Helgedøgn;>= 5,6m;Hittil i år;0,390;96,000;369099;367664;2.765;1.978
+Nedre Glomma;F;Helgedøgn;5,6m - 7,6m;Hittil i år;-0,645;96,000;156619;157636;3.178;2.274
+Nedre Glomma;F;Helgedøgn;7,6m - 12,5m;Hittil i år;2,039;96,000;150676;147665;3.845;2.751
+Nedre Glomma;F;Helgedøgn;12,5m - 16,0m;Hittil i år;-0,343;96,000;52594;52775;3.534;2.528
+Nedre Glomma;F;Helgedøgn;>= 16,0m;Hittil i år;-3,942;96,000;9210;9588;18.759;13.419
+Nedre Glomma;E+R;Alle;Alle;Januar;4,512;74,000;624944;597965;2.380;21.384
+Nedre Glomma;E+R;Alle;< 5,6m;Januar;3,455;74,000;564710;545852;2.228;20.020
+Nedre Glomma;E+R;Alle;>= 5,6m;Januar;15,517;74,000;60182;52098;2.936;26.379
+Nedre Glomma;E+R;Alle;5,6m - 7,6m;Januar;8,994;74,000;14578;13375;1.081;9.709
+Nedre Glomma;E+R;Alle;7,6m - 12,5m;Januar;17,419;74,000;19946;16987;6.733;60.495
+Nedre Glomma;E+R;Alle;12,5m - 16,0m;Januar;20,453;74,000;8669;7197;38.562;346.470
+Nedre Glomma;E+R;Alle;>= 16,0m;Januar;16,851;74,000;16989;14539;18.079;162.429
+Nedre Glomma;E+R;Yrkesdøgn;Alle;Januar;14,848;73,000;503709;438587;2.099;18.857
+Nedre Glomma;E+R;Yrkesdøgn;< 5,6m;Januar;14,287;73,000;447877;391889;2.035;18.284
+Nedre Glomma;E+R;Yrkesdøgn;>= 5,6m;Januar;19,486;73,000;55782;46685;6.165;55.394
+Nedre Glomma;E+R;Yrkesdøgn;5,6m - 7,6m;Januar;13,344;73,000;13183;11631;1.687;15.161
+Nedre Glomma;E+R;Yrkesdøgn;7,6m - 12,5m;Januar;21,689;73,000;18117;14888;4.739;42.574
+Nedre Glomma;E+R;Yrkesdøgn;12,5m - 16,0m;Januar;27,385;73,000;7945;6237;50.208;451.105
+Nedre Glomma;E+R;Yrkesdøgn;>= 16,0m;Januar;18,724;73,000;16537;13929;19.788;177.792
+Nedre Glomma;E+R;Helgedøgn;Alle;Januar;-23,932;77,000;121235;159378;8.178;73.480
+Nedre Glomma;E+R;Helgedøgn;< 5,6m;Januar;-24,116;77,000;116833;153963;8.134;73.082
+Nedre Glomma;E+R;Helgedøgn;>= 5,6m;Januar;-18,714;77,000;4400;5413;7.934;71.286
+Nedre Glomma;E+R;Helgedøgn;5,6m - 7,6m;Januar;-20,011;77,000;1395;1744;12.305;110.552
+Nedre Glomma;E+R;Helgedøgn;7,6m - 12,5m;Januar;-12,863;77,000;1829;2099;13.488;121.184
+Nedre Glomma;E+R;Helgedøgn;12,5m - 16,0m;Januar;-24,583;77,000;724;960;1.721;15.463
+Nedre Glomma;E+R;Helgedøgn;>= 16,0m;Januar;-25,902;77,000;452;610;17.925;161.053
+Nedre Glomma;E+R;Alle;Alle;Februar;2,216;98,000;265220;259471;-;-
+Nedre Glomma;E+R;Alle;< 5,6m;Februar;1,419;98,000;228115;224923;-;-
+Nedre Glomma;E+R;Alle;>= 5,6m;Februar;7,415;98,000;37098;34537;-;-
+Nedre Glomma;E+R;Alle;5,6m - 7,6m;Februar;1,193;98,000;7042;6959;-;-
+Nedre Glomma;E+R;Alle;7,6m - 12,5m;Februar;8,232;98,000;9926;9171;-;-
+Nedre Glomma;E+R;Alle;12,5m - 16,0m;Februar;0,940;98,000;5689;5636;-;-
+Nedre Glomma;E+R;Alle;>= 16,0m;Februar;13,077;98,000;14441;12771;-;-
+Nedre Glomma;E+R;Yrkesdøgn;Alle;Februar;2,782;99,000;216871;211001;-;-
+Nedre Glomma;E+R;Yrkesdøgn;< 5,6m;Februar;1,969;99,000;182256;178737;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 5,6m;Februar;7,308;99,000;34610;32253;-;-
+Nedre Glomma;E+R;Yrkesdøgn;5,6m - 7,6m;Februar;1,825;99,000;6415;6300;-;-
+Nedre Glomma;E+R;Yrkesdøgn;7,6m - 12,5m;Februar;7,721;99,000;9069;8419;-;-
+Nedre Glomma;E+R;Yrkesdøgn;12,5m - 16,0m;Februar;1,152;99,000;5180;5121;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 16,0m;Februar;12,350;99,000;13946;12413;-;-
+Nedre Glomma;E+R;Helgedøgn;Alle;Februar;-0,250;98,000;48349;48470;-;-
+Nedre Glomma;E+R;Helgedøgn;< 5,6m;Februar;-0,708;98,000;45859;46186;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 5,6m;Februar;8,932;98,000;2488;2284;-;-
+Nedre Glomma;E+R;Helgedøgn;5,6m - 7,6m;Februar;-4,856;98,000;627;659;-;-
+Nedre Glomma;E+R;Helgedøgn;7,6m - 12,5m;Februar;13,963;98,000;857;752;-;-
+Nedre Glomma;E+R;Helgedøgn;12,5m - 16,0m;Februar;-1,165;98,000;509;515;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 16,0m;Februar;38,268;98,000;495;358;-;-
+Nedre Glomma;E+R;Alle;Alle;Mars;10,790;94,000;292967;264434;-;-
+Nedre Glomma;E+R;Alle;< 5,6m;Mars;9,439;94,000;251346;229668;-;-
+Nedre Glomma;E+R;Alle;>= 5,6m;Mars;19,710;94,000;41610;34759;-;-
+Nedre Glomma;E+R;Alle;5,6m - 7,6m;Mars;7,120;94,000;7899;7374;-;-
+Nedre Glomma;E+R;Alle;7,6m - 12,5m;Mars;22,639;94,000;11674;9519;-;-
+Nedre Glomma;E+R;Alle;12,5m - 16,0m;Mars;13,954;94,000;5994;5260;-;-
+Nedre Glomma;E+R;Alle;>= 16,0m;Mars;27,265;94,000;16043;12606;-;-
+Nedre Glomma;E+R;Yrkesdøgn;Alle;Mars;21,047;93,000;242528;200358;-;-
+Nedre Glomma;E+R;Yrkesdøgn;< 5,6m;Mars;20,784;93,000;203730;168673;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 5,6m;Mars;22,441;93,000;38787;31678;-;-
+Nedre Glomma;E+R;Yrkesdøgn;5,6m - 7,6m;Mars;11,898;93,000;7157;6396;-;-
+Nedre Glomma;E+R;Yrkesdøgn;7,6m - 12,5m;Mars;25,231;93,000;10552;8426;-;-
+Nedre Glomma;E+R;Yrkesdøgn;12,5m - 16,0m;Mars;16,336;93,000;5505;4732;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 16,0m;Mars;28,448;93,000;15573;12124;-;-
+Nedre Glomma;E+R;Helgedøgn;Alle;Mars;-21,283;97,000;50439;64076;-;-
+Nedre Glomma;E+R;Helgedøgn;< 5,6m;Mars;-21,935;97,000;47616;60995;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 5,6m;Mars;-8,374;97,000;2823;3081;-;-
+Nedre Glomma;E+R;Helgedøgn;5,6m - 7,6m;Mars;-24,131;97,000;742;978;-;-
+Nedre Glomma;E+R;Helgedøgn;7,6m - 12,5m;Mars;2,653;97,000;1122;1093;-;-
+Nedre Glomma;E+R;Helgedøgn;12,5m - 16,0m;Mars;-7,386;97,000;489;528;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 16,0m;Mars;-2,490;97,000;470;482;-;-
+Nedre Glomma;E+R;Alle;Alle;April;-7,990;95,000;264507;287477;-;-
+Nedre Glomma;E+R;Alle;< 5,6m;April;-7,385;95,000;227994;246175;-;-
+Nedre Glomma;E+R;Alle;>= 5,6m;April;-11,583;95,000;36502;41284;-;-
+Nedre Glomma;E+R;Alle;5,6m - 7,6m;April;-18,981;95,000;7222;8914;-;-
+Nedre Glomma;E+R;Alle;7,6m - 12,5m;April;-9,341;95,000;11054;12193;-;-
+Nedre Glomma;E+R;Alle;12,5m - 16,0m;April;-10,279;95,000;5150;5740;-;-
+Nedre Glomma;E+R;Alle;>= 16,0m;April;-9,427;95,000;13076;14437;-;-
+Nedre Glomma;E+R;Yrkesdøgn;Alle;April;-19,062;95,000;184869;228408;-;-
+Nedre Glomma;E+R;Yrkesdøgn;< 5,6m;April;-19,657;95,000;153391;190919;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 5,6m;April;-16,024;95,000;31469;37474;-;-
+Nedre Glomma;E+R;Yrkesdøgn;5,6m - 7,6m;April;-25,906;95,000;5766;7782;-;-
+Nedre Glomma;E+R;Yrkesdøgn;7,6m - 12,5m;April;-15,130;95,000;9009;10615;-;-
+Nedre Glomma;E+R;Yrkesdøgn;12,5m - 16,0m;April;-13,164;95,000;4413;5082;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 16,0m;April;-12,247;95,000;12281;13995;-;-
+Nedre Glomma;E+R;Helgedøgn;Alle;April;34,822;95,000;79638;59069;-;-
+Nedre Glomma;E+R;Helgedøgn;< 5,6m;April;35,013;95,000;74603;55256;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 5,6m;April;32,100;95,000;5033;3810;-;-
+Nedre Glomma;E+R;Helgedøgn;5,6m - 7,6m;April;28,622;95,000;1456;1132;-;-
+Nedre Glomma;E+R;Helgedøgn;7,6m - 12,5m;April;29,594;95,000;2045;1578;-;-
+Nedre Glomma;E+R;Helgedøgn;12,5m - 16,0m;April;12,006;95,000;737;658;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 16,0m;April;79,864;95,000;795;442;-;-
+Nedre Glomma;E+R;Alle;Alle;Mai;1,556;96,000;297681;293119;-;-
+Nedre Glomma;E+R;Alle;< 5,6m;Mai;0,849;96,000;254327;252185;-;-
+Nedre Glomma;E+R;Alle;>= 5,6m;Mai;5,924;96,000;43339;40915;-;-
+Nedre Glomma;E+R;Alle;5,6m - 7,6m;Mai;-0,034;96,000;8920;8923;-;-
+Nedre Glomma;E+R;Alle;7,6m - 12,5m;Mai;4,357;96,000;12957;12416;-;-
+Nedre Glomma;E+R;Alle;12,5m - 16,0m;Mai;8,609;96,000;6043;5564;-;-
+Nedre Glomma;E+R;Alle;>= 16,0m;Mai;10,041;96,000;15419;14012;-;-
+Nedre Glomma;E+R;Yrkesdøgn;Alle;Mai;7,720;95,000;225359;209208;-;-
+Nedre Glomma;E+R;Yrkesdøgn;< 5,6m;Mai;7,593;95,000;186657;173485;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 5,6m;Mai;8,352;95,000;38688;35706;-;-
+Nedre Glomma;E+R;Yrkesdøgn;5,6m - 7,6m;Mai;3,797;95,000;7600;7322;-;-
+Nedre Glomma;E+R;Yrkesdøgn;7,6m - 12,5m;Mai;8,368;95,000;11086;10230;-;-
+Nedre Glomma;E+R;Yrkesdøgn;12,5m - 16,0m;Mai;10,457;95,000;5345;4839;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 16,0m;Mai;10,079;95,000;14657;13315;-;-
+Nedre Glomma;E+R;Helgedøgn;Alle;Mai;-13,811;98,000;72322;83911;-;-
+Nedre Glomma;E+R;Helgedøgn;< 5,6m;Mai;-14,015;98,000;67670;78700;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 5,6m;Mai;-10,712;98,000;4651;5209;-;-
+Nedre Glomma;E+R;Helgedøgn;5,6m - 7,6m;Mai;-17,552;98,000;1320;1601;-;-
+Nedre Glomma;E+R;Helgedøgn;7,6m - 12,5m;Mai;-14,410;98,000;1871;2186;-;-
+Nedre Glomma;E+R;Helgedøgn;12,5m - 16,0m;Mai;-3,724;98,000;698;725;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 16,0m;Mai;9,326;98,000;762;697;-;-
+Nedre Glomma;E+R;Alle;Alle;Juni;2,551;96,000;299812;292354;-;-
+Nedre Glomma;E+R;Alle;< 5,6m;Juni;2,982;96,000;255334;247941;-;-
+Nedre Glomma;E+R;Alle;>= 5,6m;Juni;0,160;96,000;44465;44394;-;-
+Nedre Glomma;E+R;Alle;5,6m - 7,6m;Juni;-2,713;96,000;9037;9289;-;-
+Nedre Glomma;E+R;Alle;7,6m - 12,5m;Juni;4,883;96,000;13982;13331;-;-
+Nedre Glomma;E+R;Alle;12,5m - 16,0m;Juni;-5,803;96,000;6120;6497;-;-
+Nedre Glomma;E+R;Alle;>= 16,0m;Juni;0,321;96,000;15326;15277;-;-
+Nedre Glomma;E+R;Yrkesdøgn;Alle;Juni;-1,943;95,000;234531;239179;-;-
+Nedre Glomma;E+R;Yrkesdøgn;< 5,6m;Juni;-2,053;95,000;194118;198186;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 5,6m;Juni;-1,398;95,000;40402;40975;-;-
+Nedre Glomma;E+R;Yrkesdøgn;5,6m - 7,6m;Juni;-5,247;95,000;7802;8234;-;-
+Nedre Glomma;E+R;Yrkesdøgn;7,6m - 12,5m;Juni;3,362;95,000;12237;11839;-;-
+Nedre Glomma;E+R;Yrkesdøgn;12,5m - 16,0m;Juni;-6,286;95,000;5591;5966;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 16,0m;Juni;-1,098;95,000;14772;14936;-;-
+Nedre Glomma;E+R;Helgedøgn;Alle;Juni;22,766;98,000;65281;53175;-;-
+Nedre Glomma;E+R;Helgedøgn;< 5,6m;Juni;23,035;98,000;61216;49755;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 5,6m;Juni;18,836;98,000;4063;3419;-;-
+Nedre Glomma;E+R;Helgedøgn;5,6m - 7,6m;Juni;17,062;98,000;1235;1055;-;-
+Nedre Glomma;E+R;Helgedøgn;7,6m - 12,5m;Juni;16,957;98,000;1745;1492;-;-
+Nedre Glomma;E+R;Helgedøgn;12,5m - 16,0m;Juni;-0,377;98,000;529;531;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 16,0m;Juni;62,463;98,000;554;341;-;-
+Nedre Glomma;E+R;Alle;Alle;Juli;1,031;97,000;244773;242275;-;-
+Nedre Glomma;E+R;Alle;< 5,6m;Juli;0,369;97,000;207914;207150;-;-
+Nedre Glomma;E+R;Alle;>= 5,6m;Juli;4,927;97,000;36840;35110;-;-
+Nedre Glomma;E+R;Alle;5,6m - 7,6m;Juli;-2,247;97,000;7439;7610;-;-
+Nedre Glomma;E+R;Alle;7,6m - 12,5m;Juli;1,590;97,000;11370;11192;-;-
+Nedre Glomma;E+R;Alle;12,5m - 16,0m;Juli;5,335;97,000;5390;5117;-;-
+Nedre Glomma;E+R;Alle;>= 16,0m;Juli;12,957;97,000;12641;11191;-;-
+Nedre Glomma;E+R;Yrkesdøgn;Alle;Juli;1,731;97,000;186052;182886;-;-
+Nedre Glomma;E+R;Yrkesdøgn;< 5,6m;Juli;1,024;97,000;152931;151381;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 5,6m;Juli;5,119;97,000;33102;31490;-;-
+Nedre Glomma;E+R;Yrkesdøgn;5,6m - 7,6m;Juli;-1,778;97,000;6296;6410;-;-
+Nedre Glomma;E+R;Yrkesdøgn;7,6m - 12,5m;Juli;1,672;97,000;9849;9687;-;-
+Nedre Glomma;E+R;Yrkesdøgn;12,5m - 16,0m;Juli;5,868;97,000;4763;4499;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 16,0m;Juli;11,933;97,000;12194;10894;-;-
+Nedre Glomma;E+R;Helgedøgn;Alle;Juli;-1,125;97,000;58721;59389;-;-
+Nedre Glomma;E+R;Helgedøgn;< 5,6m;Juli;-1,409;97,000;54983;55769;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 5,6m;Juli;3,260;97,000;3738;3620;-;-
+Nedre Glomma;E+R;Helgedøgn;5,6m - 7,6m;Juli;-4,750;97,000;1143;1200;-;-
+Nedre Glomma;E+R;Helgedøgn;7,6m - 12,5m;Juli;1,063;97,000;1521;1505;-;-
+Nedre Glomma;E+R;Helgedøgn;12,5m - 16,0m;Juli;1,456;97,000;627;618;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 16,0m;Juli;50,505;97,000;447;297;-;-
+Nedre Glomma;E+R;Alle;Alle;August;1,715;96,000;292110;287186;-;-
+Nedre Glomma;E+R;Alle;< 5,6m;August;1,872;96,000;247979;243421;-;-
+Nedre Glomma;E+R;Alle;>= 5,6m;August;0,846;96,000;44117;43747;-;-
+Nedre Glomma;E+R;Alle;5,6m - 7,6m;August;-3,942;96,000;8773;9133;-;-
+Nedre Glomma;E+R;Alle;7,6m - 12,5m;August;2,745;96,000;13663;13298;-;-
+Nedre Glomma;E+R;Alle;12,5m - 16,0m;August;-2,429;96,000;6146;6299;-;-
+Nedre Glomma;E+R;Alle;>= 16,0m;August;3,449;96,000;15535;15017;-;-
+Nedre Glomma;E+R;Yrkesdøgn;Alle;August;1,442;96,000;240041;236628;-;-
+Nedre Glomma;E+R;Yrkesdøgn;< 5,6m;August;1,559;96,000;199349;196289;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 5,6m;August;0,890;96,000;40680;40321;-;-
+Nedre Glomma;E+R;Yrkesdøgn;5,6m - 7,6m;August;-3,850;96,000;7792;8104;-;-
+Nedre Glomma;E+R;Yrkesdøgn;7,6m - 12,5m;August;3,296;96,000;12191;11802;-;-
+Nedre Glomma;E+R;Yrkesdøgn;12,5m - 16,0m;August;-2,972;96,000;5616;5788;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 16,0m;August;3,104;96,000;15081;14627;-;-
+Nedre Glomma;E+R;Helgedøgn;Alle;August;2,989;97,000;52069;50558;-;-
+Nedre Glomma;E+R;Helgedøgn;< 5,6m;August;3,178;97,000;48630;47132;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 5,6m;August;0,321;97,000;3437;3426;-;-
+Nedre Glomma;E+R;Helgedøgn;5,6m - 7,6m;August;-4,665;97,000;981;1029;-;-
+Nedre Glomma;E+R;Helgedøgn;7,6m - 12,5m;August;-1,604;97,000;1472;1496;-;-
+Nedre Glomma;E+R;Helgedøgn;12,5m - 16,0m;August;3,718;97,000;530;511;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 16,0m;August;16,410;97,000;454;390;-;-
+Nedre Glomma;E+R;Alle;Alle;September;0,182;98,000;304234;303680;-;-
+Nedre Glomma;E+R;Alle;< 5,6m;September;0,100;98,000;259487;259228;-;-
+Nedre Glomma;E+R;Alle;>= 5,6m;September;0,666;98,000;44740;44444;-;-
+Nedre Glomma;E+R;Alle;5,6m - 7,6m;September;-1,742;98,000;8970;9129;-;-
+Nedre Glomma;E+R;Alle;7,6m - 12,5m;September;3,638;98,000;13647;13168;-;-
+Nedre Glomma;E+R;Alle;12,5m - 16,0m;September;-4,036;98,000;6254;6517;-;-
+Nedre Glomma;E+R;Alle;>= 16,0m;September;1,529;98,000;15869;15630;-;-
+Nedre Glomma;E+R;Yrkesdøgn;Alle;September;-2,559;97,000;240475;246791;-;-
+Nedre Glomma;E+R;Yrkesdøgn;< 5,6m;September;-2,991;97,000;199933;206098;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 5,6m;September;-0,371;97,000;40536;40687;-;-
+Nedre Glomma;E+R;Yrkesdøgn;5,6m - 7,6m;September;-1,396;97,000;7841;7952;-;-
+Nedre Glomma;E+R;Yrkesdøgn;7,6m - 12,5m;September;1,045;97,000;11705;11584;-;-
+Nedre Glomma;E+R;Yrkesdøgn;12,5m - 16,0m;September;-5,518;97,000;5616;5944;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 16,0m;September;1,098;97,000;15374;15207;-;-
+Nedre Glomma;E+R;Helgedøgn;Alle;September;12,076;98,000;63759;56889;-;-
+Nedre Glomma;E+R;Helgedøgn;< 5,6m;September;12,091;98,000;59554;53130;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 5,6m;September;11,898;98,000;4204;3757;-;-
+Nedre Glomma;E+R;Helgedøgn;5,6m - 7,6m;September;-4,078;98,000;1129;1177;-;-
+Nedre Glomma;E+R;Helgedøgn;7,6m - 12,5m;September;22,601;98,000;1942;1584;-;-
+Nedre Glomma;E+R;Helgedøgn;12,5m - 16,0m;September;11,344;98,000;638;573;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 16,0m;September;17,021;98,000;495;423;-;-
+Nedre Glomma;E+R;Alle;Alle;Oktober;1,729;100,000;316216;310843;-;-
+Nedre Glomma;E+R;Alle;< 5,6m;Oktober;1,536;100,000;269880;265798;-;-
+Nedre Glomma;E+R;Alle;>= 5,6m;Oktober;2,856;100,000;46319;45033;-;-
+Nedre Glomma;E+R;Alle;5,6m - 7,6m;Oktober;5,325;100,000;9237;8770;-;-
+Nedre Glomma;E+R;Alle;7,6m - 12,5m;Oktober;2,550;100,000;13675;13335;-;-
+Nedre Glomma;E+R;Alle;12,5m - 16,0m;Oktober;0,433;100,000;6734;6705;-;-
+Nedre Glomma;E+R;Alle;>= 16,0m;Oktober;2,774;100,000;16673;16223;-;-
+Nedre Glomma;E+R;Yrkesdøgn;Alle;Oktober;4,657;100,000;254310;242994;-;-
+Nedre Glomma;E+R;Yrkesdøgn;< 5,6m;Oktober;4,719;100,000;211548;202014;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 5,6m;Oktober;4,342;100,000;42748;40969;-;-
+Nedre Glomma;E+R;Yrkesdøgn;5,6m - 7,6m;Oktober;8,733;100,000;8292;7626;-;-
+Nedre Glomma;E+R;Yrkesdøgn;7,6m - 12,5m;Oktober;4,332;100,000;12162;11657;-;-
+Nedre Glomma;E+R;Yrkesdøgn;12,5m - 16,0m;Oktober;3,057;100,000;6203;6019;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 16,0m;Oktober;2,706;100,000;16091;15667;-;-
+Nedre Glomma;E+R;Helgedøgn;Alle;Oktober;-8,759;100,000;61906;67849;-;-
+Nedre Glomma;E+R;Helgedøgn;< 5,6m;Oktober;-8,548;100,000;58332;63784;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 5,6m;Oktober;-12,131;100,000;3571;4064;-;-
+Nedre Glomma;E+R;Helgedøgn;5,6m - 7,6m;Oktober;-17,395;100,000;945;1144;-;-
+Nedre Glomma;E+R;Helgedøgn;7,6m - 12,5m;Oktober;-9,833;100,000;1513;1678;-;-
+Nedre Glomma;E+R;Helgedøgn;12,5m - 16,0m;Oktober;-22,595;100,000;531;686;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 16,0m;Oktober;4,676;100,000;582;556;-;-
+Nedre Glomma;E+R;Alle;Alle;November;0,958;100,000;313581;310605;-;-
+Nedre Glomma;E+R;Alle;< 5,6m;November;1,222;100,000;268301;265063;-;-
+Nedre Glomma;E+R;Alle;>= 5,6m;November;-0,558;100,000;45266;45520;-;-
+Nedre Glomma;E+R;Alle;5,6m - 7,6m;November;-6,198;100,000;8309;8858;-;-
+Nedre Glomma;E+R;Alle;7,6m - 12,5m;November;-3,421;100,000;12621;13068;-;-
+Nedre Glomma;E+R;Alle;12,5m - 16,0m;November;-1,639;100,000;6843;6957;-;-
+Nedre Glomma;E+R;Alle;>= 16,0m;November;5,145;100,000;17493;16637;-;-
+Nedre Glomma;E+R;Yrkesdøgn;Alle;November;0,206;100,000;258028;257497;-;-
+Nedre Glomma;E+R;Yrkesdøgn;< 5,6m;November;0,342;100,000;215607;214872;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 5,6m;November;-0,462;100,000;42408;42605;-;-
+Nedre Glomma;E+R;Yrkesdøgn;5,6m - 7,6m;November;-6,474;100,000;7555;8078;-;-
+Nedre Glomma;E+R;Yrkesdøgn;7,6m - 12,5m;November;-4,248;100,000;11540;12052;-;-
+Nedre Glomma;E+R;Yrkesdøgn;12,5m - 16,0m;November;-1,344;100,000;6311;6397;-;-
+Nedre Glomma;E+R;Yrkesdøgn;>= 16,0m;November;5,747;100,000;17002;16078;-;-
+Nedre Glomma;E+R;Helgedøgn;Alle;November;4,604;100,000;55553;53108;-;-
+Nedre Glomma;E+R;Helgedøgn;< 5,6m;November;4,987;100,000;52694;50191;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 5,6m;November;-1,955;100,000;2858;2915;-;-
+Nedre Glomma;E+R;Helgedøgn;5,6m - 7,6m;November;-3,333;100,000;754;780;-;-
+Nedre Glomma;E+R;Helgedøgn;7,6m - 12,5m;November;6,398;100,000;1081;1016;-;-
+Nedre Glomma;E+R;Helgedøgn;12,5m - 16,0m;November;-5,000;100,000;532;560;-;-
+Nedre Glomma;E+R;Helgedøgn;>= 16,0m;November;-12,165;100,000;491;559;-;-
+Nedre Glomma;E+R;Alle;Alle;Desember;-2,722;99,000;958422;985240;2.147;19.294
+Nedre Glomma;E+R;Alle;< 5,6m;Desember;-2,364;99,000;884654;906071;2.129;19.125
+Nedre Glomma;E+R;Alle;>= 5,6m;Desember;-6,822;99,000;73671;79065;4.772;42.876
+Nedre Glomma;E+R;Alle;5,6m - 7,6m;Desember;-7,056;99,000;19890;21400;0.559;5.025
+Nedre Glomma;E+R;Alle;7,6m - 12,5m;Desember;-6,282;99,000;27076;28891;0.078;0.697
+Nedre Glomma;E+R;Alle;12,5m - 16,0m;Desember;-11,710;99,000;9515;10777;13.058;117.325
+Nedre Glomma;E+R;Alle;>= 16,0m;Desember;-4,484;99,000;17190;17997;15.590;140.071
+Nedre Glomma;E+R;Yrkesdøgn;Alle;Desember;-9,248;99,000;683489;753140;2.233;20.064
+Nedre Glomma;E+R;Yrkesdøgn;< 5,6m;Desember;-9,229;99,000;618223;681083;1.851;16.628
+Nedre Glomma;E+R;Yrkesdøgn;>= 5,6m;Desember;-9,433;99,000;65172;71960;5.578;50.114
+Nedre Glomma;E+R;Yrkesdøgn;5,6m - 7,6m;Desember;-9,967;99,000;16775;18632;1.013;9.103
+Nedre Glomma;E+R;Yrkesdøgn;7,6m - 12,5m;Desember;-9,484;99,000;23612;26086;0.300;2.691
+Nedre Glomma;E+R;Yrkesdøgn;12,5m - 16,0m;Desember;-15,412;99,000;8271;9778;13.834;124.298
+Nedre Glomma;E+R;Yrkesdøgn;>= 16,0m;Desember;-5,440;99,000;16514;17464;14.977;134.564
+Nedre Glomma;E+R;Helgedøgn;Alle;Desember;18,455;100,000;274933;232100;5.321;47.807
+Nedre Glomma;E+R;Helgedøgn;< 5,6m;Desember;18,420;100,000;266431;224988;5.270;47.347
+Nedre Glomma;E+R;Helgedøgn;>= 5,6m;Desember;19,620;100,000;8499;7105;6.481;58.229
+Nedre Glomma;E+R;Helgedøgn;5,6m - 7,6m;Desember;12,536;100,000;3115;2768;2.235;20.078
+Nedre Glomma;E+R;Helgedøgn;7,6m - 12,5m;Desember;23,494;100,000;3464;2805;3.752;33.707
+Nedre Glomma;E+R;Helgedøgn;12,5m - 16,0m;Desember;24,525;100,000;1244;999;7.918;71.143
+Nedre Glomma;E+R;Helgedøgn;>= 16,0m;Desember;26,829;100,000;676;533;32.840;295.057
+Nedre Glomma;E+R;Alle;Alle;Siste 12 måneder;0,898;94,000;4474467;4434649;2.170;19.496
+Nedre Glomma;E+R;Alle;< 5,6m;Siste 12 måneder;0,682;94,000;3920041;3893475;2.022;18.168
+Nedre Glomma;E+R;Alle;>= 5,6m;Siste 12 måneder;2,448;94,000;554149;540906;3.059;27.486
+Nedre Glomma;E+R;Alle;5,6m - 7,6m;Siste 12 måneder;-2,019;94,000;117316;119734;0.318;2.859
+Nedre Glomma;E+R;Alle;7,6m - 12,5m;Siste 12 måneder;3,015;94,000;171591;166569;2.883;25.904
+Nedre Glomma;E+R;Alle;12,5m - 16,0m;Siste 12 måneder;0,359;94,000;78547;78266;0.393;3.528
+Nedre Glomma;E+R;Alle;>= 16,0m;Siste 12 måneder;5,874;94,000;186695;176337;7.074;63.557
+Nedre Glomma;E+R;Yrkesdøgn;Alle;Siste 12 måneder;0,684;94,000;3470262;3446677;2.456;22.064
+Nedre Glomma;E+R;Yrkesdøgn;< 5,6m;Siste 12 måneder;0,406;94,000;2965620;2953626;2.278;20.468
+Nedre Glomma;E+R;Yrkesdøgn;>= 5,6m;Siste 12 måneder;2,350;94,000;504384;492803;3.288;29.542
+Nedre Glomma;E+R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;-1,908;94,000;102474;104467;0.570;5.124
+Nedre Glomma;E+R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;2,610;94,000;151129;147285;3.251;29.210
+Nedre Glomma;E+R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;0,507;94,000;70759;70402;0.692;6.215
+Nedre Glomma;E+R;Yrkesdøgn;>= 16,0m;Siste 12 måneder;5,493;94,000;180022;170649;6.287;56.487
+Nedre Glomma;E+R;Helgedøgn;Alle;Siste 12 måneder;1,643;95,000;1004205;987972;1.476;13.265
+Nedre Glomma;E+R;Helgedøgn;< 5,6m;Siste 12 måneder;1,550;95,000;954421;939849;1.437;12.908
+Nedre Glomma;E+R;Helgedøgn;>= 5,6m;Siste 12 måneder;3,455;95,000;49765;48103;1.552;13.949
+Nedre Glomma;E+R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;-2,784;95,000;14842;15267;1.311;11.780
+Nedre Glomma;E+R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;6,109;95,000;20462;19284;0.197;1.768
+Nedre Glomma;E+R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-0,966;95,000;7788;7864;2.010;18.055
+Nedre Glomma;E+R;Helgedøgn;>= 16,0m;Siste 12 måneder;17,317;95,000;6673;5688;31.816;285.853
+Nedre Glomma;E+R;Alle;Alle;Hittil i år;0,898;94,000;4474467;4434649;2.170;19.496
+Nedre Glomma;E+R;Alle;< 5,6m;Hittil i år;0,682;94,000;3920041;3893475;2.022;18.168
+Nedre Glomma;E+R;Alle;>= 5,6m;Hittil i år;2,448;94,000;554149;540906;3.059;27.486
+Nedre Glomma;E+R;Alle;5,6m - 7,6m;Hittil i år;-2,019;94,000;117316;119734;0.318;2.859
+Nedre Glomma;E+R;Alle;7,6m - 12,5m;Hittil i år;3,015;94,000;171591;166569;2.883;25.904
+Nedre Glomma;E+R;Alle;12,5m - 16,0m;Hittil i år;0,359;94,000;78547;78266;0.393;3.528
+Nedre Glomma;E+R;Alle;>= 16,0m;Hittil i år;5,874;94,000;186695;176337;7.074;63.557
+Nedre Glomma;E+R;Yrkesdøgn;Alle;Hittil i år;0,684;94,000;3470262;3446677;2.456;22.064
+Nedre Glomma;E+R;Yrkesdøgn;< 5,6m;Hittil i år;0,406;94,000;2965620;2953626;2.278;20.468
+Nedre Glomma;E+R;Yrkesdøgn;>= 5,6m;Hittil i år;2,350;94,000;504384;492803;3.288;29.542
+Nedre Glomma;E+R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;-1,908;94,000;102474;104467;0.570;5.124
+Nedre Glomma;E+R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;2,610;94,000;151129;147285;3.251;29.210
+Nedre Glomma;E+R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;0,507;94,000;70759;70402;0.692;6.215
+Nedre Glomma;E+R;Yrkesdøgn;>= 16,0m;Hittil i år;5,493;94,000;180022;170649;6.287;56.487
+Nedre Glomma;E+R;Helgedøgn;Alle;Hittil i år;1,643;95,000;1004205;987972;1.476;13.265
+Nedre Glomma;E+R;Helgedøgn;< 5,6m;Hittil i år;1,550;95,000;954421;939849;1.437;12.908
+Nedre Glomma;E+R;Helgedøgn;>= 5,6m;Hittil i år;3,455;95,000;49765;48103;1.552;13.949
+Nedre Glomma;E+R;Helgedøgn;5,6m - 7,6m;Hittil i år;-2,784;95,000;14842;15267;1.311;11.780
+Nedre Glomma;E+R;Helgedøgn;7,6m - 12,5m;Hittil i år;6,109;95,000;20462;19284;0.197;1.768
+Nedre Glomma;E+R;Helgedøgn;12,5m - 16,0m;Hittil i år;-0,966;95,000;7788;7864;2.010;18.055
+Nedre Glomma;E+R;Helgedøgn;>= 16,0m;Hittil i år;17,317;95,000;6673;5688;31.816;285.853

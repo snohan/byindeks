@@ -79,7 +79,7 @@ getPoints <- function() {
   return(points)
 }
 
-trp_id = "55265V521064"
+#trp_id = "55265V521064"
 
 getTrpAadt <- function(trp_id) {
   # Get all AADTs for a trp

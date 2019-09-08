@@ -488,3 +488,87 @@ bike_index_grenland_all <- bike_index_grenland %>%
 write.csv2(bike_index_grenland_all,
            file = "data_indexpoints_tidy/sykkelindeks_grenland_2016.csv",
            row.names = F)
+
+# Nedre Glomma 2016 ####
+# Point index
+trp_glomma_2016_ids <- cities_points %>%
+  dplyr::filter(city_area_name == "Nedre Glomma",
+                agreement_start == 2017) %>%
+  dplyr::select(trp_id, legacyNortrafMpn) %>%
+  dplyr::rename(msnr = legacyNortrafMpn)
+
+# Adding metadata
+trp_glomma_2016 <- dplyr::left_join(trp_glomma_2016_ids, points)
+
+# Add index results from CSV-files
+pointindex_glomma_16_17 <-
+  readPointindexCSV("data_index_raw/pointindex_nedre-glomma-2017-12_2016.csv") %>%
+  rename(index_16_17 = index)
+
+pointindex_glomma_17_18 <-
+  readPointindexCSV("data_index_raw/pointindex_nedre-glomma-2018-12_2017.csv") %>%
+  rename(index_17_18 = index)
+
+pointindex_glomma_18_19 <-
+  readPointindexCSV("data_index_raw/pointindex_nedre-glomma-2019-08_2018.csv") %>%
+  rename(index_18_19 = index)
+
+adt <- getAdtForpoints(trp_glomma_2016$trp_id) %>%
+  dplyr::filter(year == 2016) %>%
+  dplyr::select(-year)
+
+# Final table
+trp_glomma_2016_adt <- trp_glomma_2016 %>%
+  left_join(adt) %>%
+  left_join(pointindex_glomma_16_17) %>%
+  left_join(pointindex_glomma_17_18) %>%
+  left_join(pointindex_glomma_18_19)
+
+# Index from refyear
+refyear <- trp_glomma_2016_adt %>%
+  select(starts_with("index")) %>%
+  mutate_all(list(index_converter)) %>%
+  transmute(index = purrr::pmap_dbl(., prod)) %>%
+  # Lazily changing from 1 to NA (risky?)
+  mutate(index = round(ifelse(index == 1, NA,  100 * (index - 1)),
+                       digits = 1))
+
+trp_glomma_2016_final <- trp_glomma_2016_adt %>%
+  bind_cols(refyear)
+
+write.csv2(trp_glomma_2016_final,
+           file = "data_indexpoints_tidy/indekspunkt_nedre-glomma_2016.csv",
+           row.names = F)
+
+# City index
+glomma_2017 <-
+  read_city_index_csv("data_index_raw/Nedre_Glomma-2017-12_2016.csv") %>%
+  mutate(year = "2016-2017")
+glomma_2018 <-
+  read_city_index_csv("data_index_raw/Nedre_Glomma-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+glomma_2019 <-
+  read_city_index_csv("data_index_raw/Nedre_Glomma-2019-08_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+city_index_glomma <- bind_rows(glomma_2017,
+                               glomma_2018,
+                               glomma_2019) %>%
+  mutate(index_i = index_converter(index),
+         variance = (konfidensintervall / 1.96)^2)
+
+first_two_years <- calculate_two_year_index(city_index_glomma)
+next_two_years <- bind_rows(first_two_years, slice(city_index_glomma, 3)) %>%
+  calculate_two_year_index() %>%
+  mutate(dekning = mean(city_index_glomma$dekning),
+         year = "2016-2019",
+         konfidensintervall = 1.96 * sqrt(variance))
+
+city_index_glomma_all <- city_index_glomma %>%
+  select(-standardavvik) %>%
+  bind_rows(next_two_years)
+
+write.csv2(city_index_glomma_all,
+           file = "data_indexpoints_tidy/byindeks_nedre-glomma_2016.csv",
+           row.names = F)
+
