@@ -25,7 +25,7 @@ city_info <-
 ```
 
 # Bakgrunn
-Statens vegvesens sykkelregisteringsstasjoner leverer data på som kan benyttes til å beregne en indeks, det vil si et estimat på endring i trafikkmengde, ved hjelp av samme metode som for byindeks. Denne metoden er basert på metoden for vegtrafikkindeksen.
+Statens vegvesens sykkelregisteringsstasjoner leverer data som benyttes til å beregne en indeks, det vil si et estimat på endring i trafikkmengde. Beregningsmetoden er den samme som for byindeks, og den er basert på metoden for vegtrafikkindeksen.
 
 ## Sykkelpunktenes plassering
 Kartet nedenfor viser plasseringen av trafikkregistreringspunktene som benyttes i byindeksen.
@@ -86,11 +86,11 @@ city_info %>%
   height_all(height = .2) %>% 
   padding(padding.top = .3,
           padding.bottom = .3) %>% 
-  set_caption("Estimert endring i syklende i Grenland.")
+  set_caption("Estimert endring i antall syklende.")
 ```
 
 \newline
-**Sykkelindeksen for Grenland estimerer endringen i antall syklende fra 2016 til 2019 (til og med juni) til å være -10,9 %.**
+**Sykkelindeksen for Grenland estimerer endringen i antall syklende fra 2016 til 2019 (til og med juni) til å være -6,6 %.**
 
 ```{r all_point_info_long}
 all_point_info_long <- all_point_info %>% 
@@ -129,7 +129,7 @@ ggplot() +
   theme_minimal() +
   labs(x = NULL, y = "Endring i antall syklende (%)",
        caption = "Data: Statens vegvesen") +
-  ggtitle("Estimert endring i antall syklende i Grenland",
+  ggtitle("Estimert endring i antall syklende",
           subtitle = "Sykkelindeksen (store prikker) og sykkelpunktene (små prikker)")
 
 ```
@@ -238,7 +238,7 @@ ggplot2::ggplot() +
   geom_point(data = all_point_info_index, 
              aes(x = reorder(name, index), y = index, size = adt),
              color = "#ED9300", alpha = 0.6) +
-  geom_hline(yintercept = -10.9, color = "#58B02C") +
+  geom_hline(yintercept = -6.6, color = "#58B02C") +
   xlab("") +
   ylab("Endring (%)") +
   ggtitle(label = "Endring i trafikkmengde",

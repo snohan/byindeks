@@ -132,6 +132,87 @@ getTrpAadt <- function(trp_id) {
   return(trp_aadt)
 }
 
+#trp_id <- "98963V1719019"
+
+getTrpAadt_byLength <- function(trp_id) {
+  # Get all AADTs for a trp
+  query_aadt <- paste0(
+    "query trp_adt {
+    trafficData(trafficRegistrationPointId: \"", trp_id,"\") {
+      trafficRegistrationPoint {
+      id
+    }
+    volume {
+      average {
+        daily {
+          byYear {
+            year
+            total {
+              validLengthVolume {
+                average
+              }
+              coverage {
+                percentage
+              }
+              volume {
+                average
+              }
+            }
+            byLengthRange {
+              lengthRange{
+                representation
+              }
+              total {
+                volume {
+                  average
+                  standardDeviation
+                  confidenceInterval{
+                    lowerBound
+                    upperBound
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+")
+
+  myqueries <- Query$new()
+  myqueries$query("aadts", query_aadt)
+
+  trp_aadt <- cli$exec(myqueries$queries$aadts) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
+
+  if(is_empty(trp_aadt$data$trafficData$volume$average$daily$byYear)){
+    # hva gjør vi når det ikke er noe ÅDT?
+    trp_aadt <- data.frame()
+  }else{
+    trp_aadt <- trp_aadt %>%
+      as.data.frame() %>%
+      tidyr::unnest() %>%
+      dplyr::rename(
+        trp_id = data.trafficData.id,
+        year = 2,
+        aadt_valid_length = 3,
+        coverage = 4,
+        aadt_total = 5,
+        length_range = 6,
+        aadt_length_range = 7,
+        sd_length_range = 8,
+        aadt_ci_lowerbound_length_range = 9,
+        aadt_ci_upperbound_length_range = 10
+        ) %>%
+      dplyr::mutate(trp_id = as.character(trp_id))
+  }
+
+  return(trp_aadt)
+}
+
+
 # Hente ÅDt for mange punkter
 getAdtForpoints <- function(trp_list) {
   number_of_points <- length(trp_list)
@@ -150,7 +231,27 @@ getAdtForpoints <- function(trp_list) {
   return(trp_adt)
 }
 
-getTrpSpeed <- function() {
-  # Get speed limit for TRP
+getAdtForpoints_by_length <- function(trp_list) {
+  number_of_points <- length(trp_list)
+  data_points <- data.frame()
+  trp_count <- 1
 
+  while (trp_count <= number_of_points) {
+    data_points <- bind_rows(data_points,
+                             getTrpAadt_byLength(trp_list[trp_count]))
+    trp_count <- trp_count + 1
+  }
+
+  trp_adt <- data_points %>%
+    dplyr::mutate(aadt_valid_length = round(aadt_valid_length, digits = -1),
+                  aadt_total = round(aadt_total, digits = -1),
+                  aadt_length_range = round(aadt_length_range, digits = -1),
+                  aadt_ci_lowerbound_length_range =
+                    round(aadt_ci_lowerbound_length_range, digits = -1),
+                  aadt_ci_upperbound_length_range =
+                    round(aadt_ci_upperbound_length_range, digits = -1)
+                  )
+
+  return(trp_adt)
 }
+

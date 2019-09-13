@@ -182,6 +182,12 @@ all_point_info %>%
 
 Tabellen nedenfor gjengir byindekspunktene og deres indeksverdi for 2019. ÅDT er fra 2017.
 
+Ser vi på punktenes plassering, er det naturlig å se enkelte i sammenheng. F.eks. utgjør de fire punktene Sandviksvegen, Ballestadhøgda, Elstrømbrua, Smieøya et nord-sør-snitt i Skien. PÅ samme måte er det et snitt for de tre punktene Borgestad, Lensmannsdalen og Bjørnetvedtvegen. I disse snittene bør derfor alle punktene inngå til enhver tid, for å unngå skjevheter i trafikken som fanges opp.
+
+I perioden hvor Porsgrunnsbrua er stengt, har vi tatt ut Sverresgate da mye av trafikken går her.
+
+I perioden hvor Bambletunnelen på E18 var stengt, har vi tatt ut punktet ved Høgenheitunnelen fordi mye av trafikken gikk her. Men lengre nord vil de tre punktene Svanvik, Brattåstunnelen syd og Skjelsvik fange opp totaltrafikken, og det er påsett at alle disse tre har vært med hver måned.
+
 \newline
 
 ```{r point_table}

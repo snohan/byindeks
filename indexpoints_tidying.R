@@ -513,9 +513,11 @@ pointindex_glomma_18_19 <-
   readPointindexCSV("data_index_raw/pointindex_nedre-glomma-2019-08_2018.csv") %>%
   rename(index_18_19 = index)
 
-adt <- getAdtForpoints(trp_glomma_2016$trp_id) %>%
+adt <- getAdtForpoints_by_length(trp_glomma_2016$trp_id) %>%
   dplyr::filter(year == 2016) %>%
-  dplyr::select(-year)
+  dplyr::filter(length_range == "[..,5.6)") %>%
+  dplyr::select(trp_id, aadt_length_range) %>%
+  dplyr::rename(adt = 2)
 
 # Final table
 trp_glomma_2016_adt <- trp_glomma_2016 %>%
