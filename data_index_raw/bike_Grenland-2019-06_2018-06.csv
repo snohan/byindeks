@@ -1,130 +1,4 @@
 Område;Vegkategori;døgn;lengdeklasse;periode;indeks;dekning;trafikkmengde indeksår;trafikkmengde basisår;standardavvik;konfidensintervall
-Grenland;E+R;Alle;Alle;Juli;11,041;99,000;23875;21501;4.541;7.226
-Grenland;E+R;Yrkesdøgn;Alle;Juli;16,376;99,000;19308;16591;3.792;6.034
-Grenland;E+R;Helgedøgn;Alle;Juli;-6,986;100,000;4567;4910;6.057;9.639
-Grenland;E+R;Alle;Alle;August;2,416;90,000;28615;27940;2.806;3.484
-Grenland;E+R;Yrkesdøgn;Alle;August;3,317;91,000;24265;23486;3.161;3.925
-Grenland;E+R;Helgedøgn;Alle;August;-2,335;89,000;4350;4454;7.435;9.232
-Grenland;E+R;Alle;Alle;September;12,353;97,000;22866;20352;6.733;8.360
-Grenland;E+R;Yrkesdøgn;Alle;September;12,020;97,000;18546;16556;6.650;8.258
-Grenland;E+R;Helgedøgn;Alle;September;13,804;98,000;4320;3796;14.881;18.478
-Grenland;E+R;Alle;Alle;Oktober;13,241;99,000;19071;16841;6.288;7.807
-Grenland;E+R;Yrkesdøgn;Alle;Oktober;14,627;99,000;16410;14316;8.048;9.993
-Grenland;E+R;Helgedøgn;Alle;Oktober;5,386;100,000;2661;2525;6.961;8.643
-Grenland;E+R;Alle;Alle;November;16,736;100,000;10937;9369;7.901;12.573
-Grenland;E+R;Yrkesdøgn;Alle;November;17,473;100,000;9762;8310;9.179;14.606
-Grenland;E+R;Helgedøgn;Alle;November;10,954;100,000;1175;1059;11.640;18.522
-Grenland;E+R;Alle;Alle;Desember;-18,408;97,000;5124;6280;11.286;14.014
-Grenland;E+R;Yrkesdøgn;Alle;Desember;-18,600;96,000;4407;5414;14.037;17.430
-Grenland;E+R;Helgedøgn;Alle;Desember;-17,206;99,000;717;866;13.314;16.532
-Grenland;E+R;Alle;Alle;Januar;23,625;99,000;6248;5054;13.216;16.410
-Grenland;E+R;Yrkesdøgn;Alle;Januar;23,348;99,000;5748;4660;14.076;17.478
-Grenland;E+R;Helgedøgn;Alle;Januar;26,904;99,000;500;394;41.712;51.792
-Grenland;E+R;Alle;Alle;Februar;93,498;100,000;5714;2953;38.152;47.371
-Grenland;E+R;Yrkesdøgn;Alle;Februar;89,948;100,000;5140;2706;39.390;48.909
-Grenland;E+R;Helgedøgn;Alle;Februar;132,389;100,000;574;247;79.602;98.839
-Grenland;E+R;Alle;Alle;Mars;167,081;99,000;9014;3375;42.345;67.381
-Grenland;E+R;Yrkesdøgn;Alle;Mars;171,338;99,000;7299;2690;59.189;94.182
-Grenland;E+R;Helgedøgn;Alle;Mars;150,365;99,000;1715;685;32.406;51.566
-Grenland;E+R;Alle;Alle;April;21,712;99,000;16677;13702;8.124;12.927
-Grenland;E+R;Yrkesdøgn;Alle;April;19,656;99,000;12230;10221;5.462;8.691
-Grenland;E+R;Helgedøgn;Alle;April;27,751;99,000;4447;3481;18.535;29.493
-Grenland;E+R;Alle;Alle;Mai;-28,784;99,000;19390;27227;3.112;4.952
-Grenland;E+R;Yrkesdøgn;Alle;Mai;-27,276;99,000;14776;20318;3.599;5.727
-Grenland;E+R;Helgedøgn;Alle;Mai;-33,218;100,000;4614;6909;2.242;3.568
-Grenland;E+R;Alle;Alle;Juni;-23,031;99,000;24183;31419;17.291;21.469
-Grenland;E+R;Yrkesdøgn;Alle;Juni;-29,475;99,000;18216;25829;14.323;17.785
-Grenland;E+R;Helgedøgn;Alle;Juni;6,744;99,000;5967;5590;37.105;46.072
-Grenland;E+R;Alle;Alle;Siste 12 måneder;3,065;98,000;191714;186013;4.789;5.946
-Grenland;E+R;Yrkesdøgn;Alle;Siste 12 måneder;3,316;98,000;156107;151097;4.013;4.982
-Grenland;E+R;Helgedøgn;Alle;Siste 12 måneder;1,979;98,000;35607;34916;9.052;11.240
-Grenland;E+R;Alle;Alle;Hittil i år;-2,991;99,000;81226;83730;11.314;14.048
-Grenland;E+R;Yrkesdøgn;Alle;Hittil i år;-4,539;99,000;63409;66424;9.352;11.613
-Grenland;E+R;Helgedøgn;Alle;Hittil i år;2,953;99,000;17817;17306;24.516;30.441
-Grenland;R;Alle;Alle;Juli;11,041;99,000;23875;21501;4.541;7.226
-Grenland;R;Yrkesdøgn;Alle;Juli;16,376;99,000;19308;16591;3.792;6.034
-Grenland;R;Helgedøgn;Alle;Juli;-6,986;100,000;4567;4910;6.057;9.639
-Grenland;R;Alle;Alle;August;2,416;90,000;28615;27940;2.806;3.484
-Grenland;R;Yrkesdøgn;Alle;August;3,317;91,000;24265;23486;3.161;3.925
-Grenland;R;Helgedøgn;Alle;August;-2,335;89,000;4350;4454;7.435;9.232
-Grenland;R;Alle;Alle;September;12,353;97,000;22866;20352;6.733;8.360
-Grenland;R;Yrkesdøgn;Alle;September;12,020;97,000;18546;16556;6.650;8.258
-Grenland;R;Helgedøgn;Alle;September;13,804;98,000;4320;3796;14.881;18.478
-Grenland;R;Alle;Alle;Oktober;13,241;99,000;19071;16841;6.288;7.807
-Grenland;R;Yrkesdøgn;Alle;Oktober;14,627;99,000;16410;14316;8.048;9.993
-Grenland;R;Helgedøgn;Alle;Oktober;5,386;100,000;2661;2525;6.961;8.643
-Grenland;R;Alle;Alle;November;16,736;100,000;10937;9369;7.901;12.573
-Grenland;R;Yrkesdøgn;Alle;November;17,473;100,000;9762;8310;9.179;14.606
-Grenland;R;Helgedøgn;Alle;November;10,954;100,000;1175;1059;11.640;18.522
-Grenland;R;Alle;Alle;Desember;-18,408;97,000;5124;6280;11.286;14.014
-Grenland;R;Yrkesdøgn;Alle;Desember;-18,600;96,000;4407;5414;14.037;17.430
-Grenland;R;Helgedøgn;Alle;Desember;-17,206;99,000;717;866;13.314;16.532
-Grenland;R;Alle;Alle;Januar;23,625;99,000;6248;5054;13.216;16.410
-Grenland;R;Yrkesdøgn;Alle;Januar;23,348;99,000;5748;4660;14.076;17.478
-Grenland;R;Helgedøgn;Alle;Januar;26,904;99,000;500;394;41.712;51.792
-Grenland;R;Alle;Alle;Februar;93,498;100,000;5714;2953;38.152;47.371
-Grenland;R;Yrkesdøgn;Alle;Februar;89,948;100,000;5140;2706;39.390;48.909
-Grenland;R;Helgedøgn;Alle;Februar;132,389;100,000;574;247;79.602;98.839
-Grenland;R;Alle;Alle;Mars;167,081;99,000;9014;3375;42.345;67.381
-Grenland;R;Yrkesdøgn;Alle;Mars;171,338;99,000;7299;2690;59.189;94.182
-Grenland;R;Helgedøgn;Alle;Mars;150,365;99,000;1715;685;32.406;51.566
-Grenland;R;Alle;Alle;April;21,712;99,000;16677;13702;8.124;12.927
-Grenland;R;Yrkesdøgn;Alle;April;19,656;99,000;12230;10221;5.462;8.691
-Grenland;R;Helgedøgn;Alle;April;27,751;99,000;4447;3481;18.535;29.493
-Grenland;R;Alle;Alle;Mai;-28,784;99,000;19390;27227;3.112;4.952
-Grenland;R;Yrkesdøgn;Alle;Mai;-27,276;99,000;14776;20318;3.599;5.727
-Grenland;R;Helgedøgn;Alle;Mai;-33,218;100,000;4614;6909;2.242;3.568
-Grenland;R;Alle;Alle;Juni;-23,031;99,000;24183;31419;17.291;21.469
-Grenland;R;Yrkesdøgn;Alle;Juni;-29,475;99,000;18216;25829;14.323;17.785
-Grenland;R;Helgedøgn;Alle;Juni;6,744;99,000;5967;5590;37.105;46.072
-Grenland;R;Alle;Alle;Siste 12 måneder;3,065;98,000;191714;186013;4.789;5.946
-Grenland;R;Yrkesdøgn;Alle;Siste 12 måneder;3,316;98,000;156107;151097;4.013;4.982
-Grenland;R;Helgedøgn;Alle;Siste 12 måneder;1,979;98,000;35607;34916;9.052;11.240
-Grenland;R;Alle;Alle;Hittil i år;-2,991;99,000;81226;83730;11.314;14.048
-Grenland;R;Yrkesdøgn;Alle;Hittil i år;-4,539;99,000;63409;66424;9.352;11.613
-Grenland;R;Helgedøgn;Alle;Hittil i år;2,953;99,000;17817;17306;24.516;30.441
-Grenland;F;Alle;Alle;Juli;6,986;99,000;67382;62982;5.900;3.749
-Grenland;F;Yrkesdøgn;Alle;Juli;12,865;99,000;53061;47013;6.580;4.181
-Grenland;F;Helgedøgn;Alle;Juli;-10,320;99,000;14321;15969;6.673;4.240
-Grenland;F;Alle;Alle;August;4,422;99,000;107981;103408;5.437;3.286
-Grenland;F;Yrkesdøgn;Alle;August;5,722;99,000;89908;85042;6.578;3.975
-Grenland;F;Helgedøgn;Alle;August;-1,595;99,000;18073;18366;4.896;2.959
-Grenland;F;Alle;Alle;September;17,883;99,000;88758;75293;10.735;6.820
-Grenland;F;Yrkesdøgn;Alle;September;18,939;99,000;73540;61830;12.937;8.220
-Grenland;F;Helgedøgn;Alle;September;13,036;99,000;15218;13463;7.600;4.829
-Grenland;F;Alle;Alle;Oktober;23,365;99,000;71902;58284;13.110;8.330
-Grenland;F;Yrkesdøgn;Alle;Oktober;24,773;99,000;62630;50195;15.189;9.651
-Grenland;F;Helgedøgn;Alle;Oktober;14,625;100,000;9272;8089;11.373;7.226
-Grenland;F;Alle;Alle;November;39,682;98,000;47102;33721;22.188;13.408
-Grenland;F;Yrkesdøgn;Alle;November;41,554;98,000;42091;29735;23.911;14.449
-Grenland;F;Helgedøgn;Alle;November;25,715;99,000;5011;3986;23.016;13.909
-Grenland;F;Alle;Alle;Desember;-9,022;99,000;17456;19187;15.225;9.200
-Grenland;F;Yrkesdøgn;Alle;Desember;-8,824;99,000;15189;16659;16.204;9.792
-Grenland;F;Helgedøgn;Alle;Desember;-10,324;100,000;2267;2528;13.841;8.364
-Grenland;F;Alle;Alle;Januar;33,156;99,000;19482;14631;19.718;11.385
-Grenland;F;Yrkesdøgn;Alle;Januar;34,819;99,000;18090;13418;19.824;11.446
-Grenland;F;Helgedøgn;Alle;Januar;14,757;100,000;1392;1213;26.225;15.142
-Grenland;F;Alle;Alle;Februar;109,948;98,000;16145;7690;60.203;36.380
-Grenland;F;Yrkesdøgn;Alle;Februar;106,461;98,000;14764;7151;61.456;37.138
-Grenland;F;Helgedøgn;Alle;Februar;156,215;97,000;1381;539;113.849;68.798
-Grenland;F;Alle;Alle;Mars;233,432;95,000;37351;11202;112.724;68.118
-Grenland;F;Yrkesdøgn;Alle;Mars;232,382;96,000;30968;9317;118.784;71.781
-Grenland;F;Helgedøgn;Alle;Mars;238,621;93,000;6383;1885;99.441;60.091
-Grenland;F;Alle;Alle;April;24,346;96,000;79043;63567;12.013;7.260
-Grenland;F;Yrkesdøgn;Alle;April;21,918;96,000;59380;48705;15.192;9.181
-Grenland;F;Helgedøgn;Alle;April;32,304;97,000;19663;14862;11.770;7.112
-Grenland;F;Alle;Alle;Mai;-20,500;95,000;85069;107005;5.573;3.541
-Grenland;F;Yrkesdøgn;Alle;Mai;-17,866;94,000;65381;79603;8.850;5.623
-Grenland;F;Helgedøgn;Alle;Mai;-28,151;96,000;19688;27402;5.508;3.499
-Grenland;F;Alle;Alle;Juni;-24,275;94,000;60607;80036;7.253;4.873
-Grenland;F;Yrkesdøgn;Alle;Juni;-30,929;95,000;45424;65764;7.592;5.100
-Grenland;F;Helgedøgn;Alle;Juni;6,383;94,000;15183;14272;9.745;6.546
-Grenland;F;Alle;Alle;Siste 12 måneder;9,619;98,000;698278;637006;10.985;6.083
-Grenland;F;Yrkesdøgn;Alle;Siste 12 måneder;10,885;98,000;570426;514432;13.396;7.418
-Grenland;F;Helgedøgn;Alle;Siste 12 måneder;4,306;98,000;127852;122574;3.839;2.126
-Grenland;F;Alle;Alle;Hittil i år;4,775;96,000;297697;284131;15.225;8.431
-Grenland;F;Yrkesdøgn;Alle;Hittil i år;4,487;97,000;234007;223958;18.865;10.447
-Grenland;F;Helgedøgn;Alle;Hittil i år;5,845;96,000;63690;60173;9.977;5.525
 Grenland;K;Alle;Alle;Juli;4,588;98,000;16458;15736;7.486;11.912
 Grenland;K;Yrkesdøgn;Alle;Juli;9,378;98,000;13518;12359;12.355;19.659
 Grenland;K;Helgedøgn;Alle;Juli;-12,940;98,000;2940;3377;7.234;11.511
@@ -167,6 +41,48 @@ Grenland;K;Helgedøgn;Alle;Siste 12 måneder;-0,088;97,000;22591;22611;9.695;10.17
 Grenland;K;Alle;Alle;Hittil i år;-11,723;97,000;49036;55548;15.613;19.386
 Grenland;K;Yrkesdøgn;Alle;Hittil i år;-14,136;98,000;38256;44554;15.079;18.723
 Grenland;K;Helgedøgn;Alle;Hittil i år;-1,947;97,000;10780;10994;19.745;24.517
+Grenland;R;Alle;Alle;Juli;11,041;99,000;23875;21501;4.541;7.226
+Grenland;R;Yrkesdøgn;Alle;Juli;16,376;99,000;19308;16591;3.792;6.034
+Grenland;R;Helgedøgn;Alle;Juli;-6,986;100,000;4567;4910;6.057;9.639
+Grenland;R;Alle;Alle;August;2,416;90,000;28615;27940;2.806;3.484
+Grenland;R;Yrkesdøgn;Alle;August;3,317;91,000;24265;23486;3.161;3.925
+Grenland;R;Helgedøgn;Alle;August;-2,335;89,000;4350;4454;7.435;9.232
+Grenland;R;Alle;Alle;September;12,353;97,000;22866;20352;6.733;8.360
+Grenland;R;Yrkesdøgn;Alle;September;12,020;97,000;18546;16556;6.650;8.258
+Grenland;R;Helgedøgn;Alle;September;13,804;98,000;4320;3796;14.881;18.478
+Grenland;R;Alle;Alle;Oktober;13,241;99,000;19071;16841;6.288;7.807
+Grenland;R;Yrkesdøgn;Alle;Oktober;14,627;99,000;16410;14316;8.048;9.993
+Grenland;R;Helgedøgn;Alle;Oktober;5,386;100,000;2661;2525;6.961;8.643
+Grenland;R;Alle;Alle;November;16,736;100,000;10937;9369;7.901;12.573
+Grenland;R;Yrkesdøgn;Alle;November;17,473;100,000;9762;8310;9.179;14.606
+Grenland;R;Helgedøgn;Alle;November;10,954;100,000;1175;1059;11.640;18.522
+Grenland;R;Alle;Alle;Desember;-18,408;97,000;5124;6280;11.286;14.014
+Grenland;R;Yrkesdøgn;Alle;Desember;-18,600;96,000;4407;5414;14.037;17.430
+Grenland;R;Helgedøgn;Alle;Desember;-17,206;99,000;717;866;13.314;16.532
+Grenland;R;Alle;Alle;Januar;23,625;99,000;6248;5054;13.216;16.410
+Grenland;R;Yrkesdøgn;Alle;Januar;23,348;99,000;5748;4660;14.076;17.478
+Grenland;R;Helgedøgn;Alle;Januar;26,904;99,000;500;394;41.712;51.792
+Grenland;R;Alle;Alle;Februar;93,498;100,000;5714;2953;38.152;47.371
+Grenland;R;Yrkesdøgn;Alle;Februar;89,948;100,000;5140;2706;39.390;48.909
+Grenland;R;Helgedøgn;Alle;Februar;132,389;100,000;574;247;79.602;98.839
+Grenland;R;Alle;Alle;Mars;167,081;99,000;9014;3375;42.345;67.381
+Grenland;R;Yrkesdøgn;Alle;Mars;171,338;99,000;7299;2690;59.189;94.182
+Grenland;R;Helgedøgn;Alle;Mars;150,365;99,000;1715;685;32.406;51.566
+Grenland;R;Alle;Alle;April;21,712;99,000;16677;13702;8.124;12.927
+Grenland;R;Yrkesdøgn;Alle;April;19,656;99,000;12230;10221;5.462;8.691
+Grenland;R;Helgedøgn;Alle;April;27,751;99,000;4447;3481;18.535;29.493
+Grenland;R;Alle;Alle;Mai;-28,784;99,000;19390;27227;3.112;4.952
+Grenland;R;Yrkesdøgn;Alle;Mai;-27,276;99,000;14776;20318;3.599;5.727
+Grenland;R;Helgedøgn;Alle;Mai;-33,218;100,000;4614;6909;2.242;3.568
+Grenland;R;Alle;Alle;Juni;-29,464;99,000;18733;26558;2.534;4.032
+Grenland;R;Yrkesdøgn;Alle;Juni;-34,883;99,000;14109;21667;3.073;4.890
+Grenland;R;Helgedøgn;Alle;Juni;-5,459;99,000;4624;4891;4.413;7.021
+Grenland;R;Alle;Alle;Siste 12 måneder;2,822;98,000;186264;181152;4.548;5.647
+Grenland;R;Yrkesdøgn;Alle;Siste 12 måneder;3,447;98,000;152000;146935;4.630;5.748
+Grenland;R;Helgedøgn;Alle;Siste 12 måneder;0,137;98,000;34264;34217;4.106;5.099
+Grenland;R;Alle;Alle;Hittil i år;-3,922;99,000;75776;78869;13.906;17.267
+Grenland;R;Yrkesdøgn;Alle;Hittil i år;-4,754;99,000;59302;62262;14.653;18.194
+Grenland;R;Helgedøgn;Alle;Hittil i år;-0,801;99,000;16474;16607;12.494;15.514
 Grenland;E+R+F+K;Alle;Alle;Juli;7,480;99,000;107715;100219;5.880;2.752
 Grenland;E+R+F+K;Yrkesdøgn;Alle;Juli;13,064;99,000;85887;75963;6.997;3.275
 Grenland;E+R+F+K;Helgedøgn;Alle;Juli;-10,010;99,000;21828;24256;6.483;3.034
@@ -200,15 +116,57 @@ Grenland;E+R+F+K;Helgedøgn;Alle;April;32,742;98,000;25821;19452;14.790;6.922
 Grenland;E+R+F+K;Alle;Alle;Mai;-22,505;96,000;121797;157168;6.269;2.854
 Grenland;E+R+F+K;Yrkesdøgn;Alle;Mai;-20,321;95,000;93723;117626;8.592;3.911
 Grenland;E+R+F+K;Helgedøgn;Alle;Mai;-29,002;96,000;28074;39542;6.899;3.140
-Grenland;E+R+F+K;Alle;Alle;Juni;-23,861;97,000;103050;135345;9.598;4.369
-Grenland;E+R+F+K;Yrkesdøgn;Alle;Juni;-30,384;97,000;77383;111157;8.623;3.925
-Grenland;E+R+F+K;Helgedøgn;Alle;Juni;6,115;96,000;25667;24188;19.048;8.670
-Grenland;E+R+F+K;Alle;Alle;Siste 12 måneder;6,853;98,000;1016298;951115;10.492;4.238
-Grenland;E+R+F+K;Yrkesdøgn;Alle;Siste 12 måneder;7,683;98,000;830248;771014;12.398;5.008
-Grenland;E+R+F+K;Helgedøgn;Alle;Siste 12 måneder;3,303;98,000;186050;180101;5.818;2.350
-Grenland;E+R+F+K;Alle;Alle;Hittil i år;1,075;97,000;427959;423409;15.161;6.258
-Grenland;E+R+F+K;Yrkesdøgn;Alle;Hittil i år;0,220;97,000;335672;334936;17.666;7.292
-Grenland;E+R+F+K;Helgedøgn;Alle;Hittil i år;4,311;97,000;92287;88473;14.166;5.847
+Grenland;E+R+F+K;Alle;Alle;Juni;-25,202;97,000;97600;130484;6.511;3.047
+Grenland;E+R+F+K;Yrkesdøgn;Alle;Juni;-31,515;97,000;73276;106995;6.403;2.997
+Grenland;E+R+F+K;Helgedøgn;Alle;Juni;3,555;96,000;24324;23489;11.513;5.388
+Grenland;E+R+F+K;Alle;Alle;Siste 12 måneder;6,826;98,000;1010848;946254;10.514;4.247
+Grenland;E+R+F+K;Yrkesdøgn;Alle;Siste 12 måneder;7,731;98,000;826141;766852;12.449;5.028
+Grenland;E+R+F+K;Helgedøgn;Alle;Siste 12 måneder;2,957;98,000;184707;179402;5.037;2.035
+Grenland;E+R+F+K;Alle;Alle;Hittil i år;0,946;97,000;422509;418548;15.552;6.419
+Grenland;E+R+F+K;Yrkesdøgn;Alle;Hittil i år;0,239;97,000;331565;330774;18.263;7.538
+Grenland;E+R+F+K;Helgedøgn;Alle;Hittil i år;3,612;97,000;90944;87774;11.703;4.831
+Grenland;F;Alle;Alle;Juli;6,986;99,000;67382;62982;5.900;3.749
+Grenland;F;Yrkesdøgn;Alle;Juli;12,865;99,000;53061;47013;6.580;4.181
+Grenland;F;Helgedøgn;Alle;Juli;-10,320;99,000;14321;15969;6.673;4.240
+Grenland;F;Alle;Alle;August;4,422;99,000;107981;103408;5.437;3.286
+Grenland;F;Yrkesdøgn;Alle;August;5,722;99,000;89908;85042;6.578;3.975
+Grenland;F;Helgedøgn;Alle;August;-1,595;99,000;18073;18366;4.896;2.959
+Grenland;F;Alle;Alle;September;17,883;99,000;88758;75293;10.735;6.820
+Grenland;F;Yrkesdøgn;Alle;September;18,939;99,000;73540;61830;12.937;8.220
+Grenland;F;Helgedøgn;Alle;September;13,036;99,000;15218;13463;7.600;4.829
+Grenland;F;Alle;Alle;Oktober;23,365;99,000;71902;58284;13.110;8.330
+Grenland;F;Yrkesdøgn;Alle;Oktober;24,773;99,000;62630;50195;15.189;9.651
+Grenland;F;Helgedøgn;Alle;Oktober;14,625;100,000;9272;8089;11.373;7.226
+Grenland;F;Alle;Alle;November;39,682;98,000;47102;33721;22.188;13.408
+Grenland;F;Yrkesdøgn;Alle;November;41,554;98,000;42091;29735;23.911;14.449
+Grenland;F;Helgedøgn;Alle;November;25,715;99,000;5011;3986;23.016;13.909
+Grenland;F;Alle;Alle;Desember;-9,022;99,000;17456;19187;15.225;9.200
+Grenland;F;Yrkesdøgn;Alle;Desember;-8,824;99,000;15189;16659;16.204;9.792
+Grenland;F;Helgedøgn;Alle;Desember;-10,324;100,000;2267;2528;13.841;8.364
+Grenland;F;Alle;Alle;Januar;33,156;99,000;19482;14631;19.718;11.385
+Grenland;F;Yrkesdøgn;Alle;Januar;34,819;99,000;18090;13418;19.824;11.446
+Grenland;F;Helgedøgn;Alle;Januar;14,757;100,000;1392;1213;26.225;15.142
+Grenland;F;Alle;Alle;Februar;109,948;98,000;16145;7690;60.203;36.380
+Grenland;F;Yrkesdøgn;Alle;Februar;106,461;98,000;14764;7151;61.456;37.138
+Grenland;F;Helgedøgn;Alle;Februar;156,215;97,000;1381;539;113.849;68.798
+Grenland;F;Alle;Alle;Mars;233,432;95,000;37351;11202;112.724;68.118
+Grenland;F;Yrkesdøgn;Alle;Mars;232,382;96,000;30968;9317;118.784;71.781
+Grenland;F;Helgedøgn;Alle;Mars;238,621;93,000;6383;1885;99.441;60.091
+Grenland;F;Alle;Alle;April;24,346;96,000;79043;63567;12.013;7.260
+Grenland;F;Yrkesdøgn;Alle;April;21,918;96,000;59380;48705;15.192;9.181
+Grenland;F;Helgedøgn;Alle;April;32,304;97,000;19663;14862;11.770;7.112
+Grenland;F;Alle;Alle;Mai;-20,500;95,000;85069;107005;5.573;3.541
+Grenland;F;Yrkesdøgn;Alle;Mai;-17,866;94,000;65381;79603;8.850;5.623
+Grenland;F;Helgedøgn;Alle;Mai;-28,151;96,000;19688;27402;5.508;3.499
+Grenland;F;Alle;Alle;Juni;-24,275;94,000;60607;80036;7.253;4.873
+Grenland;F;Yrkesdøgn;Alle;Juni;-30,929;95,000;45424;65764;7.592;5.100
+Grenland;F;Helgedøgn;Alle;Juni;6,383;94,000;15183;14272;9.745;6.546
+Grenland;F;Alle;Alle;Siste 12 måneder;9,619;98,000;698278;637006;10.985;6.083
+Grenland;F;Yrkesdøgn;Alle;Siste 12 måneder;10,885;98,000;570426;514432;13.396;7.418
+Grenland;F;Helgedøgn;Alle;Siste 12 måneder;4,306;98,000;127852;122574;3.839;2.126
+Grenland;F;Alle;Alle;Hittil i år;4,775;96,000;297697;284131;15.225;8.431
+Grenland;F;Yrkesdøgn;Alle;Hittil i år;4,487;97,000;234007;223958;18.865;10.447
+Grenland;F;Helgedøgn;Alle;Hittil i år;5,845;96,000;63690;60173;9.977;5.525
 Grenland;E;Alle;Alle;Juli;-;-;-;-;-;-
 Grenland;E;Yrkesdøgn;Alle;Juli;-;-;-;-;-;-
 Grenland;E;Helgedøgn;Alle;Juli;-;-;-;-;-;-
@@ -251,3 +209,45 @@ Grenland;E;Helgedøgn;Alle;Siste 12 måneder;-;-;-;-;-;-
 Grenland;E;Alle;Alle;Hittil i år;-;-;-;-;-;-
 Grenland;E;Yrkesdøgn;Alle;Hittil i år;-;-;-;-;-;-
 Grenland;E;Helgedøgn;Alle;Hittil i år;-;-;-;-;-;-
+Grenland;E+R;Alle;Alle;Juli;11,041;99,000;23875;21501;4.541;7.226
+Grenland;E+R;Yrkesdøgn;Alle;Juli;16,376;99,000;19308;16591;3.792;6.034
+Grenland;E+R;Helgedøgn;Alle;Juli;-6,986;100,000;4567;4910;6.057;9.639
+Grenland;E+R;Alle;Alle;August;2,416;90,000;28615;27940;2.806;3.484
+Grenland;E+R;Yrkesdøgn;Alle;August;3,317;91,000;24265;23486;3.161;3.925
+Grenland;E+R;Helgedøgn;Alle;August;-2,335;89,000;4350;4454;7.435;9.232
+Grenland;E+R;Alle;Alle;September;12,353;97,000;22866;20352;6.733;8.360
+Grenland;E+R;Yrkesdøgn;Alle;September;12,020;97,000;18546;16556;6.650;8.258
+Grenland;E+R;Helgedøgn;Alle;September;13,804;98,000;4320;3796;14.881;18.478
+Grenland;E+R;Alle;Alle;Oktober;13,241;99,000;19071;16841;6.288;7.807
+Grenland;E+R;Yrkesdøgn;Alle;Oktober;14,627;99,000;16410;14316;8.048;9.993
+Grenland;E+R;Helgedøgn;Alle;Oktober;5,386;100,000;2661;2525;6.961;8.643
+Grenland;E+R;Alle;Alle;November;16,736;100,000;10937;9369;7.901;12.573
+Grenland;E+R;Yrkesdøgn;Alle;November;17,473;100,000;9762;8310;9.179;14.606
+Grenland;E+R;Helgedøgn;Alle;November;10,954;100,000;1175;1059;11.640;18.522
+Grenland;E+R;Alle;Alle;Desember;-18,408;97,000;5124;6280;11.286;14.014
+Grenland;E+R;Yrkesdøgn;Alle;Desember;-18,600;96,000;4407;5414;14.037;17.430
+Grenland;E+R;Helgedøgn;Alle;Desember;-17,206;99,000;717;866;13.314;16.532
+Grenland;E+R;Alle;Alle;Januar;23,625;99,000;6248;5054;13.216;16.410
+Grenland;E+R;Yrkesdøgn;Alle;Januar;23,348;99,000;5748;4660;14.076;17.478
+Grenland;E+R;Helgedøgn;Alle;Januar;26,904;99,000;500;394;41.712;51.792
+Grenland;E+R;Alle;Alle;Februar;93,498;100,000;5714;2953;38.152;47.371
+Grenland;E+R;Yrkesdøgn;Alle;Februar;89,948;100,000;5140;2706;39.390;48.909
+Grenland;E+R;Helgedøgn;Alle;Februar;132,389;100,000;574;247;79.602;98.839
+Grenland;E+R;Alle;Alle;Mars;167,081;99,000;9014;3375;42.345;67.381
+Grenland;E+R;Yrkesdøgn;Alle;Mars;171,338;99,000;7299;2690;59.189;94.182
+Grenland;E+R;Helgedøgn;Alle;Mars;150,365;99,000;1715;685;32.406;51.566
+Grenland;E+R;Alle;Alle;April;21,712;99,000;16677;13702;8.124;12.927
+Grenland;E+R;Yrkesdøgn;Alle;April;19,656;99,000;12230;10221;5.462;8.691
+Grenland;E+R;Helgedøgn;Alle;April;27,751;99,000;4447;3481;18.535;29.493
+Grenland;E+R;Alle;Alle;Mai;-28,784;99,000;19390;27227;3.112;4.952
+Grenland;E+R;Yrkesdøgn;Alle;Mai;-27,276;99,000;14776;20318;3.599;5.727
+Grenland;E+R;Helgedøgn;Alle;Mai;-33,218;100,000;4614;6909;2.242;3.568
+Grenland;E+R;Alle;Alle;Juni;-29,464;99,000;18733;26558;2.534;4.032
+Grenland;E+R;Yrkesdøgn;Alle;Juni;-34,883;99,000;14109;21667;3.073;4.890
+Grenland;E+R;Helgedøgn;Alle;Juni;-5,459;99,000;4624;4891;4.413;7.021
+Grenland;E+R;Alle;Alle;Siste 12 måneder;2,822;98,000;186264;181152;4.548;5.647
+Grenland;E+R;Yrkesdøgn;Alle;Siste 12 måneder;3,447;98,000;152000;146935;4.630;5.748
+Grenland;E+R;Helgedøgn;Alle;Siste 12 måneder;0,137;98,000;34264;34217;4.106;5.099
+Grenland;E+R;Alle;Alle;Hittil i år;-3,922;99,000;75776;78869;13.906;17.267
+Grenland;E+R;Yrkesdøgn;Alle;Hittil i år;-4,754;99,000;59302;62262;14.653;18.194
+Grenland;E+R;Helgedøgn;Alle;Hittil i år;-0,801;99,000;16474;16607;12.494;15.514

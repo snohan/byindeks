@@ -1,0 +1,1765 @@
+Område;Vegkategori;døgn;lengdeklasse;periode;indeks;dekning;trafikkmengde indeksår;trafikkmengde basisår;standardavvik;konfidensintervall
+Nord-Jæren;K;Alle;Alle;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Alle;< 5,6m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 5,6m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Alle;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Alle;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Alle;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 16,0m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;Alle;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;< 5,6m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 5,6m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 16,0m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;Alle;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;< 5,6m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 5,6m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 16,0m;Januar;-;-;-;-;-;-
+Nord-Jæren;K;Alle;Alle;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Alle;< 5,6m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 5,6m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Alle;5,6m - 7,6m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Alle;7,6m - 12,5m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Alle;12,5m - 16,0m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 16,0m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;Alle;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;< 5,6m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 5,6m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;5,6m - 7,6m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;7,6m - 12,5m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;12,5m - 16,0m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 16,0m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;Alle;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;< 5,6m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 5,6m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;5,6m - 7,6m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;7,6m - 12,5m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;12,5m - 16,0m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 16,0m;Februar;-;-;-;-;-;-
+Nord-Jæren;K;Alle;Alle;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Alle;< 5,6m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 5,6m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Alle;5,6m - 7,6m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Alle;7,6m - 12,5m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Alle;12,5m - 16,0m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 16,0m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;Alle;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;< 5,6m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 5,6m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;5,6m - 7,6m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;7,6m - 12,5m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;12,5m - 16,0m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 16,0m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;Alle;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;< 5,6m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 5,6m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;5,6m - 7,6m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;7,6m - 12,5m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;12,5m - 16,0m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 16,0m;Mars;-;-;-;-;-;-
+Nord-Jæren;K;Alle;Alle;April;-;-;-;-;-;-
+Nord-Jæren;K;Alle;< 5,6m;April;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 5,6m;April;-;-;-;-;-;-
+Nord-Jæren;K;Alle;5,6m - 7,6m;April;-;-;-;-;-;-
+Nord-Jæren;K;Alle;7,6m - 12,5m;April;-;-;-;-;-;-
+Nord-Jæren;K;Alle;12,5m - 16,0m;April;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 16,0m;April;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;Alle;April;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;< 5,6m;April;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 5,6m;April;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;5,6m - 7,6m;April;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;7,6m - 12,5m;April;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;12,5m - 16,0m;April;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 16,0m;April;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;Alle;April;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;< 5,6m;April;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 5,6m;April;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;5,6m - 7,6m;April;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;7,6m - 12,5m;April;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;12,5m - 16,0m;April;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 16,0m;April;-;-;-;-;-;-
+Nord-Jæren;K;Alle;Alle;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Alle;< 5,6m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 5,6m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Alle;5,6m - 7,6m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Alle;7,6m - 12,5m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Alle;12,5m - 16,0m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 16,0m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;Alle;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;< 5,6m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 5,6m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;5,6m - 7,6m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;7,6m - 12,5m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;12,5m - 16,0m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 16,0m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;Alle;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;< 5,6m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 5,6m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;5,6m - 7,6m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;7,6m - 12,5m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;12,5m - 16,0m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 16,0m;Mai;-;-;-;-;-;-
+Nord-Jæren;K;Alle;Alle;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Alle;< 5,6m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 5,6m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Alle;5,6m - 7,6m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Alle;7,6m - 12,5m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Alle;12,5m - 16,0m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 16,0m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;Alle;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;< 5,6m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 5,6m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;5,6m - 7,6m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;7,6m - 12,5m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;12,5m - 16,0m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 16,0m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;Alle;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;< 5,6m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 5,6m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;5,6m - 7,6m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;7,6m - 12,5m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;12,5m - 16,0m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 16,0m;Juni;-;-;-;-;-;-
+Nord-Jæren;K;Alle;Alle;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Alle;< 5,6m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 5,6m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Alle;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Alle;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Alle;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 16,0m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;Alle;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;< 5,6m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 5,6m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 16,0m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;Alle;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;< 5,6m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 5,6m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 16,0m;Juli;-;-;-;-;-;-
+Nord-Jæren;K;Alle;Alle;August;-;-;-;-;-;-
+Nord-Jæren;K;Alle;< 5,6m;August;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 5,6m;August;-;-;-;-;-;-
+Nord-Jæren;K;Alle;5,6m - 7,6m;August;-;-;-;-;-;-
+Nord-Jæren;K;Alle;7,6m - 12,5m;August;-;-;-;-;-;-
+Nord-Jæren;K;Alle;12,5m - 16,0m;August;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 16,0m;August;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;Alle;August;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;< 5,6m;August;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 5,6m;August;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;5,6m - 7,6m;August;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;7,6m - 12,5m;August;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;12,5m - 16,0m;August;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 16,0m;August;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;Alle;August;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;< 5,6m;August;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 5,6m;August;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;5,6m - 7,6m;August;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;7,6m - 12,5m;August;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;12,5m - 16,0m;August;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 16,0m;August;-;-;-;-;-;-
+Nord-Jæren;K;Alle;Alle;September;-;-;-;-;-;-
+Nord-Jæren;K;Alle;< 5,6m;September;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 5,6m;September;-;-;-;-;-;-
+Nord-Jæren;K;Alle;5,6m - 7,6m;September;-;-;-;-;-;-
+Nord-Jæren;K;Alle;7,6m - 12,5m;September;-;-;-;-;-;-
+Nord-Jæren;K;Alle;12,5m - 16,0m;September;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 16,0m;September;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;Alle;September;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;< 5,6m;September;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 5,6m;September;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;5,6m - 7,6m;September;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;7,6m - 12,5m;September;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;12,5m - 16,0m;September;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 16,0m;September;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;Alle;September;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;< 5,6m;September;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 5,6m;September;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;5,6m - 7,6m;September;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;7,6m - 12,5m;September;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;12,5m - 16,0m;September;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 16,0m;September;-;-;-;-;-;-
+Nord-Jæren;K;Alle;Alle;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Alle;< 5,6m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 5,6m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Alle;5,6m - 7,6m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Alle;7,6m - 12,5m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Alle;12,5m - 16,0m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 16,0m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;Alle;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;< 5,6m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 5,6m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;5,6m - 7,6m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;7,6m - 12,5m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;12,5m - 16,0m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 16,0m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;Alle;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;< 5,6m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 5,6m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;5,6m - 7,6m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;7,6m - 12,5m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;12,5m - 16,0m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 16,0m;Oktober;-;-;-;-;-;-
+Nord-Jæren;K;Alle;Alle;November;-;-;-;-;-;-
+Nord-Jæren;K;Alle;< 5,6m;November;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 5,6m;November;-;-;-;-;-;-
+Nord-Jæren;K;Alle;5,6m - 7,6m;November;-;-;-;-;-;-
+Nord-Jæren;K;Alle;7,6m - 12,5m;November;-;-;-;-;-;-
+Nord-Jæren;K;Alle;12,5m - 16,0m;November;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 16,0m;November;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;Alle;November;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;< 5,6m;November;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 5,6m;November;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;5,6m - 7,6m;November;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;7,6m - 12,5m;November;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;12,5m - 16,0m;November;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 16,0m;November;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;Alle;November;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;< 5,6m;November;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 5,6m;November;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;5,6m - 7,6m;November;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;7,6m - 12,5m;November;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;12,5m - 16,0m;November;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 16,0m;November;-;-;-;-;-;-
+Nord-Jæren;K;Alle;Alle;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Alle;< 5,6m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 5,6m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Alle;5,6m - 7,6m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Alle;7,6m - 12,5m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Alle;12,5m - 16,0m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 16,0m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;Alle;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;< 5,6m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 5,6m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;5,6m - 7,6m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;7,6m - 12,5m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;12,5m - 16,0m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 16,0m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;Alle;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;< 5,6m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 5,6m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;5,6m - 7,6m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;7,6m - 12,5m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;12,5m - 16,0m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 16,0m;Desember;-;-;-;-;-;-
+Nord-Jæren;K;Alle;Alle;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Alle;< 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Alle;5,6m - 7,6m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Alle;7,6m - 12,5m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Alle;12,5m - 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;Alle;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;< 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;Alle;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;< 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Nord-Jæren;K;Alle;Alle;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Alle;< 5,6m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 5,6m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Alle;5,6m - 7,6m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Alle;7,6m - 12,5m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Alle;12,5m - 16,0m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Alle;>= 16,0m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;Alle;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;< 5,6m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 5,6m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;5,6m - 7,6m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;7,6m - 12,5m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Yrkesdøgn;>= 16,0m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;Alle;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;< 5,6m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 5,6m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;5,6m - 7,6m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;7,6m - 12,5m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;12,5m - 16,0m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;K;Helgedøgn;>= 16,0m;Hittil i år;-;-;-;-;-;-
+Nord-Jæren;R;Alle;Alle;Januar;0,799;99,000;2133298;2116386;3.187;5.071
+Nord-Jæren;R;Alle;< 5,6m;Januar;0,428;99,000;1955143;1946809;3.173;5.049
+Nord-Jæren;R;Alle;>= 5,6m;Januar;4,967;99,000;177626;169221;3.282;5.223
+Nord-Jæren;R;Alle;5,6m - 7,6m;Januar;9,889;99,000;56329;51260;5.647;8.985
+Nord-Jæren;R;Alle;7,6m - 12,5m;Januar;8,329;99,000;49670;45851;11.550;18.378
+Nord-Jæren;R;Alle;12,5m - 16,0m;Januar;-8,141;99,000;21778;23708;7.753;12.337
+Nord-Jæren;R;Alle;>= 16,0m;Januar;2,990;99,000;49849;48402;2.521;4.011
+Nord-Jæren;R;Yrkesdøgn;Alle;Januar;0,944;99,000;1702843;1686914;3.368;5.359
+Nord-Jæren;R;Yrkesdøgn;< 5,6m;Januar;0,527;99,000;1542884;1534801;3.370;5.363
+Nord-Jæren;R;Yrkesdøgn;>= 5,6m;Januar;5,064;99,000;159492;151805;3.265;5.196
+Nord-Jæren;R;Yrkesdøgn;5,6m - 7,6m;Januar;9,481;99,000;49433;45152;5.996;9.540
+Nord-Jæren;R;Yrkesdøgn;7,6m - 12,5m;Januar;8,472;99,000;45800;42223;11.500;18.299
+Nord-Jæren;R;Yrkesdøgn;12,5m - 16,0m;Januar;-8,561;99,000;18552;20289;8.584;13.659
+Nord-Jæren;R;Yrkesdøgn;>= 16,0m;Januar;3,548;99,000;45707;44141;1.886;3.001
+Nord-Jæren;R;Helgedøgn;Alle;Januar;0,229;99,000;430455;429472;2.624;4.176
+Nord-Jæren;R;Helgedøgn;< 5,6m;Januar;0,061;99,000;412259;412008;2.599;4.135
+Nord-Jæren;R;Helgedøgn;>= 5,6m;Januar;4,123;99,000;18134;17416;4.293;6.832
+Nord-Jæren;R;Helgedøgn;5,6m - 7,6m;Januar;12,901;99,000;6896;6108;2.813;4.477
+Nord-Jæren;R;Helgedøgn;7,6m - 12,5m;Januar;6,670;99,000;3870;3628;13.191;20.990
+Nord-Jæren;R;Helgedøgn;12,5m - 16,0m;Januar;-5,645;99,000;3226;3419;10.359;16.484
+Nord-Jæren;R;Helgedøgn;>= 16,0m;Januar;-2,793;99,000;4142;4261;8.280;13.175
+Nord-Jæren;R;Alle;Alle;Februar;-1,979;90,000;1791308;1827468;0.733;1.167
+Nord-Jæren;R;Alle;< 5,6m;Februar;-2,260;90,000;1640308;1678244;1.121;1.784
+Nord-Jæren;R;Alle;>= 5,6m;Februar;1,336;90,000;150509;148525;4.384;6.975
+Nord-Jæren;R;Alle;5,6m - 7,6m;Februar;4,610;90,000;47380;45292;11.362;18.080
+Nord-Jæren;R;Alle;7,6m - 12,5m;Februar;3,362;90,000;42986;41588;4.109;6.538
+Nord-Jæren;R;Alle;12,5m - 16,0m;Februar;-8,073;90,000;17798;19361;16.745;26.645
+Nord-Jæren;R;Alle;>= 16,0m;Februar;0,144;90,000;42345;42284;2.850;4.535
+Nord-Jæren;R;Yrkesdøgn;Alle;Februar;-2,989;90,000;1416616;1460261;1.571;2.499
+Nord-Jæren;R;Yrkesdøgn;< 5,6m;Februar;-3,405;90,000;1281847;1327036;1.275;2.029
+Nord-Jæren;R;Yrkesdøgn;>= 5,6m;Februar;1,221;90,000;134348;132728;5.155;8.203
+Nord-Jæren;R;Yrkesdøgn;5,6m - 7,6m;Februar;4,322;90,000;41514;39794;12.312;19.590
+Nord-Jæren;R;Yrkesdøgn;7,6m - 12,5m;Februar;2,914;90,000;39343;38229;4.915;7.821
+Nord-Jæren;R;Yrkesdøgn;12,5m - 16,0m;Februar;-9,334;90,000;14872;16403;18.119;28.832
+Nord-Jæren;R;Yrkesdøgn;>= 16,0m;Februar;0,828;90,000;38619;38302;2.863;4.556
+Nord-Jæren;R;Helgedøgn;Alle;Februar;2,038;92,000;374692;367207;10.481;16.677
+Nord-Jæren;R;Helgedøgn;< 5,6m;Februar;2,065;92,000;358461;351208;10.730;17.074
+Nord-Jæren;R;Helgedøgn;>= 5,6m;Februar;2,304;92,000;16161;15797;4.209;6.697
+Nord-Jæren;R;Helgedøgn;5,6m - 7,6m;Februar;6,693;92,000;5866;5498;8.943;14.230
+Nord-Jæren;R;Helgedøgn;7,6m - 12,5m;Februar;8,455;92,000;3643;3359;8.142;12.955
+Nord-Jæren;R;Helgedøgn;12,5m - 16,0m;Februar;-1,082;92,000;2926;2958;12.971;20.640
+Nord-Jæren;R;Helgedøgn;>= 16,0m;Februar;-6,429;92,000;3726;3982;5.941;9.453
+Nord-Jæren;R;Alle;Alle;Mars;-8,122;99,000;1633417;1777811;0.353;0.876
+Nord-Jæren;R;Alle;< 5,6m;Mars;-8,119;99,000;1494066;1626090;0.500;1.243
+Nord-Jæren;R;Alle;>= 5,6m;Mars;-8,029;99,000;138910;151036;1.087;2.701
+Nord-Jæren;R;Alle;5,6m - 7,6m;Mars;-4,739;99,000;43343;45499;6.988;17.360
+Nord-Jæren;R;Alle;7,6m - 12,5m;Mars;-7,963;99,000;40269;43753;2.134;5.301
+Nord-Jæren;R;Alle;12,5m - 16,0m;Mars;-11,175;99,000;15619;17584;18.955;47.088
+Nord-Jæren;R;Alle;>= 16,0m;Mars;-10,229;99,000;39679;44200;2.503;6.218
+Nord-Jæren;R;Yrkesdøgn;Alle;Mars;-14,774;99,000;1236591;1450953;0.088;0.218
+Nord-Jæren;R;Yrkesdøgn;< 5,6m;Mars;-15,048;99,000;1116414;1314170;0.240;0.597
+Nord-Jæren;R;Yrkesdøgn;>= 5,6m;Mars;-12,036;99,000;119805;136198;2.450;6.086
+Nord-Jæren;R;Yrkesdøgn;5,6m - 7,6m;Mars;-9,693;99,000;36719;40660;6.514;16.183
+Nord-Jæren;R;Yrkesdøgn;7,6m - 12,5m;Mars;-10,728;99,000;35942;40261;2.919;7.251
+Nord-Jæren;R;Yrkesdøgn;12,5m - 16,0m;Mars;-17,111;99,000;12348;14897;21.815;54.191
+Nord-Jæren;R;Yrkesdøgn;>= 16,0m;Mars;-13,829;99,000;34796;40380;3.861;9.592
+Nord-Jæren;R;Helgedøgn;Alle;Mars;21,406;100,000;396826;326858;4.080;10.135
+Nord-Jæren;R;Helgedøgn;< 5,6m;Mars;21,073;100,000;377652;311920;4.021;9.988
+Nord-Jæren;R;Helgedøgn;>= 5,6m;Mars;28,757;100,000;19105;14838;5.781;14.361
+Nord-Jæren;R;Helgedøgn;5,6m - 7,6m;Mars;36,888;100,000;6624;4839;4.393;10.913
+Nord-Jæren;R;Helgedøgn;7,6m - 12,5m;Mars;23,912;100,000;4327;3492;2.807;6.974
+Nord-Jæren;R;Helgedøgn;12,5m - 16,0m;Mars;21,734;100,000;3271;2687;36.681;91.120
+Nord-Jæren;R;Helgedøgn;>= 16,0m;Mars;27,827;100,000;4883;3820;8.382;20.823
+Nord-Jæren;R;Alle;Alle;April;14,078;99,000;2181507;1912297;7.303;11.621
+Nord-Jæren;R;Alle;< 5,6m;April;13,330;99,000;1982154;1749005;7.889;12.553
+Nord-Jæren;R;Alle;>= 5,6m;April;21,955;99,000;198518;162780;1.017;1.619
+Nord-Jæren;R;Alle;5,6m - 7,6m;April;26,824;99,000;64329;50723;10.931;17.394
+Nord-Jæren;R;Alle;7,6m - 12,5m;April;25,244;99,000;64884;51806;2.288;3.640
+Nord-Jæren;R;Alle;12,5m - 16,0m;April;13,300;99,000;23410;20662;12.621;20.084
+Nord-Jæren;R;Alle;>= 16,0m;April;15,929;99,000;45895;39589;3.175;5.052
+Nord-Jæren;R;Yrkesdøgn;Alle;April;26,265;99,000;1653990;1309931;9.392;14.946
+Nord-Jæren;R;Yrkesdøgn;< 5,6m;April;26,021;99,000;1480976;1175182;10.545;16.779
+Nord-Jæren;R;Yrkesdøgn;>= 5,6m;April;28,252;99,000;172324;134364;3.890;6.190
+Nord-Jæren;R;Yrkesdøgn;5,6m - 7,6m;April;33,619;99,000;54789;41004;14.214;22.617
+Nord-Jæren;R;Yrkesdøgn;7,6m - 12,5m;April;29,842;99,000;56711;43677;3.399;5.409
+Nord-Jæren;R;Yrkesdøgn;12,5m - 16,0m;April;19,462;99,000;19587;16396;11.920;18.967
+Nord-Jæren;R;Yrkesdøgn;>= 16,0m;April;23,883;99,000;41237;33287;2.730;4.344
+Nord-Jæren;R;Helgedøgn;Alle;April;-12,426;99,000;527517;602366;5.210;8.290
+Nord-Jæren;R;Helgedøgn;< 5,6m;April;-12,660;99,000;501178;573823;5.424;8.630
+Nord-Jæren;R;Helgedøgn;>= 5,6m;April;-7,820;99,000;26194;28416;4.746;7.553
+Nord-Jæren;R;Helgedøgn;5,6m - 7,6m;April;-1,842;99,000;9540;9719;8.125;12.928
+Nord-Jæren;R;Helgedøgn;7,6m - 12,5m;April;0,541;99,000;8173;8129;3.711;5.905
+Nord-Jæren;R;Helgedøgn;12,5m - 16,0m;April;-10,384;99,000;3823;4266;15.314;24.368
+Nord-Jæren;R;Helgedøgn;>= 16,0m;April;-26,087;99,000;4658;6302;7.858;12.503
+Nord-Jæren;R;Alle;Alle;Mai;-3,766;100,000;1686046;1752020;1.534;3.811
+Nord-Jæren;R;Alle;< 5,6m;Mai;-4,049;100,000;1531847;1596481;1.437;3.569
+Nord-Jæren;R;Alle;>= 5,6m;Mai;-0,888;100,000;153641;155017;3.057;7.595
+Nord-Jæren;R;Alle;5,6m - 7,6m;Mai;2,021;100,000;45944;45034;10.918;27.122
+Nord-Jæren;R;Alle;7,6m - 12,5m;Mai;1,203;100,000;48859;48278;2.106;5.232
+Nord-Jæren;R;Alle;12,5m - 16,0m;Mai;-5,351;100,000;18200;19229;8.334;20.703
+Nord-Jæren;R;Alle;>= 16,0m;Mai;-4,327;100,000;40638;42476;2.425;6.023
+Nord-Jæren;R;Yrkesdøgn;Alle;Mai;-5,823;100,000;1237716;1314238;1.826;4.537
+Nord-Jæren;R;Yrkesdøgn;< 5,6m;Mai;-6,183;100,000;1108634;1181697;1.808;4.492
+Nord-Jæren;R;Yrkesdøgn;>= 5,6m;Mai;-2,619;100,000;128613;132072;2.851;7.082
+Nord-Jæren;R;Yrkesdøgn;5,6m - 7,6m;Mai;-0,130;100,000;37751;37800;11.532;28.647
+Nord-Jæren;R;Yrkesdøgn;7,6m - 12,5m;Mai;-0,263;100,000;42152;42263;1.469;3.650
+Nord-Jæren;R;Yrkesdøgn;12,5m - 16,0m;Mai;-10,008;100,000;13524;15028;9.504;23.610
+Nord-Jæren;R;Yrkesdøgn;>= 16,0m;Mai;-4,854;100,000;35186;36981;2.811;6.983
+Nord-Jæren;R;Helgedøgn;Alle;Mai;2,409;100,000;448330;437782;3.293;8.181
+Nord-Jæren;R;Helgedøgn;< 5,6m;Mai;2,032;100,000;423213;414784;3.455;8.582
+Nord-Jæren;R;Helgedøgn;>= 5,6m;Mai;9,078;100,000;25028;22945;0.649;1.612
+Nord-Jæren;R;Helgedøgn;5,6m - 7,6m;Mai;13,257;100,000;8193;7234;5.541;13.764
+Nord-Jæren;R;Helgedøgn;7,6m - 12,5m;Mai;11,505;100,000;6707;6015;6.156;15.292
+Nord-Jæren;R;Helgedøgn;12,5m - 16,0m;Mai;11,307;100,000;4676;4201;14.997;37.256
+Nord-Jæren;R;Helgedøgn;>= 16,0m;Mai;-0,783;100,000;5452;5495;10.190;25.312
+Nord-Jæren;R;Alle;Alle;Juni;-0,955;94,000;1627848;1643550;2.701;6.710
+Nord-Jæren;R;Alle;< 5,6m;Juni;-1,346;94,000;1474597;1494713;2.890;7.178
+Nord-Jæren;R;Alle;>= 5,6m;Juni;2,923;94,000;152842;148502;3.657;9.085
+Nord-Jæren;R;Alle;5,6m - 7,6m;Juni;4,914;94,000;47251;45038;6.186;15.368
+Nord-Jæren;R;Alle;7,6m - 12,5m;Juni;3,284;94,000;48724;47175;3.748;9.310
+Nord-Jæren;R;Alle;12,5m - 16,0m;Juni;-2,963;94,000;17551;18087;37.631;93.482
+Nord-Jæren;R;Alle;>= 16,0m;Juni;2,916;94,000;39316;38202;2.553;6.342
+Nord-Jæren;R;Yrkesdøgn;Alle;Juni;-0,353;92,000;1275189;1279703;4.402;10.934
+Nord-Jæren;R;Yrkesdøgn;< 5,6m;Juni;-0,789;92,000;1141299;1150377;4.516;11.219
+Nord-Jæren;R;Yrkesdøgn;>= 5,6m;Juni;3,496;92,000;133525;129015;5.974;14.840
+Nord-Jæren;R;Yrkesdøgn;5,6m - 7,6m;Juni;5,731;92,000;40553;38355;6.976;17.329
+Nord-Jæren;R;Yrkesdøgn;7,6m - 12,5m;Juni;3,171;92,000;43402;42068;5.153;12.800
+Nord-Jæren;R;Yrkesdøgn;12,5m - 16,0m;Juni;-4,291;92,000;14298;14939;41.835;103.923
+Nord-Jæren;R;Yrkesdøgn;>= 16,0m;Juni;4,811;92,000;35272;33653;3.329;8.270
+Nord-Jæren;R;Helgedøgn;Alle;Juni;-3,075;98,000;352659;363847;4.935;12.260
+Nord-Jæren;R;Helgedøgn;< 5,6m;Juni;-3,206;98,000;333298;344336;4.701;11.678
+Nord-Jæren;R;Helgedøgn;>= 5,6m;Juni;-0,872;98,000;19317;19487;9.057;22.500
+Nord-Jæren;R;Helgedøgn;5,6m - 7,6m;Juni;0,224;98,000;6698;6683;12.460;30.953
+Nord-Jæren;R;Helgedøgn;7,6m - 12,5m;Juni;4,210;98,000;5322;5107;13.098;32.537
+Nord-Jæren;R;Helgedøgn;12,5m - 16,0m;Juni;3,335;98,000;3253;3148;28.972;71.970
+Nord-Jæren;R;Helgedøgn;>= 16,0m;Juni;-11,101;98,000;4044;4549;9.893;24.576
+Nord-Jæren;R;Alle;Alle;Juli;-1,942;97,000;1290238;1315785;1.763;4.378
+Nord-Jæren;R;Alle;< 5,6m;Juli;-2,145;97,000;1165698;1191255;1.935;4.807
+Nord-Jæren;R;Alle;>= 5,6m;Juli;-0,186;97,000;124258;124490;1.522;3.782
+Nord-Jæren;R;Alle;5,6m - 7,6m;Juli;1,442;97,000;37780;37243;0.546;1.357
+Nord-Jæren;R;Alle;7,6m - 12,5m;Juli;2,105;97,000;38711;37913;1.294;3.214
+Nord-Jæren;R;Alle;12,5m - 16,0m;Juli;-19,245;97,000;12286;15214;20.507;50.943
+Nord-Jæren;R;Alle;>= 16,0m;Juli;3,989;97,000;35481;34120;3.122;7.755
+Nord-Jæren;R;Yrkesdøgn;Alle;Juli;1,264;99,000;1020419;1007681;2.198;5.461
+Nord-Jæren;R;Yrkesdøgn;< 5,6m;Juli;1,141;99,000;911630;901345;2.436;6.051
+Nord-Jæren;R;Yrkesdøgn;>= 5,6m;Juli;2,214;99,000;108653;106300;0.207;0.515
+Nord-Jæren;R;Yrkesdøgn;5,6m - 7,6m;Juli;3,603;99,000;32375;31249;2.288;5.684
+Nord-Jæren;R;Yrkesdøgn;7,6m - 12,5m;Juli;3,928;99,000;34902;33583;2.939;7.301
+Nord-Jæren;R;Yrkesdøgn;12,5m - 16,0m;Juli;-12,836;99,000;10213;11717;20.867;51.837
+Nord-Jæren;R;Yrkesdøgn;>= 16,0m;Juli;4,746;99,000;31163;29751;3.394;8.432
+Nord-Jæren;R;Helgedøgn;Alle;Juli;-12,426;94,000;269819;308104;7.090;17.613
+Nord-Jæren;R;Helgedøgn;< 5,6m;Juli;-12,363;94,000;254068;289910;7.023;17.447
+Nord-Jæren;R;Helgedøgn;>= 5,6m;Juli;-14,211;94,000;15605;18190;8.571;21.292
+Nord-Jæren;R;Helgedøgn;5,6m - 7,6m;Juli;-9,826;94,000;5405;5994;7.159;17.783
+Nord-Jæren;R;Helgedøgn;7,6m - 12,5m;Juli;-12,032;94,000;3809;4330;11.387;28.288
+Nord-Jæren;R;Helgedøgn;12,5m - 16,0m;Juli;-40,721;94,000;2073;3497;27.106;67.335
+Nord-Jæren;R;Helgedøgn;>= 16,0m;Juli;-1,167;94,000;4318;4369;4.674;11.612
+Nord-Jæren;R;Alle;Alle;August;-1,906;100,000;1026352;1046296;2.437;21.894
+Nord-Jæren;R;Alle;< 5,6m;August;-2,338;100,000;920764;942809;2.583;23.210
+Nord-Jæren;R;Alle;>= 5,6m;August;2,041;100,000;105542;103431;1.603;14.404
+Nord-Jæren;R;Alle;5,6m - 7,6m;August;-1,986;100,000;30848;31473;1.661;14.925
+Nord-Jæren;R;Alle;7,6m - 12,5m;August;4,360;100,000;37915;36331;2.408;21.631
+Nord-Jæren;R;Alle;12,5m - 16,0m;August;-5,426;100,000;5734;6063;24.919;223.885
+Nord-Jæren;R;Alle;>= 16,0m;August;5,009;100,000;31045;29564;0.805;7.233
+Nord-Jæren;R;Yrkesdøgn;Alle;August;-1,565;100,000;854856;868447;2.955;26.549
+Nord-Jæren;R;Yrkesdøgn;< 5,6m;August;-2,069;100,000;758256;774277;3.111;27.952
+Nord-Jæren;R;Yrkesdøgn;>= 5,6m;August;2,589;100,000;96557;94120;2.287;20.550
+Nord-Jæren;R;Yrkesdøgn;5,6m - 7,6m;August;-1,582;100,000;27686;28131;2.814;25.281
+Nord-Jæren;R;Yrkesdøgn;7,6m - 12,5m;August;4,767;100,000;34875;33288;1.831;16.447
+Nord-Jæren;R;Yrkesdøgn;12,5m - 16,0m;August;-2,509;100,000;5323;5460;24.256;217.930
+Nord-Jæren;R;Yrkesdøgn;>= 16,0m;August;5,257;100,000;28673;27241;1.789;16.070
+Nord-Jæren;R;Helgedøgn;Alle;August;-3,572;100,000;171496;177849;0.189;1.699
+Nord-Jæren;R;Helgedøgn;< 5,6m;August;-3,574;100,000;162508;168532;0.340;3.053
+Nord-Jæren;R;Helgedøgn;>= 5,6m;August;-3,501;100,000;8985;9311;2.474;22.224
+Nord-Jæren;R;Helgedøgn;5,6m - 7,6m;August;-5,386;100,000;3162;3342;6.622;59.499
+Nord-Jæren;R;Helgedøgn;7,6m - 12,5m;August;-0,099;100,000;3040;3043;6.118;54.965
+Nord-Jæren;R;Helgedøgn;12,5m - 16,0m;August;-31,841;100,000;411;603;37.974;341.184
+Nord-Jæren;R;Helgedøgn;>= 16,0m;August;2,109;100,000;2372;2323;11.546;103.741
+Nord-Jæren;R;Alle;Alle;September;-1,397;99,000;1473533;1494407;5.505;13.676
+Nord-Jæren;R;Alle;< 5,6m;September;-1,102;99,000;1327960;1342763;5.908;14.677
+Nord-Jæren;R;Alle;>= 5,6m;September;-4,004;99,000;145253;151311;3.697;9.183
+Nord-Jæren;R;Alle;5,6m - 7,6m;September;-0,524;99,000;47688;47939;3.363;8.355
+Nord-Jæren;R;Alle;7,6m - 12,5m;September;-4,555;99,000;50625;53041;1.614;4.010
+Nord-Jæren;R;Alle;12,5m - 16,0m;September;-9,752;99,000;12863;14253;14.460;35.922
+Nord-Jæren;R;Alle;>= 16,0m;September;-5,546;99,000;34077;36078;7.550;18.755
+Nord-Jæren;R;Yrkesdøgn;Alle;September;-4,451;100,000;1127380;1179902;5.573;13.845
+Nord-Jæren;R;Yrkesdøgn;< 5,6m;September;-4,351;100,000;998819;1044257;6.019;14.953
+Nord-Jæren;R;Yrkesdøgn;>= 5,6m;September;-5,213;100,000;128300;135356;3.586;8.908
+Nord-Jæren;R;Yrkesdøgn;5,6m - 7,6m;September;-1,865;100,000;40933;41711;3.305;8.209
+Nord-Jæren;R;Yrkesdøgn;7,6m - 12,5m;September;-6,058;100,000;44476;47344;1.880;4.671
+Nord-Jæren;R;Yrkesdøgn;12,5m - 16,0m;September;-10,024;100,000;11813;13129;12.335;30.642
+Nord-Jæren;R;Yrkesdøgn;>= 16,0m;September;-6,313;100,000;31078;33172;7.609;18.902
+Nord-Jæren;R;Helgedøgn;Alle;September;10,063;99,000;346153;314505;3.889;9.661
+Nord-Jæren;R;Helgedøgn;< 5,6m;September;10,263;99,000;329141;298506;4.107;10.202
+Nord-Jæren;R;Helgedøgn;>= 5,6m;September;6,255;99,000;16953;15955;2.940;7.304
+Nord-Jæren;R;Helgedøgn;5,6m - 7,6m;September;8,462;99,000;6755;6228;3.268;8.118
+Nord-Jæren;R;Helgedøgn;7,6m - 12,5m;September;7,934;99,000;6149;5697;1.738;4.317
+Nord-Jæren;R;Helgedøgn;12,5m - 16,0m;September;-6,584;99,000;1050;1124;42.295;105.067
+Nord-Jæren;R;Helgedøgn;>= 16,0m;September;3,200;99,000;2999;2906;3.087;7.669
+Nord-Jæren;R;Alle;Alle;Oktober;0,230;100,000;2212852;2207776;9.717;15.462
+Nord-Jæren;R;Alle;< 5,6m;Oktober;-0,054;100,000;2002421;2003500;10.540;16.772
+Nord-Jæren;R;Alle;>= 5,6m;Oktober;2,949;100,000;209628;203623;2.994;4.765
+Nord-Jæren;R;Alle;5,6m - 7,6m;Oktober;3,546;100,000;67776;65455;3.935;6.261
+Nord-Jæren;R;Alle;7,6m - 12,5m;Oktober;3,908;100,000;65374;62915;6.132;9.757
+Nord-Jæren;R;Alle;12,5m - 16,0m;Oktober;9,499;100,000;27849;25433;24.930;39.669
+Nord-Jæren;R;Alle;>= 16,0m;Oktober;-2,391;100,000;48629;49820;4.142;6.590
+Nord-Jæren;R;Yrkesdøgn;Alle;Oktober;3,487;100,000;1796361;1735834;10.139;16.134
+Nord-Jæren;R;Yrkesdøgn;< 5,6m;Oktober;3,362;100,000;1606412;1554156;11.187;17.800
+Nord-Jæren;R;Yrkesdøgn;>= 5,6m;Oktober;4,483;100,000;189253;181133;2.813;4.476
+Nord-Jæren;R;Yrkesdøgn;5,6m - 7,6m;Oktober;4,875;100,000;60126;57331;4.371;6.955
+Nord-Jæren;R;Yrkesdøgn;7,6m - 12,5m;Oktober;5,471;100,000;59492;56406;5.273;8.390
+Nord-Jæren;R;Yrkesdøgn;12,5m - 16,0m;Oktober;12,303;100,000;24774;22060;27.505;43.767
+Nord-Jæren;R;Yrkesdøgn;>= 16,0m;Oktober;-1,048;100,000;44861;45336;3.882;6.177
+Nord-Jæren;R;Helgedøgn;Alle;Oktober;-11,750;100,000;416491;471942;8.830;14.051
+Nord-Jæren;R;Helgedøgn;< 5,6m;Oktober;-11,870;100,000;396009;449344;9.193;14.628
+Nord-Jæren;R;Helgedøgn;>= 5,6m;Oktober;-9,404;100,000;20375;22490;1.947;3.098
+Nord-Jæren;R;Helgedøgn;5,6m - 7,6m;Oktober;-5,835;100,000;7650;8124;7.590;12.078
+Nord-Jæren;R;Helgedøgn;7,6m - 12,5m;Oktober;-9,633;100,000;5882;6509;11.118;17.691
+Nord-Jæren;R;Helgedøgn;12,5m - 16,0m;Oktober;-8,835;100,000;3075;3373;15.434;24.558
+Nord-Jæren;R;Helgedøgn;>= 16,0m;Oktober;-15,968;100,000;3768;4484;4.795;7.630
+Nord-Jæren;R;Alle;Alle;November;-0,807;94,000;2064441;2081242;8.706;13.853
+Nord-Jæren;R;Alle;< 5,6m;November;-0,754;94,000;1877265;1891526;9.644;15.345
+Nord-Jæren;R;Alle;>= 5,6m;November;-1,474;94,000;186195;188981;2.609;4.152
+Nord-Jæren;R;Alle;5,6m - 7,6m;November;3,673;94,000;63020;60787;10.686;17.004
+Nord-Jæren;R;Alle;7,6m - 12,5m;November;-1,828;94,000;55414;56446;1.960;3.119
+Nord-Jæren;R;Alle;12,5m - 16,0m;November;0,095;94,000;26470;26445;45.723;72.755
+Nord-Jæren;R;Alle;>= 16,0m;November;-8,856;94,000;41291;45303;3.408;5.422
+Nord-Jæren;R;Yrkesdøgn;Alle;November;-1,815;94,000;1640829;1671169;9.185;14.616
+Nord-Jæren;R;Yrkesdøgn;< 5,6m;November;-1,801;94,000;1473240;1500262;10.354;16.475
+Nord-Jæren;R;Yrkesdøgn;>= 5,6m;November;-2,098;94,000;166741;170314;2.925;4.654
+Nord-Jæren;R;Yrkesdøgn;5,6m - 7,6m;November;3,807;94,000;55540;53503;10.824;17.223
+Nord-Jæren;R;Yrkesdøgn;7,6m - 12,5m;November;-2,419;94,000;50307;51554;1.722;2.739
+Nord-Jæren;R;Yrkesdøgn;12,5m - 16,0m;November;-0,860;94,000;23395;23598;50.335;80.094
+Nord-Jæren;R;Yrkesdøgn;>= 16,0m;November;-9,986;94,000;37499;41659;3.852;6.130
+Nord-Jæren;R;Helgedøgn;Alle;November;3,302;95,000;423612;410073;9.610;15.292
+Nord-Jæren;R;Helgedøgn;< 5,6m;November;3,261;95,000;404025;391264;9.725;15.475
+Nord-Jæren;R;Helgedøgn;>= 5,6m;November;4,216;95,000;19454;18667;7.407;11.786
+Nord-Jæren;R;Helgedøgn;5,6m - 7,6m;November;2,691;95,000;7480;7284;11.042;17.571
+Nord-Jæren;R;Helgedøgn;7,6m - 12,5m;November;4,395;95,000;5107;4892;7.798;12.409
+Nord-Jæren;R;Helgedøgn;12,5m - 16,0m;November;8,008;95,000;3075;2847;14.610;23.248
+Nord-Jæren;R;Helgedøgn;>= 16,0m;November;4,061;95,000;3792;3644;5.129;8.161
+Nord-Jæren;R;Alle;Alle;Desember;-0,653;96,000;1996773;2009906;7.074;11.256
+Nord-Jæren;R;Alle;< 5,6m;Desember;-0,098;96,000;1847601;1849409;7.914;12.593
+Nord-Jæren;R;Alle;>= 5,6m;Desember;-7,121;96,000;148435;159816;3.302;5.254
+Nord-Jæren;R;Alle;5,6m - 7,6m;Desember;-0,102;96,000;52030;52083;12.761;20.305
+Nord-Jæren;R;Alle;7,6m - 12,5m;Desember;-7,294;96,000;42352;45684;2.037;3.241
+Nord-Jæren;R;Alle;12,5m - 16,0m;Desember;-13,583;96,000;19118;22123;46.157;73.446
+Nord-Jæren;R;Alle;>= 16,0m;Desember;-12,501;96,000;34935;39926;7.613;12.114
+Nord-Jæren;R;Yrkesdøgn;Alle;Desember;-3,656;97,000;1406989;1460387;6.470;10.295
+Nord-Jæren;R;Yrkesdøgn;< 5,6m;Desember;-3,060;97,000;1281220;1321668;7.528;11.978
+Nord-Jæren;R;Yrkesdøgn;>= 5,6m;Desember;-9,382;97,000;125196;138158;3.818;6.075
+Nord-Jæren;R;Yrkesdøgn;5,6m - 7,6m;Desember;-1,477;97,000;43018;43663;11.596;18.452
+Nord-Jæren;R;Yrkesdøgn;7,6m - 12,5m;Desember;-9,169;97,000;37180;40933;3.070;4.886
+Nord-Jæren;R;Yrkesdøgn;12,5m - 16,0m;Desember;-15,718;97,000;15738;18673;50.899;80.991
+Nord-Jæren;R;Yrkesdøgn;>= 16,0m;Desember;-16,134;97,000;29260;34889;5.699;9.068
+Nord-Jæren;R;Helgedøgn;Alle;Desember;7,327;95,000;589784;549519;9.116;14.505
+Nord-Jæren;R;Helgedøgn;< 5,6m;Desember;7,322;95,000;566381;527741;9.156;14.569
+Nord-Jæren;R;Helgedøgn;>= 5,6m;Desember;7,300;95,000;23239;21658;8.482;13.497
+Nord-Jæren;R;Helgedøgn;5,6m - 7,6m;Desember;7,031;95,000;9012;8420;21.035;33.471
+Nord-Jæren;R;Helgedøgn;7,6m - 12,5m;Desember;8,861;95,000;5172;4751;9.202;14.642
+Nord-Jæren;R;Helgedøgn;12,5m - 16,0m;Desember;-2,029;95,000;3380;3450;22.591;35.947
+Nord-Jæren;R;Helgedøgn;>= 16,0m;Desember;12,666;95,000;5675;5037;11.142;17.729
+Nord-Jæren;R;Alle;Alle;Siste 12 måneder;-0,318;97,000;21117613;21184944;5.873;7.292
+Nord-Jæren;R;Alle;< 5,6m;Siste 12 måneder;-0,480;97,000;19219824;19312604;6.405;7.952
+Nord-Jæren;R;Alle;>= 5,6m;Siste 12 måneder;1,319;97,000;1891357;1866733;1.407;1.747
+Nord-Jæren;R;Alle;5,6m - 7,6m;Siste 12 måneder;4,481;97,000;603718;577826;5.571;6.917
+Nord-Jæren;R;Alle;7,6m - 12,5m;Siste 12 måneder;2,628;97,000;585783;570781;2.856;3.546
+Nord-Jæren;R;Alle;12,5m - 16,0m;Siste 12 måneder;-4,158;97,000;218676;228162;16.390;20.351
+Nord-Jæren;R;Alle;>= 16,0m;Siste 12 måneder;-1,385;97,000;483180;489964;1.767;2.195
+Nord-Jæren;R;Yrkesdøgn;Alle;Siste 12 måneder;-0,339;97,000;16369779;16425420;6.365;7.904
+Nord-Jæren;R;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,525;97,000;14701631;14779228;7.070;8.778
+Nord-Jæren;R;Yrkesdøgn;>= 5,6m;Siste 12 måneder;1,294;97,000;1662807;1641563;1.559;1.936
+Nord-Jæren;R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;4,431;97,000;520437;498353;6.054;7.517
+Nord-Jæren;R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;2,492;97,000;524582;511829;2.795;3.471
+Nord-Jæren;R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-4,233;97,000;184437;192589;17.137;21.278
+Nord-Jæren;R;Yrkesdøgn;>= 16,0m;Siste 12 måneder;-1,240;97,000;433351;438792;1.662;2.063
+Nord-Jæren;R;Helgedøgn;Alle;Siste 12 måneder;-0,246;97,000;4747834;4759524;5.005;6.215
+Nord-Jæren;R;Helgedøgn;< 5,6m;Siste 12 måneder;-0,335;97,000;4518193;4533376;5.158;6.404
+Nord-Jæren;R;Helgedøgn;>= 5,6m;Siste 12 måneder;1,501;97,000;228550;225170;2.224;2.762
+Nord-Jæren;R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;4,792;97,000;83281;79473;3.564;4.425
+Nord-Jæren;R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;3,815;97,000;61201;58952;4.095;5.085
+Nord-Jæren;R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-3,750;97,000;34239;35573;16.248;20.175
+Nord-Jæren;R;Helgedøgn;>= 16,0m;Siste 12 måneder;-2,624;97,000;49829;51172;5.835;7.245
+Nord-Jæren;R;Alle;Alle;Hittil i år;-0,318;97,000;21117613;21184944;5.873;7.292
+Nord-Jæren;R;Alle;< 5,6m;Hittil i år;-0,480;97,000;19219824;19312604;6.405;7.952
+Nord-Jæren;R;Alle;>= 5,6m;Hittil i år;1,319;97,000;1891357;1866733;1.407;1.747
+Nord-Jæren;R;Alle;5,6m - 7,6m;Hittil i år;4,481;97,000;603718;577826;5.571;6.917
+Nord-Jæren;R;Alle;7,6m - 12,5m;Hittil i år;2,628;97,000;585783;570781;2.856;3.546
+Nord-Jæren;R;Alle;12,5m - 16,0m;Hittil i år;-4,158;97,000;218676;228162;16.390;20.351
+Nord-Jæren;R;Alle;>= 16,0m;Hittil i år;-1,385;97,000;483180;489964;1.767;2.195
+Nord-Jæren;R;Yrkesdøgn;Alle;Hittil i år;-0,339;97,000;16369779;16425420;6.365;7.904
+Nord-Jæren;R;Yrkesdøgn;< 5,6m;Hittil i år;-0,525;97,000;14701631;14779228;7.070;8.778
+Nord-Jæren;R;Yrkesdøgn;>= 5,6m;Hittil i år;1,294;97,000;1662807;1641563;1.559;1.936
+Nord-Jæren;R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;4,431;97,000;520437;498353;6.054;7.517
+Nord-Jæren;R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;2,492;97,000;524582;511829;2.795;3.471
+Nord-Jæren;R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-4,233;97,000;184437;192589;17.137;21.278
+Nord-Jæren;R;Yrkesdøgn;>= 16,0m;Hittil i år;-1,240;97,000;433351;438792;1.662;2.063
+Nord-Jæren;R;Helgedøgn;Alle;Hittil i år;-0,246;97,000;4747834;4759524;5.005;6.215
+Nord-Jæren;R;Helgedøgn;< 5,6m;Hittil i år;-0,335;97,000;4518193;4533376;5.158;6.404
+Nord-Jæren;R;Helgedøgn;>= 5,6m;Hittil i år;1,501;97,000;228550;225170;2.224;2.762
+Nord-Jæren;R;Helgedøgn;5,6m - 7,6m;Hittil i år;4,792;97,000;83281;79473;3.564;4.425
+Nord-Jæren;R;Helgedøgn;7,6m - 12,5m;Hittil i år;3,815;97,000;61201;58952;4.095;5.085
+Nord-Jæren;R;Helgedøgn;12,5m - 16,0m;Hittil i år;-3,750;97,000;34239;35573;16.248;20.175
+Nord-Jæren;R;Helgedøgn;>= 16,0m;Hittil i år;-2,624;97,000;49829;51172;5.835;7.245
+Nord-Jæren;E+R+F+K;Alle;Alle;Januar;0,232;98,000;10430399;10406269;4.029;2.004
+Nord-Jæren;E+R+F+K;Alle;< 5,6m;Januar;-0,203;98,000;9559459;9578888;4.085;2.032
+Nord-Jæren;E+R+F+K;Alle;>= 5,6m;Januar;5,264;98,000;868730;825290;5.179;2.575
+Nord-Jæren;E+R+F+K;Alle;5,6m - 7,6m;Januar;10,045;98,000;315682;286865;11.362;5.650
+Nord-Jæren;E+R+F+K;Alle;7,6m - 12,5m;Januar;3,849;98,000;264231;254437;16.522;8.216
+Nord-Jæren;E+R+F+K;Alle;12,5m - 16,0m;Januar;6,679;98,000;113387;106288;19.729;9.811
+Nord-Jæren;E+R+F+K;Alle;>= 16,0m;Januar;-1,277;98,000;175430;177700;14.515;7.218
+Nord-Jæren;E+R+F+K;Yrkesdøgn;Alle;Januar;0,098;98,000;8323488;8315322;4.416;2.196
+Nord-Jæren;E+R+F+K;Yrkesdøgn;< 5,6m;Januar;-0,395;98,000;7539509;7569429;4.500;2.238
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 5,6m;Januar;5,109;98,000;782033;744024;5.343;2.657
+Nord-Jæren;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Januar;9,449;98,000;280021;255846;10.995;5.468
+Nord-Jæren;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Januar;4,242;98,000;240261;230483;15.093;7.506
+Nord-Jæren;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Januar;6,806;98,000;98294;92030;18.193;9.047
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 16,0m;Januar;-1,333;98,000;163457;165665;14.744;7.332
+Nord-Jæren;E+R+F+K;Helgedøgn;Alle;Januar;0,763;98,000;2106911;2090947;3.984;1.981
+Nord-Jæren;E+R+F+K;Helgedøgn;< 5,6m;Januar;0,522;98,000;2019950;2009459;4.062;2.020
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 5,6m;Januar;6,683;98,000;86697;81266;5.972;2.970
+Nord-Jæren;E+R+F+K;Helgedøgn;5,6m - 7,6m;Januar;14,965;98,000;35661;31019;15.968;7.940
+Nord-Jæren;E+R+F+K;Helgedøgn;7,6m - 12,5m;Januar;0,067;98,000;23970;23954;29.123;14.482
+Nord-Jæren;E+R+F+K;Helgedøgn;12,5m - 16,0m;Januar;5,856;98,000;15093;14258;42.009;20.890
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 16,0m;Januar;-0,515;98,000;11973;12035;17.148;8.528
+Nord-Jæren;E+R+F+K;Alle;Alle;Februar;-0,888;97,000;9255216;9338100;4.170;2.144
+Nord-Jæren;E+R+F+K;Alle;< 5,6m;Februar;-1,176;97,000;8476397;8577261;4.333;2.228
+Nord-Jæren;E+R+F+K;Alle;>= 5,6m;Februar;2,391;97,000;777420;759264;4.085;2.100
+Nord-Jæren;E+R+F+K;Alle;5,6m - 7,6m;Februar;5,703;97,000;280174;265057;9.507;4.888
+Nord-Jæren;E+R+F+K;Alle;7,6m - 12,5m;Februar;1,756;97,000;243394;239194;14.462;7.436
+Nord-Jæren;E+R+F+K;Alle;12,5m - 16,0m;Februar;5,066;97,000;103399;98413;18.819;9.676
+Nord-Jæren;E+R+F+K;Alle;>= 16,0m;Februar;-3,925;97,000;150453;156600;13.726;7.057
+Nord-Jæren;E+R+F+K;Yrkesdøgn;Alle;Februar;-1,071;97,000;7377940;7457799;4.444;2.285
+Nord-Jæren;E+R+F+K;Yrkesdøgn;< 5,6m;Februar;-1,430;97,000;6676221;6773101;4.570;2.350
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 5,6m;Februar;2,491;97,000;700525;683496;4.635;2.383
+Nord-Jæren;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Februar;5,799;97,000;248791;235154;9.719;4.997
+Nord-Jæren;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Februar;2,039;97,000;220511;216104;13.624;7.005
+Nord-Jæren;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Februar;5,214;97,000;89899;85444;17.874;9.190
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 16,0m;Februar;-3,726;97,000;141324;146794;14.014;7.205
+Nord-Jæren;E+R+F+K;Helgedøgn;Alle;Februar;-0,161;98,000;1877276;1880301;5.925;3.047
+Nord-Jæren;E+R+F+K;Helgedøgn;< 5,6m;Februar;-0,221;98,000;1800176;1804160;6.120;3.147
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 5,6m;Februar;1,487;98,000;76895;75768;2.839;1.460
+Nord-Jæren;E+R+F+K;Helgedøgn;5,6m - 7,6m;Februar;4,949;98,000;31383;29903;12.339;6.344
+Nord-Jæren;E+R+F+K;Helgedøgn;7,6m - 12,5m;Februar;-0,896;98,000;22883;23090;22.876;11.762
+Nord-Jæren;E+R+F+K;Helgedøgn;12,5m - 16,0m;Februar;4,094;98,000;13500;12969;31.095;15.988
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 16,0m;Februar;-6,904;98,000;9129;9806;15.978;8.215
+Nord-Jæren;E+R+F+K;Alle;Alle;Mars;-6,560;95,000;8655373;9263015;4.717;2.514
+Nord-Jæren;E+R+F+K;Alle;< 5,6m;Mars;-6,140;95,000;7961356;8482200;4.847;2.583
+Nord-Jæren;E+R+F+K;Alle;>= 5,6m;Mars;-11,066;95,000;692711;778906;5.151;2.745
+Nord-Jæren;E+R+F+K;Alle;5,6m - 7,6m;Mars;-8,748;95,000;247420;271139;6.376;3.397
+Nord-Jæren;E+R+F+K;Alle;7,6m - 12,5m;Mars;-10,300;95,000;220425;245737;4.700;2.504
+Nord-Jæren;E+R+F+K;Alle;12,5m - 16,0m;Mars;-15,885;95,000;83658;99457;15.184;8.091
+Nord-Jæren;E+R+F+K;Alle;>= 16,0m;Mars;-13,142;95,000;141208;162573;11.372;6.060
+Nord-Jæren;E+R+F+K;Yrkesdøgn;Alle;Mars;-13,998;95,000;6499224;7557030;6.513;3.471
+Nord-Jæren;E+R+F+K;Yrkesdøgn;< 5,6m;Mars;-13,903;95,000;5897203;6849503;6.632;3.534
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 5,6m;Mars;-14,862;95,000;600961;705870;6.084;3.242
+Nord-Jæren;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Mars;-13,371;95,000;210581;243085;7.411;3.949
+Nord-Jæren;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Mars;-13,587;95,000;192820;223137;5.448;2.903
+Nord-Jæren;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Mars;-20,549;95,000;69527;87509;14.811;7.892
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 16,0m;Mars;-15,845;95,000;128033;152139;11.653;6.209
+Nord-Jæren;E+R+F+K;Helgedøgn;Alle;Mars;26,387;96,000;2156149;1705985;15.467;8.242
+Nord-Jæren;E+R+F+K;Helgedøgn;< 5,6m;Mars;26,426;96,000;2064153;1632697;15.692;8.362
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 5,6m;Mars;25,623;96,000;91750;73036;11.956;6.371
+Nord-Jæren;E+R+F+K;Helgedøgn;5,6m - 7,6m;Mars;31,315;96,000;36839;28054;13.839;7.375
+Nord-Jæren;E+R+F+K;Helgedøgn;7,6m - 12,5m;Mars;22,146;96,000;27605;22600;12.923;6.886
+Nord-Jæren;E+R+F+K;Helgedøgn;12,5m - 16,0m;Mars;18,271;96,000;14131;11948;19.974;10.643
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 16,0m;Mars;26,270;96,000;13175;10434;16.399;8.739
+Nord-Jæren;E+R+F+K;Alle;Alle;April;11,931;96,000;10910451;9747516;5.790;2.710
+Nord-Jæren;E+R+F+K;Alle;< 5,6m;April;11,229;96,000;9980693;8973126;5.908;2.765
+Nord-Jæren;E+R+F+K;Alle;>= 5,6m;April;20,059;96,000;927475;772519;7.317;3.425
+Nord-Jæren;E+R+F+K;Alle;5,6m - 7,6m;April;22,643;96,000;333873;272232;9.570;4.479
+Nord-Jæren;E+R+F+K;Alle;7,6m - 12,5m;April;19,610;96,000;314378;262836;12.889;6.032
+Nord-Jæren;E+R+F+K;Alle;12,5m - 16,0m;April;15,875;96,000;117960;101799;25.720;12.037
+Nord-Jæren;E+R+F+K;Alle;>= 16,0m;April;18,881;96,000;161264;135652;16.797;7.861
+Nord-Jæren;E+R+F+K;Yrkesdøgn;Alle;April;23,907;97,000;8295012;6694543;6.192;2.898
+Nord-Jæren;E+R+F+K;Yrkesdøgn;< 5,6m;April;23,577;97,000;7488363;6059663;6.450;3.019
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 5,6m;April;27,043;97,000;804748;633446;7.749;3.626
+Nord-Jæren;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;April;30,900;97,000;285591;218175;10.819;5.064
+Nord-Jæren;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;April;25,169;97,000;270853;216389;10.636;4.978
+Nord-Jæren;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;April;24,987;97,000;99950;79968;29.063;13.602
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 16,0m;April;24,757;97,000;148354;118914;17.476;8.179
+Nord-Jæren;E+R+F+K;Helgedøgn;Alle;April;-14,331;96,000;2615439;3052973;4.787;2.240
+Nord-Jæren;E+R+F+K;Helgedøgn;< 5,6m;April;-14,455;96,000;2492330;2913463;4.810;2.251
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 5,6m;April;-11,754;96,000;122727;139073;6.966;3.260
+Nord-Jæren;E+R+F+K;Helgedøgn;5,6m - 7,6m;April;-10,683;96,000;48282;54057;8.566;4.009
+Nord-Jæren;E+R+F+K;Helgedøgn;7,6m - 12,5m;April;-6,291;96,000;43525;46447;19.486;9.120
+Nord-Jæren;E+R+F+K;Helgedøgn;12,5m - 16,0m;April;-17,503;96,000;18010;21831;20.605;9.644
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 16,0m;April;-22,870;96,000;12910;16738;16.086;7.528
+Nord-Jæren;E+R+F+K;Alle;Alle;Mai;-0,849;99,000;10605660;10696461;3.097;1.540
+Nord-Jæren;E+R+F+K;Alle;< 5,6m;Mai;-0,926;99,000;9679548;9770012;3.169;1.576
+Nord-Jæren;E+R+F+K;Alle;>= 5,6m;Mai;-0,077;99,000;923587;924295;3.171;1.577
+Nord-Jæren;E+R+F+K;Alle;5,6m - 7,6m;Mai;1,895;99,000;325597;319542;7.660;3.809
+Nord-Jæren;E+R+F+K;Alle;7,6m - 12,5m;Mai;1,221;99,000;319117;315268;9.764;4.855
+Nord-Jæren;E+R+F+K;Alle;12,5m - 16,0m;Mai;-1,586;99,000;119084;121003;15.336;7.626
+Nord-Jæren;E+R+F+K;Alle;>= 16,0m;Mai;-5,160;99,000;159789;168482;8.634;4.294
+Nord-Jæren;E+R+F+K;Yrkesdøgn;Alle;Mai;-3,385;99,000;7692589;7962120;3.252;1.617
+Nord-Jæren;E+R+F+K;Yrkesdøgn;< 5,6m;Mai;-3,580;99,000;6919688;7176622;3.312;1.647
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 5,6m;Mai;-1,641;99,000;770888;783746;3.214;1.598
+Nord-Jæren;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Mai;0,214;99,000;266875;266304;7.284;3.622
+Nord-Jæren;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Mai;0,136;99,000;268915;268549;8.602;4.278
+Nord-Jæren;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Mai;-4,089;99,000;94417;98442;13.831;6.878
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 16,0m;Mai;-6,494;99,000;140681;150451;9.704;4.826
+Nord-Jæren;E+R+F+K;Helgedøgn;Alle;Mai;6,536;99,000;2913071;2734341;4.144;2.061
+Nord-Jæren;E+R+F+K;Helgedøgn;< 5,6m;Mai;6,419;99,000;2759860;2593390;4.250;2.114
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 5,6m;Mai;8,645;99,000;152699;140549;5.470;2.720
+Nord-Jæren;E+R+F+K;Helgedøgn;5,6m - 7,6m;Mai;10,301;99,000;58722;53238;11.805;5.870
+Nord-Jæren;E+R+F+K;Helgedøgn;7,6m - 12,5m;Mai;7,455;99,000;50202;46719;17.293;8.599
+Nord-Jæren;E+R+F+K;Helgedøgn;12,5m - 16,0m;Mai;9,335;99,000;24667;22561;29.530;14.685
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 16,0m;Mai;5,973;99,000;19108;18031;15.928;7.921
+Nord-Jæren;E+R+F+K;Alle;Alle;Juni;-0,381;98,000;10790706;10832026;2.974;1.479
+Nord-Jæren;E+R+F+K;Alle;< 5,6m;Juni;-0,663;98,000;9801714;9867173;2.832;1.408
+Nord-Jæren;E+R+F+K;Alle;>= 5,6m;Juni;2,489;98,000;986734;962767;5.599;2.784
+Nord-Jæren;E+R+F+K;Alle;5,6m - 7,6m;Juni;4,684;98,000;358515;342475;7.751;3.855
+Nord-Jæren;E+R+F+K;Alle;7,6m - 12,5m;Juni;1,859;98,000;340293;334082;8.940;4.446
+Nord-Jæren;E+R+F+K;Alle;12,5m - 16,0m;Juni;-1,315;98,000;120159;121760;24.319;12.094
+Nord-Jæren;E+R+F+K;Alle;>= 16,0m;Juni;2,017;98,000;167767;164450;11.015;5.478
+Nord-Jæren;E+R+F+K;Yrkesdøgn;Alle;Juni;-0,210;98,000;8486231;8504074;3.413;1.697
+Nord-Jæren;E+R+F+K;Yrkesdøgn;< 5,6m;Juni;-0,514;98,000;7620981;7660349;3.260;1.621
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 5,6m;Juni;2,559;98,000;863506;841958;6.006;2.987
+Nord-Jæren;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Juni;4,890;98,000;308245;293874;7.600;3.779
+Nord-Jæren;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Juni;1,399;98,000;297520;293416;8.293;4.124
+Nord-Jæren;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Juni;-2,051;98,000;102371;104515;24.742;12.304
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 16,0m;Juni;3,474;98,000;155370;150153;10.295;5.119
+Nord-Jæren;E+R+F+K;Helgedøgn;Alle;Juni;-1,008;99,000;2304475;2327952;3.064;1.524
+Nord-Jæren;E+R+F+K;Helgedøgn;< 5,6m;Juni;-1,182;99,000;2180733;2206824;3.002;1.493
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 5,6m;Juni;2,002;99,000;123228;120809;6.148;3.058
+Nord-Jæren;E+R+F+K;Helgedøgn;5,6m - 7,6m;Juni;3,434;99,000;50270;48601;11.063;5.501
+Nord-Jæren;E+R+F+K;Helgedøgn;7,6m - 12,5m;Juni;5,181;99,000;42773;40666;15.553;7.735
+Nord-Jæren;E+R+F+K;Helgedøgn;12,5m - 16,0m;Juni;3,149;99,000;17788;17245;33.077;16.449
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 16,0m;Juni;-13,290;99,000;12397;14297;24.844;12.355
+Nord-Jæren;E+R+F+K;Alle;Alle;Juli;-0,948;99,000;8920860;9006249;2.769;1.335
+Nord-Jæren;E+R+F+K;Alle;< 5,6m;Juli;-0,891;99,000;8121587;8194638;2.555;1.231
+Nord-Jæren;E+R+F+K;Alle;>= 5,6m;Juli;-1,684;99,000;796768;810412;8.055;3.882
+Nord-Jæren;E+R+F+K;Alle;5,6m - 7,6m;Juli;2,682;99,000;292847;285197;6.830;3.292
+Nord-Jæren;E+R+F+K;Alle;7,6m - 12,5m;Juli;-2,603;99,000;276216;283598;9.936;4.789
+Nord-Jæren;E+R+F+K;Alle;12,5m - 16,0m;Juli;-22,532;99,000;83841;108226;26.437;12.742
+Nord-Jæren;E+R+F+K;Alle;>= 16,0m;Juli;7,851;99,000;143864;133391;36.221;17.458
+Nord-Jæren;E+R+F+K;Yrkesdøgn;Alle;Juli;3,019;99,000;6981868;6777262;2.923;1.409
+Nord-Jæren;E+R+F+K;Yrkesdøgn;< 5,6m;Juli;3,193;99,000;6289016;6094444;2.704;1.303
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 5,6m;Juli;1,318;99,000;690870;681886;8.033;3.872
+Nord-Jæren;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Juli;5,997;99,000;248328;234279;7.153;3.448
+Nord-Jæren;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Juli;0,213;99,000;242689;242174;9.022;4.348
+Nord-Jæren;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Juli;-18,120;99,000;69875;85338;28.170;13.577
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 16,0m;Juli;8,229;99,000;129978;120095;28.128;13.557
+Nord-Jæren;E+R+F+K;Helgedøgn;Alle;Juli;-13,010;99,000;1938992;2228987;3.945;1.901
+Nord-Jæren;E+R+F+K;Helgedøgn;< 5,6m;Juli;-12,743;99,000;1832571;2100194;3.838;1.850
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 5,6m;Juli;-17,606;99,000;105898;128526;8.685;4.186
+Nord-Jæren;E+R+F+K;Helgedøgn;5,6m - 7,6m;Juli;-12,567;99,000;44519;50918;7.757;3.739
+Nord-Jæren;E+R+F+K;Helgedøgn;7,6m - 12,5m;Juli;-19,064;99,000;33527;41424;15.294;7.371
+Nord-Jæren;E+R+F+K;Helgedøgn;12,5m - 16,0m;Juli;-38,981;99,000;13966;22888;25.115;12.105
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 16,0m;Juli;4,437;99,000;13886;13296;143.523;69.176
+Nord-Jæren;E+R+F+K;Alle;Alle;August;-1,098;97,000;10920426;11041659;2.590;1.212
+Nord-Jæren;E+R+F+K;Alle;< 5,6m;August;-1,243;97,000;9933543;10058579;2.482;1.162
+Nord-Jæren;E+R+F+K;Alle;>= 5,6m;August;0,364;97,000;984939;981370;6.831;3.197
+Nord-Jæren;E+R+F+K;Alle;5,6m - 7,6m;August;2,419;97,000;367664;358980;6.185;2.895
+Nord-Jæren;E+R+F+K;Alle;7,6m - 12,5m;August;1,860;97,000;341643;335405;5.366;2.511
+Nord-Jæren;E+R+F+K;Alle;12,5m - 16,0m;August;-11,278;97,000;111327;125479;21.241;9.941
+Nord-Jæren;E+R+F+K;Alle;>= 16,0m;August;1,733;97,000;164305;161506;11.999;5.616
+Nord-Jæren;E+R+F+K;Yrkesdøgn;Alle;August;-1,000;98,000;8904559;8994488;2.663;1.246
+Nord-Jæren;E+R+F+K;Yrkesdøgn;< 5,6m;August;-1,171;98,000;8020566;8115605;2.518;1.179
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 5,6m;August;0,552;98,000;882300;877453;7.066;3.307
+Nord-Jæren;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;August;2,604;98,000;324493;316258;6.314;2.955
+Nord-Jæren;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;August;1,736;98,000;306048;300827;5.463;2.557
+Nord-Jæren;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;August;-10,220;98,000;97635;108749;22.780;10.661
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 16,0m;August;1,652;98,000;154124;151619;12.630;5.911
+Nord-Jæren;E+R+F+K;Helgedøgn;Alle;August;-1,529;97,000;2015867;2047171;3.688;1.726
+Nord-Jæren;E+R+F+K;Helgedøgn;< 5,6m;August;-1,544;97,000;1912977;1942974;3.676;1.720
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 5,6m;August;-1,230;97,000;102639;103917;6.586;3.082
+Nord-Jæren;E+R+F+K;Helgedøgn;5,6m - 7,6m;August;1,051;97,000;43171;42722;7.867;3.682
+Nord-Jæren;E+R+F+K;Helgedøgn;7,6m - 12,5m;August;2,941;97,000;35595;34578;8.252;3.862
+Nord-Jæren;E+R+F+K;Helgedøgn;12,5m - 16,0m;August;-18,159;97,000;13692;16730;17.644;8.258
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 16,0m;August;2,974;97,000;10181;9887;12.809;5.995
+Nord-Jæren;E+R+F+K;Alle;Alle;September;-3,321;99,000;11246789;11633092;3.017;1.373
+Nord-Jæren;E+R+F+K;Alle;< 5,6m;September;-3,179;99,000;10278036;10615456;2.994;1.363
+Nord-Jæren;E+R+F+K;Alle;>= 5,6m;September;-4,787;99,000;966831;1015437;5.109;2.326
+Nord-Jæren;E+R+F+K;Alle;5,6m - 7,6m;September;-2,562;99,000;362637;372171;5.949;2.708
+Nord-Jæren;E+R+F+K;Alle;7,6m - 12,5m;September;-4,960;99,000;327348;344433;4.323;1.968
+Nord-Jæren;E+R+F+K;Alle;12,5m - 16,0m;September;-11,358;99,000;115043;129784;16.140;7.347
+Nord-Jæren;E+R+F+K;Alle;>= 16,0m;September;-4,286;99,000;161803;169049;13.306;6.057
+Nord-Jæren;E+R+F+K;Yrkesdøgn;Alle;September;-6,260;99,000;8513015;9081556;3.174;1.445
+Nord-Jæren;E+R+F+K;Yrkesdøgn;< 5,6m;September;-6,259;99,000;7673604;8185929;3.119;1.420
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 5,6m;September;-6,258;99,000;837863;893797;5.381;2.449
+Nord-Jæren;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;September;-4,260;99,000;308320;322038;6.182;2.814
+Nord-Jæren;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;September;-6,391;99,000;282108;301367;4.192;1.908
+Nord-Jæren;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;September;-13,095;99,000;97860;112606;17.386;7.914
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 16,0m;September;-5,204;99,000;149575;157786;13.556;6.171
+Nord-Jæren;E+R+F+K;Helgedøgn;Alle;September;7,142;99,000;2733774;2551536;3.470;1.580
+Nord-Jæren;E+R+F+K;Helgedøgn;< 5,6m;September;7,199;99,000;2604432;2429527;3.485;1.586
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 5,6m;September;6,024;99,000;128968;121640;4.976;2.265
+Nord-Jæren;E+R+F+K;Helgedøgn;5,6m - 7,6m;September;8,346;99,000;54317;50133;7.822;3.561
+Nord-Jæren;E+R+F+K;Helgedøgn;7,6m - 12,5m;September;5,048;99,000;45240;43066;8.802;4.007
+Nord-Jæren;E+R+F+K;Helgedøgn;12,5m - 16,0m;September;0,029;99,000;17183;17178;15.413;7.016
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 16,0m;September;8,568;99,000;12228;11263;12.174;5.541
+Nord-Jæren;E+R+F+K;Alle;Alle;Oktober;-5,149;98,000;11564581;12192382;8.852;3.925
+Nord-Jæren;E+R+F+K;Alle;< 5,6m;Oktober;-5,872;98,000;10492647;11147191;9.242;4.098
+Nord-Jæren;E+R+F+K;Alle;>= 5,6m;Oktober;2,565;98,000;1069166;1042423;5.103;2.263
+Nord-Jæren;E+R+F+K;Alle;5,6m - 7,6m;Oktober;1,591;98,000;388794;382705;5.592;2.479
+Nord-Jæren;E+R+F+K;Alle;7,6m - 12,5m;Oktober;3,886;98,000;352813;339615;6.300;2.793
+Nord-Jæren;E+R+F+K;Alle;12,5m - 16,0m;Oktober;-0,691;98,000;132916;133841;22.292;9.884
+Nord-Jæren;E+R+F+K;Alle;>= 16,0m;Oktober;4,500;98,000;194643;186262;16.103;7.140
+Nord-Jæren;E+R+F+K;Yrkesdøgn;Alle;Oktober;-1,590;99,000;9451479;9604179;9.152;4.058
+Nord-Jæren;E+R+F+K;Yrkesdøgn;< 5,6m;Oktober;-2,247;99,000;8480805;8675708;9.631;4.270
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 5,6m;Oktober;4,547;99,000;968268;926160;5.407;2.397
+Nord-Jæren;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Oktober;3,728;99,000;347565;335075;5.964;2.644
+Nord-Jæren;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Oktober;5,975;99,000;318732;300761;6.392;2.834
+Nord-Jæren;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Oktober;1,318;99,000;118204;116666;24.988;11.079
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 16,0m;Oktober;5,821;99,000;183767;173658;16.333;7.241
+Nord-Jæren;E+R+F+K;Helgedøgn;Alle;Oktober;-18,356;98,000;2113102;2588203;8.026;3.558
+Nord-Jæren;E+R+F+K;Helgedøgn;< 5,6m;Oktober;-18,598;98,000;2011842;2471483;8.206;3.638
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 5,6m;Oktober;-13,216;98,000;100898;116263;4.716;2.091
+Nord-Jæren;E+R+F+K;Helgedøgn;5,6m - 7,6m;Oktober;-13,439;98,000;41229;47630;6.618;2.934
+Nord-Jæren;E+R+F+K;Helgedøgn;7,6m - 12,5m;Oktober;-12,284;98,000;34081;38854;7.529;3.338
+Nord-Jæren;E+R+F+K;Helgedøgn;12,5m - 16,0m;Oktober;-14,341;98,000;14712;17175;13.527;5.998
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 16,0m;Oktober;-13,710;98,000;10876;12604;12.953;5.743
+Nord-Jæren;E+R+F+K;Alle;Alle;November;-5,532;95,000;9143235;9678629;9.772;4.573
+Nord-Jæren;E+R+F+K;Alle;< 5,6m;November;-6,168;95,000;8292914;8838031;10.323;4.831
+Nord-Jæren;E+R+F+K;Alle;>= 5,6m;November;1,134;95,000;847436;837933;9.472;4.433
+Nord-Jæren;E+R+F+K;Alle;5,6m - 7,6m;November;6,471;95,000;335830;315420;18.298;8.564
+Nord-Jæren;E+R+F+K;Alle;7,6m - 12,5m;November;-0,487;95,000;264816;266113;8.438;3.949
+Nord-Jæren;E+R+F+K;Alle;12,5m - 16,0m;November;-10,792;95,000;89570;100406;37.237;17.428
+Nord-Jæren;E+R+F+K;Alle;>= 16,0m;November;0,786;95,000;157220;155994;46.973;21.984
+Nord-Jæren;E+R+F+K;Yrkesdøgn;Alle;November;-5,612;95,000;7336004;7772182;9.739;4.558
+Nord-Jæren;E+R+F+K;Yrkesdøgn;< 5,6m;November;-6,326;95,000;6569922;7013592;10.356;4.847
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 5,6m;November;0,977;95,000;763663;756276;9.477;4.435
+Nord-Jæren;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;November;6,591;95,000;298783;280307;18.036;8.441
+Nord-Jæren;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;November;-0,515;95,000;239507;240748;8.536;3.995
+Nord-Jæren;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;November;-11,737;95,000;78900;89392;42.984;20.117
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 16,0m;November;0,442;95,000;146473;145829;48.951;22.910
+Nord-Jæren;E+R+F+K;Helgedøgn;Alle;November;-5,204;96,000;1807231;1906447;10.737;5.025
+Nord-Jæren;E+R+F+K;Helgedøgn;< 5,6m;November;-5,560;96,000;1722992;1824439;10.991;5.144
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 5,6m;November;2,591;96,000;83773;81657;11.362;5.318
+Nord-Jæren;E+R+F+K;Helgedøgn;5,6m - 7,6m;November;5,508;96,000;37047;35113;20.926;9.794
+Nord-Jæren;E+R+F+K;Helgedøgn;7,6m - 12,5m;November;-0,221;96,000;25309;25365;11.053;5.173
+Nord-Jæren;E+R+F+K;Helgedøgn;12,5m - 16,0m;November;-3,123;96,000;10670;11014;15.082;7.059
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 16,0m;November;5,726;96,000;10747;10165;29.289;13.708
+Nord-Jæren;E+R+F+K;Alle;Alle;Desember;-5,136;97,000;10501005;11069487;8.436;3.840
+Nord-Jæren;E+R+F+K;Alle;< 5,6m;Desember;-5,374;97,000;9711851;10263362;8.889;4.046
+Nord-Jæren;E+R+F+K;Alle;>= 5,6m;Desember;-2,108;97,000;787002;803949;11.631;5.294
+Nord-Jæren;E+R+F+K;Alle;5,6m - 7,6m;Desember;4,822;97,000;325206;310245;24.055;10.950
+Nord-Jæren;E+R+F+K;Alle;7,6m - 12,5m;Desember;-4,544;97,000;238606;249965;7.415;3.375
+Nord-Jæren;E+R+F+K;Alle;12,5m - 16,0m;Desember;-17,913;97,000;75944;92517;35.584;16.198
+Nord-Jæren;E+R+F+K;Alle;>= 16,0m;Desember;-2,629;97,000;147246;151222;64.290;29.264
+Nord-Jæren;E+R+F+K;Yrkesdøgn;Alle;Desember;-7,869;97,000;7458941;8096020;7.992;3.638
+Nord-Jæren;E+R+F+K;Yrkesdøgn;< 5,6m;Desember;-8,182;97,000;6790106;7395140;8.530;3.883
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 5,6m;Desember;-4,566;97,000;667161;699081;10.659;4.852
+Nord-Jæren;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Desember;2,063;97,000;268426;263001;21.693;9.875
+Nord-Jæren;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Desember;-6,685;97,000;206507;221302;7.242;3.297
+Nord-Jæren;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Desember;-19,514;97,000;63141;78450;40.313;18.350
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 16,0m;Desember;-5,311;97,000;129087;136328;57.412;26.134
+Nord-Jæren;E+R+F+K;Helgedøgn;Alle;Desember;2,307;97,000;3042064;2973467;9.973;4.540
+Nord-Jæren;E+R+F+K;Helgedøgn;< 5,6m;Desember;1,866;97,000;2921745;2868222;10.122;4.607
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 5,6m;Desember;14,278;97,000;119841;104868;21.191;9.646
+Nord-Jæren;E+R+F+K;Helgedøgn;5,6m - 7,6m;Desember;20,185;97,000;56780;47244;38.502;17.526
+Nord-Jæren;E+R+F+K;Helgedøgn;7,6m - 12,5m;Desember;11,988;97,000;32099;28663;12.980;5.908
+Nord-Jæren;E+R+F+K;Helgedøgn;12,5m - 16,0m;Desember;-8,986;97,000;12803;14067;22.938;10.441
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 16,0m;Desember;21,922;97,000;18159;14894;227.903;103.740
+Nord-Jæren;E+R+F+K;Alle;Alle;Siste 12 måneder;-1,569;98,000;122944701;124904885;3.841;1.661
+Nord-Jæren;E+R+F+K;Alle;< 5,6m;Siste 12 måneder;-1,815;98,000;112289745;114365917;3.989;1.725
+Nord-Jæren;E+R+F+K;Alle;>= 5,6m;Siste 12 måneder;1,086;98,000;10628799;10514565;3.777;1.633
+Nord-Jæren;E+R+F+K;Alle;5,6m - 7,6m;Siste 12 måneder;4,025;98,000;3934239;3782028;5.990;2.590
+Nord-Jæren;E+R+F+K;Alle;7,6m - 12,5m;Siste 12 måneder;0,939;98,000;3503280;3470683;6.637;2.870
+Nord-Jæren;E+R+F+K;Alle;12,5m - 16,0m;Siste 12 måneder;-5,428;98,000;1266288;1338973;14.672;6.345
+Nord-Jæren;E+R+F+K;Alle;>= 16,0m;Siste 12 måneder;0,110;98,000;1924992;1922881;8.627;3.730
+Nord-Jæren;E+R+F+K;Yrkesdøgn;Alle;Siste 12 måneder;-1,545;98,000;95320350;96816575;3.952;1.709
+Nord-Jæren;E+R+F+K;Yrkesdøgn;< 5,6m;Siste 12 måneder;-1,831;98,000;85965984;87569085;4.139;1.790
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 5,6m;Siste 12 måneder;1,144;98,000;9332786;9227193;3.791;1.639
+Nord-Jæren;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;4,064;98,000;3396019;3263396;5.957;2.576
+Nord-Jæren;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;1,022;98,000;3086471;3055257;5.776;2.498
+Nord-Jæren;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-5,183;98,000;1080073;1139109;14.990;6.482
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 16,0m;Siste 12 måneder;0,045;98,000;1770223;1769431;8.570;3.706
+Nord-Jæren;E+R+F+K;Helgedøgn;Alle;Siste 12 måneder;-1,652;98,000;27624351;28088310;4.070;1.760
+Nord-Jæren;E+R+F+K;Helgedøgn;< 5,6m;Siste 12 måneder;-1,765;98,000;26323761;26796832;4.126;1.784
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 5,6m;Siste 12 måneder;0,671;98,000;1296013;1287372;4.844;2.095
+Nord-Jæren;E+R+F+K;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;3,777;98,000;538220;518632;7.243;3.132
+Nord-Jæren;E+R+F+K;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;0,333;98,000;416809;415426;12.691;5.488
+Nord-Jæren;E+R+F+K;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-6,829;98,000;186215;199864;17.154;7.418
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 16,0m;Siste 12 måneder;0,860;98,000;154769;153450;17.144;7.414
+Nord-Jæren;E+R+F+K;Alle;Alle;Hittil i år;-1,569;98,000;122944701;124904885;3.841;1.661
+Nord-Jæren;E+R+F+K;Alle;< 5,6m;Hittil i år;-1,815;98,000;112289745;114365917;3.989;1.725
+Nord-Jæren;E+R+F+K;Alle;>= 5,6m;Hittil i år;1,086;98,000;10628799;10514565;3.777;1.633
+Nord-Jæren;E+R+F+K;Alle;5,6m - 7,6m;Hittil i år;4,025;98,000;3934239;3782028;5.990;2.590
+Nord-Jæren;E+R+F+K;Alle;7,6m - 12,5m;Hittil i år;0,939;98,000;3503280;3470683;6.637;2.870
+Nord-Jæren;E+R+F+K;Alle;12,5m - 16,0m;Hittil i år;-5,428;98,000;1266288;1338973;14.672;6.345
+Nord-Jæren;E+R+F+K;Alle;>= 16,0m;Hittil i år;0,110;98,000;1924992;1922881;8.627;3.730
+Nord-Jæren;E+R+F+K;Yrkesdøgn;Alle;Hittil i år;-1,545;98,000;95320350;96816575;3.952;1.709
+Nord-Jæren;E+R+F+K;Yrkesdøgn;< 5,6m;Hittil i år;-1,831;98,000;85965984;87569085;4.139;1.790
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 5,6m;Hittil i år;1,144;98,000;9332786;9227193;3.791;1.639
+Nord-Jæren;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Hittil i år;4,064;98,000;3396019;3263396;5.957;2.576
+Nord-Jæren;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Hittil i år;1,022;98,000;3086471;3055257;5.776;2.498
+Nord-Jæren;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-5,183;98,000;1080073;1139109;14.990;6.482
+Nord-Jæren;E+R+F+K;Yrkesdøgn;>= 16,0m;Hittil i år;0,045;98,000;1770223;1769431;8.570;3.706
+Nord-Jæren;E+R+F+K;Helgedøgn;Alle;Hittil i år;-1,652;98,000;27624351;28088310;4.070;1.760
+Nord-Jæren;E+R+F+K;Helgedøgn;< 5,6m;Hittil i år;-1,765;98,000;26323761;26796832;4.126;1.784
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 5,6m;Hittil i år;0,671;98,000;1296013;1287372;4.844;2.095
+Nord-Jæren;E+R+F+K;Helgedøgn;5,6m - 7,6m;Hittil i år;3,777;98,000;538220;518632;7.243;3.132
+Nord-Jæren;E+R+F+K;Helgedøgn;7,6m - 12,5m;Hittil i år;0,333;98,000;416809;415426;12.691;5.488
+Nord-Jæren;E+R+F+K;Helgedøgn;12,5m - 16,0m;Hittil i år;-6,829;98,000;186215;199864;17.154;7.418
+Nord-Jæren;E+R+F+K;Helgedøgn;>= 16,0m;Hittil i år;0,860;98,000;154769;153450;17.144;7.414
+Nord-Jæren;F;Alle;Alle;Januar;-2,505;97,000;3547640;3638782;4.799;3.433
+Nord-Jæren;F;Alle;< 5,6m;Januar;-3,036;97,000;3275582;3378139;4.705;3.365
+Nord-Jæren;F;Alle;>= 5,6m;Januar;4,261;97,000;270740;259675;6.689;4.785
+Nord-Jæren;F;Alle;5,6m - 7,6m;Januar;8,088;97,000;110008;101776;13.946;9.976
+Nord-Jæren;F;Alle;7,6m - 12,5m;Januar;-6,287;97,000;76702;81848;20.708;14.814
+Nord-Jæren;F;Alle;12,5m - 16,0m;Januar;18,743;97,000;51480;43354;24.693;17.664
+Nord-Jæren;F;Alle;>= 16,0m;Januar;-0,450;97,000;32550;32697;24.035;17.194
+Nord-Jæren;F;Yrkesdøgn;Alle;Januar;-2,897;97,000;2824982;2909253;5.465;3.910
+Nord-Jæren;F;Yrkesdøgn;< 5,6m;Januar;-3,532;97,000;2582471;2677036;5.376;3.845
+Nord-Jæren;F;Yrkesdøgn;>= 5,6m;Januar;4,310;97,000;241336;231364;6.977;4.991
+Nord-Jæren;F;Yrkesdøgn;5,6m - 7,6m;Januar;7,675;97,000;98432;91416;13.180;9.429
+Nord-Jæren;F;Yrkesdøgn;7,6m - 12,5m;Januar;-5,019;97,000;69550;73225;18.424;13.180
+Nord-Jæren;F;Yrkesdøgn;12,5m - 16,0m;Januar;18,170;97,000;43086;36461;21.806;15.599
+Nord-Jæren;F;Yrkesdøgn;>= 16,0m;Januar;0,020;97,000;30268;30262;24.469;17.504
+Nord-Jæren;F;Helgedøgn;Alle;Januar;-0,942;97,000;722658;729529;5.385;3.852
+Nord-Jæren;F;Helgedøgn;< 5,6m;Januar;-1,140;97,000;693111;701103;5.477;3.918
+Nord-Jæren;F;Helgedøgn;>= 5,6m;Januar;3,861;97,000;29404;28311;5.831;4.171
+Nord-Jæren;F;Helgedøgn;5,6m - 7,6m;Januar;11,737;97,000;11576;10360;22.138;15.837
+Nord-Jæren;F;Helgedøgn;7,6m - 12,5m;Januar;-17,059;97,000;7152;8623;37.496;26.823
+Nord-Jæren;F;Helgedøgn;12,5m - 16,0m;Januar;21,776;97,000;8394;6893;55.832;39.940
+Nord-Jæren;F;Helgedøgn;>= 16,0m;Januar;-6,283;97,000;2282;2435;35.225;25.199
+Nord-Jæren;F;Alle;Alle;Februar;-1,298;99,000;3143133;3184452;6.745;5.184
+Nord-Jæren;F;Alle;< 5,6m;Februar;-1,698;99,000;2902190;2952312;6.925;5.323
+Nord-Jæren;F;Alle;>= 5,6m;Februar;3,802;99,000;240492;231684;5.458;4.195
+Nord-Jæren;F;Alle;5,6m - 7,6m;Februar;7,571;99,000;96707;89901;12.402;9.533
+Nord-Jæren;F;Alle;7,6m - 12,5m;Februar;-5,681;99,000;71641;75956;21.123;16.237
+Nord-Jæren;F;Alle;12,5m - 16,0m;Februar;15,171;99,000;48858;42422;22.127;17.009
+Nord-Jæren;F;Alle;>= 16,0m;Februar;-0,508;99,000;23286;23405;28.666;22.034
+Nord-Jæren;F;Yrkesdøgn;Alle;Februar;-1,387;99,000;2514145;2549511;7.120;5.473
+Nord-Jæren;F;Yrkesdøgn;< 5,6m;Februar;-1,875;99,000;2298236;2342157;7.288;5.602
+Nord-Jæren;F;Yrkesdøgn;>= 5,6m;Februar;4,117;99,000;215531;207008;6.179;4.750
+Nord-Jæren;F;Yrkesdøgn;5,6m - 7,6m;Februar;8,069;99,000;86764;80286;11.868;9.122
+Nord-Jæren;F;Yrkesdøgn;7,6m - 12,5m;Februar;-5,056;99,000;64633;68075;19.249;14.796
+Nord-Jæren;F;Yrkesdøgn;12,5m - 16,0m;Februar;14,944;99,000;41519;36121;20.170;15.504
+Nord-Jæren;F;Yrkesdøgn;>= 16,0m;Februar;0,395;99,000;22615;22526;28.890;22.206
+Nord-Jæren;F;Helgedøgn;Alle;Februar;-0,938;100,000;628988;634941;5.499;4.227
+Nord-Jæren;F;Helgedøgn;< 5,6m;Februar;-1,016;100,000;603954;610155;5.787;4.449
+Nord-Jæren;F;Helgedøgn;>= 5,6m;Februar;1,155;100,000;24961;24676;3.270;2.514
+Nord-Jæren;F;Helgedøgn;5,6m - 7,6m;Februar;3,411;100,000;9943;9615;20.638;15.864
+Nord-Jæren;F;Helgedøgn;7,6m - 12,5m;Februar;-11,077;100,000;7008;7881;36.274;27.883
+Nord-Jæren;F;Helgedøgn;12,5m - 16,0m;Februar;16,474;100,000;7339;6301;39.524;30.381
+Nord-Jæren;F;Helgedøgn;>= 16,0m;Februar;-23,663;100,000;671;879;41.177;31.651
+Nord-Jæren;F;Alle;Alle;Mars;-5,359;98,000;3319776;3507769;7.035;5.407
+Nord-Jæren;F;Alle;< 5,6m;Mars;-4,992;98,000;3081323;3243239;7.119;5.472
+Nord-Jæren;F;Alle;>= 5,6m;Mars;-9,773;98,000;237798;263555;6.934;5.330
+Nord-Jæren;F;Alle;5,6m - 7,6m;Mars;-8,166;98,000;97231;105877;7.525;5.784
+Nord-Jæren;F;Alle;7,6m - 12,5m;Mars;-9,824;98,000;74072;82142;5.965;4.585
+Nord-Jæren;F;Alle;12,5m - 16,0m;Mars;-10,166;98,000;37131;41333;18.528;14.242
+Nord-Jæren;F;Alle;>= 16,0m;Mars;-14,148;98,000;29364;34203;24.625;18.929
+Nord-Jæren;F;Yrkesdøgn;Alle;Mars;-11,524;98,000;2527896;2857142;9.183;7.058
+Nord-Jæren;F;Yrkesdøgn;< 5,6m;Mars;-11,370;98,000;2321004;2618763;9.350;7.187
+Nord-Jæren;F;Yrkesdøgn;>= 5,6m;Mars;-13,120;98,000;206360;237523;8.165;6.276
+Nord-Jæren;F;Yrkesdøgn;5,6m - 7,6m;Mars;-11,469;98,000;84616;95578;8.571;6.588
+Nord-Jæren;F;Yrkesdøgn;7,6m - 12,5m;Mars;-12,723;98,000;65120;74613;6.269;4.818
+Nord-Jæren;F;Yrkesdøgn;12,5m - 16,0m;Mars;-15,269;98,000;30061;35478;18.394;14.139
+Nord-Jæren;F;Yrkesdøgn;>= 16,0m;Mars;-16,610;98,000;26563;31854;25.075;19.275
+Nord-Jæren;F;Helgedøgn;Alle;Mars;21,710;98,000;791880;650627;10.385;7.983
+Nord-Jæren;F;Helgedøgn;< 5,6m;Mars;21,753;98,000;760319;624476;10.491;8.064
+Nord-Jæren;F;Helgedøgn;>= 5,6m;Mars;20,767;98,000;31438;26032;9.452;7.266
+Nord-Jæren;F;Helgedøgn;5,6m - 7,6m;Mars;22,488;98,000;12615;10299;12.693;9.757
+Nord-Jæren;F;Helgedøgn;7,6m - 12,5m;Mars;18,900;98,000;8952;7529;15.559;11.960
+Nord-Jæren;F;Helgedøgn;12,5m - 16,0m;Mars;20,751;98,000;7070;5855;16.567;12.734
+Nord-Jæren;F;Helgedøgn;>= 16,0m;Mars;19,242;98,000;2801;2349;32.742;25.167
+Nord-Jæren;F;Alle;Alle;April;11,488;98,000;4652731;4173295;7.109;4.517
+Nord-Jæren;F;Alle;< 5,6m;April;10,767;98,000;4295021;3877515;7.040;4.473
+Nord-Jæren;F;Alle;>= 5,6m;April;21,011;98,000;356611;294694;10.862;6.901
+Nord-Jæren;F;Alle;5,6m - 7,6m;April;24,289;98,000;141811;114098;11.466;7.285
+Nord-Jæren;F;Alle;7,6m - 12,5m;April;16,508;98,000;115895;99474;19.398;12.325
+Nord-Jæren;F;Alle;12,5m - 16,0m;April;25,419;98,000;61670;49171;32.039;20.356
+Nord-Jæren;F;Alle;>= 16,0m;April;16,538;98,000;37235;31951;34.934;22.196
+Nord-Jæren;F;Yrkesdøgn;Alle;April;23,618;99,000;3573983;2891161;7.202;4.576
+Nord-Jæren;F;Yrkesdøgn;< 5,6m;April;23,135;99,000;3263010;2649943;7.127;4.529
+Nord-Jæren;F;Yrkesdøgn;>= 5,6m;April;28,988;99,000;310029;240355;11.431;7.263
+Nord-Jæren;F;Yrkesdøgn;5,6m - 7,6m;April;32,289;99,000;123432;93305;13.504;8.580
+Nord-Jæren;F;Yrkesdøgn;7,6m - 12,5m;April;22,774;99,000;100451;81818;16.059;10.204
+Nord-Jæren;F;Yrkesdøgn;12,5m - 16,0m;April;37,774;99,000;51580;37438;35.731;22.702
+Nord-Jæren;F;Yrkesdøgn;>= 16,0m;April;24,365;99,000;34566;27794;36.762;23.357
+Nord-Jæren;F;Helgedøgn;Alle;April;-15,863;97,000;1078748;1282134;5.749;3.653
+Nord-Jæren;F;Helgedøgn;< 5,6m;April;-15,931;97,000;1032011;1227572;5.800;3.685
+Nord-Jæren;F;Helgedøgn;>= 5,6m;April;-14,275;97,000;46582;54339;6.877;4.370
+Nord-Jæren;F;Helgedøgn;5,6m - 7,6m;April;-11,610;97,000;18379;20793;6.440;4.092
+Nord-Jæren;F;Helgedøgn;7,6m - 12,5m;April;-12,528;97,000;15444;17656;28.949;18.394
+Nord-Jæren;F;Helgedøgn;12,5m - 16,0m;April;-14,003;97,000;10090;11733;25.473;16.185
+Nord-Jæren;F;Helgedøgn;>= 16,0m;April;-35,795;97,000;2669;4157;25.672;16.311
+Nord-Jæren;F;Alle;Alle;Mai;-0,494;99,000;4189366;4210144;3.200;2.149
+Nord-Jæren;F;Alle;< 5,6m;Mai;-0,418;99,000;3881272;3897562;3.328;2.236
+Nord-Jæren;F;Alle;>= 5,6m;Mai;-1,525;99,000;306771;311523;2.837;1.906
+Nord-Jæren;F;Alle;5,6m - 7,6m;Mai;1,050;99,000;118858;117623;10.641;7.149
+Nord-Jæren;F;Alle;7,6m - 12,5m;Mai;-2,822;99,000;102581;105560;15.464;10.389
+Nord-Jæren;F;Alle;12,5m - 16,0m;Mai;2,352;99,000;55524;54248;20.238;13.596
+Nord-Jæren;F;Alle;>= 16,0m;Mai;-12,566;99,000;29808;34092;16.613;11.161
+Nord-Jæren;F;Yrkesdøgn;Alle;Mai;-3,570;99,000;3026963;3139013;3.963;2.662
+Nord-Jæren;F;Yrkesdøgn;< 5,6m;Mai;-3,624;99,000;2771942;2876173;4.104;2.757
+Nord-Jæren;F;Yrkesdøgn;>= 5,6m;Mai;-3,066;99,000;253928;261959;3.291;2.211
+Nord-Jæren;F;Yrkesdøgn;5,6m - 7,6m;Mai;-0,573;99,000;98847;99417;9.680;6.503
+Nord-Jæren;F;Yrkesdøgn;7,6m - 12,5m;Mai;-3,044;99,000;86562;89280;13.728;9.222
+Nord-Jæren;F;Yrkesdøgn;12,5m - 16,0m;Mai;-0,348;99,000;42671;42820;17.112;11.496
+Nord-Jæren;F;Yrkesdøgn;>= 16,0m;Mai;-15,091;99,000;25848;30442;18.532;12.450
+Nord-Jæren;F;Helgedøgn;Alle;Mai;8,521;100,000;1162403;1071131;3.404;2.287
+Nord-Jæren;F;Helgedøgn;< 5,6m;Mai;8,610;100,000;1109330;1021389;3.436;2.308
+Nord-Jæren;F;Helgedøgn;>= 5,6m;Mai;6,616;100,000;52843;49564;7.558;5.078
+Nord-Jæren;F;Helgedøgn;5,6m - 7,6m;Mai;9,914;100,000;20011;18206;19.360;13.006
+Nord-Jæren;F;Helgedøgn;7,6m - 12,5m;Mai;-1,603;100,000;16019;16280;26.463;17.778
+Nord-Jæren;F;Helgedøgn;12,5m - 16,0m;Mai;12,469;100,000;12853;11428;41.536;27.905
+Nord-Jæren;F;Helgedøgn;>= 16,0m;Mai;8,493;100,000;3960;3650;34.757;23.350
+Nord-Jæren;F;Alle;Alle;Juni;0,316;99,000;4221322;4208024;4.071;2.735
+Nord-Jæren;F;Alle;< 5,6m;Juni;-0,053;99,000;3877761;3879799;3.804;2.556
+Nord-Jæren;F;Alle;>= 5,6m;Juni;4,673;99,000;342401;327115;8.378;5.629
+Nord-Jæren;F;Alle;5,6m - 7,6m;Juni;5,463;99,000;133966;127027;12.024;8.078
+Nord-Jæren;F;Alle;7,6m - 12,5m;Juni;0,829;99,000;114749;113805;15.039;10.103
+Nord-Jæren;F;Alle;12,5m - 16,0m;Juni;14,604;99,000;57499;50172;23.702;15.923
+Nord-Jæren;F;Alle;>= 16,0m;Juni;0,210;99,000;36187;36111;23.710;15.928
+Nord-Jæren;F;Yrkesdøgn;Alle;Juni;0,769;99,000;3330026;3304620;4.482;3.011
+Nord-Jæren;F;Yrkesdøgn;< 5,6m;Juni;0,384;99,000;3029135;3017550;4.196;2.819
+Nord-Jæren;F;Yrkesdøgn;>= 5,6m;Juni;4,833;99,000;299952;286125;8.629;5.797
+Nord-Jæren;F;Yrkesdøgn;5,6m - 7,6m;Juni;5,827;99,000;117550;111078;11.493;7.721
+Nord-Jæren;F;Yrkesdøgn;7,6m - 12,5m;Juni;0,268;99,000;100812;100543;13.739;9.230
+Nord-Jæren;F;Yrkesdøgn;12,5m - 16,0m;Juni;13,994;99,000;48086;42183;23.509;15.794
+Nord-Jæren;F;Yrkesdøgn;>= 16,0m;Juni;3,660;99,000;33504;32321;22.172;14.895
+Nord-Jæren;F;Helgedøgn;Alle;Juni;-1,340;99,000;891296;903404;2.847;1.913
+Nord-Jæren;F;Helgedøgn;< 5,6m;Juni;-1,580;99,000;848626;862249;2.809;1.887
+Nord-Jæren;F;Helgedøgn;>= 5,6m;Juni;3,559;99,000;42449;40990;7.985;5.365
+Nord-Jæren;F;Helgedøgn;5,6m - 7,6m;Juni;2,928;99,000;16416;15949;17.562;11.798
+Nord-Jæren;F;Helgedøgn;7,6m - 12,5m;Juni;5,090;99,000;13937;13262;25.926;17.417
+Nord-Jæren;F;Helgedøgn;12,5m - 16,0m;Juni;17,825;99,000;9413;7989;41.577;27.932
+Nord-Jæren;F;Helgedøgn;>= 16,0m;Juni;-29,208;99,000;2683;3790;45.730;30.722
+Nord-Jæren;F;Alle;Alle;Juli;-1,134;99,000;3531778;3572274;4.050;2.573
+Nord-Jæren;F;Alle;< 5,6m;Juli;-1,120;99,000;3256029;3292903;3.603;2.289
+Nord-Jæren;F;Alle;>= 5,6m;Juli;-1,687;99,000;274018;278719;13.166;8.365
+Nord-Jæren;F;Alle;5,6m - 7,6m;Juli;1,654;99,000;107610;105859;10.903;6.927
+Nord-Jæren;F;Alle;7,6m - 12,5m;Juli;-4,051;99,000;92855;96775;16.498;10.482
+Nord-Jæren;F;Alle;12,5m - 16,0m;Juli;-14,225;99,000;41564;48457;34.740;22.073
+Nord-Jæren;F;Alle;>= 16,0m;Juli;15,785;99,000;31989;27628;81.149;51.560
+Nord-Jæren;F;Yrkesdøgn;Alle;Juli;3,504;99,000;2779617;2685528;4.165;2.646
+Nord-Jæren;F;Yrkesdøgn;< 5,6m;Juli;3,605;99,000;2540491;2452103;3.670;2.332
+Nord-Jæren;F;Yrkesdøgn;>= 5,6m;Juli;2,030;99,000;237637;232910;13.251;8.419
+Nord-Jæren;F;Yrkesdøgn;5,6m - 7,6m;Juli;5,778;99,000;93147;88059;11.333;7.201
+Nord-Jæren;F;Yrkesdøgn;7,6m - 12,5m;Juli;-0,139;99,000;82676;82791;14.968;9.510
+Nord-Jæren;F;Yrkesdøgn;12,5m - 16,0m;Juli;-9,399;99,000;34325;37886;37.525;23.842
+Nord-Jæren;F;Yrkesdøgn;>= 16,0m;Juli;13,713;99,000;27489;24174;63.192;40.150
+Nord-Jæren;F;Helgedøgn;Alle;Juli;-15,177;99,000;752161;886746;3.664;2.328
+Nord-Jæren;F;Helgedøgn;< 5,6m;Juli;-14,898;99,000;715538;840800;3.419;2.172
+Nord-Jæren;F;Helgedøgn;>= 5,6m;Juli;-20,581;99,000;36381;45809;12.064;7.665
+Nord-Jæren;F;Helgedøgn;5,6m - 7,6m;Juli;-18,747;99,000;14463;17800;9.153;5.816
+Nord-Jæren;F;Helgedøgn;7,6m - 12,5m;Juli;-27,210;99,000;10179;13984;22.784;14.476
+Nord-Jæren;F;Helgedøgn;12,5m - 16,0m;Juli;-31,520;99,000;7239;10571;30.311;19.259
+Nord-Jæren;F;Helgedøgn;>= 16,0m;Juli;30,284;99,000;4500;3454;329.336;209.250
+Nord-Jæren;F;Alle;Alle;August;-1,461;97,000;4986748;5060670;3.503;2.023
+Nord-Jæren;F;Alle;< 5,6m;August;-1,737;97,000;4585399;4666479;3.293;1.901
+Nord-Jæren;F;Alle;>= 5,6m;August;1,777;97,000;400074;393089;9.540;5.508
+Nord-Jæren;F;Alle;5,6m - 7,6m;August;2,563;97,000;160791;156773;8.763;5.059
+Nord-Jæren;F;Alle;7,6m - 12,5m;August;2,842;97,000;134545;130827;7.985;4.610
+Nord-Jæren;F;Alle;12,5m - 16,0m;August;-3,498;97,000;63171;65461;21.687;12.522
+Nord-Jæren;F;Alle;>= 16,0m;August;3,845;97,000;41567;40028;21.893;12.640
+Nord-Jæren;F;Yrkesdøgn;Alle;August;-1,242;97,000;4081029;4132367;3.641;2.102
+Nord-Jæren;F;Yrkesdøgn;< 5,6m;August;-1,565;97,000;3721204;3780361;3.381;1.952
+Nord-Jæren;F;Yrkesdøgn;>= 5,6m;August;2,167;97,000;358681;351073;9.744;5.626
+Nord-Jæren;F;Yrkesdøgn;5,6m - 7,6m;August;2,903;97,000;144038;139975;8.905;5.142
+Nord-Jæren;F;Yrkesdøgn;7,6m - 12,5m;August;2,777;97,000;121341;118062;8.006;4.622
+Nord-Jæren;F;Yrkesdøgn;12,5m - 16,0m;August;-2,291;97,000;54580;55860;23.947;13.826
+Nord-Jæren;F;Yrkesdøgn;>= 16,0m;August;4,159;97,000;38722;37176;22.826;13.179
+Nord-Jæren;F;Helgedøgn;Alle;August;-2,433;96,000;905719;928303;4.840;2.794
+Nord-Jæren;F;Helgedøgn;< 5,6m;August;-2,474;96,000;864195;886118;4.797;2.770
+Nord-Jæren;F;Helgedøgn;>= 5,6m;August;-1,483;96,000;41393;42016;9.805;5.661
+Nord-Jæren;F;Helgedøgn;5,6m - 7,6m;August;-0,268;96,000;16753;16798;11.208;6.472
+Nord-Jæren;F;Helgedøgn;7,6m - 12,5m;August;3,439;96,000;13204;12765;12.992;7.501
+Nord-Jæren;F;Helgedøgn;12,5m - 16,0m;August;-10,520;96,000;8591;9601;15.612;9.014
+Nord-Jæren;F;Helgedøgn;>= 16,0m;August;-0,245;96,000;2845;2852;24.437;14.110
+Nord-Jæren;F;Alle;Alle;September;-3,418;99,000;5064161;5243386;3.201;1.848
+Nord-Jæren;F;Alle;< 5,6m;September;-3,383;99,000;4676278;4840035;3.107;1.794
+Nord-Jæren;F;Alle;>= 5,6m;September;-3,802;99,000;386759;402043;5.490;3.170
+Nord-Jæren;F;Alle;5,6m - 7,6m;September;-1,347;99,000;159030;161202;8.151;4.706
+Nord-Jæren;F;Alle;7,6m - 12,5m;September;-4,312;99,000;124527;130139;5.557;3.208
+Nord-Jæren;F;Alle;12,5m - 16,0m;September;-8,601;99,000;61401;67179;16.111;9.302
+Nord-Jæren;F;Alle;>= 16,0m;September;-3,957;99,000;41801;43523;23.467;13.550
+Nord-Jæren;F;Yrkesdøgn;Alle;September;-6,241;99,000;3844129;4100018;3.286;1.897
+Nord-Jæren;F;Yrkesdøgn;< 5,6m;September;-6,342;99,000;3509647;3747291;3.160;1.825
+Nord-Jæren;F;Yrkesdøgn;>= 5,6m;September;-5,139;99,000;333524;351592;5.826;3.364
+Nord-Jæren;F;Yrkesdøgn;5,6m - 7,6m;September;-3,071;99,000;136898;141235;8.236;4.755
+Nord-Jæren;F;Yrkesdøgn;7,6m - 12,5m;September;-5,106;99,000;107803;113604;5.158;2.978
+Nord-Jæren;F;Yrkesdøgn;12,5m - 16,0m;September;-10,705;99,000;50355;56392;17.889;10.329
+Nord-Jæren;F;Yrkesdøgn;>= 16,0m;September;-4,690;99,000;38468;40361;24.019;13.868
+Nord-Jæren;F;Helgedøgn;Alle;September;6,705;98,000;1220032;1143368;4.493;2.594
+Nord-Jæren;F;Helgedøgn;< 5,6m;September;6,762;98,000;1166631;1092744;4.445;2.567
+Nord-Jæren;F;Helgedøgn;>= 5,6m;September;5,518;98,000;53235;50451;6.553;3.784
+Nord-Jæren;F;Helgedøgn;5,6m - 7,6m;September;10,843;98,000;22132;19967;11.508;6.644
+Nord-Jæren;F;Helgedøgn;7,6m - 12,5m;September;1,143;98,000;16724;16535;11.607;6.701
+Nord-Jæren;F;Helgedøgn;12,5m - 16,0m;September;2,401;98,000;11046;10787;14.599;8.429
+Nord-Jæren;F;Helgedøgn;>= 16,0m;September;5,408;98,000;3333;3162;21.863;12.623
+Nord-Jæren;F;Alle;Alle;Oktober;-7,294;99,000;4969876;5360879;11.155;6.441
+Nord-Jæren;F;Alle;< 5,6m;Oktober;-8,045;99,000;4556268;4954895;11.507;6.644
+Nord-Jæren;F;Alle;>= 5,6m;Oktober;1,897;99,000;412088;404416;7.341;4.239
+Nord-Jæren;F;Alle;5,6m - 7,6m;Oktober;1,526;99,000;166971;164462;7.862;4.540
+Nord-Jæren;F;Alle;7,6m - 12,5m;Oktober;4,108;99,000;132714;127477;9.052;5.226
+Nord-Jæren;F;Alle;12,5m - 16,0m;Oktober;-6,574;99,000;62431;66824;25.170;14.533
+Nord-Jæren;F;Alle;>= 16,0m;Oktober;9,460;99,000;49972;45653;30.962;17.877
+Nord-Jæren;F;Yrkesdøgn;Alle;Oktober;-3,813;99,000;4061920;4222951;11.548;6.668
+Nord-Jæren;F;Yrkesdøgn;< 5,6m;Oktober;-4,538;99,000;3689271;3864640;11.966;6.909
+Nord-Jæren;F;Yrkesdøgn;>= 5,6m;Oktober;4,017;99,000;371284;356944;7.832;4.522
+Nord-Jæren;F;Yrkesdøgn;5,6m - 7,6m;Oktober;3,667;99,000;150295;144979;8.349;4.820
+Nord-Jæren;F;Yrkesdøgn;7,6m - 12,5m;Oktober;6,396;99,000;119944;112734;9.399;5.427
+Nord-Jæren;F;Yrkesdøgn;12,5m - 16,0m;Oktober;-5,034;99,000;53808;56660;28.677;16.558
+Nord-Jæren;F;Yrkesdøgn;>= 16,0m;Oktober;10,961;99,000;47237;42571;31.270;18.055
+Nord-Jæren;F;Helgedøgn;Alle;Oktober;-20,210;99,000;907956;1137928;9.403;5.429
+Nord-Jæren;F;Helgedøgn;< 5,6m;Oktober;-20,478;99,000;866997;1090255;9.597;5.541
+Nord-Jæren;F;Helgedøgn;>= 5,6m;Oktober;-14,046;99,000;40804;47472;6.007;3.468
+Nord-Jæren;F;Helgedøgn;5,6m - 7,6m;Oktober;-14,407;99,000;16676;19483;6.152;3.552
+Nord-Jæren;F;Helgedøgn;7,6m - 12,5m;Oktober;-13,383;99,000;12770;14743;9.305;5.372
+Nord-Jæren;F;Helgedøgn;12,5m - 16,0m;Oktober;-15,161;99,000;8623;10164;16.392;9.464
+Nord-Jæren;F;Helgedøgn;>= 16,0m;Oktober;-11,259;99,000;2735;3082;28.954;16.717
+Nord-Jæren;F;Alle;Alle;November;-8,724;95,000;4256910;4663803;11.998;7.250
+Nord-Jæren;F;Alle;< 5,6m;November;-8,986;95,000;3932803;4321084;12.521;7.566
+Nord-Jæren;F;Alle;>= 5,6m;November;-5,503;95,000;322643;341431;7.456;4.506
+Nord-Jæren;F;Alle;5,6m - 7,6m;November;-5,741;95,000;138219;146637;6.116;3.696
+Nord-Jæren;F;Alle;7,6m - 12,5m;November;-3,678;95,000;105221;109239;11.603;7.012
+Nord-Jæren;F;Alle;12,5m - 16,0m;November;-19,754;95,000;37913;47246;43.834;26.488
+Nord-Jæren;F;Alle;>= 16,0m;November;7,781;95,000;41290;38309;95.651;57.801
+Nord-Jæren;F;Yrkesdøgn;Alle;November;-8,606;95,000;3426148;3748785;11.999;7.251
+Nord-Jæren;F;Yrkesdøgn;< 5,6m;November;-8,884;95,000;3135218;3440907;12.591;7.608
+Nord-Jæren;F;Yrkesdøgn;>= 5,6m;November;-5,548;95,000;289713;306731;7.603;4.595
+Nord-Jæren;F;Yrkesdøgn;5,6m - 7,6m;November;-5,400;95,000;124219;131310;6.077;3.672
+Nord-Jæren;F;Yrkesdøgn;7,6m - 12,5m;November;-3,779;95,000;94996;98727;11.586;7.002
+Nord-Jæren;F;Yrkesdøgn;12,5m - 16,0m;November;-21,440;95,000;32222;41016;52.516;31.735
+Nord-Jæren;F;Yrkesdøgn;>= 16,0m;November;7,282;95,000;38276;35678;99.414;60.075
+Nord-Jæren;F;Helgedøgn;Alle;November;-9,208;96,000;830762;915018;12.229;7.390
+Nord-Jæren;F;Helgedøgn;< 5,6m;November;-9,384;96,000;797585;880177;12.482;7.543
+Nord-Jæren;F;Helgedøgn;>= 5,6m;November;-5,101;96,000;32930;34700;8.362;5.053
+Nord-Jæren;F;Helgedøgn;5,6m - 7,6m;November;-8,658;96,000;14000;15327;8.627;5.213
+Nord-Jæren;F;Helgedøgn;7,6m - 12,5m;November;-2,730;96,000;10225;10512;15.123;9.138
+Nord-Jæren;F;Helgedøgn;12,5m - 16,0m;November;-8,652;96,000;5691;6230;15.814;9.557
+Nord-Jæren;F;Helgedøgn;>= 16,0m;November;14,557;96,000;3014;2631;63.969;38.656
+Nord-Jæren;F;Alle;Alle;Desember;-8,251;97,000;4084854;4452216;11.557;6.984
+Nord-Jæren;F;Alle;< 5,6m;Desember;-8,166;97,000;3826383;4166626;12.014;7.260
+Nord-Jæren;F;Alle;>= 5,6m;Desember;-9,477;97,000;257519;284479;6.804;4.112
+Nord-Jæren;F;Alle;5,6m - 7,6m;Desember;-10,327;97,000;113375;126431;5.242;3.168
+Nord-Jæren;F;Alle;7,6m - 12,5m;Desember;-8,183;97,000;79382;86457;10.463;6.323
+Nord-Jæren;F;Alle;12,5m - 16,0m;Desember;-26,271;97,000;29202;39607;42.870;25.906
+Nord-Jæren;F;Alle;>= 16,0m;Desember;11,181;97,000;35560;31984;142.787;86.285
+Nord-Jæren;F;Yrkesdøgn;Alle;Desember;-10,391;97,000;2916066;3254229;11.167;6.748
+Nord-Jæren;F;Yrkesdøgn;< 5,6m;Desember;-10,306;97,000;2698053;3008064;11.676;7.056
+Nord-Jæren;F;Yrkesdøgn;>= 5,6m;Desember;-11,405;97,000;217267;245237;6.982;4.219
+Nord-Jæren;F;Yrkesdøgn;5,6m - 7,6m;Desember;-11,943;97,000;95057;107949;5.869;3.547
+Nord-Jæren;F;Yrkesdøgn;7,6m - 12,5m;Desember;-10,067;97,000;68616;76297;10.457;6.319
+Nord-Jæren;F;Yrkesdøgn;12,5m - 16,0m;Desember;-28,067;97,000;23394;32522;50.170;30.318
+Nord-Jæren;F;Yrkesdøgn;>= 16,0m;Desember;6,080;97,000;30200;28469;127.151;76.836
+Nord-Jæren;F;Helgedøgn;Alle;Desember;-2,437;97,000;1168788;1197987;13.098;7.915
+Nord-Jæren;F;Helgedøgn;< 5,6m;Desember;-2,609;97,000;1128330;1158562;13.357;8.071
+Nord-Jæren;F;Helgedøgn;>= 5,6m;Desember;2,574;97,000;40252;39242;7.437;4.494
+Nord-Jæren;F;Helgedøgn;5,6m - 7,6m;Desember;-0,887;97,000;18318;18482;6.908;4.174
+Nord-Jæren;F;Helgedøgn;7,6m - 12,5m;Desember;5,965;97,000;10766;10160;13.905;8.403
+Nord-Jæren;F;Helgedøgn;12,5m - 16,0m;Desember;-18,024;97,000;5808;7085;28.012;16.928
+Nord-Jæren;F;Helgedøgn;>= 16,0m;Desember;52,489;97,000;5360;3515;550.095;332.419
+Nord-Jæren;F;Alle;Alle;Siste 12 måneder;-2,550;98,000;49968295;51275694;4.650;2.685
+Nord-Jæren;F;Alle;< 5,6m;Siste 12 måneder;-2,790;98,000;46146309;47470588;4.714;2.722
+Nord-Jæren;F;Alle;>= 5,6m;Siste 12 måneder;0,408;98,000;3807914;3792423;5.530;3.193
+Nord-Jæren;F;Alle;5,6m - 7,6m;Siste 12 måneder;1,773;98,000;1544577;1517666;7.560;4.365
+Nord-Jæren;F;Alle;7,6m - 12,5m;Siste 12 måneder;-1,195;98,000;1224884;1239699;10.490;6.057
+Nord-Jæren;F;Alle;12,5m - 16,0m;Siste 12 måneder;-1,240;98,000;607844;615474;16.266;9.391
+Nord-Jæren;F;Alle;>= 16,0m;Siste 12 måneder;2,628;98,000;430609;419584;17.045;9.842
+Nord-Jæren;F;Yrkesdøgn;Alle;Siste 12 måneder;-2,231;98,000;38906904;39794578;4.752;2.744
+Nord-Jæren;F;Yrkesdøgn;< 5,6m;Siste 12 måneder;-2,509;98,000;35559682;36474988;4.798;2.770
+Nord-Jæren;F;Yrkesdøgn;>= 5,6m;Siste 12 måneder;0,799;98,000;3335242;3308821;5.675;3.277
+Nord-Jæren;F;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;2,167;98,000;1353295;1324587;7.681;4.435
+Nord-Jæren;F;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;-0,667;98,000;1082504;1089769;9.094;5.251
+Nord-Jæren;F;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-1,008;98,000;505687;510837;16.539;9.549
+Nord-Jæren;F;Yrkesdøgn;>= 16,0m;Siste 12 måneder;2,640;98,000;393756;383628;16.814;9.708
+Nord-Jæren;F;Helgedøgn;Alle;Siste 12 måneder;-3,656;98,000;11061391;11481116;4.815;2.780
+Nord-Jæren;F;Helgedøgn;< 5,6m;Siste 12 måneder;-3,719;98,000;10586627;10995600;4.929;2.846
+Nord-Jæren;F;Helgedøgn;>= 5,6m;Siste 12 måneder;-2,260;98,000;472672;483602;5.083;2.935
+Nord-Jæren;F;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;-0,931;98,000;191282;193079;7.297;4.213
+Nord-Jæren;F;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;-5,036;98,000;142380;149930;19.774;11.417
+Nord-Jæren;F;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-2,370;98,000;102157;104637;20.326;11.736
+Nord-Jæren;F;Helgedøgn;>= 16,0m;Siste 12 måneder;2,495;98,000;36853;35956;39.012;22.525
+Nord-Jæren;F;Alle;Alle;Hittil i år;-2,550;98,000;49968295;51275694;4.650;2.685
+Nord-Jæren;F;Alle;< 5,6m;Hittil i år;-2,790;98,000;46146309;47470588;4.714;2.722
+Nord-Jæren;F;Alle;>= 5,6m;Hittil i år;0,408;98,000;3807914;3792423;5.530;3.193
+Nord-Jæren;F;Alle;5,6m - 7,6m;Hittil i år;1,773;98,000;1544577;1517666;7.560;4.365
+Nord-Jæren;F;Alle;7,6m - 12,5m;Hittil i år;-1,195;98,000;1224884;1239699;10.490;6.057
+Nord-Jæren;F;Alle;12,5m - 16,0m;Hittil i år;-1,240;98,000;607844;615474;16.266;9.391
+Nord-Jæren;F;Alle;>= 16,0m;Hittil i år;2,628;98,000;430609;419584;17.045;9.842
+Nord-Jæren;F;Yrkesdøgn;Alle;Hittil i år;-2,231;98,000;38906904;39794578;4.752;2.744
+Nord-Jæren;F;Yrkesdøgn;< 5,6m;Hittil i år;-2,509;98,000;35559682;36474988;4.798;2.770
+Nord-Jæren;F;Yrkesdøgn;>= 5,6m;Hittil i år;0,799;98,000;3335242;3308821;5.675;3.277
+Nord-Jæren;F;Yrkesdøgn;5,6m - 7,6m;Hittil i år;2,167;98,000;1353295;1324587;7.681;4.435
+Nord-Jæren;F;Yrkesdøgn;7,6m - 12,5m;Hittil i år;-0,667;98,000;1082504;1089769;9.094;5.251
+Nord-Jæren;F;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-1,008;98,000;505687;510837;16.539;9.549
+Nord-Jæren;F;Yrkesdøgn;>= 16,0m;Hittil i år;2,640;98,000;393756;383628;16.814;9.708
+Nord-Jæren;F;Helgedøgn;Alle;Hittil i år;-3,656;98,000;11061391;11481116;4.815;2.780
+Nord-Jæren;F;Helgedøgn;< 5,6m;Hittil i år;-3,719;98,000;10586627;10995600;4.929;2.846
+Nord-Jæren;F;Helgedøgn;>= 5,6m;Hittil i år;-2,260;98,000;472672;483602;5.083;2.935
+Nord-Jæren;F;Helgedøgn;5,6m - 7,6m;Hittil i år;-0,931;98,000;191282;193079;7.297;4.213
+Nord-Jæren;F;Helgedøgn;7,6m - 12,5m;Hittil i år;-5,036;98,000;142380;149930;19.774;11.417
+Nord-Jæren;F;Helgedøgn;12,5m - 16,0m;Hittil i år;-2,370;98,000;102157;104637;20.326;11.736
+Nord-Jæren;F;Helgedøgn;>= 16,0m;Hittil i år;2,495;98,000;36853;35956;39.012;22.525
+Nord-Jæren;E;Alle;Alle;Januar;2,115;100,000;4749461;4651101;2.455;3.907
+Nord-Jæren;E;Alle;< 5,6m;Januar;1,758;100,000;4328734;4253940;2.668;4.245
+Nord-Jæren;E;Alle;>= 5,6m;Januar;6,047;100,000;420364;396394;5.357;8.525
+Nord-Jæren;E;Alle;5,6m - 7,6m;Januar;11,594;100,000;149345;133829;12.733;20.261
+Nord-Jæren;E;Alle;7,6m - 12,5m;Januar;8,775;100,000;137859;126738;13.137;20.904
+Nord-Jæren;E;Alle;12,5m - 16,0m;Januar;2,302;100,000;40129;39226;9.023;14.358
+Nord-Jæren;E;Alle;>= 16,0m;Januar;-3,696;100,000;93031;96601;15.205;24.195
+Nord-Jæren;E;Yrkesdøgn;Alle;Januar;2,057;100,000;3795663;3719155;2.400;3.819
+Nord-Jæren;E;Yrkesdøgn;< 5,6m;Januar;1,685;100,000;3414154;3357592;2.626;4.179
+Nord-Jæren;E;Yrkesdøgn;>= 5,6m;Januar;5,639;100,000;381205;360855;5.585;8.886
+Nord-Jæren;E;Yrkesdøgn;5,6m - 7,6m;Januar;10,797;100,000;132156;119278;12.591;20.035
+Nord-Jæren;E;Yrkesdøgn;7,6m - 12,5m;Januar;8,585;100,000;124911;115035;12.500;19.890
+Nord-Jæren;E;Yrkesdøgn;12,5m - 16,0m;Januar;3,900;100,000;36656;35280;9.811;15.611
+Nord-Jæren;E;Yrkesdøgn;>= 16,0m;Januar;-4,142;100,000;87482;91262;15.087;24.007
+Nord-Jæren;E;Helgedøgn;Alle;Januar;2,345;100,000;953798;931946;2.735;4.351
+Nord-Jæren;E;Helgedøgn;< 5,6m;Januar;2,034;100,000;914580;896348;2.986;4.752
+Nord-Jæren;E;Helgedøgn;>= 5,6m;Januar;10,186;100,000;39159;35539;5.641;8.976
+Nord-Jæren;E;Helgedøgn;5,6m - 7,6m;Januar;18,129;100,000;17189;14551;15.590;24.808
+Nord-Jæren;E;Helgedøgn;7,6m - 12,5m;Januar;10,638;100,000;12948;11703;20.598;32.775
+Nord-Jæren;E;Helgedøgn;12,5m - 16,0m;Januar;-11,987;100,000;3473;3946;20.187;32.122
+Nord-Jæren;E;Helgedøgn;>= 16,0m;Januar;3,933;100,000;5549;5339;17.070;27.163
+Nord-Jæren;E;Alle;Alle;Februar;-0,125;99,000;4320775;4326180;2.137;3.400
+Nord-Jæren;E;Alle;< 5,6m;Februar;-0,324;99,000;3933899;3946705;2.277;3.623
+Nord-Jæren;E;Alle;>= 5,6m;Februar;1,943;99,000;386419;379055;3.155;5.021
+Nord-Jæren;E;Alle;5,6m - 7,6m;Februar;4,792;99,000;136087;129864;7.424;11.813
+Nord-Jæren;E;Alle;7,6m - 12,5m;Februar;5,850;99,000;128767;121650;10.152;16.154
+Nord-Jæren;E;Alle;12,5m - 16,0m;Februar;0,308;99,000;36743;36630;9.997;15.907
+Nord-Jæren;E;Alle;>= 16,0m;Februar;-6,698;99,000;84822;90911;10.784;17.161
+Nord-Jæren;E;Yrkesdøgn;Alle;Februar;-0,025;99,000;3447179;3448027;1.763;2.805
+Nord-Jæren;E;Yrkesdøgn;< 5,6m;Februar;-0,250;99,000;3096138;3103908;1.792;2.852
+Nord-Jæren;E;Yrkesdøgn;>= 5,6m;Februar;2,003;99,000;350646;343760;3.502;5.573
+Nord-Jæren;E;Yrkesdøgn;5,6m - 7,6m;Februar;4,727;99,000;120513;115074;8.218;13.076
+Nord-Jæren;E;Yrkesdøgn;7,6m - 12,5m;Februar;6,134;99,000;116535;109800;10.385;16.525
+Nord-Jæren;E;Yrkesdøgn;12,5m - 16,0m;Februar;1,786;99,000;33508;32920;8.982;14.292
+Nord-Jæren;E;Yrkesdøgn;>= 16,0m;Februar;-6,835;99,000;80090;85966;10.685;17.002
+Nord-Jæren;E;Helgedøgn;Alle;Februar;-0,519;99,000;873596;878153;4.497;7.155
+Nord-Jæren;E;Helgedøgn;< 5,6m;Februar;-0,598;99,000;837761;842797;4.622;7.355
+Nord-Jæren;E;Helgedøgn;>= 5,6m;Februar;1,354;99,000;35773;35295;2.159;3.435
+Nord-Jæren;E;Helgedøgn;5,6m - 7,6m;Februar;5,301;99,000;15574;14790;3.228;5.136
+Nord-Jæren;E;Helgedøgn;7,6m - 12,5m;Februar;3,224;99,000;12232;11850;8.293;13.196
+Nord-Jæren;E;Helgedøgn;12,5m - 16,0m;Februar;-12,803;99,000;3235;3710;18.608;29.609
+Nord-Jæren;E;Helgedøgn;>= 16,0m;Februar;-4,307;99,000;4732;4945;12.674;20.167
+Nord-Jæren;E;Alle;Alle;Mars;-6,920;87,000;3702180;3977435;3.014;4.795
+Nord-Jæren;E;Alle;< 5,6m;Mars;-6,280;87,000;3385967;3612871;3.240;5.156
+Nord-Jæren;E;Alle;>= 5,6m;Mars;-13,261;87,000;316003;364315;3.906;6.216
+Nord-Jæren;E;Alle;5,6m - 7,6m;Mars;-10,785;87,000;106846;119763;5.018;7.985
+Nord-Jæren;E;Alle;7,6m - 12,5m;Mars;-11,480;87,000;106084;119842;4.621;7.353
+Nord-Jæren;E;Alle;12,5m - 16,0m;Mars;-23,759;87,000;30908;40540;8.046;12.803
+Nord-Jæren;E;Alle;>= 16,0m;Mars;-14,263;87,000;72165;84170;4.643;7.389
+Nord-Jæren;E;Yrkesdøgn;Alle;Mars;-15,827;86,000;2734737;3248935;4.784;7.613
+Nord-Jæren;E;Yrkesdøgn;< 5,6m;Mars;-15,662;86,000;2459785;2916570;4.789;7.621
+Nord-Jæren;E;Yrkesdøgn;>= 5,6m;Mars;-17,267;86,000;274796;332149;4.857;7.729
+Nord-Jæren;E;Yrkesdøgn;5,6m - 7,6m;Mars;-16,473;86,000;89246;106847;6.356;10.114
+Nord-Jæren;E;Yrkesdøgn;7,6m - 12,5m;Mars;-15,245;86,000;91758;108263;5.763;9.170
+Nord-Jæren;E;Yrkesdøgn;12,5m - 16,0m;Mars;-26,973;86,000;27118;37134;6.889;10.963
+Nord-Jæren;E;Yrkesdøgn;>= 16,0m;Mars;-16,558;86,000;66674;79905;4.953;7.881
+Nord-Jæren;E;Helgedøgn;Alle;Mars;32,799;89,000;967443;728500;22.720;36.153
+Nord-Jæren;E;Helgedøgn;< 5,6m;Mars;33,015;89,000;926182;696301;23.064;36.700
+Nord-Jæren;E;Helgedøgn;>= 5,6m;Mars;28,107;89,000;41207;32166;16.461;26.193
+Nord-Jæren;E;Helgedøgn;5,6m - 7,6m;Mars;36,265;89,000;17600;12916;15.254;24.273
+Nord-Jæren;E;Helgedøgn;7,6m - 12,5m;Mars;23,724;89,000;14326;11579;14.255;22.682
+Nord-Jæren;E;Helgedøgn;12,5m - 16,0m;Mars;11,274;89,000;3790;3406;29.616;47.125
+Nord-Jæren;E;Helgedøgn;>= 16,0m;Mars;28,746;89,000;5491;4265;15.531;24.713
+Nord-Jæren;E;Alle;Alle;April;11,313;88,000;4076213;3661924;3.154;5.019
+Nord-Jæren;E;Alle;< 5,6m;April;10,665;88,000;3703518;3346606;3.372;5.366
+Nord-Jæren;E;Alle;>= 5,6m;April;18,188;88,000;372346;315045;4.549;7.238
+Nord-Jæren;E;Alle;5,6m - 7,6m;April;18,920;88,000;127733;107411;5.570;8.863
+Nord-Jæren;E;Alle;7,6m - 12,5m;April;19,760;88,000;133599;111556;6.771;10.775
+Nord-Jæren;E;Alle;12,5m - 16,0m;April;2,859;88,000;32880;31966;16.376;26.058
+Nord-Jæren;E;Alle;>= 16,0m;April;21,871;88,000;78134;64112;2.559;4.072
+Nord-Jæren;E;Yrkesdøgn;Alle;April;23,004;88,000;3067039;2493451;1.957;3.113
+Nord-Jæren;E;Yrkesdøgn;< 5,6m;April;22,816;88,000;2744377;2234538;1.976;3.144
+Nord-Jæren;E;Yrkesdøgn;>= 5,6m;April;24,608;88,000;322395;258727;3.733;5.939
+Nord-Jæren;E;Yrkesdøgn;5,6m - 7,6m;April;28,026;88,000;107370;83866;4.098;6.521
+Nord-Jæren;E;Yrkesdøgn;7,6m - 12,5m;April;25,081;88,000;113691;90894;5.175;8.235
+Nord-Jæren;E;Yrkesdøgn;12,5m - 16,0m;April;10,136;88,000;28783;26134;19.096;30.386
+Nord-Jæren;E;Yrkesdøgn;>= 16,0m;April;25,449;88,000;72551;57833;2.641;4.202
+Nord-Jæren;E;Helgedøgn;Alle;April;-13,633;89,000;1009174;1168473;3.259;5.186
+Nord-Jæren;E;Helgedøgn;< 5,6m;April;-13,752;89,000;959141;1112068;3.129;4.979
+Nord-Jæren;E;Helgedøgn;>= 5,6m;April;-11,305;89,000;49951;56318;8.085;12.865
+Nord-Jæren;E;Helgedøgn;5,6m - 7,6m;April;-13,515;89,000;20363;23545;9.259;14.734
+Nord-Jæren;E;Helgedøgn;7,6m - 12,5m;April;-3,649;89,000;19908;20662;10.564;16.810
+Nord-Jæren;E;Helgedøgn;12,5m - 16,0m;April;-29,750;89,000;4097;5832;8.679;13.811
+Nord-Jæren;E;Helgedøgn;>= 16,0m;April;-11,085;89,000;5583;6279;6.436;10.241
+Nord-Jæren;E;Alle;Alle;Mai;-0,086;97,000;4730248;4734297;3.244;5.161
+Nord-Jæren;E;Alle;< 5,6m;Mai;-0,223;97,000;4266429;4275969;3.209;5.106
+Nord-Jæren;E;Alle;>= 5,6m;Mai;1,184;97,000;463175;457755;3.417;5.437
+Nord-Jæren;E;Alle;5,6m - 7,6m;Mai;2,492;97,000;160795;156885;3.377;5.373
+Nord-Jæren;E;Alle;7,6m - 12,5m;Mai;3,870;97,000;167677;161430;3.442;5.478
+Nord-Jæren;E;Alle;12,5m - 16,0m;Mai;-4,558;97,000;45360;47526;11.634;18.513
+Nord-Jæren;E;Alle;>= 16,0m;Mai;-2,797;97,000;89343;91914;3.364;5.353
+Nord-Jæren;E;Yrkesdøgn;Alle;Mai;-2,307;97,000;3427910;3508869;2.710;4.313
+Nord-Jæren;E;Yrkesdøgn;< 5,6m;Mai;-2,554;97,000;3039112;3118752;2.611;4.154
+Nord-Jæren;E;Yrkesdøgn;>= 5,6m;Mai;-0,351;97,000;388347;389715;3.195;5.083
+Nord-Jæren;E;Yrkesdøgn;5,6m - 7,6m;Mai;0,922;97,000;130277;129087;3.278;5.216
+Nord-Jæren;E;Yrkesdøgn;7,6m - 12,5m;Mai;2,332;97,000;140201;137006;3.348;5.327
+Nord-Jæren;E;Yrkesdøgn;12,5m - 16,0m;Mai;-5,843;97,000;38222;40594;12.396;19.725
+Nord-Jæren;E;Yrkesdøgn;>= 16,0m;Mai;-4,072;97,000;79647;83028;3.463;5.510
+Nord-Jæren;E;Helgedøgn;Alle;Mai;6,276;98,000;1302338;1225428;4.458;7.094
+Nord-Jæren;E;Helgedøgn;< 5,6m;Mai;6,058;98,000;1227317;1157217;4.430;7.050
+Nord-Jæren;E;Helgedøgn;>= 5,6m;Mai;9,976;98,000;74828;68040;4.399;7.000
+Nord-Jæren;E;Helgedøgn;5,6m - 7,6m;Mai;9,785;98,000;30518;27798;3.661;5.825
+Nord-Jæren;E;Helgedøgn;7,6m - 12,5m;Mai;12,496;98,000;27476;24424;4.061;6.462
+Nord-Jæren;E;Helgedøgn;12,5m - 16,0m;Mai;2,972;98,000;7138;6932;7.382;11.746
+Nord-Jæren;E;Helgedøgn;>= 16,0m;Mai;9,115;98,000;9696;8886;8.290;13.192
+Nord-Jæren;E;Alle;Alle;Juni;-0,781;99,000;4941536;4980452;1.961;3.121
+Nord-Jæren;E;Alle;< 5,6m;Juni;-0,964;99,000;4449356;4492661;1.873;2.980
+Nord-Jæren;E;Alle;>= 5,6m;Juni;0,891;99,000;491491;487150;2.686;4.275
+Nord-Jæren;E;Alle;5,6m - 7,6m;Juni;4,042;99,000;177298;170410;2.364;3.761
+Nord-Jæren;E;Alle;7,6m - 12,5m;Juni;2,148;99,000;176820;173102;1.737;2.765
+Nord-Jæren;E;Alle;12,5m - 16,0m;Juni;-15,686;99,000;45109;53501;11.402;18.144
+Nord-Jæren;E;Alle;>= 16,0m;Juni;2,360;99,000;92264;90137;2.057;3.273
+Nord-Jæren;E;Yrkesdøgn;Alle;Juni;-0,988;99,000;3881016;3919751;1.792;2.851
+Nord-Jæren;E;Yrkesdøgn;< 5,6m;Juni;-1,199;99,000;3450547;3492422;1.686;2.683
+Nord-Jæren;E;Yrkesdøgn;>= 5,6m;Juni;0,752;99,000;430029;426818;2.793;4.444
+Nord-Jæren;E;Yrkesdøgn;5,6m - 7,6m;Juni;3,947;99,000;150142;144441;2.443;3.887
+Nord-Jæren;E;Yrkesdøgn;7,6m - 12,5m;Juni;1,658;99,000;153306;150805;1.540;2.450
+Nord-Jæren;E;Yrkesdøgn;12,5m - 16,0m;Juni;-15,627;99,000;39987;47393;12.302;19.575
+Nord-Jæren;E;Yrkesdøgn;>= 16,0m;Juni;2,869;99,000;86594;84179;2.077;3.306
+Nord-Jæren;E;Helgedøgn;Alle;Juni;-0,017;98,000;1060520;1060701;2.584;4.112
+Nord-Jæren;E;Helgedøgn;< 5,6m;Juni;-0,143;98,000;998809;1000239;2.545;4.049
+Nord-Jæren;E;Helgedøgn;>= 5,6m;Juni;1,873;98,000;61462;60332;3.347;5.326
+Nord-Jæren;E;Helgedøgn;5,6m - 7,6m;Juni;4,571;98,000;27156;25969;2.005;3.190
+Nord-Jæren;E;Helgedøgn;7,6m - 12,5m;Juni;5,458;98,000;23514;22297;4.760;7.574
+Nord-Jæren;E;Helgedøgn;12,5m - 16,0m;Juni;-16,143;98,000;5122;6108;9.033;14.373
+Nord-Jæren;E;Helgedøgn;>= 16,0m;Juni;-4,834;98,000;5670;5958;7.519;11.964
+Nord-Jæren;E;Alle;Alle;Juli;-0,470;98,000;4098844;4118190;1.285;2.044
+Nord-Jæren;E;Alle;< 5,6m;Juli;-0,286;98,000;3699860;3710480;1.194;1.900
+Nord-Jæren;E;Alle;>= 5,6m;Juli;-2,139;98,000;398492;407203;3.314;5.274
+Nord-Jæren;E;Alle;5,6m - 7,6m;Juli;3,774;98,000;147457;142095;1.358;2.161
+Nord-Jæren;E;Alle;7,6m - 12,5m;Juli;-2,861;98,000;144650;148910;1.659;2.640
+Nord-Jæren;E;Alle;12,5m - 16,0m;Juli;-32,688;98,000;29991;44555;14.712;23.410
+Nord-Jæren;E;Alle;>= 16,0m;Juli;6,631;98,000;76394;71643;3.264;5.194
+Nord-Jæren;E;Yrkesdøgn;Alle;Juli;3,170;98,000;3181832;3084053;1.272;2.025
+Nord-Jæren;E;Yrkesdøgn;< 5,6m;Juli;3,499;98,000;2836895;2740996;1.192;1.896
+Nord-Jæren;E;Yrkesdøgn;>= 5,6m;Juli;0,556;98,000;344580;342676;3.048;4.850
+Nord-Jæren;E;Yrkesdøgn;5,6m - 7,6m;Juli;6,815;98,000;122806;114971;1.352;2.152
+Nord-Jæren;E;Yrkesdøgn;7,6m - 12,5m;Juli;-0,548;98,000;125111;125800;1.676;2.667
+Nord-Jæren;E;Yrkesdøgn;12,5m - 16,0m;Juli;-29,098;98,000;25337;35735;14.236;22.652
+Nord-Jæren;E;Yrkesdøgn;>= 16,0m;Juli;7,792;98,000;71326;66170;3.729;5.934
+Nord-Jæren;E;Helgedøgn;Alle;Juli;-11,326;99,000;917012;1034137;2.303;3.664
+Nord-Jæren;E;Helgedøgn;< 5,6m;Juli;-10,987;99,000;862965;969484;2.221;3.534
+Nord-Jæren;E;Helgedøgn;>= 5,6m;Juli;-16,450;99,000;53912;64527;5.120;8.147
+Nord-Jæren;E;Helgedøgn;5,6m - 7,6m;Juli;-9,117;99,000;24651;27124;2.781;4.424
+Nord-Jæren;E;Helgedøgn;7,6m - 12,5m;Juli;-15,452;99,000;19539;23110;4.852;7.721
+Nord-Jæren;E;Helgedøgn;12,5m - 16,0m;Juli;-47,234;99,000;4654;8820;20.456;32.550
+Nord-Jæren;E;Helgedøgn;>= 16,0m;Juli;-7,400;99,000;5068;5473;7.113;11.318
+Nord-Jæren;E;Alle;Alle;August;-0,555;98,000;4907326;4934693;1.172;1.865
+Nord-Jæren;E;Alle;< 5,6m;August;-0,492;98,000;4427380;4449291;0.855;1.361
+Nord-Jæren;E;Alle;>= 5,6m;August;-1,140;98,000;479323;484850;4.318;6.870
+Nord-Jæren;E;Alle;5,6m - 7,6m;August;3,099;98,000;176025;170734;2.253;3.586
+Nord-Jæren;E;Alle;7,6m - 12,5m;August;0,556;98,000;169183;168247;1.752;2.787
+Nord-Jæren;E;Alle;12,5m - 16,0m;August;-21,375;98,000;42422;53955;18.925;30.114
+Nord-Jæren;E;Alle;>= 16,0m;August;-0,240;98,000;91693;91914;6.637;10.560
+Nord-Jæren;E;Yrkesdøgn;Alle;August;-0,626;98,000;3968674;3993674;1.063;1.692
+Nord-Jæren;E;Yrkesdøgn;< 5,6m;August;-0,558;98,000;3541106;3560967;0.658;1.048
+Nord-Jæren;E;Yrkesdøgn;>= 5,6m;August;-1,203;98,000;427062;432260;4.537;7.220
+Nord-Jæren;E;Yrkesdøgn;5,6m - 7,6m;August;3,116;98,000;152769;148152;2.320;3.692
+Nord-Jæren;E;Yrkesdøgn;7,6m - 12,5m;August;0,237;98,000;149832;149477;1.871;2.978
+Nord-Jæren;E;Yrkesdøgn;12,5m - 16,0m;August;-20,445;98,000;37732;47429;20.039;31.886
+Nord-Jæren;E;Yrkesdøgn;>= 16,0m;August;-0,542;98,000;86729;87202;7.178;11.422
+Nord-Jæren;E;Helgedøgn;Alle;August;-0,252;99,000;938652;941019;1.914;3.046
+Nord-Jæren;E;Helgedøgn;< 5,6m;August;-0,231;99,000;886274;888324;1.903;3.028
+Nord-Jæren;E;Helgedøgn;>= 5,6m;August;-0,626;99,000;52261;52590;2.746;4.370
+Nord-Jæren;E;Helgedøgn;5,6m - 7,6m;August;2,985;99,000;23256;22582;2.544;4.049
+Nord-Jæren;E;Helgedøgn;7,6m - 12,5m;August;3,095;99,000;19351;18770;2.135;3.398
+Nord-Jæren;E;Helgedøgn;12,5m - 16,0m;August;-28,134;99,000;4690;6526;14.786;23.529
+Nord-Jæren;E;Helgedøgn;>= 16,0m;August;5,348;99,000;4964;4712;5.487;8.732
+Nord-Jæren;E;Alle;Alle;September;-3,804;99,000;4709095;4895299;1.873;2.980
+Nord-Jæren;E;Alle;< 5,6m;September;-3,584;99,000;4273798;4432658;1.547;2.462
+Nord-Jæren;E;Alle;>= 5,6m;September;-5,900;99,000;434819;462083;5.789;9.212
+Nord-Jæren;E;Alle;5,6m - 7,6m;September;-4,362;99,000;155919;163030;2.786;4.433
+Nord-Jæren;E;Alle;7,6m - 12,5m;September;-5,617;99,000;152196;161253;4.179;6.650
+Nord-Jæren;E;Alle;12,5m - 16,0m;September;-15,662;99,000;40779;48352;19.669;31.298
+Nord-Jæren;E;Alle;>= 16,0m;September;-3,939;99,000;85925;89448;8.313;13.228
+Nord-Jæren;E;Yrkesdøgn;Alle;September;-6,843;99,000;3541506;3801636;2.372;3.774
+Nord-Jæren;E;Yrkesdøgn;< 5,6m;September;-6,754;99,000;3165138;3394381;2.043;3.252
+Nord-Jæren;E;Yrkesdøgn;>= 5,6m;September;-7,573;99,000;376039;406849;6.053;9.632
+Nord-Jæren;E;Yrkesdøgn;5,6m - 7,6m;September;-6,185;99,000;130489;139092;3.586;5.706
+Nord-Jæren;E;Yrkesdøgn;7,6m - 12,5m;September;-7,542;99,000;129829;140419;4.022;6.399
+Nord-Jæren;E;Yrkesdøgn;12,5m - 16,0m;September;-17,159;99,000;35692;43085;21.304;33.899
+Nord-Jæren;E;Yrkesdøgn;>= 16,0m;September;-5,013;99,000;80029;84253;8.241;13.113
+Nord-Jæren;E;Helgedøgn;Alle;September;6,759;99,000;1167589;1093663;1.053;1.675
+Nord-Jæren;E;Helgedøgn;< 5,6m;September;6,779;99,000;1108660;1038277;1.041;1.657
+Nord-Jæren;E;Helgedøgn;>= 5,6m;September;6,420;99,000;58780;55234;4.106;6.533
+Nord-Jæren;E;Helgedøgn;5,6m - 7,6m;September;6,233;99,000;25430;23938;2.011;3.199
+Nord-Jæren;E;Helgedøgn;7,6m - 12,5m;September;7,358;99,000;22367;20834;6.239;9.927
+Nord-Jæren;E;Helgedøgn;12,5m - 16,0m;September;-3,418;99,000;5087;5267;9.036;14.378
+Nord-Jæren;E;Helgedøgn;>= 16,0m;September;13,494;99,000;5896;5195;7.627;12.136
+Nord-Jæren;E;Alle;Alle;Oktober;-5,231;94,000;4381853;4623727;3.105;4.941
+Nord-Jæren;E;Alle;< 5,6m;Oktober;-6,084;94,000;3933958;4188796;2.947;4.690
+Nord-Jæren;E;Alle;>= 5,6m;Oktober;3,008;94,000;447450;434384;3.350;5.330
+Nord-Jæren;E;Alle;5,6m - 7,6m;Oktober;0,824;94,000;154047;152788;2.375;3.779
+Nord-Jæren;E;Alle;7,6m - 12,5m;Oktober;3,687;94,000;154725;149223;3.295;5.243
+Nord-Jæren;E;Alle;12,5m - 16,0m;Oktober;2,530;94,000;42636;41584;17.561;27.944
+Nord-Jæren;E;Alle;>= 16,0m;Oktober;5,786;94,000;96042;90789;4.241;6.748
+Nord-Jæren;E;Yrkesdøgn;Alle;Oktober;-1,432;95,000;3593198;3645394;3.492;5.557
+Nord-Jæren;E;Yrkesdøgn;< 5,6m;Oktober;-2,204;95,000;3185122;3256912;3.348;5.327
+Nord-Jæren;E;Yrkesdøgn;>= 5,6m;Oktober;5,063;95,000;407731;388083;3.659;5.823
+Nord-Jæren;E;Yrkesdøgn;5,6m - 7,6m;Oktober;3,298;95,000;137144;132765;2.979;4.740
+Nord-Jæren;E;Yrkesdøgn;7,6m - 12,5m;Oktober;5,831;95,000;139296;131621;3.336;5.309
+Nord-Jæren;E;Yrkesdøgn;12,5m - 16,0m;Oktober;4,417;95,000;39622;37946;19.696;31.341
+Nord-Jæren;E;Yrkesdøgn;>= 16,0m;Oktober;6,901;95,000;91669;85751;4.660;7.415
+Nord-Jæren;E;Helgedøgn;Alle;Oktober;-19,388;94,000;788655;978333;3.865;6.149
+Nord-Jæren;E;Helgedøgn;< 5,6m;Oktober;-19,643;94,000;748836;931884;3.847;6.122
+Nord-Jæren;E;Helgedøgn;>= 5,6m;Oktober;-14,216;94,000;39719;46301;3.312;5.270
+Nord-Jæren;E;Helgedøgn;5,6m - 7,6m;Oktober;-15,582;94,000;16903;20023;4.856;7.727
+Nord-Jæren;E;Helgedøgn;7,6m - 12,5m;Oktober;-12,345;94,000;15429;17602;4.066;6.471
+Nord-Jæren;E;Helgedøgn;12,5m - 16,0m;Oktober;-17,152;94,000;3014;3638;5.983;9.521
+Nord-Jæren;E;Helgedøgn;>= 16,0m;Oktober;-13,200;94,000;4373;5038;3.505;5.578
+Nord-Jæren;E;Alle;Alle;November;-3,808;99,000;2821884;2933584;3.560;8.844
+Nord-Jæren;E;Alle;< 5,6m;November;-5,431;99,000;2482846;2625421;4.654;11.561
+Nord-Jæren;E;Alle;>= 5,6m;November;10,106;99,000;338598;307521;7.370;18.308
+Nord-Jæren;E;Alle;5,6m - 7,6m;November;24,626;99,000;134591;107996;23.932;59.449
+Nord-Jæren;E;Alle;7,6m - 12,5m;November;3,737;99,000;104181;100428;3.494;8.679
+Nord-Jæren;E;Alle;12,5m - 16,0m;November;-5,720;99,000;25187;26715;15.643;38.858
+Nord-Jæren;E;Alle;>= 16,0m;November;3,118;99,000;74639;72382;3.809;9.462
+Nord-Jæren;E;Yrkesdøgn;Alle;November;-3,537;99,000;2269027;2352228;3.350;8.323
+Nord-Jæren;E;Yrkesdøgn;< 5,6m;November;-5,354;99,000;1961464;2072423;4.486;11.144
+Nord-Jæren;E;Yrkesdøgn;>= 5,6m;November;10,020;99,000;307209;279231;6.816;16.931
+Nord-Jæren;E;Yrkesdøgn;5,6m - 7,6m;November;24,640;99,000;119024;95494;23.401;58.131
+Nord-Jæren;E;Yrkesdøgn;7,6m - 12,5m;November;4,131;99,000;94204;90467;3.400;8.445
+Nord-Jæren;E;Yrkesdøgn;12,5m - 16,0m;November;-6,034;99,000;23283;24778;17.280;42.925
+Nord-Jæren;E;Yrkesdøgn;>= 16,0m;November;3,221;99,000;70698;68492;3.920;9.738
+Nord-Jæren;E;Helgedøgn;Alle;November;-4,902;99,000;552857;581356;4.508;11.198
+Nord-Jæren;E;Helgedøgn;< 5,6m;November;-5,717;99,000;521382;552998;5.306;13.182
+Nord-Jæren;E;Helgedøgn;>= 5,6m;November;10,954;99,000;31389;28290;12.746;31.664
+Nord-Jæren;E;Helgedøgn;5,6m - 7,6m;November;24,516;99,000;15567;12502;27.808;69.079
+Nord-Jæren;E;Helgedøgn;7,6m - 12,5m;November;0,161;99,000;9977;9961;6.447;16.015
+Nord-Jæren;E;Helgedøgn;12,5m - 16,0m;November;-1,704;99,000;1904;1937;10.745;26.692
+Nord-Jæren;E;Helgedøgn;>= 16,0m;November;1,311;99,000;3941;3890;3.998;9.932
+Nord-Jæren;E;Alle;Alle;Desember;-4,080;99,000;4419378;4607365;2.319;3.690
+Nord-Jæren;E;Alle;< 5,6m;Desember;-4,932;99,000;4037867;4247327;2.951;4.695
+Nord-Jæren;E;Alle;>= 5,6m;Desember;5,948;99,000;381048;359654;13.252;21.088
+Nord-Jæren;E;Alle;5,6m - 7,6m;Desember;21,309;99,000;159801;131731;32.325;51.436
+Nord-Jæren;E;Alle;7,6m - 12,5m;Desember;-0,808;99,000;116872;117824;2.794;4.447
+Nord-Jæren;E;Alle;12,5m - 16,0m;Desember;-10,274;99,000;27624;30787;20.377;32.425
+Nord-Jæren;E;Alle;>= 16,0m;Desember;-3,229;99,000;76751;79312;3.878;6.171
+Nord-Jæren;E;Yrkesdøgn;Alle;Desember;-7,261;99,000;3135886;3381404;2.085;3.318
+Nord-Jæren;E;Yrkesdøgn;< 5,6m;Desember;-8,305;99,000;2810833;3065408;2.694;4.286
+Nord-Jæren;E;Yrkesdøgn;>= 5,6m;Desember;2,855;99,000;324698;315686;11.401;18.142
+Nord-Jæren;E;Yrkesdøgn;5,6m - 7,6m;Desember;17,023;99,000;130351;111389;28.678;45.634
+Nord-Jæren;E;Yrkesdøgn;7,6m - 12,5m;Desember;-3,229;99,000;100711;104072;2.171;3.455
+Nord-Jæren;E;Yrkesdøgn;12,5m - 16,0m;Desember;-11,910;99,000;24009;27255;22.085;35.142
+Nord-Jæren;E;Yrkesdøgn;>= 16,0m;Desember;-4,581;99,000;69627;72970;4.751;7.559
+Nord-Jæren;E;Helgedøgn;Alle;Desember;4,693;99,000;1283492;1225961;2.171;3.454
+Nord-Jæren;E;Helgedøgn;< 5,6m;Desember;3,817;99,000;1227034;1181919;2.843;4.524
+Nord-Jæren;E;Helgedøgn;>= 5,6m;Desember;28,161;99,000;56350;43968;28.734;45.723
+Nord-Jæren;E;Helgedøgn;5,6m - 7,6m;Desember;44,774;99,000;29450;20342;53.736;85.506
+Nord-Jæren;E;Helgedøgn;7,6m - 12,5m;Desember;17,517;99,000;16161;13752;12.365;19.676
+Nord-Jæren;E;Helgedøgn;12,5m - 16,0m;Desember;2,350;99,000;3615;3532;8.225;13.088
+Nord-Jæren;E;Helgedøgn;>= 16,0m;Desember;12,330;99,000;7124;6342;8.797;13.997
+Nord-Jæren;E;Alle;Alle;Siste 12 måneder;-1,116;96,000;51858793;52444247;1.221;1.943
+Nord-Jæren;E;Alle;< 5,6m;Siste 12 måneder;-1,385;96,000;46923612;47582725;1.138;1.811
+Nord-Jæren;E;Alle;>= 5,6m;Siste 12 måneder;1,527;96,000;4929528;4855409;2.737;4.355
+Nord-Jæren;E;Alle;5,6m - 7,6m;Siste 12 måneder;5,894;96,000;1785944;1686536;3.946;6.279
+Nord-Jæren;E;Alle;7,6m - 12,5m;Siste 12 måneder;1,952;96,000;1692613;1660203;1.476;2.348
+Nord-Jæren;E;Alle;12,5m - 16,0m;Siste 12 måneder;-11,218;96,000;439768;495337;12.476;19.853
+Nord-Jæren;E;Alle;>= 16,0m;Siste 12 måneder;-0,210;96,000;1011203;1013333;4.965;7.900
+Nord-Jæren;E;Yrkesdøgn;Alle;Siste 12 måneder;-1,362;96,000;40043667;40596577;1.173;1.866
+Nord-Jæren;E;Yrkesdøgn;< 5,6m;Siste 12 måneder;-1,680;96,000;35704671;36314869;1.098;1.747
+Nord-Jæren;E;Yrkesdøgn;>= 5,6m;Siste 12 måneder;1,354;96,000;4334737;4276809;2.593;4.126
+Nord-Jæren;E;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;5,681;96,000;1522287;1440456;3.569;5.679
+Nord-Jæren;E;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;1,770;96,000;1479385;1453659;1.660;2.642
+Nord-Jæren;E;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-10,497;96,000;389949;435683;13.084;20.819
+Nord-Jæren;E;Yrkesdøgn;>= 16,0m;Siste 12 måneder;-0,411;96,000;943116;947011;5.035;8.011
+Nord-Jæren;E;Helgedøgn;Alle;Siste 12 måneder;-0,275;97,000;11815126;11847670;1.581;2.516
+Nord-Jæren;E;Helgedøgn;< 5,6m;Siste 12 måneder;-0,434;97,000;11218941;11267856;1.483;2.360
+Nord-Jæren;E;Helgedøgn;>= 5,6m;Siste 12 måneder;2,798;97,000;594791;578600;4.567;7.267
+Nord-Jæren;E;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;7,143;97,000;263657;246080;6.655;10.590
+Nord-Jæren;E;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;3,236;97,000;213228;206544;0.910;1.448
+Nord-Jæren;E;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-16,487;97,000;49819;59654;10.624;16.904
+Nord-Jæren;E;Helgedøgn;>= 16,0m;Siste 12 måneder;2,661;97,000;68087;66322;4.790;7.622
+Nord-Jæren;E;Alle;Alle;Hittil i år;-1,116;96,000;51858793;52444247;1.221;1.943
+Nord-Jæren;E;Alle;< 5,6m;Hittil i år;-1,385;96,000;46923612;47582725;1.138;1.811
+Nord-Jæren;E;Alle;>= 5,6m;Hittil i år;1,527;96,000;4929528;4855409;2.737;4.355
+Nord-Jæren;E;Alle;5,6m - 7,6m;Hittil i år;5,894;96,000;1785944;1686536;3.946;6.279
+Nord-Jæren;E;Alle;7,6m - 12,5m;Hittil i år;1,952;96,000;1692613;1660203;1.476;2.348
+Nord-Jæren;E;Alle;12,5m - 16,0m;Hittil i år;-11,218;96,000;439768;495337;12.476;19.853
+Nord-Jæren;E;Alle;>= 16,0m;Hittil i år;-0,210;96,000;1011203;1013333;4.965;7.900
+Nord-Jæren;E;Yrkesdøgn;Alle;Hittil i år;-1,362;96,000;40043667;40596577;1.173;1.866
+Nord-Jæren;E;Yrkesdøgn;< 5,6m;Hittil i år;-1,680;96,000;35704671;36314869;1.098;1.747
+Nord-Jæren;E;Yrkesdøgn;>= 5,6m;Hittil i år;1,354;96,000;4334737;4276809;2.593;4.126
+Nord-Jæren;E;Yrkesdøgn;5,6m - 7,6m;Hittil i år;5,681;96,000;1522287;1440456;3.569;5.679
+Nord-Jæren;E;Yrkesdøgn;7,6m - 12,5m;Hittil i år;1,770;96,000;1479385;1453659;1.660;2.642
+Nord-Jæren;E;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-10,497;96,000;389949;435683;13.084;20.819
+Nord-Jæren;E;Yrkesdøgn;>= 16,0m;Hittil i år;-0,411;96,000;943116;947011;5.035;8.011
+Nord-Jæren;E;Helgedøgn;Alle;Hittil i år;-0,275;97,000;11815126;11847670;1.581;2.516
+Nord-Jæren;E;Helgedøgn;< 5,6m;Hittil i år;-0,434;97,000;11218941;11267856;1.483;2.360
+Nord-Jæren;E;Helgedøgn;>= 5,6m;Hittil i år;2,798;97,000;594791;578600;4.567;7.267
+Nord-Jæren;E;Helgedøgn;5,6m - 7,6m;Hittil i år;7,143;97,000;263657;246080;6.655;10.590
+Nord-Jæren;E;Helgedøgn;7,6m - 12,5m;Hittil i år;3,236;97,000;213228;206544;0.910;1.448
+Nord-Jæren;E;Helgedøgn;12,5m - 16,0m;Hittil i år;-16,487;97,000;49819;59654;10.624;16.904
+Nord-Jæren;E;Helgedøgn;>= 16,0m;Hittil i år;2,661;97,000;68087;66322;4.790;7.622
+Nord-Jæren;E+R;Alle;Alle;Januar;1,703;99,000;6882759;6767487;2.588;2.164
+Nord-Jæren;E+R;Alle;< 5,6m;Januar;1,341;99,000;6283877;6200749;2.700;2.257
+Nord-Jæren;E+R;Alle;>= 5,6m;Januar;5,724;99,000;597990;565615;4.479;3.745
+Nord-Jæren;E+R;Alle;5,6m - 7,6m;Januar;11,122;99,000;205674;185089;10.167;8.500
+Nord-Jæren;E+R;Alle;7,6m - 12,5m;Januar;8,656;99,000;187529;172589;11.734;9.810
+Nord-Jæren;E+R;Alle;12,5m - 16,0m;Januar;-1,632;99,000;61907;62934;9.535;7.971
+Nord-Jæren;E+R;Alle;>= 16,0m;Januar;-1,464;99,000;142880;145003;12.083;10.102
+Nord-Jæren;E+R;Yrkesdøgn;Alle;Januar;1,710;99,000;5498506;5406069;2.598;2.172
+Nord-Jæren;E+R;Yrkesdøgn;< 5,6m;Januar;1,321;99,000;4957038;4892393;2.723;2.276
+Nord-Jæren;E+R;Yrkesdøgn;>= 5,6m;Januar;5,469;99,000;540697;512660;4.619;3.862
+Nord-Jæren;E+R;Yrkesdøgn;5,6m - 7,6m;Januar;10,435;99,000;181589;164430;10.114;8.455
+Nord-Jæren;E+R;Yrkesdøgn;7,6m - 12,5m;Januar;8,555;99,000;170711;157258;11.252;9.407
+Nord-Jæren;E+R;Yrkesdøgn;12,5m - 16,0m;Januar;-0,650;99,000;55208;55569;10.765;8.999
+Nord-Jæren;E+R;Yrkesdøgn;>= 16,0m;Januar;-1,635;99,000;133189;135403;12.182;10.184
+Nord-Jæren;E+R;Helgedøgn;Alle;Januar;1,677;99,000;1384253;1361418;2.707;2.263
+Nord-Jæren;E+R;Helgedøgn;< 5,6m;Januar;1,413;99,000;1326839;1308356;2.820;2.357
+Nord-Jæren;E+R;Helgedøgn;>= 5,6m;Januar;8,192;99,000;57293;52955;5.734;4.794
+Nord-Jæren;E+R;Helgedøgn;5,6m - 7,6m;Januar;16,584;99,000;24085;20659;12.117;10.130
+Nord-Jæren;E+R;Helgedøgn;7,6m - 12,5m;Januar;9,699;99,000;16818;15331;17.989;15.039
+Nord-Jæren;E+R;Helgedøgn;12,5m - 16,0m;Januar;-9,043;99,000;6699;7365;15.037;12.571
+Nord-Jæren;E+R;Helgedøgn;>= 16,0m;Januar;0,948;99,000;9691;9600;13.329;11.143
+Nord-Jæren;E+R;Alle;Alle;Februar;-0,675;95,000;6112083;6153648;1.916;1.602
+Nord-Jæren;E+R;Alle;< 5,6m;Februar;-0,902;95,000;5574207;5624949;2.071;1.731
+Nord-Jæren;E+R;Alle;>= 5,6m;Februar;1,772;95,000;536928;527580;3.301;2.760
+Nord-Jæren;E+R;Alle;5,6m - 7,6m;Februar;4,745;95,000;183467;175156;8.000;6.688
+Nord-Jæren;E+R;Alle;7,6m - 12,5m;Februar;5,216;95,000;171753;163238;8.421;7.040
+Nord-Jæren;E+R;Alle;12,5m - 16,0m;Februar;-2,590;95,000;54541;55991;12.020;10.049
+Nord-Jæren;E+R;Alle;>= 16,0m;Februar;-4,526;95,000;127167;133195;9.103;7.611
+Nord-Jæren;E+R;Yrkesdøgn;Alle;Februar;-0,906;95,000;4863795;4908288;2.171;1.815
+Nord-Jæren;E+R;Yrkesdøgn;< 5,6m;Februar;-1,195;95,000;4377985;4430944;2.204;1.842
+Nord-Jæren;E+R;Yrkesdøgn;>= 5,6m;Februar;1,785;95,000;484994;476488;3.761;3.144
+Nord-Jæren;E+R;Yrkesdøgn;5,6m - 7,6m;Februar;4,623;95,000;162027;154868;8.756;7.320
+Nord-Jæren;E+R;Yrkesdøgn;7,6m - 12,5m;Februar;5,302;95,000;155878;148029;8.716;7.287
+Nord-Jæren;E+R;Yrkesdøgn;12,5m - 16,0m;Februar;-1,912;95,000;48380;49323;12.709;10.625
+Nord-Jæren;E+R;Yrkesdøgn;>= 16,0m;Februar;-4,473;95,000;118709;124268;9.242;7.727
+Nord-Jæren;E+R;Helgedøgn;Alle;Februar;0,235;95,000;1248288;1245360;6.451;5.393
+Nord-Jæren;E+R;Helgedøgn;< 5,6m;Februar;0,186;95,000;1196222;1194005;6.615;5.530
+Nord-Jæren;E+R;Helgedøgn;>= 5,6m;Februar;1,648;95,000;51934;51092;2.745;2.295
+Nord-Jæren;E+R;Helgedøgn;5,6m - 7,6m;Februar;5,678;95,000;21440;20288;5.137;4.295
+Nord-Jæren;E+R;Helgedøgn;7,6m - 12,5m;Februar;4,379;95,000;15875;15209;8.087;6.761
+Nord-Jæren;E+R;Helgedøgn;12,5m - 16,0m;Februar;-7,603;95,000;6161;6668;15.724;13.145
+Nord-Jæren;E+R;Helgedøgn;>= 16,0m;Februar;-5,254;95,000;8458;8927;9.526;7.964
+Nord-Jæren;E+R;Alle;Alle;Mars;-7,292;92,000;5335597;5755246;2.361;2.184
+Nord-Jæren;E+R;Alle;< 5,6m;Mars;-6,851;92,000;4880033;5238961;2.623;2.426
+Nord-Jæren;E+R;Alle;>= 5,6m;Mars;-11,728;92,000;454913;515351;4.056;3.751
+Nord-Jæren;E+R;Alle;5,6m - 7,6m;Mars;-9,121;92,000;150189;165262;5.936;5.490
+Nord-Jæren;E+R;Alle;7,6m - 12,5m;Mars;-10,539;92,000;146353;163595;4.182;3.868
+Nord-Jæren;E+R;Alle;12,5m - 16,0m;Mars;-19,952;92,000;46527;58124;11.922;11.026
+Nord-Jæren;E+R;Alle;>= 16,0m;Mars;-12,874;92,000;111844;128370;4.287;3.965
+Nord-Jæren;E+R;Yrkesdøgn;Alle;Mars;-15,502;92,000;3971328;4699888;3.643;3.369
+Nord-Jæren;E+R;Yrkesdøgn;< 5,6m;Mars;-15,471;92,000;3576199;4230740;3.602;3.332
+Nord-Jæren;E+R;Yrkesdøgn;>= 5,6m;Mars;-15,746;92,000;394601;468347;4.760;4.403
+Nord-Jæren;E+R;Yrkesdøgn;5,6m - 7,6m;Mars;-14,604;92,000;125965;147507;6.745;6.238
+Nord-Jæren;E+R;Yrkesdøgn;7,6m - 12,5m;Mars;-14,021;92,000;127700;148524;5.260;4.865
+Nord-Jæren;E+R;Yrkesdøgn;12,5m - 16,0m;Mars;-24,149;92,000;39466;52031;11.673;10.796
+Nord-Jæren;E+R;Yrkesdøgn;>= 16,0m;Mars;-15,642;92,000;101470;120285;4.488;4.151
+Nord-Jæren;E+R;Helgedøgn;Alle;Mars;29,271;93,000;1364269;1055358;18.305;16.929
+Nord-Jæren;E+R;Helgedøgn;< 5,6m;Mars;29,320;93,000;1303834;1008221;18.628;17.228
+Nord-Jæren;E+R;Helgedøgn;>= 5,6m;Mars;28,312;93,000;60312;47004;12.950;11.977
+Nord-Jæren;E+R;Helgedøgn;5,6m - 7,6m;Mars;36,435;93,000;24224;17755;12.217;11.298
+Nord-Jæren;E+R;Helgedøgn;7,6m - 12,5m;Mars;23,768;93,000;18653;15071;11.789;10.903
+Nord-Jæren;E+R;Helgedøgn;12,5m - 16,0m;Mars;15,887;93,000;7061;6093;25.244;23.347
+Nord-Jæren;E+R;Helgedøgn;>= 16,0m;Mars;28,312;93,000;10374;8085;11.695;10.816
+Nord-Jæren;E+R;Alle;Alle;April;12,262;94,000;6257720;5574221;4.867;4.069
+Nord-Jæren;E+R;Alle;< 5,6m;April;11,580;94,000;5685672;5095611;5.200;4.347
+Nord-Jæren;E+R;Alle;>= 5,6m;April;19,471;94,000;570864;477825;3.952;3.304
+Nord-Jæren;E+R;Alle;5,6m - 7,6m;April;21,455;94,000;192062;158134;8.241;6.890
+Nord-Jæren;E+R;Alle;7,6m - 12,5m;April;21,499;94,000;198483;163362;5.992;5.010
+Nord-Jæren;E+R;Alle;12,5m - 16,0m;April;6,958;94,000;56290;52628;14.588;12.196
+Nord-Jæren;E+R;Alle;>= 16,0m;April;19,603;94,000;124029;103701;4.047;3.384
+Nord-Jæren;E+R;Yrkesdøgn;Alle;April;24,127;94,000;4721029;3803382;5.668;4.739
+Nord-Jæren;E+R;Yrkesdøgn;< 5,6m;April;23,921;94,000;4225353;3409720;6.266;5.238
+Nord-Jæren;E+R;Yrkesdøgn;>= 5,6m;April;25,854;94,000;494719;393091;3.973;3.321
+Nord-Jæren;E+R;Yrkesdøgn;5,6m - 7,6m;April;29,862;94,000;162159;124870;8.733;7.301
+Nord-Jæren;E+R;Yrkesdøgn;7,6m - 12,5m;April;26,626;94,000;170402;134571;4.943;4.133
+Nord-Jæren;E+R;Yrkesdøgn;12,5m - 16,0m;April;13,731;94,000;48370;42530;15.829;13.234
+Nord-Jæren;E+R;Yrkesdøgn;>= 16,0m;April;24,877;94,000;113788;91120;2.602;2.175
+Nord-Jæren;E+R;Helgedøgn;Alle;April;-13,222;94,000;1536691;1770839;3.784;3.164
+Nord-Jæren;E+R;Helgedøgn;< 5,6m;April;-13,380;94,000;1460319;1685891;3.805;3.181
+Nord-Jæren;E+R;Helgedøgn;>= 5,6m;April;-10,136;94,000;76145;84734;6.848;5.725
+Nord-Jæren;E+R;Helgedøgn;5,6m - 7,6m;April;-10,104;94,000;29903;33264;10.138;8.475
+Nord-Jæren;E+R;Helgedøgn;7,6m - 12,5m;April;-2,466;94,000;28081;28791;8.789;7.348
+Nord-Jæren;E+R;Helgedøgn;12,5m - 16,0m;April;-21,569;94,000;7920;10098;14.262;11.923
+Nord-Jæren;E+R;Helgedøgn;>= 16,0m;April;-18,599;94,000;10241;12581;10.398;8.693
+Nord-Jæren;E+R;Alle;Alle;Mai;-1,080;98,000;6416294;6486317;3.213;2.972
+Nord-Jæren;E+R;Alle;< 5,6m;Mai;-1,263;98,000;5798276;5872450;3.222;2.980
+Nord-Jæren;E+R;Alle;>= 5,6m;Mai;0,660;98,000;616816;612772;3.227;2.984
+Nord-Jæren;E+R;Alle;5,6m - 7,6m;Mai;2,387;98,000;206739;201919;5.449;5.040
+Nord-Jæren;E+R;Alle;7,6m - 12,5m;Mai;3,256;98,000;216536;209708;3.208;2.967
+Nord-Jæren;E+R;Alle;12,5m - 16,0m;Mai;-4,786;98,000;63560;66755;9.751;9.019
+Nord-Jæren;E+R;Alle;>= 16,0m;Mai;-3,281;98,000;129981;134390;2.966;2.743
+Nord-Jæren;E+R;Yrkesdøgn;Alle;Mai;-3,265;98,000;4665626;4823107;2.879;2.662
+Nord-Jæren;E+R;Yrkesdøgn;< 5,6m;Mai;-3,551;98,000;4147746;4300449;2.855;2.641
+Nord-Jæren;E+R;Yrkesdøgn;>= 5,6m;Mai;-0,925;98,000;516960;521787;3.065;2.835
+Nord-Jæren;E+R;Yrkesdøgn;5,6m - 7,6m;Mai;0,684;98,000;168028;166887;5.682;5.255
+Nord-Jæren;E+R;Yrkesdøgn;7,6m - 12,5m;Mai;1,720;98,000;182353;179269;3.055;2.825
+Nord-Jæren;E+R;Yrkesdøgn;12,5m - 16,0m;Mai;-6,968;98,000;51746;55622;10.786;9.976
+Nord-Jæren;E+R;Yrkesdøgn;>= 16,0m;Mai;-4,313;98,000;114833;120009;3.048;2.819
+Nord-Jæren;E+R;Helgedøgn;Alle;Mai;5,258;99,000;1750668;1663210;4.292;3.970
+Nord-Jæren;E+R;Helgedøgn;< 5,6m;Mai;4,995;99,000;1650530;1572001;4.334;4.008
+Nord-Jæren;E+R;Helgedøgn;>= 5,6m;Mai;9,750;99,000;99856;90985;3.598;3.327
+Nord-Jæren;E+R;Helgedøgn;5,6m - 7,6m;Mai;10,502;99,000;38711;35032;4.125;3.815
+Nord-Jæren;E+R;Helgedøgn;7,6m - 12,5m;Mai;12,300;99,000;34183;30439;4.231;3.913
+Nord-Jæren;E+R;Helgedøgn;12,5m - 16,0m;Mai;6,117;99,000;11814;11133;8.824;8.161
+Nord-Jæren;E+R;Helgedøgn;>= 16,0m;Mai;5,333;99,000;15148;14381;9.688;8.960
+Nord-Jæren;E+R;Alle;Alle;Juni;-0,825;97,000;6569384;6624002;1.983;1.834
+Nord-Jæren;E+R;Alle;< 5,6m;Juni;-1,059;97,000;5923953;5987374;1.990;1.840
+Nord-Jæren;E+R;Alle;>= 5,6m;Juni;1,366;97,000;644333;635652;2.863;2.648
+Nord-Jæren;E+R;Alle;5,6m - 7,6m;Juni;4,224;97,000;224549;215448;3.241;2.997
+Nord-Jæren;E+R;Alle;7,6m - 12,5m;Juni;2,391;97,000;225544;220277;2.119;1.960
+Nord-Jæren;E+R;Alle;12,5m - 16,0m;Juni;-12,471;97,000;62660;71588;18.335;16.957
+Nord-Jæren;E+R;Alle;>= 16,0m;Juni;2,525;97,000;131580;128339;2.051;1.897
+Nord-Jæren;E+R;Yrkesdøgn;Alle;Juni;-0,832;96,000;5156205;5199454;2.452;2.268
+Nord-Jæren;E+R;Yrkesdøgn;< 5,6m;Juni;-1,097;96,000;4591846;4642799;2.440;2.257
+Nord-Jæren;E+R;Yrkesdøgn;>= 5,6m;Juni;1,389;96,000;563554;555833;3.658;3.383
+Nord-Jæren;E+R;Yrkesdøgn;5,6m - 7,6m;Juni;4,321;96,000;190695;182796;3.610;3.339
+Nord-Jæren;E+R;Yrkesdøgn;7,6m - 12,5m;Juni;1,988;96,000;196708;192873;2.483;2.296
+Nord-Jæren;E+R;Yrkesdøgn;12,5m - 16,0m;Juni;-12,910;96,000;54285;62332;19.810;18.321
+Nord-Jæren;E+R;Yrkesdøgn;>= 16,0m;Juni;3,424;96,000;121866;117832;2.472;2.286
+Nord-Jæren;E+R;Helgedøgn;Alle;Juni;-0,798;98,000;1413179;1424548;3.387;3.132
+Nord-Jæren;E+R;Helgedøgn;< 5,6m;Juni;-0,927;98,000;1332107;1344575;3.300;3.052
+Nord-Jæren;E+R;Helgedøgn;>= 5,6m;Juni;1,203;98,000;80779;79819;5.016;4.639
+Nord-Jæren;E+R;Helgedøgn;5,6m - 7,6m;Juni;3,681;98,000;33854;32652;5.768;5.334
+Nord-Jæren;E+R;Helgedøgn;7,6m - 12,5m;Juni;5,226;98,000;28836;27404;6.448;5.963
+Nord-Jæren;E+R;Helgedøgn;12,5m - 16,0m;Juni;-9,518;98,000;8375;9256;16.566;15.321
+Nord-Jæren;E+R;Helgedøgn;>= 16,0m;Juni;-7,547;98,000;9714;10507;8.399;7.767
+Nord-Jæren;E+R;Alle;Alle;Juli;-0,826;98,000;5389082;5433975;1.478;1.367
+Nord-Jæren;E+R;Alle;< 5,6m;Juli;-0,738;98,000;4865558;4901735;1.569;1.451
+Nord-Jæren;E+R;Alle;>= 5,6m;Juli;-1,682;98,000;522750;531693;2.936;2.715
+Nord-Jæren;E+R;Alle;5,6m - 7,6m;Juli;3,289;98,000;185237;179338;1.569;1.451
+Nord-Jæren;E+R;Alle;7,6m - 12,5m;Juli;-1,853;98,000;183361;186823;2.682;2.480
+Nord-Jæren;E+R;Alle;12,5m - 16,0m;Juli;-29,266;98,000;42277;59769;15.838;14.648
+Nord-Jæren;E+R;Alle;>= 16,0m;Juli;5,779;98,000;111875;105763;3.251;3.007
+Nord-Jæren;E+R;Yrkesdøgn;Alle;Juli;2,701;98,000;4202251;4091734;1.692;1.565
+Nord-Jæren;E+R;Yrkesdøgn;< 5,6m;Juli;2,915;98,000;3748525;3642341;1.848;1.709
+Nord-Jæren;E+R;Yrkesdøgn;>= 5,6m;Juli;0,948;98,000;453233;448976;2.606;2.410
+Nord-Jæren;E+R;Yrkesdøgn;5,6m - 7,6m;Juli;6,128;98,000;155181;146220;2.095;1.938
+Nord-Jæren;E+R;Yrkesdøgn;7,6m - 12,5m;Juli;0,395;98,000;160013;159383;2.727;2.522
+Nord-Jæren;E+R;Yrkesdøgn;12,5m - 16,0m;Juli;-25,082;98,000;35550;47452;16.312;15.086
+Nord-Jæren;E+R;Yrkesdøgn;>= 16,0m;Juli;6,847;98,000;102489;95921;3.679;3.403
+Nord-Jæren;E+R;Helgedøgn;Alle;Juli;-11,578;97,000;1186831;1342241;3.599;3.328
+Nord-Jæren;E+R;Helgedøgn;< 5,6m;Juli;-11,304;97,000;1117033;1259394;3.564;3.297
+Nord-Jæren;E+R;Helgedøgn;>= 5,6m;Juli;-15,958;97,000;69517;82717;5.645;5.221
+Nord-Jæren;E+R;Helgedøgn;5,6m - 7,6m;Juli;-9,246;97,000;30056;33118;3.648;3.374
+Nord-Jæren;E+R;Helgedøgn;7,6m - 12,5m;Juli;-14,913;97,000;23348;27440;5.962;5.514
+Nord-Jæren;E+R;Helgedøgn;12,5m - 16,0m;Juli;-45,384;97,000;6727;12317;19.266;17.818
+Nord-Jæren;E+R;Helgedøgn;>= 16,0m;Juli;-4,633;97,000;9386;9842;6.563;6.070
+Nord-Jæren;E+R;Alle;Alle;August;-0,791;99,000;5933678;5980989;1.414;1.484
+Nord-Jæren;E+R;Alle;< 5,6m;August;-0,815;99,000;5348144;5392100;1.383;1.452
+Nord-Jæren;E+R;Alle;>= 5,6m;August;-0,581;99,000;584865;588281;3.989;4.186
+Nord-Jæren;E+R;Alle;5,6m - 7,6m;August;2,308;99,000;206873;202207;2.938;3.083
+Nord-Jæren;E+R;Alle;7,6m - 12,5m;August;1,232;99,000;207098;204578;2.345;2.461
+Nord-Jæren;E+R;Alle;12,5m - 16,0m;August;-19,764;99,000;48156;60018;19.059;20.001
+Nord-Jæren;E+R;Alle;>= 16,0m;August;1,037;99,000;122738;121478;6.014;6.311
+Nord-Jæren;E+R;Yrkesdøgn;Alle;August;-0,794;99,000;4823530;4862121;1.401;1.470
+Nord-Jæren;E+R;Yrkesdøgn;< 5,6m;August;-0,828;99,000;4299362;4335244;1.357;1.424
+Nord-Jæren;E+R;Yrkesdøgn;>= 5,6m;August;-0,525;99,000;523619;526380;4.286;4.498
+Nord-Jæren;E+R;Yrkesdøgn;5,6m - 7,6m;August;2,367;99,000;180455;176283;2.958;3.104
+Nord-Jæren;E+R;Yrkesdøgn;7,6m - 12,5m;August;1,063;99,000;184707;182765;2.609;2.738
+Nord-Jæren;E+R;Yrkesdøgn;12,5m - 16,0m;August;-18,594;99,000;43055;52889;20.129;21.124
+Nord-Jæren;E+R;Yrkesdøgn;>= 16,0m;August;0,838;99,000;115402;114443;6.568;6.893
+Nord-Jæren;E+R;Helgedøgn;Alle;August;-0,779;99,000;1110148;1118868;2.166;2.273
+Nord-Jæren;E+R;Helgedøgn;< 5,6m;August;-0,764;99,000;1048782;1056856;2.167;2.275
+Nord-Jæren;E+R;Helgedøgn;>= 5,6m;August;-1,058;99,000;61246;61901;2.791;2.929
+Nord-Jæren;E+R;Helgedøgn;5,6m - 7,6m;August;1,906;99,000;26418;25924;4.380;4.597
+Nord-Jæren;E+R;Helgedøgn;7,6m - 12,5m;August;2,650;99,000;22391;21813;2.870;3.012
+Nord-Jæren;E+R;Helgedøgn;12,5m - 16,0m;August;-28,447;99,000;5101;7129;16.269;17.074
+Nord-Jæren;E+R;Helgedøgn;>= 16,0m;August;4,279;99,000;7336;7035;6.397;6.713
+Nord-Jæren;E+R;Alle;Alle;September;-3,241;99,000;6182628;6389706;3.081;2.849
+Nord-Jæren;E+R;Alle;< 5,6m;September;-3,007;99,000;5601758;5775421;3.118;2.884
+Nord-Jæren;E+R;Alle;>= 5,6m;September;-5,432;99,000;580072;613394;5.030;4.652
+Nord-Jæren;E+R;Alle;5,6m - 7,6m;September;-3,490;99,000;203607;210969;3.247;3.003
+Nord-Jæren;E+R;Alle;7,6m - 12,5m;September;-5,354;99,000;202821;214294;3.484;3.222
+Nord-Jæren;E+R;Alle;12,5m - 16,0m;September;-14,317;99,000;53642;62605;17.322;16.021
+Nord-Jæren;E+R;Alle;>= 16,0m;September;-4,401;99,000;120002;125526;7.491;6.928
+Nord-Jæren;E+R;Yrkesdøgn;Alle;September;-6,276;99,000;4668886;4981538;3.325;3.075
+Nord-Jæren;E+R;Yrkesdøgn;< 5,6m;September;-6,188;99,000;4163957;4438638;3.335;3.084
+Nord-Jæren;E+R;Yrkesdøgn;>= 5,6m;September;-6,984;99,000;504339;542205;5.243;4.849
+Nord-Jæren;E+R;Yrkesdøgn;5,6m - 7,6m;September;-5,189;99,000;171422;180803;3.832;3.544
+Nord-Jæren;E+R;Yrkesdøgn;7,6m - 12,5m;September;-7,168;99,000;174305;187763;3.409;3.153
+Nord-Jæren;E+R;Yrkesdøgn;12,5m - 16,0m;September;-15,493;99,000;47505;56214;18.320;16.943
+Nord-Jæren;E+R;Yrkesdøgn;>= 16,0m;September;-5,380;99,000;111107;117425;7.449;6.889
+Nord-Jæren;E+R;Helgedøgn;Alle;September;7,497;99,000;1513742;1408168;2.436;2.253
+Nord-Jæren;E+R;Helgedøgn;< 5,6m;September;7,557;99,000;1437801;1336783;2.552;2.361
+Nord-Jæren;E+R;Helgedøgn;>= 5,6m;September;6,383;99,000;75733;71189;3.618;3.346
+Nord-Jæren;E+R;Helgedøgn;5,6m - 7,6m;September;6,693;99,000;32185;30166;2.381;2.202
+Nord-Jæren;E+R;Helgedøgn;7,6m - 12,5m;September;7,482;99,000;28516;26531;5.273;4.877
+Nord-Jæren;E+R;Helgedøgn;12,5m - 16,0m;September;-3,974;99,000;6137;6391;17.798;16.460
+Nord-Jæren;E+R;Helgedøgn;>= 16,0m;September;9,801;99,000;8895;8101;8.053;7.448
+Nord-Jæren;E+R;Alle;Alle;Oktober;-3,466;97,000;6594705;6831503;6.369;5.325
+Nord-Jæren;E+R;Alle;< 5,6m;Oktober;-4,133;97,000;5936379;6192296;6.829;5.709
+Nord-Jæren;E+R;Alle;>= 5,6m;Oktober;2,989;97,000;657078;638007;2.986;2.496
+Nord-Jæren;E+R;Alle;5,6m - 7,6m;Oktober;1,640;97,000;221823;218243;3.063;2.561
+Nord-Jæren;E+R;Alle;7,6m - 12,5m;Oktober;3,753;97,000;220099;212138;3.996;3.340
+Nord-Jæren;E+R;Alle;12,5m - 16,0m;Oktober;5,175;97,000;70485;67017;18.945;15.838
+Nord-Jæren;E+R;Alle;>= 16,0m;Oktober;2,889;97,000;144671;140609;5.748;4.805
+Nord-Jæren;E+R;Yrkesdøgn;Alle;Oktober;0,155;97,000;5389559;5381228;6.553;5.479
+Nord-Jæren;E+R;Yrkesdøgn;< 5,6m;Oktober;-0,406;97,000;4791534;4811068;7.123;5.955
+Nord-Jæren;E+R;Yrkesdøgn;>= 5,6m;Oktober;4,878;97,000;596984;569216;3.150;2.634
+Nord-Jæren;E+R;Yrkesdøgn;5,6m - 7,6m;Oktober;3,774;97,000;197270;190096;3.304;2.762
+Nord-Jæren;E+R;Yrkesdøgn;7,6m - 12,5m;Oktober;5,723;97,000;198788;188027;3.697;3.091
+Nord-Jæren;E+R;Yrkesdøgn;12,5m - 16,0m;Oktober;7,316;97,000;64396;60006;21.103;17.643
+Nord-Jæren;E+R;Yrkesdøgn;>= 16,0m;Oktober;4,152;97,000;136530;131087;5.779;4.832
+Nord-Jæren;E+R;Helgedøgn;Alle;Oktober;-16,902;97,000;1205146;1450275;6.793;5.679
+Nord-Jæren;E+R;Helgedøgn;< 5,6m;Oktober;-17,114;97,000;1144845;1381228;6.964;5.822
+Nord-Jæren;E+R;Helgedøgn;>= 5,6m;Oktober;-12,643;97,000;60094;68791;3.659;3.059
+Nord-Jæren;E+R;Helgedøgn;5,6m - 7,6m;Oktober;-12,769;97,000;24553;28147;7.296;6.100
+Nord-Jæren;E+R;Helgedøgn;7,6m - 12,5m;Oktober;-11,613;97,000;21311;24111;6.431;5.377
+Nord-Jæren;E+R;Helgedøgn;12,5m - 16,0m;Oktober;-13,151;97,000;6089;7011;9.789;8.184
+Nord-Jæren;E+R;Helgedøgn;>= 16,0m;Oktober;-14,503;97,000;8141;9522;4.027;3.367
+Nord-Jæren;E+R;Alle;Alle;November;-2,562;96,000;4886325;5014826;6.084;5.627
+Nord-Jæren;E+R;Alle;< 5,6m;November;-3,472;96,000;4360111;4516947;7.160;6.622
+Nord-Jæren;E+R;Alle;>= 5,6m;November;5,698;96,000;524793;496502;8.114;7.504
+Nord-Jæren;E+R;Alle;5,6m - 7,6m;November;17,080;96,000;197611;168783;19.988;18.486
+Nord-Jæren;E+R;Alle;7,6m - 12,5m;November;1,735;96,000;159595;156874;3.993;3.693
+Nord-Jæren;E+R;Alle;12,5m - 16,0m;November;-2,827;96,000;51657;53160;30.601;28.301
+Nord-Jæren;E+R;Alle;>= 16,0m;November;-1,491;96,000;115930;117685;7.224;6.681
+Nord-Jæren;E+R;Yrkesdøgn;Alle;November;-2,822;96,000;3909856;4023397;6.173;5.709
+Nord-Jæren;E+R;Yrkesdøgn;< 5,6m;November;-3,862;96,000;3434704;3572685;7.324;6.773
+Nord-Jæren;E+R;Yrkesdøgn;>= 5,6m;November;5,429;96,000;473950;449545;8.178;7.564
+Nord-Jæren;E+R;Yrkesdøgn;5,6m - 7,6m;November;17,159;96,000;174564;148997;19.716;18.234
+Nord-Jæren;E+R;Yrkesdøgn;7,6m - 12,5m;November;1,753;96,000;144511;142021;4.348;4.021
+Nord-Jæren;E+R;Yrkesdøgn;12,5m - 16,0m;November;-3,510;96,000;46678;48376;33.561;31.038
+Nord-Jæren;E+R;Yrkesdøgn;>= 16,0m;November;-1,774;96,000;108197;110151;7.901;7.307
+Nord-Jæren;E+R;Helgedøgn;Alle;November;-1,509;97,000;976469;991429;7.955;7.357
+Nord-Jæren;E+R;Helgedøgn;< 5,6m;November;-1,997;97,000;925407;944262;8.450;7.815
+Nord-Jæren;E+R;Helgedøgn;>= 5,6m;November;8,276;97,000;50843;46957;10.175;9.410
+Nord-Jæren;E+R;Helgedøgn;5,6m - 7,6m;November;16,481;97,000;23047;19786;22.325;20.647
+Nord-Jæren;E+R;Helgedøgn;7,6m - 12,5m;November;1,555;97,000;15084;14853;6.700;6.197
+Nord-Jæren;E+R;Helgedøgn;12,5m - 16,0m;November;4,076;97,000;4979;4784;11.698;10.819
+Nord-Jæren;E+R;Helgedøgn;>= 16,0m;November;2,641;97,000;7733;7534;4.321;3.996
+Nord-Jæren;E+R;Alle;Alle;Desember;-3,039;98,000;6416151;6617271;4.458;3.727
+Nord-Jæren;E+R;Alle;< 5,6m;Desember;-3,465;98,000;5885468;6096736;5.313;4.442
+Nord-Jæren;E+R;Alle;>= 5,6m;Desember;1,928;98,000;529483;519470;12.184;10.186
+Nord-Jæren;E+R;Alle;5,6m - 7,6m;Desember;15,242;98,000;211831;183814;27.664;23.127
+Nord-Jæren;E+R;Alle;7,6m - 12,5m;Desember;-2,620;98,000;159224;163508;4.017;3.358
+Nord-Jæren;E+R;Alle;12,5m - 16,0m;Desember;-11,658;98,000;46742;52910;29.701;24.830
+Nord-Jæren;E+R;Alle;>= 16,0m;Desember;-6,334;98,000;111686;119238;6.897;5.766
+Nord-Jæren;E+R;Yrkesdøgn;Alle;Desember;-6,174;98,000;4542875;4841791;4.165;3.482
+Nord-Jæren;E+R;Yrkesdøgn;< 5,6m;Desember;-6,725;98,000;4092053;4387076;5.180;4.331
+Nord-Jæren;E+R;Yrkesdøgn;>= 5,6m;Desember;-0,870;98,000;449894;453844;10.854;9.074
+Nord-Jæren;E+R;Yrkesdøgn;5,6m - 7,6m;Desember;11,813;98,000;173369;155052;24.484;20.469
+Nord-Jæren;E+R;Yrkesdøgn;7,6m - 12,5m;Desember;-4,906;98,000;137891;145005;3.731;3.119
+Nord-Jæren;E+R;Yrkesdøgn;12,5m - 16,0m;Desember;-13,458;98,000;39747;45928;32.664;27.308
+Nord-Jæren;E+R;Yrkesdøgn;>= 16,0m;Desember;-8,318;98,000;98887;107859;7.521;6.287
+Nord-Jæren;E+R;Helgedøgn;Alle;Desember;5,508;97,000;1873276;1775480;5.213;4.358
+Nord-Jæren;E+R;Helgedøgn;< 5,6m;Desember;4,899;97,000;1793415;1709660;5.538;4.630
+Nord-Jæren;E+R;Helgedøgn;>= 5,6m;Desember;21,277;97,000;79589;65626;24.517;20.496
+Nord-Jæren;E+R;Helgedøgn;5,6m - 7,6m;Desember;33,725;97,000;38462;28762;46.381;38.775
+Nord-Jæren;E+R;Helgedøgn;7,6m - 12,5m;Desember;15,295;97,000;21333;18503;11.619;9.714
+Nord-Jæren;E+R;Helgedøgn;12,5m - 16,0m;Desember;0,186;97,000;6995;6982;11.998;10.031
+Nord-Jæren;E+R;Helgedøgn;>= 16,0m;Desember;12,479;97,000;12799;11379;8.866;7.413
+Nord-Jæren;E+R;Alle;Alle;Siste 12 måneder;-0,887;97,000;72976406;73629191;3.150;2.421
+Nord-Jæren;E+R;Alle;< 5,6m;Siste 12 måneder;-1,124;97,000;66143436;66895329;3.402;2.615
+Nord-Jæren;E+R;Alle;>= 5,6m;Siste 12 måneder;1,469;97,000;6820885;6722142;2.260;1.737
+Nord-Jæren;E+R;Alle;5,6m - 7,6m;Siste 12 måneder;5,534;97,000;2389662;2264362;4.174;3.208
+Nord-Jæren;E+R;Alle;7,6m - 12,5m;Siste 12 måneder;2,125;97,000;2278396;2230984;1.795;1.380
+Nord-Jæren;E+R;Alle;12,5m - 16,0m;Siste 12 måneder;-8,992;97,000;658444;723499;13.090;10.062
+Nord-Jæren;E+R;Alle;>= 16,0m;Siste 12 måneder;-0,593;97,000;1494383;1503297;3.954;3.039
+Nord-Jæren;E+R;Yrkesdøgn;Alle;Siste 12 måneder;-1,067;97,000;56413446;57021997;3.395;2.610
+Nord-Jæren;E+R;Yrkesdøgn;< 5,6m;Siste 12 måneder;-1,346;97,000;50406302;51094097;3.743;2.877
+Nord-Jæren;E+R;Yrkesdøgn;>= 5,6m;Siste 12 måneder;1,338;97,000;5997544;5918372;2.174;1.671
+Nord-Jæren;E+R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;5,360;97,000;2042724;1938809;4.110;3.159
+Nord-Jæren;E+R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;1,958;97,000;2003967;1965488;1.881;1.446
+Nord-Jæren;E+R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-8,577;97,000;574386;628272;13.634;10.480
+Nord-Jæren;E+R;Yrkesdøgn;>= 16,0m;Siste 12 måneder;-0,674;97,000;1376467;1385803;3.996;3.071
+Nord-Jæren;E+R;Helgedøgn;Alle;Siste 12 måneder;-0,266;97,000;16562960;16607194;2.805;2.156
+Nord-Jæren;E+R;Helgedøgn;< 5,6m;Siste 12 måneder;-0,406;97,000;15737134;15801232;2.844;2.186
+Nord-Jæren;E+R;Helgedøgn;>= 5,6m;Siste 12 måneder;2,435;97,000;823341;803770;3.817;2.934
+Nord-Jæren;E+R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;6,569;97,000;346938;325553;5.704;4.384
+Nord-Jæren;E+R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;3,365;97,000;274429;265496;1.968;1.513
+Nord-Jæren;E+R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-11,729;97,000;84058;95227;12.599;9.684
+Nord-Jæren;E+R;Helgedøgn;>= 16,0m;Siste 12 måneder;0,359;97,000;117916;117494;5.529;4.250
+Nord-Jæren;E+R;Alle;Alle;Hittil i år;-0,887;97,000;72976406;73629191;3.150;2.421
+Nord-Jæren;E+R;Alle;< 5,6m;Hittil i år;-1,124;97,000;66143436;66895329;3.402;2.615
+Nord-Jæren;E+R;Alle;>= 5,6m;Hittil i år;1,469;97,000;6820885;6722142;2.260;1.737
+Nord-Jæren;E+R;Alle;5,6m - 7,6m;Hittil i år;5,534;97,000;2389662;2264362;4.174;3.208
+Nord-Jæren;E+R;Alle;7,6m - 12,5m;Hittil i år;2,125;97,000;2278396;2230984;1.795;1.380
+Nord-Jæren;E+R;Alle;12,5m - 16,0m;Hittil i år;-8,992;97,000;658444;723499;13.090;10.062
+Nord-Jæren;E+R;Alle;>= 16,0m;Hittil i år;-0,593;97,000;1494383;1503297;3.954;3.039
+Nord-Jæren;E+R;Yrkesdøgn;Alle;Hittil i år;-1,067;97,000;56413446;57021997;3.395;2.610
+Nord-Jæren;E+R;Yrkesdøgn;< 5,6m;Hittil i år;-1,346;97,000;50406302;51094097;3.743;2.877
+Nord-Jæren;E+R;Yrkesdøgn;>= 5,6m;Hittil i år;1,338;97,000;5997544;5918372;2.174;1.671
+Nord-Jæren;E+R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;5,360;97,000;2042724;1938809;4.110;3.159
+Nord-Jæren;E+R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;1,958;97,000;2003967;1965488;1.881;1.446
+Nord-Jæren;E+R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-8,577;97,000;574386;628272;13.634;10.480
+Nord-Jæren;E+R;Yrkesdøgn;>= 16,0m;Hittil i år;-0,674;97,000;1376467;1385803;3.996;3.071
+Nord-Jæren;E+R;Helgedøgn;Alle;Hittil i år;-0,266;97,000;16562960;16607194;2.805;2.156
+Nord-Jæren;E+R;Helgedøgn;< 5,6m;Hittil i år;-0,406;97,000;15737134;15801232;2.844;2.186
+Nord-Jæren;E+R;Helgedøgn;>= 5,6m;Hittil i år;2,435;97,000;823341;803770;3.817;2.934
+Nord-Jæren;E+R;Helgedøgn;5,6m - 7,6m;Hittil i år;6,569;97,000;346938;325553;5.704;4.384
+Nord-Jæren;E+R;Helgedøgn;7,6m - 12,5m;Hittil i år;3,365;97,000;274429;265496;1.968;1.513
+Nord-Jæren;E+R;Helgedøgn;12,5m - 16,0m;Hittil i år;-11,729;97,000;84058;95227;12.599;9.684
+Nord-Jæren;E+R;Helgedøgn;>= 16,0m;Hittil i år;0,359;97,000;117916;117494;5.529;4.250

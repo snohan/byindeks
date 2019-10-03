@@ -18,14 +18,17 @@ source("rmd_setup.R")
 
 ```{r points, include = FALSE}
 all_point_info <- 
-  read.csv2("data_indexpoints_tidy/indekspunkt_grenland_2017.csv")
+  read.csv2("data_indexpoints_tidy/indekspunkt_nord-jaeren_2016.csv")
 
 city_info <-
-    read.csv2("data_indexpoints_tidy/byindeks_grenland_2017.csv")
+    read.csv2("data_indexpoints_tidy/byindeks_nord-jaeren_2016.csv")
+
+byindeks <- round(city_info$index[nrow(city_info)], digits = 1)
+ki <- round(city_info$konfidensintervall[nrow(city_info)], digits = 1)
 ```
 
 # Bakgrunn
-Gjeldende avtale om Bypakke Grenland har 2016 som referanseår, og byindeksen er beregnet med utgangspunkt i dette.
+Gjeldende avtale om Bypakke Nord-Jæren har 2016 som referanseår, og byindeksen er beregnet med utgangspunkt i dette.
 
 Byindeksen bygger på metodikken i Vegtrafikkindeksen, som estimerer endring i trafikkmengde mellom to perioder. For hvert trafikkregistreringspunkt sammenlignes registrert trafikk dato for dato og time for time mellom de to periodene. Det tas hensyn til perioder hvor registreringsutstyret ikke har vært i drift og perioder hvor trafikken i stor grad er påvirket av stenginger og omkjøringer.
 
@@ -64,19 +67,21 @@ all_point_info %>%
 # Byindeksen
 Byindeksen estimerer endring i trafikkmengde for "lette" biler, da det er dette som er i fokus for "nullvekstmålet". Lette biler er målt til en lengde under 5,6 m ved trafikkregistreringsstasjonene.
 
-Tabellen nedenfor viser byindeksen for hvert år, samt for hele perioden fra 2016 fram til og med juni 2019.
+Tabellen nedenfor viser byindeksen for hvert år, samt for hele perioden fra 2016 fram til og med august 2019.
 
 ```{r city_table}
 borderline <- officer::fp_border(color = "black", style = "solid", width = 1)
 
 city_info %>% 
-  dplyr::select(year, index, dekning) %>% 
+  dplyr::select(year, index, ki_start, ki_slutt, dekning) %>% 
   flextable::flextable() %>% 
-  colformat_num(col_keys = "index", digits = 1) %>%
+  colformat_num(col_keys = c("index", "ki_start", "ki_slutt"), digits = 1) %>%
   colformat_num(col_keys = "dekning", digits = 0) %>%
   set_header_labels(year = "Periode",
                     index = "Endring i trafikkmengde (%)",
+                    ki_start = "95 % konfidensintervall",
                     dekning = "Dekningsgrad (%)") %>% 
+  merge_at(i = 1, j = 3:4, part = "header") %>% 
   bold(part = "header") %>% 
   fontsize(size = 9, part = "all") %>% 
   font(fontname = "Lucida Sans Unicode", part = "all") %>% 
@@ -88,11 +93,11 @@ city_info %>%
   height_all(height = .2) %>% 
   padding(padding.top = .3,
           padding.bottom = .3) %>% 
-  set_caption("Estimert endring i trafikkmengde i Grenland.")
+  set_caption("Estimert endring i trafikkmengde.")
 ```
 
 \newline
-**Byindeksen for Grenland estimerer endringen i trafikkmengden fra 2016 til 2019 (til og med juni) til å være -1,7 %.**
+**Byindeksen for Nord-Jæren estimerer endringen i trafikkmengden fra 2016 til 2019 (til og med august) til å være `r byindeks` ± `r ki` %.**
 
 ```{r all_point_info_long}
 all_point_info_long <- all_point_info %>% 
@@ -130,13 +135,13 @@ ggplot() +
   theme_minimal() +
   labs(x = NULL, y = "Endring i trafikkmengde (%)",
        caption = "Data: Statens vegvesen") +
-  ggtitle("Estimert endring i trafikkmengde i Grenland",
+  ggtitle("Estimert endring i trafikkmengde",
           subtitle = "Byindeksen (store prikker) og punktene (små prikker)")
 
 ```
 
 
-Kartet nedenfor viser endringen i byindekspunktene fra referanseåret 2016 til og med juni 2019.
+Kartet nedenfor viser endringen i byindekspunktene fra referanseåret 2016 til og med august 2019.
 
 ```{r map_trp_index}
 # Create a red-green scale based on index values
@@ -180,13 +185,8 @@ all_point_info %>%
 ```
 
 
-Tabellen nedenfor gjengir byindekspunktene og deres indeksverdi for 2019. ÅDT er fra 2017.
+Tabellen nedenfor gjengir byindekspunktene og deres indeksverdi for 2019.
 
-Ser vi på punktenes plassering, er det naturlig å se enkelte i sammenheng. F.eks. utgjør de fire punktene Ballestadhøgda, Elstrømbrua, Sandviksvegen og Smieøya et nord-sør-snitt i Skien. På samme måte er det et snitt for de tre punktene Borgestad, Lensmannsdalen og Bjørnetvedtvegen X Trommedalsvegen. I disse snittene bør derfor alle punktene inngå til enhver tid, for å unngå skjevheter i trafikken som fanges opp.
-
-I perioden hvor Porsgrunnsbrua er stengt (23.04.2019-), har vi tatt ut Sverresgate da mye av trafikken går her.
-
-I perioden hvor Bambletunnelen på E18 var stengt (21.04.2017 - 31.08.2018), har vi tatt ut punktet ved Høgenheitunnelen fordi mye av trafikken gikk her. Men lengre nord vil de tre punktene Svanvik, Brattåstunnelen syd og Skjelsvik fange opp totaltrafikken, og det er påsett at alle disse tre har vært med hver måned.
 
 \newline
 
@@ -196,7 +196,7 @@ index_column_names <- all_point_info %>%
   names()
 
 all_point_info %>% 
-  select(name, road_reference, adt, 
+  select(name, road_reference, adt, year,
          starts_with("index")) %>% 
   flextable() %>% 
   colformat_num(col_keys = "adt", 
@@ -206,17 +206,18 @@ all_point_info %>%
   set_header_labels(name = "Navn",
                     road_reference = "Vegreferanse",
                     adt = "ÅDT",
+                    year = "År",
                     index_16_17 = "Endring i trafikkmengde (%)") %>% 
-  add_header_row(values = c("", "", "2016", 
+  add_header_row(values = c("", "", "", "", 
                             "2016", "2017", "2018",
                             "2016"), top = F) %>% 
-  add_header_row(values = c("", "", "", 
+  add_header_row(values = c("", "", "", "",
                             "-2017", "-2018", "-2019",
                             "-2019"), top = F) %>% 
-  merge_at(i = 1, j = 4:7, part = "header") %>% 
-  align(i = 1, j = 4, align = "center", part = "header") %>% 
-  align(i = 2, j = 3:7, align = "right", part = "header") %>% 
-  align(i = 3, j = 3:7, align = "right", part = "header") %>% 
+  merge_at(i = 1, j = 5:8, part = "header") %>% 
+  align(i = 1, j = 3, align = "center", part = "header") %>% 
+  align(i = 2, j = 4:8, align = "right", part = "header") %>% 
+  align(i = 3, j = 4:8, align = "right", part = "header") %>% 
   bold(part = "header") %>% 
   fontsize(size = 9, part = "all") %>% 
   font(fontname = "Lucida Sans Unicode", part = "all") %>% 
@@ -228,7 +229,7 @@ all_point_info %>%
   height_all(height = .2) %>% 
   padding(padding.top = .3,
           padding.bottom = .3) %>% 
-  width(j = 4, width = 1) %>% 
+  width(j = 5, width = 1) %>% 
   set_caption("Estimert endring i trafikkmengde ved trafikkregistreringspunktene.")
 ```
 \newline
@@ -245,18 +246,22 @@ ggplot2::ggplot() +
   geom_point(data = all_point_info_index, 
              aes(x = reorder(name, index), y = index, size = adt),
              color = "#ED9300", alpha = 0.6) +
-  geom_hline(yintercept = -1.7, color = "#58B02C") +
+  geom_hline(yintercept = byindeks, color = "#58B02C") +
+  geom_hline(yintercept = 0, color = "#000000") +
   xlab("") +
   ylab("Endring (%)") +
   ggtitle(label = "Endring i trafikkmengde",
-          subtitle = "Fra 2016 til 2019 (juni)") +
+          subtitle = "Fra 2016 til 2019 (august)") +
   coord_flip() +
-  scale_size(name = "ÅDT 2016") +
-  #geom_rect(aes(xmin = -Inf, xmax = Inf, ymin = -1.5, ymax = 6.9),
-  #          alpha = 0.1, fill = "#008EC2") +
+  scale_size(name = "ÅDT") +
+  geom_rect(aes(xmin = -Inf, xmax = Inf, 
+                ymin = byindeks - ki, 
+                ymax = byindeks + ki),
+            alpha = 0.1, fill = "#008EC2") +
   theme_minimal() +
   theme(legend.position = "right",
         axis.text.y = element_text(size = 7)) +
   labs(caption = "Data: Statens vegvesen")
+# TODO: Add explaining labels with ggforce?
 ```
 

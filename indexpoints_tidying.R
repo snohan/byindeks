@@ -56,6 +56,7 @@ read_city_index_csv <- function(filename) {
            lengdeklasse == "< 5,6m",
            periode == "Hittil i år") %>%
     mutate(index = as.numeric(str_replace(indeks, ",", ".")),
+           dekning = as.numeric(str_replace(dekning, ",", ".")),
            standardavvik = as.numeric(as.character(standardavvik)),
            konfidensintervall = as.numeric(as.character(konfidensintervall))) %>%
     select(index, dekning, standardavvik, konfidensintervall) %>%
@@ -70,6 +71,7 @@ read_bike_index_csv <- function(filename) {
            lengdeklasse == "Alle",
            periode == "Hittil i år") %>%
     mutate(index = as.numeric(str_replace(indeks, ",", ".")),
+           dekning = as.numeric(str_replace(dekning, ",", ".")),
            standardavvik = as.numeric(as.character(standardavvik)),
            konfidensintervall = as.numeric(as.character(konfidensintervall))) %>%
     select(index, dekning, standardavvik, konfidensintervall) %>%
@@ -85,27 +87,43 @@ index_converter <- function(index) {
 }
 
 # TODO: get a compound ci, need to iterate pairwise through the years!
+# I.e. make accumulated index for one more year
 #index_from_refyear <- 100*(prod(city_index_grenland$index_i)-1)
+
+# Need number of points each year
 calculate_two_year_index <- function(city_index_df) {
 
   two_years <- city_index_df %>%
-    select(index, index_i, variance) %>%
+    select(index, index_i, dekning, variance, n_points) %>%
     slice(1:2)
+
+  year_one <- str_sub(city_index_df$year[1], 1, 4)
+  year_two <- str_sub(city_index_df$year[2], 6, 9)
 
   two_years_to_one <- list(
     index = 100 * (prod(two_years$index_i) - 1),
     index_i = prod(two_years$index_i),
-    variance = two_years$variance[1] * two_years$variance[2] +
-      two_years$variance[1] * two_years$index[2]^2 +
-      two_years$variance[2] * two_years$index[1]^2
+    year = paste0(year_one, "-", year_two),
+    dekning = mean(two_years$dekning),
+    # Using Goodman's unbiased estimate (cannot use exact formula as we are
+    # sampling)
+    variance =
+      two_years$index[1]^2 * two_years$variance[2] / two_years$n_points[2] +
+      two_years$index[2]^2 * two_years$variance[1] / two_years$n_points[1] -
+      two_years$variance[1] * two_years$variance[2] /
+      (two_years$n_points[1] * two_years$n_points[2]),
+    n_points = max(two_years$n_points)
   ) %>%
-    as_tibble()
+    as_tibble() %>%
+    dplyr::mutate(standardavvik = sqrt(variance),
+                  konfidensintervall = 1.96 * sqrt(variance) /
+                    sqrt(2))
 }
 
 # Points ####
 
 # Points used in each city
-cities_points <- read_csv2("data_points_raw/cities_points.csv")
+cities_points <- read.csv2("data_points_raw/cities_points.csv")
 cities_points_unestablished <-
   read_csv2("data_points_raw/points_unestablished.csv")
 
@@ -420,23 +438,41 @@ bike_pointindex_grenland_17_18 <-
     "data_index_raw/bikepointindex_grenland-2018-12_2017-12.csv") %>%
   rename(index_17_18 = index)
 
+n_17_18 <- bike_pointindex_grenland_17_18 %>%
+  dplyr::filter(!is.na(index_17_18)) %>%
+  nrow()
+
 bike_pointindex_grenland_18_19 <-
   read_bikepointindex_csv(
     "data_index_raw/bikepointindex_grenland-2019-06_2018-06.csv") %>%
   rename(index_18_19 = index)
 
+n_18_19 <- bike_pointindex_grenland_18_19 %>%
+  dplyr::filter(!is.na(index_18_19)) %>%
+  nrow()
+
 adt <- getAdtForpoints(bike_trp_grenland_2016$trp_id) %>%
-  dplyr::filter(year >= 2016) %>%
+  dplyr::filter(year >= 2017) %>%
+  dplyr::filter(coverage > 90) %>%
   dplyr::group_by(trp_id) %>%
   # Pick the oldest AADT available:
-  dplyr::slice(which.min(year)) %>%
-  dplyr::select(-year)
+  dplyr::slice(which.min(year))
 
 # Missing AADTs: no bike-AADTs in NVDB where we don't have it in TD-API!
+# Must manually add missing ones by looking up in Kibana.
+adt_manual <- data.frame(
+  trp_id = c("57192B1687248", "57692B1981530", "21538B1865084",
+             "67987B1846201", "40000B1846336", "47211B491325"),
+  sd = c(NA, NA, NA, NA, NA, NA),
+  adt = c(80, 15, 80, 150, 60, 80),
+  year = c(rep.int(2017, 6))
+)
+
+adt_all <- bind_rows(adt, adt_manual)
 
 bike_trp_grenland_2016_all_adt <- bike_trp_grenland_2016 %>%
-  left_join(adt) %>%
-  left_join(bike_pointindex_grenland_16_17) %>%
+  left_join(adt_all) %>%
+#  left_join(bike_pointindex_grenland_16_17) %>%
   left_join(bike_pointindex_grenland_17_18) %>%
   left_join(bike_pointindex_grenland_18_19)
 
@@ -467,23 +503,28 @@ grenland_bike_2019 <-
   read_bike_index_csv("data_index_raw/bike_Grenland-2019-06_2018-06.csv") %>%
   mutate(year = "2018-2019")
 
-bike_index_grenland <- bind_rows(grenland_bike_2017,
+bike_index_grenland <- bind_rows(#grenland_bike_2017,
                                  grenland_bike_2018,
                                  grenland_bike_2019) %>%
   mutate(index_i = index_converter(index),
-         variance = (konfidensintervall / 1.96)^2)
+         variance = standardavvik^2,
+         n_points = c(n_17_18, n_18_19))
 
 # TODO: get a compound ci
+# Skipping 2016
+# first_two_years <- calculate_two_year_index(bike_index_grenland)
+# next_two_years <- bind_rows(first_two_years, slice(bike_index_grenland, 3)) %>%
+#   calculate_two_year_index() %>%
+#   mutate(dekning = mean(bike_index_grenland$dekning),
+#          year = "2016-2019",
+#          konfidensintervall = 1.96 * sqrt(variance))
+
 first_two_years <- calculate_two_year_index(bike_index_grenland)
-next_two_years <- bind_rows(first_two_years, slice(bike_index_grenland, 3)) %>%
-  calculate_two_year_index() %>%
-  mutate(dekning = mean(bike_index_grenland$dekning),
-         year = "2016-2019",
-         konfidensintervall = 1.96 * sqrt(variance))
 
 bike_index_grenland_all <- bike_index_grenland %>%
-  select(-standardavvik) %>%
-  bind_rows(next_two_years)
+  dplyr::bind_rows(first_two_years) %>%
+  dplyr::mutate(ki_start = index - konfidensintervall,
+                ki_slutt = index + konfidensintervall)
 
 write.csv2(bike_index_grenland_all,
            file = "data_indexpoints_tidy/sykkelindeks_grenland_2016.csv",
@@ -493,7 +534,7 @@ write.csv2(bike_index_grenland_all,
 # Point index
 trp_glomma_2016_ids <- cities_points %>%
   dplyr::filter(city_area_name == "Nedre Glomma",
-                agreement_start == 2017) %>%
+                agreement_start == 2016) %>%
   dplyr::select(trp_id, legacyNortrafMpn) %>%
   dplyr::rename(msnr = legacyNortrafMpn)
 
@@ -574,3 +615,112 @@ write.csv2(city_index_glomma_all,
            file = "data_indexpoints_tidy/byindeks_nedre-glomma_2016.csv",
            row.names = F)
 
+# Nord-Jæren 2016 ####
+# Point index
+trp_jaeren_2016_ids <- cities_points %>%
+  dplyr::filter(city_area_name == "Nord-Jæren",
+                agreement_start == 2016) %>%
+  dplyr::select(trp_id, legacyNortrafMpn) %>%
+  dplyr::rename(msnr = legacyNortrafMpn)
+
+# Adding metadata
+trp_jaeren_2016 <- dplyr::left_join(trp_jaeren_2016_ids, points)
+
+# Add index results from CSV-files
+pointindex_jaeren_16_17 <-
+  readPointindexCSV("data_index_raw/pointindex_nord-jaeren-2017-12_2016.csv") %>%
+  rename(index_16_17 = index)
+
+n_16_17 <- pointindex_jaeren_16_17 %>%
+  dplyr::filter(!is.na(index_16_17)) %>%
+  nrow()
+
+pointindex_jaeren_17_18 <-
+  readPointindexCSV("data_index_raw/pointindex_nord-jaeren-2018-12_2017.csv") %>%
+  rename(index_17_18 = index)
+
+n_17_18 <- pointindex_jaeren_17_18 %>%
+  dplyr::filter(!is.na(index_17_18)) %>%
+  nrow()
+
+pointindex_jaeren_18_19 <-
+  readPointindexCSV("data_index_raw/pointindex_nord-jaeren-2019-08_2018.csv") %>%
+  rename(index_18_19 = index)
+
+n_18_19 <- pointindex_jaeren_18_19 %>%
+  dplyr::filter(!is.na(index_18_19)) %>%
+  nrow()
+
+adt <- getAdtForpoints_by_length(trp_jaeren_2016$trp_id) %>%
+  dplyr::filter(length_range == "[..,5.6)") %>%
+  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  dplyr::filter(length_quality > 95) %>%
+  dplyr::filter(coverage > 90) %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year >= 2016) %>%
+  dplyr::filter(year == min(year)) %>%
+  dplyr::select(trp_id, aadt_length_range, year) %>%
+  dplyr::rename(adt = 2)
+
+adt_manual <- data.frame(
+  trp_id = c("66678V320582", "43296V319721", "21556V319919",
+             "17949V320695"),
+  adt = c(55000, 15000, 8700, 15000),
+  year = c(2017, 2016, 2016, 2016)
+)
+
+adt_all <- bind_rows(adt, adt_manual)
+
+# Final table
+trp_jaeren_2016_adt <- trp_jaeren_2016 %>%
+  left_join(adt_all) %>%
+  left_join(pointindex_jaeren_16_17) %>%
+  left_join(pointindex_jaeren_17_18) %>%
+  left_join(pointindex_jaeren_18_19)
+
+# Index from refyear
+refyear <- trp_jaeren_2016_adt %>%
+  select(starts_with("index")) %>%
+  mutate_all(list(index_converter)) %>%
+  transmute(index = purrr::pmap_dbl(., prod)) %>%
+  # Lazily changing from 1 to NA (risky?)
+  mutate(index = round(ifelse(index == 1, NA,  100 * (index - 1)),
+                       digits = 1))
+
+trp_jaeren_2016_final <- trp_jaeren_2016_adt %>%
+  bind_cols(refyear)
+
+write.csv2(trp_jaeren_2016_final,
+           file = "data_indexpoints_tidy/indekspunkt_nord-jaeren_2016.csv",
+           row.names = F)
+
+# City index
+jaeren_2017 <-
+  read_city_index_csv("data_index_raw/Nord-Jaeren-2017-12_2016.csv") %>%
+  mutate(year = "2016-2017")
+jaeren_2018 <-
+  read_city_index_csv("data_index_raw/Nord-Jaeren-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+jaeren_2019 <-
+  read_city_index_csv("data_index_raw/Nord-Jaeren-2019-08_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+city_index_jaeren <- bind_rows(jaeren_2017,
+                               jaeren_2018,
+                               jaeren_2019) %>%
+  mutate(index_i = index_converter(index),
+         variance = standardavvik^2,
+         n_points = c(n_16_17, n_17_18, n_18_19))
+
+first_two_years <- calculate_two_year_index(city_index_jaeren)
+next_two_years <- bind_rows(first_two_years, slice(city_index_jaeren, 3)) %>%
+  calculate_two_year_index()
+
+city_index_jaeren_all <- city_index_jaeren %>%
+  bind_rows(next_two_years) %>%
+  dplyr::mutate(ki_start = index - konfidensintervall,
+                ki_slutt = index + konfidensintervall)
+
+write.csv2(city_index_jaeren_all,
+           file = "data_indexpoints_tidy/byindeks_nord-jaeren_2016.csv",
+           row.names = F)
