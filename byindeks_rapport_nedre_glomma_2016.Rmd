@@ -22,15 +22,27 @@ all_point_info <-
 
 city_info <-
     read.csv2("data_indexpoints_tidy/byindeks_nedre-glomma_2016.csv")
+
+index_all_years <- round(city_info$index[nrow(city_info)], digits = 1)
+index_all_years_ci_lower <- 
+  round(city_info$index[nrow(city_info)] - 
+          city_info$konfidensintervall[nrow(city_info)], digits = 2)
+index_all_years_ci_upper <- 
+  round(city_info$index[nrow(city_info)] + 
+          city_info$konfidensintervall[nrow(city_info)], digits = 2)
 ```
 
-# Bakgrunn
-Byindeksen er beregnet med 2016 som referanseår.
+# Formål
 
-Byindeksen bygger på metodikken i Vegtrafikkindeksen, som estimerer endring i trafikkmengde mellom to perioder. For hvert trafikkregistreringspunkt sammenlignes registrert trafikk dato for dato og time for time mellom de to periodene. Det tas hensyn til perioder hvor registreringsutstyret ikke har vært i drift og perioder hvor trafikken i stor grad er påvirket av stenginger og omkjøringer.
+Byindeksen estimerer endring i trafikkmengde for byområdet. 
 
-## Byindekspunktenes plassering
-Kartet nedenfor viser plasseringen av trafikkregistreringspunktene som benyttes i byindeksen.
+Datagrunnlaget består av "lette" biler, som er bilerr *målt* til en lengde under 5,6 m ved trafikkregistreringspunktene. I datagrunnlaget inngår også næringstransport med kjøretøy under 5,6 m da det ikke er mulig å skille disse fra andre kjøretøy. Det er heller ikke kompensert for ren gjennomgangstrafikk. 
+
+For hvert trafikkregistreringspunkt sammenlignes registrert trafikk dato for dato og time for time mellom de to periodene. Det tas hensyn til perioder hvor registreringsutstyret ikke har vært i drift og perioder hvor trafikken i stor grad er påvirket av stenginger og omkjøringer. Metodikken er beskrevet mer i slutten av rapporten.
+
+## Hvor det registreres trafikk
+
+I kartet nedenfor vises plasseringen av trafikkregistreringspunktene som benyttes i byindeksen.
 
 ```{r map_trp}
 palett_adt <-
@@ -61,8 +73,7 @@ all_point_info %>%
             labFormat = labelFormat(big.mark = " "))
 ```
 
-# Byindeksen
-Byindeksen estimerer endring i trafikkmengde for "lette" biler, da det er dette som er i fokus for "nullvekstmålet". Lette biler er målt til en lengde under 5,6 m ved trafikkregistreringsstasjonene. I datagrunnlaget inngår næringstransport med kjøretøy under 5,6 m da det ikke er mulig å skille disse fra andre kjøretøy. Motorsykler inngår også. Det er heller ikke kompensert for ren gjennomgangstrafikk.
+# Endring i trafikkmengde
 
 Tabellen nedenfor viser byindeksen for hvert år, samt for hele perioden fra 2016 fram til og med august 2019.
 
@@ -72,8 +83,12 @@ borderline <- officer::fp_border(color = "black", style = "solid", width = 1)
 city_info %>% 
   dplyr::select(year, index, konfidensintervall) %>% 
   flextable::flextable() %>% 
-  colformat_num(col_keys = "index", digits = 1) %>%
-  colformat_num(col_keys = "konfidensintervall", digits = 1) %>%
+  set_formatter(index = function(x) stringr::str_replace(
+    as.character(
+      round(x, digits = 1)), "\\.", ","),
+    konfidensintervall = function(x) stringr::str_replace(
+    as.character(
+      round(x, digits = 1)), "\\.", ",")) %>% 
   set_header_labels(year = "Periode",
                     index = "Endring i trafikkmengde (%)",
                     konfidensintervall = "Konfidensbredde (95 %)") %>% 
@@ -92,7 +107,11 @@ city_info %>%
 ```
 
 \newline
-**Byindeksen estimerer endringen i trafikkmengden fra 2016 til 2019 (til og med august) til å være 1,7 %.**
+**Byindeksen estimerer endringen i trafikkmengden fra 
+2016 til 2019 (til og med august) 
+til å være 
+`r stringr::str_replace(as.character(index_all_years), "\\.", ",")` %.**
+
 
 ```{r all_point_info_long}
 all_point_info_long <- all_point_info %>% 
@@ -108,7 +127,8 @@ all_point_info_long <- all_point_info %>%
                                 ordered = TRUE))
 ```
 
-Nedenfor vises en graf over byindeksene for hver periode, sammen med alle punktindeksene.
+Nedenfor vises endringen i trafikkmengde for byområdet sammen med endringen i de enkelte trafikkregistreringspunktene.
+
 \newline
 
 ```{r plot_city_index}
@@ -136,7 +156,7 @@ ggplot() +
 ```
 
 
-Kartet nedenfor viser endringen i byindekspunktene fra referanseåret 2016 til og med august 2019.
+I kartet nedenfor vises trafikkregistreringspunktene med en indikasjon på endringen i trafikkmengde for perioden fra referanseåret 2016 til og med august 2019.
 
 ```{r map_trp_index}
 # Create a red-green scale based on index values
@@ -180,7 +200,7 @@ all_point_info %>%
 ```
 
 
-Tabellen nedenfor gjengir byindekspunktene og deres indeksverdi for 2019. ÅDT gjelder for lette kjøretøy i 2016.
+I tabellen nedenfor gjengis trafikkregistreringspunktene og deres indeksverdier. ÅDT gjelder for lette kjøretøy i 2016.
 
 \newline
 
@@ -209,7 +229,7 @@ all_point_info %>%
                             "-2017", "-2018", "-2019",
                             "-2019"), top = F) %>% 
   merge_at(i = 1, j = 4:7, part = "header") %>% 
-  align(i = 1, j = 4, align = "center", part = "header") %>% 
+  align(i = 1, j = 4, align = "right", part = "header") %>% 
   align(i = 2, j = 3:7, align = "right", part = "header") %>% 
   align(i = 3, j = 3:7, align = "right", part = "header") %>% 
   bold(part = "header") %>% 
@@ -240,14 +260,16 @@ ggplot2::ggplot() +
   geom_point(data = all_point_info_index, 
              aes(x = reorder(name, index), y = index, size = adt),
              color = "#ED9300", alpha = 0.6) +
-  geom_hline(yintercept = 1.7, color = "#58B02C") +
+  geom_hline(yintercept = index_all_years, color = "#58B02C") +
   xlab("") +
-  ylab("Endring (%)") +
-  ggtitle(label = "Endring i trafikkmengde",
+  ylab("Endring i trafikkmengde (%)") +
+  ggtitle(label = "ÅDT og endring i trafikkmengde",
           subtitle = "Fra 2016 til 2019 (august)") +
   coord_flip() +
   scale_size(name = "ÅDT 2016") +
-  geom_rect(aes(xmin = -Inf, xmax = Inf, ymin = 0.1, ymax = 3.3),
+  geom_rect(aes(xmin = -Inf, xmax = Inf, 
+                ymin = index_all_years_ci_lower, 
+                ymax = index_all_years_ci_upper),
             alpha = 0.1, fill = "#008EC2") +
   theme_minimal() +
   theme(legend.position = "right",
@@ -255,3 +277,5 @@ ggplot2::ggplot() +
   labs(caption = "Data: Statens vegvesen")
 ```
 
+```{r child = 'byindeksmetoden.Rmd'}
+```
