@@ -129,7 +129,7 @@ cities_points_unestablished <-
 
 # All points from Traffic Data API
 points <- getPoints() %>%
-  dplyr::select(trp_id, name, road_reference, lat, lon) %>%
+  #dplyr::select(trp_id, name, road_reference, lat, lon) %>%
   dplyr::distinct(trp_id, .keep_all = T)
 
 # All points from TRP API (if needed)
@@ -724,3 +724,91 @@ city_index_jaeren_all <- city_index_jaeren %>%
 write.csv2(city_index_jaeren_all,
            file = "data_indexpoints_tidy/byindeks_nord-jaeren_2016.csv",
            row.names = F)
+
+
+# Buskerudbyen 2016 ####
+# Point index
+trp_buskerud_2016_ids <- cities_points %>%
+  dplyr::filter(city_area_name == "Buskerudbyen",
+                agreement_start == 2016) %>%
+  dplyr::select(trp_id, legacyNortrafMpn) %>%
+  dplyr::rename(msnr = legacyNortrafMpn)
+
+# Adding metadata
+# Bruker trp fra trp-api, da noen mangler igangsetting.
+trp_buskerud_2016 <- dplyr::left_join(trp_buskerud_2016_ids, points_trp) %>%
+  filter(!is.na(road_reference))
+
+# Add index results from CSV-files
+pointindex_buskerud_16_17 <-
+  readPointindexCSV("data_index_raw/pointindex_buskerudbyen-2017-12_2016.csv") %>%
+  rename(index_16_17 = index)
+
+n_16_17 <- pointindex_buskerud_16_17 %>%
+  dplyr::filter(!is.na(index_16_17)) %>%
+  nrow()
+
+pointindex_buskerud_17_18 <-
+  readPointindexCSV("data_index_raw/pointindex_buskerudbyen-2018-12_2017.csv") %>%
+  rename(index_17_18 = index)
+
+n_17_18 <- pointindex_buskerud_17_18 %>%
+  dplyr::filter(!is.na(index_17_18)) %>%
+  nrow()
+
+pointindex_buskerud_18_19 <-
+  readPointindexCSV("data_index_raw/pointindex_buskerudbyen-2019-09_2018.csv") %>%
+  rename(index_18_19 = index)
+
+n_18_19 <- pointindex_buskerud_18_19 %>%
+  dplyr::filter(!is.na(index_18_19)) %>%
+  nrow()
+
+adt <- getAdtForpoints_by_length(trp_buskerud_2016$trp_id) %>%
+  dplyr::filter(length_range == "[..,5.6)") %>%
+  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  dplyr::filter(length_quality > 90) %>%
+  dplyr::filter(coverage > 50) %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year >= 2016) %>%
+  dplyr::filter(year == min(year)) %>%
+  dplyr::select(trp_id, aadt_length_range, year) %>%
+  dplyr::rename(adt = 2)
+
+# Final table
+trp_buskerud_2016_adt <- trp_buskerud_2016 %>%
+  left_join(adt) %>%
+  left_join(pointindex_buskerud_16_17) %>%
+  left_join(pointindex_buskerud_17_18) %>%
+  left_join(pointindex_buskerud_18_19)
+
+# Must supply missing AADTs from NVDB based on road reference
+missing_aadt <- trp_buskerud_2016_adt %>%
+  dplyr::filter(adt == 0 | is.na(adt)) %>%
+  dplyr::mutate(
+    adt = mapply(getAadtByRoadlinkposition, road_link_position)) %>%
+  dplyr::mutate(year = 2018)
+
+with_aadt <- trp_buskerud_2016_adt %>%
+  dplyr::filter(adt > 0)
+
+trp_buskerud_2016_adt_final <- bind_rows(with_aadt, missing_aadt) %>%
+  dplyr::arrange(road_reference)
+
+# Index from refyear
+refyear <- trp_buskerud_2016_adt_final %>%
+  select(starts_with("index")) %>%
+  mutate_all(list(index_converter)) %>%
+  transmute(index = purrr::pmap_dbl(., prod)) %>%
+  # Lazily changing from 1 to NA (risky?)
+  mutate(index = round(ifelse(index == 1, NA,  100 * (index - 1)),
+                       digits = 1))
+
+trp_buskerud_2016_adt_final_all <- trp_buskerud_2016_adt_final %>%
+  bind_cols(refyear)
+
+write.csv2(trp_buskerud_2016_adt_final_all,
+           file = "data_indexpoints_tidy/indekspunkt_buskerudbyen_2016.csv",
+           row.names = F)
+
+# City index

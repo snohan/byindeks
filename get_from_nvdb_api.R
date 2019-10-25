@@ -267,8 +267,9 @@ getAadtByRoadlinkposition <- function(roadlink) {
 
   adt_total <- uthenta$objekter %>%
     select(id, egenskaper) %>%
-    unnest() %>%
-    filter(id1 %in% c(4623)) %>%
+    rename(id1 = id) %>%
+    unnest(cols = c(egenskaper)) %>%
+    filter(id %in% c(4623)) %>%
     select(verdi)
 
   adt_verdi <- round(as.numeric(adt_total[1, 1]), digits = -2)
@@ -276,7 +277,7 @@ getAadtByRoadlinkposition <- function(roadlink) {
   return(adt_verdi)
 }
 
-
+roadlink <- "0.26634@181322"
 #roadref <- "1200EV39hp74m14171"
 
 getSpeedLimit <- function(roadref) {

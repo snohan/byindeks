@@ -9,9 +9,9 @@ Byindeksen brukes til oppfølging av byvekstavtaler og belønningsavtaler.
 
 ## Datagrunnlag
 
-Byindeksen bygger på datagrunnlaget som samles inn fra utvalgte trafikkregistreringsstasjoner, der utstyr kontinuerlig registrerer trafikkdata i hvert kjørefelt. En trafikkregistreringsstasjon er geogra-fisk tilknyttet et punkt på vegens senterlinje, og registrerer all trafikk som passerer gjennom en tenkt linje som dekker alle kjørefelt på den aktuelle vegen. Dette kaller vi et trafikkregistrerings-snitt. I dette dokumentet bruker vi begrepet registreringspunkt når vi omtaler registrering av tra-fikk i alle kjørefelt gjennom trafikkregistreringssnittet.
+Byindeksen bygger på datagrunnlaget som samles inn fra utvalgte trafikkregistreringsstasjoner, der utstyr kontinuerlig registrerer trafikkdata i hvert kjørefelt. En trafikkregistreringsstasjon er geografisk tilknyttet et punkt på vegens senterlinje, og registrerer all trafikk som passerer gjennom en tenkt linje som dekker alle kjørefelt på den aktuelle vegen. Dette kaller vi et trafikkregistreringssnitt. Vanligvis brukes begrepet *registreringspunkt* om stedet der det registreres trafikk i alle kjørefelt gjennom trafikkregistreringssnittet. I forbindelse med byindeks omtales punktene gjerne også som indekspunkt.
 
-Standarden for utstyr i dag er at data om kjøretøy registreres og lagres enkeltvis. Motorsykler regi-streres på lik linje med andre motorkjøretøy. For indekser som beregnes til og med 2019 holdes motorsykler utenfor datagrunnlaget. Kriteriet for å filtrere ut motorsykler (o.l.) er at de klassifiseres som motorsykler (klasse 1) eller har kjøretøylengde <= 1,8 m. Fra og med 2020 vil motorsykler inngå i datagrunnlaget.
+Standarden for utstyr i dag er at data om kjøretøy registreres og lagres enkeltvis. Motorsykler registreres på lik linje med andre motorkjøretøy. For indekser som beregnes til og med 2019 holdes motorsykler utenfor datagrunnlaget. Kriteriet for å filtrere ut motorsykler (o.l.) er at de klassifiseres som motorsykler (klasse 1) eller har kjøretøylengde <= 1,8 m. Fra og med 2020 vil motorsykler inngå i datagrunnlaget, både i basis- og beregningsår.
 
 Videre består datagrunnlaget for indeksen av trafikkvolumet aggregert til timenivå. Alle data som inngår i beregningen av byindeksen skal bruke trafikkvolumet $Q$, fra trafikkregistreringspunkt $j$, aggregert til timenivå og summert over alle kjørefelt for begge kjøreretninger:
 
@@ -19,12 +19,12 @@ $$Q_{j,h,d,s,t} \,,$$
 
 for time $h$, dag $d$, måned $s$ og år $t$. Indeksen sammenligner data fra beregningsåret $t$ og basisåret $t-1$.
 
-Alle data som skal brukes i indeksen skal være faktisk registrerte data for trafikkvolum som er regi-strert på et godkjent indekspunkt.
+Alle data som skal brukes i indeksen skal være faktisk registrerte data for trafikkvolum som er registrert på et godkjent indekspunkt.
 
 
 ### Ekskludering og matching
 
-For enkelhets skyld anvendes time for time- og dato for dato-prinsippet. Ulike ukedager kan varie-re med hensyn på trafikkvolum, men i løpet av et år vil dette utjevne seg.
+Metoden anvender time for time- og dato for dato-prinsippet. Ulike ukedager kan variere med hensyn på trafikkvolum, men i løpet av et år vil dette utjevne seg.
 
 Prosessen for å lage en indeks er:
 
@@ -47,7 +47,7 @@ Når bortfall av data forekommer, stilles følgende krav:
 
 #### Ekskludering av lengdeklasser
 
-Trafikkregistreringene omfatter lengdeklassifisering av alle kjøretøy, og Tabellen nedenfor viser inndelingen i lengdeklasser. I byindeksen benyttes dette til å beregne indekser for lengdeklasser.
+Trafikkregistreringene omfatter lengdeklassifisering av alle kjøretøy, og tabellen nedenfor viser inndelingen i lengdeklasser. I byindeksen benyttes dette til å beregne indekser for lette og tunge kjøretøy, hvor skillet mellom lette og tunge er satt til kjøretøylengde på 5,6 m.
 
 ```{r lengdeklasser}
 lengdegrupper <- c("L20", "L21", "L22", "L23", "L24", "L25")
@@ -84,11 +84,11 @@ lengdeklasser %>%
 
 Erfaring har vist at lengdeklassifiseringen ikke alltid er komplett i rådatamaterialet. Derfor må det kontrolleres om lengdeklassifiseringen er tilnærmet komplett. Alle avvik per time mellom summen L21+L22+L23+L24+L25 og L20 summeres for hvert døgn. Dersom avviket er mer enn 5 % av totalsum for L20 i hele døgnet, strykes lengdeklassifiseringen for hele dette døgnet. Dersom avviket er 5 % eller mindre beholdes lengdeklassifiseringen som den er.
 
-Fra nytt registreringsutstyr med enkeltkjøretøy, filtreres dårlige lengdemålinger ut av grunnlagsda-ta. Følgende kriterier benyttes:
+Fra nytt registreringsutstyr med enkeltkjøretøy, filtreres dårlige lengdemålinger ut av grunnlagsdata. Følgende kriterier benyttes:
 
 *	Kjøretøyregistreringer med lengde under 1,0 m filtreres helt bort. Motorsykler utgjør en stor andel av disse, og de skal ikke være med i grunnlaget for byindeksen.
-*	Kjøretøyregistreringer med lengde over 27 m tas med i totaltrafikken, men ikke i lengde-klasse¬inndelingen.
-*	Kjøretøyregistreringer med fart under 7 km/h tas med i totaltrafikken, men ikke i lengde-klasse¬inndelingen.
+*	Kjøretøyregistreringer med lengde over 27 m tas med i totaltrafikken, men ikke i lengdeklasseinndelingen.
+*	Kjøretøyregistreringer med fart under 7 km/h tas med i totaltrafikken, men ikke i lengdeklasseinndelingen.
 *	Kjøretøyregistreringer med godkjent nøyaktighet på fartsmåling, det vil si at fartsmålingen ikke skal variere med mer enn 3 % over sensorene.
 
 Den samme kompletthetskontrollen som nevnt over, gjelder for disse registreringene. Kravet om minst 16 døgn i måneden med godkjent lengdeklassifisering gjelder for utregning av lengdeklasseindeks.
@@ -96,7 +96,7 @@ Den samme kompletthetskontrollen som nevnt over, gjelder for disse registreringe
 
 ### Indeksdata
 
-Etter at ekskludering og matching er gjennomført, gjenstår de dataene som danner grunnlaget for selve byindeksberegningene. Disse dataene kalles indeksdata $D^{\tt i}$, og utgjør et utvalg, hele eller deler av, de opprinnelige rådataene $D$, dvs. at $D^{\tt i} \subseteq D$. For byindeksen har vi at
+Etter at ekskludering og matching er gjennomført, gjenstår de dataene som danner grunnlaget for selve byindeksberegningene. Disse dataene kalles indeksdata $D^{\mathrm{i}}$, og utgjør et utvalg, hele eller deler av, de opprinnelige rådataene $D$, dvs. at $D^{\mathrm{i}} \subseteq D$. For byindeksen har vi at
 
 $$Q_{j,s,t} = \sum_{h,d} Q_{j,h,d,s,t} \quad \exists \, Q_{j,h,d,s,t-1} \,.$$
 
@@ -121,23 +121,44 @@ $$Q_{j,s,t}^{\mathrm{i}} = \frac{Q_{j,s,t}}{Q_{j,s,t-1}} \,.$$
 
 Her er indeksen gitt på forholdsform. Når indeksen publiseres skal den gis på prosentform, 
 
-$$Q^{\mathrm{ip}} = 100 * (Q^{\mathrm{i}}-1) \,,$$
+$$Q^{\mathrm{ip}} = 100 \cdot (Q^{\mathrm{i}}-1) \,,$$
 
 med to gjeldende sifre.
 
 En kan også regne ut indeks for en periode på flere måneder, hvor
 
-$$Q_{j,\sum s,t}^{\mathrm{i}} = \sum_{h,d,s} Q_{j,h,d,s,t} 
+$$Q_{j,\Sigma s,t}^{\mathrm{i}} = \sum_{h,d,s} Q_{j,h,d,s,t} 
 \quad \exists \,  Q_{j,h,d,s,t-1} \,,$$
 
 som gir indeksen
 
-$$Q_{j,\sum s,t}^{\mathrm{i}} = \frac{Q_{j,\sum s,t}}{Q_{j,\sum s,t-1}} =
+$$Q_{j,\Sigma s,t}^{\mathrm{i}} = \frac{Q_{j,\Sigma s,t}}{Q_{j,\Sigma s,t-1}} =
 \frac{\sum_{s} Q_{j,s,t}}{\sum_{s} Q_{j,s,t-1}} \,.$$
 
-#### Indeks over flere år
 
-For å beregne et estimat på en indeks over flere år, kan trafikkmengden fra de aktuelle årene be-nyttes eller alle mellomliggende års indekser multipliseres:
+### Indeks for et byområde
+
+En indeks for et byområde $b$, som inneholder registreringspunktene $j$, baseres på indeksdata
+
+$$Q_{b,s,t} = \sum_{j,h,d} Q_{j,h,d,s,t} \quad \exists \, Q_{j,h,d,s,t-1} \,.$$
+Månedsindeks for by $b$ er da
+
+$$Q_{b,s,t}^{\mathrm{i}} = \frac{Q_{b,s,t}}{Q_{b,s,t-1}} \,.$$
+
+Alternativt kan byindeksen ses på som et vektet gjennomsnitt av enkeltpunktindeksene, der de normaliserte vektene dannes av trafikkvolumene fra basisåret:
+
+$$Q_{b,s,t}^{\mathrm{i}} = \frac{1}{\sum_j Q_{j,s,t-1}} \sum_j Q_{j,s,t}^{\mathrm{i}} \,\cdot\, Q_{j,s,t-1} = \frac{1}{Q_{b,s,t-1}} \sum_j \frac{Q_{j,s,t}}{Q_{j,s,t-1}} \,\cdot\, Q_{j,s,t-1} = \frac{Q_{b,s,t}}{Q_{b,s,t-1}} $$
+Byindeks for flere måneder er basert på
+
+$$Q_{b,\Sigma s, t} = \sum_{j,h,d,s} Q_{j,h,d,s,t}  \quad \exists \, Q_{j,h,d,s,t-1} \,,$$
+som gir
+
+$$Q_{b,\Sigma s,t}^{\mathrm{i}} = \frac{Q_{b,\Sigma s,t}}{Q_{b,\Sigma s,t-1}} \,.$$
+
+
+### Indeks over flere år
+
+For å beregne et estimat på en indeks over flere år, kan trafikkmengden fra de aktuelle årene benyttes eller alle mellomliggende års indekser multipliseres:
 
 $$\begin{aligned} 
 Q_{j,s,t,t-n}^{\mathrm{i}} &= \frac{Q_{j,s,t}}{Q_{j,s,t-n}} =
@@ -167,17 +188,27 @@ $$G_j(Q_j) = \frac{
 \mathrm{antall \, timer \, i \, perioden}} \cdot 100 \,\% 
 = \frac{h_{j,s,t}^{\mathrm{i}}}{h_{j,s,t}} \cdot 100 \,\% \,.$$
 
-Dekningsgraden er altså den relative andelen i prosent av antall timer med indeksdata delt på antallet timer en skulle hatt dersom det er 100 % oppetid på registreringsutstyret. For aggregerte indekser er dekningsgraden den sammensatte dekningsgraden på alle punktindeksene:
+Dekningsgraden er altså den relative andelen i prosent av antall timer med indeksdata delt på antallet timer en skulle hatt dersom det er 100 % oppetid på registreringsutstyret. Dekningsgraden blir lavere enn 100 % dersom enten fulltalligheten er lav (under 99 %), stasjonen har vært ute av drift eller at data er manuelt merket med en hendelse som gir dårlig datakvalitet eller skjevhet i datagrunnlaget for en indeks. Skjevheter kan oppstå som følge av stengte veier og omkjøringer i forbindelse med vegarbeid.
 
-$$G_f(Q_f) = \frac{\sum_j h_{j,s,t}^{\mathrm{i}}}{h_{j,s,t} \sum_j 1} \cdot 100 \,\% \,. $$
+For aggregerte indekser er dekningsgraden den sammensatte dekningsgraden på alle punktindeksene:
+
+$$G_b(Q_b) = \frac{\sum_j h_{j,s,t}^{\mathrm{i}}}{h_{j,s,t} \sum_j 1} \cdot 100 \,\% \,. $$
+
 
 ### Statistisk variasjon
 Trafikkregistreringspunktene som bidrar med data til indeksen utgjør et utvalg av alle veglenker i et område. Selv om plasseringen av registreringspunktene er valgt med omhu med tanke på datakvalitet og spredning på vegnettet, antar vi at de likevel representerer et tilnærmet tilfeldig og representativt utvalg veglenker. Punktindeksene antar vi er normalfordelte, men standardavviket er ikke kjent, og må estimeres for hvert tilfelle.
 
+
 #### Standardavvik
-For byindeksen $Q^{\mathrm{i}}$ er et forventningsrett vektet standardavvik 
+For byindeksen $Q^{\mathrm{i}}$ er et forventningsrett, vektet standardavvik 
 
-$$\sigma_{s,t} = \sqrt{\frac{1}{1- \sum_j (\frac{Q_{j,s,t-1}}{Q_{f,s,t-1}})^2}}$$
+$$\sigma_{b,s,t} = \sqrt{\frac{1}{1- \sum_j \left( \frac{Q_{j,s,t-1}}{Q_{b,s,t-1}} \right)^2} = \sum_j \left( \frac{Q_{j,s,t-1}}{Q_{b,s,t-1}} \left(  Q_{j,s,t}^{\mathrm{ip}} - Q_{b,s,t}^{\mathrm{ip}} \right)^2 \right) }$$
+Her er det brukt at trafikkvolumvektene er normaliserte, men ikke-stokastiske.
 
 
+#### Konfidensintervall
 
+Alle indekstall skal oppgis med et tosidig konfidensintervall på 95 %-nivå. Da populasjonens standardavvik er ukjent, benyttes $t$-fordeling. Med konfidensfaktor $\tau$ gitt av $t$-fordeling, er konfidensintervallet
+
+$$K_{b,s,t} = \tau \frac{\sigma_{b,s,t}}{\sqrt{n_{b,s,t}}} \,,$$
+hvor $n$ er antall trafikkregistreringspunkter.

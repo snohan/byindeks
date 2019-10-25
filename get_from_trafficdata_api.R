@@ -25,9 +25,9 @@ getPoints <- function() {
       roadReference{
           shortForm
       }
-      roadNetworkReference{
-        atPosition
-        networkElementId
+      roadLinkSequence {
+        relativePosition
+        roadLinkSequenceId
       }
     }
     commissions{
@@ -57,9 +57,9 @@ getPoints <- function() {
                   road_reference =
                     data.trafficRegistrationPoints.location.roadReference.shortForm,
                   road_network_position =
-                    data.trafficRegistrationPoints.location.roadNetworkReference.atPosition,
+                    data.trafficRegistrationPoints.location.roadLinkSequence.relativePosition,
                   road_network_link =
-                    data.trafficRegistrationPoints.location.roadNetworkReference.networkElementId
+                    data.trafficRegistrationPoints.location.roadLinkSequence.roadLinkSequenceId
                     ) %>%
     dplyr::select(trp_id, name, traffic_type, road_reference, lat, lon,
                   road_network_position, road_network_link, validFrom, validTo
