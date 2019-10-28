@@ -107,9 +107,13 @@ calculate_two_year_index <- function(city_index_df) {
     dekning = mean(two_years$dekning),
     # Using Goodman's unbiased estimate (cannot use exact formula as we are
     # sampling)
+    # But it can be negative if indexes are close to zero, large variance and
+    # small n's.
+    # Resolved by using exact formula
+    # Must be something about the assumptions that are wrong?
     variance =
       two_years$index[1]^2 * two_years$variance[2] / two_years$n_points[2] +
-      two_years$index[2]^2 * two_years$variance[1] / two_years$n_points[1] -
+      two_years$index[2]^2 * two_years$variance[1] / two_years$n_points[1] +
       two_years$variance[1] * two_years$variance[2] /
       (two_years$n_points[1] * two_years$n_points[2]),
     n_points = max(two_years$n_points)
@@ -812,3 +816,93 @@ write.csv2(trp_buskerud_2016_adt_final_all,
            row.names = F)
 
 # City index
+buskerud_2017 <-
+  read_city_index_csv("data_index_raw/Buskerudbyen-2017-12_2016.csv") %>%
+  mutate(year = "2016-2017")
+buskerud_2018 <-
+  read_city_index_csv("data_index_raw/Buskerudbyen-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+buskerud_2019 <-
+  read_city_index_csv("data_index_raw/Buskerudbyen-2019-09_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+city_index_buskerud <- bind_rows(buskerud_2017,
+                                 buskerud_2018,
+                                 buskerud_2019) %>%
+  mutate(index_i = index_converter(index),
+         variance = standardavvik^2,
+         n_points = c(n_16_17, n_17_18, n_18_19))
+
+first_two_years <- calculate_two_year_index(city_index_buskerud)
+next_two_years <- bind_rows(first_two_years, slice(city_index_buskerud, 3)) %>%
+  calculate_two_year_index() %>%
+  mutate(dekning = mean(city_index_buskerud$dekning),
+         year = "2016-2019",
+         konfidensintervall = 1.96 * sqrt(variance))
+
+city_index_buskerud_all <- city_index_buskerud %>%
+  select(-standardavvik) %>%
+  bind_rows(next_two_years)
+
+write.csv2(city_index_buskerud_all,
+           file = "data_indexpoints_tidy/byindeks_buskerudbyen_2016.csv",
+           row.names = F)
+
+# City index without E18
+# Must have the points to get the n's!
+pointindex_buskerud_uten_e18_16_17 <-
+  readPointindexCSV("data_index_raw/pointindex_buskerudbyen_uten_e18-2017-12_2016.csv") %>%
+  rename(index_16_17 = index)
+
+n_uten_e18_16_17 <- pointindex_buskerud_uten_e18_16_17 %>%
+  dplyr::filter(!is.na(index_16_17)) %>%
+  nrow()
+
+pointindex_buskerud_uten_e18_17_18 <-
+  readPointindexCSV("data_index_raw/pointindex_buskerudbyen_uten_e18-2018-12_2017.csv") %>%
+  rename(index_17_18 = index)
+
+n_uten_e18_17_18 <- pointindex_buskerud_uten_e18_17_18 %>%
+  dplyr::filter(!is.na(index_17_18)) %>%
+  nrow()
+
+pointindex_buskerud_uten_e18_18_19 <-
+  readPointindexCSV("data_index_raw/pointindex_buskerudbyen_uten_e18-2019-09_2018.csv") %>%
+  rename(index_18_19 = index)
+
+n_uten_e18_18_19 <- pointindex_buskerud_uten_e18_18_19 %>%
+  dplyr::filter(!is.na(index_18_19)) %>%
+  nrow()
+
+buskerud_uten_e18_2017 <-
+  read_city_index_csv("data_index_raw/Buskerudbyen_uten_e18-2017-12_2016.csv") %>%
+  mutate(year = "2016-2017")
+buskerud_uten_e18_2018 <-
+  read_city_index_csv("data_index_raw/Buskerudbyen_uten_e18-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+buskerud_uten_e18_2019 <-
+  read_city_index_csv("data_index_raw/Buskerudbyen_uten_e18-2019-09_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+city_index_buskerud_uten_e18 <- bind_rows(buskerud_uten_e18_2017,
+                                 buskerud_uten_e18_2018,
+                                 buskerud_uten_e18_2019) %>%
+  mutate(index_i = index_converter(index),
+         variance = standardavvik^2,
+         n_points = c(n_uten_e18_16_17, n_uten_e18_17_18, n_uten_e18_18_19))
+
+first_two_years_uten_e18 <- calculate_two_year_index(city_index_buskerud_uten_e18)
+next_two_years_uten_e18 <- bind_rows(first_two_years_uten_e18,
+                                     slice(city_index_buskerud_uten_e18, 3)) %>%
+  calculate_two_year_index() %>%
+  mutate(dekning = mean(city_index_buskerud_uten_e18$dekning),
+         year = "2016-2019",
+         konfidensintervall = 1.96 * sqrt(variance))
+
+city_index_buskerud_uten_e18_all <- city_index_buskerud_uten_e18 %>%
+  select(-standardavvik) %>%
+  bind_rows(next_two_years_uten_e18)
+
+write.csv2(city_index_buskerud_uten_e18_all,
+           file = "data_indexpoints_tidy/byindeks_buskerudbyen_uten_e18_2016.csv",
+           row.names = F)

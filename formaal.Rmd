@@ -1,0 +1,7 @@
+# Formål
+
+Byindeksen estimerer endring i trafikkmengde for byområdet. 
+
+Datagrunnlaget består av "lette" biler, som er biler *målt* til en lengde under 5,6 m ved trafikkregistreringspunktene. I datagrunnlaget inngår også næringstransport med kjøretøy under 5,6 m da det ikke er mulig å skille disse fra andre kjøretøy. Det er heller ikke tatt hensyn til ren gjennomgangstrafikk. 
+
+For hvert trafikkregistreringspunkt sammenlignes registrert trafikk dato for dato og time for time mellom de to periodene. Det tas hensyn til perioder hvor registreringsutstyret ikke har vært i drift og perioder hvor trafikken i stor grad er påvirket av stenginger og omkjøringer. Metodikken er beskrevet nærmere i slutten av denne rapporten.
