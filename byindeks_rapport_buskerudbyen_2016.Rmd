@@ -63,7 +63,7 @@ all_point_info %>%
     fillColor = ~palett_adt(adt),
     fillOpacity = 0.8
   ) %>%
-  addLegend("bottomright",
+  addLegend("topleft",
             pal = palett_adt,
             values = ~adt,
             title = "ÅDT",
@@ -104,6 +104,12 @@ city_info %>%
   set_caption("Estimert endring i trafikkmengde.")
 ```
 
+\newline
+**Byindeksen estimerer endringen i trafikkmengden fra 
+2016 til 2019 (til og med september) 
+til å være 
+`r stringr::str_replace(as.character(index_all_years), "\\.", ",")` %.**
+
 En tilsvarende byindeks hvor punktene på E18 er utelatt, er vist i tabellen nedenfor.
 
 ```{r city_table_uten_e18}
@@ -133,11 +139,7 @@ city_info_uten_e18 %>%
   set_caption("Estimert endring i trafikkmengde uten E18.")
 ```
 
-\newline
-**Byindeksen estimerer endringen i trafikkmengden fra 
-2016 til 2019 (til og med september) 
-til å være 
-`r stringr::str_replace(as.character(index_all_years), "\\.", ",")` %.**
+
 
 
 ```{r all_point_info_long}
@@ -217,7 +219,7 @@ all_point_info %>%
     fillColor = ~palett_index(index),
     fillOpacity = 0.8
   ) %>%
-  addLegend("bottomright",
+  addLegend("topleft",
             pal = palett_index,
             values = ~index,
             title = "Indeks",
@@ -302,6 +304,16 @@ ggplot2::ggplot() +
         axis.text.y = element_text(size = 7)) +
   labs(caption = "Data: Statens vegvesen")
 ```
+
+
+## Spesielle forhold
+
+Noen trafikkregistreringspunkter må ses i sammenheng når det oppstår hendelser på vegnettet som medfører omkjøringsruter. 
+
+
+### Strømsåstunnelen stengt i januar og februar 2017
+
+Når Strømsåstunnelen var stengt i januar og februar 2017, var punktet her uten trafikk og ble helt ekskludert fra indeksen i denne perioden. Da gikk trafikken i stedet på parallellveiene og følgende punkter fikk dermed en økning i trafikken: Bj. Bjørnsonsgt., Kreftingsgate, Øvre Sund bru, Gulskogen, Landfalløya bru syd, Travbanen, Herstrøm og Daler. Den aktuelle perioden er derfor ekskludert også for disse punktene for å unngå at punktene måler en ensidig økning, når det ikke er tilsvarende nedgang på punktet i Strømsåstunnelen.
 
 
 ```{r child = 'byindeksmetoden.Rmd'}

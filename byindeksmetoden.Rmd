@@ -212,3 +212,17 @@ Alle indekstall skal oppgis med et tosidig konfidensintervall på 95 %-nivå. Da
 
 $$K_{b,s,t} = \tau \frac{\sigma_{b,s,t}}{\sqrt{n_{b,s,t}}} \,,$$
 hvor $n$ er antall trafikkregistreringspunkter.
+
+
+#### Variansen til indeks over to år
+
+Indeks over to år beregnes ved å multiplisere de to indeksverdiene $Q^{\mathrm{i}}$. Variansen er da gitt ved 
+
+$$\mathrm{Var}(Q^{\mathrm{i}}_1 \cdot Q^{\mathrm{i}}_2) =  
+\frac{\mathrm{Var}(Q^{\mathrm{i}}_1) \cdot \mathrm{Var}(Q^{\mathrm{i}}_2)}{n_1 n_2} +
+\frac{\mathrm{Var}(Q^{\mathrm{i}}_1)}{n_1} \cdot Q^{\mathrm{i}2}_2 +
+\frac{\mathrm{Var}(Q^{\mathrm{i}}_2)}{n_2} \cdot Q^{\mathrm{i}2}_1 \,.$$
+
+
+
+

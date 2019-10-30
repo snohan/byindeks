@@ -1,46 +1,46 @@
 Område;Vegkategori;døgn;lengdeklasse;periode;indeks;dekning;trafikkmengde indeksår;trafikkmengde basisår;standardavvik;konfidensintervall
-Buskerudbyen uten E18;E+R+F+K;Alle;Alle;Januar;5,028;91,000;6898351;6568137;3.641;1.811
-Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;Januar;3,972;91,000;6385135;6141179;3.433;1.707
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;Januar;18,953;91,000;506890;426128;12.713;6.322
-Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;Januar;28,485;91,000;161390;125610;27.851;13.850
-Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;Januar;14,029;91,000;180548;158335;10.126;5.036
-Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;Januar;17,192;91,000;68059;58075;27.407;13.629
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;Januar;15,201;91,000;96893;84108;22.259;11.069
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;Januar;10,738;91,000;5429991;4903467;5.529;2.749
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;Januar;9,677;91,000;4970164;4531639;5.586;2.778
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;Januar;22,464;91,000;454406;371054;12.564;6.248
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Januar;32,046;91,000;142962;108267;27.467;13.659
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Januar;18,070;91,000;159366;134976;10.359;5.151
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Januar;21,433;91,000;61217;50412;27.091;13.472
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;Januar;17,393;91,000;90861;77399;22.456;11.167
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;Januar;-11,793;92,000;1468360;1664670;9.005;4.478
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;Januar;-12,088;92,000;1414971;1609540;8.904;4.428
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;Januar;-4,703;92,000;52484;55074;17.657;8.781
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;Januar;6,256;92,000;18428;17343;34.542;17.178
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;Januar;-9,320;92,000;21182;23359;15.784;7.849
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;Januar;-10,714;92,000;6842;7663;34.668;17.240
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;Januar;-10,091;92,000;6032;6709;27.453;13.652
-Buskerudbyen uten E18;E+R+F+K;Alle;Alle;Februar;0,776;93,000;6904624;6851475;5.366;2.586
-Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;Februar;-0,218;93,000;6348935;6362804;5.201;2.507
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;Februar;12,806;93,000;536099;475240;12.753;6.147
-Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;Februar;20,602;93,000;163724;135756;21.517;10.371
-Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;Februar;8,341;93,000;191220;176499;14.343;6.913
-Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;Februar;5,350;93,000;67446;64021;26.566;12.804
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;Februar;14,899;93,000;113709;98964;25.825;12.447
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;Februar;1,610;92,000;5449729;5363396;6.901;3.326
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;Februar;0,457;92,000;4948979;4926458;6.765;3.261
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;Februar;13,696;92,000;481582;423570;13.812;6.657
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Februar;20,909;92,000;144484;119498;21.349;10.290
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Februar;9,417;92,000;169623;155025;15.363;7.405
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Februar;6,576;92,000;60356;56632;26.917;12.974
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;Februar;15,911;92,000;107119;92415;26.363;12.707
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;Februar;-2,230;95,000;1454895;1488079;6.916;3.333
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;Februar;-2,534;95,000;1399956;1436346;6.798;3.277
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;Februar;5,510;95,000;54517;51670;14.581;7.028
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;Februar;18,342;95,000;19240;16258;32.609;15.717
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;Februar;0,573;95,000;21597;21474;14.335;6.909
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;Februar;-4,047;95,000;7090;7389;41.519;20.012
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;Februar;0,626;95,000;6590;6549;28.394;13.685
+Buskerudbyen uten E18;E+R+F+K;Alle;Alle;Januar;4,226;90,000;5551176;5326109;3.438;1.904
+Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;Januar;3,213;90,000;5124932;4965371;3.278;1.815
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;Januar;17,773;90,000;423873;359908;10.523;5.827
+Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;Januar;27,235;90,000;130415;102499;26.757;14.818
+Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;Januar;11,694;90,000;148599;133041;8.582;4.753
+Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;Januar;17,987;90,000;56733;48084;28.257;15.648
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;Januar;15,524;90,000;88126;76284;18.351;10.163
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;Januar;10,445;90,000;4366927;3953941;6.012;3.330
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;Januar;9,463;90,000;3985232;3640726;6.177;3.421
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;Januar;21,443;90,000;379439;312441;10.090;5.587
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Januar;31,044;90,000;115172;87888;25.907;14.347
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Januar;16,086;90,000;130673;112566;9.525;5.275
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Januar;22,052;90,000;51125;41888;27.638;15.306
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;Januar;17,646;90,000;82469;70099;18.594;10.297
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;Januar;-13,695;90,000;1184249;1372168;8.743;4.842
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;Januar;-13,962;90,000;1139700;1324645;8.643;4.787
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;Januar;-6,390;90,000;44434;47467;16.996;9.412
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;Januar;4,326;90,000;15243;14611;35.742;19.793
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;Januar;-12,449;90,000;17926;20475;13.338;7.386
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;Januar;-9,490;90,000;5608;6196;38.651;21.404
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;Januar;-8,537;90,000;5657;6185;25.255;13.986
+Buskerudbyen uten E18;E+R+F+K;Alle;Alle;Februar;0,313;92,000;6301794;6282156;5.138;2.642
+Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;Februar;-0,590;92,000;5805353;5839781;4.913;2.526
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;Februar;12,003;92,000;494509;441513;12.826;6.595
+Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;Februar;19,779;92,000;147746;123349;20.976;10.785
+Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;Februar;6,503;92,000;173614;163014;13.223;6.799
+Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;Februar;5,772;92,000;64396;60882;27.247;14.009
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;Februar;15,366;92,000;108753;94268;24.100;12.391
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;Februar;1,174;91,000;4952706;4895245;6.797;3.495
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;Februar;0,128;91,000;4507810;4502048;6.551;3.368
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;Februar;12,907;91,000;443045;392398;14.002;7.199
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Februar;20,126;91,000;129784;108040;20.882;10.737
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Februar;7,556;91,000;153050;142298;14.534;7.473
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Februar;7,069;91,000;57846;54027;27.486;14.132
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;Februar;16,280;91,000;102365;88033;24.884;12.794
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;Februar;-2,727;94,000;1349088;1386911;6.909;3.552
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;Februar;-3,004;94,000;1297543;1337733;6.819;3.506
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;Februar;4,783;94,000;51464;49115;14.599;7.506
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;Februar;17,330;94,000;17962;15309;32.357;16.637
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;Februar;-0,734;94,000;20564;20716;12.710;6.535
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;Februar;-4,449;94,000;6550;6855;43.025;22.122
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;Februar;2,454;94,000;6388;6235;25.113;12.912
 Buskerudbyen uten E18;E+R+F+K;Alle;Alle;Mars;9,750;91,000;8666822;7896860;5.519;2.512
 Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;Mars;8,625;91,000;7988740;7354416;5.389;2.453
 Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;Mars;24,336;91,000;673671;541815;11.046;5.028
@@ -62,111 +62,111 @@ Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;Mars;2,429;94,000;23318;2276
 Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;Mars;-9,545;94,000;27538;30444;11.182;5.090
 Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;Mars;-4,038;94,000;8270;8618;42.259;19.236
 Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;Mars;-12,941;94,000;7306;8392;26.215;11.933
-Buskerudbyen uten E18;E+R+F+K;Alle;Alle;April;-6,722;94,000;8181011;8770580;6.022;2.670
-Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;April;-6,752;94,000;7506989;8050551;6.390;2.833
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;April;-6,790;94,000;669389;718148;7.730;3.427
-Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;April;2,216;94,000;210824;206253;16.683;7.397
-Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;April;-6,561;94,000;267282;286050;7.720;3.423
-Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;April;-20,494;94,000;74919;94231;16.218;7.191
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;April;-11,587;94,000;116364;131614;15.414;6.834
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;April;-17,463;94,000;5575424;6755084;4.752;2.107
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;April;-17,976;94,000;5029263;6131428;4.988;2.212
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;April;-12,853;94,000;542089;622039;7.615;3.376
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;April;-6,621;94,000;164770;176453;15.410;6.832
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;April;-12,646;94,000;209960;240356;6.578;2.917
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;April;-24,997;94,000;62196;82925;15.902;7.051
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;April;-14,016;94,000;105163;122305;14.463;6.412
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;April;29,278;95,000;2605587;2015496;20.806;9.225
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;April;29,107;95,000;2477726;1919123;21.074;9.343
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;April;32,454;95,000;127300;96109;19.836;8.795
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;April;54,544;95,000;46054;29800;36.654;16.251
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;April;25,448;95,000;57322;45694;18.038;7.998
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;April;12,533;95,000;12723;11306;44.166;19.582
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;April;20,324;95,000;11201;9309;42.334;18.770
-Buskerudbyen uten E18;E+R+F+K;Alle;Alle;Mai;0,515;92,000;8267732;8225351;6.201;2.823
-Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;Mai;0,323;92,000;7512382;7488224;6.521;2.968
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;Mai;1,794;92,000;747498;734324;13.748;6.258
-Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;Mai;9,325;92,000;235396;215317;19.020;8.658
-Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;Mai;3,500;92,000;304340;294047;10.192;4.639
-Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;Mai;-5,678;92,000;84173;89240;17.508;7.970
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;Mai;-8,938;92,000;123589;135720;32.711;14.890
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;Mai;3,851;91,000;6100105;5873890;6.710;3.054
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;Mai;3,760;91,000;5468341;5270192;7.033;3.201
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;Mai;3,891;91,000;624470;601080;13.481;6.136
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Mai;11,386;91,000;192373;172709;18.259;8.311
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Mai;6,098;91,000;248547;234261;10.512;4.785
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Mai;-4,596;91,000;71407;74847;18.206;8.287
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;Mai;-5,970;91,000;112143;119263;30.912;14.071
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;Mai;-7,818;94,000;2167627;2351461;8.045;3.662
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;Mai;-7,844;94,000;2044041;2218032;8.453;3.848
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;Mai;-7,667;94,000;123028;133244;17.112;7.789
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;Mai;0,974;94,000;43023;42608;24.805;11.291
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;Mai;-6,679;94,000;55793;59786;12.750;5.804
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;Mai;-11,304;94,000;12766;14393;22.622;10.298
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;Mai;-30,449;94,000;11446;16457;41.816;19.035
-Buskerudbyen uten E18;E+R+F+K;Alle;Alle;Juni;-0,847;85,000;7626796;7691968;4.479;2.159
-Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;Juni;-1,381;85,000;6872225;6968448;4.337;2.091
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;Juni;3,408;85,000;744411;719876;9.792;4.719
-Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;Juni;10,408;85,000;245497;222354;17.023;8.205
-Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;Juni;3,485;85,000;302107;291932;9.697;4.674
-Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;Juni;-9,684;85,000;78755;87199;17.032;8.209
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;Juni;-0,286;85,000;118052;118391;18.617;8.973
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;Juni;-3,096;85,000;5950577;6140709;4.622;2.228
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;Juni;-3,768;85,000;5300651;5508209;4.660;2.246
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;Juni;1,804;85,000;640422;629076;9.028;4.351
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Juni;8,449;85,000;205765;189734;15.807;7.619
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Juni;2,964;85,000;255907;248540;9.429;4.545
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Juni;-13,091;85,000;68395;78697;17.583;8.475
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;Juni;-1,561;85,000;110355;112105;18.170;8.758
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;Juni;8,055;87,000;1676219;1551259;9.844;4.745
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;Juni;7,624;87,000;1571574;1460239;9.401;4.531
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;Juni;14,525;87,000;103989;90800;18.251;8.797
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;Juni;21,803;87,000;39732;32620;27.684;13.343
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;Juni;6,471;87,000;46200;43392;14.867;7.166
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;Juni;21,854;87,000;10360;8502;25.092;12.094
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;Juni;22,447;87,000;7697;6286;35.013;16.876
-Buskerudbyen uten E18;E+R+F+K;Alle;Alle;Juli;-0,234;94,000;7693129;7711165;7.252;3.301
-Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;Juli;-0,810;94,000;6949088;7005807;7.369;3.354
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;Juli;4,951;94,000;738861;704005;9.478;4.314
-Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;Juli;10,534;94,000;252917;228814;14.645;6.666
-Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;Juli;3,274;94,000;318435;308340;9.955;4.531
-Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;Juli;-0,269;94,000;75494;75698;15.020;6.837
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;Juli;0,946;94,000;92015;91153;20.429;9.299
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;Juli;-0,009;94,000;5720086;5720583;7.548;3.436
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;Juli;-0,632;94,000;5104297;5136770;7.699;3.505
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;Juli;4,928;94,000;611372;582658;9.561;4.352
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Juli;10,151;94,000;203317;184580;14.798;6.736
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Juli;3,880;94,000;259998;250287;10.042;4.571
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Juli;-0,567;94,000;63527;63889;16.731;7.616
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;Juli;0,748;94,000;84530;83902;19.651;8.945
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;Juli;-0,881;94,000;1973043;1990582;8.279;3.768
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;Juli;-1,297;94,000;1844791;1869037;8.279;3.769
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;Juli;5,062;94,000;127489;121347;11.976;5.452
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;Juli;12,131;94,000;49600;44234;16.949;7.715
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;Juli;0,661;94,000;58437;58053;12.570;5.722
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;Juli;1,338;94,000;11967;11809;12.487;5.684
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;Juli;3,227;94,000;7485;7251;33.255;15.137
-Buskerudbyen uten E18;E+R+F+K;Alle;Alle;August;-1,648;93,000;9054147;9205858;5.989;2.655
-Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;August;-2,013;93,000;8160252;8327886;5.812;2.577
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;August;1,722;93,000;890198;875126;10.075;4.467
-Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;August;5,286;93,000;282602;268413;18.805;8.338
-Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;August;3,641;93,000;366640;353760;8.616;3.820
-Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;August;-7,770;93,000;101248;109778;12.940;5.737
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;August;-2,422;93,000;139708;143175;17.820;7.901
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;August;-1,898;94,000;7259906;7400346;5.994;2.658
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;August;-2,291;94,000;6481625;6633616;5.766;2.556
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;August;1,430;94,000;775076;764146;10.365;4.596
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;August;4,404;94,000;239194;229105;18.779;8.326
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;August;4,027;94,000;313491;301355;9.434;4.183
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;August;-7,980;94,000;90423;98264;13.939;6.180
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;August;-2,551;94,000;131968;135422;17.861;7.919
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;August;-0,624;93,000;1794241;1805512;8.555;3.793
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;August;-0,923;93,000;1678627;1694270;8.525;3.780
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;August;3,732;93,000;115122;110980;11.699;5.187
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;August;10,430;93,000;43408;39308;20.606;9.136
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;August;1,420;93,000;53149;52405;10.108;4.481
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;August;-5,984;93,000;10825;11514;13.111;5.813
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;August;-0,168;93,000;7740;7753;23.249;10.308
+Buskerudbyen uten E18;E+R+F+K;Alle;Alle;April;-6,904;95,000;8076773;8675741;5.785;2.633
+Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;April;-6,948;95,000;7415275;7968954;6.106;2.779
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;April;-6,815;95,000;656871;704913;7.807;3.554
+Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;April;2,220;95,000;207879;203364;16.814;7.654
+Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;April;-6,738;95,000;262361;281315;7.662;3.488
+Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;April;-20,602;95,000;73607;92706;16.343;7.439
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;April;-11,373;95,000;113024;127528;15.640;7.119
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;April;-17,459;95,000;5518351;6685549;4.779;2.175
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;April;-17,978;95,000;4980947;6072682;5.015;2.283
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;April;-12,748;95,000;533336;611256;7.644;3.480
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;April;-6,489;95,000;162915;174221;15.472;7.043
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;April;-12,647;95,000;206820;236764;6.633;3.020
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;April;-24,962;95,000;61304;81697;16.032;7.298
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;April;-13,727;95,000;102297;118574;14.617;6.654
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;April;28,552;95,000;2558422;1990192;19.860;9.040
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;April;28,374;95,000;2434328;1896272;20.054;9.128
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;April;31,902;95,000;123535;93657;19.800;9.013
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;April;54,287;95,000;44964;29143;37.065;16.872
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;April;24,668;95,000;55541;44551;17.571;7.998
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;April;11,754;95,000;12303;11009;44.554;20.281
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;April;19,801;95,000;10727;8954;43.200;19.664
+Buskerudbyen uten E18;E+R+F+K;Alle;Alle;Mai;0,201;94,000;8027532;8011426;5.962;2.790
+Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;Mai;-0,031;94,000;7286487;7288723;6.230;2.916
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;Mai;1,823;94,000;733418;720287;13.894;6.503
+Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;Mai;9,613;94,000;229611;209475;19.226;8.998
+Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;Mai;3,449;94,000;298513;288561;10.291;4.816
+Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;Mai;-5,599;94,000;82974;87895;17.645;8.258
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;Mai;-8,958;94,000;122320;134356;32.902;15.399
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;Mai;3,453;93,000;5916392;5718931;6.322;2.959
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;Mai;3,309;93,000;5297108;5127425;6.558;3.069
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;Mai;3,894;93,000;612210;589262;13.630;6.379
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Mai;11,685;93,000;187450;167838;18.456;8.638
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Mai;6,015;93,000;243441;229629;10.612;4.966
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Mai;-4,591;93,000;70381;73768;18.355;8.590
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;Mai;-6,006;93,000;110938;118027;31.096;14.553
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;Mai;-7,911;95,000;2111140;2292495;8.136;3.808
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;Mai;-7,954;95,000;1989379;2161298;8.545;3.999
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;Mai;-7,492;95,000;121208;131025;17.216;8.057
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;Mai;1,258;95,000;42161;41637;25.049;11.723
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;Mai;-6,550;95,000;55072;58932;12.805;5.993
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;Mai;-10,859;95,000;12593;14127;22.608;10.581
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;Mai;-30,296;95,000;11382;16329;41.977;19.646
+Buskerudbyen uten E18;E+R+F+K;Alle;Alle;Juni;-1,252;86,000;6849481;6936319;4.540;2.334
+Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;Juni;-1,758;86,000;6163612;6273883;4.383;2.254
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;Juni;2,691;86,000;677951;660185;9.274;4.768
+Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;Juni;9,472;86,000;217189;198397;15.936;8.193
+Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;Juni;3,328;86,000;276085;267194;10.012;5.148
+Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;Juni;-10,844;86,000;72613;81445;16.978;8.729
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;Juni;-0,959;86,000;112064;113149;18.807;9.670
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;Juni;-3,572;85,000;5318938;5515947;4.639;2.385
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;Juni;-4,234;85,000;4728731;4937772;4.661;2.396
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;Juni;1,176;85,000;582820;576045;8.566;4.404
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Juni;7,639;85,000;181819;168916;14.582;7.497
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Juni;2,882;85,000;233215;226683;9.754;5.015
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Juni;-14,151;85,000;62977;73358;17.706;9.104
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;Juni;-2,128;85,000;104809;107088;18.406;9.464
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;Juni;7,756;89,000;1530543;1420372;10.270;5.281
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;Juni;7,392;89,000;1434881;1336111;9.815;5.046
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;Juni;13,063;89,000;95131;84140;17.902;9.205
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;Juni;19,976;89,000;35370;29481;27.956;14.374
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;Juni;5,823;89,000;42870;40511;15.203;7.817
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;Juni;19,154;89,000;9636;8087;21.917;11.269
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;Juni;19,700;89,000;7255;6061;32.018;16.462
+Buskerudbyen uten E18;E+R+F+K;Alle;Alle;Juli;-0,683;94,000;6875295;6922565;7.540;3.634
+Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;Juli;-1,251;94,000;6200550;6279083;7.649;3.687
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;Juli;4,337;94,000;670666;642789;8.957;4.317
+Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;Juli;10,200;94,000;223651;202950;13.736;6.620
+Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;Juli;2,702;94,000;290160;282525;10.142;4.888
+Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;Juli;-0,918;94,000;70139;70789;14.708;7.089
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;Juli;0,221;94,000;86716;86525;20.766;10.009
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;Juli;-0,442;94,000;5104386;5127068;7.883;3.799
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;Juli;-1,062;94,000;4546533;4595327;8.037;3.874
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;Juli;4,384;94,000;554432;531146;9.047;4.361
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Juli;9,973;94,000;179813;163506;13.896;6.698
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Juli;3,339;94,000;236007;228381;10.215;4.924
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Juli;-1,219;94,000;59012;59740;16.499;7.952
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;Juli;0,102;94,000;79600;79519;20.045;9.661
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;Juli;-1,369;93,000;1770909;1795497;8.545;4.119
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;Juli;-1,766;93,000;1654017;1683756;8.526;4.109
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;Juli;4,112;93,000;116234;111643;11.757;5.667
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;Juli;11,140;93,000;43838;39444;16.575;7.989
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;Juli;0,017;93,000;54153;54144;12.780;6.160
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;Juli;0,706;93,000;11127;11049;12.347;5.951
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;Juli;1,570;93,000;7116;7006;32.493;15.661
+Buskerudbyen uten E18;E+R+F+K;Alle;Alle;August;-0,758;95,000;8085456;8147222;5.255;2.459
+Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;August;-1,114;95,000;7290564;7372717;5.129;2.400
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;August;2,565;95,000;793497;773651;9.118;4.267
+Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;August;6,169;95,000;246675;232341;17.285;8.090
+Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;August;4,409;95,000;328466;314595;8.482;3.970
+Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;August;-6,946;95,000;92717;99638;12.977;6.073
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;August;-1,132;95,000;125639;127077;18.559;8.686
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;August;-0,931;95,000;6493612;6554663;5.106;2.390
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;August;-1,315;95,000;5801798;5879090;4.897;2.292
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;August;2,352;95,000;690675;674801;9.545;4.467
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;August;5,368;95,000;208987;198341;17.276;8.085
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;August;4,835;95,000;280140;267221;9.390;4.395
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;August;-7,081;95,000;82896;89213;14.132;6.614
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;August;-1,145;95,000;118652;120026;18.547;8.680
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;August;-0,045;94,000;1591844;1592559;8.699;4.071
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;August;-0,325;94,000;1488766;1493627;8.726;4.084
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;August;4,018;94,000;102822;98850;10.678;4.997
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;August;10,847;94,000;37688;34000;19.588;9.168
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;August;2,010;94,000;48326;47374;10.231;4.788
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;August;-5,794;94,000;9821;10425;10.041;4.699
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;August;-0,908;94,000;6987;7051;23.889;11.180
 Buskerudbyen uten E18;E+R+F+K;Alle;Alle;September;-0,893;96,000;9413875;9498734;2.593;1.150
 Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;September;-0,917;96,000;8551506;8630633;2.637;1.169
 Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;September;-0,697;96,000;859400;865434;6.903;3.061
@@ -251,48 +251,48 @@ Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;Desember;28,422;98,000;23274
 Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;Desember;26,698;98,000;24060;18990;13.136;6.532
 Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;Desember;28,349;98,000;5940;4628;23.251;11.562
 Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;Desember;23,969;98,000;6165;4973;30.476;15.155
-Buskerudbyen uten E18;E+R+F+K;Alle;Alle;Siste 12 måneder;0,333;94,000;97775138;97450412;2.056;0.797
-Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;Siste 12 måneder;-0,086;94,000;89192288;89268642;2.176;0.844
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;Siste 12 måneder;4,579;94,000;8403180;8035242;5.443;2.111
-Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;Siste 12 måneder;9,746;94,000;2668161;2431218;12.435;4.822
-Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;Siste 12 måneder;4,014;94,000;3330372;3201841;5.543;2.149
-Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;Siste 12 måneder;-2,609;94,000;971224;997239;12.571;4.874
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;Siste 12 måneder;2,027;94,000;1433423;1404944;10.733;4.162
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;Siste 12 måneder;-0,015;94,000;75063882;75074892;2.079;0.806
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,478;94,000;67658529;67983402;2.324;0.901
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;Siste 12 måneder;4,229;94,000;7248947;6954797;5.214;2.022
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;9,007;94,000;2251477;2065450;11.697;4.536
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;4,042;94,000;2810537;2701353;5.485;2.127
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-3,242;94,000;853436;882027;12.944;5.019
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;Siste 12 måneder;2,108;94,000;1333497;1305967;10.620;4.118
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;Siste 12 måneder;1,500;95,000;22711256;22375520;5.020;1.947
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;Siste 12 måneder;1,168;94,000;21533759;21285240;4.990;1.935
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;Siste 12 måneder;6,829;94,000;1154233;1080445;8.005;3.104
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;13,920;94,000;416684;365768;17.995;6.978
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;3,866;94,000;519835;500488;7.579;2.939
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;2,236;94,000;117788;115212;17.707;6.866
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;Siste 12 måneder;0,959;94,000;99926;98977;19.884;7.710
-Buskerudbyen uten E18;E+R+F+K;Alle;Alle;Hittil i år;0,333;94,000;97775138;97450412;2.056;0.797
-Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;Hittil i år;-0,086;94,000;89192288;89268642;2.176;0.844
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;Hittil i år;4,579;94,000;8403180;8035242;5.443;2.111
-Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;Hittil i år;9,746;94,000;2668161;2431218;12.435;4.822
-Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;Hittil i år;4,014;94,000;3330372;3201841;5.543;2.149
-Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;Hittil i år;-2,609;94,000;971224;997239;12.571;4.874
-Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;Hittil i år;2,027;94,000;1433423;1404944;10.733;4.162
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;Hittil i år;-0,015;94,000;75063882;75074892;2.079;0.806
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;Hittil i år;-0,478;94,000;67658529;67983402;2.324;0.901
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;Hittil i år;4,229;94,000;7248947;6954797;5.214;2.022
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Hittil i år;9,007;94,000;2251477;2065450;11.697;4.536
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Hittil i år;4,042;94,000;2810537;2701353;5.485;2.127
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-3,242;94,000;853436;882027;12.944;5.019
-Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;Hittil i år;2,108;94,000;1333497;1305967;10.620;4.118
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;Hittil i år;1,500;95,000;22711256;22375520;5.020;1.947
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;Hittil i år;1,168;94,000;21533759;21285240;4.990;1.935
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;Hittil i år;6,829;94,000;1154233;1080445;8.005;3.104
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;Hittil i år;13,920;94,000;416684;365768;17.995;6.978
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;Hittil i år;3,866;94,000;519835;500488;7.579;2.939
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;Hittil i år;2,236;94,000;117788;115212;17.707;6.866
-Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;Hittil i år;0,959;94,000;99926;98977;19.884;7.710
+Buskerudbyen uten E18;E+R+F+K;Alle;Alle;Siste 12 måneder;0,204;94,000;92916855;92727416;1.953;0.789
+Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;Siste 12 måneder;-0,198;94,000;84744055;84912255;2.053;0.829
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;Siste 12 måneder;4,358;94,000;8020619;7685641;5.201;2.101
+Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;Siste 12 måneder;9,470;94,000;2518977;2301076;11.874;4.796
+Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;Siste 12 måneder;3,737;94,000;3177598;3063123;5.747;2.321
+Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;Siste 12 måneder;-2,720;94,000;934309;960436;12.778;5.161
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;Siste 12 måneder;2,111;94,000;1389735;1361006;10.467;4.228
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;Siste 12 måneder;-0,167;94,000;71249376;71368761;2.224;0.898
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,614;94,000;64203368;64600160;2.427;0.980
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;Siste 12 måneder;4,015;94,000;6915487;6648523;5.059;2.043
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;8,736;94,000;2124552;1953854;11.091;4.480
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;3,756;94,000;2676991;2580095;5.768;2.330
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-3,364;94,000;821456;850052;13.219;5.339
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;Siste 12 måneder;2,212;94,000;1292488;1264522;10.403;4.202
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;Siste 12 måneder;1,446;95,000;21667479;21358655;4.863;1.964
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;Siste 12 måneder;1,125;95,000;20540687;20312095;4.825;1.949
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;Siste 12 måneder;6,558;95,000;1105132;1037118;7.503;3.031
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;13,594;95,000;394425;347222;17.808;7.193
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;3,639;95,000;500607;483028;7.532;3.042
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;2,237;95,000;112853;110384;17.451;7.048
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;Siste 12 måneder;0,791;95,000;97247;96484;19.034;7.688
+Buskerudbyen uten E18;E+R+F+K;Alle;Alle;Hittil i år;0,204;94,000;92916855;92727416;1.953;0.789
+Buskerudbyen uten E18;E+R+F+K;Alle;< 5,6m;Hittil i år;-0,198;94,000;84744055;84912255;2.053;0.829
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 5,6m;Hittil i år;4,358;94,000;8020619;7685641;5.201;2.101
+Buskerudbyen uten E18;E+R+F+K;Alle;5,6m - 7,6m;Hittil i år;9,470;94,000;2518977;2301076;11.874;4.796
+Buskerudbyen uten E18;E+R+F+K;Alle;7,6m - 12,5m;Hittil i år;3,737;94,000;3177598;3063123;5.747;2.321
+Buskerudbyen uten E18;E+R+F+K;Alle;12,5m - 16,0m;Hittil i år;-2,720;94,000;934309;960436;12.778;5.161
+Buskerudbyen uten E18;E+R+F+K;Alle;>= 16,0m;Hittil i år;2,111;94,000;1389735;1361006;10.467;4.228
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;Alle;Hittil i år;-0,167;94,000;71249376;71368761;2.224;0.898
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;< 5,6m;Hittil i år;-0,614;94,000;64203368;64600160;2.427;0.980
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 5,6m;Hittil i år;4,015;94,000;6915487;6648523;5.059;2.043
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Hittil i år;8,736;94,000;2124552;1953854;11.091;4.480
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Hittil i år;3,756;94,000;2676991;2580095;5.768;2.330
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-3,364;94,000;821456;850052;13.219;5.339
+Buskerudbyen uten E18;E+R+F+K;Yrkesdøgn;>= 16,0m;Hittil i år;2,212;94,000;1292488;1264522;10.403;4.202
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;Alle;Hittil i år;1,446;95,000;21667479;21358655;4.863;1.964
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;< 5,6m;Hittil i år;1,125;95,000;20540687;20312095;4.825;1.949
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 5,6m;Hittil i år;6,558;95,000;1105132;1037118;7.503;3.031
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;5,6m - 7,6m;Hittil i år;13,594;95,000;394425;347222;17.808;7.193
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;7,6m - 12,5m;Hittil i år;3,639;95,000;500607;483028;7.532;3.042
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;12,5m - 16,0m;Hittil i år;2,237;95,000;112853;110384;17.451;7.048
+Buskerudbyen uten E18;E+R+F+K;Helgedøgn;>= 16,0m;Hittil i år;0,791;95,000;97247;96484;19.034;7.688
 Buskerudbyen uten E18;R;Alle;Alle;Januar;6,222;81,000;1372169;1291795;3.141;7.803
 Buskerudbyen uten E18;R;Alle;< 5,6m;Januar;5,369;81,000;1246792;1183262;2.541;6.313
 Buskerudbyen uten E18;R;Alle;>= 5,6m;Januar;15,455;81,000;124348;107703;9.781;24.298
@@ -398,69 +398,69 @@ Buskerudbyen uten E18;R;Helgedøgn;5,6m - 7,6m;Mai;-19,607;97,000;8508;10583;22.2
 Buskerudbyen uten E18;R;Helgedøgn;7,6m - 12,5m;Mai;-18,193;97,000;12303;15039;17.780;44.168
 Buskerudbyen uten E18;R;Helgedøgn;12,5m - 16,0m;Mai;-19,897;97,000;2331;2910;27.153;67.452
 Buskerudbyen uten E18;R;Helgedøgn;>= 16,0m;Mai;-41,833;97,000;1898;3263;33.833;84.045
-Buskerudbyen uten E18;R;Alle;Alle;Juni;-1,227;94,000;2100598;2126694;3.629;5.775
-Buskerudbyen uten E18;R;Alle;< 5,6m;Juni;-1,617;94,000;1875187;1906004;3.245;5.164
-Buskerudbyen uten E18;R;Alle;>= 5,6m;Juni;1,953;94,000;222470;218209;10.738;17.087
-Buskerudbyen uten E18;R;Alle;5,6m - 7,6m;Juni;8,273;94,000;72900;67330;17.843;28.393
-Buskerudbyen uten E18;R;Alle;7,6m - 12,5m;Juni;0,855;94,000;89896;89134;5.709;9.085
-Buskerudbyen uten E18;R;Alle;12,5m - 16,0m;Juni;3,632;94,000;24879;24007;9.888;15.734
-Buskerudbyen uten E18;R;Alle;>= 16,0m;Juni;-7,799;94,000;34795;37738;14.342;22.821
-Buskerudbyen uten E18;R;Yrkesdøgn;Alle;Juni;-1,906;94,000;1646077;1678059;3.826;6.088
-Buskerudbyen uten E18;R;Yrkesdøgn;< 5,6m;Juni;-2,345;94,000;1451012;1485858;3.548;5.646
-Buskerudbyen uten E18;R;Yrkesdøgn;>= 5,6m;Juni;1,274;94,000;192309;189889;10.078;16.036
-Buskerudbyen uten E18;R;Yrkesdøgn;5,6m - 7,6m;Juni;8,034;94,000;61267;56711;16.757;26.664
-Buskerudbyen uten E18;R;Yrkesdøgn;7,6m - 12,5m;Juni;1,040;94,000;76335;75549;5.866;9.334
-Buskerudbyen uten E18;R;Yrkesdøgn;12,5m - 16,0m;Juni;1,387;94,000;22070;21768;10.126;16.113
-Buskerudbyen uten E18;R;Yrkesdøgn;>= 16,0m;Juni;-8,990;94,000;32637;35861;13.414;21.344
-Buskerudbyen uten E18;R;Helgedøgn;Alle;Juni;1,312;94,000;454521;448635;5.141;8.180
-Buskerudbyen uten E18;R;Helgedøgn;< 5,6m;Juni;0,959;94,000;424175;420146;4.439;7.063
-Buskerudbyen uten E18;R;Helgedøgn;>= 5,6m;Juni;6,501;94,000;30161;28320;17.692;28.152
-Buskerudbyen uten E18;R;Helgedøgn;5,6m - 7,6m;Juni;9,549;94,000;11633;10619;24.710;39.319
-Buskerudbyen uten E18;R;Helgedøgn;7,6m - 12,5m;Juni;-0,177;94,000;13561;13585;9.222;14.674
-Buskerudbyen uten E18;R;Helgedøgn;12,5m - 16,0m;Juni;25,458;94,000;2809;2239;30.412;48.393
-Buskerudbyen uten E18;R;Helgedøgn;>= 16,0m;Juni;14,971;94,000;2158;1877;40.904;65.087
-Buskerudbyen uten E18;R;Alle;Alle;Juli;0,883;96,000;1865481;1849153;1.276;2.030
-Buskerudbyen uten E18;R;Alle;< 5,6m;Juli;0,474;96,000;1662224;1654389;0.802;1.275
-Buskerudbyen uten E18;R;Alle;>= 5,6m;Juli;4,105;96,000;201823;193864;9.887;15.733
-Buskerudbyen uten E18;R;Alle;5,6m - 7,6m;Juli;7,802;96,000;67440;62559;15.576;24.785
-Buskerudbyen uten E18;R;Alle;7,6m - 12,5m;Juli;3,200;96,000;87160;84457;5.356;8.522
-Buskerudbyen uten E18;R;Alle;12,5m - 16,0m;Juli;9,135;96,000;19855;18193;14.720;23.423
-Buskerudbyen uten E18;R;Alle;>= 16,0m;Juli;-4,491;96,000;27368;28655;11.201;17.823
-Buskerudbyen uten E18;R;Yrkesdøgn;Alle;Juli;1,346;96,000;1378368;1360066;1.962;3.122
-Buskerudbyen uten E18;R;Yrkesdøgn;< 5,6m;Juli;0,958;96,000;1210618;1199126;1.499;2.385
-Buskerudbyen uten E18;R;Yrkesdøgn;>= 5,6m;Juli;3,921;96,000;166450;160169;10.118;16.100
-Buskerudbyen uten E18;R;Yrkesdøgn;5,6m - 7,6m;Juli;7,177;96,000;53296;49727;15.960;25.397
-Buskerudbyen uten E18;R;Yrkesdøgn;7,6m - 12,5m;Juli;3,690;96,000;70821;68301;6.013;9.568
-Buskerudbyen uten E18;R;Yrkesdøgn;12,5m - 16,0m;Juli;10,369;96,000;16998;15401;15.722;25.017
-Buskerudbyen uten E18;R;Yrkesdøgn;>= 16,0m;Juli;-5,254;96,000;25335;26740;10.636;16.924
-Buskerudbyen uten E18;R;Helgedøgn;Alle;Juli;-0,404;95,000;487113;489087;1.345;2.139
-Buskerudbyen uten E18;R;Helgedøgn;< 5,6m;Juli;-0,803;95,000;451606;455263;1.255;1.996
-Buskerudbyen uten E18;R;Helgedøgn;>= 5,6m;Juli;4,980;95,000;35373;33695;10.317;16.417
-Buskerudbyen uten E18;R;Helgedøgn;5,6m - 7,6m;Juli;10,224;95,000;14144;12832;15.680;24.950
-Buskerudbyen uten E18;R;Helgedøgn;7,6m - 12,5m;Juli;1,133;95,000;16339;16156;4.538;7.220
-Buskerudbyen uten E18;R;Helgedøgn;12,5m - 16,0m;Juli;2,328;95,000;2857;2792;10.202;16.233
-Buskerudbyen uten E18;R;Helgedøgn;>= 16,0m;Juli;6,162;95,000;2033;1915;24.572;39.099
-Buskerudbyen uten E18;R;Alle;Alle;August;-4,251;86,000;1884354;1968019;7.819;12.442
-Buskerudbyen uten E18;R;Alle;< 5,6m;August;-4,311;86,000;1682387;1758189;7.826;12.452
-Buskerudbyen uten E18;R;Alle;>= 5,6m;August;-3,928;86,000;199596;207757;11.306;17.991
-Buskerudbyen uten E18;R;Alle;5,6m - 7,6m;August;-1,186;86,000;63394;64155;22.915;36.462
-Buskerudbyen uten E18;R;Alle;7,6m - 12,5m;August;-0,561;86,000;83536;84007;6.014;9.569
-Buskerudbyen uten E18;R;Alle;12,5m - 16,0m;August;-7,405;86,000;20870;22539;12.804;20.374
-Buskerudbyen uten E18;R;Alle;>= 16,0m;August;-14,195;86,000;31796;37056;5.424;8.631
-Buskerudbyen uten E18;R;Yrkesdøgn;Alle;August;-5,559;86,000;1493721;1581645;7.601;12.094
-Buskerudbyen uten E18;R;Yrkesdøgn;< 5,6m;August;-5,661;86,000;1317909;1396998;7.578;12.059
-Buskerudbyen uten E18;R;Yrkesdøgn;>= 5,6m;August;-4,963;86,000;173684;182755;10.828;17.230
-Buskerudbyen uten E18;R;Yrkesdøgn;5,6m - 7,6m;August;-2,660;86,000;53363;54821;22.772;36.235
-Buskerudbyen uten E18;R;Yrkesdøgn;7,6m - 12,5m;August;-0,943;86,000;71324;72003;6.132;9.757
-Buskerudbyen uten E18;R;Yrkesdøgn;12,5m - 16,0m;August;-8,470;86,000;18825;20567;12.292;19.559
-Buskerudbyen uten E18;R;Yrkesdøgn;>= 16,0m;August;-14,682;86,000;30172;35364;5.539;8.814
-Buskerudbyen uten E18;R;Helgedøgn;Alle;August;1,102;85,000;390633;386374;10.681;16.995
-Buskerudbyen uten E18;R;Helgedøgn;< 5,6m;August;0,910;85,000;364478;361191;10.665;16.970
-Buskerudbyen uten E18;R;Helgedøgn;>= 5,6m;August;3,640;85,000;25912;25002;15.266;24.291
-Buskerudbyen uten E18;R;Helgedøgn;5,6m - 7,6m;August;7,467;85,000;10031;9334;23.031;36.648
-Buskerudbyen uten E18;R;Helgedøgn;7,6m - 12,5m;August;1,733;85,000;12212;12004;9.848;15.671
-Buskerudbyen uten E18;R;Helgedøgn;12,5m - 16,0m;August;3,702;85,000;2045;1972;30.800;49.009
-Buskerudbyen uten E18;R;Helgedøgn;>= 16,0m;August;-4,019;85,000;1624;1692;16.283;25.910
+Buskerudbyen uten E18;R;Alle;Alle;Juni;-2,023;92,000;1696714;1731752;3.617;8.984
+Buskerudbyen uten E18;R;Alle;< 5,6m;Juni;-2,084;92,000;1513833;1546055;3.613;8.976
+Buskerudbyen uten E18;R;Alle;>= 5,6m;Juni;-1,628;92,000;180982;183978;5.165;12.831
+Buskerudbyen uten E18;R;Alle;5,6m - 7,6m;Juni;0,919;92,000;54567;54070;4.008;9.957
+Buskerudbyen uten E18;R;Alle;7,6m - 12,5m;Juni;-0,871;92,000;74355;75008;3.806;9.454
+Buskerudbyen uten E18;R;Alle;12,5m - 16,0m;Juni;2,247;92,000;20658;20204;10.532;26.163
+Buskerudbyen uten E18;R;Alle;>= 16,0m;Juni;-9,494;92,000;31402;34696;13.609;33.806
+Buskerudbyen uten E18;R;Yrkesdøgn;Alle;Juni;-2,408;93,000;1328690;1361480;4.309;10.704
+Buskerudbyen uten E18;R;Yrkesdøgn;< 5,6m;Juni;-2,504;93,000;1169409;1199443;4.213;10.466
+Buskerudbyen uten E18;R;Yrkesdøgn;>= 5,6m;Juni;-1,834;93,000;157454;160396;6.174;15.336
+Buskerudbyen uten E18;R;Yrkesdøgn;5,6m - 7,6m;Juni;1,358;93,000;46355;45734;5.414;13.450
+Buskerudbyen uten E18;R;Yrkesdøgn;7,6m - 12,5m;Juni;-0,430;93,000;63204;63477;5.000;12.419
+Buskerudbyen uten E18;R;Yrkesdøgn;12,5m - 16,0m;Juni;0,533;93,000;18291;18194;11.403;28.326
+Buskerudbyen uten E18;R;Yrkesdøgn;>= 16,0m;Juni;-10,266;93,000;29604;32991;13.369;33.210
+Buskerudbyen uten E18;R;Helgedøgn;Alle;Juni;-0,607;92,000;368024;370272;1.773;4.404
+Buskerudbyen uten E18;R;Helgedøgn;< 5,6m;Juni;-0,631;92,000;344424;346612;2.078;5.162
+Buskerudbyen uten E18;R;Helgedøgn;>= 5,6m;Juni;-0,229;92,000;23528;23582;3.050;7.577
+Buskerudbyen uten E18;R;Helgedøgn;5,6m - 7,6m;Juni;-1,488;92,000;8212;8336;3.161;7.851
+Buskerudbyen uten E18;R;Helgedøgn;7,6m - 12,5m;Juni;-3,295;92,000;11151;11531;3.771;9.369
+Buskerudbyen uten E18;R;Helgedøgn;12,5m - 16,0m;Juni;17,761;92,000;2367;2010;13.930;34.605
+Buskerudbyen uten E18;R;Helgedøgn;>= 16,0m;Juni;5,455;92,000;1798;1705;20.723;51.479
+Buskerudbyen uten E18;R;Alle;Alle;Juli;0,496;94,000;1521288;1513783;0.982;2.439
+Buskerudbyen uten E18;R;Alle;< 5,6m;Juli;0,474;94,000;1356368;1349972;0.946;2.349
+Buskerudbyen uten E18;R;Alle;>= 5,6m;Juli;0,522;94,000;164145;163292;2.303;5.722
+Buskerudbyen uten E18;R;Alle;5,6m - 7,6m;Juli;1,228;94,000;50271;49661;4.739;11.771
+Buskerudbyen uten E18;R;Alle;7,6m - 12,5m;Juli;1,263;94,000;72549;71644;0.379;0.941
+Buskerudbyen uten E18;R;Alle;12,5m - 16,0m;Juli;6,581;94,000;16454;15438;14.764;36.675
+Buskerudbyen uten E18;R;Alle;>= 16,0m;Juli;-6,320;94,000;24871;26549;8.574;21.299
+Buskerudbyen uten E18;R;Yrkesdøgn;Alle;Juli;0,882;95,000;1121731;1111925;1.871;4.648
+Buskerudbyen uten E18;R;Yrkesdøgn;< 5,6m;Juli;0,923;95,000;984850;975839;1.770;4.397
+Buskerudbyen uten E18;R;Yrkesdøgn;>= 5,6m;Juli;0,397;95,000;136155;135616;3.269;8.120
+Buskerudbyen uten E18;R;Yrkesdøgn;5,6m - 7,6m;Juli;0,757;95,000;40043;39742;6.478;16.093
+Buskerudbyen uten E18;R;Yrkesdøgn;7,6m - 12,5m;Juli;1,569;95,000;58963;58052;1.319;3.276
+Buskerudbyen uten E18;R;Yrkesdøgn;12,5m - 16,0m;Juli;7,928;95,000;14076;13042;16.281;40.444
+Buskerudbyen uten E18;R;Yrkesdøgn;>= 16,0m;Juli;-6,889;95,000;23073;24780;8.575;21.301
+Buskerudbyen uten E18;R;Helgedøgn;Alle;Juli;-0,573;93,000;399557;401858;1.495;3.714
+Buskerudbyen uten E18;R;Helgedøgn;< 5,6m;Juli;-0,699;93,000;371518;374133;1.439;3.574
+Buskerudbyen uten E18;R;Helgedøgn;>= 5,6m;Juli;1,135;93,000;27990;27676;4.451;11.058
+Buskerudbyen uten E18;R;Helgedøgn;5,6m - 7,6m;Juli;3,115;93,000;10228;9919;4.710;11.701
+Buskerudbyen uten E18;R;Helgedøgn;7,6m - 12,5m;Juli;-0,044;93,000;13586;13592;3.736;9.281
+Buskerudbyen uten E18;R;Helgedøgn;12,5m - 16,0m;Juli;-0,751;93,000;2378;2396;5.671;14.087
+Buskerudbyen uten E18;R;Helgedøgn;>= 16,0m;Juli;1,639;93,000;1798;1769;16.497;40.981
+Buskerudbyen uten E18;R;Alle;Alle;August;0,691;92,000;915663;909383;0.009;0.081
+Buskerudbyen uten E18;R;Alle;< 5,6m;August;1,205;92,000;812699;803020;0.186;1.671
+Buskerudbyen uten E18;R;Alle;>= 5,6m;August;-3,187;92,000;102895;106282;1.711;15.372
+Buskerudbyen uten E18;R;Alle;5,6m - 7,6m;August;-2,193;92,000;27467;28083;7.741;69.550
+Buskerudbyen uten E18;R;Alle;7,6m - 12,5m;August;1,160;92,000;45362;44842;1.303;11.704
+Buskerudbyen uten E18;R;Alle;12,5m - 16,0m;August;-0,484;92,000;12339;12399;8.681;77.991
+Buskerudbyen uten E18;R;Alle;>= 16,0m;August;-15,417;92,000;17727;20958;8.136;73.096
+Buskerudbyen uten E18;R;Yrkesdøgn;Alle;August;-1,160;93,000;727427;735962;1.888;16.967
+Buskerudbyen uten E18;R;Yrkesdøgn;< 5,6m;August;-0,683;93,000;638082;642472;1.791;16.095
+Buskerudbyen uten E18;R;Yrkesdøgn;>= 5,6m;August;-4,418;93,000;89283;93410;2.734;24.567
+Buskerudbyen uten E18;R;Yrkesdøgn;5,6m - 7,6m;August;-3,745;93,000;23156;24057;8.007;71.937
+Buskerudbyen uten E18;R;Yrkesdøgn;7,6m - 12,5m;August;0,275;93,000;37973;37869;2.975;26.730
+Buskerudbyen uten E18;R;Yrkesdøgn;12,5m - 16,0m;August;-1,893;93,000;11298;11516;10.125;90.970
+Buskerudbyen uten E18;R;Yrkesdøgn;>= 16,0m;August;-15,585;93,000;16856;19968;8.742;78.545
+Buskerudbyen uten E18;R;Helgedøgn;Alle;August;8,543;88,000;188236;173421;9.060;81.405
+Buskerudbyen uten E18;R;Helgedøgn;< 5,6m;August;8,763;88,000;174617;160548;9.081;81.586
+Buskerudbyen uten E18;R;Helgedøgn;>= 5,6m;August;5,749;88,000;13612;12872;8.357;75.088
+Buskerudbyen uten E18;R;Helgedøgn;5,6m - 7,6m;August;7,079;88,000;4311;4026;8.220;73.855
+Buskerudbyen uten E18;R;Helgedøgn;7,6m - 12,5m;August;5,966;88,000;7389;6973;9.604;86.289
+Buskerudbyen uten E18;R;Helgedøgn;12,5m - 16,0m;August;17,894;88,000;1041;883;13.068;117.409
+Buskerudbyen uten E18;R;Helgedøgn;>= 16,0m;August;-12,020;88,000;871;990;3.970;35.671
 Buskerudbyen uten E18;R;Alle;Alle;September;-2,049;97,000;935746;955316;0.535;4.809
 Buskerudbyen uten E18;R;Alle;< 5,6m;September;-1,130;97,000;833675;843207;0.900;8.087
 Buskerudbyen uten E18;R;Alle;>= 5,6m;September;-8,915;97,000;102004;111988;2.484;22.316
@@ -545,48 +545,48 @@ Buskerudbyen uten E18;R;Helgedøgn;5,6m - 7,6m;Desember;6,751;93,000;2451;2296;0.
 Buskerudbyen uten E18;R;Helgedøgn;7,6m - 12,5m;Desember;14,039;93,000;3769;3305;3.390;30.460
 Buskerudbyen uten E18;R;Helgedøgn;12,5m - 16,0m;Desember;17,235;93,000;687;586;12.909;115.984
 Buskerudbyen uten E18;R;Helgedøgn;>= 16,0m;Desember;6,928;93,000;1173;1097;0.577;5.187
-Buskerudbyen uten E18;R;Alle;Alle;Siste 12 måneder;-0,428;91,000;16614976;16686450;2.099;3.339
-Buskerudbyen uten E18;R;Alle;< 5,6m;Siste 12 måneder;-0,490;91,000;14942018;15015598;2.052;3.265
-Buskerudbyen uten E18;R;Alle;>= 5,6m;Siste 12 måneder;0,071;91,000;1660535;1659365;6.245;9.937
-Buskerudbyen uten E18;R;Alle;5,6m - 7,6m;Siste 12 måneder;2,772;91,000;492978;479680;11.859;18.870
-Buskerudbyen uten E18;R;Alle;7,6m - 12,5m;Siste 12 måneder;1,342;91,000;666514;657690;3.281;5.221
-Buskerudbyen uten E18;R;Alle;12,5m - 16,0m;Siste 12 måneder;0,960;91,000;190761;188947;3.354;5.336
-Buskerudbyen uten E18;R;Alle;>= 16,0m;Siste 12 måneder;-6,836;91,000;310282;333048;4.659;7.414
-Buskerudbyen uten E18;R;Yrkesdøgn;Alle;Siste 12 måneder;0,521;91,000;12637208;12571651;0.855;1.360
-Buskerudbyen uten E18;R;Yrkesdøgn;< 5,6m;Siste 12 måneder;0,551;91,000;11192373;11131011;0.828;1.317
-Buskerudbyen uten E18;R;Yrkesdøgn;>= 5,6m;Siste 12 måneder;0,217;91,000;1433289;1430186;5.631;8.960
-Buskerudbyen uten E18;R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;2,965;91,000;412608;400727;11.291;17.966
-Buskerudbyen uten E18;R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;1,804;91,000;558931;549026;3.130;4.980
-Buskerudbyen uten E18;R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;1,298;91,000;171118;168926;2.126;3.383
-Buskerudbyen uten E18;R;Yrkesdøgn;>= 16,0m;Siste 12 måneder;-6,701;91,000;290632;311507;3.984;6.339
-Buskerudbyen uten E18;R;Helgedøgn;Alle;Siste 12 måneder;-3,330;92,000;3977768;4114799;6.281;9.994
-Buskerudbyen uten E18;R;Helgedøgn;< 5,6m;Siste 12 måneder;-3,474;92,000;3749645;3884587;6.246;9.939
-Buskerudbyen uten E18;R;Helgedøgn;>= 5,6m;Siste 12 måneder;-0,843;92,000;227246;229179;10.095;16.064
-Buskerudbyen uten E18;R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;1,795;92,000;80370;78953;14.849;23.629
-Buskerudbyen uten E18;R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;-0,995;92,000;107583;108664;5.497;8.748
-Buskerudbyen uten E18;R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-1,888;92,000;19643;20021;14.645;23.304
-Buskerudbyen uten E18;R;Helgedøgn;>= 16,0m;Siste 12 måneder;-8,779;92,000;19650;21541;18.427;29.322
-Buskerudbyen uten E18;R;Alle;Alle;Hittil i år;-0,428;91,000;16614976;16686450;2.099;3.339
-Buskerudbyen uten E18;R;Alle;< 5,6m;Hittil i år;-0,490;91,000;14942018;15015598;2.052;3.265
-Buskerudbyen uten E18;R;Alle;>= 5,6m;Hittil i år;0,071;91,000;1660535;1659365;6.245;9.937
-Buskerudbyen uten E18;R;Alle;5,6m - 7,6m;Hittil i år;2,772;91,000;492978;479680;11.859;18.870
-Buskerudbyen uten E18;R;Alle;7,6m - 12,5m;Hittil i år;1,342;91,000;666514;657690;3.281;5.221
-Buskerudbyen uten E18;R;Alle;12,5m - 16,0m;Hittil i år;0,960;91,000;190761;188947;3.354;5.336
-Buskerudbyen uten E18;R;Alle;>= 16,0m;Hittil i år;-6,836;91,000;310282;333048;4.659;7.414
-Buskerudbyen uten E18;R;Yrkesdøgn;Alle;Hittil i år;0,521;91,000;12637208;12571651;0.855;1.360
-Buskerudbyen uten E18;R;Yrkesdøgn;< 5,6m;Hittil i år;0,551;91,000;11192373;11131011;0.828;1.317
-Buskerudbyen uten E18;R;Yrkesdøgn;>= 5,6m;Hittil i år;0,217;91,000;1433289;1430186;5.631;8.960
-Buskerudbyen uten E18;R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;2,965;91,000;412608;400727;11.291;17.966
-Buskerudbyen uten E18;R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;1,804;91,000;558931;549026;3.130;4.980
-Buskerudbyen uten E18;R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;1,298;91,000;171118;168926;2.126;3.383
-Buskerudbyen uten E18;R;Yrkesdøgn;>= 16,0m;Hittil i år;-6,701;91,000;290632;311507;3.984;6.339
-Buskerudbyen uten E18;R;Helgedøgn;Alle;Hittil i år;-3,330;92,000;3977768;4114799;6.281;9.994
-Buskerudbyen uten E18;R;Helgedøgn;< 5,6m;Hittil i år;-3,474;92,000;3749645;3884587;6.246;9.939
-Buskerudbyen uten E18;R;Helgedøgn;>= 5,6m;Hittil i år;-0,843;92,000;227246;229179;10.095;16.064
-Buskerudbyen uten E18;R;Helgedøgn;5,6m - 7,6m;Hittil i år;1,795;92,000;80370;78953;14.849;23.629
-Buskerudbyen uten E18;R;Helgedøgn;7,6m - 12,5m;Hittil i år;-0,995;92,000;107583;108664;5.497;8.748
-Buskerudbyen uten E18;R;Helgedøgn;12,5m - 16,0m;Hittil i år;-1,888;92,000;19643;20021;14.645;23.304
-Buskerudbyen uten E18;R;Helgedøgn;>= 16,0m;Hittil i år;-8,779;92,000;19650;21541;18.427;29.322
+Buskerudbyen uten E18;R;Alle;Alle;Siste 12 måneder;0,005;92,000;14898208;14897502;1.202;2.985
+Buskerudbyen uten E18;R;Alle;< 5,6m;Siste 12 måneder;0,068;92,000;13405120;13396063;1.309;3.253
+Buskerudbyen uten E18;R;Alle;>= 5,6m;Siste 12 måneder;-0,564;92,000;1484668;1493087;1.085;2.695
+Buskerudbyen uten E18;R;Alle;5,6m - 7,6m;Siste 12 måneder;0,982;92,000;421549;417450;2.556;6.350
+Buskerudbyen uten E18;R;Alle;7,6m - 12,5m;Siste 12 måneder;1,116;92,000;598188;591586;1.491;3.703
+Buskerudbyen uten E18;R;Alle;12,5m - 16,0m;Siste 12 måneder;1,370;92,000;174608;172249;0.581;1.443
+Buskerudbyen uten E18;R;Alle;>= 16,0m;Siste 12 måneder;-6,889;92,000;290323;311802;3.827;9.508
+Buskerudbyen uten E18;R;Yrkesdøgn;Alle;Siste 12 måneder;1,215;91,000;11296890;11161248;1.204;2.991
+Buskerudbyen uten E18;R;Yrkesdøgn;< 5,6m;Siste 12 måneder;1,403;91,000;10005175;9866783;1.178;2.925
+Buskerudbyen uten E18;R;Yrkesdøgn;>= 5,6m;Siste 12 måneder;-0,238;91,000;1283738;1286795;1.269;3.153
+Buskerudbyen uten E18;R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;1,500;91,000;354236;349001;2.904;7.214
+Buskerudbyen uten E18;R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;1,628;91,000;500591;492571;1.616;4.013
+Buskerudbyen uten E18;R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;1,915;91,000;156890;153942;1.782;4.427
+Buskerudbyen uten E18;R;Yrkesdøgn;>= 16,0m;Siste 12 måneder;-6,612;91,000;272021;291281;3.582;8.897
+Buskerudbyen uten E18;R;Helgedøgn;Alle;Siste 12 måneder;-3,612;92,000;3601318;3736254;6.147;15.271
+Buskerudbyen uten E18;R;Helgedøgn;< 5,6m;Siste 12 måneder;-3,665;92,000;3399945;3529280;6.304;15.659
+Buskerudbyen uten E18;R;Helgedøgn;>= 5,6m;Siste 12 måneder;-2,599;92,000;200930;206292;3.469;8.617
+Buskerudbyen uten E18;R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;-1,660;92,000;67313;68449;1.764;4.383
+Buskerudbyen uten E18;R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;-1,432;92,000;97597;99015;4.419;10.978
+Buskerudbyen uten E18;R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-3,217;92,000;17718;18307;6.746;16.758
+Buskerudbyen uten E18;R;Helgedøgn;>= 16,0m;Siste 12 måneder;-10,813;92,000;18302;20521;12.038;29.904
+Buskerudbyen uten E18;R;Alle;Alle;Hittil i år;0,005;92,000;14898208;14897502;1.202;2.985
+Buskerudbyen uten E18;R;Alle;< 5,6m;Hittil i år;0,068;92,000;13405120;13396063;1.309;3.253
+Buskerudbyen uten E18;R;Alle;>= 5,6m;Hittil i år;-0,564;92,000;1484668;1493087;1.085;2.695
+Buskerudbyen uten E18;R;Alle;5,6m - 7,6m;Hittil i år;0,982;92,000;421549;417450;2.556;6.350
+Buskerudbyen uten E18;R;Alle;7,6m - 12,5m;Hittil i år;1,116;92,000;598188;591586;1.491;3.703
+Buskerudbyen uten E18;R;Alle;12,5m - 16,0m;Hittil i år;1,370;92,000;174608;172249;0.581;1.443
+Buskerudbyen uten E18;R;Alle;>= 16,0m;Hittil i år;-6,889;92,000;290323;311802;3.827;9.508
+Buskerudbyen uten E18;R;Yrkesdøgn;Alle;Hittil i år;1,215;91,000;11296890;11161248;1.204;2.991
+Buskerudbyen uten E18;R;Yrkesdøgn;< 5,6m;Hittil i år;1,403;91,000;10005175;9866783;1.178;2.925
+Buskerudbyen uten E18;R;Yrkesdøgn;>= 5,6m;Hittil i år;-0,238;91,000;1283738;1286795;1.269;3.153
+Buskerudbyen uten E18;R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;1,500;91,000;354236;349001;2.904;7.214
+Buskerudbyen uten E18;R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;1,628;91,000;500591;492571;1.616;4.013
+Buskerudbyen uten E18;R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;1,915;91,000;156890;153942;1.782;4.427
+Buskerudbyen uten E18;R;Yrkesdøgn;>= 16,0m;Hittil i år;-6,612;91,000;272021;291281;3.582;8.897
+Buskerudbyen uten E18;R;Helgedøgn;Alle;Hittil i år;-3,612;92,000;3601318;3736254;6.147;15.271
+Buskerudbyen uten E18;R;Helgedøgn;< 5,6m;Hittil i år;-3,665;92,000;3399945;3529280;6.304;15.659
+Buskerudbyen uten E18;R;Helgedøgn;>= 5,6m;Hittil i år;-2,599;92,000;200930;206292;3.469;8.617
+Buskerudbyen uten E18;R;Helgedøgn;5,6m - 7,6m;Hittil i år;-1,660;92,000;67313;68449;1.764;4.383
+Buskerudbyen uten E18;R;Helgedøgn;7,6m - 12,5m;Hittil i år;-1,432;92,000;97597;99015;4.419;10.978
+Buskerudbyen uten E18;R;Helgedøgn;12,5m - 16,0m;Hittil i år;-3,217;92,000;17718;18307;6.746;16.758
+Buskerudbyen uten E18;R;Helgedøgn;>= 16,0m;Hittil i år;-10,813;92,000;18302;20521;12.038;29.904
 Buskerudbyen uten E18;E+R;Alle;Alle;Januar;4,505;87,000;2138922;2046719;3.658;4.542
 Buskerudbyen uten E18;E+R;Alle;< 5,6m;Januar;3,482;87,000;1961176;1895186;3.581;4.446
 Buskerudbyen uten E18;E+R;Alle;>= 5,6m;Januar;16,897;87,000;176168;150703;7.882;9.787
@@ -650,27 +650,27 @@ Buskerudbyen uten E18;E+R;Helgedøgn;5,6m - 7,6m;Mars;-10,528;90,000;10708;11968;
 Buskerudbyen uten E18;E+R;Helgedøgn;7,6m - 12,5m;Mars;-13,736;90,000;13483;15630;6.155;5.146
 Buskerudbyen uten E18;E+R;Helgedøgn;12,5m - 16,0m;Mars;-16,809;90,000;3207;3855;15.518;12.973
 Buskerudbyen uten E18;E+R;Helgedøgn;>= 16,0m;Mars;-15,390;90,000;3590;4243;24.108;20.155
-Buskerudbyen uten E18;E+R;Alle;Alle;April;-4,695;93,000;3667011;3847674;4.967;3.818
-Buskerudbyen uten E18;E+R;Alle;< 5,6m;April;-4,356;93,000;3328282;3479874;5.191;3.991
-Buskerudbyen uten E18;E+R;Alle;>= 5,6m;April;-7,943;93,000;337045;366125;6.614;5.084
-Buskerudbyen uten E18;E+R;Alle;5,6m - 7,6m;April;-1,065;93,000;99124;100191;14.381;11.055
-Buskerudbyen uten E18;E+R;Alle;7,6m - 12,5m;April;-4,140;93,000;135547;141401;6.459;4.965
-Buskerudbyen uten E18;E+R;Alle;12,5m - 16,0m;April;-25,069;93,000;34431;45950;17.155;13.186
-Buskerudbyen uten E18;E+R;Alle;>= 16,0m;April;-13,540;93,000;67943;78583;13.446;10.335
-Buskerudbyen uten E18;E+R;Yrkesdøgn;Alle;April;-17,588;93,000;2421533;2938331;2.669;2.052
-Buskerudbyen uten E18;E+R;Yrkesdøgn;< 5,6m;April;-17,938;93,000;2151913;2622300;2.843;2.185
-Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 5,6m;April;-14,775;93,000;268119;314603;5.378;4.134
-Buskerudbyen uten E18;E+R;Yrkesdøgn;5,6m - 7,6m;April;-11,405;93,000;74945;84593;11.341;8.718
-Buskerudbyen uten E18;E+R;Yrkesdøgn;7,6m - 12,5m;April;-11,273;93,000;103332;116460;4.859;3.735
-Buskerudbyen uten E18;E+R;Yrkesdøgn;12,5m - 16,0m;April;-29,501;93,000;28302;40145;17.590;13.521
-Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 16,0m;April;-16,164;93,000;61540;73405;12.153;9.342
-Buskerudbyen uten E18;E+R;Helgedøgn;Alle;April;36,965;94,000;1245478;909343;20.049;15.411
-Buskerudbyen uten E18;E+R;Helgedøgn;< 5,6m;April;37,174;94,000;1176369;857574;20.269;15.580
-Buskerudbyen uten E18;E+R;Helgedøgn;>= 5,6m;April;33,780;94,000;68926;51522;19.515;15.001
-Buskerudbyen uten E18;E+R;Helgedøgn;5,6m - 7,6m;April;55,013;94,000;24179;15598;34.227;26.309
-Buskerudbyen uten E18;E+R;Helgedøgn;7,6m - 12,5m;April;29,165;94,000;32215;24941;19.334;14.862
-Buskerudbyen uten E18;E+R;Helgedøgn;12,5m - 16,0m;April;5,581;94,000;6129;5805;27.990;21.515
-Buskerudbyen uten E18;E+R;Helgedøgn;>= 16,0m;April;23,658;94,000;6403;5178;35.208;27.063
+Buskerudbyen uten E18;E+R;Alle;Alle;April;-5,064;96,000;3562773;3752835;4.365;3.649
+Buskerudbyen uten E18;E+R;Alle;< 5,6m;April;-4,759;96,000;3236568;3398277;4.446;3.717
+Buskerudbyen uten E18;E+R;Alle;>= 5,6m;April;-8,037;96,000;324527;352890;6.750;5.643
+Buskerudbyen uten E18;E+R;Alle;5,6m - 7,6m;April;-1,154;96,000;96179;97302;14.647;12.245
+Buskerudbyen uten E18;E+R;Alle;7,6m - 12,5m;April;-4,420;96,000;130626;136666;6.393;5.344
+Buskerudbyen uten E18;E+R;Alle;12,5m - 16,0m;April;-25,450;96,000;33119;44425;17.385;14.534
+Buskerudbyen uten E18;E+R;Alle;>= 16,0m;April;-13,281;96,000;64603;74497;13.863;11.590
+Buskerudbyen uten E18;E+R;Yrkesdøgn;Alle;April;-17,580;96,000;2364460;2868796;2.710;2.266
+Buskerudbyen uten E18;E+R;Yrkesdøgn;< 5,6m;April;-17,942;96,000;2103597;2563554;2.884;2.411
+Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 5,6m;April;-14,632;96,000;259366;303820;5.436;4.545
+Buskerudbyen uten E18;E+R;Yrkesdøgn;5,6m - 7,6m;April;-11,257;96,000;73090;82361;11.498;9.613
+Buskerudbyen uten E18;E+R;Yrkesdøgn;7,6m - 12,5m;April;-11,231;96,000;100192;112868;4.951;4.139
+Buskerudbyen uten E18;E+R;Yrkesdøgn;12,5m - 16,0m;April;-29,568;96,000;27410;38917;17.942;15.000
+Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 16,0m;April;-15,788;96,000;58674;69674;12.439;10.399
+Buskerudbyen uten E18;E+R;Helgedøgn;Alle;April;35,550;96,000;1198313;884039;18.244;15.252
+Buskerudbyen uten E18;E+R;Helgedøgn;< 5,6m;April;35,730;96,000;1132971;834723;18.276;15.279
+Buskerudbyen uten E18;E+R;Helgedøgn;>= 5,6m;April;32,792;96,000;65161;49070;19.521;16.320
+Buskerudbyen uten E18;E+R;Helgedøgn;5,6m - 7,6m;April;54,535;96,000;23089;14941;35.092;29.337
+Buskerudbyen uten E18;E+R;Helgedøgn;7,6m - 12,5m;April;27,885;96,000;30434;23798;18.840;15.751
+Buskerudbyen uten E18;E+R;Helgedøgn;12,5m - 16,0m;April;3,649;96,000;5709;5508;27.420;22.923
+Buskerudbyen uten E18;E+R;Helgedøgn;>= 16,0m;April;22,932;96,000;5929;4823;36.707;30.688
 Buskerudbyen uten E18;E+R;Alle;Alle;Mai;0,165;96,000;3904213;3897775;7.572;6.330
 Buskerudbyen uten E18;E+R;Alle;< 5,6m;Mai;0,227;96,000;3504955;3497013;8.178;6.837
 Buskerudbyen uten E18;E+R;Alle;>= 5,6m;Mai;-0,567;96,000;396712;398976;16.197;13.541
@@ -692,69 +692,69 @@ Buskerudbyen uten E18;E+R;Helgedøgn;5,6m - 7,6m;Mai;-3,720;98,000;23373;24276;24
 Buskerudbyen uten E18;E+R;Helgedøgn;7,6m - 12,5m;Mai;-9,747;98,000;32640;36165;13.589;11.361
 Buskerudbyen uten E18;E+R;Helgedøgn;12,5m - 16,0m;Mai;-15,628;98,000;6808;8069;14.527;12.145
 Buskerudbyen uten E18;E+R;Helgedøgn;>= 16,0m;Mai;-42,218;98,000;6486;11225;45.307;37.877
-Buskerudbyen uten E18;E+R;Alle;Alle;Juni;0,677;88,000;4155634;4127702;4.340;3.336
-Buskerudbyen uten E18;E+R;Alle;< 5,6m;Juni;-0,024;88,000;3694965;3695868;3.918;3.012
-Buskerudbyen uten E18;E+R;Alle;>= 5,6m;Juni;6,421;88,000;456915;429347;10.958;8.423
-Buskerudbyen uten E18;E+R;Alle;5,6m - 7,6m;Juni;14,003;88,000;144430;126690;16.701;12.838
-Buskerudbyen uten E18;E+R;Alle;7,6m - 12,5m;Juni;6,772;88,000;182564;170985;10.899;8.378
-Buskerudbyen uten E18;E+R;Alle;12,5m - 16,0m;Juni;-6,870;88,000;49700;53366;15.633;12.016
-Buskerudbyen uten E18;E+R;Alle;>= 16,0m;Juni;2,446;88,000;80221;78306;19.723;15.160
-Buskerudbyen uten E18;E+R;Yrkesdøgn;Alle;Juni;-1,334;88,000;3228185;3271837;3.716;2.856
-Buskerudbyen uten E18;E+R;Yrkesdøgn;< 5,6m;Juni;-2,165;88,000;2834156;2896868;3.563;2.738
-Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 5,6m;Juni;4,811;88,000;390581;372652;9.620;7.395
-Buskerudbyen uten E18;E+R;Yrkesdøgn;5,6m - 7,6m;Juni;11,819;88,000;119316;106705;14.598;11.221
-Buskerudbyen uten E18;E+R;Yrkesdøgn;7,6m - 12,5m;Juni;6,635;88,000;152833;143324;10.068;7.739
-Buskerudbyen uten E18;E+R;Yrkesdøgn;12,5m - 16,0m;Juni;-10,474;88,000;43449;48532;16.164;12.425
-Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 16,0m;Juni;1,204;88,000;74983;74091;19.316;14.848
-Buskerudbyen uten E18;E+R;Helgedøgn;Alle;Juni;8,364;87,000;927449;855865;13.309;10.231
-Buskerudbyen uten E18;E+R;Helgedøgn;< 5,6m;Juni;7,736;87,000;860809;799000;12.700;9.762
-Buskerudbyen uten E18;E+R;Helgedøgn;>= 5,6m;Juni;17,001;87,000;66334;56695;22.833;17.551
-Buskerudbyen uten E18;E+R;Helgedøgn;5,6m - 7,6m;Juni;25,664;87,000;25114;19985;31.970;24.574
-Buskerudbyen uten E18;E+R;Helgedøgn;7,6m - 12,5m;Juni;7,483;87,000;29731;27661;18.486;14.210
-Buskerudbyen uten E18;E+R;Helgedøgn;12,5m - 16,0m;Juni;29,313;87,000;6251;4834;26.800;20.600
-Buskerudbyen uten E18;E+R;Helgedøgn;>= 16,0m;Juni;24,270;87,000;5238;4215;37.787;29.046
-Buskerudbyen uten E18;E+R;Alle;Alle;Juli;3,206;97,000;3876747;3756317;5.124;4.284
-Buskerudbyen uten E18;E+R;Alle;< 5,6m;Juli;2,537;97,000;3446909;3361609;5.338;4.462
-Buskerudbyen uten E18;E+R;Alle;>= 5,6m;Juli;8,267;97,000;426366;393808;8.498;7.105
-Buskerudbyen uten E18;E+R;Alle;5,6m - 7,6m;Juli;13,601;97,000;142060;125052;13.705;11.458
-Buskerudbyen uten E18;E+R;Alle;7,6m - 12,5m;Juli;6,182;97,000;182162;171557;6.473;5.411
-Buskerudbyen uten E18;E+R;Alle;12,5m - 16,0m;Juli;3,920;97,000;41435;39872;11.963;10.001
-Buskerudbyen uten E18;E+R;Alle;>= 16,0m;Juli;5,899;97,000;60709;57327;19.936;16.667
-Buskerudbyen uten E18;E+R;Yrkesdøgn;Alle;Juli;3,763;98,000;2842089;2739026;5.676;4.746
-Buskerudbyen uten E18;E+R;Yrkesdøgn;< 5,6m;Juli;3,036;98,000;2491758;2418337;5.903;4.935
-Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 5,6m;Juli;8,553;98,000;347282;319918;8.995;7.520
-Buskerudbyen uten E18;E+R;Yrkesdøgn;5,6m - 7,6m;Juli;13,341;98,000;111243;98149;13.890;11.613
-Buskerudbyen uten E18;E+R;Yrkesdøgn;7,6m - 12,5m;Juli;7,351;98,000;145124;135186;7.359;6.152
-Buskerudbyen uten E18;E+R;Yrkesdøgn;12,5m - 16,0m;Juli;4,619;98,000;34993;33448;12.594;10.529
-Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 16,0m;Juli;5,245;98,000;55922;53135;19.601;16.386
-Buskerudbyen uten E18;E+R;Helgedøgn;Alle;Juli;1,707;97,000;1034658;1017291;4.149;3.469
-Buskerudbyen uten E18;E+R;Helgedøgn;< 5,6m;Juli;1,259;97,000;955151;943272;4.348;3.635
-Buskerudbyen uten E18;E+R;Helgedøgn;>= 5,6m;Juli;7,029;97,000;79084;73890;7.825;6.542
-Buskerudbyen uten E18;E+R;Helgedøgn;5,6m - 7,6m;Juli;14,549;97,000;30817;26903;14.666;12.261
-Buskerudbyen uten E18;E+R;Helgedøgn;7,6m - 12,5m;Juli;1,834;97,000;37038;36371;5.783;4.835
-Buskerudbyen uten E18;E+R;Helgedøgn;12,5m - 16,0m;Juli;0,280;97,000;6442;6424;10.553;8.823
-Buskerudbyen uten E18;E+R;Helgedøgn;>= 16,0m;Juli;14,194;97,000;4787;4192;26.051;21.779
-Buskerudbyen uten E18;E+R;Alle;Alle;August;0,220;93,000;4115123;4106110;7.041;5.412
-Buskerudbyen uten E18;E+R;Alle;< 5,6m;August;-0,341;93,000;3637535;3649985;6.867;5.278
-Buskerudbyen uten E18;E+R;Alle;>= 5,6m;August;4,553;93,000;474707;454035;11.237;8.638
-Buskerudbyen uten E18;E+R;Alle;5,6m - 7,6m;August;8,449;93,000;144267;133027;19.738;15.172
-Buskerudbyen uten E18;E+R;Alle;7,6m - 12,5m;August;7,042;93,000;195687;182814;9.348;7.185
-Buskerudbyen uten E18;E+R;Alle;12,5m - 16,0m;August;-8,241;93,000;48915;53308;11.361;8.733
-Buskerudbyen uten E18;E+R;Alle;>= 16,0m;August;1,122;93,000;85838;84886;21.284;16.361
-Buskerudbyen uten E18;E+R;Yrkesdøgn;Alle;August;-0,505;93,000;3246773;3263262;7.478;5.748
-Buskerudbyen uten E18;E+R;Yrkesdøgn;< 5,6m;August;-1,183;93,000;2835235;2869165;7.208;5.541
-Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 5,6m;August;4,295;93,000;409035;392190;11.792;9.064
-Buskerudbyen uten E18;E+R;Yrkesdøgn;5,6m - 7,6m;August;7,314;93,000;119771;111608;19.590;15.058
-Buskerudbyen uten E18;E+R;Yrkesdøgn;7,6m - 12,5m;August;8,043;93,000;164723;152460;10.691;8.218
-Buskerudbyen uten E18;E+R;Yrkesdøgn;12,5m - 16,0m;August;-8,792;93,000;43312;47487;11.965;9.197
-Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 16,0m;August;0,737;93,000;81229;80635;21.523;16.544
-Buskerudbyen uten E18;E+R;Helgedøgn;Alle;August;3,026;92,000;868350;842848;7.106;5.462
-Buskerudbyen uten E18;E+R;Helgedøgn;< 5,6m;August;2,751;92,000;802300;780820;7.160;5.504
-Buskerudbyen uten E18;E+R;Helgedøgn;>= 5,6m;August;6,188;92,000;65672;61845;10.860;8.348
-Buskerudbyen uten E18;E+R;Helgedøgn;5,6m - 7,6m;August;14,366;92,000;24496;21419;21.609;16.610
-Buskerudbyen uten E18;E+R;Helgedøgn;7,6m - 12,5m;August;2,010;92,000;30964;30354;7.714;5.930
-Buskerudbyen uten E18;E+R;Helgedøgn;12,5m - 16,0m;August;-3,745;92,000;5603;5821;17.421;13.391
-Buskerudbyen uten E18;E+R;Helgedøgn;>= 16,0m;August;8,422;92,000;4609;4251;19.771;15.197
+Buskerudbyen uten E18;E+R;Alle;Alle;Juni;0,509;86,000;3751750;3732760;4.577;3.826
+Buskerudbyen uten E18;E+R;Alle;< 5,6m;Juni;-0,069;86,000;3333611;3335919;4.168;3.485
+Buskerudbyen uten E18;E+R;Alle;>= 5,6m;Juni;5,141;86,000;415427;395116;10.432;8.721
+Buskerudbyen uten E18;E+R;Alle;5,6m - 7,6m;Juni;11,167;86,000;126097;113430;15.098;12.622
+Buskerudbyen uten E18;E+R;Alle;7,6m - 12,5m;Juni;6,480;86,000;167023;156859;11.442;9.565
+Buskerudbyen uten E18;E+R;Alle;12,5m - 16,0m;Juni;-8,240;86,000;45479;49563;15.394;12.869
+Buskerudbyen uten E18;E+R;Alle;>= 16,0m;Juni;2,078;86,000;76828;75264;20.149;16.845
+Buskerudbyen uten E18;E+R;Yrkesdøgn;Alle;Juni;-1,504;87,000;2910798;2955258;3.908;3.267
+Buskerudbyen uten E18;E+R;Yrkesdøgn;< 5,6m;Juni;-2,218;87,000;2552553;2610453;3.791;3.169
+Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 5,6m;Juni;3,662;87,000;355726;343159;9.101;7.608
+Buskerudbyen uten E18;E+R;Yrkesdøgn;5,6m - 7,6m;Juni;9,063;87,000;104404;95728;12.477;10.431
+Buskerudbyen uten E18;E+R;Yrkesdøgn;7,6m - 12,5m;Juni;6,438;87,000;139702;131252;10.605;8.866
+Buskerudbyen uten E18;E+R;Yrkesdøgn;12,5m - 16,0m;Juni;-11,762;87,000;39670;44958;16.151;13.502
+Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 16,0m;Juni;1,024;87,000;71950;71221;19.808;16.560
+Buskerudbyen uten E18;E+R;Helgedøgn;Alle;Juni;8,161;85,000;840952;777502;14.101;11.789
+Buskerudbyen uten E18;E+R;Helgedøgn;< 5,6m;Juni;7,663;85,000;781058;725466;13.476;11.266
+Buskerudbyen uten E18;E+R;Helgedøgn;>= 5,6m;Juni;14,905;85,000;59701;51957;22.765;19.032
+Buskerudbyen uten E18;E+R;Helgedøgn;5,6m - 7,6m;Juni;22,545;85,000;21693;17702;32.853;27.466
+Buskerudbyen uten E18;E+R;Helgedøgn;7,6m - 12,5m;Juni;6,693;85,000;27321;25607;19.131;15.994
+Buskerudbyen uten E18;E+R;Helgedøgn;12,5m - 16,0m;Juni;26,145;85,000;5809;4605;22.669;18.952
+Buskerudbyen uten E18;E+R;Helgedøgn;>= 16,0m;Juni;20,653;85,000;4878;4043;33.558;28.055
+Buskerudbyen uten E18;E+R;Alle;Alle;Juli;3,262;97,000;3532554;3420947;5.423;5.015
+Buskerudbyen uten E18;E+R;Alle;< 5,6m;Juli;2,743;97,000;3141053;3057192;5.608;5.187
+Buskerudbyen uten E18;E+R;Alle;>= 5,6m;Juli;7,007;97,000;388688;363236;7.462;6.901
+Buskerudbyen uten E18;E+R;Alle;5,6m - 7,6m;Juli;11,357;97,000;124891;112154;12.513;11.573
+Buskerudbyen uten E18;E+R;Alle;7,6m - 12,5m;Juli;5,548;97,000;167551;158744;6.309;5.835
+Buskerudbyen uten E18;E+R;Alle;12,5m - 16,0m;Juli;2,471;97,000;38034;37117;10.985;10.160
+Buskerudbyen uten E18;E+R;Alle;>= 16,0m;Juli;5,416;97,000;58212;55221;20.264;18.741
+Buskerudbyen uten E18;E+R;Yrkesdøgn;Alle;Juli;3,797;97,000;2585452;2490885;6.016;5.563
+Buskerudbyen uten E18;E+R;Yrkesdøgn;< 5,6m;Juli;3,232;97,000;2265990;2195050;6.225;5.757
+Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 5,6m;Juli;7,320;97,000;316987;295365;8.121;7.511
+Buskerudbyen uten E18;E+R;Yrkesdøgn;5,6m - 7,6m;Juli;11,145;97,000;97990;88164;12.795;11.833
+Buskerudbyen uten E18;E+R;Yrkesdøgn;7,6m - 12,5m;Juli;6,667;97,000;133266;124937;7.242;6.698
+Buskerudbyen uten E18;E+R;Yrkesdøgn;12,5m - 16,0m;Juli;3,159;97,000;32071;31089;11.753;10.869
+Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 16,0m;Juli;4,856;97,000;53660;51175;19.988;18.486
+Buskerudbyen uten E18;E+R;Helgedøgn;Alle;Juli;1,832;97,000;947102;930062;4.360;4.032
+Buskerudbyen uten E18;E+R;Helgedøgn;< 5,6m;Juli;1,499;97,000;875063;862142;4.509;4.170
+Buskerudbyen uten E18;E+R;Helgedøgn;>= 5,6m;Juli;5,643;97,000;71701;67871;6.343;5.866
+Buskerudbyen uten E18;E+R;Helgedøgn;5,6m - 7,6m;Juli;12,134;97,000;26901;23990;13.539;12.521
+Buskerudbyen uten E18;E+R;Helgedøgn;7,6m - 12,5m;Juli;1,414;97,000;34285;33807;5.805;5.369
+Buskerudbyen uten E18;E+R;Helgedøgn;12,5m - 16,0m;Juli;-1,078;97,000;5963;6028;9.242;8.548
+Buskerudbyen uten E18;E+R;Helgedøgn;>= 16,0m;Juli;12,506;97,000;4552;4046;24.766;22.905
+Buskerudbyen uten E18;E+R;Alle;Alle;August;3,247;96,000;3146432;3047474;3.087;2.855
+Buskerudbyen uten E18;E+R;Alle;< 5,6m;August;2,710;96,000;2767847;2694816;3.136;2.900
+Buskerudbyen uten E18;E+R;Alle;>= 5,6m;August;7,217;96,000;378006;352560;8.233;7.614
+Buskerudbyen uten E18;E+R;Alle;5,6m - 7,6m;August;11,743;96,000;108340;96955;14.956;13.832
+Buskerudbyen uten E18;E+R;Alle;7,6m - 12,5m;August;9,651;96,000;157513;143649;7.886;7.293
+Buskerudbyen uten E18;E+R;Alle;12,5m - 16,0m;August;-6,449;96,000;40384;43168;11.011;10.183
+Buskerudbyen uten E18;E+R;Alle;>= 16,0m;August;4,334;96,000;71769;68788;22.681;20.977
+Buskerudbyen uten E18;E+R;Yrkesdøgn;Alle;August;2,602;97,000;2480479;2417579;3.943;3.647
+Buskerudbyen uten E18;E+R;Yrkesdøgn;< 5,6m;August;1,928;97,000;2155408;2114639;3.773;3.489
+Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 5,6m;August;7,195;97,000;324634;302845;9.186;8.495
+Buskerudbyen uten E18;E+R;Yrkesdøgn;5,6m - 7,6m;August;10,786;97,000;89564;80844;14.580;13.484
+Buskerudbyen uten E18;E+R;Yrkesdøgn;7,6m - 12,5m;August;11,025;97,000;131372;118326;9.429;8.720
+Buskerudbyen uten E18;E+R;Yrkesdøgn;12,5m - 16,0m;August;-6,897;97,000;35785;38436;12.047;11.142
+Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 16,0m;August;4,099;97,000;67913;65239;22.876;21.157
+Buskerudbyen uten E18;E+R;Helgedøgn;Alle;August;5,724;95,000;665953;629895;4.740;4.384
+Buskerudbyen uten E18;E+R;Helgedøgn;< 5,6m;August;5,561;95,000;612439;580177;4.982;4.608
+Buskerudbyen uten E18;E+R;Helgedøgn;>= 5,6m;August;7,356;95,000;53372;49715;7.512;6.948
+Buskerudbyen uten E18;E+R;Helgedøgn;5,6m - 7,6m;August;16,541;95,000;18776;16111;19.180;17.738
+Buskerudbyen uten E18;E+R;Helgedøgn;7,6m - 12,5m;August;3,230;95,000;26141;25323;7.241;6.697
+Buskerudbyen uten E18;E+R;Helgedøgn;12,5m - 16,0m;August;-2,811;95,000;4599;4732;12.724;11.768
+Buskerudbyen uten E18;E+R;Helgedøgn;>= 16,0m;August;8,650;95,000;3856;3549;20.826;19.260
 Buskerudbyen uten E18;E+R;Alle;Alle;September;-0,994;98,000;3597835;3633942;1.524;1.274
 Buskerudbyen uten E18;E+R;Alle;< 5,6m;September;-1,122;98,000;3199164;3235478;1.611;1.347
 Buskerudbyen uten E18;E+R;Alle;>= 5,6m;September;-0,039;98,000;397756;397913;6.739;5.634
@@ -839,48 +839,48 @@ Buskerudbyen uten E18;E+R;Helgedøgn;5,6m - 7,6m;Desember;22,754;97,000;7828;6377
 Buskerudbyen uten E18;E+R;Helgedøgn;7,6m - 12,5m;Desember;24,764;97,000;10827;8678;11.046;11.592
 Buskerudbyen uten E18;E+R;Helgedøgn;12,5m - 16,0m;Desember;33,192;97,000;2512;1886;19.691;20.664
 Buskerudbyen uten E18;E+R;Helgedøgn;>= 16,0m;Desember;21,587;97,000;3554;2923;19.328;20.283
-Buskerudbyen uten E18;E+R;Alle;Alle;Siste 12 måneder;0,896;93,000;40261548;39903918;2.268;1.622
-Buskerudbyen uten E18;E+R;Alle;< 5,6m;Siste 12 måneder;0,503;93,000;36194205;36013225;2.267;1.622
-Buskerudbyen uten E18;E+R;Alle;>= 5,6m;Siste 12 måneder;4,337;93,000;4045342;3877179;5.541;3.964
-Buskerudbyen uten E18;E+R;Alle;5,6m - 7,6m;Siste 12 måneder;9,119;93,000;1197561;1097482;12.587;9.004
-Buskerudbyen uten E18;E+R;Alle;7,6m - 12,5m;Siste 12 måneder;5,689;93,000;1605200;1518795;6.028;4.312
-Buskerudbyen uten E18;E+R;Alle;12,5m - 16,0m;Siste 12 måneder;-6,461;93,000;440416;470835;9.791;7.004
-Buskerudbyen uten E18;E+R;Alle;>= 16,0m;Siste 12 måneder;1,531;93,000;802165;790067;10.263;7.341
-Buskerudbyen uten E18;E+R;Yrkesdøgn;Alle;Siste 12 måneder;0,626;93,000;30344744;30155833;1.654;1.183
-Buskerudbyen uten E18;E+R;Yrkesdøgn;< 5,6m;Siste 12 måneder;0,179;93,000;26883108;26835144;1.899;1.359
-Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 5,6m;Siste 12 måneder;4,031;93,000;3441692;3308343;5.079;3.633
-Buskerudbyen uten E18;E+R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;8,257;93,000;986347;911115;11.296;8.081
-Buskerudbyen uten E18;E+R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;6,072;93,000;1322622;1246914;5.982;4.279
-Buskerudbyen uten E18;E+R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-7,155;93,000;385567;415280;11.042;7.899
-Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 16,0m;Siste 12 måneder;1,649;93,000;747156;735034;10.449;7.475
-Buskerudbyen uten E18;E+R;Helgedøgn;Alle;Siste 12 måneder;1,731;94,000;9916804;9748085;6.514;4.660
-Buskerudbyen uten E18;E+R;Helgedøgn;< 5,6m;Siste 12 måneder;1,449;94,000;9311097;9178081;6.468;4.627
-Buskerudbyen uten E18;E+R;Helgedøgn;>= 5,6m;Siste 12 måneder;6,120;94,000;603650;568836;8.888;6.358
-Buskerudbyen uten E18;E+R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;13,332;94,000;211214;186367;19.920;14.250
-Buskerudbyen uten E18;E+R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;3,934;94,000;282578;271881;7.202;5.152
-Buskerudbyen uten E18;E+R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-1,271;94,000;54849;55555;8.864;6.341
-Buskerudbyen uten E18;E+R;Helgedøgn;>= 16,0m;Siste 12 måneder;-0,044;94,000;55009;55033;21.447;15.343
-Buskerudbyen uten E18;E+R;Alle;Alle;Hittil i år;0,896;93,000;40261548;39903918;2.268;1.622
-Buskerudbyen uten E18;E+R;Alle;< 5,6m;Hittil i år;0,503;93,000;36194205;36013225;2.267;1.622
-Buskerudbyen uten E18;E+R;Alle;>= 5,6m;Hittil i år;4,337;93,000;4045342;3877179;5.541;3.964
-Buskerudbyen uten E18;E+R;Alle;5,6m - 7,6m;Hittil i år;9,119;93,000;1197561;1097482;12.587;9.004
-Buskerudbyen uten E18;E+R;Alle;7,6m - 12,5m;Hittil i år;5,689;93,000;1605200;1518795;6.028;4.312
-Buskerudbyen uten E18;E+R;Alle;12,5m - 16,0m;Hittil i år;-6,461;93,000;440416;470835;9.791;7.004
-Buskerudbyen uten E18;E+R;Alle;>= 16,0m;Hittil i år;1,531;93,000;802165;790067;10.263;7.341
-Buskerudbyen uten E18;E+R;Yrkesdøgn;Alle;Hittil i år;0,626;93,000;30344744;30155833;1.654;1.183
-Buskerudbyen uten E18;E+R;Yrkesdøgn;< 5,6m;Hittil i år;0,179;93,000;26883108;26835144;1.899;1.359
-Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 5,6m;Hittil i år;4,031;93,000;3441692;3308343;5.079;3.633
-Buskerudbyen uten E18;E+R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;8,257;93,000;986347;911115;11.296;8.081
-Buskerudbyen uten E18;E+R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;6,072;93,000;1322622;1246914;5.982;4.279
-Buskerudbyen uten E18;E+R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-7,155;93,000;385567;415280;11.042;7.899
-Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 16,0m;Hittil i år;1,649;93,000;747156;735034;10.449;7.475
-Buskerudbyen uten E18;E+R;Helgedøgn;Alle;Hittil i år;1,731;94,000;9916804;9748085;6.514;4.660
-Buskerudbyen uten E18;E+R;Helgedøgn;< 5,6m;Hittil i år;1,449;94,000;9311097;9178081;6.468;4.627
-Buskerudbyen uten E18;E+R;Helgedøgn;>= 5,6m;Hittil i år;6,120;94,000;603650;568836;8.888;6.358
-Buskerudbyen uten E18;E+R;Helgedøgn;5,6m - 7,6m;Hittil i år;13,332;94,000;211214;186367;19.920;14.250
-Buskerudbyen uten E18;E+R;Helgedøgn;7,6m - 12,5m;Hittil i år;3,934;94,000;282578;271881;7.202;5.152
-Buskerudbyen uten E18;E+R;Helgedøgn;12,5m - 16,0m;Hittil i år;-1,271;94,000;54849;55555;8.864;6.341
-Buskerudbyen uten E18;E+R;Helgedøgn;>= 16,0m;Hittil i år;-0,044;94,000;55009;55033;21.447;15.343
+Buskerudbyen uten E18;E+R;Alle;Alle;Siste 12 måneder;1,106;94,000;38440542;38020131;1.921;1.476
+Buskerudbyen uten E18;E+R;Alle;< 5,6m;Siste 12 måneder;0,739;94,000;34565593;34312093;1.977;1.520
+Buskerudbyen uten E18;E+R;Alle;>= 5,6m;Siste 12 måneder;4,308;94,000;3856957;3697666;4.544;3.493
+Buskerudbyen uten E18;E+R;Alle;5,6m - 7,6m;Siste 12 måneder;8,798;94,000;1123187;1032363;11.331;8.710
+Buskerudbyen uten E18;E+R;Alle;7,6m - 12,5m;Siste 12 måneder;5,801;94,000;1531953;1447956;5.928;4.557
+Buskerudbyen uten E18;E+R;Alle;12,5m - 16,0m;Siste 12 måneder;-6,553;94,000;422951;452612;9.878;7.593
+Buskerudbyen uten E18;E+R;Alle;>= 16,0m;Siste 12 måneder;1,848;94,000;778866;764735;10.252;7.880
+Buskerudbyen uten E18;E+R;Yrkesdøgn;Alle;Siste 12 måneder;0,947;94,000;28947353;28675895;1.712;1.316
+Buskerudbyen uten E18;E+R;Yrkesdøgn;< 5,6m;Siste 12 måneder;0,531;94,000;25647594;25512170;2.066;1.588
+Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 5,6m;Siste 12 måneder;4,097;94,000;3283388;3154169;4.133;3.177
+Buskerudbyen uten E18;E+R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;8,046;94,000;926120;857157;9.849;7.571
+Buskerudbyen uten E18;E+R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;6,258;94,000;1261142;1186867;5.891;4.528
+Buskerudbyen uten E18;E+R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-7,172;94,000;370447;399068;11.387;8.753
+Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 16,0m;Siste 12 måneder;2,054;94,000;725679;711077;10.437;8.022
+Buskerudbyen uten E18;E+R;Helgedøgn;Alle;Siste 12 måneder;1,594;94,000;9493189;9344236;6.121;4.705
+Buskerudbyen uten E18;E+R;Helgedøgn;< 5,6m;Siste 12 måneder;1,342;94,000;8917999;8799923;6.074;4.669
+Buskerudbyen uten E18;E+R;Helgedøgn;>= 5,6m;Siste 12 måneder;5,533;94,000;573569;543497;7.766;5.970
+Buskerudbyen uten E18;E+R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;12,477;94,000;197067;175206;19.466;14.963
+Buskerudbyen uten E18;E+R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;3,724;94,000;270811;261089;7.007;5.386
+Buskerudbyen uten E18;E+R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-1,942;94,000;52504;53544;5.555;4.270
+Buskerudbyen uten E18;E+R;Helgedøgn;>= 16,0m;Siste 12 måneder;-0,878;94,000;53187;53658;20.521;15.774
+Buskerudbyen uten E18;E+R;Alle;Alle;Hittil i år;1,106;94,000;38440542;38020131;1.921;1.476
+Buskerudbyen uten E18;E+R;Alle;< 5,6m;Hittil i år;0,739;94,000;34565593;34312093;1.977;1.520
+Buskerudbyen uten E18;E+R;Alle;>= 5,6m;Hittil i år;4,308;94,000;3856957;3697666;4.544;3.493
+Buskerudbyen uten E18;E+R;Alle;5,6m - 7,6m;Hittil i år;8,798;94,000;1123187;1032363;11.331;8.710
+Buskerudbyen uten E18;E+R;Alle;7,6m - 12,5m;Hittil i år;5,801;94,000;1531953;1447956;5.928;4.557
+Buskerudbyen uten E18;E+R;Alle;12,5m - 16,0m;Hittil i år;-6,553;94,000;422951;452612;9.878;7.593
+Buskerudbyen uten E18;E+R;Alle;>= 16,0m;Hittil i år;1,848;94,000;778866;764735;10.252;7.880
+Buskerudbyen uten E18;E+R;Yrkesdøgn;Alle;Hittil i år;0,947;94,000;28947353;28675895;1.712;1.316
+Buskerudbyen uten E18;E+R;Yrkesdøgn;< 5,6m;Hittil i år;0,531;94,000;25647594;25512170;2.066;1.588
+Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 5,6m;Hittil i år;4,097;94,000;3283388;3154169;4.133;3.177
+Buskerudbyen uten E18;E+R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;8,046;94,000;926120;857157;9.849;7.571
+Buskerudbyen uten E18;E+R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;6,258;94,000;1261142;1186867;5.891;4.528
+Buskerudbyen uten E18;E+R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-7,172;94,000;370447;399068;11.387;8.753
+Buskerudbyen uten E18;E+R;Yrkesdøgn;>= 16,0m;Hittil i år;2,054;94,000;725679;711077;10.437;8.022
+Buskerudbyen uten E18;E+R;Helgedøgn;Alle;Hittil i år;1,594;94,000;9493189;9344236;6.121;4.705
+Buskerudbyen uten E18;E+R;Helgedøgn;< 5,6m;Hittil i år;1,342;94,000;8917999;8799923;6.074;4.669
+Buskerudbyen uten E18;E+R;Helgedøgn;>= 5,6m;Hittil i år;5,533;94,000;573569;543497;7.766;5.970
+Buskerudbyen uten E18;E+R;Helgedøgn;5,6m - 7,6m;Hittil i år;12,477;94,000;197067;175206;19.466;14.963
+Buskerudbyen uten E18;E+R;Helgedøgn;7,6m - 12,5m;Hittil i år;3,724;94,000;270811;261089;7.007;5.386
+Buskerudbyen uten E18;E+R;Helgedøgn;12,5m - 16,0m;Hittil i år;-1,942;94,000;52504;53544;5.555;4.270
+Buskerudbyen uten E18;E+R;Helgedøgn;>= 16,0m;Hittil i år;-0,878;94,000;53187;53658;20.521;15.774
 Buskerudbyen uten E18;K;Alle;Alle;Januar;-;-;-;-;-;-
 Buskerudbyen uten E18;K;Alle;< 5,6m;Januar;-;-;-;-;-;-
 Buskerudbyen uten E18;K;Alle;>= 5,6m;Januar;-;-;-;-;-;-
@@ -1238,27 +1238,27 @@ Buskerudbyen uten E18;E;Helgedøgn;5,6m - 7,6m;Mars;-6,954;92,000;6262;6730;30.51
 Buskerudbyen uten E18;E;Helgedøgn;7,6m - 12,5m;Mars;-13,920;92,000;8027;9325;8.318;10.329
 Buskerudbyen uten E18;E;Helgedøgn;12,5m - 16,0m;Mars;-22,018;92,000;1948;2498;12.617;15.666
 Buskerudbyen uten E18;E;Helgedøgn;>= 16,0m;Mars;-8,060;92,000;2099;2283;12.942;16.069
-Buskerudbyen uten E18;E;Alle;Alle;April;-2,899;94,000;2206023;2271877;4.480;4.701
-Buskerudbyen uten E18;E;Alle;< 5,6m;April;-2,671;94,000;2007560;2062649;4.821;5.060
-Buskerudbyen uten E18;E;Alle;>= 5,6m;April;-5,368;94,000;197991;209221;6.402;6.719
-Buskerudbyen uten E18;E;Alle;5,6m - 7,6m;April;4,650;94,000;58311;55720;16.829;17.660
-Buskerudbyen uten E18;E;Alle;7,6m - 12,5m;April;-0,923;94,000;79949;80694;6.199;6.505
-Buskerudbyen uten E18;E;Alle;12,5m - 16,0m;April;-31,323;94,000;18634;27133;16.699;17.525
-Buskerudbyen uten E18;E;Alle;>= 16,0m;April;-10,021;94,000;41097;45674;13.436;14.101
-Buskerudbyen uten E18;E;Yrkesdøgn;Alle;April;-17,902;93,000;1441672;1756042;3.468;3.640
-Buskerudbyen uten E18;E;Yrkesdøgn;< 5,6m;April;-18,433;93,000;1285969;1576574;3.591;3.768
-Buskerudbyen uten E18;E;Yrkesdøgn;>= 5,6m;April;-13,460;93,000;155306;179462;5.611;5.889
-Buskerudbyen uten E18;E;Yrkesdøgn;5,6m - 7,6m;April;-8,132;93,000;43191;47014;13.888;14.575
-Buskerudbyen uten E18;E;Yrkesdøgn;7,6m - 12,5m;April;-9,375;93,000;60003;66210;5.879;6.170
-Buskerudbyen uten E18;E;Yrkesdøgn;12,5m - 16,0m;April;-36,195;93,000;14963;23451;16.752;17.580
-Buskerudbyen uten E18;E;Yrkesdøgn;>= 16,0m;April;-13,177;93,000;37149;42787;12.548;13.169
-Buskerudbyen uten E18;E;Helgedøgn;Alle;April;48,177;95,000;764351;515835;11.604;12.178
-Buskerudbyen uten E18;E;Helgedøgn;< 5,6m;April;48,453;95,000;721591;486075;12.103;12.701
-Buskerudbyen uten E18;E;Helgedøgn;>= 5,6m;April;43,436;95,000;42685;29759;13.114;13.762
-Buskerudbyen uten E18;E;Helgedøgn;5,6m - 7,6m;April;73,673;95,000;15120;8706;33.966;35.645
-Buskerudbyen uten E18;E;Helgedøgn;7,6m - 12,5m;April;37,711;95,000;19946;14484;11.111;11.660
-Buskerudbyen uten E18;E;Helgedøgn;12,5m - 16,0m;April;-0,299;95,000;3671;3682;32.878;34.503
-Buskerudbyen uten E18;E;Helgedøgn;>= 16,0m;April;36,751;95,000;3948;2887;27.420;28.775
+Buskerudbyen uten E18;E;Alle;Alle;April;-3,457;98,000;2101785;2177038;3.437;4.267
+Buskerudbyen uten E18;E;Alle;< 5,6m;April;-3,291;98,000;1915846;1981052;3.494;4.338
+Buskerudbyen uten E18;E;Alle;>= 5,6m;April;-5,364;98,000;185473;195986;6.726;8.351
+Buskerudbyen uten E18;E;Alle;5,6m - 7,6m;April;4,798;98,000;55366;52831;17.491;21.718
+Buskerudbyen uten E18;E;Alle;7,6m - 12,5m;April;-1,226;98,000;75028;75959;6.328;7.858
+Buskerudbyen uten E18;E;Alle;12,5m - 16,0m;April;-32,357;98,000;17322;25608;16.723;20.764
+Buskerudbyen uten E18;E;Alle;>= 16,0m;April;-9,212;98,000;37757;41588;14.105;17.513
+Buskerudbyen uten E18;E;Yrkesdøgn;Alle;April;-17,901;98,000;1384599;1686507;3.574;4.438
+Buskerudbyen uten E18;E;Yrkesdøgn;< 5,6m;April;-18,459;98,000;1237653;1517828;3.690;4.582
+Buskerudbyen uten E18;E;Yrkesdøgn;>= 5,6m;April;-13,117;98,000;146553;168679;5.658;7.025
+Buskerudbyen uten E18;E;Yrkesdøgn;5,6m - 7,6m;April;-7,695;98,000;41336;44782;14.221;17.658
+Buskerudbyen uten E18;E;Yrkesdøgn;7,6m - 12,5m;April;-9,191;98,000;56863;62618;6.067;7.533
+Buskerudbyen uten E18;E;Yrkesdøgn;12,5m - 16,0m;April;-36,683;98,000;14071;22223;17.302;21.484
+Buskerudbyen uten E18;E;Yrkesdøgn;>= 16,0m;April;-12,221;98,000;34283;39056;12.933;16.058
+Buskerudbyen uten E18;E;Helgedøgn;Alle;April;46,206;98,000;717186;490531;6.570;8.157
+Buskerudbyen uten E18;E;Helgedøgn;< 5,6m;April;46,407;98,000;678193;463224;6.547;8.130
+Buskerudbyen uten E18;E;Helgedøgn;>= 5,6m;April;42,528;98,000;38920;27307;13.475;16.732
+Buskerudbyen uten E18;E;Helgedøgn;5,6m - 7,6m;April;74,307;98,000;14030;8049;35.829;44.488
+Buskerudbyen uten E18;E;Helgedøgn;7,6m - 12,5m;April;36,159;98,000;18165;13341;9.970;12.380
+Buskerudbyen uten E18;E;Helgedøgn;12,5m - 16,0m;April;-3,959;98,000;3251;3385;31.695;39.355
+Buskerudbyen uten E18;E;Helgedøgn;>= 16,0m;April;37,204;98,000;3474;2532;30.117;37.396
 Buskerudbyen uten E18;E;Alle;Alle;Mai;3,774;97,000;2288853;2205608;6.045;7.505
 Buskerudbyen uten E18;E;Alle;< 5,6m;Mai;3,464;97,000;2045978;1977472;8.469;10.515
 Buskerudbyen uten E18;E;Alle;>= 5,6m;Mai;6,061;97,000;241963;228136;14.299;17.755
@@ -1427,90 +1427,90 @@ Buskerudbyen uten E18;E;Helgedøgn;5,6m - 7,6m;Desember;31,757;99,000;5377;4081;9
 Buskerudbyen uten E18;E;Helgedøgn;7,6m - 12,5m;Desember;31,361;99,000;7058;5373;7.763;12.352
 Buskerudbyen uten E18;E;Helgedøgn;12,5m - 16,0m;Desember;40,385;99,000;1825;1300;18.807;29.926
 Buskerudbyen uten E18;E;Helgedøgn;>= 16,0m;Desember;30,394;99,000;2381;1826;19.414;30.893
-Buskerudbyen uten E18;E;Alle;Alle;Siste 12 måneder;1,848;95,000;23646572;23217468;2.065;2.167
-Buskerudbyen uten E18;E;Alle;< 5,6m;Siste 12 måneder;1,212;95,000;21252187;20997627;2.359;2.476
-Buskerudbyen uten E18;E;Alle;>= 5,6m;Siste 12 måneder;7,530;95,000;2384807;2217814;1.990;2.088
-Buskerudbyen uten E18;E;Alle;5,6m - 7,6m;Siste 12 måneder;14,047;95,000;704583;617802;12.014;12.608
-Buskerudbyen uten E18;E;Alle;7,6m - 12,5m;Siste 12 måneder;9,009;95,000;938686;861105;5.611;5.888
-Buskerudbyen uten E18;E;Alle;12,5m - 16,0m;Siste 12 måneder;-11,435;95,000;249655;281888;9.603;10.078
-Buskerudbyen uten E18;E;Alle;>= 16,0m;Siste 12 måneder;7,629;95,000;491883;457019;8.684;9.113
-Buskerudbyen uten E18;E;Yrkesdøgn;Alle;Siste 12 måneder;0,702;95,000;17707536;17584182;2.164;2.271
-Buskerudbyen uten E18;E;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,085;95,000;15690735;15704133;2.477;2.599
-Buskerudbyen uten E18;E;Yrkesdøgn;>= 5,6m;Siste 12 måneder;6,935;95,000;2008403;1878157;2.154;2.260
-Buskerudbyen uten E18;E;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;12,412;95,000;573739;510388;10.674;11.202
-Buskerudbyen uten E18;E;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;9,429;95,000;763691;697888;5.621;5.898
-Buskerudbyen uten E18;E;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-12,951;95,000;214449;246354;10.943;11.484
-Buskerudbyen uten E18;E;Yrkesdøgn;>= 16,0m;Siste 12 måneder;7,791;95,000;456524;423527;9.279;9.738
-Buskerudbyen uten E18;E;Helgedøgn;Alle;Siste 12 måneder;5,428;95,000;5939036;5633286;3.915;4.108
-Buskerudbyen uten E18;E;Helgedøgn;< 5,6m;Siste 12 måneder;5,062;95,000;5561452;5293494;4.054;4.254
-Buskerudbyen uten E18;E;Helgedøgn;>= 5,6m;Siste 12 måneder;10,819;95,000;376404;339657;4.155;4.361
-Buskerudbyen uten E18;E;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;21,813;95,000;130844;107414;20.020;21.010
-Buskerudbyen uten E18;E;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;7,216;95,000;174995;163217;6.612;6.939
-Buskerudbyen uten E18;E;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-0,923;95,000;35206;35534;5.716;5.998
-Buskerudbyen uten E18;E;Helgedøgn;>= 16,0m;Siste 12 måneder;5,574;95,000;35359;33492;23.313;24.465
-Buskerudbyen uten E18;E;Alle;Alle;Hittil i år;1,848;95,000;23646572;23217468;2.065;2.167
-Buskerudbyen uten E18;E;Alle;< 5,6m;Hittil i år;1,212;95,000;21252187;20997627;2.359;2.476
-Buskerudbyen uten E18;E;Alle;>= 5,6m;Hittil i år;7,530;95,000;2384807;2217814;1.990;2.088
-Buskerudbyen uten E18;E;Alle;5,6m - 7,6m;Hittil i år;14,047;95,000;704583;617802;12.014;12.608
-Buskerudbyen uten E18;E;Alle;7,6m - 12,5m;Hittil i år;9,009;95,000;938686;861105;5.611;5.888
-Buskerudbyen uten E18;E;Alle;12,5m - 16,0m;Hittil i år;-11,435;95,000;249655;281888;9.603;10.078
-Buskerudbyen uten E18;E;Alle;>= 16,0m;Hittil i år;7,629;95,000;491883;457019;8.684;9.113
-Buskerudbyen uten E18;E;Yrkesdøgn;Alle;Hittil i år;0,702;95,000;17707536;17584182;2.164;2.271
-Buskerudbyen uten E18;E;Yrkesdøgn;< 5,6m;Hittil i år;-0,085;95,000;15690735;15704133;2.477;2.599
-Buskerudbyen uten E18;E;Yrkesdøgn;>= 5,6m;Hittil i år;6,935;95,000;2008403;1878157;2.154;2.260
-Buskerudbyen uten E18;E;Yrkesdøgn;5,6m - 7,6m;Hittil i år;12,412;95,000;573739;510388;10.674;11.202
-Buskerudbyen uten E18;E;Yrkesdøgn;7,6m - 12,5m;Hittil i år;9,429;95,000;763691;697888;5.621;5.898
-Buskerudbyen uten E18;E;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-12,951;95,000;214449;246354;10.943;11.484
-Buskerudbyen uten E18;E;Yrkesdøgn;>= 16,0m;Hittil i år;7,791;95,000;456524;423527;9.279;9.738
-Buskerudbyen uten E18;E;Helgedøgn;Alle;Hittil i år;5,428;95,000;5939036;5633286;3.915;4.108
-Buskerudbyen uten E18;E;Helgedøgn;< 5,6m;Hittil i år;5,062;95,000;5561452;5293494;4.054;4.254
-Buskerudbyen uten E18;E;Helgedøgn;>= 5,6m;Hittil i år;10,819;95,000;376404;339657;4.155;4.361
-Buskerudbyen uten E18;E;Helgedøgn;5,6m - 7,6m;Hittil i år;21,813;95,000;130844;107414;20.020;21.010
-Buskerudbyen uten E18;E;Helgedøgn;7,6m - 12,5m;Hittil i år;7,216;95,000;174995;163217;6.612;6.939
-Buskerudbyen uten E18;E;Helgedøgn;12,5m - 16,0m;Hittil i år;-0,923;95,000;35206;35534;5.716;5.998
-Buskerudbyen uten E18;E;Helgedøgn;>= 16,0m;Hittil i år;5,574;95,000;35359;33492;23.313;24.465
-Buskerudbyen uten E18;F;Alle;Alle;Januar;5,264;93,000;4759429;4521418;3.818;2.307
-Buskerudbyen uten E18;F;Alle;< 5,6m;Januar;4,191;93,000;4423959;4245993;3.548;2.144
-Buskerudbyen uten E18;F;Alle;>= 5,6m;Januar;20,077;93,000;330722;275425;15.056;9.098
-Buskerudbyen uten E18;F;Alle;5,6m - 7,6m;Januar;35,372;93,000;107882;79693;32.779;19.808
-Buskerudbyen uten E18;F;Alle;7,6m - 12,5m;Januar;12,614;93,000;118654;105363;11.849;7.160
-Buskerudbyen uten E18;F;Alle;12,5m - 16,0m;Januar;19,986;93,000;47902;39923;31.512;19.043
-Buskerudbyen uten E18;F;Alle;>= 16,0m;Januar;11,573;93,000;56284;50446;23.194;14.016
-Buskerudbyen uten E18;F;Yrkesdøgn;Alle;Januar;9,318;93,000;3755278;3435200;4.882;2.950
-Buskerudbyen uten E18;F;Yrkesdøgn;< 5,6m;Januar;8,183;93,000;3454820;3193508;4.576;2.765
-Buskerudbyen uten E18;F;Yrkesdøgn;>= 5,6m;Januar;22,700;93,000;296555;241692;15.190;9.179
-Buskerudbyen uten E18;F;Yrkesdøgn;5,6m - 7,6m;Januar;37,721;93,000;95927;69653;32.821;19.834
-Buskerudbyen uten E18;F;Yrkesdøgn;7,6m - 12,5m;Januar;15,652;93,000;105181;90946;11.609;7.015
-Buskerudbyen uten E18;F;Yrkesdøgn;12,5m - 16,0m;Januar;22,973;93,000;42962;34936;31.167;18.834
-Buskerudbyen uten E18;F;Yrkesdøgn;>= 16,0m;Januar;13,710;93,000;52485;46157;23.760;14.358
-Buskerudbyen uten E18;F;Helgedøgn;Alle;Januar;-7,555;94,000;1004151;1086218;5.652;3.415
-Buskerudbyen uten E18;F;Helgedøgn;< 5,6m;Januar;-7,919;94,000;969139;1052485;5.625;3.399
-Buskerudbyen uten E18;F;Helgedøgn;>= 5,6m;Januar;1,287;94,000;34167;33733;17.992;10.872
-Buskerudbyen uten E18;F;Helgedøgn;5,6m - 7,6m;Januar;19,074;94,000;11955;10040;38.512;23.273
-Buskerudbyen uten E18;F;Helgedøgn;7,6m - 12,5m;Januar;-6,548;94,000;13473;14417;17.188;10.387
-Buskerudbyen uten E18;F;Helgedøgn;12,5m - 16,0m;Januar;-0,942;94,000;4940;4987;39.192;23.684
-Buskerudbyen uten E18;F;Helgedøgn;>= 16,0m;Januar;-11,425;94,000;3799;4289;26.317;15.903
-Buskerudbyen uten E18;F;Alle;Alle;Februar;2,774;97,000;4008287;3900102;5.764;3.873
-Buskerudbyen uten E18;F;Alle;< 5,6m;Februar;1,528;97,000;3691838;3636266;5.721;3.843
-Buskerudbyen uten E18;F;Alle;>= 5,6m;Februar;18,776;97,000;298444;251267;12.777;8.584
-Buskerudbyen uten E18;F;Alle;5,6m - 7,6m;Februar;28,942;97,000;92926;72068;25.158;16.902
-Buskerudbyen uten E18;F;Alle;7,6m - 12,5m;Februar;10,362;97,000;106377;96389;17.453;11.725
-Buskerudbyen uten E18;F;Alle;12,5m - 16,0m;Februar;16,837;97,000;40615;34762;31.071;20.874
-Buskerudbyen uten E18;F;Alle;>= 16,0m;Februar;21,807;97,000;58526;48048;31.577;21.214
-Buskerudbyen uten E18;F;Yrkesdøgn;Alle;Februar;3,874;97,000;3230340;3109852;7.910;5.314
-Buskerudbyen uten E18;F;Yrkesdøgn;< 5,6m;Februar;2,439;97,000;2941079;2871047;7.892;5.302
-Buskerudbyen uten E18;F;Yrkesdøgn;>= 5,6m;Februar;20,058;97,000;271614;226236;13.987;9.397
-Buskerudbyen uten E18;F;Yrkesdøgn;5,6m - 7,6m;Februar;29,395;97,000;83425;64473;24.171;16.238
-Buskerudbyen uten E18;F;Yrkesdøgn;7,6m - 12,5m;Februar;12,014;97,000;96454;86109;18.428;12.380
-Buskerudbyen uten E18;F;Yrkesdøgn;12,5m - 16,0m;Februar;17,561;97,000;36464;31017;31.628;21.248
-Buskerudbyen uten E18;F;Yrkesdøgn;>= 16,0m;Februar;23,823;97,000;55271;44637;32.338;21.725
-Buskerudbyen uten E18;F;Helgedøgn;Alle;Februar;-1,557;98,000;777947;790250;9.020;6.060
-Buskerudbyen uten E18;F;Helgedøgn;< 5,6m;Februar;-1,890;98,000;750759;765219;8.855;5.949
-Buskerudbyen uten E18;F;Helgedøgn;>= 5,6m;Februar;7,187;98,000;26830;25031;19.592;13.162
-Buskerudbyen uten E18;F;Helgedøgn;5,6m - 7,6m;Februar;25,095;98,000;9501;7595;42.502;28.553
-Buskerudbyen uten E18;F;Helgedøgn;7,6m - 12,5m;Februar;-3,473;98,000;9923;10280;19.045;12.794
-Buskerudbyen uten E18;F;Helgedøgn;12,5m - 16,0m;Februar;10,841;98,000;4151;3745;54.010;36.285
-Buskerudbyen uten E18;F;Helgedøgn;>= 16,0m;Februar;-4,573;98,000;3255;3411;32.013;21.507
+Buskerudbyen uten E18;E;Alle;Alle;Siste 12 måneder;1,815;95,000;23542334;23122629;2.063;2.165
+Buskerudbyen uten E18;E;Alle;< 5,6m;Siste 12 måneder;1,169;95,000;21160473;20916030;2.348;2.464
+Buskerudbyen uten E18;E;Alle;>= 5,6m;Siste 12 måneder;7,607;95,000;2372289;2204579;1.828;1.918
+Buskerudbyen uten E18;E;Alle;5,6m - 7,6m;Siste 12 måneder;14,104;95,000;701638;614913;12.017;12.611
+Buskerudbyen uten E18;E;Alle;7,6m - 12,5m;Siste 12 måneder;9,038;95,000;933765;856370;5.618;5.896
+Buskerudbyen uten E18;E;Alle;12,5m - 16,0m;Siste 12 måneder;-11,421;95,000;248343;280363;9.687;10.166
+Buskerudbyen uten E18;E;Alle;>= 16,0m;Siste 12 måneder;7,862;95,000;488543;452933;8.599;9.024
+Buskerudbyen uten E18;E;Yrkesdøgn;Alle;Siste 12 måneder;0,775;95,000;17650463;17514647;2.095;2.199
+Buskerudbyen uten E18;E;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,019;95,000;15642419;15645387;2.430;2.550
+Buskerudbyen uten E18;E;Yrkesdøgn;>= 5,6m;Siste 12 måneder;7,084;95,000;1999650;1867374;1.766;1.853
+Buskerudbyen uten E18;E;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;12,541;95,000;571884;508156;10.570;11.093
+Buskerudbyen uten E18;E;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;9,543;95,000;760551;694296;5.545;5.819
+Buskerudbyen uten E18;E;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-12,879;95,000;213557;245126;11.092;11.641
+Buskerudbyen uten E18;E;Yrkesdøgn;>= 16,0m;Siste 12 måneder;8,066;95,000;453658;419796;9.130;9.581
+Buskerudbyen uten E18;E;Helgedøgn;Alle;Siste 12 måneder;5,062;95,000;5891871;5607982;3.145;3.301
+Buskerudbyen uten E18;E;Helgedøgn;< 5,6m;Siste 12 måneder;4,694;95,000;5518054;5270643;3.224;3.384
+Buskerudbyen uten E18;E;Helgedøgn;>= 5,6m;Siste 12 måneder;10,508;95,000;372639;337205;4.337;4.552
+Buskerudbyen uten E18;E;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;21,541;95,000;129754;106757;20.326;21.331
+Buskerudbyen uten E18;E;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;6,873;95,000;173214;162074;6.619;6.946
+Buskerudbyen uten E18;E;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-1,280;95,000;34786;35237;5.486;5.757
+Buskerudbyen uten E18;E;Helgedøgn;>= 16,0m;Siste 12 måneder;5,275;95,000;34885;33137;23.302;24.453
+Buskerudbyen uten E18;E;Alle;Alle;Hittil i år;1,815;95,000;23542334;23122629;2.063;2.165
+Buskerudbyen uten E18;E;Alle;< 5,6m;Hittil i år;1,169;95,000;21160473;20916030;2.348;2.464
+Buskerudbyen uten E18;E;Alle;>= 5,6m;Hittil i år;7,607;95,000;2372289;2204579;1.828;1.918
+Buskerudbyen uten E18;E;Alle;5,6m - 7,6m;Hittil i år;14,104;95,000;701638;614913;12.017;12.611
+Buskerudbyen uten E18;E;Alle;7,6m - 12,5m;Hittil i år;9,038;95,000;933765;856370;5.618;5.896
+Buskerudbyen uten E18;E;Alle;12,5m - 16,0m;Hittil i år;-11,421;95,000;248343;280363;9.687;10.166
+Buskerudbyen uten E18;E;Alle;>= 16,0m;Hittil i år;7,862;95,000;488543;452933;8.599;9.024
+Buskerudbyen uten E18;E;Yrkesdøgn;Alle;Hittil i år;0,775;95,000;17650463;17514647;2.095;2.199
+Buskerudbyen uten E18;E;Yrkesdøgn;< 5,6m;Hittil i år;-0,019;95,000;15642419;15645387;2.430;2.550
+Buskerudbyen uten E18;E;Yrkesdøgn;>= 5,6m;Hittil i år;7,084;95,000;1999650;1867374;1.766;1.853
+Buskerudbyen uten E18;E;Yrkesdøgn;5,6m - 7,6m;Hittil i år;12,541;95,000;571884;508156;10.570;11.093
+Buskerudbyen uten E18;E;Yrkesdøgn;7,6m - 12,5m;Hittil i år;9,543;95,000;760551;694296;5.545;5.819
+Buskerudbyen uten E18;E;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-12,879;95,000;213557;245126;11.092;11.641
+Buskerudbyen uten E18;E;Yrkesdøgn;>= 16,0m;Hittil i år;8,066;95,000;453658;419796;9.130;9.581
+Buskerudbyen uten E18;E;Helgedøgn;Alle;Hittil i år;5,062;95,000;5891871;5607982;3.145;3.301
+Buskerudbyen uten E18;E;Helgedøgn;< 5,6m;Hittil i år;4,694;95,000;5518054;5270643;3.224;3.384
+Buskerudbyen uten E18;E;Helgedøgn;>= 5,6m;Hittil i år;10,508;95,000;372639;337205;4.337;4.552
+Buskerudbyen uten E18;E;Helgedøgn;5,6m - 7,6m;Hittil i år;21,541;95,000;129754;106757;20.326;21.331
+Buskerudbyen uten E18;E;Helgedøgn;7,6m - 12,5m;Hittil i år;6,873;95,000;173214;162074;6.619;6.946
+Buskerudbyen uten E18;E;Helgedøgn;12,5m - 16,0m;Hittil i år;-1,280;95,000;34786;35237;5.486;5.757
+Buskerudbyen uten E18;E;Helgedøgn;>= 16,0m;Hittil i år;5,275;95,000;34885;33137;23.302;24.453
+Buskerudbyen uten E18;F;Alle;Alle;Januar;4,051;92,000;3412254;3279390;3.586;2.565
+Buskerudbyen uten E18;F;Alle;< 5,6m;Januar;3,048;92,000;3163756;3070185;3.364;2.407
+Buskerudbyen uten E18;F;Alle;>= 5,6m;Januar;18,403;92,000;247705;209205;12.763;9.130
+Buskerudbyen uten E18;F;Alle;5,6m - 7,6m;Januar;35,921;92,000;76907;56582;33.399;23.892
+Buskerudbyen uten E18;F;Alle;7,6m - 12,5m;Januar;8,288;92,000;86705;80069;8.890;6.360
+Buskerudbyen uten E18;F;Alle;12,5m - 16,0m;Januar;22,197;92,000;36576;29932;34.134;24.418
+Buskerudbyen uten E18;F;Alle;>= 16,0m;Januar;11,485;92,000;47517;42622;15.464;11.062
+Buskerudbyen uten E18;F;Yrkesdøgn;Alle;Januar;8,309;92,000;2692214;2485674;5.179;3.705
+Buskerudbyen uten E18;F;Yrkesdøgn;< 5,6m;Januar;7,265;92,000;2469888;2302595;4.995;3.573
+Buskerudbyen uten E18;F;Yrkesdøgn;>= 5,6m;Januar;21,034;92,000;221588;183079;12.526;8.960
+Buskerudbyen uten E18;F;Yrkesdøgn;5,6m - 7,6m;Januar;38,282;92,000;68137;49274;32.900;23.535
+Buskerudbyen uten E18;F;Yrkesdøgn;7,6m - 12,5m;Januar;11,603;92,000;76488;68536;9.190;6.574
+Buskerudbyen uten E18;F;Yrkesdøgn;12,5m - 16,0m;Januar;24,451;92,000;32870;26412;33.396;23.890
+Buskerudbyen uten E18;F;Yrkesdøgn;>= 16,0m;Januar;13,475;92,000;44093;38857;16.361;11.704
+Buskerudbyen uten E18;F;Helgedøgn;Alle;Januar;-9,282;92,000;720040;793716;5.546;3.967
+Buskerudbyen uten E18;F;Helgedøgn;< 5,6m;Januar;-9,604;92,000;693868;767590;5.494;3.930
+Buskerudbyen uten E18;F;Helgedøgn;>= 5,6m;Januar;-0,034;92,000;26117;26126;17.867;12.781
+Buskerudbyen uten E18;F;Helgedøgn;5,6m - 7,6m;Januar;20,005;92,000;8770;7308;42.751;30.582
+Buskerudbyen uten E18;F;Helgedøgn;7,6m - 12,5m;Januar;-11,411;92,000;10217;11533;14.192;10.153
+Buskerudbyen uten E18;F;Helgedøgn;12,5m - 16,0m;Januar;5,284;92,000;3706;3520;46.960;33.593
+Buskerudbyen uten E18;F;Helgedøgn;>= 16,0m;Januar;-9,057;92,000;3424;3765;21.808;15.600
+Buskerudbyen uten E18;F;Alle;Alle;Februar;2,242;97,000;3405457;3330783;5.731;4.405
+Buskerudbyen uten E18;F;Alle;< 5,6m;Februar;1,125;97,000;3148256;3113243;5.522;4.244
+Buskerudbyen uten E18;F;Alle;>= 5,6m;Februar;18,072;97,000;256854;217540;13.634;10.480
+Buskerudbyen uten E18;F;Alle;5,6m - 7,6m;Februar;28,975;97,000;76948;59661;25.367;19.498
+Buskerudbyen uten E18;F;Alle;7,6m - 12,5m;Februar;7,077;97,000;88771;82904;16.455;12.648
+Buskerudbyen uten E18;F;Alle;12,5m - 16,0m;Februar;18,790;97,000;37565;31623;32.291;24.821
+Buskerudbyen uten E18;F;Alle;>= 16,0m;Februar;23,570;97,000;53570;43352;28.497;21.905
+Buskerudbyen uten E18;F;Yrkesdøgn;Alle;Februar;3,468;97,000;2733317;2641701;8.161;6.273
+Buskerudbyen uten E18;F;Yrkesdøgn;< 5,6m;Februar;2,177;97,000;2499910;2446637;7.906;6.077
+Buskerudbyen uten E18;F;Yrkesdøgn;>= 5,6m;Februar;19,487;97,000;233077;195064;15.054;11.571
+Buskerudbyen uten E18;F;Yrkesdøgn;5,6m - 7,6m;Februar;29,633;97,000;68725;53015;24.292;18.672
+Buskerudbyen uten E18;F;Yrkesdøgn;7,6m - 12,5m;Februar;8,856;97,000;79881;73382;18.082;13.899
+Buskerudbyen uten E18;F;Yrkesdøgn;12,5m - 16,0m;Februar;19,506;97,000;33954;28412;32.609;25.066
+Buskerudbyen uten E18;F;Yrkesdøgn;>= 16,0m;Februar;25,492;97,000;50517;40255;29.821;22.922
+Buskerudbyen uten E18;F;Helgedøgn;Alle;Februar;-2,459;98,000;672140;689082;9.419;7.240
+Buskerudbyen uten E18;F;Helgedøgn;< 5,6m;Februar;-2,739;98,000;648346;666606;9.287;7.139
+Buskerudbyen uten E18;F;Helgedøgn;>= 5,6m;Februar;5,788;98,000;23777;22476;20.423;15.698
+Buskerudbyen uten E18;F;Helgedøgn;5,6m - 7,6m;Februar;23,729;98,000;8223;6646;44.009;33.828
+Buskerudbyen uten E18;F;Helgedøgn;7,6m - 12,5m;Februar;-6,637;98,000;8890;9522;15.507;11.920
+Buskerudbyen uten E18;F;Helgedøgn;12,5m - 16,0m;Februar;12,457;98,000;3611;3211;59.602;45.814
+Buskerudbyen uten E18;F;Helgedøgn;>= 16,0m;Februar;-1,421;98,000;3053;3097;26.078;20.046
 Buskerudbyen uten E18;F;Alle;Alle;Mars;10,652;93,000;5179456;4680849;5.202;3.143
 Buskerudbyen uten E18;F;Alle;< 5,6m;Mars;9,570;93,000;4813490;4393073;4.978;3.008
 Buskerudbyen uten E18;F;Alle;>= 5,6m;Mars;26,122;93,000;362868;287712;13.393;8.093
@@ -1553,69 +1553,69 @@ Buskerudbyen uten E18;F;Helgedøgn;5,6m - 7,6m;April;54,028;95,000;21875;14202;41
 Buskerudbyen uten E18;F;Helgedøgn;7,6m - 12,5m;April;20,980;95,000;25107;20753;16.501;9.972
 Buskerudbyen uten E18;F;Helgedøgn;12,5m - 16,0m;April;19,869;95,000;6594;5501;58.296;35.228
 Buskerudbyen uten E18;F;Helgedøgn;>= 16,0m;April;16,146;95,000;4798;4131;54.283;32.803
-Buskerudbyen uten E18;F;Alle;Alle;Mai;0,831;90,000;4363519;4327576;5.174;3.127
-Buskerudbyen uten E18;F;Alle;< 5,6m;Mai;0,406;90,000;4007427;3991211;5.234;3.163
-Buskerudbyen uten E18;F;Alle;>= 5,6m;Mai;4,604;90,000;350786;335348;10.773;6.510
-Buskerudbyen uten E18;F;Alle;5,6m - 7,6m;Mai;10,047;90,000;117418;106698;20.808;12.574
-Buskerudbyen uten E18;F;Alle;7,6m - 12,5m;Mai;4,280;90,000;142593;136741;8.988;5.431
-Buskerudbyen uten E18;F;Alle;12,5m - 16,0m;Mai;-0,899;90,000;41332;41707;19.748;11.934
-Buskerudbyen uten E18;F;Alle;>= 16,0m;Mai;-1,512;90,000;49443;50202;26.230;15.850
-Buskerudbyen uten E18;F;Yrkesdøgn;Alle;Mai;3,114;89,000;3259696;3161247;7.389;4.465
-Buskerudbyen uten E18;F;Yrkesdøgn;< 5,6m;Mai;2,752;89,000;2957665;2878459;7.557;4.566
-Buskerudbyen uten E18;F;Yrkesdøgn;>= 5,6m;Mai;5,402;89,000;297065;281839;11.631;7.029
-Buskerudbyen uten E18;F;Yrkesdøgn;5,6m - 7,6m;Mai;10,640;89,000;97768;88366;20.519;12.400
-Buskerudbyen uten E18;F;Yrkesdøgn;7,6m - 12,5m;Mai;5,587;89,000;119440;113120;9.816;5.932
-Buskerudbyen uten E18;F;Yrkesdøgn;12,5m - 16,0m;Mai;-0,025;89,000;35374;35383;20.172;12.190
-Buskerudbyen uten E18;F;Yrkesdøgn;>= 16,0m;Mai;-1,083;89,000;44483;44970;27.651;16.709
-Buskerudbyen uten E18;F;Helgedøgn;Alle;Mai;-5,359;91,000;1103823;1166329;3.896;2.355
-Buskerudbyen uten E18;F;Helgedøgn;< 5,6m;Mai;-5,661;91,000;1049762;1112752;3.783;2.286
-Buskerudbyen uten E18;F;Helgedøgn;>= 5,6m;Mai;0,396;91,000;53721;53509;11.518;6.960
-Buskerudbyen uten E18;F;Helgedøgn;5,6m - 7,6m;Mai;7,190;91,000;19650;18332;25.664;15.509
-Buskerudbyen uten E18;F;Helgedøgn;7,6m - 12,5m;Mai;-1,981;91,000;23153;23621;10.704;6.469
-Buskerudbyen uten E18;F;Helgedøgn;12,5m - 16,0m;Mai;-5,787;91,000;5958;6324;30.353;18.342
-Buskerudbyen uten E18;F;Helgedøgn;>= 16,0m;Mai;-5,199;91,000;4960;5232;22.315;13.485
-Buskerudbyen uten E18;F;Alle;Alle;Juni;-2,612;83,000;3471162;3564266;4.229;3.025
-Buskerudbyen uten E18;F;Alle;< 5,6m;Juni;-2,913;83,000;3177260;3272580;4.514;3.229
-Buskerudbyen uten E18;F;Alle;>= 5,6m;Juni;-1,044;83,000;287496;290529;6.298;4.506
-Buskerudbyen uten E18;F;Alle;5,6m - 7,6m;Juni;5,648;83,000;101067;95664;17.481;12.505
-Buskerudbyen uten E18;F;Alle;7,6m - 12,5m;Juni;-1,161;83,000;119543;120947;5.804;4.152
-Buskerudbyen uten E18;F;Alle;12,5m - 16,0m;Juni;-14,122;83,000;29055;33833;19.363;13.851
-Buskerudbyen uten E18;F;Alle;>= 16,0m;Juni;-5,623;83,000;37831;40085;17.296;12.373
-Buskerudbyen uten E18;F;Yrkesdøgn;Alle;Juni;-5,106;82,000;2722392;2868872;4.934;3.530
-Buskerudbyen uten E18;F;Yrkesdøgn;< 5,6m;Juni;-5,547;82,000;2466495;2611341;5.275;3.773
-Buskerudbyen uten E18;F;Yrkesdøgn;>= 5,6m;Juni;-2,567;82,000;249841;256424;6.573;4.702
-Buskerudbyen uten E18;F;Yrkesdøgn;5,6m - 7,6m;Juni;4,119;82,000;86449;83029;17.270;12.354
-Buskerudbyen uten E18;F;Yrkesdøgn;7,6m - 12,5m;Juni;-2,036;82,000;103074;105216;6.156;4.404
-Buskerudbyen uten E18;F;Yrkesdøgn;12,5m - 16,0m;Juni;-17,302;82,000;24946;30165;20.150;14.415
-Buskerudbyen uten E18;F;Yrkesdøgn;>= 16,0m;Juni;-6,950;82,000;35372;38014;16.635;11.900
-Buskerudbyen uten E18;F;Helgedøgn;Alle;Juni;7,676;88,000;748770;695394;3.970;2.840
-Buskerudbyen uten E18;F;Helgedøgn;< 5,6m;Juni;7,490;88,000;710765;661239;4.064;2.907
-Buskerudbyen uten E18;F;Helgedøgn;>= 5,6m;Juni;10,409;88,000;37655;34105;7.239;5.179
-Buskerudbyen uten E18;F;Helgedøgn;5,6m - 7,6m;Juni;15,694;88,000;14618;12635;20.731;14.830
-Buskerudbyen uten E18;F;Helgedøgn;7,6m - 12,5m;Juni;4,691;88,000;16469;15731;6.799;4.864
-Buskerudbyen uten E18;F;Helgedøgn;12,5m - 16,0m;Juni;12,023;88,000;4109;3668;20.895;14.948
-Buskerudbyen uten E18;F;Helgedøgn;>= 16,0m;Juni;18,735;88,000;2459;2071;33.253;23.788
-Buskerudbyen uten E18;F;Alle;Alle;Juli;-3,501;92,000;3816382;3954848;7.688;4.646
-Buskerudbyen uten E18;F;Alle;< 5,6m;Juli;-3,897;92,000;3502179;3644198;7.879;4.761
-Buskerudbyen uten E18;F;Alle;>= 5,6m;Juli;0,741;92,000;312495;310197;9.443;5.706
-Buskerudbyen uten E18;F;Alle;5,6m - 7,6m;Juli;6,838;92,000;110857;103762;15.733;9.507
-Buskerudbyen uten E18;F;Alle;7,6m - 12,5m;Juli;-0,373;92,000;136273;136783;12.453;7.525
-Buskerudbyen uten E18;F;Alle;12,5m - 16,0m;Juli;-4,932;92,000;34059;35826;17.442;10.540
-Buskerudbyen uten E18;F;Alle;>= 16,0m;Juli;-7,450;92,000;31306;33826;20.266;12.247
-Buskerudbyen uten E18;F;Yrkesdøgn;Alle;Juli;-3,473;92,000;2877997;2981557;7.629;4.610
-Buskerudbyen uten E18;F;Yrkesdøgn;< 5,6m;Juli;-3,895;92,000;2612539;2718433;7.903;4.776
-Buskerudbyen uten E18;F;Yrkesdøgn;>= 5,6m;Juli;0,514;92,000;264090;262740;8.800;5.318
-Buskerudbyen uten E18;F;Yrkesdøgn;5,6m - 7,6m;Juli;6,529;92,000;92074;86431;15.810;9.554
-Buskerudbyen uten E18;F;Yrkesdøgn;7,6m - 12,5m;Juli;-0,197;92,000;114874;115101;11.532;6.969
-Buskerudbyen uten E18;F;Yrkesdøgn;12,5m - 16,0m;Juli;-6,265;92,000;28534;30441;19.577;11.831
-Buskerudbyen uten E18;F;Yrkesdøgn;>= 16,0m;Juli;-7,017;92,000;28608;30767;19.046;11.509
-Buskerudbyen uten E18;F;Helgedøgn;Alle;Juli;-3,586;91,000;938385;973291;10.662;6.443
-Buskerudbyen uten E18;F;Helgedøgn;< 5,6m;Juli;-3,902;91,000;889640;925765;10.566;6.385
-Buskerudbyen uten E18;F;Helgedøgn;>= 5,6m;Juli;1,998;91,000;48405;47457;16.504;9.973
-Buskerudbyen uten E18;F;Helgedøgn;5,6m - 7,6m;Juli;8,378;91,000;18783;17331;20.362;12.305
-Buskerudbyen uten E18;F;Helgedøgn;7,6m - 12,5m;Juli;-1,305;91,000;21399;21682;19.417;11.734
-Buskerudbyen uten E18;F;Helgedøgn;12,5m - 16,0m;Juli;2,600;91,000;5525;5385;15.306;9.250
-Buskerudbyen uten E18;F;Helgedøgn;>= 16,0m;Juli;-11,801;91,000;2698;3059;39.498;23.868
+Buskerudbyen uten E18;F;Alle;Alle;Mai;0,235;92,000;4123319;4113651;4.519;2.871
+Buskerudbyen uten E18;F;Alle;< 5,6m;Mai;-0,268;92,000;3781532;3791710;4.354;2.766
+Buskerudbyen uten E18;F;Alle;>= 5,6m;Mai;4,791;92,000;336706;321311;11.005;6.992
+Buskerudbyen uten E18;F;Alle;5,6m - 7,6m;Mai;10,686;92,000;111633;100856;21.303;13.536
+Buskerudbyen uten E18;F;Alle;7,6m - 12,5m;Mai;4,199;92,000;136766;131255;9.195;5.842
+Buskerudbyen uten E18;F;Alle;12,5m - 16,0m;Mai;-0,567;92,000;40133;40362;20.051;12.740
+Buskerudbyen uten E18;F;Alle;>= 16,0m;Mai;-1,360;92,000;48174;48838;26.690;16.958
+Buskerudbyen uten E18;F;Yrkesdøgn;Alle;Mai;2,318;91,000;3075983;3006288;6.596;4.191
+Buskerudbyen uten E18;F;Yrkesdøgn;< 5,6m;Mai;1,855;91,000;2786432;2735692;6.523;4.144
+Buskerudbyen uten E18;F;Yrkesdøgn;>= 5,6m;Mai;5,475;91,000;284805;270021;11.923;7.575
+Buskerudbyen uten E18;F;Yrkesdøgn;5,6m - 7,6m;Mai;11,198;91,000;92845;83495;21.055;13.378
+Buskerudbyen uten E18;F;Yrkesdøgn;7,6m - 12,5m;Mai;5,389;91,000;114334;108488;10.005;6.357
+Buskerudbyen uten E18;F;Yrkesdøgn;12,5m - 16,0m;Mai;0,128;91,000;34348;34304;20.535;13.047
+Buskerudbyen uten E18;F;Yrkesdøgn;>= 16,0m;Mai;-1,043;91,000;43278;43734;28.159;17.891
+Buskerudbyen uten E18;F;Helgedøgn;Alle;Mai;-5,421;93,000;1047336;1107363;4.005;2.545
+Buskerudbyen uten E18;F;Helgedøgn;< 5,6m;Mai;-5,769;93,000;995100;1056018;3.867;2.457
+Buskerudbyen uten E18;F;Helgedøgn;>= 5,6m;Mai;1,191;93,000;51901;51290;11.064;7.030
+Buskerudbyen uten E18;F;Helgedøgn;5,6m - 7,6m;Mai;8,220;93,000;18788;17361;26.068;16.563
+Buskerudbyen uten E18;F;Helgedøgn;7,6m - 12,5m;Mai;-1,471;93,000;22432;22767;10.567;6.714
+Buskerudbyen uten E18;F;Helgedøgn;12,5m - 16,0m;Mai;-4,506;93,000;5785;6058;30.456;19.351
+Buskerudbyen uten E18;F;Helgedøgn;>= 16,0m;Mai;-4,075;93,000;4896;5104;21.266;13.512
+Buskerudbyen uten E18;F;Alle;Alle;Juni;-3,303;86,000;3097731;3203559;3.849;2.959
+Buskerudbyen uten E18;F;Alle;< 5,6m;Juni;-3,675;86,000;2830001;2937964;4.071;3.129
+Buskerudbyen uten E18;F;Alle;>= 5,6m;Juni;-0,960;86,000;262524;265069;6.640;5.104
+Buskerudbyen uten E18;F;Alle;5,6m - 7,6m;Juni;7,209;86,000;91092;84967;18.025;13.855
+Buskerudbyen uten E18;F;Alle;7,6m - 12,5m;Juni;-1,154;86,000;109062;110335;6.125;4.708
+Buskerudbyen uten E18;F;Alle;12,5m - 16,0m;Juni;-14,892;86,000;27134;31882;19.775;15.201
+Buskerudbyen uten E18;F;Alle;>= 16,0m;Juni;-6,992;86,000;35236;37885;16.767;12.888
+Buskerudbyen uten E18;F;Yrkesdøgn;Alle;Juni;-5,957;84,000;2408140;2560689;4.472;3.437
+Buskerudbyen uten E18;F;Yrkesdøgn;< 5,6m;Juni;-6,494;84,000;2176178;2327319;4.721;3.629
+Buskerudbyen uten E18;F;Yrkesdøgn;>= 5,6m;Juni;-2,487;84,000;227094;232886;6.949;5.341
+Buskerudbyen uten E18;F;Yrkesdøgn;5,6m - 7,6m;Juni;5,776;84,000;77415;73188;17.820;13.698
+Buskerudbyen uten E18;F;Yrkesdøgn;7,6m - 12,5m;Juni;-2,010;84,000;93513;95431;6.516;5.009
+Buskerudbyen uten E18;F;Yrkesdøgn;12,5m - 16,0m;Juni;-17,933;84,000;23307;28400;20.708;15.918
+Buskerudbyen uten E18;F;Yrkesdøgn;>= 16,0m;Juni;-8,387;84,000;32859;35867;15.958;12.266
+Buskerudbyen uten E18;F;Helgedøgn;Alle;Juni;7,268;93,000;689591;642870;3.844;2.955
+Buskerudbyen uten E18;F;Helgedøgn;< 5,6m;Juni;7,071;93,000;653823;610645;3.939;3.028
+Buskerudbyen uten E18;F;Helgedøgn;>= 5,6m;Juni;10,089;93,000;35430;32183;7.358;5.656
+Buskerudbyen uten E18;F;Helgedøgn;5,6m - 7,6m;Juni;16,113;93,000;13677;11779;21.564;16.576
+Buskerudbyen uten E18;F;Helgedøgn;7,6m - 12,5m;Juni;4,328;93,000;15549;14904;6.818;5.241
+Buskerudbyen uten E18;F;Helgedøgn;12,5m - 16,0m;Juni;9,908;93,000;3827;3482;19.016;14.617
+Buskerudbyen uten E18;F;Helgedøgn;>= 16,0m;Juni;17,790;93,000;2377;2018;33.230;25.543
+Buskerudbyen uten E18;F;Alle;Alle;Juli;-4,537;92,000;3342741;3501618;7.553;4.799
+Buskerudbyen uten E18;F;Alle;< 5,6m;Juli;-5,040;92,000;3059497;3221891;7.642;4.855
+Buskerudbyen uten E18;F;Alle;>= 5,6m;Juli;0,867;92,000;281978;279553;9.997;6.352
+Buskerudbyen uten E18;F;Alle;5,6m - 7,6m;Juli;8,771;92,000;98760;90796;15.886;10.093
+Buskerudbyen uten E18;F;Alle;7,6m - 12,5m;Juli;-0,947;92,000;122609;123781;13.013;8.268
+Buskerudbyen uten E18;F;Alle;12,5m - 16,0m;Juli;-4,654;92,000;32105;33672;18.076;11.485
+Buskerudbyen uten E18;F;Alle;>= 16,0m;Juli;-8,945;92,000;28504;31304;20.414;12.971
+Buskerudbyen uten E18;F;Yrkesdøgn;Alle;Juli;-4,448;92,000;2518934;2636183;7.579;4.815
+Buskerudbyen uten E18;F;Yrkesdøgn;< 5,6m;Juli;-4,988;92,000;2280543;2400277;7.755;4.927
+Buskerudbyen uten E18;F;Yrkesdøgn;>= 5,6m;Juli;0,706;92,000;237445;235781;9.323;5.924
+Buskerudbyen uten E18;F;Yrkesdøgn;5,6m - 7,6m;Juli;8,602;92,000;81823;75342;15.881;10.090
+Buskerudbyen uten E18;F;Yrkesdøgn;7,6m - 12,5m;Juli;-0,680;92,000;102741;103444;12.126;7.704
+Buskerudbyen uten E18;F;Yrkesdøgn;12,5m - 16,0m;Juli;-5,968;92,000;26941;28651;20.273;12.881
+Buskerudbyen uten E18;F;Yrkesdøgn;>= 16,0m;Juli;-8,482;92,000;25940;28344;19.210;12.206
+Buskerudbyen uten E18;F;Helgedøgn;Alle;Juli;-4,810;91,000;823807;865435;10.691;6.793
+Buskerudbyen uten E18;F;Helgedøgn;< 5,6m;Juli;-5,192;91,000;778954;821614;10.525;6.687
+Buskerudbyen uten E18;F;Helgedøgn;>= 5,6m;Juli;1,739;91,000;44533;43772;17.258;10.965
+Buskerudbyen uten E18;F;Helgedøgn;5,6m - 7,6m;Juli;9,596;91,000;16937;15454;21.341;13.559
+Buskerudbyen uten E18;F;Helgedøgn;7,6m - 12,5m;Juli;-2,306;91,000;19868;20337;19.696;12.515
+Buskerudbyen uten E18;F;Helgedøgn;12,5m - 16,0m;Juli;2,848;91,000;5164;5021;15.975;10.150
+Buskerudbyen uten E18;F;Helgedøgn;>= 16,0m;Juli;-13,378;91,000;2564;2960;39.262;24.946
 Buskerudbyen uten E18;F;Alle;Alle;August;-3,152;94,000;4939024;5099748;4.866;2.940
 Buskerudbyen uten E18;F;Alle;< 5,6m;August;-3,317;94,000;4522717;4677901;4.815;2.910
 Buskerudbyen uten E18;F;Alle;>= 5,6m;August;-1,330;94,000;415491;421091;8.319;5.027
@@ -1721,45 +1721,45 @@ Buskerudbyen uten E18;F;Helgedøgn;5,6m - 7,6m;Desember;31,500;99,000;15446;11746
 Buskerudbyen uten E18;F;Helgedøgn;7,6m - 12,5m;Desember;28,326;99,000;13233;10312;15.176;9.643
 Buskerudbyen uten E18;F;Helgedøgn;12,5m - 16,0m;Desember;25,018;99,000;3428;2742;26.388;16.766
 Buskerudbyen uten E18;F;Helgedøgn;>= 16,0m;Desember;27,366;99,000;2611;2050;46.182;29.343
-Buskerudbyen uten E18;F;Alle;Alle;Siste 12 måneder;-0,057;94,000;57513590;57546494;1.898;0.944
-Buskerudbyen uten E18;F;Alle;< 5,6m;Siste 12 måneder;-0,483;94,000;52998083;53255417;2.115;1.052
-Buskerudbyen uten E18;F;Alle;>= 5,6m;Siste 12 måneder;4,805;94,000;4357838;4158063;5.642;2.806
-Buskerudbyen uten E18;F;Alle;5,6m - 7,6m;Siste 12 måneder;10,262;94,000;1470600;1333736;12.892;6.411
-Buskerudbyen uten E18;F;Alle;7,6m - 12,5m;Siste 12 måneder;2,503;94,000;1725172;1683046;4.889;2.431
-Buskerudbyen uten E18;F;Alle;12,5m - 16,0m;Siste 12 måneder;0,837;94,000;530808;526404;14.246;7.084
-Buskerudbyen uten E18;F;Alle;>= 16,0m;Siste 12 måneder;2,664;94,000;631258;614877;12.159;6.047
-Buskerudbyen uten E18;F;Yrkesdøgn;Alle;Siste 12 måneder;-0,445;94,000;44719138;44919059;2.285;1.136
-Buskerudbyen uten E18;F;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,906;94,000;40775421;41148258;2.546;1.266
-Buskerudbyen uten E18;F;Yrkesdøgn;>= 5,6m;Siste 12 måneder;4,410;94,000;3807255;3646454;5.597;2.783
-Buskerudbyen uten E18;F;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;9,598;94,000;1265130;1154335;12.499;6.215
-Buskerudbyen uten E18;F;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;2,302;94,000;1487915;1454439;4.628;2.301
-Buskerudbyen uten E18;F;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;0,240;94,000;467869;466747;14.076;7.000
-Buskerudbyen uten E18;F;Yrkesdøgn;>= 16,0m;Siste 12 måneder;2,699;94,000;586341;570933;11.704;5.820
-Buskerudbyen uten E18;F;Helgedøgn;Alle;Siste 12 måneder;1,323;95,000;12794452;12627435;3.854;1.916
-Buskerudbyen uten E18;F;Helgedøgn;< 5,6m;Siste 12 måneder;0,954;95,000;12222662;12107159;3.862;1.921
-Buskerudbyen uten E18;F;Helgedøgn;>= 5,6m;Siste 12 måneder;7,618;95,000;550583;511609;7.363;3.661
-Buskerudbyen uten E18;F;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;14,531;95,000;205470;179401;16.896;8.402
-Buskerudbyen uten E18;F;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;3,784;95,000;237257;228607;8.399;4.177
-Buskerudbyen uten E18;F;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;5,501;95,000;62939;59657;23.476;11.674
-Buskerudbyen uten E18;F;Helgedøgn;>= 16,0m;Siste 12 måneder;2,214;95,000;44917;43944;19.758;9.826
-Buskerudbyen uten E18;F;Alle;Alle;Hittil i år;-0,057;94,000;57513590;57546494;1.898;0.944
-Buskerudbyen uten E18;F;Alle;< 5,6m;Hittil i år;-0,483;94,000;52998083;53255417;2.115;1.052
-Buskerudbyen uten E18;F;Alle;>= 5,6m;Hittil i år;4,805;94,000;4357838;4158063;5.642;2.806
-Buskerudbyen uten E18;F;Alle;5,6m - 7,6m;Hittil i år;10,262;94,000;1470600;1333736;12.892;6.411
-Buskerudbyen uten E18;F;Alle;7,6m - 12,5m;Hittil i år;2,503;94,000;1725172;1683046;4.889;2.431
-Buskerudbyen uten E18;F;Alle;12,5m - 16,0m;Hittil i år;0,837;94,000;530808;526404;14.246;7.084
-Buskerudbyen uten E18;F;Alle;>= 16,0m;Hittil i år;2,664;94,000;631258;614877;12.159;6.047
-Buskerudbyen uten E18;F;Yrkesdøgn;Alle;Hittil i år;-0,445;94,000;44719138;44919059;2.285;1.136
-Buskerudbyen uten E18;F;Yrkesdøgn;< 5,6m;Hittil i år;-0,906;94,000;40775421;41148258;2.546;1.266
-Buskerudbyen uten E18;F;Yrkesdøgn;>= 5,6m;Hittil i år;4,410;94,000;3807255;3646454;5.597;2.783
-Buskerudbyen uten E18;F;Yrkesdøgn;5,6m - 7,6m;Hittil i år;9,598;94,000;1265130;1154335;12.499;6.215
-Buskerudbyen uten E18;F;Yrkesdøgn;7,6m - 12,5m;Hittil i år;2,302;94,000;1487915;1454439;4.628;2.301
-Buskerudbyen uten E18;F;Yrkesdøgn;12,5m - 16,0m;Hittil i år;0,240;94,000;467869;466747;14.076;7.000
-Buskerudbyen uten E18;F;Yrkesdøgn;>= 16,0m;Hittil i år;2,699;94,000;586341;570933;11.704;5.820
-Buskerudbyen uten E18;F;Helgedøgn;Alle;Hittil i år;1,323;95,000;12794452;12627435;3.854;1.916
-Buskerudbyen uten E18;F;Helgedøgn;< 5,6m;Hittil i år;0,954;95,000;12222662;12107159;3.862;1.921
-Buskerudbyen uten E18;F;Helgedøgn;>= 5,6m;Hittil i år;7,618;95,000;550583;511609;7.363;3.661
-Buskerudbyen uten E18;F;Helgedøgn;5,6m - 7,6m;Hittil i år;14,531;95,000;205470;179401;16.896;8.402
-Buskerudbyen uten E18;F;Helgedøgn;7,6m - 12,5m;Hittil i år;3,784;95,000;237257;228607;8.399;4.177
-Buskerudbyen uten E18;F;Helgedøgn;12,5m - 16,0m;Hittil i år;5,501;95,000;62939;59657;23.476;11.674
-Buskerudbyen uten E18;F;Helgedøgn;>= 16,0m;Hittil i år;2,214;95,000;44917;43944;19.758;9.826
+Buskerudbyen uten E18;F;Alle;Alle;Siste 12 måneder;-0,422;95,000;54476313;54707285;1.793;0.922
+Buskerudbyen uten E18;F;Alle;< 5,6m;Siste 12 måneder;-0,833;94,000;50178462;50600162;1.927;0.991
+Buskerudbyen uten E18;F;Alle;>= 5,6m;Siste 12 måneder;4,405;94,000;4163662;3987975;5.989;3.079
+Buskerudbyen uten E18;F;Alle;5,6m - 7,6m;Siste 12 måneder;10,016;94,000;1395790;1268713;12.831;6.597
+Buskerudbyen uten E18;F;Alle;7,6m - 12,5m;Siste 12 måneder;1,887;94,000;1645645;1615167;5.193;2.670
+Buskerudbyen uten E18;F;Alle;12,5m - 16,0m;Siste 12 måneder;0,696;94,000;511358;507824;14.582;7.498
+Buskerudbyen uten E18;F;Alle;>= 16,0m;Siste 12 måneder;2,448;94,000;610869;596271;11.651;5.990
+Buskerudbyen uten E18;F;Yrkesdøgn;Alle;Siste 12 måneder;-0,915;94,000;42302023;42692866;2.274;1.169
+Buskerudbyen uten E18;F;Yrkesdøgn;< 5,6m;Siste 12 måneder;-1,362;94,000;38555774;39087990;2.427;1.248
+Buskerudbyen uten E18;F;Yrkesdøgn;>= 5,6m;Siste 12 måneder;3,942;94,000;3632099;3494354;5.991;3.080
+Buskerudbyen uten E18;F;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;9,276;94,000;1198432;1096697;12.418;6.385
+Buskerudbyen uten E18;F;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;1,624;94,000;1415849;1393228;4.995;2.568
+Buskerudbyen uten E18;F;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;0,006;94,000;451009;450984;14.416;7.412
+Buskerudbyen uten E18;F;Yrkesdøgn;>= 16,0m;Siste 12 måneder;2,415;94,000;566809;553445;11.295;5.808
+Buskerudbyen uten E18;F;Helgedøgn;Alle;Siste 12 måneder;1,331;95,000;12174290;12014419;3.973;2.043
+Buskerudbyen uten E18;F;Helgedøgn;< 5,6m;Siste 12 måneder;0,960;95,000;11622688;11512172;3.957;2.034
+Buskerudbyen uten E18;F;Helgedøgn;>= 5,6m;Siste 12 måneder;7,686;95,000;531563;493621;7.498;3.855
+Buskerudbyen uten E18;F;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;14,732;95,000;197358;172016;17.044;8.763
+Buskerudbyen uten E18;F;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;3,540;95,000;229796;221939;8.498;4.369
+Buskerudbyen uten E18;F;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;6,173;95,000;60349;56840;23.906;12.291
+Buskerudbyen uten E18;F;Helgedøgn;>= 16,0m;Siste 12 måneder;2,881;95,000;44060;42826;18.839;9.686
+Buskerudbyen uten E18;F;Alle;Alle;Hittil i år;-0,422;95,000;54476313;54707285;1.793;0.922
+Buskerudbyen uten E18;F;Alle;< 5,6m;Hittil i år;-0,833;94,000;50178462;50600162;1.927;0.991
+Buskerudbyen uten E18;F;Alle;>= 5,6m;Hittil i år;4,405;94,000;4163662;3987975;5.989;3.079
+Buskerudbyen uten E18;F;Alle;5,6m - 7,6m;Hittil i år;10,016;94,000;1395790;1268713;12.831;6.597
+Buskerudbyen uten E18;F;Alle;7,6m - 12,5m;Hittil i år;1,887;94,000;1645645;1615167;5.193;2.670
+Buskerudbyen uten E18;F;Alle;12,5m - 16,0m;Hittil i år;0,696;94,000;511358;507824;14.582;7.498
+Buskerudbyen uten E18;F;Alle;>= 16,0m;Hittil i år;2,448;94,000;610869;596271;11.651;5.990
+Buskerudbyen uten E18;F;Yrkesdøgn;Alle;Hittil i år;-0,915;94,000;42302023;42692866;2.274;1.169
+Buskerudbyen uten E18;F;Yrkesdøgn;< 5,6m;Hittil i år;-1,362;94,000;38555774;39087990;2.427;1.248
+Buskerudbyen uten E18;F;Yrkesdøgn;>= 5,6m;Hittil i år;3,942;94,000;3632099;3494354;5.991;3.080
+Buskerudbyen uten E18;F;Yrkesdøgn;5,6m - 7,6m;Hittil i år;9,276;94,000;1198432;1096697;12.418;6.385
+Buskerudbyen uten E18;F;Yrkesdøgn;7,6m - 12,5m;Hittil i år;1,624;94,000;1415849;1393228;4.995;2.568
+Buskerudbyen uten E18;F;Yrkesdøgn;12,5m - 16,0m;Hittil i år;0,006;94,000;451009;450984;14.416;7.412
+Buskerudbyen uten E18;F;Yrkesdøgn;>= 16,0m;Hittil i år;2,415;94,000;566809;553445;11.295;5.808
+Buskerudbyen uten E18;F;Helgedøgn;Alle;Hittil i år;1,331;95,000;12174290;12014419;3.973;2.043
+Buskerudbyen uten E18;F;Helgedøgn;< 5,6m;Hittil i år;0,960;95,000;11622688;11512172;3.957;2.034
+Buskerudbyen uten E18;F;Helgedøgn;>= 5,6m;Hittil i år;7,686;95,000;531563;493621;7.498;3.855
+Buskerudbyen uten E18;F;Helgedøgn;5,6m - 7,6m;Hittil i år;14,732;95,000;197358;172016;17.044;8.763
+Buskerudbyen uten E18;F;Helgedøgn;7,6m - 12,5m;Hittil i år;3,540;95,000;229796;221939;8.498;4.369
+Buskerudbyen uten E18;F;Helgedøgn;12,5m - 16,0m;Hittil i år;6,173;95,000;60349;56840;23.906;12.291
+Buskerudbyen uten E18;F;Helgedøgn;>= 16,0m;Hittil i år;2,881;95,000;44060;42826;18.839;9.686
