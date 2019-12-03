@@ -63,6 +63,24 @@ read_city_index_csv <- function(filename) {
     as_tibble()
 }
 
+monthly_city_index <- function(filename) {
+  # Read standard csv export from Datainn
+  read.csv2(filename, stringsAsFactors = F) %>%
+    filter(Vegkategori == "E+R+F+K",
+           døgn == "Alle",
+           lengdeklasse == "< 5,6m",
+           periode != "Siste 12 måneder") %>%
+    mutate(index = as.numeric(str_replace(indeks, ",", ".")),
+           dekning = as.numeric(str_replace(dekning, ",", ".")),
+           standardavvik = as.numeric(as.character(standardavvik)),
+           konfidensintervall = as.numeric(as.character(konfidensintervall)),
+           periode = if_else(periode == "Hittil i år",
+                             "Hele året",
+                             periode)) %>%
+    select(periode, index, dekning, standardavvik, konfidensintervall) %>%
+    as_tibble()
+}
+
 read_bike_index_csv <- function(filename) {
   # Read standard csv export from Datainn
   read.csv2(filename) %>%
@@ -631,13 +649,13 @@ trp_jaeren_2016_ids <- cities_points %>%
 trp_jaeren_2016 <- dplyr::left_join(trp_jaeren_2016_ids, points)
 
 # Add index results from CSV-files
-pointindex_jaeren_16_17 <-
-  readPointindexCSV("data_index_raw/pointindex_nord-jaeren-2017-12_2016.csv") %>%
-  rename(index_16_17 = index)
-
-n_16_17 <- pointindex_jaeren_16_17 %>%
-  dplyr::filter(!is.na(index_16_17)) %>%
-  nrow()
+# pointindex_jaeren_16_17 <-
+#   readPointindexCSV("data_index_raw/pointindex_nord-jaeren-2017-12_2016.csv") %>%
+#   rename(index_16_17 = index)
+#
+# n_16_17 <- pointindex_jaeren_16_17 %>%
+#   dplyr::filter(!is.na(index_16_17)) %>%
+#   nrow()
 
 pointindex_jaeren_17_18 <-
   readPointindexCSV("data_index_raw/pointindex_nord-jaeren-2018-12_2017.csv") %>%
@@ -648,7 +666,7 @@ n_17_18 <- pointindex_jaeren_17_18 %>%
   nrow()
 
 pointindex_jaeren_18_19 <-
-  readPointindexCSV("data_index_raw/pointindex_nord-jaeren-2019-08_2018.csv") %>%
+  readPointindexCSV("data_index_raw/pointindex_nord-jaeren-2019-09_2018.csv") %>%
   rename(index_18_19 = index)
 
 n_18_19 <- pointindex_jaeren_18_19 %>%
@@ -661,16 +679,16 @@ adt <- getAdtForpoints_by_length(trp_jaeren_2016$trp_id) %>%
   dplyr::filter(length_quality > 95) %>%
   dplyr::filter(coverage > 90) %>%
   dplyr::group_by(trp_id) %>%
-  dplyr::filter(year >= 2016) %>%
+  dplyr::filter(year >= 2017) %>%
   dplyr::filter(year == min(year)) %>%
   dplyr::select(trp_id, aadt_length_range, year) %>%
   dplyr::rename(adt = 2)
 
 adt_manual <- data.frame(
   trp_id = c("66678V320582", "43296V319721", "21556V319919",
-             "17949V320695"),
-  adt = c(55000, 15000, 8700, 15000),
-  year = c(2017, 2016, 2016, 2016)
+             "17949V320695", "67511V319880"),
+  adt = c(55000, 15000, 8500, 15000, 20000),
+  year = c(2017, 2017, 2017, 2017, 2017)
 )
 
 adt_all <- bind_rows(adt, adt_manual)
@@ -678,7 +696,7 @@ adt_all <- bind_rows(adt, adt_manual)
 # Final table
 trp_jaeren_2016_adt <- trp_jaeren_2016 %>%
   left_join(adt_all) %>%
-  left_join(pointindex_jaeren_16_17) %>%
+  #left_join(pointindex_jaeren_16_17) %>%
   left_join(pointindex_jaeren_17_18) %>%
   left_join(pointindex_jaeren_18_19)
 
@@ -699,29 +717,31 @@ write.csv2(trp_jaeren_2016_final,
            row.names = F)
 
 # City index
-jaeren_2017 <-
-  read_city_index_csv("data_index_raw/Nord-Jaeren-2017-12_2016.csv") %>%
-  mutate(year = "2016-2017")
+# jaeren_2017 <-
+#   read_city_index_csv("data_index_raw/Nord-Jaeren-2017-12_2016.csv") %>%
+#   mutate(year = "2016-2017")
 jaeren_2018 <-
   read_city_index_csv("data_index_raw/Nord-Jaeren-2018-12_2017.csv") %>%
   mutate(year = "2017-2018")
 jaeren_2019 <-
-  read_city_index_csv("data_index_raw/Nord-Jaeren-2019-08_2018.csv") %>%
+  read_city_index_csv("data_index_raw/Nord-Jaeren-2019-09_2018.csv") %>%
   mutate(year = "2018-2019")
 
-city_index_jaeren <- bind_rows(jaeren_2017,
+city_index_jaeren <- bind_rows(#jaeren_2017,
                                jaeren_2018,
                                jaeren_2019) %>%
   mutate(index_i = index_converter(index),
          variance = standardavvik^2,
-         n_points = c(n_16_17, n_17_18, n_18_19))
+         n_points = c(#n_16_17,
+                      n_17_18, n_18_19))
 
 first_two_years <- calculate_two_year_index(city_index_jaeren)
-next_two_years <- bind_rows(first_two_years, slice(city_index_jaeren, 3)) %>%
-  calculate_two_year_index()
+# next_two_years <- bind_rows(first_two_years, slice(city_index_jaeren, 3)) %>%
+#   calculate_two_year_index()
 
 city_index_jaeren_all <- city_index_jaeren %>%
-  bind_rows(next_two_years) %>%
+  #bind_rows(next_two_years) %>%
+  bind_rows(first_two_years) %>%
   dplyr::mutate(ki_start = index - konfidensintervall,
                 ki_slutt = index + konfidensintervall)
 
@@ -729,6 +749,19 @@ write.csv2(city_index_jaeren_all,
            file = "data_indexpoints_tidy/byindeks_nord-jaeren_2016.csv",
            row.names = F)
 
+# Monthly city index
+jaeren_2018_monthly <-
+  monthly_city_index("data_index_raw/Nord-Jaeren-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+jaeren_2019_monthly <-
+  monthly_city_index("data_index_raw/Nord-Jaeren-2019-09_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+jaeren_monthly <- bind_rows(jaeren_2018_monthly, jaeren_2019_monthly)
+
+write.csv2(jaeren_monthly,
+           file = "data_indexpoints_tidy/byindeks_maanedlig_nord-jaeren_2016.csv",
+           row.names = F)
 
 # Buskerudbyen 2016 ####
 # Point index

@@ -1,0 +1,35 @@
+---
+title: "Vegtrafikkindekspunkter"
+output: html_notebook
+---
+
+Trafikkregistreringspunkter som skal benyttes i Vegtrafikkindeksen.
+
+```{r setup}
+source("H:/Programmering/R/byindeks/rmd_setup.R")
+source("H:/Programmering/R/byindeks/get_from_trp_api.R")
+source("H:/Programmering/R/byindeks/get_from_trafficdata_api.R")
+
+library(htmlwidgets)
+library(DT)
+```
+
+```{r get_trp}
+trp_for_vti <- get_trp_for_vti()
+```
+
+```{r table}
+# DataTables
+trp_for_vti %>% 
+  dplyr::select(county_number, legacyNortrafMpn, name,
+                road_category, road_number, parsell, meter) %>% 
+  dplyr::slice(1:10) %>% 
+  #knitr::kable()
+  DT::datatable(options = list(pageLength = 5))
+```
+
+```{r map}
+
+```
+
+

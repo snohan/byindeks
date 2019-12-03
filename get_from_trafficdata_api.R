@@ -197,7 +197,77 @@ get_trp_aadt_with_coverage <- function(trp_id) {
   return(trp_aadt)
 }
 
-#trp_id <- "68351V319882"
+get_trp_mdt_with_coverage <- function(trp_id) {
+  # Get all AADTs for a trp
+  query_aadt <- paste0(
+    "query trp_adt{
+    trafficData(trafficRegistrationPointId: \"", trp_id,"\"){
+      trafficRegistrationPoint{
+        id
+      }
+      volume{
+    average{
+      daily{
+        byMonth(dayType: ALL, year: 2019){
+          year
+          month
+          total{
+            coverage{
+              percentage
+            }
+            validLengthVolume{
+              average
+            }
+            validSpeedVolume{
+              average
+            }
+            volume{
+              average
+              confidenceInterval{
+                confidenceWidth
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+}")
+
+  myqueries <- Query$new()
+  myqueries$query("aadts", query_aadt)
+
+  # TODO: Må splitte opp her med en test om det ikke er noe ÅDT
+  trp_aadt <- cli$exec(myqueries$queries$aadts) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
+
+  if(is_empty(trp_aadt$data$trafficData$volume$average$daily$byMonth) |
+     ncol(trp_aadt$data$trafficData$volume$average$daily$byMonth) < 5){
+    # hva gjør vi når det ikke er noe ÅDT?
+    trp_aadt <- data.frame()
+  }else{
+    trp_aadt <- trp_aadt %>%
+      as.data.frame() %>%
+      #    tidyr::unnest() %>%
+      dplyr::rename(
+        trp_id = data.trafficData.id,
+        year = data.trafficData.volume.average.daily.byMonth.year,
+        month = 3,
+        coverage = 4,
+        valid_length_volume = 5,
+        valid_speed_volume = 6,
+        mdt = 7,
+        uncertainty = 8) #%>%
+      #dplyr::mutate(trp_id = as.character(trp_id),
+       #             coverage = round(coverage, digits = 1),
+      #              uncertainty = signif(uncertainty, 2))
+  }
+
+  return(trp_aadt)
+}
+
+trp_id <- "84355V1175837"
 #trp_adt <- getTrpAadt_byLength(trp_id)
 
 getTrpAadt_byLength <- function(trp_id) {
