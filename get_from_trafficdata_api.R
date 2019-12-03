@@ -177,13 +177,14 @@ get_trp_aadt_with_coverage <- function(trp_id) {
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
 
   if(is_empty(trp_aadt$data$trafficData$volume$average$daily$byYear) |
-     ncol(trp_aadt$data$trafficData$volume$average$daily$byYear) < 5){
+     is.null(trp_aadt$data$trafficData$volume$average$daily$byYear$total.volume.average)
+     #ncol(trp_aadt$data$trafficData$volume$average$daily$byYear) < 5
+     ){
     # hva gjør vi når det ikke er noe ÅDT?
     trp_aadt <- data.frame()
   }else{
     trp_aadt <- trp_aadt %>%
       as.data.frame() %>%
-  #    tidyr::unnest() %>%
       dplyr::rename(
         trp_id = data.trafficData.id,
         year = data.trafficData.volume.average.daily.byYear.year,
@@ -267,7 +268,8 @@ get_trp_mdt_with_coverage <- function(trp_id) {
   return(trp_aadt)
 }
 
-trp_id <- "84355V1175837"
+#trp_id <- "89343V971445"
+#trp_id <- "04904V971774"
 #trp_adt <- getTrpAadt_byLength(trp_id)
 
 getTrpAadt_byLength <- function(trp_id) {
@@ -367,7 +369,7 @@ getAdtForpoints <- function(trp_list) {
   return(trp_adt)
 }
 
-get_aadt_for_trp <- function(trp_list) {
+get_aadt_for_trp_list <- function(trp_list) {
   number_of_points <- length(trp_list)
   data_points <- data.frame()
   trp_count <- 1

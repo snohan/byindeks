@@ -11,4 +11,4 @@ Thumbs.db
 *.nb.html
 *tmp*
 archive
-get_from_trp_api.R
+trp_api_cookies.R
