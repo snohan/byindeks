@@ -268,8 +268,8 @@ get_trp_mdt_with_coverage <- function(trp_id) {
   return(trp_aadt)
 }
 
-#trp_id <- "89343V971445"
-#trp_id <- "04904V971774"
+#trp_id <- "20642V805115"
+#trp_id <- "01316V804837"
 #trp_adt <- getTrpAadt_byLength(trp_id)
 
 getTrpAadt_byLength <- function(trp_id) {
@@ -325,7 +325,9 @@ getTrpAadt_byLength <- function(trp_id) {
   trp_aadt <- cli$exec(myqueries$queries$aadts) %>%
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
 
-  if(is_empty(trp_aadt$data$trafficData$volume$average$daily$byYear)){
+  if(is_empty(trp_aadt$data$trafficData$volume$average$daily$byYear) |
+     is_empty(trp_aadt$data$trafficData$volume$average$daily$byYear$byLengthRange[[1]])
+     ){
     # hva gjør vi når det ikke er noe ÅDT?
     trp_aadt <- data.frame()
   }else{
@@ -334,15 +336,15 @@ getTrpAadt_byLength <- function(trp_id) {
       tidyr::unnest(cols = c(data.trafficData.volume.average.daily.byYear.byLengthRange)) %>%
       dplyr::rename(
         trp_id = data.trafficData.id,
-        year = 2,
+        year = data.trafficData.volume.average.daily.byYear.year,
         length_range = lengthRange.representation,
-        aadt_length_range = 4,
-        sd_length_range = 5,
-        aadt_ci_lowerbound_length_range = 6,
-        aadt_ci_upperbound_length_range = 7,
-        aadt_valid_length = 8,
-        coverage = 9,
-        aadt_total = 10
+        aadt_length_range = total.volume.average,
+        sd_length_range = total.volume.standardDeviation,
+        aadt_ci_lowerbound_length_range = total.volume.confidenceInterval.lowerBound,
+        aadt_ci_upperbound_length_range = total.volume.confidenceInterval.upperBound,
+        aadt_valid_length = data.trafficData.volume.average.daily.byYear.total.validLengthVolume.average,
+        coverage = data.trafficData.volume.average.daily.byYear.total.coverage.percentage,
+        aadt_total = data.trafficData.volume.average.daily.byYear.total.volume.average
         ) %>%
       dplyr::mutate(trp_id = as.character(trp_id))
   }

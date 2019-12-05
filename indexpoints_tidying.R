@@ -939,3 +939,145 @@ city_index_buskerud_uten_e18_all <- city_index_buskerud_uten_e18 %>%
 write.csv2(city_index_buskerud_uten_e18_all,
            file = "data_indexpoints_tidy/byindeks_buskerudbyen_uten_e18_2016.csv",
            row.names = F)
+
+
+# Bergen 2016 ####
+# Point index
+trp_bergen_2016_ids <- cities_points %>%
+  dplyr::filter(city_area_name == "Bergen",
+                agreement_start == 2016) %>%
+  dplyr::select(trp_id, legacyNortrafMpn) %>%
+  dplyr::rename(msnr = legacyNortrafMpn) %>%
+  dplyr::filter(!is.na(msnr)) %>%
+  dplyr::filter(!is.na(trp_id))
+
+# Adding metadata
+trp_bergen_2016 <- dplyr::left_join(trp_bergen_2016_ids, points)
+
+# Add index results from CSV-files
+pointindex_bergen_16_17 <-
+   readPointindexCSV("data_index_raw/pointindex_bergen-2017-12_2016.csv") %>%
+   rename(index_16_17 = index)
+
+n_16_17 <- pointindex_bergen_16_17 %>%
+   dplyr::filter(!is.na(index_16_17)) %>%
+   nrow()
+
+pointindex_bergen_17_18 <-
+  readPointindexCSV("data_index_raw/pointindex_bergen-2018-12_2017.csv") %>%
+  rename(index_17_18 = index)
+
+n_17_18 <- pointindex_bergen_17_18 %>%
+  dplyr::filter(!is.na(index_17_18)) %>%
+  nrow()
+
+pointindex_bergen_18_19 <-
+  readPointindexCSV("data_index_raw/pointindex_bergen-2019-10_2018.csv") %>%
+  rename(index_18_19 = index)
+
+n_18_19 <- pointindex_bergen_18_19 %>%
+  dplyr::filter(!is.na(index_18_19)) %>%
+  nrow()
+
+adt <- getAdtForpoints_by_length(trp_bergen_2016$trp_id)
+
+adt_filtered <- adt %>%
+  dplyr::filter(length_range == "[..,5.6)") %>%
+  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  dplyr::filter(length_quality > 90) %>%
+  dplyr::filter(coverage > 50) %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year >= 2016) %>%
+  dplyr::filter(year == min(year)) %>%
+  dplyr::select(trp_id, aadt_length_range, year) %>%
+  dplyr::rename(adt = 2)
+
+adt_manual <- data.frame(
+  trp_id = c("20642V805115", "94767V804742", "49658V804949",
+             "13600V805722", "87138V755378", "52794V805054"),
+  adt = c(9000, 9000, 11000, 19000, 650, 16000),
+  year = c(2018, 2017, 2017, 2017, 2018, 2016)
+)
+
+adt_all <- bind_rows(adt_filtered, adt_manual)
+
+# Final table
+trp_bergen_2016_adt <- trp_bergen_2016 %>%
+  left_join(adt_all) %>%
+  left_join(pointindex_bergen_16_17) %>%
+  left_join(pointindex_bergen_17_18) %>%
+  left_join(pointindex_bergen_18_19)
+
+# Index from refyear
+refyear <- trp_bergen_2016_adt %>%
+  select(starts_with("index")) %>%
+  mutate_all(list(index_converter)) %>%
+  transmute(index = purrr::pmap_dbl(., prod)) %>%
+  # Lazily changing from 1 to NA (risky?)
+  mutate(index = round(ifelse(index == 1, NA,  100 * (index - 1)),
+                       digits = 1))
+
+trp_bergen_2016_final <- trp_bergen_2016_adt %>%
+  bind_cols(refyear)
+
+write.csv2(trp_bergen_2016_final,
+           file = "data_indexpoints_tidy/indekspunkt_bergen_2016.csv",
+           row.names = F)
+
+# City index
+bergen_2017 <-
+   read_city_index_csv("data_index_raw/Bergen-2017-12_2016.csv") %>%
+   mutate(year = "2016-2017")
+bergen_2018 <-
+  read_city_index_csv("data_index_raw/Bergen-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+bergen_2019 <-
+  read_city_index_csv("data_index_raw/Bergen-2019-10_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+city_index_bergen <- bind_rows(
+  bergen_2017,
+  bergen_2018,
+  bergen_2019) %>%
+  mutate(index_i = index_converter(index),
+         variance = standardavvik^2,
+         n_points = c(
+           n_16_17,
+           n_17_18,
+           n_18_19))
+
+first_two_years <- calculate_two_year_index(city_index_bergen)
+next_two_years <- bind_rows(first_two_years, slice(city_index_bergen, 3)) %>%
+   calculate_two_year_index()
+
+city_index_bergen_all <- city_index_bergen %>%
+  bind_rows(next_two_years) %>%
+  bind_rows(first_two_years) %>%
+  dplyr::mutate(ki_start = index - konfidensintervall,
+                ki_slutt = index + konfidensintervall)
+
+write.csv2(city_index_bergen_all,
+           file = "data_indexpoints_tidy/byindeks_bergen_2016.csv",
+           row.names = F)
+
+# Monthly city index
+bergen_2017_monthly <-
+  monthly_city_index("data_index_raw/Bergen-2017-12_2016.csv") %>%
+  mutate(year = "2016-2017")
+bergen_2018_monthly <-
+  monthly_city_index("data_index_raw/Bergen-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+bergen_2019_monthly <-
+  monthly_city_index("data_index_raw/Bergen-2019-10_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+bergen_monthly <- bind_rows(
+  bergen_2017_monthly,
+  bergen_2018_monthly,
+  bergen_2019_monthly)
+
+write.csv2(bergen_monthly,
+           file = "data_indexpoints_tidy/byindeks_maanedlig_bergen_2016.csv",
+           row.names = F)
+
+#
