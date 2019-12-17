@@ -157,6 +157,143 @@ points <- getPoints() %>%
 # All points from TRP API (if needed)
 points_trp <- getPointsFromTRPAPI()
 
+# Oslo og Akershus 2016 ####
+trp_oslo_2016_ids <- cities_points %>%
+  dplyr::filter(city_area_name == "Oslo og Akershus",
+                agreement_start == 2017) %>%
+  dplyr::select(trp_id, legacyNortrafMpn) %>%
+  dplyr::rename(msnr = legacyNortrafMpn)
+
+trp_oslo_2016 <- dplyr::left_join(trp_oslo_2016_ids, points)
+
+# Add index results from CSV-files
+pointindex_oslo_16_17 <-
+  readPointindexCSV("data_index_raw/pointindex_oslo-2017-12_2016.csv") %>%
+  rename(index_16_17 = index)
+
+n_16_17 <- pointindex_oslo_16_17 %>%
+  dplyr::filter(!is.na(index_16_17)) %>%
+  nrow()
+
+pointindex_oslo_17_18 <-
+  readPointindexCSV("data_index_raw/pointindex_oslo-2018-12_2017.csv") %>%
+  rename(index_17_18 = index)
+
+n_17_18 <- pointindex_oslo_17_18 %>%
+  dplyr::filter(!is.na(index_17_18)) %>%
+  nrow()
+
+pointindex_oslo_18_19 <-
+  readPointindexCSV("data_index_raw/pointindex_oslo-2019-10_2018.csv") %>%
+  rename(index_18_19 = index)
+
+n_18_19 <- pointindex_oslo_18_19 %>%
+  dplyr::filter(!is.na(index_18_19)) %>%
+  nrow()
+
+adt <- getAdtForpoints_by_length(trp_oslo_2016$trp_id)
+
+adt_filtered <- adt %>%
+  dplyr::filter(length_range == "[..,5.6)") %>%
+  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  dplyr::filter(length_quality > 90) %>%
+  dplyr::filter(coverage > 50) %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year >= 2016) %>%
+  dplyr::filter(year == min(year)) %>%
+  dplyr::select(trp_id, aadt_length_range, year) %>%
+  dplyr::rename(adt = 2)
+
+adt_manual <- data.frame(
+  trp_id = c("29403V625517", "48379V625405", "60739V625530",
+             "33808V625649", "48300V443646", "80141V444220",
+             "88537V444232"),
+  adt = c(11500, 53000, 22000, 52000, 20000, 51000, 72000),
+  year = c(2017, 2016, 2018, 2016, 2016, 2016, 2017)
+)
+
+adt_all <- bind_rows(adt_filtered, adt_manual)
+
+# Final table
+trp_oslo_2016_adt <- trp_oslo_2016 %>%
+  left_join(adt_all) %>%
+  left_join(pointindex_oslo_16_17) %>%
+  left_join(pointindex_oslo_17_18) %>%
+  left_join(pointindex_oslo_18_19)
+
+# Index from refyear
+refyear <- trp_oslo_2016_adt %>%
+  select(starts_with("index")) %>%
+  mutate_all(list(index_converter)) %>%
+  transmute(index = purrr::pmap_dbl(., prod)) %>%
+  # Lazily changing from 1 to NA (risky?)
+  mutate(index = round(ifelse(index == 1, NA,  100 * (index - 1)),
+                       digits = 1))
+
+trp_oslo_2016_final <- trp_oslo_2016_adt %>%
+  bind_cols(refyear)
+
+write.csv2(trp_oslo_2016_final,
+           file = "data_indexpoints_tidy/indekspunkt_oslo_2016.csv",
+           row.names = F)
+
+# City index
+oslo_2017 <-
+  read_city_index_csv("data_index_raw/Oslo-2017-12_2016.csv") %>%
+  mutate(year = "2016-2017")
+oslo_2018 <-
+  read_city_index_csv("data_index_raw/Oslo-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+oslo_2019 <-
+  read_city_index_csv("data_index_raw/Oslo-2019-10_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+city_index_oslo <- bind_rows(
+  oslo_2017,
+  oslo_2018,
+  oslo_2019) %>%
+  mutate(index_i = index_converter(index),
+         variance = standardavvik^2,
+         n_points = c(
+           n_16_17,
+           n_17_18,
+           n_18_19))
+
+first_two_years <- calculate_two_year_index(city_index_oslo)
+next_two_years <- bind_rows(first_two_years, slice(city_index_oslo, 3)) %>%
+  calculate_two_year_index()
+
+city_index_oslo_all <- city_index_oslo %>%
+  bind_rows(next_two_years) %>%
+  bind_rows(first_two_years) %>%
+  dplyr::mutate(ki_start = index - konfidensintervall,
+                ki_slutt = index + konfidensintervall)
+
+write.csv2(city_index_oslo_all,
+           file = "data_indexpoints_tidy/byindeks_oslo_2016.csv",
+           row.names = F)
+
+# Monthly city index
+oslo_2017_monthly <-
+  monthly_city_index("data_index_raw/Oslo-2017-12_2016.csv") %>%
+  mutate(year = "2016-2017")
+oslo_2018_monthly <-
+  monthly_city_index("data_index_raw/Oslo-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+oslo_2019_monthly <-
+  monthly_city_index("data_index_raw/Oslo-2019-10_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+oslo_monthly <- bind_rows(
+  oslo_2017_monthly,
+  oslo_2018_monthly,
+  oslo_2019_monthly)
+
+write.csv2(oslo_monthly,
+           file = "data_indexpoints_tidy/byindeks_maanedlig_oslo_2016.csv",
+           row.names = F)
+
+
 # Oslo og Akershus 2019 ####
 oslopunkter <- cities_points %>%
   dplyr::filter(city_area_name == "Oslo og Akershus",

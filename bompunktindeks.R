@@ -39,6 +39,10 @@ maanedstrafikk.byindeks <- maanedstrafikk.begge %>%
   filter(!punktnr %in% c(9916070, 9916072, 9916073, 9916074, 9916080,
                          9916081, 9916082, 9916083, 9916063))
 
+# TODO: hva gjør vi med de ukjente?
+# Her har jeg vel bare droppet dem - er det riktig?
+# Skal vi anta at de fordeler seg 90-10?
+# Skal vi be om nytt datauttrekk der andelen ukjente er lavere (finnes det)?
 maanedstrafikk.byindeks.punkt <-
   mutate(maanedstrafikk.byindeks,
          punktnr = punktnr,
@@ -52,8 +56,9 @@ maanedstrafikk.byindeks.punkt <-
                      trafikkmengde.basisaar - 1) * 100,
          dekningsgrad = 100.000)
 
-# Slå sammen med ordinære punkter
+# Slå sammen med ordinære punkter ####
 # Leser inn punktindeks fra Datainn:
+# TODO: hente fra data_index_raw
 byindeks.datainn <- read.csv2("pointindex-2018-12_2017.csv",
                               stringsAsFactors = F) %>%
 #                              locale = locale(encoding = 'ISO-8859-1'))
