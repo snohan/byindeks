@@ -184,18 +184,20 @@ get_tolling_stations <- function(kommunenr) {
 
   bom <- uthenta$objekter %>%
     select(id, egenskaper) %>%
-    unnest() %>%
-    filter(id1 %in% c(1078, 9595)) %>%
-    select(id, navn, verdi) %>%
+    rename(id1 = id) %>%
+    unnest(cols = c(egenskaper)) %>%
+    filter(id %in% c(1078, 9595)) %>%
+    select(id1, navn, verdi) %>%
+    rename(id = id1) %>%
     spread(navn, verdi)
 
   vegreferanser <- uthenta$objekter %>%
     select(id, lokasjon.vegreferanser) %>%
-    unnest()
+    unnest(cols = c(lokasjon.vegreferanser))
 
   koordinater <- uthenta$objekter %>%
     select(id, lokasjon.geometri.wkt) %>%
-    unnest() %>%
+    unnest(cols = c(lokasjon.geometri.wkt)) %>%
     mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 10, -2)) %>%
     separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
              convert = T) %>%

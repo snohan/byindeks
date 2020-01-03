@@ -77,7 +77,7 @@ all_point_info %>%
 
 # Endring i trafikkmengde
 
-Tabellen nedenfor viser byindeksen for hvert år, samt for hele perioden fra 2016 fram til og med oktober 2019.
+Tabellen nedenfor viser byindeksen for hvert år, samt for hele perioden fra 2016 til 2019.
 
 ```{r city_table}
 borderline <- officer::fp_border(color = "black", style = "solid", width = 1)
@@ -108,7 +108,7 @@ city_info %>%
 
 \newline
 **Byindeksen estimerer endringen i trafikkmengden fra 
-2016 til 2019 (til og med oktober) 
+2016 til 2019
 til å være 
 `r stringr::str_replace(as.character(index_all_years), "\\.", ",")` %.**
 Usikkerheten knyttet til byindeksen gjenspeiles i et 95 % konfidensintervall som er fra
@@ -294,7 +294,7 @@ ggplot2::ggplot() +
   xlab("") +
   ylab("Endring i trafikkmengde (%)") +
   ggtitle(label = "ÅDT og endring i trafikkmengde",
-          subtitle = "Fra 2016 til 2019 (oktober)") +
+          subtitle = "Fra 2016 til 2019") +
   coord_flip() +
   scale_size(name = "ÅDT") +
   geom_rect(aes(xmin = -Inf, xmax = Inf, 

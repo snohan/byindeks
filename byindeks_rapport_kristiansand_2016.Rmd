@@ -18,10 +18,13 @@ source("rmd_setup.R")
 
 ```{r points, include = FALSE}
 all_point_info <- 
-  read.csv2("data_indexpoints_tidy/indekspunkt_nedre-glomma_2016.csv")
+  read.csv2("data_indexpoints_tidy/indekspunkt_kristiansand_2016.csv")
 
 city_info <-
-    read.csv2("data_indexpoints_tidy/byindeks_nedre-glomma_2016.csv")
+    read.csv2("data_indexpoints_tidy/byindeks_kristiansand_2016.csv")
+
+# TODO: Egen variant for KRS kommune, dvs. gamle kommunen før den ble 
+# slått sammen med Songdalen og Søgne
 
 city_monthly <- 
   read.csv2("data_indexpoints_tidy/byindeks_maanedlig_kristiansand_2016.csv")
@@ -41,9 +44,8 @@ index_all_years_ci_upper <-
 ```{r child = 'formaal.Rmd'}
 ```
 
-## Hvor det registreres trafikk
-
-I kartet nedenfor vises plasseringen av trafikkregistreringspunktene som benyttes i byindeksen.
+## Byindekspunktenes plassering
+Kartet nedenfor viser plasseringen av trafikkregistreringspunktene som benyttes i byindeksen.
 
 ```{r map_trp}
 palett_adt <-
@@ -74,25 +76,25 @@ all_point_info %>%
             labFormat = labelFormat(big.mark = " "))
 ```
 
+
+
 # Endring i trafikkmengde
 
-Tabellen nedenfor viser byindeksen for hvert år, samt for hele perioden fra 2016  til 2019.
+Tabellen nedenfor viser byindeksen for hvert år, samt for hele perioden fra 2016 til 2019.
 
 ```{r city_table}
 borderline <- officer::fp_border(color = "black", style = "solid", width = 1)
 
 city_info %>% 
-  dplyr::select(year, index, konfidensintervall) %>% 
+  dplyr::select(year, index, ki_start, ki_slutt, dekning) %>% 
   flextable::flextable() %>% 
-  set_formatter(index = function(x) stringr::str_replace(
-    as.character(
-      round(x, digits = 1)), "\\.", ","),
-    konfidensintervall = function(x) stringr::str_replace(
-    as.character(
-      round(x, digits = 1)), "\\.", ",")) %>% 
+  colformat_num(col_keys = c("index", "ki_start", "ki_slutt"), digits = 1) %>%
+  colformat_num(col_keys = "dekning", digits = 0) %>%
   set_header_labels(year = "Periode",
                     index = "Endring i trafikkmengde (%)",
-                    konfidensintervall = "Konfidensbredde (95 %)") %>% 
+                    ki_start = "95 % konfidensintervall",
+                    dekning = "Dekningsgrad (%)") %>% 
+  merge_at(i = 1, j = 3:4, part = "header") %>% 
   bold(part = "header") %>% 
   fontsize(size = 9, part = "all") %>% 
   font(fontname = "Lucida Sans Unicode", part = "all") %>% 
@@ -138,18 +140,20 @@ city_monthly %>%
   set_caption("Estimert endring i trafikkmengde per måned.")
 ```
 
-
 ```{r all_point_info_long}
 all_point_info_long <- all_point_info %>% 
-  tidyr::gather(starts_with("index"), key = "period", value = "index_value") %>% 
+  tidyr::pivot_longer(starts_with("index"), 
+                      names_to = "period", 
+                      values_to = "index_value") %>% 
   dplyr::mutate(year = case_when(period == "index" ~ "2016-2019",
-                                   period == "index_16_17" ~ "2016-2017",
-                                   period == "index_17_18" ~ "2017-2018",
-                                   period == "index_18_19" ~ "2018-2019"),
+                                 period == "index_16_17" ~ "2016-2017",
+                                 period == "index_17_18" ~ "2017-2018",
+                                 period == "index_18_19" ~ "2018-2019"),
                 year = factor(year, levels = c("2016-2019",
-                                                   "2018-2019",
-                                                   "2017-2018",
-                                                   "2016-2017"),
+                                               "2018-2019",
+                                               "2017-2018",
+                                               "2016-2017"
+                                               ),
                                 ordered = TRUE))
 ```
 
@@ -226,7 +230,6 @@ all_point_info %>%
             labFormat = labelFormat(big.mark = " "))
 ```
 
-
 Tabellen nedenfor gjengir byindekspunktene og deres indeksverdi for 2019.
 
 \newline
@@ -236,50 +239,51 @@ index_column_names <- all_point_info %>%
   select(starts_with("index")) %>% 
   names()
 
-all_point_info %>% 
-  select(name, road_reference, adt, 
-         starts_with("index")) %>% 
-  arrange(road_reference) %>% 
-  flextable() %>% 
-  colformat_num(col_keys = "adt", 
+all_point_info %>%
+  select(name, road_reference, adt, year,
+         starts_with("index")) %>%
+  flextable() %>%
+  colformat_num(col_keys = "adt",
                 big.mark = " ", digits = 0) %>%
-  colformat_num(col_keys = index_column_names, 
+  colformat_num(col_keys = index_column_names,
                 digits = 1) %>%
   set_header_labels(name = "Navn",
                     road_reference = "Vegreferanse",
                     adt = "ÅDT",
-                    index_16_17 = "Endring i trafikkmengde (%)") %>% 
-  add_header_row(values = c("", "", "2016", 
+                    year = "År",
+                    index_16_17 = "Endring i trafikkmengde (%)") %>%
+  add_header_row(values = c("", "", "", "",
                             "2016", "2017", "2018",
-                            "2016"), top = F) %>% 
-  add_header_row(values = c("", "", "", 
+                            "2016"), top = F) %>%
+  add_header_row(values = c("", "", "", "",
                             "-2017", "-2018", "-2019",
-                            "-2019"), top = F) %>% 
-  merge_at(i = 1, j = 4:7, part = "header") %>% 
-  align(i = 1, j = 4, align = "right", part = "header") %>% 
-  align(i = 2, j = 3:7, align = "right", part = "header") %>% 
-  align(i = 3, j = 3:7, align = "right", part = "header") %>% 
-  bold(part = "header") %>% 
-  fontsize(size = 9, part = "all") %>% 
-  font(fontname = "Lucida Sans Unicode", part = "all") %>% 
-  bg(bg = "#ED9300", part = "header") %>% 
-  border_remove() %>% 
-  hline_top(part = "header", border = borderline) %>% 
-  hline_bottom(part = "all", border = borderline) %>% 
-  autofit() %>% 
-  height_all(height = .2) %>% 
+                            "-2019"), top = F) %>%
+  merge_at(i = 1, j = 5:8, part = "header") %>%
+  align(i = 1, j = 3, align = "center", part = "header") %>%
+  align(i = 2, j = 4:8, align = "right", part = "header") %>%
+  align(i = 3, j = 4:8, align = "right", part = "header") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  autofit() %>%
+  height_all(height = .2) %>%
   padding(padding.top = .3,
-          padding.bottom = .3) %>% 
-  width(j = 4, width = 1) %>% 
+          padding.bottom = .3) %>%
+  width(j = 5, width = 1) %>%
   set_caption("Estimert endring i trafikkmengde ved trafikkregistreringspunktene.")
 ```
+
 \newline
 
 I figuren nedenfor er spredningen i punktindeksene illustrert. Den horisontale grønne streken viser byindeksens samlede verdi for perioden 2016 - 2019.
 
 \newline
 
-```{r point_graph}
+```{r point_graph, fig.width=8, fig.height=8}
 all_point_info_index <- all_point_info %>% 
   dplyr::filter(!is.na(index)) 
 
@@ -288,12 +292,13 @@ ggplot2::ggplot() +
              aes(x = reorder(name, index), y = index, size = adt),
              color = "#ED9300", alpha = 0.6) +
   geom_hline(yintercept = index_all_years, color = "#58B02C") +
+  geom_hline(yintercept = 0, color = "#000000") +
   xlab("") +
   ylab("Endring i trafikkmengde (%)") +
   ggtitle(label = "ÅDT og endring i trafikkmengde",
-          subtitle = "Fra 2016 til 2019 (august)") +
+          subtitle = "Fra 2016 til 2019") +
   coord_flip() +
-  scale_size(name = "ÅDT 2016") +
+  scale_size(name = "ÅDT") +
   geom_rect(aes(xmin = -Inf, xmax = Inf, 
                 ymin = index_all_years_ci_lower, 
                 ymax = index_all_years_ci_upper),
@@ -302,7 +307,9 @@ ggplot2::ggplot() +
   theme(legend.position = "right",
         axis.text.y = element_text(size = 7)) +
   labs(caption = "Data: Statens vegvesen")
+# TODO: Add explaining labels with ggforce?
 ```
 
 ```{r child = 'byindeksmetoden.Rmd'}
 ```
+

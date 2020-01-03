@@ -1,16 +1,5 @@
 # Get data directly from TRP-API
 
-# Must add cookies fetched from browser for each session
-# Open console i Chrome (Ctrl+Shift+I)
-# Look under Network after a reload
-# Right click on api\ and choose Copy as cURL (bash)
-# Convert to R via https://curl.trillworks.com/#r
-# Copy the c() after cookies and paste it in the client instantiation below.
-# Probably need just:
-# 'www.vegvesen.no-oam'
-# 'iPlanetDirectoryProOAM'
-# 'www.vegvesen.no-443'
-
 source("trp_api_cookies.R")
 
 cli_trp <- GraphqlClient$new(

@@ -365,21 +365,46 @@ kommune_bomer <-
 kommune_bomer$name[kommune_bomer$trp_id == 56] <- "Kroppan bru"
 
 # Må legge til for 52 som er borte fra API-et.
-bom_52 <- data.frame(
-  "trp_id" = "52",
-  "msnr" = 52,
-  "name" = "Klett - E6, S-snitt",
-  "road_reference" = "Ev6 hp9 m1252",
-  "lat" = 63.32590,
-  "lon" = 10.32702,
-  "station_type" = "Bom",
-  stringsAsFactors = F)
+# bom_52 <- data.frame(
+#   "trp_id" = "52",
+#   "msnr" = 52,
+#   "name" = "Klett - E6, S-snitt",
+#   "road_reference" = "Ev6 hp9 m1252",
+#   "lat" = 63.32590,
+#   "lon" = 10.32702,
+#   "station_type" = "Bom",
+#   stringsAsFactors = F)
 
 trp_trondheim_2017_alle <-
-  bind_rows(trp_trondheim_2017, kommune_bomer, bom_52)
+  bind_rows(trp_trondheim_2017, kommune_bomer#, bom_52
+            )
+# HIT
+
+adt <- getAdtForpoints_by_length(trp_trondheim_2017$trp_id)
+
+adt_filtered <- adt %>%
+  dplyr::filter(length_range == "[..,5.6)") %>%
+  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  dplyr::filter(length_quality > 90) %>%
+  dplyr::filter(coverage > 50) %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year >= 2016) %>%
+  dplyr::filter(year == min(year)) %>%
+  dplyr::select(trp_id, aadt_length_range, year) %>%
+  dplyr::rename(adt = 2)
+
+# TODO: adt_bom
+
+adt_all <- bind_rows(adt_filtered, adt_manual)
+
+# Get AADT for reference year with coverage from TD-API.
+# TODO: Add coverage when available through API!
+# adt <- getAdtForpoints(trp_trondheim_2017$trp_id) %>%
+#   dplyr::filter(year == 2017) %>%
+#   dplyr::select(-year)
 
 # Add index results from CSV-files
-pointindex_17_18 <-
+pointindex_trondheim_17_18 <-
   read.csv2("data_index_raw/punktindeks_trondheim_alle_punkter_jan-des18.csv") %>%
   mutate(trs = as.numeric(msnr),
          trs = if_else(trs > 9916000, trs - 9916000, trs)) %>%
@@ -393,7 +418,11 @@ pointindex_17_18 <-
   rename(msnr = trs) %>%
   select(msnr, index_17_18)
 
-pointindex_18_19 <-
+n_17_18 <- pointindex_trondheim_17_18 %>%
+  dplyr::filter(!is.na(index_17_18)) %>%
+  nrow()
+
+pointindex_trondheim_18_19 <-
   read.csv2("data_index_raw/punktindeks_trondheim_alle_punkter_jan-apr19.csv") %>%
   mutate(trs = as.numeric(msnr),
          trs = if_else(trs > 9916000, trs - 9916000, trs)) %>%
@@ -407,25 +436,15 @@ pointindex_18_19 <-
   rename(msnr = trs) %>%
   select(msnr, index_18_19)
 
-# Get AADT for reference year with coverage from TD-API.
-# TODO: Add coverage when available through API!
-adt <- getAdtForpoints(trp_trondheim_2017$trp_id) %>%
-  dplyr::filter(year == 2017) %>%
-  dplyr::select(-year)
-
-# adt <- read.csv2("adt_2017_nortraf.csv") %>%
-#   filter(Felt == "R0") %>%
-#   mutate(Stasjonnr = as.character(Tellepunkt),
-#          ADT = round(ADT, digits = -2)) %>%
-#   select(Stasjonnr, ADT)
-
-
+n_18_19 <- pointindex_trondheim_18_19 %>%
+  dplyr::filter(!is.na(index_18_19)) %>%
+  nrow()
 
 # Final table
 trp_trondheim_2017_alle_adt <- trp_trondheim_2017_alle %>%
   left_join(adt) %>%
-  left_join(pointindex_17_18) %>%
-  left_join(pointindex_18_19) %>%
+  left_join(pointindex_trondheim_17_18) %>%
+  left_join(pointindex_trondheim_18_19) %>%
   mutate(index_17_18_i = index_converter(index_17_18),
          index_18_19_i = index_converter(index_18_19)) %>%
   # TODO: keep original columns
@@ -1216,5 +1235,10 @@ bergen_monthly <- bind_rows(
 write.csv2(bergen_monthly,
            file = "data_indexpoints_tidy/byindeks_maanedlig_bergen_2016.csv",
            row.names = F)
+
+# Kristiansand 2016 ####
+
+
+# Tromsø 2016 ####
 
 #

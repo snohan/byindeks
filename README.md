@@ -1,15 +1,17 @@
 # Byindeksrapporter
-Mal for formidling av byindeks.
+Dette prosjektet omhandler mal for og framstilling av rapporter for byindeksene.
 
-# Årsrapporter
-Årsrapporter for byindeks skal legges ut på vegvesen.no som PDF-dokumenter. Hvert avtaleområde får sin egen rapport, som har Statens vegvesens generelle forside som mal (https://www.vegvesen.no/intranett/Etat/Støttefunksjoner/Visuell+kommunikasjon/Grafiske+maler/Forsider/Generelle+forsider).
+# Publisering
+Rapporter for byindeks legges ut på (vegvesen.no/fag/trafikk/indekser)[https://www.vegvesen.no/fag/trafikk/trafikkdata/indekser/byindeks] og oppdateres månedlig. 
 
-Egne årsrapporter lages for hvert avtaleområde. I kode er dette en Rmd-fil kalt **byindeks_rapport_områdenavn_referanseår.Rmd**. Disse genererer innholdet som MS Word. Felles funksjoner samles i kildeskript. Datagrunnlaget er csv-filer fra indeksmodulen og metainformasjon om punktene fra Trafikkdata-API-et.
+Hvert avtaleområde får sin egen rapport i PDF, som har Statens vegvesens generelle forside som mal (https://www.vegvesen.no/intranett/Etat/Støttefunksjoner/Visuell+kommunikasjon/Grafiske+maler/Forsider/Generelle+forsider).
+
+Egne rapporter lages for hvert avtaleområde, og i kode er dette en Rmd-fil kalt **byindeks_rapport_områdenavn_referanseår.Rmd**. Disse genererer innholdet som MS Word. Felles funksjoner samles i kildeskript. Datagrunnlaget er csv-filer fra indeksmodulen og metainformasjon om punktene fra Trafikkdata-API-et.
 
 I tillegg lages en samlerapport med hovedtallene for alle avtaleområdene, også her med tall fra og med hver avtales basisår. Denne omtaler ikke punktindeksene.
 
 ## Kart over punktene
-Hver årsrapport inneholder informasjon om punktene som er bestemt å inngå i grunnlaget for byindeks.
+Hver srapport inneholder informasjon om punktene som er bestemt å inngå i grunnlaget for byindeks.
 
 Hvilke punkter som inngår i avtalene oppdateres manuelt i **cities_points.csv**, og øvrig punktinfo hentes fra trafikkdata-API via **get_from_trafficdata_api.R**. Punktinfo per område prepareres i **indexpoint_tidying.R** og lagres som **indekspunkt_områdenavn_referanseår_beregningsår.csv**, klart til bruk i rapporten.
 
