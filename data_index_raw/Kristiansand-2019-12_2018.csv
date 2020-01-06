@@ -1,0 +1,1765 @@
+Område;Vegkategori;døgn;lengdeklasse;periode;indeks;dekning;trafikkmengde indeksår;trafikkmengde basisår;standardavvik;konfidensintervall
+Kristiansand;E;Alle;Alle;Januar;1,810;99,000;4215829;4140884;0.713;0.660
+Kristiansand;E;Alle;< 5,6m;Januar;1,015;99,000;3696895;3659736;1.114;1.030
+Kristiansand;E;Alle;>= 5,6m;Januar;7,824;99,000;517906;480327;8.016;7.414
+Kristiansand;E;Alle;5,6m - 7,6m;Januar;13,531;99,000;142229;125278;13.600;12.578
+Kristiansand;E;Alle;7,6m - 12,5m;Januar;6,770;99,000;170086;159301;8.603;7.956
+Kristiansand;E;Alle;12,5m - 16,0m;Januar;-2,066;99,000;62717;64040;16.592;15.345
+Kristiansand;E;Alle;>= 16,0m;Januar;8,478;99,000;142874;131708;9.234;8.540
+Kristiansand;E;Yrkesdøgn;Alle;Januar;2,087;99,000;3421242;3351314;0.735;0.679
+Kristiansand;E;Yrkesdøgn;< 5,6m;Januar;1,273;99,000;2961175;2923943;1.254;1.160
+Kristiansand;E;Yrkesdøgn;>= 5,6m;Januar;7,616;99,000;459165;426668;7.507;6.943
+Kristiansand;E;Yrkesdøgn;5,6m - 7,6m;Januar;13,604;99,000;124311;109425;12.979;12.003
+Kristiansand;E;Yrkesdøgn;7,6m - 12,5m;Januar;5,707;99,000;148457;140442;7.773;7.188
+Kristiansand;E;Yrkesdøgn;12,5m - 16,0m;Januar;-1,082;99,000;55968;56580;15.731;14.548
+Kristiansand;E;Yrkesdøgn;>= 16,0m;Januar;8,491;99,000;130429;120221;9.650;8.925
+Kristiansand;E;Helgedøgn;Alle;Januar;0,635;99,000;794587;789570;1.220;1.129
+Kristiansand;E;Helgedøgn;< 5,6m;Januar;-0,010;99,000;735720;735793;1.064;0.984
+Kristiansand;E;Helgedøgn;>= 5,6m;Januar;9,471;99,000;58741;53659;12.778;11.818
+Kristiansand;E;Helgedøgn;5,6m - 7,6m;Januar;13,026;99,000;17918;15853;18.713;17.306
+Kristiansand;E;Helgedøgn;7,6m - 12,5m;Januar;14,688;99,000;21629;18859;16.540;15.297
+Kristiansand;E;Helgedøgn;12,5m - 16,0m;Januar;-9,531;99,000;6749;7460;25.281;23.381
+Kristiansand;E;Helgedøgn;>= 16,0m;Januar;8,340;99,000;12445;11487;6.941;6.419
+Kristiansand;E;Alle;Alle;Februar;5,027;99,000;3909107;3722005;1.148;1.062
+Kristiansand;E;Alle;< 5,6m;Februar;4,375;99,000;3432234;3288365;0.823;0.761
+Kristiansand;E;Alle;>= 5,6m;Februar;10,169;99,000;475987;432052;7.724;7.143
+Kristiansand;E;Alle;5,6m - 7,6m;Februar;19,184;99,000;134573;112912;13.564;12.545
+Kristiansand;E;Alle;7,6m - 12,5m;Februar;8,690;99,000;152730;140519;8.313;7.689
+Kristiansand;E;Alle;12,5m - 16,0m;Februar;-5,135;99,000;55181;58168;19.597;18.124
+Kristiansand;E;Alle;>= 16,0m;Februar;10,834;99,000;133503;120453;7.024;6.496
+Kristiansand;E;Yrkesdøgn;Alle;Februar;5,248;99,000;3164951;3007134;1.413;1.307
+Kristiansand;E;Yrkesdøgn;< 5,6m;Februar;4,445;99,000;2737831;2621314;1.003;0.928
+Kristiansand;E;Yrkesdøgn;>= 5,6m;Februar;10,924;99,000;426319;384336;7.482;6.920
+Kristiansand;E;Yrkesdøgn;5,6m - 7,6m;Februar;20,105;99,000;118617;98761;13.308;12.308
+Kristiansand;E;Yrkesdøgn;7,6m - 12,5m;Februar;9,823;99,000;136379;124181;8.486;7.849
+Kristiansand;E;Yrkesdøgn;12,5m - 16,0m;Februar;-4,747;99,000;48783;51214;18.910;17.489
+Kristiansand;E;Yrkesdøgn;>= 16,0m;Februar;11,218;99,000;122540;110180;7.019;6.492
+Kristiansand;E;Helgedøgn;Alle;Februar;4,097;99,000;744156;714871;0.647;0.598
+Kristiansand;E;Helgedøgn;< 5,6m;Februar;4,100;99,000;694403;667051;0.761;0.704
+Kristiansand;E;Helgedøgn;>= 5,6m;Februar;4,091;99,000;49668;47716;10.248;9.478
+Kristiansand;E;Helgedøgn;5,6m - 7,6m;Februar;12,755;99,000;15956;14151;16.464;15.226
+Kristiansand;E;Helgedøgn;7,6m - 12,5m;Februar;0,080;99,000;16351;16338;10.100;9.341
+Kristiansand;E;Helgedøgn;12,5m - 16,0m;Februar;-7,995;99,000;6398;6954;27.924;25.826
+Kristiansand;E;Helgedøgn;>= 16,0m;Februar;6,717;99,000;10963;10273;8.021;7.418
+Kristiansand;E;Alle;Alle;Mars;10,047;99,000;2153433;1956838;0.727;1.157
+Kristiansand;E;Alle;< 5,6m;Mars;8,631;99,000;1841277;1694984;0.741;1.179
+Kristiansand;E;Alle;>= 5,6m;Mars;19,089;99,000;311687;261726;5.766;9.176
+Kristiansand;E;Alle;5,6m - 7,6m;Mars;22,652;99,000;77867;63486;8.630;13.732
+Kristiansand;E;Alle;7,6m - 12,5m;Mars;26,209;99,000;104736;82986;4.215;6.707
+Kristiansand;E;Alle;12,5m - 16,0m;Mars;5,099;99,000;34193;32534;21.152;33.658
+Kristiansand;E;Alle;>= 16,0m;Mars;14,713;99,000;94891;82720;2.600;4.138
+Kristiansand;E;Yrkesdøgn;Alle;Mars;12,606;99,000;1653560;1468444;1.133;1.804
+Kristiansand;E;Yrkesdøgn;< 5,6m;Mars;11,394;99,000;1385853;1244103;0.754;1.201
+Kristiansand;E;Yrkesdøgn;>= 5,6m;Mars;19,211;99,000;267316;224238;5.892;9.376
+Kristiansand;E;Yrkesdøgn;5,6m - 7,6m;Mars;25,674;99,000;65398;52038;10.135;16.127
+Kristiansand;E;Yrkesdøgn;7,6m - 12,5m;Mars;23,944;99,000;86939;70144;4.724;7.517
+Kristiansand;E;Yrkesdøgn;12,5m - 16,0m;Mars;6,295;99,000;29550;27800;20.054;31.911
+Kristiansand;E;Yrkesdøgn;>= 16,0m;Mars;15,047;99,000;85429;74256;2.756;4.386
+Kristiansand;E;Helgedøgn;Alle;Mars;2,350;99,000;499873;488394;1.308;2.082
+Kristiansand;E;Helgedøgn;< 5,6m;Mars;1,008;99,000;455424;450881;1.670;2.657
+Kristiansand;E;Helgedøgn;>= 5,6m;Mars;18,361;99,000;44371;37488;5.156;8.204
+Kristiansand;E;Helgedøgn;5,6m - 7,6m;Mars;8,919;99,000;12469;11448;5.531;8.801
+Kristiansand;E;Helgedøgn;7,6m - 12,5m;Mars;38,584;99,000;17797;12842;8.688;13.825
+Kristiansand;E;Helgedøgn;12,5m - 16,0m;Mars;-1,922;99,000;4643;4734;27.382;43.571
+Kristiansand;E;Helgedøgn;>= 16,0m;Mars;11,791;99,000;9462;8464;3.955;6.293
+Kristiansand;E;Alle;Alle;April;1,200;98,000;2092677;2067857;2.172;3.455
+Kristiansand;E;Alle;< 5,6m;April;1,372;98,000;1782453;1758329;1.743;2.774
+Kristiansand;E;Alle;>= 5,6m;April;0,221;98,000;309963;309280;5.053;8.041
+Kristiansand;E;Alle;5,6m - 7,6m;April;6,795;98,000;79524;74464;9.273;14.756
+Kristiansand;E;Alle;7,6m - 12,5m;April;2,624;98,000;114632;111701;6.322;10.060
+Kristiansand;E;Alle;12,5m - 16,0m;April;-12,942;98,000;31065;35683;12.081;19.223
+Kristiansand;E;Alle;>= 16,0m;April;-3,077;98,000;84742;87432;2.691;4.282
+Kristiansand;E;Yrkesdøgn;Alle;April;-2,024;97,000;1509767;1540963;2.407;3.831
+Kristiansand;E;Yrkesdøgn;< 5,6m;April;-2,259;97,000;1253199;1282157;1.982;3.154
+Kristiansand;E;Yrkesdøgn;>= 5,6m;April;-0,874;97,000;256375;258636;4.823;7.674
+Kristiansand;E;Yrkesdøgn;5,6m - 7,6m;April;3,860;97,000;62345;60028;9.862;15.692
+Kristiansand;E;Yrkesdøgn;7,6m - 12,5m;April;3,087;97,000;92382;89616;5.950;9.468
+Kristiansand;E;Yrkesdøgn;12,5m - 16,0m;April;-15,922;97,000;25796;30681;10.531;16.757
+Kristiansand;E;Yrkesdøgn;>= 16,0m;April;-3,140;97,000;75852;78311;2.939;4.676
+Kristiansand;E;Helgedøgn;Alle;April;10,631;99,000;582910;526894;1.594;2.537
+Kristiansand;E;Helgedøgn;< 5,6m;April;11,148;99,000;529254;476172;1.293;2.057
+Kristiansand;E;Helgedøgn;>= 5,6m;April;5,813;99,000;53588;50644;6.541;10.407
+Kristiansand;E;Helgedøgn;5,6m - 7,6m;April;19,001;99,000;17179;14436;6.718;10.690
+Kristiansand;E;Helgedøgn;7,6m - 12,5m;April;0,747;99,000;22250;22085;8.711;13.861
+Kristiansand;E;Helgedøgn;12,5m - 16,0m;April;5,338;99,000;5269;5002;23.416;37.261
+Kristiansand;E;Helgedøgn;>= 16,0m;April;-2,533;99,000;8890;9121;1.882;2.995
+Kristiansand;E;Alle;Alle;Mai;5,857;97,000;3884417;3669480;2.810;2.949
+Kristiansand;E;Alle;< 5,6m;Mai;5,501;97,000;3350483;3175788;2.641;2.771
+Kristiansand;E;Alle;>= 5,6m;Mai;8,103;97,000;532261;492364;7.456;7.824
+Kristiansand;E;Alle;5,6m - 7,6m;Mai;14,837;97,000;155366;135293;11.610;12.183
+Kristiansand;E;Alle;7,6m - 12,5m;Mai;5,336;97,000;198044;188011;9.847;10.334
+Kristiansand;E;Alle;12,5m - 16,0m;Mai;-2,193;97,000;54895;56126;13.979;14.670
+Kristiansand;E;Alle;>= 16,0m;Mai;9,760;97,000;123956;112934;5.813;6.100
+Kristiansand;E;Yrkesdøgn;Alle;Mai;9,821;98,000;2932008;2669818;2.314;2.428
+Kristiansand;E;Yrkesdøgn;< 5,6m;Mai;9,560;98,000;2491357;2273967;3.050;3.201
+Kristiansand;E;Yrkesdøgn;>= 5,6m;Mai;11,257;98,000;439323;394874;5.267;5.527
+Kristiansand;E;Yrkesdøgn;5,6m - 7,6m;Mai;18,753;98,000;124212;104597;10.049;10.546
+Kristiansand;E;Yrkesdøgn;7,6m - 12,5m;Mai;8,146;98,000;161043;148913;7.801;8.187
+Kristiansand;E;Yrkesdøgn;12,5m - 16,0m;Mai;-0,971;98,000;45601;46048;12.479;13.096
+Kristiansand;E;Yrkesdøgn;>= 16,0m;Mai;13,797;98,000;108467;95316;5.369;5.634
+Kristiansand;E;Helgedøgn;Alle;Mai;-4,727;97,000;952409;999662;9.558;10.030
+Kristiansand;E;Helgedøgn;< 5,6m;Mai;-4,734;97,000;859126;901821;8.914;9.354
+Kristiansand;E;Helgedøgn;>= 5,6m;Mai;-4,669;97,000;92938;97490;16.898;17.733
+Kristiansand;E;Helgedøgn;5,6m - 7,6m;Mai;1,492;97,000;31154;30696;17.195;18.046
+Kristiansand;E;Helgedøgn;7,6m - 12,5m;Mai;-5,363;97,000;37001;39098;20.081;21.073
+Kristiansand;E;Helgedøgn;12,5m - 16,0m;Mai;-7,779;97,000;9294;10078;27.019;28.355
+Kristiansand;E;Helgedøgn;>= 16,0m;Mai;-12,084;97,000;15489;17618;10.127;10.628
+Kristiansand;E;Alle;Alle;Juni;-0,129;98,000;3974082;3979205;2.226;2.336
+Kristiansand;E;Alle;< 5,6m;Juni;-0,312;98,000;3429786;3440504;2.458;2.579
+Kristiansand;E;Alle;>= 5,6m;Juni;0,922;98,000;542172;537219;7.279;7.639
+Kristiansand;E;Alle;5,6m - 7,6m;Juni;8,437;98,000;168717;155590;9.750;10.232
+Kristiansand;E;Alle;7,6m - 12,5m;Juni;-0,967;98,000;202239;204213;8.250;8.658
+Kristiansand;E;Alle;12,5m - 16,0m;Juni;-6,533;98,000;56873;60848;15.772;16.552
+Kristiansand;E;Alle;>= 16,0m;Juni;-1,909;98,000;114343;116568;4.431;4.650
+Kristiansand;E;Yrkesdøgn;Alle;Juni;-7,029;98,000;2869586;3086533;1.210;1.270
+Kristiansand;E;Yrkesdøgn;< 5,6m;Juni;-7,514;98,000;2435031;2632852;1.293;1.357
+Kristiansand;E;Yrkesdøgn;>= 5,6m;Juni;-4,350;98,000;432853;452539;6.369;6.684
+Kristiansand;E;Yrkesdøgn;5,6m - 7,6m;Juni;1,991;98,000;128271;125767;9.374;9.837
+Kristiansand;E;Yrkesdøgn;7,6m - 12,5m;Juni;-6,932;98,000;157870;169629;7.144;7.497
+Kristiansand;E;Yrkesdøgn;12,5m - 16,0m;Juni;-10,518;98,000;46075;51491;14.895;15.631
+Kristiansand;E;Yrkesdøgn;>= 16,0m;Juni;-4,747;98,000;100637;105652;4.212;4.420
+Kristiansand;E;Helgedøgn;Alle;Juni;23,729;99,000;1104496;892672;5.477;5.747
+Kristiansand;E;Helgedøgn;< 5,6m;Juni;23,166;99,000;994755;807652;5.775;6.061
+Kristiansand;E;Helgedøgn;>= 5,6m;Juni;29,097;99,000;109319;84680;12.161;12.762
+Kristiansand;E;Helgedøgn;5,6m - 7,6m;Juni;35,620;99,000;40446;29823;11.933;12.523
+Kristiansand;E;Helgedøgn;7,6m - 12,5m;Juni;28,293;99,000;44369;34584;13.714;14.392
+Kristiansand;E;Helgedøgn;12,5m - 16,0m;Juni;15,400;99,000;10798;9357;31.734;33.302
+Kristiansand;E;Helgedøgn;>= 16,0m;Juni;25,559;99,000;13706;10916;10.870;11.407
+Kristiansand;E;Alle;Alle;Juli;3,214;99,000;4225455;4093858;1.582;1.661
+Kristiansand;E;Alle;< 5,6m;Juli;2,512;99,000;3684486;3594200;1.782;1.870
+Kristiansand;E;Alle;>= 5,6m;Juli;8,293;99,000;539443;498132;5.154;5.409
+Kristiansand;E;Alle;5,6m - 7,6m;Juli;11,349;99,000;172446;154870;8.176;8.580
+Kristiansand;E;Alle;7,6m - 12,5m;Juli;6,809;99,000;207393;194172;4.048;4.248
+Kristiansand;E;Alle;12,5m - 16,0m;Juli;7,032;99,000;55081;51462;12.680;13.307
+Kristiansand;E;Alle;>= 16,0m;Juli;7,063;99,000;104523;97628;4.934;5.178
+Kristiansand;E;Yrkesdøgn;Alle;Juli;6,534;99,000;3339007;3134223;0.658;0.691
+Kristiansand;E;Yrkesdøgn;< 5,6m;Juli;5,869;99,000;2878796;2719195;1.137;1.193
+Kristiansand;E;Yrkesdøgn;>= 5,6m;Juli;10,912;99,000;459009;413848;4.987;5.233
+Kristiansand;E;Yrkesdøgn;5,6m - 7,6m;Juli;14,302;99,000;141817;124072;7.663;8.042
+Kristiansand;E;Yrkesdøgn;7,6m - 12,5m;Juli;9,892;99,000;174973;159222;4.470;4.691
+Kristiansand;E;Yrkesdøgn;12,5m - 16,0m;Juli;8,523;99,000;45748;42155;13.246;13.901
+Kristiansand;E;Yrkesdøgn;>= 16,0m;Juli;9,131;99,000;96471;88399;5.239;5.498
+Kristiansand;E;Helgedøgn;Alle;Juli;-7,627;99,000;886448;959635;3.774;3.960
+Kristiansand;E;Helgedøgn;< 5,6m;Juli;-7,922;99,000;805690;875005;3.869;4.060
+Kristiansand;E;Helgedøgn;>= 5,6m;Juli;-4,568;99,000;80434;84284;5.776;6.061
+Kristiansand;E;Helgedøgn;5,6m - 7,6m;Juli;-0,549;99,000;30629;30798;9.803;10.288
+Kristiansand;E;Helgedøgn;7,6m - 12,5m;Juli;-7,239;99,000;32420;34950;1.915;2.010
+Kristiansand;E;Helgedøgn;12,5m - 16,0m;Juli;0,279;99,000;9333;9307;14.070;14.766
+Kristiansand;E;Helgedøgn;>= 16,0m;Juli;-12,753;99,000;8052;9229;4.418;4.637
+Kristiansand;E;Alle;Alle;August;1,444;92,000;3929801;3873847;1.350;1.417
+Kristiansand;E;Alle;< 5,6m;August;1,361;92,000;3400557;3354913;1.582;1.660
+Kristiansand;E;Alle;>= 5,6m;August;1,974;92,000;527996;517776;4.519;4.742
+Kristiansand;E;Alle;5,6m - 7,6m;August;4,328;92,000;161529;154828;7.156;7.510
+Kristiansand;E;Alle;7,6m - 12,5m;August;3,107;92,000;198314;192338;3.316;3.480
+Kristiansand;E;Alle;12,5m - 16,0m;August;2,997;92,000;56427;54785;11.165;11.717
+Kristiansand;E;Alle;>= 16,0m;August;-3,539;92,000;111726;115825;6.164;6.469
+Kristiansand;E;Yrkesdøgn;Alle;August;-2,484;92,000;3030313;3107516;2.266;2.378
+Kristiansand;E;Yrkesdøgn;< 5,6m;August;-2,747;92,000;2584906;2657932;2.118;2.223
+Kristiansand;E;Yrkesdøgn;>= 5,6m;August;-0,950;92,000;444432;448696;5.108;5.360
+Kristiansand;E;Yrkesdøgn;5,6m - 7,6m;August;0,882;92,000;130763;129620;7.830;8.218
+Kristiansand;E;Yrkesdøgn;7,6m - 12,5m;August;0,520;92,000;164340;163490;3.948;4.143
+Kristiansand;E;Yrkesdøgn;12,5m - 16,0m;August;-1,100;92,000;47451;47979;11.961;12.552
+Kristiansand;E;Yrkesdøgn;>= 16,0m;August;-5,324;92,000;101878;107607;6.536;6.859
+Kristiansand;E;Helgedøgn;Alle;August;17,376;92,000;899488;766331;10.608;11.132
+Kristiansand;E;Helgedøgn;< 5,6m;August;17,026;92,000;815651;696981;10.940;11.480
+Kristiansand;E;Helgedøgn;>= 5,6m;August;20,967;92,000;83564;69080;9.022;9.468
+Kristiansand;E;Helgedøgn;5,6m - 7,6m;August;22,049;92,000;30766;25208;8.301;8.711
+Kristiansand;E;Helgedøgn;7,6m - 12,5m;August;17,769;92,000;33974;28848;9.977;10.470
+Kristiansand;E;Helgedøgn;12,5m - 16,0m;August;31,884;92,000;8976;6806;16.636;17.459
+Kristiansand;E;Helgedøgn;>= 16,0m;August;19,835;92,000;9848;8218;7.985;8.380
+Kristiansand;E;Alle;Alle;September;3,192;99,000;3407651;3302245;0.955;1.186
+Kristiansand;E;Alle;< 5,6m;September;2,621;99,000;2915883;2841408;1.484;1.843
+Kristiansand;E;Alle;>= 5,6m;September;6,749;99,000;490768;459738;4.276;5.310
+Kristiansand;E;Alle;5,6m - 7,6m;September;9,447;99,000;136145;124393;10.605;13.168
+Kristiansand;E;Alle;7,6m - 12,5m;September;5,926;99,000;178636;168642;3.067;3.808
+Kristiansand;E;Alle;12,5m - 16,0m;September;5,041;99,000;56370;53665;3.408;4.232
+Kristiansand;E;Alle;>= 16,0m;September;5,820;99,000;119617;113038;3.278;4.070
+Kristiansand;E;Yrkesdøgn;Alle;September;7,235;99,000;2661117;2481578;1.271;1.578
+Kristiansand;E;Yrkesdøgn;< 5,6m;September;6,910;99,000;2241148;2096290;1.830;2.272
+Kristiansand;E;Yrkesdøgn;>= 5,6m;September;9,031;99,000;419202;384478;4.275;5.308
+Kristiansand;E;Yrkesdøgn;5,6m - 7,6m;September;12,439;99,000;111916;99535;11.511;14.293
+Kristiansand;E;Yrkesdøgn;7,6m - 12,5m;September;9,320;99,000;149217;136495;2.777;3.448
+Kristiansand;E;Yrkesdøgn;12,5m - 16,0m;September;5,779;99,000;48929;46256;4.259;5.289
+Kristiansand;E;Yrkesdøgn;>= 16,0m;September;6,799;99,000;109140;102192;3.405;4.228
+Kristiansand;E;Helgedøgn;Alle;September;-9,033;99,000;746534;820667;1.457;1.810
+Kristiansand;E;Helgedøgn;< 5,6m;September;-9,446;99,000;674735;745118;1.706;2.119
+Kristiansand;E;Helgedøgn;>= 5,6m;September;-4,908;99,000;71566;75260;4.662;5.789
+Kristiansand;E;Helgedøgn;5,6m - 7,6m;September;-2,530;99,000;24229;24858;7.474;9.280
+Kristiansand;E;Helgedøgn;7,6m - 12,5m;September;-8,486;99,000;29419;32147;4.977;6.180
+Kristiansand;E;Helgedøgn;12,5m - 16,0m;September;0,432;99,000;7441;7409;5.394;6.698
+Kristiansand;E;Helgedøgn;>= 16,0m;September;-3,402;99,000;10477;10846;2.628;3.263
+Kristiansand;E;Alle;Alle;Oktober;2,869;95,000;3855663;3748120;1.006;1.055
+Kristiansand;E;Alle;< 5,6m;Oktober;2,696;95,000;3334956;3247404;1.324;1.389
+Kristiansand;E;Alle;>= 5,6m;Oktober;3,982;95,000;519656;499755;3.717;3.901
+Kristiansand;E;Alle;5,6m - 7,6m;Oktober;9,414;95,000;141962;129747;9.560;10.033
+Kristiansand;E;Alle;7,6m - 12,5m;Oktober;2,083;95,000;188027;184190;2.950;3.096
+Kristiansand;E;Alle;12,5m - 16,0m;Oktober;4,611;95,000;60074;57426;8.136;8.538
+Kristiansand;E;Alle;>= 16,0m;Oktober;0,935;95,000;129593;128392;4.109;4.312
+Kristiansand;E;Yrkesdøgn;Alle;Oktober;3,040;95,000;3137738;3045162;0.970;1.018
+Kristiansand;E;Yrkesdøgn;< 5,6m;Oktober;2,894;95,000;2677454;2602139;1.310;1.375
+Kristiansand;E;Yrkesdøgn;>= 5,6m;Oktober;3,894;95,000;459480;442260;3.675;3.856
+Kristiansand;E;Yrkesdøgn;5,6m - 7,6m;Oktober;9,345;95,000;122372;111914;9.692;10.171
+Kristiansand;E;Yrkesdøgn;7,6m - 12,5m;Oktober;2,093;95,000;162854;159516;3.299;3.462
+Kristiansand;E;Yrkesdøgn;12,5m - 16,0m;Oktober;4,213;95,000;53553;51388;8.863;9.301
+Kristiansand;E;Yrkesdøgn;>= 16,0m;Oktober;1,054;95,000;120701;119442;4.162;4.368
+Kristiansand;E;Helgedøgn;Alle;Oktober;2,129;95,000;717925;702958;1.430;1.500
+Kristiansand;E;Helgedøgn;< 5,6m;Oktober;1,896;95,000;657502;645265;1.704;1.789
+Kristiansand;E;Helgedøgn;>= 5,6m;Oktober;4,663;95,000;60176;57495;4.667;4.898
+Kristiansand;E;Helgedøgn;5,6m - 7,6m;Oktober;9,853;95,000;19590;17833;10.017;10.512
+Kristiansand;E;Helgedøgn;7,6m - 12,5m;Oktober;2,022;95,000;25173;24674;2.405;2.524
+Kristiansand;E;Helgedøgn;12,5m - 16,0m;Oktober;7,999;95,000;6521;6038;10.785;11.318
+Kristiansand;E;Helgedøgn;>= 16,0m;Oktober;-0,648;95,000;8892;8950;4.191;4.398
+Kristiansand;E;Alle;Alle;November;0,722;90,000;3396455;3372124;0.840;0.881
+Kristiansand;E;Alle;< 5,6m;November;0,823;90,000;2978634;2954328;0.920;0.965
+Kristiansand;E;Alle;>= 5,6m;November;0,008;90,000;417107;417072;2.650;2.781
+Kristiansand;E;Alle;5,6m - 7,6m;November;3,796;90,000;116728;112459;5.506;5.778
+Kristiansand;E;Alle;7,6m - 12,5m;November;0,490;90,000;145902;145191;4.253;4.463
+Kristiansand;E;Alle;12,5m - 16,0m;November;0,887;90,000;48199;47775;6.157;6.462
+Kristiansand;E;Alle;>= 16,0m;November;-4,809;90,000;106278;111647;1.915;2.010
+Kristiansand;E;Yrkesdøgn;Alle;November;-3,070;91,000;2684798;2769836;1.311;1.376
+Kristiansand;E;Yrkesdøgn;< 5,6m;November;-3,196;91,000;2320238;2396843;1.234;1.295
+Kristiansand;E;Yrkesdøgn;>= 5,6m;November;-2,262;91,000;364003;372428;2.921;3.066
+Kristiansand;E;Yrkesdøgn;5,6m - 7,6m;November;1,574;91,000;99740;98194;5.568;5.844
+Kristiansand;E;Yrkesdøgn;7,6m - 12,5m;November;-2,423;91,000;124424;127514;4.506;4.729
+Kristiansand;E;Yrkesdøgn;12,5m - 16,0m;November;-1,705;91,000;42032;42761;6.652;6.980
+Kristiansand;E;Yrkesdøgn;>= 16,0m;November;-5,918;91,000;97807;103959;1.898;1.992
+Kristiansand;E;Helgedøgn;Alle;November;18,159;88,000;711657;602288;4.890;5.132
+Kristiansand;E;Helgedøgn;< 5,6m;November;18,101;88,000;658396;557485;5.078;5.330
+Kristiansand;E;Helgedøgn;>= 5,6m;November;18,950;88,000;53104;44644;3.310;3.474
+Kristiansand;E;Helgedøgn;5,6m - 7,6m;November;19,089;88,000;16988;14265;7.169;7.523
+Kristiansand;E;Helgedøgn;7,6m - 12,5m;November;21,503;88,000;21478;17677;4.063;4.264
+Kristiansand;E;Helgedøgn;12,5m - 16,0m;November;22,996;88,000;6167;5014;8.536;8.958
+Kristiansand;E;Helgedøgn;>= 16,0m;November;10,185;88,000;8471;7688;5.616;5.894
+Kristiansand;E;Alle;Alle;Desember;0,795;99,000;3557494;3529419;3.404;3.573
+Kristiansand;E;Alle;< 5,6m;Desember;0,746;99,000;3185543;3161951;3.044;3.194
+Kristiansand;E;Alle;>= 5,6m;Desember;1,299;99,000;371447;366683;6.724;7.057
+Kristiansand;E;Alle;5,6m - 7,6m;Desember;0,773;99,000;106487;105670;9.707;10.187
+Kristiansand;E;Alle;7,6m - 12,5m;Desember;1,812;99,000;125561;123326;4.802;5.040
+Kristiansand;E;Alle;12,5m - 16,0m;Desember;6,417;99,000;44989;42276;2.224;2.334
+Kristiansand;E;Alle;>= 16,0m;Desember;-1,049;99,000;94410;95411;8.703;9.134
+Kristiansand;E;Yrkesdøgn;Alle;Desember;4,121;99,000;2630936;2526800;4.951;5.196
+Kristiansand;E;Yrkesdøgn;< 5,6m;Desember;4,245;99,000;2314733;2220475;4.551;4.776
+Kristiansand;E;Yrkesdøgn;>= 5,6m;Desember;3,259;99,000;315806;305840;7.746;8.129
+Kristiansand;E;Yrkesdøgn;5,6m - 7,6m;Desember;4,298;99,000;88165;84532;10.167;10.670
+Kristiansand;E;Yrkesdøgn;7,6m - 12,5m;Desember;4,422;99,000;106511;102001;5.790;6.076
+Kristiansand;E;Yrkesdøgn;12,5m - 16,0m;Desember;7,965;99,000;37723;34940;4.789;5.026
+Kristiansand;E;Yrkesdøgn;>= 16,0m;Desember;-1,138;99,000;83407;84367;9.602;10.077
+Kristiansand;E;Helgedøgn;Alle;Desember;-7,586;99,000;926558;1002619;3.730;3.915
+Kristiansand;E;Helgedøgn;< 5,6m;Desember;-7,506;99,000;870810;941476;3.944;4.139
+Kristiansand;E;Helgedøgn;>= 5,6m;Desember;-8,550;99,000;55641;60843;2.170;2.278
+Kristiansand;E;Helgedøgn;5,6m - 7,6m;Desember;-13,322;99,000;18322;21138;7.698;8.078
+Kristiansand;E;Helgedøgn;7,6m - 12,5m;Desember;-10,668;99,000;19050;21325;3.453;3.624
+Kristiansand;E;Helgedøgn;12,5m - 16,0m;Desember;-0,954;99,000;7266;7336;10.783;11.316
+Kristiansand;E;Helgedøgn;>= 16,0m;Desember;-0,371;99,000;11003;11044;2.830;2.970
+Kristiansand;E;Alle;Alle;Siste 12 måneder;2,765;97,000;42602064;41455882;0.625;0.578
+Kristiansand;E;Alle;< 5,6m;Siste 12 måneder;2,381;97,000;37033187;36171910;0.920;0.851
+Kristiansand;E;Alle;>= 5,6m;Siste 12 måneder;5,392;97,000;5556393;5272124;4.345;4.019
+Kristiansand;E;Alle;5,6m - 7,6m;Siste 12 måneder;9,978;97,000;1593573;1448990;7.608;7.036
+Kristiansand;E;Alle;7,6m - 12,5m;Siste 12 måneder;4,841;97,000;1986300;1894590;4.270;3.949
+Kristiansand;E;Alle;12,5m - 16,0m;Siste 12 måneder;0,208;97,000;616064;614788;9.250;8.554
+Kristiansand;E;Alle;>= 16,0m;Siste 12 måneder;3,555;97,000;1360456;1313756;4.646;4.297
+Kristiansand;E;Yrkesdøgn;Alle;Siste 12 måneder;2,627;97,000;33035023;32189321;0.650;0.601
+Kristiansand;E;Yrkesdøgn;< 5,6m;Siste 12 måneder;2,206;97,000;28281721;27671210;1.059;0.979
+Kristiansand;E;Yrkesdøgn;>= 5,6m;Siste 12 måneder;5,200;97,000;4743283;4508841;3.975;3.677
+Kristiansand;E;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;9,966;97,000;1317927;1198483;7.539;6.972
+Kristiansand;E;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;4,665;97,000;1665389;1591163;3.901;3.607
+Kristiansand;E;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-0,394;97,000;527209;529293;8.806;8.144
+Kristiansand;E;Yrkesdøgn;>= 16,0m;Siste 12 måneder;3,602;97,000;1232758;1189902;4.694;4.341
+Kristiansand;E;Helgedøgn;Alle;Siste 12 måneder;3,243;97,000;9567041;9266561;1.534;1.419
+Kristiansand;E;Helgedøgn;< 5,6m;Siste 12 måneder;2,950;97,000;8751466;8500700;1.457;1.348
+Kristiansand;E;Helgedøgn;>= 5,6m;Siste 12 måneder;6,528;97,000;813110;763283;6.703;6.200
+Kristiansand;E;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;10,035;97,000;275646;250507;8.194;7.578
+Kristiansand;E;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;5,762;97,000;320911;303427;6.610;6.113
+Kristiansand;E;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;3,930;97,000;88855;85495;14.208;13.140
+Kristiansand;E;Helgedøgn;>= 16,0m;Siste 12 måneder;3,104;97,000;127698;123854;4.778;4.419
+Kristiansand;E;Alle;Alle;Hittil i år;2,765;97,000;42602064;41455882;0.625;0.578
+Kristiansand;E;Alle;< 5,6m;Hittil i år;2,381;97,000;37033187;36171910;0.920;0.851
+Kristiansand;E;Alle;>= 5,6m;Hittil i år;5,392;97,000;5556393;5272124;4.345;4.019
+Kristiansand;E;Alle;5,6m - 7,6m;Hittil i år;9,978;97,000;1593573;1448990;7.608;7.036
+Kristiansand;E;Alle;7,6m - 12,5m;Hittil i år;4,841;97,000;1986300;1894590;4.270;3.949
+Kristiansand;E;Alle;12,5m - 16,0m;Hittil i år;0,208;97,000;616064;614788;9.250;8.554
+Kristiansand;E;Alle;>= 16,0m;Hittil i år;3,555;97,000;1360456;1313756;4.646;4.297
+Kristiansand;E;Yrkesdøgn;Alle;Hittil i år;2,627;97,000;33035023;32189321;0.650;0.601
+Kristiansand;E;Yrkesdøgn;< 5,6m;Hittil i år;2,206;97,000;28281721;27671210;1.059;0.979
+Kristiansand;E;Yrkesdøgn;>= 5,6m;Hittil i år;5,200;97,000;4743283;4508841;3.975;3.677
+Kristiansand;E;Yrkesdøgn;5,6m - 7,6m;Hittil i år;9,966;97,000;1317927;1198483;7.539;6.972
+Kristiansand;E;Yrkesdøgn;7,6m - 12,5m;Hittil i år;4,665;97,000;1665389;1591163;3.901;3.607
+Kristiansand;E;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-0,394;97,000;527209;529293;8.806;8.144
+Kristiansand;E;Yrkesdøgn;>= 16,0m;Hittil i år;3,602;97,000;1232758;1189902;4.694;4.341
+Kristiansand;E;Helgedøgn;Alle;Hittil i år;3,243;97,000;9567041;9266561;1.534;1.419
+Kristiansand;E;Helgedøgn;< 5,6m;Hittil i år;2,950;97,000;8751466;8500700;1.457;1.348
+Kristiansand;E;Helgedøgn;>= 5,6m;Hittil i år;6,528;97,000;813110;763283;6.703;6.200
+Kristiansand;E;Helgedøgn;5,6m - 7,6m;Hittil i år;10,035;97,000;275646;250507;8.194;7.578
+Kristiansand;E;Helgedøgn;7,6m - 12,5m;Hittil i år;5,762;97,000;320911;303427;6.610;6.113
+Kristiansand;E;Helgedøgn;12,5m - 16,0m;Hittil i år;3,930;97,000;88855;85495;14.208;13.140
+Kristiansand;E;Helgedøgn;>= 16,0m;Hittil i år;3,104;97,000;127698;123854;4.778;4.419
+Kristiansand;E+R;Alle;Alle;Januar;1,599;99,000;5022420;4943376;2.088;1.403
+Kristiansand;E+R;Alle;< 5,6m;Januar;0,526;99,000;4408656;4385599;2.279;1.531
+Kristiansand;E+R;Alle;>= 5,6m;Januar;10,016;99,000;612666;556887;10.762;7.230
+Kristiansand;E+R;Alle;5,6m - 7,6m;Januar;11,876;99,000;168033;150196;14.424;9.690
+Kristiansand;E+R;Alle;7,6m - 12,5m;Januar;8,642;99,000;207663;191144;11.279;7.578
+Kristiansand;E+R;Alle;12,5m - 16,0m;Januar;11,255;99,000;84129;75618;39.939;26.832
+Kristiansand;E+R;Alle;>= 16,0m;Januar;9,228;99,000;152841;139929;10.928;7.341
+Kristiansand;E+R;Yrkesdøgn;Alle;Januar;2,122;99,000;4065276;3980789;2.335;1.569
+Kristiansand;E+R;Yrkesdøgn;< 5,6m;Januar;1,018;99,000;3521322;3485845;2.177;1.463
+Kristiansand;E+R;Yrkesdøgn;>= 5,6m;Januar;9,879;99,000;542999;494181;10.823;7.271
+Kristiansand;E+R;Yrkesdøgn;5,6m - 7,6m;Januar;11,872;99,000;146613;131054;14.112;9.480
+Kristiansand;E+R;Yrkesdøgn;7,6m - 12,5m;Januar;7,589;99,000;181281;168494;11.054;7.426
+Kristiansand;E+R;Yrkesdøgn;12,5m - 16,0m;Januar;12,840;99,000;75103;66557;41.880;28.135
+Kristiansand;E+R;Yrkesdøgn;>= 16,0m;Januar;9,312;99,000;140002;128076;11.437;7.683
+Kristiansand;E+R;Helgedøgn;Alle;Januar;-0,565;99,000;957144;962587;4.376;2.940
+Kristiansand;E+R;Helgedøgn;< 5,6m;Januar;-1,380;99,000;887334;899754;4.567;3.068
+Kristiansand;E+R;Helgedøgn;>= 5,6m;Januar;11,101;99,000;69667;62706;13.448;9.034
+Kristiansand;E+R;Helgedøgn;5,6m - 7,6m;Januar;11,901;99,000;21420;19142;18.233;12.249
+Kristiansand;E+R;Helgedøgn;7,6m - 12,5m;Januar;16,477;99,000;26382;22650;18.256;12.264
+Kristiansand;E+R;Helgedøgn;12,5m - 16,0m;Januar;-0,386;99,000;9026;9061;33.054;22.206
+Kristiansand;E+R;Helgedøgn;>= 16,0m;Januar;8,319;99,000;12839;11853;7.734;5.196
+Kristiansand;E+R;Alle;Alle;Februar;4,534;99,000;4658213;4456179;2.492;1.674
+Kristiansand;E+R;Alle;< 5,6m;Februar;3,672;99,000;4098311;3953159;2.467;1.657
+Kristiansand;E+R;Alle;>= 5,6m;Februar;11,491;99,000;558969;501359;9.266;6.225
+Kristiansand;E+R;Alle;5,6m - 7,6m;Februar;17,443;99,000;158162;134671;14.935;10.033
+Kristiansand;E+R;Alle;7,6m - 12,5m;Februar;9,803;99,000;185235;168697;10.304;6.922
+Kristiansand;E+R;Alle;12,5m - 16,0m;Februar;6,137;99,000;73603;69347;37.145;24.954
+Kristiansand;E+R;Alle;>= 16,0m;Februar;10,358;99,000;141969;128644;8.609;5.784
+Kristiansand;E+R;Yrkesdøgn;Alle;Februar;4,780;99,000;3758750;3587288;2.689;1.807
+Kristiansand;E+R;Yrkesdøgn;< 5,6m;Februar;3,753;99,000;3257841;3140007;2.518;1.692
+Kristiansand;E+R;Yrkesdøgn;>= 5,6m;Februar;12,191;99,000;500066;445728;9.028;6.065
+Kristiansand;E+R;Yrkesdøgn;5,6m - 7,6m;Februar;18,270;99,000;139006;117533;14.628;9.827
+Kristiansand;E+R;Yrkesdøgn;7,6m - 12,5m;Februar;10,756;99,000;165287;149235;10.205;6.856
+Kristiansand;E+R;Yrkesdøgn;12,5m - 16,0m;Februar;6,870;99,000;65134;60947;38.250;25.697
+Kristiansand;E+R;Yrkesdøgn;>= 16,0m;Februar;10,699;99,000;130639;118013;8.784;5.901
+Kristiansand;E+R;Helgedøgn;Alle;Februar;3,519;99,000;899463;868891;2.854;1.917
+Kristiansand;E+R;Helgedøgn;< 5,6m;Februar;3,360;99,000;840470;813152;3.151;2.117
+Kristiansand;E+R;Helgedøgn;>= 5,6m;Februar;5,882;99,000;58903;55631;11.718;7.872
+Kristiansand;E+R;Helgedøgn;5,6m - 7,6m;Februar;11,775;99,000;19156;17138;18.172;12.208
+Kristiansand;E+R;Helgedøgn;7,6m - 12,5m;Februar;2,497;99,000;19948;19462;13.781;9.258
+Kristiansand;E+R;Helgedøgn;12,5m - 16,0m;Februar;0,821;99,000;8469;8400;34.577;23.229
+Kristiansand;E+R;Helgedøgn;>= 16,0m;Februar;6,575;99,000;11330;10631;8.454;5.680
+Kristiansand;E+R;Alle;Alle;Mars;8,815;99,000;2997848;2755003;4.083;3.414
+Kristiansand;E+R;Alle;< 5,6m;Mars;6,922;99,000;2589146;2421517;4.676;3.909
+Kristiansand;E+R;Alle;>= 5,6m;Mars;22,455;99,000;408138;333296;9.693;8.103
+Kristiansand;E+R;Alle;5,6m - 7,6m;Mars;22,827;99,000;105871;86195;13.485;11.274
+Kristiansand;E+R;Alle;7,6m - 12,5m;Mars;27,163;99,000;142654;112182;4.973;4.157
+Kristiansand;E+R;Alle;12,5m - 16,0m;Mars;23,727;99,000;54706;44215;45.345;37.910
+Kristiansand;E+R;Alle;>= 16,0m;Mars;15,659;99,000;104907;90704;11.995;10.028
+Kristiansand;E+R;Yrkesdøgn;Alle;Mars;11,571;99,000;2299968;2061435;3.432;2.869
+Kristiansand;E+R;Yrkesdøgn;< 5,6m;Mars;9,749;99,000;1948608;1775521;3.917;3.275
+Kristiansand;E+R;Yrkesdøgn;>= 5,6m;Mars;22,794;99,000;350897;285760;10.112;8.454
+Kristiansand;E+R;Yrkesdøgn;5,6m - 7,6m;Mars;25,008;99,000;88918;71130;13.441;11.237
+Kristiansand;E+R;Yrkesdøgn;7,6m - 12,5m;Mars;25,649;99,000;119505;95110;6.102;5.101
+Kristiansand;E+R;Yrkesdøgn;12,5m - 16,0m;Mars;25,999;99,000;47494;37694;48.296;40.377
+Kristiansand;E+R;Yrkesdøgn;>= 16,0m;Mars;16,076;99,000;94980;81826;12.287;10.272
+Kristiansand;E+R;Helgedøgn;Alle;Mars;0,622;99,000;697880;693568;6.840;5.719
+Kristiansand;E+R;Helgedøgn;< 5,6m;Mars;-0,845;99,000;640538;645996;7.217;6.034
+Kristiansand;E+R;Helgedøgn;>= 5,6m;Mars;20,416;99,000;57241;47536;7.529;6.294
+Kristiansand;E+R;Helgedøgn;5,6m - 7,6m;Mars;12,532;99,000;16953;15065;17.674;14.776
+Kristiansand;E+R;Helgedøgn;7,6m - 12,5m;Mars;35,596;99,000;23149;17072;9.710;8.118
+Kristiansand;E+R;Helgedøgn;12,5m - 16,0m;Mars;10,597;99,000;7212;6521;34.559;28.892
+Kristiansand;E+R;Helgedøgn;>= 16,0m;Mars;11,816;99,000;9927;8878;11.101;9.281
+Kristiansand;E+R;Alle;Alle;April;0,564;97,000;2865951;2849891;2.765;2.312
+Kristiansand;E+R;Alle;< 5,6m;April;0,187;97,000;2464448;2459842;2.869;2.399
+Kristiansand;E+R;Alle;>= 5,6m;April;2,933;97,000;401085;389655;8.515;7.119
+Kristiansand;E+R;Alle;5,6m - 7,6m;April;5,418;97,000;105903;100460;10.358;8.659
+Kristiansand;E+R;Alle;7,6m - 12,5m;April;5,525;97,000;153403;145371;10.130;8.469
+Kristiansand;E+R;Alle;12,5m - 16,0m;April;1,592;97,000;48295;47538;37.693;31.512
+Kristiansand;E+R;Alle;>= 16,0m;April;-2,910;97,000;93484;96286;9.439;7.891
+Kristiansand;E+R;Yrkesdøgn;Alle;April;-3,095;97,000;2080333;2146774;2.759;2.306
+Kristiansand;E+R;Yrkesdøgn;< 5,6m;April;-3,883;97,000;1746429;1816979;3.341;2.793
+Kristiansand;E+R;Yrkesdøgn;>= 5,6m;April;1,235;97,000;333589;329518;6.885;5.756
+Kristiansand;E+R;Yrkesdøgn;5,6m - 7,6m;April;1,946;97,000;83779;82180;11.511;9.623
+Kristiansand;E+R;Yrkesdøgn;7,6m - 12,5m;April;4,967;97,000;125193;119269;7.715;6.450
+Kristiansand;E+R;Yrkesdøgn;12,5m - 16,0m;April;-2,249;97,000;40426;41356;34.677;28.991
+Kristiansand;E+R;Yrkesdøgn;>= 16,0m;April;-2,908;97,000;84191;86713;9.895;8.273
+Kristiansand;E+R;Helgedøgn;Alle;April;11,734;98,000;785618;703117;11.062;9.248
+Kristiansand;E+R;Helgedøgn;< 5,6m;April;11,691;98,000;718019;642863;10.069;8.418
+Kristiansand;E+R;Helgedøgn;>= 5,6m;April;12,237;98,000;67496;60137;27.581;23.058
+Kristiansand;E+R;Helgedøgn;5,6m - 7,6m;April;21,028;98,000;22124;18280;16.140;13.493
+Kristiansand;E+R;Helgedøgn;7,6m - 12,5m;April;8,076;98,000;28210;26102;32.054;26.798
+Kristiansand;E+R;Helgedøgn;12,5m - 16,0m;April;27,289;98,000;7869;6182;65.283;54.578
+Kristiansand;E+R;Helgedøgn;>= 16,0m;April;-2,925;98,000;9293;9573;8.999;7.523
+Kristiansand;E+R;Alle;Alle;Mai;4,916;96,000;4810918;4585497;3.516;2.362
+Kristiansand;E+R;Alle;< 5,6m;Mai;4,309;95,000;4157792;3986050;3.545;2.382
+Kristiansand;E+R;Alle;>= 5,6m;Mai;8,637;95,000;645925;594573;8.863;5.954
+Kristiansand;E+R;Alle;5,6m - 7,6m;Mai;12,838;95,000;189353;167810;12.308;8.268
+Kristiansand;E+R;Alle;7,6m - 12,5m;Mai;5,939;95,000;247548;233670;10.114;6.795
+Kristiansand;E+R;Alle;12,5m - 16,0m;Mai;7,338;95,000;74471;69380;31.224;20.976
+Kristiansand;E+R;Alle;>= 16,0m;Mai;8,762;95,000;134553;123713;6.844;4.598
+Kristiansand;E+R;Yrkesdøgn;Alle;Mai;8,803;96,000;3611786;3319571;3.505;2.355
+Kristiansand;E+R;Yrkesdøgn;< 5,6m;Mai;8,243;95,000;3071229;2837351;4.076;2.738
+Kristiansand;E+R;Yrkesdøgn;>= 5,6m;Mai;11,401;95,000;533761;479133;7.421;4.985
+Kristiansand;E+R;Yrkesdøgn;5,6m - 7,6m;Mai;16,337;95,000;151585;130298;11.877;7.979
+Kristiansand;E+R;Yrkesdøgn;7,6m - 12,5m;Mai;8,191;95,000;201769;186493;8.743;5.874
+Kristiansand;E+R;Yrkesdøgn;12,5m - 16,0m;Mai;8,560;95,000;62014;57124;31.406;21.099
+Kristiansand;E+R;Yrkesdøgn;>= 16,0m;Mai;12,522;95,000;118393;105218;6.993;4.698
+Kristiansand;E+R;Helgedøgn;Alle;Mai;-5,276;95,000;1199132;1265926;8.380;5.630
+Kristiansand;E+R;Helgedøgn;< 5,6m;Mai;-5,409;95,000;1086563;1148699;7.952;5.342
+Kristiansand;E+R;Helgedøgn;>= 5,6m;Mai;-2,838;95,000;112164;115440;16.857;11.325
+Kristiansand;E+R;Helgedøgn;5,6m - 7,6m;Mai;0,682;95,000;37768;37512;15.979;10.735
+Kristiansand;E+R;Helgedøgn;7,6m - 12,5m;Mai;-2,963;95,000;45779;47177;19.236;12.923
+Kristiansand;E+R;Helgedøgn;12,5m - 16,0m;Mai;1,640;95,000;12457;12256;35.942;24.146
+Kristiansand;E+R;Helgedøgn;>= 16,0m;Mai;-12,625;95,000;16160;18495;10.358;6.959
+Kristiansand;E+R;Alle;Alle;Juni;-0,663;99,000;4947649;4980658;2.311;1.553
+Kristiansand;E+R;Alle;< 5,6m;Juni;-1,020;99,000;4280490;4324612;2.678;1.799
+Kristiansand;E+R;Alle;>= 5,6m;Juni;1,601;99,000;664814;654340;7.611;5.113
+Kristiansand;E+R;Alle;5,6m - 7,6m;Juni;6,168;99,000;206558;194558;10.902;7.324
+Kristiansand;E+R;Alle;7,6m - 12,5m;Juni;-0,095;99,000;255373;255616;7.952;5.342
+Kristiansand;E+R;Alle;12,5m - 16,0m;Juni;2,323;99,000;77296;75541;27.537;18.500
+Kristiansand;E+R;Alle;>= 16,0m;Juni;-2,362;99,000;125587;128625;5.425;3.644
+Kristiansand;E+R;Yrkesdøgn;Alle;Juni;-7,565;98,000;3564949;3856719;1.719;1.155
+Kristiansand;E+R;Yrkesdøgn;< 5,6m;Juni;-8,249;98,000;3030392;3302839;1.980;1.330
+Kristiansand;E+R;Yrkesdøgn;>= 5,6m;Juni;-3,600;98,000;532676;552569;7.099;4.769
+Kristiansand;E+R;Yrkesdøgn;5,6m - 7,6m;Juni;-0,192;98,000;157670;157973;10.638;7.147
+Kristiansand;E+R;Yrkesdøgn;7,6m - 12,5m;Juni;-5,871;98,000;200700;213218;7.333;4.927
+Kristiansand;E+R;Yrkesdøgn;12,5m - 16,0m;Juni;-1,747;98,000;63144;64267;26.609;17.876
+Kristiansand;E+R;Yrkesdøgn;>= 16,0m;Juni;-5,080;98,000;111162;117111;5.114;3.436
+Kristiansand;E+R;Helgedøgn;Alle;Juni;23,023;99,000;1382700;1123939;5.106;3.430
+Kristiansand;E+R;Helgedøgn;< 5,6m;Juni;22,346;99,000;1250098;1021773;5.413;3.637
+Kristiansand;E+R;Helgedøgn;>= 5,6m;Juni;29,839;99,000;132138;101771;11.858;7.966
+Kristiansand;E+R;Helgedøgn;5,6m - 7,6m;Juni;33,629;99,000;48888;36585;12.463;8.373
+Kristiansand;E+R;Helgedøgn;7,6m - 12,5m;Juni;28,952;99,000;54673;42398;13.243;8.897
+Kristiansand;E+R;Helgedøgn;12,5m - 16,0m;Juni;25,528;99,000;14152;11274;39.740;26.698
+Kristiansand;E+R;Helgedøgn;>= 16,0m;Juni;25,282;99,000;14425;11514;12.991;8.727
+Kristiansand;E+R;Alle;Alle;Juli;2,593;99,000;5199104;5067701;2.065;1.387
+Kristiansand;E+R;Alle;< 5,6m;Juli;1,831;99,000;4537184;4455608;2.293;1.540
+Kristiansand;E+R;Alle;>= 5,6m;Juli;8,176;99,000;660203;610304;4.974;3.342
+Kristiansand;E+R;Alle;5,6m - 7,6m;Juli;10,948;99,000;212155;191221;8.050;5.408
+Kristiansand;E+R;Alle;7,6m - 12,5m;Juli;6,886;99,000;261566;244716;4.566;3.067
+Kristiansand;E+R;Alle;12,5m - 16,0m;Juli;7,595;99,000;72463;67348;11.325;7.609
+Kristiansand;E+R;Alle;>= 16,0m;Juli;6,541;99,000;114019;107019;5.314;3.570
+Kristiansand;E+R;Yrkesdøgn;Alle;Juli;6,094;99,000;4105231;3869420;1.485;0.998
+Kristiansand;E+R;Yrkesdøgn;< 5,6m;Juli;5,384;99,000;3541318;3360392;1.803;1.211
+Kristiansand;E+R;Yrkesdøgn;>= 5,6m;Juli;10,816;99,000;562547;507642;4.943;3.320
+Kristiansand;E+R;Yrkesdøgn;5,6m - 7,6m;Juli;13,948;99,000;174711;153325;7.767;5.218
+Kristiansand;E+R;Yrkesdøgn;7,6m - 12,5m;Juli;9,990;99,000;221794;201650;5.183;3.482
+Kristiansand;E+R;Yrkesdøgn;12,5m - 16,0m;Juli;9,056;99,000;60438;55419;11.580;7.779
+Kristiansand;E+R;Yrkesdøgn;>= 16,0m;Juli;8,592;99,000;105604;97248;5.592;3.757
+Kristiansand;E+R;Helgedøgn;Alle;Juli;-8,713;99,000;1093873;1198281;4.053;2.723
+Kristiansand;E+R;Helgedøgn;< 5,6m;Juli;-9,071;99,000;995866;1095216;4.196;2.819
+Kristiansand;E+R;Helgedøgn;>= 5,6m;Juli;-4,876;99,000;97656;102662;5.566;3.739
+Kristiansand;E+R;Helgedøgn;5,6m - 7,6m;Juli;-1,193;99,000;37444;37896;9.192;6.175
+Kristiansand;E+R;Helgedøgn;7,6m - 12,5m;Juli;-7,649;99,000;39772;43066;3.309;2.223
+Kristiansand;E+R;Helgedøgn;12,5m - 16,0m;Juli;0,805;99,000;12025;11929;13.981;9.393
+Kristiansand;E+R;Helgedøgn;>= 16,0m;Juli;-13,878;99,000;8415;9771;6.694;4.497
+Kristiansand;E+R;Alle;Alle;August;1,284;89,000;4798833;4738007;1.742;1.170
+Kristiansand;E+R;Alle;< 5,6m;August;1,195;89,000;4158424;4109323;1.908;1.282
+Kristiansand;E+R;Alle;>= 5,6m;August;1,858;89,000;639008;627352;4.986;3.350
+Kristiansand;E+R;Alle;5,6m - 7,6m;August;3,802;89,000;194427;187306;6.844;4.598
+Kristiansand;E+R;Alle;7,6m - 12,5m;August;2,221;89,000;246691;241331;3.847;2.584
+Kristiansand;E+R;Alle;12,5m - 16,0m;August;4,985;89,000;76181;72564;17.102;11.489
+Kristiansand;E+R;Alle;>= 16,0m;August;-3,521;89,000;121709;126151;7.760;5.213
+Kristiansand;E+R;Yrkesdøgn;Alle;August;-2,221;89,000;3705525;3789691;2.773;1.863
+Kristiansand;E+R;Yrkesdøgn;< 5,6m;August;-2,463;89,000;3165333;3245260;2.632;1.768
+Kristiansand;E+R;Yrkesdøgn;>= 5,6m;August;-0,792;89,000;539098;543400;5.814;3.906
+Kristiansand;E+R;Yrkesdøgn;5,6m - 7,6m;August;0,631;89,000;157883;156893;7.463;5.014
+Kristiansand;E+R;Yrkesdøgn;7,6m - 12,5m;August;-0,002;89,000;205358;205362;4.354;2.925
+Kristiansand;E+R;Yrkesdøgn;12,5m - 16,0m;August;1,384;89,000;64484;63604;18.598;12.495
+Kristiansand;E+R;Yrkesdøgn;>= 16,0m;August;-5,248;89,000;111373;117541;8.057;5.413
+Kristiansand;E+R;Helgedøgn;Alle;August;15,289;90,000;1093308;948316;10.493;7.049
+Kristiansand;E+R;Helgedøgn;< 5,6m;August;14,933;90,000;993091;864063;10.724;7.204
+Kristiansand;E+R;Helgedøgn;>= 5,6m;August;19,008;90,000;99910;83952;10.227;6.870
+Kristiansand;E+R;Helgedøgn;5,6m - 7,6m;August;20,159;90,000;36544;30413;10.234;6.875
+Kristiansand;E+R;Helgedøgn;7,6m - 12,5m;August;14,913;90,000;41333;35969;11.675;7.844
+Kristiansand;E+R;Helgedøgn;12,5m - 16,0m;August;30,547;90,000;11697;8960;15.959;10.721
+Kristiansand;E+R;Helgedøgn;>= 16,0m;August;20,046;90,000;10336;8610;9.405;6.319
+Kristiansand;E+R;Alle;Alle;September;2,567;99,000;3781492;3686834;2.326;2.151
+Kristiansand;E+R;Alle;< 5,6m;September;2,026;99,000;3231316;3167155;2.522;2.332
+Kristiansand;E+R;Alle;>= 5,6m;September;5,900;99,000;549145;518549;4.733;4.377
+Kristiansand;E+R;Alle;5,6m - 7,6m;September;8,654;99,000;148590;136755;10.306;9.531
+Kristiansand;E+R;Alle;7,6m - 12,5m;September;5,094;99,000;203085;193242;3.773;3.490
+Kristiansand;E+R;Alle;12,5m - 16,0m;September;3,933;99,000;71568;68860;4.361;4.033
+Kristiansand;E+R;Alle;>= 16,0m;September;5,188;99,000;125902;119692;4.268;3.947
+Kristiansand;E+R;Yrkesdøgn;Alle;September;6,514;99,000;2952607;2772037;2.768;2.560
+Kristiansand;E+R;Yrkesdøgn;< 5,6m;September;6,223;99,000;2481851;2336448;2.994;2.769
+Kristiansand;E+R;Yrkesdøgn;>= 5,6m;September;8,099;99,000;469960;434751;4.864;4.498
+Kristiansand;E+R;Yrkesdøgn;5,6m - 7,6m;September;11,390;99,000;122418;109900;11.350;10.497
+Kristiansand;E+R;Yrkesdøgn;7,6m - 12,5m;September;8,315;99,000;170271;157200;4.027;3.724
+Kristiansand;E+R;Yrkesdøgn;12,5m - 16,0m;September;4,969;99,000;62131;59190;4.728;4.373
+Kristiansand;E+R;Yrkesdøgn;>= 16,0m;September;6,158;99,000;115140;108461;4.342;4.016
+Kristiansand;E+R;Helgedøgn;Alle;September;-9,391;99,000;828885;914797;1.827;1.689
+Kristiansand;E+R;Helgedøgn;< 5,6m;September;-9,780;99,000;749465;830707;1.976;1.828
+Kristiansand;E+R;Helgedøgn;>= 5,6m;September;-5,505;99,000;79185;83798;4.786;4.426
+Kristiansand;E+R;Helgedøgn;5,6m - 7,6m;September;-2,543;99,000;26172;26855;7.104;6.570
+Kristiansand;E+R;Helgedøgn;7,6m - 12,5m;September;-8,956;99,000;32814;36042;4.849;4.484
+Kristiansand;E+R;Helgedøgn;12,5m - 16,0m;September;-2,410;99,000;9437;9670;7.908;7.314
+Kristiansand;E+R;Helgedøgn;>= 16,0m;September;-4,176;99,000;10762;11231;5.305;4.906
+Kristiansand;E+R;Alle;Alle;Oktober;2,435;96,000;4247871;4146902;1.818;1.520
+Kristiansand;E+R;Alle;< 5,6m;Oktober;2,317;96,000;3666220;3583184;1.865;1.560
+Kristiansand;E+R;Alle;>= 5,6m;Oktober;3,171;96,000;580570;562726;4.281;3.579
+Kristiansand;E+R;Alle;5,6m - 7,6m;Oktober;8,901;96,000;154761;142111;9.235;7.721
+Kristiansand;E+R;Alle;7,6m - 12,5m;Oktober;1,384;96,000;213665;210749;3.402;2.844
+Kristiansand;E+R;Alle;12,5m - 16,0m;Oktober;2,451;96,000;75666;73856;8.320;6.956
+Kristiansand;E+R;Alle;>= 16,0m;Oktober;0,344;96,000;136478;136010;4.859;4.062
+Kristiansand;E+R;Yrkesdøgn;Alle;Oktober;2,636;96,000;3457155;3368370;1.751;1.464
+Kristiansand;E+R;Yrkesdøgn;< 5,6m;Oktober;2,564;96,000;2942419;2868874;1.768;1.478
+Kristiansand;E+R;Yrkesdøgn;>= 5,6m;Oktober;3,047;96,000;513903;498706;4.340;3.628
+Kristiansand;E+R;Yrkesdøgn;5,6m - 7,6m;Oktober;8,841;96,000;133678;122820;9.439;7.891
+Kristiansand;E+R;Yrkesdøgn;7,6m - 12,5m;Oktober;1,289;96,000;185494;183133;3.862;3.229
+Kristiansand;E+R;Yrkesdøgn;12,5m - 16,0m;Oktober;2,156;96,000;67385;65963;8.748;7.314
+Kristiansand;E+R;Yrkesdøgn;>= 16,0m;Oktober;0,439;96,000;127346;126790;4.937;4.127
+Kristiansand;E+R;Helgedøgn;Alle;Oktober;1,565;96,000;790716;778532;2.323;1.942
+Kristiansand;E+R;Helgedøgn;< 5,6m;Oktober;1,329;96,000;723801;714310;2.506;2.095
+Kristiansand;E+R;Helgedøgn;>= 5,6m;Oktober;4,135;96,000;66667;64020;4.930;4.122
+Kristiansand;E+R;Helgedøgn;5,6m - 7,6m;Oktober;9,289;96,000;21083;19291;9.925;8.297
+Kristiansand;E+R;Helgedøgn;7,6m - 12,5m;Oktober;2,010;96,000;28171;27616;2.869;2.398
+Kristiansand;E+R;Helgedøgn;12,5m - 16,0m;Oktober;4,916;96,000;8281;7893;11.874;9.927
+Kristiansand;E+R;Helgedøgn;>= 16,0m;Oktober;-0,954;96,000;9132;9220;4.546;3.800
+Kristiansand;E+R;Alle;Alle;November;0,331;90,000;4013117;3999878;1.606;1.234
+Kristiansand;E+R;Alle;< 5,6m;November;0,456;90,000;3519443;3503453;1.407;1.082
+Kristiansand;E+R;Alle;>= 5,6m;November;-0,552;90,000;492915;495650;4.594;3.531
+Kristiansand;E+R;Alle;5,6m - 7,6m;November;3,693;90,000;136903;132027;5.599;4.304
+Kristiansand;E+R;Alle;7,6m - 12,5m;November;-0,370;90,000;175803;176456;4.915;3.778
+Kristiansand;E+R;Alle;12,5m - 16,0m;November;-0,445;90,000;66493;66790;10.748;8.262
+Kristiansand;E+R;Alle;>= 16,0m;November;-5,533;90,000;113716;120377;4.873;3.746
+Kristiansand;E+R;Yrkesdøgn;Alle;November;-3,279;91,000;3173829;3281414;2.172;1.670
+Kristiansand;E+R;Yrkesdøgn;< 5,6m;November;-3,347;91,000;2742978;2837968;1.811;1.392
+Kristiansand;E+R;Yrkesdøgn;>= 5,6m;November;-2,840;91,000;430258;442836;5.273;4.053
+Kristiansand;E+R;Yrkesdøgn;5,6m - 7,6m;November;1,634;91,000;117085;115203;6.343;4.875
+Kristiansand;E+R;Yrkesdøgn;7,6m - 12,5m;November;-3,321;91,000;150310;155474;5.436;4.179
+Kristiansand;E+R;Yrkesdøgn;12,5m - 16,0m;November;-3,078;91,000;57939;59779;11.347;8.722
+Kristiansand;E+R;Yrkesdøgn;>= 16,0m;November;-6,635;91,000;104924;112380;4.840;3.720
+Kristiansand;E+R;Helgedøgn;Alle;November;16,817;87,000;839288;718464;5.880;4.520
+Kristiansand;E+R;Helgedøgn;< 5,6m;November;16,677;87,000;776465;665485;6.079;4.673
+Kristiansand;E+R;Helgedøgn;>= 5,6m;November;18,637;87,000;62657;52814;4.451;3.421
+Kristiansand;E+R;Helgedøgn;5,6m - 7,6m;November;17,796;87,000;19818;16824;9.782;7.519
+Kristiansand;E+R;Helgedøgn;7,6m - 12,5m;November;21,499;87,000;25493;20982;5.111;3.929
+Kristiansand;E+R;Helgedøgn;12,5m - 16,0m;November;22,008;87,000;8554;7011;9.782;7.519
+Kristiansand;E+R;Helgedøgn;>= 16,0m;November;9,941;87,000;8792;7997;7.622;5.859
+Kristiansand;E+R;Alle;Alle;Desember;0,670;98,000;4253238;4224932;3.142;2.415
+Kristiansand;E+R;Alle;< 5,6m;Desember;0,542;98,000;3809596;3789069;2.821;2.169
+Kristiansand;E+R;Alle;>= 5,6m;Desember;1,854;98,000;443086;435020;7.101;5.458
+Kristiansand;E+R;Alle;5,6m - 7,6m;Desember;2,139;98,000;126964;124305;9.863;7.581
+Kristiansand;E+R;Alle;7,6m - 12,5m;Desember;2,021;98,000;153541;150499;4.615;3.548
+Kristiansand;E+R;Alle;12,5m - 16,0m;Desember;5,842;98,000;61820;58408;10.620;8.164
+Kristiansand;E+R;Alle;>= 16,0m;Desember;-1,028;98,000;100761;101808;8.589;6.602
+Kristiansand;E+R;Yrkesdøgn;Alle;Desember;4,018;98,000;3143157;3021754;4.489;3.451
+Kristiansand;E+R;Yrkesdøgn;< 5,6m;Desember;4,038;98,000;2766251;2658893;4.111;3.160
+Kristiansand;E+R;Yrkesdøgn;>= 5,6m;Desember;3,903;98,000;376464;362324;8.185;6.292
+Kristiansand;E+R;Yrkesdøgn;5,6m - 7,6m;Desember;5,569;98,000;104924;99389;10.358;7.962
+Kristiansand;E+R;Yrkesdøgn;7,6m - 12,5m;Desember;4,676;98,000;130178;124363;5.555;4.270
+Kristiansand;E+R;Yrkesdøgn;12,5m - 16,0m;Desember;7,833;98,000;51942;48169;11.737;9.022
+Kristiansand;E+R;Yrkesdøgn;>= 16,0m;Desember;-1,087;98,000;89420;90403;9.435;7.252
+Kristiansand;E+R;Helgedøgn;Alle;Desember;-7,738;98,000;1110081;1203178;3.492;2.684
+Kristiansand;E+R;Helgedøgn;< 5,6m;Desember;-7,683;98,000;1043345;1130176;3.704;2.847
+Kristiansand;E+R;Helgedøgn;>= 5,6m;Desember;-8,355;98,000;66622;72696;2.589;1.990
+Kristiansand;E+R;Helgedøgn;5,6m - 7,6m;Desember;-11,543;98,000;22040;24916;8.359;6.425
+Kristiansand;E+R;Helgedøgn;7,6m - 12,5m;Desember;-10,610;98,000;23363;26136;3.873;2.977
+Kristiansand;E+R;Helgedøgn;12,5m - 16,0m;Desember;-3,526;98,000;9878;10239;12.006;9.228
+Kristiansand;E+R;Helgedøgn;>= 16,0m;Desember;-0,561;98,000;11341;11405;3.383;2.601
+Kristiansand;E+R;Alle;Alle;Siste 12 måneder;2,304;97,000;51596654;50434858;1.313;0.834
+Kristiansand;E+R;Alle;< 5,6m;Siste 12 måneder;1,773;97,000;44921026;44138571;1.696;1.078
+Kristiansand;E+R;Alle;>= 5,6m;Siste 12 måneder;6,000;97,000;6656524;6279711;4.728;3.004
+Kristiansand;E+R;Alle;5,6m - 7,6m;Siste 12 måneder;9,159;97,000;1907680;1747615;8.119;5.159
+Kristiansand;E+R;Alle;7,6m - 12,5m;Siste 12 måneder;5,274;97,000;2446227;2323673;4.410;2.802
+Kristiansand;E+R;Alle;12,5m - 16,0m;Siste 12 måneder;5,982;97,000;836691;789465;15.003;9.533
+Kristiansand;E+R;Alle;>= 16,0m;Siste 12 måneder;3,310;97,000;1465926;1418958;5.693;3.617
+Kristiansand;E+R;Yrkesdøgn;Alle;Siste 12 måneder;2,210;97,000;39918566;39055262;1.256;0.798
+Kristiansand;E+R;Yrkesdøgn;< 5,6m;Siste 12 måneder;1,632;97,000;34215971;33666377;1.699;1.079
+Kristiansand;E+R;Yrkesdøgn;>= 5,6m;Siste 12 måneder;5,760;97,000;5686218;5376548;4.422;2.810
+Kristiansand;E+R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;9,019;97,000;1578270;1447698;8.211;5.217
+Kristiansand;E+R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;5,010;97,000;2057140;1959001;4.066;2.583
+Kristiansand;E+R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;5,524;97,000;717634;680069;15.059;9.568
+Kristiansand;E+R;Yrkesdøgn;>= 16,0m;Siste 12 måneder;3,364;97,000;1333174;1289780;5.765;3.663
+Kristiansand;E+R;Helgedøgn;Alle;Siste 12 måneder;2,623;97,000;11678088;11379596;2.098;1.333
+Kristiansand;E+R;Helgedøgn;< 5,6m;Siste 12 måneder;2,224;97,000;10705055;10472194;2.241;1.424
+Kristiansand;E+R;Helgedøgn;>= 5,6m;Siste 12 måneder;7,434;97,000;970306;903163;7.172;4.557
+Kristiansand;E+R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;9,834;97,000;329410;299917;8.344;5.301
+Kristiansand;E+R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;6,695;97,000;389087;364672;7.350;4.670
+Kristiansand;E+R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;8,831;97,000;119057;109396;16.446;10.449
+Kristiansand;E+R;Helgedøgn;>= 16,0m;Siste 12 måneder;2,767;97,000;132752;129178;5.742;3.648
+Kristiansand;E+R;Alle;Alle;Hittil i år;2,304;97,000;51596654;50434858;1.313;0.834
+Kristiansand;E+R;Alle;< 5,6m;Hittil i år;1,773;97,000;44921026;44138571;1.696;1.078
+Kristiansand;E+R;Alle;>= 5,6m;Hittil i år;6,000;97,000;6656524;6279711;4.728;3.004
+Kristiansand;E+R;Alle;5,6m - 7,6m;Hittil i år;9,159;97,000;1907680;1747615;8.119;5.159
+Kristiansand;E+R;Alle;7,6m - 12,5m;Hittil i år;5,274;97,000;2446227;2323673;4.410;2.802
+Kristiansand;E+R;Alle;12,5m - 16,0m;Hittil i år;5,982;97,000;836691;789465;15.003;9.533
+Kristiansand;E+R;Alle;>= 16,0m;Hittil i år;3,310;97,000;1465926;1418958;5.693;3.617
+Kristiansand;E+R;Yrkesdøgn;Alle;Hittil i år;2,210;97,000;39918566;39055262;1.256;0.798
+Kristiansand;E+R;Yrkesdøgn;< 5,6m;Hittil i år;1,632;97,000;34215971;33666377;1.699;1.079
+Kristiansand;E+R;Yrkesdøgn;>= 5,6m;Hittil i år;5,760;97,000;5686218;5376548;4.422;2.810
+Kristiansand;E+R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;9,019;97,000;1578270;1447698;8.211;5.217
+Kristiansand;E+R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;5,010;97,000;2057140;1959001;4.066;2.583
+Kristiansand;E+R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;5,524;97,000;717634;680069;15.059;9.568
+Kristiansand;E+R;Yrkesdøgn;>= 16,0m;Hittil i år;3,364;97,000;1333174;1289780;5.765;3.663
+Kristiansand;E+R;Helgedøgn;Alle;Hittil i år;2,623;97,000;11678088;11379596;2.098;1.333
+Kristiansand;E+R;Helgedøgn;< 5,6m;Hittil i år;2,224;97,000;10705055;10472194;2.241;1.424
+Kristiansand;E+R;Helgedøgn;>= 5,6m;Hittil i år;7,434;97,000;970306;903163;7.172;4.557
+Kristiansand;E+R;Helgedøgn;5,6m - 7,6m;Hittil i år;9,834;97,000;329410;299917;8.344;5.301
+Kristiansand;E+R;Helgedøgn;7,6m - 12,5m;Hittil i år;6,695;97,000;389087;364672;7.350;4.670
+Kristiansand;E+R;Helgedøgn;12,5m - 16,0m;Hittil i år;8,831;97,000;119057;109396;16.446;10.449
+Kristiansand;E+R;Helgedøgn;>= 16,0m;Hittil i år;2,767;97,000;132752;129178;5.742;3.648
+Kristiansand;R;Alle;Alle;Januar;0,511;99,000;806591;802492;5.502;8.755
+Kristiansand;R;Alle;< 5,6m;Januar;-1,943;99,000;711761;725863;4.765;7.582
+Kristiansand;R;Alle;>= 5,6m;Januar;23,772;99,000;94760;76560;16.836;26.789
+Kristiansand;R;Alle;5,6m - 7,6m;Januar;3,556;99,000;25804;24918;19.475;30.990
+Kristiansand;R;Alle;7,6m - 12,5m;Januar;18,007;99,000;37577;31843;19.883;31.638
+Kristiansand;R;Alle;12,5m - 16,0m;Januar;84,937;99,000;21412;11578;48.942;77.878
+Kristiansand;R;Alle;>= 16,0m;Januar;21,238;99,000;9967;8221;29.132;46.356
+Kristiansand;R;Yrkesdøgn;Alle;Januar;2,313;99,000;644034;629475;6.522;10.378
+Kristiansand;R;Yrkesdøgn;< 5,6m;Januar;-0,312;99,000;560147;561902;5.083;8.088
+Kristiansand;R;Yrkesdøgn;>= 5,6m;Januar;24,175;99,000;83834;67513;18.443;29.347
+Kristiansand;R;Yrkesdøgn;5,6m - 7,6m;Januar;3,112;99,000;22302;21629;20.083;31.956
+Kristiansand;R;Yrkesdøgn;7,6m - 12,5m;Januar;17,011;99,000;32824;28052;21.064;33.518
+Kristiansand;R;Yrkesdøgn;12,5m - 16,0m;Januar;91,791;99,000;19135;9977;53.072;84.450
+Kristiansand;R;Yrkesdøgn;>= 16,0m;Januar;21,871;99,000;9573;7855;29.705;47.267
+Kristiansand;R;Helgedøgn;Alle;Januar;-6,046;100,000;162557;173017;8.706;13.853
+Kristiansand;R;Helgedøgn;< 5,6m;Januar;-7,530;100,000;151614;163961;8.591;13.670
+Kristiansand;R;Helgedøgn;>= 5,6m;Januar;20,769;100,000;10926;9047;16.587;26.393
+Kristiansand;R;Helgedøgn;5,6m - 7,6m;Januar;6,476;100,000;3502;3289;19.814;31.529
+Kristiansand;R;Helgedøgn;7,6m - 12,5m;Januar;25,376;100,000;4753;3791;27.598;43.914
+Kristiansand;R;Helgedøgn;12,5m - 16,0m;Januar;42,224;100,000;2277;1601;40.008;63.661
+Kristiansand;R;Helgedøgn;>= 16,0m;Januar;7,650;100,000;394;366;31.520;50.156
+Kristiansand;R;Alle;Alle;Februar;2,034;99,000;749106;734174;5.469;8.703
+Kristiansand;R;Alle;< 5,6m;Februar;0,193;99,000;666077;664794;4.632;7.370
+Kristiansand;R;Alle;>= 5,6m;Februar;19,731;99,000;82982;69307;15.448;24.581
+Kristiansand;R;Alle;5,6m - 7,6m;Februar;8,410;99,000;23589;21759;21.999;35.006
+Kristiansand;R;Alle;7,6m - 12,5m;Februar;15,356;99,000;32505;28178;18.873;30.031
+Kristiansand;R;Alle;12,5m - 16,0m;Februar;64,791;99,000;18422;11179;53.653;85.374
+Kristiansand;R;Alle;>= 16,0m;Februar;3,357;99,000;8466;8191;25.360;40.354
+Kristiansand;R;Yrkesdøgn;Alle;Februar;2,352;99,000;593799;580154;5.948;9.464
+Kristiansand;R;Yrkesdøgn;< 5,6m;Februar;0,254;99,000;520010;518693;4.701;7.481
+Kristiansand;R;Yrkesdøgn;>= 5,6m;Februar;20,125;99,000;73747;61392;15.363;24.445
+Kristiansand;R;Yrkesdøgn;5,6m - 7,6m;Februar;8,614;99,000;20389;18772;20.935;33.313
+Kristiansand;R;Yrkesdøgn;7,6m - 12,5m;Februar;15,383;99,000;28908;25054;18.435;29.335
+Kristiansand;R;Yrkesdøgn;12,5m - 16,0m;Februar;67,995;99,000;16351;9733;57.037;90.758
+Kristiansand;R;Yrkesdøgn;>= 16,0m;Februar;3,396;99,000;8099;7833;26.024;41.410
+Kristiansand;R;Helgedøgn;Alle;Februar;0,836;99,000;155307;154020;6.655;10.590
+Kristiansand;R;Helgedøgn;< 5,6m;Februar;-0,023;99,000;146067;146101;6.913;11.000
+Kristiansand;R;Helgedøgn;>= 5,6m;Februar;16,677;99,000;9235;7915;16.600;26.414
+Kristiansand;R;Helgedøgn;5,6m - 7,6m;Februar;7,131;99,000;3200;2987;29.285;46.599
+Kristiansand;R;Helgedøgn;7,6m - 12,5m;Februar;15,141;99,000;3597;3124;24.225;38.548
+Kristiansand;R;Helgedøgn;12,5m - 16,0m;Februar;43,223;99,000;2071;1446;41.368;65.826
+Kristiansand;R;Helgedøgn;>= 16,0m;Februar;2,514;99,000;367;358;25.279;40.225
+Kristiansand;R;Alle;Alle;Mars;5,795;99,000;844415;798165;7.206;11.466
+Kristiansand;R;Alle;< 5,6m;Mars;2,937;99,000;747869;726533;7.526;11.975
+Kristiansand;R;Alle;>= 5,6m;Mars;34,765;99,000;96451;71570;10.965;17.448
+Kristiansand;R;Alle;5,6m - 7,6m;Mars;23,317;99,000;28004;22709;25.459;40.511
+Kristiansand;R;Alle;7,6m - 12,5m;Mars;29,874;99,000;37918;29196;7.050;11.219
+Kristiansand;R;Alle;12,5m - 16,0m;Mars;75,610;99,000;20513;11681;55.819;88.821
+Kristiansand;R;Alle;>= 16,0m;Mars;25,451;99,000;10016;7984;46.887;74.608
+Kristiansand;R;Yrkesdøgn;Alle;Mars;9,008;99,000;646408;592991;5.870;9.340
+Kristiansand;R;Yrkesdøgn;< 5,6m;Mars;5,897;99,000;562755;531418;5.619;8.942
+Kristiansand;R;Yrkesdøgn;>= 5,6m;Mars;35,855;99,000;83581;61522;11.154;17.749
+Kristiansand;R;Yrkesdøgn;5,6m - 7,6m;Mars;23,193;99,000;23520;19092;23.327;37.118
+Kristiansand;R;Yrkesdøgn;7,6m - 12,5m;Mars;30,441;99,000;32566;24966;7.965;12.674
+Kristiansand;R;Yrkesdøgn;12,5m - 16,0m;Mars;81,362;99,000;17944;9894;61.893;98.485
+Kristiansand;R;Yrkesdøgn;>= 16,0m;Mars;26,169;99,000;9551;7570;46.543;74.060
+Kristiansand;R;Helgedøgn;Alle;Mars;-3,493;100,000;198007;205174;12.546;19.963
+Kristiansand;R;Helgedøgn;< 5,6m;Mars;-5,126;100,000;185114;195115;13.018;20.714
+Kristiansand;R;Helgedøgn;>= 5,6m;Mars;28,085;100,000;12870;10048;10.656;16.956
+Kristiansand;R;Helgedøgn;5,6m - 7,6m;Mars;23,970;100,000;4484;3617;35.555;56.576
+Kristiansand;R;Helgedøgn;7,6m - 12,5m;Mars;26,525;100,000;5352;4230;7.548;12.010
+Kristiansand;R;Helgedøgn;12,5m - 16,0m;Mars;43,760;100,000;2569;1787;37.176;59.155
+Kristiansand;R;Helgedøgn;>= 16,0m;Mars;12,319;100,000;465;414;62.881;100.057
+Kristiansand;R;Alle;Alle;April;-1,120;97,000;773274;782034;3.946;6.280
+Kristiansand;R;Alle;< 5,6m;April;-2,782;97,000;681995;701513;3.081;4.903
+Kristiansand;R;Alle;>= 5,6m;April;13,371;97,000;91122;80375;10.754;17.111
+Kristiansand;R;Alle;5,6m - 7,6m;April;1,473;97,000;26379;25996;14.573;23.188
+Kristiansand;R;Alle;7,6m - 12,5m;April;15,150;97,000;38771;33670;14.574;23.191
+Kristiansand;R;Alle;12,5m - 16,0m;April;45,340;97,000;17230;11855;53.849;85.686
+Kristiansand;R;Alle;>= 16,0m;April;-1,265;97,000;8742;8854;35.911;57.143
+Kristiansand;R;Yrkesdøgn;Alle;April;-5,818;97,000;570566;605811;1.457;2.319
+Kristiansand;R;Yrkesdøgn;< 5,6m;April;-7,777;97,000;493230;534822;2.248;3.577
+Kristiansand;R;Yrkesdøgn;>= 5,6m;April;8,933;97,000;77214;70882;8.018;12.758
+Kristiansand;R;Yrkesdøgn;5,6m - 7,6m;April;-3,241;97,000;21434;22152;16.343;26.006
+Kristiansand;R;Yrkesdøgn;7,6m - 12,5m;April;10,650;97,000;32811;29653;10.628;16.912
+Kristiansand;R;Yrkesdøgn;12,5m - 16,0m;April;37,049;97,000;14630;10675;49.187;78.268
+Kristiansand;R;Yrkesdøgn;>= 16,0m;April;-0,750;97,000;8339;8402;36.725;58.437
+Kristiansand;R;Helgedøgn;Alle;April;15,029;96,000;202708;176223;24.281;38.636
+Kristiansand;R;Helgedøgn;< 5,6m;April;13,242;96,000;188765;166691;22.110;35.183
+Kristiansand;R;Helgedøgn;>= 5,6m;April;46,508;96,000;13908;9493;58.226;92.650
+Kristiansand;R;Helgedøgn;5,6m - 7,6m;April;28,642;96,000;4945;3844;35.908;57.138
+Kristiansand;R;Helgedøgn;7,6m - 12,5m;April;48,369;96,000;5960;4017;66.423;105.694
+Kristiansand;R;Helgedøgn;12,5m - 16,0m;April;120,339;96,000;2600;1180;99.088;157.670
+Kristiansand;R;Helgedøgn;>= 16,0m;April;-10,841;96,000;403;452;44.281;70.461
+Kristiansand;R;Alle;Alle;Mai;1,145;94,000;926501;916017;3.810;4.731
+Kristiansand;R;Alle;< 5,6m;Mai;-0,364;93,000;807309;810262;2.372;2.945
+Kristiansand;R;Alle;>= 5,6m;Mai;11,207;93,000;113664;102209;15.165;18.829
+Kristiansand;R;Alle;5,6m - 7,6m;Mai;4,521;93,000;33987;32517;13.785;17.116
+Kristiansand;R;Alle;7,6m - 12,5m;Mai;8,421;93,000;49504;45659;12.911;16.031
+Kristiansand;R;Alle;12,5m - 16,0m;Mai;47,699;93,000;19576;13254;50.057;62.154
+Kristiansand;R;Alle;>= 16,0m;Mai;-1,688;93,000;10597;10779;8.173;10.148
+Kristiansand;R;Yrkesdøgn;Alle;Mai;4,621;94,000;679778;649753;4.562;5.665
+Kristiansand;R;Yrkesdøgn;< 5,6m;Mai;2,927;92,000;579872;563384;3.070;3.812
+Kristiansand;R;Yrkesdøgn;>= 5,6m;Mai;12,081;92,000;94438;84259;14.949;18.562
+Kristiansand;R;Yrkesdøgn;5,6m - 7,6m;Mai;6,506;92,000;27373;25701;15.071;18.713
+Kristiansand;R;Yrkesdøgn;7,6m - 12,5m;Mai;8,371;92,000;40726;37580;13.455;16.707
+Kristiansand;R;Yrkesdøgn;12,5m - 16,0m;Mai;48,185;92,000;16413;11076;52.391;65.052
+Kristiansand;R;Yrkesdøgn;>= 16,0m;Mai;0,242;92,000;9926;9902;8.222;10.208
+Kristiansand;R;Helgedøgn;Alle;Mai;-7,339;94,000;246723;266264;3.355;4.166
+Kristiansand;R;Helgedøgn;< 5,6m;Mai;-7,875;93,000;227437;246878;4.454;5.530
+Kristiansand;R;Helgedøgn;>= 5,6m;Mai;7,109;93,000;19226;17950;16.334;20.281
+Kristiansand;R;Helgedøgn;5,6m - 7,6m;Mai;-2,964;93,000;6614;6816;13.084;16.246
+Kristiansand;R;Helgedøgn;7,6m - 12,5m;Mai;8,652;93,000;8778;8079;12.930;16.055
+Kristiansand;R;Helgedøgn;12,5m - 16,0m;Mai;45,225;93,000;3163;2178;45.398;56.369
+Kristiansand;R;Helgedøgn;>= 16,0m;Mai;-23,489;93,000;671;877;11.059;13.731
+Kristiansand;R;Alle;Alle;Juni;-2,785;99,000;973567;1001453;1.458;1.810
+Kristiansand;R;Alle;< 5,6m;Juni;-3,778;99,000;850704;884108;1.630;2.024
+Kristiansand;R;Alle;>= 5,6m;Juni;4,714;99,000;122642;117121;9.881;12.269
+Kristiansand;R;Alle;5,6m - 7,6m;Juni;-2,892;99,000;37841;38968;11.943;14.829
+Kristiansand;R;Alle;7,6m - 12,5m;Juni;3,368;99,000;53134;51403;7.410;9.201
+Kristiansand;R;Alle;12,5m - 16,0m;Juni;38,998;99,000;20423;14693;35.410;43.968
+Kristiansand;R;Alle;>= 16,0m;Juni;-6,743;99,000;11244;12057;11.712;14.542
+Kristiansand;R;Yrkesdøgn;Alle;Juni;-9,715;99,000;695363;770186;1.782;2.213
+Kristiansand;R;Yrkesdøgn;< 5,6m;Juni;-11,138;99,000;595361;669987;1.099;1.364
+Kristiansand;R;Yrkesdøgn;>= 5,6m;Juni;-0,207;99,000;99823;100030;10.344;12.843
+Kristiansand;R;Yrkesdøgn;5,6m - 7,6m;Juni;-8,716;99,000;29399;32206;12.391;15.386
+Kristiansand;R;Yrkesdøgn;7,6m - 12,5m;Juni;-1,741;99,000;42830;43589;8.006;9.941
+Kristiansand;R;Yrkesdøgn;12,5m - 16,0m;Juni;33,602;99,000;17069;12776;33.626;41.752
+Kristiansand;R;Yrkesdøgn;>= 16,0m;Juni;-8,151;99,000;10525;11459;11.230;13.944
+Kristiansand;R;Helgedøgn;Alle;Juni;20,296;99,000;278204;231267;3.201;3.975
+Kristiansand;R;Helgedøgn;< 5,6m;Juni;19,252;99,000;255343;214121;3.352;4.162
+Kristiansand;R;Helgedøgn;>= 5,6m;Juni;33,515;99,000;22819;17091;12.347;15.331
+Kristiansand;R;Helgedøgn;5,6m - 7,6m;Juni;24,845;99,000;8442;6762;13.018;16.163
+Kristiansand;R;Helgedøgn;7,6m - 12,5m;Juni;31,866;99,000;10304;7814;13.669;16.973
+Kristiansand;R;Helgedøgn;12,5m - 16,0m;Juni;74,961;99,000;3354;1917;43.150;53.578
+Kristiansand;R;Helgedøgn;>= 16,0m;Juni;20,234;99,000;719;598;39.492;49.036
+Kristiansand;R;Alle;Alle;Juli;-0,020;99,000;973649;973843;1.750;2.173
+Kristiansand;R;Alle;< 5,6m;Juli;-1,011;99,000;852698;861408;1.966;2.441
+Kristiansand;R;Alle;>= 5,6m;Juli;7,656;99,000;120760;112172;5.375;6.674
+Kristiansand;R;Alle;5,6m - 7,6m;Juli;9,238;99,000;39709;36351;9.146;11.356
+Kristiansand;R;Alle;7,6m - 12,5m;Juli;7,180;99,000;54173;50544;7.072;8.781
+Kristiansand;R;Alle;12,5m - 16,0m;Juli;9,417;99,000;17382;15886;9.163;11.378
+Kristiansand;R;Alle;>= 16,0m;Juli;1,118;99,000;9496;9391;7.308;9.074
+Kristiansand;R;Yrkesdøgn;Alle;Juli;4,220;99,000;766224;735197;2.419;3.003
+Kristiansand;R;Yrkesdøgn;< 5,6m;Juli;3,326;99,000;662522;641197;2.668;3.313
+Kristiansand;R;Yrkesdøgn;>= 5,6m;Juli;10,389;99,000;103538;93794;5.968;7.410
+Kristiansand;R;Yrkesdøgn;5,6m - 7,6m;Juli;12,447;99,000;32894;29253;9.741;12.095
+Kristiansand;R;Yrkesdøgn;7,6m - 12,5m;Juli;10,354;99,000;46821;42428;8.303;10.310
+Kristiansand;R;Yrkesdøgn;12,5m - 16,0m;Juli;10,751;99,000;14690;13264;7.512;9.328
+Kristiansand;R;Yrkesdøgn;>= 16,0m;Juli;3,209;99,000;9133;8849;7.509;9.324
+Kristiansand;R;Helgedøgn;Alle;Juli;-13,083;99,000;207425;238646;1.354;1.681
+Kristiansand;R;Helgedøgn;< 5,6m;Juli;-13,639;99,000;190176;220211;1.540;1.913
+Kristiansand;R;Helgedøgn;>= 5,6m;Juli;-6,290;99,000;17222;18378;5.643;7.007
+Kristiansand;R;Helgedøgn;5,6m - 7,6m;Juli;-3,987;99,000;6815;7098;7.732;9.601
+Kristiansand;R;Helgedøgn;7,6m - 12,5m;Juli;-9,414;99,000;7352;8116;6.675;8.288
+Kristiansand;R;Helgedøgn;12,5m - 16,0m;Juli;2,670;99,000;2692;2622;19.949;24.770
+Kristiansand;R;Helgedøgn;>= 16,0m;Juli;-33,026;99,000;363;542;3.849;4.780
+Kristiansand;R;Alle;Alle;August;0,564;86,000;869032;864160;3.166;3.932
+Kristiansand;R;Alle;< 5,6m;August;0,458;86,000;757867;754410;3.243;4.027
+Kristiansand;R;Alle;>= 5,6m;August;1,311;86,000;111012;109576;8.077;10.029
+Kristiansand;R;Alle;5,6m - 7,6m;August;1,293;86,000;32898;32478;6.311;7.837
+Kristiansand;R;Alle;7,6m - 12,5m;August;-1,257;86,000;48377;48993;4.306;5.347
+Kristiansand;R;Alle;12,5m - 16,0m;August;11,109;86,000;19754;17779;38.311;47.569
+Kristiansand;R;Alle;>= 16,0m;August;-3,322;86,000;9983;10326;21.692;26.934
+Kristiansand;R;Yrkesdøgn;Alle;August;-1,021;86,000;675212;682175;4.797;5.957
+Kristiansand;R;Yrkesdøgn;< 5,6m;August;-1,175;86,000;580427;587328;4.552;5.652
+Kristiansand;R;Yrkesdøgn;>= 5,6m;August;-0,040;86,000;94666;94704;9.956;12.362
+Kristiansand;R;Yrkesdøgn;5,6m - 7,6m;August;-0,561;86,000;27120;27273;7.480;9.288
+Kristiansand;R;Yrkesdøgn;7,6m - 12,5m;August;-2,040;86,000;41018;41872;6.157;7.645
+Kristiansand;R;Yrkesdøgn;12,5m - 16,0m;August;9,011;86,000;17033;15625;40.870;50.747
+Kristiansand;R;Yrkesdøgn;>= 16,0m;August;-4,419;86,000;9495;9934;21.571;26.784
+Kristiansand;R;Helgedøgn;Alle;August;6,503;87,000;193820;181985;5.189;6.443
+Kristiansand;R;Helgedøgn;< 5,6m;August;6,199;87,000;177440;167082;5.072;6.297
+Kristiansand;R;Helgedøgn;>= 5,6m;August;9,911;87,000;16346;14872;11.911;14.789
+Kristiansand;R;Helgedøgn;5,6m - 7,6m;August;11,009;87,000;5778;5205;14.347;17.814
+Kristiansand;R;Helgedøgn;7,6m - 12,5m;August;3,342;87,000;7359;7121;11.828;14.686
+Kristiansand;R;Helgedøgn;12,5m - 16,0m;August;26,323;87,000;2721;2154;22.497;27.933
+Kristiansand;R;Helgedøgn;>= 16,0m;August;24,490;87,000;488;392;30.266;37.580
+Kristiansand;R;Alle;Alle;September;-2,795;99,000;373841;384589;4.076;36.622
+Kristiansand;R;Alle;< 5,6m;September;-3,166;99,000;315433;325747;4.661;41.881
+Kristiansand;R;Alle;>= 5,6m;September;-0,738;99,000;58377;58811;0.482;4.330
+Kristiansand;R;Alle;5,6m - 7,6m;September;0,671;99,000;12445;12362;4.100;36.833
+Kristiansand;R;Alle;7,6m - 12,5m;September;-0,614;99,000;24449;24600;4.506;40.483
+Kristiansand;R;Alle;12,5m - 16,0m;September;0,020;99,000;15198;15195;12.387;111.293
+Kristiansand;R;Alle;>= 16,0m;September;-5,546;99,000;6285;6654;0.476;4.278
+Kristiansand;R;Yrkesdøgn;Alle;September;0,355;99,000;291490;290459;5.267;47.323
+Kristiansand;R;Yrkesdøgn;< 5,6m;September;0,227;99,000;240703;240158;5.857;52.624
+Kristiansand;R;Yrkesdøgn;>= 5,6m;September;0,965;99,000;50758;50273;1.794;16.123
+Kristiansand;R;Yrkesdøgn;5,6m - 7,6m;September;1,322;99,000;10502;10365;7.432;66.773
+Kristiansand;R;Yrkesdøgn;7,6m - 12,5m;September;1,686;99,000;21054;20705;7.671;68.924
+Kristiansand;R;Yrkesdøgn;12,5m - 16,0m;September;2,072;99,000;13202;12934;12.806;115.062
+Kristiansand;R;Yrkesdøgn;>= 16,0m;September;-4,291;99,000;6000;6269;0.262;2.354
+Kristiansand;R;Helgedøgn;Alle;September;-12,514;99,000;82351;94130;2.115;19.003
+Kristiansand;R;Helgedøgn;< 5,6m;September;-12,687;99,000;74730;85589;2.642;23.734
+Kristiansand;R;Helgedøgn;>= 5,6m;September;-10,764;99,000;7619;8538;3.755;33.734
+Kristiansand;R;Helgedøgn;5,6m - 7,6m;September;-2,704;99,000;1943;1997;5.336;47.938
+Kristiansand;R;Helgedøgn;7,6m - 12,5m;September;-12,837;99,000;3395;3895;2.125;19.093
+Kristiansand;R;Helgedøgn;12,5m - 16,0m;September;-11,720;99,000;1996;2261;27.655;248.469
+Kristiansand;R;Helgedøgn;>= 16,0m;September;-25,974;99,000;285;385;11.637;104.550
+Kristiansand;R;Alle;Alle;Oktober;-1,649;99,000;392208;398782;3.275;29.429
+Kristiansand;R;Alle;< 5,6m;Oktober;-1,345;99,000;331264;335780;3.227;28.991
+Kristiansand;R;Alle;>= 5,6m;Oktober;-3,267;99,000;60914;62971;3.220;28.926
+Kristiansand;R;Alle;5,6m - 7,6m;Oktober;3,518;99,000;12799;12364;10.895;97.891
+Kristiansand;R;Alle;7,6m - 12,5m;Oktober;-3,468;99,000;25638;26559;2.553;22.941
+Kristiansand;R;Alle;12,5m - 16,0m;Oktober;-5,100;99,000;15592;16430;3.989;35.844
+Kristiansand;R;Alle;>= 16,0m;Oktober;-9,622;99,000;6885;7618;9.019;81.035
+Kristiansand;R;Yrkesdøgn;Alle;Oktober;-1,173;99,000;319417;323208;3.942;35.416
+Kristiansand;R;Yrkesdøgn;< 5,6m;Oktober;-0,664;99,000;264965;266735;3.661;32.895
+Kristiansand;R;Yrkesdøgn;>= 5,6m;Oktober;-3,584;99,000;54423;56446;5.076;45.604
+Kristiansand;R;Yrkesdøgn;5,6m - 7,6m;Oktober;3,668;99,000;11306;10906;16.802;150.964
+Kristiansand;R;Yrkesdøgn;7,6m - 12,5m;Oktober;-4,137;99,000;22640;23617;4.502;40.452
+Kristiansand;R;Yrkesdøgn;12,5m - 16,0m;Oktober;-5,098;99,000;13832;14575;2.780;24.977
+Kristiansand;R;Yrkesdøgn;>= 16,0m;Oktober;-9,567;99,000;6645;7348;9.288;83.448
+Kristiansand;R;Helgedøgn;Alle;Oktober;-3,682;100,000;72791;75574;0.913;8.200
+Kristiansand;R;Helgedøgn;< 5,6m;Oktober;-3,977;100,000;66299;69045;1.856;16.675
+Kristiansand;R;Helgedøgn;>= 5,6m;Oktober;-0,521;100,000;6491;6525;10.571;94.974
+Kristiansand;R;Helgedøgn;5,6m - 7,6m;Oktober;2,401;100,000;1493;1458;15.025;134.998
+Kristiansand;R;Helgedøgn;7,6m - 12,5m;Oktober;1,903;100,000;2998;2942;9.851;88.506
+Kristiansand;R;Helgedøgn;12,5m - 16,0m;Oktober;-5,121;100,000;1760;1855;46.820;420.657
+Kristiansand;R;Helgedøgn;>= 16,0m;Oktober;-11,111;100,000;240;270;0.445;3.996
+Kristiansand;R;Alle;Alle;November;-1,767;88,000;616662;627754;3.176;7.890
+Kristiansand;R;Alle;< 5,6m;November;-1,514;88,000;540809;549125;2.064;5.126
+Kristiansand;R;Alle;>= 5,6m;November;-3,525;88,000;75808;78578;12.821;31.849
+Kristiansand;R;Alle;5,6m - 7,6m;November;3,102;88,000;20175;19568;8.750;21.735
+Kristiansand;R;Alle;7,6m - 12,5m;November;-4,363;88,000;29901;31265;8.128;20.190
+Kristiansand;R;Alle;12,5m - 16,0m;November;-3,792;88,000;18294;19015;28.112;69.834
+Kristiansand;R;Alle;>= 16,0m;November;-14,800;88,000;7438;8730;20.238;50.274
+Kristiansand;R;Yrkesdøgn;Alle;November;-4,407;89,000;489031;511578;5.487;13.631
+Kristiansand;R;Yrkesdøgn;< 5,6m;November;-4,168;89,000;422740;441125;4.312;10.711
+Kristiansand;R;Yrkesdøgn;>= 5,6m;November;-5,898;89,000;66255;70408;15.210;37.784
+Kristiansand;R;Yrkesdøgn;5,6m - 7,6m;November;1,975;89,000;17345;17009;12.943;32.152
+Kristiansand;R;Yrkesdøgn;7,6m - 12,5m;November;-7,418;89,000;25886;27960;10.195;25.325
+Kristiansand;R;Yrkesdøgn;12,5m - 16,0m;November;-6,528;89,000;15907;17018;28.959;71.937
+Kristiansand;R;Yrkesdøgn;>= 16,0m;November;-15,485;89,000;7117;8421;19.944;49.544
+Kristiansand;R;Helgedøgn;Alle;November;9,860;85,000;127631;116176;6.576;16.337
+Kristiansand;R;Helgedøgn;< 5,6m;November;9,323;85,000;118069;108000;6.226;15.467
+Kristiansand;R;Helgedøgn;>= 5,6m;November;16,928;85,000;9553;8170;10.964;27.235
+Kristiansand;R;Helgedøgn;5,6m - 7,6m;November;10,590;85,000;2830;2559;20.714;51.457
+Kristiansand;R;Helgedøgn;7,6m - 12,5m;November;21,483;85,000;4015;3305;11.769;29.235
+Kristiansand;R;Helgedøgn;12,5m - 16,0m;November;19,529;85,000;2387;1997;25.140;62.450
+Kristiansand;R;Helgedøgn;>= 16,0m;November;3,883;85,000;321;309;53.716;133.438
+Kristiansand;R;Alle;Alle;Desember;0,033;95,000;695744;695513;2.498;6.206
+Kristiansand;R;Alle;< 5,6m;Desember;-0,489;95,000;624053;627118;2.022;5.022
+Kristiansand;R;Alle;>= 5,6m;Desember;4,832;95,000;71639;68337;11.886;29.526
+Kristiansand;R;Alle;5,6m - 7,6m;Desember;9,885;95,000;20477;18635;10.033;24.924
+Kristiansand;R;Alle;7,6m - 12,5m;Desember;2,970;95,000;27980;27173;5.714;14.195
+Kristiansand;R;Alle;12,5m - 16,0m;Desember;4,333;95,000;16831;16132;31.822;79.051
+Kristiansand;R;Alle;>= 16,0m;Desember;-0,719;95,000;6351;6397;12.614;31.334
+Kristiansand;R;Yrkesdøgn;Alle;Desember;3,489;95,000;512221;494954;2.761;6.860
+Kristiansand;R;Yrkesdøgn;< 5,6m;Desember;2,988;95,000;451518;438418;1.914;4.756
+Kristiansand;R;Yrkesdøgn;>= 5,6m;Desember;7,390;95,000;60658;56484;13.775;34.220
+Kristiansand;R;Yrkesdøgn;5,6m - 7,6m;Desember;12,802;95,000;16759;14857;12.145;30.171
+Kristiansand;R;Yrkesdøgn;7,6m - 12,5m;Desember;5,836;95,000;23667;22362;6.882;17.095
+Kristiansand;R;Yrkesdøgn;12,5m - 16,0m;Desember;7,484;95,000;14219;13229;32.858;81.625
+Kristiansand;R;Yrkesdøgn;>= 16,0m;Desember;-0,381;95,000;6013;6036;13.020;32.343
+Kristiansand;R;Helgedøgn;Alle;Desember;-8,494;95,000;183523;200559;3.238;8.044
+Kristiansand;R;Helgedøgn;< 5,6m;Desember;-8,567;95,000;172535;188700;3.508;8.714
+Kristiansand;R;Helgedøgn;>= 5,6m;Desember;-7,357;95,000;10981;11853;5.386;13.380
+Kristiansand;R;Helgedøgn;5,6m - 7,6m;Desember;-1,588;95,000;3718;3778;3.753;9.322
+Kristiansand;R;Helgedøgn;7,6m - 12,5m;Desember;-10,351;95,000;4313;4811;7.212;17.917
+Kristiansand;R;Helgedøgn;12,5m - 16,0m;Desember;-10,024;95,000;2612;2903;24.145;59.980
+Kristiansand;R;Helgedøgn;>= 16,0m;Desember;-6,371;95,000;338;361;15.130;37.584
+Kristiansand;R;Alle;Alle;Siste 12 måneder;0,174;96,000;8994590;8978976;1.432;1.778
+Kristiansand;R;Alle;< 5,6m;Siste 12 måneder;-0,989;96,000;7887839;7966661;1.407;1.748
+Kristiansand;R;Alle;>= 5,6m;Siste 12 måneder;9,185;96,000;1100131;1007587;6.573;8.162
+Kristiansand;R;Alle;5,6m - 7,6m;Siste 12 måneder;5,184;96,000;314107;298625;11.229;13.942
+Kristiansand;R;Alle;7,6m - 12,5m;Siste 12 måneder;7,188;96,000;459927;429083;5.697;7.073
+Kristiansand;R;Alle;12,5m - 16,0m;Siste 12 måneder;26,306;96,000;220627;174677;14.482;17.981
+Kristiansand;R;Alle;>= 16,0m;Siste 12 måneder;0,255;96,000;105470;105202;16.268;20.200
+Kristiansand;R;Yrkesdøgn;Alle;Siste 12 måneder;0,256;96,000;6883543;6865941;1.507;1.871
+Kristiansand;R;Yrkesdøgn;< 5,6m;Siste 12 måneder;-1,016;96,000;5934250;5995167;1.367;1.697
+Kristiansand;R;Yrkesdøgn;>= 5,6m;Siste 12 måneder;8,670;96,000;942935;867707;6.605;8.201
+Kristiansand;R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;4,465;96,000;260343;249215;11.610;14.416
+Kristiansand;R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;6,501;96,000;391751;367838;5.573;6.919
+Kristiansand;R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;26,297;96,000;190425;150776;14.597;18.124
+Kristiansand;R;Yrkesdøgn;>= 16,0m;Siste 12 måneder;0,539;96,000;100416;99878;16.299;20.238
+Kristiansand;R;Helgedøgn;Alle;Siste 12 måneder;-0,094;96,000;2111047;2113035;2.116;2.627
+Kristiansand;R;Helgedøgn;< 5,6m;Siste 12 måneder;-0,908;96,000;1953589;1971494;2.291;2.844
+Kristiansand;R;Helgedøgn;>= 5,6m;Siste 12 måneder;12,379;96,000;157196;139880;9.208;11.433
+Kristiansand;R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;8,812;96,000;53764;49410;11.123;13.811
+Kristiansand;R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;11,317;96,000;68176;61245;10.341;12.840
+Kristiansand;R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;26,363;96,000;30202;23901;14.683;18.231
+Kristiansand;R;Helgedøgn;>= 16,0m;Siste 12 måneder;-5,071;96,000;5054;5324;18.384;22.826
+Kristiansand;R;Alle;Alle;Hittil i år;0,174;96,000;8994590;8978976;1.432;1.778
+Kristiansand;R;Alle;< 5,6m;Hittil i år;-0,989;96,000;7887839;7966661;1.407;1.748
+Kristiansand;R;Alle;>= 5,6m;Hittil i år;9,185;96,000;1100131;1007587;6.573;8.162
+Kristiansand;R;Alle;5,6m - 7,6m;Hittil i år;5,184;96,000;314107;298625;11.229;13.942
+Kristiansand;R;Alle;7,6m - 12,5m;Hittil i år;7,188;96,000;459927;429083;5.697;7.073
+Kristiansand;R;Alle;12,5m - 16,0m;Hittil i år;26,306;96,000;220627;174677;14.482;17.981
+Kristiansand;R;Alle;>= 16,0m;Hittil i år;0,255;96,000;105470;105202;16.268;20.200
+Kristiansand;R;Yrkesdøgn;Alle;Hittil i år;0,256;96,000;6883543;6865941;1.507;1.871
+Kristiansand;R;Yrkesdøgn;< 5,6m;Hittil i år;-1,016;96,000;5934250;5995167;1.367;1.697
+Kristiansand;R;Yrkesdøgn;>= 5,6m;Hittil i år;8,670;96,000;942935;867707;6.605;8.201
+Kristiansand;R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;4,465;96,000;260343;249215;11.610;14.416
+Kristiansand;R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;6,501;96,000;391751;367838;5.573;6.919
+Kristiansand;R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;26,297;96,000;190425;150776;14.597;18.124
+Kristiansand;R;Yrkesdøgn;>= 16,0m;Hittil i år;0,539;96,000;100416;99878;16.299;20.238
+Kristiansand;R;Helgedøgn;Alle;Hittil i år;-0,094;96,000;2111047;2113035;2.116;2.627
+Kristiansand;R;Helgedøgn;< 5,6m;Hittil i år;-0,908;96,000;1953589;1971494;2.291;2.844
+Kristiansand;R;Helgedøgn;>= 5,6m;Hittil i år;12,379;96,000;157196;139880;9.208;11.433
+Kristiansand;R;Helgedøgn;5,6m - 7,6m;Hittil i år;8,812;96,000;53764;49410;11.123;13.811
+Kristiansand;R;Helgedøgn;7,6m - 12,5m;Hittil i år;11,317;96,000;68176;61245;10.341;12.840
+Kristiansand;R;Helgedøgn;12,5m - 16,0m;Hittil i år;26,363;96,000;30202;23901;14.683;18.231
+Kristiansand;R;Helgedøgn;>= 16,0m;Hittil i år;-5,071;96,000;5054;5324;18.384;22.826
+Kristiansand;K;Alle;Alle;Januar;-;-;-;-;-;-
+Kristiansand;K;Alle;< 5,6m;Januar;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 5,6m;Januar;-;-;-;-;-;-
+Kristiansand;K;Alle;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Kristiansand;K;Alle;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Kristiansand;K;Alle;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 16,0m;Januar;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;Alle;Januar;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;< 5,6m;Januar;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 5,6m;Januar;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 16,0m;Januar;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;Alle;Januar;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;< 5,6m;Januar;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 5,6m;Januar;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 16,0m;Januar;-;-;-;-;-;-
+Kristiansand;K;Alle;Alle;Februar;-;-;-;-;-;-
+Kristiansand;K;Alle;< 5,6m;Februar;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 5,6m;Februar;-;-;-;-;-;-
+Kristiansand;K;Alle;5,6m - 7,6m;Februar;-;-;-;-;-;-
+Kristiansand;K;Alle;7,6m - 12,5m;Februar;-;-;-;-;-;-
+Kristiansand;K;Alle;12,5m - 16,0m;Februar;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 16,0m;Februar;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;Alle;Februar;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;< 5,6m;Februar;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 5,6m;Februar;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;5,6m - 7,6m;Februar;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;7,6m - 12,5m;Februar;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;12,5m - 16,0m;Februar;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 16,0m;Februar;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;Alle;Februar;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;< 5,6m;Februar;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 5,6m;Februar;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;5,6m - 7,6m;Februar;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;7,6m - 12,5m;Februar;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;12,5m - 16,0m;Februar;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 16,0m;Februar;-;-;-;-;-;-
+Kristiansand;K;Alle;Alle;Mars;-;-;-;-;-;-
+Kristiansand;K;Alle;< 5,6m;Mars;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 5,6m;Mars;-;-;-;-;-;-
+Kristiansand;K;Alle;5,6m - 7,6m;Mars;-;-;-;-;-;-
+Kristiansand;K;Alle;7,6m - 12,5m;Mars;-;-;-;-;-;-
+Kristiansand;K;Alle;12,5m - 16,0m;Mars;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 16,0m;Mars;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;Alle;Mars;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;< 5,6m;Mars;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 5,6m;Mars;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;5,6m - 7,6m;Mars;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;7,6m - 12,5m;Mars;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;12,5m - 16,0m;Mars;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 16,0m;Mars;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;Alle;Mars;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;< 5,6m;Mars;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 5,6m;Mars;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;5,6m - 7,6m;Mars;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;7,6m - 12,5m;Mars;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;12,5m - 16,0m;Mars;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 16,0m;Mars;-;-;-;-;-;-
+Kristiansand;K;Alle;Alle;April;-;-;-;-;-;-
+Kristiansand;K;Alle;< 5,6m;April;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 5,6m;April;-;-;-;-;-;-
+Kristiansand;K;Alle;5,6m - 7,6m;April;-;-;-;-;-;-
+Kristiansand;K;Alle;7,6m - 12,5m;April;-;-;-;-;-;-
+Kristiansand;K;Alle;12,5m - 16,0m;April;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 16,0m;April;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;Alle;April;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;< 5,6m;April;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 5,6m;April;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;5,6m - 7,6m;April;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;7,6m - 12,5m;April;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;12,5m - 16,0m;April;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 16,0m;April;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;Alle;April;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;< 5,6m;April;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 5,6m;April;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;5,6m - 7,6m;April;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;7,6m - 12,5m;April;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;12,5m - 16,0m;April;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 16,0m;April;-;-;-;-;-;-
+Kristiansand;K;Alle;Alle;Mai;-;-;-;-;-;-
+Kristiansand;K;Alle;< 5,6m;Mai;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 5,6m;Mai;-;-;-;-;-;-
+Kristiansand;K;Alle;5,6m - 7,6m;Mai;-;-;-;-;-;-
+Kristiansand;K;Alle;7,6m - 12,5m;Mai;-;-;-;-;-;-
+Kristiansand;K;Alle;12,5m - 16,0m;Mai;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 16,0m;Mai;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;Alle;Mai;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;< 5,6m;Mai;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 5,6m;Mai;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;5,6m - 7,6m;Mai;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;7,6m - 12,5m;Mai;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;12,5m - 16,0m;Mai;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 16,0m;Mai;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;Alle;Mai;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;< 5,6m;Mai;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 5,6m;Mai;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;5,6m - 7,6m;Mai;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;7,6m - 12,5m;Mai;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;12,5m - 16,0m;Mai;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 16,0m;Mai;-;-;-;-;-;-
+Kristiansand;K;Alle;Alle;Juni;-;-;-;-;-;-
+Kristiansand;K;Alle;< 5,6m;Juni;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 5,6m;Juni;-;-;-;-;-;-
+Kristiansand;K;Alle;5,6m - 7,6m;Juni;-;-;-;-;-;-
+Kristiansand;K;Alle;7,6m - 12,5m;Juni;-;-;-;-;-;-
+Kristiansand;K;Alle;12,5m - 16,0m;Juni;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 16,0m;Juni;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;Alle;Juni;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;< 5,6m;Juni;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 5,6m;Juni;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;5,6m - 7,6m;Juni;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;7,6m - 12,5m;Juni;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;12,5m - 16,0m;Juni;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 16,0m;Juni;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;Alle;Juni;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;< 5,6m;Juni;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 5,6m;Juni;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;5,6m - 7,6m;Juni;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;7,6m - 12,5m;Juni;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;12,5m - 16,0m;Juni;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 16,0m;Juni;-;-;-;-;-;-
+Kristiansand;K;Alle;Alle;Juli;-;-;-;-;-;-
+Kristiansand;K;Alle;< 5,6m;Juli;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 5,6m;Juli;-;-;-;-;-;-
+Kristiansand;K;Alle;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Kristiansand;K;Alle;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Kristiansand;K;Alle;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 16,0m;Juli;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;Alle;Juli;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;< 5,6m;Juli;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 5,6m;Juli;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 16,0m;Juli;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;Alle;Juli;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;< 5,6m;Juli;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 5,6m;Juli;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 16,0m;Juli;-;-;-;-;-;-
+Kristiansand;K;Alle;Alle;August;-;-;-;-;-;-
+Kristiansand;K;Alle;< 5,6m;August;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 5,6m;August;-;-;-;-;-;-
+Kristiansand;K;Alle;5,6m - 7,6m;August;-;-;-;-;-;-
+Kristiansand;K;Alle;7,6m - 12,5m;August;-;-;-;-;-;-
+Kristiansand;K;Alle;12,5m - 16,0m;August;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 16,0m;August;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;Alle;August;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;< 5,6m;August;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 5,6m;August;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;5,6m - 7,6m;August;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;7,6m - 12,5m;August;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;12,5m - 16,0m;August;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 16,0m;August;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;Alle;August;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;< 5,6m;August;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 5,6m;August;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;5,6m - 7,6m;August;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;7,6m - 12,5m;August;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;12,5m - 16,0m;August;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 16,0m;August;-;-;-;-;-;-
+Kristiansand;K;Alle;Alle;September;-;-;-;-;-;-
+Kristiansand;K;Alle;< 5,6m;September;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 5,6m;September;-;-;-;-;-;-
+Kristiansand;K;Alle;5,6m - 7,6m;September;-;-;-;-;-;-
+Kristiansand;K;Alle;7,6m - 12,5m;September;-;-;-;-;-;-
+Kristiansand;K;Alle;12,5m - 16,0m;September;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 16,0m;September;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;Alle;September;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;< 5,6m;September;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 5,6m;September;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;5,6m - 7,6m;September;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;7,6m - 12,5m;September;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;12,5m - 16,0m;September;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 16,0m;September;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;Alle;September;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;< 5,6m;September;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 5,6m;September;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;5,6m - 7,6m;September;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;7,6m - 12,5m;September;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;12,5m - 16,0m;September;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 16,0m;September;-;-;-;-;-;-
+Kristiansand;K;Alle;Alle;Oktober;-;-;-;-;-;-
+Kristiansand;K;Alle;< 5,6m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 5,6m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Alle;5,6m - 7,6m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Alle;7,6m - 12,5m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Alle;12,5m - 16,0m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 16,0m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;Alle;Oktober;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;< 5,6m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 5,6m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;5,6m - 7,6m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;7,6m - 12,5m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;12,5m - 16,0m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 16,0m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;Alle;Oktober;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;< 5,6m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 5,6m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;5,6m - 7,6m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;7,6m - 12,5m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;12,5m - 16,0m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 16,0m;Oktober;-;-;-;-;-;-
+Kristiansand;K;Alle;Alle;November;-;-;-;-;-;-
+Kristiansand;K;Alle;< 5,6m;November;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 5,6m;November;-;-;-;-;-;-
+Kristiansand;K;Alle;5,6m - 7,6m;November;-;-;-;-;-;-
+Kristiansand;K;Alle;7,6m - 12,5m;November;-;-;-;-;-;-
+Kristiansand;K;Alle;12,5m - 16,0m;November;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 16,0m;November;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;Alle;November;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;< 5,6m;November;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 5,6m;November;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;5,6m - 7,6m;November;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;7,6m - 12,5m;November;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;12,5m - 16,0m;November;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 16,0m;November;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;Alle;November;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;< 5,6m;November;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 5,6m;November;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;5,6m - 7,6m;November;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;7,6m - 12,5m;November;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;12,5m - 16,0m;November;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 16,0m;November;-;-;-;-;-;-
+Kristiansand;K;Alle;Alle;Desember;-;-;-;-;-;-
+Kristiansand;K;Alle;< 5,6m;Desember;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 5,6m;Desember;-;-;-;-;-;-
+Kristiansand;K;Alle;5,6m - 7,6m;Desember;-;-;-;-;-;-
+Kristiansand;K;Alle;7,6m - 12,5m;Desember;-;-;-;-;-;-
+Kristiansand;K;Alle;12,5m - 16,0m;Desember;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 16,0m;Desember;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;Alle;Desember;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;< 5,6m;Desember;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 5,6m;Desember;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;5,6m - 7,6m;Desember;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;7,6m - 12,5m;Desember;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;12,5m - 16,0m;Desember;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 16,0m;Desember;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;Alle;Desember;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;< 5,6m;Desember;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 5,6m;Desember;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;5,6m - 7,6m;Desember;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;7,6m - 12,5m;Desember;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;12,5m - 16,0m;Desember;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 16,0m;Desember;-;-;-;-;-;-
+Kristiansand;K;Alle;Alle;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Alle;< 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Alle;5,6m - 7,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Alle;7,6m - 12,5m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Alle;12,5m - 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;Alle;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;< 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;Alle;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;< 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand;K;Alle;Alle;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Alle;< 5,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 5,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Alle;5,6m - 7,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Alle;7,6m - 12,5m;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Alle;12,5m - 16,0m;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Alle;>= 16,0m;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;Alle;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;< 5,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 5,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;5,6m - 7,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;7,6m - 12,5m;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Yrkesdøgn;>= 16,0m;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;Alle;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;< 5,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 5,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;5,6m - 7,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;7,6m - 12,5m;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;12,5m - 16,0m;Hittil i år;-;-;-;-;-;-
+Kristiansand;K;Helgedøgn;>= 16,0m;Hittil i år;-;-;-;-;-;-
+Kristiansand;E+R+F+K;Alle;Alle;Januar;1,573;95,000;7968122;7844727;2.293;0.926
+Kristiansand;E+R+F+K;Alle;< 5,6m;Januar;0,760;95,000;7119333;7065614;2.457;0.993
+Kristiansand;E+R+F+K;Alle;>= 5,6m;Januar;8,914;95,000;846657;777363;9.934;4.012
+Kristiansand;E+R+F+K;Alle;5,6m - 7,6m;Januar;9,039;95,000;242762;222637;14.731;5.950
+Kristiansand;E+R+F+K;Alle;7,6m - 12,5m;Januar;11,553;95,000;313012;280595;27.631;11.161
+Kristiansand;E+R+F+K;Alle;12,5m - 16,0m;Januar;1,487;95,000;121956;120169;41.870;16.912
+Kristiansand;E+R+F+K;Alle;>= 16,0m;Januar;9,720;95,000;168927;153962;14.264;5.761
+Kristiansand;E+R+F+K;Yrkesdøgn;Alle;Januar;2,047;95,000;6453095;6323639;2.505;1.012
+Kristiansand;E+R+F+K;Yrkesdøgn;< 5,6m;Januar;1,227;95,000;5702676;5633527;2.460;0.993
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 5,6m;Januar;8,701;95,000;748519;688601;9.916;4.005
+Kristiansand;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Januar;9,153;95,000;212966;195108;14.323;5.785
+Kristiansand;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Januar;10,129;95,000;271884;246878;25.382;10.252
+Kristiansand;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Januar;2,974;95,000;108205;105080;43.782;17.684
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 16,0m;Januar;9,841;95,000;155464;141535;15.619;6.308
+Kristiansand;E+R+F+K;Helgedøgn;Alle;Januar;-0,398;95,000;1515027;1521088;3.939;1.591
+Kristiansand;E+R+F+K;Helgedøgn;< 5,6m;Januar;-1,077;95,000;1416657;1432087;4.193;1.694
+Kristiansand;E+R+F+K;Helgedøgn;>= 5,6m;Januar;10,563;95,000;98138;88762;13.018;5.258
+Kristiansand;E+R+F+K;Helgedøgn;5,6m - 7,6m;Januar;8,235;95,000;29796;27529;19.846;8.016
+Kristiansand;E+R+F+K;Helgedøgn;7,6m - 12,5m;Januar;21,980;95,000;41128;33717;46.572;18.811
+Kristiansand;E+R+F+K;Helgedøgn;12,5m - 16,0m;Januar;-8,867;95,000;13751;15089;-;-
+Kristiansand;E+R+F+K;Helgedøgn;>= 16,0m;Januar;8,337;95,000;13463;12427;-;-
+Kristiansand;E+R+F+K;Alle;Alle;Februar;4,299;98,000;7270259;6970589;2.761;1.166
+Kristiansand;E+R+F+K;Alle;< 5,6m;Februar;3,792;98,000;6508318;6270533;2.776;1.172
+Kristiansand;E+R+F+K;Alle;>= 5,6m;Februar;8,953;98,000;760153;697688;9.993;4.220
+Kristiansand;E+R+F+K;Alle;5,6m - 7,6m;Februar;11,462;98,000;222630;199736;16.979;7.170
+Kristiansand;E+R+F+K;Alle;7,6m - 12,5m;Februar;11,889;98,000;275435;246167;29.988;12.663
+Kristiansand;E+R+F+K;Alle;12,5m - 16,0m;Februar;-3,704;98,000;105740;109807;37.124;15.676
+Kristiansand;E+R+F+K;Alle;>= 16,0m;Februar;10,121;98,000;156348;141978;11.481;4.848
+Kristiansand;E+R+F+K;Yrkesdøgn;Alle;Februar;4,349;98,000;5870797;5626109;2.880;1.216
+Kristiansand;E+R+F+K;Yrkesdøgn;< 5,6m;Februar;3,728;98,000;5190675;5004098;2.749;1.161
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 5,6m;Februar;9,467;98,000;678498;619820;9.875;4.170
+Kristiansand;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Februar;12,074;98,000;196512;175341;16.766;7.079
+Kristiansand;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Februar;12,211;98,000;244436;217837;27.022;11.410
+Kristiansand;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Februar;-2,806;98,000;93093;95781;38.338;16.189
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 16,0m;Februar;10,390;98,000;144457;130861;12.150;5.131
+Kristiansand;E+R+F+K;Helgedøgn;Alle;Februar;4,089;98,000;1399462;1344480;3.518;1.485
+Kristiansand;E+R+F+K;Helgedøgn;< 5,6m;Februar;4,043;98,000;1317643;1266435;3.788;1.600
+Kristiansand;E+R+F+K;Helgedøgn;>= 5,6m;Februar;4,863;98,000;81655;77868;12.891;5.444
+Kristiansand;E+R+F+K;Helgedøgn;5,6m - 7,6m;Februar;7,063;98,000;26118;24395;20.615;8.705
+Kristiansand;E+R+F+K;Helgedøgn;7,6m - 12,5m;Februar;9,421;98,000;30999;28330;57.266;24.181
+Kristiansand;E+R+F+K;Helgedøgn;12,5m - 16,0m;Februar;-9,832;98,000;12647;14026;-;-
+Kristiansand;E+R+F+K;Helgedøgn;>= 16,0m;Februar;6,962;98,000;11891;11117;10.180;4.299
+Kristiansand;E+R+F+K;Alle;Alle;Mars;9,899;97,000;5933233;5398789;4.287;1.951
+Kristiansand;E+R+F+K;Alle;< 5,6m;Mars;8,663;97,000;5285714;4864332;4.620;2.103
+Kristiansand;E+R+F+K;Alle;>= 5,6m;Mars;21,077;97,000;645983;533531;14.085;6.411
+Kristiansand;E+R+F+K;Alle;5,6m - 7,6m;Mars;18,690;97,000;181582;152988;18.656;8.492
+Kristiansand;E+R+F+K;Alle;7,6m - 12,5m;Mars;34,598;97,000;253462;188310;36.366;16.554
+Kristiansand;E+R+F+K;Alle;12,5m - 16,0m;Mars;2,301;97,000;89421;87410;46.527;21.179
+Kristiansand;E+R+F+K;Alle;>= 16,0m;Mars;15,927;97,000;121518;104823;15.032;6.842
+Kristiansand;E+R+F+K;Yrkesdøgn;Alle;Mars;11,785;97,000;4578406;4095729;4.491;2.044
+Kristiansand;E+R+F+K;Yrkesdøgn;< 5,6m;Mars;10,638;97,000;4023466;3636593;4.551;2.072
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 5,6m;Mars;20,784;97,000;553607;458344;14.412;6.560
+Kristiansand;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Mars;19,348;97,000;154066;129090;19.510;8.881
+Kristiansand;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Mars;31,857;97,000;211523;160419;33.173;15.100
+Kristiansand;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Mars;4,972;97,000;77147;73493;48.324;21.997
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 16,0m;Mars;16,288;97,000;110871;95342;15.288;6.959
+Kristiansand;E+R+F+K;Helgedøgn;Alle;Mars;3,973;97,000;1354827;1303060;6.717;3.057
+Kristiansand;E+R+F+K;Helgedøgn;< 5,6m;Mars;2,811;97,000;1262248;1227739;7.042;3.205
+Kristiansand;E+R+F+K;Helgedøgn;>= 5,6m;Mars;22,862;97,000;92376;75187;14.964;6.811
+Kristiansand;E+R+F+K;Helgedøgn;5,6m - 7,6m;Mars;15,139;97,000;27516;23898;20.700;9.423
+Kristiansand;E+R+F+K;Helgedøgn;7,6m - 12,5m;Mars;50,368;97,000;41939;27891;58.709;26.724
+Kristiansand;E+R+F+K;Helgedøgn;12,5m - 16,0m;Mars;-11,806;97,000;12274;13917;-;-
+Kristiansand;E+R+F+K;Helgedøgn;>= 16,0m;Mars;12,298;97,000;10647;9481;21.715;9.885
+Kristiansand;E+R+F+K;Alle;Alle;April;-2,040;98,000;5748919;5868638;4.729;2.153
+Kristiansand;E+R+F+K;Alle;< 5,6m;April;-2,263;98,000;5097483;5215504;4.642;2.113
+Kristiansand;E+R+F+K;Alle;>= 5,6m;April;-0,250;98,000;650047;651678;10.328;4.701
+Kristiansand;E+R+F+K;Alle;5,6m - 7,6m;April;-0,492;98,000;180383;181275;12.695;5.779
+Kristiansand;E+R+F+K;Alle;7,6m - 12,5m;April;4,765;98,000;275599;263063;21.717;9.886
+Kristiansand;E+R+F+K;Alle;12,5m - 16,0m;April;-9,847;98,000;84161;93354;33.271;15.145
+Kristiansand;E+R+F+K;Alle;>= 16,0m;April;-3,581;98,000;109904;113986;12.501;5.691
+Kristiansand;E+R+F+K;Yrkesdøgn;Alle;April;-4,509;98,000;4266381;4467838;4.073;1.854
+Kristiansand;E+R+F+K;Yrkesdøgn;< 5,6m;April;-4,924;98,000;3721796;3914564;4.119;1.875
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 5,6m;April;-1,564;98,000;543439;552075;9.483;4.317
+Kristiansand;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;April;-2,935;98,000;146616;151050;12.731;5.795
+Kristiansand;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;April;4,500;98,000;227185;217402;19.660;8.949
+Kristiansand;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;April;-12,760;98,000;69991;80228;31.317;14.255
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 16,0m;April;-3,625;98,000;99647;103395;13.221;6.018
+Kristiansand;E+R+F+K;Helgedøgn;Alle;April;5,835;99,000;1482538;1400800;10.604;4.827
+Kristiansand;E+R+F+K;Helgedøgn;< 5,6m;April;5,746;99,000;1375687;1300940;10.128;4.610
+Kristiansand;E+R+F+K;Helgedøgn;>= 5,6m;April;7,033;99,000;106608;99603;23.853;10.858
+Kristiansand;E+R+F+K;Helgedøgn;5,6m - 7,6m;April;11,719;99,000;33767;30225;18.716;8.519
+Kristiansand;E+R+F+K;Helgedøgn;7,6m - 12,5m;April;6,029;99,000;48414;45661;38.690;17.612
+Kristiansand;E+R+F+K;Helgedøgn;12,5m - 16,0m;April;7,954;99,000;14170;13126;52.989;24.120
+Kristiansand;E+R+F+K;Helgedøgn;>= 16,0m;April;-3,154;99,000;10257;10591;18.289;8.325
+Kristiansand;E+R+F+K;Alle;Alle;Mai;4,024;97,000;7787760;7486472;3.585;1.514
+Kristiansand;E+R+F+K;Alle;< 5,6m;Mai;3,743;97,000;6856135;6608745;3.227;1.363
+Kristiansand;E+R+F+K;Alle;>= 5,6m;Mai;5,917;97,000;923341;871759;10.469;4.420
+Kristiansand;E+R+F+K;Alle;5,6m - 7,6m;Mai;8,874;97,000;270529;248479;13.497;5.699
+Kristiansand;E+R+F+K;Alle;7,6m - 12,5m;Mai;4,986;97,000;385250;366955;17.601;7.432
+Kristiansand;E+R+F+K;Alle;12,5m - 16,0m;Mai;0,996;97,000;115525;114386;30.128;12.722
+Kristiansand;E+R+F+K;Alle;>= 16,0m;Mai;7,114;97,000;152037;141939;9.094;3.840
+Kristiansand;E+R+F+K;Yrkesdøgn;Alle;Mai;7,650;97,000;5862875;5446234;4.096;1.730
+Kristiansand;E+R+F+K;Yrkesdøgn;< 5,6m;Mai;7,501;96,000;5089417;4734308;3.854;1.627
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 5,6m;Mai;8,166;96,000;765743;707933;10.425;4.402
+Kristiansand;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Mai;11,724;96,000;220286;197170;14.221;6.005
+Kristiansand;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Mai;6,648;96,000;315357;295698;16.080;6.790
+Kristiansand;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Mai;2,472;96,000;95440;93138;31.219;13.183
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 16,0m;Mai;10,443;96,000;134660;121927;9.930;4.193
+Kristiansand;E+R+F+K;Helgedøgn;Alle;Mai;-5,654;97,000;1924885;2040238;6.904;2.915
+Kristiansand;E+R+F+K;Helgedøgn;< 5,6m;Mai;-5,747;97,000;1766718;1874437;6.677;2.819
+Kristiansand;E+R+F+K;Helgedøgn;>= 5,6m;Mai;-3,802;97,000;157598;163826;14.790;6.245
+Kristiansand;E+R+F+K;Helgedøgn;5,6m - 7,6m;Mai;-2,078;97,000;50243;51309;14.950;6.313
+Kristiansand;E+R+F+K;Helgedøgn;7,6m - 12,5m;Mai;-1,914;97,000;69893;71257;28.039;11.840
+Kristiansand;E+R+F+K;Helgedøgn;12,5m - 16,0m;Mai;-5,473;97,000;20085;21248;30.649;12.942
+Kristiansand;E+R+F+K;Helgedøgn;>= 16,0m;Mai;-13,167;97,000;17377;20012;10.803;4.562
+Kristiansand;E+R+F+K;Alle;Alle;Juni;-1,638;96,000;7453764;7577923;3.236;1.435
+Kristiansand;E+R+F+K;Alle;< 5,6m;Juni;-1,751;96,000;6551749;6668485;3.080;1.365
+Kristiansand;E+R+F+K;Alle;>= 5,6m;Juni;-0,877;96,000;898951;906908;9.357;4.149
+Kristiansand;E+R+F+K;Alle;5,6m - 7,6m;Juni;2,638;96,000;276350;269247;12.790;5.671
+Kristiansand;E+R+F+K;Alle;7,6m - 12,5m;Juni;-1,218;96,000;368369;372910;14.943;6.625
+Kristiansand;E+R+F+K;Alle;12,5m - 16,0m;Juni;-4,899;96,000;114424;120318;25.912;11.489
+Kristiansand;E+R+F+K;Alle;>= 16,0m;Juni;-3,202;96,000;139808;144433;7.494;3.322
+Kristiansand;E+R+F+K;Yrkesdøgn;Alle;Juni;-8,525;95,000;5383140;5884808;4.944;2.192
+Kristiansand;E+R+F+K;Yrkesdøgn;< 5,6m;Juni;-8,913;95,000;4658364;5114217;4.783;2.121
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 5,6m;Juni;-6,021;95,000;722329;768603;9.427;4.180
+Kristiansand;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Juni;-3,363;95,000;214634;222104;13.037;5.780
+Kristiansand;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Juni;-7,013;95,000;291036;312986;13.584;6.023
+Kristiansand;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Juni;-8,986;95,000;92202;101305;25.524;11.317
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 16,0m;Juni;-5,863;95,000;124457;132208;7.295;3.234
+Kristiansand;E+R+F+K;Helgedøgn;Alle;Juni;22,297;97,000;2070624;1693115;6.852;3.038
+Kristiansand;E+R+F+K;Helgedøgn;< 5,6m;Juni;21,818;97,000;1893385;1554268;7.112;3.153
+Kristiansand;E+R+F+K;Helgedøgn;>= 5,6m;Juni;27,705;97,000;176622;138305;13.190;5.848
+Kristiansand;E+R+F+K;Helgedøgn;5,6m - 7,6m;Juni;30,912;97,000;61716;47143;13.133;5.823
+Kristiansand;E+R+F+K;Helgedøgn;7,6m - 12,5m;Juni;29,052;97,000;77333;59924;30.110;13.350
+Kristiansand;E+R+F+K;Helgedøgn;12,5m - 16,0m;Juni;16,878;97,000;22222;19013;35.350;15.673
+Kristiansand;E+R+F+K;Helgedøgn;>= 16,0m;Juni;25,571;97,000;15351;12225;15.759;6.987
+Kristiansand;E+R+F+K;Alle;Alle;Juli;2,842;98,000;7490344;7283380;2.483;1.101
+Kristiansand;E+R+F+K;Alle;< 5,6m;Juli;2,257;98,000;6610199;6464316;2.729;1.210
+Kristiansand;E+R+F+K;Alle;>= 5,6m;Juli;7,473;98,000;877939;816893;5.107;2.265
+Kristiansand;E+R+F+K;Alle;5,6m - 7,6m;Juli;9,670;98,000;274616;250403;8.513;3.775
+Kristiansand;E+R+F+K;Alle;7,6m - 12,5m;Juli;4,726;98,000;368896;352249;7.515;3.332
+Kristiansand;E+R+F+K;Alle;12,5m - 16,0m;Juli;13,089;98,000;107924;95433;18.241;8.088
+Kristiansand;E+R+F+K;Alle;>= 16,0m;Juli;6,477;98,000;126503;118808;5.548;2.460
+Kristiansand;E+R+F+K;Yrkesdøgn;Alle;Juli;6,163;98,000;5959495;5613512;1.939;0.860
+Kristiansand;E+R+F+K;Yrkesdøgn;< 5,6m;Juli;5,639;98,000;5204891;4927032;2.158;0.957
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 5,6m;Juli;9,935;98,000;752835;684799;5.209;2.309
+Kristiansand;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Juli;12,383;98,000;229092;203849;8.539;3.786
+Kristiansand;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Juli;7,567;98,000;316295;294044;7.770;3.445
+Kristiansand;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Juli;14,490;98,000;89852;78480;19.568;8.676
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 16,0m;Juli;8,457;98,000;117596;108426;5.849;2.593
+Kristiansand;E+R+F+K;Helgedøgn;Alle;Juli;-8,325;98,000;1530849;1669868;4.961;2.199
+Kristiansand;E+R+F+K;Helgedøgn;< 5,6m;Juli;-8,585;98,000;1405308;1537284;5.233;2.320
+Kristiansand;E+R+F+K;Helgedøgn;>= 5,6m;Juli;-5,292;98,000;125104;132094;6.186;2.743
+Kristiansand;E+R+F+K;Helgedøgn;5,6m - 7,6m;Juli;-2,212;98,000;45524;46554;9.619;4.265
+Kristiansand;E+R+F+K;Helgedøgn;7,6m - 12,5m;Juli;-9,628;98,000;52601;58205;7.885;3.496
+Kristiansand;E+R+F+K;Helgedøgn;12,5m - 16,0m;Juli;6,601;98,000;18072;16953;19.096;8.466
+Kristiansand;E+R+F+K;Helgedøgn;>= 16,0m;Juli;-14,207;98,000;8907;10382;7.959;3.529
+Kristiansand;E+R+F+K;Alle;Alle;August;0,847;91,000;7002352;6943558;2.005;0.889
+Kristiansand;E+R+F+K;Alle;< 5,6m;August;0,825;91,000;6164119;6113675;2.033;0.901
+Kristiansand;E+R+F+K;Alle;>= 5,6m;August;0,999;91,000;836400;828131;5.331;2.363
+Kristiansand;E+R+F+K;Alle;5,6m - 7,6m;August;2,169;91,000;251989;246639;8.099;3.591
+Kristiansand;E+R+F+K;Alle;7,6m - 12,5m;August;0,375;91,000;345290;343999;6.090;2.700
+Kristiansand;E+R+F+K;Alle;12,5m - 16,0m;August;6,622;91,000;107676;100989;22.301;9.888
+Kristiansand;E+R+F+K;Alle;>= 16,0m;August;-3,706;91,000;131445;136504;8.000;3.547
+Kristiansand;E+R+F+K;Yrkesdøgn;Alle;August;-2,543;91,000;5452979;5595250;2.575;1.142
+Kristiansand;E+R+F+K;Yrkesdøgn;< 5,6m;August;-2,693;91,000;4743884;4875196;2.400;1.064
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 5,6m;August;-1,535;91,000;707652;718683;5.832;2.586
+Kristiansand;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;August;-0,772;91,000;207482;209096;8.433;3.739
+Kristiansand;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;August;-1,630;91,000;289166;293959;6.039;2.677
+Kristiansand;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;August;2,528;91,000;90286;88060;23.650;10.486
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 16,0m;August;-5,370;91,000;120718;127568;8.232;3.650
+Kristiansand;E+R+F+K;Helgedøgn;Alle;August;14,912;91,000;1549373;1348308;8.878;3.936
+Kristiansand;E+R+F+K;Helgedøgn;< 5,6m;August;14,676;91,000;1420235;1238479;9.085;4.028
+Kristiansand;E+R+F+K;Helgedøgn;>= 5,6m;August;17,634;91,000;128748;109448;9.573;4.244
+Kristiansand;E+R+F+K;Helgedøgn;5,6m - 7,6m;August;18,549;91,000;44507;37543;10.209;4.527
+Kristiansand;E+R+F+K;Helgedøgn;7,6m - 12,5m;August;12,158;91,000;56124;50040;12.289;5.448
+Kristiansand;E+R+F+K;Helgedøgn;12,5m - 16,0m;August;34,504;91,000;17390;12929;19.380;8.593
+Kristiansand;E+R+F+K;Helgedøgn;>= 16,0m;August;20,043;91,000;10727;8936;-;-
+Kristiansand;E+R+F+K;Alle;Alle;September;1,624;99,000;5903168;5808847;2.621;1.304
+Kristiansand;E+R+F+K;Alle;< 5,6m;September;1,212;99,000;5161710;5099894;2.662;1.324
+Kristiansand;E+R+F+K;Alle;>= 5,6m;September;4,630;99,000;739944;707199;4.868;2.421
+Kristiansand;E+R+F+K;Alle;5,6m - 7,6m;September;6,580;99,000;204108;191506;9.908;4.927
+Kristiansand;E+R+F+K;Alle;7,6m - 12,5m;September;3,896;99,000;298146;286966;5.437;2.704
+Kristiansand;E+R+F+K;Alle;12,5m - 16,0m;September;2,851;99,000;102677;99831;10.269;5.107
+Kristiansand;E+R+F+K;Alle;>= 16,0m;September;4,746;99,000;135013;128896;7.151;3.556
+Kristiansand;E+R+F+K;Yrkesdøgn;Alle;September;4,954;99,000;4638276;4419337;3.657;1.819
+Kristiansand;E+R+F+K;Yrkesdøgn;< 5,6m;September;4,688;99,000;4004504;3825183;3.707;1.843
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 5,6m;September;6,702;99,000;632576;592846;5.283;2.627
+Kristiansand;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;September;8,815;99,000;170061;156284;11.225;5.582
+Kristiansand;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;September;7,037;99,000;250146;233701;5.764;2.867
+Kristiansand;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;September;3,267;99,000;88474;85675;11.807;5.872
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 16,0m;September;5,725;99,000;123895;117186;7.052;3.507
+Kristiansand;E+R+F+K;Helgedøgn;Alle;September;-8,968;98,000;1264892;1389510;3.638;1.809
+Kristiansand;E+R+F+K;Helgedøgn;< 5,6m;September;-9,218;98,000;1157206;1274711;3.780;1.880
+Kristiansand;E+R+F+K;Helgedøgn;>= 5,6m;September;-6,108;98,000;107368;114353;7.000;3.481
+Kristiansand;E+R+F+K;Helgedøgn;5,6m - 7,6m;September;-3,336;98,000;34047;35222;8.508;4.231
+Kristiansand;E+R+F+K;Helgedøgn;7,6m - 12,5m;September;-9,885;98,000;48000;53265;8.165;4.060
+Kristiansand;E+R+F+K;Helgedøgn;12,5m - 16,0m;September;0,332;98,000;14203;14156;10.207;5.076
+Kristiansand;E+R+F+K;Helgedøgn;>= 16,0m;September;-5,056;98,000;11118;11710;9.483;4.716
+Kristiansand;E+R+F+K;Alle;Alle;Oktober;2,238;95,000;7114133;6958380;1.802;0.799
+Kristiansand;E+R+F+K;Alle;< 5,6m;Oktober;2,311;95,000;6279224;6137361;1.801;0.799
+Kristiansand;E+R+F+K;Alle;>= 5,6m;Oktober;1,682;95,000;833329;819545;5.171;2.293
+Kristiansand;E+R+F+K;Alle;5,6m - 7,6m;Oktober;5,013;95,000;227190;216345;10.775;4.777
+Kristiansand;E+R+F+K;Alle;7,6m - 12,5m;Oktober;-0,219;95,000;336623;337361;5.213;2.311
+Kristiansand;E+R+F+K;Alle;12,5m - 16,0m;Oktober;3,480;95,000;117069;113132;13.086;5.802
+Kristiansand;E+R+F+K;Alle;>= 16,0m;Oktober;-0,170;95,000;152447;152707;7.648;3.391
+Kristiansand;E+R+F+K;Yrkesdøgn;Alle;Oktober;2,656;95,000;5813604;5663178;1.887;0.837
+Kristiansand;E+R+F+K;Yrkesdøgn;< 5,6m;Oktober;2,811;95,000;5076059;4937289;1.873;0.830
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 5,6m;Oktober;1,596;95,000;736269;724702;5.148;2.282
+Kristiansand;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Oktober;5,211;95,000;198095;188284;10.604;4.702
+Kristiansand;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Oktober;-0,236;95,000;291918;292608;5.429;2.407
+Kristiansand;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Oktober;2,571;95,000;103502;100908;13.388;5.936
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 16,0m;Oktober;-0,104;95,000;142754;142902;8.238;3.652
+Kristiansand;E+R+F+K;Helgedøgn;Alle;Oktober;0,411;96,000;1300529;1295202;3.396;1.506
+Kristiansand;E+R+F+K;Helgedøgn;< 5,6m;Oktober;0,258;96,000;1203165;1200072;3.728;1.653
+Kristiansand;E+R+F+K;Helgedøgn;>= 5,6m;Oktober;2,338;96,000;97060;94843;6.466;2.867
+Kristiansand;E+R+F+K;Helgedøgn;5,6m - 7,6m;Oktober;3,685;96,000;29095;28061;14.698;6.517
+Kristiansand;E+R+F+K;Helgedøgn;7,6m - 12,5m;Oktober;-0,107;96,000;44705;44753;5.881;2.607
+Kristiansand;E+R+F+K;Helgedøgn;12,5m - 16,0m;Oktober;10,987;96,000;13567;12224;17.114;7.588
+Kristiansand;E+R+F+K;Helgedøgn;>= 16,0m;Oktober;-1,142;96,000;9693;9805;5.739;2.544
+Kristiansand;E+R+F+K;Alle;Alle;November;0,395;95,000;6677138;6650876;1.847;0.819
+Kristiansand;E+R+F+K;Alle;< 5,6m;November;0,654;95,000;5963073;5924331;1.749;0.776
+Kristiansand;E+R+F+K;Alle;>= 5,6m;November;-1,722;95,000;712752;725242;5.329;2.363
+Kristiansand;E+R+F+K;Alle;5,6m - 7,6m;November;0,887;95,000;203910;202118;8.140;3.609
+Kristiansand;E+R+F+K;Alle;7,6m - 12,5m;November;-1,949;95,000;279850;285412;5.250;2.328
+Kristiansand;E+R+F+K;Alle;12,5m - 16,0m;November;0,114;95,000;102366;102249;12.988;5.758
+Kristiansand;E+R+F+K;Alle;>= 16,0m;November;-6,524;95,000;126626;135463;6.861;3.042
+Kristiansand;E+R+F+K;Yrkesdøgn;Alle;November;-3,320;96,000;5267841;5448749;1.951;0.865
+Kristiansand;E+R+F+K;Yrkesdøgn;< 5,6m;November;-3,197;96,000;4649027;4802579;1.746;0.774
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 5,6m;November;-4,240;96,000;617758;645110;5.476;2.428
+Kristiansand;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;November;-1,049;96,000;175487;177347;8.045;3.567
+Kristiansand;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;November;-5,028;96,000;237221;249779;5.358;2.376
+Kristiansand;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;November;-3,623;96,000;87845;91147;13.043;5.783
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 16,0m;November;-7,594;96,000;117205;126837;6.917;3.067
+Kristiansand;E+R+F+K;Helgedøgn;Alle;November;17,234;94,000;1409297;1202127;5.312;2.355
+Kristiansand;E+R+F+K;Helgedøgn;< 5,6m;November;17,142;94,000;1314046;1121752;5.360;2.376
+Kristiansand;E+R+F+K;Helgedøgn;>= 5,6m;November;18,547;94,000;94994;80132;9.604;4.258
+Kristiansand;E+R+F+K;Helgedøgn;5,6m - 7,6m;November;14,743;94,000;28423;24771;14.554;6.453
+Kristiansand;E+R+F+K;Helgedøgn;7,6m - 12,5m;November;19,633;94,000;42629;35633;10.372;4.599
+Kristiansand;E+R+F+K;Helgedøgn;12,5m - 16,0m;November;30,796;94,000;14521;11102;-;-
+Kristiansand;E+R+F+K;Helgedøgn;>= 16,0m;November;9,216;94,000;9421;8626;-;-
+Kristiansand;E+R+F+K;Alle;Alle;Desember;0,297;96,000;7706640;7683837;6.282;2.537
+Kristiansand;E+R+F+K;Alle;< 5,6m;Desember;1,068;97,000;6895271;6822428;3.448;1.423
+Kristiansand;E+R+F+K;Alle;>= 5,6m;Desember;1,124;97,000;693933;686219;6.780;2.799
+Kristiansand;E+R+F+K;Alle;5,6m - 7,6m;Desember;0,207;97,000;206564;206137;9.347;3.858
+Kristiansand;E+R+F+K;Alle;7,6m - 12,5m;Desember;1,953;97,000;264588;259519;4.977;2.055
+Kristiansand;E+R+F+K;Alle;12,5m - 16,0m;Desember;4,400;97,000;107945;103396;12.615;5.207
+Kristiansand;E+R+F+K;Alle;>= 16,0m;Desember;-1,989;97,000;114836;117167;10.826;4.469
+Kristiansand;E+R+F+K;Yrkesdøgn;Alle;Desember;3,935;96,000;5715728;5499351;6.888;2.782
+Kristiansand;E+R+F+K;Yrkesdøgn;< 5,6m;Desember;4,886;97,000;5046706;4811615;4.328;1.786
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 5,6m;Desember;3,184;97,000;585110;567056;7.577;3.128
+Kristiansand;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Desember;3,191;97,000;170887;165603;9.786;4.040
+Kristiansand;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Desember;4,604;97,000;222920;213108;5.735;2.367
+Kristiansand;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Desember;6,151;97,000;88829;83682;13.822;5.706
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 16,0m;Desember;-2,091;97,000;102474;104663;11.874;4.901
+Kristiansand;E+R+F+K;Helgedøgn;Alle;Desember;-8,861;96,000;1990912;2184486;6.169;2.492
+Kristiansand;E+R+F+K;Helgedøgn;< 5,6m;Desember;-8,069;97,000;1848565;2010813;4.004;1.653
+Kristiansand;E+R+F+K;Helgedøgn;>= 5,6m;Desember;-8,677;97,000;108823;119163;5.683;2.346
+Kristiansand;E+R+F+K;Helgedøgn;5,6m - 7,6m;Desember;-11,983;97,000;35677;40534;10.047;4.147
+Kristiansand;E+R+F+K;Helgedøgn;7,6m - 12,5m;Desember;-10,220;97,000;41668;46411;6.506;2.686
+Kristiansand;E+R+F+K;Helgedøgn;12,5m - 16,0m;Desember;-3,033;97,000;19116;19714;11.650;4.809
+Kristiansand;E+R+F+K;Helgedøgn;>= 16,0m;Desember;-1,136;97,000;12362;12504;9.005;3.717
+Kristiansand;E+R+F+K;Alle;Alle;Siste 12 måneder;1,915;96,000;84055832;82476016;2.504;0.918
+Kristiansand;E+R+F+K;Alle;< 5,6m;Siste 12 måneder;1,689;96,000;74492328;73255218;1.970;0.723
+Kristiansand;E+R+F+K;Alle;>= 5,6m;Siste 12 måneder;4,403;96,000;9419429;9022156;5.809;2.131
+Kristiansand;E+R+F+K;Alle;5,6m - 7,6m;Siste 12 måneder;5,994;96,000;2742613;2587510;9.636;3.535
+Kristiansand;E+R+F+K;Alle;7,6m - 12,5m;Siste 12 måneder;5,051;96,000;3764520;3583506;7.980;2.927
+Kristiansand;E+R+F+K;Alle;12,5m - 16,0m;Siste 12 måneder;1,302;96,000;1276884;1260474;15.220;5.583
+Kristiansand;E+R+F+K;Alle;>= 16,0m;Siste 12 måneder;2,813;96,000;1635412;1590666;6.786;2.489
+Kristiansand;E+R+F+K;Yrkesdøgn;Alle;Siste 12 måneder;1,840;96,000;65262617;64083734;2.541;0.932
+Kristiansand;E+R+F+K;Yrkesdøgn;< 5,6m;Siste 12 måneder;1,593;96,000;57111465;56216201;2.173;0.797
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 5,6m;Siste 12 måneder;4,086;96,000;8044335;7728572;5.675;2.081
+Kristiansand;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;5,799;96,000;2296184;2170326;9.754;3.578
+Kristiansand;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;4,645;96,000;3169087;3028419;7.580;2.780
+Kristiansand;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;0,733;96,000;1084866;1076977;15.407;5.651
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 16,0m;Siste 12 måneder;2,846;96,000;1494198;1452850;6.989;2.563
+Kristiansand;E+R+F+K;Helgedøgn;Alle;Siste 12 måneder;2,180;96,000;18793215;18392282;3.636;1.334
+Kristiansand;E+R+F+K;Helgedøgn;< 5,6m;Siste 12 måneder;2,006;97,000;17380863;17039017;2.999;1.100
+Kristiansand;E+R+F+K;Helgedøgn;>= 5,6m;Siste 12 måneder;6,301;97,000;1375094;1293584;7.849;2.879
+Kristiansand;E+R+F+K;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;7,010;97,000;446429;417184;10.191;3.738
+Kristiansand;E+R+F+K;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;7,268;97,000;595433;555087;11.141;4.087
+Kristiansand;E+R+F+K;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;4,644;97,000;192018;183497;16.317;5.985
+Kristiansand;E+R+F+K;Helgedøgn;>= 16,0m;Siste 12 måneder;2,466;97,000;141214;137816;6.357;2.332
+Kristiansand;E+R+F+K;Alle;Alle;Hittil i år;1,915;96,000;84055832;82476016;2.504;0.918
+Kristiansand;E+R+F+K;Alle;< 5,6m;Hittil i år;1,689;96,000;74492328;73255218;1.970;0.723
+Kristiansand;E+R+F+K;Alle;>= 5,6m;Hittil i år;4,403;96,000;9419429;9022156;5.809;2.131
+Kristiansand;E+R+F+K;Alle;5,6m - 7,6m;Hittil i år;5,994;96,000;2742613;2587510;9.636;3.535
+Kristiansand;E+R+F+K;Alle;7,6m - 12,5m;Hittil i år;5,051;96,000;3764520;3583506;7.980;2.927
+Kristiansand;E+R+F+K;Alle;12,5m - 16,0m;Hittil i år;1,302;96,000;1276884;1260474;15.220;5.583
+Kristiansand;E+R+F+K;Alle;>= 16,0m;Hittil i år;2,813;96,000;1635412;1590666;6.786;2.489
+Kristiansand;E+R+F+K;Yrkesdøgn;Alle;Hittil i år;1,840;96,000;65262617;64083734;2.541;0.932
+Kristiansand;E+R+F+K;Yrkesdøgn;< 5,6m;Hittil i år;1,593;96,000;57111465;56216201;2.173;0.797
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 5,6m;Hittil i år;4,086;96,000;8044335;7728572;5.675;2.081
+Kristiansand;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Hittil i år;5,799;96,000;2296184;2170326;9.754;3.578
+Kristiansand;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Hittil i år;4,645;96,000;3169087;3028419;7.580;2.780
+Kristiansand;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Hittil i år;0,733;96,000;1084866;1076977;15.407;5.651
+Kristiansand;E+R+F+K;Yrkesdøgn;>= 16,0m;Hittil i år;2,846;96,000;1494198;1452850;6.989;2.563
+Kristiansand;E+R+F+K;Helgedøgn;Alle;Hittil i år;2,180;96,000;18793215;18392282;3.636;1.334
+Kristiansand;E+R+F+K;Helgedøgn;< 5,6m;Hittil i år;2,006;97,000;17380863;17039017;2.999;1.100
+Kristiansand;E+R+F+K;Helgedøgn;>= 5,6m;Hittil i år;6,301;97,000;1375094;1293584;7.849;2.879
+Kristiansand;E+R+F+K;Helgedøgn;5,6m - 7,6m;Hittil i år;7,010;97,000;446429;417184;10.191;3.738
+Kristiansand;E+R+F+K;Helgedøgn;7,6m - 12,5m;Hittil i år;7,268;97,000;595433;555087;11.141;4.087
+Kristiansand;E+R+F+K;Helgedøgn;12,5m - 16,0m;Hittil i år;4,644;97,000;192018;183497;16.317;5.985
+Kristiansand;E+R+F+K;Helgedøgn;>= 16,0m;Hittil i år;2,466;97,000;141214;137816;6.357;2.332
+Kristiansand;F;Alle;Alle;Januar;1,529;92,000;2945702;2901351;2.774;1.536
+Kristiansand;F;Alle;< 5,6m;Januar;1,144;92,000;2710677;2680015;2.863;1.585
+Kristiansand;F;Alle;>= 5,6m;Januar;6,130;92,000;233991;220476;8.048;4.457
+Kristiansand;F;Alle;5,6m - 7,6m;Januar;3,158;92,000;74729;72441;14.837;8.217
+Kristiansand;F;Alle;7,6m - 12,5m;Januar;17,773;92,000;105349;89451;47.073;26.068
+Kristiansand;F;Alle;12,5m - 16,0m;Januar;-15,093;92,000;37827;44551;45.804;25.365
+Kristiansand;F;Alle;>= 16,0m;Januar;14,630;92,000;16086;14033;33.640;18.629
+Kristiansand;F;Yrkesdøgn;Alle;Januar;1,919;92,000;2387819;2342850;2.955;1.636
+Kristiansand;F;Yrkesdøgn;< 5,6m;Januar;1,568;92,000;2181354;2147682;2.998;1.661
+Kristiansand;F;Yrkesdøgn;>= 5,6m;Januar;5,709;92,000;205520;194420;7.621;4.220
+Kristiansand;F;Yrkesdøgn;5,6m - 7,6m;Januar;3,589;92,000;66353;64054;14.344;7.944
+Kristiansand;F;Yrkesdøgn;7,6m - 12,5m;Januar;15,589;92,000;90603;78384;43.065;23.849
+Kristiansand;F;Yrkesdøgn;12,5m - 16,0m;Januar;-14,072;92,000;33102;38523;47.836;26.491
+Kristiansand;F;Yrkesdøgn;>= 16,0m;Januar;14,882;92,000;15462;13459;37.904;20.990
+Kristiansand;F;Helgedøgn;Alle;Januar;-0,111;92,000;557883;558501;3.449;1.910
+Kristiansand;F;Helgedøgn;< 5,6m;Januar;-0,565;92,000;529323;532333;3.840;2.126
+Kristiansand;F;Helgedøgn;>= 5,6m;Januar;9,268;92,000;28471;26056;13.207;7.314
+Kristiansand;F;Helgedøgn;5,6m - 7,6m;Januar;-0,131;92,000;8376;8387;22.281;12.339
+Kristiansand;F;Helgedøgn;7,6m - 12,5m;Januar;33,243;92,000;14746;11067;77.871;43.124
+Kristiansand;F;Helgedøgn;12,5m - 16,0m;Januar;-21,616;92,000;4725;6028;-;-
+Kristiansand;F;Helgedøgn;>= 16,0m;Januar;8,711;92,000;624;574;-;-
+Kristiansand;F;Alle;Alle;Februar;3,883;98,000;2612046;2514410;3.350;2.025
+Kristiansand;F;Alle;< 5,6m;Februar;3,997;98,000;2410007;2317374;3.435;2.075
+Kristiansand;F;Alle;>= 5,6m;Februar;2,473;98,000;201184;196329;9.493;5.737
+Kristiansand;F;Alle;5,6m - 7,6m;Februar;-0,918;98,000;64468;65065;14.856;8.977
+Kristiansand;F;Alle;7,6m - 12,5m;Februar;16,432;98,000;90200;77470;52.834;31.928
+Kristiansand;F;Alle;12,5m - 16,0m;Februar;-20,571;98,000;32137;40460;35.266;21.311
+Kristiansand;F;Alle;>= 16,0m;Februar;7,837;98,000;14379;13334;27.490;16.612
+Kristiansand;F;Yrkesdøgn;Alle;Februar;3,592;98,000;2112047;2038821;3.265;1.973
+Kristiansand;F;Yrkesdøgn;< 5,6m;Februar;3,688;98,000;1932834;1864091;3.311;2.001
+Kristiansand;F;Yrkesdøgn;>= 5,6m;Februar;2,493;98,000;178432;174092;9.055;5.472
+Kristiansand;F;Yrkesdøgn;5,6m - 7,6m;Februar;-0,522;98,000;57506;57808;14.225;8.596
+Kristiansand;F;Yrkesdøgn;7,6m - 12,5m;Februar;15,374;98,000;79149;68602;47.334;28.603
+Kristiansand;F;Yrkesdøgn;12,5m - 16,0m;Februar;-19,736;98,000;27959;34834;37.094;22.415
+Kristiansand;F;Yrkesdøgn;>= 16,0m;Februar;7,550;98,000;13818;12848;29.466;17.806
+Kristiansand;F;Helgedøgn;Alle;Februar;5,133;97,000;499999;475589;4.535;2.740
+Kristiansand;F;Helgedøgn;< 5,6m;Februar;5,270;97,000;477173;453283;4.729;2.858
+Kristiansand;F;Helgedøgn;>= 5,6m;Februar;2,316;97,000;22752;22237;16.218;9.800
+Kristiansand;F;Helgedøgn;5,6m - 7,6m;Februar;-4,065;97,000;6962;7257;23.123;13.973
+Kristiansand;F;Helgedøgn;7,6m - 12,5m;Februar;24,617;97,000;11051;8868;101.566;61.376
+Kristiansand;F;Helgedøgn;12,5m - 16,0m;Februar;-25,738;97,000;4178;5626;-;-
+Kristiansand;F;Helgedøgn;>= 16,0m;Februar;15,432;97,000;561;486;28.469;17.204
+Kristiansand;F;Alle;Alle;Mars;11,030;96,000;2935385;2643786;4.514;2.728
+Kristiansand;F;Alle;< 5,6m;Mars;10,388;96,000;2696568;2442815;4.193;2.534
+Kristiansand;F;Alle;>= 5,6m;Mars;18,783;96,000;237845;200235;19.963;12.064
+Kristiansand;F;Alle;5,6m - 7,6m;Mars;13,352;96,000;75711;66793;23.718;14.333
+Kristiansand;F;Alle;7,6m - 12,5m;Mars;45,555;96,000;110808;76128;56.711;34.270
+Kristiansand;F;Alle;12,5m - 16,0m;Mars;-19,632;96,000;34715;43195;40.705;24.598
+Kristiansand;F;Alle;>= 16,0m;Mars;17,650;96,000;16611;14119;28.841;17.428
+Kristiansand;F;Yrkesdøgn;Alle;Mars;12,001;96,000;2278438;2034294;5.621;3.397
+Kristiansand;F;Yrkesdøgn;< 5,6m;Mars;11,487;96,000;2074858;1861072;5.228;3.159
+Kristiansand;F;Yrkesdøgn;>= 5,6m;Mars;17,456;96,000;202710;172584;20.006;12.090
+Kristiansand;F;Yrkesdøgn;5,6m - 7,6m;Mars;12,402;96,000;65148;57960;24.230;14.642
+Kristiansand;F;Yrkesdøgn;7,6m - 12,5m;Mars;40,896;96,000;92018;65309;51.719;31.254
+Kristiansand;F;Yrkesdøgn;12,5m - 16,0m;Mars;-17,168;96,000;29653;35799;41.775;25.244
+Kristiansand;F;Yrkesdøgn;>= 16,0m;Mars;17,572;96,000;15891;13516;28.619;17.294
+Kristiansand;F;Helgedøgn;Alle;Mars;7,786;96,000;656947;609492;4.463;2.697
+Kristiansand;F;Helgedøgn;< 5,6m;Mars;6,870;96,000;621710;581743;4.428;2.676
+Kristiansand;F;Helgedøgn;>= 5,6m;Mars;27,066;96,000;35135;27651;22.701;13.718
+Kristiansand;F;Helgedøgn;5,6m - 7,6m;Mars;19,586;96,000;10563;8833;25.978;15.698
+Kristiansand;F;Helgedøgn;7,6m - 12,5m;Mars;73,676;96,000;18790;10819;90.424;54.643
+Kristiansand;F;Helgedøgn;12,5m - 16,0m;Mars;-31,558;96,000;5062;7396;-;-
+Kristiansand;F;Helgedøgn;>= 16,0m;Mars;19,403;96,000;720;603;75.386;45.555
+Kristiansand;F;Alle;Alle;April;-4,498;99,000;2882968;3018747;4.998;3.020
+Kristiansand;F;Alle;< 5,6m;April;-4,450;99,000;2633035;2755662;4.965;3.000
+Kristiansand;F;Alle;>= 5,6m;April;-4,985;99,000;248962;262023;11.590;7.003
+Kristiansand;F;Alle;5,6m - 7,6m;April;-7,839;99,000;74480;80815;12.001;7.252
+Kristiansand;F;Alle;7,6m - 12,5m;April;3,827;99,000;122196;117692;31.613;19.104
+Kristiansand;F;Alle;12,5m - 16,0m;April;-21,717;99,000;35866;45816;26.446;15.981
+Kristiansand;F;Alle;>= 16,0m;April;-7,232;99,000;16420;17700;23.382;14.130
+Kristiansand;F;Yrkesdøgn;Alle;April;-5,817;99,000;2186048;2321064;4.802;2.902
+Kristiansand;F;Yrkesdøgn;< 5,6m;April;-5,827;99,000;1975367;2097585;4.729;2.858
+Kristiansand;F;Yrkesdøgn;>= 5,6m;April;-5,710;99,000;209850;222557;11.641;7.035
+Kristiansand;F;Yrkesdøgn;5,6m - 7,6m;April;-8,760;99,000;62837;68870;12.446;7.521
+Kristiansand;F;Yrkesdøgn;7,6m - 12,5m;April;3,932;99,000;101992;98133;29.056;17.558
+Kristiansand;F;Yrkesdøgn;12,5m - 16,0m;April;-23,943;99,000;29565;38872;26.010;15.718
+Kristiansand;F;Yrkesdøgn;>= 16,0m;April;-7,349;99,000;15456;16682;24.595;14.863
+Kristiansand;F;Helgedøgn;Alle;April;-0,109;99,000;696920;697683;6.452;3.899
+Kristiansand;F;Helgedøgn;< 5,6m;April;-0,062;99,000;657668;658077;6.538;3.951
+Kristiansand;F;Helgedøgn;>= 5,6m;April;-0,897;99,000;39112;39466;17.523;10.589
+Kristiansand;F;Helgedøgn;5,6m - 7,6m;April;-2,528;99,000;11643;11945;13.013;7.864
+Kristiansand;F;Helgedøgn;7,6m - 12,5m;April;3,298;99,000;20204;19559;48.808;29.494
+Kristiansand;F;Helgedøgn;12,5m - 16,0m;April;-9,260;99,000;6301;6944;36.940;22.323
+Kristiansand;F;Helgedøgn;>= 16,0m;April;-5,305;99,000;964;1018;51.838;31.325
+Kristiansand;F;Alle;Alle;Mai;2,615;98,000;2976842;2900975;3.511;2.122
+Kristiansand;F;Alle;< 5,6m;Mai;2,884;98,000;2698343;2622695;2.781;1.680
+Kristiansand;F;Alle;>= 5,6m;Mai;0,083;98,000;277416;277186;11.894;7.188
+Kristiansand;F;Alle;5,6m - 7,6m;Mai;0,628;98,000;81176;80669;12.997;7.854
+Kristiansand;F;Alle;7,6m - 12,5m;Mai;3,314;98,000;137702;133285;26.999;16.315
+Kristiansand;F;Alle;12,5m - 16,0m;Mai;-8,781;98,000;41054;45006;29.578;17.874
+Kristiansand;F;Alle;>= 16,0m;Mai;-4,071;98,000;17484;18226;13.552;8.190
+Kristiansand;F;Yrkesdøgn;Alle;Mai;5,851;97,000;2251089;2126663;4.556;2.753
+Kristiansand;F;Yrkesdøgn;< 5,6m;Mai;6,391;97,000;2018188;1896957;3.565;2.154
+Kristiansand;F;Yrkesdøgn;>= 5,6m;Mai;1,391;97,000;231982;228800;12.833;7.755
+Kristiansand;F;Yrkesdøgn;5,6m - 7,6m;Mai;2,735;97,000;68701;66872;14.916;9.013
+Kristiansand;F;Yrkesdøgn;7,6m - 12,5m;Mai;4,014;97,000;113588;109205;24.671;14.909
+Kristiansand;F;Yrkesdøgn;12,5m - 16,0m;Mai;-7,186;97,000;33426;36014;32.559;19.675
+Kristiansand;F;Yrkesdøgn;>= 16,0m;Mai;-2,645;97,000;16267;16709;14.443;8.728
+Kristiansand;F;Helgedøgn;Alle;Mai;-6,271;99,000;725753;774312;4.416;2.668
+Kristiansand;F;Helgedøgn;< 5,6m;Mai;-6,281;99,000;680155;725738;4.817;2.911
+Kristiansand;F;Helgedøgn;>= 5,6m;Mai;-6,101;99,000;45434;48386;10.326;6.240
+Kristiansand;F;Helgedøgn;5,6m - 7,6m;Mai;-9,582;99,000;12475;13797;10.066;6.083
+Kristiansand;F;Helgedøgn;7,6m - 12,5m;Mai;0,141;99,000;24114;24080;41.617;25.149
+Kristiansand;F;Helgedøgn;12,5m - 16,0m;Mai;-15,169;99,000;7628;8992;21.915;13.243
+Kristiansand;F;Helgedøgn;>= 16,0m;Mai;-19,776;99,000;1217;1517;15.030;9.082
+Kristiansand;F;Alle;Alle;Juni;-3,509;93,000;2506115;2597265;4.069;2.733
+Kristiansand;F;Alle;< 5,6m;Juni;-3,098;93,000;2271259;2343873;3.561;2.392
+Kristiansand;F;Alle;>= 5,6m;Juni;-7,297;93,000;234137;252568;10.950;7.356
+Kristiansand;F;Alle;5,6m - 7,6m;Juni;-6,557;93,000;69792;74689;13.624;9.153
+Kristiansand;F;Alle;7,6m - 12,5m;Juni;-3,664;93,000;112996;117294;25.026;16.813
+Kristiansand;F;Alle;12,5m - 16,0m;Juni;-17,082;93,000;37128;44777;20.494;13.768
+Kristiansand;F;Alle;>= 16,0m;Juni;-10,039;93,000;14221;15808;15.549;10.446
+Kristiansand;F;Yrkesdøgn;Alle;Juni;-10,350;92,000;1818191;2028089;8.087;5.433
+Kristiansand;F;Yrkesdøgn;< 5,6m;Juni;-10,125;92,000;1627972;1811378;7.776;5.224
+Kristiansand;F;Yrkesdøgn;>= 5,6m;Juni;-12,212;92,000;189653;216034;12.165;8.172
+Kristiansand;F;Yrkesdøgn;5,6m - 7,6m;Juni;-11,176;92,000;56964;64131;15.942;10.710
+Kristiansand;F;Yrkesdøgn;7,6m - 12,5m;Juni;-9,454;92,000;90336;99768;22.506;15.120
+Kristiansand;F;Yrkesdøgn;12,5m - 16,0m;Juni;-21,545;92,000;29058;37038;20.792;13.969
+Kristiansand;F;Yrkesdøgn;>= 16,0m;Juni;-11,936;92,000;13295;15097;15.609;10.486
+Kristiansand;F;Helgedøgn;Alle;Juni;20,863;96,000;687924;569176;9.810;6.590
+Kristiansand;F;Helgedøgn;< 5,6m;Juni;20,806;96,000;643287;532495;10.113;6.794
+Kristiansand;F;Helgedøgn;>= 5,6m;Juni;21,761;96,000;44484;36534;15.957;10.720
+Kristiansand;F;Helgedøgn;5,6m - 7,6m;Juni;21,500;96,000;12828;10558;12.020;8.075
+Kristiansand;F;Helgedøgn;7,6m - 12,5m;Juni;29,294;96,000;22660;17526;54.320;36.493
+Kristiansand;F;Helgedøgn;12,5m - 16,0m;Juni;4,277;96,000;8070;7739;27.908;18.749
+Kristiansand;F;Helgedøgn;>= 16,0m;Juni;30,239;96,000;926;711;40.676;27.327
+Kristiansand;F;Alle;Alle;Juli;3,410;97,000;2291240;2215679;3.404;2.287
+Kristiansand;F;Alle;< 5,6m;Juli;3,201;97,000;2073015;2008708;3.567;2.397
+Kristiansand;F;Alle;>= 5,6m;Juli;5,396;97,000;217736;206589;5.501;3.695
+Kristiansand;F;Alle;5,6m - 7,6m;Juli;5,541;97,000;62461;59182;9.599;6.449
+Kristiansand;F;Alle;7,6m - 12,5m;Juli;-0,189;97,000;107330;107533;10.578;7.106
+Kristiansand;F;Alle;12,5m - 16,0m;Juli;26,263;97,000;35461;28085;25.911;17.407
+Kristiansand;F;Alle;>= 16,0m;Juli;5,895;97,000;12484;11789;8.347;5.608
+Kristiansand;F;Yrkesdøgn;Alle;Juli;6,317;97,000;1854264;1744092;2.856;1.919
+Kristiansand;F;Yrkesdøgn;< 5,6m;Juli;6,187;97,000;1663573;1566640;2.890;1.942
+Kristiansand;F;Yrkesdøgn;>= 5,6m;Juli;7,412;97,000;190288;177157;5.664;3.805
+Kristiansand;F;Yrkesdøgn;5,6m - 7,6m;Juli;7,634;97,000;54381;50524;9.850;6.617
+Kristiansand;F;Yrkesdøgn;7,6m - 12,5m;Juli;2,280;97,000;94501;92394;10.078;6.770
+Kristiansand;F;Yrkesdøgn;12,5m - 16,0m;Juli;27,549;97,000;29414;23061;29.391;19.745
+Kristiansand;F;Yrkesdøgn;>= 16,0m;Juli;7,282;97,000;11992;11178;8.713;5.854
+Kristiansand;F;Helgedøgn;Alle;Juli;-7,339;97,000;436976;471587;7.139;4.796
+Kristiansand;F;Helgedøgn;< 5,6m;Juli;-7,380;97,000;409442;442068;7.571;5.086
+Kristiansand;F;Helgedøgn;>= 5,6m;Juli;-6,741;97,000;27448;29432;8.434;5.666
+Kristiansand;F;Helgedøgn;5,6m - 7,6m;Juli;-6,676;97,000;8080;8658;11.350;7.625
+Kristiansand;F;Helgedøgn;7,6m - 12,5m;Juli;-15,259;97,000;12829;15139;13.213;8.877
+Kristiansand;F;Helgedøgn;12,5m - 16,0m;Juli;20,362;97,000;6047;5024;24.206;16.262
+Kristiansand;F;Helgedøgn;>= 16,0m;Juli;-19,476;97,000;492;611;19.344;12.995
+Kristiansand;F;Alle;Alle;August;-0,092;93,000;2203519;2205551;2.403;1.614
+Kristiansand;F;Alle;< 5,6m;August;0,067;93,000;2005695;2004352;2.301;1.546
+Kristiansand;F;Alle;>= 5,6m;August;-1,687;93,000;197392;200779;6.117;4.110
+Kristiansand;F;Alle;5,6m - 7,6m;August;-2,985;93,000;57562;59333;10.346;6.951
+Kristiansand;F;Alle;7,6m - 12,5m;August;-3,963;93,000;98599;102668;8.352;5.611
+Kristiansand;F;Alle;12,5m - 16,0m;August;10,800;93,000;31495;28425;36.883;24.779
+Kristiansand;F;Alle;>= 16,0m;August;-5,960;93,000;9736;10353;12.360;8.304
+Kristiansand;F;Yrkesdøgn;Alle;August;-3,218;93,000;1747454;1805559;2.315;1.555
+Kristiansand;F;Yrkesdøgn;< 5,6m;August;-3,153;93,000;1578551;1629936;2.134;1.434
+Kristiansand;F;Yrkesdøgn;>= 5,6m;August;-3,839;93,000;168554;175283;6.081;4.085
+Kristiansand;F;Yrkesdøgn;5,6m - 7,6m;August;-4,988;93,000;49599;52203;10.724;7.205
+Kristiansand;F;Yrkesdøgn;7,6m - 12,5m;August;-5,405;93,000;83808;88597;8.034;5.397
+Kristiansand;F;Yrkesdøgn;12,5m - 16,0m;August;5,504;93,000;25802;24456;38.764;26.042
+Kristiansand;F;Yrkesdøgn;>= 16,0m;August;-6,802;93,000;9345;10027;12.202;8.197
+Kristiansand;F;Helgedøgn;Alle;August;14,019;93,000;456065;399992;4.745;3.188
+Kristiansand;F;Helgedøgn;< 5,6m;August;14,083;93,000;427144;374416;5.219;3.506
+Kristiansand;F;Helgedøgn;>= 5,6m;August;13,108;93,000;28838;25496;6.557;4.405
+Kristiansand;F;Helgedøgn;5,6m - 7,6m;August;11,683;93,000;7963;7130;8.123;5.457
+Kristiansand;F;Helgedøgn;7,6m - 12,5m;August;5,117;93,000;14791;14071;12.216;8.207
+Kristiansand;F;Helgedøgn;12,5m - 16,0m;August;43,437;93,000;5693;3969;27.507;18.480
+Kristiansand;F;Helgedøgn;>= 16,0m;August;19,939;93,000;391;326;-;-
+Kristiansand;F;Alle;Alle;September;-0,016;98,000;2121676;2122013;2.498;1.678
+Kristiansand;F;Alle;< 5,6m;September;-0,121;98,000;1930394;1932739;2.616;1.758
+Kristiansand;F;Alle;>= 5,6m;September;1,139;98,000;190799;188650;3.850;2.587
+Kristiansand;F;Alle;5,6m - 7,6m;September;1,401;98,000;55518;54751;8.163;5.484
+Kristiansand;F;Alle;7,6m - 12,5m;September;1,427;98,000;95061;93724;7.698;5.172
+Kristiansand;F;Alle;12,5m - 16,0m;September;0,446;98,000;31109;30971;19.521;13.114
+Kristiansand;F;Alle;>= 16,0m;September;-1,010;98,000;9111;9204;23.688;15.914
+Kristiansand;F;Yrkesdøgn;Alle;September;2,329;98,000;1685669;1647300;3.652;2.453
+Kristiansand;F;Yrkesdøgn;< 5,6m;September;2,278;98,000;1522653;1488735;3.666;2.463
+Kristiansand;F;Yrkesdøgn;>= 5,6m;September;2,860;98,000;162616;158095;4.951;3.326
+Kristiansand;F;Yrkesdøgn;5,6m - 7,6m;September;2,714;98,000;47643;46384;9.940;6.678
+Kristiansand;F;Yrkesdøgn;7,6m - 12,5m;September;4,410;98,000;79875;76501;8.144;5.471
+Kristiansand;F;Yrkesdøgn;12,5m - 16,0m;September;-0,536;98,000;26343;26485;22.177;14.899
+Kristiansand;F;Yrkesdøgn;>= 16,0m;September;0,344;98,000;8755;8725;22.704;15.253
+Kristiansand;F;Helgedøgn;Alle;September;-8,154;98,000;436007;474713;5.911;3.971
+Kristiansand;F;Helgedøgn;< 5,6m;September;-8,167;98,000;407741;444004;5.989;4.023
+Kristiansand;F;Helgedøgn;>= 5,6m;September;-7,763;98,000;28183;30555;11.429;7.678
+Kristiansand;F;Helgedøgn;5,6m - 7,6m;September;-5,880;98,000;7875;8367;12.542;8.426
+Kristiansand;F;Helgedøgn;7,6m - 12,5m;September;-11,827;98,000;15186;17223;12.947;8.698
+Kristiansand;F;Helgedøgn;12,5m - 16,0m;September;6,242;98,000;4766;4486;14.487;9.733
+Kristiansand;F;Helgedøgn;>= 16,0m;September;-25,678;98,000;356;479;33.574;22.555
+Kristiansand;F;Alle;Alle;Oktober;1,949;95,000;2866262;2811478;1.924;1.111
+Kristiansand;F;Alle;< 5,6m;Oktober;2,303;95,000;2613004;2554177;1.903;1.099
+Kristiansand;F;Alle;>= 5,6m;Oktober;-1,581;95,000;252759;256819;5.744;3.316
+Kristiansand;F;Alle;5,6m - 7,6m;Oktober;-2,432;95,000;72429;74234;10.143;5.856
+Kristiansand;F;Alle;7,6m - 12,5m;Oktober;-2,886;95,000;122958;126612;6.690;3.863
+Kristiansand;F;Alle;12,5m - 16,0m;Oktober;5,416;95,000;41403;39276;20.531;11.854
+Kristiansand;F;Alle;>= 16,0m;Oktober;-4,360;95,000;15969;16697;18.640;10.762
+Kristiansand;F;Yrkesdøgn;Alle;Oktober;2,686;95,000;2356449;2294808;2.237;1.292
+Kristiansand;F;Yrkesdøgn;< 5,6m;Oktober;3,153;95,000;2133640;2068415;2.124;1.226
+Kristiansand;F;Yrkesdøgn;>= 5,6m;Oktober;-1,606;95,000;222366;225996;5.657;3.266
+Kristiansand;F;Yrkesdøgn;5,6m - 7,6m;Oktober;-1,599;95,000;64417;65464;9.972;5.757
+Kristiansand;F;Yrkesdøgn;7,6m - 12,5m;Oktober;-2,787;95,000;106424;109475;6.876;3.970
+Kristiansand;F;Yrkesdøgn;12,5m - 16,0m;Oktober;3,354;95,000;36117;34945;20.919;12.079
+Kristiansand;F;Yrkesdøgn;>= 16,0m;Oktober;-4,369;95,000;15408;16112;20.483;11.827
+Kristiansand;F;Helgedøgn;Alle;Oktober;-1,327;96,000;509813;516670;4.124;2.381
+Kristiansand;F;Helgedøgn;< 5,6m;Oktober;-1,317;96,000;479364;485762;4.768;2.753
+Kristiansand;F;Helgedøgn;>= 5,6m;Oktober;-1,395;96,000;30393;30823;7.889;4.555
+Kristiansand;F;Helgedøgn;5,6m - 7,6m;Oktober;-8,643;96,000;8012;8770;16.041;9.262
+Kristiansand;F;Helgedøgn;7,6m - 12,5m;Oktober;-3,519;96,000;16534;17137;7.767;4.485
+Kristiansand;F;Helgedøgn;12,5m - 16,0m;Oktober;22,050;96,000;5286;4331;21.486;12.406
+Kristiansand;F;Helgedøgn;>= 16,0m;Oktober;-4,103;96,000;561;585;14.946;8.630
+Kristiansand;F;Alle;Alle;November;0,491;99,000;2664021;2650998;2.312;1.397
+Kristiansand;F;Alle;< 5,6m;November;0,940;99,000;2443630;2420878;2.251;1.361
+Kristiansand;F;Alle;>= 5,6m;November;-4,249;99,000;219837;229592;6.316;3.817
+Kristiansand;F;Alle;5,6m - 7,6m;November;-4,400;99,000;67007;70091;9.792;5.918
+Kristiansand;F;Alle;7,6m - 12,5m;November;-4,505;99,000;104047;108956;5.167;3.122
+Kristiansand;F;Alle;12,5m - 16,0m;November;1,168;99,000;35873;35459;18.242;11.024
+Kristiansand;F;Alle;>= 16,0m;November;-14,424;99,000;12910;15086;13.275;8.022
+Kristiansand;F;Yrkesdøgn;Alle;November;-3,383;99,000;2094012;2167335;1.809;1.093
+Kristiansand;F;Yrkesdøgn;< 5,6m;November;-2,981;99,000;1906049;1964611;1.810;1.094
+Kristiansand;F;Yrkesdøgn;>= 5,6m;November;-7,304;99,000;187500;202274;5.114;3.091
+Kristiansand;F;Yrkesdøgn;5,6m - 7,6m;November;-6,021;99,000;58402;62144;8.942;5.404
+Kristiansand;F;Yrkesdøgn;7,6m - 12,5m;November;-7,841;99,000;86911;94305;4.350;2.629
+Kristiansand;F;Yrkesdøgn;12,5m - 16,0m;November;-4,661;99,000;29906;31368;17.601;10.636
+Kristiansand;F;Yrkesdøgn;>= 16,0m;November;-15,052;99,000;12281;14457;13.829;8.357
+Kristiansand;F;Helgedøgn;Alle;November;17,853;99,000;570009;483663;4.952;2.992
+Kristiansand;F;Helgedøgn;< 5,6m;November;17,822;99,000;537581;456267;4.737;2.863
+Kristiansand;F;Helgedøgn;>= 5,6m;November;18,373;99,000;32337;27318;15.771;9.530
+Kristiansand;F;Helgedøgn;5,6m - 7,6m;November;8,280;99,000;8605;7947;20.728;12.526
+Kristiansand;F;Helgedøgn;7,6m - 12,5m;November;16,961;99,000;17136;14651;15.087;9.117
+Kristiansand;F;Helgedøgn;12,5m - 16,0m;November;45,857;99,000;5967;4091;-;-
+Kristiansand;F;Helgedøgn;>= 16,0m;November;0,000;99,000;629;629;-;-
+Kristiansand;F;Alle;Alle;Desember;-0,159;95,000;3453402;3458905;8.910;4.581
+Kristiansand;F;Alle;< 5,6m;Desember;1,725;96,000;3085675;3033359;4.204;2.240
+Kristiansand;F;Alle;>= 5,6m;Desember;-0,140;96,000;250847;251199;6.718;3.580
+Kristiansand;F;Alle;5,6m - 7,6m;Desember;-2,728;96,000;79600;81832;8.695;4.633
+Kristiansand;F;Alle;7,6m - 12,5m;Desember;1,859;96,000;111047;109020;5.803;3.092
+Kristiansand;F;Alle;12,5m - 16,0m;Desember;2,527;96,000;46125;44988;15.879;8.462
+Kristiansand;F;Alle;>= 16,0m;Desember;-8,360;96,000;14075;15359;19.547;10.416
+Kristiansand;F;Yrkesdøgn;Alle;Desember;3,833;95,000;2572571;2477597;9.285;4.774
+Kristiansand;F;Yrkesdøgn;< 5,6m;Desember;5,934;97,000;2280455;2152722;4.664;2.485
+Kristiansand;F;Yrkesdøgn;>= 5,6m;Desember;1,912;97,000;208646;204732;7.084;3.775
+Kristiansand;F;Yrkesdøgn;5,6m - 7,6m;Desember;-0,379;97,000;65963;66214;8.691;4.631
+Kristiansand;F;Yrkesdøgn;7,6m - 12,5m;Desember;4,504;97,000;92742;88745;6.442;3.433
+Kristiansand;F;Yrkesdøgn;12,5m - 16,0m;Desember;3,869;97,000;36887;35513;17.299;9.218
+Kristiansand;F;Yrkesdøgn;>= 16,0m;Desember;-8,457;97,000;13054;14260;21.298;11.349
+Kristiansand;F;Helgedøgn;Alle;Desember;-10,239;95,000;880831;981308;8.401;4.319
+Kristiansand;F;Helgedøgn;< 5,6m;Desember;-8,564;96,000;805220;880637;4.602;2.452
+Kristiansand;F;Helgedøgn;>= 5,6m;Desember;-9,181;96,000;42201;46467;8.802;4.691
+Kristiansand;F;Helgedøgn;5,6m - 7,6m;Desember;-12,684;96,000;13637;15618;13.171;7.018
+Kristiansand;F;Helgedøgn;7,6m - 12,5m;Desember;-9,716;96,000;18305;20275;9.087;4.842
+Kristiansand;F;Helgedøgn;12,5m - 16,0m;Desember;-2,501;96,000;9238;9475;12.681;6.757
+Kristiansand;F;Helgedøgn;>= 16,0m;Desember;-7,097;96,000;1021;1099;28.308;15.084
+Kristiansand;F;Alle;Alle;Siste 12 måneder;1,305;96,000;32459178;32041158;3.705;1.786
+Kristiansand;F;Alle;< 5,6m;Siste 12 måneder;1,561;96,000;29571302;29116647;2.459;1.185
+Kristiansand;F;Alle;>= 5,6m;Siste 12 måneder;0,746;96,000;2762905;2742445;6.685;3.222
+Kristiansand;F;Alle;5,6m - 7,6m;Siste 12 måneder;-0,591;96,000;834933;839895;9.690;4.670
+Kristiansand;F;Alle;7,6m - 12,5m;Siste 12 måneder;4,640;96,000;1318293;1259833;12.535;6.042
+Kristiansand;F;Alle;12,5m - 16,0m;Siste 12 måneder;-6,543;96,000;440193;471009;13.664;6.586
+Kristiansand;F;Alle;>= 16,0m;Siste 12 måneder;-1,294;96,000;169486;171708;12.478;6.014
+Kristiansand;F;Yrkesdøgn;Alle;Siste 12 måneder;1,261;96,000;25344051;25028472;3.803;1.833
+Kristiansand;F;Yrkesdøgn;< 5,6m;Siste 12 måneder;1,533;96,000;22895494;22549824;2.873;1.385
+Kristiansand;F;Yrkesdøgn;>= 5,6m;Siste 12 måneder;0,259;96,000;2358117;2352024;6.600;3.181
+Kristiansand;F;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;-0,652;96,000;717914;722628;9.907;4.775
+Kristiansand;F;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;3,977;96,000;1111947;1069418;11.957;5.763
+Kristiansand;F;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-7,477;96,000;367232;396908;13.802;6.652
+Kristiansand;F;Yrkesdøgn;>= 16,0m;Siste 12 måneder;-1,255;96,000;161024;163070;13.068;6.298
+Kristiansand;F;Helgedøgn;Alle;Siste 12 måneder;1,461;96,000;7115127;7012686;5.360;2.584
+Kristiansand;F;Helgedøgn;< 5,6m;Siste 12 måneder;1,660;96,000;6675808;6566823;4.082;1.968
+Kristiansand;F;Helgedøgn;>= 5,6m;Siste 12 måneder;3,680;96,000;404788;390421;9.288;4.477
+Kristiansand;F;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;-0,211;96,000;117019;117267;11.352;5.471
+Kristiansand;F;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;8,366;96,000;206346;190415;16.633;8.017
+Kristiansand;F;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-1,538;96,000;72961;74101;16.264;7.839
+Kristiansand;F;Helgedøgn;>= 16,0m;Siste 12 måneder;-2,038;96,000;8462;8638;11.891;5.731
+Kristiansand;F;Alle;Alle;Hittil i år;1,305;96,000;32459178;32041158;3.705;1.786
+Kristiansand;F;Alle;< 5,6m;Hittil i år;1,561;96,000;29571302;29116647;2.459;1.185
+Kristiansand;F;Alle;>= 5,6m;Hittil i år;0,746;96,000;2762905;2742445;6.685;3.222
+Kristiansand;F;Alle;5,6m - 7,6m;Hittil i år;-0,591;96,000;834933;839895;9.690;4.670
+Kristiansand;F;Alle;7,6m - 12,5m;Hittil i år;4,640;96,000;1318293;1259833;12.535;6.042
+Kristiansand;F;Alle;12,5m - 16,0m;Hittil i år;-6,543;96,000;440193;471009;13.664;6.586
+Kristiansand;F;Alle;>= 16,0m;Hittil i år;-1,294;96,000;169486;171708;12.478;6.014
+Kristiansand;F;Yrkesdøgn;Alle;Hittil i år;1,261;96,000;25344051;25028472;3.803;1.833
+Kristiansand;F;Yrkesdøgn;< 5,6m;Hittil i år;1,533;96,000;22895494;22549824;2.873;1.385
+Kristiansand;F;Yrkesdøgn;>= 5,6m;Hittil i år;0,259;96,000;2358117;2352024;6.600;3.181
+Kristiansand;F;Yrkesdøgn;5,6m - 7,6m;Hittil i år;-0,652;96,000;717914;722628;9.907;4.775
+Kristiansand;F;Yrkesdøgn;7,6m - 12,5m;Hittil i år;3,977;96,000;1111947;1069418;11.957;5.763
+Kristiansand;F;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-7,477;96,000;367232;396908;13.802;6.652
+Kristiansand;F;Yrkesdøgn;>= 16,0m;Hittil i år;-1,255;96,000;161024;163070;13.068;6.298
+Kristiansand;F;Helgedøgn;Alle;Hittil i år;1,461;96,000;7115127;7012686;5.360;2.584
+Kristiansand;F;Helgedøgn;< 5,6m;Hittil i år;1,660;96,000;6675808;6566823;4.082;1.968
+Kristiansand;F;Helgedøgn;>= 5,6m;Hittil i år;3,680;96,000;404788;390421;9.288;4.477
+Kristiansand;F;Helgedøgn;5,6m - 7,6m;Hittil i år;-0,211;96,000;117019;117267;11.352;5.471
+Kristiansand;F;Helgedøgn;7,6m - 12,5m;Hittil i år;8,366;96,000;206346;190415;16.633;8.017
+Kristiansand;F;Helgedøgn;12,5m - 16,0m;Hittil i år;-1,538;96,000;72961;74101;16.264;7.839
+Kristiansand;F;Helgedøgn;>= 16,0m;Hittil i år;-2,038;96,000;8462;8638;11.891;5.731

@@ -1,0 +1,1765 @@
+Område;Vegkategori;døgn;lengdeklasse;periode;indeks;dekning;trafikkmengde indeksår;trafikkmengde basisår;standardavvik;konfidensintervall
+Kristiansand kommune;E;Alle;Alle;Januar;5,336;99,000;5766606;5474477;0.631;0.784
+Kristiansand kommune;E;Alle;< 5,6m;Januar;4,679;99,000;1716863;1640114;1.157;10.395
+Kristiansand kommune;E;Alle;>= 5,6m;Januar;19,148;99,000;180045;151111;3.658;32.869
+Kristiansand kommune;E;Alle;5,6m - 7,6m;Januar;18,154;99,000;48944;41424;17.385;156.202
+Kristiansand kommune;E;Alle;7,6m - 12,5m;Januar;22,098;99,000;62392;51100;2.064;18.544
+Kristiansand kommune;E;Alle;12,5m - 16,0m;Januar;18,179;99,000;25035;21184;17.053;153.214
+Kristiansand kommune;E;Alle;>= 16,0m;Januar;16,766;99,000;43674;37403;2.753;24.737
+Kristiansand kommune;E;Yrkesdøgn;Alle;Januar;11,419;99,000;4671977;4193165;1.119;1.390
+Kristiansand kommune;E;Yrkesdøgn;< 5,6m;Januar;11,407;99,000;1380184;1238867;0.162;1.457
+Kristiansand kommune;E;Yrkesdøgn;>= 5,6m;Januar;23,781;99,000;162107;130963;4.660;41.868
+Kristiansand kommune;E;Yrkesdøgn;5,6m - 7,6m;Januar;21,745;99,000;43099;35401;17.194;154.479
+Kristiansand kommune;E;Yrkesdøgn;7,6m - 12,5m;Januar;27,523;99,000;55845;43792;4.175;37.515
+Kristiansand kommune;E;Yrkesdøgn;12,5m - 16,0m;Januar;25,764;99,000;22806;18134;16.187;145.431
+Kristiansand kommune;E;Yrkesdøgn;>= 16,0m;Januar;19,982;99,000;40357;33636;3.158;28.372
+Kristiansand kommune;E;Helgedøgn;Alle;Januar;-14,570;99,000;1094629;1281312;2.408;2.990
+Kristiansand kommune;E;Helgedøgn;< 5,6m;Januar;-16,092;99,000;336679;401247;5.039;45.273
+Kristiansand kommune;E;Helgedøgn;>= 5,6m;Januar;-10,969;99,000;17938;20148;2.190;19.680
+Kristiansand kommune;E;Helgedøgn;5,6m - 7,6m;Januar;-2,955;99,000;5845;6023;17.950;161.276
+Kristiansand kommune;E;Helgedøgn;7,6m - 12,5m;Januar;-10,413;99,000;6547;7308;9.296;83.525
+Kristiansand kommune;E;Helgedøgn;12,5m - 16,0m;Januar;-26,918;99,000;2229;3050;17.128;153.893
+Kristiansand kommune;E;Helgedøgn;>= 16,0m;Januar;-11,946;99,000;3317;3767;0.923;8.289
+Kristiansand kommune;E;Alle;Alle;Februar;-1,951;92,000;5485544;5594718;1.487;1.561
+Kristiansand kommune;E;Alle;< 5,6m;Februar;-1,880;85,000;1830693;1865769;1.574;3.911
+Kristiansand kommune;E;Alle;>= 5,6m;Februar;0,157;85,000;211420;211088;4.457;11.071
+Kristiansand kommune;E;Alle;5,6m - 7,6m;Februar;-3,242;85,000;56137;58018;12.967;32.211
+Kristiansand kommune;E;Alle;7,6m - 12,5m;Februar;-1,719;85,000;70270;71499;4.485;11.141
+Kristiansand kommune;E;Alle;12,5m - 16,0m;Februar;4,569;85,000;30305;28981;11.752;29.194
+Kristiansand kommune;E;Alle;>= 16,0m;Februar;4,027;85,000;54708;52590;5.134;12.755
+Kristiansand kommune;E;Yrkesdøgn;Alle;Februar;-2,317;91,000;4412435;4517077;4.175;4.382
+Kristiansand kommune;E;Yrkesdøgn;< 5,6m;Februar;-2,150;84,000;1449682;1481538;5.916;14.696
+Kristiansand kommune;E;Yrkesdøgn;>= 5,6m;Februar;1,226;84,000;189451;187156;6.867;17.058
+Kristiansand kommune;E;Yrkesdøgn;5,6m - 7,6m;Februar;-2,825;84,000;49161;50590;14.231;35.351
+Kristiansand kommune;E;Yrkesdøgn;7,6m - 12,5m;Februar;0,182;84,000;62775;62661;7.545;18.742
+Kristiansand kommune;E;Yrkesdøgn;12,5m - 16,0m;Februar;6,868;84,000;27216;25467;10.413;25.868
+Kristiansand kommune;E;Yrkesdøgn;>= 16,0m;Februar;3,842;84,000;50299;48438;7.172;17.817
+Kristiansand kommune;E;Helgedøgn;Alle;Februar;-0,421;92,000;1073109;1077641;10.069;10.567
+Kristiansand kommune;E;Helgedøgn;< 5,6m;Februar;-0,838;87,000;381011;384231;15.410;38.281
+Kristiansand kommune;E;Helgedøgn;>= 5,6m;Februar;-8,202;87,000;21969;23932;14.601;36.270
+Kristiansand kommune;E;Helgedøgn;5,6m - 7,6m;Februar;-6,085;87,000;6976;7428;21.027;52.234
+Kristiansand kommune;E;Helgedøgn;7,6m - 12,5m;Februar;-15,196;87,000;7495;8838;13.604;33.795
+Kristiansand kommune;E;Helgedøgn;12,5m - 16,0m;Februar;-12,094;87,000;3089;3514;20.673;51.356
+Kristiansand kommune;E;Helgedøgn;>= 16,0m;Februar;6,190;87,000;4409;4152;18.064;44.872
+Kristiansand kommune;E;Alle;Alle;Mars;2,249;91,000;2578792;2522075;7.526;18.696
+Kristiansand kommune;E;Alle;< 5,6m;Mars;1,733;82,000;1972260;1938664;7.809;19.399
+Kristiansand kommune;E;Alle;>= 5,6m;Mars;17,151;82,000;254520;217258;4.303;10.689
+Kristiansand kommune;E;Alle;5,6m - 7,6m;Mars;20,571;82,000;72317;59979;13.973;34.710
+Kristiansand kommune;E;Alle;7,6m - 12,5m;Mars;16,508;82,000;88717;76147;1.454;3.612
+Kristiansand kommune;E;Alle;12,5m - 16,0m;Mars;8,078;82,000;31441;29091;1.797;4.463
+Kristiansand kommune;E;Alle;>= 16,0m;Mars;19,223;82,000;62045;52041;3.957;9.829
+Kristiansand kommune;E;Yrkesdøgn;Alle;Mars;11,355;89,000;2128308;1911276;8.028;19.943
+Kristiansand kommune;E;Yrkesdøgn;< 5,6m;Mars;12,827;80,000;1601328;1419276;6.549;16.268
+Kristiansand kommune;E;Yrkesdøgn;>= 5,6m;Mars;23,497;80,000;228616;185119;5.852;14.537
+Kristiansand kommune;E;Yrkesdøgn;5,6m - 7,6m;Mars;28,955;80,000;63732;49422;16.629;41.308
+Kristiansand kommune;E;Yrkesdøgn;7,6m - 12,5m;Mars;22,224;80,000;78844;64508;2.603;6.467
+Kristiansand kommune;E;Yrkesdøgn;12,5m - 16,0m;Mars;16,188;80,000;28258;24321;3.695;9.179
+Kristiansand kommune;E;Yrkesdøgn;>= 16,0m;Mars;23,287;80,000;57782;46868;2.964;7.364
+Kristiansand kommune;E;Helgedøgn;Alle;Mars;-26,247;95,000;450484;610799;6.440;15.999
+Kristiansand kommune;E;Helgedøgn;< 5,6m;Mars;-28,583;88,000;370932;519388;9.407;23.367
+Kristiansand kommune;E;Helgedøgn;>= 5,6m;Mars;-19,400;88,000;25904;32139;4.585;11.389
+Kristiansand kommune;E;Helgedøgn;5,6m - 7,6m;Mars;-18,680;88,000;8585;10557;13.020;32.344
+Kristiansand kommune;E;Helgedøgn;7,6m - 12,5m;Mars;-15,173;88,000;9873;11639;7.171;17.813
+Kristiansand kommune;E;Helgedøgn;12,5m - 16,0m;Mars;-33,270;88,000;3183;4770;8.155;20.259
+Kristiansand kommune;E;Helgedøgn;>= 16,0m;Mars;-17,591;88,000;4263;5173;10.382;25.791
+Kristiansand kommune;E;Alle;Alle;April;-6,328;96,000;2478022;2645414;1.631;4.051
+Kristiansand kommune;E;Alle;< 5,6m;April;-6,412;96,000;2183465;2333054;2.229;5.536
+Kristiansand kommune;E;Alle;>= 5,6m;April;-6,046;96,000;293439;312321;3.663;9.098
+Kristiansand kommune;E;Alle;5,6m - 7,6m;April;3,747;96,000;86060;82952;14.216;35.314
+Kristiansand kommune;E;Alle;7,6m - 12,5m;April;-8,929;96,000;109950;120730;3.645;9.056
+Kristiansand kommune;E;Alle;12,5m - 16,0m;April;-13,174;96,000;36777;42357;6.262;15.555
+Kristiansand kommune;E;Alle;>= 16,0m;April;-8,494;96,000;60652;66282;4.501;11.182
+Kristiansand kommune;E;Yrkesdøgn;Alle;April;-16,023;95,000;1735297;2066394;1.662;4.129
+Kristiansand kommune;E;Yrkesdøgn;< 5,6m;April;-16,723;95,000;1499121;1800170;1.792;4.452
+Kristiansand kommune;E;Yrkesdøgn;>= 5,6m;April;-11,564;95,000;235407;266190;3.547;8.812
+Kristiansand kommune;E;Yrkesdøgn;5,6m - 7,6m;April;-6,078;95,000;65427;69661;12.397;30.795
+Kristiansand kommune;E;Yrkesdøgn;7,6m - 12,5m;April;-13,056;95,000;86716;99738;3.079;7.648
+Kristiansand kommune;E;Yrkesdøgn;12,5m - 16,0m;April;-17,099;95,000;29895;36061;5.802;14.414
+Kristiansand kommune;E;Yrkesdøgn;>= 16,0m;April;-12,121;95,000;53369;60730;4.337;10.774
+Kristiansand kommune;E;Helgedøgn;Alle;April;28,273;96,000;742725;579020;5.247;13.035
+Kristiansand kommune;E;Helgedøgn;< 5,6m;April;28,423;96,000;684344;532884;6.301;15.653
+Kristiansand kommune;E;Helgedøgn;>= 5,6m;April;25,798;96,000;58032;46131;4.683;11.634
+Kristiansand kommune;E;Helgedøgn;5,6m - 7,6m;April;55,240;96,000;20633;13291;20.380;50.626
+Kristiansand kommune;E;Helgedøgn;7,6m - 12,5m;April;10,680;96,000;23234;20992;6.327;15.718
+Kristiansand kommune;E;Helgedøgn;12,5m - 16,0m;April;9,307;96,000;6882;6296;11.730;29.139
+Kristiansand kommune;E;Helgedøgn;>= 16,0m;April;31,178;96,000;7283;5552;7.663;19.036
+Kristiansand kommune;E;Alle;Alle;Mai;1,788;96,000;5576453;5478505;2.742;2.877
+Kristiansand kommune;E;Alle;< 5,6m;Mai;0,982;96,000;4961968;4913700;2.887;3.029
+Kristiansand kommune;E;Alle;>= 5,6m;Mai;8,533;96,000;612735;564561;5.295;5.557
+Kristiansand kommune;E;Alle;5,6m - 7,6m;Mai;6,063;96,000;177150;167024;13.039;13.683
+Kristiansand kommune;E;Alle;7,6m - 12,5m;Mai;8,456;96,000;236544;218101;6.059;6.359
+Kristiansand kommune;E;Alle;12,5m - 16,0m;Mai;0,250;96,000;68179;68009;7.232;7.590
+Kristiansand kommune;E;Alle;>= 16,0m;Mai;17,442;96,000;130862;111427;8.736;9.167
+Kristiansand kommune;E;Yrkesdøgn;Alle;Mai;4,382;96,000;4186338;4010606;3.724;3.908
+Kristiansand kommune;E;Yrkesdøgn;< 5,6m;Mai;3,660;96,000;3675153;3545394;3.643;3.823
+Kristiansand kommune;E;Yrkesdøgn;>= 5,6m;Mai;9,630;96,000;509837;465054;6.755;7.089
+Kristiansand kommune;E;Yrkesdøgn;5,6m - 7,6m;Mai;6,671;96,000;142495;133584;12.565;13.186
+Kristiansand kommune;E;Yrkesdøgn;7,6m - 12,5m;Mai;9,985;96,000;195553;177800;7.087;7.437
+Kristiansand kommune;E;Yrkesdøgn;12,5m - 16,0m;Mai;2,654;96,000;57325;55843;9.261;9.719
+Kristiansand kommune;E;Yrkesdøgn;>= 16,0m;Mai;17,007;96,000;114464;97827;10.079;10.577
+Kristiansand kommune;E;Helgedøgn;Alle;Mai;-5,299;96,000;1390115;1467899;4.758;4.993
+Kristiansand kommune;E;Helgedøgn;< 5,6m;Mai;-5,956;96,000;1286815;1368306;4.829;5.067
+Kristiansand kommune;E;Helgedøgn;>= 5,6m;Mai;3,408;96,000;102898;99507;3.480;3.652
+Kristiansand kommune;E;Helgedøgn;5,6m - 7,6m;Mai;3,633;96,000;34655;33440;15.846;16.629
+Kristiansand kommune;E;Helgedøgn;7,6m - 12,5m;Mai;1,712;96,000;40991;40301;7.950;8.343
+Kristiansand kommune;E;Helgedøgn;12,5m - 16,0m;Mai;-10,784;96,000;10854;12166;7.319;7.681
+Kristiansand kommune;E;Helgedøgn;>= 16,0m;Mai;20,574;96,000;16398;13600;6.519;6.842
+Kristiansand kommune;E;Alle;Alle;Juni;-2,694;98,000;3342831;3435381;1.421;3.529
+Kristiansand kommune;E;Alle;< 5,6m;Juni;-3,158;98,000;2952012;3048263;1.983;4.926
+Kristiansand kommune;E;Alle;>= 5,6m;Juni;0,927;98,000;390434;386849;3.676;9.132
+Kristiansand kommune;E;Alle;5,6m - 7,6m;Juni;-3,454;98,000;115616;119752;2.732;6.786
+Kristiansand kommune;E;Alle;7,6m - 12,5m;Juni;5,465;98,000;156093;148005;5.306;13.180
+Kristiansand kommune;E;Alle;12,5m - 16,0m;Juni;-13,448;98,000;37747;43612;3.232;8.029
+Kristiansand kommune;E;Alle;>= 16,0m;Juni;7,284;98,000;80978;75480;10.319;25.635
+Kristiansand kommune;E;Yrkesdøgn;Alle;Juni;-5,541;98,000;2626255;2780309;1.405;3.490
+Kristiansand kommune;E;Yrkesdøgn;< 5,6m;Juni;-6,220;98,000;2290204;2442102;1.973;4.900
+Kristiansand kommune;E;Yrkesdøgn;>= 5,6m;Juni;-0,649;98,000;335759;337951;3.923;9.746
+Kristiansand kommune;E;Yrkesdøgn;5,6m - 7,6m;Juni;-5,153;98,000;96896;102160;2.766;6.870
+Kristiansand kommune;E;Yrkesdøgn;7,6m - 12,5m;Juni;4,131;98,000;132192;126948;5.514;13.697
+Kristiansand kommune;E;Yrkesdøgn;12,5m - 16,0m;Juni;-16,003;98,000;32463;38648;3.371;8.373
+Kristiansand kommune;E;Yrkesdøgn;>= 16,0m;Juni;5,717;98,000;74208;70195;10.709;26.602
+Kristiansand kommune;E;Helgedøgn;Alle;Juni;9,389;97,000;716576;655072;1.584;3.936
+Kristiansand kommune;E;Helgedøgn;< 5,6m;Juni;9,180;97,000;661808;606161;1.827;4.539
+Kristiansand kommune;E;Helgedøgn;>= 5,6m;Juni;11,814;97,000;54675;48898;2.423;6.018
+Kristiansand kommune;E;Helgedøgn;5,6m - 7,6m;Juni;6,412;97,000;18720;17592;2.641;6.560
+Kristiansand kommune;E;Helgedøgn;7,6m - 12,5m;Juni;13,506;97,000;23901;21057;4.643;11.533
+Kristiansand kommune;E;Helgedøgn;12,5m - 16,0m;Juni;6,446;97,000;5284;4964;1.061;2.635
+Kristiansand kommune;E;Helgedøgn;>= 16,0m;Juni;28,098;97,000;6770;5285;5.077;12.612
+Kristiansand kommune;E;Alle;Alle;Juli;-1,706;86,000;3841733;3908417;2.774;4.414
+Kristiansand kommune;E;Alle;< 5,6m;Juli;-2,135;86,000;3439635;3514663;3.061;4.871
+Kristiansand kommune;E;Alle;>= 5,6m;Juli;2,139;86,000;401462;393053;1.535;2.442
+Kristiansand kommune;E;Alle;5,6m - 7,6m;Juli;-2,046;86,000;127038;129692;3.741;5.953
+Kristiansand kommune;E;Alle;7,6m - 12,5m;Juli;5,012;86,000;165516;157616;3.520;5.601
+Kristiansand kommune;E;Alle;12,5m - 16,0m;Juli;-9,204;86,000;36804;40535;8.574;13.643
+Kristiansand kommune;E;Alle;>= 16,0m;Juli;10,572;86,000;72104;65210;8.417;13.394
+Kristiansand kommune;E;Yrkesdøgn;Alle;Juli;-0,810;85,000;2845149;2868384;6.060;9.642
+Kristiansand kommune;E;Yrkesdøgn;< 5,6m;Juli;-1,283;85,000;2516213;2548915;6.505;10.350
+Kristiansand kommune;E;Yrkesdøgn;>= 5,6m;Juli;2,988;85,000;328450;318920;3.274;5.210
+Kristiansand kommune;E;Yrkesdøgn;5,6m - 7,6m;Juli;-1,657;85,000;99634;101313;5.304;8.439
+Kristiansand kommune;E;Yrkesdøgn;7,6m - 12,5m;Juli;6,539;85,000;135058;126769;3.708;5.900
+Kristiansand kommune;E;Yrkesdøgn;12,5m - 16,0m;Juli;-10,632;85,000;28731;32149;11.782;18.748
+Kristiansand kommune;E;Yrkesdøgn;>= 16,0m;Juli;10,799;85,000;65027;58689;9.039;14.383
+Kristiansand kommune;E;Helgedøgn;Alle;Juli;-4,178;87,000;996584;1040033;6.087;9.685
+Kristiansand kommune;E;Helgedøgn;< 5,6m;Juli;-4,383;87,000;923422;965748;5.936;9.445
+Kristiansand kommune;E;Helgedøgn;>= 5,6m;Juli;-1,512;87,000;73012;74133;8.123;12.925
+Kristiansand kommune;E;Helgedøgn;5,6m - 7,6m;Juli;-3,436;87,000;27404;28379;7.036;11.195
+Kristiansand kommune;E;Helgedøgn;7,6m - 12,5m;Juli;-1,261;87,000;30458;30847;10.340;16.453
+Kristiansand kommune;E;Helgedøgn;12,5m - 16,0m;Juli;-3,732;87,000;8073;8386;6.337;10.084
+Kristiansand kommune;E;Helgedøgn;>= 16,0m;Juli;8,526;87,000;7077;6521;11.722;18.652
+Kristiansand kommune;E;Alle;Alle;August;0,779;96,000;4478789;4444161;2.168;3.450
+Kristiansand kommune;E;Alle;< 5,6m;August;0,340;96,000;3971623;3958182;2.414;3.842
+Kristiansand kommune;E;Alle;>= 5,6m;August;4,364;96,000;506163;484997;2.179;3.468
+Kristiansand kommune;E;Alle;5,6m - 7,6m;August;0,035;96,000;152355;152301;4.757;7.569
+Kristiansand kommune;E;Alle;7,6m - 12,5m;August;7,363;96,000;200040;186321;5.667;9.017
+Kristiansand kommune;E;Alle;12,5m - 16,0m;August;-7,361;96,000;51849;55969;7.852;12.495
+Kristiansand kommune;E;Alle;>= 16,0m;August;12,735;96,000;101919;90406;11.351;18.062
+Kristiansand kommune;E;Yrkesdøgn;Alle;August;0,842;95,000;3587195;3557235;2.776;4.417
+Kristiansand kommune;E;Yrkesdøgn;< 5,6m;August;0,344;95,000;3146036;3135264;3.066;4.878
+Kristiansand kommune;E;Yrkesdøgn;>= 5,6m;August;4,548;95,000;440311;421157;2.519;4.009
+Kristiansand kommune;E;Yrkesdøgn;5,6m - 7,6m;August;-0,150;95,000;128358;128551;5.100;8.116
+Kristiansand kommune;E;Yrkesdøgn;7,6m - 12,5m;August;7,725;95,000;172542;160169;6.020;9.579
+Kristiansand kommune;E;Yrkesdøgn;12,5m - 16,0m;August;-7,641;95,000;45099;48830;8.613;13.705
+Kristiansand kommune;E;Yrkesdøgn;>= 16,0m;August;12,804;95,000;94312;83607;11.849;18.855
+Kristiansand kommune;E;Helgedøgn;Alle;August;0,526;98,000;891594;886926;2.403;3.824
+Kristiansand kommune;E;Helgedøgn;< 5,6m;August;0,324;98,000;825587;822918;2.517;4.005
+Kristiansand kommune;E;Helgedøgn;>= 5,6m;August;3,152;98,000;65852;63840;2.009;3.196
+Kristiansand kommune;E;Helgedøgn;5,6m - 7,6m;August;1,040;98,000;23997;23750;4.635;7.375
+Kristiansand kommune;E;Helgedøgn;7,6m - 12,5m;August;5,147;98,000;27498;26152;4.045;6.437
+Kristiansand kommune;E;Helgedøgn;12,5m - 16,0m;August;-5,449;98,000;6750;7139;4.252;6.765
+Kristiansand kommune;E;Helgedøgn;>= 16,0m;August;11,884;98,000;7607;6799;5.582;8.882
+Kristiansand kommune;E;Alle;Alle;September;-0,552;97,000;2678836;2693698;0.767;1.906
+Kristiansand kommune;E;Alle;< 5,6m;September;-0,397;97,000;2344871;2354229;0.670;1.665
+Kristiansand kommune;E;Alle;>= 5,6m;September;-1,625;97,000;332801;338299;1.582;3.930
+Kristiansand kommune;E;Alle;5,6m - 7,6m;September;-0,939;97,000;94881;95780;3.186;7.914
+Kristiansand kommune;E;Alle;7,6m - 12,5m;September;-3,434;97,000;125402;129861;1.345;3.342
+Kristiansand kommune;E;Alle;12,5m - 16,0m;September;-0,453;97,000;43691;43890;4.802;11.929
+Kristiansand kommune;E;Alle;>= 16,0m;September;0,086;97,000;68827;68768;3.566;8.858
+Kristiansand kommune;E;Yrkesdøgn;Alle;September;-3,205;97,000;2113908;2183900;1.391;3.455
+Kristiansand kommune;E;Yrkesdøgn;< 5,6m;September;-3,134;97,000;1826323;1885407;1.413;3.509
+Kristiansand kommune;E;Yrkesdøgn;>= 5,6m;September;-3,649;97,000;286712;297571;1.659;4.121
+Kristiansand kommune;E;Yrkesdøgn;5,6m - 7,6m;September;-3,932;97,000;78363;81570;2.861;7.108
+Kristiansand kommune;E;Yrkesdøgn;7,6m - 12,5m;September;-5,754;97,000;106838;113361;1.723;4.280
+Kristiansand kommune;E;Yrkesdøgn;12,5m - 16,0m;September;-1,224;97,000;38245;38719;6.100;15.153
+Kristiansand kommune;E;Yrkesdøgn;>= 16,0m;September;-1,025;97,000;63266;63921;3.530;8.768
+Kristiansand kommune;E;Helgedøgn;Alle;September;10,814;98,000;564928;509798;3.035;7.540
+Kristiansand kommune;E;Helgedøgn;< 5,6m;September;10,607;98,000;518548;468822;2.928;7.273
+Kristiansand kommune;E;Helgedøgn;>= 5,6m;September;13,163;98,000;46089;40728;4.588;11.398
+Kristiansand kommune;E;Helgedøgn;5,6m - 7,6m;September;16,242;98,000;16518;14210;6.421;15.950
+Kristiansand kommune;E;Helgedøgn;7,6m - 12,5m;September;12,509;98,000;18564;16500;3.925;9.751
+Kristiansand kommune;E;Helgedøgn;12,5m - 16,0m;September;5,318;98,000;5446;5171;7.875;19.562
+Kristiansand kommune;E;Helgedøgn;>= 16,0m;September;14,731;98,000;5561;4847;4.621;11.480
+Kristiansand kommune;E;Alle;Alle;Oktober;1,018;95,000;3077212;3046198;1.088;1.731
+Kristiansand kommune;E;Alle;< 5,6m;Oktober;0,881;95,000;2721720;2697956;1.153;1.835
+Kristiansand kommune;E;Alle;>= 5,6m;Oktober;2,140;95,000;354267;346845;1.496;2.380
+Kristiansand kommune;E;Alle;5,6m - 7,6m;Oktober;3,438;95,000;101173;97810;3.998;6.361
+Kristiansand kommune;E;Alle;7,6m - 12,5m;Oktober;2,148;95,000;133753;130940;4.260;6.778
+Kristiansand kommune;E;Alle;12,5m - 16,0m;Oktober;-0,254;95,000;46309;46427;4.381;6.971
+Kristiansand kommune;E;Alle;>= 16,0m;Oktober;1,903;95,000;73032;71668;3.172;5.047
+Kristiansand kommune;E;Yrkesdøgn;Alle;Oktober;3,959;95,000;2443132;2350103;2.254;3.587
+Kristiansand kommune;E;Yrkesdøgn;< 5,6m;Oktober;3,913;95,000;2133366;2053030;2.370;3.772
+Kristiansand kommune;E;Yrkesdøgn;>= 5,6m;Oktober;4,324;95,000;308819;296018;1.828;2.909
+Kristiansand kommune;E;Yrkesdøgn;5,6m - 7,6m;Oktober;6,215;95,000;85487;80485;4.411;7.020
+Kristiansand kommune;E;Yrkesdøgn;7,6m - 12,5m;Oktober;4,498;95,000;115842;110856;6.143;9.776
+Kristiansand kommune;E;Yrkesdøgn;12,5m - 16,0m;Oktober;2,730;95,000;40795;39711;4.942;7.863
+Kristiansand kommune;E;Yrkesdøgn;>= 16,0m;Oktober;2,661;95,000;66695;64966;3.530;5.617
+Kristiansand kommune;E;Helgedøgn;Alle;Oktober;-8,909;95,000;634080;696095;3.790;6.030
+Kristiansand kommune;E;Helgedøgn;< 5,6m;Oktober;-8,772;95,000;588354;644926;3.978;6.329
+Kristiansand kommune;E;Helgedøgn;>= 5,6m;Oktober;-10,583;95,000;45448;50827;2.893;4.603
+Kristiansand kommune;E;Helgedøgn;5,6m - 7,6m;Oktober;-9,460;95,000;15686;17325;3.410;5.427
+Kristiansand kommune;E;Helgedøgn;7,6m - 12,5m;Oktober;-10,820;95,000;17911;20084;4.307;6.853
+Kristiansand kommune;E;Helgedøgn;12,5m - 16,0m;Oktober;-17,898;95,000;5514;6716;2.720;4.329
+Kristiansand kommune;E;Helgedøgn;>= 16,0m;Oktober;-5,446;95,000;6337;6702;4.496;7.154
+Kristiansand kommune;E;Alle;Alle;November;7,984;99,000;4500044;4167339;9.395;11.665
+Kristiansand kommune;E;Alle;< 5,6m;November;2,710;99,000;2787384;2713848;1.056;1.681
+Kristiansand kommune;E;Alle;>= 5,6m;November;5,366;99,000;350182;332348;2.379;3.786
+Kristiansand kommune;E;Alle;5,6m - 7,6m;November;7,100;99,000;98526;91994;7.407;11.786
+Kristiansand kommune;E;Alle;7,6m - 12,5m;November;7,649;99,000;129438;120241;8.113;12.910
+Kristiansand kommune;E;Alle;12,5m - 16,0m;November;2,796;99,000;46321;45061;3.730;5.936
+Kristiansand kommune;E;Alle;>= 16,0m;November;1,126;99,000;75897;75052;2.015;3.207
+Kristiansand kommune;E;Yrkesdøgn;Alle;November;7,605;99,000;3684890;3424452;8.918;11.073
+Kristiansand kommune;E;Yrkesdøgn;< 5,6m;November;2,625;99,000;2260727;2202893;1.126;1.792
+Kristiansand kommune;E;Yrkesdøgn;>= 5,6m;November;4,675;99,000;311379;297473;2.651;4.219
+Kristiansand kommune;E;Yrkesdøgn;5,6m - 7,6m;November;6,324;99,000;85540;80452;7.821;12.445
+Kristiansand kommune;E;Yrkesdøgn;7,6m - 12,5m;November;6,352;99,000;113924;107120;8.138;12.950
+Kristiansand kommune;E;Yrkesdøgn;12,5m - 16,0m;November;3,245;99,000;41525;40220;4.110;6.540
+Kristiansand kommune;E;Yrkesdøgn;>= 16,0m;November;1,017;99,000;70390;69681;2.139;3.404
+Kristiansand kommune;E;Helgedøgn;Alle;November;9,728;99,000;815154;742887;11.750;14.589
+Kristiansand kommune;E;Helgedøgn;< 5,6m;November;3,073;99,000;526657;510955;2.066;3.287
+Kristiansand kommune;E;Helgedøgn;>= 5,6m;November;11,263;99,000;38803;34875;2.244;3.570
+Kristiansand kommune;E;Helgedøgn;5,6m - 7,6m;November;12,511;99,000;12986;11542;4.441;7.067
+Kristiansand kommune;E;Helgedøgn;7,6m - 12,5m;November;18,238;99,000;15514;13121;8.551;13.607
+Kristiansand kommune;E;Helgedøgn;12,5m - 16,0m;November;-0,930;99,000;4796;4841;1.223;1.946
+Kristiansand kommune;E;Helgedøgn;>= 16,0m;November;2,532;99,000;5507;5371;6.462;10.283
+Kristiansand kommune;E;Alle;Alle;Desember;-1,445;95,000;5281236;5358670;1.624;1.704
+Kristiansand kommune;E;Alle;< 5,6m;Desember;-0,708;94,000;3620879;3646702;1.589;1.973
+Kristiansand kommune;E;Alle;>= 5,6m;Desember;-2,170;94,000;355642;363532;2.358;2.928
+Kristiansand kommune;E;Alle;5,6m - 7,6m;Desember;2,307;94,000;104092;101745;5.133;6.374
+Kristiansand kommune;E;Alle;7,6m - 12,5m;Desember;-3,398;94,000;126322;130766;5.629;6.989
+Kristiansand kommune;E;Alle;12,5m - 16,0m;Desember;-7,028;94,000;45549;48992;7.640;9.486
+Kristiansand kommune;E;Alle;>= 16,0m;Desember;-2,865;94,000;79679;82029;5.300;6.581
+Kristiansand kommune;E;Yrkesdøgn;Alle;Desember;-7,331;96,000;3943683;4255653;2.577;2.705
+Kristiansand kommune;E;Yrkesdøgn;< 5,6m;Desember;-6,762;95,000;2676746;2870860;2.678;3.325
+Kristiansand kommune;E;Yrkesdøgn;>= 5,6m;Desember;-4,624;95,000;306990;321873;2.652;3.293
+Kristiansand kommune;E;Yrkesdøgn;5,6m - 7,6m;Desember;-1,411;95,000;86927;88171;5.511;6.843
+Kristiansand kommune;E;Yrkesdøgn;7,6m - 12,5m;Desember;-5,764;95,000;109115;115789;5.646;7.010
+Kristiansand kommune;E;Yrkesdøgn;12,5m - 16,0m;Desember;-8,895;95,000;38981;42787;8.468;10.514
+Kristiansand kommune;E;Yrkesdøgn;>= 16,0m;Desember;-4,205;95,000;71967;75126;5.590;6.941
+Kristiansand kommune;E;Helgedøgn;Alle;Desember;21,263;94,000;1337553;1103017;3.812;4.001
+Kristiansand kommune;E;Helgedøgn;< 5,6m;Desember;21,691;93,000;944133;775842;4.644;5.766
+Kristiansand kommune;E;Helgedøgn;>= 5,6m;Desember;16,786;93,000;48652;41659;3.673;4.560
+Kristiansand kommune;E;Helgedøgn;5,6m - 7,6m;Desember;26,455;93,000;17165;13574;3.864;4.798
+Kristiansand kommune;E;Helgedøgn;7,6m - 12,5m;Desember;14,889;93,000;17207;14977;7.354;9.131
+Kristiansand kommune;E;Helgedøgn;12,5m - 16,0m;Desember;5,850;93,000;6568;6205;4.038;5.014
+Kristiansand kommune;E;Helgedøgn;>= 16,0m;Desember;11,720;93,000;7712;6903;3.023;3.754
+Kristiansand kommune;E;Alle;Alle;Siste 12 måneder;0,650;95,000;49086098;48769053;0.765;0.640
+Kristiansand kommune;E;Alle;< 5,6m;Siste 12 måneder;-0,352;94,000;34503373;34625144;1.857;1.552
+Kristiansand kommune;E;Alle;>= 5,6m;Siste 12 måneder;3,433;94,000;4243110;4102262;3.586;2.998
+Kristiansand kommune;E;Alle;5,6m - 7,6m;Siste 12 måneder;2,989;94,000;1234289;1198471;8.010;6.696
+Kristiansand kommune;E;Alle;7,6m - 12,5m;Siste 12 måneder;4,095;94,000;1604437;1541327;4.961;4.147
+Kristiansand kommune;E;Alle;12,5m - 16,0m;Siste 12 måneder;-2,743;94,000;500007;514108;4.413;3.690
+Kristiansand kommune;E;Alle;>= 16,0m;Siste 12 måneder;6,603;94,000;904377;848356;7.689;6.429
+Kristiansand kommune;E;Yrkesdøgn;Alle;Siste 12 måneder;0,682;95,000;38378567;38118554;2.139;1.788
+Kristiansand kommune;E;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,633;93,000;26455083;26623716;2.200;1.839
+Kristiansand kommune;E;Yrkesdøgn;>= 5,6m;Siste 12 måneder;3,358;93,000;3643838;3525445;4.768;3.986
+Kristiansand kommune;E;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;2,373;93,000;1025119;1001360;8.913;7.451
+Kristiansand kommune;E;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;4,256;93,000;1365244;1309511;5.619;4.697
+Kristiansand kommune;E;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-2,166;93,000;431339;440890;6.023;5.035
+Kristiansand kommune;E;Yrkesdøgn;>= 16,0m;Siste 12 måneder;6,263;93,000;822136;773684;8.150;6.814
+Kristiansand kommune;E;Helgedøgn;Alle;Siste 12 måneder;0,535;95,000;10707531;10650499;6.551;5.477
+Kristiansand kommune;E;Helgedøgn;< 5,6m;Siste 12 måneder;0,586;94,000;8048290;8001428;7.542;6.306
+Kristiansand kommune;E;Helgedøgn;>= 5,6m;Siste 12 måneder;3,893;94,000;599272;576817;4.656;3.893
+Kristiansand kommune;E;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;6,118;94,000;209170;197111;9.499;7.941
+Kristiansand kommune;E;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;3,182;94,000;239193;231816;5.684;4.752
+Kristiansand kommune;E;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-6,214;94,000;68668;73218;7.653;6.398
+Kristiansand kommune;E;Helgedøgn;>= 16,0m;Siste 12 måneder;10,136;94,000;82241;74672;8.631;7.216
+Kristiansand kommune;E;Alle;Alle;Hittil i år;0,650;95,000;49086098;48769053;0.765;0.640
+Kristiansand kommune;E;Alle;< 5,6m;Hittil i år;-0,352;94,000;34503373;34625144;1.857;1.552
+Kristiansand kommune;E;Alle;>= 5,6m;Hittil i år;3,433;94,000;4243110;4102262;3.586;2.998
+Kristiansand kommune;E;Alle;5,6m - 7,6m;Hittil i år;2,989;94,000;1234289;1198471;8.010;6.696
+Kristiansand kommune;E;Alle;7,6m - 12,5m;Hittil i år;4,095;94,000;1604437;1541327;4.961;4.147
+Kristiansand kommune;E;Alle;12,5m - 16,0m;Hittil i år;-2,743;94,000;500007;514108;4.413;3.690
+Kristiansand kommune;E;Alle;>= 16,0m;Hittil i år;6,603;94,000;904377;848356;7.689;6.429
+Kristiansand kommune;E;Yrkesdøgn;Alle;Hittil i år;0,682;95,000;38378567;38118554;2.139;1.788
+Kristiansand kommune;E;Yrkesdøgn;< 5,6m;Hittil i år;-0,633;93,000;26455083;26623716;2.200;1.839
+Kristiansand kommune;E;Yrkesdøgn;>= 5,6m;Hittil i år;3,358;93,000;3643838;3525445;4.768;3.986
+Kristiansand kommune;E;Yrkesdøgn;5,6m - 7,6m;Hittil i år;2,373;93,000;1025119;1001360;8.913;7.451
+Kristiansand kommune;E;Yrkesdøgn;7,6m - 12,5m;Hittil i år;4,256;93,000;1365244;1309511;5.619;4.697
+Kristiansand kommune;E;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-2,166;93,000;431339;440890;6.023;5.035
+Kristiansand kommune;E;Yrkesdøgn;>= 16,0m;Hittil i år;6,263;93,000;822136;773684;8.150;6.814
+Kristiansand kommune;E;Helgedøgn;Alle;Hittil i år;0,535;95,000;10707531;10650499;6.551;5.477
+Kristiansand kommune;E;Helgedøgn;< 5,6m;Hittil i år;0,586;94,000;8048290;8001428;7.542;6.306
+Kristiansand kommune;E;Helgedøgn;>= 5,6m;Hittil i år;3,893;94,000;599272;576817;4.656;3.893
+Kristiansand kommune;E;Helgedøgn;5,6m - 7,6m;Hittil i år;6,118;94,000;209170;197111;9.499;7.941
+Kristiansand kommune;E;Helgedøgn;7,6m - 12,5m;Hittil i år;3,182;94,000;239193;231816;5.684;4.752
+Kristiansand kommune;E;Helgedøgn;12,5m - 16,0m;Hittil i år;-6,214;94,000;68668;73218;7.653;6.398
+Kristiansand kommune;E;Helgedøgn;>= 16,0m;Hittil i år;10,136;94,000;82241;74672;8.631;7.216
+Kristiansand kommune;E+R;Alle;Alle;Januar;4,876;97,000;6483641;6182223;1.899;1.460
+Kristiansand kommune;E+R;Alle;< 5,6m;Januar;3,518;96,000;2369724;2289195;2.913;3.057
+Kristiansand kommune;E+R;Alle;>= 5,6m;Januar;16,465;96,000;244177;209657;8.413;8.829
+Kristiansand kommune;E+R;Alle;5,6m - 7,6m;Januar;18,259;96,000;67804;57335;16.568;17.387
+Kristiansand kommune;E+R;Alle;7,6m - 12,5m;Januar;17,773;96,000;93261;79187;11.436;12.002
+Kristiansand kommune;E+R;Alle;12,5m - 16,0m;Januar;10,752;96,000;31663;28589;21.223;22.272
+Kristiansand kommune;E+R;Alle;>= 16,0m;Januar;15,496;96,000;51449;44546;11.970;12.561
+Kristiansand kommune;E+R;Yrkesdøgn;Alle;Januar;11,068;97,000;5238823;4716792;2.126;1.634
+Kristiansand kommune;E+R;Yrkesdøgn;< 5,6m;Januar;10,362;95,000;1890062;1712605;3.038;3.189
+Kristiansand kommune;E+R;Yrkesdøgn;>= 5,6m;Januar;21,171;95,000;219044;180772;9.357;9.820
+Kristiansand kommune;E+R;Yrkesdøgn;5,6m - 7,6m;Januar;21,922;95,000;59553;48845;17.220;18.071
+Kristiansand kommune;E+R;Yrkesdøgn;7,6m - 12,5m;Januar;23,449;95,000;82942;67187;13.059;13.704
+Kristiansand kommune;E+R;Yrkesdøgn;12,5m - 16,0m;Januar;18,081;95,000;28755;24352;21.582;22.648
+Kristiansand kommune;E+R;Yrkesdøgn;>= 16,0m;Januar;18,337;95,000;47794;40388;12.903;13.540
+Kristiansand kommune;E+R;Helgedøgn;Alle;Januar;-15,054;97,000;1244818;1465431;2.679;2.060
+Kristiansand kommune;E+R;Helgedøgn;< 5,6m;Januar;-16,811;96,000;479662;576590;3.831;4.020
+Kristiansand kommune;E+R;Helgedøgn;>= 5,6m;Januar;-12,989;96,000;25133;28885;5.112;5.365
+Kristiansand kommune;E+R;Helgedøgn;5,6m - 7,6m;Januar;-2,815;96,000;8251;8490;14.317;15.025
+Kristiansand kommune;E+R;Helgedøgn;7,6m - 12,5m;Januar;-14,008;96,000;10319;12000;9.785;10.269
+Kristiansand kommune;E+R;Helgedøgn;12,5m - 16,0m;Januar;-31,367;96,000;2908;4237;16.462;17.276
+Kristiansand kommune;E+R;Helgedøgn;>= 16,0m;Januar;-12,097;96,000;3655;4158;4.120;4.323
+Kristiansand kommune;E+R;Alle;Alle;Februar;-1,956;92,000;6171763;6294916;1.642;1.175
+Kristiansand kommune;E+R;Alle;< 5,6m;Februar;-1,999;90,000;2456700;2506811;2.001;1.850
+Kristiansand kommune;E+R;Alle;>= 5,6m;Februar;0,523;90,000;271590;270178;3.921;3.626
+Kristiansand kommune;E+R;Alle;5,6m - 7,6m;Februar;-1,908;90,000;73570;75001;12.471;11.534
+Kristiansand kommune;E+R;Alle;7,6m - 12,5m;Februar;-0,276;90,000;98678;98951;5.627;5.204
+Kristiansand kommune;E+R;Alle;12,5m - 16,0m;Februar;1,578;90,000;36894;36321;14.257;13.185
+Kristiansand kommune;E+R;Alle;>= 16,0m;Februar;4,245;90,000;62448;59905;6.895;6.377
+Kristiansand kommune;E+R;Yrkesdøgn;Alle;Februar;-2,098;92,000;4950505;5056591;4.030;2.883
+Kristiansand kommune;E+R;Yrkesdøgn;< 5,6m;Februar;-1,762;89,000;1934169;1968864;4.896;4.528
+Kristiansand kommune;E+R;Yrkesdøgn;>= 5,6m;Februar;1,547;89,000;242996;239293;6.093;5.636
+Kristiansand kommune;E+R;Yrkesdøgn;5,6m - 7,6m;Februar;-1,499;89,000;64336;65315;14.175;13.110
+Kristiansand kommune;E+R;Yrkesdøgn;7,6m - 12,5m;Februar;1,316;89,000;87769;86629;8.060;7.454
+Kristiansand kommune;E+R;Yrkesdøgn;12,5m - 16,0m;Februar;3,922;89,000;33151;31900;13.657;12.630
+Kristiansand kommune;E+R;Yrkesdøgn;>= 16,0m;Februar;4,132;89,000;57740;55449;8.262;7.641
+Kristiansand kommune;E+R;Helgedøgn;Alle;Februar;-1,378;94,000;1221258;1238325;10.277;7.351
+Kristiansand kommune;E+R;Helgedøgn;< 5,6m;Februar;-2,866;93,000;522531;537947;13.570;12.551
+Kristiansand kommune;E+R;Helgedøgn;>= 5,6m;Februar;-7,418;93,000;28594;30885;13.446;12.435
+Kristiansand kommune;E+R;Helgedøgn;5,6m - 7,6m;Februar;-4,667;93,000;9234;9686;18.412;17.028
+Kristiansand kommune;E+R;Helgedøgn;7,6m - 12,5m;Februar;-11,467;93,000;10909;12322;15.489;14.325
+Kristiansand kommune;E+R;Helgedøgn;12,5m - 16,0m;Februar;-15,336;93,000;3743;4421;19.910;18.414
+Kristiansand kommune;E+R;Helgedøgn;>= 16,0m;Februar;5,655;93,000;4708;4456;18.287;16.913
+Kristiansand kommune;E+R;Alle;Alle;Mars;2,999;95,000;3312461;3216016;6.368;6.682
+Kristiansand kommune;E+R;Alle;< 5,6m;Mars;2,487;91,000;2639544;2575502;6.414;6.731
+Kristiansand kommune;E+R;Alle;>= 5,6m;Mars;16,962;91,000;320835;274308;5.858;6.147
+Kristiansand kommune;E+R;Alle;5,6m - 7,6m;Mars;21,182;91,000;92588;76404;13.404;14.067
+Kristiansand kommune;E+R;Alle;7,6m - 12,5m;Mars;15,558;91,000;118890;102883;6.578;6.903
+Kristiansand kommune;E+R;Alle;12,5m - 16,0m;Mars;9,973;91,000;39721;36119;10.172;10.674
+Kristiansand kommune;E+R;Alle;>= 16,0m;Mars;18,223;91,000;69636;58902;7.227;7.585
+Kristiansand kommune;E+R;Yrkesdøgn;Alle;Mars;11,964;94,000;2730469;2438699;6.697;7.028
+Kristiansand kommune;E+R;Yrkesdøgn;< 5,6m;Mars;12,987;89,000;2143805;1897399;5.235;5.494
+Kristiansand kommune;E+R;Yrkesdøgn;>= 5,6m;Mars;22,981;89,000;288240;234377;7.078;7.428
+Kristiansand kommune;E+R;Yrkesdøgn;5,6m - 7,6m;Mars;28,899;89,000;81491;63221;15.644;16.417
+Kristiansand kommune;E+R;Yrkesdøgn;7,6m - 12,5m;Mars;20,800;89,000;105682;87485;7.983;8.378
+Kristiansand kommune;E+R;Yrkesdøgn;12,5m - 16,0m;Mars;18,615;89,000;35983;30336;11.709;12.288
+Kristiansand kommune;E+R;Yrkesdøgn;>= 16,0m;Mars;22,029;89,000;65084;53335;7.263;7.622
+Kristiansand kommune;E+R;Helgedøgn;Alle;Mars;-25,128;97,000;581992;777317;5.841;6.130
+Kristiansand kommune;E+R;Helgedøgn;< 5,6m;Mars;-26,893;94,000;495739;678103;8.353;8.766
+Kristiansand kommune;E+R;Helgedøgn;>= 5,6m;Mars;-18,372;94,000;32595;39931;5.840;6.129
+Kristiansand kommune;E+R;Helgedøgn;5,6m - 7,6m;Mars;-15,823;94,000;11097;13183;14.078;14.774
+Kristiansand kommune;E+R;Helgedøgn;7,6m - 12,5m;Mars;-14,223;94,000;13208;15398;6.290;6.601
+Kristiansand kommune;E+R;Helgedøgn;12,5m - 16,0m;Mars;-35,362;94,000;3738;5783;11.725;12.304
+Kristiansand kommune;E+R;Helgedøgn;>= 16,0m;Mars;-18,232;94,000;4552;5567;10.985;11.528
+Kristiansand kommune;E+R;Alle;Alle;April;-7,519;96,000;3122971;3376876;3.164;3.321
+Kristiansand kommune;E+R;Alle;< 5,6m;April;-7,683;96,000;2768142;2998513;3.428;3.598
+Kristiansand kommune;E+R;Alle;>= 5,6m;April;-6,498;96,000;353634;378209;4.561;4.786
+Kristiansand kommune;E+R;Alle;5,6m - 7,6m;April;2,790;96,000;105640;102773;12.925;13.564
+Kristiansand kommune;E+R;Alle;7,6m - 12,5m;April;-10,637;96,000;135418;151537;6.532;6.855
+Kristiansand kommune;E+R;Alle;12,5m - 16,0m;April;-8,452;96,000;45959;50202;27.091;28.431
+Kristiansand kommune;E+R;Alle;>= 16,0m;April;-9,607;96,000;66617;73697;6.639;6.967
+Kristiansand kommune;E+R;Yrkesdøgn;Alle;April;-17,408;95,000;2170283;2627720;3.552;3.728
+Kristiansand kommune;E+R;Yrkesdøgn;< 5,6m;April;-18,179;95,000;1886070;2305128;3.706;3.890
+Kristiansand kommune;E+R;Yrkesdøgn;>= 5,6m;April;-12,117;95,000;283393;322467;4.336;4.550
+Kristiansand kommune;E+R;Yrkesdøgn;5,6m - 7,6m;April;-6,742;95,000;80357;86166;11.586;12.159
+Kristiansand kommune;E+R;Yrkesdøgn;7,6m - 12,5m;April;-14,735;95,000;107158;125676;6.145;6.449
+Kristiansand kommune;E+R;Yrkesdøgn;12,5m - 16,0m;April;-13,943;95,000;36972;42962;21.038;22.078
+Kristiansand kommune;E+R;Yrkesdøgn;>= 16,0m;April;-12,942;95,000;58906;67663;5.789;6.075
+Kristiansand kommune;E+R;Helgedøgn;Alle;April;27,168;97,000;952688;749156;5.940;6.234
+Kristiansand kommune;E+R;Helgedøgn;< 5,6m;April;27,212;97,000;882072;693385;6.499;6.820
+Kristiansand kommune;E+R;Helgedøgn;>= 5,6m;April;26,011;97,000;70241;55742;7.925;8.317
+Kristiansand kommune;E+R;Helgedøgn;5,6m - 7,6m;April;52,243;97,000;25283;16607;19.947;20.933
+Kristiansand kommune;E+R;Helgedøgn;7,6m - 12,5m;April;9,277;97,000;28260;25861;7.783;8.168
+Kristiansand kommune;E+R;Helgedøgn;12,5m - 16,0m;April;24,130;97,000;8987;7240;64.466;67.652
+Kristiansand kommune;E+R;Helgedøgn;>= 16,0m;April;27,793;97,000;7711;6034;18.317;19.223
+Kristiansand kommune;E+R;Alle;Alle;Mai;1,617;96,000;6451913;6349253;2.586;1.850
+Kristiansand kommune;E+R;Alle;< 5,6m;Mai;0,716;96,000;5742159;5701355;2.778;1.987
+Kristiansand kommune;E+R;Alle;>= 5,6m;Mai;9,328;96,000;707840;647444;5.583;3.994
+Kristiansand kommune;E+R;Alle;5,6m - 7,6m;Mai;7,061;96,000;207114;193455;12.568;8.991
+Kristiansand kommune;E+R;Alle;7,6m - 12,5m;Mai;7,913;96,000;277330;256994;6.446;4.611
+Kristiansand kommune;E+R;Alle;12,5m - 16,0m;Mai;6,735;96,000;81978;76805;25.850;18.492
+Kristiansand kommune;E+R;Alle;>= 16,0m;Mai;17,662;96,000;141418;120190;8.701;6.224
+Kristiansand kommune;E+R;Yrkesdøgn;Alle;Mai;4,410;96,000;4831081;4627034;3.461;2.476
+Kristiansand kommune;E+R;Yrkesdøgn;< 5,6m;Mai;3,583;96,000;4239437;4092783;3.405;2.436
+Kristiansand kommune;E+R;Yrkesdøgn;>= 5,6m;Mai;10,533;96,000;590182;533940;6.895;4.932
+Kristiansand kommune;E+R;Yrkesdøgn;5,6m - 7,6m;Mai;7,806;96,000;166839;154759;12.338;8.826
+Kristiansand kommune;E+R;Yrkesdøgn;7,6m - 12,5m;Mai;9,504;96,000;230153;210178;7.042;5.038
+Kristiansand kommune;E+R;Yrkesdøgn;12,5m - 16,0m;Mai;9,266;96,000;68940;63094;26.887;19.234
+Kristiansand kommune;E+R;Yrkesdøgn;>= 16,0m;Mai;17,318;96,000;124250;105909;10.030;7.175
+Kristiansand kommune;E+R;Helgedøgn;Alle;Mai;-5,887;96,000;1620832;1722219;4.546;3.252
+Kristiansand kommune;E+R;Helgedøgn;< 5,6m;Mai;-6,580;96,000;1502722;1608572;4.634;3.315
+Kristiansand kommune;E+R;Helgedøgn;>= 5,6m;Mai;3,660;96,000;117658;113504;3.633;2.599
+Kristiansand kommune;E+R;Helgedøgn;5,6m - 7,6m;Mai;4,081;96,000;40275;38696;14.743;10.546
+Kristiansand kommune;E+R;Helgedøgn;7,6m - 12,5m;Mai;0,771;96,000;47177;46816;9.238;6.608
+Kristiansand kommune;E+R;Helgedøgn;12,5m - 16,0m;Mai;-4,908;96,000;13038;13711;24.769;17.719
+Kristiansand kommune;E+R;Helgedøgn;>= 16,0m;Mai;20,216;96,000;17168;14281;8.064;5.768
+Kristiansand kommune;E+R;Alle;Alle;Juni;-2,502;94,000;3833424;3931781;1.470;1.543
+Kristiansand kommune;E+R;Alle;< 5,6m;Juni;-3,043;94,000;3376343;3482314;1.825;1.915
+Kristiansand kommune;E+R;Alle;>= 5,6m;Juni;1,681;94,000;456623;449076;4.130;4.335
+Kristiansand kommune;E+R;Alle;5,6m - 7,6m;Juni;-1,866;94,000;135448;138023;6.083;6.384
+Kristiansand kommune;E+R;Alle;7,6m - 12,5m;Juni;4,138;94,000;184882;177535;6.146;6.449
+Kristiansand kommune;E+R;Alle;12,5m - 16,0m;Juni;-6,025;94,000;47023;50038;24.499;25.710
+Kristiansand kommune;E+R;Alle;>= 16,0m;Juni;6,936;94,000;89270;83480;9.994;10.488
+Kristiansand kommune;E+R;Yrkesdøgn;Alle;Juni;-5,401;94,000;3002469;3173891;1.449;1.521
+Kristiansand kommune;E+R;Yrkesdøgn;< 5,6m;Juni;-6,174;94,000;2608828;2780482;1.813;1.902
+Kristiansand kommune;E+R;Yrkesdøgn;>= 5,6m;Juni;0,062;94,000;393298;393056;4.247;4.457
+Kristiansand kommune;E+R;Yrkesdøgn;5,6m - 7,6m;Juni;-3,656;94,000;113600;117911;6.083;6.384
+Kristiansand kommune;E+R;Yrkesdøgn;7,6m - 12,5m;Juni;2,827;94,000;157264;152940;6.185;6.491
+Kristiansand kommune;E+R;Yrkesdøgn;12,5m - 16,0m;Juni;-8,912;94,000;40411;44365;22.866;23.996
+Kristiansand kommune;E+R;Yrkesdøgn;>= 16,0m;Juni;5,374;94,000;82023;77840;10.326;10.836
+Kristiansand kommune;E+R;Helgedøgn;Alle;Juni;9,641;94,000;830955;757890;1.841;1.932
+Kristiansand kommune;E+R;Helgedøgn;< 5,6m;Juni;9,359;94,000;767515;701832;1.875;1.967
+Kristiansand kommune;E+R;Helgedøgn;>= 5,6m;Juni;13,040;94,000;63325;56020;5.389;5.656
+Kristiansand kommune;E+R;Helgedøgn;5,6m - 7,6m;Juni;8,632;94,000;21848;20112;10.293;10.802
+Kristiansand kommune;E+R;Helgedøgn;7,6m - 12,5m;Juni;12,291;94,000;27618;24595;5.965;6.260
+Kristiansand kommune;E+R;Helgedøgn;12,5m - 16,0m;Juni;16,552;94,000;6612;5673;40.171;42.156
+Kristiansand kommune;E+R;Helgedøgn;>= 16,0m;Juni;28,493;94,000;7247;5640;5.126;5.379
+Kristiansand kommune;E+R;Alle;Alle;Juli;-1,660;90,000;4317206;4390086;2.559;2.685
+Kristiansand kommune;E+R;Alle;< 5,6m;Juli;-2,132;90,000;3870116;3954431;2.808;2.947
+Kristiansand kommune;E+R;Alle;>= 5,6m;Juli;2,651;90,000;446230;434704;2.744;2.879
+Kristiansand kommune;E+R;Alle;5,6m - 7,6m;Juli;-0,399;90,000;146470;147057;7.106;7.458
+Kristiansand kommune;E+R;Alle;7,6m - 12,5m;Juli;4,847;90,000;184267;175748;3.293;3.455
+Kristiansand kommune;E+R;Alle;12,5m - 16,0m;Juli;-7,279;90,000;40968;44184;11.524;12.094
+Kristiansand kommune;E+R;Alle;>= 16,0m;Juli;10,057;90,000;74525;67715;8.930;9.372
+Kristiansand kommune;E+R;Yrkesdøgn;Alle;Juli;-0,809;90,000;3194232;3220300;5.544;5.818
+Kristiansand kommune;E+R;Yrkesdøgn;< 5,6m;Juli;-1,321;90,000;2828471;2866335;5.940;6.233
+Kristiansand kommune;E+R;Yrkesdøgn;>= 5,6m;Juli;3,362;90,000;365099;353223;3.643;3.823
+Kristiansand kommune;E+R;Yrkesdøgn;5,6m - 7,6m;Juli;-0,222;90,000;114950;115206;7.394;7.760
+Kristiansand kommune;E+R;Yrkesdøgn;7,6m - 12,5m;Juli;6,192;90,000;150580;141800;3.620;3.799
+Kristiansand kommune;E+R;Yrkesdøgn;12,5m - 16,0m;Juli;-8,349;90,000;32241;35178;14.620;15.343
+Kristiansand kommune;E+R;Yrkesdøgn;>= 16,0m;Juli;10,303;90,000;67328;61039;9.501;9.971
+Kristiansand kommune;E+R;Helgedøgn;Alle;Juli;-4,002;91,000;1122974;1169786;5.588;5.864
+Kristiansand kommune;E+R;Helgedøgn;< 5,6m;Juli;-4,269;91,000;1041645;1088096;5.426;5.694
+Kristiansand kommune;E+R;Helgedøgn;>= 5,6m;Juli;-0,430;91,000;81131;81481;8.573;8.997
+Kristiansand kommune;E+R;Helgedøgn;5,6m - 7,6m;Juli;-1,039;91,000;31520;31851;10.716;11.246
+Kristiansand kommune;E+R;Helgedøgn;7,6m - 12,5m;Juli;-0,769;91,000;33687;33948;9.788;10.272
+Kristiansand kommune;E+R;Helgedøgn;12,5m - 16,0m;Juli;-3,098;91,000;8727;9006;6.611;6.937
+Kristiansand kommune;E+R;Helgedøgn;>= 16,0m;Juli;7,804;91,000;7197;6676;12.756;13.387
+Kristiansand kommune;E+R;Alle;Alle;August;0,598;92,000;5246904;5215693;2.119;1.771
+Kristiansand kommune;E+R;Alle;< 5,6m;August;0,106;92,000;4653094;4648159;2.416;2.020
+Kristiansand kommune;E+R;Alle;>= 5,6m;August;4,620;92,000;592571;566404;2.891;2.417
+Kristiansand kommune;E+R;Alle;5,6m - 7,6m;August;1,414;92,000;180980;178456;6.619;5.534
+Kristiansand kommune;E+R;Alle;7,6m - 12,5m;August;5,826;92,000;237106;224052;6.720;5.618
+Kristiansand kommune;E+R;Alle;12,5m - 16,0m;August;-1,417;92,000;63464;64376;27.799;23.241
+Kristiansand kommune;E+R;Alle;>= 16,0m;August;11,556;92,000;111021;99520;11.632;9.725
+Kristiansand kommune;E+R;Yrkesdøgn;Alle;August;0,589;91,000;4189151;4164627;2.719;2.273
+Kristiansand kommune;E+R;Yrkesdøgn;< 5,6m;August;0,033;91,000;3672526;3671301;3.063;2.561
+Kristiansand kommune;E+R;Yrkesdøgn;>= 5,6m;August;4,709;91,000;515584;492399;2.943;2.460
+Kristiansand kommune;E+R;Yrkesdøgn;5,6m - 7,6m;August;1,253;91,000;152535;150647;6.797;5.682
+Kristiansand kommune;E+R;Yrkesdøgn;7,6m - 12,5m;August;6,108;91,000;204864;193071;7.162;5.987
+Kristiansand kommune;E+R;Yrkesdøgn;12,5m - 16,0m;August;-1,963;91,000;55237;56343;26.791;22.398
+Kristiansand kommune;E+R;Yrkesdøgn;>= 16,0m;August;11,490;91,000;102948;92338;12.195;10.195
+Kristiansand kommune;E+R;Helgedøgn;Alle;August;0,636;95,000;1057753;1051066;2.304;1.926
+Kristiansand kommune;E+R;Helgedøgn;< 5,6m;August;0,380;95,000;980568;976858;2.375;1.986
+Kristiansand kommune;E+R;Helgedøgn;>= 5,6m;August;4,029;95,000;76987;74005;5.014;4.192
+Kristiansand kommune;E+R;Helgedøgn;5,6m - 7,6m;August;2,287;95,000;28445;27809;7.320;6.120
+Kristiansand kommune;E+R;Helgedøgn;7,6m - 12,5m;August;4,070;95,000;32242;30981;5.277;4.412
+Kristiansand kommune;E+R;Helgedøgn;12,5m - 16,0m;August;2,415;95,000;8227;8033;36.238;30.296
+Kristiansand kommune;E+R;Helgedøgn;>= 16,0m;August;12,406;95,000;8073;7182;7.585;6.341
+Kristiansand kommune;E+R;Alle;Alle;September;-0,814;98,000;3537179;3566222;1.313;1.215
+Kristiansand kommune;E+R;Alle;< 5,6m;September;-0,766;98,000;3103673;3127615;1.633;1.510
+Kristiansand kommune;E+R;Alle;>= 5,6m;September;-1,335;98,000;420894;426590;3.481;3.220
+Kristiansand kommune;E+R;Alle;5,6m - 7,6m;September;-0,311;98,000;123193;123577;5.238;4.844
+Kristiansand kommune;E+R;Alle;7,6m - 12,5m;September;-4,509;98,000;163466;171185;3.665;3.390
+Kristiansand kommune;E+R;Alle;12,5m - 16,0m;September;4,523;98,000;56107;53679;31.680;29.299
+Kristiansand kommune;E+R;Alle;>= 16,0m;September;-0,027;98,000;78128;78149;4.353;4.026
+Kristiansand kommune;E+R;Yrkesdøgn;Alle;September;-3,462;98,000;2780108;2879817;1.856;1.717
+Kristiansand kommune;E+R;Yrkesdøgn;< 5,6m;September;-3,501;97,000;2405826;2493119;2.281;2.110
+Kristiansand kommune;E+R;Yrkesdøgn;>= 5,6m;September;-3,458;97,000;362005;374970;3.219;2.977
+Kristiansand kommune;E+R;Yrkesdøgn;5,6m - 7,6m;September;-3,274;97,000;101725;105168;4.761;4.403
+Kristiansand kommune;E+R;Yrkesdøgn;7,6m - 12,5m;September;-6,914;97,000;139122;149455;3.928;3.632
+Kristiansand kommune;E+R;Yrkesdøgn;12,5m - 16,0m;September;3,373;97,000;49067;47466;30.628;28.327
+Kristiansand kommune;E+R;Yrkesdøgn;>= 16,0m;September;-1,084;97,000;72091;72881;4.140;3.829
+Kristiansand kommune;E+R;Helgedøgn;Alle;September;10,295;99,000;757071;686405;2.765;2.557
+Kristiansand kommune;E+R;Helgedøgn;< 5,6m;September;9,984;99,000;697847;634496;2.641;2.442
+Kristiansand kommune;E+R;Helgedøgn;>= 5,6m;September;14,082;99,000;58889;51620;8.081;7.473
+Kristiansand kommune;E+R;Helgedøgn;5,6m - 7,6m;September;16,617;99,000;21468;18409;11.147;10.310
+Kristiansand kommune;E+R;Helgedøgn;7,6m - 12,5m;September;12,029;99,000;24344;21730;4.943;4.571
+Kristiansand kommune;E+R;Helgedøgn;12,5m - 16,0m;September;13,311;99,000;7040;6213;40.079;37.067
+Kristiansand kommune;E+R;Helgedøgn;>= 16,0m;September;14,598;99,000;6037;5268;12.654;11.703
+Kristiansand kommune;E+R;Alle;Alle;Oktober;1,750;97,000;3980911;3912453;1.877;1.569
+Kristiansand kommune;E+R;Alle;< 5,6m;Oktober;1,470;96,000;3518797;3467835;1.652;1.381
+Kristiansand kommune;E+R;Alle;>= 5,6m;Oktober;3,928;96,000;449476;432489;6.545;5.471
+Kristiansand kommune;E+R;Alle;5,6m - 7,6m;Oktober;5,655;96,000;131039;124025;8.138;6.804
+Kristiansand kommune;E+R;Alle;7,6m - 12,5m;Oktober;1,978;96,000;174333;170952;4.088;3.418
+Kristiansand kommune;E+R;Alle;12,5m - 16,0m;Oktober;6,659;96,000;59891;56152;40.704;34.030
+Kristiansand kommune;E+R;Alle;>= 16,0m;Oktober;3,507;96,000;84213;81360;8.727;7.296
+Kristiansand kommune;E+R;Yrkesdøgn;Alle;Oktober;4,718;97,000;3147533;3005713;2.582;2.158
+Kristiansand kommune;E+R;Yrkesdøgn;< 5,6m;Oktober;4,521;96,000;2743318;2624658;2.399;2.006
+Kristiansand kommune;E+R;Yrkesdøgn;>= 5,6m;Oktober;6,118;96,000;391913;369317;6.667;5.574
+Kristiansand kommune;E+R;Yrkesdøgn;5,6m - 7,6m;Oktober;8,421;96,000;110767;102164;7.902;6.607
+Kristiansand kommune;E+R;Yrkesdøgn;7,6m - 12,5m;Oktober;4,444;96,000;151203;144770;5.383;4.500
+Kristiansand kommune;E+R;Yrkesdøgn;12,5m - 16,0m;Oktober;9,181;96,000;52682;48252;41.399;34.610
+Kristiansand kommune;E+R;Yrkesdøgn;>= 16,0m;Oktober;4,222;96,000;77261;74131;9.144;7.645
+Kristiansand kommune;E+R;Helgedøgn;Alle;Oktober;-8,091;97,000;833378;906740;3.994;3.339
+Kristiansand kommune;E+R;Helgedøgn;< 5,6m;Oktober;-8,029;97,000;775479;843177;4.142;3.463
+Kristiansand kommune;E+R;Helgedøgn;>= 5,6m;Oktober;-8,879;97,000;57563;63172;6.065;5.070
+Kristiansand kommune;E+R;Helgedøgn;5,6m - 7,6m;Oktober;-7,269;97,000;20272;21861;9.686;8.098
+Kristiansand kommune;E+R;Helgedøgn;7,6m - 12,5m;Oktober;-11,657;97,000;23130;26182;5.489;4.589
+Kristiansand kommune;E+R;Helgedøgn;12,5m - 16,0m;Oktober;-8,747;97,000;7209;7900;39.628;33.130
+Kristiansand kommune;E+R;Helgedøgn;>= 16,0m;Oktober;-3,832;97,000;6952;7229;11.773;9.842
+Kristiansand kommune;E+R;Alle;Alle;November;7,127;99,000;5364388;5007483;8.524;6.552
+Kristiansand kommune;E+R;Alle;< 5,6m;November;2,502;99,000;3559994;3473091;1.178;0.984
+Kristiansand kommune;E+R;Alle;>= 5,6m;November;6,943;99,000;441797;413116;5.648;4.722
+Kristiansand kommune;E+R;Alle;5,6m - 7,6m;November;9,876;99,000;127268;115829;10.941;9.147
+Kristiansand kommune;E+R;Alle;7,6m - 12,5m;November;6,726;99,000;168439;157824;8.531;7.132
+Kristiansand kommune;E+R;Alle;12,5m - 16,0m;November;9,914;99,000;59892;54490;39.400;32.939
+Kristiansand kommune;E+R;Alle;>= 16,0m;November;1,442;99,000;86198;84973;4.920;4.114
+Kristiansand kommune;E+R;Yrkesdøgn;Alle;November;6,767;99,000;4380743;4103072;8.132;6.251
+Kristiansand kommune;E+R;Yrkesdøgn;< 5,6m;November;2,347;99,000;2874795;2808879;1.264;1.057
+Kristiansand kommune;E+R;Yrkesdøgn;>= 5,6m;November;6,235;99,000;393063;369993;5.778;4.830
+Kristiansand kommune;E+R;Yrkesdøgn;5,6m - 7,6m;November;9,183;99,000;110597;101295;11.253;9.408
+Kristiansand kommune;E+R;Yrkesdøgn;7,6m - 12,5m;November;5,598;99,000;148450;140580;8.261;6.906
+Kristiansand kommune;E+R;Yrkesdøgn;12,5m - 16,0m;November;9,837;99,000;53684;48876;38.537;32.218
+Kristiansand kommune;E+R;Yrkesdøgn;>= 16,0m;November;1,376;99,000;80332;79242;5.107;4.269
+Kristiansand kommune;E+R;Helgedøgn;Alle;November;8,761;99,000;983645;904411;10.534;8.097
+Kristiansand kommune;E+R;Helgedøgn;< 5,6m;November;3,160;99,000;685199;664212;2.216;1.853
+Kristiansand kommune;E+R;Helgedøgn;>= 5,6m;November;13,012;99,000;48734;43123;5.990;5.008
+Kristiansand kommune;E+R;Helgedøgn;5,6m - 7,6m;November;14,703;99,000;16671;14534;9.172;7.668
+Kristiansand kommune;E+R;Helgedøgn;7,6m - 12,5m;November;15,919;99,000;19989;17244;11.887;9.938
+Kristiansand kommune;E+R;Helgedøgn;12,5m - 16,0m;November;10,581;99,000;6208;5614;47.613;39.806
+Kristiansand kommune;E+R;Helgedøgn;>= 16,0m;November;2,356;99,000;5866;5731;7.077;5.917
+Kristiansand kommune;E+R;Alle;Alle;Desember;-1,203;94,000;6074777;6148749;1.862;1.332
+Kristiansand kommune;E+R;Alle;< 5,6m;Desember;-0,609;93,000;4344877;4371506;1.731;1.331
+Kristiansand kommune;E+R;Alle;>= 5,6m;Desember;-0,849;93,000;425103;428741;5.907;4.541
+Kristiansand kommune;E+R;Alle;5,6m - 7,6m;Desember;4,636;93,000;126705;121091;11.179;8.593
+Kristiansand kommune;E+R;Alle;7,6m - 12,5m;Desember;-4,137;93,000;155548;162261;5.452;4.190
+Kristiansand kommune;E+R;Alle;12,5m - 16,0m;Desember;0,132;93,000;55931;55857;41.177;31.651
+Kristiansand kommune;E+R;Alle;>= 16,0m;Desember;-2,919;93,000;86919;89532;5.892;4.529
+Kristiansand kommune;E+R;Yrkesdøgn;Alle;Desember;-7,242;94,000;4515709;4868250;2.609;1.867
+Kristiansand kommune;E+R;Yrkesdøgn;< 5,6m;Desember;-6,895;93,000;3189817;3426058;2.619;2.013
+Kristiansand kommune;E+R;Yrkesdøgn;>= 5,6m;Desember;-3,516;93,000;365881;379216;5.845;4.493
+Kristiansand kommune;E+R;Yrkesdøgn;5,6m - 7,6m;Desember;0,798;93,000;105520;104685;11.350;8.725
+Kristiansand kommune;E+R;Yrkesdøgn;7,6m - 12,5m;Desember;-6,496;93,000;134003;143312;5.300;4.074
+Kristiansand kommune;E+R;Yrkesdøgn;12,5m - 16,0m;Desember;-2,729;93,000;47580;48915;36.946;28.399
+Kristiansand kommune;E+R;Yrkesdøgn;>= 16,0m;Desember;-4,284;93,000;78778;82304;6.030;4.635
+Kristiansand kommune;E+R;Helgedøgn;Alle;Desember;21,755;94,000;1559068;1280499;4.248;3.039
+Kristiansand kommune;E+R;Helgedøgn;< 5,6m;Desember;22,171;93,000;1155060;945448;4.924;3.785
+Kristiansand kommune;E+R;Helgedøgn;>= 5,6m;Desember;19,580;93,000;59222;49525;9.013;6.928
+Kristiansand kommune;E+R;Helgedøgn;5,6m - 7,6m;Desember;29,130;93,000;21185;16406;11.541;8.871
+Kristiansand kommune;E+R;Helgedøgn;7,6m - 12,5m;Desember;13,700;93,000;21545;18949;10.962;8.426
+Kristiansand kommune;E+R;Helgedøgn;12,5m - 16,0m;Desember;20,297;93,000;8351;6942;70.191;53.954
+Kristiansand kommune;E+R;Helgedøgn;>= 16,0m;Desember;12,631;93,000;8141;7228;11.399;8.762
+Kristiansand kommune;E+R;Alle;Alle;Siste 12 måneder;0,531;95,000;57897538;57591751;0.787;0.500
+Kristiansand kommune;E+R;Alle;< 5,6m;Siste 12 måneder;-0,453;94,000;42403163;42596327;1.685;1.070
+Kristiansand kommune;E+R;Alle;>= 5,6m;Siste 12 måneder;4,053;94,000;5130770;4930916;3.898;2.477
+Kristiansand kommune;E+R;Alle;5,6m - 7,6m;Siste 12 måneder;4,459;94,000;1517819;1453026;8.566;5.442
+Kristiansand kommune;E+R;Alle;7,6m - 12,5m;Siste 12 måneder;3,240;94,000;1991618;1929109;5.413;3.439
+Kristiansand kommune;E+R;Alle;12,5m - 16,0m;Siste 12 måneder;2,089;94,000;619491;606812;22.886;14.541
+Kristiansand kommune;E+R;Alle;>= 16,0m;Siste 12 måneder;6,356;94,000;1001842;941969;7.475;4.749
+Kristiansand kommune;E+R;Yrkesdøgn;Alle;Siste 12 måneder;0,554;95,000;45131106;44882506;1.988;1.263
+Kristiansand kommune;E+R;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,706;94,000;32417124;32647611;2.018;1.282
+Kristiansand kommune;E+R;Yrkesdøgn;>= 5,6m;Siste 12 måneder;3,952;94,000;4410698;4243023;4.736;3.009
+Kristiansand kommune;E+R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;3,858;94,000;1262270;1215382;9.290;5.902
+Kristiansand kommune;E+R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;3,415;94,000;1699190;1643083;5.881;3.737
+Kristiansand kommune;E+R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;2,426;94,000;534703;522039;22.208;14.110
+Kristiansand kommune;E+R;Yrkesdøgn;>= 16,0m;Siste 12 måneder;6,031;94,000;914535;862519;7.844;4.984
+Kristiansand kommune;E+R;Helgedøgn;Alle;Siste 12 måneder;0,450;96,000;12766432;12709245;5.887;3.741
+Kristiansand kommune;E+R;Helgedøgn;< 5,6m;Siste 12 måneder;0,375;95,000;9986039;9948716;6.592;4.188
+Kristiansand kommune;E+R;Helgedøgn;>= 5,6m;Siste 12 måneder;4,678;95,000;720072;687893;5.136;3.263
+Kristiansand kommune;E+R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;7,534;95,000;255549;237644;9.774;6.210
+Kristiansand kommune;E+R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;2,238;95,000;292428;286026;6.148;3.906
+Kristiansand kommune;E+R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;0,018;95,000;84788;84773;29.716;18.880
+Kristiansand kommune;E+R;Helgedøgn;>= 16,0m;Siste 12 måneder;9,889;95,000;87307;79450;9.024;5.734
+Kristiansand kommune;E+R;Alle;Alle;Hittil i år;0,531;95,000;57897538;57591751;0.787;0.500
+Kristiansand kommune;E+R;Alle;< 5,6m;Hittil i år;-0,453;94,000;42403163;42596327;1.685;1.070
+Kristiansand kommune;E+R;Alle;>= 5,6m;Hittil i år;4,053;94,000;5130770;4930916;3.898;2.477
+Kristiansand kommune;E+R;Alle;5,6m - 7,6m;Hittil i år;4,459;94,000;1517819;1453026;8.566;5.442
+Kristiansand kommune;E+R;Alle;7,6m - 12,5m;Hittil i år;3,240;94,000;1991618;1929109;5.413;3.439
+Kristiansand kommune;E+R;Alle;12,5m - 16,0m;Hittil i år;2,089;94,000;619491;606812;22.886;14.541
+Kristiansand kommune;E+R;Alle;>= 16,0m;Hittil i år;6,356;94,000;1001842;941969;7.475;4.749
+Kristiansand kommune;E+R;Yrkesdøgn;Alle;Hittil i år;0,554;95,000;45131106;44882506;1.988;1.263
+Kristiansand kommune;E+R;Yrkesdøgn;< 5,6m;Hittil i år;-0,706;94,000;32417124;32647611;2.018;1.282
+Kristiansand kommune;E+R;Yrkesdøgn;>= 5,6m;Hittil i år;3,952;94,000;4410698;4243023;4.736;3.009
+Kristiansand kommune;E+R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;3,858;94,000;1262270;1215382;9.290;5.902
+Kristiansand kommune;E+R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;3,415;94,000;1699190;1643083;5.881;3.737
+Kristiansand kommune;E+R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;2,426;94,000;534703;522039;22.208;14.110
+Kristiansand kommune;E+R;Yrkesdøgn;>= 16,0m;Hittil i år;6,031;94,000;914535;862519;7.844;4.984
+Kristiansand kommune;E+R;Helgedøgn;Alle;Hittil i år;0,450;96,000;12766432;12709245;5.887;3.741
+Kristiansand kommune;E+R;Helgedøgn;< 5,6m;Hittil i år;0,375;95,000;9986039;9948716;6.592;4.188
+Kristiansand kommune;E+R;Helgedøgn;>= 5,6m;Hittil i år;4,678;95,000;720072;687893;5.136;3.263
+Kristiansand kommune;E+R;Helgedøgn;5,6m - 7,6m;Hittil i år;7,534;95,000;255549;237644;9.774;6.210
+Kristiansand kommune;E+R;Helgedøgn;7,6m - 12,5m;Hittil i år;2,238;95,000;292428;286026;6.148;3.906
+Kristiansand kommune;E+R;Helgedøgn;12,5m - 16,0m;Hittil i år;0,018;95,000;84788;84773;29.716;18.880
+Kristiansand kommune;E+R;Helgedøgn;>= 16,0m;Hittil i år;9,889;95,000;87307;79450;9.024;5.734
+Kristiansand kommune;R;Alle;Alle;Januar;1,312;94,000;717035;707746;3.792;6.033
+Kristiansand kommune;R;Alle;< 5,6m;Januar;0,582;94,000;652861;649081;3.392;5.397
+Kristiansand kommune;R;Alle;>= 5,6m;Januar;9,541;94,000;64132;58546;12.605;20.057
+Kristiansand kommune;R;Alle;5,6m - 7,6m;Januar;18,534;94,000;18860;15911;22.118;35.194
+Kristiansand kommune;R;Alle;7,6m - 12,5m;Januar;9,905;94,000;30869;28087;17.506;27.856
+Kristiansand kommune;R;Alle;12,5m - 16,0m;Januar;-10,493;94,000;6628;7405;17.172;27.325
+Kristiansand kommune;R;Alle;>= 16,0m;Januar;8,848;94,000;7775;7143;31.827;50.643
+Kristiansand kommune;R;Yrkesdøgn;Alle;Januar;8,254;94,000;566846;523627;5.101;8.117
+Kristiansand kommune;R;Yrkesdøgn;< 5,6m;Januar;7,629;94,000;509878;473738;4.492;7.147
+Kristiansand kommune;R;Yrkesdøgn;>= 5,6m;Januar;14,311;94,000;56937;49809;14.814;23.573
+Kristiansand kommune;R;Yrkesdøgn;5,6m - 7,6m;Januar;22,389;94,000;16454;13444;24.350;38.746
+Kristiansand kommune;R;Yrkesdøgn;7,6m - 12,5m;Januar;15,824;94,000;27097;23395;21.485;34.187
+Kristiansand kommune;R;Yrkesdøgn;12,5m - 16,0m;Januar;-4,326;94,000;5949;6218;18.152;28.884
+Kristiansand kommune;R;Yrkesdøgn;>= 16,0m;Januar;10,145;94,000;7437;6752;32.870;52.304
+Kristiansand kommune;R;Helgedøgn;Alle;Januar;-18,428;94,000;150189;184119;2.038;3.243
+Kristiansand kommune;R;Helgedøgn;< 5,6m;Januar;-18,455;94,000;142983;175343;1.962;3.122
+Kristiansand kommune;R;Helgedøgn;>= 5,6m;Januar;-17,649;94,000;7195;8737;6.378;10.149
+Kristiansand kommune;R;Helgedøgn;5,6m - 7,6m;Januar;-2,473;94,000;2406;2467;13.651;21.723
+Kristiansand kommune;R;Helgedøgn;7,6m - 12,5m;Januar;-19,608;94,000;3772;4692;10.399;16.546
+Kristiansand kommune;R;Helgedøgn;12,5m - 16,0m;Januar;-42,797;94,000;679;1187;14.605;23.239
+Kristiansand kommune;R;Helgedøgn;>= 16,0m;Januar;-13,555;94,000;338;391;15.304;24.352
+Kristiansand kommune;R;Alle;Alle;Februar;-1,996;94,000;686219;700198;3.066;4.879
+Kristiansand kommune;R;Alle;< 5,6m;Februar;-2,345;94,000;626007;641042;3.346;5.324
+Kristiansand kommune;R;Alle;>= 5,6m;Februar;1,828;94,000;60170;59090;3.018;4.802
+Kristiansand kommune;R;Alle;5,6m - 7,6m;Februar;2,650;94,000;17433;16983;14.074;22.395
+Kristiansand kommune;R;Alle;7,6m - 12,5m;Februar;3,482;94,000;28408;27452;7.858;12.503
+Kristiansand kommune;R;Alle;12,5m - 16,0m;Februar;-10,232;94,000;6589;7340;18.773;29.871
+Kristiansand kommune;R;Alle;>= 16,0m;Februar;5,810;94,000;7740;7315;17.696;28.159
+Kristiansand kommune;R;Yrkesdøgn;Alle;Februar;-0,268;92,000;538070;539514;3.136;4.989
+Kristiansand kommune;R;Yrkesdøgn;< 5,6m;Februar;-0,583;92,000;484487;487326;3.203;5.097
+Kristiansand kommune;R;Yrkesdøgn;>= 5,6m;Februar;2,701;92,000;53545;52137;5.579;8.878
+Kristiansand kommune;R;Yrkesdøgn;5,6m - 7,6m;Februar;3,056;92,000;15175;14725;17.830;28.372
+Kristiansand kommune;R;Yrkesdøgn;7,6m - 12,5m;Februar;4,281;92,000;24994;23968;11.452;18.223
+Kristiansand kommune;R;Yrkesdøgn;12,5m - 16,0m;Februar;-7,741;92,000;5935;6433;19.397;30.864
+Kristiansand kommune;R;Yrkesdøgn;>= 16,0m;Februar;6,133;92,000;7441;7011;17.674;28.123
+Kristiansand kommune;R;Helgedøgn;Alle;Februar;-7,801;98,000;148149;160684;11.880;18.903
+Kristiansand kommune;R;Helgedøgn;< 5,6m;Februar;-7,934;98,000;141520;153716;11.810;18.792
+Kristiansand kommune;R;Helgedøgn;>= 5,6m;Februar;-4,717;98,000;6625;6953;14.181;22.565
+Kristiansand kommune;R;Helgedøgn;5,6m - 7,6m;Februar;0,000;98,000;2258;2258;15.060;23.963
+Kristiansand kommune;R;Helgedøgn;7,6m - 12,5m;Februar;-2,009;98,000;3414;3484;19.601;31.189
+Kristiansand kommune;R;Helgedøgn;12,5m - 16,0m;Februar;-27,894;98,000;654;907;17.662;28.105
+Kristiansand kommune;R;Helgedøgn;>= 16,0m;Februar;-1,645;98,000;299;304;30.782;48.981
+Kristiansand kommune;R;Alle;Alle;Mars;5,725;99,000;733669;693941;2.197;5.457
+Kristiansand kommune;R;Alle;< 5,6m;Mars;4,781;99,000;667284;636838;1.783;4.430
+Kristiansand kommune;R;Alle;>= 5,6m;Mars;16,240;99,000;66315;57050;12.147;30.175
+Kristiansand kommune;R;Alle;5,6m - 7,6m;Mars;23,416;99,000;20271;16425;16.934;42.066
+Kristiansand kommune;R;Alle;7,6m - 12,5m;Mars;12,855;99,000;30173;26736;15.304;38.017
+Kristiansand kommune;R;Alle;12,5m - 16,0m;Mars;17,814;99,000;8280;7028;22.782;56.594
+Kristiansand kommune;R;Alle;>= 16,0m;Mars;10,640;99,000;7591;6861;22.366;55.560
+Kristiansand kommune;R;Yrkesdøgn;Alle;Mars;14,170;99,000;602161;527423;2.425;6.024
+Kristiansand kommune;R;Yrkesdøgn;< 5,6m;Mars;13,460;99,000;542477;478123;1.824;4.531
+Kristiansand kommune;R;Yrkesdøgn;>= 5,6m;Mars;21,044;99,000;59624;49258;13.231;32.869
+Kristiansand kommune;R;Yrkesdøgn;5,6m - 7,6m;Mars;28,698;99,000;17759;13799;19.076;47.387
+Kristiansand kommune;R;Yrkesdøgn;7,6m - 12,5m;Mars;16,804;99,000;26838;22977;17.773;44.151
+Kristiansand kommune;R;Yrkesdøgn;12,5m - 16,0m;Mars;28,429;99,000;7725;6015;24.472;60.792
+Kristiansand kommune;R;Yrkesdøgn;>= 16,0m;Mars;12,912;99,000;7302;6467;22.205;55.160
+Kristiansand kommune;R;Helgedøgn;Alle;Mars;-21,025;99,000;131508;166518;2.237;5.556
+Kristiansand kommune;R;Helgedøgn;< 5,6m;Mars;-21,364;99,000;124807;158715;2.189;5.438
+Kristiansand kommune;R;Helgedøgn;>= 5,6m;Mars;-14,130;99,000;6691;7792;9.765;24.259
+Kristiansand kommune;R;Helgedøgn;5,6m - 7,6m;Mars;-4,341;99,000;2512;2626;15.887;39.467
+Kristiansand kommune;R;Helgedøgn;7,6m - 12,5m;Mars;-11,280;99,000;3335;3759;4.144;10.294
+Kristiansand kommune;R;Helgedøgn;12,5m - 16,0m;Mars;-45,212;99,000;555;1013;21.182;52.619
+Kristiansand kommune;R;Helgedøgn;>= 16,0m;Mars;-26,650;99,000;289;394;23.305;57.894
+Kristiansand kommune;R;Alle;Alle;April;-11,827;96,000;644949;731462;3.042;7.557
+Kristiansand kommune;R;Alle;< 5,6m;April;-12,139;96,000;584677;665459;2.515;6.248
+Kristiansand kommune;R;Alle;>= 5,6m;April;-8,640;96,000;60195;65888;8.610;21.389
+Kristiansand kommune;R;Alle;5,6m - 7,6m;April;-1,216;96,000;19580;19821;11.856;29.453
+Kristiansand kommune;R;Alle;7,6m - 12,5m;April;-17,330;96,000;25468;30807;11.256;27.962
+Kristiansand kommune;R;Alle;12,5m - 16,0m;April;17,043;96,000;9182;7845;65.661;163.111
+Kristiansand kommune;R;Alle;>= 16,0m;April;-19,555;96,000;5965;7415;13.825;34.343
+Kristiansand kommune;R;Yrkesdøgn;Alle;April;-22,507;95,000;434986;561326;3.039;7.550
+Kristiansand kommune;R;Yrkesdøgn;< 5,6m;April;-23,370;95,000;386949;504958;3.192;7.929
+Kristiansand kommune;R;Yrkesdøgn;>= 5,6m;April;-14,732;95,000;47986;56277;7.692;19.108
+Kristiansand kommune;R;Yrkesdøgn;5,6m - 7,6m;April;-9,543;95,000;14930;16505;12.810;31.823
+Kristiansand kommune;R;Yrkesdøgn;7,6m - 12,5m;April;-21,189;95,000;20442;25938;10.792;26.809
+Kristiansand kommune;R;Yrkesdøgn;12,5m - 16,0m;April;2,550;95,000;7077;6901;51.720;128.480
+Kristiansand kommune;R;Yrkesdøgn;>= 16,0m;April;-20,136;95,000;5537;6933;12.495;31.038
+Kristiansand kommune;R;Helgedøgn;Alle;April;23,409;98,000;209963;170136;8.359;20.764
+Kristiansand kommune;R;Helgedøgn;< 5,6m;April;23,194;98,000;197728;160501;7.705;19.139
+Kristiansand kommune;R;Helgedøgn;>= 5,6m;April;27,032;98,000;12209;9611;18.576;46.146
+Kristiansand kommune;R;Helgedøgn;5,6m - 7,6m;April;40,229;98,000;4650;3316;20.817;51.713
+Kristiansand kommune;R;Helgedøgn;7,6m - 12,5m;April;3,224;98,000;5026;4869;12.137;30.150
+Kristiansand kommune;R;Helgedøgn;12,5m - 16,0m;April;122,987;98,000;2105;944;144.284;358.422
+Kristiansand kommune;R;Helgedøgn;>= 16,0m;April;-11,203;98,000;428;482;41.052;101.980
+Kristiansand kommune;R;Alle;Alle;Mai;0,541;97,000;875460;870748;1.735;2.761
+Kristiansand kommune;R;Alle;< 5,6m;Mai;-0,948;97,000;780191;787655;1.913;3.044
+Kristiansand kommune;R;Alle;>= 5,6m;Mai;14,746;97,000;95105;82883;5.273;8.390
+Kristiansand kommune;R;Alle;5,6m - 7,6m;Mai;13,367;97,000;29964;26431;10.067;16.019
+Kristiansand kommune;R;Alle;7,6m - 12,5m;Mai;4,867;97,000;40786;38893;9.331;14.847
+Kristiansand kommune;R;Alle;12,5m - 16,0m;Mai;56,878;97,000;13799;8796;51.396;81.783
+Kristiansand kommune;R;Alle;>= 16,0m;Mai;20,461;97,000;10556;8763;11.297;17.976
+Kristiansand kommune;R;Yrkesdøgn;Alle;Mai;4,593;97,000;644743;616428;2.306;3.669
+Kristiansand kommune;R;Yrkesdøgn;< 5,6m;Mai;3,086;97,000;564284;547389;2.478;3.943
+Kristiansand kommune;R;Yrkesdøgn;>= 5,6m;Mai;16,635;97,000;80345;68886;5.624;8.949
+Kristiansand kommune;R;Yrkesdøgn;5,6m - 7,6m;Mai;14,966;97,000;24344;21175;10.959;17.439
+Kristiansand kommune;R;Yrkesdøgn;7,6m - 12,5m;Mai;6,863;97,000;34600;32378;8.199;13.047
+Kristiansand kommune;R;Yrkesdøgn;12,5m - 16,0m;Mai;60,185;97,000;11615;7251;52.499;83.537
+Kristiansand kommune;R;Yrkesdøgn;>= 16,0m;Mai;21,084;97,000;9786;8082;12.646;20.122
+Kristiansand kommune;R;Helgedøgn;Alle;Mai;-9,281;97,000;230717;254320;0.887;1.411
+Kristiansand kommune;R;Helgedøgn;< 5,6m;Mai;-10,138;97,000;215907;240266;1.077;1.713
+Kristiansand kommune;R;Helgedøgn;>= 5,6m;Mai;5,451;97,000;14760;13997;5.080;8.083
+Kristiansand kommune;R;Helgedøgn;5,6m - 7,6m;Mai;6,925;97,000;5620;5256;9.541;15.182
+Kristiansand kommune;R;Helgedøgn;7,6m - 12,5m;Mai;-5,050;97,000;6186;6515;15.860;25.237
+Kristiansand kommune;R;Helgedøgn;12,5m - 16,0m;Mai;41,359;97,000;2184;1545;53.843;85.677
+Kristiansand kommune;R;Helgedøgn;>= 16,0m;Mai;13,069;97,000;770;681;25.450;40.496
+Kristiansand kommune;R;Alle;Alle;Juni;-1,170;90,000;490593;496400;1.647;4.090
+Kristiansand kommune;R;Alle;< 5,6m;Juni;-2,239;90,000;424331;434051;1.248;3.100
+Kristiansand kommune;R;Alle;>= 5,6m;Juni;6,367;90,000;66189;62227;4.456;11.069
+Kristiansand kommune;R;Alle;5,6m - 7,6m;Juni;8,544;90,000;19832;18271;9.443;23.457
+Kristiansand kommune;R;Alle;7,6m - 12,5m;Juni;-2,509;90,000;28789;29530;7.076;17.578
+Kristiansand kommune;R;Alle;12,5m - 16,0m;Juni;44,351;90,000;9276;6426;32.083;79.698
+Kristiansand kommune;R;Alle;>= 16,0m;Juni;3,650;90,000;8292;8000;12.430;30.878
+Kristiansand kommune;R;Yrkesdøgn;Alle;Juni;-4,413;90,000;376214;393582;2.078;5.161
+Kristiansand kommune;R;Yrkesdøgn;< 5,6m;Juni;-5,838;90,000;318624;338380;1.599;3.971
+Kristiansand kommune;R;Yrkesdøgn;>= 5,6m;Juni;4,417;90,000;57539;55105;4.621;11.479
+Kristiansand kommune;R;Yrkesdøgn;5,6m - 7,6m;Juni;6,050;90,000;16704;15751;10.734;26.665
+Kristiansand kommune;R;Yrkesdøgn;7,6m - 12,5m;Juni;-3,540;90,000;25072;25992;6.803;16.900
+Kristiansand kommune;R;Yrkesdøgn;12,5m - 16,0m;Juni;39,024;90,000;7948;5717;25.166;62.517
+Kristiansand kommune;R;Yrkesdøgn;>= 16,0m;Juni;2,224;90,000;7815;7645;12.532;31.130
+Kristiansand kommune;R;Helgedøgn;Alle;Juni;11,244;92,000;114379;102818;3.174;7.884
+Kristiansand kommune;R;Helgedøgn;< 5,6m;Juni;10,490;92,000;105707;95671;2.743;6.815
+Kristiansand kommune;R;Helgedøgn;>= 5,6m;Juni;21,455;92,000;8650;7122;10.780;26.778
+Kristiansand kommune;R;Helgedøgn;5,6m - 7,6m;Juni;24,127;92,000;3128;2520;23.561;58.529
+Kristiansand kommune;R;Helgedøgn;7,6m - 12,5m;Juni;5,059;92,000;3717;3538;8.694;21.596
+Kristiansand kommune;R;Helgedøgn;12,5m - 16,0m;Juni;87,306;92,000;1328;709;95.168;236.410
+Kristiansand kommune;R;Helgedøgn;>= 16,0m;Juni;34,366;92,000;477;355;1.968;4.889
+Kristiansand kommune;R;Alle;Alle;Juli;-1,286;99,000;475473;481669;1.493;13.414
+Kristiansand kommune;R;Alle;< 5,6m;Juli;-2,112;99,000;430481;439768;1.418;12.742
+Kristiansand kommune;R;Alle;>= 5,6m;Juli;7,484;99,000;44768;41651;6.314;56.733
+Kristiansand kommune;R;Alle;5,6m - 7,6m;Juli;11,903;99,000;19432;17365;13.604;122.229
+Kristiansand kommune;R;Alle;7,6m - 12,5m;Juli;3,414;99,000;18751;18132;1.171;10.521
+Kristiansand kommune;R;Alle;12,5m - 16,0m;Juli;14,113;99,000;4164;3649;19.751;177.452
+Kristiansand kommune;R;Alle;>= 16,0m;Juli;-3,353;99,000;2421;2505;13.012;116.913
+Kristiansand kommune;R;Yrkesdøgn;Alle;Juli;-0,805;99,000;349083;351916;1.711;15.373
+Kristiansand kommune;R;Yrkesdøgn;< 5,6m;Juli;-1,626;99,000;312258;317420;1.631;14.656
+Kristiansand kommune;R;Yrkesdøgn;>= 5,6m;Juli;6,839;99,000;36649;34303;6.402;57.519
+Kristiansand kommune;R;Yrkesdøgn;5,6m - 7,6m;Juli;10,243;99,000;15316;13893;13.015;116.937
+Kristiansand kommune;R;Yrkesdøgn;7,6m - 12,5m;Juli;3,267;99,000;15522;15031;2.006;18.027
+Kristiansand kommune;R;Yrkesdøgn;12,5m - 16,0m;Juli;15,880;99,000;3510;3029;23.192;208.370
+Kristiansand kommune;R;Yrkesdøgn;>= 16,0m;Juli;-2,085;99,000;2301;2350;15.073;135.429
+Kristiansand kommune;R;Helgedøgn;Alle;Juli;-2,592;99,000;126390;129753;0.892;8.010
+Kristiansand kommune;R;Helgedøgn;< 5,6m;Juli;-3,372;99,000;118223;122348;0.815;7.318
+Kristiansand kommune;R;Helgedøgn;>= 5,6m;Juli;10,493;99,000;8119;7348;5.251;47.179
+Kristiansand kommune;R;Helgedøgn;5,6m - 7,6m;Juli;18,548;99,000;4116;3472;14.919;134.040
+Kristiansand kommune;R;Helgedøgn;7,6m - 12,5m;Juli;4,128;99,000;3229;3101;3.465;31.128
+Kristiansand kommune;R;Helgedøgn;12,5m - 16,0m;Juli;5,484;99,000;654;620;4.744;42.626
+Kristiansand kommune;R;Helgedøgn;>= 16,0m;Juli;-22,581;99,000;120;155;9.422;84.652
+Kristiansand kommune;R;Alle;Alle;August;-0,443;88,000;768115;771532;2.145;3.413
+Kristiansand kommune;R;Alle;< 5,6m;August;-1,233;88,000;681471;689977;2.669;4.247
+Kristiansand kommune;R;Alle;>= 5,6m;August;6,143;88,000;86408;81407;5.851;9.310
+Kristiansand kommune;R;Alle;5,6m - 7,6m;August;9,444;88,000;28625;26155;9.850;15.674
+Kristiansand kommune;R;Alle;7,6m - 12,5m;August;-1,762;88,000;37066;37731;6.863;10.920
+Kristiansand kommune;R;Alle;12,5m - 16,0m;August;38,159;88,000;11615;8407;62.600;99.611
+Kristiansand kommune;R;Alle;>= 16,0m;August;-0,132;88,000;9102;9114;9.993;15.901
+Kristiansand kommune;R;Yrkesdøgn;Alle;August;-0,895;86,000;601956;607392;2.658;4.230
+Kristiansand kommune;R;Yrkesdøgn;< 5,6m;August;-1,781;86,000;526490;536037;3.264;5.193
+Kristiansand kommune;R;Yrkesdøgn;>= 5,6m;August;5,658;86,000;75273;71242;5.355;8.521
+Kristiansand kommune;R;Yrkesdøgn;5,6m - 7,6m;August;9,418;86,000;24177;22096;9.565;15.219
+Kristiansand kommune;R;Yrkesdøgn;7,6m - 12,5m;August;-1,763;86,000;32322;32902;7.729;12.299
+Kristiansand kommune;R;Yrkesdøgn;12,5m - 16,0m;August;34,939;86,000;10138;7513;59.369;94.469
+Kristiansand kommune;R;Yrkesdøgn;>= 16,0m;August;-1,088;86,000;8636;8731;10.208;16.243
+Kristiansand kommune;R;Helgedøgn;Alle;August;1,230;93,000;166159;164140;2.401;3.820
+Kristiansand kommune;R;Helgedøgn;< 5,6m;August;0,676;93,000;154981;153940;2.358;3.752
+Kristiansand kommune;R;Helgedøgn;>= 5,6m;August;9,543;93,000;11135;10165;11.605;18.466
+Kristiansand kommune;R;Helgedøgn;5,6m - 7,6m;August;9,584;93,000;4448;4059;14.058;22.369
+Kristiansand kommune;R;Helgedøgn;7,6m - 12,5m;August;-1,760;93,000;4744;4829;7.558;12.027
+Kristiansand kommune;R;Helgedøgn;12,5m - 16,0m;August;65,213;93,000;1477;894;88.737;141.200
+Kristiansand kommune;R;Helgedøgn;>= 16,0m;August;21,671;93,000;466;383;26.406;42.017
+Kristiansand kommune;R;Alle;Alle;September;-1,625;99,000;858343;872524;2.295;3.652
+Kristiansand kommune;R;Alle;< 5,6m;September;-1,886;98,000;758802;773386;3.003;4.778
+Kristiansand kommune;R;Alle;>= 5,6m;September;-0,224;98,000;88093;88291;7.407;11.786
+Kristiansand kommune;R;Alle;5,6m - 7,6m;September;1,853;98,000;28312;27797;9.788;15.574
+Kristiansand kommune;R;Alle;7,6m - 12,5m;September;-7,889;98,000;38064;41324;6.105;9.715
+Kristiansand kommune;R;Alle;12,5m - 16,0m;September;26,836;98,000;12416;9789;72.318;115.074
+Kristiansand kommune;R;Alle;>= 16,0m;September;-0,853;98,000;9301;9381;9.341;14.864
+Kristiansand kommune;R;Yrkesdøgn;Alle;September;-4,270;99,000;666200;695917;3.105;4.941
+Kristiansand kommune;R;Yrkesdøgn;< 5,6m;September;-4,642;98,000;579503;607712;4.099;6.522
+Kristiansand kommune;R;Yrkesdøgn;>= 5,6m;September;-2,721;98,000;75293;77399;6.772;10.776
+Kristiansand kommune;R;Yrkesdøgn;5,6m - 7,6m;September;-1,000;98,000;23362;23598;8.814;14.025
+Kristiansand kommune;R;Yrkesdøgn;7,6m - 12,5m;September;-10,556;98,000;32284;36094;6.321;10.058
+Kristiansand kommune;R;Yrkesdøgn;12,5m - 16,0m;September;23,722;98,000;10822;8747;69.561;110.687
+Kristiansand kommune;R;Yrkesdøgn;>= 16,0m;September;-1,507;98,000;8825;8960;8.434;13.420
+Kristiansand kommune;R;Helgedøgn;Alle;September;8,797;99,000;192143;176607;2.102;3.344
+Kristiansand kommune;R;Helgedøgn;< 5,6m;September;8,224;99,000;179299;165674;1.209;1.925
+Kristiansand kommune;R;Helgedøgn;>= 5,6m;September;17,517;99,000;12800;10892;15.781;25.112
+Kristiansand kommune;R;Helgedøgn;5,6m - 7,6m;September;17,885;99,000;4950;4199;22.084;35.140
+Kristiansand kommune;R;Helgedøgn;7,6m - 12,5m;September;10,516;99,000;5780;5230;8.018;12.758
+Kristiansand kommune;R;Helgedøgn;12,5m - 16,0m;September;52,975;99,000;1594;1042;90.664;144.266
+Kristiansand kommune;R;Helgedøgn;>= 16,0m;September;13,064;99,000;476;421;44.843;71.355
+Kristiansand kommune;R;Alle;Alle;Oktober;4,323;99,000;903699;866255;1.437;2.287
+Kristiansand kommune;R;Alle;< 5,6m;Oktober;3,533;98,000;797077;769879;1.317;2.096
+Kristiansand kommune;R;Alle;>= 5,6m;Oktober;11,168;98,000;95209;85644;12.011;19.112
+Kristiansand kommune;R;Alle;5,6m - 7,6m;Oktober;13,927;98,000;29866;26215;13.239;21.067
+Kristiansand kommune;R;Alle;7,6m - 12,5m;Oktober;1,420;98,000;40580;40012;4.877;7.761
+Kristiansand kommune;R;Alle;12,5m - 16,0m;Oktober;39,661;98,000;13582;9725;93.848;149.332
+Kristiansand kommune;R;Alle;>= 16,0m;Oktober;15,363;98,000;11181;9692;20.587;32.759
+Kristiansand kommune;R;Yrkesdøgn;Alle;Oktober;7,442;99,000;704401;655610;1.837;2.923
+Kristiansand kommune;R;Yrkesdøgn;< 5,6m;Oktober;6,704;98,000;609952;571628;1.173;1.866
+Kristiansand kommune;R;Yrkesdøgn;>= 5,6m;Oktober;13,363;98,000;83094;73299;12.200;19.412
+Kristiansand kommune;R;Yrkesdøgn;5,6m - 7,6m;Oktober;16,611;98,000;25280;21679;11.978;19.059
+Kristiansand kommune;R;Yrkesdøgn;7,6m - 12,5m;Oktober;4,267;98,000;35361;33914;4.583;7.292
+Kristiansand kommune;R;Yrkesdøgn;12,5m - 16,0m;Oktober;39,176;98,000;11887;8541;95.761;152.378
+Kristiansand kommune;R;Yrkesdøgn;>= 16,0m;Oktober;15,286;98,000;10566;9165;21.993;34.996
+Kristiansand kommune;R;Helgedøgn;Alle;Oktober;-5,387;99,000;199298;210645;4.353;6.927
+Kristiansand kommune;R;Helgedøgn;< 5,6m;Oktober;-5,612;99,000;187125;198251;4.787;7.618
+Kristiansand kommune;R;Helgedøgn;>= 5,6m;Oktober;-1,863;99,000;12115;12345;9.572;15.231
+Kristiansand kommune;R;Helgedøgn;5,6m - 7,6m;Oktober;1,102;99,000;4586;4536;18.717;29.783
+Kristiansand kommune;R;Helgedøgn;7,6m - 12,5m;Oktober;-14,415;99,000;5219;6098;8.688;13.825
+Kristiansand kommune;R;Helgedøgn;12,5m - 16,0m;Oktober;43,159;99,000;1695;1184;89.712;142.752
+Kristiansand kommune;R;Helgedøgn;>= 16,0m;Oktober;16,698;99,000;615;527;37.538;59.731
+Kristiansand kommune;R;Alle;Alle;November;2,880;99,000;864344;840144;0.826;1.314
+Kristiansand kommune;R;Alle;< 5,6m;November;1,761;99,000;772610;759243;1.562;2.485
+Kristiansand kommune;R;Alle;>= 5,6m;November;13,430;99,000;91615;80768;9.543;15.185
+Kristiansand kommune;R;Alle;5,6m - 7,6m;November;20,587;99,000;28742;23835;15.900;25.300
+Kristiansand kommune;R;Alle;7,6m - 12,5m;November;3,773;99,000;39001;37583;11.753;18.702
+Kristiansand kommune;R;Alle;12,5m - 16,0m;November;43,928;99,000;13571;9429;89.651;142.655
+Kristiansand kommune;R;Alle;>= 16,0m;November;3,830;99,000;10301;9921;14.924;23.747
+Kristiansand kommune;R;Yrkesdøgn;Alle;November;2,539;99,000;695853;678620;1.236;1.966
+Kristiansand kommune;R;Yrkesdøgn;< 5,6m;November;1,334;99,000;614068;605986;1.465;2.332
+Kristiansand kommune;R;Yrkesdøgn;>= 5,6m;November;12,637;99,000;81684;72520;9.800;15.593
+Kristiansand kommune;R;Yrkesdøgn;5,6m - 7,6m;November;20,218;99,000;25057;20843;15.955;25.389
+Kristiansand kommune;R;Yrkesdøgn;7,6m - 12,5m;November;3,186;99,000;34526;33460;10.912;17.364
+Kristiansand kommune;R;Yrkesdøgn;12,5m - 16,0m;November;40,469;99,000;12159;8656;87.728;139.595
+Kristiansand kommune;R;Yrkesdøgn;>= 16,0m;November;3,985;99,000;9942;9561;15.101;24.029
+Kristiansand kommune;R;Helgedøgn;Alle;November;4,313;99,000;168491;161524;2.561;4.076
+Kristiansand kommune;R;Helgedøgn;< 5,6m;November;3,448;99,000;158542;153257;3.285;5.228
+Kristiansand kommune;R;Helgedøgn;>= 5,6m;November;20,405;99,000;9931;8248;9.902;15.757
+Kristiansand kommune;R;Helgedøgn;5,6m - 7,6m;November;23,162;99,000;3685;2992;16.460;26.191
+Kristiansand kommune;R;Helgedøgn;7,6m - 12,5m;November;8,537;99,000;4475;4123;19.235;30.608
+Kristiansand kommune;R;Helgedøgn;12,5m - 16,0m;November;82,665;99,000;1412;773;104.430;166.172
+Kristiansand kommune;R;Helgedøgn;>= 16,0m;November;-0,278;99,000;359;360;17.511;27.865
+Kristiansand kommune;R;Alle;Alle;Desember;0,438;91,000;793541;790079;2.909;4.629
+Kristiansand kommune;R;Alle;< 5,6m;Desember;-0,111;91,000;723998;724804;2.790;4.439
+Kristiansand kommune;R;Alle;>= 5,6m;Desember;6,521;91,000;69461;65209;12.664;20.151
+Kristiansand kommune;R;Alle;5,6m - 7,6m;Desember;16,887;91,000;22613;19346;23.585;37.528
+Kristiansand kommune;R;Alle;7,6m - 12,5m;Desember;-7,204;91,000;29226;31495;5.002;7.959
+Kristiansand kommune;R;Alle;12,5m - 16,0m;Desember;51,231;91,000;10382;6865;110.497;175.825
+Kristiansand kommune;R;Alle;>= 16,0m;Desember;-3,505;91,000;7240;7503;13.858;22.051
+Kristiansand kommune;R;Yrkesdøgn;Alle;Desember;-6,623;90,000;572026;612597;3.579;5.695
+Kristiansand kommune;R;Yrkesdøgn;< 5,6m;Desember;-7,588;90,000;513071;555198;3.059;4.867
+Kristiansand kommune;R;Yrkesdøgn;>= 5,6m;Desember;2,700;90,000;58891;57343;13.228;21.049
+Kristiansand kommune;R;Yrkesdøgn;5,6m - 7,6m;Desember;12,589;90,000;18593;16514;24.358;38.760
+Kristiansand kommune;R;Yrkesdøgn;7,6m - 12,5m;Desember;-9,574;90,000;24888;27523;3.470;5.521
+Kristiansand kommune;R;Yrkesdøgn;12,5m - 16,0m;Desember;40,323;90,000;8599;6128;98.710;157.070
+Kristiansand kommune;R;Yrkesdøgn;>= 16,0m;Desember;-5,113;90,000;6811;7178;12.829;20.414
+Kristiansand kommune;R;Helgedøgn;Alle;Desember;24,810;93,000;221515;177482;6.510;10.359
+Kristiansand kommune;R;Helgedøgn;< 5,6m;Desember;24,363;93,000;210927;169606;6.951;11.061
+Kristiansand kommune;R;Helgedøgn;>= 5,6m;Desember;34,376;93,000;10570;7866;13.037;20.745
+Kristiansand kommune;R;Helgedøgn;5,6m - 7,6m;Desember;41,949;93,000;4020;2832;24.372;38.782
+Kristiansand kommune;R;Helgedøgn;7,6m - 12,5m;Desember;9,215;93,000;4338;3972;22.307;35.495
+Kristiansand kommune;R;Helgedøgn;12,5m - 16,0m;Desember;141,927;93,000;1783;737;187.293;298.025
+Kristiansand kommune;R;Helgedøgn;>= 16,0m;Desember;32,000;93,000;429;325;68.133;108.415
+Kristiansand kommune;R;Alle;Alle;Siste 12 måneder;-0,128;95,000;8811440;8822698;0.697;1.109
+Kristiansand kommune;R;Alle;< 5,6m;Siste 12 måneder;-0,896;95,000;7899790;7971183;1.014;1.613
+Kristiansand kommune;R;Alle;>= 5,6m;Siste 12 måneder;7,121;95,000;887660;828654;4.731;7.529
+Kristiansand kommune;R;Alle;5,6m - 7,6m;Siste 12 måneder;11,383;95,000;283530;254555;9.193;14.627
+Kristiansand kommune;R;Alle;7,6m - 12,5m;Siste 12 måneder;-0,155;95,000;387181;387782;7.122;11.333
+Kristiansand kommune;R;Alle;12,5m - 16,0m;Siste 12 måneder;28,888;95,000;119484;92704;53.801;85.609
+Kristiansand kommune;R;Alle;>= 16,0m;Siste 12 måneder;4,115;95,000;97465;93613;7.937;12.629
+Kristiansand kommune;R;Yrkesdøgn;Alle;Siste 12 måneder;-0,169;95,000;6752539;6763952;1.041;1.657
+Kristiansand kommune;R;Yrkesdøgn;< 5,6m;Siste 12 måneder;-1,027;94,000;5962041;6023895;1.532;2.437
+Kristiansand kommune;R;Yrkesdøgn;>= 5,6m;Siste 12 måneder;6,868;94,000;766860;717578;4.525;7.201
+Kristiansand kommune;R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;10,807;94,000;237151;214022;9.562;15.216
+Kristiansand kommune;R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;0,112;94,000;333946;333572;7.252;11.540
+Kristiansand kommune;R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;27,376;94,000;103364;81149;51.164;81.413
+Kristiansand kommune;R;Yrkesdøgn;>= 16,0m;Siste 12 måneder;4,012;94,000;92399;88835;7.573;12.051
+Kristiansand kommune;R;Helgedøgn;Alle;Siste 12 måneder;0,008;97,000;2058901;2058746;1.235;1.965
+Kristiansand kommune;R;Helgedøgn;< 5,6m;Siste 12 måneder;-0,490;97,000;1937749;1947288;1.012;1.610
+Kristiansand kommune;R;Helgedøgn;>= 5,6m;Siste 12 måneder;8,754;97,000;120800;111076;6.581;10.471
+Kristiansand kommune;R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;14,423;97,000;46379;40533;10.081;16.041
+Kristiansand kommune;R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;-1,799;97,000;53235;54210;7.815;12.435
+Kristiansand kommune;R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;39,507;97,000;16120;11555;72.820;115.873
+Kristiansand kommune;R;Helgedøgn;>= 16,0m;Siste 12 måneder;6,028;97,000;5066;4778;17.704;28.171
+Kristiansand kommune;R;Alle;Alle;Hittil i år;-0,128;95,000;8811440;8822698;0.697;1.109
+Kristiansand kommune;R;Alle;< 5,6m;Hittil i år;-0,896;95,000;7899790;7971183;1.014;1.613
+Kristiansand kommune;R;Alle;>= 5,6m;Hittil i år;7,121;95,000;887660;828654;4.731;7.529
+Kristiansand kommune;R;Alle;5,6m - 7,6m;Hittil i år;11,383;95,000;283530;254555;9.193;14.627
+Kristiansand kommune;R;Alle;7,6m - 12,5m;Hittil i år;-0,155;95,000;387181;387782;7.122;11.333
+Kristiansand kommune;R;Alle;12,5m - 16,0m;Hittil i år;28,888;95,000;119484;92704;53.801;85.609
+Kristiansand kommune;R;Alle;>= 16,0m;Hittil i år;4,115;95,000;97465;93613;7.937;12.629
+Kristiansand kommune;R;Yrkesdøgn;Alle;Hittil i år;-0,169;95,000;6752539;6763952;1.041;1.657
+Kristiansand kommune;R;Yrkesdøgn;< 5,6m;Hittil i år;-1,027;94,000;5962041;6023895;1.532;2.437
+Kristiansand kommune;R;Yrkesdøgn;>= 5,6m;Hittil i år;6,868;94,000;766860;717578;4.525;7.201
+Kristiansand kommune;R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;10,807;94,000;237151;214022;9.562;15.216
+Kristiansand kommune;R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;0,112;94,000;333946;333572;7.252;11.540
+Kristiansand kommune;R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;27,376;94,000;103364;81149;51.164;81.413
+Kristiansand kommune;R;Yrkesdøgn;>= 16,0m;Hittil i år;4,012;94,000;92399;88835;7.573;12.051
+Kristiansand kommune;R;Helgedøgn;Alle;Hittil i år;0,008;97,000;2058901;2058746;1.235;1.965
+Kristiansand kommune;R;Helgedøgn;< 5,6m;Hittil i år;-0,490;97,000;1937749;1947288;1.012;1.610
+Kristiansand kommune;R;Helgedøgn;>= 5,6m;Hittil i år;8,754;97,000;120800;111076;6.581;10.471
+Kristiansand kommune;R;Helgedøgn;5,6m - 7,6m;Hittil i år;14,423;97,000;46379;40533;10.081;16.041
+Kristiansand kommune;R;Helgedøgn;7,6m - 12,5m;Hittil i år;-1,799;97,000;53235;54210;7.815;12.435
+Kristiansand kommune;R;Helgedøgn;12,5m - 16,0m;Hittil i år;39,507;97,000;16120;11555;72.820;115.873
+Kristiansand kommune;R;Helgedøgn;>= 16,0m;Hittil i år;6,028;97,000;5066;4778;17.704;28.171
+Kristiansand kommune;K;Alle;Alle;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;< 5,6m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 5,6m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 16,0m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;Alle;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;< 5,6m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 5,6m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 16,0m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;Alle;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;< 5,6m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 5,6m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 16,0m;Januar;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;Alle;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;< 5,6m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 5,6m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;5,6m - 7,6m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;7,6m - 12,5m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;12,5m - 16,0m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 16,0m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;Alle;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;< 5,6m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 5,6m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;5,6m - 7,6m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;7,6m - 12,5m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;12,5m - 16,0m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 16,0m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;Alle;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;< 5,6m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 5,6m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;5,6m - 7,6m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;7,6m - 12,5m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;12,5m - 16,0m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 16,0m;Februar;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;Alle;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;< 5,6m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 5,6m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;5,6m - 7,6m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;7,6m - 12,5m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;12,5m - 16,0m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 16,0m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;Alle;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;< 5,6m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 5,6m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;5,6m - 7,6m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;7,6m - 12,5m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;12,5m - 16,0m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 16,0m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;Alle;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;< 5,6m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 5,6m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;5,6m - 7,6m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;7,6m - 12,5m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;12,5m - 16,0m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 16,0m;Mars;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;Alle;April;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;< 5,6m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 5,6m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;5,6m - 7,6m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;7,6m - 12,5m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;12,5m - 16,0m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 16,0m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;Alle;April;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;< 5,6m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 5,6m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;5,6m - 7,6m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;7,6m - 12,5m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;12,5m - 16,0m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 16,0m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;Alle;April;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;< 5,6m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 5,6m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;5,6m - 7,6m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;7,6m - 12,5m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;12,5m - 16,0m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 16,0m;April;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;Alle;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;< 5,6m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 5,6m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;5,6m - 7,6m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;7,6m - 12,5m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;12,5m - 16,0m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 16,0m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;Alle;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;< 5,6m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 5,6m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;5,6m - 7,6m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;7,6m - 12,5m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;12,5m - 16,0m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 16,0m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;Alle;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;< 5,6m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 5,6m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;5,6m - 7,6m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;7,6m - 12,5m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;12,5m - 16,0m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 16,0m;Mai;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;Alle;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;< 5,6m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 5,6m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;5,6m - 7,6m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;7,6m - 12,5m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;12,5m - 16,0m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 16,0m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;Alle;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;< 5,6m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 5,6m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;5,6m - 7,6m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;7,6m - 12,5m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;12,5m - 16,0m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 16,0m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;Alle;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;< 5,6m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 5,6m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;5,6m - 7,6m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;7,6m - 12,5m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;12,5m - 16,0m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 16,0m;Juni;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;Alle;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;< 5,6m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 5,6m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 16,0m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;Alle;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;< 5,6m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 5,6m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 16,0m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;Alle;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;< 5,6m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 5,6m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 16,0m;Juli;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;Alle;August;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;< 5,6m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 5,6m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;5,6m - 7,6m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;7,6m - 12,5m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;12,5m - 16,0m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 16,0m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;Alle;August;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;< 5,6m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 5,6m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;5,6m - 7,6m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;7,6m - 12,5m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;12,5m - 16,0m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 16,0m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;Alle;August;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;< 5,6m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 5,6m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;5,6m - 7,6m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;7,6m - 12,5m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;12,5m - 16,0m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 16,0m;August;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;Alle;September;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;< 5,6m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 5,6m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;5,6m - 7,6m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;7,6m - 12,5m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;12,5m - 16,0m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 16,0m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;Alle;September;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;< 5,6m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 5,6m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;5,6m - 7,6m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;7,6m - 12,5m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;12,5m - 16,0m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 16,0m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;Alle;September;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;< 5,6m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 5,6m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;5,6m - 7,6m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;7,6m - 12,5m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;12,5m - 16,0m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 16,0m;September;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;Alle;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;< 5,6m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 5,6m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;5,6m - 7,6m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;7,6m - 12,5m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;12,5m - 16,0m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 16,0m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;Alle;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;< 5,6m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 5,6m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;5,6m - 7,6m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;7,6m - 12,5m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;12,5m - 16,0m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 16,0m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;Alle;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;< 5,6m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 5,6m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;5,6m - 7,6m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;7,6m - 12,5m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;12,5m - 16,0m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 16,0m;Oktober;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;Alle;November;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;< 5,6m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 5,6m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;5,6m - 7,6m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;7,6m - 12,5m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;12,5m - 16,0m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 16,0m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;Alle;November;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;< 5,6m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 5,6m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;5,6m - 7,6m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;7,6m - 12,5m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;12,5m - 16,0m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 16,0m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;Alle;November;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;< 5,6m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 5,6m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;5,6m - 7,6m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;7,6m - 12,5m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;12,5m - 16,0m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 16,0m;November;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;Alle;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;< 5,6m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 5,6m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;5,6m - 7,6m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;7,6m - 12,5m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;12,5m - 16,0m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 16,0m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;Alle;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;< 5,6m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 5,6m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;5,6m - 7,6m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;7,6m - 12,5m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;12,5m - 16,0m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 16,0m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;Alle;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;< 5,6m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 5,6m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;5,6m - 7,6m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;7,6m - 12,5m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;12,5m - 16,0m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 16,0m;Desember;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;Alle;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;< 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;5,6m - 7,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;7,6m - 12,5m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;12,5m - 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;Alle;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;< 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;Alle;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;< 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 5,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 16,0m;Siste 12 måneder;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;Alle;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;< 5,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 5,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;5,6m - 7,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;7,6m - 12,5m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;12,5m - 16,0m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Alle;>= 16,0m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;Alle;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;< 5,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 5,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;5,6m - 7,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;7,6m - 12,5m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Yrkesdøgn;>= 16,0m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;Alle;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;< 5,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 5,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;5,6m - 7,6m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;7,6m - 12,5m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;12,5m - 16,0m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;K;Helgedøgn;>= 16,0m;Hittil i år;-;-;-;-;-;-
+Kristiansand kommune;E+R+F+K;Alle;Alle;Januar;4,674;92,000;9289191;8874378;2.979;1.394
+Kristiansand kommune;E+R+F+K;Alle;< 5,6m;Januar;3,295;91,000;4953790;4795777;3.481;1.790
+Kristiansand kommune;E+R+F+K;Alle;>= 5,6m;Januar;17,681;91,000;462424;392948;20.748;10.668
+Kristiansand kommune;E+R+F+K;Alle;5,6m - 7,6m;Januar;19,718;91,000;125990;105239;25.200;12.957
+Kristiansand kommune;E+R+F+K;Alle;7,6m - 12,5m;Januar;11,516;91,000;187934;168526;29.096;14.960
+Kristiansand kommune;E+R+F+K;Alle;12,5m - 16,0m;Januar;28,747;91,000;85452;66372;92.840;47.734
+Kristiansand kommune;E+R+F+K;Alle;>= 16,0m;Januar;19,384;91,000;63048;52811;50.842;26.140
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;Alle;Januar;9,818;93,000;7477454;6808964;4.838;2.264
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;< 5,6m;Januar;7,917;92,000;3936237;3647462;5.961;3.065
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 5,6m;Januar;21,597;92,000;408942;336308;21.724;11.170
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Januar;23,321;92,000;110475;89583;27.200;13.985
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Januar;15,411;92,000;164756;142756;29.018;14.920
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Januar;34,144;92,000;74642;55643;93.889;48.273
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 16,0m;Januar;22,230;92,000;59069;48326;52.749;27.121
+Kristiansand kommune;E+R+F+K;Helgedøgn;Alle;Januar;-12,282;91,000;1811737;2065414;7.266;3.401
+Kristiansand kommune;E+R+F+K;Helgedøgn;< 5,6m;Januar;-11,387;90,000;1017553;1148315;9.210;4.735
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 5,6m;Januar;-5,576;90,000;53482;56640;20.793;10.691
+Kristiansand kommune;E+R+F+K;Helgedøgn;5,6m - 7,6m;Januar;-0,901;90,000;15515;15656;22.367;11.500
+Kristiansand kommune;E+R+F+K;Helgedøgn;7,6m - 12,5m;Januar;-10,058;90,000;23178;25770;37.172;19.112
+Kristiansand kommune;E+R+F+K;Helgedøgn;12,5m - 16,0m;Januar;0,755;90,000;10810;10729;114.118;58.674
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 16,0m;Januar;-11,282;90,000;3979;4485;-;-
+Kristiansand kommune;E+R+F+K;Alle;Alle;Februar;-2,038;93,000;9004014;9191364;2.426;1.104
+Kristiansand kommune;E+R+F+K;Alle;< 5,6m;Februar;-2,554;92,000;5047950;5180259;2.963;1.473
+Kristiansand kommune;E+R+F+K;Alle;>= 5,6m;Februar;2,704;92,000;488447;475586;9.085;4.518
+Kristiansand kommune;E+R+F+K;Alle;5,6m - 7,6m;Februar;1,886;92,000;130945;128521;12.971;6.450
+Kristiansand kommune;E+R+F+K;Alle;7,6m - 12,5m;Februar;-1,747;92,000;193348;196785;18.237;9.069
+Kristiansand kommune;E+R+F+K;Alle;12,5m - 16,0m;Februar;12,366;92,000;90465;80509;68.710;34.169
+Kristiansand kommune;E+R+F+K;Alle;>= 16,0m;Februar;5,616;92,000;73689;69771;26.946;13.400
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;Alle;Februar;-1,704;93,000;7230948;7356323;4.199;1.911
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;< 5,6m;Februar;-2,081;92,000;4001114;4086135;4.576;2.276
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 5,6m;Februar;3,567;92,000;433256;418335;10.170;5.057
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Februar;3,056;92,000;114971;111562;14.694;7.307
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Februar;-0,796;92,000;170709;172079;17.892;8.898
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Februar;13,213;92,000;78889;69682;67.051;33.344
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 16,0m;Februar;5,653;92,000;68687;65012;28.312;14.079
+Kristiansand kommune;E+R+F+K;Helgedøgn;Alle;Februar;-3,377;95,000;1773066;1835041;9.270;4.219
+Kristiansand kommune;E+R+F+K;Helgedøgn;< 5,6m;Februar;-4,322;94,000;1046836;1094124;10.905;5.423
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 5,6m;Februar;-3,598;94,000;55191;57251;13.011;6.470
+Kristiansand kommune;E+R+F+K;Helgedøgn;5,6m - 7,6m;Februar;-5,808;94,000;15974;16959;18.313;9.107
+Kristiansand kommune;E+R+F+K;Helgedøgn;7,6m - 12,5m;Februar;-8,366;94,000;22639;24706;28.439;14.142
+Kristiansand kommune;E+R+F+K;Helgedøgn;12,5m - 16,0m;Februar;6,918;94,000;11576;10827;-;-
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 16,0m;Februar;5,106;94,000;5002;4759;19.809;9.851
+Kristiansand kommune;E+R+F+K;Alle;Alle;Mars;6,580;97,000;5964539;5596301;6.483;3.455
+Kristiansand kommune;E+R+F+K;Alle;< 5,6m;Mars;6,086;95,000;5042899;4753581;6.319;3.367
+Kristiansand kommune;E+R+F+K;Alle;>= 5,6m;Mars;20,327;95,000;545258;453147;13.413;7.147
+Kristiansand kommune;E+R+F+K;Alle;5,6m - 7,6m;Mars;26,654;95,000;154707;122149;19.241;10.253
+Kristiansand kommune;E+R+F+K;Alle;7,6m - 12,5m;Mars;13,213;95,000;214413;189389;21.986;11.716
+Kristiansand kommune;E+R+F+K;Alle;12,5m - 16,0m;Mars;27,847;95,000;95929;75034;56.095;29.891
+Kristiansand kommune;E+R+F+K;Alle;>= 16,0m;Mars;20,479;95,000;80209;66575;29.148;15.532
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;Alle;Mars;14,994;96,000;4902336;4263132;6.249;3.330
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;< 5,6m;Mars;15,436;94,000;4095247;3547632;4.995;2.662
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 5,6m;Mars;25,637;94,000;484977;386015;13.944;7.430
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Mars;33,051;94,000;136011;102225;20.729;11.046
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Mars;17,264;94,000;189043;161212;22.224;11.843
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Mars;36,734;94,000;84634;61897;55.457;29.551
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 16,0m;Mars;24,073;94,000;75289;60681;29.704;15.828
+Kristiansand kommune;E+R+F+K;Helgedøgn;Alle;Mars;-20,325;98,000;1062203;1333169;8.031;4.279
+Kristiansand kommune;E+R+F+K;Helgedøgn;< 5,6m;Mars;-21,419;97,000;947652;1205949;9.375;4.995
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 5,6m;Mars;-10,205;97,000;60281;67132;15.355;8.182
+Kristiansand kommune;E+R+F+K;Helgedøgn;5,6m - 7,6m;Mars;-6,163;97,000;18696;19924;21.369;11.387
+Kristiansand kommune;E+R+F+K;Helgedøgn;7,6m - 12,5m;Mars;-9,962;97,000;25370;28177;25.189;13.422
+Kristiansand kommune;E+R+F+K;Helgedøgn;12,5m - 16,0m;Mars;-14,021;97,000;11295;13137;153.725;81.914
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 16,0m;Mars;-16,525;97,000;4920;5894;31.199;16.625
+Kristiansand kommune;E+R+F+K;Alle;Alle;April;-8,136;95,000;6132824;6675981;3.279;1.686
+Kristiansand kommune;E+R+F+K;Alle;< 5,6m;April;-8,380;95,000;5521686;6026693;3.306;1.700
+Kristiansand kommune;E+R+F+K;Alle;>= 5,6m;April;-5,622;95,000;608413;644658;8.274;4.254
+Kristiansand kommune;E+R+F+K;Alle;5,6m - 7,6m;April;3,004;95,000;180167;174913;16.949;8.714
+Kristiansand kommune;E+R+F+K;Alle;7,6m - 12,5m;April;-11,579;95,000;247753;280196;9.255;4.759
+Kristiansand kommune;E+R+F+K;Alle;12,5m - 16,0m;April;-2,522;95,000;101596;104225;41.119;21.142
+Kristiansand kommune;E+R+F+K;Alle;>= 16,0m;April;-7,532;95,000;78897;85324;18.013;9.262
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;Alle;April;-17,992;95,000;4269145;5205738;3.060;1.573
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;< 5,6m;April;-18,775;95,000;3780702;4654593;3.150;1.620
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 5,6m;April;-11,179;95,000;486204;547399;7.722;3.971
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;April;-5,501;95,000;139314;147424;14.354;7.380
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;April;-15,678;95,000;196780;233367;8.827;4.539
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;April;-9,251;95,000;79654;87774;40.263;20.701
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 16,0m;April;-10,627;95,000;70456;78834;17.542;9.019
+Kristiansand kommune;E+R+F+K;Helgedøgn;Alle;April;26,760;94,000;1863679;1470243;8.199;4.216
+Kristiansand kommune;E+R+F+K;Helgedøgn;< 5,6m;April;26,885;94,000;1740984;1372100;8.009;4.118
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 5,6m;April;25,653;94,000;122209;97259;16.708;8.591
+Kristiansand kommune;E+R+F+K;Helgedøgn;5,6m - 7,6m;April;48,616;94,000;40853;27489;32.116;16.512
+Kristiansand kommune;E+R+F+K;Helgedøgn;7,6m - 12,5m;April;8,849;94,000;50973;46829;17.156;8.821
+Kristiansand kommune;E+R+F+K;Helgedøgn;12,5m - 16,0m;April;33,378;94,000;21942;16451;52.354;26.918
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 16,0m;April;30,062;94,000;8441;6490;44.502;22.881
+Kristiansand kommune;E+R+F+K;Alle;Alle;Mai;2,406;96,000;9750293;9521254;2.790;1.270
+Kristiansand kommune;E+R+F+K;Alle;< 5,6m;Mai;1,555;96,000;8753888;8619864;2.896;1.318
+Kristiansand kommune;E+R+F+K;Alle;>= 5,6m;Mai;10,623;96,000;991391;896186;8.548;3.891
+Kristiansand kommune;E+R+F+K;Alle;5,6m - 7,6m;Mai;10,610;96,000;293925;265730;17.832;8.117
+Kristiansand kommune;E+R+F+K;Alle;7,6m - 12,5m;Mai;8,357;96,000;410059;378435;7.693;3.502
+Kristiansand kommune;E+R+F+K;Alle;12,5m - 16,0m;Mai;9,293;96,000;129684;118657;37.719;17.169
+Kristiansand kommune;E+R+F+K;Alle;>= 16,0m;Mai;18,265;96,000;157723;133364;15.486;7.049
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;Alle;Mai;5,431;96,000;7283438;6908262;3.865;1.759
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;< 5,6m;Mai;4,651;96,000;6452538;6165786;3.756;1.710
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 5,6m;Mai;11,958;96,000;826880;738560;9.568;4.355
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Mai;11,430;96,000;238359;213910;17.769;8.088
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Mai;9,952;96,000;341071;310199;8.486;3.863
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Mai;12,216;96,000;107851;96110;38.435;17.495
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 16,0m;Mai;17,963;96,000;139599;118341;16.413;7.471
+Kristiansand kommune;E+R+F+K;Helgedøgn;Alle;Mai;-5,593;96,000;2466855;2612992;4.105;1.869
+Kristiansand kommune;E+R+F+K;Helgedøgn;< 5,6m;Mai;-6,223;96,000;2301350;2454078;4.238;1.929
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 5,6m;Mai;4,368;96,000;164511;157626;6.529;2.972
+Kristiansand kommune;E+R+F+K;Helgedøgn;5,6m - 7,6m;Mai;7,229;96,000;55566;51820;19.363;8.814
+Kristiansand kommune;E+R+F+K;Helgedøgn;7,6m - 12,5m;Mai;1,102;96,000;68988;68236;8.679;3.951
+Kristiansand kommune;E+R+F+K;Helgedøgn;12,5m - 16,0m;Mai;-3,167;96,000;21833;22547;48.355;22.011
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 16,0m;Mai;20,642;96,000;18124;15023;-;-
+Kristiansand kommune;E+R+F+K;Alle;Alle;Juni;-0,943;92,000;6417101;6478177;3.288;1.821
+Kristiansand kommune;E+R+F+K;Alle;< 5,6m;Juni;-1,471;92,000;5728288;5813800;3.270;1.811
+Kristiansand kommune;E+R+F+K;Alle;>= 5,6m;Juni;3,864;92,000;685765;660251;8.242;4.564
+Kristiansand kommune;E+R+F+K;Alle;5,6m - 7,6m;Juni;4,115;92,000;207891;199674;17.238;9.546
+Kristiansand kommune;E+R+F+K;Alle;7,6m - 12,5m;Juni;4,313;92,000;289765;277784;7.217;3.997
+Kristiansand kommune;E+R+F+K;Alle;12,5m - 16,0m;Juni;-1,882;92,000;86713;88376;25.878;14.331
+Kristiansand kommune;E+R+F+K;Alle;>= 16,0m;Juni;7,392;92,000;101396;94417;14.064;7.788
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;Alle;Juni;-4,029;91,000;5018702;5229384;3.082;1.707
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;< 5,6m;Juni;-4,746;91,000;4428404;4649026;3.225;1.786
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 5,6m;Juni;1,989;91,000;588202;576732;7.648;4.235
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Juni;1,851;91,000;174396;171226;15.769;8.732
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Juni;2,705;91,000;246877;240375;6.941;3.844
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Juni;-4,397;91,000;73381;76756;25.942;14.366
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 16,0m;Juni;5,853;91,000;93548;88375;14.008;7.758
+Kristiansand kommune;E+R+F+K;Helgedøgn;Alle;Juni;11,980;92,000;1398399;1248793;5.480;3.035
+Kristiansand kommune;E+R+F+K;Helgedøgn;< 5,6m;Juni;11,600;92,000;1299884;1164774;5.118;2.834
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 5,6m;Juni;16,815;92,000;97563;83519;13.659;7.564
+Kristiansand kommune;E+R+F+K;Helgedøgn;5,6m - 7,6m;Juni;17,741;92,000;33495;28448;26.635;14.750
+Kristiansand kommune;E+R+F+K;Helgedøgn;7,6m - 12,5m;Juni;14,646;92,000;42888;37409;12.310;6.817
+Kristiansand kommune;E+R+F+K;Helgedøgn;12,5m - 16,0m;Juni;14,733;92,000;13332;11620;31.878;17.653
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 16,0m;Juni;29,891;92,000;7848;6042;24.327;13.472
+Kristiansand kommune;E+R+F+K;Alle;Alle;Juli;-1,315;93,000;6101092;6182383;2.310;1.334
+Kristiansand kommune;E+R+F+K;Alle;< 5,6m;Juli;-1,825;93,000;5497247;5599439;2.501;1.444
+Kristiansand kommune;E+R+F+K;Alle;>= 5,6m;Juli;3,606;93,000;602703;581726;5.047;2.914
+Kristiansand kommune;E+R+F+K;Alle;5,6m - 7,6m;Juli;0,367;93,000;193040;192335;8.804;5.083
+Kristiansand kommune;E+R+F+K;Alle;7,6m - 12,5m;Juli;5,485;93,000;262067;248441;6.516;3.762
+Kristiansand kommune;E+R+F+K;Alle;12,5m - 16,0m;Juli;-1,949;93,000;64662;65947;23.091;13.332
+Kristiansand kommune;E+R+F+K;Alle;>= 16,0m;Juli;10,574;93,000;82934;75003;10.549;6.091
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;Alle;Juli;-0,599;92,000;4538094;4565444;4.617;2.666
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;< 5,6m;Juli;-1,178;92,000;4040535;4088720;4.932;2.848
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 5,6m;Juli;4,399;92,000;496690;475761;5.292;3.056
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Juli;0,483;92,000;153469;152732;8.667;5.004
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Juli;6,971;92,000;216755;202630;6.219;3.591
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Juli;-2,513;92,000;51120;52438;23.422;13.523
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 16,0m;Juli;10,867;92,000;75346;67961;10.916;6.303
+Kristiansand kommune;E+R+F+K;Helgedøgn;Alle;Juli;-3,336;93,000;1562998;1616939;5.933;3.426
+Kristiansand kommune;E+R+F+K;Helgedøgn;< 5,6m;Juli;-3,575;93,000;1456712;1510719;5.727;3.307
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 5,6m;Juli;0,045;93,000;106013;105965;10.459;6.039
+Kristiansand kommune;E+R+F+K;Helgedøgn;5,6m - 7,6m;Juli;-0,081;93,000;39571;39603;13.043;7.531
+Kristiansand kommune;E+R+F+K;Helgedøgn;7,6m - 12,5m;Juli;-1,089;93,000;45312;45811;13.489;7.789
+Kristiansand kommune;E+R+F+K;Helgedøgn;12,5m - 16,0m;Juli;0,244;93,000;13542;13509;34.845;20.119
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 16,0m;Juli;7,753;93,000;7588;7042;15.454;8.923
+Kristiansand kommune;E+R+F+K;Alle;Alle;August;1,162;94,000;7784333;7694940;2.763;1.420
+Kristiansand kommune;E+R+F+K;Alle;< 5,6m;August;0,728;94,000;6974794;6924379;2.918;1.500
+Kristiansand kommune;E+R+F+K;Alle;>= 5,6m;August;5,029;94,000;807642;768974;4.860;2.499
+Kristiansand kommune;E+R+F+K;Alle;5,6m - 7,6m;August;3,077;94,000;247830;240433;9.760;5.018
+Kristiansand kommune;E+R+F+K;Alle;7,6m - 12,5m;August;5,786;94,000;340815;322173;6.627;3.408
+Kristiansand kommune;E+R+F+K;Alle;12,5m - 16,0m;August;0,459;94,000;96135;95696;23.762;12.218
+Kristiansand kommune;E+R+F+K;Alle;>= 16,0m;August;11,015;94,000;122862;110672;14.611;7.512
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;Alle;August;1,035;93,000;6248488;6184495;3.136;1.612
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;< 5,6m;August;0,551;93,000;5543085;5512686;3.324;1.709
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 5,6m;August;4,967;93,000;703776;670472;5.080;2.612
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;August;2,865;93,000;210800;204929;9.741;5.008
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;August;5,813;93,000;295363;279136;7.084;3.642
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;August;-0,030;93,000;83251;83276;23.173;11.914
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 16,0m;August;10,890;93,000;114362;103131;14.986;7.705
+Kristiansand kommune;E+R+F+K;Helgedøgn;Alle;August;1,682;96,000;1535845;1510445;3.021;1.553
+Kristiansand kommune;E+R+F+K;Helgedøgn;< 5,6m;August;1,418;96,000;1431709;1411693;3.065;1.576
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 5,6m;August;5,446;96,000;103866;98502;5.786;2.975
+Kristiansand kommune;E+R+F+K;Helgedøgn;5,6m - 7,6m;August;4,298;96,000;37030;35504;12.086;6.214
+Kristiansand kommune;E+R+F+K;Helgedøgn;7,6m - 12,5m;August;5,611;96,000;45452;43037;5.865;3.015
+Kristiansand kommune;E+R+F+K;Helgedøgn;12,5m - 16,0m;August;3,736;96,000;12884;12420;29.526;15.181
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 16,0m;August;12,717;96,000;8500;7541;15.843;8.146
+Kristiansand kommune;E+R+F+K;Alle;Alle;September;-0,357;98,000;6025867;6047463;3.081;1.642
+Kristiansand kommune;E+R+F+K;Alle;< 5,6m;September;-0,323;98,000;5382738;5400186;3.088;1.645
+Kristiansand kommune;E+R+F+K;Alle;>= 5,6m;September;-0,712;98,000;629790;634309;6.668;3.553
+Kristiansand kommune;E+R+F+K;Alle;5,6m - 7,6m;September;1,122;98,000;186398;184329;11.690;6.229
+Kristiansand kommune;E+R+F+K;Alle;7,6m - 12,5m;September;-4,674;98,000;260041;272790;5.080;2.707
+Kristiansand kommune;E+R+F+K;Alle;12,5m - 16,0m;September;4,478;98,000;91893;87954;26.686;14.220
+Kristiansand kommune;E+R+F+K;Alle;>= 16,0m;September;2,490;98,000;91458;89236;20.500;10.924
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;Alle;September;-3,224;98,000;4748586;4906776;3.544;1.889
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;< 5,6m;September;-3,281;98,000;4194368;4336642;3.631;1.935
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 5,6m;September;-2,937;98,000;541302;557679;6.922;3.689
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;September;-1,853;98,000;155855;158797;11.882;6.332
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;September;-7,234;98,000;220808;238027;5.458;2.908
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;September;3,132;98,000;79677;77257;26.742;14.250
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 16,0m;September;1,632;98,000;84962;83598;21.393;11.400
+Kristiansand kommune;E+R+F+K;Helgedøgn;Alle;September;11,975;98,000;1277281;1140687;3.885;2.070
+Kristiansand kommune;E+R+F+K;Helgedøgn;< 5,6m;September;11,737;98,000;1188370;1063544;3.902;2.079
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 5,6m;September;15,474;98,000;88488;76630;7.424;3.956
+Kristiansand kommune;E+R+F+K;Helgedøgn;5,6m - 7,6m;September;19,626;98,000;30543;25532;13.516;7.202
+Kristiansand kommune;E+R+F+K;Helgedøgn;7,6m - 12,5m;September;12,858;98,000;39233;34763;5.031;2.681
+Kristiansand kommune;E+R+F+K;Helgedøgn;12,5m - 16,0m;September;14,200;98,000;12216;10697;29.610;15.778
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 16,0m;September;15,218;98,000;6496;5638;23.605;12.578
+Kristiansand kommune;E+R+F+K;Alle;Alle;Oktober;1,973;95,000;6932538;6798405;1.961;0.975
+Kristiansand kommune;E+R+F+K;Alle;< 5,6m;Oktober;1,608;95,000;6212004;6113704;1.822;0.906
+Kristiansand kommune;E+R+F+K;Alle;>= 5,6m;Oktober;5,818;95,000;705498;666712;9.649;4.798
+Kristiansand kommune;E+R+F+K;Alle;5,6m - 7,6m;Oktober;10,596;95,000;211280;191038;21.640;10.761
+Kristiansand kommune;E+R+F+K;Alle;7,6m - 12,5m;Oktober;-0,168;95,000;287398;287883;7.566;3.763
+Kristiansand kommune;E+R+F+K;Alle;12,5m - 16,0m;Oktober;14,984;95,000;107962;93893;48.193;23.966
+Kristiansand kommune;E+R+F+K;Alle;>= 16,0m;Oktober;5,282;95,000;98858;93898;23.456;11.664
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;Alle;Oktober;4,336;95,000;5460679;5233730;2.574;1.280
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;< 5,6m;Oktober;3,943;95,000;4833452;4650084;2.666;1.326
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 5,6m;Oktober;8,003;95,000;612754;567351;9.226;4.588
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Oktober;12,719;95,000;179251;159025;19.742;9.817
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Oktober;2,408;95,000;248533;242688;8.239;4.097
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Oktober;17,765;95,000;93701;79566;49.249;24.491
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 16,0m;Oktober;6,038;95,000;91269;86072;24.925;12.395
+Kristiansand kommune;E+R+F+K;Helgedøgn;Alle;Oktober;-5,932;95,000;1471859;1564675;6.342;3.154
+Kristiansand kommune;E+R+F+K;Helgedøgn;< 5,6m;Oktober;-5,812;95,000;1378552;1463620;6.192;3.079
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 5,6m;Oktober;-6,660;95,000;92744;99361;14.659;7.290
+Kristiansand kommune;E+R+F+K;Helgedøgn;5,6m - 7,6m;Oktober;0,050;95,000;32029;32013;31.630;15.729
+Kristiansand kommune;E+R+F+K;Helgedøgn;7,6m - 12,5m;Oktober;-14,006;95,000;38865;45195;8.053;4.005
+Kristiansand kommune;E+R+F+K;Helgedøgn;12,5m - 16,0m;Oktober;-0,461;95,000;14261;14327;50.517;25.122
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 16,0m;Oktober;-3,028;95,000;7589;7826;34.197;17.006
+Kristiansand kommune;E+R+F+K;Alle;Alle;November;5,482;99,000;8469294;8029161;6.973;3.361
+Kristiansand kommune;E+R+F+K;Alle;< 5,6m;November;2,307;99,000;6401126;6256801;1.625;0.808
+Kristiansand kommune;E+R+F+K;Alle;>= 5,6m;November;8,853;99,000;702428;645302;10.603;5.273
+Kristiansand kommune;E+R+F+K;Alle;5,6m - 7,6m;November;15,747;99,000;213074;184086;24.733;12.300
+Kristiansand kommune;E+R+F+K;Alle;7,6m - 12,5m;November;4,260;99,000;280038;268597;11.915;5.925
+Kristiansand kommune;E+R+F+K;Alle;12,5m - 16,0m;November;15,270;99,000;108745;94339;51.895;25.807
+Kristiansand kommune;E+R+F+K;Alle;>= 16,0m;November;2,331;99,000;100571;98280;19.088;9.492
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;Alle;November;4,768;99,000;6870051;6557387;6.874;3.313
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;< 5,6m;November;1,596;99,000;5133820;5053181;1.905;0.947
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 5,6m;November;7,873;99,000;620492;575204;10.487;5.215
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;November;14,247;99,000;184520;161510;23.088;11.481
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;November;3,301;99,000;245768;237915;11.446;5.692
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;November;14,881;99,000;96005;83569;50.750;25.237
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 16,0m;November;2,157;99,000;94199;92210;19.367;9.631
+Kristiansand kommune;E+R+F+K;Helgedøgn;Alle;November;8,661;99,000;1599243;1471774;8.359;4.029
+Kristiansand kommune;E+R+F+K;Helgedøgn;< 5,6m;November;5,291;99,000;1267306;1203620;4.142;2.060
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 5,6m;November;16,888;99,000;81936;70098;13.003;6.466
+Kristiansand kommune;E+R+F+K;Helgedøgn;5,6m - 7,6m;November;26,479;99,000;28554;22576;36.238;18.021
+Kristiansand kommune;E+R+F+K;Helgedøgn;7,6m - 12,5m;November;11,694;99,000;34270;30682;17.877;8.890
+Kristiansand kommune;E+R+F+K;Helgedøgn;12,5m - 16,0m;November;18,292;99,000;12740;10770;61.530;30.598
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 16,0m;November;4,975;99,000;6372;6070;29.515;14.678
+Kristiansand kommune;E+R+F+K;Alle;Alle;Desember;-0,587;93,000;9268400;9323133;2.277;1.036
+Kristiansand kommune;E+R+F+K;Alle;< 5,6m;Desember;-0,181;93,000;7288285;7301527;2.198;1.029
+Kristiansand kommune;E+R+F+K;Alle;>= 5,6m;Desember;1,356;93,000;664992;656095;10.984;5.141
+Kristiansand kommune;E+R+F+K;Alle;5,6m - 7,6m;Desember;11,855;93,000;203393;181836;26.851;12.566
+Kristiansand kommune;E+R+F+K;Alle;7,6m - 12,5m;Desember;-3,965;93,000;253946;264431;13.806;6.461
+Kristiansand kommune;E+R+F+K;Alle;12,5m - 16,0m;Desember;0,103;93,000;109324;109211;51.023;23.879
+Kristiansand kommune;E+R+F+K;Alle;>= 16,0m;Desember;-2,274;93,000;98329;100617;16.131;7.550
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;Alle;Desember;-6,612;94,000;6840653;7324979;2.858;1.301
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;< 5,6m;Desember;-6,475;94,000;5313689;5681546;2.839;1.329
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 5,6m;Desember;-1,936;94,000;564505;575650;10.042;4.700
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Desember;7,226;94,000;168672;157305;24.146;11.301
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Desember;-6,741;94,000;216279;231911;11.733;5.491
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Desember;-3,471;94,000;90088;93327;47.166;22.074
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 16,0m;Desember;-3,911;94,000;89466;93107;15.569;7.287
+Kristiansand kommune;E+R+F+K;Helgedøgn;Alle;Desember;21,499;92,000;2427747;1998154;4.936;2.247
+Kristiansand kommune;E+R+F+K;Helgedøgn;< 5,6m;Desember;21,890;92,000;1974596;1619981;5.729;2.681
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 5,6m;Desember;24,914;92,000;100487;80445;18.278;8.554
+Kristiansand kommune;E+R+F+K;Helgedøgn;5,6m - 7,6m;Desember;41,539;92,000;34721;24531;42.357;19.824
+Kristiansand kommune;E+R+F+K;Helgedøgn;7,6m - 12,5m;Desember;15,827;92,000;37667;32520;28.365;13.275
+Kristiansand kommune;E+R+F+K;Helgedøgn;12,5m - 16,0m;Desember;21,103;92,000;19236;15884;74.496;34.865
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 16,0m;Desember;18,016;92,000;8863;7510;-;-
+Kristiansand kommune;E+R+F+K;Alle;Alle;Siste 12 måneder;0,804;95,000;91139486;90412940;1.472;0.622
+Kristiansand kommune;E+R+F+K;Alle;< 5,6m;Siste 12 måneder;0,026;94,000;72804695;72786010;1.864;0.787
+Kristiansand kommune;E+R+F+K;Alle;>= 5,6m;Siste 12 måneder;5,603;94,000;7894751;7475894;6.879;2.905
+Kristiansand kommune;E+R+F+K;Alle;5,6m - 7,6m;Siste 12 måneder;8,218;94,000;2348640;2170283;14.920;6.300
+Kristiansand kommune;E+R+F+K;Alle;7,6m - 12,5m;Siste 12 måneder;2,286;94,000;3227577;3155430;7.785;3.287
+Kristiansand kommune;E+R+F+K;Alle;12,5m - 16,0m;Siste 12 måneder;8,179;94,000;1168560;1080213;25.567;10.796
+Kristiansand kommune;E+R+F+K;Alle;>= 16,0m;Siste 12 måneder;7,477;94,000;1149974;1069968;13.830;5.840
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;Alle;Siste 12 måneder;0,488;95,000;70888574;70544614;2.095;0.885
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,571;94,000;55753191;56073493;2.101;0.887
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 5,6m;Siste 12 måneder;5,331;94,000;6767980;6425466;7.095;2.996
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;7,423;94,000;1966093;1830228;14.269;6.025
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;2,245;94,000;2752742;2692295;7.964;3.363
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;8,241;94,000;992893;917295;25.904;10.938
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 16,0m;Siste 12 måneder;7,163;94,000;1056252;985648;14.253;6.018
+Kristiansand kommune;E+R+F+K;Helgedøgn;Alle;Siste 12 måneder;1,926;95,000;20250912;19868326;5.368;2.267
+Kristiansand kommune;E+R+F+K;Helgedøgn;< 5,6m;Siste 12 måneder;2,028;95,000;17051504;16712517;5.757;2.431
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 5,6m;Siste 12 måneder;7,268;95,000;1126771;1050428;9.002;3.801
+Kristiansand kommune;E+R+F+K;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;12,496;95,000;382547;340055;20.622;8.708
+Kristiansand kommune;E+R+F+K;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;2,526;95,000;474835;463135;9.852;4.160
+Kristiansand kommune;E+R+F+K;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;7,825;95,000;175667;162918;26.110;11.025
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 16,0m;Siste 12 måneder;11,150;95,000;93722;84320;18.432;7.783
+Kristiansand kommune;E+R+F+K;Alle;Alle;Hittil i år;0,804;95,000;91139486;90412940;1.472;0.622
+Kristiansand kommune;E+R+F+K;Alle;< 5,6m;Hittil i år;0,026;94,000;72804695;72786010;1.864;0.787
+Kristiansand kommune;E+R+F+K;Alle;>= 5,6m;Hittil i år;5,603;94,000;7894751;7475894;6.879;2.905
+Kristiansand kommune;E+R+F+K;Alle;5,6m - 7,6m;Hittil i år;8,218;94,000;2348640;2170283;14.920;6.300
+Kristiansand kommune;E+R+F+K;Alle;7,6m - 12,5m;Hittil i år;2,286;94,000;3227577;3155430;7.785;3.287
+Kristiansand kommune;E+R+F+K;Alle;12,5m - 16,0m;Hittil i år;8,179;94,000;1168560;1080213;25.567;10.796
+Kristiansand kommune;E+R+F+K;Alle;>= 16,0m;Hittil i år;7,477;94,000;1149974;1069968;13.830;5.840
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;Alle;Hittil i år;0,488;95,000;70888574;70544614;2.095;0.885
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;< 5,6m;Hittil i år;-0,571;94,000;55753191;56073493;2.101;0.887
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 5,6m;Hittil i år;5,331;94,000;6767980;6425466;7.095;2.996
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Hittil i år;7,423;94,000;1966093;1830228;14.269;6.025
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Hittil i år;2,245;94,000;2752742;2692295;7.964;3.363
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Hittil i år;8,241;94,000;992893;917295;25.904;10.938
+Kristiansand kommune;E+R+F+K;Yrkesdøgn;>= 16,0m;Hittil i år;7,163;94,000;1056252;985648;14.253;6.018
+Kristiansand kommune;E+R+F+K;Helgedøgn;Alle;Hittil i år;1,926;95,000;20250912;19868326;5.368;2.267
+Kristiansand kommune;E+R+F+K;Helgedøgn;< 5,6m;Hittil i år;2,028;95,000;17051504;16712517;5.757;2.431
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 5,6m;Hittil i år;7,268;95,000;1126771;1050428;9.002;3.801
+Kristiansand kommune;E+R+F+K;Helgedøgn;5,6m - 7,6m;Hittil i år;12,496;95,000;382547;340055;20.622;8.708
+Kristiansand kommune;E+R+F+K;Helgedøgn;7,6m - 12,5m;Hittil i år;2,526;95,000;474835;463135;9.852;4.160
+Kristiansand kommune;E+R+F+K;Helgedøgn;12,5m - 16,0m;Hittil i år;7,825;95,000;175667;162918;26.110;11.025
+Kristiansand kommune;E+R+F+K;Helgedøgn;>= 16,0m;Hittil i år;11,150;95,000;93722;84320;18.432;7.783
+Kristiansand kommune;F;Alle;Alle;Januar;4,212;89,000;2805550;2692155;4.702;3.159
+Kristiansand kommune;F;Alle;< 5,6m;Januar;3,091;89,000;2584066;2506582;4.178;2.807
+Kristiansand kommune;F;Alle;>= 5,6m;Januar;19,071;89,000;218247;183291;29.660;19.926
+Kristiansand kommune;F;Alle;5,6m - 7,6m;Januar;21,464;89,000;58186;47904;33.919;22.787
+Kristiansand kommune;F;Alle;7,6m - 12,5m;Januar;5,971;89,000;94673;89339;38.693;25.994
+Kristiansand kommune;F;Alle;12,5m - 16,0m;Januar;42,363;89,000;53789;37783;128.032;86.013
+Kristiansand kommune;F;Alle;>= 16,0m;Januar;40,339;89,000;11599;8265;120.090;80.678
+Kristiansand kommune;F;Yrkesdøgn;Alle;Januar;7,000;90,000;2238631;2092172;7.491;5.033
+Kristiansand kommune;F;Yrkesdøgn;< 5,6m;Januar;5,753;90,000;2046175;1934857;7.131;4.791
+Kristiansand kommune;F;Yrkesdøgn;>= 5,6m;Januar;22,093;90,000;189898;155536;31.084;20.883
+Kristiansand kommune;F;Yrkesdøgn;5,6m - 7,6m;Januar;24,999;90,000;50922;40738;36.960;24.830
+Kristiansand kommune;F;Yrkesdøgn;7,6m - 12,5m;Januar;8,264;90,000;81814;75569;37.575;25.243
+Kristiansand kommune;F;Yrkesdøgn;12,5m - 16,0m;Januar;46,646;90,000;45887;31291;130.480;87.658
+Kristiansand kommune;F;Yrkesdøgn;>= 16,0m;Januar;42,038;90,000;11275;7938;122.306;82.166
+Kristiansand kommune;F;Helgedøgn;Alle;Januar;-5,511;86,000;566919;599983;9.949;6.684
+Kristiansand kommune;F;Helgedøgn;< 5,6m;Januar;-5,918;86,000;537891;571725;9.773;6.566
+Kristiansand kommune;F;Helgedøgn;>= 5,6m;Januar;2,140;86,000;28349;27755;27.533;18.497
+Kristiansand kommune;F;Helgedøgn;5,6m - 7,6m;Januar;1,368;86,000;7264;7166;30.123;20.237
+Kristiansand kommune;F;Helgedøgn;7,6m - 12,5m;Januar;-6,616;86,000;12859;13770;51.071;34.310
+Kristiansand kommune;F;Helgedøgn;12,5m - 16,0m;Januar;21,719;86,000;7902;6492;152.543;102.480
+Kristiansand kommune;F;Helgedøgn;>= 16,0m;Januar;-0,917;86,000;324;327;-;-
+Kristiansand kommune;F;Alle;Alle;Februar;-2,216;94,000;2832251;2896448;3.723;2.501
+Kristiansand kommune;F;Alle;< 5,6m;Februar;-3,075;94,000;2591250;2673448;3.719;2.498
+Kristiansand kommune;F;Alle;>= 5,6m;Februar;5,574;94,000;216857;205408;12.842;8.627
+Kristiansand kommune;F;Alle;5,6m - 7,6m;Februar;7,203;94,000;57375;53520;13.013;8.742
+Kristiansand kommune;F;Alle;7,6m - 12,5m;Februar;-3,234;94,000;94670;97834;25.976;17.451
+Kristiansand kommune;F;Alle;12,5m - 16,0m;Februar;21,234;94,000;53571;44188;97.820;65.716
+Kristiansand kommune;F;Alle;>= 16,0m;Februar;13,937;94,000;11241;9866;69.202;46.491
+Kristiansand kommune;F;Yrkesdøgn;Alle;Februar;-0,839;94,000;2280443;2299732;4.821;3.239
+Kristiansand kommune;F;Yrkesdøgn;< 5,6m;Februar;-2,377;93,000;2066945;2117271;4.750;3.191
+Kristiansand kommune;F;Yrkesdøgn;>= 5,6m;Februar;6,266;93,000;190260;179042;13.905;9.341
+Kristiansand kommune;F;Yrkesdøgn;5,6m - 7,6m;Februar;9,488;93,000;50635;46247;14.374;9.657
+Kristiansand kommune;F;Yrkesdøgn;7,6m - 12,5m;Februar;-2,937;93,000;82940;85450;24.759;16.633
+Kristiansand kommune;F;Yrkesdøgn;12,5m - 16,0m;Februar;21,058;93,000;45738;37782;96.106;64.565
+Kristiansand kommune;F;Yrkesdøgn;>= 16,0m;Februar;14,472;93,000;10947;9563;70.776;47.548
+Kristiansand kommune;F;Helgedøgn;Alle;Februar;-7,526;96,000;551808;596716;5.875;3.947
+Kristiansand kommune;F;Helgedøgn;< 5,6m;Februar;-5,731;95,000;524305;556177;8.944;6.009
+Kristiansand kommune;F;Helgedøgn;>= 5,6m;Februar;0,876;95,000;26597;26366;12.327;8.281
+Kristiansand kommune;F;Helgedøgn;5,6m - 7,6m;Februar;-7,328;95,000;6740;7273;20.074;13.486
+Kristiansand kommune;F;Helgedøgn;7,6m - 12,5m;Februar;-5,281;95,000;11730;12384;38.257;25.701
+Kristiansand kommune;F;Helgedøgn;12,5m - 16,0m;Februar;22,276;95,000;7833;6406;-;-
+Kristiansand kommune;F;Helgedøgn;>= 16,0m;Februar;-2,970;95,000;294;303;37.280;25.045
+Kristiansand kommune;F;Alle;Alle;Mars;11,419;98,000;2652078;2380285;2.752;1.968
+Kristiansand kommune;F;Alle;< 5,6m;Mars;10,343;97,000;2403355;2178079;3.033;2.170
+Kristiansand kommune;F;Alle;>= 5,6m;Mars;25,489;97,000;224423;178839;19.504;13.953
+Kristiansand kommune;F;Alle;5,6m - 7,6m;Mars;35,794;97,000;62119;45745;24.524;17.543
+Kristiansand kommune;F;Alle;7,6m - 12,5m;Mars;10,424;97,000;95523;86506;32.630;23.342
+Kristiansand kommune;F;Alle;12,5m - 16,0m;Mars;44,438;97,000;56208;38915;80.225;57.390
+Kristiansand kommune;F;Alle;>= 16,0m;Mars;37,795;97,000;10573;7673;84.969;60.783
+Kristiansand kommune;F;Yrkesdøgn;Alle;Mars;19,043;97,000;2171867;1824433;3.047;2.179
+Kristiansand kommune;F;Yrkesdøgn;< 5,6m;Mars;18,253;97,000;1951442;1650233;3.300;2.361
+Kristiansand kommune;F;Yrkesdøgn;>= 5,6m;Mars;29,741;97,000;196737;151638;20.452;14.631
+Kristiansand kommune;F;Yrkesdøgn;5,6m - 7,6m;Mars;39,781;97,000;54520;39004;27.030;19.336
+Kristiansand kommune;F;Yrkesdøgn;7,6m - 12,5m;Mars;13,067;97,000;83361;73727;32.350;23.142
+Kristiansand kommune;F;Yrkesdøgn;12,5m - 16,0m;Mars;54,149;97,000;48651;31561;79.138;56.612
+Kristiansand kommune;F;Yrkesdøgn;>= 16,0m;Mars;38,919;97,000;10205;7346;85.432;61.114
+Kristiansand kommune;F;Helgedøgn;Alle;Mars;-13,608;99,000;480211;555852;5.347;3.825
+Kristiansand kommune;F;Helgedøgn;< 5,6m;Mars;-14,385;99,000;451913;527846;5.275;3.773
+Kristiansand kommune;F;Helgedøgn;>= 5,6m;Mars;1,783;99,000;27686;27201;16.894;12.085
+Kristiansand kommune;F;Helgedøgn;5,6m - 7,6m;Mars;12,728;99,000;7599;6741;20.377;14.577
+Kristiansand kommune;F;Helgedøgn;7,6m - 12,5m;Mars;-4,828;99,000;12162;12779;37.218;26.624
+Kristiansand kommune;F;Helgedøgn;12,5m - 16,0m;Mars;2,760;99,000;7557;7354;226.677;162.155
+Kristiansand kommune;F;Helgedøgn;>= 16,0m;Mars;12,538;99,000;368;327;124.202;88.849
+Kristiansand kommune;F;Alle;Alle;April;-8,768;94,000;3009853;3299105;3.574;2.401
+Kristiansand kommune;F;Alle;< 5,6m;April;-9,069;94,000;2753544;3028180;3.378;2.270
+Kristiansand kommune;F;Alle;>= 5,6m;April;-4,380;94,000;254779;266449;11.910;8.001
+Kristiansand kommune;F;Alle;5,6m - 7,6m;April;3,309;94,000;74527;72140;22.543;15.145
+Kristiansand kommune;F;Alle;7,6m - 12,5m;April;-12,688;94,000;112335;128659;12.174;8.179
+Kristiansand kommune;F;Alle;12,5m - 16,0m;April;2,988;94,000;55637;54023;54.274;36.462
+Kristiansand kommune;F;Alle;>= 16,0m;April;5,616;94,000;12280;11627;43.503;29.225
+Kristiansand kommune;F;Yrkesdøgn;Alle;April;-18,586;95,000;2098862;2578018;2.767;1.859
+Kristiansand kommune;F;Yrkesdøgn;< 5,6m;April;-19,359;95,000;1894632;2349465;2.821;1.895
+Kristiansand kommune;F;Yrkesdøgn;>= 5,6m;April;-9,835;95,000;202811;224932;11.071;7.437
+Kristiansand kommune;F;Yrkesdøgn;5,6m - 7,6m;April;-3,756;95,000;58957;61258;18.432;12.383
+Kristiansand kommune;F;Yrkesdøgn;7,6m - 12,5m;April;-16,779;95,000;89622;107691;11.636;7.817
+Kristiansand kommune;F;Yrkesdøgn;12,5m - 16,0m;April;-4,753;95,000;42682;44812;55.815;37.497
+Kristiansand kommune;F;Yrkesdøgn;>= 16,0m;April;3,393;95,000;11550;11171;41.480;27.867
+Kristiansand kommune;F;Helgedøgn;Alle;April;26,336;93,000;910991;721087;10.505;7.057
+Kristiansand kommune;F;Helgedøgn;< 5,6m;April;26,550;93,000;858912;678715;9.862;6.625
+Kristiansand kommune;F;Helgedøgn;>= 5,6m;April;25,173;93,000;51968;41517;24.461;16.433
+Kristiansand kommune;F;Helgedøgn;5,6m - 7,6m;April;43,080;93,000;15570;10882;45.489;30.560
+Kristiansand kommune;F;Helgedøgn;7,6m - 12,5m;April;8,322;93,000;22713;20968;24.856;16.698
+Kristiansand kommune;F;Helgedøgn;12,5m - 16,0m;April;40,647;93,000;12955;9211;47.837;32.137
+Kristiansand kommune;F;Helgedøgn;>= 16,0m;April;60,088;93,000;730;456;151.822;101.995
+Kristiansand kommune;F;Alle;Alle;Mai;3,984;96,000;3298380;3172001;2.702;1.815
+Kristiansand kommune;F;Alle;< 5,6m;Mai;3,194;96,000;3011729;2918509;2.605;1.750
+Kristiansand kommune;F;Alle;>= 5,6m;Mai;13,994;96,000;283551;248742;13.418;9.015
+Kristiansand kommune;F;Alle;5,6m - 7,6m;Mai;20,112;96,000;86811;72275;25.883;17.389
+Kristiansand kommune;F;Alle;7,6m - 12,5m;Mai;9,295;96,000;132729;121441;10.442;7.015
+Kristiansand kommune;F;Alle;12,5m - 16,0m;Mai;13,987;96,000;47706;41852;58.594;39.364
+Kristiansand kommune;F;Alle;>= 16,0m;Mai;23,767;96,000;16305;13174;42.960;28.861
+Kristiansand kommune;F;Yrkesdøgn;Alle;Mai;7,502;96,000;2452357;2281228;4.078;2.740
+Kristiansand kommune;F;Yrkesdøgn;< 5,6m;Mai;6,758;96,000;2213101;2073003;3.776;2.537
+Kristiansand kommune;F;Yrkesdøgn;>= 5,6m;Mai;15,677;96,000;236698;204620;14.330;9.627
+Kristiansand kommune;F;Yrkesdøgn;5,6m - 7,6m;Mai;20,911;96,000;71520;59151;25.830;17.353
+Kristiansand kommune;F;Yrkesdøgn;7,6m - 12,5m;Mai;10,895;96,000;110918;100021;11.629;7.812
+Kristiansand kommune;F;Yrkesdøgn;12,5m - 16,0m;Mai;17,855;96,000;38911;33016;59.335;39.862
+Kristiansand kommune;F;Yrkesdøgn;>= 16,0m;Mai;23,464;96,000;15349;12432;42.758;28.725
+Kristiansand kommune;F;Helgedøgn;Alle;Mai;-5,024;96,000;846023;890773;3.576;2.403
+Kristiansand kommune;F;Helgedøgn;< 5,6m;Mai;-5,544;96,000;798628;845506;3.817;2.564
+Kristiansand kommune;F;Helgedøgn;>= 5,6m;Mai;6,190;96,000;46853;44122;11.022;7.405
+Kristiansand kommune;F;Helgedøgn;5,6m - 7,6m;Mai;16,512;96,000;15291;13124;28.087;18.869
+Kristiansand kommune;F;Helgedøgn;7,6m - 12,5m;Mai;1,825;96,000;21811;21420;8.363;5.618
+Kristiansand kommune;F;Helgedøgn;12,5m - 16,0m;Mai;-0,464;96,000;8795;8836;80.101;53.813
+Kristiansand kommune;F;Helgedøgn;>= 16,0m;Mai;28,841;96,000;956;742;-;-
+Kristiansand kommune;F;Alle;Alle;Juni;1,464;90,000;2583677;2546396;3.785;2.910
+Kristiansand kommune;F;Alle;< 5,6m;Juni;0,878;90,000;2351945;2331486;3.537;2.719
+Kristiansand kommune;F;Alle;>= 5,6m;Juni;8,508;90,000;229142;211175;12.183;9.365
+Kristiansand kommune;F;Alle;5,6m - 7,6m;Juni;17,505;90,000;72443;61651;24.536;18.860
+Kristiansand kommune;F;Alle;7,6m - 12,5m;Juni;4,622;90,000;104883;100249;9.573;7.358
+Kristiansand kommune;F;Alle;12,5m - 16,0m;Juni;3,527;90,000;39690;38338;31.035;23.855
+Kristiansand kommune;F;Alle;>= 16,0m;Juni;10,871;90,000;12126;10937;31.440;24.167
+Kristiansand kommune;F;Yrkesdøgn;Alle;Juni;-1,910;90,000;2016233;2055493;3.672;2.822
+Kristiansand kommune;F;Yrkesdøgn;< 5,6m;Juni;-2,621;90,000;1819576;1868544;3.703;2.847
+Kristiansand kommune;F;Yrkesdøgn;>= 5,6m;Juni;6,113;90,000;194904;183676;11.184;8.597
+Kristiansand kommune;F;Yrkesdøgn;5,6m - 7,6m;Juni;14,032;90,000;60796;53315;22.107;16.993
+Kristiansand kommune;F;Yrkesdøgn;7,6m - 12,5m;Juni;2,491;90,000;89613;87435;8.906;6.845
+Kristiansand kommune;F;Yrkesdøgn;12,5m - 16,0m;Juni;1,788;90,000;32970;32391;32.587;25.049
+Kristiansand kommune;F;Yrkesdøgn;>= 16,0m;Juni;9,397;90,000;11525;10535;30.129;23.159
+Kristiansand kommune;F;Helgedøgn;Alle;Juni;15,592;91,000;567444;490903;7.062;5.429
+Kristiansand kommune;F;Helgedøgn;< 5,6m;Juni;14,997;91,000;532369;462942;6.456;4.963
+Kristiansand kommune;F;Helgedøgn;>= 5,6m;Juni;24,506;91,000;34238;27499;20.561;15.805
+Kristiansand kommune;F;Helgedøgn;5,6m - 7,6m;Juni;39,719;91,000;11647;8336;37.781;29.041
+Kristiansand kommune;F;Helgedøgn;7,6m - 12,5m;Juni;19,167;91,000;15270;12814;19.037;14.633
+Kristiansand kommune;F;Helgedøgn;12,5m - 16,0m;Juni;12,998;91,000;6720;5947;28.586;21.973
+Kristiansand kommune;F;Helgedøgn;>= 16,0m;Juni;49,502;91,000;601;402;86.094;66.178
+Kristiansand kommune;F;Alle;Alle;Juli;-0,469;95,000;1783886;1792297;1.796;1.501
+Kristiansand kommune;F;Alle;< 5,6m;Juli;-1,087;95,000;1627131;1645008;1.971;1.648
+Kristiansand kommune;F;Alle;>= 5,6m;Juli;6,428;95,000;156473;147022;8.614;7.201
+Kristiansand kommune;F;Alle;5,6m - 7,6m;Juli;2,853;95,000;46570;45278;13.564;11.340
+Kristiansand kommune;F;Alle;7,6m - 12,5m;Juli;7,025;95,000;77800;72693;11.573;9.675
+Kristiansand kommune;F;Alle;12,5m - 16,0m;Juli;8,873;95,000;23694;21763;40.670;34.001
+Kristiansand kommune;F;Alle;>= 16,0m;Juli;15,381;95,000;8409;7288;21.616;18.072
+Kristiansand kommune;F;Yrkesdøgn;Alle;Juli;-0,095;94,000;1343862;1345144;2.679;2.240
+Kristiansand kommune;F;Yrkesdøgn;< 5,6m;Juli;-0,844;94,000;1212064;1222385;2.937;2.455
+Kristiansand kommune;F;Yrkesdøgn;>= 5,6m;Juli;7,388;94,000;131591;122538;8.124;6.792
+Kristiansand kommune;F;Yrkesdøgn;5,6m - 7,6m;Juli;2,646;94,000;38519;37526;12.610;10.542
+Kristiansand kommune;F;Yrkesdøgn;7,6m - 12,5m;Juli;8,787;94,000;66175;60830;10.494;8.773
+Kristiansand kommune;F;Yrkesdøgn;12,5m - 16,0m;Juli;9,380;94,000;18879;17260;37.793;31.596
+Kristiansand kommune;F;Yrkesdøgn;>= 16,0m;Juli;15,834;94,000;8018;6922;20.955;17.519
+Kristiansand kommune;F;Helgedøgn;Alle;Juli;-1,594;96,000;440024;447153;7.342;6.138
+Kristiansand kommune;F;Helgedøgn;< 5,6m;Juli;-1,788;96,000;415067;422623;6.977;5.833
+Kristiansand kommune;F;Helgedøgn;>= 5,6m;Juli;1,626;96,000;24882;24484;16.147;13.499
+Kristiansand kommune;F;Helgedøgn;5,6m - 7,6m;Juli;3,857;96,000;8051;7752;20.798;17.388
+Kristiansand kommune;F;Helgedøgn;7,6m - 12,5m;Juli;-2,006;96,000;11625;11863;22.347;18.682
+Kristiansand kommune;F;Helgedøgn;12,5m - 16,0m;Juli;6,929;96,000;4815;4503;73.198;61.195
+Kristiansand kommune;F;Helgedøgn;>= 16,0m;Juli;6,831;96,000;391;366;41.947;35.068
+Kristiansand kommune;F;Alle;Alle;August;2,347;95,000;2537429;2479247;3.699;2.843
+Kristiansand kommune;F;Alle;< 5,6m;August;1,998;95,000;2321700;2276220;3.650;2.805
+Kristiansand kommune;F;Alle;>= 5,6m;August;6,171;95,000;215071;202570;8.400;6.457
+Kristiansand kommune;F;Alle;5,6m - 7,6m;August;7,863;95,000;66850;61977;15.215;11.696
+Kristiansand kommune;F;Alle;7,6m - 12,5m;August;5,695;95,000;103709;98121;7.420;5.703
+Kristiansand kommune;F;Alle;12,5m - 16,0m;August;4,314;95,000;32671;31320;17.755;13.647
+Kristiansand kommune;F;Alle;>= 16,0m;August;6,178;95,000;11841;11152;31.872;24.499
+Kristiansand kommune;F;Yrkesdøgn;Alle;August;1,954;95,000;2059337;2019868;3.995;3.071
+Kristiansand kommune;F;Yrkesdøgn;< 5,6m;August;1,584;95,000;1870559;1841385;3.932;3.022
+Kristiansand kommune;F;Yrkesdøgn;>= 5,6m;August;5,683;95,000;188192;178073;8.924;6.860
+Kristiansand kommune;F;Yrkesdøgn;5,6m - 7,6m;August;7,338;95,000;58265;54282;14.942;11.485
+Kristiansand kommune;F;Yrkesdøgn;7,6m - 12,5m;August;5,152;95,000;90499;86065;7.937;6.101
+Kristiansand kommune;F;Yrkesdøgn;12,5m - 16,0m;August;4,014;95,000;28014;26933;18.058;13.880
+Kristiansand kommune;F;Yrkesdøgn;>= 16,0m;August;5,754;95,000;11414;10793;31.293;24.054
+Kristiansand kommune;F;Helgedøgn;Alle;August;4,074;97,000;478092;459379;3.232;2.484
+Kristiansand kommune;F;Helgedøgn;< 5,6m;August;3,750;97,000;451141;434835;3.305;2.541
+Kristiansand kommune;F;Helgedøgn;>= 5,6m;August;9,724;97,000;26879;24497;6.238;4.795
+Kristiansand kommune;F;Helgedøgn;5,6m - 7,6m;August;11,566;97,000;8585;7695;20.764;15.961
+Kristiansand kommune;F;Helgedøgn;7,6m - 12,5m;August;9,572;97,000;13210;12056;5.939;4.565
+Kristiansand kommune;F;Helgedøgn;12,5m - 16,0m;August;6,155;97,000;4657;4387;18.966;14.578
+Kristiansand kommune;F;Helgedøgn;>= 16,0m;August;18,942;97,000;427;359;64.996;49.960
+Kristiansand kommune;F;Alle;Alle;September;0,300;98,000;2488688;2481241;4.630;3.559
+Kristiansand kommune;F;Alle;< 5,6m;September;0,286;98,000;2279065;2272571;4.471;3.437
+Kristiansand kommune;F;Alle;>= 5,6m;September;0,567;98,000;208896;207719;10.818;8.316
+Kristiansand kommune;F;Alle;5,6m - 7,6m;September;4,038;98,000;63205;60752;19.193;14.753
+Kristiansand kommune;F;Alle;7,6m - 12,5m;September;-4,951;98,000;96575;101605;7.312;5.621
+Kristiansand kommune;F;Alle;12,5m - 16,0m;September;4,408;98,000;35786;34275;23.567;18.115
+Kristiansand kommune;F;Alle;>= 16,0m;September;20,231;98,000;13330;11087;54.132;41.609
+Kristiansand kommune;F;Yrkesdøgn;Alle;September;-2,885;98,000;1968478;2026959;5.249;4.034
+Kristiansand kommune;F;Yrkesdøgn;< 5,6m;September;-2,982;98,000;1788542;1843523;5.133;3.945
+Kristiansand kommune;F;Yrkesdøgn;>= 5,6m;September;-1,867;98,000;179297;182709;11.514;8.850
+Kristiansand kommune;F;Yrkesdøgn;5,6m - 7,6m;September;0,934;98,000;54130;53629;19.622;15.083
+Kristiansand kommune;F;Yrkesdøgn;7,6m - 12,5m;September;-7,774;98,000;81686;88572;7.853;6.036
+Kristiansand kommune;F;Yrkesdøgn;12,5m - 16,0m;September;2,749;98,000;30610;29791;25.872;19.887
+Kristiansand kommune;F;Yrkesdøgn;>= 16,0m;September;20,099;98,000;12871;10717;55.802;42.894
+Kristiansand kommune;F;Helgedøgn;Alle;September;14,513;98,000;520210;454282;4.121;3.167
+Kristiansand kommune;F;Helgedøgn;< 5,6m;September;14,328;98,000;490523;429048;4.168;3.204
+Kristiansand kommune;F;Helgedøgn;>= 5,6m;September;18,349;98,000;29599;25010;6.147;4.725
+Kristiansand kommune;F;Helgedøgn;5,6m - 7,6m;September;27,404;98,000;9075;7123;16.737;12.865
+Kristiansand kommune;F;Helgedøgn;7,6m - 12,5m;September;14,241;98,000;14889;13033;5.500;4.228
+Kristiansand kommune;F;Helgedøgn;12,5m - 16,0m;September;15,433;98,000;5176;4484;11.790;9.063
+Kristiansand kommune;F;Helgedøgn;>= 16,0m;September;24,054;98,000;459;370;78.943;60.681
+Kristiansand kommune;F;Alle;Alle;Oktober;2,276;94,000;2951627;2885952;2.217;1.586
+Kristiansand kommune;F;Alle;< 5,6m;Oktober;1,789;94,000;2693207;2645869;2.166;1.550
+Kristiansand kommune;F;Alle;>= 5,6m;Oktober;9,307;94,000;256022;234223;13.465;9.632
+Kristiansand kommune;F;Alle;5,6m - 7,6m;Oktober;19,739;94,000;80241;67013;33.530;23.986
+Kristiansand kommune;F;Alle;7,6m - 12,5m;Oktober;-3,306;94,000;113065;116931;10.393;7.435
+Kristiansand kommune;F;Alle;12,5m - 16,0m;Oktober;27,371;94,000;48071;37741;63.042;45.098
+Kristiansand kommune;F;Alle;>= 16,0m;Oktober;16,805;94,000;14645;12538;59.799;42.777
+Kristiansand kommune;F;Yrkesdøgn;Alle;Oktober;3,821;93,000;2313146;2228017;2.739;1.959
+Kristiansand kommune;F;Yrkesdøgn;< 5,6m;Oktober;3,195;93,000;2090134;2025426;3.022;2.162
+Kristiansand kommune;F;Yrkesdøgn;>= 5,6m;Oktober;11,517;93,000;220841;198034;12.486;8.932
+Kristiansand kommune;F;Yrkesdøgn;5,6m - 7,6m;Oktober;20,441;93,000;68484;56861;30.424;21.764
+Kristiansand kommune;F;Yrkesdøgn;7,6m - 12,5m;Oktober;-0,601;93,000;97330;97918;11.034;7.893
+Kristiansand kommune;F;Yrkesdøgn;12,5m - 16,0m;Oktober;30,993;93,000;41019;31314;64.379;46.054
+Kristiansand kommune;F;Yrkesdøgn;>= 16,0m;Oktober;17,310;93,000;14008;11941;62.798;44.923
+Kristiansand kommune;F;Helgedøgn;Alle;Oktober;-2,957;94,000;638481;657935;7.918;5.664
+Kristiansand kommune;F;Helgedøgn;< 5,6m;Oktober;-2,800;94,000;603073;620443;7.449;5.329
+Kristiansand kommune;F;Helgedøgn;>= 5,6m;Oktober;-2,785;94,000;35181;36189;22.874;16.363
+Kristiansand kommune;F;Helgedøgn;5,6m - 7,6m;Oktober;15,810;94,000;11757;10152;51.157;36.595
+Kristiansand kommune;F;Helgedøgn;7,6m - 12,5m;Oktober;-17,241;94,000;15735;19013;10.173;7.277
+Kristiansand kommune;F;Helgedøgn;12,5m - 16,0m;Oktober;9,725;94,000;7052;6427;70.355;50.329
+Kristiansand kommune;F;Helgedøgn;>= 16,0m;Oktober;6,700;94,000;637;597;120.687;86.334
+Kristiansand kommune;F;Alle;Alle;November;2,754;99,000;3104906;3021678;2.639;1.888
+Kristiansand kommune;F;Alle;< 5,6m;November;2,063;99,000;2841132;2783710;2.131;1.524
+Kristiansand kommune;F;Alle;>= 5,6m;November;12,251;99,000;260631;232186;15.918;11.387
+Kristiansand kommune;F;Alle;5,6m - 7,6m;November;25,710;99,000;85806;68257;36.756;26.294
+Kristiansand kommune;F;Alle;7,6m - 12,5m;November;0,746;99,000;111599;110773;15.728;11.251
+Kristiansand kommune;F;Alle;12,5m - 16,0m;November;22,595;99,000;48853;39849;72.235;51.674
+Kristiansand kommune;F;Alle;>= 16,0m;November;8,011;99,000;14373;13307;50.518;36.138
+Kristiansand kommune;F;Yrkesdøgn;Alle;November;1,426;98,000;2489308;2454315;2.553;1.826
+Kristiansand kommune;F;Yrkesdøgn;< 5,6m;November;0,656;98,000;2259025;2244302;2.221;1.589
+Kristiansand kommune;F;Yrkesdøgn;>= 5,6m;November;10,827;98,000;227429;205211;15.844;11.334
+Kristiansand kommune;F;Yrkesdøgn;5,6m - 7,6m;November;22,765;98,000;73923;60215;34.091;24.388
+Kristiansand kommune;F;Yrkesdøgn;7,6m - 12,5m;November;-0,017;98,000;97318;97335;15.138;10.829
+Kristiansand kommune;F;Yrkesdøgn;12,5m - 16,0m;November;21,987;98,000;42321;34693;70.728;50.596
+Kristiansand kommune;F;Yrkesdøgn;>= 16,0m;November;6,932;98,000;13867;12968;50.485;36.115
+Kristiansand kommune;F;Helgedøgn;Alle;November;8,502;99,000;615598;567363;4.608;3.296
+Kristiansand kommune;F;Helgedøgn;< 5,6m;November;7,916;99,000;582107;539408;4.543;3.250
+Kristiansand kommune;F;Helgedøgn;>= 5,6m;November;23,084;99,000;33202;26975;18.320;13.106
+Kristiansand kommune;F;Helgedøgn;5,6m - 7,6m;November;47,762;99,000;11883;8042;53.804;38.489
+Kristiansand kommune;F;Helgedøgn;7,6m - 12,5m;November;6,273;99,000;14281;13438;23.524;16.828
+Kristiansand kommune;F;Helgedøgn;12,5m - 16,0m;November;26,687;99,000;6532;5156;84.805;60.666
+Kristiansand kommune;F;Helgedøgn;>= 16,0m;November;49,263;99,000;506;339;107.405;76.833
+Kristiansand kommune;F;Alle;Alle;Desember;0,606;93,000;3193623;3174384;2.654;1.783
+Kristiansand kommune;F;Alle;< 5,6m;Desember;0,457;93,000;2943408;2930021;2.766;1.858
+Kristiansand kommune;F;Alle;>= 5,6m;Desember;5,513;93,000;239889;227354;16.440;11.045
+Kristiansand kommune;F;Alle;5,6m - 7,6m;Desember;26,246;93,000;76688;60745;40.631;27.296
+Kristiansand kommune;F;Alle;7,6m - 12,5m;Desember;-3,692;93,000;98398;102170;21.941;14.740
+Kristiansand kommune;F;Alle;12,5m - 16,0m;Desember;0,073;93,000;53393;53354;65.958;44.311
+Kristiansand kommune;F;Alle;>= 16,0m;Desember;2,932;93,000;11410;11085;46.040;30.930
+Kristiansand kommune;F;Yrkesdøgn;Alle;Desember;-5,364;94,000;2324944;2456729;3.133;2.105
+Kristiansand kommune;F;Yrkesdøgn;< 5,6m;Desember;-5,835;94,000;2123872;2255488;3.265;2.193
+Kristiansand kommune;F;Yrkesdøgn;>= 5,6m;Desember;1,115;94,000;198624;196434;15.139;10.171
+Kristiansand kommune;F;Yrkesdøgn;5,6m - 7,6m;Desember;20,015;94,000;63152;52620;35.891;24.112
+Kristiansand kommune;F;Yrkesdøgn;7,6m - 12,5m;Desember;-7,137;94,000;82276;88599;18.460;12.402
+Kristiansand kommune;F;Yrkesdøgn;12,5m - 16,0m;Desember;-4,287;94,000;42508;44412;61.988;41.644
+Kristiansand kommune;F;Yrkesdøgn;>= 16,0m;Desember;-1,065;94,000;10688;10803;43.313;29.098
+Kristiansand kommune;F;Helgedøgn;Alle;Desember;21,044;91,000;868679;717655;6.343;4.261
+Kristiansand kommune;F;Helgedøgn;< 5,6m;Desember;21,497;90,000;819536;674533;7.125;4.787
+Kristiansand kommune;F;Helgedøgn;>= 5,6m;Desember;33,457;90,000;41265;30920;25.626;17.216
+Kristiansand kommune;F;Helgedøgn;5,6m - 7,6m;Desember;66,597;90,000;13536;8125;65.824;44.221
+Kristiansand kommune;F;Helgedøgn;7,6m - 12,5m;Desember;18,797;90,000;16122;13571;43.447;29.188
+Kristiansand kommune;F;Helgedøgn;12,5m - 16,0m;Desember;21,729;90,000;10885;8942;87.882;59.040
+Kristiansand kommune;F;Helgedøgn;>= 16,0m;Desember;156,028;90,000;722;282;-;-
+Kristiansand kommune;F;Alle;Alle;Siste 12 måneder;1,282;94,000;33241948;32821189;2.205;1.401
+Kristiansand kommune;F;Alle;< 5,6m;Siste 12 måneder;0,702;94,000;30401532;30189683;2.017;1.282
+Kristiansand kommune;F;Alle;>= 5,6m;Siste 12 måneder;8,605;94,000;2763981;2544978;10.128;6.435
+Kristiansand kommune;F;Alle;5,6m - 7,6m;Siste 12 måneder;15,833;94,000;830821;717257;21.620;13.737
+Kristiansand kommune;F;Alle;7,6m - 12,5m;Siste 12 måneder;0,786;94,000;1235959;1226321;10.854;6.896
+Kristiansand kommune;F;Alle;12,5m - 16,0m;Siste 12 måneder;15,984;94,000;549069;473401;29.345;18.645
+Kristiansand kommune;F;Alle;>= 16,0m;Siste 12 måneder;15,729;94,000;148132;127999;35.042;22.264
+Kristiansand kommune;F;Yrkesdøgn;Alle;Siste 12 måneder;0,372;95,000;25757468;25662108;2.430;1.544
+Kristiansand kommune;F;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,383;94,000;23336067;23425882;2.360;1.500
+Kristiansand kommune;F;Yrkesdøgn;>= 5,6m;Siste 12 måneder;8,011;94,000;2357282;2182443;10.092;6.412
+Kristiansand kommune;F;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;14,471;94,000;703823;614846;19.726;12.533
+Kristiansand kommune;F;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;0,414;94,000;1053552;1049212;10.735;6.821
+Kristiansand kommune;F;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;15,922;94,000;458190;395256;30.959;19.670
+Kristiansand kommune;F;Yrkesdøgn;>= 16,0m;Siste 12 måneder;15,096;94,000;141717;123129;35.324;22.444
+Kristiansand kommune;F;Helgedøgn;Alle;Siste 12 måneder;4,545;94,000;7484480;7159081;3.355;2.131
+Kristiansand kommune;F;Helgedøgn;< 5,6m;Siste 12 måneder;4,460;94,000;7065465;6763801;3.533;2.245
+Kristiansand kommune;F;Helgedøgn;>= 5,6m;Siste 12 måneder;12,182;94,000;406699;362535;12.485;7.933
+Kristiansand kommune;F;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;24,008;94,000;126998;102411;32.343;20.549
+Kristiansand kommune;F;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;2,991;94,000;182407;177109;14.471;9.194
+Kristiansand kommune;F;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;16,295;94,000;90879;78145;21.191;13.464
+Kristiansand kommune;F;Helgedøgn;>= 16,0m;Siste 12 måneder;31,725;94,000;6415;4870;66.072;41.980
+Kristiansand kommune;F;Alle;Alle;Hittil i år;1,282;94,000;33241948;32821189;2.205;1.401
+Kristiansand kommune;F;Alle;< 5,6m;Hittil i år;0,702;94,000;30401532;30189683;2.017;1.282
+Kristiansand kommune;F;Alle;>= 5,6m;Hittil i år;8,605;94,000;2763981;2544978;10.128;6.435
+Kristiansand kommune;F;Alle;5,6m - 7,6m;Hittil i år;15,833;94,000;830821;717257;21.620;13.737
+Kristiansand kommune;F;Alle;7,6m - 12,5m;Hittil i år;0,786;94,000;1235959;1226321;10.854;6.896
+Kristiansand kommune;F;Alle;12,5m - 16,0m;Hittil i år;15,984;94,000;549069;473401;29.345;18.645
+Kristiansand kommune;F;Alle;>= 16,0m;Hittil i år;15,729;94,000;148132;127999;35.042;22.264
+Kristiansand kommune;F;Yrkesdøgn;Alle;Hittil i år;0,372;95,000;25757468;25662108;2.430;1.544
+Kristiansand kommune;F;Yrkesdøgn;< 5,6m;Hittil i år;-0,383;94,000;23336067;23425882;2.360;1.500
+Kristiansand kommune;F;Yrkesdøgn;>= 5,6m;Hittil i år;8,011;94,000;2357282;2182443;10.092;6.412
+Kristiansand kommune;F;Yrkesdøgn;5,6m - 7,6m;Hittil i år;14,471;94,000;703823;614846;19.726;12.533
+Kristiansand kommune;F;Yrkesdøgn;7,6m - 12,5m;Hittil i år;0,414;94,000;1053552;1049212;10.735;6.821
+Kristiansand kommune;F;Yrkesdøgn;12,5m - 16,0m;Hittil i år;15,922;94,000;458190;395256;30.959;19.670
+Kristiansand kommune;F;Yrkesdøgn;>= 16,0m;Hittil i år;15,096;94,000;141717;123129;35.324;22.444
+Kristiansand kommune;F;Helgedøgn;Alle;Hittil i år;4,545;94,000;7484480;7159081;3.355;2.131
+Kristiansand kommune;F;Helgedøgn;< 5,6m;Hittil i år;4,460;94,000;7065465;6763801;3.533;2.245
+Kristiansand kommune;F;Helgedøgn;>= 5,6m;Hittil i år;12,182;94,000;406699;362535;12.485;7.933
+Kristiansand kommune;F;Helgedøgn;5,6m - 7,6m;Hittil i år;24,008;94,000;126998;102411;32.343;20.549
+Kristiansand kommune;F;Helgedøgn;7,6m - 12,5m;Hittil i år;2,991;94,000;182407;177109;14.471;9.194
+Kristiansand kommune;F;Helgedøgn;12,5m - 16,0m;Hittil i år;16,295;94,000;90879;78145;21.191;13.464
+Kristiansand kommune;F;Helgedøgn;>= 16,0m;Hittil i år;31,725;94,000;6415;4870;66.072;41.980
