@@ -1,4 +1,5 @@
 # Gathering info on all points and indexes
+# Wrangle one city at a time!
 
 # Setup ####
 
@@ -15,132 +16,9 @@ source("get_from_trp_api.R")
 # NVDB API calls to get tolling stations
 source("get_from_nvdb_api.R")
 
-# Functions ####
-
-readPointindexCSV <- function(filename) {
-  # Read standard csv export from Datainn
-  read.csv2(filename) %>%
-    filter(døgn == "Alle",
-           lengdeklasse == "< 5,6m",
-           periode == "Hittil i år") %>%
-    mutate(trs = as.numeric(msnr),
-           trafikkmengde.basisaar = as.numeric(
-             as.character(trafikkmengde.basisår)),
-           trafikkmengde.indeksaar = as.numeric(
-             as.character(trafikkmengde.indeksår))) %>%
-    group_by(trs) %>%
-    summarise(trafikkmengde_basisaar = sum(trafikkmengde.basisaar),
-              trafikkmengde_indeksaar = sum(trafikkmengde.indeksaar),
-              index = round((trafikkmengde_indeksaar/
-                                  trafikkmengde_basisaar - 1) * 100,
-                                  digits = 1)) %>%
-    rename(msnr = trs) %>%
-    select(msnr, index)
-}
-
-read_bikepointindex_csv <- function(filename) {
-  # Read standard csv export from Datainn
-  read.csv2(filename) %>%
-    filter(døgn == "Alle",
-           periode == "Hittil i år") %>%
-    mutate(msnr = as.numeric(msnr),
-           index = as.numeric(str_replace(indeks, ",", "."))) %>%
-    select(msnr, index)
-}
-
-read_city_index_csv <- function(filename) {
-  # Read standard csv export from Datainn
-  read.csv2(filename) %>%
-    filter(Vegkategori == "E+R+F+K",
-           døgn == "Alle",
-           lengdeklasse == "< 5,6m",
-           periode == "Hittil i år") %>%
-    mutate(index = as.numeric(str_replace(indeks, ",", ".")),
-           dekning = as.numeric(str_replace(dekning, ",", ".")),
-           standardavvik = as.numeric(as.character(standardavvik)),
-           konfidensintervall = as.numeric(as.character(konfidensintervall))) %>%
-    select(index, dekning, standardavvik, konfidensintervall) %>%
-    as_tibble()
-}
-
-monthly_city_index <- function(filename) {
-  # Read standard csv export from Datainn
-  read.csv2(filename, stringsAsFactors = F) %>%
-    filter(Vegkategori == "E+R+F+K",
-           døgn == "Alle",
-           lengdeklasse == "< 5,6m",
-           periode != "Siste 12 måneder") %>%
-    mutate(index = as.numeric(str_replace(indeks, ",", ".")),
-           dekning = as.numeric(str_replace(dekning, ",", ".")),
-           standardavvik = as.numeric(as.character(standardavvik)),
-           konfidensintervall = as.numeric(as.character(konfidensintervall)),
-           periode = if_else(periode == "Hittil i år",
-                             "Hele året",
-                             periode)) %>%
-    select(periode, index, dekning, standardavvik, konfidensintervall) %>%
-    as_tibble()
-}
-
-read_bike_index_csv <- function(filename) {
-  # Read standard csv export from Datainn
-  read.csv2(filename) %>%
-    filter(Vegkategori == "E+R+F+K",
-           døgn == "Alle",
-           lengdeklasse == "Alle",
-           periode == "Hittil i år") %>%
-    mutate(index = as.numeric(str_replace(indeks, ",", ".")),
-           dekning = as.numeric(str_replace(dekning, ",", ".")),
-           standardavvik = as.numeric(as.character(standardavvik)),
-           konfidensintervall = as.numeric(as.character(konfidensintervall))) %>%
-    select(index, dekning, standardavvik, konfidensintervall) %>%
-    as_tibble()
-}
-
-
-index_converter <- function(index) {
-  ifelse(
-    is.na(index),
-    1,
-    index/100 + 1)
-}
-
-# TODO: get a compound ci, need to iterate pairwise through the years!
-# I.e. make accumulated index for one more year
-#index_from_refyear <- 100*(prod(city_index_grenland$index_i)-1)
-
-# Need number of points each year
-calculate_two_year_index <- function(city_index_df) {
-
-  two_years <- city_index_df %>%
-    select(index, index_i, dekning, variance, n_points) %>%
-    slice(1:2)
-
-  year_one <- str_sub(city_index_df$year[1], 1, 4)
-  year_two <- str_sub(city_index_df$year[2], 6, 9)
-
-  two_years_to_one <- list(
-    index = 100 * (prod(two_years$index_i) - 1),
-    index_i = prod(two_years$index_i),
-    year = paste0(year_one, "-", year_two),
-    dekning = mean(two_years$dekning),
-    # Using Goodman's unbiased estimate (cannot use exact formula as we are
-    # sampling)
-    # But it can be negative if indexes are close to zero, large variance and
-    # small n's.
-    # Resolved by using exact formula
-    # Must be something about the assumptions that are wrong?
-    variance =
-      two_years$index[1]^2 * two_years$variance[2] / two_years$n_points[2] +
-      two_years$index[2]^2 * two_years$variance[1] / two_years$n_points[1] +
-      two_years$variance[1] * two_years$variance[2] /
-      (two_years$n_points[1] * two_years$n_points[2]),
-    n_points = max(two_years$n_points)
-  ) %>%
-    as_tibble() %>%
-    dplyr::mutate(standardavvik = sqrt(variance),
-                  konfidensintervall = 1.96 * sqrt(variance) /
-                    sqrt(2))
-}
+# Functions
+# source TAKLER IKKE Ø som brukes i kolonneoverskrift i csv-ene!
+source("indexpoints_tidying_functions.R")
 
 # Points ####
 
@@ -1237,8 +1115,417 @@ write.csv2(bergen_monthly,
            row.names = F)
 
 # Kristiansand 2016 ####
+trp_krs_2016_ids <- cities_points %>%
+  dplyr::filter(city_area_name == "Kristiansand",
+                agreement_start == 2017) %>%
+  dplyr::select(trp_id, legacyNortrafMpn) %>%
+  dplyr::rename(msnr = legacyNortrafMpn) %>%
+  dplyr::filter(!is.na(msnr)) %>%
+  dplyr::filter(!is.na(trp_id))
 
+# Adding metadata
+trp_krs_2016 <- dplyr::left_join(trp_krs_2016_ids, points)
+
+# Add index results from CSV-files
+pointindex_krs_16_17 <-
+  readPointindexCSV("data_index_raw/pointindex_kristiansand-2017-12_2016.csv") %>%
+  rename(index_16_17 = index)
+
+n_16_17 <- pointindex_krs_16_17 %>%
+  dplyr::filter(!is.na(index_16_17)) %>%
+  nrow()
+
+pointindex_krs_17_18 <-
+  readPointindexCSV("data_index_raw/pointindex_kristiansand-2018-12_2017.csv") %>%
+  rename(index_17_18 = index)
+
+n_17_18 <- pointindex_krs_17_18 %>%
+  dplyr::filter(!is.na(index_17_18)) %>%
+  nrow()
+
+pointindex_krs_18_19 <-
+  readPointindexCSV("data_index_raw/pointindex_kristiansand-2019-12_2018.csv") %>%
+  rename(index_18_19 = index)
+
+n_18_19 <- pointindex_krs_18_19 %>%
+  dplyr::filter(!is.na(index_18_19)) %>%
+  nrow()
+
+adt <- getAdtForpoints_by_length(trp_krs_2016$trp_id)
+
+adt_filtered <- adt %>%
+  dplyr::filter(length_range == "[..,5.6)") %>%
+  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  dplyr::filter(length_quality > 90) %>%
+  dplyr::filter(coverage > 50) %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year >= 2016) %>%
+  dplyr::filter(year == min(year)) %>%
+  dplyr::select(trp_id, aadt_length_range, year) %>%
+  dplyr::rename(adt = 2)
+
+adt_manual <- data.frame(
+  trp_id = c("33412V121301", "43920V121762", "45924V1955584",
+             "47254V121508"),
+  adt = c(40000, 3000, 21500, 8000),
+  year = c(2017, 2016, 2017, 2017)
+)
+
+adt_all <- bind_rows(adt_filtered, adt_manual)
+
+# Final table
+trp_krs_2016_adt <- trp_krs_2016 %>%
+  left_join(adt_all) %>%
+  left_join(pointindex_krs_16_17) %>%
+  left_join(pointindex_krs_17_18) %>%
+  left_join(pointindex_krs_18_19)
+
+# Index from refyear
+refyear <- trp_krs_2016_adt %>%
+  select(starts_with("index")) %>%
+  mutate_all(list(index_converter)) %>%
+  transmute(index = purrr::pmap_dbl(., prod)) %>%
+  # Lazily changing from 1 to NA (risky?)
+  mutate(index = round(ifelse(index == 1, NA,  100 * (index - 1)),
+                       digits = 1))
+
+trp_krs_2016_final <- trp_krs_2016_adt %>%
+  bind_cols(refyear)
+
+write.csv2(trp_krs_2016_final,
+           file = "data_indexpoints_tidy/indekspunkt_kristiansand_2016.csv",
+           row.names = F)
+
+# City index
+krs_2017 <-
+  read_city_index_csv("data_index_raw/Kristiansand-2017-12_2016.csv") %>%
+  mutate(year = "2016-2017")
+krs_2018 <-
+  read_city_index_csv("data_index_raw/Kristiansand-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+krs_2019 <-
+  read_city_index_csv("data_index_raw/Kristiansand-2019-12_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+city_index_krs <- bind_rows(
+  krs_2017,
+  krs_2018,
+  krs_2019) %>%
+  mutate(index_i = index_converter(index),
+         variance = standardavvik^2,
+         n_points = c(
+           n_16_17,
+           n_17_18,
+           n_18_19))
+
+first_two_years <- calculate_two_year_index(city_index_krs)
+next_two_years <- bind_rows(first_two_years, slice(city_index_krs, 3)) %>%
+  calculate_two_year_index()
+
+city_index_krs_all <- city_index_krs %>%
+  bind_rows(next_two_years) %>%
+  bind_rows(first_two_years) %>%
+  dplyr::mutate(ki_start = index - konfidensintervall,
+                ki_slutt = index + konfidensintervall)
+
+write.csv2(city_index_krs_all,
+           file = "data_indexpoints_tidy/byindeks_kristiansand_2016.csv",
+           row.names = F)
+
+# Monthly city index
+krs_2017_monthly <-
+  monthly_city_index("data_index_raw/Kristiansand-2017-12_2016.csv") %>%
+  mutate(year = "2016-2017")
+krs_2018_monthly <-
+  monthly_city_index("data_index_raw/Kristiansand-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+krs_2019_monthly <-
+  monthly_city_index("data_index_raw/Kristiansand-2019-12_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+krs_monthly <- bind_rows(
+  krs_2017_monthly,
+  krs_2018_monthly,
+  krs_2019_monthly)
+
+write.csv2(krs_monthly,
+           file = "data_indexpoints_tidy/byindeks_maanedlig_kristiansand_2016.csv",
+           row.names = F)
+
+
+# Kristiansand kommune 2016 ####
+trp_krs_kommune_2016_ids <- cities_points %>%
+  dplyr::filter(city_area_name == "Kristiansand kommune",
+                agreement_start == 2017) %>%
+  dplyr::select(trp_id, legacyNortrafMpn) %>%
+  dplyr::rename(msnr = legacyNortrafMpn) %>%
+  dplyr::filter(!is.na(msnr)) %>%
+  dplyr::filter(!is.na(trp_id))
+
+# Adding metadata
+trp_krs_kommune_2016 <- dplyr::left_join(trp_krs_kommune_2016_ids, points)
+
+# Add index results from CSV-files
+pointindex_krs_kommune_16_17 <-
+  readPointindexCSV("data_index_raw/pointindex_kristiansand_kommune-2017-12_2016.csv") %>%
+  rename(index_16_17 = index)
+
+n_16_17 <- pointindex_krs_kommune_16_17 %>%
+  dplyr::filter(!is.na(index_16_17)) %>%
+  nrow()
+
+pointindex_krs_kommune_17_18 <-
+  readPointindexCSV("data_index_raw/pointindex_kristiansand_kommune-2018-12_2017.csv") %>%
+  rename(index_17_18 = index)
+
+n_17_18 <- pointindex_krs_kommune_17_18 %>%
+  dplyr::filter(!is.na(index_17_18)) %>%
+  nrow()
+
+pointindex_krs_kommune_18_19 <-
+  readPointindexCSV("data_index_raw/pointindex_kristiansand_kommune-2019-12_2018.csv") %>%
+  rename(index_18_19 = index)
+
+n_18_19 <- pointindex_krs_kommune_18_19 %>%
+  dplyr::filter(!is.na(index_18_19)) %>%
+  nrow()
+
+adt <- getAdtForpoints_by_length(trp_krs_kommune_2016$trp_id)
+
+adt_filtered <- adt %>%
+  dplyr::filter(length_range == "[..,5.6)") %>%
+  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  dplyr::filter(length_quality > 90) %>%
+  dplyr::filter(coverage > 50) %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year >= 2016) %>%
+  dplyr::filter(year == min(year)) %>%
+  dplyr::select(trp_id, aadt_length_range, year) %>%
+  dplyr::rename(adt = 2)
+
+adt_manual <- data.frame(
+  trp_id = c("45924V1955584",
+             "47254V121508"),
+  adt = c(21500, 8000),
+  year = c(2017, 2017)
+)
+
+adt_all <- bind_rows(adt_filtered, adt_manual)
+
+# Final table
+trp_krs_kommune_2016_adt <- trp_krs_kommune_2016 %>%
+  left_join(adt_all) %>%
+  left_join(pointindex_krs_kommune_16_17) %>%
+  left_join(pointindex_krs_kommune_17_18) %>%
+  left_join(pointindex_krs_kommune_18_19)
+
+# Index from refyear
+refyear <- trp_krs_kommune_2016_adt %>%
+  select(starts_with("index")) %>%
+  mutate_all(list(index_converter)) %>%
+  transmute(index = purrr::pmap_dbl(., prod)) %>%
+  # Lazily changing from 1 to NA (risky?)
+  mutate(index = round(ifelse(index == 1, NA,  100 * (index - 1)),
+                       digits = 1))
+
+trp_krs_kommune_2016_final <- trp_krs_kommune_2016_adt %>%
+  bind_cols(refyear)
+
+write.csv2(trp_krs_kommune_2016_final,
+           file = "data_indexpoints_tidy/indekspunkt_kristiansand_kommune_2016.csv",
+           row.names = F)
+
+# City index
+krs_kommune_2017 <-
+  read_city_index_csv("data_index_raw/Kristiansand_kommune-2017-12_2016.csv") %>%
+  mutate(year = "2016-2017")
+krs_kommune_2018 <-
+  read_city_index_csv("data_index_raw/Kristiansand_kommune-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+krs_kommune_2019 <-
+  read_city_index_csv("data_index_raw/Kristiansand_kommune-2019-12_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+city_index_krs_kommune <- bind_rows(
+  krs_kommune_2017,
+  krs_kommune_2018,
+  krs_kommune_2019) %>%
+  mutate(index_i = index_converter(index),
+         variance = standardavvik^2,
+         n_points = c(
+           n_16_17,
+           n_17_18,
+           n_18_19))
+
+first_two_years <- calculate_two_year_index(city_index_krs_kommune)
+next_two_years <- bind_rows(first_two_years, slice(city_index_krs_kommune, 3)) %>%
+  calculate_two_year_index()
+
+city_index_krs_kommune_all <- city_index_krs_kommune %>%
+  bind_rows(next_two_years) %>%
+  bind_rows(first_two_years) %>%
+  dplyr::mutate(ki_start = index - konfidensintervall,
+                ki_slutt = index + konfidensintervall)
+
+write.csv2(city_index_krs_kommune_all,
+           file = "data_indexpoints_tidy/byindeks_kristiansand_kommune_2016.csv",
+           row.names = F)
+
+# Monthly city index
+krs_kommune_2017_monthly <-
+  monthly_city_index("data_index_raw/Kristiansand_kommune-2017-12_2016.csv") %>%
+  mutate(year = "2016-2017")
+krs_kommune_2018_monthly <-
+  monthly_city_index("data_index_raw/Kristiansand_kommune-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+krs_kommune_2019_monthly <-
+  monthly_city_index("data_index_raw/Kristiansand_kommune-2019-12_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+krs_kommune_monthly <- bind_rows(
+  krs_kommune_2017_monthly,
+  krs_kommune_2018_monthly,
+  krs_kommune_2019_monthly)
+
+write.csv2(krs_kommune_monthly,
+           file = "data_indexpoints_tidy/byindeks_maanedlig_kristiansand_kommune_2016.csv",
+           row.names = F)
 
 # Tromsø 2016 ####
+# Point index
+trp_tromso_2016_ids <- cities_points %>%
+  dplyr::filter(city_area_name == "Tromsø",
+                agreement_start == 2017) %>%
+  dplyr::select(trp_id, legacyNortrafMpn) %>%
+  dplyr::rename(msnr = legacyNortrafMpn) %>%
+  dplyr::filter(!is.na(msnr)) %>%
+  dplyr::filter(!is.na(trp_id))
 
+# Adding metadata
+trp_tromso_2016 <- dplyr::left_join(trp_tromso_2016_ids, points)
+
+# Add index results from CSV-files
+pointindex_tromso_16_17 <-
+  readPointindexCSV("data_index_raw/pointindex_tromso-2017-12_2016.csv") %>%
+  rename(index_16_17 = index)
+
+n_16_17 <- pointindex_tromso_16_17 %>%
+  dplyr::filter(!is.na(index_16_17)) %>%
+  nrow()
+
+pointindex_tromso_17_18 <-
+  readPointindexCSV("data_index_raw/pointindex_tromso-2018-12_2017.csv") %>%
+  rename(index_17_18 = index)
+
+n_17_18 <- pointindex_tromso_17_18 %>%
+  dplyr::filter(!is.na(index_17_18)) %>%
+  nrow()
+
+pointindex_tromso_18_19 <-
+  readPointindexCSV("data_index_raw/pointindex_tromso-2019-12_2018.csv") %>%
+  rename(index_18_19 = index)
+
+n_18_19 <- pointindex_tromso_18_19 %>%
+  dplyr::filter(!is.na(index_18_19)) %>%
+  nrow()
+
+adt <- getAdtForpoints_by_length(trp_tromso_2016$trp_id)
+
+adt_filtered <- adt %>%
+  dplyr::filter(length_range == "[..,5.6)") %>%
+  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  dplyr::filter(length_quality > 90) %>%
+  dplyr::filter(coverage > 50) %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year >= 2016) %>%
+  dplyr::filter(year == min(year)) %>%
+  dplyr::select(trp_id, aadt_length_range, year) %>%
+  dplyr::rename(adt = 2)
+
+adt_manual <- data.frame(
+  trp_id = c("52043V1664653", "49212V1126027", "71291V1125935"),
+  adt = c(15000, 12000, 10000),
+  year = c(2019, 2017, 2019)
+)
+
+adt_all <- bind_rows(adt_filtered, adt_manual)
+
+# Final table
+trp_tromso_2016_adt <- trp_tromso_2016 %>%
+  left_join(adt_all) %>%
+  left_join(pointindex_tromso_16_17) %>%
+  left_join(pointindex_tromso_17_18) %>%
+  left_join(pointindex_tromso_18_19)
+
+# Index from refyear
+refyear <- trp_tromso_2016_adt %>%
+  select(starts_with("index")) %>%
+  mutate_all(list(index_converter)) %>%
+  transmute(index = purrr::pmap_dbl(., prod)) %>%
+  # Lazily changing from 1 to NA (risky?)
+  mutate(index = round(ifelse(index == 1, NA,  100 * (index - 1)),
+                       digits = 1))
+
+trp_tromso_2016_final <- trp_tromso_2016_adt %>%
+  bind_cols(refyear)
+
+write.csv2(trp_tromso_2016_final,
+           file = "data_indexpoints_tidy/indekspunkt_tromso_2016.csv",
+           row.names = F)
+
+# City index
+tromso_2017 <-
+  read_city_index_csv("data_index_raw/Tromso-2017-12_2016.csv") %>%
+  mutate(year = "2016-2017")
+tromso_2018 <-
+  read_city_index_csv("data_index_raw/Tromso-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+tromso_2019 <-
+  read_city_index_csv("data_index_raw/Tromso-2019-12_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+city_index_tromso <- bind_rows(
+  tromso_2017,
+  tromso_2018,
+  tromso_2019) %>%
+  mutate(index_i = index_converter(index),
+         variance = standardavvik^2,
+         n_points = c(
+           n_16_17,
+           n_17_18,
+           n_18_19))
+
+first_two_years <- calculate_two_year_index(city_index_tromso)
+next_two_years <- bind_rows(first_two_years, slice(city_index_tromso, 3)) %>%
+  calculate_two_year_index()
+
+city_index_tromso_all <- city_index_tromso %>%
+  bind_rows(next_two_years) %>%
+  bind_rows(first_two_years) %>%
+  dplyr::mutate(ki_start = index - konfidensintervall,
+                ki_slutt = index + konfidensintervall)
+
+write.csv2(city_index_tromso_all,
+           file = "data_indexpoints_tidy/byindeks_tromso_2016.csv",
+           row.names = F)
+
+# Monthly city index
+tromso_2017_monthly <-
+  monthly_city_index("data_index_raw/Tromso-2017-12_2016.csv") %>%
+  mutate(year = "2016-2017")
+tromso_2018_monthly <-
+  monthly_city_index("data_index_raw/Tromso-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+tromso_2019_monthly <-
+  monthly_city_index("data_index_raw/Tromso-2019-12_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+tromso_monthly <- bind_rows(
+  tromso_2017_monthly,
+  tromso_2018_monthly,
+  tromso_2019_monthly)
+
+write.csv2(tromso_monthly,
+           file = "data_indexpoints_tidy/byindeks_maanedlig_tromso_2016.csv",
+           row.names = F)
 #
