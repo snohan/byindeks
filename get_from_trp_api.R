@@ -86,7 +86,7 @@ getPointsFromTRPAPI_filtered <- function() {
 
 get_trp_for_vti <- function() {
 
-  query_points_trp <-
+  api_query <-
     "query vti_trp {
   trafficRegistrationPoints (trafficType: VEHICLE) {
     id
@@ -124,9 +124,9 @@ get_trp_for_vti <- function() {
 }"
 
   myqueries <- Query$new()
-  myqueries$query("points_trp", query_points_trp)
+  myqueries$query("api_data", api_query)
 
-  points_trp <- cli_trp$exec(myqueries$queries$points_trp) %>%
+  points_trp <- cli_trp$exec(myqueries$queries$api_data) %>%
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
     as.data.frame() %>%
     tidyr::unnest(cols =
@@ -149,6 +149,7 @@ get_trp_for_vti <- function() {
       county_name = data.trafficRegistrationPoints.location.county.name,
       road_category =
         data.trafficRegistrationPoints.location.roadReference.roadCategory.id) %>%
+    # Removing points without commissions
     dplyr::filter(!is.na(valid_from)) %>%
     dplyr::mutate(valid_from = lubridate::floor_date(
                                 lubridate::with_tz(
@@ -156,25 +157,27 @@ get_trp_for_vti <- function() {
                                 unit = "second")) %>%
     dplyr::group_by(trp_id) %>%
     dplyr::slice(which.min(valid_from)) %>%
-    tidyr::separate(road_reference,
-                    into = c("road_number", NA, "parsell", NA, "meter"),
-                    sep = " ",
-                    remove = F) %>%
+    # tidyr::separate(road_reference,
+    #                 into = c("road_number", NA, "parsell", NA, "meter"),
+    #                 sep = " ",
+    #                 remove = F) %>%
     dplyr::mutate(road_link_position = paste0(road_network_position, "@",
                                               road_network_link),
-                  road_number = as.integer(stringr::str_sub(road_number, 3, -1)),
-                  parsell = as.integer(parsell),
-                  meter = as.integer(meter),
-                  road_reference = str_replace(road_reference, "HP ", "hp"),
-                  road_reference = str_replace(road_reference, "Meter ", "m"),
+                  #road_number = as.integer(stringr::str_sub(road_number, 3, -1)),
+                  #parsell = as.integer(parsell),
+                  #meter = as.integer(meter),
+                  #road_reference = str_replace(road_reference, "HP ", "hp"),
+                  #road_reference = str_replace(road_reference, "Meter ", "m"),
                   first_commission_datainn = lubridate::floor_date(
                     valid_from, unit = "day")) %>%
-    dplyr::filter(parsell < 70,
+    dplyr::filter(#parsell < 70,
                   first_commission_datainn < "2019-02-01") %>%
     dplyr::select(county_number, county_name, trp_id, legacyNortrafMpn, name,
-                  road_reference, road_category, road_number, parsell, meter,
+                  road_reference, road_category, #road_number, parsell, meter,
                   road_link_position, lat, lon, first_commission_datainn) %>%
-    dplyr::arrange(county_number, road_category, road_number, parsell, meter) %>%
+    dplyr::arrange(county_number, road_category, road_reference,
+                   #road_number, parsell, meter
+                   ) %>%
     dplyr::ungroup()
 
   return(points_trp)
@@ -463,6 +466,52 @@ trs <- cli_trp$exec(myqueries$queries$points_trp) %>%
                 trp_id = 2)
 
 return(trs)
+}
+
+get_trs_history <- function() {
+  # Get all trs' and their device type history
+  query_trs <-
+    "query all_trs{trafficRegistrationStations (withTrps: true) {
+	id
+  name
+  deviceTypeHistory {
+    validFrom
+    validTo
+    deviceType
+  }
+  firmwareHistory {
+    validFrom
+    validTo
+    firmwareVersion
+  }
+  commissions {
+    validFrom
+    validTo
+  }
+	}
+}
+"
+
+myqueries <- Query$new()
+myqueries$query("points_trp", query_trs)
+
+trs <- cli_trp$exec(myqueries$queries$points_trp) %>%
+  jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
+  as.data.frame() %>%
+  tidyr::unnest(cols = c(data.trafficRegistrationStations.commissions),
+                keep_empty = TRUE) %>%
+  dplyr::rename(commission_valid_from = validFrom,
+                commission_valid_to = validTo) %>%
+  tidyr::unnest(cols = c(data.trafficRegistrationStations.deviceTypeHistory),
+                keep_empty = TRUE) %>%
+  dplyr::rename(device_valid_from = validFrom,
+                device_valid_to = validTo) %>%
+  tidyr::unnest(cols = c(data.trafficRegistrationStations.firmwareHistory),
+                keep_empty = TRUE) %>%
+  dplyr::rename(firmware_valid_from = validFrom,
+                firmware_valid_to = validTo)
+
+  return(trs)
 }
 
 get_trp_with_commissions <- function() {

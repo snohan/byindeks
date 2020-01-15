@@ -14,56 +14,56 @@ library(DT)
 library(htmltools)
 ```
 
-```{r get_trp, results='hide'}
+```{r get_trp, results='hide', message=FALSE}
 trp_for_vti <- get_trp_for_vti()
+trp_latest_data <- get_trps_latest_data()
 
-trp_aadts_1_25 <- trp_for_vti$trp_id[1:250] %>% 
+trp_for_vti_latest_data <- trp_for_vti %>% 
+  dplyr::filter(!stringr::str_detect(road_reference, "KD")) %>% 
+  dplyr::filter(!stringr::str_detect(road_reference, "KV")) %>% 
+  dplyr::left_join(trp_latest_data) %>% 
+  dplyr::filter(latest_data_by_hour > "2020-01-12 00:00:00")
+
+trp_aadts <- trp_for_vti_latest_data$trp_id %>% 
   get_aadt_for_trp_list() %>% 
-  dplyr::filter(year == 2018)
+  dplyr::filter(year == 2019)
 
-trp_aadts_250_500 <- trp_for_vti$trp_id[251:500] %>% 
-  get_aadt_for_trp_list() %>% 
-  dplyr::filter(year == 2018)
-
-trp_aadts_501_n <- trp_for_vti$trp_id[501:1994] %>% 
-  get_aadt_for_trp_list() %>% 
-  dplyr::filter(year == 2018)
-
-trp_aadts <- bind_rows(
-  trp_aadts_1_25,
-  trp_aadts_250_500,
-  trp_aadts_501_n
-)
-
-# TODO: change to 2019 in get_from_td_api
-trp_for_vti_aadt <- trp_for_vti %>% 
+trp_for_vti_aadt <- trp_for_vti_latest_data %>% 
   dplyr::left_join(trp_aadts) %>% 
   dplyr::filter(!is.na(adt),
-                coverage > 90) %>% 
-  dplyr::mutate(valid_length_ratio = valid_length_volume / adt) %>%
+                coverage > 90,
+                adt > 250) %>% 
+  dplyr::mutate(valid_length_percent = round(valid_length_volume /adt * 100, digits = 1)) %>%
   dplyr::mutate(trp_label = paste(name, road_reference, sep = "<br/>"),
                 trp_label = lapply(trp_label, htmltools::HTML))
 
-# TODO: pointindex 2019
+trp_for_vti_aadt %>% 
+  dplyr::select(-trp_label) %>% 
+  write.csv2(file = "trp_for_vti_2020.csv", row.names = F)
 ```
 
 ```{r table}
 # DataTables
 trp_for_vti_aadt %>% 
-  dplyr::select(county_number, legacyNortrafMpn, name,
-                road_category, road_number, parsell, meter, adt) %>%
-  dplyr::mutate(county_number = as.character(county_number),
-                legacyNortrafMpn = as.character(legacyNortrafMpn),
-                road_number = as.character(road_number),
-                parsell = as.character(parsell)) %>% 
-  dplyr::rename(Fylke = county_number,
+  dplyr::select(#county_number, 
+                county_name, legacyNortrafMpn, 
+                #trp_id, 
+                name,
+                road_reference, 
+                #road_category, 
+                adt, valid_length_percent) %>%
+  dplyr::mutate(#county_number = as.character(county_number),
+                legacyNortrafMpn = as.character(legacyNortrafMpn)
+                ) %>% 
+  dplyr::rename(#Fylkenr = county_number,
+                Fylkenanvn = county_name,
                 Nortrafnr = legacyNortrafMpn,
+                #Punktid = trp_id,
                 Navn = name,
-                Vegkat = road_category,
-                Vegnr = road_number,
-                Parsell = parsell,
-                Meter = meter,
-                AADT = adt) %>% 
+                Vegreferanse = road_reference,
+                #Vegkat = road_category,
+                AADT = adt,
+                Lengdekv. = valid_length_percent) %>% 
   DT::datatable(
     filter = "top",
     extensions = "Buttons",
@@ -75,13 +75,19 @@ trp_for_vti_aadt %>%
       autoWidth = TRUE))
 ```
 
-```{r map}
+```{r map, message=FALSE}
 palett_adt <-
  colorNumeric(palette = "Greens",
               domain = NULL)
 
 # TODO: county polygons (nice to have)
-# TODO: add road categories as layers (one addCircleMarkers per layer?)
+
+trp_for_vti_aadt_R <- trp_for_vti_aadt %>% 
+  dplyr::filter(!stringr::str_detect(road_reference, "F"))
+
+trp_for_vti_aadt_F <- trp_for_vti_aadt %>% 
+  dplyr::filter(stringr::str_detect(road_reference, "F"))
+
 trp_for_vti_aadt %>% 
   leaflet(width = "100%",
           options = leafletOptions(crs = nvdb_crs,
@@ -89,10 +95,25 @@ trp_for_vti_aadt %>%
   addTiles(urlTemplate = nvdb_map_url,
            attribution = nvdb_map_attribution) %>%
   addCircleMarkers(
+    data = trp_for_vti_aadt_R,
+    group = "R",
     radius = 6,
     stroke = T,
     weight = 2,
-    color = "#444f55",
+    color = "#008ec2",
+    opacity = 0.8,
+    fill = T,
+    fillColor = ~palett_adt(adt),
+    fillOpacity = 0.8,
+    label = ~trp_label
+  ) %>%
+  addCircleMarkers(
+    data = trp_for_vti_aadt_F,
+    group = "F",
+    radius = 6,
+    stroke = T,
+    weight = 2,
+    color = "#ed9300",
     opacity = 0.8,
     fill = T,
     fillColor = ~palett_adt(adt),
@@ -104,7 +125,11 @@ trp_for_vti_aadt %>%
             values = ~adt,
             title = "ÅDT",
             opacity = 0.7,
-            labFormat = labelFormat(big.mark = " "))
+            labFormat = labelFormat(big.mark = " ")) %>% 
+  addLayersControl(
+    overlayGroups = c("F", "R"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
 ```
 
 

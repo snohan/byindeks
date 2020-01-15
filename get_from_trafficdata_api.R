@@ -77,8 +77,40 @@ getPoints <- function() {
   return(points)
 }
 
+
+get_trps_latest_data <- function() {
+  # Get all traffic registration points
+  query_points <-
+    "query trp_latest_data {
+  trafficRegistrationPoints {
+    id
+    latestData {
+      volumeByHour
+    }
+  }
+}"
+
+  myqueries <- Query$new()
+  myqueries$query("points", query_points)
+
+  points <- cli$exec(myqueries$queries$points) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
+    as.data.frame() %>%
+    dplyr::rename(trp_id =
+                    data.trafficRegistrationPoints.id,
+                  latest_data_by_hour =
+                    data.trafficRegistrationPoints.latestData.volumeByHour
+    ) %>%
+    dplyr::mutate(latest_data_by_hour =
+                    floor_date(with_tz(ymd_hms(latest_data_by_hour)),
+                               unit = "hour")
+    )
+
+  return(points)
+}
+
 #trp_id = "55265V521064"
-trp_id <- "43849B2033722"
+#trp_id <- "43849B2033722"
 
 getTrpAadt <- function(trp_id) {
   # Get all AADTs for a trp
@@ -415,3 +447,75 @@ getAdtForpoints_by_length <- function(trp_list) {
   return(trp_adt)
 }
 
+indexyear <- "2019"
+#trp_ids <- "\"44656V72812\", \"77022V72359\""
+
+get_pointindices <- function(trp_ids, indexyear) {
+  # Get pointindex for a number of trps
+  api_query <- paste0(
+    "query pointindex{
+      trafficVolumeIndices(
+        trafficRegistrationPointIds: [\"", trp_ids, "\"],
+        year: ", indexyear, ") {
+        calculationMonth {
+          month
+          year
+        }
+        roadCategory {
+          id
+        }
+        trafficRegistrationPoint {
+          id
+        }
+        volumeIndexByDayType {
+          dayType
+          trafficVolumeIndex {
+            index {
+              baseVolume
+              calculationVolume
+              indexNumber
+              percentageChange
+            }
+            lengthRange {
+              representation
+            }
+            indexCoverage {
+              hours {
+                percentage
+                numerator
+                denominator
+              }
+            }
+          }
+        }
+      }
+    }")
+
+  myqueries <- Query$new()
+  myqueries$query("data", api_query)
+
+  trp_data <- cli$exec(myqueries$queries$data) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
+    as.data.frame() %>%
+    tidyr::unnest(cols = c(data.trafficVolumeIndices.volumeIndexByDayType)) %>%
+    dplyr::rename(
+      day_type = dayType,
+      base_volume = trafficVolumeIndex.index.baseVolume,
+      calculation_volume = trafficVolumeIndex.index.calculationVolume,
+      index_i = trafficVolumeIndex.index.indexNumber,
+      index_p = trafficVolumeIndex.index.percentageChange,
+      length_range = trafficVolumeIndex.lengthRange.representation,
+      coverage_percentage = trafficVolumeIndex.indexCoverage.hours.percentage,
+      month = data.trafficVolumeIndices.calculationMonth.month,
+      year = data.trafficVolumeIndices.calculationMonth.year,
+      road_category = data.trafficVolumeIndices.roadCategory.id,
+      trp_id = data.trafficVolumeIndices.trafficRegistrationPoint.id) %>%
+    dplyr::mutate(trp_id = as.character(trp_id)) %>%
+    dplyr::select(trp_id, month, year, road_category, day_type, length_range,
+                  base_volume, calculation_volume, index_i, index_p,
+                  coverage_percentage) %>%
+    dplyr::filter(length_range %in% c("[..,..)", "[..,5.6)", "[5.6,..)")) %>%
+    dplyr::filter(day_type == "ALL")
+
+  return(trp_data)
+}
