@@ -2,6 +2,7 @@
 
 library(ghql)
 library(lubridate)
+library(magrittr)
 
 cli <- GraphqlClient$new(
   url = "https://www.vegvesen.no/trafikkdata/api/?query="
@@ -519,3 +520,92 @@ get_pointindices <- function(trp_ids, indexyear) {
 
   return(trp_data)
 }
+
+getHourlytraffic <- function(trpID, from, to) {
+  # Default values
+  hasNextPage <- TRUE
+  cursor <- ""
+  hourlyTraffic <- data.frame()
+
+  build_query <- function() {
+    query_hourlyTraffic <- paste0(
+      'query point_hour_volumes {
+    trafficData(trafficRegistrationPointId: "',
+      trpID,
+      '"){
+        trafficRegistrationPoint {
+          id
+          name
+        }
+        volume {
+        byHour(
+        from: "',
+      from,
+      '",
+        to: "',
+      to,
+      '",
+        after: "',
+      cursor,
+      '"
+        ) {
+        edges {
+          node {
+            from
+            total {
+              volume
+              coverage {
+                percentage
+              }
+            }
+              }
+              }
+              pageInfo {
+                hasNextPage
+                endCursor
+              }
+              }
+              }
+            }
+        }
+      ')
+  }
+
+  while(hasNextPage == TRUE){
+
+    myqueries <- Query$new()
+    myqueries$query("hourlyTraffic", build_query())
+
+    trafficData <- cli$exec(myqueries$queries$hourlyTraffic) %>%
+      fromJSON(simplifyDataFrame = T, flatten = T)
+
+    if(length(trafficData$data$trafficData$volume$byHour$edges) == 0)
+      break;
+
+    trafficData %<>% as.data.frame()
+
+    cursor <-
+      trafficData$data.trafficData.volume.byHour.pageInfo.endCursor[1] %>%
+      as.character()
+    hasNextPage <-
+      trafficData$data.trafficData.volume.byHour.pageInfo.hasNextPage[1]
+
+    trafficData %<>% select(1:5)
+
+    hourlyTraffic <- bind_rows(hourlyTraffic, trafficData)
+  }
+
+  if(nrow(hourlyTraffic) == 0) {
+    hourlyTraffic <- setNames(data.frame(matrix(ncol = 5, nrow = 0)),
+                              c("point_id", "point_name", "hour_from",
+                                "total_volume", "coverage"))
+  }else{
+    colnames(hourlyTraffic) <- c("point_id", "point_name", "hour_from",
+                                 "total_volume", "coverage")
+    hourlyTraffic %<>% mutate(hour_from = with_tz(ymd_hms(hour_from), "CET"))
+  }
+
+  return(hourlyTraffic)
+}
+
+

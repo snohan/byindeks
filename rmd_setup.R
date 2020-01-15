@@ -56,3 +56,7 @@ nvdb_crs <- leafletCRS(
 decimal_comma <- function(number) {
   stringr::str_replace(as.character(number), "\\.", ",")
 }
+
+decimal_point <- function(number) {
+  stringr::str_replace(as.character(number), ",", "\\.")
+}
