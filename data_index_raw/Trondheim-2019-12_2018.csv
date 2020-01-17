@@ -1,0 +1,1765 @@
+Område;Vegkategori;døgn;lengdeklasse;periode;indeks;dekning;trafikkmengde indeksår;trafikkmengde basisår;standardavvik;konfidensintervall
+Trondheim;K;Alle;Alle;Januar;-;-;-;-;-;-
+Trondheim;K;Alle;< 5,6m;Januar;-;-;-;-;-;-
+Trondheim;K;Alle;>= 5,6m;Januar;-;-;-;-;-;-
+Trondheim;K;Alle;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Trondheim;K;Alle;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Trondheim;K;Alle;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Trondheim;K;Alle;>= 16,0m;Januar;-;-;-;-;-;-
+Trondheim;K;Yrkesdøgn;Alle;Januar;-;-;-;-;-;-
+Trondheim;K;Yrkesdøgn;< 5,6m;Januar;-;-;-;-;-;-
+Trondheim;K;Yrkesdøgn;>= 5,6m;Januar;-;-;-;-;-;-
+Trondheim;K;Yrkesdøgn;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Trondheim;K;Yrkesdøgn;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Trondheim;K;Yrkesdøgn;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Trondheim;K;Yrkesdøgn;>= 16,0m;Januar;-;-;-;-;-;-
+Trondheim;K;Helgedøgn;Alle;Januar;-;-;-;-;-;-
+Trondheim;K;Helgedøgn;< 5,6m;Januar;-;-;-;-;-;-
+Trondheim;K;Helgedøgn;>= 5,6m;Januar;-;-;-;-;-;-
+Trondheim;K;Helgedøgn;5,6m - 7,6m;Januar;-;-;-;-;-;-
+Trondheim;K;Helgedøgn;7,6m - 12,5m;Januar;-;-;-;-;-;-
+Trondheim;K;Helgedøgn;12,5m - 16,0m;Januar;-;-;-;-;-;-
+Trondheim;K;Helgedøgn;>= 16,0m;Januar;-;-;-;-;-;-
+Trondheim;K;Alle;Alle;Februar;4,086;80,000;214322;205909;-;-
+Trondheim;K;Alle;< 5,6m;Februar;3,318;80,000;199354;192952;-;-
+Trondheim;K;Alle;>= 5,6m;Februar;16,122;80,000;13491;11618;-;-
+Trondheim;K;Alle;5,6m - 7,6m;Februar;15,962;80,000;6117;5275;-;-
+Trondheim;K;Alle;7,6m - 12,5m;Februar;23,872;80,000;4063;3280;-;-
+Trondheim;K;Alle;12,5m - 16,0m;Februar;3,085;80,000;2439;2366;-;-
+Trondheim;K;Alle;>= 16,0m;Februar;25,108;80,000;872;697;-;-
+Trondheim;K;Yrkesdøgn;Alle;Februar;3,608;84,000;170494;164556;-;-
+Trondheim;K;Yrkesdøgn;< 5,6m;Februar;2,612;84,000;157241;153239;-;-
+Trondheim;K;Yrkesdøgn;>= 5,6m;Februar;18,129;84,000;12009;10166;-;-
+Trondheim;K;Yrkesdøgn;5,6m - 7,6m;Februar;17,190;84,000;5488;4683;-;-
+Trondheim;K;Yrkesdøgn;7,6m - 12,5m;Februar;28,321;84,000;3593;2800;-;-
+Trondheim;K;Yrkesdøgn;12,5m - 16,0m;Februar;4,889;84,000;2167;2066;-;-
+Trondheim;K;Yrkesdøgn;>= 16,0m;Februar;23,339;84,000;761;617;-;-
+Trondheim;K;Helgedøgn;Alle;Februar;5,985;72,000;43828;41353;-;-
+Trondheim;K;Helgedøgn;< 5,6m;Februar;6,043;72,000;42113;39713;-;-
+Trondheim;K;Helgedøgn;>= 5,6m;Februar;2,066;72,000;1482;1452;-;-
+Trondheim;K;Helgedøgn;5,6m - 7,6m;Februar;6,250;72,000;629;592;-;-
+Trondheim;K;Helgedøgn;7,6m - 12,5m;Februar;-2,083;72,000;470;480;-;-
+Trondheim;K;Helgedøgn;12,5m - 16,0m;Februar;-9,333;72,000;272;300;-;-
+Trondheim;K;Helgedøgn;>= 16,0m;Februar;38,750;72,000;111;80;-;-
+Trondheim;K;Alle;Alle;Mars;13,845;100,000;303823;266874;-;-
+Trondheim;K;Alle;< 5,6m;Mars;12,807;100,000;283739;251525;-;-
+Trondheim;K;Alle;>= 5,6m;Mars;31,695;100,000;17925;13611;-;-
+Trondheim;K;Alle;5,6m - 7,6m;Mars;36,025;100,000;7967;5857;-;-
+Trondheim;K;Alle;7,6m - 12,5m;Mars;31,076;100,000;5382;4106;-;-
+Trondheim;K;Alle;12,5m - 16,0m;Mars;23,217;100,000;3386;2748;-;-
+Trondheim;K;Alle;>= 16,0m;Mars;32,222;100,000;1190;900;-;-
+Trondheim;K;Yrkesdøgn;Alle;Mars;14,630;100,000;224902;196198;-;-
+Trondheim;K;Yrkesdøgn;< 5,6m;Mars;13,332;100,000;208059;183584;-;-
+Trondheim;K;Yrkesdøgn;>= 5,6m;Mars;34,106;100,000;15150;11297;-;-
+Trondheim;K;Yrkesdøgn;5,6m - 7,6m;Mars;37,882;100,000;6821;4947;-;-
+Trondheim;K;Yrkesdøgn;7,6m - 12,5m;Mars;34,133;100,000;4472;3334;-;-
+Trondheim;K;Yrkesdøgn;12,5m - 16,0m;Mars;27,980;100,000;2877;2248;-;-
+Trondheim;K;Yrkesdøgn;>= 16,0m;Mars;27,604;100,000;980;768;-;-
+Trondheim;K;Helgedøgn;Alle;Mars;11,666;100,000;78921;70676;-;-
+Trondheim;K;Helgedøgn;< 5,6m;Mars;11,391;100,000;75680;67941;-;-
+Trondheim;K;Helgedøgn;>= 5,6m;Mars;19,922;100,000;2775;2314;-;-
+Trondheim;K;Helgedøgn;5,6m - 7,6m;Mars;25,934;100,000;1146;910;-;-
+Trondheim;K;Helgedøgn;7,6m - 12,5m;Mars;17,876;100,000;910;772;-;-
+Trondheim;K;Helgedøgn;12,5m - 16,0m;Mars;1,800;100,000;509;500;-;-
+Trondheim;K;Helgedøgn;>= 16,0m;Mars;59,091;100,000;210;132;-;-
+Trondheim;K;Alle;Alle;April;-8,199;100,000;266014;289773;-;-
+Trondheim;K;Alle;< 5,6m;April;-8,614;100,000;247020;270303;-;-
+Trondheim;K;Alle;>= 5,6m;April;-1,107;100,000;16968;17158;-;-
+Trondheim;K;Alle;5,6m - 7,6m;April;-1,278;100,000;7182;7275;-;-
+Trondheim;K;Alle;7,6m - 12,5m;April;5,831;100,000;5808;5488;-;-
+Trondheim;K;Alle;12,5m - 16,0m;April;-10,040;100,000;2903;3227;-;-
+Trondheim;K;Alle;>= 16,0m;April;-7,962;100,000;1075;1168;-;-
+Trondheim;K;Yrkesdøgn;Alle;April;-7,224;100,000;195930;211186;-;-
+Trondheim;K;Yrkesdøgn;< 5,6m;April;-7,836;100,000;179996;195300;-;-
+Trondheim;K;Yrkesdøgn;>= 5,6m;April;1,394;100,000;14325;14128;-;-
+Trondheim;K;Yrkesdøgn;5,6m - 7,6m;April;0,293;100,000;6165;6147;-;-
+Trondheim;K;Yrkesdøgn;7,6m - 12,5m;April;10,397;100,000;4842;4386;-;-
+Trondheim;K;Yrkesdøgn;12,5m - 16,0m;April;-8,786;100,000;2419;2652;-;-
+Trondheim;K;Yrkesdøgn;>= 16,0m;April;-4,666;100,000;899;943;-;-
+Trondheim;K;Helgedøgn;Alle;April;-10,820;100,000;70084;78587;-;-
+Trondheim;K;Helgedøgn;< 5,6m;April;-10,638;100,000;67024;75003;-;-
+Trondheim;K;Helgedøgn;>= 5,6m;April;-12,772;100,000;2643;3030;-;-
+Trondheim;K;Helgedøgn;5,6m - 7,6m;April;-9,840;100,000;1017;1128;-;-
+Trondheim;K;Helgedøgn;7,6m - 12,5m;April;-12,341;100,000;966;1102;-;-
+Trondheim;K;Helgedøgn;12,5m - 16,0m;April;-15,826;100,000;484;575;-;-
+Trondheim;K;Helgedøgn;>= 16,0m;April;-21,778;100,000;176;225;-;-
+Trondheim;K;Alle;Alle;Mai;0,581;100,000;282706;281073;-;-
+Trondheim;K;Alle;< 5,6m;Mai;0,113;100,000;261786;261490;-;-
+Trondheim;K;Alle;>= 5,6m;Mai;7,968;100,000;18659;17282;-;-
+Trondheim;K;Alle;5,6m - 7,6m;Mai;8,903;100,000;7572;6953;-;-
+Trondheim;K;Alle;7,6m - 12,5m;Mai;7,971;100,000;6475;5997;-;-
+Trondheim;K;Alle;12,5m - 16,0m;Mai;5,686;100,000;3364;3183;-;-
+Trondheim;K;Alle;>= 16,0m;Mai;8,616;100,000;1248;1149;-;-
+Trondheim;K;Yrkesdøgn;Alle;Mai;3,973;100,000;202299;194568;-;-
+Trondheim;K;Yrkesdøgn;< 5,6m;Mai;3,380;100,000;184937;178890;-;-
+Trondheim;K;Yrkesdøgn;>= 5,6m;Mai;11,950;100,000;15608;13942;-;-
+Trondheim;K;Yrkesdøgn;5,6m - 7,6m;Mai;12,557;100,000;6409;5694;-;-
+Trondheim;K;Yrkesdøgn;7,6m - 12,5m;Mai;13,615;100,000;5399;4752;-;-
+Trondheim;K;Yrkesdøgn;12,5m - 16,0m;Mai;7,187;100,000;2774;2588;-;-
+Trondheim;K;Yrkesdøgn;>= 16,0m;Mai;12,996;100,000;1026;908;-;-
+Trondheim;K;Helgedøgn;Alle;Mai;-7,049;100,000;80407;86505;-;-
+Trondheim;K;Helgedøgn;< 5,6m;Mai;-6,962;100,000;76849;82600;-;-
+Trondheim;K;Helgedøgn;>= 5,6m;Mai;-8,653;100,000;3051;3340;-;-
+Trondheim;K;Helgedøgn;5,6m - 7,6m;Mai;-7,625;100,000;1163;1259;-;-
+Trondheim;K;Helgedøgn;7,6m - 12,5m;Mai;-13,574;100,000;1076;1245;-;-
+Trondheim;K;Helgedøgn;12,5m - 16,0m;Mai;-0,840;100,000;590;595;-;-
+Trondheim;K;Helgedøgn;>= 16,0m;Mai;-7,884;100,000;222;241;-;-
+Trondheim;K;Alle;Alle;Juni;-1,768;100,000;261932;266645;-;-
+Trondheim;K;Alle;< 5,6m;Juni;-1,896;100,000;241859;246534;-;-
+Trondheim;K;Alle;>= 5,6m;Juni;1,761;100,000;18082;17769;-;-
+Trondheim;K;Alle;5,6m - 7,6m;Juni;8,834;100,000;7429;6826;-;-
+Trondheim;K;Alle;7,6m - 12,5m;Juni;7,154;100,000;6785;6332;-;-
+Trondheim;K;Alle;12,5m - 16,0m;Juni;-15,636;100,000;2811;3332;-;-
+Trondheim;K;Alle;>= 16,0m;Juni;-17,357;100,000;1057;1279;-;-
+Trondheim;K;Yrkesdøgn;Alle;Juni;-7,928;100,000;186462;202517;-;-
+Trondheim;K;Yrkesdøgn;< 5,6m;Juni;-8,516;100,000;169857;185668;-;-
+Trondheim;K;Yrkesdøgn;>= 5,6m;Juni;-0,100;100,000;15008;15023;-;-
+Trondheim;K;Yrkesdøgn;5,6m - 7,6m;Juni;7,273;100,000;6254;5830;-;-
+Trondheim;K;Yrkesdøgn;7,6m - 12,5m;Juni;5,758;100,000;5547;5245;-;-
+Trondheim;K;Yrkesdøgn;12,5m - 16,0m;Juni;-18,748;100,000;2310;2843;-;-
+Trondheim;K;Yrkesdøgn;>= 16,0m;Juni;-18,824;100,000;897;1105;-;-
+Trondheim;K;Helgedøgn;Alle;Juni;17,687;100,000;75470;64128;-;-
+Trondheim;K;Helgedøgn;< 5,6m;Juni;18,296;100,000;72002;60866;-;-
+Trondheim;K;Helgedøgn;>= 5,6m;Juni;11,945;100,000;3074;2746;-;-
+Trondheim;K;Helgedøgn;5,6m - 7,6m;Juni;17,972;100,000;1175;996;-;-
+Trondheim;K;Helgedøgn;7,6m - 12,5m;Juni;13,891;100,000;1238;1087;-;-
+Trondheim;K;Helgedøgn;12,5m - 16,0m;Juni;2,454;100,000;501;489;-;-
+Trondheim;K;Helgedøgn;>= 16,0m;Juni;-8,046;100,000;160;174;-;-
+Trondheim;K;Alle;Alle;Juli;2,091;100,000;195699;191691;-;-
+Trondheim;K;Alle;< 5,6m;Juli;1,978;100,000;180869;177361;-;-
+Trondheim;K;Alle;>= 5,6m;Juli;8,376;100,000;13909;12834;-;-
+Trondheim;K;Alle;5,6m - 7,6m;Juli;14,523;100,000;6056;5288;-;-
+Trondheim;K;Alle;7,6m - 12,5m;Juli;9,293;100,000;5445;4982;-;-
+Trondheim;K;Alle;12,5m - 16,0m;Juli;-2,286;100,000;1838;1881;-;-
+Trondheim;K;Alle;>= 16,0m;Juli;-16,545;100,000;570;683;-;-
+Trondheim;K;Yrkesdøgn;Alle;Juli;5,938;100,000;154378;145725;-;-
+Trondheim;K;Yrkesdøgn;< 5,6m;Juli;5,859;100,000;141358;133534;-;-
+Trondheim;K;Yrkesdøgn;>= 5,6m;Juli;12,025;100,000;12232;10919;-;-
+Trondheim;K;Yrkesdøgn;5,6m - 7,6m;Juli;19,938;100,000;5396;4499;-;-
+Trondheim;K;Yrkesdøgn;7,6m - 12,5m;Juli;12,096;100,000;4782;4266;-;-
+Trondheim;K;Yrkesdøgn;12,5m - 16,0m;Juli;-0,128;100,000;1561;1563;-;-
+Trondheim;K;Yrkesdøgn;>= 16,0m;Juli;-16,582;100,000;493;591;-;-
+Trondheim;K;Helgedøgn;Alle;Juli;-10,105;100,000;41321;45966;-;-
+Trondheim;K;Helgedøgn;< 5,6m;Juli;-9,848;100,000;39511;43827;-;-
+Trondheim;K;Helgedøgn;>= 5,6m;Juli;-12,428;100,000;1677;1915;-;-
+Trondheim;K;Helgedøgn;5,6m - 7,6m;Juli;-16,350;100,000;660;789;-;-
+Trondheim;K;Helgedøgn;7,6m - 12,5m;Juli;-7,402;100,000;663;716;-;-
+Trondheim;K;Helgedøgn;12,5m - 16,0m;Juli;-12,893;100,000;277;318;-;-
+Trondheim;K;Helgedøgn;>= 16,0m;Juli;-16,304;100,000;77;92;-;-
+Trondheim;K;Alle;Alle;August;-1,589;100,000;261267;265485;-;-
+Trondheim;K;Alle;< 5,6m;August;-2,830;100,000;239264;246233;-;-
+Trondheim;K;Alle;>= 5,6m;August;14,533;100,000;19789;17278;-;-
+Trondheim;K;Alle;5,6m - 7,6m;August;1,880;100,000;7209;7076;-;-
+Trondheim;K;Alle;7,6m - 12,5m;August;10,198;100,000;6667;6050;-;-
+Trondheim;K;Alle;12,5m - 16,0m;August;-33,344;100,000;2025;3038;-;-
+Trondheim;K;Alle;>= 16,0m;August;249,013;100,000;3888;1114;-;-
+Trondheim;K;Yrkesdøgn;Alle;August;-5,108;100,000;199301;210030;-;-
+Trondheim;K;Yrkesdøgn;< 5,6m;August;-6,462;100,000;180793;193282;-;-
+Trondheim;K;Yrkesdøgn;>= 5,6m;August;10,929;100,000;16717;15070;-;-
+Trondheim;K;Yrkesdøgn;5,6m - 7,6m;August;0,372;100,000;6207;6184;-;-
+Trondheim;K;Yrkesdøgn;7,6m - 12,5m;August;9,262;100,000;5698;5215;-;-
+Trondheim;K;Yrkesdøgn;12,5m - 16,0m;August;-34,106;100,000;1762;2674;-;-
+Trondheim;K;Yrkesdøgn;>= 16,0m;August;205,918;100,000;3050;997;-;-
+Trondheim;K;Helgedøgn;Alle;August;11,741;100,000;61966;55455;-;-
+Trondheim;K;Helgedøgn;< 5,6m;August;10,425;100,000;58471;52951;-;-
+Trondheim;K;Helgedøgn;>= 5,6m;August;39,130;100,000;3072;2208;-;-
+Trondheim;K;Helgedøgn;5,6m - 7,6m;August;12,332;100,000;1002;892;-;-
+Trondheim;K;Helgedøgn;7,6m - 12,5m;August;16,048;100,000;969;835;-;-
+Trondheim;K;Helgedøgn;12,5m - 16,0m;August;-27,747;100,000;263;364;-;-
+Trondheim;K;Helgedøgn;>= 16,0m;August;616,239;100,000;838;117;-;-
+Trondheim;K;Alle;Alle;September;1,367;100,000;273475;269786;-;-
+Trondheim;K;Alle;< 5,6m;September;0,578;100,000;252464;251013;-;-
+Trondheim;K;Alle;>= 5,6m;September;13,025;100,000;19047;16852;-;-
+Trondheim;K;Alle;5,6m - 7,6m;September;2,839;100,000;7027;6833;-;-
+Trondheim;K;Alle;7,6m - 12,5m;September;2,620;100,000;6071;5916;-;-
+Trondheim;K;Alle;12,5m - 16,0m;September;-62,858;100,000;1154;3107;-;-
+Trondheim;K;Alle;>= 16,0m;September;381,426;100,000;4795;996;-;-
+Trondheim;K;Yrkesdøgn;Alle;September;5,467;100,000;206468;195766;-;-
+Trondheim;K;Yrkesdøgn;< 5,6m;September;4,669;100,000;188948;180519;-;-
+Trondheim;K;Yrkesdøgn;>= 5,6m;September;15,757;100,000;16008;13829;-;-
+Trondheim;K;Yrkesdøgn;5,6m - 7,6m;September;6,942;100,000;6116;5719;-;-
+Trondheim;K;Yrkesdøgn;7,6m - 12,5m;September;7,050;100,000;5102;4766;-;-
+Trondheim;K;Yrkesdøgn;12,5m - 16,0m;September;-61,484;100,000;981;2547;-;-
+Trondheim;K;Yrkesdøgn;>= 16,0m;September;377,917;100,000;3809;797;-;-
+Trondheim;K;Helgedøgn;Alle;September;-9,474;100,000;67007;74020;-;-
+Trondheim;K;Helgedøgn;< 5,6m;September;-9,899;100,000;63516;70494;-;-
+Trondheim;K;Helgedøgn;>= 5,6m;September;0,529;100,000;3039;3023;-;-
+Trondheim;K;Helgedøgn;5,6m - 7,6m;September;-18,223;100,000;911;1114;-;-
+Trondheim;K;Helgedøgn;7,6m - 12,5m;September;-15,739;100,000;969;1150;-;-
+Trondheim;K;Helgedøgn;12,5m - 16,0m;September;-69,107;100,000;173;560;-;-
+Trondheim;K;Helgedøgn;>= 16,0m;September;395,477;100,000;986;199;-;-
+Trondheim;K;Alle;Alle;Oktober;-1,767;74,000;204792;208475;-;-
+Trondheim;K;Alle;< 5,6m;Oktober;-1,944;74,000;188813;192557;-;-
+Trondheim;K;Alle;>= 5,6m;Oktober;0,922;74,000;14564;14431;-;-
+Trondheim;K;Alle;5,6m - 7,6m;Oktober;-4,644;74,000;5626;5900;-;-
+Trondheim;K;Alle;7,6m - 12,5m;Oktober;-13,909;74,000;4314;5011;-;-
+Trondheim;K;Alle;12,5m - 16,0m;Oktober;-64,302;74,000;936;2622;-;-
+Trondheim;K;Alle;>= 16,0m;Oktober;310,690;74,000;3688;898;-;-
+Trondheim;K;Yrkesdøgn;Alle;Oktober;-2,680;73,000;161375;165819;-;-
+Trondheim;K;Yrkesdøgn;< 5,6m;Oktober;-2,657;73,000;147707;151738;-;-
+Trondheim;K;Yrkesdøgn;>= 5,6m;Oktober;-2,501;73,000;12515;12836;-;-
+Trondheim;K;Yrkesdøgn;5,6m - 7,6m;Oktober;-7,681;73,000;4928;5338;-;-
+Trondheim;K;Yrkesdøgn;7,6m - 12,5m;Oktober;-14,919;73,000;3724;4377;-;-
+Trondheim;K;Yrkesdøgn;12,5m - 16,0m;Oktober;-64,944;73,000;814;2322;-;-
+Trondheim;K;Yrkesdøgn;>= 16,0m;Oktober;281,602;73,000;3049;799;-;-
+Trondheim;K;Helgedøgn;Alle;Oktober;1,784;74,000;43417;42656;-;-
+Trondheim;K;Helgedøgn;< 5,6m;Oktober;0,703;74,000;41106;40819;-;-
+Trondheim;K;Helgedøgn;>= 5,6m;Oktober;28,464;74,000;2049;1595;-;-
+Trondheim;K;Helgedøgn;5,6m - 7,6m;Oktober;24,199;74,000;698;562;-;-
+Trondheim;K;Helgedøgn;7,6m - 12,5m;Oktober;-6,940;74,000;590;634;-;-
+Trondheim;K;Helgedøgn;12,5m - 16,0m;Oktober;-59,333;74,000;122;300;-;-
+Trondheim;K;Helgedøgn;>= 16,0m;Oktober;545,455;74,000;639;99;-;-
+Trondheim;K;Alle;Alle;November;-2,237;100,000;282753;289223;-;-
+Trondheim;K;Alle;< 5,6m;November;-2,128;100,000;262326;268031;-;-
+Trondheim;K;Alle;>= 5,6m;November;-2,568;100,000;18629;19120;-;-
+Trondheim;K;Alle;5,6m - 7,6m;November;-8,059;100,000;7290;7929;-;-
+Trondheim;K;Alle;7,6m - 12,5m;November;-15,160;100,000;5283;6227;-;-
+Trondheim;K;Alle;12,5m - 16,0m;November;-69,809;100,000;1140;3776;-;-
+Trondheim;K;Alle;>= 16,0m;November;313,805;100,000;4916;1188;-;-
+Trondheim;K;Yrkesdøgn;Alle;November;-6,239;100,000;211342;225405;-;-
+Trondheim;K;Yrkesdøgn;< 5,6m;November;-6,149;100,000;194346;207080;-;-
+Trondheim;K;Yrkesdøgn;>= 5,6m;November;-6,530;100,000;15602;16692;-;-
+Trondheim;K;Yrkesdøgn;5,6m - 7,6m;November;-9,639;100,000;6290;6961;-;-
+Trondheim;K;Yrkesdøgn;7,6m - 12,5m;November;-17,358;100,000;4442;5375;-;-
+Trondheim;K;Yrkesdøgn;12,5m - 16,0m;November;-71,463;100,000;952;3336;-;-
+Trondheim;K;Yrkesdøgn;>= 16,0m;November;284,118;100,000;3918;1020;-;-
+Trondheim;K;Helgedøgn;Alle;November;11,898;100,000;71411;63818;-;-
+Trondheim;K;Helgedøgn;< 5,6m;November;11,532;100,000;67980;60951;-;-
+Trondheim;K;Helgedøgn;>= 5,6m;November;24,671;100,000;3027;2428;-;-
+Trondheim;K;Helgedøgn;5,6m - 7,6m;November;3,306;100,000;1000;968;-;-
+Trondheim;K;Helgedøgn;7,6m - 12,5m;November;-1,291;100,000;841;852;-;-
+Trondheim;K;Helgedøgn;12,5m - 16,0m;November;-57,273;100,000;188;440;-;-
+Trondheim;K;Helgedøgn;>= 16,0m;November;494,048;100,000;998;168;-;-
+Trondheim;K;Alle;Alle;Desember;-9,040;100,000;267120;293667;-;-
+Trondheim;K;Alle;< 5,6m;Desember;-9,260;100,000;250496;276058;-;-
+Trondheim;K;Alle;>= 5,6m;Desember;-5,271;100,000;15077;15916;-;-
+Trondheim;K;Alle;5,6m - 7,6m;Desember;-11,469;100,000;6013;6792;-;-
+Trondheim;K;Alle;7,6m - 12,5m;Desember;-29,770;100,000;3574;5089;-;-
+Trondheim;K;Alle;12,5m - 16,0m;Desember;-65,027;100,000;1052;3008;-;-
+Trondheim;K;Alle;>= 16,0m;Desember;332,132;100,000;4438;1027;-;-
+Trondheim;K;Yrkesdøgn;Alle;Desember;-5,440;100,000;189928;200854;-;-
+Trondheim;K;Yrkesdøgn;< 5,6m;Desember;-5,214;100,000;176849;186577;-;-
+Trondheim;K;Yrkesdøgn;>= 5,6m;Desember;-8,260;100,000;11940;13015;-;-
+Trondheim;K;Yrkesdøgn;5,6m - 7,6m;Desember;-12,647;100,000;4890;5598;-;-
+Trondheim;K;Yrkesdøgn;7,6m - 12,5m;Desember;-30,984;100,000;2898;4199;-;-
+Trondheim;K;Yrkesdøgn;12,5m - 16,0m;Desember;-63,712;100,000;868;2392;-;-
+Trondheim;K;Yrkesdøgn;>= 16,0m;Desember;297,579;100,000;3284;826;-;-
+Trondheim;K;Helgedøgn;Alle;Desember;-16,831;100,000;77192;92813;-;-
+Trondheim;K;Helgedøgn;< 5,6m;Desember;-17,695;100,000;73647;89481;-;-
+Trondheim;K;Helgedøgn;>= 5,6m;Desember;8,135;100,000;3137;2901;-;-
+Trondheim;K;Helgedøgn;5,6m - 7,6m;Desember;-5,946;100,000;1123;1194;-;-
+Trondheim;K;Helgedøgn;7,6m - 12,5m;Desember;-24,045;100,000;676;890;-;-
+Trondheim;K;Helgedøgn;12,5m - 16,0m;Desember;-70,130;100,000;184;616;-;-
+Trondheim;K;Helgedøgn;>= 16,0m;Desember;474,129;100,000;1154;201;-;-
+Trondheim;K;Alle;Alle;Siste 12 måneder;-0,520;96,000;2813903;2828601;-;-
+Trondheim;K;Alle;< 5,6m;Siste 12 måneder;-0,990;96,000;2607990;2634057;-;-
+Trondheim;K;Alle;>= 5,6m;Siste 12 måneder;7,058;96,000;186140;173869;-;-
+Trondheim;K;Alle;5,6m - 7,6m;Siste 12 måneder;4,839;96,000;75488;72004;-;-
+Trondheim;K;Alle;7,6m - 12,5m;Siste 12 måneder;2,375;96,000;59867;58478;-;-
+Trondheim;K;Alle;12,5m - 16,0m;Siste 12 måneder;-28,617;96,000;23048;32288;-;-
+Trondheim;K;Alle;>= 16,0m;Siste 12 måneder;149,905;96,000;27737;11099;-;-
+Trondheim;K;Yrkesdøgn;Alle;Siste 12 måneder;-0,461;96,000;2102879;2112624;-;-
+Trondheim;K;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,991;96,000;1930091;1949411;-;-
+Trondheim;K;Yrkesdøgn;>= 5,6m;Siste 12 måneder;6,941;96,000;157114;146917;-;-
+Trondheim;K;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;5,461;96,000;64964;61600;-;-
+Trondheim;K;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;3,662;96,000;50499;48715;-;-
+Trondheim;K;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-28,446;96,000;19485;27231;-;-
+Trondheim;K;Yrkesdøgn;>= 16,0m;Siste 12 måneder;136,538;96,000;22166;9371;-;-
+Trondheim;K;Helgedøgn;Alle;Siste 12 måneder;-0,692;95,000;711024;715977;-;-
+Trondheim;K;Helgedøgn;< 5,6m;Siste 12 måneder;-0,985;95,000;677899;684646;-;-
+Trondheim;K;Helgedøgn;>= 5,6m;Siste 12 måneder;7,695;95,000;29026;26952;-;-
+Trondheim;K;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;1,153;95,000;10524;10404;-;-
+Trondheim;K;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;-4,046;95,000;9368;9763;-;-
+Trondheim;K;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-29,543;95,000;3563;5057;-;-
+Trondheim;K;Helgedøgn;>= 16,0m;Siste 12 måneder;222,396;95,000;5571;1728;-;-
+Trondheim;K;Alle;Alle;Hittil i år;-0,520;96,000;2813903;2828601;-;-
+Trondheim;K;Alle;< 5,6m;Hittil i år;-0,990;96,000;2607990;2634057;-;-
+Trondheim;K;Alle;>= 5,6m;Hittil i år;7,058;96,000;186140;173869;-;-
+Trondheim;K;Alle;5,6m - 7,6m;Hittil i år;4,839;96,000;75488;72004;-;-
+Trondheim;K;Alle;7,6m - 12,5m;Hittil i år;2,375;96,000;59867;58478;-;-
+Trondheim;K;Alle;12,5m - 16,0m;Hittil i år;-28,617;96,000;23048;32288;-;-
+Trondheim;K;Alle;>= 16,0m;Hittil i år;149,905;96,000;27737;11099;-;-
+Trondheim;K;Yrkesdøgn;Alle;Hittil i år;-0,461;96,000;2102879;2112624;-;-
+Trondheim;K;Yrkesdøgn;< 5,6m;Hittil i år;-0,991;96,000;1930091;1949411;-;-
+Trondheim;K;Yrkesdøgn;>= 5,6m;Hittil i år;6,941;96,000;157114;146917;-;-
+Trondheim;K;Yrkesdøgn;5,6m - 7,6m;Hittil i år;5,461;96,000;64964;61600;-;-
+Trondheim;K;Yrkesdøgn;7,6m - 12,5m;Hittil i år;3,662;96,000;50499;48715;-;-
+Trondheim;K;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-28,446;96,000;19485;27231;-;-
+Trondheim;K;Yrkesdøgn;>= 16,0m;Hittil i år;136,538;96,000;22166;9371;-;-
+Trondheim;K;Helgedøgn;Alle;Hittil i år;-0,692;95,000;711024;715977;-;-
+Trondheim;K;Helgedøgn;< 5,6m;Hittil i år;-0,985;95,000;677899;684646;-;-
+Trondheim;K;Helgedøgn;>= 5,6m;Hittil i år;7,695;95,000;29026;26952;-;-
+Trondheim;K;Helgedøgn;5,6m - 7,6m;Hittil i år;1,153;95,000;10524;10404;-;-
+Trondheim;K;Helgedøgn;7,6m - 12,5m;Hittil i år;-4,046;95,000;9368;9763;-;-
+Trondheim;K;Helgedøgn;12,5m - 16,0m;Hittil i år;-29,543;95,000;3563;5057;-;-
+Trondheim;K;Helgedøgn;>= 16,0m;Hittil i år;222,396;95,000;5571;1728;-;-
+Trondheim;R;Alle;Alle;Januar;0,859;99,000;880185;872685;1.886;16.948
+Trondheim;R;Alle;< 5,6m;Januar;1,172;99,000;804390;795074;1.708;15.349
+Trondheim;R;Alle;>= 5,6m;Januar;-2,197;99,000;75047;76733;3.475;31.221
+Trondheim;R;Alle;5,6m - 7,6m;Januar;-6,128;99,000;22731;24215;6.583;59.150
+Trondheim;R;Alle;7,6m - 12,5m;Januar;4,931;99,000;28620;27275;1.649;14.813
+Trondheim;R;Alle;12,5m - 16,0m;Januar;-1,428;99,000;10425;10576;17.372;156.080
+Trondheim;R;Alle;>= 16,0m;Januar;-9,518;99,000;13271;14667;11.475;103.100
+Trondheim;R;Yrkesdøgn;Alle;Januar;0,843;99,000;704731;698840;2.521;22.651
+Trondheim;R;Yrkesdøgn;< 5,6m;Januar;1,220;99,000;635004;627351;2.424;21.776
+Trondheim;R;Yrkesdøgn;>= 5,6m;Januar;-2,311;99,000;68995;70627;3.149;28.291
+Trondheim;R;Yrkesdøgn;5,6m - 7,6m;Januar;-5,714;99,000;20941;22210;5.928;53.257
+Trondheim;R;Yrkesdøgn;7,6m - 12,5m;Januar;4,484;99,000;26168;25045;1.873;16.826
+Trondheim;R;Yrkesdøgn;12,5m - 16,0m;Januar;-1,468;99,000;9196;9333;19.163;172.175
+Trondheim;R;Yrkesdøgn;>= 16,0m;Januar;-9,609;99,000;12690;14039;12.035;108.131
+Trondheim;R;Helgedøgn;Alle;Januar;0,926;99,000;175454;173845;0.641;5.762
+Trondheim;R;Helgedøgn;< 5,6m;Januar;0,992;99,000;169386;167723;0.930;8.354
+Trondheim;R;Helgedøgn;>= 5,6m;Januar;-0,884;99,000;6052;6106;7.265;65.276
+Trondheim;R;Helgedøgn;5,6m - 7,6m;Januar;-10,723;99,000;1790;2005;13.690;123.001
+Trondheim;R;Helgedøgn;7,6m - 12,5m;Januar;9,955;99,000;2452;2230;2.671;24.001
+Trondheim;R;Helgedøgn;12,5m - 16,0m;Januar;-1,126;99,000;1229;1243;1.692;15.204
+Trondheim;R;Helgedøgn;>= 16,0m;Januar;-7,484;99,000;581;628;3.777;33.936
+Trondheim;R;Alle;Alle;Februar;0,593;99,000;806323;801569;2.107;18.929
+Trondheim;R;Alle;< 5,6m;Februar;1,188;99,000;737445;728789;1.899;17.065
+Trondheim;R;Alle;>= 5,6m;Februar;-5,140;99,000;68225;71922;3.745;33.644
+Trondheim;R;Alle;5,6m - 7,6m;Februar;-6,851;99,000;21089;22640;7.864;70.654
+Trondheim;R;Alle;7,6m - 12,5m;Februar;3,085;99,000;26502;25709;2.063;18.535
+Trondheim;R;Alle;12,5m - 16,0m;Februar;-12,029;99,000;8827;10034;10.999;98.820
+Trondheim;R;Alle;>= 16,0m;Februar;-12,793;99,000;11807;13539;12.356;111.015
+Trondheim;R;Yrkesdøgn;Alle;Februar;0,872;99,000;646418;640830;2.425;21.786
+Trondheim;R;Yrkesdøgn;< 5,6m;Februar;1,561;99,000;583049;574085;2.188;19.662
+Trondheim;R;Yrkesdøgn;>= 5,6m;Februar;-4,828;99,000;62726;65908;4.034;36.243
+Trondheim;R;Yrkesdøgn;5,6m - 7,6m;Februar;-6,350;99,000;19395;20710;8.313;74.690
+Trondheim;R;Yrkesdøgn;7,6m - 12,5m;Februar;3,988;99,000;24328;23395;2.277;20.455
+Trondheim;R;Yrkesdøgn;12,5m - 16,0m;Februar;-12,005;99,000;7726;8780;11.656;104.729
+Trondheim;R;Yrkesdøgn;>= 16,0m;Februar;-13,407;99,000;11277;13023;11.401;102.433
+Trondheim;R;Helgedøgn;Alle;Februar;-0,519;100,000;159905;160739;0.869;7.811
+Trondheim;R;Helgedøgn;< 5,6m;Februar;-0,199;100,000;154396;154704;0.859;7.716
+Trondheim;R;Helgedøgn;>= 5,6m;Februar;-8,563;100,000;5499;6014;0.578;5.192
+Trondheim;R;Helgedøgn;5,6m - 7,6m;Februar;-12,228;100,000;1694;1930;2.414;21.693
+Trondheim;R;Helgedøgn;7,6m - 12,5m;Februar;-6,050;100,000;2174;2314;2.432;21.854
+Trondheim;R;Helgedøgn;12,5m - 16,0m;Februar;-12,201;100,000;1101;1254;5.350;48.069
+Trondheim;R;Helgedøgn;>= 16,0m;Februar;2,713;100,000;530;516;35.757;321.260
+Trondheim;R;Alle;Alle;Mars;11,791;98,000;902641;807437;0.927;8.331
+Trondheim;R;Alle;< 5,6m;Mars;12,688;98,000;828241;734983;0.845;7.596
+Trondheim;R;Alle;>= 5,6m;Mars;2,542;98,000;73466;71645;1.785;16.037
+Trondheim;R;Alle;5,6m - 7,6m;Mars;3,718;98,000;22681;21868;1.688;15.166
+Trondheim;R;Alle;7,6m - 12,5m;Mars;8,679;98,000;27837;25614;2.271;20.402
+Trondheim;R;Alle;12,5m - 16,0m;Mars;-7,309;98,000;10018;10808;2.625;23.581
+Trondheim;R;Alle;>= 16,0m;Mars;-3,182;98,000;12930;13355;21.832;196.155
+Trondheim;R;Yrkesdøgn;Alle;Mars;12,268;97,000;689647;614287;0.396;3.559
+Trondheim;R;Yrkesdøgn;< 5,6m;Mars;13,348;97,000;622819;549474;0.208;1.865
+Trondheim;R;Yrkesdøgn;>= 5,6m;Mars;2,969;97,000;65921;64020;2.021;18.161
+Trondheim;R;Yrkesdøgn;5,6m - 7,6m;Mars;3,987;97,000;20423;19640;1.580;14.192
+Trondheim;R;Yrkesdøgn;7,6m - 12,5m;Mars;8,863;97,000;24676;22667;3.727;33.488
+Trondheim;R;Yrkesdøgn;12,5m - 16,0m;Mars;-5,134;97,000;8573;9037;4.425;39.755
+Trondheim;R;Yrkesdøgn;>= 16,0m;Mars;-3,369;97,000;12249;12676;21.667;194.666
+Trondheim;R;Helgedøgn;Alle;Mars;10,274;100,000;212994;193150;2.619;23.531
+Trondheim;R;Helgedøgn;< 5,6m;Mars;10,734;100,000;205422;185509;2.740;24.614
+Trondheim;R;Helgedøgn;>= 5,6m;Mars;-1,049;100,000;7545;7625;0.096;0.859
+Trondheim;R;Helgedøgn;5,6m - 7,6m;Mars;1,346;100,000;2258;2228;2.423;21.770
+Trondheim;R;Helgedøgn;7,6m - 12,5m;Mars;7,262;100,000;3161;2947;9.173;82.420
+Trondheim;R;Helgedøgn;12,5m - 16,0m;Mars;-18,408;100,000;1445;1771;3.855;34.633
+Trondheim;R;Helgedøgn;>= 16,0m;Mars;0,295;100,000;681;679;24.796;222.780
+Trondheim;R;Alle;Alle;April;-7,152;100,000;819040;882133;2.154;19.352
+Trondheim;R;Alle;< 5,6m;April;-6,528;100,000;747224;799411;2.207;19.825
+Trondheim;R;Alle;>= 5,6m;April;-13,011;100,000;70934;81544;1.420;12.757
+Trondheim;R;Alle;5,6m - 7,6m;April;-12,570;100,000;21137;24176;3.724;33.461
+Trondheim;R;Alle;7,6m - 12,5m;April;-6,506;100,000;28252;30218;5.646;50.726
+Trondheim;R;Alle;12,5m - 16,0m;April;-22,375;100,000;9041;11647;0.722;6.483
+Trondheim;R;Alle;>= 16,0m;April;-19,345;100,000;12504;15503;15.367;138.064
+Trondheim;R;Yrkesdøgn;Alle;April;-7,486;100,000;624380;674902;1.859;16.700
+Trondheim;R;Yrkesdøgn;< 5,6m;April;-6,600;100,000;560629;600248;1.947;17.491
+Trondheim;R;Yrkesdøgn;>= 5,6m;April;-14,445;100,000;62900;73520;0.935;8.401
+Trondheim;R;Yrkesdøgn;5,6m - 7,6m;April;-13,199;100,000;18802;21661;2.832;25.442
+Trondheim;R;Yrkesdøgn;7,6m - 12,5m;April;-7,948;100,000;24890;27039;5.478;49.222
+Trondheim;R;Yrkesdøgn;12,5m - 16,0m;April;-26,043;100,000;7395;9999;0.630;5.660
+Trondheim;R;Yrkesdøgn;>= 16,0m;April;-20,296;100,000;11813;14821;14.887;133.759
+Trondheim;R;Helgedøgn;Alle;April;-6,066;100,000;194660;207231;3.106;27.909
+Trondheim;R;Helgedøgn;< 5,6m;April;-6,310;100,000;186595;199163;2.987;26.840
+Trondheim;R;Helgedøgn;>= 5,6m;April;0,125;100,000;8034;8024;5.743;51.601
+Trondheim;R;Helgedøgn;5,6m - 7,6m;April;-7,157;100,000;2335;2515;12.001;107.825
+Trondheim;R;Helgedøgn;7,6m - 12,5m;April;5,757;100,000;3362;3179;3.988;35.828
+Trondheim;R;Helgedøgn;12,5m - 16,0m;April;-0,121;100,000;1646;1648;5.109;45.904
+Trondheim;R;Helgedøgn;>= 16,0m;April;1,320;100,000;691;682;21.734;195.274
+Trondheim;R;Alle;Alle;Mai;4,441;100,000;950271;909862;0.892;8.016
+Trondheim;R;Alle;< 5,6m;Mai;5,007;100,000;862956;821807;1.391;12.497
+Trondheim;R;Alle;>= 5,6m;Mai;-0,915;100,000;86235;87031;3.458;31.072
+Trondheim;R;Alle;5,6m - 7,6m;Mai;0,827;100,000;25484;25275;0.404;3.633
+Trondheim;R;Alle;7,6m - 12,5m;Mai;-0,531;100,000;35058;35245;2.228;20.016
+Trondheim;R;Alle;12,5m - 16,0m;Mai;-0,747;100,000;11158;11242;9.046;81.275
+Trondheim;R;Alle;>= 16,0m;Mai;-4,807;100,000;14535;15269;19.426;174.538
+Trondheim;R;Yrkesdøgn;Alle;Mai;7,546;100,000;708706;658982;1.090;9.796
+Trondheim;R;Yrkesdøgn;< 5,6m;Mai;8,471;100,000;631376;582071;1.837;16.504
+Trondheim;R;Yrkesdøgn;>= 5,6m;Mai;0,449;100,000;76286;75945;4.146;37.250
+Trondheim;R;Yrkesdøgn;5,6m - 7,6m;Mai;1,660;100,000;22354;21989;1.974;17.735
+Trondheim;R;Yrkesdøgn;7,6m - 12,5m;Mai;1,181;100,000;30938;30577;2.738;24.597
+Trondheim;R;Yrkesdøgn;12,5m - 16,0m;Mai;1,581;100,000;9316;9171;9.661;86.803
+Trondheim;R;Yrkesdøgn;>= 16,0m;Mai;-3,730;100,000;13678;14208;20.471;183.921
+Trondheim;R;Helgedøgn;Alle;Mai;-3,713;100,000;241565;250880;0.475;4.268
+Trondheim;R;Helgedøgn;< 5,6m;Mai;-3,402;100,000;231580;239736;0.440;3.954
+Trondheim;R;Helgedøgn;>= 5,6m;Mai;-10,256;100,000;9949;11086;1.308;11.748
+Trondheim;R;Helgedøgn;5,6m - 7,6m;Mai;-4,747;100,000;3130;3286;9.942;89.323
+Trondheim;R;Helgedøgn;7,6m - 12,5m;Mai;-11,740;100,000;4120;4668;1.374;12.349
+Trondheim;R;Helgedøgn;12,5m - 16,0m;Mai;-11,057;100,000;1842;2071;9.067;81.465
+Trondheim;R;Helgedøgn;>= 16,0m;Mai;-19,227;100,000;857;1061;8.617;77.421
+Trondheim;R;Alle;Alle;Juni;-0,737;100,000;926239;933119;3.929;35.298
+Trondheim;R;Alle;< 5,6m;Juni;0,407;100,000;838778;835379;4.319;38.800
+Trondheim;R;Alle;>= 5,6m;Juni;-10,694;100,000;86410;96757;1.237;11.112
+Trondheim;R;Alle;5,6m - 7,6m;Juni;-2,986;100,000;27323;28164;1.678;15.076
+Trondheim;R;Alle;7,6m - 12,5m;Juni;-9,847;100,000;34314;38062;7.307;65.653
+Trondheim;R;Alle;12,5m - 16,0m;Juni;-17,240;100,000;11540;13944;3.005;26.998
+Trondheim;R;Alle;>= 16,0m;Juni;-20,221;100,000;13233;16587;14.034;126.089
+Trondheim;R;Yrkesdøgn;Alle;Juni;-6,687;100,000;680741;729524;3.333;29.944
+Trondheim;R;Yrkesdøgn;< 5,6m;Juni;-5,778;100,000;605804;642952;3.748;33.672
+Trondheim;R;Yrkesdøgn;>= 5,6m;Juni;-13,638;100,000;73959;85638;0.817;7.343
+Trondheim;R;Yrkesdøgn;5,6m - 7,6m;Juni;-5,621;100,000;23322;24711;1.719;15.443
+Trondheim;R;Yrkesdøgn;7,6m - 12,5m;Juni;-13,114;100,000;29119;33514;6.928;62.250
+Trondheim;R;Yrkesdøgn;12,5m - 16,0m;Juni;-21,925;100,000;9052;11594;3.182;28.587
+Trondheim;R;Yrkesdøgn;>= 16,0m;Juni;-21,196;100,000;12466;15819;13.972;125.530
+Trondheim;R;Helgedøgn;Alle;Juni;20,582;100,000;245498;203595;6.881;61.826
+Trondheim;R;Helgedøgn;< 5,6m;Juni;21,071;100,000;232974;192427;6.896;61.954
+Trondheim;R;Helgedøgn;>= 5,6m;Juni;11,979;100,000;12451;11119;6.714;60.325
+Trondheim;R;Helgedøgn;5,6m - 7,6m;Juni;15,870;100,000;4001;3453;2.646;23.774
+Trondheim;R;Helgedøgn;7,6m - 12,5m;Juni;14,226;100,000;5195;4548;7.720;69.362
+Trondheim;R;Helgedøgn;12,5m - 16,0m;Juni;5,872;100,000;2488;2350;13.654;122.677
+Trondheim;R;Helgedøgn;>= 16,0m;Juni;-0,130;100,000;767;768;9.429;84.714
+Trondheim;R;Alle;Alle;Juli;4,455;100,000;762229;729723;4.718;42.393
+Trondheim;R;Alle;< 5,6m;Juli;5,635;100,000;683353;646902;4.576;41.116
+Trondheim;R;Alle;>= 5,6m;Juli;-4,720;100,000;78588;82481;5.982;53.742
+Trondheim;R;Alle;5,6m - 7,6m;Juli;5,169;100,000;25392;24144;2.408;21.634
+Trondheim;R;Alle;7,6m - 12,5m;Juli;-3,316;100,000;31574;32657;14.058;126.308
+Trondheim;R;Alle;12,5m - 16,0m;Juli;-18,504;100,000;10755;13197;4.175;37.509
+Trondheim;R;Alle;>= 16,0m;Juli;-12,946;100,000;10867;12483;12.504;112.342
+Trondheim;R;Yrkesdøgn;Alle;Juli;6,890;100,000;616090;576380;4.370;39.265
+Trondheim;R;Yrkesdøgn;< 5,6m;Juli;8,429;100,000;545396;502999;4.387;39.418
+Trondheim;R;Yrkesdøgn;>= 5,6m;Juli;-3,614;100,000;70417;73057;4.631;41.611
+Trondheim;R;Yrkesdøgn;5,6m - 7,6m;Juli;5,225;100,000;22416;21303;1.264;11.360
+Trondheim;R;Yrkesdøgn;7,6m - 12,5m;Juli;-2,422;100,000;28401;29106;13.979;125.597
+Trondheim;R;Yrkesdøgn;12,5m - 16,0m;Juli;-14,555;100,000;9123;10677;1.778;15.973
+Trondheim;R;Yrkesdøgn;>= 16,0m;Juli;-12,480;100,000;10477;11971;13.381;120.226
+Trondheim;R;Helgedøgn;Alle;Juli;-4,698;100,000;146139;153343;6.049;54.346
+Trondheim;R;Helgedøgn;< 5,6m;Juli;-4,132;100,000;137957;143903;5.376;48.298
+Trondheim;R;Helgedøgn;>= 5,6m;Juli;-13,296;100,000;8171;9424;15.603;140.186
+Trondheim;R;Helgedøgn;5,6m - 7,6m;Juli;4,752;100,000;2976;2841;11.051;99.289
+Trondheim;R;Helgedøgn;7,6m - 12,5m;Juli;-10,645;100,000;3173;3551;15.008;134.843
+Trondheim;R;Helgedøgn;12,5m - 16,0m;Juli;-35,238;100,000;1632;2520;11.038;99.170
+Trondheim;R;Helgedøgn;>= 16,0m;Juli;-23,828;100,000;390;512;6.034;54.211
+Trondheim;R;Alle;Alle;August;1,752;100,000;964890;948272;5.805;52.153
+Trondheim;R;Alle;< 5,6m;August;2,063;100,000;867113;849584;6.788;60.989
+Trondheim;R;Alle;>= 5,6m;August;-1,029;100,000;96547;97551;2.489;22.360
+Trondheim;R;Alle;5,6m - 7,6m;August;0,492;100,000;28785;28644;0.955;8.582
+Trondheim;R;Alle;7,6m - 12,5m;August;6,745;100,000;41272;38664;6.922;62.189
+Trondheim;R;Alle;12,5m - 16,0m;August;-2,106;100,000;14038;14340;12.226;109.848
+Trondheim;R;Alle;>= 16,0m;August;-21,700;100,000;12452;15903;0.633;5.685
+Trondheim;R;Yrkesdøgn;Alle;August;-1,622;100,000;757851;770345;3.869;34.766
+Trondheim;R;Yrkesdøgn;< 5,6m;August;-1,464;100,000;671453;681429;4.874;43.793
+Trondheim;R;Yrkesdøgn;>= 5,6m;August;-2,959;100,000;85225;87824;3.678;33.042
+Trondheim;R;Yrkesdøgn;5,6m - 7,6m;August;-1,345;100,000;25154;25497;0.454;4.084
+Trondheim;R;Yrkesdøgn;7,6m - 12,5m;August;2,843;100,000;35773;34784;6.307;56.670
+Trondheim;R;Yrkesdøgn;12,5m - 16,0m;August;1,610;100,000;12436;12239;16.886;151.712
+Trondheim;R;Yrkesdøgn;>= 16,0m;August;-22,491;100,000;11862;15304;0.742;6.667
+Trondheim;R;Helgedøgn;Alle;August;16,362;100,000;207039;177927;15.623;140.371
+Trondheim;R;Helgedøgn;< 5,6m;August;16,357;100,000;195660;168155;15.891;142.776
+Trondheim;R;Helgedøgn;>= 5,6m;August;16,398;100,000;11322;9727;11.016;98.978
+Trondheim;R;Helgedøgn;5,6m - 7,6m;August;15,380;100,000;3631;3147;14.640;131.531
+Trondheim;R;Helgedøgn;7,6m - 12,5m;August;41,727;100,000;5499;3880;13.669;122.810
+Trondheim;R;Helgedøgn;12,5m - 16,0m;August;-23,751;100,000;1602;2101;11.911;107.013
+Trondheim;R;Helgedøgn;>= 16,0m;August;-1,503;100,000;590;599;2.092;18.798
+Trondheim;R;Alle;Alle;September;5,413;100,000;950512;901699;4.252;38.203
+Trondheim;R;Alle;< 5,6m;September;5,448;100,000;857664;813355;5.278;47.417
+Trondheim;R;Alle;>= 5,6m;September;4,736;100,000;91606;87464;4.671;41.967
+Trondheim;R;Alle;5,6m - 7,6m;September;6,458;100,000;26374;24774;3.178;28.553
+Trondheim;R;Alle;7,6m - 12,5m;September;9,965;100,000;40135;36498;16.543;148.637
+Trondheim;R;Alle;12,5m - 16,0m;September;14,287;100,000;12847;11241;15.624;140.372
+Trondheim;R;Alle;>= 16,0m;September;-18,066;100,000;12250;14951;12.119;108.884
+Trondheim;R;Yrkesdøgn;Alle;September;9,063;100,000;741856;680208;4.349;39.072
+Trondheim;R;Yrkesdøgn;< 5,6m;September;9,359;100,000;659162;602749;5.665;50.896
+Trondheim;R;Yrkesdøgn;>= 5,6m;September;6,367;100,000;81495;76617;5.181;46.552
+Trondheim;R;Yrkesdøgn;5,6m - 7,6m;September;8,752;100,000;23522;21629;1.616;14.517
+Trondheim;R;Yrkesdøgn;7,6m - 12,5m;September;10,795;100,000;35133;31710;15.241;136.934
+Trondheim;R;Yrkesdøgn;12,5m - 16,0m;September;20,972;100,000;11254;9303;18.881;169.638
+Trondheim;R;Yrkesdøgn;>= 16,0m;September;-17,095;100,000;11586;13975;10.415;93.574
+Trondheim;R;Helgedøgn;Alle;September;-5,795;100,000;208656;221491;4.085;36.701
+Trondheim;R;Helgedøgn;< 5,6m;September;-5,747;100,000;198502;210606;4.387;39.418
+Trondheim;R;Helgedøgn;>= 5,6m;September;-6,785;100,000;10111;10847;1.719;15.441
+Trondheim;R;Helgedøgn;5,6m - 7,6m;September;-9,316;100,000;2852;3145;12.567;112.909
+Trondheim;R;Helgedøgn;7,6m - 12,5m;September;4,470;100,000;5002;4788;24.795;222.778
+Trondheim;R;Helgedøgn;12,5m - 16,0m;September;-17,802;100,000;1593;1938;12.406;111.465
+Trondheim;R;Helgedøgn;>= 16,0m;September;-31,967;100,000;664;976;37.588;337.712
+Trondheim;R;Alle;Alle;Oktober;2,884;100,000;986523;958869;3.759;33.769
+Trondheim;R;Alle;< 5,6m;Oktober;3,211;100,000;890128;862432;4.655;41.820
+Trondheim;R;Alle;>= 5,6m;Oktober;-0,129;100,000;95237;95360;3.975;35.713
+Trondheim;R;Alle;5,6m - 7,6m;Oktober;1,086;100,000;28012;27711;3.255;29.243
+Trondheim;R;Alle;7,6m - 12,5m;Oktober;9,244;100,000;42294;38715;13.254;119.083
+Trondheim;R;Alle;12,5m - 16,0m;Oktober;-1,470;100,000;12130;12311;31.477;282.814
+Trondheim;R;Alle;>= 16,0m;Oktober;-22,992;100,000;12801;16623;14.371;129.121
+Trondheim;R;Yrkesdøgn;Alle;Oktober;3,289;100,000;808322;782586;3.514;31.576
+Trondheim;R;Yrkesdøgn;< 5,6m;Oktober;3,692;100,000;719610;693987;4.466;40.130
+Trondheim;R;Yrkesdøgn;>= 5,6m;Oktober;0,019;100,000;87578;87561;3.633;32.639
+Trondheim;R;Yrkesdøgn;5,6m - 7,6m;Oktober;1,240;100,000;25801;25485;3.168;28.460
+Trondheim;R;Yrkesdøgn;7,6m - 12,5m;Oktober;9,174;100,000;38428;35199;12.151;109.172
+Trondheim;R;Yrkesdøgn;12,5m - 16,0m;Oktober;0,119;100,000;10957;10944;32.799;294.687
+Trondheim;R;Yrkesdøgn;>= 16,0m;Oktober;-22,224;100,000;12392;15933;14.322;128.678
+Trondheim;R;Helgedøgn;Alle;Oktober;1,088;100,000;178201;176283;4.854;43.611
+Trondheim;R;Helgedøgn;< 5,6m;Oktober;1,231;100,000;170518;168445;5.448;48.946
+Trondheim;R;Helgedøgn;>= 5,6m;Oktober;-1,795;100,000;7659;7799;7.763;69.751
+Trondheim;R;Helgedøgn;5,6m - 7,6m;Oktober;-0,674;100,000;2211;2226;4.217;37.891
+Trondheim;R;Helgedøgn;7,6m - 12,5m;Oktober;9,954;100,000;3866;3516;24.894;223.663
+Trondheim;R;Helgedøgn;12,5m - 16,0m;Oktober;-14,192;100,000;1173;1367;25.243;226.797
+Trondheim;R;Helgedøgn;>= 16,0m;Oktober;-40,725;100,000;409;690;13.192;118.524
+Trondheim;R;Alle;Alle;November;0,105;99,000;934980;933997;3.023;27.161
+Trondheim;R;Alle;< 5,6m;November;0,804;99,000;851021;844230;3.716;33.386
+Trondheim;R;Alle;>= 5,6m;November;-6,533;99,000;83004;88806;3.296;29.613
+Trondheim;R;Alle;5,6m - 7,6m;November;-5,841;99,000;24438;25954;7.984;71.736
+Trondheim;R;Alle;7,6m - 12,5m;November;1,122;99,000;35776;35379;11.824;106.238
+Trondheim;R;Alle;12,5m - 16,0m;November;-2,160;99,000;11639;11896;35.681;320.584
+Trondheim;R;Alle;>= 16,0m;November;-28,414;99,000;11151;15577;13.628;122.443
+Trondheim;R;Yrkesdøgn;Alle;November;-2,391;99,000;727827;745659;2.256;20.267
+Trondheim;R;Yrkesdøgn;< 5,6m;November;-1,730;99,000;652055;663537;2.890;25.968
+Trondheim;R;Yrkesdøgn;>= 5,6m;November;-7,845;99,000;74844;81215;2.684;24.116
+Trondheim;R;Yrkesdøgn;5,6m - 7,6m;November;-7,004;99,000;21976;23631;8.220;73.854
+Trondheim;R;Yrkesdøgn;7,6m - 12,5m;November;-1,172;99,000;31793;32170;9.436;84.781
+Trondheim;R;Yrkesdøgn;12,5m - 16,0m;November;-1,875;99,000;10310;10507;37.686;338.591
+Trondheim;R;Yrkesdøgn;>= 16,0m;November;-27,786;99,000;10765;14907;12.929;116.163
+Trondheim;R;Helgedøgn;Alle;November;9,990;99,000;207153;188338;6.303;56.632
+Trondheim;R;Helgedøgn;< 5,6m;November;10,113;99,000;198966;180693;6.981;62.718
+Trondheim;R;Helgedøgn;>= 5,6m;November;7,496;99,000;8160;7591;9.900;88.951
+Trondheim;R;Helgedøgn;5,6m - 7,6m;November;5,984;99,000;2462;2323;6.468;58.114
+Trondheim;R;Helgedøgn;7,6m - 12,5m;November;24,120;99,000;3983;3209;44.331;398.295
+Trondheim;R;Helgedøgn;12,5m - 16,0m;November;-4,320;99,000;1329;1389;21.705;195.010
+Trondheim;R;Helgedøgn;>= 16,0m;November;-42,388;99,000;386;670;27.816;249.915
+Trondheim;R;Alle;Alle;Desember;1,860;99,000;867319;851481;1.940;17.432
+Trondheim;R;Alle;< 5,6m;Desember;1,821;99,000;801891;787552;2.698;24.239
+Trondheim;R;Alle;>= 5,6m;Desember;2,239;99,000;64704;63287;7.327;65.827
+Trondheim;R;Alle;5,6m - 7,6m;Desember;-1,135;99,000;19168;19388;2.815;25.290
+Trondheim;R;Alle;7,6m - 12,5m;Desember;13,523;99,000;27913;24588;21.538;193.508
+Trondheim;R;Alle;12,5m - 16,0m;Desember;20,684;99,000;9423;7808;30.647;275.353
+Trondheim;R;Alle;>= 16,0m;Desember;-28,714;99,000;8200;11503;18.911;169.908
+Trondheim;R;Yrkesdøgn;Alle;Desember;5,947;99,000;644361;608192;2.235;20.077
+Trondheim;R;Yrkesdøgn;< 5,6m;Desember;6,288;99,000;586942;552218;3.099;27.841
+Trondheim;R;Yrkesdøgn;>= 5,6m;Desember;2,436;99,000;56716;55367;6.167;55.407
+Trondheim;R;Yrkesdøgn;5,6m - 7,6m;Desember;-0,047;99,000;17014;17022;2.569;23.084
+Trondheim;R;Yrkesdøgn;7,6m - 12,5m;Desember;11,541;99,000;23881;21410;16.177;145.346
+Trondheim;R;Yrkesdøgn;12,5m - 16,0m;Desember;22,357;99,000;8045;6575;32.867;295.302
+Trondheim;R;Yrkesdøgn;>= 16,0m;Desember;-24,942;99,000;7776;10360;17.021;152.926
+Trondheim;R;Helgedøgn;Alle;Desember;-8,357;100,000;222958;243289;1.557;13.986
+Trondheim;R;Helgedøgn;< 5,6m;Desember;-8,662;100,000;214949;235334;2.114;18.990
+Trondheim;R;Helgedøgn;>= 5,6m;Desember;0,859;100,000;7988;7920;15.306;137.522
+Trondheim;R;Helgedøgn;5,6m - 7,6m;Desember;-8,960;100,000;2154;2366;4.766;42.823
+Trondheim;R;Helgedøgn;7,6m - 12,5m;Desember;26,872;100,000;4032;3178;66.361;596.233
+Trondheim;R;Helgedøgn;12,5m - 16,0m;Desember;11,760;100,000;1378;1233;20.394;183.234
+Trondheim;R;Helgedøgn;>= 16,0m;Desember;-62,905;100,000;424;1143;26.147;234.923
+Trondheim;R;Alle;Alle;Siste 12 måneder;2,092;99,000;10751152;10530846;2.860;25.695
+Trondheim;R;Alle;< 5,6m;Siste 12 måneder;2,634;99,000;9770204;9519498;3.276;29.437
+Trondheim;R;Alle;>= 5,6m;Siste 12 måneder;-3,056;99,000;970003;1000581;0.924;8.301
+Trondheim;R;Alle;5,6m - 7,6m;Siste 12 måneder;-1,461;99,000;292614;296953;3.155;28.344
+Trondheim;R;Alle;7,6m - 12,5m;Siste 12 måneder;2,811;99,000;399547;388624;2.985;26.821
+Trondheim;R;Alle;12,5m - 16,0m;Siste 12 måneder;-5,180;99,000;131841;139044;9.056;81.366
+Trondheim;R;Alle;>= 16,0m;Siste 12 måneder;-17,026;99,000;146001;175960;3.810;34.236
+Trondheim;R;Yrkesdøgn;Alle;Siste 12 måneder;2,080;99,000;8350930;8180735;2.684;24.110
+Trondheim;R;Yrkesdøgn;< 5,6m;Siste 12 måneder;2,753;99,000;7473299;7273100;3.187;28.630
+Trondheim;R;Yrkesdøgn;>= 5,6m;Siste 12 måneder;-3,370;99,000;867062;897299;1.170;10.513
+Trondheim;R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;-1,645;99,000;261120;265488;2.640;23.724
+Trondheim;R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;1,994;99,000;353528;346616;2.018;18.133
+Trondheim;R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-4,042;99,000;113383;118159;10.546;94.750
+Trondheim;R;Yrkesdøgn;>= 16,0m;Siste 12 måneder;-16,766;99,000;139031;167036;4.278;38.432
+Trondheim;R;Helgedøgn;Alle;Siste 12 måneder;2,132;99,000;2400222;2350111;3.474;31.209
+Trondheim;R;Helgedøgn;< 5,6m;Siste 12 måneder;2,248;99,000;2296905;2246398;3.569;32.063
+Trondheim;R;Helgedøgn;>= 5,6m;Siste 12 måneder;-0,330;99,000;102941;103282;1.320;11.860
+Trondheim;R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;0,092;99,000;31494;31465;7.688;69.075
+Trondheim;R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;9,548;99,000;46019;42008;12.580;113.031
+Trondheim;R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-11,621;99,000;18458;20885;1.650;14.823
+Trondheim;R;Helgedøgn;>= 16,0m;Siste 12 måneder;-21,896;99,000;6970;8924;4.466;40.124
+Trondheim;R;Alle;Alle;Hittil i år;2,092;99,000;10751152;10530846;2.860;25.695
+Trondheim;R;Alle;< 5,6m;Hittil i år;2,634;99,000;9770204;9519498;3.276;29.437
+Trondheim;R;Alle;>= 5,6m;Hittil i år;-3,056;99,000;970003;1000581;0.924;8.301
+Trondheim;R;Alle;5,6m - 7,6m;Hittil i år;-1,461;99,000;292614;296953;3.155;28.344
+Trondheim;R;Alle;7,6m - 12,5m;Hittil i år;2,811;99,000;399547;388624;2.985;26.821
+Trondheim;R;Alle;12,5m - 16,0m;Hittil i år;-5,180;99,000;131841;139044;9.056;81.366
+Trondheim;R;Alle;>= 16,0m;Hittil i år;-17,026;99,000;146001;175960;3.810;34.236
+Trondheim;R;Yrkesdøgn;Alle;Hittil i år;2,080;99,000;8350930;8180735;2.684;24.110
+Trondheim;R;Yrkesdøgn;< 5,6m;Hittil i år;2,753;99,000;7473299;7273100;3.187;28.630
+Trondheim;R;Yrkesdøgn;>= 5,6m;Hittil i år;-3,370;99,000;867062;897299;1.170;10.513
+Trondheim;R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;-1,645;99,000;261120;265488;2.640;23.724
+Trondheim;R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;1,994;99,000;353528;346616;2.018;18.133
+Trondheim;R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-4,042;99,000;113383;118159;10.546;94.750
+Trondheim;R;Yrkesdøgn;>= 16,0m;Hittil i år;-16,766;99,000;139031;167036;4.278;38.432
+Trondheim;R;Helgedøgn;Alle;Hittil i år;2,132;99,000;2400222;2350111;3.474;31.209
+Trondheim;R;Helgedøgn;< 5,6m;Hittil i år;2,248;99,000;2296905;2246398;3.569;32.063
+Trondheim;R;Helgedøgn;>= 5,6m;Hittil i år;-0,330;99,000;102941;103282;1.320;11.860
+Trondheim;R;Helgedøgn;5,6m - 7,6m;Hittil i år;0,092;99,000;31494;31465;7.688;69.075
+Trondheim;R;Helgedøgn;7,6m - 12,5m;Hittil i år;9,548;99,000;46019;42008;12.580;113.031
+Trondheim;R;Helgedøgn;12,5m - 16,0m;Hittil i år;-11,621;99,000;18458;20885;1.650;14.823
+Trondheim;R;Helgedøgn;>= 16,0m;Hittil i år;-21,896;99,000;6970;8924;4.466;40.124
+Trondheim;F;Alle;Alle;Januar;-1,461;99,000;711545;722095;3.635;32.657
+Trondheim;F;Alle;< 5,6m;Januar;-1,951;99,000;659583;672709;4.486;40.309
+Trondheim;F;Alle;>= 5,6m;Januar;5,002;99,000;51450;48999;9.238;83.000
+Trondheim;F;Alle;5,6m - 7,6m;Januar;9,952;99,000;21434;19494;14.484;130.134
+Trondheim;F;Alle;7,6m - 12,5m;Januar;2,505;99,000;15057;14689;11.101;99.735
+Trondheim;F;Alle;12,5m - 16,0m;Januar;-0,486;99,000;12492;12553;1.378;12.383
+Trondheim;F;Alle;>= 16,0m;Januar;9,015;99,000;2467;2263;27.929;250.933
+Trondheim;F;Yrkesdøgn;Alle;Januar;-1,775;99,000;569497;579787;2.950;26.502
+Trondheim;F;Yrkesdøgn;< 5,6m;Januar;-2,360;99,000;523914;536577;3.825;34.365
+Trondheim;F;Yrkesdøgn;>= 5,6m;Januar;5,279;99,000;45151;42887;8.888;79.852
+Trondheim;F;Yrkesdøgn;5,6m - 7,6m;Januar;10,768;99,000;19287;17412;15.041;135.137
+Trondheim;F;Yrkesdøgn;7,6m - 12,5m;Januar;2,834;99,000;13391;13022;9.537;85.687
+Trondheim;F;Yrkesdøgn;12,5m - 16,0m;Januar;-1,535;99,000;10265;10425;0.345;3.099
+Trondheim;F;Yrkesdøgn;>= 16,0m;Januar;8,876;99,000;2208;2028;29.511;265.150
+Trondheim;F;Helgedøgn;Alle;Januar;-0,183;99,000;142048;142308;6.504;58.435
+Trondheim;F;Helgedøgn;< 5,6m;Januar;-0,340;99,000;135669;136132;7.217;64.839
+Trondheim;F;Helgedøgn;>= 5,6m;Januar;3,060;99,000;6299;6112;11.604;104.257
+Trondheim;F;Helgedøgn;5,6m - 7,6m;Januar;3,122;99,000;2147;2082;10.088;90.633
+Trondheim;F;Helgedøgn;7,6m - 12,5m;Januar;-0,060;99,000;1666;1667;23.837;214.167
+Trondheim;F;Helgedøgn;12,5m - 16,0m;Januar;4,652;99,000;2227;2128;7.702;69.203
+Trondheim;F;Helgedøgn;>= 16,0m;Januar;10,213;99,000;259;235;13.163;118.261
+Trondheim;F;Alle;Alle;Februar;-2,206;98,000;643602;658123;1.443;12.962
+Trondheim;F;Alle;< 5,6m;Februar;-2,368;98,000;596986;611464;2.515;22.601
+Trondheim;F;Alle;>= 5,6m;Februar;-0,132;98,000;46178;46239;13.572;121.935
+Trondheim;F;Alle;5,6m - 7,6m;Februar;5,464;98,000;18876;17898;19.039;171.058
+Trondheim;F;Alle;7,6m - 12,5m;Februar;2,255;98,000;14285;13970;14.140;127.039
+Trondheim;F;Alle;12,5m - 16,0m;Februar;-10,054;98,000;10906;12125;0.855;7.683
+Trondheim;F;Alle;>= 16,0m;Februar;-6,011;98,000;2111;2246;1.547;13.904
+Trondheim;F;Yrkesdøgn;Alle;Februar;-2,135;99,000;515704;526952;0.707;6.351
+Trondheim;F;Yrkesdøgn;< 5,6m;Februar;-2,395;99,000;474205;485841;1.934;17.372
+Trondheim;F;Yrkesdøgn;>= 5,6m;Februar;0,903;99,000;41105;40737;14.723;132.279
+Trondheim;F;Yrkesdøgn;5,6m - 7,6m;Februar;7,257;99,000;17249;16082;19.690;176.910
+Trondheim;F;Yrkesdøgn;7,6m - 12,5m;Februar;4,297;99,000;12912;12380;15.365;138.045
+Trondheim;F;Yrkesdøgn;12,5m - 16,0m;Februar;-11,747;99,000;9008;10207;1.580;14.193
+Trondheim;F;Yrkesdøgn;>= 16,0m;Februar;-6,383;99,000;1936;2068;2.451;22.026
+Trondheim;F;Helgedøgn;Alle;Februar;-2,495;98,000;127898;131171;4.343;39.024
+Trondheim;F;Helgedøgn;< 5,6m;Februar;-2,262;98,000;122781;125623;4.752;42.694
+Trondheim;F;Helgedøgn;>= 5,6m;Februar;-7,797;98,000;5073;5502;4.087;36.722
+Trondheim;F;Helgedøgn;5,6m - 7,6m;Februar;-10,407;98,000;1627;1816;13.711;123.190
+Trondheim;F;Helgedøgn;7,6m - 12,5m;Februar;-13,648;98,000;1373;1590;2.302;20.680
+Trondheim;F;Helgedøgn;12,5m - 16,0m;Februar;-1,043;98,000;1898;1918;2.477;22.257
+Trondheim;F;Helgedøgn;>= 16,0m;Februar;-1,685;98,000;175;178;9.001;80.874
+Trondheim;F;Alle;Alle;Mars;6,174;99,000;730513;688032;3.014;27.078
+Trondheim;F;Alle;< 5,6m;Mars;5,744;99,000;679225;642331;2.389;21.462
+Trondheim;F;Alle;>= 5,6m;Mars;12,160;99,000;50685;45190;12.894;115.844
+Trondheim;F;Alle;5,6m - 7,6m;Mars;15,288;99,000;20474;17759;15.688;140.948
+Trondheim;F;Alle;7,6m - 12,5m;Mars;19,738;99,000;16167;13502;16.352;146.921
+Trondheim;F;Alle;12,5m - 16,0m;Mars;0,510;99,000;11828;11768;5.286;47.493
+Trondheim;F;Alle;>= 16,0m;Mars;2,545;99,000;2216;2161;21.291;191.291
+Trondheim;F;Yrkesdøgn;Alle;Mars;6,020;99,000;562612;530668;4.729;42.487
+Trondheim;F;Yrkesdøgn;< 5,6m;Mars;5,476;99,000;518572;491650;4.073;36.592
+Trondheim;F;Yrkesdøgn;>= 5,6m;Mars;12,884;99,000;43553;38582;13.778;123.787
+Trondheim;F;Yrkesdøgn;5,6m - 7,6m;Mars;15,677;99,000;18159;15698;16.649;149.581
+Trondheim;F;Yrkesdøgn;7,6m - 12,5m;Mars;19,699;99,000;14000;11696;20.150;181.042
+Trondheim;F;Yrkesdøgn;12,5m - 16,0m;Mars;1,964;99,000;9449;9267;2.727;24.503
+Trondheim;F;Yrkesdøgn;>= 16,0m;Mars;1,249;99,000;1945;1921;21.946;197.176
+Trondheim;F;Helgedøgn;Alle;Mars;6,696;100,000;167901;157364;2.724;24.474
+Trondheim;F;Helgedøgn;< 5,6m;Mars;6,618;100,000;160653;150681;3.087;27.734
+Trondheim;F;Helgedøgn;>= 5,6m;Mars;7,930;100,000;7132;6608;7.032;63.184
+Trondheim;F;Helgedøgn;5,6m - 7,6m;Mars;12,324;100,000;2315;2061;8.584;77.126
+Trondheim;F;Helgedøgn;7,6m - 12,5m;Mars;19,989;100,000;2167;1806;8.628;77.516
+Trondheim;F;Helgedøgn;12,5m - 16,0m;Mars;-4,878;100,000;2379;2501;15.063;135.339
+Trondheim;F;Helgedøgn;>= 16,0m;Mars;12,917;100,000;271;240;14.257;128.096
+Trondheim;F;Alle;Alle;April;-6,788;100,000;683238;732994;0.444;3.991
+Trondheim;F;Alle;< 5,6m;April;-6,727;100,000;631721;677279;1.428;12.829
+Trondheim;F;Alle;>= 5,6m;April;-5,953;100,000;50667;53874;10.248;92.074
+Trondheim;F;Alle;5,6m - 7,6m;April;-14,109;100,000;18336;21348;18.252;163.988
+Trondheim;F;Alle;7,6m - 12,5m;April;6,261;100,000;18142;17073;0.386;3.472
+Trondheim;F;Alle;12,5m - 16,0m;April;-11,451;100,000;11166;12610;12.848;115.435
+Trondheim;F;Alle;>= 16,0m;April;6,331;100,000;3023;2843;7.041;63.263
+Trondheim;F;Yrkesdøgn;Alle;April;-6,387;100,000;528181;564216;0.155;1.396
+Trondheim;F;Yrkesdøgn;< 5,6m;April;-6,296;100,000;483936;516453;1.279;11.489
+Trondheim;F;Yrkesdøgn;>= 5,6m;April;-6,098;100,000;43500;46325;10.965;98.514
+Trondheim;F;Yrkesdøgn;5,6m - 7,6m;April;-13,465;100,000;16273;18805;17.866;160.517
+Trondheim;F;Yrkesdøgn;7,6m - 12,5m;April;5,221;100,000;15580;14807;0.114;1.020
+Trondheim;F;Yrkesdøgn;12,5m - 16,0m;April;-12,378;100,000;8905;10163;16.509;148.325
+Trondheim;F;Yrkesdøgn;>= 16,0m;April;7,529;100,000;2742;2550;5.386;48.392
+Trondheim;F;Helgedøgn;Alle;April;-8,130;100,000;155057;168778;1.327;11.927
+Trondheim;F;Helgedøgn;< 5,6m;April;-8,109;100,000;147785;160826;1.820;16.349
+Trondheim;F;Helgedøgn;>= 5,6m;April;-5,060;100,000;7167;7549;5.844;52.505
+Trondheim;F;Helgedøgn;5,6m - 7,6m;April;-18,875;100,000;2063;2543;20.916;187.920
+Trondheim;F;Helgedøgn;7,6m - 12,5m;April;13,063;100,000;2562;2266;3.215;28.882
+Trondheim;F;Helgedøgn;12,5m - 16,0m;April;-7,601;100,000;2261;2447;3.014;27.081
+Trondheim;F;Helgedøgn;>= 16,0m;April;-4,096;100,000;281;293;22.249;199.900
+Trondheim;F;Alle;Alle;Mai;2,055;96,000;1531359;1500521;3.980;6.334
+Trondheim;F;Alle;< 5,6m;Mai;1,841;96,000;1339974;1315751;4.447;7.076
+Trondheim;F;Alle;>= 5,6m;Mai;3,732;96,000;189305;182494;4.543;7.230
+Trondheim;F;Alle;5,6m - 7,6m;Mai;2,968;96,000;40763;39588;13.502;21.484
+Trondheim;F;Alle;7,6m - 12,5m;Mai;10,426;96,000;62163;56294;6.719;10.691
+Trondheim;F;Alle;12,5m - 16,0m;Mai;-1,722;96,000;75505;76828;2.640;4.200
+Trondheim;F;Alle;>= 16,0m;Mai;11,141;96,000;10874;9784;11.188;17.803
+Trondheim;F;Yrkesdøgn;Alle;Mai;4,824;94,000;1124339;1072597;6.142;9.773
+Trondheim;F;Yrkesdøgn;< 5,6m;Mai;4,618;94,000;969421;926630;6.601;10.504
+Trondheim;F;Yrkesdøgn;>= 5,6m;Mai;6,401;94,000;153161;143947;6.039;9.610
+Trondheim;F;Yrkesdøgn;5,6m - 7,6m;Mai;5,031;94,000;34343;32698;16.133;25.671
+Trondheim;F;Yrkesdøgn;7,6m - 12,5m;Mai;12,098;94,000;51129;45611;6.284;9.999
+Trondheim;F;Yrkesdøgn;12,5m - 16,0m;Mai;1,734;94,000;58508;57511;3.992;6.353
+Trondheim;F;Yrkesdøgn;>= 16,0m;Mai;12,969;94,000;9181;8127;9.438;15.018
+Trondheim;F;Helgedøgn;Alle;Mai;-4,885;98,000;407020;427924;5.995;9.539
+Trondheim;F;Helgedøgn;< 5,6m;Mai;-4,772;98,000;370553;389121;6.257;9.956
+Trondheim;F;Helgedøgn;>= 5,6m;Mai;-6,234;98,000;36144;38547;2.999;4.771
+Trondheim;F;Helgedøgn;5,6m - 7,6m;Mai;-6,821;98,000;6420;6890;14.219;22.626
+Trondheim;F;Helgedøgn;7,6m - 12,5m;Mai;3,286;98,000;11034;10683;11.481;18.268
+Trondheim;F;Helgedøgn;12,5m - 16,0m;Mai;-12,010;98,000;16997;19317;1.206;1.918
+Trondheim;F;Helgedøgn;>= 16,0m;Mai;2,173;98,000;1693;1657;22.313;35.505
+Trondheim;F;Alle;Alle;Juni;-6,932;99,000;1152399;1238232;1.680;4.174
+Trondheim;F;Alle;< 5,6m;Juni;-6,966;98,000;984326;1058028;1.998;4.963
+Trondheim;F;Alle;>= 5,6m;Juni;-6,409;98,000;157669;168466;0.191;0.474
+Trondheim;F;Alle;5,6m - 7,6m;Juni;-12,207;98,000;31881;36314;8.440;20.965
+Trondheim;F;Alle;7,6m - 12,5m;Juni;2,092;98,000;49246;48237;6.802;16.896
+Trondheim;F;Alle;12,5m - 16,0m;Juni;-10,325;98,000;66526;74186;3.008;7.472
+Trondheim;F;Alle;>= 16,0m;Juni;2,950;98,000;10016;9729;19.088;47.417
+Trondheim;F;Yrkesdøgn;Alle;Juni;-11,859;99,000;838200;950974;2.713;6.740
+Trondheim;F;Yrkesdøgn;< 5,6m;Juni;-12,109;99,000;710562;808462;3.192;7.930
+Trondheim;F;Yrkesdøgn;>= 5,6m;Juni;-10,681;99,000;123627;138410;0.981;2.437
+Trondheim;F;Yrkesdøgn;5,6m - 7,6m;Juni;-15,599;99,000;26047;30861;6.943;17.246
+Trondheim;F;Yrkesdøgn;7,6m - 12,5m;Juni;-2,286;99,000;39120;40035;7.204;17.895
+Trondheim;F;Yrkesdøgn;12,5m - 16,0m;Juni;-15,370;99,000;50007;59089;2.606;6.473
+Trondheim;F;Yrkesdøgn;>= 16,0m;Juni;0,332;99,000;8453;8425;20.817;51.713
+Trondheim;F;Helgedøgn;Alle;Juni;9,379;99,000;314199;287258;5.075;12.607
+Trondheim;F;Helgedøgn;< 5,6m;Juni;9,696;96,000;273764;249566;4.051;10.064
+Trondheim;F;Helgedøgn;>= 5,6m;Juni;13,262;96,000;34042;30056;1.368;3.398
+Trondheim;F;Helgedøgn;5,6m - 7,6m;Juni;6,987;96,000;5834;5453;14.686;36.481
+Trondheim;F;Helgedøgn;7,6m - 12,5m;Juni;23,458;96,000;10126;8202;9.458;23.496
+Trondheim;F;Helgedøgn;12,5m - 16,0m;Juni;9,419;96,000;16519;15097;3.296;8.188
+Trondheim;F;Helgedøgn;>= 16,0m;Juni;19,862;96,000;1563;1304;9.015;22.395
+Trondheim;F;Alle;Alle;Juli;1,579;99,000;962737;947773;4.443;11.037
+Trondheim;F;Alle;< 5,6m;Juli;1,675;98,000;817302;803837;5.405;13.426
+Trondheim;F;Alle;>= 5,6m;Juli;2,183;98,000;130713;127920;2.290;5.689
+Trondheim;F;Alle;5,6m - 7,6m;Juli;-0,351;98,000;29511;29615;2.042;5.073
+Trondheim;F;Alle;7,6m - 12,5m;Juli;2,708;98,000;39182;38149;6.247;15.518
+Trondheim;F;Alle;12,5m - 16,0m;Juli;-4,063;98,000;52579;54806;13.820;34.330
+Trondheim;F;Alle;>= 16,0m;Juli;76,467;98,000;9441;5350;114.374;284.120
+Trondheim;F;Yrkesdøgn;Alle;Juli;4,442;99,000;773587;740688;4.013;9.970
+Trondheim;F;Yrkesdøgn;< 5,6m;Juli;6,489;98,000;661127;620840;7.382;18.339
+Trondheim;F;Yrkesdøgn;>= 5,6m;Juli;5,110;98,000;109609;104280;3.238;8.044
+Trondheim;F;Yrkesdøgn;5,6m - 7,6m;Juli;1,539;98,000;25528;25141;0.589;1.462
+Trondheim;F;Yrkesdøgn;7,6m - 12,5m;Juli;4,451;98,000;33695;32259;7.027;17.455
+Trondheim;F;Yrkesdøgn;12,5m - 16,0m;Juli;-0,453;98,000;41982;42173;14.704;36.527
+Trondheim;F;Yrkesdøgn;>= 16,0m;Juli;78,543;98,000;8404;4707;119.767;297.518
+Trondheim;F;Helgedøgn;Alle;Juli;-8,661;99,000;189150;207085;4.856;12.062
+Trondheim;F;Helgedøgn;< 5,6m;Juli;-14,657;97,000;156175;182997;7.891;19.603
+Trondheim;F;Helgedøgn;>= 5,6m;Juli;-10,728;97,000;21104;23640;6.543;16.254
+Trondheim;F;Helgedøgn;5,6m - 7,6m;Juli;-10,975;97,000;3983;4474;15.101;37.513
+Trondheim;F;Helgedøgn;7,6m - 12,5m;Juli;-6,842;97,000;5487;5890;3.981;9.890
+Trondheim;F;Helgedøgn;12,5m - 16,0m;Juli;-16,117;97,000;10597;12633;12.115;30.096
+Trondheim;F;Helgedøgn;>= 16,0m;Juli;61,275;97,000;1037;643;86.584;215.086
+Trondheim;F;Alle;Alle;August;-1,189;99,000;1368975;1385448;9.396;14.951
+Trondheim;F;Alle;< 5,6m;August;-2,374;99,000;1152279;1180302;10.538;16.768
+Trondheim;F;Alle;>= 5,6m;August;5,269;99,000;212239;201615;10.665;16.970
+Trondheim;F;Alle;5,6m - 7,6m;August;-2,303;99,000;39669;40604;4.099;6.522
+Trondheim;F;Alle;7,6m - 12,5m;August;-34,702;99,000;33562;51398;31.080;49.455
+Trondheim;F;Alle;12,5m - 16,0m;August;-29,143;99,000;69548;98153;28.172;44.828
+Trondheim;F;Alle;>= 16,0m;August;506,108;99,000;69460;11460;872.455;1388.271
+Trondheim;F;Yrkesdøgn;Alle;August;-4,364;99,000;1057397;1105643;8.900;14.162
+Trondheim;F;Yrkesdøgn;< 5,6m;August;-5,307;99,000;882218;931664;9.932;15.804
+Trondheim;F;Yrkesdøgn;>= 5,6m;August;0,222;99,000;171404;171024;10.338;16.449
+Trondheim;F;Yrkesdøgn;5,6m - 7,6m;August;-6,875;99,000;32457;34853;3.807;6.059
+Trondheim;F;Yrkesdøgn;7,6m - 12,5m;August;-34,946;99,000;28860;44363;29.765;47.362
+Trondheim;F;Yrkesdøgn;12,5m - 16,0m;August;-30,010;99,000;57066;81534;26.574;42.286
+Trondheim;F;Yrkesdøgn;>= 16,0m;August;416,070;99,000;53021;10274;728.791;1159.668
+Trondheim;F;Helgedøgn;Alle;August;11,355;99,000;311578;279805;13.566;21.587
+Trondheim;F;Helgedøgn;< 5,6m;August;8,616;99,000;270061;248638;15.110;24.043
+Trondheim;F;Helgedøgn;>= 5,6m;August;33,487;99,000;40835;30591;14.740;23.455
+Trondheim;F;Helgedøgn;5,6m - 7,6m;August;25,404;99,000;7212;5751;17.893;28.471
+Trondheim;F;Helgedøgn;7,6m - 12,5m;August;-33,163;99,000;4702;7035;41.393;65.866
+Trondheim;F;Helgedøgn;12,5m - 16,0m;August;-24,893;99,000;12482;16619;36.658;58.330
+Trondheim;F;Helgedøgn;>= 16,0m;August;1286,088;99,000;16439;1186;2189.151;3483.428
+Trondheim;F;Alle;Alle;September;-2,995;92,000;1111738;1146058;6.615;10.526
+Trondheim;F;Alle;< 5,6m;September;-2,743;92,000;919045;944964;5.408;8.605
+Trondheim;F;Alle;>= 5,6m;September;-4,571;92,000;190288;199403;21.915;34.872
+Trondheim;F;Alle;5,6m - 7,6m;September;-2,942;92,000;29993;30902;12.322;19.607
+Trondheim;F;Alle;7,6m - 12,5m;September;-58,894;92,000;21182;51530;27.851;44.318
+Trondheim;F;Alle;12,5m - 16,0m;September;-37,277;92,000;66697;106335;33.814;53.806
+Trondheim;F;Alle;>= 16,0m;September;580,857;92,000;72416;10636;996.654;1585.900
+Trondheim;F;Yrkesdøgn;Alle;September;1,583;91,000;830930;817985;6.926;11.021
+Trondheim;F;Yrkesdøgn;< 5,6m;September;2,795;91,000;676406;658017;6.041;9.612
+Trondheim;F;Yrkesdøgn;>= 5,6m;September;-3,777;91,000;152539;158527;21.810;34.705
+Trondheim;F;Yrkesdøgn;5,6m - 7,6m;September;-2,556;91,000;24247;24883;10.872;17.300
+Trondheim;F;Yrkesdøgn;7,6m - 12,5m;September;-55,925;91,000;18446;41851;29.006;46.155
+Trondheim;F;Yrkesdøgn;12,5m - 16,0m;September;-34,412;91,000;54215;82660;33.944;54.012
+Trondheim;F;Yrkesdøgn;>= 16,0m;September;509,121;91,000;55631;9133;888.252;1413.407
+Trondheim;F;Helgedøgn;Alle;September;-14,407;94,000;280808;328073;5.428;8.636
+Trondheim;F;Helgedøgn;< 5,6m;September;-15,441;94,000;242639;286947;4.357;6.932
+Trondheim;F;Helgedøgn;>= 5,6m;September;-7,650;94,000;37749;40876;22.643;36.030
+Trondheim;F;Helgedøgn;5,6m - 7,6m;September;-4,536;94,000;5746;6019;27.274;43.400
+Trondheim;F;Helgedøgn;7,6m - 12,5m;September;-71,733;94,000;2736;9679;20.814;33.119
+Trondheim;F;Helgedøgn;12,5m - 16,0m;September;-47,278;94,000;12482;23675;33.215;52.853
+Trondheim;F;Helgedøgn;>= 16,0m;September;1016,766;94,000;16785;1503;1608.891;2560.105
+Trondheim;F;Alle;Alle;Oktober;-2,028;99,000;1230772;1256246;5.457;8.683
+Trondheim;F;Alle;< 5,6m;Oktober;-0,958;99,000;1019212;1029074;4.305;6.850
+Trondheim;F;Alle;>= 5,6m;Oktober;-7,176;99,000;209156;225326;20.217;32.170
+Trondheim;F;Alle;5,6m - 7,6m;Oktober;-8,566;99,000;31233;34159;7.020;11.171
+Trondheim;F;Alle;7,6m - 12,5m;Oktober;-63,403;99,000;23123;63183;25.389;40.400
+Trondheim;F;Alle;12,5m - 16,0m;Oktober;-38,966;99,000;71147;116569;32.998;52.508
+Trondheim;F;Alle;>= 16,0m;Oktober;632,834;99,000;83653;11415;1117.177;1777.679
+Trondheim;F;Yrkesdøgn;Alle;Oktober;-3,010;99,000;964337;994264;5.641;8.976
+Trondheim;F;Yrkesdøgn;< 5,6m;Oktober;-1,534;99,000;787207;799472;4.417;7.028
+Trondheim;F;Yrkesdøgn;>= 5,6m;Oktober;-9,347;99,000;175091;193145;19.269;30.661
+Trondheim;F;Yrkesdøgn;5,6m - 7,6m;Oktober;-9,572;99,000;27020;29880;6.687;10.641
+Trondheim;F;Yrkesdøgn;7,6m - 12,5m;Oktober;-62,516;99,000;20598;54952;25.496;40.569
+Trondheim;F;Yrkesdøgn;12,5m - 16,0m;Oktober;-38,698;99,000;60083;98012;32.019;50.949
+Trondheim;F;Yrkesdøgn;>= 16,0m;Oktober;554,208;99,000;67390;10301;1004.259;1598.000
+Trondheim;F;Helgedøgn;Alle;Oktober;1,700;99,000;266435;261982;5.143;8.183
+Trondheim;F;Helgedøgn;< 5,6m;Oktober;1,047;99,000;232005;229602;4.155;6.611
+Trondheim;F;Helgedøgn;>= 5,6m;Oktober;5,854;99,000;34065;32181;26.719;42.515
+Trondheim;F;Helgedøgn;5,6m - 7,6m;Oktober;-1,542;99,000;4213;4279;10.748;17.102
+Trondheim;F;Helgedøgn;7,6m - 12,5m;Oktober;-69,323;99,000;2525;8231;23.863;37.971
+Trondheim;F;Helgedøgn;12,5m - 16,0m;Oktober;-40,378;99,000;11064;18557;38.281;60.914
+Trondheim;F;Helgedøgn;>= 16,0m;Oktober;1359,874;99,000;16263;1114;2149.708;3420.665
+Trondheim;F;Alle;Alle;November;-1,557;97,000;1354901;1376335;7.261;9.015
+Trondheim;F;Alle;< 5,6m;November;-0,450;97,000;1193956;1199348;6.910;8.580
+Trondheim;F;Alle;>= 5,6m;November;-9,934;97,000;157884;175299;22.103;27.445
+Trondheim;F;Alle;5,6m - 7,6m;November;-8,827;97,000;34085;37385;8.222;10.208
+Trondheim;F;Alle;7,6m - 12,5m;November;-54,130;97,000;25927;56523;35.701;44.329
+Trondheim;F;Alle;12,5m - 16,0m;November;-39,350;97,000;44650;73619;40.505;50.293
+Trondheim;F;Alle;>= 16,0m;November;584,792;97,000;53222;7772;1222.685;1518.164
+Trondheim;F;Yrkesdøgn;Alle;November;-6,113;96,000;1024534;1091236;7.692;9.551
+Trondheim;F;Yrkesdøgn;< 5,6m;November;-4,886;96,000;893124;939004;7.164;8.895
+Trondheim;F;Yrkesdøgn;>= 5,6m;November;-14,464;96,000;128939;150743;20.965;26.032
+Trondheim;F;Yrkesdøgn;5,6m - 7,6m;November;-11,690;96,000;29386;33276;8.440;10.479
+Trondheim;F;Yrkesdøgn;7,6m - 12,5m;November;-53,950;96,000;22429;48706;34.471;42.801
+Trondheim;F;Yrkesdøgn;12,5m - 16,0m;November;-41,420;96,000;36156;61721;39.390;48.909
+Trondheim;F;Yrkesdøgn;>= 16,0m;November;481,932;96,000;40968;7040;1026.130;1274.109
+Trondheim;F;Helgedøgn;Alle;November;15,878;98,000;330367;285099;8.196;10.177
+Trondheim;F;Helgedøgn;< 5,6m;November;15,552;98,000;300832;260344;8.080;10.033
+Trondheim;F;Helgedøgn;>= 5,6m;November;17,873;98,000;28945;24556;31.007;38.500
+Trondheim;F;Helgedøgn;5,6m - 7,6m;November;14,359;98,000;4699;4109;11.525;14.310
+Trondheim;F;Helgedøgn;7,6m - 12,5m;November;-55,251;98,000;3498;7817;45.877;56.964
+Trondheim;F;Helgedøgn;12,5m - 16,0m;November;-28,610;98,000;8494;11898;47.725;59.259
+Trondheim;F;Helgedøgn;>= 16,0m;November;1574,044;98,000;12254;732;2892.199;3591.139
+Trondheim;F;Alle;Alle;Desember;-2,449;95,000;1500909;1538586;6.123;7.603
+Trondheim;F;Alle;< 5,6m;Desember;-2,531;95,000;1307749;1341712;5.180;6.432
+Trondheim;F;Alle;>= 5,6m;Desember;-2,476;95,000;190152;194980;21.945;27.248
+Trondheim;F;Alle;5,6m - 7,6m;Desember;-7,070;95,000;30887;33237;5.640;7.003
+Trondheim;F;Alle;7,6m - 12,5m;Desember;-56,828;95,000;23788;55101;30.925;38.398
+Trondheim;F;Alle;12,5m - 16,0m;Desember;-39,580;95,000;58328;96538;37.183;46.169
+Trondheim;F;Alle;>= 16,0m;Desember;663,549;95,000;77149;10104;1171.136;1454.157
+Trondheim;F;Yrkesdøgn;Alle;Desember;-1,178;94,000;1070114;1082868;4.683;5.815
+Trondheim;F;Yrkesdøgn;< 5,6m;Desember;-0,881;94,000;922957;931161;2.678;3.325
+Trondheim;F;Yrkesdøgn;>= 5,6m;Desember;-3,608;94,000;144708;150124;21.694;26.937
+Trondheim;F;Yrkesdøgn;5,6m - 7,6m;Desember;-7,560;94,000;25188;27248;4.184;5.196
+Trondheim;F;Yrkesdøgn;7,6m - 12,5m;Desember;-54,102;94,000;19810;43161;31.474;39.081
+Trondheim;F;Yrkesdøgn;12,5m - 16,0m;Desember;-38,275;94,000;44296;71764;37.855;47.003
+Trondheim;F;Yrkesdøgn;>= 16,0m;Desember;596,944;94,000;55414;7951;1038.473;1289.434
+Trondheim;F;Helgedøgn;Alle;Desember;-5,469;96,000;430795;455718;13.117;16.287
+Trondheim;F;Helgedøgn;< 5,6m;Desember;-6,274;96,000;384792;410551;13.034;16.184
+Trondheim;F;Helgedøgn;>= 5,6m;Desember;1,311;96,000;45444;44856;24.271;30.137
+Trondheim;F;Helgedøgn;5,6m - 7,6m;Desember;-4,842;96,000;5699;5989;12.829;15.929
+Trondheim;F;Helgedøgn;7,6m - 12,5m;Desember;-66,683;96,000;3978;11940;27.199;33.771
+Trondheim;F;Helgedøgn;12,5m - 16,0m;Desember;-43,360;96,000;14032;24774;35.087;43.566
+Trondheim;F;Helgedøgn;>= 16,0m;Desember;909,522;96,000;21735;2153;1792.705;2225.938
+Trondheim;F;Alle;Alle;Siste 12 måneder;-1,575;97,000;12982688;13190443;3.739;3.923
+Trondheim;F;Alle;< 5,6m;Siste 12 måneder;-1,529;97,000;11301358;11476799;2.727;2.862
+Trondheim;F;Alle;>= 5,6m;Siste 12 måneder;-2,001;97,000;1636386;1669805;15.321;16.078
+Trondheim;F;Alle;5,6m - 7,6m;Siste 12 måneder;-3,115;97,000;347142;358303;9.815;10.300
+Trondheim;F;Alle;7,6m - 12,5m;Siste 12 måneder;-28,735;97,000;341824;479649;31.687;33.253
+Trondheim;F;Alle;12,5m - 16,0m;Siste 12 måneder;-26,098;97,000;551372;746090;25.499;26.760
+Trondheim;F;Alle;>= 16,0m;Siste 12 måneder;361,794;97,000;396048;85763;675.664;709.065
+Trondheim;F;Yrkesdøgn;Alle;Siste 12 måneder;-1,973;97,000;9859432;10057878;3.898;4.091
+Trondheim;F;Yrkesdøgn;< 5,6m;Siste 12 måneder;-1,644;97,000;8503649;8645771;2.929;3.073
+Trondheim;F;Yrkesdøgn;>= 5,6m;Siste 12 måneder;-3,361;97,000;1332387;1378731;14.763;15.492
+Trondheim;F;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;-3,798;97,000;295184;306837;10.282;10.790
+Trondheim;F;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;-28,019;97,000;289970;402843;31.317;32.866
+Trondheim;F;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-26,002;97,000;439940;594526;24.860;26.089
+Trondheim;F;Yrkesdøgn;>= 16,0m;Siste 12 måneder;312,335;97,000;307293;74525;592.152;621.426
+Trondheim;F;Helgedøgn;Alle;Siste 12 måneder;-0,297;98,000;3123256;3132565;3.972;4.169
+Trondheim;F;Helgedøgn;< 5,6m;Siste 12 måneder;-1,177;97,000;2797709;2831028;2.780;2.918
+Trondheim;F;Helgedøgn;>= 5,6m;Siste 12 måneder;4,440;97,000;303999;291074;18.928;19.864
+Trondheim;F;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;0,956;97,000;51958;51466;11.215;11.770
+Trondheim;F;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;-32,487;97,000;51854;76806;33.661;35.326
+Trondheim;F;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-26,479;97,000;111432;151564;28.217;29.612
+Trondheim;F;Helgedøgn;>= 16,0m;Siste 12 måneder;689,776;97,000;88755;11238;1239.826;1301.117
+Trondheim;F;Alle;Alle;Hittil i år;-1,575;97,000;12982688;13190443;3.739;3.923
+Trondheim;F;Alle;< 5,6m;Hittil i år;-1,529;97,000;11301358;11476799;2.727;2.862
+Trondheim;F;Alle;>= 5,6m;Hittil i år;-2,001;97,000;1636386;1669805;15.321;16.078
+Trondheim;F;Alle;5,6m - 7,6m;Hittil i år;-3,115;97,000;347142;358303;9.815;10.300
+Trondheim;F;Alle;7,6m - 12,5m;Hittil i år;-28,735;97,000;341824;479649;31.687;33.253
+Trondheim;F;Alle;12,5m - 16,0m;Hittil i år;-26,098;97,000;551372;746090;25.499;26.760
+Trondheim;F;Alle;>= 16,0m;Hittil i år;361,794;97,000;396048;85763;675.664;709.065
+Trondheim;F;Yrkesdøgn;Alle;Hittil i år;-1,973;97,000;9859432;10057878;3.898;4.091
+Trondheim;F;Yrkesdøgn;< 5,6m;Hittil i år;-1,644;97,000;8503649;8645771;2.929;3.073
+Trondheim;F;Yrkesdøgn;>= 5,6m;Hittil i år;-3,361;97,000;1332387;1378731;14.763;15.492
+Trondheim;F;Yrkesdøgn;5,6m - 7,6m;Hittil i år;-3,798;97,000;295184;306837;10.282;10.790
+Trondheim;F;Yrkesdøgn;7,6m - 12,5m;Hittil i år;-28,019;97,000;289970;402843;31.317;32.866
+Trondheim;F;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-26,002;97,000;439940;594526;24.860;26.089
+Trondheim;F;Yrkesdøgn;>= 16,0m;Hittil i år;312,335;97,000;307293;74525;592.152;621.426
+Trondheim;F;Helgedøgn;Alle;Hittil i år;-0,297;98,000;3123256;3132565;3.972;4.169
+Trondheim;F;Helgedøgn;< 5,6m;Hittil i år;-1,177;97,000;2797709;2831028;2.780;2.918
+Trondheim;F;Helgedøgn;>= 5,6m;Hittil i år;4,440;97,000;303999;291074;18.928;19.864
+Trondheim;F;Helgedøgn;5,6m - 7,6m;Hittil i år;0,956;97,000;51958;51466;11.215;11.770
+Trondheim;F;Helgedøgn;7,6m - 12,5m;Hittil i år;-32,487;97,000;51854;76806;33.661;35.326
+Trondheim;F;Helgedøgn;12,5m - 16,0m;Hittil i år;-26,479;97,000;111432;151564;28.217;29.612
+Trondheim;F;Helgedøgn;>= 16,0m;Hittil i år;689,776;97,000;88755;11238;1239.826;1301.117
+Trondheim;E+R;Alle;Alle;Januar;1,445;99,000;2162634;2131827;1.296;3.219
+Trondheim;E+R;Alle;< 5,6m;Januar;1,599;99,000;1967155;1936201;1.122;2.787
+Trondheim;E+R;Alle;>= 5,6m;Januar;0,009;99,000;194509;194492;3.150;7.824
+Trondheim;E+R;Alle;5,6m - 7,6m;Januar;0,956;99,000;61799;61214;8.611;21.391
+Trondheim;E+R;Alle;7,6m - 12,5m;Januar;3,724;99,000;72814;70200;1.625;4.036
+Trondheim;E+R;Alle;12,5m - 16,0m;Januar;-4,382;99,000;22473;23503;10.271;25.514
+Trondheim;E+R;Alle;>= 16,0m;Januar;-5,438;99,000;37423;39575;7.868;19.544
+Trondheim;E+R;Yrkesdøgn;Alle;Januar;1,505;99,000;1749598;1723650;1.663;4.132
+Trondheim;E+R;Yrkesdøgn;< 5,6m;Januar;1,689;99,000;1571048;1544956;1.528;3.795
+Trondheim;E+R;Yrkesdøgn;>= 5,6m;Januar;0,013;99,000;177606;177583;3.141;7.802
+Trondheim;E+R;Yrkesdøgn;5,6m - 7,6m;Januar;1,345;99,000;56900;56145;8.423;20.925
+Trondheim;E+R;Yrkesdøgn;7,6m - 12,5m;Januar;3,439;99,000;66059;63863;1.585;3.939
+Trondheim;E+R;Yrkesdøgn;12,5m - 16,0m;Januar;-4,806;99,000;19668;20661;11.451;28.447
+Trondheim;E+R;Yrkesdøgn;>= 16,0m;Januar;-5,242;99,000;34979;36914;8.377;20.810
+Trondheim;E+R;Helgedøgn;Alle;Januar;1,190;99,000;413036;408177;0.489;1.215
+Trondheim;E+R;Helgedøgn;< 5,6m;Januar;1,243;99,000;396107;391245;0.629;1.563
+Trondheim;E+R;Helgedøgn;>= 5,6m;Januar;-0,035;99,000;16903;16909;4.294;10.666
+Trondheim;E+R;Helgedøgn;5,6m - 7,6m;Januar;-3,354;99,000;4899;5069;11.231;27.898
+Trondheim;E+R;Helgedøgn;7,6m - 12,5m;Januar;6,596;99,000;6755;6337;3.768;9.360
+Trondheim;E+R;Helgedøgn;12,5m - 16,0m;Januar;-1,302;99,000;2805;2842;0.891;2.214
+Trondheim;E+R;Helgedøgn;>= 16,0m;Januar;-8,155;99,000;2444;2661;1.953;4.851
+Trondheim;E+R;Alle;Alle;Februar;1,794;99,000;2002066;1966775;1.824;4.531
+Trondheim;E+R;Alle;< 5,6m;Februar;1,924;99,000;1818465;1784144;1.392;3.458
+Trondheim;E+R;Alle;>= 5,6m;Februar;0,664;99,000;182727;181521;6.687;16.613
+Trondheim;E+R;Alle;5,6m - 7,6m;Februar;0,098;99,000;57322;57266;8.836;21.951
+Trondheim;E+R;Alle;7,6m - 12,5m;Februar;5,083;99,000;69048;65708;2.479;6.159
+Trondheim;E+R;Alle;12,5m - 16,0m;Februar;-6,506;99,000;21082;22549;8.920;22.159
+Trondheim;E+R;Alle;>= 16,0m;Februar;-2,008;99,000;35275;35998;13.467;33.454
+Trondheim;E+R;Yrkesdøgn;Alle;Februar;2,098;99,000;1620989;1587675;1.970;4.893
+Trondheim;E+R;Yrkesdøgn;< 5,6m;Februar;2,230;99,000;1452902;1421214;1.491;3.704
+Trondheim;E+R;Yrkesdøgn;>= 5,6m;Februar;1,118;99,000;167230;165381;6.910;17.165
+Trondheim;E+R;Yrkesdøgn;5,6m - 7,6m;Februar;0,633;99,000;52751;52419;9.005;22.369
+Trondheim;E+R;Yrkesdøgn;7,6m - 12,5m;Februar;6,062;99,000;63069;59464;2.621;6.510
+Trondheim;E+R;Yrkesdøgn;12,5m - 16,0m;Februar;-6,509;99,000;18470;19756;9.185;22.816
+Trondheim;E+R;Yrkesdøgn;>= 16,0m;Februar;-2,377;99,000;32940;33742;13.566;33.701
+Trondheim;E+R;Helgedøgn;Alle;Februar;0,521;100,000;381077;379100;1.286;3.195
+Trondheim;E+R;Helgedøgn;< 5,6m;Februar;0,725;100,000;365563;362930;1.168;2.902
+Trondheim;E+R;Helgedøgn;>= 5,6m;Februar;-3,984;100,000;15497;16140;4.836;12.013
+Trondheim;E+R;Helgedøgn;5,6m - 7,6m;Februar;-5,694;100,000;4571;4847;7.289;18.106
+Trondheim;E+R;Helgedøgn;7,6m - 12,5m;Februar;-4,244;100,000;5979;6244;2.358;5.858
+Trondheim;E+R;Helgedøgn;12,5m - 16,0m;Februar;-6,480;100,000;2612;2793;7.414;18.418
+Trondheim;E+R;Helgedøgn;>= 16,0m;Februar;3,502;100,000;2335;2256;18.726;46.518
+Trondheim;E+R;Alle;Alle;Mars;10,064;98,000;2229682;2025800;1.961;4.871
+Trondheim;E+R;Alle;< 5,6m;Mars;10,336;98,000;2027486;1837560;2.618;6.503
+Trondheim;E+R;Alle;>= 5,6m;Mars;6,483;98,000;199297;187163;4.335;10.768
+Trondheim;E+R;Alle;5,6m - 7,6m;Mars;7,792;98,000;62998;58444;4.414;10.965
+Trondheim;E+R;Alle;7,6m - 12,5m;Mars;10,918;98,000;74628;67282;2.732;6.787
+Trondheim;E+R;Alle;12,5m - 16,0m;Mars;0,321;98,000;23448;23373;9.353;23.233
+Trondheim;E+R;Alle;>= 16,0m;Mars;0,418;98,000;38223;38064;13.092;32.522
+Trondheim;E+R;Yrkesdøgn;Alle;Mars;10,800;98,000;1730884;1562170;1.606;3.988
+Trondheim;E+R;Yrkesdøgn;< 5,6m;Mars;11,120;98,000;1550541;1395379;2.416;6.002
+Trondheim;E+R;Yrkesdøgn;>= 5,6m;Mars;7,172;98,000;177623;165737;4.660;11.575
+Trondheim;E+R;Yrkesdøgn;5,6m - 7,6m;Mars;8,084;98,000;56247;52040;4.442;11.035
+Trondheim;E+R;Yrkesdøgn;7,6m - 12,5m;Mars;11,678;98,000;65984;59084;3.727;9.258
+Trondheim;E+R;Yrkesdøgn;12,5m - 16,0m;Mars;1,855;98,000;20100;19734;8.764;21.771
+Trondheim;E+R;Yrkesdøgn;>= 16,0m;Mars;1,184;98,000;35292;34879;13.424;33.347
+Trondheim;E+R;Helgedøgn;Alle;Mars;7,585;100,000;498798;463630;3.390;8.422
+Trondheim;E+R;Helgedøgn;< 5,6m;Mars;7,862;100,000;476945;442181;3.619;8.990
+Trondheim;E+R;Helgedøgn;>= 5,6m;Mars;1,157;100,000;21674;21426;2.274;5.649
+Trondheim;E+R;Helgedøgn;5,6m - 7,6m;Mars;5,418;100,000;6751;6404;4.383;10.887
+Trondheim;E+R;Helgedøgn;7,6m - 12,5m;Mars;5,440;100,000;8644;8198;5.542;13.767
+Trondheim;E+R;Helgedøgn;12,5m - 16,0m;Mars;-7,997;100,000;3348;3639;13.490;33.511
+Trondheim;E+R;Helgedøgn;>= 16,0m;Mars;-7,975;100,000;2931;3185;14.867;36.932
+Trondheim;E+R;Alle;Alle;April;-6,744;100,000;2031059;2177938;1.357;3.372
+Trondheim;E+R;Alle;< 5,6m;April;-6,588;100,000;1827071;1955927;1.316;3.270
+Trondheim;E+R;Alle;>= 5,6m;April;-9,319;100,000;198543;218946;3.974;9.873
+Trondheim;E+R;Alle;5,6m - 7,6m;April;-10,351;100,000;60615;67614;3.138;7.795
+Trondheim;E+R;Alle;7,6m - 12,5m;April;-3,338;100,000;80395;83171;4.666;11.590
+Trondheim;E+R;Alle;12,5m - 16,0m;April;-22,526;100,000;19577;25269;0.458;1.139
+Trondheim;E+R;Alle;>= 16,0m;April;-11,508;100,000;37956;42892;12.027;29.876
+Trondheim;E+R;Yrkesdøgn;Alle;April;-7,577;100,000;1557245;1684902;1.107;2.750
+Trondheim;E+R;Yrkesdøgn;< 5,6m;April;-7,267;100,000;1380416;1488594;1.368;3.399
+Trondheim;E+R;Yrkesdøgn;>= 5,6m;April;-10,937;100,000;172469;193648;3.768;9.361
+Trondheim;E+R;Yrkesdøgn;5,6m - 7,6m;April;-11,972;100,000;52825;60009;2.071;5.144
+Trondheim;E+R;Yrkesdøgn;7,6m - 12,5m;April;-4,814;100,000;69178;72677;4.609;11.449
+Trondheim;E+R;Yrkesdøgn;12,5m - 16,0m;April;-25,852;100,000;15973;21542;0.437;1.085
+Trondheim;E+R;Yrkesdøgn;>= 16,0m;April;-12,499;100,000;34493;39420;11.959;29.708
+Trondheim;E+R;Helgedøgn;Alle;April;-3,899;100,000;473814;493036;3.067;7.618
+Trondheim;E+R;Helgedøgn;< 5,6m;April;-4,425;100,000;446655;467333;2.793;6.937
+Trondheim;E+R;Helgedøgn;>= 5,6m;April;3,067;100,000;26074;25298;4.361;10.832
+Trondheim;E+R;Helgedøgn;5,6m - 7,6m;April;2,433;100,000;7790;7605;11.723;29.121
+Trondheim;E+R;Helgedøgn;7,6m - 12,5m;April;6,890;100,000;11217;10494;2.475;6.147
+Trondheim;E+R;Helgedøgn;12,5m - 16,0m;April;-3,300;100,000;3604;3727;4.671;11.602
+Trondheim;E+R;Helgedøgn;>= 16,0m;April;-0,259;100,000;3463;3472;11.138;27.668
+Trondheim;E+R;Alle;Alle;Mai;6,353;97,000;2761473;2596515;2.798;4.452
+Trondheim;E+R;Alle;< 5,6m;Mai;7,003;97,000;2469604;2307985;3.191;5.077
+Trondheim;E+R;Alle;>= 5,6m;Mai;1,638;97,000;290456;285774;2.704;4.303
+Trondheim;E+R;Alle;5,6m - 7,6m;Mai;2,157;97,000;85447;83643;2.140;3.405
+Trondheim;E+R;Alle;7,6m - 12,5m;Mai;1,717;97,000;120641;118605;2.597;4.133
+Trondheim;E+R;Alle;12,5m - 16,0m;Mai;-5,024;97,000;28753;30274;5.892;9.375
+Trondheim;E+R;Alle;>= 16,0m;Mai;4,437;97,000;55615;53252;12.016;19.121
+Trondheim;E+R;Yrkesdøgn;Alle;Mai;10,804;96,000;2085359;1882018;3.293;5.241
+Trondheim;E+R;Yrkesdøgn;< 5,6m;Mai;11,732;96,000;1833366;1640862;3.363;5.351
+Trondheim;E+R;Yrkesdøgn;>= 5,6m;Mai;4,829;96,000;250638;239093;4.792;7.625
+Trondheim;E+R;Yrkesdøgn;5,6m - 7,6m;Mai;4,603;96,000;73474;70241;5.411;8.610
+Trondheim;E+R;Yrkesdøgn;7,6m - 12,5m;Mai;5,705;96,000;103022;97462;4.096;6.517
+Trondheim;E+R;Yrkesdøgn;12,5m - 16,0m;Mai;-2,735;96,000;23967;24641;6.188;9.846
+Trondheim;E+R;Yrkesdøgn;>= 16,0m;Mai;7,328;96,000;50175;46749;13.736;21.856
+Trondheim;E+R;Helgedøgn;Alle;Mai;-5,372;98,000;676114;714497;8.005;12.738
+Trondheim;E+R;Helgedøgn;< 5,6m;Mai;-4,630;98,000;636238;667123;8.268;13.157
+Trondheim;E+R;Helgedøgn;>= 5,6m;Mai;-14,702;98,000;39818;46681;5.287;8.412
+Trondheim;E+R;Helgedøgn;5,6m - 7,6m;Mai;-10,663;98,000;11973;13402;8.492;13.512
+Trondheim;E+R;Helgedøgn;7,6m - 12,5m;Mai;-16,667;98,000;17619;21143;5.272;8.388
+Trondheim;E+R;Helgedøgn;12,5m - 16,0m;Mai;-15,036;98,000;4786;5633;5.550;8.831
+Trondheim;E+R;Helgedøgn;>= 16,0m;Mai;-16,346;98,000;5440;6503;5.508;8.765
+Trondheim;E+R;Alle;Alle;Juni;-1,606;99,000;2201679;2237604;2.542;6.314
+Trondheim;E+R;Alle;< 5,6m;Juni;-0,998;99,000;1955771;1975478;3.036;7.541
+Trondheim;E+R;Alle;>= 5,6m;Juni;-6,286;99,000;242575;258847;4.702;11.682
+Trondheim;E+R;Alle;5,6m - 7,6m;Juni;-2,658;99,000;76879;78978;1.028;2.553
+Trondheim;E+R;Alle;7,6m - 12,5m;Juni;-5,273;99,000;98342;103816;6.414;15.933
+Trondheim;E+R;Alle;12,5m - 16,0m;Juni;-14,345;99,000;25604;29892;3.930;9.762
+Trondheim;E+R;Alle;>= 16,0m;Juni;-9,556;99,000;41750;46161;13.680;33.982
+Trondheim;E+R;Yrkesdøgn;Alle;Juni;-7,672;99,000;1637092;1773126;2.269;5.636
+Trondheim;E+R;Yrkesdøgn;< 5,6m;Juni;-7,367;99,000;1431351;1545185;2.859;7.101
+Trondheim;E+R;Yrkesdøgn;>= 5,6m;Juni;-9,968;99,000;202989;225463;3.929;9.760
+Trondheim;E+R;Yrkesdøgn;5,6m - 7,6m;Juni;-6,600;99,000;63833;68344;1.424;3.538
+Trondheim;E+R;Yrkesdøgn;7,6m - 12,5m;Juni;-9,155;99,000;81194;89376;5.840;14.507
+Trondheim;E+R;Yrkesdøgn;12,5m - 16,0m;Juni;-19,177;99,000;20419;25264;3.785;9.402
+Trondheim;E+R;Yrkesdøgn;>= 16,0m;Juni;-11,620;99,000;37543;42479;12.938;32.141
+Trondheim;E+R;Helgedøgn;Alle;Juni;21,553;100,000;564587;464478;4.301;10.684
+Trondheim;E+R;Helgedøgn;< 5,6m;Juni;21,875;100,000;524420;430293;4.286;10.648
+Trondheim;E+R;Helgedøgn;>= 5,6m;Juni;18,578;100,000;39586;33384;7.635;18.965
+Trondheim;E+R;Helgedøgn;5,6m - 7,6m;Juni;22,682;100,000;13046;10634;6.916;17.180
+Trondheim;E+R;Helgedøgn;7,6m - 12,5m;Juni;18,753;100,000;17148;14440;6.232;15.482
+Trondheim;E+R;Helgedøgn;12,5m - 16,0m;Juni;12,035;100,000;5185;4628;10.798;26.825
+Trondheim;E+R;Helgedøgn;>= 16,0m;Juni;14,259;100,000;4207;3682;13.382;33.242
+Trondheim;E+R;Alle;Alle;Juli;4,455;100,000;762229;729723;4.718;42.393
+Trondheim;E+R;Alle;< 5,6m;Juli;5,635;100,000;683353;646902;4.576;41.116
+Trondheim;E+R;Alle;>= 5,6m;Juli;-4,720;100,000;78588;82481;5.982;53.742
+Trondheim;E+R;Alle;5,6m - 7,6m;Juli;5,169;100,000;25392;24144;2.408;21.634
+Trondheim;E+R;Alle;7,6m - 12,5m;Juli;-3,316;100,000;31574;32657;14.058;126.308
+Trondheim;E+R;Alle;12,5m - 16,0m;Juli;-18,504;100,000;10755;13197;4.175;37.509
+Trondheim;E+R;Alle;>= 16,0m;Juli;-12,946;100,000;10867;12483;12.504;112.342
+Trondheim;E+R;Yrkesdøgn;Alle;Juli;6,890;100,000;616090;576380;4.370;39.265
+Trondheim;E+R;Yrkesdøgn;< 5,6m;Juli;8,429;100,000;545396;502999;4.387;39.418
+Trondheim;E+R;Yrkesdøgn;>= 5,6m;Juli;-3,614;100,000;70417;73057;4.631;41.611
+Trondheim;E+R;Yrkesdøgn;5,6m - 7,6m;Juli;5,225;100,000;22416;21303;1.264;11.360
+Trondheim;E+R;Yrkesdøgn;7,6m - 12,5m;Juli;-2,422;100,000;28401;29106;13.979;125.597
+Trondheim;E+R;Yrkesdøgn;12,5m - 16,0m;Juli;-14,555;100,000;9123;10677;1.778;15.973
+Trondheim;E+R;Yrkesdøgn;>= 16,0m;Juli;-12,480;100,000;10477;11971;13.381;120.226
+Trondheim;E+R;Helgedøgn;Alle;Juli;-4,698;100,000;146139;153343;6.049;54.346
+Trondheim;E+R;Helgedøgn;< 5,6m;Juli;-4,132;100,000;137957;143903;5.376;48.298
+Trondheim;E+R;Helgedøgn;>= 5,6m;Juli;-13,296;100,000;8171;9424;15.603;140.186
+Trondheim;E+R;Helgedøgn;5,6m - 7,6m;Juli;4,752;100,000;2976;2841;11.051;99.289
+Trondheim;E+R;Helgedøgn;7,6m - 12,5m;Juli;-10,645;100,000;3173;3551;15.008;134.843
+Trondheim;E+R;Helgedøgn;12,5m - 16,0m;Juli;-35,238;100,000;1632;2520;11.038;99.170
+Trondheim;E+R;Helgedøgn;>= 16,0m;Juli;-23,828;100,000;390;512;6.034;54.211
+Trondheim;E+R;Alle;Alle;August;1,318;100,000;2571612;2538156;4.289;6.825
+Trondheim;E+R;Alle;< 5,6m;August;1,073;100,000;2284268;2260020;4.567;7.266
+Trondheim;E+R;Alle;>= 5,6m;August;2,694;100,000;282388;274979;6.230;9.913
+Trondheim;E+R;Alle;5,6m - 7,6m;August;1,991;100,000;95176;93318;6.673;10.618
+Trondheim;E+R;Alle;7,6m - 12,5m;August;5,574;100,000;113580;107583;5.076;8.077
+Trondheim;E+R;Alle;12,5m - 16,0m;August;-1,659;100,000;28328;28806;7.548;12.010
+Trondheim;E+R;Alle;>= 16,0m;August;0,071;100,000;45304;45272;22.133;35.219
+Trondheim;E+R;Yrkesdøgn;Alle;August;-1,580;100,000;2041630;2074410;3.499;5.568
+Trondheim;E+R;Yrkesdøgn;< 5,6m;August;-1,969;100,000;1792718;1828730;3.607;5.740
+Trondheim;E+R;Yrkesdøgn;>= 5,6m;August;0,809;100,000;244921;242955;6.469;10.293
+Trondheim;E+R;Yrkesdøgn;5,6m - 7,6m;August;0,038;100,000;81410;81379;6.718;10.690
+Trondheim;E+R;Yrkesdøgn;7,6m - 12,5m;August;3,296;100,000;97723;94605;4.822;7.673
+Trondheim;E+R;Yrkesdøgn;12,5m - 16,0m;August;-0,509;100,000;24620;24746;10.453;16.633
+Trondheim;E+R;Yrkesdøgn;>= 16,0m;August;-2,503;100,000;41168;42225;20.624;32.817
+Trondheim;E+R;Helgedøgn;Alle;August;14,283;100,000;529982;463746;9.558;15.210
+Trondheim;E+R;Helgedøgn;< 5,6m;August;13,972;100,000;491550;431290;9.679;15.402
+Trondheim;E+R;Helgedøgn;>= 5,6m;August;16,997;100,000;37467;32024;8.558;13.617
+Trondheim;E+R;Helgedøgn;5,6m - 7,6m;August;15,303;100,000;13766;11939;10.235;16.286
+Trondheim;E+R;Helgedøgn;7,6m - 12,5m;August;22,184;100,000;15857;12978;19.196;30.546
+Trondheim;E+R;Helgedøgn;12,5m - 16,0m;August;-8,670;100,000;3708;4060;21.501;34.212
+Trondheim;E+R;Helgedøgn;>= 16,0m;August;35,740;100,000;4136;3047;32.380;51.524
+Trondheim;E+R;Alle;Alle;September;5,688;92,000;3938343;3726383;4.835;5.074
+Trondheim;E+R;Alle;< 5,6m;September;6,148;92,000;3518911;3315094;5.228;5.486
+Trondheim;E+R;Alle;>= 5,6m;September;2,646;92,000;416602;405862;4.792;5.029
+Trondheim;E+R;Alle;5,6m - 7,6m;September;5,381;92,000;128048;121509;6.043;6.342
+Trondheim;E+R;Alle;7,6m - 12,5m;September;3,735;92,000;168300;162241;10.580;11.103
+Trondheim;E+R;Alle;12,5m - 16,0m;September;-20,829;92,000;40849;51596;25.300;26.551
+Trondheim;E+R;Alle;>= 16,0m;September;12,606;92,000;79405;70516;26.025;27.312
+Trondheim;E+R;Yrkesdøgn;Alle;September;8,547;92,000;3055152;2814587;5.748;6.032
+Trondheim;E+R;Yrkesdøgn;< 5,6m;September;9,250;92,000;2692298;2464352;6.179;6.485
+Trondheim;E+R;Yrkesdøgn;>= 5,6m;September;4,147;92,000;360265;345919;5.620;5.898
+Trondheim;E+R;Yrkesdøgn;5,6m - 7,6m;September;6,997;92,000;110986;103728;6.528;6.851
+Trondheim;E+R;Yrkesdøgn;7,6m - 12,5m;September;5,981;92,000;143150;135071;11.113;11.662
+Trondheim;E+R;Yrkesdøgn;12,5m - 16,0m;September;-18,709;92,000;35246;43358;27.164;28.507
+Trondheim;E+R;Yrkesdøgn;>= 16,0m;September;11,168;92,000;70883;63762;22.074;23.165
+Trondheim;E+R;Helgedøgn;Alle;September;-3,137;93,000;883191;911796;4.994;5.241
+Trondheim;E+R;Helgedøgn;< 5,6m;September;-2,836;93,000;826613;850742;5.193;5.450
+Trondheim;E+R;Helgedøgn;>= 5,6m;September;-6,016;93,000;56337;59943;3.383;3.550
+Trondheim;E+R;Helgedøgn;5,6m - 7,6m;September;-4,044;93,000;17062;17781;8.837;9.274
+Trondheim;E+R;Helgedøgn;7,6m - 12,5m;September;-7,435;93,000;25150;27170;10.630;11.156
+Trondheim;E+R;Helgedøgn;12,5m - 16,0m;September;-31,986;93,000;5603;8238;24.168;25.363
+Trondheim;E+R;Helgedøgn;>= 16,0m;September;26,177;93,000;8522;6754;67.508;70.845
+Trondheim;E+R;Alle;Alle;Oktober;3,851;99,000;4816122;4637528;2.765;2.902
+Trondheim;E+R;Alle;< 5,6m;Oktober;4,248;99,000;4293964;4119006;2.850;2.991
+Trondheim;E+R;Alle;>= 5,6m;Oktober;0,585;99,000;519073;516055;5.259;5.519
+Trondheim;E+R;Alle;5,6m - 7,6m;Oktober;3,496;99,000;157476;152157;6.631;6.959
+Trondheim;E+R;Alle;7,6m - 12,5m;Oktober;0,018;99,000;206092;206055;9.734;10.215
+Trondheim;E+R;Alle;12,5m - 16,0m;Oktober;-23,399;99,000;51337;67019;24.999;26.235
+Trondheim;E+R;Alle;>= 16,0m;Oktober;14,692;99,000;104168;90824;30.966;32.496
+Trondheim;E+R;Yrkesdøgn;Alle;Oktober;3,945;99,000;3968283;3817667;2.800;2.939
+Trondheim;E+R;Yrkesdøgn;< 5,6m;Oktober;4,387;99,000;3497878;3350885;2.891;3.034
+Trondheim;E+R;Yrkesdøgn;>= 5,6m;Oktober;0,685;99,000;467689;464508;5.155;5.410
+Trondheim;E+R;Yrkesdøgn;5,6m - 7,6m;Oktober;3,483;99,000;142421;137627;6.689;7.020
+Trondheim;E+R;Yrkesdøgn;7,6m - 12,5m;Oktober;0,261;99,000;183271;182794;9.403;9.868
+Trondheim;E+R;Yrkesdøgn;12,5m - 16,0m;Oktober;-21,368;99,000;46547;59196;24.154;25.348
+Trondheim;E+R;Yrkesdøgn;>= 16,0m;Oktober;12,438;99,000;95450;84891;28.018;29.403
+Trondheim;E+R;Helgedøgn;Alle;Oktober;3,413;100,000;847839;819861;2.911;3.055
+Trondheim;E+R;Helgedøgn;< 5,6m;Oktober;3,641;100,000;796086;768121;2.989;3.137
+Trondheim;E+R;Helgedøgn;>= 5,6m;Oktober;-0,316;100,000;51384;51547;6.567;6.892
+Trondheim;E+R;Helgedøgn;5,6m - 7,6m;Oktober;3,613;100,000;15055;14530;7.418;7.785
+Trondheim;E+R;Helgedøgn;7,6m - 12,5m;Oktober;-1,892;100,000;22821;23261;13.197;13.849
+Trondheim;E+R;Helgedøgn;12,5m - 16,0m;Oktober;-38,770;100,000;4790;7823;32.567;34.177
+Trondheim;E+R;Helgedøgn;>= 16,0m;Oktober;46,941;100,000;8718;5933;71.139;74.656
+Trondheim;E+R;Alle;Alle;November;1,385;98,000;4523555;4461767;2.287;2.400
+Trondheim;E+R;Alle;< 5,6m;November;2,254;98,000;4073801;3983999;2.517;2.642
+Trondheim;E+R;Alle;>= 5,6m;November;-5,906;98,000;447336;475416;3.807;3.995
+Trondheim;E+R;Alle;5,6m - 7,6m;November;-2,112;98,000;136514;139459;6.256;6.565
+Trondheim;E+R;Alle;7,6m - 12,5m;November;-7,340;98,000;169482;182908;8.526;8.947
+Trondheim;E+R;Alle;12,5m - 16,0m;November;-29,697;98,000;46093;65563;24.673;25.893
+Trondheim;E+R;Alle;>= 16,0m;November;8,871;98,000;95247;87486;31.006;32.539
+Trondheim;E+R;Yrkesdøgn;Alle;November;-1,854;97,000;3553275;3620382;2.285;2.398
+Trondheim;E+R;Yrkesdøgn;< 5,6m;November;-1,148;97,000;3152519;3189143;2.481;2.603
+Trondheim;E+R;Yrkesdøgn;>= 5,6m;November;-7,136;97,000;398521;429146;3.787;3.974
+Trondheim;E+R;Yrkesdøgn;5,6m - 7,6m;November;-3,849;97,000;121424;126285;6.213;6.521
+Trondheim;E+R;Yrkesdøgn;7,6m - 12,5m;November;-8,406;97,000;150040;163810;7.760;8.144
+Trondheim;E+R;Yrkesdøgn;12,5m - 16,0m;November;-28,525;97,000;41253;57717;23.716;24.888
+Trondheim;E+R;Yrkesdøgn;>= 16,0m;November;5,496;97,000;85804;81334;26.816;28.142
+Trondheim;E+R;Helgedøgn;Alle;November;15,319;99,000;970280;841385;4.793;5.030
+Trondheim;E+R;Helgedøgn;< 5,6m;November;15,906;99,000;921282;794856;5.097;5.349
+Trondheim;E+R;Helgedøgn;>= 5,6m;November;5,500;99,000;48815;46270;5.983;6.279
+Trondheim;E+R;Helgedøgn;5,6m - 7,6m;November;14,544;99,000;15090;13174;11.299;11.858
+Trondheim;E+R;Helgedøgn;7,6m - 12,5m;November;1,801;99,000;19442;19098;19.772;20.749
+Trondheim;E+R;Helgedøgn;12,5m - 16,0m;November;-38,313;99,000;4840;7846;35.302;37.047
+Trondheim;E+R;Helgedøgn;>= 16,0m;November;53,495;99,000;9443;6152;83.898;88.046
+Trondheim;E+R;Alle;Alle;Desember;2,806;96,000;4118602;4006197;1.426;1.496
+Trondheim;E+R;Alle;< 5,6m;Desember;2,975;96,000;3772878;3663869;1.669;1.752
+Trondheim;E+R;Alle;>= 5,6m;Desember;0,936;96,000;343859;340669;4.991;5.238
+Trondheim;E+R;Alle;5,6m - 7,6m;Desember;0,948;96,000;105295;104306;4.711;4.944
+Trondheim;E+R;Alle;7,6m - 12,5m;Desember;-0,825;96,000;126414;127465;12.947;13.587
+Trondheim;E+R;Alle;12,5m - 16,0m;Desember;-20,738;96,000;37054;46749;32.476;34.081
+Trondheim;E+R;Alle;>= 16,0m;Desember;20,832;96,000;75096;62149;39.359;41.304
+Trondheim;E+R;Yrkesdøgn;Alle;Desember;6,207;96,000;3071094;2891620;1.557;1.634
+Trondheim;E+R;Yrkesdøgn;< 5,6m;Desember;6,641;96,000;2769454;2596977;1.762;1.849
+Trondheim;E+R;Yrkesdøgn;>= 5,6m;Desember;2,328;96,000;299982;293158;4.411;4.629
+Trondheim;E+R;Yrkesdøgn;5,6m - 7,6m;Desember;2,079;96,000;92275;90396;4.848;5.088
+Trondheim;E+R;Yrkesdøgn;7,6m - 12,5m;Desember;0,783;96,000;110728;109868;10.340;10.851
+Trondheim;E+R;Yrkesdøgn;12,5m - 16,0m;Desember;-16,008;96,000;31839;37907;29.853;31.329
+Trondheim;E+R;Yrkesdøgn;>= 16,0m;Desember;18,464;96,000;65140;54987;34.483;36.188
+Trondheim;E+R;Helgedøgn;Alle;Desember;-6,017;97,000;1047508;1114577;1.885;1.979
+Trondheim;E+R;Helgedøgn;< 5,6m;Desember;-5,949;97,000;1003424;1066892;2.299;2.413
+Trondheim;E+R;Helgedøgn;>= 5,6m;Desember;-7,649;97,000;43877;47511;9.674;10.152
+Trondheim;E+R;Helgedøgn;5,6m - 7,6m;Desember;-6,398;97,000;13020;13910;4.743;4.978
+Trondheim;E+R;Helgedøgn;7,6m - 12,5m;Desember;-10,860;97,000;15686;17597;31.833;33.406
+Trondheim;E+R;Helgedøgn;12,5m - 16,0m;Desember;-41,020;97,000;5215;8842;43.704;45.864
+Trondheim;E+R;Helgedøgn;>= 16,0m;Desember;39,011;97,000;9956;7162;74.833;78.532
+Trondheim;E+R;Alle;Alle;Siste 12 måneder;2,656;98,000;34119056;33236213;2.143;2.249
+Trondheim;E+R;Alle;< 5,6m;Siste 12 måneder;3,043;98,000;30692727;29786185;2.274;2.386
+Trondheim;E+R;Alle;>= 5,6m;Siste 12 måneder;-0,767;98,000;3395953;3422205;3.677;3.859
+Trondheim;E+R;Alle;5,6m - 7,6m;Siste 12 måneder;1,047;98,000;1052961;1042052;4.360;4.576
+Trondheim;E+R;Alle;7,6m - 12,5m;Siste 12 måneder;0,273;98,000;1331310;1327691;6.345;6.659
+Trondheim;E+R;Alle;12,5m - 16,0m;Siste 12 måneder;-16,933;98,000;355353;427790;18.494;19.409
+Trondheim;E+R;Alle;>= 16,0m;Siste 12 måneder;5,068;98,000;656329;624672;25.226;26.473
+Trondheim;E+R;Yrkesdøgn;Alle;Siste 12 måneder;2,607;98,000;26686691;26008587;2.447;2.568
+Trondheim;E+R;Yrkesdøgn;< 5,6m;Siste 12 måneder;3,050;98,000;23669887;22969276;2.670;2.802
+Trondheim;E+R;Yrkesdøgn;>= 5,6m;Siste 12 måneder;-0,839;98,000;2990350;3015648;3.652;3.833
+Trondheim;E+R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;0,766;98,000;926962;919916;4.228;4.437
+Trondheim;E+R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;0,401;98,000;1161819;1157180;5.939;6.232
+Trondheim;E+R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-15,875;98,000;307225;365199;16.996;17.836
+Trondheim;E+R;Yrkesdøgn;>= 16,0m;Siste 12 måneder;3,661;98,000;594344;573353;22.255;23.356
+Trondheim;E+R;Helgedøgn;Alle;Siste 12 måneder;2,833;98,000;7432365;7227626;3.204;3.363
+Trondheim;E+R;Helgedøgn;< 5,6m;Siste 12 måneder;3,021;98,000;7022840;6816909;3.158;3.314
+Trondheim;E+R;Helgedøgn;>= 5,6m;Siste 12 måneder;-0,235;98,000;405603;406557;5.608;5.885
+Trondheim;E+R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;3,163;98,000;125999;122136;6.964;7.308
+Trondheim;E+R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;-0,598;98,000;169491;170511;11.296;11.854
+Trondheim;E+R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-23,107;98,000;48128;62591;28.989;30.422
+Trondheim;E+R;Helgedøgn;>= 16,0m;Siste 12 måneder;20,784;98,000;61985;51319;60.170;63.145
+Trondheim;E+R;Alle;Alle;Hittil i år;2,656;98,000;34119056;33236213;2.143;2.249
+Trondheim;E+R;Alle;< 5,6m;Hittil i år;3,043;98,000;30692727;29786185;2.274;2.386
+Trondheim;E+R;Alle;>= 5,6m;Hittil i år;-0,767;98,000;3395953;3422205;3.677;3.859
+Trondheim;E+R;Alle;5,6m - 7,6m;Hittil i år;1,047;98,000;1052961;1042052;4.360;4.576
+Trondheim;E+R;Alle;7,6m - 12,5m;Hittil i år;0,273;98,000;1331310;1327691;6.345;6.659
+Trondheim;E+R;Alle;12,5m - 16,0m;Hittil i år;-16,933;98,000;355353;427790;18.494;19.409
+Trondheim;E+R;Alle;>= 16,0m;Hittil i år;5,068;98,000;656329;624672;25.226;26.473
+Trondheim;E+R;Yrkesdøgn;Alle;Hittil i år;2,607;98,000;26686691;26008587;2.447;2.568
+Trondheim;E+R;Yrkesdøgn;< 5,6m;Hittil i år;3,050;98,000;23669887;22969276;2.670;2.802
+Trondheim;E+R;Yrkesdøgn;>= 5,6m;Hittil i år;-0,839;98,000;2990350;3015648;3.652;3.833
+Trondheim;E+R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;0,766;98,000;926962;919916;4.228;4.437
+Trondheim;E+R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;0,401;98,000;1161819;1157180;5.939;6.232
+Trondheim;E+R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-15,875;98,000;307225;365199;16.996;17.836
+Trondheim;E+R;Yrkesdøgn;>= 16,0m;Hittil i år;3,661;98,000;594344;573353;22.255;23.356
+Trondheim;E+R;Helgedøgn;Alle;Hittil i år;2,833;98,000;7432365;7227626;3.204;3.363
+Trondheim;E+R;Helgedøgn;< 5,6m;Hittil i år;3,021;98,000;7022840;6816909;3.158;3.314
+Trondheim;E+R;Helgedøgn;>= 5,6m;Hittil i år;-0,235;98,000;405603;406557;5.608;5.885
+Trondheim;E+R;Helgedøgn;5,6m - 7,6m;Hittil i år;3,163;98,000;125999;122136;6.964;7.308
+Trondheim;E+R;Helgedøgn;7,6m - 12,5m;Hittil i år;-0,598;98,000;169491;170511;11.296;11.854
+Trondheim;E+R;Helgedøgn;12,5m - 16,0m;Hittil i år;-23,107;98,000;48128;62591;28.989;30.422
+Trondheim;E+R;Helgedøgn;>= 16,0m;Hittil i år;20,784;98,000;61985;51319;60.170;63.145
+Trondheim;E;Alle;Alle;Januar;1,851;99,000;1282449;1259142;-;-
+Trondheim;E;Alle;< 5,6m;Januar;1,896;99,000;1162765;1141127;-;-
+Trondheim;E;Alle;>= 5,6m;Januar;1,446;99,000;119462;117759;-;-
+Trondheim;E;Alle;5,6m - 7,6m;Januar;5,592;99,000;39068;36999;-;-
+Trondheim;E;Alle;7,6m - 12,5m;Januar;2,956;99,000;44194;42925;-;-
+Trondheim;E;Alle;12,5m - 16,0m;Januar;-6,800;99,000;12048;12927;-;-
+Trondheim;E;Alle;>= 16,0m;Januar;-3,035;99,000;24152;24908;-;-
+Trondheim;E;Yrkesdøgn;Alle;Januar;1,957;99,000;1044867;1024810;-;-
+Trondheim;E;Yrkesdøgn;< 5,6m;Januar;2,009;99,000;936044;917605;-;-
+Trondheim;E;Yrkesdøgn;>= 5,6m;Januar;1,547;99,000;108611;106956;-;-
+Trondheim;E;Yrkesdøgn;5,6m - 7,6m;Januar;5,964;99,000;35959;33935;-;-
+Trondheim;E;Yrkesdøgn;7,6m - 12,5m;Januar;2,764;99,000;39891;38818;-;-
+Trondheim;E;Yrkesdøgn;12,5m - 16,0m;Januar;-7,556;99,000;10472;11328;-;-
+Trondheim;E;Yrkesdøgn;>= 16,0m;Januar;-2,562;99,000;22289;22875;-;-
+Trondheim;E;Helgedøgn;Alle;Januar;1,387;99,000;237582;234332;-;-
+Trondheim;E;Helgedøgn;< 5,6m;Januar;1,431;99,000;226721;223522;-;-
+Trondheim;E;Helgedøgn;>= 5,6m;Januar;0,444;99,000;10851;10803;-;-
+Trondheim;E;Helgedøgn;5,6m - 7,6m;Januar;1,469;99,000;3109;3064;-;-
+Trondheim;E;Helgedøgn;7,6m - 12,5m;Januar;4,772;99,000;4303;4107;-;-
+Trondheim;E;Helgedøgn;12,5m - 16,0m;Januar;-1,438;99,000;1576;1599;-;-
+Trondheim;E;Helgedøgn;>= 16,0m;Januar;-8,362;99,000;1863;2033;-;-
+Trondheim;E;Alle;Alle;Februar;2,621;100,000;1195743;1165206;-;-
+Trondheim;E;Alle;< 5,6m;Februar;2,432;100,000;1081020;1055355;-;-
+Trondheim;E;Alle;>= 5,6m;Februar;4,474;100,000;114502;109599;-;-
+Trondheim;E;Alle;5,6m - 7,6m;Februar;4,641;100,000;36233;34626;-;-
+Trondheim;E;Alle;7,6m - 12,5m;Februar;6,368;100,000;42546;39999;-;-
+Trondheim;E;Alle;12,5m - 16,0m;Februar;-2,078;100,000;12255;12515;-;-
+Trondheim;E;Alle;>= 16,0m;Februar;4,493;100,000;23468;22459;-;-
+Trondheim;E;Yrkesdøgn;Alle;Februar;2,928;100,000;974571;946845;-;-
+Trondheim;E;Yrkesdøgn;< 5,6m;Februar;2,682;100,000;869853;847129;-;-
+Trondheim;E;Yrkesdøgn;>= 5,6m;Februar;5,058;100,000;104504;99473;-;-
+Trondheim;E;Yrkesdøgn;5,6m - 7,6m;Februar;5,194;100,000;33356;31709;-;-
+Trondheim;E;Yrkesdøgn;7,6m - 12,5m;Februar;7,408;100,000;38741;36069;-;-
+Trondheim;E;Yrkesdøgn;12,5m - 16,0m;Februar;-2,114;100,000;10744;10976;-;-
+Trondheim;E;Yrkesdøgn;>= 16,0m;Februar;4,556;100,000;21663;20719;-;-
+Trondheim;E;Helgedøgn;Alle;Februar;1,287;100,000;221172;218361;-;-
+Trondheim;E;Helgedøgn;< 5,6m;Februar;1,412;100,000;211167;208226;-;-
+Trondheim;E;Helgedøgn;>= 5,6m;Februar;-1,264;100,000;9998;10126;-;-
+Trondheim;E;Helgedøgn;5,6m - 7,6m;Februar;-1,371;100,000;2877;2917;-;-
+Trondheim;E;Helgedøgn;7,6m - 12,5m;Februar;-3,181;100,000;3805;3930;-;-
+Trondheim;E;Helgedøgn;12,5m - 16,0m;Februar;-1,819;100,000;1511;1539;-;-
+Trondheim;E;Helgedøgn;>= 16,0m;Februar;3,736;100,000;1805;1740;-;-
+Trondheim;E;Alle;Alle;Mars;8,920;100,000;1327041;1218363;-;-
+Trondheim;E;Alle;< 5,6m;Mars;8,767;100,000;1199245;1102577;-;-
+Trondheim;E;Alle;>= 5,6m;Mars;8,928;100,000;125831;115518;-;-
+Trondheim;E;Alle;5,6m - 7,6m;Mars;10,228;100,000;40317;36576;-;-
+Trondheim;E;Alle;7,6m - 12,5m;Mars;12,295;100,000;46791;41668;-;-
+Trondheim;E;Alle;12,5m - 16,0m;Mars;6,884;100,000;13430;12565;-;-
+Trondheim;E;Alle;>= 16,0m;Mars;2,364;100,000;25293;24709;-;-
+Trondheim;E;Yrkesdøgn;Alle;Mars;9,849;100,000;1041237;947883;-;-
+Trondheim;E;Yrkesdøgn;< 5,6m;Mars;9,672;100,000;927722;845905;-;-
+Trondheim;E;Yrkesdøgn;>= 5,6m;Mars;9,816;100,000;111702;101717;-;-
+Trondheim;E;Yrkesdøgn;5,6m - 7,6m;Mars;10,568;100,000;35824;32400;-;-
+Trondheim;E;Yrkesdøgn;7,6m - 12,5m;Mars;13,431;100,000;41308;36417;-;-
+Trondheim;E;Yrkesdøgn;12,5m - 16,0m;Mars;7,759;100,000;11527;10697;-;-
+Trondheim;E;Yrkesdøgn;>= 16,0m;Mars;3,783;100,000;23043;22203;-;-
+Trondheim;E;Helgedøgn;Alle;Mars;5,665;100,000;285804;270480;-;-
+Trondheim;E;Helgedøgn;< 5,6m;Mars;5,786;100,000;271523;256672;-;-
+Trondheim;E;Helgedøgn;>= 5,6m;Mars;2,377;100,000;14129;13801;-;-
+Trondheim;E;Helgedøgn;5,6m - 7,6m;Mars;7,591;100,000;4493;4176;-;-
+Trondheim;E;Helgedøgn;7,6m - 12,5m;Mars;4,418;100,000;5483;5251;-;-
+Trondheim;E;Helgedøgn;12,5m - 16,0m;Mars;1,874;100,000;1903;1868;-;-
+Trondheim;E;Helgedøgn;>= 16,0m;Mars;-10,215;100,000;2250;2506;-;-
+Trondheim;E;Alle;Alle;April;-6,466;100,000;1212019;1295805;-;-
+Trondheim;E;Alle;< 5,6m;April;-6,629;100,000;1079847;1156516;-;-
+Trondheim;E;Alle;>= 5,6m;April;-7,127;100,000;127609;137402;-;-
+Trondheim;E;Alle;5,6m - 7,6m;April;-9,116;100,000;39478;43438;-;-
+Trondheim;E;Alle;7,6m - 12,5m;April;-1,530;100,000;52143;52953;-;-
+Trondheim;E;Alle;12,5m - 16,0m;April;-22,655;100,000;10536;13622;-;-
+Trondheim;E;Alle;>= 16,0m;April;-7,072;100,000;25452;27389;-;-
+Trondheim;E;Yrkesdøgn;Alle;April;-7,637;100,000;932865;1010000;-;-
+Trondheim;E;Yrkesdøgn;< 5,6m;April;-7,718;100,000;819787;888346;-;-
+Trondheim;E;Yrkesdøgn;>= 5,6m;April;-8,790;100,000;109569;120128;-;-
+Trondheim;E;Yrkesdøgn;5,6m - 7,6m;April;-11,278;100,000;34023;38348;-;-
+Trondheim;E;Yrkesdøgn;7,6m - 12,5m;April;-2,958;100,000;44288;45638;-;-
+Trondheim;E;Yrkesdøgn;12,5m - 16,0m;April;-25,687;100,000;8578;11543;-;-
+Trondheim;E;Yrkesdøgn;>= 16,0m;April;-7,801;100,000;22680;24599;-;-
+Trondheim;E;Helgedøgn;Alle;April;-2,327;100,000;279154;285805;-;-
+Trondheim;E;Helgedøgn;< 5,6m;April;-3,024;100,000;260060;268170;-;-
+Trondheim;E;Helgedøgn;>= 5,6m;April;4,434;100,000;18040;17274;-;-
+Trondheim;E;Helgedøgn;5,6m - 7,6m;April;7,171;100,000;5455;5090;-;-
+Trondheim;E;Helgedøgn;7,6m - 12,5m;April;7,382;100,000;7855;7315;-;-
+Trondheim;E;Helgedøgn;12,5m - 16,0m;April;-5,820;100,000;1958;2079;-;-
+Trondheim;E;Helgedøgn;>= 16,0m;April;-0,645;100,000;2772;2790;-;-
+Trondheim;E;Alle;Alle;Mai;7,384;95,000;1811202;1686653;3.652;32.810
+Trondheim;E;Alle;< 5,6m;Mai;8,106;95,000;1606648;1486178;4.309;38.715
+Trondheim;E;Alle;>= 5,6m;Mai;2,756;95,000;204221;198743;0.661;5.935
+Trondheim;E;Alle;5,6m - 7,6m;Mai;2,733;95,000;59963;58368;2.977;26.750
+Trondheim;E;Alle;7,6m - 12,5m;Mai;2,667;95,000;85583;83360;2.376;21.347
+Trondheim;E;Alle;12,5m - 16,0m;Mai;-7,550;95,000;17595;19032;0.401;3.600
+Trondheim;E;Alle;>= 16,0m;Mai;8,154;95,000;41080;37983;5.152;46.285
+Trondheim;E;Yrkesdøgn;Alle;Mai;12,560;93,000;1376653;1223036;2.345;21.070
+Trondheim;E;Yrkesdøgn;< 5,6m;Mai;13,525;93,000;1201990;1058791;2.161;19.415
+Trondheim;E;Yrkesdøgn;>= 5,6m;Mai;6,867;93,000;174352;163148;3.678;33.048
+Trondheim;E;Yrkesdøgn;5,6m - 7,6m;Mai;5,944;93,000;51120;48252;7.977;71.672
+Trondheim;E;Yrkesdøgn;7,6m - 12,5m;Mai;7,773;93,000;72084;66885;1.218;10.945
+Trondheim;E;Yrkesdøgn;12,5m - 16,0m;Mai;-5,294;93,000;14651;15470;0.853;7.663
+Trondheim;E;Yrkesdøgn;>= 16,0m;Mai;12,157;93,000;36497;32541;6.018;54.070
+Trondheim;E;Helgedøgn;Alle;Mai;-6,270;97,000;434549;463617;12.587;113.086
+Trondheim;E;Helgedøgn;< 5,6m;Mai;-5,318;97,000;404658;427387;13.239;118.952
+Trondheim;E;Helgedøgn;>= 5,6m;Mai;-16,087;97,000;29869;35595;5.914;53.137
+Trondheim;E;Helgedøgn;5,6m - 7,6m;Mai;-12,584;97,000;8843;10116;8.487;76.248
+Trondheim;E;Helgedøgn;7,6m - 12,5m;Mai;-18,064;97,000;13499;16475;5.503;49.441
+Trondheim;E;Helgedøgn;12,5m - 16,0m;Mai;-17,350;97,000;2944;3562;0.339;3.043
+Trondheim;E;Helgedøgn;>= 16,0m;Mai;-15,785;97,000;4583;5442;5.588;50.206
+Trondheim;E;Alle;Alle;Juni;-2,227;99,000;1275440;1304485;-;-
+Trondheim;E;Alle;< 5,6m;Juni;-2,027;99,000;1116993;1140099;-;-
+Trondheim;E;Alle;>= 5,6m;Juni;-3,655;99,000;156165;162090;-;-
+Trondheim;E;Alle;5,6m - 7,6m;Juni;-2,476;99,000;49556;50814;-;-
+Trondheim;E;Alle;7,6m - 12,5m;Juni;-2,625;99,000;64028;65754;-;-
+Trondheim;E;Alle;12,5m - 16,0m;Juni;-11,813;99,000;14064;15948;-;-
+Trondheim;E;Alle;>= 16,0m;Juni;-3,574;99,000;28517;29574;-;-
+Trondheim;E;Yrkesdøgn;Alle;Juni;-8,361;99,000;956351;1043602;-;-
+Trondheim;E;Yrkesdøgn;< 5,6m;Juni;-8,500;99,000;825547;902233;-;-
+Trondheim;E;Yrkesdøgn;>= 5,6m;Juni;-7,720;99,000;129030;139825;-;-
+Trondheim;E;Yrkesdøgn;5,6m - 7,6m;Juni;-7,155;99,000;40511;43633;-;-
+Trondheim;E;Yrkesdøgn;7,6m - 12,5m;Juni;-6,779;99,000;52075;55862;-;-
+Trondheim;E;Yrkesdøgn;12,5m - 16,0m;Juni;-16,847;99,000;11367;13670;-;-
+Trondheim;E;Yrkesdøgn;>= 16,0m;Juni;-5,938;99,000;25077;26660;-;-
+Trondheim;E;Helgedøgn;Alle;Juni;22,311;100,000;319089;260883;-;-
+Trondheim;E;Helgedøgn;< 5,6m;Juni;22,525;100,000;291446;237866;-;-
+Trondheim;E;Helgedøgn;>= 5,6m;Juni;21,873;100,000;27135;22265;-;-
+Trondheim;E;Helgedøgn;5,6m - 7,6m;Juni;25,957;100,000;9045;7181;-;-
+Trondheim;E;Helgedøgn;7,6m - 12,5m;Juni;20,835;100,000;11953;9892;-;-
+Trondheim;E;Helgedøgn;12,5m - 16,0m;Juni;18,393;100,000;2697;2278;-;-
+Trondheim;E;Helgedøgn;>= 16,0m;Juni;18,051;100,000;3440;2914;-;-
+Trondheim;E;Alle;Alle;Juli;-;-;-;-;-;-
+Trondheim;E;Alle;< 5,6m;Juli;-;-;-;-;-;-
+Trondheim;E;Alle;>= 5,6m;Juli;-;-;-;-;-;-
+Trondheim;E;Alle;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Trondheim;E;Alle;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Trondheim;E;Alle;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Trondheim;E;Alle;>= 16,0m;Juli;-;-;-;-;-;-
+Trondheim;E;Yrkesdøgn;Alle;Juli;-;-;-;-;-;-
+Trondheim;E;Yrkesdøgn;< 5,6m;Juli;-;-;-;-;-;-
+Trondheim;E;Yrkesdøgn;>= 5,6m;Juli;-;-;-;-;-;-
+Trondheim;E;Yrkesdøgn;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Trondheim;E;Yrkesdøgn;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Trondheim;E;Yrkesdøgn;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Trondheim;E;Yrkesdøgn;>= 16,0m;Juli;-;-;-;-;-;-
+Trondheim;E;Helgedøgn;Alle;Juli;-;-;-;-;-;-
+Trondheim;E;Helgedøgn;< 5,6m;Juli;-;-;-;-;-;-
+Trondheim;E;Helgedøgn;>= 5,6m;Juli;-;-;-;-;-;-
+Trondheim;E;Helgedøgn;5,6m - 7,6m;Juli;-;-;-;-;-;-
+Trondheim;E;Helgedøgn;7,6m - 12,5m;Juli;-;-;-;-;-;-
+Trondheim;E;Helgedøgn;12,5m - 16,0m;Juli;-;-;-;-;-;-
+Trondheim;E;Helgedøgn;>= 16,0m;Juli;-;-;-;-;-;-
+Trondheim;E;Alle;Alle;August;1,059;100,000;1606722;1589884;5.693;51.153
+Trondheim;E;Alle;< 5,6m;August;0,476;100,000;1417155;1410436;5.028;45.174
+Trondheim;E;Alle;>= 5,6m;August;4,742;100,000;185841;177428;10.747;96.556
+Trondheim;E;Alle;5,6m - 7,6m;August;2,655;100,000;66391;64674;10.680;95.952
+Trondheim;E;Alle;7,6m - 12,5m;August;4,917;100,000;72308;68919;8.959;80.490
+Trondheim;E;Alle;12,5m - 16,0m;August;-1,217;100,000;14290;14466;9.295;83.515
+Trondheim;E;Alle;>= 16,0m;August;11,859;100,000;32852;29369;12.538;112.652
+Trondheim;E;Yrkesdøgn;Alle;August;-1,556;100,000;1283779;1304065;5.515;49.548
+Trondheim;E;Yrkesdøgn;< 5,6m;August;-2,269;100,000;1121265;1147301;4.739;42.575
+Trondheim;E;Yrkesdøgn;>= 5,6m;August;2,943;100,000;159696;155131;11.086;99.602
+Trondheim;E;Yrkesdøgn;5,6m - 7,6m;August;0,669;100,000;56256;55882;10.987;98.712
+Trondheim;E;Yrkesdøgn;7,6m - 12,5m;August;3,559;100,000;61950;59821;9.800;88.053
+Trondheim;E;Yrkesdøgn;12,5m - 16,0m;August;-2,583;100,000;12184;12507;8.329;74.833
+Trondheim;E;Yrkesdøgn;>= 16,0m;August;8,859;100,000;29306;26921;11.156;100.237
+Trondheim;E;Helgedøgn;Alle;August;12,989;100,000;322943;285819;8.167;73.374
+Trondheim;E;Helgedøgn;< 5,6m;August;12,448;100,000;295890;263135;7.714;69.308
+Trondheim;E;Helgedøgn;>= 5,6m;August;17,258;100,000;26145;22297;12.053;108.293
+Trondheim;E;Helgedøgn;5,6m - 7,6m;August;15,275;100,000;10135;8792;11.733;105.419
+Trondheim;E;Helgedøgn;7,6m - 12,5m;August;13,849;100,000;10358;9098;7.313;65.708
+Trondheim;E;Helgedøgn;12,5m - 16,0m;August;7,504;100,000;2106;1959;15.587;140.045
+Trondheim;E;Helgedøgn;>= 16,0m;August;44,853;100,000;3546;2448;31.448;282.545
+Trondheim;E;Alle;Alle;September;5,776;89,000;2987831;2824684;5.635;8.966
+Trondheim;E;Alle;< 5,6m;September;6,376;89,000;2661247;2501739;5.948;9.464
+Trondheim;E;Alle;>= 5,6m;September;2,072;89,000;324996;318398;5.222;8.309
+Trondheim;E;Alle;5,6m - 7,6m;September;5,106;89,000;101674;96735;7.072;11.252
+Trondheim;E;Alle;7,6m - 12,5m;September;1,926;89,000;128165;125743;9.323;14.835
+Trondheim;E;Alle;12,5m - 16,0m;September;-30,611;89,000;28002;40355;15.219;24.217
+Trondheim;E;Alle;>= 16,0m;September;20,858;89,000;67155;55565;21.870;34.800
+Trondheim;E;Yrkesdøgn;Alle;September;8,383;88,000;2313296;2134379;6.820;10.851
+Trondheim;E;Yrkesdøgn;< 5,6m;September;9,214;88,000;2033136;1861603;7.187;11.436
+Trondheim;E;Yrkesdøgn;>= 5,6m;September;3,516;88,000;278770;269302;6.244;9.936
+Trondheim;E;Yrkesdøgn;5,6m - 7,6m;September;6,535;88,000;87464;82099;7.735;12.309
+Trondheim;E;Yrkesdøgn;7,6m - 12,5m;September;4,505;88,000;108017;103361;11.071;17.617
+Trondheim;E;Yrkesdøgn;12,5m - 16,0m;September;-29,549;88,000;23992;34055;13.581;21.611
+Trondheim;E;Yrkesdøgn;>= 16,0m;September;19,101;88,000;59297;49787;16.184;25.752
+Trondheim;E;Helgedøgn;Alle;September;-2,284;90,000;674535;690305;5.461;8.690
+Trondheim;E;Helgedøgn;< 5,6m;September;-1,879;90,000;628111;640136;5.610;8.927
+Trondheim;E;Helgedøgn;>= 5,6m;September;-5,846;90,000;46226;49096;3.888;6.186
+Trondheim;E;Helgedøgn;5,6m - 7,6m;September;-2,911;90,000;14210;14636;8.504;13.532
+Trondheim;E;Helgedøgn;7,6m - 12,5m;September;-9,981;90,000;20148;22382;2.178;3.466
+Trondheim;E;Helgedøgn;12,5m - 16,0m;September;-36,349;90,000;4010;6300;27.524;43.796
+Trondheim;E;Helgedøgn;>= 16,0m;September;35,999;90,000;7858;5778;69.984;111.360
+Trondheim;E;Alle;Alle;Oktober;4,103;99,000;3829599;3678659;2.825;4.495
+Trondheim;E;Alle;< 5,6m;Oktober;4,522;99,000;3403836;3256574;2.667;4.244
+Trondheim;E;Alle;>= 5,6m;Oktober;0,747;99,000;423836;420695;6.028;9.591
+Trondheim;E;Alle;5,6m - 7,6m;Oktober;4,032;99,000;129464;124446;7.548;12.010
+Trondheim;E;Alle;7,6m - 12,5m;Oktober;-2,117;99,000;163798;167340;8.131;12.938
+Trondheim;E;Alle;12,5m - 16,0m;Oktober;-28,334;99,000;39207;54708;22.837;36.338
+Trondheim;E;Alle;>= 16,0m;Oktober;23,134;99,000;91367;74201;26.812;42.663
+Trondheim;E;Yrkesdøgn;Alle;Oktober;4,115;99,000;3159961;3035081;2.980;4.741
+Trondheim;E;Yrkesdøgn;< 5,6m;Oktober;4,568;99,000;2778268;2656898;2.850;4.535
+Trondheim;E;Yrkesdøgn;>= 5,6m;Oktober;0,839;99,000;380111;376947;5.958;9.480
+Trondheim;E;Yrkesdøgn;5,6m - 7,6m;Oktober;3,993;99,000;116620;112142;7.670;12.204
+Trondheim;E;Yrkesdøgn;7,6m - 12,5m;Oktober;-1,865;99,000;144843;147595;7.969;12.681
+Trondheim;E;Yrkesdøgn;12,5m - 16,0m;Oktober;-26,241;99,000;35590;48252;21.166;33.679
+Trondheim;E;Yrkesdøgn;>= 16,0m;Oktober;20,447;99,000;83058;68958;23.564;37.495
+Trondheim;E;Helgedøgn;Alle;Oktober;4,049;100,000;669638;643578;2.215;3.524
+Trondheim;E;Helgedøgn;< 5,6m;Oktober;4,318;100,000;625568;599676;1.998;3.179
+Trondheim;E;Helgedøgn;>= 5,6m;Oktober;-0,053;100,000;43725;43748;6.960;11.074
+Trondheim;E;Helgedøgn;5,6m - 7,6m;Oktober;4,389;100,000;12844;12304;7.981;12.700
+Trondheim;E;Helgedøgn;7,6m - 12,5m;Oktober;-4,001;100,000;18955;19745;10.253;16.315
+Trondheim;E;Helgedøgn;12,5m - 16,0m;Oktober;-43,975;100,000;3617;6456;34.877;55.497
+Trondheim;E;Helgedøgn;>= 16,0m;Oktober;58,478;100,000;8309;5243;67.537;107.466
+Trondheim;E;Alle;Alle;November;1,724;98,000;3588575;3527770;2.248;3.577
+Trondheim;E;Alle;< 5,6m;November;2,644;98,000;3222780;3139769;2.345;3.731
+Trondheim;E;Alle;>= 5,6m;November;-5,762;98,000;364332;386610;4.313;6.862
+Trondheim;E;Alle;5,6m - 7,6m;November;-1,259;98,000;112076;113505;6.203;9.870
+Trondheim;E;Alle;7,6m - 12,5m;November;-9,370;98,000;133706;147529;6.741;10.726
+Trondheim;E;Alle;12,5m - 16,0m;November;-35,800;98,000;34454;53667;17.471;27.801
+Trondheim;E;Alle;>= 16,0m;November;16,948;98,000;84096;71909;27.400;43.600
+Trondheim;E;Yrkesdøgn;Alle;November;-1,714;97,000;2825448;2874723;2.558;4.070
+Trondheim;E;Yrkesdøgn;< 5,6m;November;-0,995;97,000;2500464;2525606;2.693;4.286
+Trondheim;E;Yrkesdøgn;>= 5,6m;November;-6,971;97,000;323677;347931;4.367;6.949
+Trondheim;E;Yrkesdøgn;5,6m - 7,6m;November;-3,123;97,000;99448;102654;6.228;9.910
+Trondheim;E;Yrkesdøgn;7,6m - 12,5m;November;-10,174;97,000;118247;131640;6.758;10.753
+Trondheim;E;Yrkesdøgn;12,5m - 16,0m;November;-34,457;97,000;30943;47210;15.027;23.911
+Trondheim;E;Yrkesdøgn;>= 16,0m;November;12,965;97,000;75039;66427;22.772;36.236
+Trondheim;E;Helgedøgn;Alle;November;16,856;100,000;763127;653047;3.180;5.060
+Trondheim;E;Helgedøgn;< 5,6m;November;17,610;100,000;722316;614163;3.065;4.877
+Trondheim;E;Helgedøgn;>= 5,6m;November;5,109;100,000;40655;38679;5.725;9.110
+Trondheim;E;Helgedøgn;5,6m - 7,6m;November;16,376;100,000;12628;10851;11.778;18.741
+Trondheim;E;Helgedøgn;7,6m - 12,5m;November;-2,706;100,000;15459;15889;7.887;12.549
+Trondheim;E;Helgedøgn;12,5m - 16,0m;November;-45,625;100,000;3511;6457;35.453;56.413
+Trondheim;E;Helgedøgn;>= 16,0m;November;65,213;100,000;9057;5482;81.840;130.225
+Trondheim;E;Alle;Alle;Desember;3,061;95,000;3251283;3154716;1.334;2.123
+Trondheim;E;Alle;< 5,6m;Desember;3,291;95,000;2970987;2876317;1.390;2.212
+Trondheim;E;Alle;>= 5,6m;Desember;0,639;95,000;279155;277382;5.041;8.021
+Trondheim;E;Alle;5,6m - 7,6m;Desember;1,424;95,000;86127;84918;5.288;8.415
+Trondheim;E;Alle;7,6m - 12,5m;Desember;-4,254;95,000;98501;102877;7.630;12.141
+Trondheim;E;Alle;12,5m - 16,0m;Desember;-29,044;95,000;27631;38941;25.179;40.065
+Trondheim;E;Alle;>= 16,0m;Desember;32,085;95,000;66896;50646;32.872;52.307
+Trondheim;E;Yrkesdøgn;Alle;Desember;6,276;94,000;2426733;2283428;1.600;2.546
+Trondheim;E;Yrkesdøgn;< 5,6m;Desember;6,737;94,000;2182512;2044759;1.610;2.562
+Trondheim;E;Yrkesdøgn;>= 5,6m;Desember;2,302;94,000;243266;237791;4.599;7.318
+Trondheim;E;Yrkesdøgn;5,6m - 7,6m;Desember;2,572;94,000;75261;73374;5.490;8.736
+Trondheim;E;Yrkesdøgn;7,6m - 12,5m;Desember;-1,821;94,000;86847;88458;7.067;11.245
+Trondheim;E;Yrkesdøgn;12,5m - 16,0m;Desember;-24,058;94,000;23794;31332;21.225;33.774
+Trondheim;E;Yrkesdøgn;>= 16,0m;Desember;28,541;94,000;57364;44627;28.539;45.412
+Trondheim;E;Helgedøgn;Alle;Desember;-5,364;95,000;824550;871288;1.347;2.143
+Trondheim;E;Helgedøgn;< 5,6m;Desember;-5,181;95,000;788475;831558;1.700;2.705
+Trondheim;E;Helgedøgn;>= 5,6m;Desember;-9,351;95,000;35889;39591;8.114;12.912
+Trondheim;E;Helgedøgn;5,6m - 7,6m;Desember;-5,873;95,000;10866;11544;4.957;7.888
+Trondheim;E;Helgedøgn;7,6m - 12,5m;Desember;-19,176;95,000;11654;14419;10.976;17.465
+Trondheim;E;Helgedøgn;12,5m - 16,0m;Desember;-49,573;95,000;3837;7609;40.506;64.454
+Trondheim;E;Helgedøgn;>= 16,0m;Desember;58,365;95,000;9532;6019;62.087;98.793
+Trondheim;E;Alle;Alle;Siste 12 måneder;2,918;96,000;23367904;22705367;2.297;3.655
+Trondheim;E;Alle;< 5,6m;Siste 12 måneder;3,236;96,000;20922523;20266687;2.351;3.741
+Trondheim;E;Alle;>= 5,6m;Siste 12 måneder;0,179;96,000;2425950;2421624;4.425;7.042
+Trondheim;E;Alle;5,6m - 7,6m;Siste 12 måneder;2,046;96,000;760347;745099;5.030;8.004
+Trondheim;E;Alle;7,6m - 12,5m;Siste 12 måneder;-0,778;96,000;931763;939067;8.168;12.997
+Trondheim;E;Alle;12,5m - 16,0m;Siste 12 måneder;-22,592;96,000;223512;288746;21.226;33.775
+Trondheim;E;Alle;>= 16,0m;Siste 12 måneder;13,732;96,000;510328;448712;26.444;42.078
+Trondheim;E;Yrkesdøgn;Alle;Siste 12 måneder;2,849;96,000;18335761;17827852;2.920;4.647
+Trondheim;E;Yrkesdøgn;< 5,6m;Siste 12 måneder;3,188;96,000;16196588;15696176;3.133;4.986
+Trondheim;E;Yrkesdøgn;>= 5,6m;Siste 12 måneder;0,233;96,000;2123288;2118349;4.229;6.729
+Trondheim;E;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;1,744;96,000;665842;654428;4.989;7.939
+Trondheim;E;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;-0,280;96,000;808291;810564;8.030;12.777
+Trondheim;E;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-21,534;96,000;193842;247040;18.372;29.234
+Trondheim;E;Yrkesdøgn;>= 16,0m;Siste 12 måneder;12,059;96,000;455313;406317;22.163;35.266
+Trondheim;E;Helgedøgn;Alle;Siste 12 måneder;3,170;97,000;5032143;4877515;3.797;6.041
+Trondheim;E;Helgedøgn;< 5,6m;Siste 12 måneder;3,401;97,000;4725935;4570511;3.669;5.838
+Trondheim;E;Helgedøgn;>= 5,6m;Siste 12 måneder;-0,202;97,000;302662;303275;7.282;11.587
+Trondheim;E;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;4,228;97,000;94505;90671;7.604;12.100
+Trondheim;E;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;-3,915;97,000;123472;128503;9.643;15.344
+Trondheim;E;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-28,859;97,000;29670;41706;37.855;60.236
+Trondheim;E;Helgedøgn;>= 16,0m;Siste 12 måneder;29,768;97,000;55015;42395;68.698;109.314
+Trondheim;E;Alle;Alle;Hittil i år;2,918;96,000;23367904;22705367;2.297;3.655
+Trondheim;E;Alle;< 5,6m;Hittil i år;3,236;96,000;20922523;20266687;2.351;3.741
+Trondheim;E;Alle;>= 5,6m;Hittil i år;0,179;96,000;2425950;2421624;4.425;7.042
+Trondheim;E;Alle;5,6m - 7,6m;Hittil i år;2,046;96,000;760347;745099;5.030;8.004
+Trondheim;E;Alle;7,6m - 12,5m;Hittil i år;-0,778;96,000;931763;939067;8.168;12.997
+Trondheim;E;Alle;12,5m - 16,0m;Hittil i år;-22,592;96,000;223512;288746;21.226;33.775
+Trondheim;E;Alle;>= 16,0m;Hittil i år;13,732;96,000;510328;448712;26.444;42.078
+Trondheim;E;Yrkesdøgn;Alle;Hittil i år;2,849;96,000;18335761;17827852;2.920;4.647
+Trondheim;E;Yrkesdøgn;< 5,6m;Hittil i år;3,188;96,000;16196588;15696176;3.133;4.986
+Trondheim;E;Yrkesdøgn;>= 5,6m;Hittil i år;0,233;96,000;2123288;2118349;4.229;6.729
+Trondheim;E;Yrkesdøgn;5,6m - 7,6m;Hittil i år;1,744;96,000;665842;654428;4.989;7.939
+Trondheim;E;Yrkesdøgn;7,6m - 12,5m;Hittil i år;-0,280;96,000;808291;810564;8.030;12.777
+Trondheim;E;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-21,534;96,000;193842;247040;18.372;29.234
+Trondheim;E;Yrkesdøgn;>= 16,0m;Hittil i år;12,059;96,000;455313;406317;22.163;35.266
+Trondheim;E;Helgedøgn;Alle;Hittil i år;3,170;97,000;5032143;4877515;3.797;6.041
+Trondheim;E;Helgedøgn;< 5,6m;Hittil i år;3,401;97,000;4725935;4570511;3.669;5.838
+Trondheim;E;Helgedøgn;>= 5,6m;Hittil i år;-0,202;97,000;302662;303275;7.282;11.587
+Trondheim;E;Helgedøgn;5,6m - 7,6m;Hittil i år;4,228;97,000;94505;90671;7.604;12.100
+Trondheim;E;Helgedøgn;7,6m - 12,5m;Hittil i år;-3,915;97,000;123472;128503;9.643;15.344
+Trondheim;E;Helgedøgn;12,5m - 16,0m;Hittil i år;-28,859;97,000;29670;41706;37.855;60.236
+Trondheim;E;Helgedøgn;>= 16,0m;Hittil i år;29,768;97,000;55015;42395;68.698;109.314
+Trondheim;E+R+F+K;Alle;Alle;Januar;0,710;99,000;2874179;2853922;2.335;2.899
+Trondheim;E+R+F+K;Alle;< 5,6m;Januar;0,683;99,000;2626738;2608910;2.750;3.414
+Trondheim;E+R+F+K;Alle;>= 5,6m;Januar;1,014;99,000;245959;243491;4.904;6.089
+Trondheim;E+R+F+K;Alle;5,6m - 7,6m;Januar;3,129;99,000;83233;80708;9.992;12.407
+Trondheim;E+R+F+K;Alle;7,6m - 12,5m;Januar;3,513;99,000;87871;84889;4.142;5.143
+Trondheim;E+R+F+K;Alle;12,5m - 16,0m;Januar;-3,026;99,000;34965;36056;7.600;9.436
+Trondheim;E+R+F+K;Alle;>= 16,0m;Januar;-4,656;99,000;39890;41838;10.345;12.845
+Trondheim;E+R+F+K;Yrkesdøgn;Alle;Januar;0,680;99,000;2319095;2303437;2.430;3.017
+Trondheim;E+R+F+K;Yrkesdøgn;< 5,6m;Januar;0,645;99,000;2094962;2081533;2.868;3.561
+Trondheim;E+R+F+K;Yrkesdøgn;>= 5,6m;Januar;1,037;99,000;222757;220470;4.840;6.010
+Trondheim;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Januar;3,575;99,000;76187;73557;10.113;12.556
+Trondheim;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Januar;3,336;99,000;79450;76885;3.568;4.430
+Trondheim;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Januar;-3,709;99,000;29933;31086;8.392;10.420
+Trondheim;E+R+F+K;Yrkesdøgn;>= 16,0m;Januar;-4,507;99,000;37187;38942;10.752;13.351
+Trondheim;E+R+F+K;Helgedøgn;Alle;Januar;0,835;99,000;555084;550485;2.834;3.519
+Trondheim;E+R+F+K;Helgedøgn;< 5,6m;Januar;0,834;99,000;531776;527377;3.159;3.923
+Trondheim;E+R+F+K;Helgedøgn;>= 5,6m;Januar;0,786;99,000;23202;23021;6.022;7.477
+Trondheim;E+R+F+K;Helgedøgn;5,6m - 7,6m;Januar;-1,468;99,000;7046;7151;9.963;12.371
+Trondheim;E+R+F+K;Helgedøgn;7,6m - 12,5m;Januar;5,210;99,000;8421;8004;9.938;12.339
+Trondheim;E+R+F+K;Helgedøgn;12,5m - 16,0m;Januar;1,247;99,000;5032;4970;5.029;6.245
+Trondheim;E+R+F+K;Helgedøgn;>= 16,0m;Januar;-6,664;99,000;2703;2896;8.258;10.254
+Trondheim;E+R+F+K;Alle;Alle;Februar;1,031;96,000;2859990;2830807;2.586;2.714
+Trondheim;E+R+F+K;Alle;< 5,6m;Februar;1,014;96,000;2614805;2588560;2.606;2.735
+Trondheim;E+R+F+K;Alle;>= 5,6m;Februar;1,261;96,000;242396;239378;8.073;8.472
+Trondheim;E+R+F+K;Alle;5,6m - 7,6m;Februar;2,332;96,000;82315;80439;10.924;11.464
+Trondheim;E+R+F+K;Alle;7,6m - 12,5m;Februar;5,350;96,000;87396;82958;6.949;7.292
+Trondheim;E+R+F+K;Alle;12,5m - 16,0m;Februar;-7,055;96,000;34427;37040;6.963;7.307
+Trondheim;E+R+F+K;Alle;>= 16,0m;Februar;-1,754;96,000;38258;38941;13.148;13.798
+Trondheim;E+R+F+K;Yrkesdøgn;Alle;Februar;1,229;97,000;2307187;2279183;2.606;2.735
+Trondheim;E+R+F+K;Yrkesdøgn;< 5,6m;Februar;1,168;97,000;2084348;2060294;2.625;2.755
+Trondheim;E+R+F+K;Yrkesdøgn;>= 5,6m;Februar;1,877;97,000;220344;216284;8.563;8.986
+Trondheim;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Februar;3,148;97,000;75488;73184;11.336;11.896
+Trondheim;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Februar;6,605;97,000;79574;74644;7.602;7.978
+Trondheim;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Februar;-7,443;97,000;29645;32029;7.748;8.131
+Trondheim;E+R+F+K;Yrkesdøgn;>= 16,0m;Februar;-2,169;97,000;35637;36427;13.154;13.804
+Trondheim;E+R+F+K;Helgedøgn;Alle;Februar;0,214;94,000;552803;551624;3.063;3.214
+Trondheim;E+R+F+K;Helgedøgn;< 5,6m;Februar;0,415;94,000;530457;528266;3.098;3.251
+Trondheim;E+R+F+K;Helgedøgn;>= 5,6m;Februar;-4,512;94,000;22052;23094;4.665;4.895
+Trondheim;E+R+F+K;Helgedøgn;5,6m - 7,6m;Februar;-5,899;94,000;6827;7255;8.890;9.330
+Trondheim;E+R+F+K;Helgedøgn;7,6m - 12,5m;Februar;-5,918;94,000;7822;8314;4.894;5.136
+Trondheim;E+R+F+K;Helgedøgn;12,5m - 16,0m;Februar;-4,570;94,000;4782;5011;5.827;6.115
+Trondheim;E+R+F+K;Helgedøgn;>= 16,0m;Februar;4,256;94,000;2621;2514;18.100;18.995
+Trondheim;E+R+F+K;Alle;Alle;Mars;9,505;99,000;3264018;2980706;3.021;3.170
+Trondheim;E+R+F+K;Alle;< 5,6m;Mars;9,484;99,000;2990450;2731416;3.242;3.403
+Trondheim;E+R+F+K;Alle;>= 5,6m;Mars;8,921;99,000;267907;245964;8.960;9.403
+Trondheim;E+R+F+K;Alle;5,6m - 7,6m;Mars;11,429;99,000;91439;82060;11.047;11.593
+Trondheim;E+R+F+K;Alle;7,6m - 12,5m;Mars;13,296;99,000;96177;84890;8.440;8.858
+Trondheim;E+R+F+K;Alle;12,5m - 16,0m;Mars;2,040;99,000;38662;37889;9.491;9.961
+Trondheim;E+R+F+K;Alle;>= 16,0m;Mars;1,226;99,000;41629;41125;13.982;14.674
+Trondheim;E+R+F+K;Yrkesdøgn;Alle;Mars;10,020;98,000;2518398;2289036;3.531;3.706
+Trondheim;E+R+F+K;Yrkesdøgn;< 5,6m;Mars;9,976;98,000;2277172;2070613;3.765;3.951
+Trondheim;E+R+F+K;Yrkesdøgn;>= 5,6m;Mars;9,605;98,000;236326;215616;9.420;9.886
+Trondheim;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Mars;11,752;98,000;81227;72685;11.476;12.043
+Trondheim;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Mars;13,954;98,000;84456;74114;9.590;10.064
+Trondheim;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Mars;3,767;98,000;32426;31249;9.805;10.290
+Trondheim;E+R+F+K;Yrkesdøgn;>= 16,0m;Mars;1,728;98,000;38217;37568;13.837;14.521
+Trondheim;E+R+F+K;Helgedøgn;Alle;Mars;7,800;100,000;745620;691670;3.029;3.178
+Trondheim;E+R+F+K;Helgedøgn;< 5,6m;Mars;7,941;100,000;713278;660803;3.163;3.320
+Trondheim;E+R+F+K;Helgedøgn;>= 5,6m;Mars;4,063;100,000;31581;30348;6.948;7.291
+Trondheim;E+R+F+K;Helgedøgn;5,6m - 7,6m;Mars;8,928;100,000;10212;9375;8.540;8.962
+Trondheim;E+R+F+K;Helgedøgn;7,6m - 12,5m;Mars;8,769;100,000;11721;10776;8.722;9.154
+Trondheim;E+R+F+K;Helgedøgn;12,5m - 16,0m;Mars;-6,084;100,000;6236;6640;11.091;11.639
+Trondheim;E+R+F+K;Helgedøgn;>= 16,0m;Mars;-4,076;100,000;3412;3557;23.156;24.301
+Trondheim;E+R+F+K;Alle;Alle;April;-6,886;100,000;2980311;3200705;1.086;1.140
+Trondheim;E+R+F+K;Alle;< 5,6m;April;-6,809;100,000;2705812;2903509;1.267;1.330
+Trondheim;E+R+F+K;Alle;>= 5,6m;April;-8,208;100,000;266178;289978;5.369;5.635
+Trondheim;E+R+F+K;Alle;5,6m - 7,6m;April;-10,499;100,000;86133;96237;8.216;8.623
+Trondheim;E+R+F+K;Alle;7,6m - 12,5m;April;-1,312;100,000;104345;105732;5.913;6.205
+Trondheim;E+R+F+K;Alle;12,5m - 16,0m;April;-18,148;100,000;33646;41106;8.157;8.560
+Trondheim;E+R+F+K;Alle;>= 16,0m;April;-10,338;100,000;42054;46903;12.179;12.781
+Trondheim;E+R+F+K;Yrkesdøgn;Alle;April;-7,273;100,000;2281356;2460304;0.971;1.019
+Trondheim;E+R+F+K;Yrkesdøgn;< 5,6m;April;-7,090;100,000;2044348;2200347;1.210;1.270
+Trondheim;E+R+F+K;Yrkesdøgn;>= 5,6m;April;-9,369;100,000;230294;254101;6.113;6.415
+Trondheim;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;April;-11,415;100,000;75263;84961;8.062;8.461
+Trondheim;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;April;-2,471;100,000;89600;91870;6.661;6.990
+Trondheim;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;April;-20,549;100,000;27297;34357;10.271;10.779
+Trondheim;E+R+F+K;Yrkesdøgn;>= 16,0m;April;-11,136;100,000;38134;42913;12.489;13.107
+Trondheim;E+R+F+K;Helgedøgn;Alle;April;-5,598;100,000;698955;740401;3.608;3.787
+Trondheim;E+R+F+K;Helgedøgn;< 5,6m;April;-5,930;100,000;661464;703162;3.276;3.438
+Trondheim;E+R+F+K;Helgedøgn;>= 5,6m;April;0,020;100,000;35884;35877;7.069;7.419
+Trondheim;E+R+F+K;Helgedøgn;5,6m - 7,6m;April;-3,601;100,000;10870;11276;15.454;16.218
+Trondheim;E+R+F+K;Helgedøgn;7,6m - 12,5m;April;6,370;100,000;14745;13862;7.542;7.915
+Trondheim;E+R+F+K;Helgedøgn;12,5m - 16,0m;April;-5,927;100,000;6349;6749;5.223;5.481
+Trondheim;E+R+F+K;Helgedøgn;>= 16,0m;April;-1,754;100,000;3920;3990;12.080;12.677
+Trondheim;E+R+F+K;Alle;Alle;Mai;4,509;97,000;4575538;4378109;3.772;2.899
+Trondheim;E+R+F+K;Alle;< 5,6m;Mai;4,791;97,000;4071364;3885226;4.368;3.358
+Trondheim;E+R+F+K;Alle;>= 5,6m;Mai;2,651;97,000;498420;485550;3.462;2.661
+Trondheim;E+R+F+K;Alle;5,6m - 7,6m;Mai;2,764;97,000;133782;130184;7.237;5.563
+Trondheim;E+R+F+K;Alle;7,6m - 12,5m;Mai;4,634;97,000;189279;180896;5.978;4.595
+Trondheim;E+R+F+K;Alle;12,5m - 16,0m;Mai;-2,415;97,000;107622;110285;4.212;3.238
+Trondheim;E+R+F+K;Alle;>= 16,0m;Mai;5,534;97,000;67737;64185;11.150;8.571
+Trondheim;E+R+F+K;Yrkesdøgn;Alle;Mai;8,345;96,000;3411997;3149183;5.161;3.967
+Trondheim;E+R+F+K;Yrkesdøgn;< 5,6m;Mai;8,788;96,000;2987724;2746382;5.754;4.423
+Trondheim;E+R+F+K;Yrkesdøgn;>= 5,6m;Mai;5,649;96,000;419407;396982;4.886;3.756
+Trondheim;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Mai;5,149;96,000;114226;108633;9.259;7.117
+Trondheim;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Mai;7,932;96,000;159550;147825;5.592;4.299
+Trondheim;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Mai;0,601;96,000;85249;84740;5.000;3.843
+Trondheim;E+R+F+K;Yrkesdøgn;>= 16,0m;Mai;8,243;96,000;60382;55784;12.391;9.524
+Trondheim;E+R+F+K;Helgedøgn;Alle;Mai;-5,320;98,000;1163541;1228926;6.387;4.910
+Trondheim;E+R+F+K;Helgedøgn;< 5,6m;Mai;-4,847;98,000;1083640;1138844;6.633;5.098
+Trondheim;E+R+F+K;Helgedøgn;>= 5,6m;Mai;-10,788;98,000;79013;88568;5.934;4.562
+Trondheim;E+R+F+K;Helgedøgn;5,6m - 7,6m;Mai;-9,257;98,000;19556;21551;9.598;7.378
+Trondheim;E+R+F+K;Helgedøgn;7,6m - 12,5m;Mai;-10,106;98,000;29729;33071;12.430;9.554
+Trondheim;E+R+F+K;Helgedøgn;12,5m - 16,0m;Mai;-12,417;98,000;22373;25545;3.723;2.862
+Trondheim;E+R+F+K;Helgedøgn;>= 16,0m;Mai;-12,451;98,000;7355;8401;12.209;9.385
+Trondheim;E+R+F+K;Alle;Alle;Juni;-3,379;99,000;3616010;3742481;3.360;3.107
+Trondheim;E+R+F+K;Alle;< 5,6m;Juni;-2,990;99,000;3181956;3280040;3.802;3.516
+Trondheim;E+R+F+K;Alle;>= 5,6m;Juni;-6,011;99,000;418326;445082;3.472;3.211
+Trondheim;E+R+F+K;Alle;5,6m - 7,6m;Juni;-4,855;99,000;116189;122118;7.481;6.919
+Trondheim;E+R+F+K;Alle;7,6m - 12,5m;Juni;-2,533;99,000;154373;158385;7.113;6.578
+Trondheim;E+R+F+K;Alle;12,5m - 16,0m;Juni;-11,609;99,000;94941;107410;3.588;3.318
+Trondheim;E+R+F+K;Alle;>= 16,0m;Juni;-7,602;99,000;52823;57169;13.923;12.877
+Trondheim;E+R+F+K;Yrkesdøgn;Alle;Juni;-9,050;99,000;2661754;2926617;2.973;2.750
+Trondheim;E+R+F+K;Yrkesdøgn;< 5,6m;Juni;-8,961;99,000;2311770;2539315;3.460;3.200
+Trondheim;E+R+F+K;Yrkesdøgn;>= 5,6m;Juni;-9,837;99,000;341624;378896;3.435;3.177
+Trondheim;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Juni;-8,474;99,000;96134;105035;7.257;6.712
+Trondheim;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Juni;-6,531;99,000;125861;134656;7.057;6.526
+Trondheim;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Juni;-16,583;99,000;72736;87196;3.268;3.022
+Trondheim;E+R+F+K;Yrkesdøgn;>= 16,0m;Juni;-9,837;99,000;46893;52009;13.600;12.578
+Trondheim;E+R+F+K;Helgedøgn;Alle;Juni;16,963;99,000;954256;815864;7.364;6.811
+Trondheim;E+R+F+K;Helgedøgn;< 5,6m;Juni;17,478;98,000;870186;740725;7.142;6.605
+Trondheim;E+R+F+K;Helgedøgn;>= 5,6m;Juni;15,889;98,000;76702;66186;5.374;4.970
+Trondheim;E+R+F+K;Helgedøgn;5,6m - 7,6m;Juni;17,397;98,000;20055;17083;11.813;10.925
+Trondheim;E+R+F+K;Helgedøgn;7,6m - 12,5m;Juni;20,157;98,000;28512;23729;7.049;6.519
+Trondheim;E+R+F+K;Helgedøgn;12,5m - 16,0m;Juni;9,850;98,000;22205;20214;5.635;5.212
+Trondheim;E+R+F+K;Helgedøgn;>= 16,0m;Juni;14,922;98,000;5930;5160;11.115;10.280
+Trondheim;E+R+F+K;Alle;Alle;Juli;2,754;99,000;1920665;1869187;3.889;4.082
+Trondheim;E+R+F+K;Alle;< 5,6m;Juli;3,281;99,000;1681524;1628100;4.519;4.742
+Trondheim;E+R+F+K;Alle;>= 5,6m;Juli;-0,011;99,000;223210;223235;5.432;5.701
+Trondheim;E+R+F+K;Alle;5,6m - 7,6m;Juli;3,238;99,000;60959;59047;5.223;5.481
+Trondheim;E+R+F+K;Alle;7,6m - 12,5m;Juli;0,545;99,000;76201;75788;9.211;9.666
+Trondheim;E+R+F+K;Alle;12,5m - 16,0m;Juli;-6,743;99,000;65172;69884;12.650;13.276
+Trondheim;E+R+F+K;Alle;>= 16,0m;Juli;12,757;99,000;20878;18516;67.172;70.492
+Trondheim;E+R+F+K;Yrkesdøgn;Alle;Juli;5,555;99,000;1544055;1462793;3.520;3.694
+Trondheim;E+R+F+K;Yrkesdøgn;< 5,6m;Juli;7,198;99,000;1347881;1257373;5.132;5.385
+Trondheim;E+R+F+K;Yrkesdøgn;>= 5,6m;Juli;2,126;99,000;192258;188256;6.247;6.556
+Trondheim;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Juli;4,705;99,000;53340;50943;5.704;5.986
+Trondheim;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Juli;1,900;99,000;66878;65631;9.751;10.233
+Trondheim;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Juli;-3,211;99,000;52666;54413;12.980;13.622
+Trondheim;E+R+F+K;Yrkesdøgn;>= 16,0m;Juli;12,189;99,000;19374;17269;68.554;71.943
+Trondheim;E+R+F+K;Helgedøgn;Alle;Juli;-7,329;99,000;376610;406394;4.760;4.996
+Trondheim;E+R+F+K;Helgedøgn;< 5,6m;Juli;-10,003;98,000;333643;370727;7.697;8.077
+Trondheim;E+R+F+K;Helgedøgn;>= 5,6m;Juli;-11,513;98,000;30952;34979;8.027;8.424
+Trondheim;E+R+F+K;Helgedøgn;5,6m - 7,6m;Juli;-5,985;98,000;7619;8104;13.845;14.529
+Trondheim;E+R+F+K;Helgedøgn;7,6m - 12,5m;Juli;-8,211;98,000;9323;10157;7.710;8.091
+Trondheim;E+R+F+K;Helgedøgn;12,5m - 16,0m;Juli;-19,165;98,000;12506;15471;13.412;14.075
+Trondheim;E+R+F+K;Helgedøgn;>= 16,0m;Juli;20,609;98,000;1504;1247;64.277;67.454
+Trondheim;E+R+F+K;Alle;Alle;August;0,305;99,000;4201854;4189089;5.868;4.511
+Trondheim;E+R+F+K;Alle;< 5,6m;August;-0,291;99,000;3675811;3686555;6.516;5.008
+Trondheim;E+R+F+K;Alle;>= 5,6m;August;4,160;99,000;514416;493872;7.799;5.995
+Trondheim;E+R+F+K;Alle;5,6m - 7,6m;August;0,749;99,000;142054;140998;5.634;4.331
+Trondheim;E+R+F+K;Alle;7,6m - 12,5m;August;-6,800;99,000;153809;165031;27.049;20.792
+Trondheim;E+R+F+K;Alle;12,5m - 16,0m;August;-23,151;99,000;99901;129997;26.006;19.990
+Trondheim;E+R+F+K;Alle;>= 16,0m;August;105,117;99,000;118652;57846;428.099;329.066
+Trondheim;E+R+F+K;Yrkesdøgn;Alle;August;-2,707;99,000;3298328;3390083;5.434;4.177
+Trondheim;E+R+F+K;Yrkesdøgn;< 5,6m;August;-3,316;99,000;2855729;2953676;5.949;4.573
+Trondheim;E+R+F+K;Yrkesdøgn;>= 5,6m;August;0,931;99,000;433042;429049;7.569;5.818
+Trondheim;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;August;-1,913;99,000;120074;122416;6.251;4.805
+Trondheim;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;August;-8,255;99,000;132281;144183;25.716;19.767
+Trondheim;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;August;-23,410;99,000;83448;108954;25.581;19.663
+Trondheim;E+R+F+K;Yrkesdøgn;>= 16,0m;August;81,769;99,000;97239;53496;351.347;270.069
+Trondheim;E+R+F+K;Helgedøgn;Alle;August;13,081;99,000;903526;799006;9.753;7.497
+Trondheim;E+R+F+K;Helgedøgn;< 5,6m;August;11,899;99,000;820082;732879;10.596;8.145
+Trondheim;E+R+F+K;Helgedøgn;>= 5,6m;August;25,533;99,000;81374;64823;14.000;10.761
+Trondheim;E+R+F+K;Helgedøgn;5,6m - 7,6m;August;18,287;99,000;21980;18582;12.507;9.614
+Trondheim;E+R+F+K;Helgedøgn;7,6m - 12,5m;August;3,262;99,000;21528;20848;39.111;30.063
+Trondheim;E+R+F+K;Helgedøgn;12,5m - 16,0m;August;-21,812;99,000;16453;21043;31.944;24.555
+Trondheim;E+R+F+K;Helgedøgn;>= 16,0m;August;392,253;99,000;21413;4350;1257.773;966.810
+Trondheim;E+R+F+K;Alle;Alle;September;3,526;93,000;5323556;5142227;6.141;4.126
+Trondheim;E+R+F+K;Alle;< 5,6m;September;3,976;93,000;4690420;4511071;6.197;4.163
+Trondheim;E+R+F+K;Alle;>= 5,6m;September;0,614;93,000;625937;622117;12.340;8.290
+Trondheim;E+R+F+K;Alle;5,6m - 7,6m;September;3,657;93,000;165068;159244;7.740;5.200
+Trondheim;E+R+F+K;Alle;7,6m - 12,5m;September;-10,986;93,000;195553;219687;32.424;21.783
+Trondheim;E+R+F+K;Alle;12,5m - 16,0m;September;-32,500;93,000;108700;161038;29.784;20.009
+Trondheim;E+R+F+K;Alle;>= 16,0m;September;90,651;93,000;156616;82148;364.331;244.761
+Trondheim;E+R+F+K;Yrkesdøgn;Alle;September;6,901;92,000;4092550;3828338;6.244;4.195
+Trondheim;E+R+F+K;Yrkesdøgn;< 5,6m;September;7,713;92,000;3557652;3302888;6.273;4.214
+Trondheim;E+R+F+K;Yrkesdøgn;>= 5,6m;September;2,033;92,000;528812;518275;12.417;8.342
+Trondheim;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;September;5,225;92,000;141349;134330;7.899;5.307
+Trondheim;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;September;-8,250;92,000;166698;181688;32.308;21.705
+Trondheim;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;September;-29,653;92,000;90442;128565;30.134;20.244
+Trondheim;E+R+F+K;Yrkesdøgn;>= 16,0m;September;76,848;92,000;130323;73692;316.929;212.916
+Trondheim;E+R+F+K;Helgedøgn;Alle;September;-6,308;94,000;1231006;1313889;6.965;4.679
+Trondheim;E+R+F+K;Helgedøgn;< 5,6m;September;-6,242;94,000;1132768;1208183;7.337;4.929
+Trondheim;E+R+F+K;Helgedøgn;>= 5,6m;September;-6,468;94,000;97125;103842;12.973;8.716
+Trondheim;E+R+F+K;Helgedøgn;5,6m - 7,6m;September;-4,796;94,000;23719;24914;14.014;9.415
+Trondheim;E+R+F+K;Helgedøgn;7,6m - 12,5m;September;-24,064;94,000;28855;37999;32.753;22.004
+Trondheim;E+R+F+K;Helgedøgn;12,5m - 16,0m;September;-43,775;94,000;18258;32473;29.558;19.857
+Trondheim;E+R+F+K;Helgedøgn;>= 16,0m;September;210,939;94,000;26293;8456;696.238;467.739
+Trondheim;E+R+F+K;Alle;Alle;Oktober;2,449;97,000;6251686;6102249;4.170;2.802
+Trondheim;E+R+F+K;Alle;< 5,6m;Oktober;3,021;97,000;5501989;5340637;3.803;2.555
+Trondheim;E+R+F+K;Alle;>= 5,6m;Oktober;-1,723;97,000;742793;755812;11.442;7.687
+Trondheim;E+R+F+K;Alle;5,6m - 7,6m;Oktober;1,102;97,000;194335;192216;8.051;5.409
+Trondheim;E+R+F+K;Alle;7,6m - 12,5m;Oktober;-14,848;97,000;233529;274249;32.219;21.645
+Trondheim;E+R+F+K;Alle;12,5m - 16,0m;Oktober;-33,720;97,000;123420;186210;28.749;19.314
+Trondheim;E+R+F+K;Alle;>= 16,0m;Oktober;85,684;97,000;191509;103137;376.906;253.209
+Trondheim;E+R+F+K;Yrkesdøgn;Alle;Oktober;2,335;97,000;5093995;4977750;4.532;3.044
+Trondheim;E+R+F+K;Yrkesdøgn;< 5,6m;Oktober;3,038;97,000;4432792;4302095;4.045;2.718
+Trondheim;E+R+F+K;Yrkesdøgn;>= 5,6m;Oktober;-2,266;97,000;655295;670489;11.299;7.591
+Trondheim;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Oktober;0,882;97,000;174369;172845;8.373;5.625
+Trondheim;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Oktober;-14,261;97,000;207593;242123;31.769;21.343
+Trondheim;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Oktober;-32,650;97,000;107444;159530;28.195;18.942
+Trondheim;E+R+F+K;Yrkesdøgn;>= 16,0m;Oktober;72,817;97,000;165889;95991;331.107;222.441
+Trondheim;E+R+F+K;Helgedøgn;Alle;Oktober;2,952;97,000;1157691;1124499;3.315;2.227
+Trondheim;E+R+F+K;Helgedøgn;< 5,6m;Oktober;2,952;97,000;1069197;1038542;3.235;2.173
+Trondheim;E+R+F+K;Helgedøgn;>= 5,6m;Oktober;2,549;97,000;87498;85323;16.324;10.967
+Trondheim;E+R+F+K;Helgedøgn;5,6m - 7,6m;Oktober;3,072;97,000;19966;19371;8.803;5.914
+Trondheim;E+R+F+K;Helgedøgn;7,6m - 12,5m;Oktober;-19,268;97,000;25936;32126;35.441;23.809
+Trondheim;E+R+F+K;Helgedøgn;12,5m - 16,0m;Oktober;-40,120;97,000;15976;26680;33.325;22.388
+Trondheim;E+R+F+K;Helgedøgn;>= 16,0m;Oktober;258,522;97,000;25620;7146;885.223;594.701
+Trondheim;E+R+F+K;Alle;Alle;November;0,553;98,000;6161209;6127325;4.029;2.560
+Trondheim;E+R+F+K;Alle;< 5,6m;November;1,444;98,000;5530083;5451378;3.959;2.516
+Trondheim;E+R+F+K;Alle;>= 5,6m;November;-6,865;98,000;623849;669835;11.471;7.288
+Trondheim;E+R+F+K;Alle;5,6m - 7,6m;November;-3,726;98,000;177889;184773;6.933;4.405
+Trondheim;E+R+F+K;Alle;7,6m - 12,5m;November;-18,304;98,000;200692;245658;27.812;17.671
+Trondheim;E+R+F+K;Alle;12,5m - 16,0m;November;-35,727;98,000;91883;142958;31.900;20.268
+Trondheim;E+R+F+K;Alle;>= 16,0m;November;59,037;98,000;153385;96446;379.048;240.836
+Trondheim;E+R+F+K;Yrkesdøgn;Alle;November;-2,995;97,000;4789151;4937023;4.402;2.797
+Trondheim;E+R+F+K;Yrkesdøgn;< 5,6m;November;-2,197;97,000;4239989;4335227;4.189;2.662
+Trondheim;E+R+F+K;Yrkesdøgn;>= 5,6m;November;-8,971;97,000;543062;596581;11.149;7.084
+Trondheim;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;November;-5,658;97,000;157100;166522;7.150;4.543
+Trondheim;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;November;-18,808;97,000;176911;217891;26.668;16.944
+Trondheim;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;November;-36,175;97,000;78361;122774;31.222;19.837
+Trondheim;E+R+F+K;Yrkesdøgn;>= 16,0m;November;46,195;97,000;130690;89394;313.593;199.248
+Trondheim;E+R+F+K;Helgedøgn;Alle;November;15,270;99,000;1372058;1190302;5.446;3.460
+Trondheim;E+R+F+K;Helgedøgn;< 5,6m;November;15,584;99,000;1290094;1116151;5.583;3.547
+Trondheim;E+R+F+K;Helgedøgn;>= 5,6m;November;10,283;99,000;80787;73254;18.787;11.937
+Trondheim;E+R+F+K;Helgedøgn;5,6m - 7,6m;November;13,906;99,000;20789;18251;10.810;6.869
+Trondheim;E+R+F+K;Helgedøgn;7,6m - 12,5m;November;-14,355;99,000;23781;27767;38.767;24.631
+Trondheim;E+R+F+K;Helgedøgn;12,5m - 16,0m;November;-33,006;99,000;13522;20184;39.761;25.263
+Trondheim;E+R+F+K;Helgedøgn;>= 16,0m;November;221,824;99,000;22695;7052;1050.148;667.232
+Trondheim;E+R+F+K;Alle;Alle;Desember;0,825;96,000;5886631;5838450;4.684;2.976
+Trondheim;E+R+F+K;Alle;< 5,6m;Desember;0,937;96,000;5331123;5281639;4.562;2.898
+Trondheim;E+R+F+K;Alle;>= 5,6m;Desember;-0,449;96,000;549088;551565;12.938;8.220
+Trondheim;E+R+F+K;Alle;5,6m - 7,6m;Desember;-1,483;96,000;142195;144335;6.278;3.989
+Trondheim;E+R+F+K;Alle;7,6m - 12,5m;Desember;-18,054;96,000;153776;187655;33.247;21.124
+Trondheim;E+R+F+K;Alle;12,5m - 16,0m;Desember;-34,083;96,000;96434;146295;34.236;21.752
+Trondheim;E+R+F+K;Alle;>= 16,0m;Desember;113,814;96,000;156683;73280;464.385;295.056
+Trondheim;E+R+F+K;Yrkesdøgn;Alle;Desember;3,731;96,000;4331136;4175342;4.829;3.068
+Trondheim;E+R+F+K;Yrkesdøgn;< 5,6m;Desember;4,160;96,000;3869260;3714715;4.580;2.910
+Trondheim;E+R+F+K;Yrkesdøgn;>= 5,6m;Desember;0,073;96,000;456630;456297;12.633;8.027
+Trondheim;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Desember;-0,721;96,000;122353;123242;6.711;4.264
+Trondheim;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Desember;-15,132;96,000;133436;157228;31.885;20.259
+Trondheim;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Desember;-31,286;96,000;77003;112063;34.501;21.921
+Trondheim;E+R+F+K;Yrkesdøgn;>= 16,0m;Desember;94,213;96,000;123838;63764;396.590;251.981
+Trondheim;E+R+F+K;Helgedøgn;Alle;Desember;-6,471;96,000;1555495;1663108;7.128;4.529
+Trondheim;E+R+F+K;Helgedøgn;< 5,6m;Desember;-6,705;96,000;1461863;1566924;7.111;4.518
+Trondheim;E+R+F+K;Helgedøgn;>= 5,6m;Desember;-2,950;96,000;92458;95268;17.504;11.122
+Trondheim;E+R+F+K;Helgedøgn;5,6m - 7,6m;Desember;-5,931;96,000;19842;21093;7.322;4.652
+Trondheim;E+R+F+K;Helgedøgn;7,6m - 12,5m;Desember;-33,151;96,000;20340;30427;39.773;25.271
+Trondheim;E+R+F+K;Helgedøgn;12,5m - 16,0m;Desember;-43,237;96,000;19431;34232;34.234;21.751
+Trondheim;E+R+F+K;Helgedøgn;>= 16,0m;Desember;245,156;96,000;32845;9516;845.668;537.312
+Trondheim;E+R+F+K;Alle;Alle;Siste 12 måneder;1,341;97,000;49915647;49255257;3.202;1.935
+Trondheim;E+R+F+K;Alle;< 5,6m;Siste 12 måneder;1,606;97,000;44602075;43897041;3.136;1.895
+Trondheim;E+R+F+K;Alle;>= 5,6m;Siste 12 måneder;-0,900;97,000;5218479;5265879;8.789;5.311
+Trondheim;E+R+F+K;Alle;5,6m - 7,6m;Siste 12 måneder;0,220;97,000;1475591;1472359;6.147;3.715
+Trondheim;E+R+F+K;Alle;7,6m - 12,5m;Siste 12 måneder;-7,118;97,000;1733001;1865818;21.398;12.931
+Trondheim;E+R+F+K;Alle;12,5m - 16,0m;Siste 12 måneder;-22,915;97,000;929773;1206168;21.652;13.084
+Trondheim;E+R+F+K;Alle;>= 16,0m;Siste 12 måneder;49,697;97,000;1080114;721534;255.597;154.456
+Trondheim;E+R+F+K;Yrkesdøgn;Alle;Siste 12 måneder;1,231;97,000;38649002;38179089;3.455;2.088
+Trondheim;E+R+F+K;Yrkesdøgn;< 5,6m;Siste 12 måneder;1,606;97,000;34103627;33564458;3.385;2.045
+Trondheim;E+R+F+K;Yrkesdøgn;>= 5,6m;Siste 12 måneder;-1,353;97,000;4479851;4541296;8.465;5.115
+Trondheim;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;-0,096;97,000;1287110;1288353;6.332;3.826
+Trondheim;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;-6,617;97,000;1502288;1608738;20.860;12.605
+Trondheim;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;-22,322;97,000;766650;986956;20.879;12.617
+Trondheim;E+R+F+K;Yrkesdøgn;>= 16,0m;Siste 12 måneder;40,556;97,000;923803;657249;218.908;132.285
+Trondheim;E+R+F+K;Helgedøgn;Alle;Siste 12 måneder;1,720;98,000;11266645;11076168;3.526;2.130
+Trondheim;E+R+F+K;Helgedøgn;< 5,6m;Siste 12 måneder;1,605;98,000;10498448;10332583;3.469;2.096
+Trondheim;E+R+F+K;Helgedøgn;>= 5,6m;Siste 12 måneder;1,938;98,000;738628;724583;12.116;7.322
+Trondheim;E+R+F+K;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;2,432;98,000;188481;184006;7.726;4.669
+Trondheim;E+R+F+K;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;-10,256;98,000;230713;257080;24.982;15.096
+Trondheim;E+R+F+K;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;-25,587;98,000;163123;219212;26.143;15.798
+Trondheim;E+R+F+K;Helgedøgn;>= 16,0m;Siste 12 måneder;143,153;98,000;156311;64285;559.491;338.097
+Trondheim;E+R+F+K;Alle;Alle;Hittil i år;1,341;97,000;49915647;49255257;3.202;1.935
+Trondheim;E+R+F+K;Alle;< 5,6m;Hittil i år;1,606;97,000;44602075;43897041;3.136;1.895
+Trondheim;E+R+F+K;Alle;>= 5,6m;Hittil i år;-0,900;97,000;5218479;5265879;8.789;5.311
+Trondheim;E+R+F+K;Alle;5,6m - 7,6m;Hittil i år;0,220;97,000;1475591;1472359;6.147;3.715
+Trondheim;E+R+F+K;Alle;7,6m - 12,5m;Hittil i år;-7,118;97,000;1733001;1865818;21.398;12.931
+Trondheim;E+R+F+K;Alle;12,5m - 16,0m;Hittil i år;-22,915;97,000;929773;1206168;21.652;13.084
+Trondheim;E+R+F+K;Alle;>= 16,0m;Hittil i år;49,697;97,000;1080114;721534;255.597;154.456
+Trondheim;E+R+F+K;Yrkesdøgn;Alle;Hittil i år;1,231;97,000;38649002;38179089;3.455;2.088
+Trondheim;E+R+F+K;Yrkesdøgn;< 5,6m;Hittil i år;1,606;97,000;34103627;33564458;3.385;2.045
+Trondheim;E+R+F+K;Yrkesdøgn;>= 5,6m;Hittil i år;-1,353;97,000;4479851;4541296;8.465;5.115
+Trondheim;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Hittil i år;-0,096;97,000;1287110;1288353;6.332;3.826
+Trondheim;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Hittil i år;-6,617;97,000;1502288;1608738;20.860;12.605
+Trondheim;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Hittil i år;-22,322;97,000;766650;986956;20.879;12.617
+Trondheim;E+R+F+K;Yrkesdøgn;>= 16,0m;Hittil i år;40,556;97,000;923803;657249;218.908;132.285
+Trondheim;E+R+F+K;Helgedøgn;Alle;Hittil i år;1,720;98,000;11266645;11076168;3.526;2.130
+Trondheim;E+R+F+K;Helgedøgn;< 5,6m;Hittil i år;1,605;98,000;10498448;10332583;3.469;2.096
+Trondheim;E+R+F+K;Helgedøgn;>= 5,6m;Hittil i år;1,938;98,000;738628;724583;12.116;7.322
+Trondheim;E+R+F+K;Helgedøgn;5,6m - 7,6m;Hittil i år;2,432;98,000;188481;184006;7.726;4.669
+Trondheim;E+R+F+K;Helgedøgn;7,6m - 12,5m;Hittil i år;-10,256;98,000;230713;257080;24.982;15.096
+Trondheim;E+R+F+K;Helgedøgn;12,5m - 16,0m;Hittil i år;-25,587;98,000;163123;219212;26.143;15.798
+Trondheim;E+R+F+K;Helgedøgn;>= 16,0m;Hittil i år;143,153;98,000;156311;64285;559.491;338.097

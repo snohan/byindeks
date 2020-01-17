@@ -23,6 +23,10 @@ getPoints <- function() {
           lon
         }
       }
+      county {
+          name
+          number
+        }
       roadReference{
           shortForm
       }
@@ -51,6 +55,8 @@ getPoints <- function() {
                     data.trafficRegistrationPoints.name,
                   traffic_type =
                     data.trafficRegistrationPoints.trafficRegistrationType,
+                  county_name = data.trafficRegistrationPoints.location.county.name,
+                  county_no = data.trafficRegistrationPoints.location.county.number,
                   lat =
                     data.trafficRegistrationPoints.location.coordinates.latLon.lat,
                   lon =
@@ -62,7 +68,8 @@ getPoints <- function() {
                   road_network_link =
                     data.trafficRegistrationPoints.location.roadLinkSequence.roadLinkSequenceId
                     ) %>%
-    dplyr::select(trp_id, name, traffic_type, road_reference, lat, lon,
+    dplyr::select(trp_id, name, traffic_type, road_reference, county_name,
+                  county_no, lat, lon,
                   road_network_position, road_network_link, validFrom, validTo
                   ) %>%
     dplyr::mutate(road_reference = str_replace(road_reference, "HP ", "hp")
@@ -301,7 +308,7 @@ get_trp_mdt_with_coverage <- function(trp_id) {
   return(trp_aadt)
 }
 
-#trp_id <- "20642V805115"
+trp_id <- "91582V930281"
 #trp_id <- "01316V804837"
 #trp_adt <- getTrpAadt_byLength(trp_id)
 
@@ -327,6 +334,10 @@ getTrpAadt_byLength <- function(trp_id) {
               }
               volume {
                 average
+                confidenceInterval {
+                  lowerBound
+                  upperBound
+                }
               }
             }
             byLengthRange {
@@ -377,7 +388,9 @@ getTrpAadt_byLength <- function(trp_id) {
         aadt_ci_upperbound_length_range = total.volume.confidenceInterval.upperBound,
         aadt_valid_length = data.trafficData.volume.average.daily.byYear.total.validLengthVolume.average,
         coverage = data.trafficData.volume.average.daily.byYear.total.coverage.percentage,
-        aadt_total = data.trafficData.volume.average.daily.byYear.total.volume.average
+        aadt_total = data.trafficData.volume.average.daily.byYear.total.volume.average,
+        aadt_ci_lowerbound_total = data.trafficData.volume.average.daily.byYear.total.volume.confidenceInterval.lowerBound,
+        aadt_ci_upperbound_total = data.trafficData.volume.average.daily.byYear.total.volume.confidenceInterval.upperBound
         ) %>%
       dplyr::mutate(trp_id = as.character(trp_id))
   }
@@ -442,14 +455,19 @@ getAdtForpoints_by_length <- function(trp_list) {
                   aadt_ci_lowerbound_length_range =
                     round(aadt_ci_lowerbound_length_range, digits = -1),
                   aadt_ci_upperbound_length_range =
-                    round(aadt_ci_upperbound_length_range, digits = -1)
+                    round(aadt_ci_upperbound_length_range, digits = -1),
+                  aadt_ci_upperbound_total =
+                    round(aadt_ci_upperbound_total, digits = -1),
+                  aadt_ci_lowerbound_total =
+                    round(aadt_ci_lowerbound_total, digits = -1)
                   )
 
   return(trp_adt)
 }
 
-indexyear <- "2019"
+#indexyear <- "2019"
 #trp_ids <- "\"44656V72812\", \"77022V72359\""
+#trp_ids <- "90390V443603"
 
 get_pointindices <- function(trp_ids, indexyear) {
   # Get pointindex for a number of trps
@@ -496,9 +514,11 @@ get_pointindices <- function(trp_ids, indexyear) {
   myqueries$query("data", api_query)
 
   trp_data <- cli$exec(myqueries$queries$data) %>%
-    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
+
+  trp_data_data <- trp_data$data %>%
     as.data.frame() %>%
-    tidyr::unnest(cols = c(data.trafficVolumeIndices.volumeIndexByDayType)) %>%
+    tidyr::unnest(cols = c(trafficVolumeIndices.volumeIndexByDayType)) %>%
     dplyr::rename(
       day_type = dayType,
       base_volume = trafficVolumeIndex.index.baseVolume,
@@ -507,10 +527,10 @@ get_pointindices <- function(trp_ids, indexyear) {
       index_p = trafficVolumeIndex.index.percentageChange,
       length_range = trafficVolumeIndex.lengthRange.representation,
       coverage_percentage = trafficVolumeIndex.indexCoverage.hours.percentage,
-      month = data.trafficVolumeIndices.calculationMonth.month,
-      year = data.trafficVolumeIndices.calculationMonth.year,
-      road_category = data.trafficVolumeIndices.roadCategory.id,
-      trp_id = data.trafficVolumeIndices.trafficRegistrationPoint.id) %>%
+      month = trafficVolumeIndices.calculationMonth.month,
+      year = trafficVolumeIndices.calculationMonth.year,
+      road_category = trafficVolumeIndices.roadCategory.id,
+      trp_id = trafficVolumeIndices.trafficRegistrationPoint.id) %>%
     dplyr::mutate(trp_id = as.character(trp_id)) %>%
     dplyr::select(trp_id, month, year, road_category, day_type, length_range,
                   base_volume, calculation_volume, index_i, index_p,
@@ -518,7 +538,7 @@ get_pointindices <- function(trp_ids, indexyear) {
     dplyr::filter(length_range %in% c("[..,..)", "[..,5.6)", "[5.6,..)")) %>%
     dplyr::filter(day_type == "ALL")
 
-  return(trp_data)
+  return(trp_data_data)
 }
 
 getHourlytraffic <- function(trpID, from, to) {

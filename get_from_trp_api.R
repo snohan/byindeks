@@ -77,7 +77,6 @@ getPointsFromTRPAPI_filtered <- function() {
   points_trp <- cli_trp$exec(myqueries$queries$points_trp) %>%
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
     as.data.frame() %>%
-    tidyr::unnest()%>%
     dplyr::rename(
       trp_id = id)
 
@@ -170,8 +169,8 @@ get_trp_for_vti <- function() {
                   #road_reference = str_replace(road_reference, "Meter ", "m"),
                   first_commission_datainn = lubridate::floor_date(
                     valid_from, unit = "day")) %>%
-    dplyr::filter(#parsell < 70,
-                  first_commission_datainn < "2019-02-01") %>%
+    #dplyr::filter(#parsell < 70,
+    #              first_commission_datainn < "2019-02-01") %>%
     dplyr::select(county_number, county_name, trp_id, legacyNortrafMpn, name,
                   road_reference, road_category, #road_number, parsell, meter,
                   road_link_position, lat, lon, first_commission_datainn) %>%
