@@ -12,9 +12,14 @@ trps <- read.csv2("trp_for_vti_2020.csv") %>%
 
 trp_old_pointindex <- read.csv2("pointindex-2019-12_2018-12.csv") %>%
   dplyr::filter(periode == "Desember",
-                lengdeklasse == "Alle",
                 døgn == "Alle") %>%
-  dplyr::select(msnr, indeks, dekning, trafikkmengde.indeksår,
+  dplyr::filter(lengdeklasse %in% c("Alle", ">= 5,6m", "< 5,6m")) %>%
+  dplyr::mutate(lengdeklasse = dplyr::case_when(
+    lengdeklasse == "Alle" ~ "alle",
+    lengdeklasse == "< 5,6m" ~ "lette",
+    lengdeklasse == ">= 5,6m" ~ "tunge"
+  )) %>%
+  dplyr::select(msnr, lengdeklasse, indeks, dekning, trafikkmengde.indeksår,
                 trafikkmengde.basisår) %>%
   dplyr::rename(legacyNortrafMpn = msnr,
                 indeksvolum = trafikkmengde.indeksår,
@@ -44,14 +49,21 @@ trp_index <- get_pointindices(trp_ids,
 toc()
 
 trp_index_filtered <- trp_index %>%
-  dplyr::filter(length_range == "[..,..)",
-                month == 12) %>%
-  dplyr::select(trp_id, base_volume, calculation_volume,
-                index_p, coverage_percentage)
+  dplyr::filter(month == 12) %>%
+  dplyr::mutate(length_range = dplyr::case_when(
+    length_range == "[..,..)" ~ "alle",
+    length_range == "[..,5.6)" ~ "lette",
+    length_range == "[5.6,..)" ~ "tunge"
+  )) %>%
+  dplyr::select(trp_id, length_range, coverage_percentage,
+                base_volume, calculation_volume,
+                index_p)
 
 trp_with_index <- trps %>%
   dplyr::left_join(trp_index_filtered) %>%
-  dplyr::left_join(trp_old_pointindex) %>%
+  dplyr::left_join(trp_old_pointindex,
+                   by = c("legacyNortrafMpn" = "legacyNortrafMpn",
+                          "length_range" = "lengdeklasse")) %>%
   #dplyr::filter(!is.na(index_p)) %>%
   #dplyr::filter(trp_id %in% trp_ids_clean$trp_id) %>%
   dplyr::filter(!is.na(indeks)) %>%
@@ -59,6 +71,9 @@ trp_with_index <- trps %>%
                 coverage_diff = coverage_percentage - dekning,
                 base_diff = base_volume - basisvolum,
                 calc_diff = calculation_volume - indeksvolum)
+
+write.csv2(trp_with_index, file = "indeks_med_ny_og_gammel_modul.csv",
+           row.names = F)
 
 # Eksempel Berge øst 54608V320601
 

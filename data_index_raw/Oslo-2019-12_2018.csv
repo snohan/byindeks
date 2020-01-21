@@ -923,27 +923,27 @@ Oslo og Akershus;E+R;Helgedøgn;5,6m - 7,6m;Februar;4,764;96,000;56845;54260;15.3
 Oslo og Akershus;E+R;Helgedøgn;7,6m - 12,5m;Februar;1,101;96,000;48845;48313;8.495;4.905
 Oslo og Akershus;E+R;Helgedøgn;12,5m - 16,0m;Februar;3,503;96,000;40986;39599;17.024;9.829
 Oslo og Akershus;E+R;Helgedøgn;>= 16,0m;Februar;12,443;96,000;39600;35218;22.282;12.865
-Oslo og Akershus;E+R;Alle;Alle;Mars;5,830;96,000;16494927;15586305;2.922;1.766
-Oslo og Akershus;E+R;Alle;< 5,6m;Mars;5,246;96,000;14728995;13994892;3.141;1.898
-Oslo og Akershus;E+R;Alle;>= 5,6m;Mars;10,866;96,000;1758725;1586357;5.241;3.167
-Oslo og Akershus;E+R;Alle;5,6m - 7,6m;Mars;12,158;96,000;509143;453951;10.564;6.384
-Oslo og Akershus;E+R;Alle;7,6m - 12,5m;Mars;9,620;96,000;482551;440203;4.250;2.569
-Oslo og Akershus;E+R;Alle;12,5m - 16,0m;Mars;12,658;96,000;301664;267770;13.550;8.188
-Oslo og Akershus;E+R;Alle;>= 16,0m;Mars;9,644;96,000;465367;424433;6.931;4.189
-Oslo og Akershus;E+R;Yrkesdøgn;Alle;Mars;7,528;95,000;12310191;11448388;3.467;2.095
-Oslo og Akershus;E+R;Yrkesdøgn;< 5,6m;Mars;6,953;95,000;10770634;10070457;3.665;2.215
-Oslo og Akershus;E+R;Yrkesdøgn;>= 5,6m;Mars;11,646;95,000;1532974;1373070;5.457;3.298
-Oslo og Akershus;E+R;Yrkesdøgn;5,6m - 7,6m;Mars;12,349;95,000;438716;390493;9.927;5.999
-Oslo og Akershus;E+R;Yrkesdøgn;7,6m - 12,5m;Mars;9,795;95,000;419908;382448;4.672;2.824
-Oslo og Akershus;E+R;Yrkesdøgn;12,5m - 16,0m;Mars;16,838;95,000;253867;217281;15.184;9.175
-Oslo og Akershus;E+R;Yrkesdøgn;>= 16,0m;Mars;9,830;95,000;420483;382848;6.395;3.864
-Oslo og Akershus;E+R;Helgedøgn;Alle;Mars;1,131;97,000;4184736;4137917;5.089;3.075
-Oslo og Akershus;E+R;Helgedøgn;< 5,6m;Mars;0,864;97,000;3958361;3924435;4.953;2.993
-Oslo og Akershus;E+R;Helgedøgn;>= 5,6m;Mars;5,844;97,000;225751;213287;11.394;6.885
-Oslo og Akershus;E+R;Helgedøgn;5,6m - 7,6m;Mars;10,982;97,000;70427;63458;18.028;10.894
-Oslo og Akershus;E+R;Helgedøgn;7,6m - 12,5m;Mars;8,463;97,000;62643;57755;8.517;5.147
-Oslo og Akershus;E+R;Helgedøgn;12,5m - 16,0m;Mars;-5,332;97,000;47797;50489;13.468;8.139
-Oslo og Akershus;E+R;Helgedøgn;>= 16,0m;Mars;7,933;97,000;44884;41585;16.203;9.792
+Oslo og Akershus;E+R;Alle;Alle;Mars;6,080;98,000;15561908;14670035;2.822;1.793
+Oslo og Akershus;E+R;Alle;< 5,6m;Mars;5,514;98,000;13933629;13205509;3.020;1.919
+Oslo og Akershus;E+R;Alle;>= 5,6m;Mars;11,070;98,000;1623016;1461249;5.449;3.462
+Oslo og Akershus;E+R;Alle;5,6m - 7,6m;Mars;11,150;98,000;471837;424503;10.149;6.449
+Oslo og Akershus;E+R;Alle;7,6m - 12,5m;Mars;10,077;98,000;447695;406711;4.086;2.596
+Oslo og Akershus;E+R;Alle;12,5m - 16,0m;Mars;15,240;98,000;282130;244819;10.708;6.804
+Oslo og Akershus;E+R;Alle;>= 16,0m;Mars;9,381;98,000;421354;385216;7.298;4.637
+Oslo og Akershus;E+R;Yrkesdøgn;Alle;Mars;8,061;98,000;11682617;10811096;2.649;1.683
+Oslo og Akershus;E+R;Yrkesdøgn;< 5,6m;Mars;7,501;98,000;10258549;9542736;2.787;1.771
+Oslo og Akershus;E+R;Yrkesdøgn;>= 5,6m;Mars;12,181;98,000;1419331;1265216;5.352;3.400
+Oslo og Akershus;E+R;Yrkesdøgn;5,6m - 7,6m;Mars;11,736;98,000;408887;365940;9.989;6.347
+Oslo og Akershus;E+R;Yrkesdøgn;7,6m - 12,5m;Mars;10,493;98,000;390321;353254;4.082;2.594
+Oslo og Akershus;E+R;Yrkesdøgn;12,5m - 16,0m;Mars;20,154;98,000;238253;198289;10.587;6.726
+Oslo og Akershus;E+R;Yrkesdøgn;>= 16,0m;Mars;9,817;98,000;381870;347733;6.785;4.311
+Oslo og Akershus;E+R;Helgedøgn;Alle;Mars;0,527;99,000;3879291;3858939;4.685;2.977
+Oslo og Akershus;E+R;Helgedøgn;< 5,6m;Mars;0,336;99,000;3675080;3662773;4.674;2.970
+Oslo og Akershus;E+R;Helgedøgn;>= 5,6m;Mars;3,903;99,000;203685;196033;9.483;6.025
+Oslo og Akershus;E+R;Helgedøgn;5,6m - 7,6m;Mars;7,491;99,000;62950;58563;13.251;8.419
+Oslo og Akershus;E+R;Helgedøgn;7,6m - 12,5m;Mars;7,327;99,000;57374;53457;7.722;4.907
+Oslo og Akershus;E+R;Helgedøgn;12,5m - 16,0m;Mars;-5,702;99,000;43877;46530;14.063;8.935
+Oslo og Akershus;E+R;Helgedøgn;>= 16,0m;Mars;5,338;99,000;39484;37483;14.723;9.355
 Oslo og Akershus;E+R;Alle;Alle;April;-4,718;95,000;14987520;15729707;1.919;1.160
 Oslo og Akershus;E+R;Alle;< 5,6m;April;-5,066;95,000;13315363;14025949;1.795;1.085
 Oslo og Akershus;E+R;Alle;>= 5,6m;April;-1,815;95,000;1667005;1697828;4.909;2.966
@@ -1133,48 +1133,48 @@ Oslo og Akershus;E+R;Helgedøgn;5,6m - 7,6m;Desember;-6,522;97,000;82518;88275;8.
 Oslo og Akershus;E+R;Helgedøgn;7,6m - 12,5m;Desember;-12,942;97,000;65516;75256;8.180;4.530
 Oslo og Akershus;E+R;Helgedøgn;12,5m - 16,0m;Desember;-4,996;97,000;59366;62488;5.183;2.870
 Oslo og Akershus;E+R;Helgedøgn;>= 16,0m;Desember;-5,118;97,000;57465;60565;37.782;20.923
-Oslo og Akershus;E+R;Alle;Alle;Siste 12 måneder;-0,019;96,000;202468309;202506357;1.613;0.829
-Oslo og Akershus;E+R;Alle;< 5,6m;Siste 12 måneder;-0,280;96,000;178892237;179394452;1.700;0.874
-Oslo og Akershus;E+R;Alle;>= 5,6m;Siste 12 måneder;1,970;96,000;23473742;23020174;2.980;1.532
-Oslo og Akershus;E+R;Alle;5,6m - 7,6m;Siste 12 måneder;2,680;96,000;6685177;6510678;6.004;3.087
-Oslo og Akershus;E+R;Alle;7,6m - 12,5m;Siste 12 måneder;0,155;96,000;6911135;6900456;2.731;1.404
-Oslo og Akershus;E+R;Alle;12,5m - 16,0m;Siste 12 måneder;2,737;96,000;4094114;3985027;9.897;5.088
-Oslo og Akershus;E+R;Alle;>= 16,0m;Siste 12 måneder;2,833;96,000;5783316;5624013;9.691;4.983
-Oslo og Akershus;E+R;Yrkesdøgn;Alle;Siste 12 måneder;-0,094;95,000;152680748;152825078;1.879;0.966
-Oslo og Akershus;E+R;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,389;95,000;132261061;132777109;1.982;1.019
-Oslo og Akershus;E+R;Yrkesdøgn;>= 5,6m;Siste 12 måneder;1,805;95,000;20323798;19963422;3.108;1.598
-Oslo og Akershus;E+R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;2,415;95,000;5700162;5565754;6.012;3.091
-Oslo og Akershus;E+R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;0,046;95,000;5914623;5911907;2.830;1.455
-Oslo og Akershus;E+R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;2,575;95,000;3457931;3371116;10.658;5.480
-Oslo og Akershus;E+R;Yrkesdøgn;>= 16,0m;Siste 12 måneder;2,668;95,000;5251082;5114645;8.933;4.593
-Oslo og Akershus;E+R;Helgedøgn;Alle;Siste 12 måneder;0,214;96,000;49787561;49681279;2.358;1.212
-Oslo og Akershus;E+R;Helgedøgn;< 5,6m;Siste 12 måneder;0,030;96,000;46631176;46617343;2.372;1.220
-Oslo og Akershus;E+R;Helgedøgn;>= 5,6m;Siste 12 måneder;3,049;96,000;3149944;3056752;3.594;1.848
-Oslo og Akershus;E+R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;4,243;96,000;985015;944924;6.642;3.415
-Oslo og Akershus;E+R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;0,806;96,000;996512;988549;4.168;2.143
-Oslo og Akershus;E+R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;3,628;96,000;636183;613911;7.218;3.711
-Oslo og Akershus;E+R;Helgedøgn;>= 16,0m;Siste 12 måneder;4,489;96,000;532234;509368;16.535;8.502
-Oslo og Akershus;E+R;Alle;Alle;Hittil i år;-0,019;96,000;202468309;202506357;1.613;0.829
-Oslo og Akershus;E+R;Alle;< 5,6m;Hittil i år;-0,280;96,000;178892237;179394452;1.700;0.874
-Oslo og Akershus;E+R;Alle;>= 5,6m;Hittil i år;1,970;96,000;23473742;23020174;2.980;1.532
-Oslo og Akershus;E+R;Alle;5,6m - 7,6m;Hittil i år;2,680;96,000;6685177;6510678;6.004;3.087
-Oslo og Akershus;E+R;Alle;7,6m - 12,5m;Hittil i år;0,155;96,000;6911135;6900456;2.731;1.404
-Oslo og Akershus;E+R;Alle;12,5m - 16,0m;Hittil i år;2,737;96,000;4094114;3985027;9.897;5.088
-Oslo og Akershus;E+R;Alle;>= 16,0m;Hittil i år;2,833;96,000;5783316;5624013;9.691;4.983
-Oslo og Akershus;E+R;Yrkesdøgn;Alle;Hittil i år;-0,094;95,000;152680748;152825078;1.879;0.966
-Oslo og Akershus;E+R;Yrkesdøgn;< 5,6m;Hittil i år;-0,389;95,000;132261061;132777109;1.982;1.019
-Oslo og Akershus;E+R;Yrkesdøgn;>= 5,6m;Hittil i år;1,805;95,000;20323798;19963422;3.108;1.598
-Oslo og Akershus;E+R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;2,415;95,000;5700162;5565754;6.012;3.091
-Oslo og Akershus;E+R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;0,046;95,000;5914623;5911907;2.830;1.455
-Oslo og Akershus;E+R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;2,575;95,000;3457931;3371116;10.658;5.480
-Oslo og Akershus;E+R;Yrkesdøgn;>= 16,0m;Hittil i år;2,668;95,000;5251082;5114645;8.933;4.593
-Oslo og Akershus;E+R;Helgedøgn;Alle;Hittil i år;0,214;96,000;49787561;49681279;2.358;1.212
-Oslo og Akershus;E+R;Helgedøgn;< 5,6m;Hittil i år;0,030;96,000;46631176;46617343;2.372;1.220
-Oslo og Akershus;E+R;Helgedøgn;>= 5,6m;Hittil i år;3,049;96,000;3149944;3056752;3.594;1.848
-Oslo og Akershus;E+R;Helgedøgn;5,6m - 7,6m;Hittil i år;4,243;96,000;985015;944924;6.642;3.415
-Oslo og Akershus;E+R;Helgedøgn;7,6m - 12,5m;Hittil i år;0,806;96,000;996512;988549;4.168;2.143
-Oslo og Akershus;E+R;Helgedøgn;12,5m - 16,0m;Hittil i år;3,628;96,000;636183;613911;7.218;3.711
-Oslo og Akershus;E+R;Helgedøgn;>= 16,0m;Hittil i år;4,489;96,000;532234;509368;16.535;8.502
+Oslo og Akershus;E+R;Alle;Alle;Siste 12 måneder;-0,027;96,000;201535290;201590087;1.626;0.836
+Oslo og Akershus;E+R;Alle;< 5,6m;Siste 12 måneder;-0,285;96,000;178096871;178605069;1.716;0.882
+Oslo og Akershus;E+R;Alle;>= 5,6m;Siste 12 måneder;1,935;96,000;23338033;22895066;2.959;1.521
+Oslo og Akershus;E+R;Alle;5,6m - 7,6m;Siste 12 måneder;2,571;96,000;6647871;6481230;5.871;3.018
+Oslo og Akershus;E+R;Alle;7,6m - 12,5m;Siste 12 måneder;0,136;96,000;6876279;6866964;2.738;1.408
+Oslo og Akershus;E+R;Alle;12,5m - 16,0m;Siste 12 måneder;2,840;96,000;4074580;3962076;9.849;5.064
+Oslo og Akershus;E+R;Alle;>= 16,0m;Siste 12 måneder;2,767;96,000;5739303;5584796;9.694;4.984
+Oslo og Akershus;E+R;Yrkesdøgn;Alle;Siste 12 måneder;-0,088;96,000;152053174;152187786;1.882;0.968
+Oslo og Akershus;E+R;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,378;96,000;131748976;132249388;1.980;1.018
+Oslo og Akershus;E+R;Yrkesdøgn;>= 5,6m;Siste 12 måneder;1,786;96,000;20210155;19855568;3.105;1.596
+Oslo og Akershus;E+R;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;2,330;96,000;5670333;5541201;5.915;3.041
+Oslo og Akershus;E+R;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;0,039;96,000;5885036;5882713;2.837;1.459
+Oslo og Akershus;E+R;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;2,691;96,000;3442317;3352124;10.606;5.453
+Oslo og Akershus;E+R;Yrkesdøgn;>= 16,0m;Siste 12 måneder;2,617;96,000;5212469;5079530;8.943;4.598
+Oslo og Akershus;E+R;Helgedøgn;Alle;Siste 12 måneder;0,162;96,000;49482116;49402301;2.440;1.255
+Oslo og Akershus;E+R;Helgedøgn;< 5,6m;Siste 12 måneder;-0,017;96,000;46347895;46355681;2.454;1.262
+Oslo og Akershus;E+R;Helgedøgn;>= 5,6m;Siste 12 måneder;2,908;96,000;3127878;3039498;3.619;1.861
+Oslo og Akershus;E+R;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;3,990;96,000;977538;940029;6.390;3.286
+Oslo og Akershus;E+R;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;0,710;96,000;991243;984251;4.311;2.217
+Oslo og Akershus;E+R;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;3,658;96,000;632263;609952;7.260;3.733
+Oslo og Akershus;E+R;Helgedøgn;>= 16,0m;Siste 12 måneder;4,269;96,000;526834;505266;16.545;8.507
+Oslo og Akershus;E+R;Alle;Alle;Hittil i år;-0,027;96,000;201535290;201590087;1.626;0.836
+Oslo og Akershus;E+R;Alle;< 5,6m;Hittil i år;-0,285;96,000;178096871;178605069;1.716;0.882
+Oslo og Akershus;E+R;Alle;>= 5,6m;Hittil i år;1,935;96,000;23338033;22895066;2.959;1.521
+Oslo og Akershus;E+R;Alle;5,6m - 7,6m;Hittil i år;2,571;96,000;6647871;6481230;5.871;3.018
+Oslo og Akershus;E+R;Alle;7,6m - 12,5m;Hittil i år;0,136;96,000;6876279;6866964;2.738;1.408
+Oslo og Akershus;E+R;Alle;12,5m - 16,0m;Hittil i år;2,840;96,000;4074580;3962076;9.849;5.064
+Oslo og Akershus;E+R;Alle;>= 16,0m;Hittil i år;2,767;96,000;5739303;5584796;9.694;4.984
+Oslo og Akershus;E+R;Yrkesdøgn;Alle;Hittil i år;-0,088;96,000;152053174;152187786;1.882;0.968
+Oslo og Akershus;E+R;Yrkesdøgn;< 5,6m;Hittil i år;-0,378;96,000;131748976;132249388;1.980;1.018
+Oslo og Akershus;E+R;Yrkesdøgn;>= 5,6m;Hittil i år;1,786;96,000;20210155;19855568;3.105;1.596
+Oslo og Akershus;E+R;Yrkesdøgn;5,6m - 7,6m;Hittil i år;2,330;96,000;5670333;5541201;5.915;3.041
+Oslo og Akershus;E+R;Yrkesdøgn;7,6m - 12,5m;Hittil i år;0,039;96,000;5885036;5882713;2.837;1.459
+Oslo og Akershus;E+R;Yrkesdøgn;12,5m - 16,0m;Hittil i år;2,691;96,000;3442317;3352124;10.606;5.453
+Oslo og Akershus;E+R;Yrkesdøgn;>= 16,0m;Hittil i år;2,617;96,000;5212469;5079530;8.943;4.598
+Oslo og Akershus;E+R;Helgedøgn;Alle;Hittil i år;0,162;96,000;49482116;49402301;2.440;1.255
+Oslo og Akershus;E+R;Helgedøgn;< 5,6m;Hittil i år;-0,017;96,000;46347895;46355681;2.454;1.262
+Oslo og Akershus;E+R;Helgedøgn;>= 5,6m;Hittil i år;2,908;96,000;3127878;3039498;3.619;1.861
+Oslo og Akershus;E+R;Helgedøgn;5,6m - 7,6m;Hittil i år;3,990;96,000;977538;940029;6.390;3.286
+Oslo og Akershus;E+R;Helgedøgn;7,6m - 12,5m;Hittil i år;0,710;96,000;991243;984251;4.311;2.217
+Oslo og Akershus;E+R;Helgedøgn;12,5m - 16,0m;Hittil i år;3,658;96,000;632263;609952;7.260;3.733
+Oslo og Akershus;E+R;Helgedøgn;>= 16,0m;Hittil i år;4,269;96,000;526834;505266;16.545;8.507
 Oslo og Akershus;E;Alle;Alle;Januar;1,644;97,000;14282374;14051337;1.226;0.943
 Oslo og Akershus;E;Alle;< 5,6m;Januar;1,219;97,000;12578058;12426580;1.285;0.988
 Oslo og Akershus;E;Alle;>= 5,6m;Januar;4,822;97,000;1697427;1619340;3.380;2.598
@@ -1217,27 +1217,27 @@ Oslo og Akershus;E;Helgedøgn;5,6m - 7,6m;Februar;2,950;96,000;48020;46644;14.930
 Oslo og Akershus;E;Helgedøgn;7,6m - 12,5m;Februar;0,277;96,000;41997;41881;7.016;5.393
 Oslo og Akershus;E;Helgedøgn;12,5m - 16,0m;Februar;3,344;96,000;34398;33285;14.385;11.057
 Oslo og Akershus;E;Helgedøgn;>= 16,0m;Februar;11,142;96,000;37445;33691;13.506;10.382
-Oslo og Akershus;E;Alle;Alle;Mars;5,072;94,000;13598130;12941704;2.375;1.986
-Oslo og Akershus;E;Alle;< 5,6m;Mars;4,541;94,000;12083472;11558617;2.836;2.371
-Oslo og Akershus;E;Alle;>= 5,6m;Mars;9,519;94,000;1511377;1380019;3.295;2.755
-Oslo og Akershus;E;Alle;5,6m - 7,6m;Mars;9,513;94,000;422552;385845;7.913;6.615
-Oslo og Akershus;E;Alle;7,6m - 12,5m;Mars;8,917;94,000;403631;370587;3.507;2.932
-Oslo og Akershus;E;Alle;12,5m - 16,0m;Mars;12,418;94,000;252666;224755;13.207;11.041
-Oslo og Akershus;E;Alle;>= 16,0m;Mars;8,449;94,000;432528;398832;2.684;2.244
-Oslo og Akershus;E;Yrkesdøgn;Alle;Mars;6,869;93,000;10131381;9480206;3.251;2.718
-Oslo og Akershus;E;Yrkesdøgn;< 5,6m;Mars;6,371;93,000;8809039;8281458;3.633;3.037
-Oslo og Akershus;E;Yrkesdøgn;>= 5,6m;Mars;10,321;93,000;1319242;1195821;3.946;3.299
-Oslo og Akershus;E;Yrkesdøgn;5,6m - 7,6m;Mars;9,741;93,000;364335;331996;7.057;5.900
-Oslo og Akershus;E;Yrkesdøgn;7,6m - 12,5m;Mars;9,319;93,000;350994;321072;4.329;3.619
-Oslo og Akershus;E;Yrkesdøgn;12,5m - 16,0m;Mars;16,348;93,000;213395;183411;15.767;13.182
-Oslo og Akershus;E;Yrkesdøgn;>= 16,0m;Mars;8,676;93,000;390518;359342;2.450;2.048
-Oslo og Akershus;E;Helgedøgn;Alle;Mars;0,152;96,000;3466749;3461498;4.929;4.121
-Oslo og Akershus;E;Helgedøgn;< 5,6m;Mars;-0,083;96,000;3274433;3277159;4.848;4.053
-Oslo og Akershus;E;Helgedøgn;>= 5,6m;Mars;4,309;96,000;192135;184198;9.771;8.169
-Oslo og Akershus;E;Helgedøgn;5,6m - 7,6m;Mars;8,112;96,000;58217;53849;16.691;13.954
-Oslo og Akershus;E;Helgedøgn;7,6m - 12,5m;Mars;6,305;96,000;52637;49515;6.752;5.645
-Oslo og Akershus;E;Helgedøgn;12,5m - 16,0m;Mars;-5,014;96,000;39271;41344;9.592;8.019
-Oslo og Akershus;E;Helgedøgn;>= 16,0m;Mars;6,381;96,000;42010;39490;12.166;10.171
+Oslo og Akershus;E;Alle;Alle;Mars;5,319;99,000;12665111;12025434;2.272;2.102
+Oslo og Akershus;E;Alle;< 5,6m;Mars;4,818;99,000;11288106;10769234;2.732;2.526
+Oslo og Akershus;E;Alle;>= 5,6m;Mars;9,623;99,000;1375668;1254911;3.481;3.219
+Oslo og Akershus;E;Alle;5,6m - 7,6m;Mars;8,095;99,000;385246;356397;6.102;5.643
+Oslo og Akershus;E;Alle;7,6m - 12,5m;Mars;9,398;99,000;368775;337095;3.283;3.036
+Oslo og Akershus;E;Alle;12,5m - 16,0m;Mars;15,524;99,000;233132;201804;9.218;8.525
+Oslo og Akershus;E;Alle;>= 16,0m;Mars;8,036;99,000;388515;359615;2.473;2.288
+Oslo og Akershus;E;Yrkesdøgn;Alle;Mars;7,474;98,000;9503807;8842914;2.227;2.059
+Oslo og Akershus;E;Yrkesdøgn;< 5,6m;Mars;7,006;98,000;8296954;7753737;2.585;2.391
+Oslo og Akershus;E;Yrkesdøgn;>= 5,6m;Mars;10,812;98,000;1205599;1087967;3.785;3.501
+Oslo og Akershus;E;Yrkesdøgn;5,6m - 7,6m;Mars;8,803;98,000;334506;307443;6.368;5.890
+Oslo og Akershus;E;Yrkesdøgn;7,6m - 12,5m;Mars;10,117;98,000;321407;291878;3.560;3.293
+Oslo og Akershus;E;Yrkesdøgn;12,5m - 16,0m;Mars;20,291;98,000;197781;164419;10.131;9.369
+Oslo og Akershus;E;Yrkesdøgn;>= 16,0m;Mars;8,537;98,000;351905;324227;2.570;2.376
+Oslo og Akershus;E;Helgedøgn;Alle;Mars;-0,667;99,000;3161304;3182520;4.123;3.813
+Oslo og Akershus;E;Helgedøgn;< 5,6m;Mars;-0,807;99,000;2991152;3015497;4.267;3.946
+Oslo og Akershus;E;Helgedøgn;>= 5,6m;Mars;1,872;99,000;170069;166944;5.603;5.182
+Oslo og Akershus;E;Helgedøgn;5,6m - 7,6m;Mars;3,648;99,000;50740;48954;6.881;6.364
+Oslo og Akershus;E;Helgedøgn;7,6m - 12,5m;Mars;4,757;99,000;47368;45217;4.228;3.910
+Oslo og Akershus;E;Helgedøgn;12,5m - 16,0m;Mars;-5,441;99,000;35351;37385;10.116;9.356
+Oslo og Akershus;E;Helgedøgn;>= 16,0m;Mars;3,453;99,000;36610;35388;8.277;7.655
 Oslo og Akershus;E;Alle;Alle;April;-4,950;93,000;12333749;12976073;1.806;1.510
 Oslo og Akershus;E;Alle;< 5,6m;April;-5,197;93,000;10905680;11503550;1.664;1.391
 Oslo og Akershus;E;Alle;>= 5,6m;April;-3,024;93,000;1425658;1470120;3.953;3.305
@@ -1427,48 +1427,48 @@ Oslo og Akershus;E;Helgedøgn;5,6m - 7,6m;Desember;-7,242;96,000;66966;72194;5.69
 Oslo og Akershus;E;Helgedøgn;7,6m - 12,5m;Desember;-12,353;96,000;55901;63780;5.547;3.968
 Oslo og Akershus;E;Helgedøgn;12,5m - 16,0m;Desember;-4,113;96,000;49327;51443;4.465;3.194
 Oslo og Akershus;E;Helgedøgn;>= 16,0m;Desember;-8,338;96,000;50391;54975;5.116;3.660
-Oslo og Akershus;E;Alle;Alle;Siste 12 måneder;-0,247;95,000;165459755;165869740;1.265;0.905
-Oslo og Akershus;E;Alle;< 5,6m;Siste 12 måneder;-0,437;95,000;145619851;146259124;1.397;0.999
-Oslo og Akershus;E;Alle;>= 5,6m;Siste 12 måneder;1,141;95,000;19778244;19555024;1.746;1.249
-Oslo og Akershus;E;Alle;5,6m - 7,6m;Siste 12 måneder;1,017;95,000;5422401;5367830;3.644;2.607
-Oslo og Akershus;E;Alle;7,6m - 12,5m;Siste 12 måneder;0,547;95,000;5756861;5725538;2.117;1.514
-Oslo og Akershus;E;Alle;12,5m - 16,0m;Siste 12 måneder;1,267;95,000;3364740;3322656;10.129;7.246
-Oslo og Akershus;E;Alle;>= 16,0m;Siste 12 måneder;1,853;95,000;5234242;5139000;5.544;3.966
-Oslo og Akershus;E;Yrkesdøgn;Alle;Siste 12 måneder;-0,322;95,000;124463429;124866018;1.622;1.160
-Oslo og Akershus;E;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,535;95,000;107273594;107850389;1.758;1.257
-Oslo og Akershus;E;Yrkesdøgn;>= 5,6m;Siste 12 måneder;0,989;95,000;17133156;16965423;2.059;1.473
-Oslo og Akershus;E;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;0,758;95,000;4619798;4585048;3.539;2.532
-Oslo og Akershus;E;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;0,495;95,000;4909769;4885592;2.334;1.670
-Oslo og Akershus;E;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;0,961;95,000;2849047;2821934;10.869;7.775
-Oslo og Akershus;E;Yrkesdøgn;>= 16,0m;Siste 12 måneder;1,748;95,000;4754542;4672849;5.280;3.777
-Oslo og Akershus;E;Helgedøgn;Alle;Siste 12 måneder;-0,018;96,000;40996326;41003722;2.256;1.614
-Oslo og Akershus;E;Helgedøgn;< 5,6m;Siste 12 måneder;-0,163;96,000;38346257;38408735;2.291;1.639
-Oslo og Akershus;E;Helgedøgn;>= 5,6m;Siste 12 måneder;2,143;96,000;2645088;2589601;2.306;1.650
-Oslo og Akershus;E;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;2,532;96,000;802603;782782;5.162;3.693
-Oslo og Akershus;E;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;0,851;96,000;847092;839946;3.288;2.352
-Oslo og Akershus;E;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;2,990;96,000;515693;500722;7.194;5.146
-Oslo og Akershus;E;Helgedøgn;>= 16,0m;Siste 12 måneder;2,907;96,000;479700;466151;9.254;6.620
-Oslo og Akershus;E;Alle;Alle;Hittil i år;-0,247;95,000;165459755;165869740;1.265;0.905
-Oslo og Akershus;E;Alle;< 5,6m;Hittil i år;-0,437;95,000;145619851;146259124;1.397;0.999
-Oslo og Akershus;E;Alle;>= 5,6m;Hittil i år;1,141;95,000;19778244;19555024;1.746;1.249
-Oslo og Akershus;E;Alle;5,6m - 7,6m;Hittil i år;1,017;95,000;5422401;5367830;3.644;2.607
-Oslo og Akershus;E;Alle;7,6m - 12,5m;Hittil i år;0,547;95,000;5756861;5725538;2.117;1.514
-Oslo og Akershus;E;Alle;12,5m - 16,0m;Hittil i år;1,267;95,000;3364740;3322656;10.129;7.246
-Oslo og Akershus;E;Alle;>= 16,0m;Hittil i år;1,853;95,000;5234242;5139000;5.544;3.966
-Oslo og Akershus;E;Yrkesdøgn;Alle;Hittil i år;-0,322;95,000;124463429;124866018;1.622;1.160
-Oslo og Akershus;E;Yrkesdøgn;< 5,6m;Hittil i år;-0,535;95,000;107273594;107850389;1.758;1.257
-Oslo og Akershus;E;Yrkesdøgn;>= 5,6m;Hittil i år;0,989;95,000;17133156;16965423;2.059;1.473
-Oslo og Akershus;E;Yrkesdøgn;5,6m - 7,6m;Hittil i år;0,758;95,000;4619798;4585048;3.539;2.532
-Oslo og Akershus;E;Yrkesdøgn;7,6m - 12,5m;Hittil i år;0,495;95,000;4909769;4885592;2.334;1.670
-Oslo og Akershus;E;Yrkesdøgn;12,5m - 16,0m;Hittil i år;0,961;95,000;2849047;2821934;10.869;7.775
-Oslo og Akershus;E;Yrkesdøgn;>= 16,0m;Hittil i år;1,748;95,000;4754542;4672849;5.280;3.777
-Oslo og Akershus;E;Helgedøgn;Alle;Hittil i år;-0,018;96,000;40996326;41003722;2.256;1.614
-Oslo og Akershus;E;Helgedøgn;< 5,6m;Hittil i år;-0,163;96,000;38346257;38408735;2.291;1.639
-Oslo og Akershus;E;Helgedøgn;>= 5,6m;Hittil i år;2,143;96,000;2645088;2589601;2.306;1.650
-Oslo og Akershus;E;Helgedøgn;5,6m - 7,6m;Hittil i år;2,532;96,000;802603;782782;5.162;3.693
-Oslo og Akershus;E;Helgedøgn;7,6m - 12,5m;Hittil i år;0,851;96,000;847092;839946;3.288;2.352
-Oslo og Akershus;E;Helgedøgn;12,5m - 16,0m;Hittil i år;2,990;96,000;515693;500722;7.194;5.146
-Oslo og Akershus;E;Helgedøgn;>= 16,0m;Hittil i år;2,907;96,000;479700;466151;9.254;6.620
+Oslo og Akershus;E;Alle;Alle;Siste 12 måneder;-0,259;96,000;164526736;164953470;1.282;0.917
+Oslo og Akershus;E;Alle;< 5,6m;Siste 12 måneder;-0,444;96,000;144824485;145469741;1.420;1.016
+Oslo og Akershus;E;Alle;>= 5,6m;Siste 12 måneder;1,094;96,000;19642535;19429916;1.663;1.190
+Oslo og Akershus;E;Alle;5,6m - 7,6m;Siste 12 måneder;0,875;96,000;5385095;5338382;3.255;2.328
+Oslo og Akershus;E;Alle;7,6m - 12,5m;Siste 12 måneder;0,526;96,000;5722005;5692046;2.129;1.523
+Oslo og Akershus;E;Alle;12,5m - 16,0m;Siste 12 måneder;1,379;96,000;3345206;3299705;10.093;7.220
+Oslo og Akershus;E;Alle;>= 16,0m;Siste 12 måneder;1,774;96,000;5190229;5099783;5.486;3.924
+Oslo og Akershus;E;Yrkesdøgn;Alle;Siste 12 måneder;-0,316;95,000;123835855;124228726;1.625;1.163
+Oslo og Akershus;E;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,523;95,000;106761509;107322668;1.754;1.255
+Oslo og Akershus;E;Yrkesdøgn;>= 5,6m;Siste 12 måneder;0,961;95,000;17019513;16857569;2.032;1.454
+Oslo og Akershus;E;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;0,646;95,000;4589969;4560495;3.242;2.319
+Oslo og Akershus;E;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;0,490;95,000;4880182;4856398;2.342;1.675
+Oslo og Akershus;E;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;1,088;95,000;2833433;2802942;10.831;7.748
+Oslo og Akershus;E;Yrkesdøgn;>= 16,0m;Siste 12 måneder;1,686;95,000;4715929;4637734;5.247;3.753
+Oslo og Akershus;E;Helgedøgn;Alle;Siste 12 måneder;-0,083;96,000;40690881;40724744;2.356;1.685
+Oslo og Akershus;E;Helgedøgn;< 5,6m;Siste 12 måneder;-0,220;96,000;38062976;38147073;2.392;1.711
+Oslo og Akershus;E;Helgedøgn;>= 5,6m;Siste 12 måneder;1,970;96,000;2623022;2572347;2.263;1.619
+Oslo og Akershus;E;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;2,216;96,000;795126;777887;4.599;3.290
+Oslo og Akershus;E;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;0,739;96,000;841823;835648;3.501;2.505
+Oslo og Akershus;E;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;3,022;96,000;511773;496763;7.251;5.187
+Oslo og Akershus;E;Helgedøgn;>= 16,0m;Siste 12 måneder;2,651;96,000;474300;462049;9.123;6.526
+Oslo og Akershus;E;Alle;Alle;Hittil i år;-0,259;96,000;164526736;164953470;1.282;0.917
+Oslo og Akershus;E;Alle;< 5,6m;Hittil i år;-0,444;96,000;144824485;145469741;1.420;1.016
+Oslo og Akershus;E;Alle;>= 5,6m;Hittil i år;1,094;96,000;19642535;19429916;1.663;1.190
+Oslo og Akershus;E;Alle;5,6m - 7,6m;Hittil i år;0,875;96,000;5385095;5338382;3.255;2.328
+Oslo og Akershus;E;Alle;7,6m - 12,5m;Hittil i år;0,526;96,000;5722005;5692046;2.129;1.523
+Oslo og Akershus;E;Alle;12,5m - 16,0m;Hittil i år;1,379;96,000;3345206;3299705;10.093;7.220
+Oslo og Akershus;E;Alle;>= 16,0m;Hittil i år;1,774;96,000;5190229;5099783;5.486;3.924
+Oslo og Akershus;E;Yrkesdøgn;Alle;Hittil i år;-0,316;95,000;123835855;124228726;1.625;1.163
+Oslo og Akershus;E;Yrkesdøgn;< 5,6m;Hittil i år;-0,523;95,000;106761509;107322668;1.754;1.255
+Oslo og Akershus;E;Yrkesdøgn;>= 5,6m;Hittil i år;0,961;95,000;17019513;16857569;2.032;1.454
+Oslo og Akershus;E;Yrkesdøgn;5,6m - 7,6m;Hittil i år;0,646;95,000;4589969;4560495;3.242;2.319
+Oslo og Akershus;E;Yrkesdøgn;7,6m - 12,5m;Hittil i år;0,490;95,000;4880182;4856398;2.342;1.675
+Oslo og Akershus;E;Yrkesdøgn;12,5m - 16,0m;Hittil i år;1,088;95,000;2833433;2802942;10.831;7.748
+Oslo og Akershus;E;Yrkesdøgn;>= 16,0m;Hittil i år;1,686;95,000;4715929;4637734;5.247;3.753
+Oslo og Akershus;E;Helgedøgn;Alle;Hittil i år;-0,083;96,000;40690881;40724744;2.356;1.685
+Oslo og Akershus;E;Helgedøgn;< 5,6m;Hittil i år;-0,220;96,000;38062976;38147073;2.392;1.711
+Oslo og Akershus;E;Helgedøgn;>= 5,6m;Hittil i år;1,970;96,000;2623022;2572347;2.263;1.619
+Oslo og Akershus;E;Helgedøgn;5,6m - 7,6m;Hittil i år;2,216;96,000;795126;777887;4.599;3.290
+Oslo og Akershus;E;Helgedøgn;7,6m - 12,5m;Hittil i år;0,739;96,000;841823;835648;3.501;2.505
+Oslo og Akershus;E;Helgedøgn;12,5m - 16,0m;Hittil i år;3,022;96,000;511773;496763;7.251;5.187
+Oslo og Akershus;E;Helgedøgn;>= 16,0m;Hittil i år;2,651;96,000;474300;462049;9.123;6.526
 Oslo og Akershus;E+R+F+K;Alle;Alle;Januar;1,611;97,000;20006821;19689551;1.395;0.618
 Oslo og Akershus;E+R+F+K;Alle;< 5,6m;Januar;1,306;97,000;17853989;17623813;1.324;0.587
 Oslo og Akershus;E+R+F+K;Alle;>= 5,6m;Januar;4,136;97,000;2139739;2054749;4.614;2.046
@@ -1511,27 +1511,27 @@ Oslo og Akershus;E+R+F+K;Helgedøgn;5,6m - 7,6m;Februar;4,735;97,000;61426;58649;
 Oslo og Akershus;E+R+F+K;Helgedøgn;7,6m - 12,5m;Februar;0,277;97,000;52048;51904;10.022;4.562
 Oslo og Akershus;E+R+F+K;Helgedøgn;12,5m - 16,0m;Februar;4,241;97,000;44363;42558;17.047;7.760
 Oslo og Akershus;E+R+F+K;Helgedøgn;>= 16,0m;Februar;12,212;97,000;42432;37814;21.420;9.750
-Oslo og Akershus;E+R+F+K;Alle;Alle;Mars;6,196;97,000;18066317;17012248;3.392;1.687
-Oslo og Akershus;E+R+F+K;Alle;< 5,6m;Mars;5,678;97,000;16216672;15345372;3.657;1.819
-Oslo og Akershus;E+R+F+K;Alle;>= 5,6m;Mars;10,869;97,000;1842221;1661626;5.170;2.571
-Oslo og Akershus;E+R+F+K;Alle;5,6m - 7,6m;Mars;11,964;97,000;541348;483502;10.360;5.152
-Oslo og Akershus;E+R+F+K;Alle;7,6m - 12,5m;Mars;9,551;97,000;511256;466684;4.794;2.384
-Oslo og Akershus;E+R+F+K;Alle;12,5m - 16,0m;Mars;12,988;97,000;320416;283584;13.389;6.658
-Oslo og Akershus;E+R+F+K;Alle;>= 16,0m;Mars;9,663;97,000;469201;427856;7.051;3.506
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;Alle;Mars;7,861;96,000;13513341;12528518;3.726;1.853
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;< 5,6m;Mars;7,352;96,000;11900755;11085759;3.980;1.979
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;>= 5,6m;Mars;11,691;96,000;1605799;1437711;5.377;2.674
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Mars;12,203;96,000;467253;416437;9.622;4.785
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Mars;9,717;96,000;445411;405964;4.990;2.481
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Mars;17,272;96,000;269201;229552;15.311;7.614
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;>= 16,0m;Mars;9,896;96,000;423934;385758;6.792;3.378
-Oslo og Akershus;E+R+F+K;Helgedøgn;Alle;Mars;1,544;97,000;4552976;4483730;5.493;2.732
-Oslo og Akershus;E+R+F+K;Helgedøgn;< 5,6m;Mars;1,322;97,000;4315917;4259613;5.370;2.671
-Oslo og Akershus;E+R+F+K;Helgedøgn;>= 5,6m;Mars;5,586;97,000;236422;223915;12.036;5.986
-Oslo og Akershus;E+R+F+K;Helgedøgn;5,6m - 7,6m;Mars;10,482;97,000;74095;67065;18.960;9.429
-Oslo og Akershus;E+R+F+K;Helgedøgn;7,6m - 12,5m;Mars;8,440;97,000;65845;60720;10.168;5.057
-Oslo og Akershus;E+R+F+K;Helgedøgn;12,5m - 16,0m;Mars;-5,214;97,000;51215;54032;13.042;6.485
-Oslo og Akershus;E+R+F+K;Helgedøgn;>= 16,0m;Mars;7,528;97,000;45267;42098;16.632;8.271
+Oslo og Akershus;E+R+F+K;Alle;Alle;Mars;6,445;99,000;17133298;16095978;3.315;1.704
+Oslo og Akershus;E+R+F+K;Alle;< 5,6m;Mars;5,945;99,000;15421306;14555989;3.561;1.831
+Oslo og Akershus;E+R+F+K;Alle;>= 5,6m;Mars;11,064;99,000;1706512;1536518;5.359;2.756
+Oslo og Akershus;E+R+F+K;Alle;5,6m - 7,6m;Mars;11,009;99,000;504042;454054;9.932;5.107
+Oslo og Akershus;E+R+F+K;Alle;7,6m - 12,5m;Mars;9,974;99,000;476400;433192;4.716;2.425
+Oslo og Akershus;E+R+F+K;Alle;12,5m - 16,0m;Mars;15,443;99,000;300882;260633;10.650;5.476
+Oslo og Akershus;E+R+F+K;Alle;>= 16,0m;Mars;9,404;99,000;425188;388639;7.421;3.816
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;Alle;Mars;8,364;99,000;12885767;11891226;3.031;1.558
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;< 5,6m;Mars;7,867;99,000;11388670;10558038;3.244;1.668
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;>= 5,6m;Mars;12,204;99,000;1492156;1329857;5.262;2.705
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Mars;11,621;99,000;437424;391884;9.644;4.958
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Mars;10,365;99,000;415824;376770;4.533;2.331
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Mars;20,435;99,000;253587;210560;11.052;5.682
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;>= 16,0m;Mars;9,890;99,000;385321;350643;7.202;3.703
+Oslo og Akershus;E+R+F+K;Helgedøgn;Alle;Mars;1,017;99,000;4247531;4204752;5.244;2.696
+Oslo og Akershus;E+R+F+K;Helgedøgn;< 5,6m;Mars;0,868;99,000;4032636;3997951;5.223;2.685
+Oslo og Akershus;E+R+F+K;Helgedøgn;>= 5,6m;Mars;3,723;99,000;214356;206661;10.392;5.343
+Oslo og Akershus;E+R+F+K;Helgedøgn;5,6m - 7,6m;Mars;7,155;99,000;66618;62170;14.854;7.637
+Oslo og Akershus;E+R+F+K;Helgedøgn;7,6m - 12,5m;Mars;7,362;99,000;60576;56422;9.699;4.987
+Oslo og Akershus;E+R+F+K;Helgedøgn;12,5m - 16,0m;Mars;-5,548;99,000;47295;50073;13.563;6.973
+Oslo og Akershus;E+R+F+K;Helgedøgn;>= 16,0m;Mars;4,924;99,000;39867;37996;15.194;7.812
 Oslo og Akershus;E+R+F+K;Alle;Alle;April;-5,037;96,000;16518845;17394997;2.114;1.019
 Oslo og Akershus;E+R+F+K;Alle;< 5,6m;April;-5,400;96,000;14749848;15591833;2.015;0.971
 Oslo og Akershus;E+R+F+K;Alle;>= 5,6m;April;-1,856;96,000;1763611;1796964;4.847;2.336
@@ -1721,45 +1721,45 @@ Oslo og Akershus;E+R+F+K;Helgedøgn;5,6m - 7,6m;Desember;-6,731;98,000;88408;9478
 Oslo og Akershus;E+R+F+K;Helgedøgn;7,6m - 12,5m;Desember;-13,211;98,000;69591;80184;8.498;3.768
 Oslo og Akershus;E+R+F+K;Helgedøgn;12,5m - 16,0m;Desember;-4,851;98,000;63987;67249;5.874;2.604
 Oslo og Akershus;E+R+F+K;Helgedøgn;>= 16,0m;Desember;-5,148;98,000;60969;64278;36.619;16.236
-Oslo og Akershus;E+R+F+K;Alle;Alle;Siste 12 måneder;-0,011;96,000;226246728;226271745;1.651;0.697
-Oslo og Akershus;E+R+F+K;Alle;< 5,6m;Siste 12 måneder;-0,252;96,000;201062360;201570381;1.723;0.728
-Oslo og Akershus;E+R+F+K;Alle;>= 5,6m;Siste 12 måneder;1,906;96,000;25060069;24591452;3.016;1.273
-Oslo og Akershus;E+R+F+K;Alle;5,6m - 7,6m;Siste 12 måneder;2,721;96,000;7260670;7068346;5.950;2.513
-Oslo og Akershus;E+R+F+K;Alle;7,6m - 12,5m;Siste 12 måneder;-0,061;96,000;7428022;7432538;3.060;1.292
-Oslo og Akershus;E+R+F+K;Alle;12,5m - 16,0m;Siste 12 måneder;2,638;96,000;4369797;4257502;9.661;4.080
-Oslo og Akershus;E+R+F+K;Alle;>= 16,0m;Siste 12 måneder;2,889;96,000;6001580;5833066;9.724;4.106
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;Alle;Siste 12 måneder;-0,079;96,000;171262696;171397694;1.862;0.786
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,348;96,000;149431775;149953404;1.946;0.822
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;>= 5,6m;Siste 12 måneder;1,741;96,000;21713722;21342202;3.173;1.340
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;2,471;96,000;6212564;6062776;5.937;2.507
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;-0,162;96,000;6373228;6383550;3.146;1.328
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;2,446;96,000;3688270;3600193;10.455;4.415
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;>= 16,0m;Siste 12 måneder;2,719;96,000;5439660;5295683;8.897;3.757
-Oslo og Akershus;E+R+F+K;Helgedøgn;Alle;Siste 12 måneder;0,200;97,000;54984032;54874051;2.392;1.010
-Oslo og Akershus;E+R+F+K;Helgedøgn;< 5,6m;Siste 12 måneder;0,026;97,000;51630585;51616977;2.408;1.017
-Oslo og Akershus;E+R+F+K;Helgedøgn;>= 5,6m;Siste 12 måneder;2,988;97,000;3346347;3249250;3.603;1.521
-Oslo og Akershus;E+R+F+K;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;4,230;97,000;1048106;1005570;6.725;2.840
-Oslo og Akershus;E+R+F+K;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;0,553;97,000;1054794;1048988;4.329;1.828
-Oslo og Akershus;E+R+F+K;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;3,684;97,000;681527;657309;7.259;3.065
-Oslo og Akershus;E+R+F+K;Helgedøgn;>= 16,0m;Siste 12 måneder;4,566;97,000;561920;537383;17.482;7.382
-Oslo og Akershus;E+R+F+K;Alle;Alle;Hittil i år;-0,011;96,000;226246728;226271745;1.651;0.697
-Oslo og Akershus;E+R+F+K;Alle;< 5,6m;Hittil i år;-0,252;96,000;201062360;201570381;1.723;0.728
-Oslo og Akershus;E+R+F+K;Alle;>= 5,6m;Hittil i år;1,906;96,000;25060069;24591452;3.016;1.273
-Oslo og Akershus;E+R+F+K;Alle;5,6m - 7,6m;Hittil i år;2,721;96,000;7260670;7068346;5.950;2.513
-Oslo og Akershus;E+R+F+K;Alle;7,6m - 12,5m;Hittil i år;-0,061;96,000;7428022;7432538;3.060;1.292
-Oslo og Akershus;E+R+F+K;Alle;12,5m - 16,0m;Hittil i år;2,638;96,000;4369797;4257502;9.661;4.080
-Oslo og Akershus;E+R+F+K;Alle;>= 16,0m;Hittil i år;2,889;96,000;6001580;5833066;9.724;4.106
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;Alle;Hittil i år;-0,079;96,000;171262696;171397694;1.862;0.786
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;< 5,6m;Hittil i år;-0,348;96,000;149431775;149953404;1.946;0.822
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;>= 5,6m;Hittil i år;1,741;96,000;21713722;21342202;3.173;1.340
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Hittil i år;2,471;96,000;6212564;6062776;5.937;2.507
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Hittil i år;-0,162;96,000;6373228;6383550;3.146;1.328
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Hittil i år;2,446;96,000;3688270;3600193;10.455;4.415
-Oslo og Akershus;E+R+F+K;Yrkesdøgn;>= 16,0m;Hittil i år;2,719;96,000;5439660;5295683;8.897;3.757
-Oslo og Akershus;E+R+F+K;Helgedøgn;Alle;Hittil i år;0,200;97,000;54984032;54874051;2.392;1.010
-Oslo og Akershus;E+R+F+K;Helgedøgn;< 5,6m;Hittil i år;0,026;97,000;51630585;51616977;2.408;1.017
-Oslo og Akershus;E+R+F+K;Helgedøgn;>= 5,6m;Hittil i år;2,988;97,000;3346347;3249250;3.603;1.521
-Oslo og Akershus;E+R+F+K;Helgedøgn;5,6m - 7,6m;Hittil i år;4,230;97,000;1048106;1005570;6.725;2.840
-Oslo og Akershus;E+R+F+K;Helgedøgn;7,6m - 12,5m;Hittil i år;0,553;97,000;1054794;1048988;4.329;1.828
-Oslo og Akershus;E+R+F+K;Helgedøgn;12,5m - 16,0m;Hittil i år;3,684;97,000;681527;657309;7.259;3.065
-Oslo og Akershus;E+R+F+K;Helgedøgn;>= 16,0m;Hittil i år;4,566;97,000;561920;537383;17.482;7.382
+Oslo og Akershus;E+R+F+K;Alle;Alle;Siste 12 måneder;-0,019;96,000;225313709;225355475;1.662;0.702
+Oslo og Akershus;E+R+F+K;Alle;< 5,6m;Siste 12 måneder;-0,256;96,000;200266994;200780998;1.738;0.734
+Oslo og Akershus;E+R+F+K;Alle;>= 5,6m;Siste 12 måneder;1,872;96,000;24924360;24466344;2.995;1.265
+Oslo og Akershus;E+R+F+K;Alle;5,6m - 7,6m;Siste 12 måneder;2,621;96,000;7223364;7038898;5.829;2.461
+Oslo og Akershus;E+R+F+K;Alle;7,6m - 12,5m;Siste 12 måneder;-0,079;96,000;7393166;7399046;3.066;1.295
+Oslo og Akershus;E+R+F+K;Alle;12,5m - 16,0m;Siste 12 måneder;2,733;96,000;4350263;4234551;9.615;4.060
+Oslo og Akershus;E+R+F+K;Alle;>= 16,0m;Siste 12 måneder;2,826;96,000;5957567;5793849;9.727;4.108
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;Alle;Siste 12 måneder;-0,073;96,000;170635122;170760402;1.864;0.787
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;< 5,6m;Siste 12 måneder;-0,339;96,000;148919690;149425683;1.944;0.821
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;>= 5,6m;Siste 12 måneder;1,722;96,000;21600079;21234348;3.170;1.339
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Siste 12 måneder;2,393;96,000;6182735;6038223;5.850;2.470
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Siste 12 måneder;-0,169;96,000;6343641;6354356;3.152;1.331
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Siste 12 måneder;2,554;96,000;3672656;3581201;10.406;4.394
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;>= 16,0m;Siste 12 måneder;2,670;96,000;5401047;5260568;8.907;3.761
+Oslo og Akershus;E+R+F+K;Helgedøgn;Alle;Siste 12 måneder;0,153;97,000;54678587;54595073;2.464;1.040
+Oslo og Akershus;E+R+F+K;Helgedøgn;< 5,6m;Siste 12 måneder;-0,016;97,000;51347304;51355315;2.479;1.047
+Oslo og Akershus;E+R+F+K;Helgedøgn;>= 5,6m;Siste 12 måneder;2,855;97,000;3324281;3231996;3.623;1.530
+Oslo og Akershus;E+R+F+K;Helgedøgn;5,6m - 7,6m;Siste 12 måneder;3,993;97,000;1040629;1000675;6.494;2.742
+Oslo og Akershus;E+R+F+K;Helgedøgn;7,6m - 12,5m;Siste 12 måneder;0,463;97,000;1049525;1044690;4.452;1.880
+Oslo og Akershus;E+R+F+K;Helgedøgn;12,5m - 16,0m;Siste 12 måneder;3,713;97,000;677607;653350;7.298;3.082
+Oslo og Akershus;E+R+F+K;Helgedøgn;>= 16,0m;Siste 12 måneder;4,358;97,000;556520;533281;17.499;7.389
+Oslo og Akershus;E+R+F+K;Alle;Alle;Hittil i år;-0,019;96,000;225313709;225355475;1.662;0.702
+Oslo og Akershus;E+R+F+K;Alle;< 5,6m;Hittil i år;-0,256;96,000;200266994;200780998;1.738;0.734
+Oslo og Akershus;E+R+F+K;Alle;>= 5,6m;Hittil i år;1,872;96,000;24924360;24466344;2.995;1.265
+Oslo og Akershus;E+R+F+K;Alle;5,6m - 7,6m;Hittil i år;2,621;96,000;7223364;7038898;5.829;2.461
+Oslo og Akershus;E+R+F+K;Alle;7,6m - 12,5m;Hittil i år;-0,079;96,000;7393166;7399046;3.066;1.295
+Oslo og Akershus;E+R+F+K;Alle;12,5m - 16,0m;Hittil i år;2,733;96,000;4350263;4234551;9.615;4.060
+Oslo og Akershus;E+R+F+K;Alle;>= 16,0m;Hittil i år;2,826;96,000;5957567;5793849;9.727;4.108
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;Alle;Hittil i år;-0,073;96,000;170635122;170760402;1.864;0.787
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;< 5,6m;Hittil i år;-0,339;96,000;148919690;149425683;1.944;0.821
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;>= 5,6m;Hittil i år;1,722;96,000;21600079;21234348;3.170;1.339
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;5,6m - 7,6m;Hittil i år;2,393;96,000;6182735;6038223;5.850;2.470
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;7,6m - 12,5m;Hittil i år;-0,169;96,000;6343641;6354356;3.152;1.331
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;12,5m - 16,0m;Hittil i år;2,554;96,000;3672656;3581201;10.406;4.394
+Oslo og Akershus;E+R+F+K;Yrkesdøgn;>= 16,0m;Hittil i år;2,670;96,000;5401047;5260568;8.907;3.761
+Oslo og Akershus;E+R+F+K;Helgedøgn;Alle;Hittil i år;0,153;97,000;54678587;54595073;2.464;1.040
+Oslo og Akershus;E+R+F+K;Helgedøgn;< 5,6m;Hittil i år;-0,016;97,000;51347304;51355315;2.479;1.047
+Oslo og Akershus;E+R+F+K;Helgedøgn;>= 5,6m;Hittil i år;2,855;97,000;3324281;3231996;3.623;1.530
+Oslo og Akershus;E+R+F+K;Helgedøgn;5,6m - 7,6m;Hittil i år;3,993;97,000;1040629;1000675;6.494;2.742
+Oslo og Akershus;E+R+F+K;Helgedøgn;7,6m - 12,5m;Hittil i år;0,463;97,000;1049525;1044690;4.452;1.880
+Oslo og Akershus;E+R+F+K;Helgedøgn;12,5m - 16,0m;Hittil i år;3,713;97,000;677607;653350;7.298;3.082
+Oslo og Akershus;E+R+F+K;Helgedøgn;>= 16,0m;Hittil i år;4,358;97,000;556520;533281;17.499;7.389

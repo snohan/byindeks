@@ -62,7 +62,7 @@ n_17_18 <- pointindex_oslo_17_18 %>%
   nrow()
 
 pointindex_oslo_18_19 <-
-  readPointindexCSV("data_index_raw/pointindex_oslo-2019-10_2018.csv") %>%
+  readPointindexCSV("data_index_raw/pointindex_oslo-2019-12_2018.csv") %>%
   rename(index_18_19 = index)
 
 n_18_19 <- pointindex_oslo_18_19 %>%
@@ -75,7 +75,7 @@ adt_filtered <- adt %>%
   dplyr::filter(length_range == "[..,5.6)") %>%
   dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
   dplyr::filter(length_quality > 90) %>%
-  dplyr::filter(coverage > 50) %>%
+  dplyr::filter(coverage > 20) %>%
   dplyr::group_by(trp_id) %>%
   dplyr::filter(year >= 2016) %>%
   dplyr::filter(year == min(year)) %>%
@@ -123,7 +123,7 @@ oslo_2018 <-
   read_city_index_csv("data_index_raw/Oslo-2018-12_2017.csv") %>%
   mutate(year = "2017-2018")
 oslo_2019 <-
-  read_city_index_csv("data_index_raw/Oslo-2019-10_2018.csv") %>%
+  read_city_index_csv("data_index_raw/Oslo-2019-12_2018.csv") %>%
   mutate(year = "2018-2019")
 
 city_index_oslo <- bind_rows(
@@ -140,10 +140,12 @@ city_index_oslo <- bind_rows(
 first_two_years <- calculate_two_year_index(city_index_oslo)
 next_two_years <- bind_rows(first_two_years, slice(city_index_oslo, 3)) %>%
   calculate_two_year_index()
+last_two_years <- calculate_two_year_index(slice(city_index_oslo, 2:3))
 
 city_index_oslo_all <- city_index_oslo %>%
   bind_rows(next_two_years) %>%
   bind_rows(first_two_years) %>%
+  bind_rows(last_two_years) %>%
   dplyr::mutate(ki_start = index - konfidensintervall,
                 ki_slutt = index + konfidensintervall)
 
@@ -159,7 +161,7 @@ oslo_2018_monthly <-
   monthly_city_index("data_index_raw/Oslo-2018-12_2017.csv") %>%
   mutate(year = "2017-2018")
 oslo_2019_monthly <-
-  monthly_city_index("data_index_raw/Oslo-2019-10_2018.csv") %>%
+  monthly_city_index("data_index_raw/Oslo-2019-12_2018.csv") %>%
   mutate(year = "2018-2019")
 
 oslo_monthly <- bind_rows(
@@ -381,7 +383,13 @@ trp_grenland_2017_ids <- cities_points %>%
 
 # Adding metadata
 # Bruker trp fra trp-api, da noen mangler igangsetting.
-trp_grenland_2017 <- dplyr::left_join(trp_grenland_2017_ids, points_trp) %>%
+trp_grenland_2017 <- dplyr::left_join(trp_grenland_2017_ids, points_trp) #%>%
+  #filter(!is.na(road_reference))
+
+# Bambletunnelen syd har fått utdatert veglenke - kanskje flytte den til
+# 0.01@2823121. I mellomtiden:
+trp_grenland_2017$road_reference[4] <- "EV18 S26D30 m87"
+trp_grenland_2017 <- trp_grenland_2017 %>%
   filter(!is.na(road_reference))
 
 # Add index results from CSV-files
@@ -389,21 +397,52 @@ pointindex_grenland_16_17 <-
   readPointindexCSV("data_index_raw/pointindex_grenland-2017-12_2016.csv") %>%
   rename(index_16_17 = index)
 
+n_16_17 <- pointindex_grenland_16_17 %>%
+  dplyr::filter(!is.na(index_16_17)) %>%
+  nrow()
+
 pointindex_grenland_17_18 <-
   readPointindexCSV("data_index_raw/pointindex_grenland-2018-12_2017.csv") %>%
   rename(index_17_18 = index)
 
+n_17_18 <- pointindex_grenland_17_18 %>%
+  dplyr::filter(!is.na(index_17_18)) %>%
+  nrow()
+
 pointindex_grenland_18_19 <-
-  readPointindexCSV("data_index_raw/pointindex_grenland-2019-06_2018.csv") %>%
+  readPointindexCSV("data_index_raw/pointindex_grenland-2019-12_2018.csv") %>%
   rename(index_18_19 = index)
 
-adt <- getAdtForpoints(trp_grenland_2017$trp_id) %>%
-  dplyr::filter(year == 2016) %>%
-  dplyr::select(-year)
+n_18_19 <- pointindex_grenland_18_19 %>%
+  dplyr::filter(!is.na(index_18_19)) %>%
+  nrow()
+
+adt <- getAdtForpoints_by_length(trp_grenland_2017$trp_id) #%>%
+  #dplyr::filter(year == 2016) %>%
+  #dplyr::select(-year)
+
+adt_filtered <- adt %>%
+  dplyr::filter(length_range == "[..,5.6)") %>%
+  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  dplyr::filter(length_quality > 90) %>%
+  dplyr::filter(coverage > 10) %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year >= 2016) %>%
+  dplyr::filter(year == min(year)) %>%
+  dplyr::select(trp_id, aadt_length_range, year) %>%
+  dplyr::rename(adt = 2)
+
+adt_manual <- data.frame(
+  trp_id = c("32825V521440"),
+  adt = c(9000),
+  year = c(2016)
+)
+
+adt_all <- bind_rows(adt_filtered, adt_manual)
 
 # Final table
 trp_grenland_2017_alle_adt <- trp_grenland_2017 %>%
-  left_join(adt) %>%
+  left_join(adt_all) %>%
   left_join(pointindex_grenland_16_17) %>%
   left_join(pointindex_grenland_17_18) %>%
   left_join(pointindex_grenland_18_19)
@@ -424,7 +463,7 @@ trp_grenland_2017_final <- bind_rows(with_aadt, missing_aadt) %>%
   dplyr::select(-road_link_position, -sd)
 
 # Index from refyear
-refyear <- trp_grenland_2017_final %>%
+refyear <- trp_grenland_2017_alle_adt %>%
   select(starts_with("index")) %>%
   mutate_all(list(index_converter)) %>%
   transmute(index = purrr::pmap_dbl(., prod)) %>%
@@ -432,7 +471,7 @@ refyear <- trp_grenland_2017_final %>%
   mutate(index = round(ifelse(index == 1, NA,  100 * (index - 1)),
                        digits = 1))
 
-trp_grenland_2017_final_all <- trp_grenland_2017_final %>%
+trp_grenland_2017_final_all <- trp_grenland_2017_alle_adt %>%
   bind_cols(refyear)
 
 write.csv2(trp_grenland_2017_final_all,
@@ -447,28 +486,53 @@ grenland_2018 <-
   read_city_index_csv("data_index_raw/Grenland-2018-12_2017.csv") %>%
   mutate(year = "2017-2018")
 grenland_2019 <-
-  read_city_index_csv("data_index_raw/Grenland-2019-06_2018.csv") %>%
+  read_city_index_csv("data_index_raw/Grenland-2019-12_2018.csv") %>%
   mutate(year = "2018-2019")
 
 city_index_grenland <- bind_rows(grenland_2017,
                                  grenland_2018,
                                  grenland_2019) %>%
   mutate(index_i = index_converter(index),
-         variance = (konfidensintervall / 1.96)^2)
+         variance = standardavvik^2,
+         n_points = c(
+           n_16_17,
+           n_17_18,
+           n_18_19))
 
 first_two_years <- calculate_two_year_index(city_index_grenland)
 next_two_years <- bind_rows(first_two_years, slice(city_index_grenland, 3)) %>%
-  calculate_two_year_index() %>%
-  mutate(dekning = mean(city_index_grenland$dekning),
-         year = "2016-2019",
-         konfidensintervall = 1.96 * sqrt(variance))
+  calculate_two_year_index()
+last_two_years <- calculate_two_year_index(slice(city_index_grenland, 2:3))
 
 city_index_grenland_all <- city_index_grenland %>%
-  select(-standardavvik) %>%
-  bind_rows(next_two_years)
+  bind_rows(next_two_years) %>%
+  bind_rows(first_two_years) %>%
+  bind_rows(last_two_years) %>%
+  dplyr::mutate(ki_start = index - konfidensintervall,
+                ki_slutt = index + konfidensintervall)
 
 write.csv2(city_index_grenland_all,
            file = "data_indexpoints_tidy/byindeks_grenland_2017.csv",
+           row.names = F)
+
+# Monthly city index
+grenland_2017_monthly <-
+  monthly_city_index("data_index_raw/Grenland-2017-12_2016.csv") %>%
+  mutate(year = "2016-2017")
+grenland_2018_monthly <-
+  monthly_city_index("data_index_raw/Grenland-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+grenland_2019_monthly <-
+  monthly_city_index("data_index_raw/Grenland-2019-12_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+grenland_monthly <- bind_rows(
+  grenland_2017_monthly,
+  grenland_2018_monthly,
+  grenland_2019_monthly)
+
+write.csv2(grenland_monthly,
+           file = "data_indexpoints_tidy/byindeks_maanedlig_grenland_2016.csv",
            row.names = F)
 
 # Grenland sykkel 2016 ####

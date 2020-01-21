@@ -47,36 +47,7 @@ Kartet nedenfor viser plasseringen av trafikkregistreringspunktene som benyttes 
 
 ```{r map_trp}
 create_point_adt_map(all_point_info)
-
-# palett_adt <-
-#  colorNumeric(palette = "Greens",
-#               domain = NULL)
-# 
-# all_point_info %>%
-#   leaflet(width = "100%",
-#           options = leafletOptions(crs = nvdb_crs,
-#                                    zoomControl = F)) %>%
-#   addTiles(urlTemplate = nvdb_map_url,
-#            attribution = nvdb_map_attribution) %>%
-#   addCircleMarkers(
-#     radius = 6,
-#     stroke = T,
-#     weight = 2,
-#     color = "#444f55",
-#     opacity = 0.8,
-#     fill = T,
-#     fillColor = ~palett_adt(adt),
-#     fillOpacity = 0.8
-#   ) %>%
-#   addLegend("bottomright",
-#             pal = palett_adt,
-#             values = ~adt,
-#             title = "ÅDT",
-#             opacity = 0.7,
-#             labFormat = labelFormat(big.mark = " "))
 ```
-
-
 
 # Endring i trafikkmengde
 

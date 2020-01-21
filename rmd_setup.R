@@ -13,6 +13,8 @@ library(RColorBrewer)
 library(webshot)
 library(officer)
 
+source("index_report_functions.R")
+
 # knitr options ####
 knitr::opts_chunk$set(echo = FALSE,
                       warning = FALSE,
