@@ -32,46 +32,20 @@ city_info_all_years <- city_info %>%
 index_all_years <- round(city_info_all_years$index, digits = 1)
 index_all_years_ci_lower <- 
   round(city_info_all_years$index - 
-          city_info_all_years$konfidensintervall, digits = 2)
+          city_info_all_years$konfidensintervall, digits = 1)
 index_all_years_ci_upper <- 
   round(city_info_all_years$index + 
-          city_info_all_years$konfidensintervall, digits = 2)
+          city_info_all_years$konfidensintervall, digits = 1)
 ```
 
 ```{r child = 'formaal.Rmd'}
 ```
 
-## Hvor det registreres trafikk
-
-I kartet nedenfor vises plasseringen av trafikkregistreringspunktene som benyttes i byindeksen.
+## Byindekspunktenes plassering
+Kartet nedenfor viser plasseringen av trafikkregistreringspunktene som benyttes i byindeksen.
 
 ```{r map_trp}
-palett_adt <-
- colorNumeric(palette = "Greens",
-              domain = NULL)
-
-all_point_info %>%
-  leaflet(width = "100%",
-          options = leafletOptions(crs = nvdb_crs,
-                                   zoomControl = F)) %>%
-  addTiles(urlTemplate = nvdb_map_url,
-           attribution = nvdb_map_attribution) %>%
-  addCircleMarkers(
-    radius = 6,
-    stroke = T,
-    weight = 2,
-    color = "#444f55",
-    opacity = 0.8,
-    fill = T,
-    fillColor = ~palett_adt(adt),
-    fillOpacity = 0.8
-  ) %>%
-  addLegend("bottomright",
-            pal = palett_adt,
-            values = ~adt,
-            title = "ÅDT",
-            opacity = 0.7,
-            labFormat = labelFormat(big.mark = " "))
+create_point_adt_map(all_point_info)
 ```
 
 # Endring i trafikkmengde
@@ -79,32 +53,7 @@ all_point_info %>%
 Tabellen nedenfor viser byindeksen for hvert år, samt for hele perioden fra 2016  til 2019.
 
 ```{r city_table}
-borderline <- officer::fp_border(color = "black", style = "solid", width = 1)
-
-city_info %>% 
-  dplyr::select(year, index, konfidensintervall) %>% 
-  flextable::flextable() %>% 
-  set_formatter(index = function(x) stringr::str_replace(
-    as.character(
-      round(x, digits = 1)), "\\.", ","),
-    konfidensintervall = function(x) stringr::str_replace(
-    as.character(
-      round(x, digits = 1)), "\\.", ",")) %>% 
-  set_header_labels(year = "Periode",
-                    index = "Endring i trafikkmengde (%)",
-                    konfidensintervall = "Konfidensbredde (95 %)") %>% 
-  bold(part = "header") %>% 
-  fontsize(size = 9, part = "all") %>% 
-  font(fontname = "Lucida Sans Unicode", part = "all") %>% 
-  bg(bg = "#ED9300", part = "header") %>% 
-  border_remove() %>% 
-  hline_top(part = "header", border = borderline) %>% 
-  hline_bottom(part = "all", border = borderline) %>% 
-  autofit() %>% 
-  height_all(height = .2) %>% 
-  padding(padding.top = .3,
-          padding.bottom = .3) %>% 
-  set_caption("Estimert endring i trafikkmengde.")
+create_city_index_table(city_info)
 ```
 
 \newline
@@ -117,25 +66,7 @@ Usikkerheten knyttet til byindeksen gjenspeiles i et 95 % konfidensintervall som
 `r stringr::str_replace(as.character(index_all_years_ci_upper), "\\.", ",")` %.
 
 ```{r monthly_city_index}
-city_monthly %>% 
-  dplyr::select(year, periode, index) %>% 
-  flextable::flextable() %>% 
-  colformat_num(col_keys = c("index"), digits = 1) %>%
-  set_header_labels(year = "År",
-                    periode = "Periode",
-                    index = "Endring i trafikkmengde (%)") %>% 
-  bold(part = "header") %>% 
-  fontsize(size = 9, part = "all") %>% 
-  font(fontname = "Lucida Sans Unicode", part = "all") %>% 
-  bg(bg = "#ED9300", part = "header") %>% 
-  border_remove() %>% 
-  hline_top(part = "header", border = borderline) %>% 
-  hline_bottom(part = "all", border = borderline) %>% 
-  autofit() %>% 
-  height_all(height = .2) %>% 
-  padding(padding.top = .3,
-          padding.bottom = .3) %>% 
-  set_caption("Estimert endring i trafikkmengde per måned.")
+create_monthly_city_index_table(city_monthly)
 ```
 
 
@@ -160,7 +91,8 @@ Nedenfor vises en graf over byindeksene for hver periode, sammen med alle punkti
 set.seed(123) # To keep the jittering the same for each render of the plot
 
 city_info_each_one_year_and_total <- city_info %>% 
-  dplyr::filter(year != "2016-2018")
+  dplyr::filter(year != "2016-2018") %>% 
+  dplyr::filter(year != "2017-2019")
 
 ggplot() +
   geom_jitter(data = all_point_info_long,
@@ -186,44 +118,7 @@ ggplot() +
 Kartet nedenfor viser endringen i byindekspunktene fra referanseåret 2016 til 2019.
 
 ```{r map_trp_index}
-# Create a red-green scale based on index values
-negative_value <- round(abs(min(all_point_info$index, na.rm = T)), digits = 0) + 1
-positive_value <- round(max(all_point_info$index, na.rm = T), digits = 0) + 1
-
-rc1 <- colorRampPalette(colors = c("red", "white"), space = "Lab")(negative_value)
-
-## Make vector of colors for values larger than 0 (180 colors)
-rc2 <- colorRampPalette(colors = c("white", "green"), space = "Lab")(positive_value)
-
-## Combine the two color palettes
-rampcols <- c(rc1, rc2)
-
-palett_index <-
- colorNumeric(palette = rampcols,
-              domain = NULL)
-
-all_point_info %>%
-  leaflet(width = "100%",
-          options = leafletOptions(crs = nvdb_crs,
-                                   zoomControl = F)) %>%
-  addTiles(urlTemplate = nvdb_map_url,
-           attribution = nvdb_map_attribution) %>%
-  addCircleMarkers(
-    radius = 6,
-    stroke = T,
-    weight = 2,
-    color = "#444f55",
-    opacity = 0.8,
-    fill = T,
-    fillColor = ~palett_index(index),
-    fillOpacity = 0.8
-  ) %>%
-  addLegend("bottomright",
-            pal = palett_index,
-            values = ~index,
-            title = "Indeks",
-            opacity = 0.7,
-            labFormat = labelFormat(big.mark = " "))
+create_pointindex_map(all_point_info)
 ```
 
 
@@ -241,9 +136,9 @@ all_point_info %>%
          starts_with("index")) %>% 
   arrange(road_reference) %>% 
   flextable() %>% 
-  colformat_num(col_keys = "adt", 
+  colformat_num(j = "adt", 
                 big.mark = " ", digits = 0) %>%
-  colformat_num(col_keys = index_column_names, 
+  colformat_num(j = index_column_names, 
                 digits = 1) %>%
   set_header_labels(name = "Navn",
                     road_reference = "Vegreferanse",
@@ -275,6 +170,8 @@ all_point_info %>%
 ```
 \newline
 
+Punktet på Simo var på gamle Rv110 med to kjørefelt. Dette er ved slutten av 2019 erstattet av et nytt punkt på ny Rv110 med fire kjørefelt, men dette er ikke tatt med i indeksen ennå.
+
 I figuren nedenfor er spredningen i punktindeksene illustrert. Den horisontale grønne streken viser byindeksens samlede verdi for perioden 2016 - 2019.
 
 \newline
@@ -291,9 +188,9 @@ ggplot2::ggplot() +
   xlab("") +
   ylab("Endring i trafikkmengde (%)") +
   ggtitle(label = "ÅDT og endring i trafikkmengde",
-          subtitle = "Fra 2016 til 2019 (august)") +
+          subtitle = "Fra 2016 til 2019") +
   coord_flip() +
-  scale_size(name = "ÅDT 2016") +
+  scale_size(name = "ÅDT") +
   geom_rect(aes(xmin = -Inf, xmax = Inf, 
                 ymin = index_all_years_ci_lower, 
                 ymax = index_all_years_ci_upper),

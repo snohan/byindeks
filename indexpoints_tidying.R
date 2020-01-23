@@ -666,23 +666,50 @@ pointindex_glomma_16_17 <-
   readPointindexCSV("data_index_raw/pointindex_nedre-glomma-2017-12_2016.csv") %>%
   rename(index_16_17 = index)
 
+n_16_17 <- pointindex_glomma_16_17 %>%
+  dplyr::filter(!is.na(index_16_17)) %>%
+  nrow()
+
 pointindex_glomma_17_18 <-
   readPointindexCSV("data_index_raw/pointindex_nedre-glomma-2018-12_2017.csv") %>%
   rename(index_17_18 = index)
 
+n_17_18 <- pointindex_glomma_17_18 %>%
+  dplyr::filter(!is.na(index_17_18)) %>%
+  nrow()
+
 pointindex_glomma_18_19 <-
-  readPointindexCSV("data_index_raw/pointindex_nedre-glomma-2019-08_2018.csv") %>%
+  readPointindexCSV("data_index_raw/pointindex_nedre-glomma-2019-12_2018.csv") %>%
   rename(index_18_19 = index)
 
-adt <- getAdtForpoints_by_length(trp_glomma_2016$trp_id) %>%
-  dplyr::filter(year == 2016) %>%
+n_18_19 <- pointindex_glomma_18_19 %>%
+  dplyr::filter(!is.na(index_18_19)) %>%
+  nrow()
+
+adt <- getAdtForpoints_by_length(trp_glomma_2016$trp_id)
+
+adt_filtered <- adt %>%
   dplyr::filter(length_range == "[..,5.6)") %>%
-  dplyr::select(trp_id, aadt_length_range) %>%
+  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  dplyr::filter(length_quality > 90) %>%
+  dplyr::filter(coverage > 20) %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year >= 2016) %>%
+  dplyr::filter(year == min(year)) %>%
+  dplyr::select(trp_id, aadt_length_range, year) %>%
   dplyr::rename(adt = 2)
+
+adt_manual <- data.frame(
+  trp_id = c("08132V1984223"),
+  adt = c(9200),
+  year = c(2017)
+)
+
+adt_all <- bind_rows(adt_filtered, adt_manual)
 
 # Final table
 trp_glomma_2016_adt <- trp_glomma_2016 %>%
-  left_join(adt) %>%
+  left_join(adt_all) %>%
   left_join(pointindex_glomma_16_17) %>%
   left_join(pointindex_glomma_17_18) %>%
   left_join(pointindex_glomma_18_19)
@@ -711,25 +738,31 @@ glomma_2018 <-
   read_city_index_csv("data_index_raw/Nedre_Glomma-2018-12_2017.csv") %>%
   mutate(year = "2017-2018")
 glomma_2019 <-
-  read_city_index_csv("data_index_raw/Nedre_Glomma-2019-08_2018.csv") %>%
+  read_city_index_csv("data_index_raw/Nedre_Glomma-2019-12_2018.csv") %>%
   mutate(year = "2018-2019")
 
-city_index_glomma <- bind_rows(glomma_2017,
-                               glomma_2018,
-                               glomma_2019) %>%
+city_index_glomma <- bind_rows(
+  glomma_2017,
+  glomma_2018,
+  glomma_2019) %>%
   mutate(index_i = index_converter(index),
-         variance = (konfidensintervall / 1.96)^2)
+         variance = standardavvik^2,
+         n_points = c(
+           n_16_17,
+           n_17_18,
+           n_18_19))
 
 first_two_years <- calculate_two_year_index(city_index_glomma)
 next_two_years <- bind_rows(first_two_years, slice(city_index_glomma, 3)) %>%
-  calculate_two_year_index() %>%
-  mutate(dekning = mean(city_index_glomma$dekning),
-         year = "2016-2019",
-         konfidensintervall = 1.96 * sqrt(variance))
+  calculate_two_year_index()
+last_two_years <- calculate_two_year_index(slice(city_index_glomma, 2:3))
 
 city_index_glomma_all <- city_index_glomma %>%
-  select(-standardavvik) %>%
-  bind_rows(next_two_years)
+  bind_rows(next_two_years) %>%
+  bind_rows(first_two_years) %>%
+  bind_rows(last_two_years) %>%
+  dplyr::mutate(ki_start = index - konfidensintervall,
+                ki_slutt = index + konfidensintervall)
 
 write.csv2(city_index_glomma_all,
            file = "data_indexpoints_tidy/byindeks_nedre-glomma_2016.csv",
@@ -764,7 +797,7 @@ n_17_18 <- pointindex_jaeren_17_18 %>%
   nrow()
 
 pointindex_jaeren_18_19 <-
-  readPointindexCSV("data_index_raw/pointindex_nord-jaeren-2019-09_2018.csv") %>%
+  readPointindexCSV("data_index_raw/pointindex_nord-jaeren-2019-12_2018.csv") %>%
   rename(index_18_19 = index)
 
 n_18_19 <- pointindex_jaeren_18_19 %>%
@@ -775,7 +808,7 @@ adt <- getAdtForpoints_by_length(trp_jaeren_2016$trp_id) %>%
   dplyr::filter(length_range == "[..,5.6)") %>%
   dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
   dplyr::filter(length_quality > 95) %>%
-  dplyr::filter(coverage > 90) %>%
+  dplyr::filter(coverage > 50) %>%
   dplyr::group_by(trp_id) %>%
   dplyr::filter(year >= 2017) %>%
   dplyr::filter(year == min(year)) %>%
@@ -784,9 +817,9 @@ adt <- getAdtForpoints_by_length(trp_jaeren_2016$trp_id) %>%
 
 adt_manual <- data.frame(
   trp_id = c("66678V320582", "43296V319721", "21556V319919",
-             "17949V320695", "67511V319880"),
-  adt = c(55000, 15000, 8500, 15000, 20000),
-  year = c(2017, 2017, 2017, 2017, 2017)
+             "17949V320695", "67511V319880", "68351V319882"),
+  adt = c(55000, 15000, 8500, 15000, 20000, 32000),
+  year = c(2017, 2017, 2017, 2017, 2017, 2017)
 )
 
 adt_all <- bind_rows(adt, adt_manual)
@@ -822,7 +855,7 @@ jaeren_2018 <-
   read_city_index_csv("data_index_raw/Nord-Jaeren-2018-12_2017.csv") %>%
   mutate(year = "2017-2018")
 jaeren_2019 <-
-  read_city_index_csv("data_index_raw/Nord-Jaeren-2019-09_2018.csv") %>%
+  read_city_index_csv("data_index_raw/Nord-Jaeren-2019-12_2018.csv") %>%
   mutate(year = "2018-2019")
 
 city_index_jaeren <- bind_rows(#jaeren_2017,
@@ -852,7 +885,7 @@ jaeren_2018_monthly <-
   monthly_city_index("data_index_raw/Nord-Jaeren-2018-12_2017.csv") %>%
   mutate(year = "2017-2018")
 jaeren_2019_monthly <-
-  monthly_city_index("data_index_raw/Nord-Jaeren-2019-09_2018.csv") %>%
+  monthly_city_index("data_index_raw/Nord-Jaeren-2019-12_2018.csv") %>%
   mutate(year = "2018-2019")
 
 jaeren_monthly <- bind_rows(jaeren_2018_monthly, jaeren_2019_monthly)
@@ -1070,7 +1103,7 @@ n_17_18 <- pointindex_bergen_17_18 %>%
   nrow()
 
 pointindex_bergen_18_19 <-
-  readPointindexCSV("data_index_raw/pointindex_bergen-2019-10_2018.csv") %>%
+  readPointindexCSV("data_index_raw/pointindex_bergen-2019-12_2018.csv") %>%
   rename(index_18_19 = index)
 
 n_18_19 <- pointindex_bergen_18_19 %>%
@@ -1091,10 +1124,10 @@ adt_filtered <- adt %>%
   dplyr::rename(adt = 2)
 
 adt_manual <- data.frame(
-  trp_id = c("20642V805115", "94767V804742", "49658V804949",
-             "13600V805722", "87138V755378", "52794V805054"),
-  adt = c(9000, 9000, 11000, 19000, 650, 16000),
-  year = c(2018, 2017, 2017, 2017, 2018, 2016)
+  trp_id = c("20642V805115", "94767V804742",
+             "13600V805722", "52794V805054"),
+  adt = c(9000, 9000, 19000, 16000),
+  year = c(2018, 2017, 2017, 2016)
 )
 
 adt_all <- bind_rows(adt_filtered, adt_manual)
@@ -1130,7 +1163,7 @@ bergen_2018 <-
   read_city_index_csv("data_index_raw/Bergen-2018-12_2017.csv") %>%
   mutate(year = "2017-2018")
 bergen_2019 <-
-  read_city_index_csv("data_index_raw/Bergen-2019-10_2018.csv") %>%
+  read_city_index_csv("data_index_raw/Bergen-2019-12_2018.csv") %>%
   mutate(year = "2018-2019")
 
 city_index_bergen <- bind_rows(
@@ -1147,10 +1180,12 @@ city_index_bergen <- bind_rows(
 first_two_years <- calculate_two_year_index(city_index_bergen)
 next_two_years <- bind_rows(first_two_years, slice(city_index_bergen, 3)) %>%
    calculate_two_year_index()
+last_two_years <- calculate_two_year_index(slice(city_index_bergen, 2:3))
 
 city_index_bergen_all <- city_index_bergen %>%
   bind_rows(next_two_years) %>%
   bind_rows(first_two_years) %>%
+  bind_rows(last_two_years) %>%
   dplyr::mutate(ki_start = index - konfidensintervall,
                 ki_slutt = index + konfidensintervall)
 
@@ -1166,7 +1201,7 @@ bergen_2018_monthly <-
   monthly_city_index("data_index_raw/Bergen-2018-12_2017.csv") %>%
   mutate(year = "2017-2018")
 bergen_2019_monthly <-
-  monthly_city_index("data_index_raw/Bergen-2019-10_2018.csv") %>%
+  monthly_city_index("data_index_raw/Bergen-2019-12_2018.csv") %>%
   mutate(year = "2018-2019")
 
 bergen_monthly <- bind_rows(
@@ -1562,10 +1597,12 @@ city_index_tromso <- bind_rows(
 first_two_years <- calculate_two_year_index(city_index_tromso)
 next_two_years <- bind_rows(first_two_years, slice(city_index_tromso, 3)) %>%
   calculate_two_year_index()
+last_two_years <- calculate_two_year_index(slice(city_index_tromso, 2:3))
 
 city_index_tromso_all <- city_index_tromso %>%
   bind_rows(next_two_years) %>%
   bind_rows(first_two_years) %>%
+  bind_rows(last_two_years) %>%
   dplyr::mutate(ki_start = index - konfidensintervall,
                 ki_slutt = index + konfidensintervall)
 

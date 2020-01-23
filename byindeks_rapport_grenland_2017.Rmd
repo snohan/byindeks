@@ -124,9 +124,9 @@ Kartet nedenfor viser endringen i byindekspunktene fra referanseåret 2016 til o
 create_pointindex_map(all_point_info)
 ```
 
-Ser vi på punktenes plassering, er det naturlig å se enkelte i sammenheng. F.eks. utgjør de fire punktene Ballestadhøgda, Elstrømbrua, Sandviksvegen og Smieøya et nord-sør-snitt i Skien. På samme måte er det et snitt for de tre punktene Borgestad, Lensmannsdalen og Bjørnetvedtvegen X Trommedalsvegen. I disse snittene bør derfor alle punktene inngå til enhver tid, for å unngå skjevheter i trafikken som fanges opp.
+Ser vi på punktenes plassering, er det naturlig å se enkelte i sammenheng. F.eks. utgjør de fire punktene Ballestadhøgda, Elstrømbrua, Sandviksvegen og Smieøya et nord-sør-snitt i Skien. På samme måte er det et snitt for de tre punktene Borgestad, Lensmannsdalen og Bjørnetvedtvegen X Trommedalsvegen. I disse snittene bør derfor alle punktene inngå i perioder hvor trafikkfordelingen mellom de er utenfor det normale, for å unngå skjevheter i trafikken som fanges opp.
 
-I perioden hvor Porsgrunnsbrua er stengt (23.04.2019-), har vi tatt ut Sverresgate da mye av trafikken går her.
+I perioden hvor Porsgrunnstunelen var stengt (23.04.2019-10.12.2019), har vi tatt ut Sverresgate og Menstadbrua da mye av trafikken gikk her. Borgestad er inkludert, da denne veies opp av Lensmannsdalen og Porsgrunnbrua, men Bjørntvedtvegen X Trommedalsvegen er holdt utenfor slik at trafikken som fanges opp blir omtrent likt på begge sider av vegnettet. 
 
 I perioden hvor Bambletunnelen på E18 var stengt (21.04.2017 - 31.08.2018), har vi tatt ut punktet ved Høgenheitunnelen fordi mye av trafikken gikk her. Men lengre nord vil de tre punktene Svanvik, Brattåstunnelen syd og Skjelsvik fange opp totaltrafikken, og det er påsett at alle disse tre har vært med hver måned.
 
@@ -142,6 +142,7 @@ index_column_names <- all_point_info %>%
 all_point_info %>% 
   select(name, road_reference, adt, 
          starts_with("index")) %>% 
+  arrange(road_reference) %>% 
   flextable() %>% 
   colformat_num(j = "adt", 
                 big.mark = " ", digits = 0) %>%

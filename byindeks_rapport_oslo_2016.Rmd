@@ -52,7 +52,7 @@ create_point_adt_map(all_point_info)
 
 # Endring i trafikkmengde
 
-Tabellen nedenfor viser byindeksen for hvert år, samt for hele perioden fra 2016 fram til og med oktober 2019.
+Tabellen nedenfor viser byindeksen for hvert år, samt for hele perioden fra 2016 fram til og med 2019.
 
 ```{r city_table}
 create_city_index_table(city_info)
@@ -138,6 +138,7 @@ index_column_names <- all_point_info %>%
 all_point_info %>%
   select(name, road_reference, adt, year,
          starts_with("index")) %>%
+  arrange(road_reference) %>% 
   flextable() %>%
   colformat_num(j = "adt",
                 big.mark = " ", digits = 0) %>%
