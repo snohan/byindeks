@@ -75,6 +75,37 @@ trp_with_index <- trps %>%
 write.csv2(trp_with_index, file = "indeks_med_ny_og_gammel_modul.csv",
            row.names = F)
 
+# New pointidex csv ####
+read_new_pointindex <- function(filename) {
+ pi_df <- readr::read_csv2(filename,
+                           locale = readr::locale(encoding = "latin1")) %>%
+   dplyr::rename(trafikkmengde_basis = 12,
+                 trafikkmengde_indeks = 11) %>%
+   dplyr::mutate_at(vars(indeks, dekning), decimal_point) %>%
+   dplyr::mutate_at(vars(indeks, dekning, trafikkmengde_basis, trafikkmengde_indeks),
+                    as.numeric) %>%
+   dplyr::filter(døgn == "Alle",
+                 periode == "Januar",
+                 lengdeklasse == "Alle")
+}
+
+pi_1500 <- read_new_pointindex("punktindeks-2020-01_1500.csv")
+
+read_new_index <- function(filename) {
+  i_df <- readr::read_csv2(filename,
+                           locale = readr::locale(encoding = "latin1")) %>%
+    dplyr::rename(trafikkmengde_basis = 9,
+                  trafikkmengde_indeks = 8) %>%
+    dplyr::mutate_at(vars(indeks, dekning), decimal_point) %>%
+    dplyr::mutate_at(vars(indeks, dekning, trafikkmengde_basis, trafikkmengde_indeks),
+                     as.numeric) %>%
+    dplyr::filter(døgn == "Alle",
+                  periode == "Januar",
+                  lengdeklasse == "Alle")
+}
+
+i_500 <- read_new_index("vegtrafikkindeks-2020-01_1500.csv")
+
 # Eksempel Berge øst 54608V320601
 
 hour_volumes_base <- getHourlytraffic("54608V320601",

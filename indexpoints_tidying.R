@@ -904,7 +904,8 @@ trp_buskerud_2016_ids <- cities_points %>%
 
 # Adding metadata
 # Bruker trp fra trp-api, da noen mangler igangsetting.
-trp_buskerud_2016 <- dplyr::left_join(trp_buskerud_2016_ids, points_trp) %>%
+trp_buskerud_2016 <-
+  dplyr::left_join(trp_buskerud_2016_ids, points_trp) %>%
   filter(!is.na(road_reference))
 
 # Add index results from CSV-files
@@ -925,18 +926,20 @@ n_17_18 <- pointindex_buskerud_17_18 %>%
   nrow()
 
 pointindex_buskerud_18_19 <-
-  readPointindexCSV("data_index_raw/pointindex_buskerudbyen-2019-09_2018.csv") %>%
+  readPointindexCSV("data_index_raw/pointindex_buskerudbyen-2019-12_2018.csv") %>%
   rename(index_18_19 = index)
 
 n_18_19 <- pointindex_buskerud_18_19 %>%
   dplyr::filter(!is.na(index_18_19)) %>%
   nrow()
 
-adt <- getAdtForpoints_by_length(trp_buskerud_2016$trp_id) %>%
+adt <- getAdtForpoints_by_length(trp_buskerud_2016$trp_id)
+
+adt_filtered <- adt %>%
   dplyr::filter(length_range == "[..,5.6)") %>%
   dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
   dplyr::filter(length_quality > 90) %>%
-  dplyr::filter(coverage > 50) %>%
+  dplyr::filter(coverage > 20) %>%
   dplyr::group_by(trp_id) %>%
   dplyr::filter(year >= 2016) %>%
   dplyr::filter(year == min(year)) %>%
@@ -945,7 +948,7 @@ adt <- getAdtForpoints_by_length(trp_buskerud_2016$trp_id) %>%
 
 # Final table
 trp_buskerud_2016_adt <- trp_buskerud_2016 %>%
-  left_join(adt) %>%
+  left_join(adt_filtered) %>%
   left_join(pointindex_buskerud_16_17) %>%
   left_join(pointindex_buskerud_17_18) %>%
   left_join(pointindex_buskerud_18_19)
@@ -987,7 +990,7 @@ buskerud_2018 <-
   read_city_index_csv("data_index_raw/Buskerudbyen-2018-12_2017.csv") %>%
   mutate(year = "2017-2018")
 buskerud_2019 <-
-  read_city_index_csv("data_index_raw/Buskerudbyen-2019-09_2018.csv") %>%
+  read_city_index_csv("data_index_raw/Buskerudbyen-2019-12_2018.csv") %>%
   mutate(year = "2018-2019")
 
 city_index_buskerud <- bind_rows(buskerud_2017,
@@ -999,17 +1002,38 @@ city_index_buskerud <- bind_rows(buskerud_2017,
 
 first_two_years <- calculate_two_year_index(city_index_buskerud)
 next_two_years <- bind_rows(first_two_years, slice(city_index_buskerud, 3)) %>%
-  calculate_two_year_index() %>%
-  mutate(dekning = mean(city_index_buskerud$dekning),
-         year = "2016-2019",
-         konfidensintervall = 1.96 * sqrt(variance))
+  calculate_two_year_index()
+last_two_years <- calculate_two_year_index(slice(city_index_buskerud, 2:3))
 
 city_index_buskerud_all <- city_index_buskerud %>%
-  select(-standardavvik) %>%
-  bind_rows(next_two_years)
+  bind_rows(next_two_years) %>%
+  bind_rows(first_two_years) %>%
+  bind_rows(last_two_years) %>%
+  dplyr::mutate(ki_start = index - konfidensintervall,
+                ki_slutt = index + konfidensintervall)
 
 write.csv2(city_index_buskerud_all,
            file = "data_indexpoints_tidy/byindeks_buskerudbyen_2016.csv",
+           row.names = F)
+
+# Monthly city index
+buskerud_2017_monthly <-
+  monthly_city_index("data_index_raw/Buskerudbyen-2017-12_2016.csv") %>%
+  mutate(year = "2016-2017")
+buskerud_2018_monthly <-
+  monthly_city_index("data_index_raw/Buskerudbyen-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+buskerud_2019_monthly <-
+  monthly_city_index("data_index_raw/Buskerudbyen-2019-12_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+buskerud_monthly <- bind_rows(
+  buskerud_2017_monthly,
+  buskerud_2018_monthly,
+  buskerud_2019_monthly)
+
+write.csv2(buskerud_monthly,
+           file = "data_indexpoints_tidy/byindeks_maanedlig_buskerudbyen_2016.csv",
            row.names = F)
 
 # City index without E18
@@ -1031,7 +1055,7 @@ n_uten_e18_17_18 <- pointindex_buskerud_uten_e18_17_18 %>%
   nrow()
 
 pointindex_buskerud_uten_e18_18_19 <-
-  readPointindexCSV("data_index_raw/pointindex_buskerudbyen_uten_e18-2019-09_2018.csv") %>%
+  readPointindexCSV("data_index_raw/pointindex_buskerudbyen_uten_e18-2019-12_2018.csv") %>%
   rename(index_18_19 = index)
 
 n_uten_e18_18_19 <- pointindex_buskerud_uten_e18_18_19 %>%
@@ -1045,7 +1069,7 @@ buskerud_uten_e18_2018 <-
   read_city_index_csv("data_index_raw/Buskerudbyen_uten_e18-2018-12_2017.csv") %>%
   mutate(year = "2017-2018")
 buskerud_uten_e18_2019 <-
-  read_city_index_csv("data_index_raw/Buskerudbyen_uten_e18-2019-09_2018.csv") %>%
+  read_city_index_csv("data_index_raw/Buskerudbyen_uten_e18-2019-12_2018.csv") %>%
   mutate(year = "2018-2019")
 
 city_index_buskerud_uten_e18 <- bind_rows(buskerud_uten_e18_2017,
@@ -1056,21 +1080,43 @@ city_index_buskerud_uten_e18 <- bind_rows(buskerud_uten_e18_2017,
          n_points = c(n_uten_e18_16_17, n_uten_e18_17_18, n_uten_e18_18_19))
 
 first_two_years_uten_e18 <- calculate_two_year_index(city_index_buskerud_uten_e18)
-next_two_years_uten_e18 <- bind_rows(first_two_years_uten_e18,
-                                     slice(city_index_buskerud_uten_e18, 3)) %>%
-  calculate_two_year_index() %>%
-  mutate(dekning = mean(city_index_buskerud_uten_e18$dekning),
-         year = "2016-2019",
-         konfidensintervall = 1.96 * sqrt(variance))
+next_two_years_uten_e18 <-
+  bind_rows(first_two_years_uten_e18,
+            slice(city_index_buskerud_uten_e18, 3)) %>%
+    calculate_two_year_index()
+last_two_years_uten_e18 <-
+  calculate_two_year_index(slice(city_index_buskerud_uten_e18, 2:3))
 
 city_index_buskerud_uten_e18_all <- city_index_buskerud_uten_e18 %>%
-  select(-standardavvik) %>%
-  bind_rows(next_two_years_uten_e18)
+  bind_rows(next_two_years_uten_e18) %>%
+  bind_rows(first_two_years_uten_e18) %>%
+  bind_rows(last_two_years_uten_e18) %>%
+  dplyr::mutate(ki_start = index - konfidensintervall,
+                ki_slutt = index + konfidensintervall)
 
 write.csv2(city_index_buskerud_uten_e18_all,
            file = "data_indexpoints_tidy/byindeks_buskerudbyen_uten_e18_2016.csv",
            row.names = F)
 
+# Monthly city index
+buskerud_uten_e18_2017_monthly <-
+  monthly_city_index("data_index_raw/Buskerudbyen_uten_e18-2017-12_2016.csv") %>%
+  mutate(year = "2016-2017")
+buskerud_uten_e18_2018_monthly <-
+  monthly_city_index("data_index_raw/Buskerudbyen_uten_e18-2018-12_2017.csv") %>%
+  mutate(year = "2017-2018")
+buskerud_uten_e18_2019_monthly <-
+  monthly_city_index("data_index_raw/Buskerudbyen_uten_e18-2019-12_2018.csv") %>%
+  mutate(year = "2018-2019")
+
+buskerud_uten_e18_monthly <- bind_rows(
+  buskerud_uten_e18_2017_monthly,
+  buskerud_uten_e18_2018_monthly,
+  buskerud_uten_e18_2019_monthly)
+
+write.csv2(buskerud_uten_e18_monthly,
+           file = "data_indexpoints_tidy/byindeks_maanedlig_buskerudbyen_uten_e18_2016.csv",
+           row.names = F)
 
 # Bergen 2016 ####
 # Point index
@@ -1320,10 +1366,12 @@ city_index_krs <- bind_rows(
 first_two_years <- calculate_two_year_index(city_index_krs)
 next_two_years <- bind_rows(first_two_years, slice(city_index_krs, 3)) %>%
   calculate_two_year_index()
+last_two_years <- calculate_two_year_index(slice(city_index_krs, 2:3))
 
 city_index_krs_all <- city_index_krs %>%
   bind_rows(next_two_years) %>%
   bind_rows(first_two_years) %>%
+  bind_rows(last_two_years) %>%
   dplyr::mutate(ki_start = index - konfidensintervall,
                 ki_slutt = index + konfidensintervall)
 
@@ -1459,10 +1507,12 @@ city_index_krs_kommune <- bind_rows(
 first_two_years <- calculate_two_year_index(city_index_krs_kommune)
 next_two_years <- bind_rows(first_two_years, slice(city_index_krs_kommune, 3)) %>%
   calculate_two_year_index()
+last_two_years <- calculate_two_year_index(slice(city_index_krs_kommune, 2:3))
 
 city_index_krs_kommune_all <- city_index_krs_kommune %>%
   bind_rows(next_two_years) %>%
   bind_rows(first_two_years) %>%
+  bind_rows(last_two_years) %>%
   dplyr::mutate(ki_start = index - konfidensintervall,
                 ki_slutt = index + konfidensintervall)
 
