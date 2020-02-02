@@ -40,9 +40,8 @@ maanedstrafikk.byindeks <- maanedstrafikk.begge %>%
                          9916081, 9916082, 9916083, 9916063))
 
 # TODO: hva gjør vi med de ukjente?
-# Her har jeg vel bare droppet dem - er det riktig?
-# Skal vi anta at de fordeler seg 90-10?
-# Skal vi be om nytt datauttrekk der andelen ukjente er lavere (finnes det)?
+# Januar 2020: Fikk nytt datasett med lavere andel ukjente!
+# Andel ukjente ligger da på 1-2 % og antar at denne er stabil.
 maanedstrafikk.byindeks.punkt <-
   mutate(maanedstrafikk.byindeks,
          punktnr = punktnr,

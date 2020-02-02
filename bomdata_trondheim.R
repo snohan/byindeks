@@ -2,8 +2,9 @@ library(tidyverse)
 library(lubridate)
 library(readxl)
 
+# Vask alle bomdata ####
 # Alle filer fra og med 2017 er på samme format.
-data_files <- list.files("H:/Programmering/R/byindeks/bomdata_trondheim/raw",
+data_files <- list.files("H:/Programmering/R/byindeks/bomdata_trondheim/raw_new",
                          all.files = TRUE, no.. = TRUE,
                          full.names = TRUE)
 
@@ -45,8 +46,8 @@ all_data_monthly <- all_data_tidy %>%
   dplyr::group_by(aar_maaned, stasjon, felt) %>%
   dplyr::summarise(trafikkvolum_alle = sum(trafikk))
 
-feltkoder <- tibble::enframe(unique(all_data_monthly$felt))
-stasjoner <- tibble::enframe(unique(all_data_monthly$stasjon))
+#feltkoder <- tibble::enframe(unique(all_data_monthly$felt))
+#stasjoner <- tibble::enframe(unique(all_data_monthly$stasjon))
 
 all_data_monthly_by_class <- all_data_tidy %>%
   dplyr::group_by(aar_maaned, stasjon, felt, klasse) %>%
@@ -58,5 +59,92 @@ all_data_monthly_by_class <- all_data_tidy %>%
                                            digits = 2))
 
 write.csv2(all_data_monthly_by_class,
-           file = "H:/Programmering/R/byindeks/data_index_raw/bomdata_trondheim_maanedlig.csv",
+           file = "H:/Programmering/R/byindeks/data_index_raw/bomdata_trondheim_maanedlig_new.csv",
            row.names = FALSE)
+
+# Henter inn ferdig vasket bomdata ####
+
+all_data_monthly_by_class <- read_csv2(
+  file = "H:/Programmering/R/byindeks/data_index_raw/bomdata_trondheim_maanedlig_new.csv",
+  locale = readr::locale(encoding = "latin1")
+)
+
+# Ekskluderinger ####
+# Tungasletta høy andel ukjente
+tungasletta <- all_data_monthly_by_class %>%
+  dplyr::filter(stasjon == "Tungasletta",
+                aar_maaned > "2018-05-31",
+                aar_maaned < "2019-01-01")
+# TODO: Juli og aug 2018 må ekskluderes da ukjentandelen er over 30 %!
+
+all_data_monthly_by_class_excluded <- all_data_monthly_by_class %>%
+  dplyr::select(-trafikkvolum_andel, -trafikkvolum_alle) %>%
+  dplyr::filter(!(felt == "TUNGA" & aar_maaned == "2018-07-01")) %>%
+  dplyr::filter(!(felt == "TUNGA" & aar_maaned == "2018-08-01"))
+
+all_data_monthly_by_class_excluded_total <-
+  all_data_monthly_by_class_excluded %>%
+  dplyr::group_by(aar_maaned, stasjon, felt) %>%
+  dplyr::summarise(trafikkvolum = sum(trafikkvolum)) %>%
+  dplyr::mutate(klasse = "Alle") %>%
+  dplyr::ungroup()
+
+all_data_monthly_by_all_classes <- all_data_monthly_by_class_excluded_total %>%
+  dplyr::bind_rows(all_data_monthly_by_class_excluded) %>%
+  dplyr::mutate(year = lubridate::year(aar_maaned),
+                month = lubridate::month(aar_maaned))
+
+felt_og_stasjon <- all_data_monthly_by_all_classes %>%
+  dplyr::distinct_at(vars(stasjon, felt))
+
+# Månedsindeks ####
+calculate_monthly_index_for_tolling_stations <-
+  function(monthly_class_data, baseyear) {
+    basedata <- monthly_class_data %>%
+      dplyr::filter(year == baseyear)
+
+    calcdata <- monthly_class_data %>%
+      dplyr::filter(year == baseyear + 1)
+
+    indexdata <- dplyr::inner_join(basedata,
+                                   calcdata,
+                                   by = c("month", "felt", "klasse"),
+                                   suffix = c("_base", "_calc"),
+                                   ) %>%
+      dplyr::group_by(felt, klasse, month) %>%
+      dplyr::summarise(monthly_volume_base = sum(trafikkvolum_base),
+                       monthly_volume_calc = sum(trafikkvolum_calc)) %>%
+      dplyr::mutate(indeks = (monthly_volume_calc /
+                                monthly_volume_base - 1) * 100,
+                    aar_maaned = lubridate::ymd(
+                      paste(baseyear + 1, month, "1", sep = "-")))
+}
+
+bomindeks_2017 <- all_data_monthly_by_all_classes %>%
+  dplyr:: select(-stasjon, -aar_maaned) %>%
+  dplyr::filter(klasse == "Liten_bil") %>%
+  calculate_monthly_index_for_tolling_stations(2016)
+
+bomindeks_2018 <- all_data_monthly_by_all_classes %>%
+  dplyr:: select(-stasjon, -aar_maaned) %>%
+  dplyr::filter(klasse == "Liten_bil") %>%
+  calculate_monthly_index_for_tolling_stations(2017)
+
+bomindeks_2019 <- all_data_monthly_by_all_classes %>%
+  dplyr:: select(-stasjon, -aar_maaned) %>%
+  dplyr::filter(klasse == "Liten_bil") %>%
+  calculate_monthly_index_for_tolling_stations(2018)
+
+# TODO: Legge til stasjonkoder slik de er i NVDB
+
+maanedsindekser <- bind_rows(bomindeks_2017,
+                             bomindeks_2018,
+                             bomindeks_2019) %>%
+  dplyr::left_join(felt_og_stasjon)
+
+write.csv2(maanedsindekser,
+           file = "H:/Programmering/R/byindeks/data_index_tidy/bom_maanedsindekser.csv",
+           row.names = F)
+
+# Se plott for å se etter avvik i bomdata_trondheim.Rmd
+# TODO: Dekningsgrad for antall måneder

@@ -3,6 +3,7 @@
 # 18. februar 2015.
 # Snorre Hansen.
 #
+# ALL DEPRECATED - USE "bomdata_trondheim.R" instead
 
 # Pakker ####
 library(tidyverse)

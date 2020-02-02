@@ -15,7 +15,8 @@ knitr::opts_chunk$set(echo = FALSE,
  
 
 ```{r read}
-bomdata_trondheim_maanedlig <- read.csv2("H:/Programmering/R/byindeks/data_index_raw/bomdata_trondheim_maanedlig.csv",
+# CSV file is made in "bomdata_trondheim.R"
+bomdata_trondheim_maanedlig <- read.csv2("H:/Programmering/R/byindeks/data_index_raw/bomdata_trondheim_maanedlig_new.csv",
                                          stringsAsFactors = FALSE) %>% 
   dplyr::mutate(aar_maaned = lubridate::ymd(aar_maaned))
   
@@ -44,6 +45,8 @@ data_to_plot %>%
 }
 ```
 
+# Andel kjøretøy med ukjent kjøretøyklasse
+
 ```{r plot1}
 areaplot_by_class(bomdata_trondheim_maanedlig, 1, 5)
 ```
@@ -62,3 +65,40 @@ areaplot_by_class(bomdata_trondheim_maanedlig, 11, 15)
 areaplot_by_class(bomdata_trondheim_maanedlig, 16, 20)
 ```
 
+# Månedsindeks
+```{r indeks}
+# CSV file is made in "bomdata_trondheim.R"
+bomindeks_trondheim_maanedlig <- read.csv2("bom_maanedsindekser.csv",
+                                         stringsAsFactors = FALSE) %>% 
+  dplyr::mutate(aar_maaned = lubridate::ymd(aar_maaned))
+  
+feltkoder <- tibble::enframe(unique(bomindeks_trondheim_maanedlig$felt))
+
+stepplot_by_class <- function(data_to_plot, station_no_from, station_no_to) {
+  
+data_to_plot %>% 
+  dplyr::filter(
+    felt %in% feltkoder$value[station_no_from:station_no_to]) %>% 
+  ggplot2::ggplot(aes(aar_maaned, indeks)) +
+  geom_bar(stat = "identity") +
+  facet_grid(stasjon ~ ., switch = "y") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.grid = element_blank(),
+        strip.text.y = element_text(angle = 180)) +
+  ggtitle(label = "Indeks", 
+          subtitle = "Data fra bomstasjonene som er med i byindeks for Trondheim")
+  
+}
+```
+
+```{r indeksplott1, fig.width=8, fig.height=8}
+stepplot_by_class(bomindeks_trondheim_maanedlig, 1, 10)
+```
+
+```{r indeksplott2, fig.width=8, fig.height=8}
+stepplot_by_class(bomindeks_trondheim_maanedlig, 11, 20)
+```

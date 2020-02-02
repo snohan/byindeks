@@ -228,8 +228,10 @@ trp_trondheim_2017 <- dplyr::left_join(trp_trondheim_2017_ids, points_trp) %>%
 kommunenr <- "5001"
 kommunenavn <- hent_kommune(kommunenr)[[1]]
 
-kommune_bomer <-
-  get_tolling_stations(kommunenr) %>%
+kommune_bomer_uttak <-
+  get_tolling_stations(kommunenr)
+
+kommune_bomer <- kommune_bomer_uttak %>%
   dplyr::mutate(station_type = "Bom") %>%
   dplyr::select(-kommune, -road) %>%
   dplyr::mutate(trp_id = msnr,
@@ -237,8 +239,8 @@ kommune_bomer <-
   dplyr::select(trp_id, everything()) %>%
   dplyr::filter(trp_id %in% c("51", "52", "53", "54", "55", "56", "58",
                               "59", "60", "61", "62", "64", "65", "66",
-                              "67", "68", "69", "85", "86")) %>%
-  dplyr::mutate(name = str_sub(name, 1, -10))
+                              "67", "68", "69", "85", "86", "72")) #%>%
+  #dplyr::mutate(name = str_sub(name, 1, -10))
 
 # Må endre navn på Kroppan bru, dvs. ta bor retningsangivelse, da de to
 # bomstasjonene er slått sammen i indeksberegningen.
@@ -282,6 +284,8 @@ adt_all <- bind_rows(adt_filtered, adt_manual)
 # adt <- getAdtForpoints(trp_trondheim_2017$trp_id) %>%
 #   dplyr::filter(year == 2017) %>%
 #   dplyr::select(-year)
+
+# TODO: Read datainn and bomindeks files and bind them here
 
 # Add index results from CSV-files
 pointindex_trondheim_17_18 <-
