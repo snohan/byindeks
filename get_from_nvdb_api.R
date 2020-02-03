@@ -4,6 +4,7 @@ library(httr)
 
 # Definer URI og sti ####
 nvdb_url <- "https://www.vegvesen.no/nvdb/api/v2"
+nvdb_url_v3 <- "https://apilesv3.atlas.vegvesen.no"
 sti_vegobjekter <- "/vegobjekter"
 
 # Hent trafikkregistreringsstasjoner i en kommune
@@ -214,6 +215,69 @@ get_tolling_stations <- function(kommunenr) {
 
   colnames(bomer) <- c("msnr", "name", "road_reference",
                        "lat", "lon", "road", "kommune")
+
+  return(bomer)
+}
+
+get_tolling_stations_v3 <- function(kommunenr) {
+  # Laget for Trondheim
+  api_query_45 <- paste0(nvdb_url_v3,
+                         sti_vegobjekter,
+                         "/45",
+                         "?inkluder=egenskaper,lokasjon")
+
+  api_query_45_kommune <- paste0(api_query_45,
+                                 "&kommune=",
+                                 kommunenr,
+                                 "&srid=wgs84")
+
+  respons <- GET(api_query_45_kommune,
+                 add_headers("X-Client" = "trafikkdatagruppa",
+                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+                             "Accept" = "application/vnd.vegvesen.nvdb-v3-rev1+json"))
+
+  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+                      simplifyDataFrame = T,
+                      flatten = T)
+
+  bom <- uthenta$objekter %>%
+    dplyr::select(id, egenskaper) %>%
+    dplyr::rename(id1 = id) %>%
+    tidyr::unnest(cols = c(egenskaper)) %>%
+    dplyr::filter(id %in% c(1078, 9595)) %>%
+    dplyr::select(id1, navn, verdi) %>%
+    dplyr::rename(id = id1) %>%
+    tidyr::pivot_wider(names_from = navn, values_from = verdi) %>%
+    dplyr::rename(name = 2,
+                  msnr = 3)
+
+  vegreferanser <- uthenta$objekter %>%
+    dplyr::select(id, lokasjon.vegsystemreferanser) %>%
+    tidyr::unnest(cols = c(lokasjon.vegsystemreferanser)) %>%
+    dplyr::select(id, kortform) %>%
+    dplyr::rename(road_reference = kortform)
+
+  koordinater <- uthenta$objekter %>%
+    dplyr::select(id, lokasjon.geometri.wkt) %>%
+    dplyr::mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 10, -2)) %>%
+    tidyr::separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
+             convert = T) %>%
+    dplyr::select(id, lat, lon)
+
+  veglenkeposisjoner <- uthenta$objekter %>%
+    dplyr::select(id, lokasjon.stedfestinger) %>%
+    tidyr::unnest(cols = c(lokasjon.stedfestinger)) %>%
+    dplyr::select(id, kortform) %>%
+    dplyr::rename(road_link_position = kortform)
+
+  # Setter sammen
+  bomer <- bom %>%
+    dplyr::left_join(vegreferanser) %>%
+    dplyr::left_join(koordinater) %>%
+    dplyr::left_join(veglenkeposisjoner) %>%
+    dplyr::select(-id) %>%
+    dplyr::select(msnr, name, road_reference,
+                  road_link_position, lat, lon)
 
   return(bomer)
 }
