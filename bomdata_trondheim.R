@@ -71,10 +71,10 @@ all_data_monthly_by_class <- read_csv2(
 
 # Ekskluderinger ####
 # Tungasletta høy andel ukjente
-tungasletta <- all_data_monthly_by_class %>%
-  dplyr::filter(stasjon == "Tungasletta",
-                aar_maaned > "2018-05-31",
-                aar_maaned < "2019-01-01")
+# tungasletta <- all_data_monthly_by_class %>%
+#   dplyr::filter(stasjon == "Tungasletta",
+#                 aar_maaned > "2018-05-31",
+#                 aar_maaned < "2019-01-01")
 # TODO: Juli og aug 2018 må ekskluderes da ukjentandelen er over 30 %!
 
 all_data_monthly_by_class_excluded <- all_data_monthly_by_class %>%
@@ -94,8 +94,17 @@ all_data_monthly_by_all_classes <- all_data_monthly_by_class_excluded_total %>%
   dplyr::mutate(year = lubridate::year(aar_maaned),
                 month = lubridate::month(aar_maaned))
 
+# Legger til stasjonkoder slik de er i NVDB
+bomfeltkoder <- read.csv2(
+  "H:/Programmering/R/byindeks/bomdata_trondheim/bomfeltkoder.csv")
+
 felt_og_stasjon <- all_data_monthly_by_all_classes %>%
-  dplyr::distinct_at(vars(stasjon, felt))
+  dplyr::distinct_at(vars(stasjon, felt)) %>%
+  dplyr::left_join(bomfeltkoder)
+
+write.csv2(felt_og_stasjon,
+           file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_felt_og_stasjon.csv",
+           row.names = F)
 
 # Månedsindeks ####
 calculate_monthly_index_for_tolling_stations <-
@@ -135,16 +144,27 @@ bomindeks_2019 <- all_data_monthly_by_all_classes %>%
   dplyr::filter(klasse == "Liten_bil") %>%
   calculate_monthly_index_for_tolling_stations(2018)
 
-# TODO: Legge til stasjonkoder slik de er i NVDB
-
 maanedsindekser <- bind_rows(bomindeks_2017,
                              bomindeks_2018,
                              bomindeks_2019) %>%
   dplyr::left_join(felt_og_stasjon)
 
 write.csv2(maanedsindekser,
-           file = "H:/Programmering/R/byindeks/data_index_tidy/bom_maanedsindekser.csv",
+           file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.csv",
+           row.names = F)
+
+# TODO: Dekningsgrad for antall måneder
+aarsindekser <- maanedsindekser %>%
+  dplyr::mutate(year = year(aar_maaned)) %>%
+  dplyr::group_by(felt, year) %>%
+  dplyr::summarise(base_volume = sum(monthly_volume_base),
+                   calc_volume = sum(monthly_volume_calc),
+                   indeks = (calc_volume /
+                               base_volume - 1) * 100) %>%
+  dplyr::left_join(felt_og_stasjon)
+
+write.csv2(aarsindekser,
+           file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_aarsindekser.csv",
            row.names = F)
 
 # Se plott for å se etter avvik i bomdata_trondheim.Rmd
-# TODO: Dekningsgrad for antall måneder

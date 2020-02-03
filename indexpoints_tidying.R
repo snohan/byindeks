@@ -210,57 +210,112 @@ oslo_adt <- getAdtForpoints(indekspunktene_oslo$trp_id)
 
 
 # Trondheim 2017 ####
+# Trps
 trp_trondheim_2017_ids <- cities_points %>%
   dplyr::filter(city_area_name == "Trondheim",
                 agreement_start == 2017) %>%
   dplyr::select(trp_id, legacyNortrafMpn) %>%
   dplyr::rename(msnr = legacyNortrafMpn)
 
-# Adding metadata
+# Adding metadata to trps
 # Bruker trp fra trp-api, da noen mangler igangsetting.
 trp_trondheim_2017 <- dplyr::left_join(trp_trondheim_2017_ids, points_trp) %>%
   # Må ta vekk ene punktet i Strindheimtunnelen
   dplyr::filter(trp_id != "21571V2394246") %>%
   # Må skille trs fra bom
-  dplyr::mutate(station_type = "TRS")
+  dplyr::mutate(station_type = "TRS") %>%
+  dplyr::select(-legacyNortrafMpn)
 
-# Bompunkter i Trondheim
+# Tolling stations with metadata
 kommunenr <- "5001"
 kommunenavn <- hent_kommune(kommunenr)[[1]]
 
 kommune_bomer_uttak <-
-  get_tolling_stations(kommunenr)
+  get_tolling_stations_v3(kommunenr)
 
 kommune_bomer <- kommune_bomer_uttak %>%
   dplyr::mutate(station_type = "Bom") %>%
-  dplyr::select(-kommune, -road) %>%
   dplyr::mutate(trp_id = msnr,
                 msnr = as.numeric(msnr)) %>%
   dplyr::select(trp_id, everything()) %>%
   dplyr::filter(trp_id %in% c("51", "52", "53", "54", "55", "56", "58",
                               "59", "60", "61", "62", "64", "65", "66",
-                              "67", "68", "69", "85", "86", "72")) #%>%
-  #dplyr::mutate(name = str_sub(name, 1, -10))
+                              "67", "68", "69", "85", "86", "72"))
 
-# Må endre navn på Kroppan bru, dvs. ta bor retningsangivelse, da de to
-# bomstasjonene er slått sammen i indeksberegningen.
-kommune_bomer$name[kommune_bomer$trp_id == 56] <- "Kroppan bru"
+# Names from toll data files
+bom_felt_og_stasjon <- read.csv2(
+  "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_felt_og_stasjon.csv"
+) %>%
+  dplyr::select(-felt) %>%
+  dplyr::rename(name = stasjon)
 
-# Må legge til for 52 som er borte fra API-et.
-# bom_52 <- data.frame(
-#   "trp_id" = "52",
-#   "msnr" = 52,
-#   "name" = "Klett - E6, S-snitt",
-#   "road_reference" = "Ev6 hp9 m1252",
-#   "lat" = 63.32590,
-#   "lon" = 10.32702,
-#   "station_type" = "Bom",
-#   stringsAsFactors = F)
+trh_bomer <- kommune_bomer %>%
+  dplyr::select(-name) %>%
+  dplyr::left_join(bom_felt_og_stasjon, by = c("msnr" = "kode")) %>%
+  dplyr::select(trp_id, msnr, name, dplyr::everything())
 
+# All indexpoints
 trp_trondheim_2017_alle <-
-  bind_rows(trp_trondheim_2017, kommune_bomer#, bom_52
-            )
+  bind_rows(trp_trondheim_2017, trh_bomer)
+
+# Pointindices
+pointindex_16_17 <-
+  read_pointindex_csv_with_volumes(
+    "data_index_raw/pointindex_trondheim-2017-12_2016.csv") %>%
+  rename(index_16_17 = index)
+
+pointindex_17_18 <-
+  read_pointindex_csv_with_volumes(
+    "data_index_raw/pointindex_trondheim-2018-12_2017.csv") %>%
+  rename(index_17_18 = index)
+
+pointindex_18_19 <-
+  read_pointindex_csv_with_volumes(
+    "data_index_raw/pointindex_trondheim-2019-12_2018.csv") %>%
+  rename(index_18_19 = index)
+
+tollpointindex <- read.csv2(
+  "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_aarsindekser.csv") %>%
+  dplyr::rename(msnr = kode,
+                index = indeks) %>%
+  dplyr::select(-felt, -stasjon) %>%
+  dplyr::select(msnr, base_volume, calc_volume, index, year)
+
+pointindex_16_17_all <- tollpointindex %>%
+  dplyr::filter(year == 2017) %>%
+  dplyr::mutate(index_16_17 = round(index, digits = 1)) %>%
+  dplyr::select(msnr, base_volume, calc_volume, index_16_17) %>%
+  dplyr::bind_rows(pointindex_16_17)
+
+pointindex_17_18_all <- tollpointindex %>%
+  dplyr::filter(year == 2018) %>%
+  dplyr::mutate(index_17_18 = round(index, digits = 1)) %>%
+  dplyr::select(msnr, base_volume, calc_volume, index_17_18) %>%
+  dplyr::bind_rows(pointindex_17_18)
+
+pointindex_18_19_all <- tollpointindex %>%
+  dplyr::filter(year == 2019) %>%
+  dplyr::mutate(index_18_19 = round(index, digits = 1)) %>%
+  dplyr::select(msnr, base_volume, calc_volume, index_18_19) %>%
+  dplyr::bind_rows(pointindex_18_19)
+
+# Number of points each year
+n_16_17 <- pointindex_16_17_all %>%
+  dplyr::filter(!is.na(index_16_17)) %>%
+  nrow()
+
+n_17_18 <- pointindex_17_18_all %>%
+  dplyr::filter(!is.na(index_17_18)) %>%
+  nrow()
+
+n_18_19 <- pointindex_18_19_all %>%
+  dplyr::filter(!is.na(index_18_19)) %>%
+  nrow()
+
+# Adding pointindices to all points
+
 # HIT
+# ADT
 
 adt <- getAdtForpoints_by_length(trp_trondheim_2017$trp_id)
 
@@ -285,7 +340,7 @@ adt_all <- bind_rows(adt_filtered, adt_manual)
 #   dplyr::filter(year == 2017) %>%
 #   dplyr::select(-year)
 
-# TODO: Read datainn and bomindeks files and bind them here
+# TODO: ADD pointinfo with ADt and Read datainn and bomindeks files and bind them here
 
 # Add index results from CSV-files
 pointindex_trondheim_17_18 <-

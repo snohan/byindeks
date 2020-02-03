@@ -21,6 +21,24 @@ readPointindexCSV <- function(filename) {
     select(msnr, index)
 }
 
+#filename <- "data_index_raw/pointindex_trondheim-2019-12_2018.csv"
+read_pointindex_csv_with_volumes <- function(filename) {
+  # Read standard csv export from Datainn
+  df <- read.csv2(filename,
+                  stringsAsFactors = F) %>%
+    dplyr::filter(døgn == "Alle",
+           lengdeklasse == "< 5,6m",
+           periode == "Hittil i år") %>%
+    dplyr::mutate(index = round(
+                            as.numeric(decimal_point(indeks)),
+                            digits = 1)) %>%
+    dplyr::rename(base_volume = trafikkmengde.basisår,
+                  calc_volume = trafikkmengde.indeksår) %>%
+    dplyr::mutate(base_volume = as.numeric(base_volume),
+                  calc_volume = as.numeric(calc_volume)) %>%
+    dplyr::select(msnr, base_volume, calc_volume, index)
+}
+
 read_bikepointindex_csv <- function(filename) {
   # Read standard csv export from Datainn
   read.csv2(filename) %>%
