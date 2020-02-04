@@ -223,8 +223,11 @@ trp_trondheim_2017 <- dplyr::left_join(trp_trondheim_2017_ids, points_trp) %>%
   # Må ta vekk ene punktet i Strindheimtunnelen
   dplyr::filter(trp_id != "21571V2394246") %>%
   # Må skille trs fra bom
-  dplyr::mutate(station_type = "TRS") %>%
+  dplyr::mutate(station_type = "TRP") %>%
   dplyr::select(-legacyNortrafMpn)
+
+# Endrer navn
+trp_trondheim_2017$name[trp_trondheim_2017$msnr == 1600149] <- "Strindheimtunnelen"
 
 # Tolling stations with metadata
 kommunenr <- "5001"
@@ -273,6 +276,7 @@ pointindex_18_19 <-
   read_pointindex_csv_with_volumes(
     "data_index_raw/pointindex_trondheim-2019-12_2018.csv") %>%
   rename(index_18_19 = index)
+# NB! 2019 includes more points than agreed
 
 tollpointindex <- read.csv2(
   "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_aarsindekser.csv") %>%
@@ -312,14 +316,13 @@ n_18_19 <- pointindex_18_19_all %>%
   dplyr::filter(!is.na(index_18_19)) %>%
   nrow()
 
-# Adding pointindices to all points
-
-# HIT
 # ADT
+adt_trp_id <- trp_trondheim_2017_alle %>%
+  dplyr::filter(station_type == "TRP")
 
-adt <- getAdtForpoints_by_length(trp_trondheim_2017$trp_id)
+adt_trp <- getAdtForpoints_by_length(adt_trp_id$trp_id)
 
-adt_filtered <- adt %>%
+adt_trp_filtered <- adt_trp %>%
   dplyr::filter(length_range == "[..,5.6)") %>%
   dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
   dplyr::filter(length_quality > 90) %>%
@@ -330,107 +333,140 @@ adt_filtered <- adt %>%
   dplyr::select(trp_id, aadt_length_range, year) %>%
   dplyr::rename(adt = 2)
 
-# TODO: adt_bom
+trp_trondheim_2017_alle_adt_trp <- trp_trondheim_2017_alle %>%
+  dplyr::left_join(adt_trp_filtered)
 
-adt_all <- bind_rows(adt_filtered, adt_manual)
+missing_adt <- trp_trondheim_2017_alle_adt_trp %>%
+  dplyr::filter(is.na(adt)) %>%
+  dplyr::mutate(adt = mapply(getAadtByRoadlinkposition, road_link_position))
 
-# Get AADT for reference year with coverage from TD-API.
-# TODO: Add coverage when available through API!
-# adt <- getAdtForpoints(trp_trondheim_2017$trp_id) %>%
-#   dplyr::filter(year == 2017) %>%
-#   dplyr::select(-year)
+missing_adt_small_cars <- missing_adt %>%
+  dplyr::mutate(adt = round(0.9 * adt, digits = -2),
+                year = 2018)
 
-# TODO: ADD pointinfo with ADt and Read datainn and bomindeks files and bind them here
+# Correcting wrong values
+missing_adt_small_cars$adt[missing_adt_small_cars$trp_id == 56] <- 44000
 
-# Add index results from CSV-files
-pointindex_trondheim_17_18 <-
-  read.csv2("data_index_raw/punktindeks_trondheim_alle_punkter_jan-des18.csv") %>%
-  mutate(trs = as.numeric(msnr),
-         trs = if_else(trs > 9916000, trs - 9916000, trs)) %>%
-  select(-msnr) %>%
-  group_by(trs) %>%
-  summarise(trafikkmengde_basisaar = sum(trafikkmengde.basisaar),
-            trafikkmengde_indeksaar = sum(trafikkmengde.indeksaar),
-            index_17_18 = round((trafikkmengde_indeksaar/
-                             trafikkmengde_basisaar - 1) * 100,
-                          digits = 1)) %>%
-  rename(msnr = trs) %>%
-  select(msnr, index_17_18)
+# Finally all adt
+trp_trondheim_2017_alle_adt <- trp_trondheim_2017_alle_adt_trp %>%
+  dplyr::filter(!is.na(adt)) %>%
+  dplyr::bind_rows(missing_adt_small_cars)
 
-n_17_18 <- pointindex_trondheim_17_18 %>%
-  dplyr::filter(!is.na(index_17_18)) %>%
-  nrow()
+# Adding pointindices to all points
+trp_trondheim_2017_alle_adt_index <- trp_trondheim_2017_alle_adt %>%
+  dplyr::left_join(select(pointindex_16_17_all, 1, 4)) %>%
+  dplyr::left_join(select(pointindex_17_18_all, 1, 4)) %>%
+  dplyr::left_join(select(pointindex_18_19_all, 1, 4))
 
-pointindex_trondheim_18_19 <-
-  read.csv2("data_index_raw/punktindeks_trondheim_alle_punkter_jan-apr19.csv") %>%
-  mutate(trs = as.numeric(msnr),
-         trs = if_else(trs > 9916000, trs - 9916000, trs)) %>%
-  select(-msnr) %>%
-  group_by(trs) %>%
-  summarise(trafikkmengde_basisaar = sum(trafikkmengde.basisaar),
-            trafikkmengde_indeksaar = sum(trafikkmengde.indeksaar),
-            index_18_19 = round((trafikkmengde_indeksaar/
-                             trafikkmengde_basisaar - 1) * 100,
-                          digits = 1)) %>%
-  rename(msnr = trs) %>%
-  select(msnr, index_18_19)
+# Index from refyear
+refyear <- trp_trondheim_2017_alle_adt_index %>%
+  select(starts_with("index")) %>%
+  mutate_all(list(index_converter)) %>%
+  transmute(index = purrr::pmap_dbl(., prod)) %>%
+  # Lazily changing from 1 to NA (risky?)
+  mutate(index = round(ifelse(index == 1, NA,  100 * (index - 1)),
+                       digits = 1))
 
-n_18_19 <- pointindex_trondheim_18_19 %>%
-  dplyr::filter(!is.na(index_18_19)) %>%
-  nrow()
+trp_trondheim_2017_alle_adt_index_final <- trp_trondheim_2017_alle_adt_index %>%
+  bind_cols(refyear)
 
-# Final table
-trp_trondheim_2017_alle_adt <- trp_trondheim_2017_alle %>%
-  left_join(adt) %>%
-  left_join(pointindex_trondheim_17_18) %>%
-  left_join(pointindex_trondheim_18_19) %>%
-  mutate(index_17_18_i = index_converter(index_17_18),
-         index_18_19_i = index_converter(index_18_19)) %>%
-  # TODO: keep original columns
-  mutate(index = 100 * (index_17_18_i * index_18_19_i - 1)) %>%
-  mutate(index = ifelse(index == 0, NA, index)) %>%
-  select(-index_17_18_i, -index_18_19_i)
-
-# TODO: If NA all years, the result must be NA.
-# Lazy solution: if equals 0, then NA!
-
-# Must supply missing AADTs from NVDB based on road reference
-missing_aadt <- trp_trondheim_2017_alle_adt %>%
-  dplyr::filter(adt == 0 | is.na(adt)) %>%
-  dplyr::mutate(roadref_short = str_remove_all(road_reference, " "),
-                adt = mapply(getAadtByRoadReference, roadref_short)) %>%
-  dplyr::select(-roadref_short)
-
-with_aadt <- trp_trondheim_2017_alle_adt %>%
-  dplyr::filter(adt > 0)
-
-trp_trondheim_2017_final <- bind_rows(with_aadt, missing_aadt) %>%
-  dplyr::arrange(road_reference)
-
-write.csv2(trp_trondheim_2017_final,
+write.csv2(trp_trondheim_2017_alle_adt_index_final,
            file = "data_indexpoints_tidy/indekspunkt_trondheim_2017.csv",
            row.names = F)
 
 # City index
-trondheim_2018 <- read.csv2("data_index_raw/byindeks_trondheim_2018.csv") %>%
-  mutate(index_period = "2017-2018")
-trondheim_2019 <- read.csv2("data_index_raw/byindeks_trondheim_201904.csv") %>%
-  mutate(index_period = "2018-2019")
-city_index_trondheim <- bind_rows(trondheim_2018, trondheim_2019) %>%
-  mutate(index_i = index_converter(indeks))
+# Must calculate based on all pointindices
+city_index_2017 <- pointindex_16_17_all %>%
+  dplyr::summarise(base_volume_all = sum(base_volume),
+                   calc_volume_all = sum(calc_volume),
+                   index = (calc_volume_all / base_volume_all - 1 ) * 100,
+                   n_points = n(),
+                   year = "2016-2017")
 
-city_index_trondheim_across_years <-
-  100 * (prod(city_index_trondheim$index_i) - 1) %>%
-  as.data.frame() %>%
-  rename(indeks = 1)
+# To find weighted variance and ci
+pointindex_16_17_all_sd <- pointindex_16_17_all %>%
+  dplyr::mutate(city_index = city_index_2017$index,
+                city_base_volume = city_index_2017$base_volume_all,
+                diff = (base_volume / city_base_volume) *
+                  (index_16_17 - city_index)^2,
+                weight = (base_volume / city_base_volume)^2) %>%
+  dplyr::summarise(standardavvik = sqrt((1 / (1 - sum(weight) )) * sum(diff) ))
 
-city_index_trondheim_across_years$index_period <- "2017-2019"
+city_index_2017_sd <- city_index_2017 %>%
+  dplyr::bind_cols(pointindex_16_17_all_sd) %>%
+  dplyr::mutate(variance = standardavvik^2,
+                konfidensintervall = qt(0.975, n_points - 1) * standardavvik /
+                  sqrt(n_points))
 
-city_index_trondheim_all <- city_index_trondheim %>%
-  select(indeks, index_period) %>%
-  bind_rows(city_index_trondheim_across_years)
+city_index_2018 <- pointindex_17_18_all %>%
+  dplyr::summarise(base_volume_all = sum(base_volume),
+                   calc_volume_all = sum(calc_volume),
+                   index = (calc_volume_all / base_volume_all - 1 ) * 100,
+                   n_points = n(),
+                   year = "2017-2018")
 
-# TODO: find the compound CI (later)
+pointindex_17_18_all_sd <- pointindex_17_18_all %>%
+  dplyr::mutate(city_index = city_index_2018$index,
+                city_base_volume = city_index_2018$base_volume_all,
+                diff = (base_volume / city_base_volume) *
+                  (index_17_18 - city_index)^2,
+                weight = (base_volume / city_base_volume)^2) %>%
+  dplyr::summarise(standardavvik = sqrt((1 / (1 - sum(weight) )) * sum(diff) ))
+
+city_index_2018_sd <- city_index_2018 %>%
+  dplyr::bind_cols(pointindex_17_18_all_sd) %>%
+  dplyr::mutate(variance = standardavvik^2,
+                konfidensintervall = qt(0.975, n_points - 1) * standardavvik /
+                  sqrt(n_points))
+
+city_index_2019 <- pointindex_18_19_all %>%
+  dplyr::summarise(base_volume_all = sum(base_volume),
+                   calc_volume_all = sum(calc_volume),
+                   index = (calc_volume_all / base_volume_all - 1 ) * 100,
+                   n_points = n(),
+                   year = "2018-2019")
+
+pointindex_18_19_all_sd <- pointindex_18_19_all %>%
+  dplyr::mutate(city_index = city_index_2019$index,
+                city_base_volume = city_index_2018$base_volume_all,
+                diff = (base_volume / city_base_volume) *
+                  (index_18_19 - city_index)^2,
+                weight = (base_volume / city_base_volume)^2) %>%
+  dplyr::summarise(standardavvik = sqrt((1 / (1 - sum(weight) )) * sum(diff) ))
+
+city_index_2019_sd <- city_index_2019 %>%
+  dplyr::bind_cols(pointindex_18_19_all_sd) %>%
+  dplyr::mutate(variance = standardavvik^2,
+                konfidensintervall = qt(0.975, n_points - 1) * standardavvik /
+                  sqrt(n_points))
+
+
+city_index <- bind_rows(city_index_2017_sd,
+                        city_index_2018_sd,
+                        city_index_2019_sd) %>%
+  dplyr::select(-base_volume_all, -calc_volume_all) %>%
+  dplyr::mutate(index_i = index_converter(index),
+                # TODO: True coverage
+                dekning = 100)
+
+first_two_years <- calculate_two_year_index(city_index)
+next_two_years <- bind_rows(first_two_years, slice(city_index, 3)) %>%
+  calculate_two_year_index()
+last_two_years <- calculate_two_year_index(slice(city_index, 2:3))
+
+city_index_all <- city_index %>%
+  bind_rows(next_two_years) %>%
+  bind_rows(first_two_years) %>%
+  bind_rows(last_two_years) %>%
+  dplyr::mutate(ki_start = index - konfidensintervall,
+                ki_slutt = index + konfidensintervall)
+
+write.csv2(city_index_all,
+           file = "data_indexpoints_tidy/byindeks_trondheim_2017.csv",
+           row.names = F)
+
+# Monthly city index
+# TODO: worth it? Skip until someone asks for it! :)
 
 # Grenland 2017 ####
 # Point index

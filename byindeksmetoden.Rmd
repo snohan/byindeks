@@ -202,7 +202,7 @@ Trafikkregistreringspunktene som bidrar med data til indeksen utgjør et utvalg 
 #### Standardavvik
 For byindeksen $Q^{\mathrm{i}}$ er et forventningsrett, vektet standardavvik 
 
-$$\sigma_{b,s,t} = \sqrt{\frac{1}{1- \sum_j \left( \frac{Q_{j,s,t-1}}{Q_{b,s,t-1}} \right)^2} = \sum_j \left( \frac{Q_{j,s,t-1}}{Q_{b,s,t-1}} \left(  Q_{j,s,t}^{\mathrm{ip}} - Q_{b,s,t}^{\mathrm{ip}} \right)^2 \right) }$$
+$$\sigma_{b,s,t} = \sqrt{\frac{1}{1- \sum_j \left( \frac{Q_{j,s,t-1}}{Q_{b,s,t-1}} \right)^2} \sum_j \left( \frac{Q_{j,s,t-1}}{Q_{b,s,t-1}} \left(  Q_{j,s,t}^{\mathrm{ip}} - Q_{b,s,t}^{\mathrm{ip}} \right)^2 \right) }$$
 Her er det brukt at trafikkvolumvektene er normaliserte, men ikke-stokastiske.
 
 

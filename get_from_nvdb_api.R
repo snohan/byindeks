@@ -259,7 +259,7 @@ get_tolling_stations_v3 <- function(kommunenr) {
 
   koordinater <- uthenta$objekter %>%
     dplyr::select(id, lokasjon.geometri.wkt) %>%
-    dplyr::mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 10, -2)) %>%
+    dplyr::mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 9, -2)) %>%
     tidyr::separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
              convert = T) %>%
     dplyr::select(id, lat, lon)
@@ -312,6 +312,7 @@ getAadtByRoadReference <- function(roadref) {
   return(adt_verdi)
 }
 
+roadlink <- "0.81008@41567"
 getAadtByRoadlinkposition <- function(roadlink) {
   api_query_540 <- paste0(nvdb_url,
                           sti_vegobjekter,
