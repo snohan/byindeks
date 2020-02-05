@@ -72,7 +72,7 @@ all_point_info %>%
     fillColor = ~palett_adt(adt),
     fillOpacity = 0.8
   ) %>%
-  addLegend("bottomleft",
+  addLegend("bottomright",
             pal = palett_stasjonstype,
             values = ~station_type,
             title = "Stasjonstype",
