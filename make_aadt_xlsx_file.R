@@ -1,5 +1,6 @@
 # Get AADTs for specific trps
 library(writexl)
+library(DataExplorer)
 
 points <- get_trp_for_vti()
 
@@ -15,7 +16,7 @@ points_chosen <- points %>%
                 -road_link_position) %>%
   dplyr::filter(!(trp_id %in% periodic_trp$trp_id)) %>%
   dplyr::filter(county_number %in% geodata_3) %>%
-  dplyr::select(-county_number, -first_commission_datainn)
+  dplyr::select(-county_number)
 
 aadt_chosen_raw <- getAdtForpoints_by_length(points_chosen$trp_id)
 
@@ -57,11 +58,14 @@ geodata_x_aadt <- bind_rows(geodata_1_aadt,
                             geodata_2_aadt,
                             geodata_3_aadt)
 
-# Lager et Excelark med fire faner
-# Må først lage en navgitt liste
-# excelfaner <- list(fart = trafikkarbeid_nvdb,
-#                    vegkategori = trafikkarbeid_veg_fylke,
-#                    fylke = trafikkarbeid_fylke,
-#                    land = trafikkarbeid_aar)
+# Sjekker
+DataExplorer::introduce(geodata_x_aadt)
+DataExplorer::plot_missing(geodata_x_aadt)
+DataExplorer::plot_bar(geodata_x_aadt)
+DataExplorer::plot_histogram(geodata_x_aadt$aadt_ki_start_total)
+summary(geodata_x_aadt$aadt_ki_start_total)
 
-write_xlsx(geodata_x_aadt, path = "aadt_rapport_jan_2020.xlsx")
+geodata_x_aadt %>%
+  dplyr::mutate(first_commission_datainn =
+                  as.character(first_commission_datainn)) %>%
+write_xlsx(path = "aadt_trafikkdataportalen_2020-02-13.xlsx")
