@@ -182,6 +182,92 @@ get_trp_for_vti <- function() {
   return(points_trp)
 }
 
+get_trp_for_adt <- function() {
+
+  api_query <-
+    "query vti_trp {
+  trafficRegistrationPoints (trafficType: VEHICLE, stationType: CONTINUOUS) {
+    id
+    name
+    location{
+      roadReference{
+        shortForm
+        roadCategory {
+          id
+        }
+      }
+      county {
+        number
+        name
+      }
+    }
+    roadReferenceHistory {
+      validFrom
+      validTo
+      roadReference {
+        shortForm
+      }
+    }
+    legacyNortrafMpn
+    commissionElements {
+      commission {
+        validFrom
+        validTo
+      }
+    }
+  }
+}"
+
+  myqueries <- Query$new()
+  myqueries$query("api_data", api_query)
+
+  points_trp <- cli_trp$exec(myqueries$queries$api_data) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
+    as.data.frame() %>%
+    tidyr::unnest(cols =
+                    c("data.trafficRegistrationPoints.commissionElements")) %>%
+    dplyr::rename(
+      trp_id = data.trafficRegistrationPoints.id,
+      name = data.trafficRegistrationPoints.name,
+      road_system_reference =
+        data.trafficRegistrationPoints.location.roadReference.shortForm,
+      legacyNortrafMpn = data.trafficRegistrationPoints.legacyNortrafMpn,
+      valid_from = commission.validFrom,
+      valid_to = commission.validTo,
+      county_number = data.trafficRegistrationPoints.location.county.number,
+      county_name = data.trafficRegistrationPoints.location.county.name,
+      road_category =
+        data.trafficRegistrationPoints.location.roadReference.roadCategory.id) %>%
+    # Removing points without commissions
+    dplyr::filter(!is.na(valid_from)) %>%
+    dplyr::mutate(valid_from = lubridate::floor_date(
+      lubridate::with_tz(
+        lubridate::ymd_hms(valid_from)),
+      unit = "second")) %>%
+    dplyr::group_by(trp_id) %>%
+    dplyr::slice(which.min(valid_from)) %>%
+    dplyr::mutate(first_commission_datainn = lubridate::floor_date(
+                    valid_from, unit = "day")) %>%
+    dplyr::select(-valid_from, - valid_to) %>%
+    tidyr::unnest(cols = "data.trafficRegistrationPoints.roadReferenceHistory") %>%
+    # Removing points without road_reference
+    dplyr::filter(!is.na(validFrom)) %>%
+    dplyr::mutate(validFrom = lubridate::floor_date(
+      lubridate::with_tz(
+        lubridate::ymd_hms(validFrom)),
+      unit = "second")) %>%
+    dplyr::slice(which.max(validFrom)) %>%
+    dplyr::select(-validTo, -validFrom) %>%
+    dplyr::rename(road_reference = roadReference.shortForm) %>%
+    dplyr::select(county_number, county_name, trp_id, legacyNortrafMpn, name,
+                  road_category, road_system_reference, road_reference,
+                  first_commission_datainn) %>%
+    dplyr::arrange(county_number, road_category, road_system_reference) %>%
+    dplyr::ungroup()
+
+  return(points_trp)
+}
+
 get_stations_from_TRPAPI <- function() {
   # Get all traffic registration stations
   query_points_trp <-

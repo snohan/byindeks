@@ -2,21 +2,14 @@
 library(writexl)
 library(DataExplorer)
 
-points <- get_trp_for_vti()
-
-# Filter away periodic
-periodic_trp <- getPointsFromTRPAPI_filtered()
+points <- get_trp_for_adt()
 
 geodata_1 <- c(54, 18, 50, 15)
 geodata_2 <- c(11, 38, 42, 46)
 geodata_3 <- c(3, 30, 34)
 
 points_chosen <- points %>%
-  dplyr::select(-road_category, -lat, -lon,
-                -road_link_position) %>%
-  dplyr::filter(!(trp_id %in% periodic_trp$trp_id)) %>%
-  dplyr::filter(county_number %in% geodata_3) %>%
-  dplyr::select(-county_number)
+  dplyr::filter(county_number %in% geodata_1)
 
 aadt_chosen_raw <- getAdtForpoints_by_length(points_chosen$trp_id)
 
@@ -51,7 +44,7 @@ aadt_chosen <- aadt_chosen_raw %>%
 points_chosen_aadt <- points_chosen %>%
   dplyr::left_join(aadt_chosen)
 
-geodata_3_aadt <- points_chosen_aadt
+geodata_1_aadt <- points_chosen_aadt
 
 
 geodata_x_aadt <- bind_rows(geodata_1_aadt,
@@ -65,7 +58,39 @@ DataExplorer::plot_bar(geodata_x_aadt)
 DataExplorer::plot_histogram(geodata_x_aadt$aadt_ki_start_total)
 summary(geodata_x_aadt$aadt_ki_start_total)
 
-geodata_x_aadt %>%
+alle_adt <- geodata_x_aadt %>%
   dplyr::mutate(first_commission_datainn =
                   as.character(first_commission_datainn)) %>%
-write_xlsx(path = "aadt_trafikkdataportalen_2020-02-13.xlsx")
+  dplyr::rename(Fylkenr = county_number,
+                Fylkenavn = county_name,
+                Punktid = trp_id,
+                Nortrafnr = legacyNortrafMpn,
+                Navn = name,
+                Vegkat = road_category,
+                Vegsystemreferanse = road_system_reference,
+                Vegreferanse = road_reference,
+                Datainn_fra = first_commission_datainn,
+                Ar = year,
+                Dekningsgrad = dekningsgrad,
+                ADT_total = aadt_total,
+                ADT_total_ki_start = aadt_ki_start_total,
+                ADT_total_ki_slutt = aadt_ki_slutt_total,
+                Lengdekvalitetsgrad = godkjent_lengde,
+                ADT_lette = aadt_lette,
+                ADT_lette_ki_start = aadt_ki_start_lette,
+                ADT_lette_ki_slutt = aadt_ki_slutt_lette,
+                ADT_tunge = aadt_tunge,
+                ADT_tunge_ki_start = aadt_ki_start_tunge,
+                ADT_tunge_ki_slutt = aadt_ki_slutt_tunge)
+
+write_xlsx(alle_adt, path = "aadt_trafikkdataportalen_2020-02-26.xlsx")
+
+
+
+
+
+
+
+
+
+
