@@ -28,7 +28,7 @@ cities_points_unestablished <-
   read_csv2("data_points_raw/points_unestablished.csv")
 
 # All points from Traffic Data API
-points <- getPoints() %>%
+points <- get_points() %>%
   #dplyr::select(trp_id, name, road_reference, lat, lon) %>%
   dplyr::distinct(trp_id, .keep_all = T)
 
@@ -894,6 +894,14 @@ n_17_18 <- pointindex_jaeren_17_18 %>%
 pointindex_jaeren_18_19 <-
   readPointindexCSV("data_index_raw/pointindex_nord-jaeren-2019-12_2018.csv") %>%
   rename(index_18_19 = index)
+
+n_18_19 <- pointindex_jaeren_18_19 %>%
+  dplyr::filter(!is.na(index_18_19)) %>%
+  nrow()
+
+pointindex_jaeren_20 <-
+  read_new_pointindex_csv("data_index_raw/punktindeks_nord-jaeren-2020-01.csv") %>%
+  rename(index_19_20 = index)
 
 n_18_19 <- pointindex_jaeren_18_19 %>%
   dplyr::filter(!is.na(index_18_19)) %>%

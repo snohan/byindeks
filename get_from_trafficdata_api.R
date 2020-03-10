@@ -8,26 +8,30 @@ cli <- GraphqlClient$new(
   url = "https://www.vegvesen.no/trafikkdata/api/?query="
 )
 
-getPoints <- function() {
+get_points <- function() {
   # Get all traffic registration points
   query_points <-
-    "query allPoints{
-  trafficRegistrationPoints{
+    "query all_trps {
+  trafficRegistrationPoints {
     id
     name
     trafficRegistrationType
-    location{
-      coordinates{
-        latLon{
+    location {
+      coordinates {
+        latLon {
           lat
           lon
         }
       }
       county {
-          name
-          number
-        }
-      roadReference{
+        name
+        number
+      }
+      municipality {
+        name
+        number
+      }
+      roadReference {
           shortForm
       }
       roadLinkSequence {
@@ -35,7 +39,7 @@ getPoints <- function() {
         roadLinkSequenceId
       }
     }
-    commissions{
+    commissions {
       validFrom
       validTo
     }
@@ -57,6 +61,8 @@ getPoints <- function() {
                     data.trafficRegistrationPoints.trafficRegistrationType,
                   county_name = data.trafficRegistrationPoints.location.county.name,
                   county_no = data.trafficRegistrationPoints.location.county.number,
+                  municipality_name = data.trafficRegistrationPoints.location.municipality.name,
+                  municipality_no = data.trafficRegistrationPoints.location.municipality.number,
                   lat =
                     data.trafficRegistrationPoints.location.coordinates.latLon.lat,
                   lon =
@@ -69,7 +75,7 @@ getPoints <- function() {
                     data.trafficRegistrationPoints.location.roadLinkSequence.roadLinkSequenceId
                     ) %>%
     dplyr::select(trp_id, name, traffic_type, road_reference, county_name,
-                  county_no, lat, lon,
+                  county_no, municipality_name, municipality_no, lat, lon,
                   road_network_position, road_network_link, validFrom, validTo
                   ) %>%
     dplyr::mutate(road_reference = str_replace(road_reference, "HP ", "hp")

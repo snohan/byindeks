@@ -21,6 +21,21 @@ readPointindexCSV <- function(filename) {
     select(msnr, index)
 }
 
+read_new_pointindex_csv <- function(filename) {
+  # Read new csv export from Datainn
+  read.csv2(filename) %>%
+    filter(døgn == "Alle",
+           lengdeklasse == "< 5,6m",
+           periode == "Hittil i år") %>%
+    mutate(trafikkmengde.basisaar = as.numeric(
+             as.character("trafikkmengde basisår")),
+           trafikkmengde.indeksaar = as.numeric(
+             as.character("trafikkmengde indeksår"))) %>%
+  rename(index = indeks) %>%
+  select(trpid, index)
+}
+
+filename <- "data_index_raw/punktindeks_nord-jaeren-2020-01.csv"
 #filename <- "data_index_raw/pointindex_trondheim-2019-12_2018.csv"
 read_pointindex_csv_with_volumes <- function(filename) {
   # Read standard csv export from Datainn

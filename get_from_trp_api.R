@@ -1,6 +1,8 @@
 # Get data directly from TRP-API
 
-source("trp_api_cookies.R")
+library(httr)
+
+source("H:/Programmering/R/byindeks/trp_api_cookies.R")
 
 cli_trp <- GraphqlClient$new(
   url = "https://www.vegvesen.no/datainn/adm/traffic-registration-point/api/",
