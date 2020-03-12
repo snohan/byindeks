@@ -756,4 +756,114 @@ getHourlytraffic <- function(trpID, from, to) {
   return(hourlyTraffic)
 }
 
+trpID <- "81077V72158"
+from <- "2020-03-09T00:00:00+01:00"
+to <- "2020-03-12T00:00:00+01:00"
+
+get_daily_traffic <- function(trpID, from, to) {
+  # Default values
+  hasNextPage <- TRUE
+  cursor <- ""
+  dailyTraffic <- data.frame()
+
+  build_query <- function() {
+    query_traffic <- paste0(
+      'query point_day_volumes {
+    trafficData(trafficRegistrationPointId: "',
+      trpID,
+      '"){
+        trafficRegistrationPoint {
+          id
+          name
+        }
+        volume {
+        byDay(
+        from: "',
+      from,
+      '",
+        to: "',
+      to,
+      '",
+        after: "',
+      cursor,
+      '"
+        ) {
+        edges {
+          node {
+            from
+            total {
+              volumeNumbers {
+                volume
+              }
+              coverage {
+                percentage
+              }
+            }
+              }
+              }
+              pageInfo {
+                hasNextPage
+                endCursor
+              }
+              }
+              }
+            }
+        }
+      ')
+  }
+
+  while(hasNextPage == TRUE){
+
+    myqueries <- Query$new()
+    myqueries$query("dailyTraffic", build_query())
+
+    trafficData <- cli$exec(myqueries$queries$dailyTraffic) %>%
+      fromJSON(simplifyDataFrame = T, flatten = T)
+
+    if(length(trafficData$data$trafficData$volume$byDay$edges) == 0)
+      break;
+
+    trafficData %<>% as.data.frame()
+
+    cursor <-
+      trafficData$data.trafficData.volume.byDay.pageInfo.endCursor[1] %>%
+      as.character()
+    hasNextPage <-
+      trafficData$data.trafficData.volume.byDay.pageInfo.hasNextPage[1]
+
+    trafficData %<>% select(1:5)
+
+    dailyTraffic <- bind_rows(dailyTraffic, trafficData)
+  }
+
+  if(nrow(dailyTraffic) == 0) {
+    dailyTraffic <- setNames(data.frame(matrix(ncol = 5, nrow = 0)),
+                              c("point_id", "point_name", "from",
+                                "total_volume", "coverage"))
+  }else{
+    colnames(dailyTraffic) <- c("point_id", "point_name", "from",
+                                 "total_volume", "coverage")
+    dailyTraffic %<>% mutate(from = with_tz(ymd_hms(from), "CET"))
+  }
+
+  return(dailyTraffic)
+}
+
+
+get_dt_for_trp_list <- function(trp_list, from, to) {
+  number_of_points <- length(trp_list)
+  data_points <- data.frame()
+  trp_count <- 1
+
+  while (trp_count <= number_of_points) {
+    data_points <- bind_rows(data_points,
+                             get_daily_traffic(
+                               trp_list[trp_count],
+                               from,
+                               to))
+    trp_count <- trp_count + 1
+  }
+
+  return(data_points)
+}
 
