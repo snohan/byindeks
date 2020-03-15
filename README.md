@@ -2,9 +2,9 @@
 Dette prosjektet omhandler mal for og framstilling av rapporter for byindeksene.
 
 # Publisering
-Rapporter for byindeks legges ut på (vegvesen.no/fag/trafikk/indekser)[https://www.vegvesen.no/fag/trafikk/trafikkdata/indekser/byindeks] og oppdateres månedlig. 
+Rapporter for byindeks legges ut på [vegvesen.no/fag/trafikk/indekser](https://www.vegvesen.no/fag/trafikk/trafikkdata/indekser/byindeks) og oppdateres månedlig. 
 
-Hvert avtaleområde får sin egen rapport i PDF, som har Statens vegvesens generelle forside som mal (https://www.vegvesen.no/intranett/Etat/Støttefunksjoner/Visuell+kommunikasjon/Grafiske+maler/Forsider/Generelle+forsider).
+Hvert avtaleområde får sin egen rapport i PDF, som har [Statens vegvesens generelle forside som mal](https://www.vegvesen.no/intranett/Etat/Støttefunksjoner/Visuell+kommunikasjon/Grafiske+maler/Forsider/Generelle+forsider).
 
 Egne rapporter lages for hvert avtaleområde, og i kode er dette en Rmd-fil kalt **byindeks_rapport_områdenavn_referanseår.Rmd**. Disse genererer innholdet som MS Word. Felles funksjoner samles i kildeskript. Datagrunnlaget er csv-filer fra indeksmodulen og metainformasjon om punktene fra Trafikkdata-API-et.
 

@@ -21,7 +21,8 @@ cities_points_start <- read.csv2("data_points_raw/cities_points.csv") %>%
   dplyr::filter(city_area_name %in% c("Bergen",
                                       "Nord-Jæren",
                                       "Oslo og Akershus",
-                                      "Trondheim"),
+                                      "Trondheim",
+                                      "Tromsø"),
                 !is.na(trp_id)) %>% 
   dplyr::distinct(trp_id, .keep_all = TRUE) %>% 
   dplyr::select(city_area_name, trp_id) %>% 
@@ -30,13 +31,15 @@ cities_points_start <- read.csv2("data_points_raw/cities_points.csv") %>%
                                 "21801V72158",
                                 "81008V41567",
                                 "14772V41375",
-                                "20570V72811")))
+                                "20570V72811",
+                                "17949V320695",
+                                "75341V41863")))
 
-additional_trps <- data.frame(city_area_name = 
-                                c(rep("Trondheim", times = 13),
-                                  rep("Nord-Jæren", times = 34)),
-                              trp_id = 
-                                c(
+additional_trps <- 
+  data.frame(city_area_name = 
+               c(rep("Trondheim", times = 13),
+                 rep("Nord-Jæren", times = 34)),
+             trp_id = c(
                                   # Trondheim
                                   "04211V1677432",
                                   "94210V2411536",
@@ -106,7 +109,7 @@ week_2019_from <- "2019-03-11T00:00:00+01:00"
 week_2019_to <- "2019-03-18T00:00:00+01:00"
 
 week_2020_from <- "2020-03-02T00:00:00+01:00"
-week_2020_to <- "2020-03-13T00:00:00+01:00"
+week_2020_to <- "2020-03-15T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -263,7 +266,7 @@ Været vil enkelte dager kunne påvirke trafikkmengden. For eksempel vil det ved
 ```{r plot_city_2020, fig.width=8, fig.height=8}
 city_dt_2020_10_11 %>%
   ggplot2::ggplot(aes(ukedag, index)) +
-  geom_bar(aes(fill = index < 0), stat = "identity",
+  geom_bar(aes(fill = index > 0), stat = "identity",
            color = "#000000", 
            alpha = 0.6) +
   scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
