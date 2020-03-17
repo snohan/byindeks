@@ -38,7 +38,8 @@ cities_points_start <- read.csv2("data_points_raw/cities_points.csv") %>%
 additional_trps <- 
   data.frame(city_area_name = 
                c(rep("Trondheim", times = 13),
-                 rep("Nord-Jæren", times = 34)),
+                 rep("Nord-Jæren", times = 34),
+                 rep("Bodø", times = 11)),
              trp_id = c(
                                   # Trondheim
                                   "04211V1677432",
@@ -88,7 +89,19 @@ additional_trps <-
                                   "48362V320684",
                                   "89794V320138",
                                   "05658V320707",
-                                  "57836V319878"
+                                  "57836V319878",
+                                  # Bodø
+                                  "18346V886007",
+                                  "43264V886007",
+                                  "66316V2676855",
+                                  "33696V2676853",
+                                  "91229V886007",
+                                  "26549V2669516",
+                                  "29133V1201961",
+                                  "90646V1201961",
+                                  "74801V2676825",
+                                  "77027V1207593",
+                                  "86957V885288"
                                   ))
 
 cities_points <- bind_rows(cities_points_start, additional_trps)
@@ -104,12 +117,17 @@ trps <- dplyr::left_join(cities_points, points) %>%
   dplyr::filter(!is.na(name)) %>% 
   dplyr::filter(!stringr::str_detect(road_reference, "KD"))
 
-# Days we want
-week_2019_from <- "2019-03-11T00:00:00+01:00"
-week_2019_to <- "2019-03-18T00:00:00+01:00"
+# Will make two comparisons with different bases:
+# 1a. Week 10 2020, 
+# 1b. for Bodø and Tromsø which use week 9 as they had vacation in week 10
+# 2. Same week in 2019
 
-week_2020_from <- "2020-03-02T00:00:00+01:00"
-week_2020_to <- "2020-03-15T00:00:00+01:00"
+# Week 11 onwards 2019
+week_2019_from <- "2019-03-11T00:00:00+01:00"
+week_2019_to <- "2019-03-25T00:00:00+01:00"
+
+week_2020_from <- "2020-02-24T00:00:00+01:00"
+week_2020_to <- "2020-03-17T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -149,6 +167,12 @@ dt_2020_10 <- dt %>%
   filter(weekno == 10) %>% 
   select(point_id, total_volume, weekno, weekday)
 
+# For the north
+dt_2020_09 <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 9) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
 dt_2019_11 <- dt %>% 
   filter(year == 2019) %>%
   filter(weekno == 11) %>% 
@@ -156,31 +180,34 @@ dt_2019_11 <- dt %>%
   filter(!(point_id %in% c("21768V805002",
                            "41331V443662",
                            "71258V805748",
-                           "87138V755378")))
+                           "87138V755378",
+                           "91229V886007")))
+
+dt_2019_12 <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 12) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007")))
+
 
 dt_2020_11 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 11) %>% 
   select(point_id, total_volume, weekno, weekday)
 
+dt_2020_12 <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 12) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+
 # Trp index
-# Compare this week to 2020 week 10  
-trp_dt_2020_10_11 <- inner_join(dt_2020_10, dt_2020_11,
-                            by = c("point_id", "weekday"),
-                            suffix = c("_10", "_11")) %>% 
-  mutate(index = round((total_volume_11 / total_volume_10 - 1) * 100, digits = 1)) %>% 
-  left_join(norske_ukedager) %>% 
-  select(point_id, ukedag, index) %>% 
-  left_join(points, by = c("point_id" = "trp_id")) %>% 
-  left_join(cities_points, by = c("point_id" = "trp_id")) %>% 
-  select(ukedag, name, road_reference, city_area_name, index)
-
-write.csv2(trp_dt_2020_10_11,
-           file = "daglig_endring_punkter_2020_uke10-11.csv",
-           row.names = F)
-
-# Compare this week to same week 2019
-trp_dt_201911_202011 <- inner_join(dt_2019_11, dt_2020_11,
+calculate_trp_index <- function(dt_base, dt_calc) {
+  trp_daily_index <- inner_join(dt_base, dt_calc,
                             by = c("point_id", "weekday"),
                             suffix = c("_b", "_c")) %>% 
   mutate(index = round((total_volume_c / total_volume_b - 1) * 100, digits = 1)) %>% 
@@ -189,29 +216,38 @@ trp_dt_201911_202011 <- inner_join(dt_2019_11, dt_2020_11,
   left_join(points, by = c("point_id" = "trp_id")) %>% 
   left_join(cities_points, by = c("point_id" = "trp_id")) %>% 
   select(ukedag, name, road_reference, city_area_name, index)
+}
 
-write.csv2(trp_dt_201911_202011,
-           file = "daglig_endring_punkter_2019_uke11-2020_uke11.csv",
-           row.names = F)
+# Compare dt to 2020 week 10  
+trp_dt_2020_10_11 <- calculate_trp_index(dt_2020_10, dt_2020_11) %>% 
+  filter(!(city_area_name %in% c("Bodø", "Tromsø")))
+
+trp_dt_2020_10_12 <- calculate_trp_index(dt_2020_10, dt_2020_12) %>% 
+  filter(!(city_area_name %in% c("Bodø", "Tromsø")))
+
+# write.csv2(trp_dt_2020_10_11,
+#            file = "daglig_endring_punkter_2020_uke10-11.csv",
+#            row.names = F)
+
+# For the north
+trp_dt_2020_09_11 <- calculate_trp_index(dt_2020_09, dt_2020_11) %>% 
+  filter(city_area_name %in% c("Bodø", "Tromsø"))
+
+trp_dt_2020_09_12 <- calculate_trp_index(dt_2020_09, dt_2020_12) %>% 
+  filter(city_area_name %in% c("Bodø", "Tromsø"))
+
+# Compare this week to same week 2019
+trp_dt_201911_202011 <- calculate_trp_index(dt_2019_11, dt_2020_11)
+trp_dt_201912_202012 <- calculate_trp_index(dt_2019_12, dt_2020_12)
+
+# write.csv2(trp_dt_201911_202011,
+#            file = "daglig_endring_punkter_2019_uke11-2020_uke11.csv",
+#            row.names = F)
 
 
 # City index
-# Compare this week to 2020 week 10
-city_dt_2020_10_11 <- inner_join(dt_2020_10, dt_2020_11,
-                            by = c("point_id", "weekday"),
-                            suffix = c("_10", "_11")) %>% 
-  left_join(cities_points, by = c("point_id" = "trp_id")) %>% 
-  group_by(weekday, city_area_name) %>% 
-  summarise(city_volume_10 = sum(total_volume_10),
-            city_volume_11 = sum(total_volume_11),
-            no_trp = n()
-            ) %>% 
-  mutate(index = round((city_volume_11 / city_volume_10 - 1) * 100, digits = 1)) %>% 
-  left_join(norske_ukedager) %>% 
-  select(city_area_name, ukedag, no_trp, index)
-
-# Compare this week to same week 2019
-city_dt_201911_202011 <- inner_join(dt_2019_11, dt_2020_11,
+calculate_city_index <- function(dt_base, dt_calc) {
+  city_daily_index <- inner_join(dt_base, dt_calc,
                             by = c("point_id", "weekday"),
                             suffix = c("_b", "_c")) %>% 
   left_join(cities_points, by = c("point_id" = "trp_id")) %>% 
@@ -220,29 +256,32 @@ city_dt_201911_202011 <- inner_join(dt_2019_11, dt_2020_11,
             city_volume_c = sum(total_volume_c),
             no_trp = n()
             ) %>% 
-  mutate(index = round((city_volume_c / city_volume_b - 1) * 100, digits = 1)) %>% 
+  mutate(index = round((city_volume_c / city_volume_b - 1) * 100, 
+                       digits = 1)) %>% 
   left_join(norske_ukedager) %>% 
   select(city_area_name, ukedag, no_trp, index)
+}
 
-# city_dt_2020_week_10 <- dt %>% 
-#   filter(year == 2020) %>%
-#   select(-year) %>% 
-#   left_join(cities_points, by = c("point_id" = "trp_id")) %>% 
-#   group_by(weekno, weekday, city_area_name) %>% 
-#   summarise(city_volume = sum(total_volume),
-#             no_trp = n()
-#             ) %>% 
-#   pivot_wider(id_cols = c(city_area_name, weekday),
-#               names_from = weekno,
-#               values_from = city_volume,
-#               names_prefix = "week_",
-#               values_fill = list(city_volume = NA)) %>%
-#   mutate(index = round((week_11 / week_10 - 1) * 100, digits = 1)) %>% 
-#   left_join(norske_ukedager) %>% 
-#   select(city_area_name, ukedag, index)
+# Compare this week to 2020 week 10
+city_dt_2020_10_11 <- calculate_city_index(dt_2020_10, dt_2020_11) %>% 
+  filter(!(city_area_name %in% c("Bodø", "Tromsø")))
 
+city_dt_2020_10_12 <- calculate_city_index(dt_2020_10, dt_2020_12) %>% 
+  filter(!(city_area_name %in% c("Bodø", "Tromsø")))
 
-# TODO: compare this week to same week 2019
+# For the north
+city_dt_2020_09_11 <- calculate_city_index(dt_2020_09, dt_2020_11) %>% 
+  filter(city_area_name %in% c("Bodø", "Tromsø"))
+
+city_dt_2020_09_12 <- calculate_city_index(dt_2020_09, dt_2020_12) %>% 
+  filter(city_area_name %in% c("Bodø", "Tromsø"))
+
+# Compare this week to same week 2019
+city_dt_201911_202011 <- calculate_city_index(dt_2019_11, dt_2020_11) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+city_dt_201912_202012 <- calculate_city_index(dt_2019_12, dt_2020_12) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
 
 ```
 
@@ -252,7 +291,7 @@ Datagrunnlaget for beregningene hentes fra trafikkregistreringspunktene som inng
 
 For å få et best mulig bilde av trafikkutviklingen gjøres to sammenligninger:
 
-* Døgntrafikken sammenlignes med tilsvarende døgntrafikk i uke 10 i 2020
+* Døgntrafikken sammenlignes med tilsvarende døgntrafikk i uke 10 i 2020, bortsett fra for Bodø og Tromsø som bruker uke 9 som sammenligning pga. vinterferie i uke 10.
 * Døgntrafikken sammenlignes med tilsvarende døgntrafikk i samme uke i 2019
 
 Oppdatert rapport vil være tilgjengelig kl. 10 hver arbeidsdag.
@@ -262,8 +301,11 @@ Alle data er hentet fra [trafikkdata.no](https://www.trafikkdata.no/). Vi tar fo
 Været vil enkelte dager kunne påvirke trafikkmengden. For eksempel vil det ved dårlig føre, som ved stort snøfall eller underkjølt regn, bli redusert framkommelighet og dette fører til mindre trafikk enn normalt.
 
 
-# Samlet endring i byene
-```{r plot_city_2020, fig.width=8, fig.height=8}
+# Endring i trafikken i byområdene, grafer
+
+## Fra uke 10 til uke 11, 2020
+
+```{r plot_city_202011, fig.width=8, fig.height=8}
 city_dt_2020_10_11 %>%
   ggplot2::ggplot(aes(ukedag, index)) +
   geom_bar(aes(fill = index > 0), stat = "identity",
@@ -286,7 +328,82 @@ city_dt_2020_10_11 %>%
   labs(caption = "Data: Statens vegvesen")
 ```
 
-```{r plot_city_2019, fig.width=8, fig.height=8}
+
+```{r plot_city_202011_north, fig.width=8, fig.height=6}
+city_dt_2020_09_11 %>%
+  ggplot2::ggplot(aes(ukedag, index)) +
+  geom_bar(aes(fill = index > 0), stat = "identity",
+           color = "#000000", 
+           alpha = 0.6) +
+  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
+                    values = c("#ed1c2e", "#58b02c")) +
+  geom_hline(yintercept = 0, color = "#000000") +
+  facet_grid(city_area_name ~., switch = "y") +
+  scale_y_continuous(position = "right") +
+  xlab("") +
+  ylab("Endring i trafikkmengde (%)\n") +
+  ggtitle(label = "Daglig endring i trafikkmengde",
+          subtitle = "Fra uke 9 til uke 11 i 2020") +
+  theme(strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        strip.background = element_blank()) +
+  labs(caption = "Data: Statens vegvesen")
+```
+
+## Fra uke 10 til uke 12, 2020
+
+```{r plot_city_202012, fig.width=8, fig.height=8}
+city_dt_2020_10_12 %>%
+  ggplot2::ggplot(aes(ukedag, index)) +
+  geom_bar(aes(fill = index > 0), stat = "identity",
+           color = "#000000", 
+           alpha = 0.6) +
+  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
+                    values = c("#ed1c2e", "#58b02c")) +
+  geom_hline(yintercept = 0, color = "#000000") +
+  facet_grid(city_area_name ~., switch = "y") +
+  scale_y_continuous(position = "right") +
+  xlab("") +
+  ylab("Endring i trafikkmengde (%)\n") +
+  ggtitle(label = "Daglig endring i trafikkmengde",
+          subtitle = "Fra uke 10 til uke 12 i 2020") +
+  theme(strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        strip.background = element_blank()) +
+  labs(caption = "Data: Statens vegvesen")
+```
+
+
+```{r plot_city_202012_north, fig.width=8, fig.height=6}
+city_dt_2020_09_12 %>%
+  ggplot2::ggplot(aes(ukedag, index)) +
+  geom_bar(aes(fill = index > 0), stat = "identity",
+           color = "#000000", 
+           alpha = 0.6) +
+  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
+                    values = c("#ed1c2e", "#58b02c")) +
+  geom_hline(yintercept = 0, color = "#000000") +
+  facet_grid(city_area_name ~., switch = "y") +
+  scale_y_continuous(position = "right") +
+  xlab("") +
+  ylab("Endring i trafikkmengde (%)\n") +
+  ggtitle(label = "Daglig endring i trafikkmengde",
+          subtitle = "Fra uke 9 til uke 12 i 2020") +
+  theme(strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        strip.background = element_blank()) +
+  labs(caption = "Data: Statens vegvesen")
+```
+
+## Fra samme uke i 2019 til 2020
+
+```{r plot_city_201911, fig.width=8, fig.height=8}
 city_dt_201911_202011 %>%
   ggplot2::ggplot(aes(ukedag, index)) +
   geom_bar(aes(fill = index > 0), stat = "identity",
@@ -309,7 +426,36 @@ city_dt_201911_202011 %>%
   labs(caption = "Data: Statens vegvesen")
 ```
 
-```{r table_city}
+
+```{r plot_city_201912, fig.width=8, fig.height=8}
+city_dt_201912_202012 %>%
+  ggplot2::ggplot(aes(ukedag, index)) +
+  geom_bar(aes(fill = index > 0), stat = "identity",
+           color = "#000000", 
+           alpha = 0.6) +
+  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
+                    values = c("#ed1c2e", "#58b02c")) +
+  geom_hline(yintercept = 0, color = "#000000") +
+  facet_grid(city_area_name ~., switch = "y") +
+  scale_y_continuous(position = "right") +
+  xlab("") +
+  ylab("Endring i trafikkmengde (%)\n") +
+  ggtitle(label = "Daglig endring i trafikkmengde",
+          subtitle = "Fra uke 12 2019 til uke 12 i 2020") +
+  theme(strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        strip.background = element_blank()) +
+  labs(caption = "Data: Statens vegvesen")
+```
+
+
+# Endring i trafikken i byområdene, tabeller
+
+## Fra uke 10 til uke 11, 2020
+
+```{r table_city_202011}
 city_dt_2020_10_11 %>%
   ungroup() %>% 
   select(-weekday, -no_trp) %>%
@@ -335,8 +481,8 @@ city_dt_2020_10_11 %>%
 I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet med uke 10 som utgangspunkt. Det vil si at trafikken har gått ned fra uke 10 til uke 11, når prosentverdien er negativ. Vi ser den samme tendensen i alle byområdene. Data baserer seg på trafikken registrert i følgende antall trafikkregistreringspunkt: Bergen 45, Nord-Jæren 48, Oslo og Akershus 76 og Trondheim 18.
 
 
-```{r table_city_2019}
-city_dt_201911_202011 %>%
+```{r table_city_202011_north}
+city_dt_2020_09_11 %>%
   ungroup() %>% 
   select(-weekday, -no_trp) %>%
   pivot_wider(names_from = ukedag,
@@ -355,12 +501,118 @@ city_dt_201911_202011 %>%
   height_all(height = .2) %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
+  set_caption("Prosentvis endring i trafikkmengde fra uke 9 til uke 11 i 2020.")
+```
+
+Tabellen over viser endringen i trafikkmengden oppgitt i prosent, sammenlignet med uke 9 som utgangspunkt. Data baserer seg på trafikken registrert i følgende antall trafikkregistreringspunkt: Bodø 11, Tromsø 14.
+
+
+## Fra uke 10 til uke 12, 2020
+
+```{r table_city_202012}
+city_dt_2020_10_12 %>%
+  ungroup() %>% 
+  select(-weekday, -no_trp) %>%
+  pivot_wider(names_from = ukedag,
+              values_from = index) %>% 
+  flextable() %>%
+  set_header_labels(city_area_name = "Byområde") %>%
+  bold(part = "header") %>%
+  fontsize(size = 10, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  colformat_num(j = 2, na_str = "", digits = 1) %>% 
+  autofit() %>%
+  height_all(height = .2) %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Prosentvis endring i trafikkmengde fra uke 10 til uke 12 i 2020.")
+```
+
+
+
+
+```{r table_city_202012_north}
+city_dt_2020_09_12 %>%
+  ungroup() %>% 
+  select(-weekday, -no_trp) %>%
+  pivot_wider(names_from = ukedag,
+              values_from = index) %>% 
+  flextable() %>%
+  set_header_labels(city_area_name = "Byområde") %>%
+  bold(part = "header") %>%
+  fontsize(size = 10, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  colformat_num(j = 2, na_str = "", digits = 1) %>% 
+  autofit() %>%
+  height_all(height = .2) %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Prosentvis endring i trafikkmengde fra uke 9 til uke 12 i 2020.")
+```
+
+
+## Fra samme uke i 2019 til 2020
+
+```{r table_city_201911}
+city_dt_201911_202011 %>%
+  ungroup() %>% 
+  select(-weekday, -no_trp) %>%
+  pivot_wider(names_from = ukedag,
+              values_from = index) %>% 
+  flextable() %>%
+  set_header_labels(city_area_name = "Byområde") %>%
+  bold(part = "header") %>%
+  fontsize(size = 10, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  colformat_num(j = 2, na_str = "", digits = 1) %>% 
+  autofit() %>%
+  height_all(height = .2) %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
   set_caption("Prosentvis endring i trafikkmengde fra uke 11 2019 til uke 11 2020.")
 ```
 
-I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet med uke 11 i 2019 som utgangspunkt. Det vil si at trafikken har gått ned fra år 2019 til samme ukedag i 2020, når prosentverdien er negativ. Data baserer seg på trafikken registrert i følgende antall trafikkregistreringspunkt: Bergen 40, Nord-Jæren 44, Oslo og Akershus 65 og Trondheim 14.
+I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet med uke 11 i 2019 som utgangspunkt. Det vil si at trafikken har gått ned fra år 2019 til samme ukedag i 2020, når prosentverdien er negativ. Data baserer seg på trafikken registrert i følgende antall trafikkregistreringspunkt: Bergen 40, Nord-Jæren 44, Oslo og Akershus 65, Tromsø 11 og Trondheim 14. Bodø hadde litt for få punkter tilgjengelig med data i 2011 til at tall kan presenteres.
 
 Vi ser den samme tendensen i alle byområdene, med unntak av onsdagen. [Onsdag 13. mars 2019 var det snøfall og underkjølt regn i Oslo og Akershus](https://www.yr.no/nb/historikk/graf/1-72837/Norge/Oslo/Oslo/Oslo?q=2019-03-13). Dette er nok forklaringen til at trafikken den dagen var mindre enn normalt, og at tilsvarende onsdag i 2020 hadde mer trafikk i sammenligningen.
+
+```{r table_city_201912}
+city_dt_201912_202012 %>%
+  ungroup() %>% 
+  select(-weekday, -no_trp) %>%
+  pivot_wider(names_from = ukedag,
+              values_from = index) %>% 
+  flextable() %>%
+  set_header_labels(city_area_name = "Byområde") %>%
+  bold(part = "header") %>%
+  fontsize(size = 10, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  colformat_num(j = 2, na_str = "", digits = 1) %>% 
+  autofit() %>%
+  height_all(height = .2) %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Prosentvis endring i trafikkmengde fra uke 12 2019 til uke 12 2020.")
+```
+
+
+
 
 
 ```{r point_graph, fig.width=8, fig.height=12}
