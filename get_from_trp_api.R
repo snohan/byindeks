@@ -596,7 +596,8 @@ trs <- cli_trp$exec(myqueries$queries$points_trp) %>%
   tidyr::unnest(cols = c(data.trafficRegistrationStations.firmwareHistory),
                 keep_empty = TRUE) %>%
   dplyr::rename(firmware_valid_from = validFrom,
-                firmware_valid_to = validTo)
+                firmware_valid_to = validTo,
+                trs_id = 1)
 
   return(trs)
 }
@@ -643,6 +644,35 @@ trps <- points_trp %>%
                 incompatible_with_nortraf = 8)
 
 return(trps)
+}
+
+get_trs_info <- function() {
+
+  query_trs <-
+    "query trs {
+  trafficRegistrationStations {
+    id
+    name
+    operationalStatus
+    stationType
+    trafficType
+  }
+}
+"
+
+myqueries <- Query$new()
+myqueries$query("trs", query_trs)
+
+trs <- cli_trp$exec(myqueries$queries$trs) %>%
+  jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
+  as.data.frame() %>%
+  dplyr::rename(trs_id = 1,
+                name = 2,
+                status = 3,
+                station_type = 4,
+                traffic_type = 5)
+
+return(trs)
 }
 
 #trp_id <- "16334V971464"
