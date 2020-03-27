@@ -80,7 +80,7 @@ borderdata_2019_from <- "2019-03-11T00:00:00+01:00"
 borderdata_2019_to <- "2019-04-01T00:00:00+01:00"
 
 borderdata_2020_from <- "2020-03-02T00:00:00+01:00"
-borderdata_2020_to <- "2020-03-24T00:00:00+01:00"
+borderdata_2020_to <- "2020-03-27T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -293,7 +293,7 @@ border_trp_adt %>%
   height_all(height = .2) %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Trafikkregstreringspunkter ved riksgrenseovergangene.")
+  set_caption("Trafikkregistreringspunkter ved riksgrenseovergangene.")
 ```
 
 
@@ -461,7 +461,7 @@ border_trp_dt_2020_10_13 %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  colformat_num(j = 2, na_str = "", digits = 1) %>% 
+  colformat_num(j = 2:5, na_str = "", digits = 1) %>% 
   autofit() %>%
   height_all(height = .2) %>%
   padding(padding.top = .3,
@@ -525,7 +525,7 @@ border_trp_dt_201913_202013 %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  colformat_num(j = 2, na_str = "", digits = 1) %>% 
+  colformat_num(j = 2:5, na_str = "", digits = 1) %>% 
   autofit() %>%
   height_all(height = .2) %>%
   padding(padding.top = .3,

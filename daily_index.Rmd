@@ -127,7 +127,7 @@ week_2019_from <- "2019-03-11T00:00:00+01:00"
 week_2019_to <- "2019-04-01T00:00:00+01:00"
 
 week_2020_from <- "2020-02-24T00:00:00+01:00"
-week_2020_to <- "2020-03-24T00:00:00+01:00"
+week_2020_to <- "2020-03-27T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -256,7 +256,7 @@ trp_dt_2020_09_13 <- calculate_trp_index(dt_2020_09, dt_2020_13) %>%
 # Compare this week to same week 2019
 trp_dt_201911_202011 <- calculate_trp_index(dt_2019_11, dt_2020_11)
 trp_dt_201912_202012 <- calculate_trp_index(dt_2019_12, dt_2020_12)
-trp_dt_201912_202013 <- calculate_trp_index(dt_2019_13, dt_2020_13)
+trp_dt_201913_202013 <- calculate_trp_index(dt_2019_13, dt_2020_13)
 
 # write.csv2(trp_dt_201911_202011,
 #            file = "daglig_endring_punkter_2019_uke11-2020_uke11.csv",
@@ -321,8 +321,6 @@ For å få et best mulig bilde av trafikkutviklingen gjøres to sammenligninger:
 
 * Døgntrafikken sammenlignes med tilsvarende døgntrafikk i uke 10 i 2020, bortsett fra for Bodø og Tromsø som bruker uke 9 som sammenligning pga. vinterferie i uke 10.
 * Døgntrafikken sammenlignes med tilsvarende døgntrafikk i samme uke i 2019
-
-Oppdatert rapport vil være tilgjengelig kl. 10 hver arbeidsdag.
 
 Alle data er hentet fra [trafikkdata.no](https://www.trafikkdata.no/). Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
 
@@ -477,7 +475,7 @@ city_dt_2020_10_13 %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  colformat_num(j = 2, na_str = "", digits = 1) %>% 
+  colformat_num(j = 2:5, na_str = "", digits = 1) %>% 
   autofit() %>%
   height_all(height = .2) %>%
   padding(padding.top = .3,
@@ -632,7 +630,7 @@ city_dt_2020_09_13 %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  colformat_num(j = 2, na_str = "", digits = 1) %>% 
+  colformat_num(j = 2:5, na_str = "", digits = 1) %>% 
   autofit() %>%
   height_all(height = .2) %>%
   padding(padding.top = .3,
@@ -793,7 +791,7 @@ city_dt_201913_202013 %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  colformat_num(j = 2, na_str = "", digits = 1) %>% 
+  colformat_num(j = 2:5, na_str = "", digits = 1) %>% 
   autofit() %>%
   height_all(height = .2) %>%
   padding(padding.top = .3,
