@@ -182,21 +182,23 @@ oslopunkter <- cities_points %>%
 
 # Adding metadata
 indekspunkter_oslo <- dplyr::left_join(oslopunkter, points) %>%
-  dplyr::select(1:5, 7:11, 6)
+  dplyr::select(trp_id, name, road_reference,
+                county_name, municipality_name,
+                lat, lon, road_link_position)
 
-# Legger inn uetablerte punkter
-indekspunkter_oslo_uetablerte <-
-  read.csv2("points_not_yet_established.csv") %>%
-  dplyr::filter(city_area_name == "Oslo og Akershus",
-                agreement_start == 2019) %>%
-  dplyr::mutate(established = "Nei" )
-
-indekspunktene_oslo <- bind_rows(indekspunkter_oslo,
-                                 indekspunkter_oslo_uetablerte)
-
-write.csv2(indekspunktene_oslo,
-           file = "data_indexpoints_tidy/indekspunktene_oslo_2019.csv",
-           row.names = F)
+# Legger inn uetablerte punkter, mangler bare 2 per 31.03.2020
+# indekspunkter_oslo_uetablerte <-
+#   read.csv2("points_not_yet_established.csv") %>%
+#   dplyr::filter(city_area_name == "Oslo og Akershus",
+#                 agreement_start == 2019) %>%
+#   dplyr::mutate(established = "Nei" )
+#
+# indekspunktene_oslo <- bind_rows(indekspunkter_oslo,
+#                                  indekspunkter_oslo_uetablerte)
+#
+# write.csv2(indekspunktene_oslo,
+#            file = "data_indexpoints_tidy/indekspunktene_oslo_2019.csv",
+#            row.names = F)
 
 
 # ADT

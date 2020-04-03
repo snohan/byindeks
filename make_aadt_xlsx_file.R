@@ -11,7 +11,7 @@ geodata_3 <- c(3, 30, 34)
 points_chosen <- points %>%
   dplyr::filter(county_number %in% geodata_1)
 
-aadt_chosen_raw <- getAdtForpoints_by_length(points_chosen$trp_id)
+aadt_chosen_raw <- get_aadt_by_length_for_trp_list(points_chosen$trp_id)
 
 aadt_chosen <- aadt_chosen_raw %>%
   dplyr::select(-sd_length_range) %>%

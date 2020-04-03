@@ -2,7 +2,7 @@
 title: Daglig trafikkutvikling over riksgrensen
 output: 
   word_document:
-    reference_docx: svv_notatmal.docx
+    reference_docx: svv_notatmal3.docx
     toc: true
     toc_depth: 2
     fig_caption: true
@@ -77,10 +77,10 @@ border_trp_adt <- border_trps %>%
 # 2. Same week in 2019
 
 borderdata_2019_from <- "2019-03-11T00:00:00+01:00"
-borderdata_2019_to <- "2019-04-01T00:00:00+01:00"
+borderdata_2019_to <- "2019-04-22T00:00:00+01:00"
 
 borderdata_2020_from <- "2020-03-02T00:00:00+01:00"
-borderdata_2020_to <- "2020-03-27T00:00:00+01:00"
+borderdata_2020_to <- "2020-04-03T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -135,6 +135,11 @@ border_dt_2019_13 <- border_dt %>%
   filter(weekno == 13) %>% 
   select(point_id, total_volume, weekno, weekday)
 
+border_dt_2019_14 <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 14) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
 border_dt_2020_11 <- border_dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 11) %>% 
@@ -150,13 +155,19 @@ border_dt_2020_13 <- border_dt %>%
   filter(weekno == 13) %>% 
   select(point_id, total_volume, weekno, weekday)
 
+border_dt_2020_14 <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 14) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
 # Trp index
 calculate_trp_border_index <- function(dt_base, dt_calc) {
   trp_daily_index <- inner_join(dt_base, dt_calc,
                                 by = c("point_id", "weekday"),
                                 suffix = c("_b", "_c")) %>% 
     mutate(index = round((total_volume_c / total_volume_b - 1) * 100, 
-                         digits = 1)) %>% 
+                         digits = 1),
+           index = dplyr::na_if(index, "Inf")) %>% 
     left_join(norske_ukedager) %>% 
     select(point_id, ukedag, index) %>% 
     left_join(points, by = c("point_id" = "trp_id")) %>% 
@@ -182,6 +193,10 @@ border_trp_dt_2020_10_13 <- calculate_trp_border_index(
   border_dt_2020_10, 
   border_dt_2020_13)
 
+border_trp_dt_2020_10_14 <- calculate_trp_border_index(
+  border_dt_2020_10, 
+  border_dt_2020_14)
+
 # Compare this week to same week 2019
 border_trp_dt_201911_202011 <- calculate_trp_border_index(
   border_dt_2019_11, 
@@ -194,6 +209,10 @@ border_trp_dt_201912_202012 <- calculate_trp_border_index(
 border_trp_dt_201913_202013 <- calculate_trp_border_index(
   border_dt_2019_13, 
   border_dt_2020_13)
+
+border_trp_dt_201914_202014 <- calculate_trp_border_index(
+  border_dt_2019_14, 
+  border_dt_2020_14)
 
 # Border index
 calculate_border_index <- function(dt_base, dt_calc) {
@@ -227,9 +246,15 @@ border_dt_2020_10_13 <- calculate_border_index(
   border_dt_2020_13) %>% 
   mutate(periode = "Uke 10 til 13")
 
+border_dt_2020_10_14 <- calculate_border_index(
+  border_dt_2020_10, 
+  border_dt_2020_14) %>% 
+  mutate(periode = "Uke 10 til 14")
+
 border_base_2020 <- bind_rows(border_dt_2020_10_11,
                               border_dt_2020_10_12,
-                              border_dt_2020_10_13)
+                              border_dt_2020_10_13,
+                              border_dt_2020_10_14)
 
 # Compare this week to same week 2019
 border_dt_201911_202011 <- calculate_border_index(
@@ -247,9 +272,74 @@ border_dt_201913_202013 <- calculate_border_index(
   border_dt_2020_13) %>% 
   mutate(periode = "Uke 13")
 
+border_dt_201914_202014 <- calculate_border_index(
+  border_dt_2019_14, 
+  border_dt_2020_14) %>% 
+  mutate(periode = "Uke 14")
+
 border_base_2019 <- bind_rows(border_dt_201911_202011,
                               border_dt_201912_202012,
-                              border_dt_201913_202013)
+                              border_dt_201913_202013,
+                              border_dt_201914_202014)
+
+# Function for generating table
+make_border_table <- function(border_base, caption_text) {
+  
+  border_base_table_ready <- border_base %>%
+    dplyr::ungroup() %>% 
+    dplyr::select(-no_trp) %>%
+    dplyr::mutate(index = dplyr::na_if(index, "Inf")) %>% 
+    tidyr::pivot_wider(names_from = ukedag,
+                       values_from = index)
+  
+  ncol_dt <- ncol(border_base_table_ready)
+  
+  border_table <- border_base_table_ready %>% 
+    flextable() %>%
+    set_header_labels(periode = "Sammenlignet") %>%
+    bold(part = "header") %>%
+    fontsize(size = 9, part = "all") %>%
+    font(fontname = "Lucida Sans Unicode", part = "all") %>%
+    bg(bg = "#ED9300", part = "header") %>%
+    border_remove() %>%
+    hline_top(part = "header", border = borderline) %>%
+    hline_bottom(part = "all", border = borderline) %>%
+    colformat_num(j = 2:ncol_dt, na_str = "", digits = 1) %>% 
+    autofit() %>%
+    height_all(height = .2) %>%
+    padding(padding.top = .3,
+            padding.bottom = .3) %>%
+    set_caption(caption_text)
+  
+  return(border_table)
+}
+
+make_border_trp_table <- function(border_trp_dt, caption_text) {
+  
+  border_trp_dt_table_ready <- border_trp_dt %>%
+    select(-road, -adt, -municipality_name)
+  
+  ncol_dt <- ncol(border_trp_dt_table_ready)
+  
+  border_trp_table <- border_trp_dt_table_ready %>% 
+    flextable() %>%
+    set_header_labels(name = "Punktnavn") %>%
+    bold(part = "header") %>%
+    fontsize(size = 9, part = "all") %>%
+    font(fontname = "Lucida Sans Unicode", part = "all") %>%
+    bg(bg = "#ED9300", part = "header") %>%
+    border_remove() %>%
+    hline_top(part = "header", border = borderline) %>%
+    hline_bottom(part = "all", border = borderline) %>%
+    colformat_num(j = 2:ncol_dt, na_str = "", digits = 1) %>% 
+    autofit() %>%
+    height_all(height = .2) %>%
+    padding(padding.top = .3,
+            padding.bottom = .3) %>%
+    set_caption(caption_text)
+  
+  return(border_trp_table)
+}
 ```
 
 # Bakgrunn
@@ -281,7 +371,7 @@ border_trp_adt %>%
                     adt = "ÅDT",
                     municipality_name = "Kommune") %>%
   bold(part = "header") %>%
-  fontsize(size = 10, part = "all") %>%
+  fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
@@ -326,27 +416,32 @@ border_base_2020 %>%
 
 
 ```{r table_2020}
-border_base_2020 %>%
-  ungroup() %>% 
-  select(-no_trp) %>%
-  pivot_wider(names_from = ukedag,
-              values_from = index) %>% 
-  flextable() %>%
-  set_header_labels(periode = "Sammenlignet") %>%
-  bold(part = "header") %>%
-  fontsize(size = 10, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
-  bg(bg = "#ED9300", part = "header") %>%
-  border_remove() %>%
-  hline_top(part = "header", border = borderline) %>%
-  hline_bottom(part = "all", border = borderline) %>%
-  colformat_num(j = 2:8, na_str = "", digits = 1) %>% 
-  autofit() %>%
-  height_all(height = .2) %>%
-  padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption("Prosentvis endring i trafikkmengde fra uke 10 i 2020.")
+# border_base_2020 %>%
+#   ungroup() %>% 
+#   select(-no_trp) %>%
+#   pivot_wider(names_from = ukedag,
+#               values_from = index) %>% 
+#   flextable() %>%
+#   set_header_labels(periode = "Sammenlignet") %>%
+#   bold(part = "header") %>%
+#   fontsize(size = 9, part = "all") %>%
+#   font(fontname = "Lucida Sans Unicode", part = "all") %>%
+#   bg(bg = "#ED9300", part = "header") %>%
+#   border_remove() %>%
+#   hline_top(part = "header", border = borderline) %>%
+#   hline_bottom(part = "all", border = borderline) %>%
+#   colformat_num(j = 2:8, na_str = "", digits = 1) %>% 
+#   autofit() %>%
+#   height_all(height = .2) %>%
+#   padding(padding.top = .3,
+#           padding.bottom = .3) %>%
+#   set_caption("Prosentvis endring i trafikkmengde fra uke 10 i 2020.")
+
+make_border_table(border_base_2020,
+                  "Prosentvis endring i trafikkmengde fra uke 10 i 2020.")
 ```
+
+\newline \newline
 
 I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet med uke 10 som utgangspunkt. Det vil si at trafikken har gått ned fra uke 10 til uke 11, når prosentverdien er negativ.
 
@@ -379,27 +474,11 @@ border_base_2019 %>%
 
 
 ```{r table_2019}
-border_base_2019 %>%
-  ungroup() %>% 
-  select(-no_trp) %>%
-  pivot_wider(names_from = ukedag,
-              values_from = index) %>% 
-  flextable() %>%
-  set_header_labels(periode = "Sammenlignet") %>%
-  bold(part = "header") %>%
-  fontsize(size = 10, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
-  bg(bg = "#ED9300", part = "header") %>%
-  border_remove() %>%
-  hline_top(part = "header", border = borderline) %>%
-  hline_bottom(part = "all", border = borderline) %>%
-  colformat_num(j = 2:8, na_str = "", digits = 1) %>% 
-  autofit() %>%
-  height_all(height = .2) %>%
-  padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption("Prosentvis endring i trafikkmengde fra 2019 til 2020.")
+make_border_table(border_base_2019,
+                  "Prosentvis endring i trafikkmengde fra 2019 til 2020.")
 ```
+
+\newline
 
 I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet med uke 11 i 2019 som utgangspunkt. Det vil si at trafikken har gått ned fra år 2019 til samme ukedag i 2020, når prosentverdien er negativ. 
 
@@ -409,130 +488,69 @@ I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet me
 ## Sammenlignet med uke 10 i 2020
 
 ```{r trptable_202010}
-border_trp_dt_2020_10_11 %>%
-  select(-road, -adt, -municipality_name) %>% 
-  flextable() %>%
-  set_header_labels(name = "Punktnavn") %>%
-  bold(part = "header") %>%
-  fontsize(size = 10, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
-  bg(bg = "#ED9300", part = "header") %>%
-  border_remove() %>%
-  hline_top(part = "header", border = borderline) %>%
-  hline_bottom(part = "all", border = borderline) %>%
-  colformat_num(j = 2:8, na_str = "", digits = 1) %>% 
-  autofit() %>%
-  height_all(height = .2) %>%
-  padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption("Prosentvis endring i trafikkmengde fra uke 10 til uke 11 i 2020.")
+# border_trp_dt_2020_10_11 %>%
+#   select(-road, -adt, -municipality_name) %>% 
+#   flextable() %>%
+#   set_header_labels(name = "Punktnavn") %>%
+#   bold(part = "header") %>%
+#   fontsize(size = 10, part = "all") %>%
+#   font(fontname = "Lucida Sans Unicode", part = "all") %>%
+#   bg(bg = "#ED9300", part = "header") %>%
+#   border_remove() %>%
+#   hline_top(part = "header", border = borderline) %>%
+#   hline_bottom(part = "all", border = borderline) %>%
+#   colformat_num(j = 2:8, na_str = "", digits = 1) %>% 
+#   autofit() %>%
+#   height_all(height = .2) %>%
+#   padding(padding.top = .3,
+#           padding.bottom = .3) %>%
+#   set_caption("Prosentvis endring i trafikkmengde fra uke 10 til uke 11 i 2020.")
+
+make_border_trp_table(border_trp_dt_2020_10_11,
+                      "Prosentvis endring i trafikkmengde fra uke 10 til uke 11 i 2020.")
 ```
 
 
 ```{r trptable_202012}
-border_trp_dt_2020_10_12 %>%
-  select(-road, -adt, -municipality_name) %>% 
-  flextable() %>%
-  set_header_labels(name = "Punktnavn") %>%
-  bold(part = "header") %>%
-  fontsize(size = 10, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
-  bg(bg = "#ED9300", part = "header") %>%
-  border_remove() %>%
-  hline_top(part = "header", border = borderline) %>%
-  hline_bottom(part = "all", border = borderline) %>%
-  colformat_num(j = 2:8, na_str = "", digits = 1) %>% 
-  autofit() %>%
-  height_all(height = .2) %>%
-  padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption("Prosentvis endring i trafikkmengde fra uke 10 til uke 12 i 2020.")
+make_border_trp_table(border_trp_dt_2020_10_12,
+                      "Prosentvis endring i trafikkmengde fra uke 10 til uke 12 i 2020.")
 ```
 
 ```{r trptable_202013}
-border_trp_dt_2020_10_13 %>%
-  select(-road, -adt, -municipality_name) %>% 
-  flextable() %>%
-  set_header_labels(name = "Punktnavn") %>%
-  bold(part = "header") %>%
-  fontsize(size = 10, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
-  bg(bg = "#ED9300", part = "header") %>%
-  border_remove() %>%
-  hline_top(part = "header", border = borderline) %>%
-  hline_bottom(part = "all", border = borderline) %>%
-  colformat_num(j = 2:5, na_str = "", digits = 1) %>% 
-  autofit() %>%
-  height_all(height = .2) %>%
-  padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption("Prosentvis endring i trafikkmengde fra uke 10 til uke 13 i 2020.")
+make_border_trp_table(border_trp_dt_2020_10_13,
+                      "Prosentvis endring i trafikkmengde fra uke 10 til uke 13 i 2020.")
 ```
+
+
+```{r trptable_202014}
+make_border_trp_table(border_trp_dt_2020_10_14,
+                      "Prosentvis endring i trafikkmengde fra uke 10 til uke 14 i 2020.")
+```
+
+
 
 ## Sammenlignet mellom samme uke i 2019 og 2020
 
 ```{r trptable_201911}
-border_trp_dt_201911_202011 %>%
- select(-road, -adt, -municipality_name) %>% 
-  flextable() %>%
-  set_header_labels(name = "Punktnavn") %>%
-  bold(part = "header") %>%
-  fontsize(size = 10, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
-  bg(bg = "#ED9300", part = "header") %>%
-  border_remove() %>%
-  hline_top(part = "header", border = borderline) %>%
-  hline_bottom(part = "all", border = borderline) %>%
-  colformat_num(j = 2:8, na_str = "", digits = 1) %>% 
-  autofit() %>%
-  height_all(height = .2) %>%
-  padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption("Prosentvis endring i trafikkmengde fra uke 11 2019 til uke 11 2020.")
+make_border_trp_table(border_trp_dt_201911_202011,
+                      "Prosentvis endring i trafikkmengde fra uke 11 2019 til uke 11 2020.")
 ```
 
 
 ```{r trptable_201912}
-border_trp_dt_201912_202012 %>%
-  select(-road, -adt, -municipality_name) %>% 
-  flextable() %>%
-  set_header_labels(name = "Punktnavn") %>%
-  bold(part = "header") %>%
-  fontsize(size = 10, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
-  bg(bg = "#ED9300", part = "header") %>%
-  border_remove() %>%
-  hline_top(part = "header", border = borderline) %>%
-  hline_bottom(part = "all", border = borderline) %>%
-  colformat_num(j = 2:8, na_str = "", digits = 1) %>% 
-  autofit() %>%
-  height_all(height = .2) %>%
-  padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption("Prosentvis endring i trafikkmengde fra uke 12 2019 til uke 12 2020.")
+make_border_trp_table(border_trp_dt_201912_202012,
+                      "Prosentvis endring i trafikkmengde fra uke 12 2019 til uke 12 2020.")
 ```
 
 
 ```{r trptable_201913}
-border_trp_dt_201913_202013 %>%
-  select(-road, -adt, -municipality_name) %>% 
-  flextable() %>%
-  set_header_labels(name = "Punktnavn") %>%
-  bold(part = "header") %>%
-  fontsize(size = 10, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
-  bg(bg = "#ED9300", part = "header") %>%
-  border_remove() %>%
-  hline_top(part = "header", border = borderline) %>%
-  hline_bottom(part = "all", border = borderline) %>%
-  colformat_num(j = 2:5, na_str = "", digits = 1) %>% 
-  autofit() %>%
-  height_all(height = .2) %>%
-  padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption("Prosentvis endring i trafikkmengde fra uke 13 2019 til uke 13 2020.")
+make_border_trp_table(border_trp_dt_201913_202013,
+                      "Prosentvis endring i trafikkmengde fra uke 13 2019 til uke 13 2020.")
 ```
 
-
+```{r trptable_201914}
+make_border_trp_table(border_trp_dt_201914_202014,
+                      "Prosentvis endring i trafikkmengde fra uke 14 2019 til uke 14 2020.")
+```
 
 

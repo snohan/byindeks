@@ -400,7 +400,7 @@ get_trp_mdt_by_lane <- function(trp_id, mdt_year) {
 #trp_id <- "01316V804837"
 #trp_adt <- getTrpAadt_byLength(trp_id)
 
-getTrpAadt_byLength <- function(trp_id) {
+get_aadt_by_length_for_trp <- function(trp_id) {
   # Get all AADTs for a trp
   query_aadt <- paste0(
     "query trp_adt {
@@ -565,14 +565,14 @@ get_mdt_by_lane_for_trp_list <- function(trp_list, mdt_year) {
 #test <- get_mdt_by_lane_for_trp_list(trp_list, "2020")
 #test_adt <- getAdtForpoints_by_length(test_list)
 
-getAdtForpoints_by_length <- function(trp_list) {
+get_aadt_by_length_for_trp_list <- function(trp_list) {
   number_of_points <- length(trp_list)
   data_points <- data.frame()
   trp_count <- 1
 
   while (trp_count <= number_of_points) {
     data_points <- bind_rows(data_points,
-                             getTrpAadt_byLength(trp_list[trp_count]))
+                             get_aadt_by_length_for_trp(trp_list[trp_count]))
     trp_count <- trp_count + 1
   }
 
