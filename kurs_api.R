@@ -49,6 +49,8 @@ utvalgte_punkter <- alle_punkter %>%
 
 
 hent_aadt_for_punkt <- function(trp_id) {
+  # Henter ÅDT for ett punkt
+  # Inn: en trp_id
 
   query_aadt <- paste0(
     "query aadt {
@@ -83,13 +85,98 @@ hent_aadt_for_punkt <- function(trp_id) {
   myqueries$query("aadt", query_aadt)
 
   aadt <- cli$exec(myqueries$queries$aadt) %>%
-    jsonlite::fromJSON(flatten = TRUE) %>%
-    as.data.frame()
+    jsonlite::fromJSON(flatten = TRUE)
+
+  # Feilhåndtering
+  if (is_empty(aadt$data$trafficData$volume$average$daily$byYear) |
+      is.null(aadt$data$trafficData$volume$average$daily$byYear$total.volume.average)) {
+
+    aadt <- data.frame()
+
+  }else{
+
+    aadt <- aadt %>%
+    as.data.frame() %>%
+    rename(trp_id = 1,
+           year = 2,
+           aadt = 3,
+           coverage = 4)
+
+  }
+
+
 
 }
 
+# Henter ÅDT for ett punkt
+eksempel_aadt <- hent_aadt_for_punkt(utvalgte_punkter$trp_id[2])
 
-eksempel_aadt <- hent_aadt_for_punkt("99483V705274")
+# Setter sammen info
+punkter_med_adt <- eksempel_aadt %>%
+  left_join(utvalgte_punkter) %>%
+  select(county_name,
+         name,
+         road_reference,
+         year,
+         aadt,
+         coverage)
 
+# Hente ÅDT for flere punkter
+hent_aadt_for_punktliste  <- function(trp_list) {
+
+  number_of_points <- length(trp_list)
+  data_points <- data.frame()
+  trp_count <- 1
+
+  while (trp_count <= number_of_points) {
+
+    data_points <- dplyr::bind_rows(
+      data_points,
+      hent_aadt_for_punkt(trp_list[trp_count]))
+
+    trp_count <- trp_count + 1
+  }
+
+  return(data_points)
+
+}
+
+aadt_nordland <- hent_aadt_for_punktliste(utvalgte_punkter$trp_id)
+
+
+
+punkter_med_adt_nordland <- aadt_nordland %>%
+  left_join(utvalgte_punkter) %>%
+  select(county_name,
+         name,
+         road_reference,
+         year,
+         aadt,
+         coverage)
+
+
+# Skrive ut til CSV eller Excel
+
+
+
+
+#JUKSELAPP
+####
+get_aadt_for_trp_list <- function(trp_list) {
+  number_of_points <- length(trp_list)
+  data_points <- data.frame()
+  trp_count <- 1
+
+  while (trp_count <= number_of_points) {
+    data_points <- bind_rows(data_points,
+                             get_trp_aadt_with_coverage(trp_list[trp_count]))
+    trp_count <- trp_count + 1
+  }
+
+  trp_adt <- data_points %>%
+    dplyr::mutate(adt = round(adt, digits = -1))
+
+  return(trp_adt)
+}
 
 

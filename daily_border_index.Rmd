@@ -1,5 +1,5 @@
 ---
-title: Daglig trafikkutvikling over riksgrensen
+title: Daglig trafikkutvikling ved riksgrensen
 output: 
   word_document:
     reference_docx: svv_notatmal3.docx
@@ -72,15 +72,16 @@ adt_filtered <- adt %>%
 border_trp_adt <- border_trps %>% 
   left_join(adt_filtered)
 
-# Will make two comparisons with different bases:
-# 1. Week 10 2020, 
+# Different comparisons with different bases:
+# 1. Week 10 2020
 # 2. Same week in 2019
+# 3. Easter 2019 to Easter 2020
 
 borderdata_2019_from <- "2019-03-11T00:00:00+01:00"
 borderdata_2019_to <- "2019-04-22T00:00:00+01:00"
 
 borderdata_2020_from <- "2020-03-02T00:00:00+01:00"
-borderdata_2020_to <- "2020-04-03T00:00:00+01:00"
+borderdata_2020_to <- "2020-04-14T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -140,6 +141,23 @@ border_dt_2019_14 <- border_dt %>%
   filter(weekno == 14) %>% 
   select(point_id, total_volume, weekno, weekday)
 
+border_dt_2019_15_palmweekend <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 15,
+         weekday > 4) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2019_16_easterweek <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 16) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2019_17_eastermonday <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 17) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+#
 border_dt_2020_11 <- border_dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 11) %>% 
@@ -157,8 +175,26 @@ border_dt_2020_13 <- border_dt %>%
 
 border_dt_2020_14 <- border_dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 14) %>% 
+  filter(weekno == 14,
+         weekday < 5) %>% 
   select(point_id, total_volume, weekno, weekday)
+
+border_dt_2020_14_palmweekend <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 14,
+         weekday > 4) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2020_15_easterweek <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 15) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2020_16_eastermonday <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 16) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
 
 # Trp index
 calculate_trp_border_index <- function(dt_base, dt_calc) {
@@ -213,6 +249,19 @@ border_trp_dt_201913_202013 <- calculate_trp_border_index(
 border_trp_dt_201914_202014 <- calculate_trp_border_index(
   border_dt_2019_14, 
   border_dt_2020_14)
+
+# Compare Easter
+border_trp_dt_palmweekend <- calculate_trp_border_index(
+  border_dt_2019_15_palmweekend, 
+  border_dt_2020_14_palmweekend)
+
+border_trp_dt_easterweek <- calculate_trp_border_index(
+  border_dt_2019_16_easterweek,
+  border_dt_2020_15_easterweek)
+
+border_trp_dt_eastermonday <- calculate_trp_border_index(
+  border_dt_2019_17_eastermonday,
+  border_dt_2020_16_eastermonday)
 
 # Border index
 calculate_border_index <- function(dt_base, dt_calc) {
@@ -282,6 +331,29 @@ border_base_2019 <- bind_rows(border_dt_201911_202011,
                               border_dt_201913_202013,
                               border_dt_201914_202014)
 
+# Compare Easter
+border_dt_palmweekend <- calculate_border_index(
+  border_dt_2019_15_palmweekend, 
+  border_dt_2020_14_palmweekend) %>% 
+  mutate(periode = "Palmehelga")
+
+border_dt_easterweek <- calculate_border_index(
+  border_dt_2019_16_easterweek, 
+  border_dt_2020_15_easterweek) %>% 
+  mutate(periode = "Påskeuka")
+
+border_dt_eastermonday <- calculate_border_index(
+  border_dt_2019_17_eastermonday, 
+  border_dt_2020_16_eastermonday) %>% 
+  mutate(periode = "2. påskedag")
+
+border_easter <- bind_rows(border_dt_palmweekend,
+                           border_dt_easterweek,
+                           border_dt_eastermonday
+                           ) %>% 
+  mutate(periode = factor(periode,
+                          levels = c("Palmehelga", "Påskeuka", "2. påskedag")))
+
 # Function for generating table
 make_border_table <- function(border_base, caption_text) {
   
@@ -340,6 +412,30 @@ make_border_trp_table <- function(border_trp_dt, caption_text) {
   
   return(border_trp_table)
 }
+
+make_daily_border_plot <- function(area_dt, subtitle_text) {
+  
+  area_dt %>%
+  ggplot2::ggplot(aes(ukedag, index)) +
+  geom_bar(aes(fill = index > 0), stat = "identity",
+           color = "#000000",
+           alpha = 0.6) +
+  scale_fill_manual(guide = FALSE, breaks = c(FALSE, TRUE),
+                    values = c("#ed1c2e", "#58b02c")) +
+  geom_hline(yintercept = 0, color = "#000000") +
+  facet_grid(periode ~., switch = "y") +
+  scale_y_continuous(position = "right") +
+  xlab("") +
+  ylab("Endring i trafikkmengde (%)\n") +
+  ggtitle(label = "Daglig endring i trafikkmengde over riksgrensen",
+          subtitle = subtitle_text) +
+  theme(strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        strip.background = element_blank()) +
+  labs(caption = "Data: Statens vegvesen")
+}
 ```
 
 # Bakgrunn
@@ -350,10 +446,11 @@ Statens vegvesen har i dag til sammen 30 trafikkregistreringspunkter ved de ulik
 
 Datagrunnlaget for beregningene hentes fra disse trafikkregistreringspunktene. Det vil gi et representativ utvalg for å kunne beregne trafikkutviklingen. Det gjøres en sammenligning av døgntrafikken, ukedag mot ukedag. Mandag sammenlignes med mandag osv.  
 
-For å få et best mulig bilde av trafikkutviklingen gjøres to sammenligninger:
+Trafikkutviklingen sammenlignes slik:
 
 * Døgntrafikken sammenlignes med tilsvarende døgntrafikk i uke 10 i 2020.
 * Døgntrafikken sammenlignes med tilsvarende døgntrafikk i samme uke i 2019.
+* For påsken sammenlignes døgntrafikken mellom tilsvarende påskedager, fra fredag før palmesøndag til andre påskedag.
 
 Alle data er hentet fra [trafikkdata.no](https://www.trafikkdata.no/). Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
 
@@ -392,26 +489,7 @@ border_trp_adt %>%
 ## Sammenlignet med uke 10 i 2020
 
 ```{r plot_202011, fig.width=8, fig.height=8}
-border_base_2020 %>%
-  ggplot2::ggplot(aes(ukedag, index)) +
-  geom_bar(aes(fill = index > 0), stat = "identity",
-           color = "#000000", 
-           alpha = 0.6) +
-  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
-                    values = c("#ed1c2e", "#58b02c")) +
-  geom_hline(yintercept = 0, color = "#000000") +
-  facet_grid(periode ~., switch = "y") +
-  scale_y_continuous(position = "right") +
-  xlab("") +
-  ylab("Endring i trafikkmengde (%)\n") +
-  ggtitle(label = "Daglig endring i trafikkmengde over riksgrensen",
-          subtitle = "2020") +
-  theme(strip.text.y = element_text(angle = 180),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        strip.background = element_blank()) +
-  labs(caption = "Data: Statens vegvesen")
+make_daily_border_plot(border_base_2020, "2020")
 ```
 
 
@@ -449,26 +527,7 @@ I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet me
 ## Sammenlignet mellom samme uke i 2019 og 2020
 
 ```{r plot_201911, fig.width=8, fig.height=8}
-border_base_2019 %>%
-  ggplot2::ggplot(aes(ukedag, index)) +
-  geom_bar(aes(fill = index > 0), stat = "identity",
-           color = "#000000", 
-           alpha = 0.6) +
-  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
-                    values = c("#ed1c2e", "#58b02c")) +
-  geom_hline(yintercept = 0, color = "#000000") +
-  facet_grid(periode ~., switch = "y") +
-  scale_y_continuous(position = "right") +
-  xlab("") +
-  ylab("Endring i trafikkmengde (%)\n") +
-  ggtitle(label = "Daglig endring i trafikkmengde over riksgrensen",
-          subtitle = "Fra 2019 til 2020") +
-  theme(strip.text.y = element_text(angle = 180),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        strip.background = element_blank()) +
-  labs(caption = "Data: Statens vegvesen")
+make_daily_border_plot(border_base_2019, "Fra 2019 til 2020")
 ```
 
 
@@ -481,6 +540,46 @@ make_border_table(border_base_2019,
 \newline
 
 I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet med uke 11 i 2019 som utgangspunkt. Det vil si at trafikken har gått ned fra år 2019 til samme ukedag i 2020, når prosentverdien er negativ. 
+
+
+## Sammenligning av påsketrafikken
+
+```{r plot_easter, fig.width=8, fig.height=8}
+make_daily_border_plot(border_easter, "Fra 2019 til 2020")
+```
+
+```{r table_easter}
+#make_border_table(border_easter,
+#                  "Prosentvis endring i trafikkmengde fra påsken 2019 til påsken 2020.")
+
+border_base_table_ready_easter <- border_easter %>%
+  dplyr::ungroup() %>% 
+  dplyr::select(-no_trp) %>%
+  dplyr::mutate(index = dplyr::na_if(index, "Inf")) %>% 
+  tidyr::pivot_wider(names_from = ukedag,
+                     values_from = index) %>% 
+  dplyr::select(1, Mandag, everything())
+
+ncol_dt_easter <- ncol(border_base_table_ready_easter)
+
+border_base_table_ready_easter %>% 
+  select(periode, Mandag, Tirsdag, Onsdag, Torsdag, Fredag, Lørdag, Søndag) %>% 
+  flextable() %>%
+  set_header_labels(periode = "Sammenlignet") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  colformat_num(j = 2:ncol_dt_easter, na_str = "", digits = 1) %>% 
+  autofit() %>%
+  height_all(height = .2) %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Prosentvis endring i trafikkmengde fra påsken 2019 til påsken 2020.")
+```
 
 
 # Endring i trafikk ved de enkelte riksgrenseovergangene
@@ -552,5 +651,28 @@ make_border_trp_table(border_trp_dt_201913_202013,
 make_border_trp_table(border_trp_dt_201914_202014,
                       "Prosentvis endring i trafikkmengde fra uke 14 2019 til uke 14 2020.")
 ```
+
+
+## Sammenligning av påsketrafikken
+
+```{r trptable_palmweekend}
+make_border_trp_table(border_trp_dt_palmweekend,
+                      "Prosentvis endring i trafikkmengde fra palmehelga 2019 til palmehelga 2020.")
+```
+
+
+```{r trptable_easterweek}
+make_border_trp_table(border_trp_dt_easterweek,
+                      "Prosentvis endring i trafikkmengde fra påskeuka 2019 til påskeuka 2020.")
+```
+
+
+```{r trptable_eastermonday}
+make_border_trp_table(border_trp_dt_eastermonday,
+                      "Prosentvis endring i trafikkmengde fra 2. påskedag 2019 til 2. påskedag 2020.")
+```
+
+
+
 
 

@@ -117,17 +117,18 @@ trps <- dplyr::left_join(cities_points, points) %>%
   dplyr::filter(!is.na(name)) %>% 
   dplyr::filter(!stringr::str_detect(road_reference, "KD"))
 
-# Will make two comparisons with different bases:
+# Will make different comparisons with different bases:
 # 1a. Week 10 2020, 
 # 1b. for Bodø and Tromsø which use week 9 as they had vacation in week 10
 # 2. Same week in 2019
+# 3. Easter
 
 # Week 11 onwards 2019, including Easter
 week_2019_from <- "2019-03-11T00:00:00+01:00"
 week_2019_to <- "2019-04-22T00:00:00+01:00"
 
 week_2020_from <- "2020-02-24T00:00:00+01:00"
-week_2020_to <- "2020-04-03T00:00:00+01:00"
+week_2020_to <- "2020-04-14T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -157,7 +158,8 @@ dt <- bind_rows(dt_2019, dt_2020) %>%
   mutate(year = lubridate::year(from),
          weekno = lubridate::isoweek(from),
          weekday = lubridate::wday(from,
-                                   week_start = getOption("lubridate.week.start", 1))) %>%
+                                   week_start = 
+                                     getOption("lubridate.week.start", 1))) %>%
   select(-from) %>% 
   filter(coverage > 99)
 
@@ -213,6 +215,40 @@ dt_2019_14 <- dt %>%
                            "87138V755378",
                            "91229V886007")))
 
+dt_2019_15_palmweekend <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 15,
+         weekday > 4) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "75341V41863")))
+
+dt_2019_16_easterweek <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 16) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "75341V41863")))
+
+dt_2019_17_eastermonday <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 17) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "75341V41863")))
+
 dt_2020_11 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 11) %>% 
@@ -230,7 +266,24 @@ dt_2020_13 <- dt %>%
 
 dt_2020_14 <- dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 14) %>% 
+  filter(weekno == 14,
+         weekday < 5) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+dt_2020_14_palmweekend <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 14,
+         weekday > 4) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+dt_2020_15_easterweek <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 15) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+dt_2020_16_eastermonday <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 16) %>% 
   select(point_id, total_volume, weekno, weekday)
 
 # Trp index
@@ -278,10 +331,15 @@ trp_dt_201912_202012 <- calculate_trp_index(dt_2019_12, dt_2020_12)
 trp_dt_201913_202013 <- calculate_trp_index(dt_2019_13, dt_2020_13)
 trp_dt_201914_202014 <- calculate_trp_index(dt_2019_14, dt_2020_14)
 
-# write.csv2(trp_dt_201911_202011,
-#            file = "daglig_endring_punkter_2019_uke11-2020_uke11.csv",
-#            row.names = F)
+# Easter
+trp_dt_palmweekend <- calculate_trp_index(dt_2019_15_palmweekend, 
+                                          dt_2020_14_palmweekend)
 
+trp_dt_easterweek <- calculate_trp_index(dt_2019_16_easterweek,
+                                         dt_2020_15_easterweek)
+
+trp_dt_eastermonday <- calculate_trp_index(dt_2019_17_eastermonday,
+                                           dt_2020_16_eastermonday)
 
 # City index
 calculate_city_index <- function(dt_base, dt_calc) {
@@ -339,6 +397,18 @@ city_dt_201913_202013 <- calculate_city_index(dt_2019_13, dt_2020_13) %>%
 city_dt_201914_202014 <- calculate_city_index(dt_2019_14, dt_2020_14) %>% 
   filter(!(city_area_name %in% c("Bodø")))
 
+# Easter
+city_dt_palmweekend <- calculate_city_index(dt_2019_15_palmweekend,
+                                            dt_2020_14_palmweekend) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+city_dt_easterweek <- calculate_city_index(dt_2019_16_easterweek,
+                                            dt_2020_15_easterweek) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+city_dt_eastermonday <- calculate_city_index(dt_2019_17_eastermonday,
+                                            dt_2020_16_eastermonday) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
 
 # Function for generating table
 
@@ -373,6 +443,29 @@ make_city_table <- function(city_dt, caption_text) {
   return(city_table)
 }
 
+make_daily_plot <- function(area_dt, subtitle_text) {
+  
+  area_dt %>%
+  ggplot2::ggplot(aes(ukedag, index)) +
+  geom_bar(aes(fill = index > 0), stat = "identity",
+           color = "#000000", 
+           alpha = 0.6) +
+  scale_fill_manual(guide = FALSE, breaks = c(FALSE, TRUE), 
+                    values = c("#ed1c2e", "#58b02c")) +
+  geom_hline(yintercept = 0, color = "#000000") +
+  facet_grid(city_area_name ~., switch = "y") +
+  scale_y_continuous(position = "right") +
+  xlab("") +
+  ylab("Endring i trafikkmengde (%)\n") +
+  ggtitle(label = "Daglig endring i trafikkmengde",
+          subtitle = subtitle_text) +
+  theme(strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        strip.background = element_blank()) +
+  labs(caption = "Data: Statens vegvesen")
+}
 ```
 
 # Bakgrunn
@@ -398,26 +491,28 @@ Været vil enkelte dager kunne påvirke trafikkmengden. For eksempel vil det ved
 ### Fra uke 10 til 11, 2020
 
 ```{r plot_city_202011, fig.width=8, fig.height=8}
-city_dt_2020_10_11 %>%
-  ggplot2::ggplot(aes(ukedag, index)) +
-  geom_bar(aes(fill = index > 0), stat = "identity",
-           color = "#000000", 
-           alpha = 0.6) +
-  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
-                    values = c("#ed1c2e", "#58b02c")) +
-  geom_hline(yintercept = 0, color = "#000000") +
-  facet_grid(city_area_name ~., switch = "y") +
-  scale_y_continuous(position = "right") +
-  xlab("") +
-  ylab("Endring i trafikkmengde (%)\n") +
-  ggtitle(label = "Daglig endring i trafikkmengde",
-          subtitle = "Fra uke 10 til uke 11 i 2020") +
-  theme(strip.text.y = element_text(angle = 180),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        strip.background = element_blank()) +
-  labs(caption = "Data: Statens vegvesen")
+# city_dt_2020_10_11 %>%
+#   ggplot2::ggplot(aes(ukedag, index)) +
+#   geom_bar(aes(fill = index > 0), stat = "identity",
+#            color = "#000000", 
+#            alpha = 0.6) +
+#   scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
+#                     values = c("#ed1c2e", "#58b02c")) +
+#   geom_hline(yintercept = 0, color = "#000000") +
+#   facet_grid(city_area_name ~., switch = "y") +
+#   scale_y_continuous(position = "right") +
+#   xlab("") +
+#   ylab("Endring i trafikkmengde (%)\n") +
+#   ggtitle(label = "Daglig endring i trafikkmengde",
+#           subtitle = "Fra uke 10 til uke 11 i 2020") +
+#   theme(strip.text.y = element_text(angle = 180),
+#         panel.grid.major = element_blank(), 
+#         panel.grid.minor = element_blank(),
+#         panel.background = element_blank(),
+#         strip.background = element_blank()) +
+#   labs(caption = "Data: Statens vegvesen")
+
+make_daily_plot(city_dt_2020_10_11, "Fra uke 10 til uke 11 i 2020")
 ```
 
 ```{r table_city_202011}
@@ -452,26 +547,7 @@ I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet me
 ### Fra uke 10 til 12, 2020
 
 ```{r plot_city_202012, fig.width=8, fig.height=8}
-city_dt_2020_10_12 %>%
-  ggplot2::ggplot(aes(ukedag, index)) +
-  geom_bar(aes(fill = index > 0), stat = "identity",
-           color = "#000000", 
-           alpha = 0.6) +
-  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
-                    values = c("#ed1c2e", "#58b02c")) +
-  geom_hline(yintercept = 0, color = "#000000") +
-  facet_grid(city_area_name ~., switch = "y") +
-  scale_y_continuous(position = "right") +
-  xlab("") +
-  ylab("Endring i trafikkmengde (%)\n") +
-  ggtitle(label = "Daglig endring i trafikkmengde",
-          subtitle = "Fra uke 10 til uke 12 i 2020") +
-  theme(strip.text.y = element_text(angle = 180),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        strip.background = element_blank()) +
-  labs(caption = "Data: Statens vegvesen")
+make_daily_plot(city_dt_2020_10_12, "Fra uke 10 til uke 12 i 2020")
 ```
 
 
@@ -485,26 +561,7 @@ make_city_table(city_dt_2020_10_12,
 ### Fra uke 10 til 13, 2020
 
 ```{r plot_city_202013, fig.width=8, fig.height=8}
-city_dt_2020_10_13 %>%
-  ggplot2::ggplot(aes(ukedag, index)) +
-  geom_bar(aes(fill = index > 0), stat = "identity",
-           color = "#000000", 
-           alpha = 0.6) +
-  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
-                    values = c("#ed1c2e", "#58b02c")) +
-  geom_hline(yintercept = 0, color = "#000000") +
-  facet_grid(city_area_name ~., switch = "y") +
-  scale_y_continuous(position = "right") +
-  xlab("") +
-  ylab("Endring i trafikkmengde (%)\n") +
-  ggtitle(label = "Daglig endring i trafikkmengde",
-          subtitle = "Fra uke 10 til uke 13 i 2020") +
-  theme(strip.text.y = element_text(angle = 180),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        strip.background = element_blank()) +
-  labs(caption = "Data: Statens vegvesen")
+make_daily_plot(city_dt_2020_10_13, "Fra uke 10 til uke 13 i 2020")
 ```
 
 
@@ -517,26 +574,7 @@ make_city_table(city_dt_2020_10_13,
 ### Fra uke 10 til 14, 2020
 
 ```{r plot_city_202014, fig.width=8, fig.height=8}
-city_dt_2020_10_14 %>%
-  ggplot2::ggplot(aes(ukedag, index)) +
-  geom_bar(aes(fill = index > 0), stat = "identity",
-           color = "#000000", 
-           alpha = 0.6) +
-  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
-                    values = c("#ed1c2e", "#58b02c")) +
-  geom_hline(yintercept = 0, color = "#000000") +
-  facet_grid(city_area_name ~., switch = "y") +
-  scale_y_continuous(position = "right") +
-  xlab("") +
-  ylab("Endring i trafikkmengde (%)\n") +
-  ggtitle(label = "Daglig endring i trafikkmengde",
-          subtitle = "Fra uke 10 til uke 14 i 2020") +
-  theme(strip.text.y = element_text(angle = 180),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        strip.background = element_blank()) +
-  labs(caption = "Data: Statens vegvesen")
+make_daily_plot(city_dt_2020_10_14, "Fra uke 10 til uke 14 i 2020")
 ```
 
 ```{r table_city_202014}
@@ -549,26 +587,7 @@ make_city_table(city_dt_2020_10_14,
 ### Fra uke 9 til 11, 2020
 
 ```{r plot_city_202011_north, fig.width=8, fig.height=6}
-city_dt_2020_09_11 %>%
-  ggplot2::ggplot(aes(ukedag, index)) +
-  geom_bar(aes(fill = index > 0), stat = "identity",
-           color = "#000000", 
-           alpha = 0.6) +
-  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
-                    values = c("#ed1c2e", "#58b02c")) +
-  geom_hline(yintercept = 0, color = "#000000") +
-  facet_grid(city_area_name ~., switch = "y") +
-  scale_y_continuous(position = "right") +
-  xlab("") +
-  ylab("Endring i trafikkmengde (%)\n") +
-  ggtitle(label = "Daglig endring i trafikkmengde",
-          subtitle = "Fra uke 9 til uke 11 i 2020") +
-  theme(strip.text.y = element_text(angle = 180),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        strip.background = element_blank()) +
-  labs(caption = "Data: Statens vegvesen")
+make_daily_plot(city_dt_2020_09_11, "Fra uke 9 til uke 11 i 2020")
 ```
 
 ```{r table_city_202011_north}
@@ -582,26 +601,7 @@ Tabellen over viser endringen i trafikkmengden oppgitt i prosent, sammenlignet m
 ### Fra uke 9 til 12, 2020
 
 ```{r plot_city_202012_north, fig.width=8, fig.height=6}
-city_dt_2020_09_12 %>%
-  ggplot2::ggplot(aes(ukedag, index)) +
-  geom_bar(aes(fill = index > 0), stat = "identity",
-           color = "#000000", 
-           alpha = 0.6) +
-  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
-                    values = c("#ed1c2e", "#58b02c")) +
-  geom_hline(yintercept = 0, color = "#000000") +
-  facet_grid(city_area_name ~., switch = "y") +
-  scale_y_continuous(position = "right") +
-  xlab("") +
-  ylab("Endring i trafikkmengde (%)\n") +
-  ggtitle(label = "Daglig endring i trafikkmengde",
-          subtitle = "Fra uke 9 til uke 12 i 2020") +
-  theme(strip.text.y = element_text(angle = 180),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        strip.background = element_blank()) +
-  labs(caption = "Data: Statens vegvesen")
+make_daily_plot(city_dt_2020_09_12, "Fra uke 9 til uke 12 i 2020")
 ```
 
 
@@ -615,26 +615,7 @@ make_city_table(city_dt_2020_09_12,
 ### Fra uke 9 til 13, 2020
 
 ```{r plot_city_202013_north, fig.width=8, fig.height=6}
-city_dt_2020_09_13 %>%
-  ggplot2::ggplot(aes(ukedag, index)) +
-  geom_bar(aes(fill = index > 0), stat = "identity",
-           color = "#000000", 
-           alpha = 0.6) +
-  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
-                    values = c("#ed1c2e", "#58b02c")) +
-  geom_hline(yintercept = 0, color = "#000000") +
-  facet_grid(city_area_name ~., switch = "y") +
-  scale_y_continuous(position = "right") +
-  xlab("") +
-  ylab("Endring i trafikkmengde (%)\n") +
-  ggtitle(label = "Daglig endring i trafikkmengde",
-          subtitle = "Fra uke 9 til uke 13 i 2020") +
-  theme(strip.text.y = element_text(angle = 180),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        strip.background = element_blank()) +
-  labs(caption = "Data: Statens vegvesen")
+make_daily_plot(city_dt_2020_09_13, "Fra uke 9 til uke 13 i 2020")
 ```
 
 
@@ -647,26 +628,7 @@ make_city_table(city_dt_2020_09_13,
 ### Fra uke 9 til 14, 2020
 
 ```{r plot_city_202014_north, fig.width=8, fig.height=6}
-city_dt_2020_09_14 %>%
-  ggplot2::ggplot(aes(ukedag, index)) +
-  geom_bar(aes(fill = index > 0), stat = "identity",
-           color = "#000000", 
-           alpha = 0.6) +
-  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
-                    values = c("#ed1c2e", "#58b02c")) +
-  geom_hline(yintercept = 0, color = "#000000") +
-  facet_grid(city_area_name ~., switch = "y") +
-  scale_y_continuous(position = "right") +
-  xlab("") +
-  ylab("Endring i trafikkmengde (%)\n") +
-  ggtitle(label = "Daglig endring i trafikkmengde",
-          subtitle = "Fra uke 9 til uke 14 i 2020") +
-  theme(strip.text.y = element_text(angle = 180),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        strip.background = element_blank()) +
-  labs(caption = "Data: Statens vegvesen")
+make_daily_plot(city_dt_2020_09_14, "Fra uke 9 til uke 14 i 2020")
 ```
 
 ```{r table_city_202014_north}
@@ -679,26 +641,7 @@ make_city_table(city_dt_2020_09_14,
 
 
 ```{r plot_city_201911, fig.width=8, fig.height=8}
-city_dt_201911_202011 %>%
-  ggplot2::ggplot(aes(ukedag, index)) +
-  geom_bar(aes(fill = index > 0), stat = "identity",
-           color = "#000000", 
-           alpha = 0.6) +
-  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
-                    values = c("#ed1c2e", "#58b02c")) +
-  geom_hline(yintercept = 0, color = "#000000") +
-  facet_grid(city_area_name ~., switch = "y") +
-  scale_y_continuous(position = "right") +
-  xlab("") +
-  ylab("Endring i trafikkmengde (%)\n") +
-  ggtitle(label = "Daglig endring i trafikkmengde",
-          subtitle = "Fra uke 11 2019 til uke 11 i 2020") +
-  theme(strip.text.y = element_text(angle = 180),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        strip.background = element_blank()) +
-  labs(caption = "Data: Statens vegvesen")
+make_daily_plot(city_dt_201911_202011, "Fra uke 11 2019 til uke 11 i 2020")
 ```
 
 ```{r table_city_201911}
@@ -713,26 +656,7 @@ Vi ser den samme tendensen i alle byområdene, med unntak av onsdagen. [Onsdag 1
 
 
 ```{r plot_city_201912, fig.width=8, fig.height=8}
-city_dt_201912_202012 %>%
-  ggplot2::ggplot(aes(ukedag, index)) +
-  geom_bar(aes(fill = index > 0), stat = "identity",
-           color = "#000000", 
-           alpha = 0.6) +
-  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
-                    values = c("#ed1c2e", "#58b02c")) +
-  geom_hline(yintercept = 0, color = "#000000") +
-  facet_grid(city_area_name ~., switch = "y") +
-  scale_y_continuous(position = "right") +
-  xlab("") +
-  ylab("Endring i trafikkmengde (%)\n") +
-  ggtitle(label = "Daglig endring i trafikkmengde",
-          subtitle = "Fra uke 12 2019 til uke 12 i 2020") +
-  theme(strip.text.y = element_text(angle = 180),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        strip.background = element_blank()) +
-  labs(caption = "Data: Statens vegvesen")
+make_daily_plot(city_dt_201912_202012, "Fra uke 12 2019 til uke 12 i 2020")
 ```
 
 
@@ -752,26 +676,7 @@ make_city_table(city_dt_201912_202012,
 
 
 ```{r plot_city_201913, fig.width=8, fig.height=8}
-city_dt_201913_202013 %>%
-  ggplot2::ggplot(aes(ukedag, index)) +
-  geom_bar(aes(fill = index > 0), stat = "identity",
-           color = "#000000", 
-           alpha = 0.6) +
-  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
-                    values = c("#ed1c2e", "#58b02c")) +
-  geom_hline(yintercept = 0, color = "#000000") +
-  facet_grid(city_area_name ~., switch = "y") +
-  scale_y_continuous(position = "right") +
-  xlab("") +
-  ylab("Endring i trafikkmengde (%)\n") +
-  ggtitle(label = "Daglig endring i trafikkmengde",
-          subtitle = "Fra uke 13 2019 til uke 13 i 2020") +
-  theme(strip.text.y = element_text(angle = 180),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        strip.background = element_blank()) +
-  labs(caption = "Data: Statens vegvesen")
+make_daily_plot(city_dt_201913_202013, "Fra uke 13 2019 til uke 13 i 2020")
 ```
 
 
@@ -782,26 +687,7 @@ make_city_table(city_dt_201913_202013,
 
 
 ```{r plot_city_201914, fig.width=8, fig.height=8}
-city_dt_201914_202014 %>%
-  ggplot2::ggplot(aes(ukedag, index)) +
-  geom_bar(aes(fill = index > 0), stat = "identity",
-           color = "#000000", 
-           alpha = 0.6) +
-  scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
-                    values = c("#ed1c2e", "#58b02c")) +
-  geom_hline(yintercept = 0, color = "#000000") +
-  facet_grid(city_area_name ~., switch = "y") +
-  scale_y_continuous(position = "right") +
-  xlab("") +
-  ylab("Endring i trafikkmengde (%)\n") +
-  ggtitle(label = "Daglig endring i trafikkmengde",
-          subtitle = "Fra uke 14 2019 til uke 14 i 2020") +
-  theme(strip.text.y = element_text(angle = 180),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        strip.background = element_blank()) +
-  labs(caption = "Data: Statens vegvesen")
+make_daily_plot(city_dt_201914_202014, "Fra uke 14 2019 til uke 14 i 2020")
 ```
 
 
@@ -811,7 +697,41 @@ make_city_table(city_dt_201914_202014,
 ```
 
 
+# Endring i påsketrafikken
 
+```{r plot_city_palmweekend, fig.width=8, fig.height=8}
+make_daily_plot(city_dt_palmweekend, "Fra palmehelga 2019 til palmehelga 2020")
+```
+
+
+```{r table_city_palmweekend}
+make_city_table(city_dt_palmweekend,
+                "Prosentvis endring i trafikkmengde fra palmehelga 2019 til palmehelga 2020.")
+```
+
+
+
+```{r plot_city_easterweek, fig.width=8, fig.height=8}
+make_daily_plot(city_dt_easterweek, "Fra påskeuka 2019 til påskeuka 2020")
+```
+
+
+```{r table_city_easterweek}
+make_city_table(city_dt_easterweek,
+                "Prosentvis endring i trafikkmengde fra påskeuka 2019 til påskeuka 2020.")
+```
+
+
+
+```{r plot_city_eastermonday, fig.width=8, fig.height=8}
+make_daily_plot(city_dt_eastermonday, "Fra 2. påskedag 2019 til 2. påskedag 2020")
+```
+
+
+```{r table_city_eastermonday}
+make_city_table(city_dt_eastermonday,
+                "Prosentvis endring i trafikkmengde fra 2. påskedag 2019 til 2. påskedag 2020.")
+```
 
 
 
