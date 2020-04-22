@@ -5,10 +5,10 @@ library(httr)
 source("H:/Programmering/R/byindeks/trp_api_cookies.R")
 
 cli_trp <- GraphqlClient$new(
-  url = "https://www.vegvesen.no/datainn/adm/traffic-registration-point/api/",
+    url = "https://www.vegvesen.no/datainn/adm/traffic-registration-point/api/",
   headers =
-    set_cookies(.cookies = trp_api_cookies
-    ))
+    set_cookies(.cookies = trp_api_cookies)
+  )
 
 getPointsFromTRPAPI <- function() {
   # Get all traffic registration points
@@ -518,6 +518,14 @@ points_trp <- cli_trp$exec(myqueries$queries$points_trp) %>%
 return(points_trp)
 }
 
+# Testing
+# url_trp_api <- "https://www.vegvesen.no/datainn/adm/traffic-registration-point/api/"
+#
+# test_call <- httr::GET(url = url_trp_api,
+#                        query = query_points_trp,
+#                        set_cookies(.cookies = trp_api_cookies))
+
+
 get_trs_device <- function() {
   # Get all trs' and their device type history
   query_trs <-
@@ -675,7 +683,7 @@ trs <- cli_trp$exec(myqueries$queries$trs) %>%
 return(trs)
 }
 
-#trp_id <- "16334V971464"
+trp_id <- "16334V971464"
 
 get_specific_trp <- function(trp_id) {
   query_points_trp <-

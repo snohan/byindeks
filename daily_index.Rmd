@@ -125,10 +125,10 @@ trps <- dplyr::left_join(cities_points, points) %>%
 
 # Week 11 onwards 2019, including Easter
 week_2019_from <- "2019-03-11T00:00:00+01:00"
-week_2019_to <- "2019-04-22T00:00:00+01:00"
+week_2019_to <- "2019-04-29T00:00:00+01:00"
 
 week_2020_from <- "2020-02-24T00:00:00+01:00"
-week_2020_to <- "2020-04-14T00:00:00+01:00"
+week_2020_to <- "2020-04-22T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -175,6 +175,7 @@ dt_2020_09 <- dt %>%
   filter(weekno == 9) %>% 
   select(point_id, total_volume, weekno, weekday)
 
+# Weeks 2019
 dt_2019_11 <- dt %>% 
   filter(year == 2019) %>%
   filter(weekno == 11) %>% 
@@ -240,7 +241,8 @@ dt_2019_16_easterweek <- dt %>%
 
 dt_2019_17_eastermonday <- dt %>% 
   filter(year == 2019) %>%
-  filter(weekno == 17) %>% 
+  filter(weekno == 17,
+         weekday < 2) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
   filter(!(point_id %in% c("21768V805002",
                            "41331V443662",
@@ -249,6 +251,19 @@ dt_2019_17_eastermonday <- dt %>%
                            "91229V886007",
                            "75341V41863")))
 
+dt_2019_17 <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 17,
+         weekday > 1) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "75341V41863")))
+
+# Weeks 2020
 dt_2020_11 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 11) %>% 
@@ -283,8 +298,22 @@ dt_2020_15_easterweek <- dt %>%
 
 dt_2020_16_eastermonday <- dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 16) %>% 
+  filter(weekno == 16,
+         weekday < 2) %>% 
   select(point_id, total_volume, weekno, weekday)
+
+dt_2020_16 <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 16,
+         weekday > 1) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("67263V1811577")))
+
+dt_2020_17 <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 17) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
 
 # Trp index
 calculate_trp_index <- function(dt_base, dt_calc) {
@@ -312,6 +341,12 @@ trp_dt_2020_10_13 <- calculate_trp_index(dt_2020_10, dt_2020_13) %>%
 trp_dt_2020_10_14 <- calculate_trp_index(dt_2020_10, dt_2020_14) %>% 
   filter(!(city_area_name %in% c("Bodø", "Tromsø")))
 
+trp_dt_2020_10_16 <- calculate_trp_index(dt_2020_10, dt_2020_16) %>% 
+  filter(!(city_area_name %in% c("Bodø", "Tromsø")))
+
+trp_dt_2020_10_17 <- calculate_trp_index(dt_2020_10, dt_2020_17) %>% 
+  filter(!(city_area_name %in% c("Bodø", "Tromsø")))
+
 # For the north
 trp_dt_2020_09_11 <- calculate_trp_index(dt_2020_09, dt_2020_11) %>% 
   filter(city_area_name %in% c("Bodø", "Tromsø"))
@@ -325,11 +360,18 @@ trp_dt_2020_09_13 <- calculate_trp_index(dt_2020_09, dt_2020_13) %>%
 trp_dt_2020_09_14 <- calculate_trp_index(dt_2020_09, dt_2020_14) %>% 
   filter(city_area_name %in% c("Bodø", "Tromsø"))
 
+trp_dt_2020_09_16 <- calculate_trp_index(dt_2020_09, dt_2020_16) %>% 
+  filter(city_area_name %in% c("Bodø", "Tromsø"))
+
+trp_dt_2020_09_17 <- calculate_trp_index(dt_2020_09, dt_2020_17) %>% 
+  filter(city_area_name %in% c("Bodø", "Tromsø"))
+
 # Compare this week to same week 2019
 trp_dt_201911_202011 <- calculate_trp_index(dt_2019_11, dt_2020_11)
 trp_dt_201912_202012 <- calculate_trp_index(dt_2019_12, dt_2020_12)
 trp_dt_201913_202013 <- calculate_trp_index(dt_2019_13, dt_2020_13)
 trp_dt_201914_202014 <- calculate_trp_index(dt_2019_14, dt_2020_14)
+trp_dt_201917_202017 <- calculate_trp_index(dt_2019_17, dt_2020_17)
 
 # Easter
 trp_dt_palmweekend <- calculate_trp_index(dt_2019_15_palmweekend, 
@@ -371,6 +413,12 @@ city_dt_2020_10_13 <- calculate_city_index(dt_2020_10, dt_2020_13) %>%
 city_dt_2020_10_14 <- calculate_city_index(dt_2020_10, dt_2020_14) %>% 
   filter(!(city_area_name %in% c("Bodø", "Tromsø")))
 
+city_dt_2020_10_16 <- calculate_city_index(dt_2020_10, dt_2020_16) %>% 
+  filter(!(city_area_name %in% c("Bodø", "Tromsø")))
+
+city_dt_2020_10_17 <- calculate_city_index(dt_2020_10, dt_2020_17) %>% 
+  filter(!(city_area_name %in% c("Bodø", "Tromsø")))
+
 # For the north
 city_dt_2020_09_11 <- calculate_city_index(dt_2020_09, dt_2020_11) %>% 
   filter(city_area_name %in% c("Bodø", "Tromsø"))
@@ -384,6 +432,12 @@ city_dt_2020_09_13 <- calculate_city_index(dt_2020_09, dt_2020_13) %>%
 city_dt_2020_09_14 <- calculate_city_index(dt_2020_09, dt_2020_14) %>% 
   filter(city_area_name %in% c("Bodø", "Tromsø"))
 
+city_dt_2020_09_16 <- calculate_city_index(dt_2020_09, dt_2020_16) %>% 
+  filter(city_area_name %in% c("Bodø", "Tromsø"))
+
+city_dt_2020_09_17 <- calculate_city_index(dt_2020_09, dt_2020_17) %>% 
+  filter(city_area_name %in% c("Bodø", "Tromsø"))
+
 # Compare this week to same week 2019
 city_dt_201911_202011 <- calculate_city_index(dt_2019_11, dt_2020_11) %>% 
   filter(!(city_area_name %in% c("Bodø")))
@@ -395,6 +449,9 @@ city_dt_201913_202013 <- calculate_city_index(dt_2019_13, dt_2020_13) %>%
   filter(!(city_area_name %in% c("Bodø")))
 
 city_dt_201914_202014 <- calculate_city_index(dt_2019_14, dt_2020_14) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+city_dt_201917_202017 <- calculate_city_index(dt_2019_17, dt_2020_17) %>% 
   filter(!(city_area_name %in% c("Bodø")))
 
 # Easter
@@ -479,7 +536,9 @@ For å få et best mulig bilde av trafikkutviklingen gjøres to sammenligninger:
 * Døgntrafikken sammenlignes med tilsvarende døgntrafikk i uke 10 i 2020, bortsett fra for Bodø og Tromsø som bruker uke 9 som sammenligning pga. vinterferie i uke 10.
 * Døgntrafikken sammenlignes med tilsvarende døgntrafikk i samme uke i 2019
 
-Alle data er hentet fra [trafikkdata.no](https://www.trafikkdata.no/). Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
+Alle data er hentet fra [trafikkdata.no](https://www.trafikkdata.no/). Døgntrafikk med minst 99 % dekningsgrad er brukt til å beregne prosentvis endring mellom to dager.
+
+Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
 
 Været vil enkelte dager kunne påvirke trafikkmengden. For eksempel vil det ved dårlig føre, som ved stort snøfall eller underkjølt regn, bli redusert framkommelighet og dette fører til mindre trafikk enn normalt.
 
@@ -564,12 +623,11 @@ make_city_table(city_dt_2020_10_12,
 make_daily_plot(city_dt_2020_10_13, "Fra uke 10 til uke 13 i 2020")
 ```
 
-
-
 ```{r table_city_202013}
 make_city_table(city_dt_2020_10_13,
                 "Prosentvis endring i trafikkmengde fra uke 10 til uke 13 i 2020.")
 ```
+
 
 ### Fra uke 10 til 14, 2020
 
@@ -581,6 +639,31 @@ make_daily_plot(city_dt_2020_10_14, "Fra uke 10 til uke 14 i 2020")
 make_city_table(city_dt_2020_10_14,
                 "Prosentvis endring i trafikkmengde fra uke 10 til uke 14 i 2020.")
 ```
+
+
+### Fra uke 10 til 16, 2020
+
+```{r plot_city_202016, fig.width=8, fig.height=8}
+make_daily_plot(city_dt_2020_10_16, "Fra uke 10 til uke 16 i 2020")
+```
+
+```{r table_city_202016}
+make_city_table(city_dt_2020_10_16,
+                "Prosentvis endring i trafikkmengde fra uke 10 til uke 16 i 2020.")
+```
+
+
+### Fra uke 10 til 17, 2020
+
+```{r plot_city_202017, fig.width=8, fig.height=8}
+make_daily_plot(city_dt_2020_10_17, "Fra uke 10 til uke 17 i 2020")
+```
+
+```{r table_city_202017}
+make_city_table(city_dt_2020_10_17,
+                "Prosentvis endring i trafikkmengde fra uke 10 til uke 17 i 2020.")
+```
+
 
 ## De største byområdene i Nord-Norge
 
@@ -634,6 +717,30 @@ make_daily_plot(city_dt_2020_09_14, "Fra uke 9 til uke 14 i 2020")
 ```{r table_city_202014_north}
 make_city_table(city_dt_2020_09_14,
                 "Prosentvis endring i trafikkmengde fra uke 9 til uke 14 i 2020.")
+```
+
+
+### Fra uke 9 til 16, 2020
+
+```{r plot_city_202016_north, fig.width=8, fig.height=6}
+make_daily_plot(city_dt_2020_09_16, "Fra uke 9 til uke 16 i 2020")
+```
+
+```{r table_city_202016_north}
+make_city_table(city_dt_2020_09_16,
+                "Prosentvis endring i trafikkmengde fra uke 9 til uke 16 i 2020.")
+```
+
+
+### Fra uke 9 til 17, 2020
+
+```{r plot_city_202017_north, fig.width=8, fig.height=6}
+make_daily_plot(city_dt_2020_09_17, "Fra uke 9 til uke 17 i 2020")
+```
+
+```{r table_city_202017_north}
+make_city_table(city_dt_2020_09_17,
+                "Prosentvis endring i trafikkmengde fra uke 9 til uke 17 i 2020.")
 ```
 
 
@@ -695,6 +802,19 @@ make_daily_plot(city_dt_201914_202014, "Fra uke 14 2019 til uke 14 i 2020")
 make_city_table(city_dt_201914_202014,
                 "Prosentvis endring i trafikkmengde fra uke 14 2019 til uke 14 2020.")
 ```
+
+
+```{r plot_city_201917, fig.width=8, fig.height=8}
+make_daily_plot(city_dt_201917_202017, "Fra uke 17 2019 til uke 17 i 2020")
+```
+
+
+```{r table_city_201917}
+make_city_table(city_dt_201917_202017,
+                "Prosentvis endring i trafikkmengde fra uke 17 2019 til uke 17 2020.")
+```
+
+
 
 
 # Endring i påsketrafikken

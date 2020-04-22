@@ -78,10 +78,10 @@ border_trp_adt <- border_trps %>%
 # 3. Easter 2019 to Easter 2020
 
 borderdata_2019_from <- "2019-03-11T00:00:00+01:00"
-borderdata_2019_to <- "2019-04-22T00:00:00+01:00"
+borderdata_2019_to <- "2019-04-29T00:00:00+01:00"
 
 borderdata_2020_from <- "2020-03-02T00:00:00+01:00"
-borderdata_2020_to <- "2020-04-14T00:00:00+01:00"
+borderdata_2020_to <- "2020-04-22T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -115,7 +115,7 @@ border_dt <- bind_rows(border_dt_2019, border_dt_2020) %>%
   select(-from) %>% 
   filter(coverage > 99)
 
-
+# Weeks 2019
 border_dt_2020_10 <- border_dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 10) %>% 
@@ -154,10 +154,18 @@ border_dt_2019_16_easterweek <- border_dt %>%
 
 border_dt_2019_17_eastermonday <- border_dt %>% 
   filter(year == 2019) %>%
-  filter(weekno == 17) %>% 
+  filter(weekno == 17,
+         weekday < 2) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-#
+border_dt_2019_17 <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 17,
+         weekday > 1) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+
+# Weeks 2020
 border_dt_2020_11 <- border_dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 11) %>% 
@@ -192,9 +200,20 @@ border_dt_2020_15_easterweek <- border_dt %>%
 
 border_dt_2020_16_eastermonday <- border_dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 16) %>% 
+  filter(weekno == 16,
+         weekday < 2) %>% 
   select(point_id, total_volume, weekno, weekday)
 
+border_dt_2020_16 <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 16,
+         weekday > 1) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2020_17 <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 17) %>% 
+  select(point_id, total_volume, weekno, weekday)
 
 # Trp index
 calculate_trp_border_index <- function(dt_base, dt_calc) {
@@ -233,6 +252,14 @@ border_trp_dt_2020_10_14 <- calculate_trp_border_index(
   border_dt_2020_10, 
   border_dt_2020_14)
 
+border_trp_dt_2020_10_16 <- calculate_trp_border_index(
+  border_dt_2020_10, 
+  border_dt_2020_16)
+
+border_trp_dt_2020_10_17 <- calculate_trp_border_index(
+  border_dt_2020_10, 
+  border_dt_2020_17)
+
 # Compare this week to same week 2019
 border_trp_dt_201911_202011 <- calculate_trp_border_index(
   border_dt_2019_11, 
@@ -249,6 +276,10 @@ border_trp_dt_201913_202013 <- calculate_trp_border_index(
 border_trp_dt_201914_202014 <- calculate_trp_border_index(
   border_dt_2019_14, 
   border_dt_2020_14)
+
+border_trp_dt_201917_202017 <- calculate_trp_border_index(
+  border_dt_2019_17, 
+  border_dt_2020_17)
 
 # Compare Easter
 border_trp_dt_palmweekend <- calculate_trp_border_index(
@@ -300,10 +331,22 @@ border_dt_2020_10_14 <- calculate_border_index(
   border_dt_2020_14) %>% 
   mutate(periode = "Uke 10 til 14")
 
+border_dt_2020_10_16 <- calculate_border_index(
+  border_dt_2020_10, 
+  border_dt_2020_16) %>% 
+  mutate(periode = "Uke 10 til 16")
+
+border_dt_2020_10_17 <- calculate_border_index(
+  border_dt_2020_10, 
+  border_dt_2020_17) %>% 
+  mutate(periode = "Uke 10 til 17")
+
 border_base_2020 <- bind_rows(border_dt_2020_10_11,
                               border_dt_2020_10_12,
                               border_dt_2020_10_13,
-                              border_dt_2020_10_14)
+                              border_dt_2020_10_14,
+                              border_dt_2020_10_16,
+                              border_dt_2020_10_17)
 
 # Compare this week to same week 2019
 border_dt_201911_202011 <- calculate_border_index(
@@ -326,10 +369,16 @@ border_dt_201914_202014 <- calculate_border_index(
   border_dt_2020_14) %>% 
   mutate(periode = "Uke 14")
 
+border_dt_201917_202017 <- calculate_border_index(
+  border_dt_2019_17, 
+  border_dt_2020_17) %>% 
+  mutate(periode = "Uke 17")
+
 border_base_2019 <- bind_rows(border_dt_201911_202011,
                               border_dt_201912_202012,
                               border_dt_201913_202013,
-                              border_dt_201914_202014)
+                              border_dt_201914_202014,
+                              border_dt_201917_202017)
 
 # Compare Easter
 border_dt_palmweekend <- calculate_border_index(
@@ -452,7 +501,9 @@ Trafikkutviklingen sammenlignes slik:
 * Døgntrafikken sammenlignes med tilsvarende døgntrafikk i samme uke i 2019.
 * For påsken sammenlignes døgntrafikken mellom tilsvarende påskedager, fra fredag før palmesøndag til andre påskedag.
 
-Alle data er hentet fra [trafikkdata.no](https://www.trafikkdata.no/). Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
+Alle data er hentet fra [trafikkdata.no](https://www.trafikkdata.no/). Døgntrafikk med minst 99 % dekningsgrad er brukt til å beregne prosentvis endring mellom to dager.
+
+Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
 
 Været vil enkelte dager kunne påvirke trafikkmengden. For eksempel vil det ved dårlig føre, som ved stort snøfall eller underkjølt regn, bli redusert framkommelighet og dette fører til mindre trafikk enn normalt. Spesielt gjelder dette en del av grenseovergangene som ligger i fjellstrøk. Enkelte grenseoverganger er vinterstid tidvis stengt på grunn av værforhold.
 
@@ -487,6 +538,7 @@ border_trp_adt %>%
 # Samlet endring i trafikk over riksgrensen
 
 ## Sammenlignet med uke 10 i 2020
+Påsken, som her er definert til å gjelde fra og med fredag før palmesøndag til og med Andre påskedag, er tatt ut og sammenlignet i egen figur og tabell lenger ned.
 
 ```{r plot_202011, fig.width=8, fig.height=8}
 make_daily_border_plot(border_base_2020, "2020")
@@ -525,6 +577,7 @@ I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet me
 
 
 ## Sammenlignet mellom samme uke i 2019 og 2020
+Påsken, som her er definert til å gjelde fra og med fredag før palmesøndag til og med Andre påskedag, er tatt ut og sammenlignet i egen figur og tabell lenger ned. Siden påsken i 2019 var i uke 16, mens den i 2020 var i uke 15, blir det to uker som ikke kan sammelignes direkte mellom årene.
 
 ```{r plot_201911, fig.width=8, fig.height=8}
 make_daily_border_plot(border_base_2019, "Fra 2019 til 2020")
@@ -627,7 +680,16 @@ make_border_trp_table(border_trp_dt_2020_10_14,
 ```
 
 
+```{r trptable_202016}
+make_border_trp_table(border_trp_dt_2020_10_16,
+                      "Prosentvis endring i trafikkmengde fra uke 10 til uke 16 i 2020.")
+```
 
+
+```{r trptable_202017}
+make_border_trp_table(border_trp_dt_2020_10_17,
+                      "Prosentvis endring i trafikkmengde fra uke 10 til uke 17 i 2020.")
+```
 ## Sammenlignet mellom samme uke i 2019 og 2020
 
 ```{r trptable_201911}

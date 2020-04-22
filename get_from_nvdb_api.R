@@ -4,7 +4,7 @@ library(httr)
 
 # Definer URI og sti ####
 nvdb_url <- "https://www.vegvesen.no/nvdb/api/v2"
-nvdb_url_v3 <- "https://apilesv3.atlas.vegvesen.no"
+nvdb_url_v3 <- "https://www.vegvesen.no/nvdb/api/v3"
 sti_vegobjekter <- "/vegobjekter"
 
 # Hent trafikkregistreringsstasjoner i en kommune
@@ -377,7 +377,7 @@ getSpeedLimit <- function(roadref) {
   return(verdi)
 }
 
-#roadlink <- "0.38722@2037772"
+roadlink <- "0.38722@2037772"
 
 getSpeedLimit_roadlink <- function(roadlink) {
   api_query_105 <- paste0(nvdb_url,
@@ -413,6 +413,61 @@ getSpeedLimit_roadlink <- function(roadlink) {
       select(verdi)
 
     verdi <- speed_limit[1, 1]
+  }
+
+  return(verdi)
+}
+
+get_speedlimit_by_roadlink <- function(roadlink) {
+  api_query_105 <- paste0(nvdb_url_v3,
+                          sti_vegobjekter,
+                          "/105",
+                          "?inkluder=egenskaper")
+
+  api_query_105_vegref <- paste0(api_query_105,
+                                 "&veglenkesekvens=",
+                                 roadlink)
+
+  respons <- GET(api_query_105_vegref,
+                 add_headers("X-Client" = "trafikkdatagruppa",
+                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+                             "Accept" = "application/vnd.vegvesen.nvdb-v3+json"))
+
+  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+                      simplifyDataFrame = T,
+                      flatten = T)
+
+  objekter <- uthenta$objekter
+
+  if(length(objekter) == 0) {
+    verdi = NA
+  }else{
+    speed_limit_raw <- objekter %>%
+      dplyr::select(egenskaper) %>%
+      tidyr::unnest(cols = c(egenskaper))
+
+    # Some responses lack 5127 (valid from date)
+    if(5127 %in% speed_limit_raw) {
+      speed_limit <- speed_limit_raw %>%
+        dplyr::filter(id %in% c(2021, 5127)) %>%
+        dplyr::select(navn, verdi) %>%
+        dplyr::distinct() %>%
+        tidyr::pivot_wider(names_from = navn,
+                           values_from = verdi) %>%
+        dplyr::rename(speed_limit = 1,
+                      valid_from = 2) %>%
+        dplyr::mutate(valid_from = lubridate::ymd(valid_from)) %>%
+        # Choosing latest
+        dplyr::filter(valid_from == max(valid_from))
+
+      verdi <- speed_limit$speed_limit[1]
+    }else{
+      speed_limit <- speed_limit_raw %>%
+        dplyr::filter(id %in% c(2021)) %>%
+        dplyr::select(navn, verdi)
+
+      verdi <- speed_limit$verdi[1]
+    }
   }
 
   return(verdi)
