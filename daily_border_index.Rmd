@@ -81,7 +81,7 @@ borderdata_2019_from <- "2019-03-11T00:00:00+01:00"
 borderdata_2019_to <- "2019-04-29T00:00:00+01:00"
 
 borderdata_2020_from <- "2020-03-02T00:00:00+01:00"
-borderdata_2020_to <- "2020-04-22T00:00:00+01:00"
+borderdata_2020_to <- "2020-04-23T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -473,7 +473,8 @@ make_daily_border_plot <- function(area_dt, subtitle_text) {
                     values = c("#ed1c2e", "#58b02c")) +
   geom_hline(yintercept = 0, color = "#000000") +
   facet_grid(periode ~., switch = "y") +
-  scale_y_continuous(position = "right") +
+  scale_y_continuous(position = "right",
+                     limits = c(-100, 100)) +
   xlab("") +
   ylab("Endring i trafikkmengde (%)\n") +
   ggtitle(label = "Daglig endring i trafikkmengde over riksgrensen",
@@ -714,6 +715,10 @@ make_border_trp_table(border_trp_dt_201914_202014,
                       "Prosentvis endring i trafikkmengde fra uke 14 2019 til uke 14 2020.")
 ```
 
+```{r trptable_201917}
+make_border_trp_table(border_trp_dt_201917_202017,
+                      "Prosentvis endring i trafikkmengde fra uke 17 2019 til uke 17 2020.")
+```
 
 ## Sammenligning av påsketrafikken
 

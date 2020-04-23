@@ -128,7 +128,7 @@ week_2019_from <- "2019-03-11T00:00:00+01:00"
 week_2019_to <- "2019-04-29T00:00:00+01:00"
 
 week_2020_from <- "2020-02-24T00:00:00+01:00"
-week_2020_to <- "2020-04-22T00:00:00+01:00"
+week_2020_to <- "2020-04-23T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -511,7 +511,8 @@ make_daily_plot <- function(area_dt, subtitle_text) {
                     values = c("#ed1c2e", "#58b02c")) +
   geom_hline(yintercept = 0, color = "#000000") +
   facet_grid(city_area_name ~., switch = "y") +
-  scale_y_continuous(position = "right") +
+  scale_y_continuous(position = "right",
+                     limits = c(-60, 20)) +
   xlab("") +
   ylab("Endring i trafikkmengde (%)\n") +
   ggtitle(label = "Daglig endring i trafikkmengde",
@@ -550,52 +551,10 @@ Været vil enkelte dager kunne påvirke trafikkmengden. For eksempel vil det ved
 ### Fra uke 10 til 11, 2020
 
 ```{r plot_city_202011, fig.width=8, fig.height=8}
-# city_dt_2020_10_11 %>%
-#   ggplot2::ggplot(aes(ukedag, index)) +
-#   geom_bar(aes(fill = index > 0), stat = "identity",
-#            color = "#000000", 
-#            alpha = 0.6) +
-#   scale_fill_manual(guide = FALSE, breaks = c(TRUE, FALSE), 
-#                     values = c("#ed1c2e", "#58b02c")) +
-#   geom_hline(yintercept = 0, color = "#000000") +
-#   facet_grid(city_area_name ~., switch = "y") +
-#   scale_y_continuous(position = "right") +
-#   xlab("") +
-#   ylab("Endring i trafikkmengde (%)\n") +
-#   ggtitle(label = "Daglig endring i trafikkmengde",
-#           subtitle = "Fra uke 10 til uke 11 i 2020") +
-#   theme(strip.text.y = element_text(angle = 180),
-#         panel.grid.major = element_blank(), 
-#         panel.grid.minor = element_blank(),
-#         panel.background = element_blank(),
-#         strip.background = element_blank()) +
-#   labs(caption = "Data: Statens vegvesen")
-
 make_daily_plot(city_dt_2020_10_11, "Fra uke 10 til uke 11 i 2020")
 ```
 
 ```{r table_city_202011}
-# city_dt_2020_10_11 %>%
-#   ungroup() %>% 
-#   select(-weekday, -no_trp) %>%
-#   pivot_wider(names_from = ukedag,
-#               values_from = index) %>% 
-#   flextable() %>%
-#   set_header_labels(city_area_name = "Byområde") %>%
-#   bold(part = "header") %>%
-#   fontsize(size = 10, part = "all") %>%
-#   font(fontname = "Lucida Sans Unicode", part = "all") %>%
-#   bg(bg = "#ED9300", part = "header") %>%
-#   border_remove() %>%
-#   hline_top(part = "header", border = borderline) %>%
-#   hline_bottom(part = "all", border = borderline) %>%
-#   colformat_num(j = 3, na_str = "", digits = 1) %>% 
-#   autofit() %>%
-#   height_all(height = .2) %>%
-#   padding(padding.top = .3,
-#           padding.bottom = .3) %>%
-#   set_caption("Prosentvis endring i trafikkmengde fra uke 10 til uke 11 i 2020.")
-
 make_city_table(city_dt_2020_10_11, 
                 "Prosentvis endring i trafikkmengde fra uke 10 til uke 11 i 2020.")
 ```
