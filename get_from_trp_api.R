@@ -4,10 +4,16 @@ library(httr)
 
 source("H:/Programmering/R/byindeks/trp_api_cookies.R")
 
+trp_api_url <- "https://www.vegvesen.no/datainn/adm/traffic-registration-point/api/"
+
 cli_trp <- GraphqlClient$new(
     url = "https://www.vegvesen.no/datainn/adm/traffic-registration-point/api/",
-  headers =
-    set_cookies(.cookies = trp_api_cookies)
+    headers = list(
+      #.headers = trp_api_headers,
+      .cookies = trp_api_cookies
+    )
+      #httr::add_headers(.headers = trp_api_headers),
+      #httr::set_cookies(.cookies = trp_api_cookies)
   )
 
 getPointsFromTRPAPI <- function() {
@@ -86,6 +92,8 @@ getPointsFromTRPAPI_filtered <- function() {
 }
 
 get_trp_for_vti <- function() {
+
+  # TODO: replace deprecated county node
 
   api_query <-
     "query vti_trp {
@@ -182,6 +190,126 @@ get_trp_for_vti <- function() {
     dplyr::ungroup()
 
   return(points_trp)
+}
+
+
+get_trp_for_vti_httr <- function() {
+
+  counties_numbers <- get_counties() %>%
+    select(county_number, geo_number)
+
+  api_query <-
+    "query vti_trp {
+  trafficRegistrationPoints (trafficType: VEHICLE) {
+    id
+    name
+    location{
+      coordinates{
+        latlon{
+          latitude
+          longitude
+        }
+      }
+      roadReference{
+        shortForm
+        roadCategory {
+          id
+        }
+      }
+      roadLink{
+        id
+        position
+      }
+      municipality {
+        county {
+          number
+          name
+        }
+        number
+        name
+      }
+    }
+    legacyNortrafMpn
+    commissionElements {
+      commission {
+        validFrom
+        validTo
+      }
+    }
+  }
+}"
+
+  api_query_trimmed <- stringr::str_replace_all(api_query, "[\r\n]", " ")
+
+  api_query_string <- paste0('{"query":"', api_query_trimmed, '" }')
+
+  response <- httr::POST(url = trp_api_url,
+                    httr::add_headers(.headers = trp_api_headers),
+                    httr::set_cookies(.cookies = trp_api_cookies),
+                    body = api_query_string)
+
+  response_parsed <- fromJSON(str_conv(response$content, encoding = "UTF-8"),
+                         simplifyDataFrame = T,
+                         flatten = T) %>%
+    as.data.frame() %>%
+    tidyr::unnest(cols =
+                    c("data.trafficRegistrationPoints.commissionElements" )) %>%
+    dplyr::rename(
+      trp_id = data.trafficRegistrationPoints.id,
+      name = data.trafficRegistrationPoints.name,
+      lat = data.trafficRegistrationPoints.location.coordinates.latlon.latitude,
+      lon = data.trafficRegistrationPoints.location.coordinates.latlon.longitude,
+      road_reference =
+        data.trafficRegistrationPoints.location.roadReference.shortForm,
+      road_network_position =
+        data.trafficRegistrationPoints.location.roadLink.position,
+      road_network_link =
+        data.trafficRegistrationPoints.location.roadLink.id,
+      legacyNortrafMpn = data.trafficRegistrationPoints.legacyNortrafMpn,
+      valid_from = commission.validFrom,
+      valid_to = commission.validTo,
+      county_number = data.trafficRegistrationPoints.location.municipality.county.number,
+      county_name = data.trafficRegistrationPoints.location.municipality.county.name,
+      municipality_number = data.trafficRegistrationPoints.location.municipality.number,
+      municipality_name = data.trafficRegistrationPoints.location.municipality.name,
+      road_category =
+        data.trafficRegistrationPoints.location.roadReference.roadCategory.id) %>%
+    # Removing points without commissions
+    dplyr::filter(!is.na(valid_from)) %>%
+    dplyr::mutate(valid_from = lubridate::floor_date(
+      lubridate::with_tz(
+        lubridate::ymd_hms(valid_from)),
+      unit = "second")) %>%
+    dplyr::group_by(trp_id) %>%
+    dplyr::slice(which.min(valid_from)) %>%
+    # tidyr::separate(road_reference,
+    #                 into = c("road_number", NA, "parsell", NA, "meter"),
+    #                 sep = " ",
+    #                 remove = F) %>%
+    dplyr::mutate(road_link_position = paste0(road_network_position, "@",
+                                              road_network_link),
+                  #road_number = as.integer(stringr::str_sub(road_number, 3, -1)),
+                  #parsell = as.integer(parsell),
+                  #meter = as.integer(meter),
+                  #road_reference = str_replace(road_reference, "HP ", "hp"),
+                  #road_reference = str_replace(road_reference, "Meter ", "m"),
+                  first_commission_datainn = lubridate::floor_date(
+                    valid_from, unit = "day")) %>%
+    #dplyr::filter(#parsell < 70,
+    #              first_commission_datainn < "2019-02-01") %>%
+    dplyr::left_join(counties_numbers) %>%
+    dplyr::select(geo_number, county_name,
+                  municipality_name,
+                  trp_id, legacyNortrafMpn, name,
+                  road_reference, road_category,
+                  #road_number, parsell, meter,
+                  road_link_position, lat, lon, first_commission_datainn) %>%
+    dplyr::arrange(geo_number,
+                   road_category, road_reference) %>%
+    dplyr::select(-geo_number) %>%
+    dplyr::ungroup()
+
+  return(response_parsed)
 }
 
 get_trp_for_adt <- function() {

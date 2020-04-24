@@ -81,7 +81,7 @@ borderdata_2019_from <- "2019-03-11T00:00:00+01:00"
 borderdata_2019_to <- "2019-04-29T00:00:00+01:00"
 
 borderdata_2020_from <- "2020-03-02T00:00:00+01:00"
-borderdata_2020_to <- "2020-04-23T00:00:00+01:00"
+borderdata_2020_to <- "2020-04-24T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -213,9 +213,13 @@ border_dt_2020_16 <- border_dt %>%
 border_dt_2020_17 <- border_dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 17) %>% 
-  select(point_id, total_volume, weekno, weekday)
+  select(point_id, total_volume, weekno, weekday) 
 
 # Trp index
+# Testing
+#dt_base <- border_dt_2020_10
+#dt_calc <- border_dt_2020_17
+
 calculate_trp_border_index <- function(dt_base, dt_calc) {
   trp_daily_index <- inner_join(dt_base, dt_calc,
                                 by = c("point_id", "weekday"),
@@ -227,10 +231,12 @@ calculate_trp_border_index <- function(dt_base, dt_calc) {
     select(point_id, ukedag, index) %>% 
     left_join(points, by = c("point_id" = "trp_id")) %>% 
     left_join(adt_filtered, by = c("point_id" = "trp_id")) %>% 
-    tidyr::separate(road_reference, c("road", "streking", "meter"),
+    tidyr::separate(road_reference, c("road", "strekning", "meter"),
                     sep = " ") %>%    
 #    mutate(road = stringr::str_split_fixed(road_reference, " ", 2)) %>% 
     select(name, road, adt, municipality_name, ukedag, index) %>% 
+    arrange(factor(ukedag, levels = ukedager)) %>% 
+    # TODO: sort by weekday
     tidyr::pivot_wider(names_from = ukedag,
                        values_from = index)
 }
@@ -547,27 +553,6 @@ make_daily_border_plot(border_base_2020, "2020")
 
 
 ```{r table_2020}
-# border_base_2020 %>%
-#   ungroup() %>% 
-#   select(-no_trp) %>%
-#   pivot_wider(names_from = ukedag,
-#               values_from = index) %>% 
-#   flextable() %>%
-#   set_header_labels(periode = "Sammenlignet") %>%
-#   bold(part = "header") %>%
-#   fontsize(size = 9, part = "all") %>%
-#   font(fontname = "Lucida Sans Unicode", part = "all") %>%
-#   bg(bg = "#ED9300", part = "header") %>%
-#   border_remove() %>%
-#   hline_top(part = "header", border = borderline) %>%
-#   hline_bottom(part = "all", border = borderline) %>%
-#   colformat_num(j = 2:8, na_str = "", digits = 1) %>% 
-#   autofit() %>%
-#   height_all(height = .2) %>%
-#   padding(padding.top = .3,
-#           padding.bottom = .3) %>%
-#   set_caption("Prosentvis endring i trafikkmengde fra uke 10 i 2020.")
-
 make_border_table(border_base_2020,
                   "Prosentvis endring i trafikkmengde fra uke 10 i 2020.")
 ```

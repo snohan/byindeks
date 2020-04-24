@@ -15,7 +15,7 @@ library(htmltools)
 ```
 
 ```{r get_trp, results='hide', message=FALSE}
-trp_for_vti <- get_trp_for_vti()
+trp_for_vti <- get_trp_for_vti_httr()
 trp_latest_data <- get_trps_latest_data()
 
 trp_for_vti_latest_data <- trp_for_vti %>% 
@@ -23,6 +23,11 @@ trp_for_vti_latest_data <- trp_for_vti %>%
   dplyr::filter(!stringr::str_detect(road_reference, "KV")) %>% 
   dplyr::left_join(trp_latest_data) %>% 
   dplyr::filter(latest_data_by_hour > "2020-01-12 00:00:00")
+
+trp_vti_ekskluderte <- read.csv2("vti_trp_ekskluderte.csv")
+
+trp_for_vti_latest_data <- trp_for_vti_latest_data %>% 
+  filter(!(trp_id %in% trp_vti_ekskluderte$trpid))
 
 trp_aadts <- trp_for_vti_latest_data$trp_id %>% 
   get_aadt_for_trp_list() %>% 
@@ -32,7 +37,7 @@ trp_for_vti_aadt <- trp_for_vti_latest_data %>%
   dplyr::left_join(trp_aadts) %>% 
   dplyr::filter(!is.na(adt),
                 coverage > 90,
-                adt > 250) %>% 
+                adt > 500) %>% 
   dplyr::mutate(valid_length_percent = round(valid_length_volume /adt * 100, digits = 1)) %>%
   dplyr::mutate(trp_label = paste(name, road_reference, sep = "<br/>"),
                 trp_label = lapply(trp_label, htmltools::HTML))
@@ -40,14 +45,18 @@ trp_for_vti_aadt <- trp_for_vti_latest_data %>%
 trp_for_vti_aadt %>% 
   dplyr::select(-trp_label) %>% 
   write.csv2(file = "trp_for_vti_2020.csv", row.names = F)
+
+trp_for_vti_aadt %>% 
+  dplyr::select(trp_id) %>% 
+  write.csv2(file = "trp_id_vti_def.csv", row.names = F)
+
 ```
 
 ```{r table}
 # DataTables
 trp_for_vti_aadt %>% 
-  dplyr::select(#county_number, 
-                county_name, legacyNortrafMpn, 
-                #trp_id, 
+  dplyr::select(#trp_id, 
+                county_name, municipality_name, legacyNortrafMpn, 
                 name,
                 road_reference, 
                 #road_category, 
@@ -56,8 +65,9 @@ trp_for_vti_aadt %>%
                 legacyNortrafMpn = as.character(legacyNortrafMpn)
                 ) %>% 
   dplyr::rename(#Fylkenr = county_number,
-                Fylkenanvn = county_name,
-                Nortrafnr = legacyNortrafMpn,
+                Fylke = county_name,
+                Kommune = municipality_name,
+                MSNR = legacyNortrafMpn,
                 #Punktid = trp_id,
                 Navn = name,
                 Vegreferanse = road_reference,
