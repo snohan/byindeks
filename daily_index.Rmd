@@ -128,7 +128,7 @@ week_2019_from <- "2019-03-11T00:00:00+01:00"
 week_2019_to <- "2019-05-06T00:00:00+01:00"
 
 week_2020_from <- "2020-02-24T00:00:00+01:00"
-week_2020_to <- "2020-04-28T00:00:00+01:00"
+week_2020_to <- "2020-05-04T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -265,13 +265,16 @@ dt_2019_17 <- dt %>%
 
 dt_2019_18 <- dt %>% 
   filter(year == 2019) %>%
-  filter(weekno == 18) %>% 
+  filter(weekno == 18) %>%
+  # removing 1 May
+  filter(weekday != 3) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
   filter(!(point_id %in% c("21768V805002",
                            "41331V443662",
                            "71258V805748",
                            "87138V755378",
-                           "91229V886007")))
+                           "91229V886007",
+                           "42754V444240")))
 
 # Weeks 2020
 dt_2020_11 <- dt %>% 
@@ -326,8 +329,11 @@ dt_2020_17 <- dt %>%
 
 dt_2020_18 <- dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 18) %>% 
-  select(point_id, total_volume, weekno, weekday)
+  filter(weekno == 18) %>%
+  # removing 1 May
+  filter(weekday != 5) %>% 
+  select(point_id, total_volume, weekno, weekday)%>% 
+  filter(!(point_id %in% c("42754V444240")))
 
 
 # Trp index

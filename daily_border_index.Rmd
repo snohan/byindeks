@@ -1,5 +1,5 @@
 ---
-title: Daglig trafikkutvikling ved riksgrensen
+title: Daglig endring i trafikk ved riksgrensen
 output: 
   word_document:
     reference_docx: svv_notatmal3.docx
@@ -81,7 +81,7 @@ borderdata_2019_from <- "2019-03-11T00:00:00+01:00"
 borderdata_2019_to <- "2019-05-06T00:00:00+01:00"
 
 borderdata_2020_from <- "2020-03-02T00:00:00+01:00"
-borderdata_2020_to <- "2020-04-28T00:00:00+01:00"
+borderdata_2020_to <- "2020-05-04T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -167,6 +167,8 @@ border_dt_2019_17 <- border_dt %>%
 border_dt_2019_18 <- border_dt %>% 
   filter(year == 2019) %>%
   filter(weekno == 18) %>% 
+  # removing 1 May
+  filter(weekday != 3) %>% 
   select(point_id, total_volume, weekno, weekday)
 
 # Weeks 2020
@@ -221,7 +223,9 @@ border_dt_2020_17 <- border_dt %>%
 
 border_dt_2020_18 <- border_dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 18) %>% 
+  filter(weekno == 18) %>%
+  # removing 1 May
+  filter(weekday != 5) %>% 
   select(point_id, total_volume, weekno, weekday)
 
 # Trp index
@@ -574,7 +578,9 @@ border_trp_adt %>%
 # Samlet endring i trafikk over riksgrensen
 
 ## Sammenlignet med uke 10 i 2020
-Påsken, som her er definert til å gjelde fra og med fredag før palmesøndag til og med Andre påskedag, er tatt ut og sammenlignet i egen figur og tabell lenger ned.
+Påsken, som her er definert til å gjelde fra og med fredag før palmesøndag til og med Andre påskedag, er tatt ut og sammenlignet i egen figur og tabell.
+
+Spesielle dager i mai og juni tas ut av den direkte sammenligningen uke for uke. Spesielle dager må sammenlignes direkte, og dette gjelder 1. mai, 17. mai, Kristi himmelfartsdag, fredag etter Krist himmelfartsdag og Pinsen.
 
 ```{r plot_202011, fig.width=8, fig.height=8}
 make_daily_border_plot(border_base_2020, "2020")
