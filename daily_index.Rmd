@@ -125,10 +125,10 @@ trps <- dplyr::left_join(cities_points, points) %>%
 
 # Week 11 onwards 2019, including Easter
 week_2019_from <- "2019-03-11T00:00:00+01:00"
-week_2019_to <- "2019-05-06T00:00:00+01:00"
+week_2019_to <- "2019-05-13T00:00:00+01:00"
 
 week_2020_from <- "2020-02-24T00:00:00+01:00"
-week_2020_to <- "2020-05-04T00:00:00+01:00"
+week_2020_to <- "2020-05-11T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -276,6 +276,17 @@ dt_2019_18 <- dt %>%
                            "91229V886007",
                            "42754V444240")))
 
+dt_2019_19 <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 19) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "42754V444240")))
+
 # Weeks 2020
 dt_2020_11 <- dt %>% 
   filter(year == 2020) %>%
@@ -332,7 +343,13 @@ dt_2020_18 <- dt %>%
   filter(weekno == 18) %>%
   # removing 1 May
   filter(weekday != 5) %>% 
-  select(point_id, total_volume, weekno, weekday)%>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("42754V444240")))
+
+dt_2020_19 <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 19) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
   filter(!(point_id %in% c("42754V444240")))
 
 
@@ -371,6 +388,9 @@ trp_dt_2020_10_17 <- calculate_trp_index(dt_2020_10, dt_2020_17) %>%
 trp_dt_2020_10_18 <- calculate_trp_index(dt_2020_10, dt_2020_18) %>% 
   filter(!(city_area_name %in% c("Bodø", "Tromsø")))
 
+trp_dt_2020_10_19 <- calculate_trp_index(dt_2020_10, dt_2020_19) %>% 
+  filter(!(city_area_name %in% c("Bodø", "Tromsø")))
+
 # For the north
 trp_dt_2020_09_11 <- calculate_trp_index(dt_2020_09, dt_2020_11) %>% 
   filter(city_area_name %in% c("Bodø", "Tromsø"))
@@ -393,6 +413,9 @@ trp_dt_2020_09_17 <- calculate_trp_index(dt_2020_09, dt_2020_17) %>%
 trp_dt_2020_09_18 <- calculate_trp_index(dt_2020_09, dt_2020_18) %>% 
   filter(city_area_name %in% c("Bodø", "Tromsø"))
 
+trp_dt_2020_09_19 <- calculate_trp_index(dt_2020_09, dt_2020_19) %>% 
+  filter(city_area_name %in% c("Bodø", "Tromsø"))
+
 # Compare this week to same week 2019
 trp_dt_201911_202011 <- calculate_trp_index(dt_2019_11, dt_2020_11)
 trp_dt_201912_202012 <- calculate_trp_index(dt_2019_12, dt_2020_12)
@@ -400,6 +423,7 @@ trp_dt_201913_202013 <- calculate_trp_index(dt_2019_13, dt_2020_13)
 trp_dt_201914_202014 <- calculate_trp_index(dt_2019_14, dt_2020_14)
 trp_dt_201917_202017 <- calculate_trp_index(dt_2019_17, dt_2020_17)
 trp_dt_201918_202018 <- calculate_trp_index(dt_2019_18, dt_2020_18)
+trp_dt_201919_202019 <- calculate_trp_index(dt_2019_19, dt_2020_19)
 
 # Easter
 trp_dt_palmweekend <- calculate_trp_index(dt_2019_15_palmweekend, 
@@ -450,6 +474,9 @@ city_dt_2020_10_17 <- calculate_city_index(dt_2020_10, dt_2020_17) %>%
 city_dt_2020_10_18 <- calculate_city_index(dt_2020_10, dt_2020_18) %>% 
   filter(!(city_area_name %in% c("Bodø", "Tromsø")))
 
+city_dt_2020_10_19 <- calculate_city_index(dt_2020_10, dt_2020_19) %>% 
+  filter(!(city_area_name %in% c("Bodø", "Tromsø")))
+
 # For the north
 city_dt_2020_09_11 <- calculate_city_index(dt_2020_09, dt_2020_11) %>% 
   filter(city_area_name %in% c("Bodø", "Tromsø"))
@@ -472,6 +499,9 @@ city_dt_2020_09_17 <- calculate_city_index(dt_2020_09, dt_2020_17) %>%
 city_dt_2020_09_18<- calculate_city_index(dt_2020_09, dt_2020_18) %>% 
   filter(city_area_name %in% c("Bodø", "Tromsø"))
 
+city_dt_2020_09_19<- calculate_city_index(dt_2020_09, dt_2020_19) %>% 
+  filter(city_area_name %in% c("Bodø", "Tromsø"))
+
 # Compare this week to same week 2019
 city_dt_201911_202011 <- calculate_city_index(dt_2019_11, dt_2020_11) %>% 
   filter(!(city_area_name %in% c("Bodø")))
@@ -489,6 +519,9 @@ city_dt_201917_202017 <- calculate_city_index(dt_2019_17, dt_2020_17) %>%
   filter(!(city_area_name %in% c("Bodø")))
 
 city_dt_201918_202018 <- calculate_city_index(dt_2019_18, dt_2020_18) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+city_dt_201919_202019 <- calculate_city_index(dt_2019_19, dt_2020_19) %>% 
   filter(!(city_area_name %in% c("Bodø")))
 
 # Easter
@@ -673,6 +706,19 @@ make_city_table(city_dt_2020_10_18,
 ```
 
 
+### Fra uke 10 til 19, 2020
+
+```{r plot_city_202019, fig.width=8, fig.height=8}
+make_daily_plot(city_dt_2020_10_19, "Fra uke 10 til uke 19 i 2020")
+```
+
+
+```{r table_city_202019}
+make_city_table(city_dt_2020_10_19,
+                "Prosentvis endring i trafikkmengde fra uke 10 til uke 19 i 2020.")
+```
+
+
 
 ## De største byområdene i Nord-Norge
 
@@ -766,6 +812,19 @@ make_city_table(city_dt_2020_09_18,
 ```
 
 
+### Fra uke 9 til 19, 2020
+
+```{r plot_city_202019_north, fig.width=8, fig.height=6}
+make_daily_plot(city_dt_2020_09_19, "Fra uke 9 til uke 19 i 2020")
+```
+
+```{r table_city_202019_north}
+make_city_table(city_dt_2020_09_19,
+                "Prosentvis endring i trafikkmengde fra uke 9 til uke 19 i 2020.")
+```
+
+
+
 # Endring i trafikk fra 2019 til 2020
 
 
@@ -848,6 +907,15 @@ make_city_table(city_dt_201918_202018,
 ```
 
 
+```{r plot_city_201919, fig.width=8, fig.height=8}
+make_daily_plot(city_dt_201919_202019, "Fra uke 19 2019 til uke 19 i 2020")
+```
+
+
+```{r table_city_201919}
+make_city_table(city_dt_201919_202019,
+                "Prosentvis endring i trafikkmengde fra uke 19 2019 til uke 19 2020.")
+```
 
 # Endring i påsketrafikken
 
