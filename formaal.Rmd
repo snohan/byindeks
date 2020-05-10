@@ -1,9 +1,9 @@
 # Formål
 
-Byindeksen estimerer endring i trafikkmengde for byområdet. 
+Byvekstavtalene har mål (nullvekstmålet) om at veksten i persontransporten i storbyområdene skal tas med kollektivtransport, sykling og gange, jf. Nasjonal transportplan 2018-2029. Trafikkutviklingen for persontransport med bil, målt med byindeks og reisevaneundersøkelser, ligger til grunn for vurderingen av måloppnåelsen i avtalene.
 
-Datagrunnlaget består av "lette" biler, som er biler *målt* til en lengde under 5,6 m ved trafikkregistreringspunktene. I datagrunnlaget inngår også næringstransport med kjøretøy under 5,6 m da det ikke er mulig å skille disse fra andre kjøretøy basert på Statens vegvesens automatiske trafikkregistreringer alene. Det er heller ikke tatt hensyn til ren gjennomgangstrafikk. 
+Byindeksen beregner endring i trafikkmengde for byområdet. Metoden er basert på tellinger fra faste trafikkregistreringspunkter fordelt på riksveier, fylkesveier og kommunale veier, og er ment å gi et representativt bilde av trafikkutviklingen i avtaleområdet. For hvert trafikkregistreringspunkt sammenlignes registrert trafikk dato for dato og time for time mellom to påfølgende år. Det tas hensyn til perioder hvor registreringsutstyret ikke har vært i drift, og perioder hvor trafikken i stor grad er påvirket av stenginger og omkjøringer.
 
-For hvert trafikkregistreringspunkt sammenlignes registrert trafikk dato for dato og time for time mellom to påfølgende år. Det tas hensyn til perioder hvor registreringsutstyret ikke har vært i drift og perioder hvor trafikken i stor grad er påvirket av stenginger og omkjøringer.
+Datagrunnlaget for byindeksen består av “lette” biler, dvs. biler som er under 5,6 m. Også lettere næringstransport og gjennomgangstrafikk med lette biler inngår i datagrunnlaget for byindeksen selv om denne trafikken er unntatt fra nullvekstmålet. Vi anser likevel at byindeksen gir et tilstrekkelig robust bilde av om trafikkutviklingen er i tråd med ønsket måloppnåelse. Data fra reisevaneundersøkelsen gjør det mulig å skille ut gjennomgangstrafikken, og å skille ut næringstransport med personbil («lette» biler), og kan brukes som en supplerende kilde. 
 
 Metodikken er beskrevet nærmere i slutten av denne rapporten.

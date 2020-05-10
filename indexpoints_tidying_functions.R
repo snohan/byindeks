@@ -1,5 +1,17 @@
 # Index tidying functions
 
+choose_city_trp_ids <- function(city_name,
+                                start_year) {
+
+  trp_ids <- cities_points %>%
+    dplyr::filter(city_area_name == city_name,
+                  agreement_start == start_year) %>%
+    dplyr::select(trp_id, legacyNortrafMpn) %>%
+    dplyr::rename(msnr = legacyNortrafMpn) %>%
+    dplyr::filter(!is.na(msnr)) %>%
+    dplyr::filter(!is.na(trp_id))
+}
+
 readPointindexCSV <- function(filename) {
   # Read standard csv export from Datainn
   read.csv2(filename) %>%
@@ -27,12 +39,13 @@ read_new_pointindex_csv <- function(filename) {
     filter(døgn == "Alle",
            lengdeklasse == "< 5,6m",
            periode == "Hittil i år") %>%
-    mutate(trafikkmengde.basisaar = as.numeric(
+    mutate(index = as.numeric(str_replace(indeks, ",", ".")),
+           trafikkmengde.basisaar = as.numeric(
              as.character("trafikkmengde basisår")),
            trafikkmengde.indeksaar = as.numeric(
              as.character("trafikkmengde indeksår"))) %>%
-  rename(index = indeks) %>%
-  select(trpid, index)
+  rename(trp_id = trpid) %>%
+  select(trp_id, index)
 }
 
 filename <- "data_index_raw/punktindeks_nord-jaeren-2020-01.csv"
@@ -67,7 +80,8 @@ read_bikepointindex_csv <- function(filename) {
 read_city_index_csv <- function(filename) {
   # Read standard csv export from Datainn
   read.csv2(filename) %>%
-    filter(Vegkategori == "E+R+F+K",
+    rename_all(str_to_lower) %>%
+    filter(vegkategori == "E+R+F+K",
            døgn == "Alle",
            lengdeklasse == "< 5,6m",
            periode == "Hittil i år") %>%
@@ -120,11 +134,10 @@ index_converter <- function(index) {
     index/100 + 1)
 }
 
-# TODO: get a compound ci, need to iterate pairwise through the years!
+# Compound ci, need to iterate pairwise through the years!
 # I.e. make accumulated index for one more year
 #index_from_refyear <- 100*(prod(city_index_grenland$index_i)-1)
 
-# Need number of points each year
 calculate_two_year_index <- function(city_index_df) {
 
   two_years <- city_index_df %>%

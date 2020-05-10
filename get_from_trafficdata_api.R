@@ -134,6 +134,89 @@ get_points <- function() {
   return(points)
 }
 
+get_points_2 <- function() {
+  # Get all traffic registration points
+  query_points <-
+    "query all_trps {
+  trafficRegistrationPoints {
+    id
+    name
+    trafficRegistrationType
+    location {
+      coordinates {
+        latLon {
+          lat
+          lon
+        }
+      }
+      county {
+        name
+        number
+      }
+      municipality {
+        name
+        number
+      }
+      roadReference {
+          shortForm
+      }
+      roadLinkSequence {
+        relativePosition
+        roadLinkSequenceId
+      }
+    }
+    commissions {
+      validFrom
+      validTo
+    }
+  }
+}"
+
+  myqueries <- Query$new()
+  myqueries$query("points", query_points)
+
+  points <- cli$exec(myqueries$queries$points) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
+    as.data.frame() %>%
+    tidyr::unnest(cols = c(data.trafficRegistrationPoints.commissions)) %>%
+    dplyr::rename(trp_id =
+                    data.trafficRegistrationPoints.id,
+                  name =
+                    data.trafficRegistrationPoints.name,
+                  traffic_type =
+                    data.trafficRegistrationPoints.trafficRegistrationType,
+                  county_name = data.trafficRegistrationPoints.location.county.name,
+                  county_no = data.trafficRegistrationPoints.location.county.number,
+                  municipality_name = data.trafficRegistrationPoints.location.municipality.name,
+                  municipality_no = data.trafficRegistrationPoints.location.municipality.number,
+                  lat =
+                    data.trafficRegistrationPoints.location.coordinates.latLon.lat,
+                  lon =
+                    data.trafficRegistrationPoints.location.coordinates.latLon.lon,
+                  road_reference =
+                    data.trafficRegistrationPoints.location.roadReference.shortForm,
+                  road_network_position =
+                    data.trafficRegistrationPoints.location.roadLinkSequence.relativePosition,
+                  road_network_link =
+                    data.trafficRegistrationPoints.location.roadLinkSequence.roadLinkSequenceId
+    ) %>%
+    dplyr::select(trp_id, name, traffic_type, road_reference, county_name,
+                  county_no, municipality_name, municipality_no, lat, lon,
+                  road_network_position, road_network_link, validFrom, validTo
+    ) %>%
+    dplyr::mutate(road_reference = str_replace(road_reference, "HP ", "hp")
+    ) %>%
+    dplyr::mutate(road_reference = str_replace(road_reference, "Meter ", "m"),
+                  road_link_position = paste0(road_network_position, "@",
+                                              road_network_link),
+                  validFrom =
+                    floor_date(with_tz(ymd_hms(validFrom)), unit = "day"),
+                  validTo = floor_date(with_tz(ymd_hms(validTo)), unit = "day")
+    )
+
+  return(points)
+}
+
 
 get_trps_latest_data <- function() {
   # Get all traffic registration points

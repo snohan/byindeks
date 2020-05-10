@@ -1,11 +1,40 @@
 # Funksjoner for å hente nødvendig info fra NVDB-API v2.
 
+library(tidyverse)
 library(httr)
+library(jsonlite)
 
 # Definer URI og sti ####
 nvdb_url <- "https://www.vegvesen.no/nvdb/api/v2"
 nvdb_url_v3 <- "https://www.vegvesen.no/nvdb/api/v3"
 sti_vegobjekter <- "/vegobjekter"
+sti_veg <- "/veg"
+
+
+vegsystemreferanse <- "KV6064S1D1m30"
+kommunenr <- "5001"
+# Hent stedfesting i punkt på vegnettet
+hent_vegpunkt <- function(vegsystemreferanse, kommunenr) {
+  api_query <- paste0(nvdb_url_v3,
+                      sti_veg,
+                      "?vegsystemreferanse=",
+                      vegsystemreferanse,
+                      "&kommune=",
+                      kommunenr)
+
+  respons <- GET(api_query,
+                 add_headers("X-Client" = "trafikkdatagruppa",
+                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+                             "Accept" = "application/vnd.vegvesen.nvdb-v3+json"))
+
+  uthenta <- jsonlite::fromJSON(
+    stringr::str_conv(
+    respons$content, encoding = "UTF-8"),
+                      simplifyDataFrame = T,
+                      flatten = T)
+
+  kommune <- bind_rows(uthenta$objekter$egenskaper, .id = "kid")
+}
 
 # Hent trafikkregistreringsstasjoner i en kommune
 hent_kommune <- function(kommunenr) {
