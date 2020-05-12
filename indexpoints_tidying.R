@@ -35,20 +35,29 @@ points <- get_points() %>%
 
 points_split_reference <- points %>%
   tidyr::separate(road_reference, c("road_system", "intersection_part"),
-                  sep = " KD", remove = FALSE) %>%
+                  sep = "[:blank:][:alpha:]{1}D",
+                  remove = FALSE, fill = "right") %>%
   dplyr::mutate(road_category = stringr::str_sub(road_system, 1, 1)) %>%
+  dplyr::mutate(road_category = factor(road_category,
+                                       levels = c("E", "R", "F", "K", "P"))) %>%
   tidyr::separate(road_system, c("road", "section_meter"),
                   sep = " S") %>%
-  dplyr::mutate(road_number = stringr::str_sub(road, 3, -1)) %>%
+  dplyr::mutate(road_number = as.numeric(stringr::str_sub(road, 3, -1))) %>%
+  dplyr::mutate(road_category_and_number = paste0(road_category, "v", road_number)) %>%
   tidyr::separate(section_meter, c("section_number", "subsection_meter"),
-                  sep = "D") %>%
+                  sep = "D", convert = TRUE) %>%
   tidyr::separate(subsection_meter, c("subsection_number", "meter"),
-                  sep = " m") %>%
-  # TODO: split intersection_part and inspect warnings
+                  sep = " m", convert = TRUE) %>%
+  tidyr::separate(intersection_part, c("intersection_part_number", "intersection_meter"),
+                  sep = " m", convert = TRUE) %>%
   dplyr::select(trp_id, name, road_reference, road_category, road_number,
-                section_number, subsection_number, meter, intersection_part,
-                county_name, municipality_name, lat, lon, road_link_position)
-
+                road_category_and_number,
+                section_number, subsection_number, meter,
+                intersection_part_number, intersection_meter,
+                county_name, municipality_name, lat, lon, road_link_position) %>%
+  dplyr::arrange(road_category, road_number,
+                 section_number, subsection_number, meter,
+                 intersection_part_number, intersection_meter)
 
 # All points from TRP API (if needed)
 points_trp <- getPointsFromTRPAPI()
@@ -1241,10 +1250,15 @@ write.csv2(buskerud_uten_e18_monthly,
            file = "data_indexpoints_tidy/byindeks_maanedlig_buskerudbyen_uten_e18_2016.csv",
            row.names = F)
 
-# Bergen 2016 ####
-# Point index
+# Bergen 2016 points ####
 this_citys_trps <- choose_city_trp_ids("Bergen", 2016) %>%
-  dplyr::left_join(points)
+  dplyr::left_join(points_split_reference) %>%
+  dplyr::arrange(road_category, road_number,
+                 section_number, subsection_number, meter,
+                 intersection_part_number, intersection_meter) %>%
+  dplyr::select(trp_id, msnr, name, road_reference, road_category_and_number,
+                county_name, municipality_name,
+                lat, lon, road_link_position)
 
 # Index results from CSV-files
 pointindex_17 <-
@@ -1309,18 +1323,17 @@ this_citys_trp_index <- this_citys_trps %>%
   left_join(pointindex_19) %>%
   left_join(pointindex_20)
 
-# Dropping "from reference year" for point index!
 # Index from refyear
-# refyear <- this_citys_trp_index %>%
-#   select(starts_with("index")) %>%
-#   mutate_all(list(index_converter)) %>%
-#   transmute(index = purrr::pmap_dbl(., prod)) %>%
-#   # Lazily changing from 1 to NA (risky?)
-#   mutate(index = round(ifelse(index == 1, NA,  100 * (index - 1)),
-#                        digits = 1))
-#
-# this_citys_trp_index_refyear <- this_citys_trp_index %>%
-#   bind_cols(refyear)
+refyear <- this_citys_trp_index %>%
+  select(starts_with("index")) %>%
+  mutate_all(list(index_converter)) %>%
+  transmute(index = purrr::pmap_dbl(., prod)) %>%
+  # Lazily changing from 1 to NA (risky?)
+  mutate(index = round(ifelse(index == 1, NA,  100 * (index - 1)),
+                       digits = 1))
+
+this_citys_trp_index_refyear <- this_citys_trp_index %>%
+  bind_cols(refyear)
 
 # TODO: 3 year rolling index, but not now - only for the city
 
@@ -1328,7 +1341,8 @@ write.csv2(this_citys_trp_index_refyear,
            file = "data_indexpoints_tidy/indekspunkt_bergen_2016.csv",
            row.names = F)
 
-# City index
+
+# Bergen 2016 city ####
 city_17 <-
   read_city_index_csv("data_index_raw/Bergen-2017-12_2016.csv") %>%
   mutate(year = "2016-2017")
@@ -1375,28 +1389,55 @@ write.csv2(city_index_all,
            file = "data_indexpoints_tidy/byindeks_bergen_2016.csv",
            row.names = F)
 
-# HERE
 
-# Monthly city index
-# TODO: only 36 month rolling index
-bergen_2017_monthly <-
+# Bergen 2016 monthly ####
+city_17_monthly <-
   monthly_city_index("data_index_raw/Bergen-2017-12_2016.csv") %>%
   mutate(year = "2016-2017")
-bergen_2018_monthly <-
+city_18_monthly <-
   monthly_city_index("data_index_raw/Bergen-2018-12_2017.csv") %>%
   mutate(year = "2017-2018")
-bergen_2019_monthly <-
+city_19_monthly <-
   monthly_city_index("data_index_raw/Bergen-2019-12_2018.csv") %>%
   mutate(year = "2018-2019")
+city_20_monthly <-
+  monthly_city_index("data_index_raw/Bergen-2020-04.csv") %>%
+  mutate(year = "2019-2020")
 
-bergen_monthly <- bind_rows(
-  bergen_2017_monthly,
-  bergen_2018_monthly,
-  bergen_2019_monthly)
+city_monthly <- bind_rows(
+  city_17_monthly,
+  city_18_monthly,
+  city_19_monthly,
+  city_20_monthly)
 
-write.csv2(bergen_monthly,
+write.csv2(city_monthly,
            file = "data_indexpoints_tidy/byindeks_maanedlig_bergen_2016.csv",
            row.names = F)
+
+# HERE
+# Bergen 2016 three year ####
+# TODO: 36 month rolling index
+# TODO: functionize
+city_monthly_36 <- city_monthly %>%
+  filter(periode != "Hele året") %>%
+  tibble::rowid_to_column("id") %>%
+  mutate(three_year_group = case_when(
+    id <= 12 ~ 1,
+    id <= 24 ~ 2,
+    id <= 36 ~ 3,
+    TRUE ~ 4
+  ))
+
+city_monthly_36_period <- city_monthly_36 %>%
+  slice(36) %>%
+  select(periode, year)
+
+city_monthly_36_index <- city_monthly_36%>%
+  filter(three_year_group < 4) %>%
+  group_by(three_year_group) %>%
+  summarise(volume_index_year = sum(traffic_index_year),
+            volume_base_year = sum(traffic_base_year))
+
 
 # Kristiansand 2016 ####
 trp_krs_2016_ids <- cities_points %>%

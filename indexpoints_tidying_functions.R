@@ -93,13 +93,16 @@ read_city_index_csv <- function(filename) {
     as_tibble()
 }
 
+#filename <- "data_index_raw/Bergen-2017-12_2016.csv"
 monthly_city_index <- function(filename) {
   # Read standard csv export from Datainn
   read.csv2(filename, stringsAsFactors = F) %>%
-    filter(Vegkategori == "E+R+F+K",
+    rename_all(tolower) %>%
+    filter(vegkategori == "E+R+F+K",
            døgn == "Alle",
            lengdeklasse == "< 5,6m",
-           periode != "Siste 12 måneder") %>%
+           periode != "Siste 12 måneder",
+           indeks != "-") %>%
     mutate(index = as.numeric(str_replace(indeks, ",", ".")),
            dekning = as.numeric(str_replace(dekning, ",", ".")),
            standardavvik = as.numeric(as.character(standardavvik)),
@@ -107,7 +110,12 @@ monthly_city_index <- function(filename) {
            periode = if_else(periode == "Hittil i år",
                              "Hele året",
                              periode)) %>%
-    select(periode, index, dekning, standardavvik, konfidensintervall) %>%
+    rename(traffic_index_year = 'trafikkmengde.indeksår',
+           traffic_base_year =  'trafikkmengde.basisår') %>%
+    mutate(traffic_index_year = as.numeric(traffic_index_year),
+           traffic_base_year = as.numeric(traffic_base_year)) %>%
+    select(periode, traffic_index_year, traffic_base_year,
+           index, dekning, standardavvik, konfidensintervall) %>%
     as_tibble()
 }
 

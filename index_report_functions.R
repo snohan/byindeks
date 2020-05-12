@@ -82,14 +82,12 @@ borderline <- officer::fp_border(color = "black", style = "solid", width = 1)
 create_city_index_table <- function(city_info) {
 
   city_table <- city_info %>%
-    dplyr::select(year, index, ki_start, ki_slutt, dekning) %>%
+    dplyr::select(year, index, ki_start, ki_slutt) %>%
     flextable::flextable() %>%
     colformat_num(j = c("index", "ki_start", "ki_slutt"), digits = 1) %>%
-    colformat_num(j = "dekning", digits = 0) %>%
     set_header_labels(year = "Periode",
                       index = "Endring i trafikkmengde (%)",
-                      ki_start = "95 % konfidensintervall",
-                      dekning = "Dekningsgrad (%)") %>%
+                      ki_start = "95 % konfidensintervall") %>%
     merge_at(i = 1, j = 3:4, part = "header") %>%
     bold(part = "header") %>%
     fontsize(size = 9, part = "all") %>%
@@ -110,6 +108,7 @@ create_city_index_table <- function(city_info) {
 create_monthly_city_index_table <- function(city_monthly) {
 
   monthly_table <- city_monthly %>%
+    dplyr::filter(!is.na(index)) %>%
     dplyr::select(year, periode, index) %>%
     flextable::flextable() %>%
     colformat_num(j = c("index"), digits = 1) %>%

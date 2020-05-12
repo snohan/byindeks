@@ -135,6 +135,8 @@ get_points <- function() {
 }
 
 get_points_2 <- function() {
+  # The thought was to fetch individual components of the road system reference,
+  # but those are not available in the API...
   # Get all traffic registration points
   query_points <-
     "query all_trps {
