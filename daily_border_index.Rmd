@@ -78,10 +78,10 @@ border_trp_adt <- border_trps %>%
 # 3. Easter 2019 to Easter 2020
 
 borderdata_2019_from <- "2019-03-11T00:00:00+01:00"
-borderdata_2019_to <- "2019-05-13T00:00:00+01:00"
+borderdata_2019_to <- "2019-05-20T00:00:00+01:00"
 
 borderdata_2020_from <- "2020-03-02T00:00:00+01:00"
-borderdata_2020_to <- "2020-05-11T00:00:00+01:00"
+borderdata_2020_to <- "2020-05-18T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -176,6 +176,11 @@ border_dt_2019_19 <- border_dt %>%
   filter(weekno == 19) %>% 
   select(point_id, total_volume, weekno, weekday)
 
+border_dt_2019_20 <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 20) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
 # Weeks 2020
 border_dt_2020_11 <- border_dt %>% 
   filter(year == 2020) %>%
@@ -238,6 +243,12 @@ border_dt_2020_19 <- border_dt %>%
   filter(weekno == 19) %>% 
   select(point_id, total_volume, weekno, weekday)
 
+border_dt_2020_20 <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 20) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+
 # Trp index
 # Testing
 #dt_base <- border_dt_2020_10
@@ -297,6 +308,10 @@ border_trp_dt_2020_10_19 <- calculate_trp_border_index(
   border_dt_2020_10, 
   border_dt_2020_19)
 
+border_trp_dt_2020_10_20 <- calculate_trp_border_index(
+  border_dt_2020_10, 
+  border_dt_2020_20)
+
 # Compare this week to same week 2019
 border_trp_dt_201911_202011 <- calculate_trp_border_index(
   border_dt_2019_11, 
@@ -325,6 +340,10 @@ border_trp_dt_201918_202018 <- calculate_trp_border_index(
 border_trp_dt_201919_202019 <- calculate_trp_border_index(
   border_dt_2019_19, 
   border_dt_2020_19)
+
+border_trp_dt_201920_202020 <- calculate_trp_border_index(
+  border_dt_2019_20, 
+  border_dt_2020_20)
 
 # Compare Easter
 border_trp_dt_palmweekend <- calculate_trp_border_index(
@@ -396,6 +415,11 @@ border_dt_2020_10_19 <- calculate_border_index(
   border_dt_2020_19) %>% 
   mutate(periode = "Uke 10 til 19")
 
+border_dt_2020_10_20 <- calculate_border_index(
+  border_dt_2020_10, 
+  border_dt_2020_20) %>% 
+  mutate(periode = "Uke 10 til 20")
+
 border_base_2020 <- bind_rows(border_dt_2020_10_11,
                               border_dt_2020_10_12,
                               border_dt_2020_10_13,
@@ -403,7 +427,8 @@ border_base_2020 <- bind_rows(border_dt_2020_10_11,
                               border_dt_2020_10_16,
                               border_dt_2020_10_17,
                               border_dt_2020_10_18,
-                              border_dt_2020_10_19)
+                              border_dt_2020_10_19,
+                              border_dt_2020_10_20)
 
 # Compare this week to same week 2019
 border_dt_201911_202011 <- calculate_border_index(
@@ -441,13 +466,20 @@ border_dt_201919_202019 <- calculate_border_index(
   border_dt_2020_19) %>% 
   mutate(periode = "Uke 19")
 
+border_dt_201920_202020 <- calculate_border_index(
+  border_dt_2019_20, 
+  border_dt_2020_20) %>% 
+  mutate(periode = "Uke 20")
+
+
 border_base_2019 <- bind_rows(border_dt_201911_202011,
                               border_dt_201912_202012,
                               border_dt_201913_202013,
                               border_dt_201914_202014,
                               border_dt_201917_202017,
                               border_dt_201918_202018,
-                              border_dt_201919_202019)
+                              border_dt_201919_202019,
+                              border_dt_201920_202020)
 
 # Compare Easter
 border_dt_palmweekend <- calculate_border_index(
@@ -754,6 +786,12 @@ make_border_trp_table(border_trp_dt_2020_10_19,
                       "Prosentvis endring i trafikkmengde fra uke 10 til uke 19 i 2020.")
 ```
 
+```{r trptable_202020}
+make_border_trp_table(border_trp_dt_2020_10_20,
+                      "Prosentvis endring i trafikkmengde fra uke 10 til uke 20 i 2020.")
+```
+
+
 
 ## Sammenlignet mellom samme uke i 2019 og 2020
 
@@ -796,6 +834,10 @@ make_border_trp_table(border_trp_dt_201919_202019,
                       "Prosentvis endring i trafikkmengde fra uke 19 2019 til uke 19 2020.")
 ```
 
+```{r trptable_201920}
+make_border_trp_table(border_trp_dt_201920_202020,
+                      "Prosentvis endring i trafikkmengde fra uke 20 2019 til uke 20 2020.")
+```
 
 
 

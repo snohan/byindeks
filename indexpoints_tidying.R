@@ -1428,6 +1428,7 @@ city_monthly_36 <- city_monthly %>%
     TRUE ~ 4
   ))
 
+
 city_monthly_36_period <- city_monthly_36 %>%
   slice(36) %>%
   select(periode, year)
@@ -1436,7 +1437,8 @@ city_monthly_36_index <- city_monthly_36%>%
   filter(three_year_group < 4) %>%
   group_by(three_year_group) %>%
   summarise(volume_index_year = sum(traffic_index_year),
-            volume_base_year = sum(traffic_base_year))
+            volume_base_year = sum(traffic_base_year),
+            index = (volume_index_year / volume_base_year - 1 ) * 100)
 
 
 # Kristiansand 2016 ####
