@@ -38,7 +38,7 @@ cities_points_start <- read.csv2("data_points_raw/cities_points.csv") %>%
 additional_trps <- 
   data.frame(city_area_name = 
                c(rep("Trondheim", times = 9),
-                 rep("Nord-Jæren", times = 34),
+                 rep("Nord-Jæren", times = 29),
                  rep("Bodø", times = 11)),
              trp_id = c(
                                   # Trondheim
@@ -52,13 +52,13 @@ additional_trps <-
                                   "60797V2801059",
                                   "66126V3112188",
                                   # Nord-Jæren
-                                  "93189V320582",
+                                  #"93189V320582",
                                   "52780V320689",
                                   "13715V2721330",
                                   "14570V320273",
-                                  "50749V319525",
+                                  #"50749V319525",
                                   "11531V320190",
-                                  "71535V319524",
+                                  #"71535V319524",
                                   "50741V1727509",
                                   "41451V320581",
                                   "64211V2520554",
@@ -78,8 +78,8 @@ additional_trps <-
                                   "35382V1727514",
                                   "24330V320678",
                                   "36178V320198",
-                                  "92102V319885",
-                                  "32842V319521",
+                                  #"92102V319885",
+                                  #"32842V319521",
                                   "61487V319872",
                                   "00462V320124",
                                   "48362V320684",
@@ -121,10 +121,10 @@ trps <- dplyr::left_join(cities_points, points) %>%
 
 # Week 11 onwards 2019, including Easter
 week_2019_from <- "2019-03-11T00:00:00+01:00"
-week_2019_to <- "2019-05-20T00:00:00+01:00"
+week_2019_to <- "2019-06-03T00:00:00+01:00"
 
 week_2020_from <- "2020-02-24T00:00:00+01:00"
-week_2020_to <- "2020-05-18T00:00:00+01:00"
+week_2020_to <- "2020-05-25T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -159,7 +159,7 @@ dt <- bind_rows(dt_2019, dt_2020) %>%
   select(-from) %>% 
   filter(coverage > 99)
 
-
+#  Base weeks ####
 dt_2020_10 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 10) %>% 
@@ -171,7 +171,8 @@ dt_2020_09 <- dt %>%
   filter(weekno == 9) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-# Weeks 2019
+
+# Weeks 2019 ####
 dt_2019_11 <- dt %>% 
   filter(year == 2019) %>%
   filter(weekno == 11) %>% 
@@ -283,7 +284,7 @@ dt_2019_1_may <- dt %>%
                            "87138V755378",
                            "91229V886007",
                            "42754V444240"))) %>% 
-  mutate(weekday = "1_may")
+  mutate(weekday = "1. mai")
 
 dt_2019_19 <- dt %>% 
   filter(year == 2019) %>%
@@ -321,14 +322,36 @@ dt_2019_17_may <- dt %>%
                            "87138V755378",
                            "91229V886007",
                            "42754V444240")))%>% 
-  mutate(weekday = "17_may")
+  mutate(weekday = "17. mai")
 
-
+# Special days
 dt_2019_spring_specials <-
   dplyr::bind_rows(dt_2019_1_may,
                    dt_2019_17_may)
 
-# Weeks 2020
+dt_2019_21 <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 21) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "42754V444240")))
+
+dt_2019_22_ascension <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 22) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "42754V444240")))
+
+# Weeks 2020 ####
 dt_2020_11 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 11) %>% 
@@ -393,7 +416,7 @@ dt_2020_1_may <- dt %>%
   filter(weekday == 5) %>% 
   select(point_id, total_volume, weekno) %>% 
   filter(!(point_id %in% c("42754V444240"))) %>% 
-  mutate(weekday = "1_may")
+  mutate(weekday = "1. mai")
 
 dt_2020_19 <- dt %>% 
   filter(year == 2020) %>%
@@ -415,11 +438,26 @@ dt_2020_17_may <- dt %>%
   filter(weekday == 7) %>% 
   select(point_id, total_volume, weekno) %>% 
   filter(!(point_id %in% c("42754V444240"))) %>% 
-  mutate(weekday = "17_may")
+  mutate(weekday = "17. mai")
 
+# Special days
 dt_2020_spring_specials <-
   dplyr::bind_rows(dt_2020_1_may,
                    dt_2020_17_may)
+
+dt_2020_21_ascension <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 21) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("42754V444240")))
+
+dt_2020_22 <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 22) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("42754V444240")))
+
+
 
 # Trp index
 calculate_trp_index <- function(dt_base, dt_calc) {
@@ -504,6 +542,8 @@ trp_dt_2020_09_19 <- calculate_trp_index(dt_2020_09, dt_2020_19) %>%
 trp_dt_2020_09_20 <- calculate_trp_index(dt_2020_09, dt_2020_20) %>% 
   filter(city_area_name %in% c("Bodø", "Tromsø"))
 
+# Ending this series with week 20 here. Week 9/10 is no longer the norm.
+
 # Compare this week to same week 2019
 trp_dt_201911_202011 <- calculate_trp_index(dt_2019_11, dt_2020_11)
 trp_dt_201912_202012 <- calculate_trp_index(dt_2019_12, dt_2020_12)
@@ -513,6 +553,8 @@ trp_dt_201917_202017 <- calculate_trp_index(dt_2019_17, dt_2020_17)
 trp_dt_201918_202018 <- calculate_trp_index(dt_2019_18, dt_2020_18)
 trp_dt_201919_202019 <- calculate_trp_index(dt_2019_19, dt_2020_19)
 trp_dt_201920_202020 <- calculate_trp_index(dt_2019_20, dt_2020_20)
+trp_dt_2019_2020_ascension <- calculate_trp_index(
+  dt_2019_22_ascension, dt_2020_21_ascension)
 
 # Spring specials
 trp_dt_spring <- calculate_trp_index_movable_days(dt_2019_spring_specials,
@@ -642,11 +684,16 @@ city_dt_201919_202019 <- calculate_city_index(dt_2019_19, dt_2020_19) %>%
 city_dt_201920_202020 <- calculate_city_index(dt_2019_20, dt_2020_20) %>% 
   filter(!(city_area_name %in% c("Bodø")))
 
+city_dt_2019_2020_ascension <- calculate_city_index(dt_2019_22_ascension, 
+                                                    dt_2020_21_ascension) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
 
 # Spring specials
 city_dt_spring <- calculate_city_index_movable_days(dt_2019_spring_specials,
                                                     dt_2020_spring_specials) %>% 
-  filter(!(city_area_name %in% c("Bodø")))
+  filter(!(city_area_name %in% c("Bodø"))) %>% 
+  mutate(ukedag = weekday)
 
 # Easter
 city_dt_palmweekend <- calculate_city_index(dt_2019_15_palmweekend,
@@ -740,6 +787,12 @@ Været vil enkelte dager kunne påvirke trafikkmengden. For eksempel vil det ved
 
 # Endring i trafikk fra uka før smitteverntiltak i 2020
 
+Påsken, som her er definert til å gjelde fra og med fredag før palmesøndag til og med Andre påskedag, er tatt ut og sammenlignet i egen figur og tabell.
+
+Spesielle dager i mai og juni tas ut av den direkte sammenligningen uke for uke. Spesielle dager må sammenlignes direkte, og dette gjelder 1. mai, 17. mai, Kristi himmelfartsdag med påfølgende helg og Pinsen.
+
+Med uke 20 avsluttes rekken med sammenligninger med uke 10, da sesongvariasjoner normalt gjør at det ikke forventes samme mengde trafikk.
+
 ## De største byområdene i Sør-Norge
 
 ### Fra uke 10 til 11, 2020
@@ -753,7 +806,7 @@ make_city_table(city_dt_2020_10_11,
                 "Prosentvis endring i trafikkmengde fra uke 10 til uke 11 i 2020.")
 ```
 
-I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet med uke 10 som utgangspunkt. Det vil si at trafikken har gått ned fra uke 10 til uke 11, når prosentverdien er negativ. Vi ser den samme tendensen i alle byområdene. Data baserer seg på trafikken registrert i følgende antall trafikkregistreringspunkt: Bergen 45, Nord-Jæren 48, Oslo og Akershus 76 og Trondheim 18.
+I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet med uke 10 som utgangspunkt. Det vil si at trafikken har gått ned fra uke 10 til uke 11, når prosentverdien er negativ. Vi ser den samme tendensen i alle byområdene. Data baserer seg på trafikken registrert i følgende antall trafikkregistreringspunkt: Bergen 45, Nord-Jæren 43, Oslo og Akershus 76 og Trondheim 18.
 
 
 ### Fra uke 10 til 12, 2020
@@ -974,6 +1027,9 @@ make_city_table(city_dt_2020_09_20,
 
 
 # Endring i trafikk fra 2019 til 2020
+Påsken, som her er definert til å gjelde fra og med fredag før palmesøndag til og med Andre påskedag, er tatt ut og sammenlignet i egen figur og tabell lenger ned. Siden påsken i 2019 var i uke 16, mens den i 2020 var i uke 15, blir det to uker som ikke kan sammenlignes direkte mellom årene.
+
+Uke 21 i 2020 hadde Kristi himmelfartsdag, og er her sammenlignet med tilsvarende uke i 2019 som var uke 22. Den er angitt med "Uke 21/22".
 
 
 ```{r plot_city_201911, fig.width=8, fig.height=8}
@@ -1076,7 +1132,31 @@ make_city_table(city_dt_201920_202020,
 ```
 
 
-# Endring i påsketrafikken
+```{r plot_city_ascension, fig.width=8, fig.height=8}
+make_daily_plot(city_dt_2019_2020_ascension, 
+                "Fra uke 22 2019 til uke 21 i 2020 (Kristi himmelfart)")
+```
+
+```{r table_city_ascension}
+make_city_table(city_dt_2019_2020_ascension,
+                "Prosentvis endring i trafikkmengde fra uke 22 2019 til uke 21 2020 (Kristi himmelfart).")
+```
+
+## Sammenligning av spesielle dager i mai
+
+```{r plot_city_spring, fig.width=8, fig.height=8}
+make_daily_plot(city_dt_spring, "Fra 2019 til 2020")
+```
+
+```{r table_city_spring}
+make_city_table(city_dt_spring,
+                "Prosentvis endring i trafikkmengde fra 2019 til 2020.")
+```
+
+For 17. mai viser våre data ganske ulik endring i byene, men dette kan skyldes at våre trafikkregistreringspunkter i veldig ulik grad dekker veger som normalt er stengt 17. mai.
+
+
+## Endring i påsketrafikken
 
 ```{r plot_city_palmweekend, fig.width=8, fig.height=8}
 make_daily_plot(city_dt_palmweekend, "Fra palmehelga 2019 til palmehelga 2020")

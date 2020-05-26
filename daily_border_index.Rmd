@@ -78,10 +78,10 @@ border_trp_adt <- border_trps %>%
 # 3. Easter 2019 to Easter 2020
 
 borderdata_2019_from <- "2019-03-11T00:00:00+01:00"
-borderdata_2019_to <- "2019-05-20T00:00:00+01:00"
+borderdata_2019_to <- "2019-06-03T00:00:00+01:00"
 
 borderdata_2020_from <- "2020-03-02T00:00:00+01:00"
-borderdata_2020_to <- "2020-05-18T00:00:00+01:00"
+borderdata_2020_to <- "2020-05-25T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -171,6 +171,13 @@ border_dt_2019_18 <- border_dt %>%
   filter(weekday != 3) %>% 
   select(point_id, total_volume, weekno, weekday)
 
+border_dt_2019_1_may <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 18) %>% 
+  filter(weekday == 3) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "1. mai")
+
 border_dt_2019_19 <- border_dt %>% 
   filter(year == 2019) %>%
   filter(weekno == 19) %>% 
@@ -179,9 +186,34 @@ border_dt_2019_19 <- border_dt %>%
 border_dt_2019_20 <- border_dt %>% 
   filter(year == 2019) %>%
   filter(weekno == 20) %>% 
+  # removing 17 May
+  filter(weekday != 5) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-# Weeks 2020
+border_dt_2019_17_may <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 20) %>% 
+  filter(weekday == 5) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "17. mai")
+
+border_dt_2019_21 <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 21) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2019_22_ascension <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 22) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+# Special days
+border_dt_2019_spring_specials <-
+  dplyr::bind_rows(border_dt_2019_1_may,
+                   border_dt_2019_17_may)
+
+
+# Weeks 2020 ####
 border_dt_2020_11 <- border_dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 11) %>% 
@@ -238,6 +270,13 @@ border_dt_2020_18 <- border_dt %>%
   filter(weekday != 5) %>% 
   select(point_id, total_volume, weekno, weekday)
 
+border_dt_2020_1_may <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 18) %>%
+  filter(weekday == 5) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "1. mai")
+
 border_dt_2020_19 <- border_dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 19) %>% 
@@ -246,8 +285,26 @@ border_dt_2020_19 <- border_dt %>%
 border_dt_2020_20 <- border_dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 20) %>% 
+  # removing 17 May
+  filter(weekday != 7) %>% 
   select(point_id, total_volume, weekno, weekday)
 
+border_dt_2020_17_may <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 20) %>%
+  filter(weekday == 7) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "17. mai")
+
+border_dt_2020_21_ascension <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 21) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+# Special days
+border_dt_2020_spring_specials <-
+  dplyr::bind_rows(border_dt_2020_1_may,
+                   border_dt_2020_17_may)
 
 # Trp index
 # Testing
@@ -272,6 +329,25 @@ calculate_trp_border_index <- function(dt_base, dt_calc) {
     arrange(factor(ukedag, levels = ukedager)) %>% 
     # TODO: sort by weekday
     tidyr::pivot_wider(names_from = ukedag,
+                       values_from = index)
+}
+
+calculate_trp_border_index_movable_days <- function(dt_base, dt_calc) {
+  trp_daily_index <- inner_join(dt_base, dt_calc,
+                            by = c("point_id", "weekday"),
+                            suffix = c("_b", "_c")) %>% 
+  mutate(index = round((total_volume_c / total_volume_b - 1) * 100, digits = 1),
+         index = dplyr::na_if(index, "Inf")) %>% 
+  #left_join(norske_ukedager) %>% 
+  select(point_id, weekday, index) %>% 
+  left_join(points, by = c("point_id" = "trp_id")) %>% 
+  left_join(adt_filtered, by = c("point_id" = "trp_id")) %>% 
+  tidyr::separate(road_reference, c("road", "strekning", "meter"),
+                  sep = " ") %>%
+  select(name, road, adt, municipality_name, weekday, index) %>% 
+    #arrange(factor(ukedag, levels = ukedager)) %>% 
+    # TODO: sort by weekday
+    tidyr::pivot_wider(names_from = weekday,
                        values_from = index)
 }
 
@@ -312,7 +388,9 @@ border_trp_dt_2020_10_20 <- calculate_trp_border_index(
   border_dt_2020_10, 
   border_dt_2020_20)
 
-# Compare this week to same week 2019
+# Ending this series with week 20 here. Week 10 is no longer the norm.
+
+# Compare this week to same week 2019 ####
 border_trp_dt_201911_202011 <- calculate_trp_border_index(
   border_dt_2019_11, 
   border_dt_2020_11)
@@ -345,7 +423,17 @@ border_trp_dt_201920_202020 <- calculate_trp_border_index(
   border_dt_2019_20, 
   border_dt_2020_20)
 
-# Compare Easter
+border_trp_dt_2019_2020_ascension <- calculate_trp_border_index(
+  border_dt_2019_22_ascension,
+  border_dt_2020_21_ascension
+)
+
+border_trp_dt_spring_specials <- calculate_trp_border_index_movable_days(
+  border_dt_2019_spring_specials,
+  border_dt_2020_spring_specials
+)
+
+# Compare Easter ####
 border_trp_dt_palmweekend <- calculate_trp_border_index(
   border_dt_2019_15_palmweekend, 
   border_dt_2020_14_palmweekend)
@@ -358,7 +446,7 @@ border_trp_dt_eastermonday <- calculate_trp_border_index(
   border_dt_2019_17_eastermonday,
   border_dt_2020_16_eastermonday)
 
-# Border index
+# Border index ####
 calculate_border_index <- function(dt_base, dt_calc) {
   border_daily_index <- inner_join(dt_base, dt_calc,
                             by = c("point_id", "weekday"),
@@ -374,7 +462,22 @@ calculate_border_index <- function(dt_base, dt_calc) {
   select(ukedag, no_trp, index)
 }
 
-# Compare this week to 2020 week 10
+calculate_border_index_movable_days <- function(dt_base, dt_calc) {
+  border_daily_index <- inner_join(dt_base, dt_calc,
+                            by = c("point_id", "weekday"),
+                            suffix = c("_b", "_c")) %>% 
+  group_by(weekday) %>% 
+  summarise(border_volume_b = sum(total_volume_b),
+            border_volume_c = sum(total_volume_c),
+            no_trp = n()
+            ) %>% 
+  mutate(index = round((border_volume_c / border_volume_b - 1) * 100, 
+                       digits = 1)) %>% 
+  #left_join(norske_ukedager) %>% 
+  select(weekday, no_trp, index)
+}
+
+# Compare this week to 2020 week 10 ####
 border_dt_2020_10_11 <- calculate_border_index(
   border_dt_2020_10, 
   border_dt_2020_11) %>% 
@@ -430,7 +533,9 @@ border_base_2020 <- bind_rows(border_dt_2020_10_11,
                               border_dt_2020_10_19,
                               border_dt_2020_10_20)
 
-# Compare this week to same week 2019
+# Ending this series here.
+
+# Compare this week to same week 2019 ####
 border_dt_201911_202011 <- calculate_border_index(
   border_dt_2019_11, 
   border_dt_2020_11) %>% 
@@ -471,6 +576,10 @@ border_dt_201920_202020 <- calculate_border_index(
   border_dt_2020_20) %>% 
   mutate(periode = "Uke 20")
 
+border_dt_201922_202021 <- calculate_border_index(
+  border_dt_2019_22_ascension, 
+  border_dt_2020_21_ascension) %>% 
+  mutate(periode = "Uke 21/22")
 
 border_base_2019 <- bind_rows(border_dt_201911_202011,
                               border_dt_201912_202012,
@@ -479,9 +588,18 @@ border_base_2019 <- bind_rows(border_dt_201911_202011,
                               border_dt_201917_202017,
                               border_dt_201918_202018,
                               border_dt_201919_202019,
-                              border_dt_201920_202020)
+                              border_dt_201920_202020,
+                              border_dt_201922_202021)
 
-# Compare Easter
+# Compare spring specials ####
+
+border_dt_spring_specials <- calculate_border_index_movable_days(
+  border_dt_2019_spring_specials,
+  border_dt_2020_spring_specials) %>% 
+  mutate(periode = "Spesielle dager") %>% 
+  rename(ukedag = weekday)
+
+# Compare Easter ####
 border_dt_palmweekend <- calculate_border_index(
   border_dt_2019_15_palmweekend, 
   border_dt_2020_14_palmweekend) %>% 
@@ -642,7 +760,10 @@ border_trp_adt %>%
 ## Sammenlignet med uke 10 i 2020
 Påsken, som her er definert til å gjelde fra og med fredag før palmesøndag til og med Andre påskedag, er tatt ut og sammenlignet i egen figur og tabell.
 
-Spesielle dager i mai og juni tas ut av den direkte sammenligningen uke for uke. Spesielle dager må sammenlignes direkte, og dette gjelder 1. mai, 17. mai, Kristi himmelfartsdag, fredag etter Krist himmelfartsdag og Pinsen.
+Spesielle dager i mai og juni tas ut av den direkte sammenligningen uke for uke. Spesielle dager må sammenlignes direkte, og dette gjelder 1. mai, 17. mai, Kristi himmelfartsdag med påfølgende helg og Pinsen.
+
+Med uke 20 avsluttes rekken med sammenligninger med uke 10, da sesongvariasjoner normalt gjør at det ikke forventes samme mengde trafikk.
+
 
 ```{r plot_202011, fig.width=8, fig.height=8}
 make_daily_border_plot(border_base_2020, "2020")
@@ -662,6 +783,9 @@ I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet me
 ## Sammenlignet mellom samme uke i 2019 og 2020
 Påsken, som her er definert til å gjelde fra og med fredag før palmesøndag til og med Andre påskedag, er tatt ut og sammenlignet i egen figur og tabell lenger ned. Siden påsken i 2019 var i uke 16, mens den i 2020 var i uke 15, blir det to uker som ikke kan sammenlignes direkte mellom årene.
 
+Uke 21 i 2020 hadde Kristi himmelfartsdag, og er her sammenlignet med tilsvarende uke i 2019 som var uke 22. Den er angitt med "Uke 21/22".
+
+
 ```{r plot_201911, fig.width=8, fig.height=8}
 make_daily_border_plot(border_base_2019, "Fra 2019 til 2020")
 ```
@@ -677,6 +801,16 @@ make_border_table(border_base_2019,
 
 I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet med uke 11 i 2019 som utgangspunkt. Det vil si at trafikken har gått ned fra år 2019 til samme ukedag i 2020, når prosentverdien er negativ. 
 
+## Sammenligning av spesielle dager i mai
+
+```{r plot_spring, fig.width=8, fig.height=8}
+make_daily_border_plot(border_dt_spring_specials, "Fra 2019 til 2020")
+```
+
+```{r table_spring}
+make_border_table(border_dt_spring_specials,
+                  "Prosentvis endring i trafikkmengde fra 2019 til 2020.")
+```
 
 ## Sammenligning av påsketrafikken
 
@@ -788,7 +922,7 @@ make_border_trp_table(border_trp_dt_2020_10_19,
 
 ```{r trptable_202020}
 make_border_trp_table(border_trp_dt_2020_10_20,
-                      "Prosentvis endring i trafikkmengde fra uke 10 til uke 20 i 2020.")
+                      "Prosentvis endring i trafikkmengde fra uke 10 til uke 20 i 2020. Søndag 17. mai er utelatt.")
 ```
 
 
@@ -836,8 +970,22 @@ make_border_trp_table(border_trp_dt_201919_202019,
 
 ```{r trptable_201920}
 make_border_trp_table(border_trp_dt_201920_202020,
-                      "Prosentvis endring i trafikkmengde fra uke 20 2019 til uke 20 2020.")
+                      "Prosentvis endring i trafikkmengde fra uke 20 2019 til uke 20 2020. 17. mai er utelatt.")
 ```
+
+```{r trptable_201921}
+make_border_trp_table(border_trp_dt_2019_2020_ascension,
+                      "Prosentvis endring i trafikkmengde fra uke 22 2019 til uke 21 2020.")
+```
+
+## Sammenligning av spesielle dager i mai
+
+```{r trptable_spring}
+make_border_trp_table(border_trp_dt_spring_specials,
+                      "Prosentvis endring i trafikkmengde fra 2019 til 2020.")
+```
+
+
 
 
 

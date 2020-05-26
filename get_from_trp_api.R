@@ -91,6 +91,66 @@ getPointsFromTRPAPI_filtered <- function() {
   return(points_trp)
 }
 
+
+get_periodic_trps <- function() {
+
+  api_query <-
+    "query hentTRP{
+  trafficRegistrationPoints(stationType: PERIODIC, trafficType: VEHICLE) {
+    id
+    name
+    location {
+      roadLink {
+        id
+        position
+      }
+      coordinates {
+        latlon {
+          latitude
+          longitude
+          wkt
+          srid
+        }
+        utm33 {
+          north
+          east
+          wkt
+          srid
+        }
+      }
+      roadReference {
+        shortForm
+      }
+    }
+    commissionElements {
+      commission {
+        validFrom
+        validTo
+      }
+    }
+  }
+}"
+
+  api_query_trimmed <- stringr::str_replace_all(api_query, "[\r\n]", " ")
+
+  api_query_string <- paste0('{"query":"', api_query_trimmed, '" }')
+
+  response <- httr::POST(url = trp_api_url,
+                         httr::add_headers(.headers = trp_api_headers),
+                         httr::set_cookies(.cookies = trp_api_cookies),
+                         body = api_query_string)
+
+  response_parsed <- fromJSON(str_conv(response$content, encoding = "UTF-8"),
+                              simplifyDataFrame = T,
+                              flatten = T) %>%
+    as.data.frame() %>%
+    tidyr::unnest(cols =
+                    c("data.trafficRegistrationPoints.commissionElements"))
+
+  return(response_parsed)
+}
+
+
 get_trp_for_vti <- function() {
 
   # TODO: replace deprecated county node
