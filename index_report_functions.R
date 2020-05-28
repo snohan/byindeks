@@ -131,4 +131,28 @@ create_monthly_city_index_table <- function(city_monthly) {
   return(monthly_table)
 }
 
+create_city_36_index_table <- function(city_36_month) {
+
+  city_table <- city_36_month %>%
+    dplyr::select(periode, year, index) %>%
+    flextable::flextable() %>%
+    colformat_num(j = c("index"), digits = 1) %>%
+    set_header_labels(periode = "Treårsperiodens slutt",
+                      index = "Endring i trafikkmengde (%)") %>%
+    merge_at(i = 1, j = 1:2, part = "header") %>%
+    bold(part = "header") %>%
+    fontsize(size = 9, part = "all") %>%
+    font(fontname = "Lucida Sans Unicode", part = "all") %>%
+    bg(bg = "#ED9300", part = "header") %>%
+    border_remove() %>%
+    hline_top(part = "header", border = borderline) %>%
+    hline_bottom(part = "all", border = borderline) %>%
+    autofit() %>%
+    height_all(height = .2) %>%
+    padding(padding.top = .3,
+            padding.bottom = .3) %>%
+    set_caption("Estimert endring i trafikkmengde for siste tre år.")
+
+  return(city_table)
+}
 

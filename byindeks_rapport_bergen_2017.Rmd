@@ -26,6 +26,9 @@ city_info <-
 city_monthly <- 
   read.csv2("data_indexpoints_tidy/byindeks_maanedlig_bergen_2016.csv")
 
+city_36_month <- 
+  read.csv2("data_indexpoints_tidy/byindeks_36_maaneder_bergen_2016.csv")
+
 # TODO: change to three year rolling when available
 city_info_all_years <- city_info %>% 
   dplyr::filter(year == "2016-2020")
@@ -100,6 +103,14 @@ Usikkerheten knyttet til byindeksen gjenspeiles i et 95 % konfidensintervall som
 `r stringr::str_replace(as.character(index_all_years_ci_lower), "\\.", ",")` % til
 `r stringr::str_replace(as.character(index_all_years_ci_upper), "\\.", ",")` %.
 
+
+## Endring i rullerende treårsperiode
+
+Når månedsindeks er beregnet gjennom tre år eller lenger, beregnes en rullerende treårsindeks. Den oppdateres månedlig. Den første treårsindeksen inkluderer månedsindeksene fra og med januar 2017 til og med desember 2019.
+
+```{r city_table_36}
+create_city_36_index_table(city_36_month)
+```
 
 
 

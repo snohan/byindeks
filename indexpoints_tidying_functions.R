@@ -179,4 +179,89 @@ calculate_two_year_index <- function(city_index_df) {
                     sqrt(2))
 }
 
+calculate_two_years_index_36_month_version <- function(city_index_df) {
+
+  # TODO: add sd and ci
+
+  months_1_24 <- city_index_df %>%
+    select(index, index_i) %>%
+    slice(1:2)
+
+  months_25_36 <- city_index_df %>%
+    select(index, index_i) %>%
+    slice(3)
+
+  first_24_months <- list(
+    index = 100 * (prod(months_1_24$index_i) - 1),
+    index_i = prod(months_1_24$index_i)) %>%
+    as_tibble()
+
+  months_1_36 <- bind_rows(first_24_months, months_25_36)
+
+  all_36_months_index <- list(
+    index = 100 * (prod(months_1_36$index_i) - 1),
+    index_i = prod(months_1_36$index_i)) %>%
+    as_tibble()
+
+  return(all_36_months_index)
+}
+
+calculate_all_possible_36_month_indexes <- function(city_monthly_df) {
+
+  # A for-loop that loops through all consecutive and possible
+  # 36-month periods
+  # Using just single months
+  city_months <- city_monthly_df %>%
+    filter(periode != "Hele året")
+
+  no_months <- nrow(city_months)
+  n_end <- no_months - 35
+
+  all_possible_36_month_indexes <- tibble::tibble()
+
+  for (n in 1:n_end) {
+
+    # n from n_start to n_end
+    start_month <- n
+    end_month <- 35 + n
+
+    # The 36 months for this iteration
+    city_monthly_36 <- city_months %>%
+      slice(start_month:end_month) %>%
+      tibble::rowid_to_column("id") %>%
+      mutate(three_year_group = case_when(
+        id <= 12 ~ 1,
+        id <= 24 ~ 2,
+        id <= 36 ~ 3,
+        TRUE ~ 4
+      ))
+
+    # The end month for this iteration
+    city_monthly_36_period <- city_months %>%
+      slice(end_month) %>%
+      select(periode, year) %>%
+      mutate(year = stringr::str_sub(year, 6, 9))
+
+    # The 36 month index for this iteration
+    city_monthly_36_index <- city_monthly_36 %>%
+      #filter(three_year_group < 4) %>%
+      group_by(three_year_group) %>%
+      summarise(volume_index_year = sum(traffic_index_year),
+                volume_base_year = sum(traffic_base_year),
+                index = (volume_index_year / volume_base_year - 1 ) * 100,
+                index_i = volume_index_year / volume_base_year) %>%
+      #select(index, index_i) %>%
+      calculate_two_years_index_36_month_version() %>%
+      bind_cols(city_monthly_36_period)
+
+    all_possible_36_month_indexes <- bind_rows(
+      all_possible_36_month_indexes,
+      city_monthly_36_index
+    )
+
+  }
+
+  return(all_possible_36_month_indexes)
+}
+
 

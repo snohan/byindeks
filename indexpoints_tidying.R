@@ -1416,29 +1416,17 @@ write.csv2(city_monthly,
 
 # HERE
 # Bergen 2016 three year ####
-# TODO: 36 month rolling index
-# TODO: functionize
-city_monthly_36 <- city_monthly %>%
-  filter(periode != "Hele året") %>%
-  tibble::rowid_to_column("id") %>%
-  mutate(three_year_group = case_when(
-    id <= 12 ~ 1,
-    id <= 24 ~ 2,
-    id <= 36 ~ 3,
-    TRUE ~ 4
-  ))
+# No use in calculating this before 37 months are available
+# The first 36 month index is equal to the first three whole year index!
 
+# TODO: 36 month rolling index with sd and ci
 
-city_monthly_36_period <- city_monthly_36 %>%
-  slice(36) %>%
-  select(periode, year)
+all_possible_36_month_indexes <-
+  calculate_all_possible_36_month_indexes(city_monthly)
 
-city_monthly_36_index <- city_monthly_36%>%
-  filter(three_year_group < 4) %>%
-  group_by(three_year_group) %>%
-  summarise(volume_index_year = sum(traffic_index_year),
-            volume_base_year = sum(traffic_base_year),
-            index = (volume_index_year / volume_base_year - 1 ) * 100)
+write.csv2(all_possible_36_month_indexes,
+           file = "data_indexpoints_tidy/byindeks_36_maaneder_bergen_2016.csv",
+           row.names = F)
 
 
 # Kristiansand 2016 ####

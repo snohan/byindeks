@@ -6,6 +6,27 @@ source("H:/Programmering/R/byindeks/trp_api_cookies.R")
 
 trp_api_url <- "https://www.vegvesen.no/datainn/adm/traffic-registration-point/api/"
 
+# Without ghql
+get_via_httr <- function(api_query) {
+
+  api_query_trimmed <- stringr::str_replace_all(api_query, "[\r\n]", " ")
+
+  api_query_string <- paste0('{"query":"', api_query_trimmed, '" }')
+
+  response <- httr::POST(url = trp_api_url,
+                         httr::add_headers(.headers = trp_api_headers),
+                         httr::set_cookies(.cookies = trp_api_cookies),
+                         body = api_query_string)
+
+  response_parsed <- fromJSON(str_conv(response$content, encoding = "UTF-8"),
+                              simplifyDataFrame = T,
+                              flatten = T) %>%
+    as.data.frame()
+
+  return(response_parsed)
+}
+
+# With ghql
 cli_trp <- GraphqlClient$new(
     url = "https://www.vegvesen.no/datainn/adm/traffic-registration-point/api/",
     headers = list(
@@ -92,7 +113,7 @@ getPointsFromTRPAPI_filtered <- function() {
 }
 
 
-get_periodic_trps <- function() {
+get_periodic_trps_with_commission <- function() {
 
   api_query <-
     "query hentTRP{
@@ -150,6 +171,92 @@ get_periodic_trps <- function() {
   return(response_parsed)
 }
 
+
+get_periodic_trps <- function() {
+  # Many periodic stations have no trps defined, therefore assuming
+  # there is a trp where the station is located
+
+  api_query <-
+    "query periodic_trs {
+  trafficRegistrationStations (stationType: PERIODIC, trafficType: VEHICLE) {
+    id
+    name
+    stationType
+    location {
+      roadLink {
+        id
+        position
+      }
+      coordinates {
+        latlon {
+          latitude
+          longitude
+          wkt
+          srid
+        }
+        utm33 {
+          north
+          east
+          wkt
+          srid
+        }
+      }
+      roadReference {
+        shortForm
+        roadCategory {
+          id
+          name
+        }
+      }
+      municipality {
+        name
+        county {
+          name
+        }
+      }
+    }
+    trafficRegistrationPoints {
+      id
+    }
+  }
+}"
+
+  api_query_trimmed <- stringr::str_replace_all(api_query, "[\r\n]", " ")
+
+  api_query_string <- paste0('{"query":"', api_query_trimmed, '" }')
+
+  response <- httr::POST(url = trp_api_url,
+                         httr::add_headers(.headers = trp_api_headers),
+                         httr::set_cookies(.cookies = trp_api_cookies),
+                         body = api_query_string)
+
+  response_parsed <- fromJSON(str_conv(response$content, encoding = "UTF-8"),
+                              simplifyDataFrame = T,
+                              flatten = T) %>%
+    as.data.frame() %>%
+    tidyr::unnest(cols =
+                    c("data.trafficRegistrationStations.trafficRegistrationPoints"),
+                  keep_empty = TRUE) %>%
+    dplyr::select(trs_id = 1,
+                  trs_name = 2,
+                  trp_id = 4,
+                  roadlink = 5,
+                  position = 6,
+                  lat = 7,
+                  lon = 8,
+                  latlon_wkt = 9,
+                  latlon_srid = 10,
+                  utm33_n = 11,
+                  utm33_e = 12,
+                  utm33_wkt = 13,
+                  utm33_srid = 14,
+                  road_reference = 15,
+                  road_category = 16,
+                  municipality = 18,
+                  county = 19)
+
+  return(response_parsed)
+}
 
 get_trp_for_vti <- function() {
 
@@ -553,6 +660,69 @@ get_stations_and_trps_with_coordinates_from_TRPAPI <- function() {
   points_trp <- cli_trp$exec(myqueries$queries$points_trp) %>%
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
     as.data.frame() %>%
+    tidyr::unnest(data.trafficRegistrationStations.trafficRegistrationPoints) %>%
+    dplyr::rename(
+      stasjonnr = data.trafficRegistrationStations.id,
+      stasjonnavn = data.trafficRegistrationStations.name,
+      stasjon_vegref = data.trafficRegistrationStations.location.roadReference.shortForm,
+      stasjon_lat = data.trafficRegistrationStations.location.coordinates.latlon.latitude,
+      stasjon_lon = data.trafficRegistrationStations.location.coordinates.latlon.longitude,
+      punktnr = id,
+      punktnavn = name,
+      punkt_lat = location.coordinates.latlon.latitude,
+      punkt_lon = location.coordinates.latlon.longitude,
+      punkt_vegref = location.currentRoadReference.shortForm,
+      punkt_vegref_kort = location.currentRoadReference,
+      punkt_vegkategori = location.currentRoadReference.category,
+      fylkenr = location.currentRoadReference.countyInformation.id,
+      fylkenavn = location.currentRoadReference.countyInformation.name) %>%
+    dplyr::select(-punkt_vegref_kort)
+
+  return(points_trp)
+}
+
+get_stations_and_trps_with_coordinates_from_TRPAPI_httr <- function() {
+  # Get all traffic registration stations
+  api_query <-
+    "query getStation{
+    trafficRegistrationStations{
+    id
+    name
+    location{
+      roadReference{
+        shortForm
+      }
+      coordinates{
+        latlon{
+          latitude
+          longitude
+        }
+      }
+    }
+    trafficRegistrationPoints {
+      id
+      name
+      location{
+        coordinates{
+          latlon{
+            latitude
+            longitude
+          }
+        }
+        currentRoadReference{
+          shortForm
+          countyInformation {
+            id
+            name
+          }
+          category
+        }
+      }
+    }
+  }
+}"
+
+  points_trp <- get_via_httr(api_query) %>%
     tidyr::unnest(data.trafficRegistrationStations.trafficRegistrationPoints) %>%
     dplyr::rename(
       stasjonnr = data.trafficRegistrationStations.id,
