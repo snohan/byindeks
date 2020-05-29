@@ -121,10 +121,10 @@ trps <- dplyr::left_join(cities_points, points) %>%
 
 # Week 11 onwards 2019, including Easter
 week_2019_from <- "2019-03-11T00:00:00+01:00"
-week_2019_to <- "2019-06-03T00:00:00+01:00"
+week_2019_to <- "2019-06-17T00:00:00+01:00"
 
 week_2020_from <- "2020-02-24T00:00:00+01:00"
-week_2020_to <- "2020-05-25T00:00:00+01:00"
+week_2020_to <- "2020-05-30T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -351,6 +351,30 @@ dt_2019_22_ascension <- dt %>%
                            "91229V886007",
                            "42754V444240")))
 
+dt_2019_23_whitsun <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 23) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "42754V444240")))
+
+dt_2019_24_whitmonday <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 24) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "42754V444240")))
+
+
+
 # Weeks 2020 ####
 dt_2020_11 <- dt %>% 
   filter(year == 2020) %>%
@@ -451,11 +475,18 @@ dt_2020_21_ascension <- dt %>%
   select(point_id, total_volume, weekno, weekday) %>% 
   filter(!(point_id %in% c("42754V444240")))
 
-dt_2020_22 <- dt %>% 
+dt_2020_22_whitsun <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 22) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
   filter(!(point_id %in% c("42754V444240")))
+
+dt_2020_23_whitmonday <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 23) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("42754V444240")))
+
 
 
 
@@ -555,6 +586,8 @@ trp_dt_201919_202019 <- calculate_trp_index(dt_2019_19, dt_2020_19)
 trp_dt_201920_202020 <- calculate_trp_index(dt_2019_20, dt_2020_20)
 trp_dt_2019_2020_ascension <- calculate_trp_index(
   dt_2019_22_ascension, dt_2020_21_ascension)
+trp_dt_2019_2020_whitsun <- calculate_trp_index(
+  dt_2019_23_whitsun, dt_2020_22_whitsun)
 
 # Spring specials
 trp_dt_spring <- calculate_trp_index_movable_days(dt_2019_spring_specials,
@@ -686,6 +719,10 @@ city_dt_201920_202020 <- calculate_city_index(dt_2019_20, dt_2020_20) %>%
 
 city_dt_2019_2020_ascension <- calculate_city_index(dt_2019_22_ascension, 
                                                     dt_2020_21_ascension) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+city_dt_2019_2020_whitsun <- calculate_city_index(dt_2019_23_whitsun, 
+                                                    dt_2020_22_whitsun) %>% 
   filter(!(city_area_name %in% c("Bodø")))
 
 
@@ -1141,6 +1178,19 @@ make_daily_plot(city_dt_2019_2020_ascension,
 make_city_table(city_dt_2019_2020_ascension,
                 "Prosentvis endring i trafikkmengde fra uke 22 2019 til uke 21 2020 (Kristi himmelfart).")
 ```
+
+
+```{r plot_city_whitsun, fig.width=8, fig.height=8}
+make_daily_plot(city_dt_2019_2020_whitsun, 
+                "Fra uke 23 2019 til uke 22 i 2020 (pinsehelg)")
+```
+
+```{r table_city_whitsun}
+make_city_table(city_dt_2019_2020_whitsun,
+                "Prosentvis endring i trafikkmengde fra uke 23 2019 til uke 22 2020 (pinsehelg).")
+```
+
+
 
 ## Sammenligning av spesielle dager i mai
 
