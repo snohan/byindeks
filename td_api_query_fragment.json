@@ -1,0 +1,61 @@
+query aadt {
+  trafficData(trafficRegistrationPointId: "44656V72812") {
+    trafficRegistrationPoint {
+      id
+    }
+    volume {
+      average {
+        daily {
+          byYear {
+            year
+            dayType
+            total {
+              ...totalVolume
+              ...validLength
+            }
+            byDirection {
+              heading
+              total {
+                ...totalVolume
+                ...validLength
+              }
+              byLengthRange {
+                lengthRange {
+                  representation
+                }
+                total {
+                  ...totalVolume
+                }
+              }
+            }
+            byLengthRange {
+              lengthRange {
+                representation
+              }
+              total {
+                ...totalVolume
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+fragment totalVolume on TrafficVolumeAverage {
+  coverage {
+    percentage
+  }
+  volume {
+    average
+    standardDeviation
+  }
+}
+
+fragment validLength on TrafficVolumeAverage {
+  validLengthVolume {
+    average
+    standardDeviation
+  }
+}

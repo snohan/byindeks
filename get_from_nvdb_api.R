@@ -10,6 +10,12 @@ nvdb_url_v3 <- "https://www.vegvesen.no/nvdb/api/v3"
 sti_vegobjekter <- "/vegobjekter"
 sti_veg <- "/veg"
 
+nvdb_v3_headers <- c(
+  "X-Client" = "trafikkdatagruppa",
+  "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+  "Accept" = "application/vnd.vegvesen.nvdb-v3+json"
+)
+
 
 vegsystemreferanse <- "KV6064S1D1m30"
 kommunenr <- "5001"
@@ -501,3 +507,94 @@ get_speedlimit_by_roadlink <- function(roadlink) {
 
   return(verdi)
 }
+
+municipality_number <- "5001"
+get_road_length_for_municipality <- function(municipality_number) {
+
+  # Paginated response, starting with an empty tibble to add each response to
+  road_segments_selected <- tibble::tibble()
+
+  api_query <- paste0(nvdb_url_v3,
+                      "/vegnett/veglenkesekvenser/segmentert?",
+                      "kommune=",
+                      municipality_number,
+                      "&historisk=false",
+                      "&kryssystem=false",
+                      "&sideanlegg=false",
+                      "&detaljniva=VT,VTKB",
+                      "&typeveg=kanalisertveg,enkelbilveg",
+                      "&adskiltelop=Med,Nei",
+                      "&veglenketype=hoved",
+                      "&trafikantgruppe=K",
+                      "&geometritoleranse=30")
+
+  respons <- httr::GET(api_query,
+                      httr::add_headers(.headers = nvdb_v3_headers))
+
+  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+                      simplifyDataFrame = T,
+                      flatten = T)
+
+  road_segment_info <- uthenta$objekter %>%
+    dplyr::select(link_type = type,
+                  road_type = typeVeg,
+                  length_m = lengde,
+                  road_reference = vegsystemreferanse.kortform,
+                  road_category = vegsystemreferanse.vegsystem.vegkategori,
+                  road_phase = vegsystemreferanse.vegsystem.fase,
+                  road_number = vegsystemreferanse.vegsystem.nummer,
+                  ) %>%
+    dplyr::filter(road_category %in% c("E", "R", "F", "K"))
+
+  road_segments_selected <- dplyr::bind_rows(
+    road_segments_selected,
+    road_segment_info
+  )
+
+  # TODO: paginering, a while loop?
+  # How to know if has next page?
+  # If "returned" < 1000 !!!
+  returned <- uthenta$metadata$returnert
+
+  while(returned == 1000) {
+    next_page <- uthenta$metadata$neste$href
+
+    respons <- httr::GET(next_page,
+                         httr::add_headers(.headers = nvdb_v3_headers))
+
+    uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+                        simplifyDataFrame = T,
+                        flatten = T)
+
+    road_segment_info <- uthenta$objekter %>%
+      dplyr::select(link_type = type,
+                    road_type = typeVeg,
+                    length_m = lengde,
+                    road_reference = vegsystemreferanse.kortform,
+                    road_category = vegsystemreferanse.vegsystem.vegkategori,
+                    road_phase = vegsystemreferanse.vegsystem.fase,
+                    road_number = vegsystemreferanse.vegsystem.nummer,
+      ) %>%
+      dplyr::filter(road_category %in% c("E", "R", "F", "K"))
+
+    road_segments_selected <- dplyr::bind_rows(
+      road_segments_selected,
+      road_segment_info
+    )
+
+    returned <- uthenta$metadata$returnert
+  }
+
+  road_lengths <- road_segments_selected %>%
+    group_by(road_category) %>%
+    summarise(length_km = round(sum(length_m) / 1000, digits = 0))
+
+  return(road_lengths)
+}
+
+trondheim_roads <- get_road_length_for_municipality("5001")
+
+
+
+
+
