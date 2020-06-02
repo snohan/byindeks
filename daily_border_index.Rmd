@@ -81,7 +81,7 @@ borderdata_2019_from <- "2019-03-11T00:00:00+01:00"
 borderdata_2019_to <- "2019-06-17T00:00:00+01:00"
 
 borderdata_2020_from <- "2020-03-02T00:00:00+01:00"
-borderdata_2020_to <- "2020-05-30T00:00:00+01:00"
+borderdata_2020_to <- "2020-06-08T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -466,6 +466,10 @@ border_trp_dt_2019_2020_whitsun <- calculate_trp_border_index(
   border_dt_2020_22_whitsun
 )
 
+border_trp_dt_2019_2020_whitmonday <- calculate_trp_border_index(
+  border_dt_2019_24_whitmonday,
+  border_dt_2020_23_whitmonday
+)
 
 
 # Compare Easter ####
@@ -520,47 +524,47 @@ calculate_border_index_movable_days <- function(dt_base, dt_calc) {
 border_dt_2020_10_11 <- calculate_border_index(
   border_dt_2020_10, 
   border_dt_2020_11) %>% 
-  mutate(periode = "Uke 10 til 11")
+  mutate(periode = "Uke 10 \n til 11")
 
 border_dt_2020_10_12 <- calculate_border_index(
   border_dt_2020_10, 
   border_dt_2020_12) %>% 
-  mutate(periode = "Uke 10 til 12")
+  mutate(periode = "Uke 10 \n til 12")
 
 border_dt_2020_10_13 <- calculate_border_index(
   border_dt_2020_10, 
   border_dt_2020_13) %>% 
-  mutate(periode = "Uke 10 til 13")
+  mutate(periode = "Uke 10 \n til 13")
 
 border_dt_2020_10_14 <- calculate_border_index(
   border_dt_2020_10, 
   border_dt_2020_14) %>% 
-  mutate(periode = "Uke 10 til 14")
+  mutate(periode = "Uke 10 \n til 14")
 
 border_dt_2020_10_16 <- calculate_border_index(
   border_dt_2020_10, 
   border_dt_2020_16) %>% 
-  mutate(periode = "Uke 10 til 16")
+  mutate(periode = "Uke 10 \n til 16")
 
 border_dt_2020_10_17 <- calculate_border_index(
   border_dt_2020_10, 
   border_dt_2020_17) %>% 
-  mutate(periode = "Uke 10 til 17")
+  mutate(periode = "Uke 10 \n til 17")
 
 border_dt_2020_10_18 <- calculate_border_index(
   border_dt_2020_10, 
   border_dt_2020_18) %>% 
-  mutate(periode = "Uke 10 til 18")
+  mutate(periode = "Uke 10 \n til 18")
 
 border_dt_2020_10_19 <- calculate_border_index(
   border_dt_2020_10, 
   border_dt_2020_19) %>% 
-  mutate(periode = "Uke 10 til 19")
+  mutate(periode = "Uke 10 \n til 19")
 
 border_dt_2020_10_20 <- calculate_border_index(
   border_dt_2020_10, 
   border_dt_2020_20) %>% 
-  mutate(periode = "Uke 10 til 20")
+  mutate(periode = "Uke 10 \n til 20")
 
 border_base_2020 <- bind_rows(border_dt_2020_10_11,
                               border_dt_2020_10_12,
@@ -578,52 +582,57 @@ border_base_2020 <- bind_rows(border_dt_2020_10_11,
 border_dt_201911_202011 <- calculate_border_index(
   border_dt_2019_11, 
   border_dt_2020_11) %>% 
-  mutate(periode = "Uke 11")
+  mutate(periode = "Uke \n 11")
 
 border_dt_201912_202012 <- calculate_border_index(
   border_dt_2019_12, 
   border_dt_2020_12) %>% 
-  mutate(periode = "Uke 12")
+  mutate(periode = "Uke \n 12")
 
 border_dt_201913_202013 <- calculate_border_index(
   border_dt_2019_13, 
   border_dt_2020_13) %>% 
-  mutate(periode = "Uke 13")
+  mutate(periode = "Uke \n 13")
 
 border_dt_201914_202014 <- calculate_border_index(
   border_dt_2019_14, 
   border_dt_2020_14) %>% 
-  mutate(periode = "Uke 14")
+  mutate(periode = "Uke \n 14")
 
 border_dt_201917_202017 <- calculate_border_index(
   border_dt_2019_17, 
   border_dt_2020_17) %>% 
-  mutate(periode = "Uke 17")
+  mutate(periode = "Uke \n 17")
 
 border_dt_201918_202018 <- calculate_border_index(
   border_dt_2019_18, 
   border_dt_2020_18) %>% 
-  mutate(periode = "Uke 18")
+  mutate(periode = "Uke \n 18")
 
 border_dt_201919_202019 <- calculate_border_index(
   border_dt_2019_19, 
   border_dt_2020_19) %>% 
-  mutate(periode = "Uke 19")
+  mutate(periode = "Uke \n 19")
 
 border_dt_201920_202020 <- calculate_border_index(
   border_dt_2019_20, 
   border_dt_2020_20) %>% 
-  mutate(periode = "Uke 20")
+  mutate(periode = "Uke \n 20")
 
 border_dt_201922_202021 <- calculate_border_index(
   border_dt_2019_22_ascension, 
   border_dt_2020_21_ascension) %>% 
-  mutate(periode = "Uke 21/22")
+  mutate(periode = "Uke \n 21/22")
 
 border_dt_201923_202022 <- calculate_border_index(
   border_dt_2019_23_whitsun, 
   border_dt_2020_22_whitsun) %>% 
-  mutate(periode = "Uke 22/23")
+  mutate(periode = "Uke \n 22/23")
+
+border_dt_201924_202023 <- calculate_border_index(
+  border_dt_2019_24_whitmonday, 
+  border_dt_2020_23_whitmonday) %>% 
+  mutate(periode = "Uke \n 23/24")
 
 
 border_base_2019 <- bind_rows(border_dt_201911_202011,
@@ -635,7 +644,8 @@ border_base_2019 <- bind_rows(border_dt_201911_202011,
                               border_dt_201919_202019,
                               border_dt_201920_202020,
                               border_dt_201922_202021,
-                              border_dt_201923_202022)
+                              border_dt_201923_202022,
+                              border_dt_201924_202023)
 
 
 # Compare spring specials ####
@@ -676,7 +686,8 @@ make_border_table <- function(border_base, caption_text) {
     dplyr::select(-no_trp) %>%
     dplyr::mutate(index = dplyr::na_if(index, "Inf")) %>% 
     tidyr::pivot_wider(names_from = ukedag,
-                       values_from = index)
+                       values_from = index) %>% 
+    dplyr::mutate(periode = stringr::str_replace(periode, " \n", ""))
   
   ncol_dt <- ncol(border_base_table_ready)
   
@@ -739,7 +750,8 @@ make_daily_border_plot <- function(area_dt, subtitle_text) {
   geom_hline(yintercept = 0, color = "#000000") +
   facet_grid(periode ~., switch = "y") +
   scale_y_continuous(position = "right",
-                     limits = c(-100, 100)) +
+                     limits = c(-100, 100),
+                     breaks = c(-80, 0, 80)) +
   xlab("") +
   ylab("Endring i trafikkmengde (%)\n") +
   ggtitle(label = "Daglig endring i trafikkmengde over riksgrensen",
@@ -1027,10 +1039,13 @@ make_border_trp_table(border_trp_dt_2019_2020_ascension,
 
 ```{r trptable_201922}
 make_border_trp_table(border_trp_dt_2019_2020_whitsun,
-                      "Prosentvis endring i trafikkmengde fra uke 23 2019 til uke 22 2020.")
+                      "Prosentvis endring i trafikkmengde fra uke 23 2019 til uke 22 2020. Lørdag og søndag er henholdsvis Pinseaften og 1. pinsedag.")
 ```
 
-
+```{r trptable_201923}
+make_border_trp_table(border_trp_dt_2019_2020_whitmonday,
+                      "Prosentvis endring i trafikkmengde fra uke 24 2019 til uke 23 2020. Mandag er 2. pinsedag.")
+```
 
 
 
