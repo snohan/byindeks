@@ -971,8 +971,16 @@ get_daily_traffic <- function(trpID, from, to) {
   }else{
     colnames(dailyTraffic) <- c("point_id", "point_name", "from",
                                  "total_volume", "coverage")
-    dailyTraffic %<>% mutate(from = with_tz(ymd_hms(from), "CET"))
+    #dailyTraffic %<>% mutate(from = with_tz(ymd_hms(from), "CET"))
   }
+
+  # To avoid error when joining, cast column type
+  dailyTraffic <- dailyTraffic %>%
+    dplyr::mutate(point_id = as.character(point_id),
+                  point_name = as.character(point_name),
+                  from = with_tz(ymd_hms(from), "CET"),
+                  total_volume = as.integer(total_volume),
+                  coverage = as.numeric(coverage))
 
   return(dailyTraffic)
 }
