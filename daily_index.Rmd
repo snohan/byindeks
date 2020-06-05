@@ -121,10 +121,10 @@ trps <- dplyr::left_join(cities_points, points) %>%
 
 # Week 11 onwards 2019, including Easter
 week_2019_from <- "2019-03-11T00:00:00+01:00"
-week_2019_to <- "2019-06-17T00:00:00+01:00"
+week_2019_to <- "2019-09-02T00:00:00+01:00"
 
 week_2020_from <- "2020-02-24T00:00:00+01:00"
-week_2020_to <- "2020-06-08T00:00:00+01:00"
+week_2020_to <- "2020-08-31T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -159,6 +159,7 @@ dt <- bind_rows(dt_2019, dt_2020) %>%
   select(-from) %>% 
   filter(coverage > 99)
 
+
 #  Base weeks ####
 dt_2020_10 <- dt %>% 
   filter(year == 2020) %>%
@@ -177,6 +178,7 @@ dt_2019_11 <- dt %>%
   filter(year == 2019) %>%
   filter(weekno == 11) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
+  # Excluding points with anomalous traffic
   filter(!(point_id %in% c("21768V805002",
                            "41331V443662",
                            "71258V805748",
@@ -373,6 +375,128 @@ dt_2019_24_whitmonday <- dt %>%
                            "91229V886007",
                            "42754V444240")))
 
+dt_2019_25 <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 25) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "42754V444240")))
+
+dt_2019_26 <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 26) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "42754V444240")))
+
+dt_2019_27 <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 27) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "42754V444240")))
+
+dt_2019_28 <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 28) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "42754V444240")))
+
+dt_2019_29 <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 29) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "42754V444240")))
+
+dt_2019_30 <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 30) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "42754V444240")))
+
+dt_2019_31 <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 31) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "42754V444240")))
+
+dt_2019_32 <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 32) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "42754V444240")))
+
+dt_2019_33 <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 33) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "42754V444240")))
+
+dt_2019_34 <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 34) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "42754V444240")))
+
+dt_2019_35 <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 35) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "42754V444240")))
+
+# ADD NEW WEEK HERE!
 
 
 # Weeks 2020 ####
@@ -489,6 +613,8 @@ dt_2020_23_whitmonday <- dt %>%
 
 
 
+# ADD NEW WEEK HERE!
+
 
 # Trp index
 calculate_trp_index <- function(dt_base, dt_calc) {
@@ -517,7 +643,7 @@ calculate_trp_index_movable_days <- function(dt_base, dt_calc) {
 
 
 
-# Compare dt to 2020 week 10  
+# Compare dt to 2020 week 10  ####
 trp_dt_2020_10_11 <- calculate_trp_index(dt_2020_10, dt_2020_11) %>% 
   filter(!(city_area_name %in% c("Bodø", "Tromsø")))
 
@@ -544,6 +670,8 @@ trp_dt_2020_10_19 <- calculate_trp_index(dt_2020_10, dt_2020_19) %>%
 
 trp_dt_2020_10_20 <- calculate_trp_index(dt_2020_10, dt_2020_20) %>% 
   filter(!(city_area_name %in% c("Bodø", "Tromsø")))
+
+# Ending this series with week 20 here. Week 9/10 is no longer the norm.
 
 # For the north
 trp_dt_2020_09_11 <- calculate_trp_index(dt_2020_09, dt_2020_11) %>% 
@@ -575,7 +703,8 @@ trp_dt_2020_09_20 <- calculate_trp_index(dt_2020_09, dt_2020_20) %>%
 
 # Ending this series with week 20 here. Week 9/10 is no longer the norm.
 
-# Compare this week to same week 2019
+
+# Compare this week to same week 2019 ####
 trp_dt_201911_202011 <- calculate_trp_index(dt_2019_11, dt_2020_11)
 trp_dt_201912_202012 <- calculate_trp_index(dt_2019_12, dt_2020_12)
 trp_dt_201913_202013 <- calculate_trp_index(dt_2019_13, dt_2020_13)
@@ -590,6 +719,18 @@ trp_dt_2019_2020_whitsun <- calculate_trp_index(
   dt_2019_23_whitsun, dt_2020_22_whitsun)
 trp_dt_2019_2020_whitmonday <- calculate_trp_index(
   dt_2019_24_whitmonday, dt_2020_23_whitmonday)
+trp_dt_201924_202021 <- calculate_trp_index(dt_2019_21, dt_2020_24)
+trp_dt_201925_202025 <- calculate_trp_index(dt_2019_25, dt_2020_25)
+trp_dt_201926_202026 <- calculate_trp_index(dt_2019_26, dt_2020_26)
+trp_dt_201927_202027 <- calculate_trp_index(dt_2019_27, dt_2020_27)
+trp_dt_201928_202028 <- calculate_trp_index(dt_2019_28, dt_2020_28)
+trp_dt_201929_202029 <- calculate_trp_index(dt_2019_29, dt_2020_29)
+trp_dt_201930_202030 <- calculate_trp_index(dt_2019_30, dt_2020_30)
+trp_dt_201931_202031 <- calculate_trp_index(dt_2019_31, dt_2020_31)
+trp_dt_201932_202032 <- calculate_trp_index(dt_2019_32, dt_2020_32)
+trp_dt_201933_202033 <- calculate_trp_index(dt_2019_33, dt_2020_33)
+trp_dt_201934_202034 <- calculate_trp_index(dt_2019_34, dt_2020_34)
+trp_dt_201935_202035 <- calculate_trp_index(dt_2019_35, dt_2020_35)
 
 
 # Spring specials
@@ -606,7 +747,8 @@ trp_dt_easterweek <- calculate_trp_index(dt_2019_16_easterweek,
 trp_dt_eastermonday <- calculate_trp_index(dt_2019_17_eastermonday,
                                            dt_2020_16_eastermonday)
 
-# City index
+
+# City index ####
 calculate_city_index <- function(dt_base, dt_calc) {
   city_daily_index <- inner_join(dt_base, dt_calc,
                             by = c("point_id", "weekday"),
@@ -639,6 +781,7 @@ calculate_city_index_movable_days <- function(dt_base, dt_calc) {
   select(city_area_name, weekday, no_trp, index)
 }
 
+
 # Compare this week to 2020 week 10
 city_dt_2020_10_11 <- calculate_city_index(dt_2020_10, dt_2020_11) %>% 
   filter(!(city_area_name %in% c("Bodø", "Tromsø")))
@@ -667,6 +810,8 @@ city_dt_2020_10_19 <- calculate_city_index(dt_2020_10, dt_2020_19) %>%
 city_dt_2020_10_20 <- calculate_city_index(dt_2020_10, dt_2020_20) %>% 
   filter(!(city_area_name %in% c("Bodø", "Tromsø")))
 
+# Ending this series with week 20 here. Week 9/10 is no longer the norm.
+
 # For the north
 city_dt_2020_09_11 <- calculate_city_index(dt_2020_09, dt_2020_11) %>% 
   filter(city_area_name %in% c("Bodø", "Tromsø"))
@@ -694,6 +839,9 @@ city_dt_2020_09_19 <- calculate_city_index(dt_2020_09, dt_2020_19) %>%
 
 city_dt_2020_09_20 <- calculate_city_index(dt_2020_09, dt_2020_20) %>% 
   filter(city_area_name %in% c("Bodø", "Tromsø"))
+
+# Ending this series with week 20 here. Week 9/10 is no longer the norm.
+
 
 # Compare this week to same week 2019
 city_dt_201911_202011 <- calculate_city_index(dt_2019_11, dt_2020_11) %>% 
@@ -732,6 +880,43 @@ city_dt_2019_2020_whitmonday <- calculate_city_index(dt_2019_24_whitmonday,
                                                      dt_2020_23_whitmonday) %>% 
   filter(!(city_area_name %in% c("Bodø")))
 
+city_dt_201921_202024 <- calculate_city_index(dt_2019_21, dt_2020_24) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+city_dt_201925_202025 <- calculate_city_index(dt_2019_25, dt_2020_25) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+city_dt_201926_202026 <- calculate_city_index(dt_2019_26, dt_2020_26) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+city_dt_201927_202027 <- calculate_city_index(dt_2019_27, dt_2020_27) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+city_dt_201928_202028 <- calculate_city_index(dt_2019_28, dt_2020_28) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+city_dt_201929_202029 <- calculate_city_index(dt_2019_29, dt_2020_29) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+city_dt_201930_202030 <- calculate_city_index(dt_2019_30, dt_2020_30) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+city_dt_201931_202031 <- calculate_city_index(dt_2019_31, dt_2020_31) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+city_dt_201932_202032 <- calculate_city_index(dt_2019_32, dt_2020_32) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+city_dt_201933_202033 <- calculate_city_index(dt_2019_33, dt_2020_33) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+city_dt_201934_202034 <- calculate_city_index(dt_2019_34, dt_2020_34) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+city_dt_201935_202035 <- calculate_city_index(dt_2019_35, dt_2020_35) %>% 
+  filter(!(city_area_name %in% c("Bodø")))
+
+
 
 # Spring specials
 city_dt_spring <- calculate_city_index_movable_days(dt_2019_spring_specials,
@@ -752,8 +937,8 @@ city_dt_eastermonday <- calculate_city_index(dt_2019_17_eastermonday,
                                             dt_2020_16_eastermonday) %>% 
   filter(!(city_area_name %in% c("Bodø")))
 
-# Function for generating table
 
+# Function for generating table ####
 make_city_table <- function(city_dt, caption_text) {
   
   city_dt_table_ready <- city_dt %>%
@@ -1206,6 +1391,160 @@ make_daily_plot(city_dt_2019_2020_whitmonday,
 ```{r table_city_whitmonday}
 make_city_table(city_dt_2019_2020_whitmonday,
                 "Prosentvis endring i trafikkmengde fra uke 24 2019 til uke 23 2020 (mandag er 2. pinsedag).")
+```
+
+```{r plot_city_201921, fig.width=8, fig.height=8}
+#make_daily_plot(city_dt_201921_202024, 
+#                "Fra uke 21 2019 til uke 24 i 2020")
+```
+
+
+```{r table_city_201921}
+#make_city_table(city_dt_201921_202024,
+#                "Prosentvis endring i trafikkmengde fra uke 21 2019 til uke 24 2020.")
+```
+
+
+
+```{r plot_city_201925, fig.width=8, fig.height=8}
+#make_daily_plot(city_dt_201925_202025, 
+#                "Fra uke 25 2019 til uke 25 i 2020")
+```
+
+
+```{r table_city_201925}
+#make_city_table(city_dt_201925_202025,
+#                "Prosentvis endring i trafikkmengde fra uke 25 2019 til uke 25 2020.")
+```
+
+
+
+```{r plot_city_201926, fig.width=8, fig.height=8}
+#make_daily_plot(city_dt_201926_202026, 
+#                "Fra uke 26 2019 til uke 26 i 2020")
+```
+
+
+```{r table_city_201926}
+#make_city_table(city_dt_201926_202026,
+#                "Prosentvis endring i trafikkmengde fra uke 26 2019 til uke 26 2020.")
+```
+
+
+
+```{r plot_city_201927, fig.width=8, fig.height=8}
+#make_daily_plot(city_dt_201927_202027, 
+#                "Fra uke 27 2019 til uke 27 i 2020")
+```
+
+
+```{r table_city_201927}
+#make_city_table(city_dt_201927_202027,
+#                "Prosentvis endring i trafikkmengde fra uke 27 2019 til uke 27 2020.")
+```
+
+
+
+```{r plot_city_201928, fig.width=8, fig.height=8}
+#make_daily_plot(city_dt_201928_202028, 
+#                "Fra uke 28 2019 til uke 28 i 2020")
+```
+
+
+```{r table_city_201928}
+#make_city_table(city_dt_201928_202028,
+#                "Prosentvis endring i trafikkmengde fra uke 28 2019 til uke 28 2020.")
+```
+
+
+
+```{r plot_city_201929, fig.width=8, fig.height=8}
+#make_daily_plot(city_dt_201929_202029, 
+#                "Fra uke 29 2019 til uke 29 i 2020")
+```
+
+
+```{r table_city_201929}
+#make_city_table(city_dt_201929_202029,
+#                "Prosentvis endring i trafikkmengde fra uke 29 2019 til uke 29 2020.")
+```
+
+
+
+```{r plot_city_201930, fig.width=8, fig.height=8}
+#make_daily_plot(city_dt_201930_202030, 
+#                "Fra uke 30 2019 til uke 30 i 2020")
+```
+
+
+```{r table_city_201930}
+#make_city_table(city_dt_201930_202030,
+#                "Prosentvis endring i trafikkmengde fra uke 30 2019 til uke 30 2020.")
+```
+
+
+
+```{r plot_city_201931, fig.width=8, fig.height=8}
+#make_daily_plot(city_dt_201931_202031, 
+#                "Fra uke 31 2019 til uke 31 i 2020")
+```
+
+
+```{r table_city_201931}
+#make_city_table(city_dt_201931_202031,
+#                "Prosentvis endring i trafikkmengde fra uke 31 2019 til uke 31 2020.")
+```
+
+
+
+```{r plot_city_201932, fig.width=8, fig.height=8}
+#make_daily_plot(city_dt_201932_202032, 
+#                "Fra uke 32 2019 til uke 32 i 2020")
+```
+
+
+```{r table_city_201932}
+#make_city_table(city_dt_201932_202032,
+#                "Prosentvis endring i trafikkmengde fra uke 32 2019 til uke 32 2020.")
+```
+
+
+
+```{r plot_city_201933, fig.width=8, fig.height=8}
+#make_daily_plot(city_dt_201933_202033, 
+#                "Fra uke 33 2019 til uke 33 i 2020")
+```
+
+
+```{r table_city_201933}
+#make_city_table(city_dt_201933_202033,
+#                "Prosentvis endring i trafikkmengde fra uke 33 2019 til uke 33 2020.")
+```
+
+
+
+```{r plot_city_201934, fig.width=8, fig.height=8}
+#make_daily_plot(city_dt_201934_202034, 
+#                "Fra uke 34 2019 til uke 34 i 2020")
+```
+
+
+```{r table_city_201934}
+#make_city_table(city_dt_201934_202034,
+#                "Prosentvis endring i trafikkmengde fra uke 34 2019 til uke 34 2020.")
+```
+
+
+
+```{r plot_city_201935, fig.width=8, fig.height=8}
+#make_daily_plot(city_dt_201935_202035, 
+#                "Fra uke 35 2019 til uke 35 i 2020")
+```
+
+
+```{r table_city_201935}
+#make_city_table(city_dt_201935_202035,
+#                "Prosentvis endring i trafikkmengde fra uke 35 2019 til uke 35 2020.")
 ```
 
 
