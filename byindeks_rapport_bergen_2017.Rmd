@@ -17,6 +17,11 @@ source("rmd_setup.R")
 ```
 
 ```{r points, include = FALSE}
+road_lengths <- read.csv2("road_lengths/bergen_road_lengths.csv") %>% 
+  mutate(road_category = factor(road_category,
+                                levels = c("E", "R", "F", "K"))) %>% 
+  arrange(municipality_number, road_category)
+
 all_point_info <- 
   read.csv2("data_indexpoints_tidy/indekspunkt_bergen_2016.csv")
 
@@ -43,6 +48,21 @@ index_all_years_ci_upper <-
 ```
 
 ```{r child = 'formaal.Rmd'}
+```
+
+## Områdeavgrensing og vegnett
+Dagens byvekstavtale gjelder for kommunene Bergen, Askøy, Alver og Bjørnafjorden. Veglengder fordelt på vegkatori er vist i tabellene nedenfor.
+
+Lengden på vegnettet gjelder per 1. januar 2020, og omfatter kun bilveg. Lengde på kryssystem og sideanlegg er utelatt [^1]. 
+
+[^1]: Videre filtrering: kun topologinivå VT+VTKB, kun vegtype kanalisert veg og enkel bilveg, kun veglenketype "hoved". Adskilte løp: kun "Nei" og "Med" - dette som en enkel måte å unngå dobbelttelling av f.eks. toløpstuneller på.
+
+
+```{r road_length}
+road_lengths %>% create_municipality_road_length_table()
+```
+```{r road_length_sum}
+road_lengths %>% create_city_road_length_table()
 ```
 
 ## Byindekspunktene
@@ -110,6 +130,7 @@ Når månedsindeks er beregnet gjennom tre år eller lenger, beregnes en rullere
 
 ```{r city_table_36}
 create_city_36_index_table(city_36_month)
+# TODO: CI
 ```
 
 
@@ -253,13 +274,8 @@ Tabellen viser endring i trafikk per måned, sammenlignet med samme måned året
 
 ```{r monthly_city_index}
 create_monthly_city_index_table(city_monthly)
+# TODO: CI
 ```
-
-
-## Tre års rullerende indeks
-
-Tre års rullerende indeks beregnes ved å bruke de siste 36 måneders indeks, og oppdateres hver måned. Den begynner å gjelde første gang etter at tre år av avtaleperioden er gått.
-
 
 
 

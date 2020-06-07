@@ -1,4 +1,4 @@
-# Funksjoner for å hente nødvendig info fra NVDB-API v2.
+# Funksjoner for å hente nødvendig info fra NVDB-API v2 og v3.
 
 library(tidyverse)
 library(httr)
@@ -526,7 +526,8 @@ get_road_length_for_municipality <- function(municipality_number) {
                       "&adskiltelop=Med,Nei",
                       "&veglenketype=hoved",
                       "&trafikantgruppe=K",
-                      "&geometritoleranse=30")
+                      "&geometritoleranse=30",
+                      "&tidspunkt='2020-01-01'")
 
   respons <- httr::GET(api_query,
                       httr::add_headers(.headers = nvdb_v3_headers))
@@ -587,7 +588,8 @@ get_road_length_for_municipality <- function(municipality_number) {
 
   road_lengths <- road_segments_selected %>%
     group_by(road_category) %>%
-    summarise(length_km = round(sum(length_m) / 1000, digits = 0))
+    summarise(length_km = round(sum(length_m) / 1000, digits = 0)) %>%
+    mutate(municipality_number = municipality_number)
 
   return(road_lengths)
 }

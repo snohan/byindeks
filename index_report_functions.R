@@ -147,6 +147,7 @@ create_city_36_index_table <- function(city_36_month) {
     border_remove() %>%
     hline_top(part = "header", border = borderline) %>%
     hline_bottom(part = "all", border = borderline) %>%
+    align(j = 2, align = "left") %>%
     autofit() %>%
     height_all(height = .2) %>%
     padding(padding.top = .3,
@@ -155,4 +156,63 @@ create_city_36_index_table <- function(city_36_month) {
 
   return(city_table)
 }
+
+
+create_municipality_road_length_table <- function(road_lengths) {
+
+  road_lengths_table <- road_lengths %>%
+    select(municipality_name, road_category, length_km) %>%
+    flextable() %>%
+    merge_v(j = "municipality_name", target = "municipality_name") %>%
+    set_header_labels(municipality_name = "Kommune",
+                      road_category = "Vegkategori",
+                      length_km = "Lengde (km)") %>%
+    bold(part = "header") %>%
+    fontsize(size = 9, part = "all") %>%
+    font(fontname = "Lucida Sans Unicode", part = "all") %>%
+    bg(bg = "#ED9300", part = "header") %>%
+    border_remove() %>%
+    hline_top(part = "header", border = borderline) %>%
+    hline_bottom(part = "all", border = borderline) %>%
+    fix_border_issues() %>%
+    align(j = 2, align = "center") %>%
+    valign(j = 1, valign = "top") %>%
+    autofit() %>%
+    height_all(height = .2) %>%
+    padding(padding.top = .3,
+            padding.bottom = .3) %>%
+    set_caption("Samlet veglengde per kommune.")
+
+  return(road_lengths_table)
+}
+
+create_city_road_length_table <- function(road_lengths) {
+
+  road_lengths_table <- road_lengths %>%
+    select(municipality_name, road_category, length_km) %>%
+    group_by(road_category) %>%
+    summarise(length_km = sum(length_km)) %>%
+    flextable() %>%
+    set_header_labels(road_category = "Vegkategori",
+                      length_km = "Lengde (km)") %>%
+    bold(part = "header") %>%
+    fontsize(size = 9, part = "all") %>%
+    font(fontname = "Lucida Sans Unicode", part = "all") %>%
+    bg(bg = "#ED9300", part = "header") %>%
+    border_remove() %>%
+    hline_top(part = "header", border = borderline) %>%
+    hline_bottom(part = "all", border = borderline) %>%
+    align(j = 1, align = "center") %>%
+    autofit() %>%
+    height_all(height = .2) %>%
+    padding(padding.top = .3,
+            padding.bottom = .3) %>%
+    set_caption("Samlet veglengde.")
+
+  return(road_lengths_table)
+}
+
+
+
+
 

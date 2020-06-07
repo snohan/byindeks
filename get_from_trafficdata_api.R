@@ -51,6 +51,29 @@ get_counties <- function() {
   return(counties)
 }
 
+get_municipalities <- function() {
+
+  query_api <-
+    "query municipalities {
+       areas {
+         municipalities {
+           number
+           name
+         }
+       }
+     }"
+
+  myqueries <- Query$new()
+  myqueries$query("response", query_api)
+
+  counties <- cli$exec(myqueries$queries$response) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
+    as.data.frame() %>%
+    dplyr::rename(municipality_number = 1,
+                  municipality_name = 2)
+}
+
+
 get_points <- function() {
   # Get all traffic registration points
   query_points <-
