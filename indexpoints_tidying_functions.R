@@ -12,6 +12,16 @@ choose_city_trp_ids <- function(city_name,
     dplyr::filter(!is.na(trp_id))
 }
 
+choose_new_city_trp_ids <- function(city_name,
+                                start_year) {
+
+  trp_ids <- cities_points %>%
+    dplyr::filter(city_area_name == city_name,
+                  agreement_start == start_year) %>%
+    dplyr::select(trp_id) %>%
+    dplyr::filter(!is.na(trp_id))
+}
+
 readPointindexCSV <- function(filename) {
   # Read standard csv export from Datainn
   read.csv2(filename) %>%

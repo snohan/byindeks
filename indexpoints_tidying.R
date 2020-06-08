@@ -202,16 +202,20 @@ write.csv2(oslo_monthly,
 
 
 # Oslo og Akershus 2019 ####
-oslopunkter <- cities_points %>%
-  dplyr::filter(city_area_name == "Oslo og Akershus",
-                agreement_start == 2019) %>%
-  dplyr::mutate(established = "Ja" )
+this_citys_trps <- choose_new_city_trp_ids("Oslo og Akershus", 2019) %>%
+  dplyr::left_join(points_split_reference)
 
-# Adding metadata
-indekspunkter_oslo <- dplyr::left_join(oslopunkter, points) %>%
-  dplyr::select(trp_id, name, road_reference,
-                county_name, municipality_name,
-                lat, lon, road_link_position)
+# old
+# oslopunkter <- cities_points %>%
+#   dplyr::filter(city_area_name == "Oslo og Akershus",
+#                 agreement_start == 2019) %>%
+#   dplyr::mutate(established = "Ja" )
+
+# old Adding metadata
+# indekspunkter_oslo <- dplyr::left_join(oslopunkter, points) %>%
+#   dplyr::select(trp_id, name, road_reference,
+#                 county_name, municipality_name,
+#                 lat, lon, road_link_position)
 
 # Legger inn uetablerte punkter, mangler bare 2 per 31.03.2020
 # indekspunkter_oslo_uetablerte <-
@@ -228,14 +232,73 @@ indekspunkter_oslo <- dplyr::left_join(oslopunkter, points) %>%
 #            row.names = F)
 
 
-# ADT
-oslo_adt <- getAdtForpoints(indekspunktene_oslo$trp_id)
-# TODO: filtrere ut 2018
-# TODO: join
-# TODO: hente fra NVDB de som mangler?
+pointindex_20 <-
+  read_new_pointindex_csv("data_index_raw/punktindeks_oslo-2020-04.csv") %>%
+  rename(index_20 = index)
 
-# Test
-#uten_adt <- getTrpAadt("32135V604101")
+n_20 <- pointindex_20 %>%
+  dplyr::filter(!is.na(index_20)) %>%
+  nrow()
+
+adt <- get_aadt_by_length_for_trp_list(this_citys_trps$trp_id)
+
+adt_filtered <- adt %>%
+  dplyr::filter(length_range == "[..,5.6)") %>%
+  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  dplyr::filter(length_quality > 90) %>%
+  dplyr::filter(coverage > 50) %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year >= 2016) %>%
+  dplyr::filter(year == min(year)) %>%
+  dplyr::select(trp_id, aadt_length_range, year) %>%
+  dplyr::rename(adt = 2)
+
+this_citys_trp_index <- this_citys_trps %>%
+  left_join(adt_filtered) %>%
+  left_join(pointindex_20)
+
+# Fetch missing adts!
+missing_adt <- this_citys_trp_index %>%
+  dplyr::filter(is.na(adt)) %>%
+  dplyr::mutate(adt = mapply(getAadtByRoadlinkposition, road_link_position))
+
+missing_adt_small_cars <- missing_adt %>%
+  dplyr::mutate(adt = round(0.9 * adt, digits = -2),
+                year = 2019)
+
+# Finally all adt
+this_citys_trp_index_all <- this_citys_trp_index %>%
+  dplyr::filter(!is.na(adt)) %>%
+  dplyr::bind_rows(missing_adt_small_cars) %>%
+  dplyr::arrange(road_category, road_number,
+                 section_number, subsection_number, meter,
+                 intersection_part_number, intersection_meter) %>%
+  dplyr::select(trp_id, name, road_reference, road_category_and_number,
+                county_name, municipality_name,
+                lat, lon, road_link_position, adt, year, starts_with("index"))
+
+# Index from refyear
+# refyear <- this_citys_trp_index %>%
+#   select(starts_with("index")) %>%
+#   mutate_all(list(index_converter)) %>%
+#   transmute(index = purrr::pmap_dbl(., prod)) %>%
+#   # Lazily changing from 1 to NA (risky?)
+#   mutate(index = round(ifelse(index == 1, NA,  100 * (index - 1)),
+#                        digits = 1))
+
+# this_citys_trp_index_refyear <- this_citys_trp_index %>%
+#   bind_cols(refyear)
+
+# TODO: 3 year rolling index, but not now - only for the city
+
+write.csv2(this_citys_trp_index_all,
+           file = "data_indexpoints_tidy/indekspunkt_oslo_2019.csv",
+           row.names = F)
+
+
+# HERE
+
+
 
 
 # Trondheim 2017 ####
@@ -1249,6 +1312,8 @@ buskerud_uten_e18_monthly <- bind_rows(
 write.csv2(buskerud_uten_e18_monthly,
            file = "data_indexpoints_tidy/byindeks_maanedlig_buskerudbyen_uten_e18_2016.csv",
            row.names = F)
+
+
 
 # Bergen 2016 points ####
 this_citys_trps <- choose_city_trp_ids("Bergen", 2016) %>%
