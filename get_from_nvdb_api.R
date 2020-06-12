@@ -508,7 +508,7 @@ get_speedlimit_by_roadlink <- function(roadlink) {
   return(verdi)
 }
 
-municipality_number <- "5001"
+#municipality_number <- "5001"
 get_road_length_for_municipality <- function(municipality_number) {
 
   # Paginated response, starting with an empty tibble to add each response to
@@ -552,9 +552,8 @@ get_road_length_for_municipality <- function(municipality_number) {
     road_segment_info
   )
 
-  # TODO: paginering, a while loop?
   # How to know if has next page?
-  # If "returned" < 1000 !!!
+  # If "returned" < 1000 !!! Beware of changed page size in their API!
   returned <- uthenta$metadata$returnert
 
   while(returned == 1000) {
@@ -594,7 +593,7 @@ get_road_length_for_municipality <- function(municipality_number) {
   return(road_lengths)
 }
 
-trondheim_roads <- get_road_length_for_municipality("5001")
+#trondheim_roads <- get_road_length_for_municipality("5001")
 
 
 

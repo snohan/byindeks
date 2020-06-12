@@ -38,6 +38,9 @@ create_pointindex_map <- function(all_point_info_df) {
   negative_value <- round(abs(min(all_point_info_df$index, na.rm = T)), digits = 0) + 1
   positive_value <- round(max(all_point_info_df$index, na.rm = T), digits = 0) + 1
 
+  # If even the max value is negative
+  if(positive_value < 0) positive_value <- 1
+
   rc1 <- colorRampPalette(colors = c("red", "white"), space = "Lab")(negative_value)
 
   ## Make vector of colors for values larger than 0 (180 colors)
@@ -158,14 +161,29 @@ create_city_36_index_table <- function(city_36_month) {
 }
 
 
+road_category_names <- data.frame(
+  road_category = c("E", "R", "F", "K"),
+  road_category_name = c("Europaveg", "Riksveg", "Fylkesveg", "Kommunalveg"))
+
+
+read_road_length_csv <- function(road_csv) {
+
+  readr::read_csv2(road_csv) %>%
+    left_join(road_category_names) %>%
+    mutate(road_category = factor(road_category,
+                                  levels = c("E", "R", "F", "K"))) %>%
+    arrange(municipality_number, road_category)
+}
+
+
 create_municipality_road_length_table <- function(road_lengths) {
 
   road_lengths_table <- road_lengths %>%
-    select(municipality_name, road_category, length_km) %>%
+    select(municipality_name, road_category_name, length_km) %>%
     flextable() %>%
     merge_v(j = "municipality_name", target = "municipality_name") %>%
     set_header_labels(municipality_name = "Kommune",
-                      road_category = "Vegkategori",
+                      road_category_name = "Vegkategori",
                       length_km = "Lengde (km)") %>%
     bold(part = "header") %>%
     fontsize(size = 9, part = "all") %>%
@@ -175,7 +193,6 @@ create_municipality_road_length_table <- function(road_lengths) {
     hline_top(part = "header", border = borderline) %>%
     hline_bottom(part = "all", border = borderline) %>%
     fix_border_issues() %>%
-    align(j = 2, align = "center") %>%
     valign(j = 1, valign = "top") %>%
     autofit() %>%
     height_all(height = .2) %>%
@@ -189,11 +206,14 @@ create_municipality_road_length_table <- function(road_lengths) {
 create_city_road_length_table <- function(road_lengths) {
 
   road_lengths_table <- road_lengths %>%
-    select(municipality_name, road_category, length_km) %>%
-    group_by(road_category) %>%
+    select(road_category, road_category_name, length_km) %>%
+    group_by(road_category, road_category_name) %>%
     summarise(length_km = sum(length_km)) %>%
+    ungroup() %>%
+    select(-road_category) %>%
+    select(road_category_name, length_km) %>%
     flextable() %>%
-    set_header_labels(road_category = "Vegkategori",
+    set_header_labels(road_category_name = "Vegkategori",
                       length_km = "Lengde (km)") %>%
     bold(part = "header") %>%
     fontsize(size = 9, part = "all") %>%
@@ -202,7 +222,7 @@ create_city_road_length_table <- function(road_lengths) {
     border_remove() %>%
     hline_top(part = "header", border = borderline) %>%
     hline_bottom(part = "all", border = borderline) %>%
-    align(j = 1, align = "center") %>%
+    #align(j = 1, align = "center") %>%
     autofit() %>%
     height_all(height = .2) %>%
     padding(padding.top = .3,
