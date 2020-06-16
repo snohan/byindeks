@@ -121,6 +121,18 @@ nord_jaeren_all <- dplyr::bind_rows(stavanger,
 write.csv2(nord_jaeren_all, file = "road_lengths/nord-jaeren_road_lengths.csv",
            row.names = FALSE)
 
+# Tromsø ####
+
+# Buskerudbyen ####
+
+# Trondheim ####
+trondheim <- get_road_length_for_municipality(1103)
+melhus <- get_road_length_for_municipality(1103)
+malvik <- get_road_length_for_municipality(1103)
+stjordal <- get_road_length_for_municipality(1103)
+
+trondheim_all
+
 
 
 

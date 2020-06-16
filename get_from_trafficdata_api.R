@@ -907,9 +907,13 @@ getHourlytraffic <- function(trpID, from, to) {
   return(hourlyTraffic)
 }
 
-trpID <- "81077V72158"
-from <- "2020-03-09T00:00:00+01:00"
-to <- "2020-03-12T00:00:00+01:00"
+# trpID <- "81077V72158"
+# from <- "2020-06-09T00:00:00+01:00"
+# to <- "2020-06-18T00:00:00+01:00"
+# test1 <- get_daily_traffic(trps$trp_id[1], from, to)
+# test2 <- get_daily_traffic(trps$trp_id[2], from, to)
+#
+# test_bind <- bind_rows(test1, test2)
 
 get_daily_traffic <- function(trpID, from, to) {
   # Default values

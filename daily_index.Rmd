@@ -120,11 +120,11 @@ trps <- dplyr::left_join(cities_points, points) %>%
 # 3. Easter
 
 # Week 11 onwards 2019, including Easter
-#week_2019_from <- "2019-03-11T00:00:00+01:00"
-#week_2019_to <- "2019-09-02T00:00:00+01:00"
+week_2019_from_1 <- "2019-03-11T00:00:00+01:00"
+week_2019_to_1 <- "2019-06-01T00:00:00+01:00"
 
-week_2019_from <- "2019-03-11T00:00:00+01:00"
-week_2019_to <- "2019-06-17T00:00:00+01:00"
+week_2019_from_2 <- "2019-06-01T00:00:00+01:00"
+week_2019_to_2 <- "2019-09-02T00:00:00+01:00"
 
 week_2020_from <- "2020-02-24T00:00:00+01:00"
 week_2020_to <- "2020-08-31T00:00:00+01:00"
@@ -142,9 +142,15 @@ norske_ukedager <- data.frame(weekday = c(1, 2, 3, 4, 5, 6, 7),
                                                levels = ukedager))
 
 # Fetch daily traffic from API
-dt_2019 <- get_dt_for_trp_list(trps$trp_id,
-                               week_2019_from,
-                               week_2019_to)
+dt_2019_1 <- get_dt_for_trp_list(trps$trp_id,
+                               week_2019_from_1,
+                               week_2019_to_1)
+
+dt_2019_2 <- get_dt_for_trp_list(trps$trp_id,
+                               week_2019_from_2,
+                               week_2019_to_2)
+
+dt_2019 <- bind_rows(dt_2019_1, dt_2019_2)
 
 
 dt_2020 <- get_dt_for_trp_list(trps$trp_id,
@@ -326,7 +332,7 @@ dt_2019_17_may <- dt %>%
                            "71258V805748",
                            "87138V755378",
                            "91229V886007",
-                           "42754V444240")))%>% 
+                           "42754V444240"))) %>% 
   mutate(weekday = "17. mai")
 
 # Special days
@@ -551,7 +557,9 @@ dt_2020_16 <- dt %>%
 dt_2020_17 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 17) %>% 
-  select(point_id, total_volume, weekno, weekday)
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_18 <- dt %>% 
   filter(year == 2020) %>%
@@ -559,21 +567,24 @@ dt_2020_18 <- dt %>%
   # removing 1 May
   filter(weekday != 5) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_1_may <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 18) %>%
   filter(weekday == 5) %>% 
   select(point_id, total_volume, weekno) %>% 
-  filter(!(point_id %in% c("42754V444240"))) %>% 
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244"))) %>% 
   mutate(weekday = "1. mai")
 
 dt_2020_19 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 19) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_20 <- dt %>% 
   filter(year == 2020) %>%
@@ -581,14 +592,16 @@ dt_2020_20 <- dt %>%
   # removing 17 May
   filter(weekday != 7) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_17_may <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 20) %>% 
   filter(weekday == 7) %>% 
   select(point_id, total_volume, weekno) %>% 
-  filter(!(point_id %in% c("42754V444240"))) %>% 
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244"))) %>% 
   mutate(weekday = "17. mai")
 
 # Special days
@@ -600,91 +613,106 @@ dt_2020_21_ascension <- dt %>%
   filter(year == 2020) %>%
   filter(weekno == 21) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_22_whitsun <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 22) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_23_whitmonday <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 23) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_24 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 24) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_25 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 25) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_26 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 26) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_27 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 27) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_28 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 28) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_29 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 29) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_30 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 30) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_31 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 31) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_32 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 32) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_33 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 33) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_34 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 34) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 dt_2020_35 <- dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 35) %>% 
   select(point_id, total_volume, weekno, weekday) %>% 
-  filter(!(point_id %in% c("42754V444240")))
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244")))
 
 
 
@@ -1469,14 +1497,14 @@ make_city_table(city_dt_2019_2020_whitmonday,
 ```
 
 ```{r plot_city_201921, fig.width=8, fig.height=8}
-#make_daily_plot(city_dt_201921_202024, 
-#                "Fra uke 21 2019 til uke 24 i 2020")
+make_daily_plot(city_dt_201921_202024, 
+                "Fra uke 21 2019 til uke 24 i 2020")
 ```
 
 
 ```{r table_city_201921}
-#make_city_table(city_dt_201921_202024,
-#                "Prosentvis endring i trafikkmengde fra uke 21 2019 til uke 24 2020.")
+make_city_table(city_dt_201921_202024,
+                "Prosentvis endring i trafikkmengde fra uke 21 2019 til uke 24 2020.")
 ```
 
 

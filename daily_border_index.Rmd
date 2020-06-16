@@ -82,8 +82,11 @@ border_trp_adt <- border_trps %>%
 # 3. Easter 2019 to Easter 2020
 
 # From week 11 to week 35
-borderdata_2019_from <- "2019-03-11T00:00:00+01:00"
-borderdata_2019_to <- "2019-09-02T00:00:00+01:00"
+borderdata_2019_from_1 <- "2019-03-11T00:00:00+01:00"
+borderdata_2019_to_1 <- "2019-06-01T00:00:00+01:00"
+
+borderdata_2019_from_2 <- "2019-06-01T00:00:00+01:00"
+borderdata_2019_to_2 <- "2019-09-02T00:00:00+01:00"
 
 # From week 10 to week 35
 borderdata_2020_from <- "2020-03-02T00:00:00+01:00"
@@ -102,9 +105,15 @@ norske_ukedager <- data.frame(weekday = c(1, 2, 3, 4, 5, 6, 7),
                                                levels = ukedager))
 
 # Fetch daily traffic from API
-border_dt_2019 <- get_dt_for_trp_list(border_trps$trp_id,
-                                      borderdata_2019_from,
-                                      borderdata_2019_to)
+border_dt_2019_1 <- get_dt_for_trp_list(border_trps$trp_id,
+                                      borderdata_2019_from_1,
+                                      borderdata_2019_to_1)
+
+border_dt_2019_2 <- get_dt_for_trp_list(border_trps$trp_id,
+                                      borderdata_2019_from_2,
+                                      borderdata_2019_to_2)
+
+border_dt_2019 <- bind_rows(border_dt_2019_1, border_dt_2019_2)
 
 border_dt_2020 <- get_dt_for_trp_list(border_trps$trp_id,
                                       borderdata_2020_from,
@@ -1314,8 +1323,8 @@ make_border_trp_table(border_trp_dt_2019_2020_whitmonday,
 ```
 
 ```{r trptable_201924}
-# make_border_trp_table(border_trp_dt_201921_202024,
-#                       "Prosentvis endring i trafikkmengde fra uke 21 2019 til uke 24 2020. Uke 24 er første uke uten spesielle dager, og kan best sammenlignes med uke 21 i 2019.")
+make_border_trp_table(border_trp_dt_201921_202024,
+                      "Prosentvis endring i trafikkmengde fra uke 21 2019 til uke 24 2020. Uke 24 er første uke uten spesielle dager, og kan best sammenlignes med uke 21 i 2019.")
 ```
 
 
