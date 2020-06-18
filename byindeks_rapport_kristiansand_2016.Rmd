@@ -5,7 +5,7 @@ output:
   #   toc: true
   #   fig_caption: true
   word_document:
-    reference_docx: svv_notatmal.docx
+    reference_docx: svv_notatmal3.docx
     toc: true
     toc_depth: 2
     fig_caption: true

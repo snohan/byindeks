@@ -26,10 +26,10 @@ city_info <-
     read.csv2("data_indexpoints_tidy/byindeks_nedre-glomma_2016.csv")
 
 city_monthly <- 
-  read.csv2("data_indexpoints_tidy/byindeks_maanedlig_kristiansand_2016.csv")
+  read.csv2("data_indexpoints_tidy/byindeks_maanedlig_nedre_glomma_2016.csv")
 
 city_36_month <- 
-  read.csv2("data_indexpoints_tidy/byindeks_36_maaneder_bergen_2016.csv")
+  read.csv2("data_indexpoints_tidy/byindeks_36_maaneder_nedre_glomma_2016.csv")
 
 # TODO: change to three year rolling when available
 city_info_all_years <- city_info %>% 
@@ -193,7 +193,7 @@ ggplot() +
   theme_minimal() +
   labs(x = NULL, y = "Endring i trafikkmengde (%)",
        caption = "Data: Statens vegvesen") +
-  ggtitle("Estimert endring i trafikkmengde i Grenland",
+  ggtitle("Estimert endring i trafikkmengde",
           subtitle = "Byindeksen (store prikker) og punktene (små prikker)")
 
 ```
@@ -300,6 +300,7 @@ ggplot2::ggplot() +
              aes(x = reorder(name, index), y = index, size = adt),
              color = "#ED9300", alpha = 0.6) +
   geom_hline(yintercept = index_all_years, color = "#58B02C") +
+  geom_hline(yintercept = 0, color = "#000000") +
   xlab("") +
   ylab("Endring i trafikkmengde (%)") +
   ggtitle(label = "ÅDT og endring i trafikkmengde",
