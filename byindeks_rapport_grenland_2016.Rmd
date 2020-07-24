@@ -31,8 +31,6 @@ city_monthly <-
 city_36_month <- 
   read.csv2("data_indexpoints_tidy/byindeks_36_maaneder_grenland_2016.csv")
 
-
-
 city_info_all_years <- city_info %>% 
   dplyr::filter(year == "2016-2020")
 
@@ -187,7 +185,7 @@ ggplot() +
   theme_minimal() +
   labs(x = NULL, y = "Endring i trafikkmengde (%)",
        caption = "Data: Statens vegvesen") +
-  ggtitle("Estimert endring i trafikkmengde i Grenland",
+  ggtitle("Estimert endring i trafikkmengde",
           subtitle = "Byindeksen (store prikker) og punktene (små prikker)")
 
 ```
@@ -205,7 +203,7 @@ I perioden hvor Porsgrunnstunelen var stengt (23.04.2019-10.12.2019), har vi tat
 
 I perioden hvor Bambletunnelen på E18 var stengt (21.04.2017 - 31.08.2018), har vi tatt ut punktet ved Høgenheitunnelen fordi mye av trafikken gikk her. Men lengre nord vil de tre punktene Svanvik, Brattåstunnelen syd og Skjelsvik fange opp totaltrafikken, og det er påsett at alle disse tre har vært med hver måned.
 
-Tabellen nedenfor gjengir byindekspunktene og deres indeksverdi. ÅDT er fra referanseår eller det året som er nærmest og som har en gyldig ÅDT-verdi.
+Tabellen nedenfor gjengir byindekspunktene og deres indeksverdi. 
 
 \newline
 
@@ -213,43 +211,6 @@ Tabellen nedenfor gjengir byindekspunktene og deres indeksverdi. ÅDT er fra ref
 index_column_names <- all_point_info %>% 
   select(starts_with("index")) %>% 
   names()
-
-# all_point_info %>% 
-#   select(name, road_reference, adt, 
-#          starts_with("index")) %>% 
-#   arrange(road_reference) %>% 
-#   flextable() %>% 
-#   colformat_num(j = "adt", 
-#                 big.mark = " ", digits = 0) %>%
-#   colformat_num(j = index_column_names, 
-#                 digits = 1) %>%
-#   set_header_labels(name = "Navn",
-#                     road_reference = "Vegreferanse",
-#                     adt = "ÅDT",
-#                     index_16_17 = "Endring i trafikkmengde (%)") %>% 
-#   add_header_row(values = c("", "", "2016", 
-#                             "2016", "2017", "2018",
-#                             "2016"), top = F) %>% 
-#   add_header_row(values = c("", "", "", 
-#                             "-2017", "-2018", "-2019",
-#                             "-2019"), top = F) %>% 
-#   merge_at(i = 1, j = 4:7, part = "header") %>% 
-#   align(i = 1, j = 4, align = "center", part = "header") %>% 
-#   align(i = 2, j = 3:7, align = "right", part = "header") %>% 
-#   align(i = 3, j = 3:7, align = "right", part = "header") %>% 
-#   bold(part = "header") %>% 
-#   fontsize(size = 9, part = "all") %>% 
-#   font(fontname = "Lucida Sans Unicode", part = "all") %>% 
-#   bg(bg = "#ED9300", part = "header") %>% 
-#   border_remove() %>% 
-#   hline_top(part = "header", border = borderline) %>% 
-#   hline_bottom(part = "all", border = borderline) %>% 
-#   autofit() %>% 
-#   height_all(height = .2) %>% 
-#   padding(padding.top = .3,
-#           padding.bottom = .3) %>% 
-#   width(j = 4, width = 1) %>% 
-#   set_caption("Estimert endring i trafikkmengde ved trafikkregistreringspunktene.")
 
 all_point_info %>%
   select(name, road_category_and_number, starts_with("index")) %>%

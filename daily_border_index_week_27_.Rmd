@@ -1,0 +1,574 @@
+---
+title: Daglig endring i trafikk ved riksgrensen
+output: 
+  word_document:
+    reference_docx: svv_notatmal3.docx
+    toc: true
+    toc_depth: 2
+    fig_caption: true
+    fig_width: 7
+---
+
+```{r setup, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
+# Packages are loaded through sourcing rmd_setup.R
+source("rmd_setup.R")
+
+# Traffic Data API calls to get points metadata and aadt
+source("get_from_trafficdata_api.R")
+
+# Points on border crossings
+border_trp_ids <- c("04904V971774",
+                    "35229V971507",
+                    "02535V971411",
+                    "09269V971425",
+                    "21405V2607269",
+                    "05732V971567",
+                    "76778V704564",
+                    "57929V705247",
+                    "94299V704696",
+                    "94864V704707",
+                    "00737V704646",
+                    "14158V705081",
+                    "69140V704643",
+                    "11051V704737",
+                    "66220V72824",
+                    "84237V578097",
+                    "50089V578151",
+                    "93561V578187",
+                    "99923V578123",
+                    "08581V885541",
+                    "35829V885266",
+                    "77275V885276",
+                    "01777V885181",
+                    "45313V1125788",
+                    "85233V930344",
+                    #"13177V930320", feil på sløyfe fra 05.01.2020
+                    "97351V930305",
+                    "99312V930442",
+                    "68101V930654",
+                    "97687V930620"
+                    )
+
+# All points from Traffic Data API
+points <- get_points() %>%
+  dplyr::select(trp_id, name, road_reference, municipality_name,
+                lat, lon) %>%
+  dplyr::distinct(trp_id, .keep_all = T)
+
+# Adding metadata to trps
+border_trps <- points %>%
+  dplyr::filter(trp_id %in% border_trp_ids) %>% 
+  dplyr::arrange(desc(lat))
+
+
+# TRP AADT ####
+adt <- get_aadt_for_trp_list(border_trps$trp_id)
+
+adt_filtered <- adt %>%
+  #dplyr::filter(coverage > 20) %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year == max(year)) %>%
+  dplyr::select(trp_id, adt)
+
+border_trp_adt <- border_trps %>% 
+  left_join(adt_filtered)
+
+
+# Daily traffic ####
+# Same week in 2019
+
+# From week 27
+borderdata_2019_from <- "2019-07-01T00:00:00+02:00"
+borderdata_2019_to <- "2019-07-22T00:00:00+02:00"
+
+borderdata_2020_from <- "2020-06-29T00:00:00+02:00"
+borderdata_2020_to <- "2020-07-20T00:00:00+02:00"
+
+ukedager <- c("Mandag",
+              "Tirsdag",
+              "Onsdag",
+              "Torsdag",
+              "Fredag",
+              "Lørdag",
+              "Søndag")
+
+norske_ukedager <- data.frame(weekday = c(1, 2, 3, 4, 5, 6, 7),
+                              ukedag = ordered(ukedager,
+                                               levels = ukedager))
+
+# Fetch daily traffic from API
+border_dt_2019 <- get_dt_for_trp_list(border_trps$trp_id,
+                                      borderdata_2019_from,
+                                      borderdata_2019_to)
+
+border_dt_2020 <- get_dt_for_trp_list(border_trps$trp_id,
+                                      borderdata_2020_from,
+                                      borderdata_2020_to)
+
+border_dt <- bind_rows(border_dt_2019, border_dt_2020) %>%
+  select(-point_name) %>%
+  mutate(year = lubridate::year(from),
+         weekno = lubridate::isoweek(from),
+         weekday = lubridate::wday(from,
+                                   week_start =
+                                     getOption("lubridate.week.start", 1))) %>%
+  select(-from) %>% 
+  filter(coverage > 99)
+
+
+
+# Weeks 2019 ####
+border_dt_2019_27 <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 27) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2019_28 <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 28) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2019_29 <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 29) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2019_30 <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 30) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2019_31 <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 31) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2019_32 <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 32) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2019_33 <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 33) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2019_34 <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 34) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2019_35 <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 35) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+# ADD NEW WEEK HERE!!!
+
+
+
+# Weeks 2020 ####
+border_dt_2020_27 <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 27) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2020_28 <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 28) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(point_id != "14158V705081")
+
+border_dt_2020_29 <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 29) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2020_30 <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 30) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2020_31 <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 31) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2020_32 <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 32) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2020_33 <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 33) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2020_34 <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 34) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2020_35 <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 35) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+# ADD NEW WEEK HERE!!!
+
+
+# Trp index ####
+calculate_trp_border_index <- function(dt_base, dt_calc) {
+  trp_daily_index <- inner_join(dt_base, dt_calc,
+                                by = c("point_id", "weekday"),
+                                suffix = c("_b", "_c")) %>% 
+    mutate(index = round((total_volume_c / total_volume_b - 1) * 100, 
+                         digits = 1),
+           index = dplyr::na_if(index, "Inf")) %>% 
+    left_join(norske_ukedager) %>% 
+    select(point_id, ukedag, index) %>% 
+    left_join(points, by = c("point_id" = "trp_id")) %>% 
+    left_join(adt_filtered, by = c("point_id" = "trp_id")) %>% 
+    tidyr::separate(road_reference, c("road", "strekning", "meter"),
+                    sep = " ") %>%    
+#    mutate(road = stringr::str_split_fixed(road_reference, " ", 2)) %>% 
+    select(name, road, adt, municipality_name, ukedag, index) %>% 
+    arrange(factor(ukedag, levels = ukedager)) %>% 
+    # TODO: sort by weekday
+    tidyr::pivot_wider(names_from = ukedag,
+                       values_from = index)
+}
+
+
+# Compare week 2020 to same week 2019 ####
+border_trp_dt_201927_202027 <- calculate_trp_border_index(
+  border_dt_2019_27,
+  border_dt_2020_27
+)
+
+border_trp_dt_201928_202028 <- calculate_trp_border_index(
+  border_dt_2019_28,
+  border_dt_2020_28
+)
+
+border_trp_dt_201929_202029 <- calculate_trp_border_index(
+  border_dt_2019_29,
+  border_dt_2020_29
+)
+
+border_trp_dt_201930_202030 <- calculate_trp_border_index(
+  border_dt_2019_30,
+  border_dt_2020_30
+)
+
+border_trp_dt_201931_202031 <- calculate_trp_border_index(
+  border_dt_2019_31,
+  border_dt_2020_31
+)
+
+border_trp_dt_201932_202032 <- calculate_trp_border_index(
+  border_dt_2019_32,
+  border_dt_2020_32
+)
+
+border_trp_dt_201933_202033 <- calculate_trp_border_index(
+  border_dt_2019_33,
+  border_dt_2020_33
+)
+
+border_trp_dt_201934_202034 <- calculate_trp_border_index(
+  border_dt_2019_34,
+  border_dt_2020_34
+)
+
+border_trp_dt_201935_202035 <- calculate_trp_border_index(
+  border_dt_2019_35,
+  border_dt_2020_35
+)
+
+
+# ADD NEW TRP INDEX HERE!!!
+
+
+
+
+
+# Border index ####
+calculate_border_index <- function(dt_base, dt_calc) {
+  border_daily_index <- inner_join(dt_base, dt_calc,
+                            by = c("point_id", "weekday"),
+                            suffix = c("_b", "_c")) %>% 
+  group_by(weekday) %>% 
+  summarise(border_volume_b = sum(total_volume_b),
+            border_volume_c = sum(total_volume_c),
+            no_trp = n()
+            ) %>% 
+  mutate(index = round((border_volume_c / border_volume_b - 1) * 100, 
+                       digits = 1)) %>% 
+  left_join(norske_ukedager) %>% 
+  select(ukedag, no_trp, index)
+}
+
+
+# Compare this week to same week 2019 ####
+border_dt_201927_202027 <- calculate_border_index(
+  border_dt_2019_27, 
+  border_dt_2020_27) %>% 
+  mutate(periode = "Uke \n 27")
+
+border_dt_201928_202028 <- calculate_border_index(
+  border_dt_2019_28, 
+  border_dt_2020_28) %>% 
+  mutate(periode = "Uke \n 28")
+
+border_dt_201929_202029 <- calculate_border_index(
+  border_dt_2019_29, 
+  border_dt_2020_29) %>% 
+  mutate(periode = "Uke \n 29")
+
+border_dt_201930_202030 <- calculate_border_index(
+  border_dt_2019_30, 
+  border_dt_2020_30) %>% 
+  mutate(periode = "Uke \n 30")
+
+border_dt_201931_202031 <- calculate_border_index(
+  border_dt_2019_31, 
+  border_dt_2020_31) %>% 
+  mutate(periode = "Uke \n 31")
+
+border_dt_201932_202032 <- calculate_border_index(
+  border_dt_2019_32, 
+  border_dt_2020_32) %>% 
+  mutate(periode = "Uke \n 32")
+
+border_dt_201933_202033 <- calculate_border_index(
+  border_dt_2019_33, 
+  border_dt_2020_33) %>% 
+  mutate(periode = "Uke \n 33")
+
+border_dt_201934_202034 <- calculate_border_index(
+  border_dt_2019_34, 
+  border_dt_2020_34) %>% 
+  mutate(periode = "Uke \n 34")
+
+border_dt_201935_202035 <- calculate_border_index(
+  border_dt_2019_35, 
+  border_dt_2020_35) %>% 
+  mutate(periode = "Uke \n 35")
+
+
+
+
+
+
+# ADD NEW WEEK HERE!
+border_base_2019 <- bind_rows(border_dt_201935_202035,
+                              border_dt_201934_202034,
+                              border_dt_201933_202033,
+                              border_dt_201932_202032,
+                              border_dt_201931_202031,
+                              border_dt_201930_202030,
+                              border_dt_201929_202029,
+                              border_dt_201928_202028,
+                              border_dt_201927_202027
+)
+
+
+# Function for generating table
+make_border_table <- function(border_base, caption_text) {
+  
+  border_base_table_ready <- border_base %>%
+    dplyr::ungroup() %>% 
+    dplyr::select(-no_trp) %>%
+    dplyr::mutate(index = dplyr::na_if(index, "Inf")) %>% 
+    tidyr::pivot_wider(names_from = ukedag,
+                       values_from = index) %>% 
+    dplyr::mutate(periode = stringr::str_replace(periode, " \n", ""))
+  
+  ncol_dt <- ncol(border_base_table_ready)
+  
+  border_table <- border_base_table_ready %>% 
+    flextable() %>%
+    set_header_labels(periode = "Sammenlignet") %>%
+    bold(part = "header") %>%
+    fontsize(size = 9, part = "all") %>%
+    font(fontname = "Lucida Sans Unicode", part = "all") %>%
+    bg(bg = "#ED9300", part = "header") %>%
+    border_remove() %>%
+    hline_top(part = "header", border = borderline) %>%
+    hline_bottom(part = "all", border = borderline) %>%
+    colformat_num(j = 2:ncol_dt, na_str = "", digits = 1) %>% 
+    autofit() %>%
+    height_all(height = .2) %>%
+    padding(padding.top = .3,
+            padding.bottom = .3) %>%
+    set_caption(caption_text)
+  
+  return(border_table)
+}
+
+make_border_trp_table <- function(border_trp_dt, caption_text) {
+  
+  border_trp_dt_table_ready <- border_trp_dt %>%
+    select(-road, -adt, -municipality_name)
+  
+  ncol_dt <- ncol(border_trp_dt_table_ready)
+  
+  border_trp_table <- border_trp_dt_table_ready %>% 
+    flextable() %>%
+    set_header_labels(name = "Punktnavn") %>%
+    bold(part = "header") %>%
+    fontsize(size = 9, part = "all") %>%
+    font(fontname = "Lucida Sans Unicode", part = "all") %>%
+    bg(bg = "#ED9300", part = "header") %>%
+    border_remove() %>%
+    hline_top(part = "header", border = borderline) %>%
+    hline_bottom(part = "all", border = borderline) %>%
+    colformat_num(j = 2:ncol_dt, na_str = "", digits = 1) %>% 
+    autofit() %>%
+    height_all(height = .2) %>%
+    padding(padding.top = .3,
+            padding.bottom = .3) %>%
+    set_caption(caption_text)
+  
+  return(border_trp_table)
+}
+
+make_daily_border_plot <- function(area_dt, subtitle_text) {
+  
+  area_dt %>%
+  ggplot2::ggplot(aes(ukedag, index)) +
+  geom_bar(aes(fill = index > 0), stat = "identity",
+           color = "#000000",
+           alpha = 0.6) +
+  scale_fill_manual(guide = FALSE, breaks = c(FALSE, TRUE),
+                    values = c("#ed1c2e", "#58b02c")) +
+  geom_hline(yintercept = 0, color = "#000000") +
+  facet_grid(periode ~., switch = "y") +
+  scale_y_continuous(position = "right",
+                     limits = c(-100, 100),
+                     breaks = c(-80, 0, 80)) +
+  xlab("") +
+  ylab("Endring i trafikkmengde (%)\n") +
+  ggtitle(label = "Daglig endring i trafikkmengde over riksgrensen",
+          subtitle = subtitle_text) +
+  theme(strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        strip.background = element_blank()) +
+  labs(caption = "Data: Statens vegvesen")
+}
+```
+
+# Bakgrunn
+
+Som følge av smitteverntiltak i forbindelse med spredningen av det nye koronaviruset SARS-CoV-2, er det interessant å se hvordan trafikken endret seg. De første tiltakene ble annonsert av Regjeringen torsdag 12. mars 2020 (uke 11), og trådde i kraft fredag 13. mars. Grensen til Finland åpnet mandag 15. juni (uke 25).
+
+Statens vegvesen har i dag til sammen 30 trafikkregistreringspunkter ved de ulike riksgrenseovergangene fra Svinesund i sør til Storskog i nordøst. Trafikken er ikke registrert i selve grenseovergangen, men litt inn på norsk side. Det er ingen store kryss mellom registreringspunktene og riksgrensen, slik at de fleste kjøretøy som blir registrert antas å krysse riksgrensen, selv om enkelte kjøretøy kan stoppe og eventuelt snu på norsk side.
+
+Datagrunnlaget for beregningene hentes fra disse trafikkregistreringspunktene. Det vil gi et representativ utvalg for å kunne beregne trafikkutviklingen. Det gjøres en sammenligning av døgntrafikken, ukedag mot ukedag. Mandag sammenlignes med mandag osv.  
+
+Trafikkutviklingen sammenlignes ved at døgntrafikken sammenlignes med tilsvarende døgntrafikk i samme uke i 2019.
+
+Denne rapporten viser utviklingen fra uke 27 og framover. Trafikkutvikling for tidligere uker finnes i egen rapport for uke 10-26.
+
+
+Alle data er hentet fra [trafikkdata.no](https://www.trafikkdata.no/). Døgntrafikk med minst 99 % dekningsgrad er brukt til å beregne prosentvis endring mellom to dager.
+
+Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
+
+Været vil enkelte dager kunne påvirke trafikkmengden. For eksempel vil det ved dårlig føre, som ved stort snøfall eller underkjølt regn, bli redusert framkommelighet og dette fører til mindre trafikk enn normalt. Spesielt gjelder dette en del av grenseovergangene som ligger i fjellstrøk. Enkelte grenseoverganger er vinterstid tidvis stengt på grunn av værforhold.
+
+
+# Trafikkregistreringspunkt ved riksgrenseovergangene
+
+```{r trptable}
+border_trp_adt %>%
+  select(-trp_id, -lat, -lon) %>% 
+  flextable() %>%
+  set_header_labels(name = "Punktnavn",
+                    road_reference = "Vegsystemreferanse",
+                    adt = "ÅDT",
+                    municipality_name = "Kommune") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  colformat_num(j = 4, na_str = "", digits = 0,
+                big.mark = " ") %>% 
+  autofit() %>%
+  height_all(height = .2) %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) #%>%
+#  set_caption("Trafikkregistreringspunkter ved riksgrenseovergangene.")
+```
+
+
+# Samlet endring i trafikk over riksgrensen
+
+```{r plot_2019, fig.width=8, fig.height=8}
+make_daily_border_plot(border_base_2019, "Fra 2019 til 2020")
+```
+
+
+
+```{r table_2019}
+make_border_table(border_base_2019,
+                  "Prosentvis endring i trafikkmengde fra 2019 til 2020.")
+```
+\
+I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet med uke tilsvarende uke i 2019 som utgangspunkt. Det vil si at trafikken har gått ned fra år 2019 til samme ukedag i 2020, når prosentverdien er negativ.
+\
+
+
+# Endring i trafikk ved de enkelte riksgrenseovergangene
+
+```{r trptable_201927}
+make_border_trp_table(border_trp_dt_201927_202027,
+                      "Prosentvis endring i trafikkmengde fra uke 27 2019 til uke 27 2020.")
+```
+
+```{r trptable_201928}
+make_border_trp_table(border_trp_dt_201928_202028,
+                      "Prosentvis endring i trafikkmengde fra uke 28 2019 til uke 28 2020.")
+```
+
+```{r trptable_201929}
+make_border_trp_table(border_trp_dt_201929_202029,
+                      "Prosentvis endring i trafikkmengde fra uke 29 2019 til uke 29 2020.")
+```
+
+```{r trptable_201930}
+# make_border_trp_table(border_trp_dt_201930_202030,
+#                      "Prosentvis endring i trafikkmengde fra uke 30 2019 til uke 30 2020.")
+```
+
+```{r trptable_201931}
+# make_border_trp_table(border_trp_dt_201931_202031,
+#                      "Prosentvis endring i trafikkmengde fra uke 31 2019 til uke 31 2020.")
+```
+
+```{r trptable_201932}
+# make_border_trp_table(border_trp_dt_201932_202032,
+#                      "Prosentvis endring i trafikkmengde fra uke 32 2019 til uke 32 2020.")
+```
+
+```{r trptable_201933}
+# make_border_trp_table(border_trp_dt_201933_202033,
+#                      "Prosentvis endring i trafikkmengde fra uke 33 2019 til uke 33 2020.")
+```
+
+```{r trptable_201934}
+# make_border_trp_table(border_trp_dt_201934_2020334,
+#                      "Prosentvis endring i trafikkmengde fra uke 34 2019 til uke 34 2020.")
+```
+
+```{r trptable_201935}
+# make_border_trp_table(border_trp_dt_201935_202035,
+#                      "Prosentvis endring i trafikkmengde fra uke 35 2019 til uke 35 2020.")
+```
+
