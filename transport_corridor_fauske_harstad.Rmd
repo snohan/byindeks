@@ -1,0 +1,207 @@
+---
+#title: Trafikkutvikling
+output: 
+  # html_document:
+  #   toc: true
+  #   fig_caption: true
+  word_document:
+    reference_docx: svv_notatmal3.docx
+    toc: true
+    toc_depth: 2
+    fig_caption: true
+    fig_width: 7
+---
+
+```{r setup, include = FALSE, echo = FALSE}
+source("rmd_setup.R")
+source("get_from_trafficdata_api.R")
+source("get_from_nvdb_api.R")
+
+# Disposition of output
+# Text on road corridor (table with length?)
+# Points: table with AADT
+# Points: map
+# Corridor index: per year (this year to date) and combined from first year
+# LATER Corridor index: per month
+# Point index: map for combined index
+# Point index: table per year
+```
+
+```{r get_data, include = FALSE}
+index_2017 <- get_published_index(3953, 2017, 12)
+index_2018 <- get_published_index(3953, 2018, 12)
+index_2019 <- get_published_index(3953, 2019, 12)
+index_2020 <- get_published_index(3953, 2020, 6)
+
+index_all_years <- dplyr::bind_rows(index_2017,
+                                    index_2018,
+                                    index_2019,
+                                    index_2020)
+
+pointindex_2017 <- get_published_pointindex(3953, 2017, 12)
+pointindex_2018 <- get_published_pointindex(3953, 2018, 12)
+pointindex_2019 <- get_published_pointindex(3953, 2019, 12)
+pointindex_2020 <- get_published_pointindex(3953, 2020, 6)
+
+
+
+# Points ####
+corridor_points <- pointindex_2017[[1]]
+
+# TODO: functionize point metadata wrangling
+# Point metadata from Traffic Data API
+points <- get_points() %>%
+  dplyr::distinct(trp_id, .keep_all = T) %>%
+  dplyr::select(trp_id, name, road_reference, county_name,
+                municipality_name, lat, lon, road_link_position) %>% 
+  dplyr::filter(trp_id %in% corridor_points)
+
+points_split_reference <- points %>%
+  tidyr::separate(road_reference, c("road_system", "intersection_part"),
+                  sep = "[:blank:][:alpha:]{1}D",
+                  remove = FALSE, fill = "right") %>%
+  dplyr::mutate(road_category = stringr::str_sub(road_system, 1, 1)) %>%
+  dplyr::mutate(road_category = factor(road_category,
+                                       levels = c("E", "R", "F", "K", "P"))) %>%
+  tidyr::separate(road_system, c("road", "section_meter"),
+                  sep = " S") %>%
+  dplyr::mutate(road_number = as.numeric(stringr::str_sub(road, 3, -1))) %>%
+  dplyr::mutate(road_category_and_number = paste0(road_category, "v", road_number)) %>%
+  tidyr::separate(section_meter, c("section_number", "subsection_meter"),
+                  sep = "D", convert = TRUE) %>%
+  tidyr::separate(subsection_meter, c("subsection_number", "meter"),
+                  sep = " m", convert = TRUE) %>%
+  tidyr::separate(intersection_part, c("intersection_part_number", "intersection_meter"),
+                  sep = " m", convert = TRUE) %>%
+  dplyr::select(trp_id, name, road_reference, road_category, road_number,
+                road_category_and_number,
+                section_number, subsection_number, meter,
+                intersection_part_number, intersection_meter,
+                county_name, municipality_name, lat, lon, road_link_position) %>%
+  dplyr::arrange(road_category, road_number,
+                 section_number, subsection_number, meter,
+                 intersection_part_number, intersection_meter)
+
+# Point AADT
+adt <- get_aadt_by_length_for_trp_list(points$trp_id)
+
+adt_filtered <- adt %>%
+  dplyr::select(-sd_length_range, 
+                -aadt_ci_lowerbound_length_range,
+                -aadt_ci_upperbound_length_range
+                ) %>% 
+  dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
+  dplyr::mutate(length_range = if_else(length_range == "[..,5.6)",
+                                         "short", "long")) %>%
+  tidyr::pivot_wider(names_from = length_range, names_prefix = "aadt_",
+                     values_from = aadt_length_range) %>%
+  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  #dplyr::filter(length_quality > 90) %>%
+  dplyr::filter(coverage > 50) %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year == max(year)) %>%
+  dplyr::select(trp_id, year, aadt_total, coverage, aadt_short, aadt_long, length_quality) %>%
+  dplyr::rename(adt = aadt_total) %>% 
+  dplyr::mutate(aadt_short = if_else(length_quality > 99, aadt_short, NA_real_),
+                aadt_long = if_else(length_quality > 99, aadt_long, NA_real_)) %>% 
+  dplyr::select(-length_quality)
+
+points_adt <- left_join(points_split_reference, adt_filtered)
+
+# Must supply missing AADTs from NVDB based on road reference
+missing_aadt <- points_adt %>%
+  dplyr::filter(adt == 0 | is.na(adt)) %>%
+  dplyr::mutate(
+    adt = mapply(getAadtByRoadlinkposition, road_link_position)) %>%
+  dplyr::mutate(year = 2019)
+
+with_aadt <- points_adt %>%
+  dplyr::filter(adt > 0)
+
+points_adt_all <- bind_rows(with_aadt, missing_aadt) %>%
+  dplyr::arrange(road_category, road_number,
+                 section_number, subsection_number, meter,
+                 intersection_part_number, intersection_meter)
+
+# Point index
+pointindices_year_to_date <- bind_rows(pointindex_2017[[2]],
+                          pointindex_2018[[2]],
+                          pointindex_2019[[2]],
+                          pointindex_2020[[2]]) %>% 
+  dplyr::filter(period == "year_to_date") %>% 
+  dplyr::select(-area_name)
+
+points_indices_year_to_date <- left_join(points_split_reference, pointindices_year_to_date) %>% 
+  dplyr::select(name, road_reference, year, month, is_excluded, total_index, coverage,
+                length_excluded, length_coverage, index_short, index_long, period)
+
+# TODO: Recreate essentials in CSV export: all points, all months, pivoted with short/long, coverage for both total and short/long
+
+```
+
+# Vegnett
+Transportkorridoren mellom Fauske, via Narvik, til Harstad og Sortland består av:
+
+- E6 mellom Fauske og Bjerkvik, 
+- E10 mellom Bjerkvik og Gullesfjordbotn,
+- Rv83 mellom Tjeldsundbrua og Harstad,
+- Rv85 mellom Gullesfjordbotn og Sortland
+
+## Trafikkregistreringgspunktene
+Trafikkregistreringspunktene i transportkorridoren er listet opp i følgende tabell.
+
+```{r point_table}
+points_adt_all %>%
+  select(name, road_reference, adt, aadt_short, aadt_long, year) %>%
+  flextable() %>%
+  colformat_num(j = 3:5,
+                big.mark = " ", digits = 0, na_str = "") %>%
+  set_header_labels(name = "Navn",
+                    road_reference = "Vegreferanse",
+                    adt = "ÅDT total",
+                    aadt_short = "ÅDT lette",
+                    aadt_long = "ÅDT tunge",
+                    year = "År") %>%
+  align(i = 1, j = 3, align = "center", part = "header") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  autofit() %>%
+  height_all(height = .2) %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Trafikkregistreringspunkt. Skillet mellom lette og tunge kjøretøy er basert på målt lengde kortere eller lengre enn 5,6 m. Der ÅDT for lette og tunge mangler, er datagrunnlaget for dårlig til at tall kan presenteres. Summen av lette og tunge kan avvike noe fra totalen på grunn av avrundingsregler.")
+```
+
+Kartet nedenfor viser plasseringen av trafikkregistreringspunktene.
+
+```{r map_trp}
+create_point_adt_map(points_adt_all)
+```
+
+## Endring i trafikkmengde
+Endring i trafikkmengde er beregnet for hele kalenderår. Tabellen nedenfor viser trafikkutviklingen for hvert år.
+
+
+```{r city_table}
+corridor_index_all_years <- index_all_years %>% 
+  dplyr::select(year, length_range, index = index_p, period) %>% 
+  dplyr::filter(period == "year_to_date") %>% 
+  dplyr::select(-period) %>% 
+  dplyr::mutate(length_range = case_when(length_range == "[..,..)" ~ "total",
+                                         length_range == "[..,5.6)" ~ "short",
+                                         length_range == "[5.6,..)" ~ "long")) %>% 
+  tidyr::pivot_wider(names_from = length_range, names_prefix = "index_",
+                     values_from = index)
+
+create_corridor_index_table(corridor_index_all_years)
+
+# Ikke vis lette tunge for 2017, men for resten!
+```
+
+
+

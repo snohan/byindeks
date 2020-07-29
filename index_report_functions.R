@@ -232,7 +232,32 @@ create_city_road_length_table <- function(road_lengths) {
   return(road_lengths_table)
 }
 
+create_corridor_index_table <- function(corridor_index_all_years) {
 
+  corridor_table <- corridor_index_all_years %>%
+    dplyr::select(year, index_total, index_short, index_long) %>%
+    flextable::flextable() %>%
+    colformat_num(j = 2:4, digits = 1) %>%
+    set_header_labels(year = "Periode",
+                      index_total = "Endring i alle \n (%)",
+                      index_short = "Endring i lette \n (%)",
+                      index_long = "Endring i tunge \n (%)") %>%
+    bold(part = "header") %>%
+    fontsize(size = 9, part = "all") %>%
+    font(fontname = "Lucida Sans Unicode", part = "all") %>%
+    bg(bg = "#ED9300", part = "header") %>%
+    border_remove() %>%
+    hline_top(part = "header", border = borderline) %>%
+    hline_bottom(part = "all", border = borderline) %>%
+    align(align = "center", part = "header") %>%
+    autofit() %>%
+    height_all(height = .2) %>%
+    padding(padding.top = .3,
+            padding.bottom = .3) %>%
+    set_caption("Estimert endring i trafikkmengde.")
+
+  return(corridor_table)
+}
 
 
 
