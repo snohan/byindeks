@@ -31,36 +31,22 @@ cities_points_unestablished <-
 points <- get_points() %>%
   dplyr::distinct(trp_id, .keep_all = T) %>%
   dplyr::select(trp_id, name, road_reference, county_name,
-                municipality_name, lat, lon, road_link_position)
-
-points_split_reference <- points %>%
-  tidyr::separate(road_reference, c("road_system", "intersection_part"),
-                  sep = "[:blank:][:alpha:]{1}D",
-                  remove = FALSE, fill = "right") %>%
-  dplyr::mutate(road_category = stringr::str_sub(road_system, 1, 1)) %>%
-  dplyr::mutate(road_category = factor(road_category,
-                                       levels = c("E", "R", "F", "K", "P"))) %>%
-  tidyr::separate(road_system, c("road", "section_meter"),
-                  sep = " S") %>%
-  dplyr::mutate(road_number = as.numeric(stringr::str_sub(road, 3, -1))) %>%
-  dplyr::mutate(road_category_and_number = paste0(road_category, "v", road_number)) %>%
-  tidyr::separate(section_meter, c("section_number", "subsection_meter"),
-                  sep = "D", convert = TRUE) %>%
-  tidyr::separate(subsection_meter, c("subsection_number", "meter"),
-                  sep = " m", convert = TRUE) %>%
-  tidyr::separate(intersection_part, c("intersection_part_number", "intersection_meter"),
-                  sep = " m", convert = TRUE) %>%
+                municipality_name, lat, lon, road_link_position) %>%
+  split_road_system_reference() %>%
   dplyr::select(trp_id, name, road_reference, road_category, road_number,
                 road_category_and_number,
                 section_number, subsection_number, meter,
                 intersection_part_number, intersection_meter,
-                county_name, municipality_name, lat, lon, road_link_position) %>%
-  dplyr::arrange(road_category, road_number,
-                 section_number, subsection_number, meter,
-                 intersection_part_number, intersection_meter)
+                county_name, municipality_name, lat, lon, road_link_position)
 
 # All points from TRP API (if needed)
-points_trp <- getPointsFromTRPAPI()
+points_trp <- get_points_from_trpapi_httr() %>%
+  split_road_system_reference() #%>%
+  # dplyr::select(trp_id, name, road_reference, road_category, road_number,
+  #               road_category_and_number,
+  #               section_number, subsection_number, meter,
+  #               intersection_part_number, intersection_meter,
+  #               county_name, municipality_name, lat, lon, road_link_position)
 
 ###
 ###
@@ -1341,6 +1327,65 @@ write.csv2(city_index_all,
 
 # Monthly city index
 # TODO: worth it? Skip until someone asks for it! :)
+
+# Trondheim 2019 points ####
+this_citys_trps <- choose_new_city_trp_ids("Trondheim", 2019) %>%
+  dplyr::left_join(points_trp) %>%
+  dplyr::mutate(station_type = "Trafikkregistrering") %>%
+  dplyr::select(-legacyNortrafMpn, -county_name) # %>%
+  # dplyr::arrange(road_category, road_number,
+  #                section_number, subsection_number, meter,
+  #                intersection_part_number, intersection_meter) %>%
+  # dplyr::select(trp_id, name, road_reference, road_category_and_number,
+  #               county_name, municipality_name,
+  #               lat, lon, road_link_position)
+
+
+# Tolling stations with metadata
+kommunenr <- "5001"
+kommunenavn <- hent_kommune(kommunenr)[[1]]
+
+kommune_bomer_uttak <-
+  get_tolling_stations_v3(kommunenr)
+
+kommune_bomer <- kommune_bomer_uttak %>%
+  dplyr::mutate(station_type = "Bom") %>%
+  dplyr::mutate(trp_id = msnr,
+                msnr = as.numeric(msnr)) %>%
+  dplyr::select(trp_id, everything()) %>%
+  dplyr::filter(trp_id %in% c("51", "52", "53", "54", "55", "56", "58",
+                              "59", "60", "61", "62", "64", "65", "66",
+                              "67", "68", "69", "85", "86", "72"))
+
+# Names from toll data files
+bom_felt_og_stasjon <- read.csv2(
+  "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_felt_og_stasjon.csv"
+) %>%
+  dplyr::select(-felt) %>%
+  dplyr::rename(name = stasjon)
+
+trh_bomer <- kommune_bomer %>%
+  dplyr::select(-name) %>%
+  dplyr::left_join(bom_felt_og_stasjon, by = c("msnr" = "kode")) %>%
+  dplyr::select(-msnr) %>%
+  #dplyr::select(trp_id, name, dplyr::everything()) %>%
+  split_road_system_reference() %>%
+  dplyr::mutate(municipality_name = "Trondheim")
+
+# All points
+this_citys_trps_all <- bind_rows(this_citys_trps, trh_bomer) %>%
+  dplyr::arrange(road_category, road_number,
+                 section_number, subsection_number, meter,
+                 intersection_part_number, intersection_meter) %>%
+  dplyr::select(trp_id, name, road_reference,
+                road_category_and_number,
+                municipality_name, lat, lon, road_link_position,
+                station_type)
+
+
+# HERE!
+
+
 
 # Grenland 2016 points ####
 this_citys_trps <- choose_city_trp_ids("Grenland", 2017) %>%

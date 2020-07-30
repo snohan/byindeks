@@ -91,6 +91,62 @@ getPointsFromTRPAPI <- function() {
   return(points_trp)
 }
 
+get_points_from_trpapi_httr <- function() {
+  # Get all traffic registration points
+  api_query <-
+    "query allPoints{
+  trafficRegistrationPoints{
+    id
+    name
+    location{
+      coordinates{
+        latlon{
+          latitude
+          longitude
+        }
+      }
+       municipality {
+        name
+        number
+        county {
+          name
+        }
+      }
+      roadReference{
+        shortForm
+      }
+      roadLink{
+        id
+        position
+      }
+    }
+    legacyNortrafMpn
+  }
+}"
+
+  points_trp <- get_via_httr(api_query) %>%
+    dplyr::rename(
+      trp_id = data.trafficRegistrationPoints.id,
+      name = data.trafficRegistrationPoints.name,
+      municipality_name = data.trafficRegistrationPoints.location.municipality.name,
+      county_name = data.trafficRegistrationPoints.location.municipality.county.name,
+      lat = data.trafficRegistrationPoints.location.coordinates.latlon.latitude,
+      lon = data.trafficRegistrationPoints.location.coordinates.latlon.longitude,
+      road_reference = data.trafficRegistrationPoints.location.roadReference.shortForm,
+      road_network_position =
+        data.trafficRegistrationPoints.location.roadLink.position,
+      road_network_link =
+        data.trafficRegistrationPoints.location.roadLink.id,
+      legacyNortrafMpn = data.trafficRegistrationPoints.legacyNortrafMpn) %>%
+    dplyr::mutate(road_link_position = paste0(road_network_position, "@",
+                                              road_network_link)) %>%
+    dplyr::select(trp_id, name, county_name, municipality_name,
+                  road_reference, road_link_position, lat, lon,
+                  legacyNortrafMpn)
+
+  return(points_trp)
+}
+
 getPointsFromTRPAPI_filtered <- function() {
   # Get all traffic registration points
   query_points_trp <-
