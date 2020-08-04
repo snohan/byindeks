@@ -2879,3 +2879,243 @@
 2019-12-01;"Være (Gml. E6)";"VÆRE-";"Liten_bil";244098;254354;95,97
 2019-12-01;"Være (Gml. E6)";"VÆRE-";"Stor_bil";8670;254354;3,41
 2019-12-01;"Være (Gml. E6)";"VÆRE-";"Ukjent";1586;254354;0,62
+2020-01-01;"Bjørndalen (Oslovn.)";"BJØRN";"Liten_bil";273013;298658;91,41
+2020-01-01;"Bjørndalen (Oslovn.)";"BJØRN";"Stor_bil";22157;298658;7,42
+2020-01-01;"Bjørndalen (Oslovn.)";"BJØRN";"Ukjent";3488;298658;1,17
+2020-01-01;"Bratsbergveien";"BRATS";"Liten_bil";182581;202802;90,03
+2020-01-01;"Bratsbergveien";"BRATS";"Stor_bil";17025;202802;8,39
+2020-01-01;"Bratsbergveien";"BRATS";"Ukjent";3196;202802;1,58
+2020-01-01;"Byåsveien";"BYÅSV";"Liten_bil";274982;290992;94,5
+2020-01-01;"Byåsveien";"BYÅSV";"Stor_bil";11662;290992;4,01
+2020-01-01;"Byåsveien";"BYÅSV";"Ukjent";4348;290992;1,49
+2020-01-01;"Bøckmans veg";"BØCKM";"Liten_bil";161671;165042;97,96
+2020-01-01;"Bøckmans veg";"BØCKM";"Stor_bil";2210;165042;1,34
+2020-01-01;"Bøckmans veg";"BØCKM";"Ukjent";1161;165042;0,7
+2020-01-01;"Fv 704 Torgårdsletta";"TORGR";"Liten_bil";198468;232158;85,49
+2020-01-01;"Fv 704 Torgårdsletta";"TORGR";"Stor_bil";24567;232158;10,58
+2020-01-01;"Fv 704 Torgårdsletta";"TORGR";"Ukjent";9123;232158;3,93
+2020-01-01;"Gamle Oslovei";"GAMLE";"Liten_bil";102723;109143;94,12
+2020-01-01;"Gamle Oslovei";"GAMLE";"Stor_bil";5173;109143;4,74
+2020-01-01;"Gamle Oslovei";"GAMLE";"Ukjent";1247;109143;1,14
+2020-01-01;"Haakon VII s gt ";"H-VII";"Liten_bil";333668;348631;95,71
+2020-01-01;"Haakon VII s gt ";"H-VII";"Stor_bil";8419;348631;2,41
+2020-01-01;"Haakon VII s gt ";"H-VII";"Ukjent";6544;348631;1,88
+2020-01-01;"Klett - E6";"KLETT-E6";"Liten_bil";690269;771644;89,45
+2020-01-01;"Klett - E6";"KLETT-E6";"Stor_bil";69339;771644;8,99
+2020-01-01;"Klett - E6";"KLETT-E6";"Ukjent";12036;771644;1,56
+2020-01-01;"Klett - Rv.707";"KLETT";"Liten_bil";153053;164695;92,93
+2020-01-01;"Klett - Rv.707";"KLETT";"Stor_bil";9281;164695;5,64
+2020-01-01;"Klett - Rv.707";"KLETT";"Ukjent";2361;164695;1,43
+2020-01-01;"Kroppan bru";"KROP-";"Liten_bil";428242;464337;92,23
+2020-01-01;"Kroppan bru";"KROP-";"Stor_bil";33604;464337;7,24
+2020-01-01;"Kroppan bru";"KROP-";"Ukjent";2491;464337;0,54
+2020-01-01;"Landbruksvegen";"LANDB";"Liten_bil";151606;158796;95,47
+2020-01-01;"Landbruksvegen";"LANDB";"Stor_bil";2925;158796;1,84
+2020-01-01;"Landbruksvegen";"LANDB";"Ukjent";4265;158796;2,69
+2020-01-01;"Nedre Leirfoss (Fossestuvegen)";"LEIRF";"Liten_bil";60440;67118;90,05
+2020-01-01;"Nedre Leirfoss (Fossestuvegen)";"LEIRF";"Stor_bil";5982;67118;8,91
+2020-01-01;"Nedre Leirfoss (Fossestuvegen)";"LEIRF";"Ukjent";696;67118;1,04
+2020-01-01;"Nord for Sluppen bru (Tempevn)";"SLUPP";"Liten_bil";313226;323494;96,83
+2020-01-01;"Nord for Sluppen bru (Tempevn)";"SLUPP";"Stor_bil";7259;323494;2,24
+2020-01-01;"Nord for Sluppen bru (Tempevn)";"SLUPP";"Ukjent";3009;323494;0,93
+2020-01-01;"Ranheim";"RANH-";"Liten_bil";526255;584258;90,07
+2020-01-01;"Ranheim";"RANH-";"Stor_bil";52319;584258;8,95
+2020-01-01;"Ranheim";"RANH-";"Ukjent";5684;584258;0,97
+2020-01-01;"Rv 706 Leangensletta";"Rv706";"Liten_bil";720240;788280;91,37
+2020-01-01;"Rv 706 Leangensletta";"Rv706";"Stor_bil";54363;788280;6,9
+2020-01-01;"Rv 706 Leangensletta";"Rv706";"Ukjent";13677;788280;1,74
+2020-01-01;"Tempeveien";"TEMPE";"Liten_bil";99989;111595;89,6
+2020-01-01;"Tempeveien";"TEMPE";"Stor_bil";8204;111595;7,35
+2020-01-01;"Tempeveien";"TEMPE";"Ukjent";3402;111595;3,05
+2020-01-01;"Thorbjørn Bratts veg";"THBRA";"Liten_bil";385135;406529;94,74
+2020-01-01;"Thorbjørn Bratts veg";"THBRA";"Stor_bil";17338;406529;4,26
+2020-01-01;"Thorbjørn Bratts veg";"THBRA";"Ukjent";4056;406529;1
+2020-01-01;"Tillerbrua";"TILLB";"Liten_bil";21393;27557;77,63
+2020-01-01;"Tillerbrua";"TILLB";"Stor_bil";3686;27557;13,38
+2020-01-01;"Tillerbrua";"TILLB";"Ukjent";2478;27557;8,99
+2020-01-01;"Tungasletta";"TUNGA";"Liten_bil";223312;236840;94,29
+2020-01-01;"Tungasletta";"TUNGA";"Stor_bil";8543;236840;3,61
+2020-01-01;"Tungasletta";"TUNGA";"Ukjent";4985;236840;2,1
+2020-01-01;"Være (Gml. E6)";"VÆRE-";"Liten_bil";245664;255915;95,99
+2020-01-01;"Være (Gml. E6)";"VÆRE-";"Stor_bil";8988;255915;3,51
+2020-01-01;"Være (Gml. E6)";"VÆRE-";"Ukjent";1263;255915;0,49
+2020-02-01;"Bjørndalen (Oslovn.)";"BJØRN";"Liten_bil";250350;273772;91,44
+2020-02-01;"Bjørndalen (Oslovn.)";"BJØRN";"Stor_bil";20201;273772;7,38
+2020-02-01;"Bjørndalen (Oslovn.)";"BJØRN";"Ukjent";3221;273772;1,18
+2020-02-01;"Bratsbergveien";"BRATS";"Liten_bil";174853;192922;90,63
+2020-02-01;"Bratsbergveien";"BRATS";"Stor_bil";15781;192922;8,18
+2020-02-01;"Bratsbergveien";"BRATS";"Ukjent";2288;192922;1,19
+2020-02-01;"Byåsveien";"BYÅSV";"Liten_bil";251323;265709;94,59
+2020-02-01;"Byåsveien";"BYÅSV";"Stor_bil";10647;265709;4,01
+2020-02-01;"Byåsveien";"BYÅSV";"Ukjent";3739;265709;1,41
+2020-02-01;"Bøckmans veg";"BØCKM";"Liten_bil";146107;149113;97,98
+2020-02-01;"Bøckmans veg";"BØCKM";"Stor_bil";1898;149113;1,27
+2020-02-01;"Bøckmans veg";"BØCKM";"Ukjent";1108;149113;0,74
+2020-02-01;"Fv 704 Torgårdsletta";"TORGR";"Liten_bil";183077;211665;86,49
+2020-02-01;"Fv 704 Torgårdsletta";"TORGR";"Stor_bil";20294;211665;9,59
+2020-02-01;"Fv 704 Torgårdsletta";"TORGR";"Ukjent";8294;211665;3,92
+2020-02-01;"Gamle Oslovei";"GAMLE";"Liten_bil";95401;101105;94,36
+2020-02-01;"Gamle Oslovei";"GAMLE";"Stor_bil";4619;101105;4,57
+2020-02-01;"Gamle Oslovei";"GAMLE";"Ukjent";1085;101105;1,07
+2020-02-01;"Haakon VII s gt ";"H-VII";"Liten_bil";312454;325159;96,09
+2020-02-01;"Haakon VII s gt ";"H-VII";"Stor_bil";7918;325159;2,44
+2020-02-01;"Haakon VII s gt ";"H-VII";"Ukjent";4787;325159;1,47
+2020-02-01;"Klett - E6";"KLETT-E6";"Liten_bil";680214;753060;90,33
+2020-02-01;"Klett - E6";"KLETT-E6";"Stor_bil";64031;753060;8,5
+2020-02-01;"Klett - E6";"KLETT-E6";"Ukjent";8815;753060;1,17
+2020-02-01;"Klett - Rv.707";"KLETT";"Liten_bil";148582;159272;93,29
+2020-02-01;"Klett - Rv.707";"KLETT";"Stor_bil";8486;159272;5,33
+2020-02-01;"Klett - Rv.707";"KLETT";"Ukjent";2204;159272;1,38
+2020-02-01;"Kroppan bru";"KROP-";"Liten_bil";397745;431191;92,24
+2020-02-01;"Kroppan bru";"KROP-";"Stor_bil";31214;431191;7,24
+2020-02-01;"Kroppan bru";"KROP-";"Ukjent";2232;431191;0,52
+2020-02-01;"Landbruksvegen";"LANDB";"Liten_bil";136333;141941;96,05
+2020-02-01;"Landbruksvegen";"LANDB";"Stor_bil";2923;141941;2,06
+2020-02-01;"Landbruksvegen";"LANDB";"Ukjent";2685;141941;1,89
+2020-02-01;"Nedre Leirfoss (Fossestuvegen)";"LEIRF";"Liten_bil";58159;64403;90,3
+2020-02-01;"Nedre Leirfoss (Fossestuvegen)";"LEIRF";"Stor_bil";5434;64403;8,44
+2020-02-01;"Nedre Leirfoss (Fossestuvegen)";"LEIRF";"Ukjent";810;64403;1,26
+2020-02-01;"Nord for Sluppen bru (Tempevn)";"SLUPP";"Liten_bil";283161;292088;96,94
+2020-02-01;"Nord for Sluppen bru (Tempevn)";"SLUPP";"Stor_bil";6250;292088;2,14
+2020-02-01;"Nord for Sluppen bru (Tempevn)";"SLUPP";"Ukjent";2677;292088;0,92
+2020-02-01;"Ranheim";"RANH-";"Liten_bil";499321;557143;89,62
+2020-02-01;"Ranheim";"RANH-";"Stor_bil";47843;557143;8,59
+2020-02-01;"Ranheim";"RANH-";"Ukjent";9979;557143;1,79
+2020-02-01;"Rv 706 Leangensletta";"Rv706";"Liten_bil";662097;722597;91,63
+2020-02-01;"Rv 706 Leangensletta";"Rv706";"Stor_bil";51584;722597;7,14
+2020-02-01;"Rv 706 Leangensletta";"Rv706";"Ukjent";8916;722597;1,23
+2020-02-01;"Tempeveien";"TEMPE";"Liten_bil";89177;95943;92,95
+2020-02-01;"Tempeveien";"TEMPE";"Stor_bil";3779;95943;3,94
+2020-02-01;"Tempeveien";"TEMPE";"Ukjent";2987;95943;3,11
+2020-02-01;"Thorbjørn Bratts veg";"THBRA";"Liten_bil";352418;374712;94,05
+2020-02-01;"Thorbjørn Bratts veg";"THBRA";"Stor_bil";15324;374712;4,09
+2020-02-01;"Thorbjørn Bratts veg";"THBRA";"Ukjent";6970;374712;1,86
+2020-02-01;"Tillerbrua";"TILLB";"Liten_bil";18685;23455;79,66
+2020-02-01;"Tillerbrua";"TILLB";"Stor_bil";2567;23455;10,94
+2020-02-01;"Tillerbrua";"TILLB";"Ukjent";2203;23455;9,39
+2020-02-01;"Tungasletta";"TUNGA";"Liten_bil";208075;218719;95,13
+2020-02-01;"Tungasletta";"TUNGA";"Stor_bil";7333;218719;3,35
+2020-02-01;"Tungasletta";"TUNGA";"Ukjent";3311;218719;1,51
+2020-02-01;"Være (Gml. E6)";"VÆRE-";"Liten_bil";231148;242561;95,29
+2020-02-01;"Være (Gml. E6)";"VÆRE-";"Stor_bil";10363;242561;4,27
+2020-02-01;"Være (Gml. E6)";"VÆRE-";"Ukjent";1050;242561;0,43
+2020-03-01;"Bjørndalen (Oslovn.)";"BJØRN";"Liten_bil";218573;241614;90,46
+2020-03-01;"Bjørndalen (Oslovn.)";"BJØRN";"Stor_bil";20435;241614;8,46
+2020-03-01;"Bjørndalen (Oslovn.)";"BJØRN";"Ukjent";2606;241614;1,08
+2020-03-01;"Bratsbergveien";"BRATS";"Liten_bil";142484;161040;88,48
+2020-03-01;"Bratsbergveien";"BRATS";"Stor_bil";15561;161040;9,66
+2020-03-01;"Bratsbergveien";"BRATS";"Ukjent";2995;161040;1,86
+2020-03-01;"Byåsveien";"BYÅSV";"Liten_bil";222354;235880;94,27
+2020-03-01;"Byåsveien";"BYÅSV";"Stor_bil";9967;235880;4,23
+2020-03-01;"Byåsveien";"BYÅSV";"Ukjent";3559;235880;1,51
+2020-03-01;"Bøckmans veg";"BØCKM";"Liten_bil";126278;129459;97,54
+2020-03-01;"Bøckmans veg";"BØCKM";"Stor_bil";2010;129459;1,55
+2020-03-01;"Bøckmans veg";"BØCKM";"Ukjent";1171;129459;0,9
+2020-03-01;"Fv 704 Torgårdsletta";"TORGR";"Liten_bil";167021;196961;84,8
+2020-03-01;"Fv 704 Torgårdsletta";"TORGR";"Stor_bil";22451;196961;11,4
+2020-03-01;"Fv 704 Torgårdsletta";"TORGR";"Ukjent";7489;196961;3,8
+2020-03-01;"Gamle Oslovei";"GAMLE";"Liten_bil";92024;98264;93,65
+2020-03-01;"Gamle Oslovei";"GAMLE";"Stor_bil";4622;98264;4,7
+2020-03-01;"Gamle Oslovei";"GAMLE";"Ukjent";1618;98264;1,65
+2020-03-01;"Haakon VII s gt ";"H-VII";"Liten_bil";275651;291820;94,46
+2020-03-01;"Haakon VII s gt ";"H-VII";"Stor_bil";8468;291820;2,9
+2020-03-01;"Haakon VII s gt ";"H-VII";"Ukjent";7701;291820;2,64
+2020-03-01;"Klett - E6";"KLETT-E6";"Liten_bil";620991;722013;86,01
+2020-03-01;"Klett - E6";"KLETT-E6";"Stor_bil";74629;722013;10,34
+2020-03-01;"Klett - E6";"KLETT-E6";"Ukjent";26393;722013;3,66
+2020-03-01;"Klett - Rv.707";"KLETT";"Liten_bil";129456;139918;92,52
+2020-03-01;"Klett - Rv.707";"KLETT";"Stor_bil";8610;139918;6,15
+2020-03-01;"Klett - Rv.707";"KLETT";"Ukjent";1852;139918;1,32
+2020-03-01;"Kroppan bru";"KROP-";"Liten_bil";321916;354150;90,9
+2020-03-01;"Kroppan bru";"KROP-";"Stor_bil";30242;354150;8,54
+2020-03-01;"Kroppan bru";"KROP-";"Ukjent";1992;354150;0,56
+2020-03-01;"Landbruksvegen";"LANDB";"Liten_bil";112573;119645;94,09
+2020-03-01;"Landbruksvegen";"LANDB";"Stor_bil";2907;119645;2,43
+2020-03-01;"Landbruksvegen";"LANDB";"Ukjent";4165;119645;3,48
+2020-03-01;"Nedre Leirfoss (Fossestuvegen)";"LEIRF";"Liten_bil";50599;56773;89,13
+2020-03-01;"Nedre Leirfoss (Fossestuvegen)";"LEIRF";"Stor_bil";5583;56773;9,83
+2020-03-01;"Nedre Leirfoss (Fossestuvegen)";"LEIRF";"Ukjent";591;56773;1,04
+2020-03-01;"Nord for Sluppen bru (Tempevn)";"SLUPP";"Liten_bil";248936;257033;96,85
+2020-03-01;"Nord for Sluppen bru (Tempevn)";"SLUPP";"Stor_bil";6045;257033;2,35
+2020-03-01;"Nord for Sluppen bru (Tempevn)";"SLUPP";"Ukjent";2052;257033;0,8
+2020-03-01;"Ranheim";"RANH-";"Liten_bil";370301;424953;87,14
+2020-03-01;"Ranheim";"RANH-";"Stor_bil";49014;424953;11,53
+2020-03-01;"Ranheim";"RANH-";"Ukjent";5638;424953;1,33
+2020-03-01;"Rv 706 Leangensletta";"Rv706";"Liten_bil";530527;592929;89,48
+2020-03-01;"Rv 706 Leangensletta";"Rv706";"Stor_bil";50010;592929;8,43
+2020-03-01;"Rv 706 Leangensletta";"Rv706";"Ukjent";12392;592929;2,09
+2020-03-01;"Tempeveien";"TEMPE";"Liten_bil";78247;84153;92,98
+2020-03-01;"Tempeveien";"TEMPE";"Stor_bil";3203;84153;3,81
+2020-03-01;"Tempeveien";"TEMPE";"Ukjent";2703;84153;3,21
+2020-03-01;"Thorbjørn Bratts veg";"THBRA";"Liten_bil";301570;318970;94,54
+2020-03-01;"Thorbjørn Bratts veg";"THBRA";"Stor_bil";14268;318970;4,47
+2020-03-01;"Thorbjørn Bratts veg";"THBRA";"Ukjent";3132;318970;0,98
+2020-03-01;"Tillerbrua";"TILLB";"Liten_bil";17376;22049;78,81
+2020-03-01;"Tillerbrua";"TILLB";"Stor_bil";2909;22049;13,19
+2020-03-01;"Tillerbrua";"TILLB";"Ukjent";1764;22049;8
+2020-03-01;"Tungasletta";"TUNGA";"Liten_bil";183611;195461;93,94
+2020-03-01;"Tungasletta";"TUNGA";"Stor_bil";7822;195461;4
+2020-03-01;"Tungasletta";"TUNGA";"Ukjent";4028;195461;2,06
+2020-03-01;"Være (Gml. E6)";"VÆRE-";"Liten_bil";203991;215555;94,64
+2020-03-01;"Være (Gml. E6)";"VÆRE-";"Stor_bil";10420;215555;4,83
+2020-03-01;"Være (Gml. E6)";"VÆRE-";"Ukjent";1144;215555;0,53
+2020-04-01;"Bjørndalen (Oslovn.)";"BJØRN";"Liten_bil";212901;232623;91,52
+2020-04-01;"Bjørndalen (Oslovn.)";"BJØRN";"Stor_bil";16701;232623;7,18
+2020-04-01;"Bjørndalen (Oslovn.)";"BJØRN";"Ukjent";3021;232623;1,3
+2020-04-01;"Bratsbergveien";"BRATS";"Liten_bil";107010;118000;90,69
+2020-04-01;"Bratsbergveien";"BRATS";"Stor_bil";9074;118000;7,69
+2020-04-01;"Bratsbergveien";"BRATS";"Ukjent";1916;118000;1,62
+2020-04-01;"Byåsveien";"BYÅSV";"Liten_bil";209225;220297;94,97
+2020-04-01;"Byåsveien";"BYÅSV";"Stor_bil";7611;220297;3,45
+2020-04-01;"Byåsveien";"BYÅSV";"Ukjent";3461;220297;1,57
+2020-04-01;"Bøckmans veg";"BØCKM";"Liten_bil";113727;116666;97,48
+2020-04-01;"Bøckmans veg";"BØCKM";"Stor_bil";1656;116666;1,42
+2020-04-01;"Bøckmans veg";"BØCKM";"Ukjent";1283;116666;1,1
+2020-04-01;"Fv 704 Torgårdsletta";"TORGR";"Liten_bil";162879;191979;84,84
+2020-04-01;"Fv 704 Torgårdsletta";"TORGR";"Stor_bil";21515;191979;11,21
+2020-04-01;"Fv 704 Torgårdsletta";"TORGR";"Ukjent";7585;191979;3,95
+2020-04-01;"Gamle Oslovei";"GAMLE";"Liten_bil";91825;96414;95,24
+2020-04-01;"Gamle Oslovei";"GAMLE";"Stor_bil";3869;96414;4,01
+2020-04-01;"Gamle Oslovei";"GAMLE";"Ukjent";720;96414;0,75
+2020-04-01;"Haakon VII s gt ";"H-VII";"Liten_bil";283426;296537;95,58
+2020-04-01;"Haakon VII s gt ";"H-VII";"Stor_bil";7776;296537;2,62
+2020-04-01;"Haakon VII s gt ";"H-VII";"Ukjent";5335;296537;1,8
+2020-04-01;"Klett - E6";"KLETT-E6";"Liten_bil";552295;619725;89,12
+2020-04-01;"Klett - E6";"KLETT-E6";"Stor_bil";60705;619725;9,8
+2020-04-01;"Klett - E6";"KLETT-E6";"Ukjent";6725;619725;1,09
+2020-04-01;"Klett - Rv.707";"KLETT";"Liten_bil";134565;144201;93,32
+2020-04-01;"Klett - Rv.707";"KLETT";"Stor_bil";7680;144201;5,33
+2020-04-01;"Klett - Rv.707";"KLETT";"Ukjent";1956;144201;1,36
+2020-04-01;"Kroppan bru";"KROP-";"Liten_bil";268463;291974;91,95
+2020-04-01;"Kroppan bru";"KROP-";"Stor_bil";21920;291974;7,51
+2020-04-01;"Kroppan bru";"KROP-";"Ukjent";1591;291974;0,54
+2020-04-01;"Landbruksvegen";"LANDB";"Liten_bil";116739;123093;94,84
+2020-04-01;"Landbruksvegen";"LANDB";"Stor_bil";3214;123093;2,61
+2020-04-01;"Landbruksvegen";"LANDB";"Ukjent";3140;123093;2,55
+2020-04-01;"Nedre Leirfoss (Fossestuvegen)";"LEIRF";"Liten_bil";47775;52581;90,86
+2020-04-01;"Nedre Leirfoss (Fossestuvegen)";"LEIRF";"Stor_bil";4365;52581;8,3
+2020-04-01;"Nedre Leirfoss (Fossestuvegen)";"LEIRF";"Ukjent";441;52581;0,84
+2020-04-01;"Nord for Sluppen bru (Tempevn)";"SLUPP";"Liten_bil";239785;247275;96,97
+2020-04-01;"Nord for Sluppen bru (Tempevn)";"SLUPP";"Stor_bil";5249;247275;2,12
+2020-04-01;"Nord for Sluppen bru (Tempevn)";"SLUPP";"Ukjent";2241;247275;0,91
+2020-04-01;"Ranheim";"RANH-";"Liten_bil";296472;340564;87,05
+2020-04-01;"Ranheim";"RANH-";"Stor_bil";36602;340564;10,75
+2020-04-01;"Ranheim";"RANH-";"Ukjent";7490;340564;2,2
+2020-04-01;"Rv 706 Leangensletta";"Rv706";"Liten_bil";470660;517458;90,96
+2020-04-01;"Rv 706 Leangensletta";"Rv706";"Stor_bil";36634;517458;7,08
+2020-04-01;"Rv 706 Leangensletta";"Rv706";"Ukjent";10164;517458;1,96
+2020-04-01;"Tempeveien";"TEMPE";"Liten_bil";68458;72907;93,9
+2020-04-01;"Tempeveien";"TEMPE";"Stor_bil";2174;72907;2,98
+2020-04-01;"Tempeveien";"TEMPE";"Ukjent";2275;72907;3,12
+2020-04-01;"Thorbjørn Bratts veg";"THBRA";"Liten_bil";267326;283741;94,21
+2020-04-01;"Thorbjørn Bratts veg";"THBRA";"Stor_bil";13431;283741;4,73
+2020-04-01;"Thorbjørn Bratts veg";"THBRA";"Ukjent";2984;283741;1,05
+2020-04-01;"Tillerbrua";"TILLB";"Liten_bil";15754;18681;84,33
+2020-04-01;"Tillerbrua";"TILLB";"Stor_bil";1713;18681;9,17
+2020-04-01;"Tillerbrua";"TILLB";"Ukjent";1214;18681;6,5
+2020-04-01;"Tungasletta";"TUNGA";"Liten_bil";171577;182781;93,87
+2020-04-01;"Tungasletta";"TUNGA";"Stor_bil";7212;182781;3,95
+2020-04-01;"Tungasletta";"TUNGA";"Ukjent";3992;182781;2,18
+2020-04-01;"Være (Gml. E6)";"VÆRE-";"Liten_bil";202131;213672;94,6
+2020-04-01;"Være (Gml. E6)";"VÆRE-";"Stor_bil";9951;213672;4,66
+2020-04-01;"Være (Gml. E6)";"VÆRE-";"Ukjent";1590;213672;0,74

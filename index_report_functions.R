@@ -168,7 +168,11 @@ road_category_names <- data.frame(
 
 read_road_length_csv <- function(road_csv) {
 
-  readr::read_csv2(road_csv) %>%
+  readr::read_csv2(road_csv,
+                   locale = readr::locale(
+                     encoding = "latin1",
+                     decimal_mark = ",",
+                     grouping_mark = " ")) %>%
     left_join(road_category_names) %>%
     mutate(road_category = factor(road_category,
                                   levels = c("E", "R", "F", "K"))) %>%

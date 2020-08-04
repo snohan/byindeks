@@ -58,7 +58,27 @@ read_new_pointindex_csv <- function(filename) {
   select(trp_id, index)
 }
 
-filename <- "data_index_raw/punktindeks_nord-jaeren-2020-01.csv"
+#filename <- "data_index_raw/punktindeks_trondheim-2020-04.csv"
+read_new_pointindex_csv_with_volumes <- function(filename) {
+  # Read new csv export from Datainn
+  readr::read_csv2(filename,
+                   locale = readr::locale(
+                     encoding = "latin1",
+                     decimal_mark = ",",
+                     grouping_mark = " ")) %>%
+    filter(døgn == "Alle",
+           lengdeklasse == "< 5,6m",
+           periode == "Hittil i år") %>%
+    rename(trp_id = trpid,
+           base_volume = 12,
+           calc_volume = 11) %>%
+    mutate(index = as.numeric(str_replace(indeks, ",", ".")),
+           base_volume = as.numeric(as.character(base_volume)),
+           calc_volume = as.numeric(as.character(calc_volume))) %>%
+    select(trp_id, base_volume, calc_volume, index)
+}
+
+#filename <- "data_index_raw/punktindeks_nord-jaeren-2020-01.csv"
 #filename <- "data_index_raw/pointindex_trondheim-2019-12_2018.csv"
 read_pointindex_csv_with_volumes <- function(filename) {
   # Read standard csv export from Datainn
@@ -280,7 +300,7 @@ split_road_system_reference <- function(df) {
 
   df_with_split_reference <- df %>%
     tidyr::separate(road_reference, c("road_system", "intersection_part"),
-                    sep = "[:blank:][:alpha:]{1}D",
+                    sep = "[[:blank:]][[:alpha:]]{1}D",
                     remove = FALSE, fill = "right") %>%
     dplyr::mutate(road_category = stringr::str_sub(road_system, 1, 1)) %>%
     dplyr::mutate(road_category = factor(road_category,

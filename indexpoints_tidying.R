@@ -1382,8 +1382,139 @@ this_citys_trps_all <- bind_rows(this_citys_trps, trh_bomer) %>%
                 municipality_name, lat, lon, road_link_position,
                 station_type)
 
+# Index results from CSV-files
+pointindex_20 <-
+  read_new_pointindex_csv_with_volumes("data_index_raw/punktindeks_trondheim-2020-04.csv") %>%
+  rename(index_20 = index)
 
-# HERE!
+tollpointindex <- read.csv2(
+  "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_aarsindekser.csv") %>%
+  dplyr::rename(trp_id = kode,
+                index = indeks) %>%
+  dplyr::mutate(trp_id = as.character(trp_id)) %>%
+  dplyr::select(-felt, -stasjon) %>%
+  dplyr::select(trp_id, base_volume, calc_volume, index, year)
+
+pointindex_20_all <- tollpointindex %>%
+  dplyr::filter(year == 2020) %>%
+  dplyr::mutate(index_20 = round(index, digits = 1)) %>%
+  dplyr::select(trp_id, base_volume, calc_volume, index_20) %>%
+  dplyr::bind_rows(pointindex_20)
+
+n_20 <- pointindex_20_all %>%
+  dplyr::filter(!is.na(index_20)) %>%
+  nrow()
+
+# ADT
+adt_trp_id <- this_citys_trps_all %>%
+  dplyr::filter(station_type == "Trafikkregistrering")
+
+adt_trp <- get_aadt_by_length_for_trp_list(adt_trp_id$trp_id)
+
+adt_trp_filtered <- adt_trp %>%
+  dplyr::filter(length_range == "[..,5.6)") %>%
+  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  dplyr::filter(length_quality > 90) %>%
+  dplyr::filter(coverage > 50) %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year >= 2019) %>%
+  dplyr::filter(year == min(year)) %>%
+  dplyr::select(trp_id, aadt_length_range, year) %>%
+  dplyr::rename(adt = 2)
+
+this_citys_trps_all_adt <- this_citys_trps_all %>%
+  dplyr::left_join(adt_trp_filtered)
+
+missing_adt <- this_citys_trps_all_adt %>%
+  dplyr::filter(is.na(adt)) %>%
+  dplyr::mutate(adt = mapply(getAadtByRoadlinkposition, road_link_position))
+
+missing_adt_small_cars <- missing_adt %>%
+  dplyr::mutate(adt = round(0.9 * adt, digits = -2),
+                year = 2019)
+
+# Correcting wrong values
+missing_adt_small_cars$adt[missing_adt_small_cars$trp_id == 56] <- 44000
+
+# Finally all adt
+this_citys_trps_all_adt_final <- this_citys_trps_all_adt %>%
+  dplyr::filter(!is.na(adt)) %>%
+  dplyr::bind_rows(missing_adt_small_cars)
+
+# Adding pointindices to all points
+this_citys_trps_all_adt_final_index <- this_citys_trps_all_adt_final %>%
+  dplyr::left_join(select(pointindex_20_all, 1, 4))
+
+# Index from refyear
+# Not relevant before 2021
+# refyear <- this_citys_trps_all_adt_final_index %>%
+#   select(starts_with("index")) %>%
+#   mutate_all(list(index_converter)) %>%
+#   transmute(index = purrr::pmap_dbl(., prod)) %>%
+#   # Lazily changing from 1 to NA (risky?)
+#   mutate(index = round(ifelse(index == 1, NA,  100 * (index - 1)),
+#                        digits = 1))
+#
+# trp_trondheim_2017_alle_adt_index_final <- trp_trondheim_2017_alle_adt_index %>%
+#   bind_cols(refyear)
+
+write.csv2(this_citys_trps_all_adt_final_index,
+           file = "data_indexpoints_tidy/indekspunkt_trondheim_2019.csv",
+           row.names = F)
+
+
+# City index
+# Must calculate based on all pointindices
+city_index_20 <- pointindex_20_all %>%
+  dplyr::summarise(base_volume_all = sum(base_volume),
+                   calc_volume_all = sum(calc_volume),
+                   index = (calc_volume_all / base_volume_all - 1 ) * 100,
+                   n_points = n(),
+                   year = "2019-2020")
+
+# To find weighted variance and ci
+pointindex_20_all_sd <- pointindex_20_all %>%
+  dplyr::filter(!is.na(index_20)) %>%
+  dplyr::mutate(city_index = city_index_20$index,
+                city_base_volume = city_index_20$base_volume_all,
+                diff = (base_volume / city_base_volume) *
+                  (index_20 - city_index)^2,
+                weight = (base_volume / city_base_volume)^2) %>%
+  dplyr::summarise(standardavvik = sqrt((1 / (1 - sum(weight) )) * sum(diff) ))
+
+city_index_20_sd <- city_index_20 %>%
+  dplyr::bind_cols(pointindex_20_all_sd) %>%
+  dplyr::mutate(variance = standardavvik^2,
+                konfidensintervall = qt(0.975, n_points - 1) * standardavvik /
+                  sqrt(n_points))
+
+city_index <- bind_rows(city_index_20_sd#,
+                        #city_index_21_sd,
+                        #city_index_22_sd
+                        ) %>%
+  dplyr::select(-base_volume_all, -calc_volume_all) %>%
+  dplyr::mutate(index_i = index_converter(index),
+                # TODO: True coverage
+                dekning = 100)
+
+#first_two_years <- calculate_two_year_index(city_index)
+#next_two_years <- bind_rows(first_two_years, slice(city_index, 3)) %>%
+#  calculate_two_year_index()
+#last_two_years <- calculate_two_year_index(slice(city_index, 2:3))
+
+city_index_all <- city_index %>%
+ #bind_rows(next_two_years) %>%
+  #bind_rows(first_two_years) %>%
+  #bind_rows(last_two_years) %>%
+  dplyr::mutate(ki_start = index - konfidensintervall,
+                ki_slutt = index + konfidensintervall)
+
+write.csv2(city_index_all,
+           file = "data_indexpoints_tidy/byindeks_trondheim_2019.csv",
+           row.names = F)
+
+# Monthly city index
+# TODO: worth it? Skip until someone asks for it! :)
 
 
 

@@ -68,7 +68,7 @@ areaplot_by_class(bomdata_trondheim_maanedlig, 16, 20)
 # Månedsindeks
 ```{r indeks}
 # CSV file is made in "bomdata_trondheim.R"
-bomindeks_trondheim_maanedlig <- read.csv2("bom_maanedsindekser.csv",
+bomindeks_trondheim_maanedlig <- read.csv2("H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.csv",
                                          stringsAsFactors = FALSE) %>% 
   dplyr::mutate(aar_maaned = lubridate::ymd(aar_maaned))
   

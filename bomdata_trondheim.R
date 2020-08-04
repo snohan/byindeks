@@ -15,6 +15,7 @@ all_data <- do.call(bind_rows,
 all_data_tidy <- all_data %>%
   dplyr::select(1,4:7) %>%
   dplyr::filter(Dato != "29.02.2016") %>%
+  dplyr::filter(Dato != "29.02.2020") %>%
   dplyr::rename(dato = Dato,
                 stasjon = Stasjon,
                 felt = 3,
@@ -75,7 +76,7 @@ all_data_monthly_by_class <- read_csv2(
 #   dplyr::filter(stasjon == "Tungasletta",
 #                 aar_maaned > "2018-05-31",
 #                 aar_maaned < "2019-01-01")
-# TODO: Juli og aug 2018 må ekskluderes da ukjentandelen er over 30 %!
+# Juli og aug 2018 må ekskluderes da ukjentandelen er over 30 %!
 
 all_data_monthly_by_class_excluded <- all_data_monthly_by_class %>%
   dplyr::select(-trafikkvolum_andel, -trafikkvolum_alle) %>%
@@ -144,9 +145,15 @@ bomindeks_2019 <- all_data_monthly_by_all_classes %>%
   dplyr::filter(klasse == "Liten_bil") %>%
   calculate_monthly_index_for_tolling_stations(2018)
 
+bomindeks_2020 <- all_data_monthly_by_all_classes %>%
+  dplyr:: select(-stasjon, -aar_maaned) %>%
+  dplyr::filter(klasse == "Liten_bil") %>%
+  calculate_monthly_index_for_tolling_stations(2019)
+
 maanedsindekser <- bind_rows(bomindeks_2017,
                              bomindeks_2018,
-                             bomindeks_2019) %>%
+                             bomindeks_2019,
+                             bomindeks_2020) %>%
   dplyr::left_join(felt_og_stasjon)
 
 write.csv2(maanedsindekser,
