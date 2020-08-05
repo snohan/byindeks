@@ -16,6 +16,31 @@ output:
 source("rmd_setup.R")
 source("get_from_trafficdata_api.R")
 source("get_from_nvdb_api.R")
+
+split_road_system_reference <- function(df) {
+
+  df_with_split_reference <- df %>%
+    tidyr::separate(road_reference, c("road_system", "intersection_part"),
+                    sep = "[[:blank:]][[:alpha:]]{1}D",
+                    remove = FALSE, fill = "right") %>%
+    dplyr::mutate(road_category = stringr::str_sub(road_system, 1, 1)) %>%
+    dplyr::mutate(road_category = factor(road_category,
+                                         levels = c("E", "R", "F", "K", "P"))) %>%
+    tidyr::separate(road_system, c("road", "section_meter"),
+                    sep = " S") %>%
+    dplyr::mutate(road_number = as.numeric(stringr::str_sub(road, 3, -1))) %>%
+    dplyr::mutate(road_category_and_number = paste0(road_category, "v", road_number)) %>%
+    tidyr::separate(section_meter, c("section_number", "subsection_meter"),
+                    sep = "D", convert = TRUE) %>%
+    tidyr::separate(subsection_meter, c("subsection_number", "meter"),
+                    sep = " m", convert = TRUE) %>%
+    tidyr::separate(intersection_part, c("intersection_part_number", "intersection_meter"),
+                    sep = " m", convert = TRUE)  %>%
+    dplyr::arrange(road_category, road_number,
+                   section_number, subsection_number, meter,
+                   intersection_part_number, intersection_meter)
+}
+
 index_converter <- function(index) {
   ifelse(
     is.na(index),
@@ -24,14 +49,18 @@ index_converter <- function(index) {
 }
 
 # Disposition of output
-# Text on road corridor (table with length?)
-# Points: table with AADT
-# Points: map
-# Corridor index: per year (this year to date) and LATER combined from first year
+# OK Text on road corridor 
+# LATER Table with road lengths
+# OK Points: table with AADT
+# OK Points: map
+# LATER Map with road
+# OK Corridor index: table per year (this year to date) 
+# LATER Corridor index: table with combined index from first year
 # LATER Corridor index: per month
-# Point index: map for combined index
-# Point index: table for combined index
-# LATER Point index: table per year
+# LATER Point index: map for combined index
+# LATER Point index: table for combined index
+# OK Point index: table per year
+#  Point index: table per year
 ```
 
 ```{r get_data, include = FALSE}
@@ -55,39 +84,18 @@ pointindex_2020 <- get_published_pointindex(3953, 2020, 6)
 # Points ####
 corridor_points <- pointindex_2017[[1]]
 
-# TODO: functionize point metadata wrangling
 # Point metadata from Traffic Data API
 points <- get_points() %>%
   dplyr::distinct(trp_id, .keep_all = T) %>%
   dplyr::select(trp_id, name, road_reference, county_name,
                 municipality_name, lat, lon, road_link_position) %>% 
-  dplyr::filter(trp_id %in% corridor_points)
-
-points_split_reference <- points %>%
-  tidyr::separate(road_reference, c("road_system", "intersection_part"),
-                  sep = "[:blank:][:alpha:]{1}D",
-                  remove = FALSE, fill = "right") %>%
-  dplyr::mutate(road_category = stringr::str_sub(road_system, 1, 1)) %>%
-  dplyr::mutate(road_category = factor(road_category,
-                                       levels = c("E", "R", "F", "K", "P"))) %>%
-  tidyr::separate(road_system, c("road", "section_meter"),
-                  sep = " S") %>%
-  dplyr::mutate(road_number = as.numeric(stringr::str_sub(road, 3, -1))) %>%
-  dplyr::mutate(road_category_and_number = paste0(road_category, "v", road_number)) %>%
-  tidyr::separate(section_meter, c("section_number", "subsection_meter"),
-                  sep = "D", convert = TRUE) %>%
-  tidyr::separate(subsection_meter, c("subsection_number", "meter"),
-                  sep = " m", convert = TRUE) %>%
-  tidyr::separate(intersection_part, c("intersection_part_number", "intersection_meter"),
-                  sep = " m", convert = TRUE) %>%
+  dplyr::filter(trp_id %in% corridor_points) %>% 
+  split_road_system_reference() %>% 
   dplyr::select(trp_id, name, road_reference, road_category, road_number,
                 road_category_and_number,
                 section_number, subsection_number, meter,
                 intersection_part_number, intersection_meter,
-                county_name, municipality_name, lat, lon, road_link_position) %>%
-  dplyr::arrange(road_category, road_number,
-                 section_number, subsection_number, meter,
-                 intersection_part_number, intersection_meter)
+                county_name, municipality_name, lat, lon, road_link_position)
 
 # Point AADT
 adt <- get_aadt_by_length_for_trp_list(points$trp_id)
@@ -113,7 +121,7 @@ adt_filtered <- adt %>%
                 aadt_long = if_else(length_quality > 99, aadt_long, NA_real_)) %>% 
   dplyr::select(-length_quality)
 
-points_adt <- left_join(points_split_reference, adt_filtered)
+points_adt <- left_join(points, adt_filtered)
 
 # Must supply missing AADTs from NVDB based on road reference
 missing_aadt <- points_adt %>%
@@ -140,14 +148,14 @@ pointindices_year_to_date <- bind_rows(pointindex_2017[[2]],
   dplyr::mutate(index_short = if_else(length_coverage == 0, NA_real_, index_short),
                 index_long = if_else(length_coverage == 0, NA_real_, index_long))
 
-points_indices_year_to_date <- left_join(points_split_reference, pointindices_year_to_date) %>% 
-  dplyr::select(name, road_reference, year, month, is_excluded, total_index, coverage,
+points_indices_year_to_date <- left_join(points, pointindices_year_to_date) %>% 
+  dplyr::select(name, road_category_and_number, year, month, is_excluded, total_index, coverage,
                 length_excluded, length_coverage, index_short, index_long, period)
 
 # TODO: Recreate essentials in CSV export: all points, all months and years, pivoted with short/long, coverage for both total and short/long. Makes it easy to see what needs to be excluded!
 
 points_indices_year_to_date_total <- points_indices_year_to_date %>% 
-  dplyr::select(name, road_reference, year, total_index) %>% 
+  dplyr::select(name, road_category_and_number, year, total_index) %>% 
   tidyr::pivot_wider(names_from = year, names_prefix = "index_",
                      values_from = total_index) 
 
@@ -171,7 +179,7 @@ Transportkorridoren mellom Fauske, via Narvik, til Harstad og Sortland består a
 - Rv83 mellom Tjeldsundbrua og Harstad,
 - Rv85 mellom Gullesfjordbotn og Sortland
 
-## Trafikkregistreringspunktene
+# Trafikkregistreringspunktene
 Trafikkregistreringspunktene i transportkorridoren er listet opp i følgende tabell.
 
 ```{r point_table}
@@ -182,11 +190,11 @@ points_adt_all %>%
                 big.mark = " ", digits = 0, na_str = "") %>%
   set_header_labels(name = "Navn",
                     road_reference = "Vegreferanse",
-                    adt = "ÅDT total",
-                    aadt_short = "ÅDT lette",
-                    aadt_long = "ÅDT tunge",
+                    adt = "ÅDT \n total",
+                    aadt_short = "ÅDT \n lette",
+                    aadt_long = "ÅDT \n tunge",
                     year = "År") %>%
-  align(i = 1, j = 3, align = "center", part = "header") %>%
+  align(i = 1, j = 3:5, align = "right", part = "header") %>%
   bold(part = "header") %>%
   fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
@@ -198,7 +206,7 @@ points_adt_all %>%
   height_all(height = .2) %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Trafikkregistreringspunkt. Skillet mellom lette og tunge kjøretøy er basert på målt lengde kortere eller lengre enn 5,6 m. Der ÅDT for lette og tunge mangler, er datagrunnlaget for dårlig til at tall kan presenteres. Summen av lette og tunge kan avvike noe fra totalen på grunn av avrundingsregler.")
+  set_caption("Trafikkregistreringspunkt og årsdøgntrafikk (ÅDT). Skillet mellom lette og tunge kjøretøy er basert på målt lengde kortere eller lengre enn 5,6 m. Der ÅDT for lette og tunge er utelatt fra tabellen, er datagrunnlaget for dårlig til at tall kan presenteres. Summen av lette og tunge kan avvike noe fra totalen på grunn av avrunding.")
 ```
 
 Kartet nedenfor viser plasseringen av trafikkregistreringspunktene.
@@ -207,7 +215,7 @@ Kartet nedenfor viser plasseringen av trafikkregistreringspunktene.
 create_point_adt_map(points_adt_all)
 ```
 
-## Endring i trafikkmengde
+# Endring i trafikkmengde
 Endring i trafikkmengde er beregnet for hele kalenderår. Tabellen nedenfor viser trafikkutviklingen for hvert år, sammenlignet med året før.
 
 
@@ -237,12 +245,12 @@ index_column_names <- points_indices_year_to_date_total_refyear %>%
   names()
 
 points_indices_year_to_date_total_refyear %>%
-  select(name, road_reference, starts_with("index")) %>%
+  select(name, road_category_and_number, starts_with("index")) %>%
   flextable() %>%
   colformat_num(j = index_column_names,
                 digits = 1) %>%
   set_header_labels(name = "Navn",
-                    road_reference = "Vegreferanse",
+                    road_category_and_number = "Veg",
                     index_2017 = "Endring i trafikkmengde (%)") %>%
   add_header_row(values = c("", "",
                             "2016", "2017", "2018",
@@ -269,3 +277,34 @@ points_indices_year_to_date_total_refyear %>%
   set_caption("Estimert endring i trafikkmengde (alle kjøretøy) ved trafikkregistreringspunktene.")
 ```
 
+
+```{r point_index_table_length}
+points_indices_year_to_date %>%
+  select(name, road_category_and_number, year, total_index, coverage, length_coverage,
+         index_short, index_long) %>%
+  flextable() %>%
+  colformat_num(j = c(4, 7:8), digits = 1, na_str = "") %>%
+  colformat_num(j = c(5:6), digits = 0, na_str = "") %>%
+  set_header_labels(name = "Navn",
+                    road_category_and_number = "Veg",
+                    year = "År",
+                    total_index = "Indeks \n alle",
+                    coverage = "Dekningsgrad",
+                    length_coverage = "Lengde- \n kvalitetsgrad",
+                    index_short = "Indeks \n lette",
+                    index_long = "Indeks \n tunge"
+                    ) %>%
+  align(i = 1, j = 4:8, align = "right", part = "header") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  autofit() %>%
+  height_all(height = .2) %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Trafikkregistreringspunkt og indeks. Der indeks er utelatt fra tabellen, er datagrunnlaget for dårlig til at tall kan presenteres.")
+```
