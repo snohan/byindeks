@@ -1,5 +1,6 @@
 # Fetching data from Trafikkdata-API or TRP-API
 
+library(tidyverse)
 library(ghql)
 library(lubridate)
 library(magrittr)
@@ -744,50 +745,76 @@ get_aadt_by_length_for_trp_list <- function(trp_list) {
   return(trp_adt)
 }
 
-#indexyear <- "2019"
+#indexyear <- "2020"
 #trp_ids <- "\"44656V72812\", \"77022V72359\""
-#trp_ids <- "90390V443603"
+trp_ids <- "00091V121407"
 
 get_pointindices <- function(trp_ids, indexyear) {
-  # Get pointindex for a number of trps
+  # Get pointindex for trps
   api_query <- paste0(
     "query pointindex{
       trafficVolumeIndices(
         trafficRegistrationPointIds: [\"", trp_ids, "\"],
         year: ", indexyear, ") {
-        calculationMonth {
-          month
-          year
-        }
-        roadCategory {
-          id
-        }
         trafficRegistrationPoint {
-          id
+      id
+      }
+      calculationMonth {
+        year
+        month
+      }
+      roadCategory {
+        id
+      }
+      volumeIndicesMonth {
+      	...pointIndexFields
+      }
+      volumeIndicesYearToDate {
+      	...pointIndexFields
+      }
+      volumeIndicesLast12Months {
+        ...pointIndexFields
+      }
+    }
+  }
+
+  fragment pointIndexFields on TrafficVolumeIndexByDayType {
+    dayType
+    isExcluded
+    totalTrafficVolumeIndex {
+      indexNumber {
+        index {
+          indexNumber
+          percentageChange
         }
-        volumeIndexByDayType {
-          dayType
-          trafficVolumeIndex {
-            index {
-              baseVolume
-              calculationVolume
-              indexNumber
-              percentageChange
-            }
-            lengthRange {
-              representation
-            }
-            indexCoverage {
-              hours {
-                percentage
-                numerator
-                denominator
-              }
-            }
-          }
+        lengthRange {
+          representation
         }
       }
-    }")
+      indexCoverage {
+        hours {
+          percentage
+        }
+      }
+    }
+    lengthRangesTrafficVolumeIndex {
+      isExcluded
+      indexNumbers {
+        index {
+          indexNumber
+          percentageChange
+        }
+        lengthRange {
+          representation
+        }
+      }
+      indexCoverage {
+        hours {
+          percentage
+        }
+      }
+    }
+  }")
 
   myqueries <- Query$new()
   myqueries$query("data", api_query)
@@ -795,29 +822,80 @@ get_pointindices <- function(trp_ids, indexyear) {
   trp_data <- cli$exec(myqueries$queries$data) %>%
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
 
-  trp_data_data <- trp_data$data %>%
-    as.data.frame() %>%
-    tidyr::unnest(cols = c(trafficVolumeIndices.volumeIndexByDayType)) %>%
-    dplyr::rename(
-      day_type = dayType,
-      base_volume = trafficVolumeIndex.index.baseVolume,
-      calculation_volume = trafficVolumeIndex.index.calculationVolume,
-      index_i = trafficVolumeIndex.index.indexNumber,
-      index_p = trafficVolumeIndex.index.percentageChange,
-      length_range = trafficVolumeIndex.lengthRange.representation,
-      coverage_percentage = trafficVolumeIndex.indexCoverage.hours.percentage,
-      month = trafficVolumeIndices.calculationMonth.month,
-      year = trafficVolumeIndices.calculationMonth.year,
-      road_category = trafficVolumeIndices.roadCategory.id,
-      trp_id = trafficVolumeIndices.trafficRegistrationPoint.id) %>%
-    dplyr::mutate(trp_id = as.character(trp_id)) %>%
-    dplyr::select(trp_id, month, year, road_category, day_type, length_range,
-                  base_volume, calculation_volume, index_i, index_p,
-                  coverage_percentage) %>%
-    dplyr::filter(length_range %in% c("[..,..)", "[..,5.6)", "[5.6,..)")) %>%
-    dplyr::filter(day_type == "ALL")
+  # Unwrap one part a time:
+  # 1. month
+  # 2. year to date
+  # 3. last 12
 
-  return(trp_data_data)
+  trp_data_data_1 <- trp_data$data %>%
+    as.data.frame() %>%
+    dplyr::select(trafficVolumeIndices.trafficRegistrationPoint.id,
+                  trafficVolumeIndices.calculationMonth.year,
+                  trafficVolumeIndices.calculationMonth.month,
+                  trafficVolumeIndices.roadCategory.id,
+                  trafficVolumeIndices.volumeIndicesMonth) %>%
+    tidyr::unnest(cols = c(trafficVolumeIndices.volumeIndicesMonth)) %>%
+    # Keeping only rows with actual results
+    dplyr::filter(isExcluded == "FALSE") %>%
+    dplyr::mutate(period = "month")
+
+  trp_data_data_2 <- trp_data$data %>%
+    as.data.frame() %>%
+    dplyr::select(trafficVolumeIndices.trafficRegistrationPoint.id,
+                  trafficVolumeIndices.calculationMonth.year,
+                  trafficVolumeIndices.calculationMonth.month,
+                  trafficVolumeIndices.roadCategory.id,
+                  trafficVolumeIndices.volumeIndicesYearToDate) %>%
+    tidyr::unnest(cols = c(trafficVolumeIndices.volumeIndicesYearToDate)) %>%
+    # Keeping only rows with actual results
+    dplyr::filter(isExcluded == "FALSE")%>%
+    dplyr::mutate(period = "year_to_date")
+
+  trp_data_data_3 <- trp_data$data %>%
+    as.data.frame() %>%
+    dplyr::select(trafficVolumeIndices.trafficRegistrationPoint.id,
+                  trafficVolumeIndices.calculationMonth.year,
+                  trafficVolumeIndices.calculationMonth.month,
+                  trafficVolumeIndices.roadCategory.id,
+                  trafficVolumeIndices.volumeIndicesLast12Months) %>%
+    tidyr::unnest(cols = c(trafficVolumeIndices.volumeIndicesLast12Months)) %>%
+    # Keeping only rows with actual results
+    dplyr::filter(isExcluded == "FALSE")%>%
+    dplyr::mutate(period = "last_12_months")
+
+trp_data_data_all <- dplyr::bind_rows(trp_data_data_1,
+                                      trp_data_data_2,
+                                      trp_data_data_3)
+
+
+  if(nrow(trp_data_data_all) == 0){
+      # hva gjør vi når det ikke er noen indekser?
+      trp_data_data_all <- data.frame()
+    }else{
+      trp_data_data_all <- trp_data_data_all %>%
+        tidyr::unnest(cols = c(lengthRangesTrafficVolumeIndex.indexNumbers)) %>%
+        dplyr::select(trp_id = trafficVolumeIndices.trafficRegistrationPoint.id,
+                      year = trafficVolumeIndices.calculationMonth.year,
+                      month = trafficVolumeIndices.calculationMonth.month,
+                      road_category = trafficVolumeIndices.roadCategory.id,
+                      day_type = dayType,
+                      period = period,
+                      index_total = totalTrafficVolumeIndex.indexNumber.index.indexNumber,
+                      index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
+                      index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
+                      length_is_excluded = lengthRangesTrafficVolumeIndex.isExcluded,
+                      length_range = lengthRange.representation,
+                      length_index = index.indexNumber,
+                      length_index_p = index.percentageChange,
+                      length_index_coverage = lengthRangesTrafficVolumeIndex.indexCoverage.hours.percentage) %>%
+        dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
+        dplyr::mutate(length_range = dplyr::if_else(length_range == "[..,5.6)",
+                                                    "short", "long")) %>%
+        tidyr::pivot_wider(names_from = length_range, names_prefix = "index_",
+                           values_from = length_index_p)
+    }
+
+  return(trp_data_data_all)
 }
 
 getHourlytraffic <- function(trpID, from, to) {
@@ -1261,7 +1339,7 @@ get_published_pointindex <- function(index_id, indexyear, indexmonth) {
     dplyr::mutate(length_range = if_else(length_range == "[..,5.6)",
                                          "short", "long")) %>%
     tidyr::pivot_wider(names_from = length_range, names_prefix = "index_",
-                       values_from = length_index, ) %>%
+                       values_from = length_index) %>%
     dplyr::mutate(period = "month")
 
 
@@ -1289,7 +1367,7 @@ get_published_pointindex <- function(index_id, indexyear, indexmonth) {
       dplyr::mutate(length_range = if_else(length_range == "[..,5.6)",
                                            "short", "long")) %>%
       tidyr::pivot_wider(names_from = length_range, names_prefix = "index_",
-                         values_from = length_index, ) %>%
+                         values_from = length_index) %>%
       dplyr::mutate(period = "year_to_date")
 
   published_index <- bind_rows(monthly_data,

@@ -3,6 +3,7 @@
 library(tidyverse)
 library(httr)
 library(jsonlite)
+library(sf)
 
 # Definer URI og sti ####
 nvdb_url <- "https://www.vegvesen.no/nvdb/api/v2"
@@ -17,8 +18,8 @@ nvdb_v3_headers <- c(
 )
 
 
-vegsystemreferanse <- "KV6064S1D1m30"
-kommunenr <- "5001"
+#vegsystemreferanse <- "KV6064S1D1m30"
+#kommunenr <- "5001"
 # Hent stedfesting i punkt på vegnettet
 hent_vegpunkt <- function(vegsystemreferanse, kommunenr) {
   api_query <- paste0(nvdb_url_v3,
@@ -74,6 +75,102 @@ hent_kommune <- function(kommunenr) {
 
   return(svar)
 }
+
+#kommunenr <- "5001"
+hent_kommune_v3 <- function(kommunenr) {
+  api_query <- paste0(nvdb_url_v3,
+                          sti_vegobjekter,
+                          "/946",
+                          "?inkluder=egenskaper")
+
+  api_query_kommune <- paste0(api_query,
+                                  "&kommune=",
+                                  kommunenr)
+
+  respons <- GET(api_query_kommune,
+                 add_headers("X-Client" = "trafikkdatagruppa",
+                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+                             "Accept" = "application/vnd.vegvesen.nvdb-v3-rev1+json"))
+
+  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+                      simplifyDataFrame = T,
+                      flatten = T)
+
+  kommuneinfo <- bind_rows(uthenta$objekter$egenskaper[[1]], .id = "kid") %>%
+    dplyr::select(navn, verdi) %>%
+    tidyr::pivot_wider(names_from = navn, values_from = verdi) %>%
+    dplyr::select(kommunenavn = Kommunenavn,
+                  kommunenr = Kommunenummer,
+                  polygon = 1) %>%
+    sf::st_as_sf(wkt = "polygon",
+                 crs = 5973) %>%
+    sf::st_zm(drop = T, what = "ZM") %>%
+    sf::st_transform("+proj=longlat +datum=WGS84")
+
+  return(kommuneinfo)
+}
+
+hent_alle_kommuner_v3 <- function() {
+  api_query <- paste0(nvdb_url_v3,
+                      "/omrader/kommuner",
+                      "?inkluder=kartutsnitt")#&srid=wgs84")
+
+  respons <- GET(api_query,
+                 add_headers("X-Client" = "trafikkdatagruppa",
+                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+                             "Accept" = "application/vnd.vegvesen.nvdb-v3-rev1+json"))
+
+  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+                      simplifyDataFrame = T,
+                      flatten = T)
+
+  uthenta_sf <- uthenta %>%
+    sf::st_as_sf(wkt = "kartutsnitt.wkt",
+                 crs = 5973) %>%
+    sf::st_zm(drop = T, what = "ZM") %>%
+    #dplyr::select(GEOMETRY) %>%
+    sf::st_transform("+proj=longlat +datum=WGS84")
+
+  # uthenta_sf <- sf::st_as_sf(uthenta,
+  #                            wkt = "kartutsnitt.wkt",
+  #                            crs = "+proj=longlat +datum=WGS84")
+  #
+  return(uthenta_sf)
+}
+
+# kommunenr <- "5031"
+# hent_kommune_v3 <- function(kommunenr) {
+#
+#   api_query <- paste0(nvdb_url_v3,
+#                       sti_vegobjekter,
+#                       "/946",
+#                       "?inkluder=egenskaper,lokasjon")
+#
+#   api_query_kommune <- paste0(api_query,
+#                                   "?kommune=",
+#                                   kommunenr,
+#                                   "&srid=wgs84")
+#
+#   respons <- GET(api_query_kommune,
+#                  add_headers("X-Client" = "trafikkdatagruppa",
+#                              "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+#                              "Accept" = "application/vnd.vegvesen.nvdb-v3-rev1+json"))
+#
+#   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+#                       simplifyDataFrame = T,
+#                       flatten = T)
+#
+#   kommune <- bind_rows(uthenta$objekter$egenskaper, .id = "kid") %>%
+#     filter(id %in% c(4585))
+#
+#   kommunenavn <- kommune$verdi
+#
+#   polygon <- uthenta$objekter$lokasjon.geometri.wkt
+#
+#   svar <- list(kommunenavn, polygon)
+#
+#   return(svar)
+# }
 
 hent_trafikkregistreringsstasjon_for_omraade <- function(omraadenr) {
   # Fire siffer angir kommunenr.
