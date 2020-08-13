@@ -1,5 +1,7 @@
 # Index tidying functions
 
+source("H:/Programmering/R/byindeks/split_road_system_reference.R")
+
 choose_city_trp_ids <- function(city_name,
                                 start_year) {
 

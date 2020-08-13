@@ -747,7 +747,7 @@ get_aadt_by_length_for_trp_list <- function(trp_list) {
 
 #indexyear <- "2020"
 #trp_ids <- "\"44656V72812\", \"77022V72359\""
-trp_ids <- "00091V121407"
+#trp_ids <- "35258V2475662"
 
 get_pointindices <- function(trp_ids, indexyear) {
   # Get pointindex for trps
@@ -885,7 +885,7 @@ trp_data_data_all <- dplyr::bind_rows(trp_data_data_1,
                       index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
                       length_is_excluded = lengthRangesTrafficVolumeIndex.isExcluded,
                       length_range = lengthRange.representation,
-                      length_index = index.indexNumber,
+                      #length_index = index.indexNumber,
                       length_index_p = index.percentageChange,
                       length_index_coverage = lengthRangesTrafficVolumeIndex.indexCoverage.hours.percentage) %>%
         dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
