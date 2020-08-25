@@ -115,10 +115,10 @@ trps <- dplyr::left_join(cities_points, points) %>%
 
 # Fetch daily traffic
 week_2019_from <- "2019-07-01T00:00:00+02:00"
-week_2019_to <- "2019-08-12T00:00:00+02:00"
+week_2019_to <- "2019-08-26T00:00:00+02:00"
 
 week_2020_from <- "2020-06-29T00:00:00+02:00"
-week_2020_to <- "2020-08-10T00:00:00+02:00"
+week_2020_to <- "2020-08-24T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -486,7 +486,9 @@ city_dt_2019_2020_weeks = bind_rows(city_dt_201927_202027,
                                     city_dt_201929_202029,
                                     city_dt_201930_202030,
                                     city_dt_201931_202031,
-                                    city_dt_201932_202032
+                                    city_dt_201932_202032,
+                                    city_dt_201933_202033,
+                                    city_dt_201934_202034
                                    )
 
 oslo_og_akershus_dt_2019_2020 <- city_dt_2019_2020_weeks %>% 
@@ -671,7 +673,7 @@ make_daily_plot_city(oslo_og_akershus_dt_2019_2020, "")
 ## Tromsø
 ```{r table_city_tromsoe}
 make_city_table_city(tromsoe_dt_2019_2020,
-                "Prosentvis endring i trafikkmengde i Tromsoe 2019 til 2020.")
+                "Prosentvis endring i trafikkmengde i Tromsø 2019 til 2020.")
 ```
 \
 ```{r plot_city_tromsoe, fig.width=8, fig.height=8}

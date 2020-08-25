@@ -898,6 +898,20 @@ trp_data_data_all <- dplyr::bind_rows(trp_data_data_1,
   return(trp_data_data_all)
 }
 
+get_pointindices_for_trp_list <- function(trp_list, index_year) {
+  number_of_points <- length(trp_list)
+  data_points <- data.frame()
+  trp_count <- 1
+
+  while (trp_count <= number_of_points) {
+    data_points <- bind_rows(data_points,
+                             get_pointindices(trp_list[trp_count], index_year))
+    trp_count <- trp_count + 1
+  }
+
+  return(data_points)
+}
+
 getHourlytraffic <- function(trpID, from, to) {
   # Default values
   hasNextPage <- TRUE
