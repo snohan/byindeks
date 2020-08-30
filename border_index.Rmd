@@ -1,0 +1,135 @@
+---
+title: Riksgrenseindeks
+output: 
+  word_document:
+    reference_docx: svv_notatmal3.docx
+    toc: true
+    toc_depth: 2
+    fig_caption: true
+    fig_width: 7
+---
+
+```{r setup, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
+# Packages are loaded through sourcing rmd_setup.R
+source("rmd_setup.R")
+
+# Traffic Data API calls to get points metadata and aadt
+source("get_from_trafficdata_api.R")
+source("split_road_system_reference.R")
+source("get_from_nvdb_api.R")
+```
+
+
+
+```{r get_data, include=FALSE}
+# Fetching published index from Traffic Data API
+index_2020 <- get_published_index(2952, 2020, 7)
+
+pointindex_2020 <- get_published_pointindex(2952, 2020, 7)
+
+# Index points
+border_points <- pointindex_2020[[1]]
+
+# Point metadata from Traffic Data API
+points <- get_points() %>%
+  dplyr::distinct(trp_id, .keep_all = T) %>%
+  dplyr::select(trp_id, name, road_reference, county_name,
+                municipality_name, lat, lon, road_link_position) %>% 
+  dplyr::filter(trp_id %in% border_points) %>% 
+  split_road_system_reference() %>% 
+  dplyr::select(trp_id, name, road_reference, road_category, road_number,
+                road_category_and_number,
+                section_number, subsection_number, meter,
+                intersection_part_number, intersection_meter,
+                county_name, municipality_name, lat, lon, road_link_position)
+
+# Point AADT
+adt <- get_aadt_by_length_for_trp_list(points$trp_id)
+
+adt_filtered <- adt %>%
+  dplyr::select(-sd_length_range, 
+                -aadt_ci_lowerbound_length_range,
+                -aadt_ci_upperbound_length_range
+                ) %>% 
+  dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
+  dplyr::mutate(length_range = if_else(length_range == "[..,5.6)",
+                                         "short", "long")) %>%
+  tidyr::pivot_wider(names_from = length_range, names_prefix = "aadt_",
+                     values_from = aadt_length_range) %>%
+  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  #dplyr::filter(length_quality > 90) %>%
+  dplyr::filter(coverage > 50) %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year == max(year)) %>%
+  dplyr::select(trp_id, year, aadt_total, coverage, aadt_short, aadt_long, length_quality) %>%
+  dplyr::rename(adt = aadt_total) %>% 
+  dplyr::mutate(aadt_short = if_else(length_quality > 99, aadt_short, NA_real_),
+                aadt_long = if_else(length_quality > 99, aadt_long, NA_real_)) %>% 
+  dplyr::select(-length_quality)
+
+points_adt <- left_join(points, adt_filtered)
+
+# Must supply missing AADTs from NVDB based on road reference
+missing_aadt <- points_adt %>%
+  dplyr::filter(adt == 0 | is.na(adt)) %>%
+  dplyr::mutate(
+    #adt = mapply(getAadtByRoadlinkposition, road_link_position)) %>%
+    adt = purrr::map_dbl(road_link_position, getAadtByRoadlinkposition)) %>%
+  dplyr::mutate(year = 2019)
+
+with_aadt <- points_adt %>%
+  dplyr::filter(adt > 0)
+
+points_adt_all <- bind_rows(with_aadt, missing_aadt) %>%
+  dplyr::arrange(desc(lat))
+
+# TODO: Point index
+```
+
+```{r point_table}
+points_adt_all %>%
+  select(name, road_reference, adt, aadt_short, aadt_long, year) %>%
+  flextable() %>%
+  colformat_num(j = 3:5,
+                big.mark = " ", digits = 0, na_str = "") %>%
+  set_header_labels(name = "Navn",
+                    road_reference = "Vegreferanse",
+                    adt = "ÅDT \n total",
+                    aadt_short = "ÅDT \n lette",
+                    aadt_long = "ÅDT \n tunge",
+                    year = "År") %>%
+  align(i = 1, j = 3:5, align = "right", part = "header") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  autofit() %>%
+  height_all(height = .2) %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Trafikkregistreringspunkt og årsdøgntrafikk (ÅDT). Skillet mellom lette og tunge kjøretøy er basert på målt lengde kortere eller lengre enn 5,6 m. Der ÅDT for lette og tunge er utelatt fra tabellen, er datagrunnlaget for dårlig til at tall kan presenteres. Summen av lette og tunge kan avvike noe fra totalen på grunn av avrunding.")
+```
+
+
+
+```{r border_table}
+index_2020_wide <- index_2020 %>% 
+  dplyr::select(year, road_category, length_range, index = index_p, period) %>% 
+  dplyr::filter(period == "year_to_date") %>% 
+  dplyr::select(-period) %>% 
+  dplyr::mutate(length_range = case_when(length_range == "[..,..)" ~ "total",
+                                         length_range == "[..,5.6)" ~ "short",
+                                         length_range == "[5.6,..)" ~ "long")) %>% 
+  tidyr::pivot_wider(names_from = length_range, names_prefix = "index_",
+                     values_from = index)
+
+# TODO: create table, make new function
+
+# TODO: CI shown with +-
+```
+
+
+

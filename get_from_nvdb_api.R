@@ -43,6 +43,32 @@ hent_vegpunkt <- function(vegsystemreferanse, kommunenr) {
   kommune <- bind_rows(uthenta$objekter$egenskaper, .id = "kid")
 }
 
+#veglenkeposisjon <- "0.25636836@423823"
+# Hent stedfesting i punkt på vegnettet
+hent_vegsystemreferanse <- function(veglenkeposisjon) {
+  api_query <- paste0(nvdb_url_v3,
+                      sti_veg,
+                      "?veglenkesekvens=",
+                      veglenkeposisjon)
+
+  respons <- GET(api_query,
+                 add_headers("X-Client" = "trafikkdatagruppa",
+                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+                             "Accept" = "application/vnd.vegvesen.nvdb-v3+json"))
+
+  uthenta <- jsonlite::fromJSON(
+    stringr::str_conv(
+      respons$content, encoding = "UTF-8"),
+    simplifyDataFrame = T,
+    flatten = T)
+
+  vegsystemreferanse <- uthenta$vegsystemreferanse$kortform
+
+  result <- dplyr::if_else(is.null(vegsystemreferanse), "", vegsystemreferanse)
+
+  return(result)
+}
+
 # Hent trafikkregistreringsstasjoner i en kommune
 hent_kommune <- function(kommunenr) {
   api_query_536 <- paste0(nvdb_url,
@@ -444,7 +470,7 @@ getAadtByRoadReference <- function(roadref) {
   return(adt_verdi)
 }
 
-roadlink <- "0.81008@41567"
+#roadlink <- "0.81008@41567"
 getAadtByRoadlinkposition <- function(roadlink) {
   api_query_540 <- paste0(nvdb_url,
                           sti_vegobjekter,
@@ -471,7 +497,7 @@ getAadtByRoadlinkposition <- function(roadlink) {
     filter(id %in% c(4623)) %>%
     select(verdi)
 
-  adt_verdi <- round(as.numeric(adt_total[1, 1]), digits = -2)
+  adt_verdi <- round(as.numeric(adt_total[1, 1]), digits = -1)
 
   return(adt_verdi)
 }

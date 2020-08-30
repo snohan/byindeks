@@ -1123,9 +1123,9 @@ get_dt_for_trp_list <- function(trp_list, from, to) {
 }
 
 
-#index_id <- 3953
-#indexyear <- 2017
-#indexmonth <- 12
+#index_id <- 2952
+#indexyear <- 2020
+#indexmonth <- 7
 
 get_published_index <- function(index_id, indexyear, indexmonth) {
   # Get published index for a given area, year and month
@@ -1148,7 +1148,11 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
             name
           }
           byRoadCategoryCombination(combinations:
-          EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG) {
+          [
+            EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG,
+            EUROPAVEG_RIKSVEG,
+            FYLKESVEG
+          ]) {
             roadCategoryCombination
             monthIndicesByDayType {
               ...indexFields
@@ -1196,6 +1200,7 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
     tidyr::unnest(cols = c(byLengthRange)) %>%
     dplyr::rename(
       day_type = dayType,
+      road_category = roadCategoryCombination,
       length_range = lengthRange.representation,
       #index_i = trafficVolumeIndex.index.indexNumber,
       index_p = volumeIndexNumber.percentageChange,
@@ -1205,7 +1210,7 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
       month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month
       ) %>%
     dplyr::filter(day_type == "ALL") %>%
-    dplyr::select(area_name, year, month, length_range, index_p,
+    dplyr::select(area_name, year, month, road_category, length_range, index_p,
                   confidence_width) %>%
     dplyr::mutate(period = "month")
 
@@ -1218,6 +1223,7 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
     tidyr::unnest(cols = c(byLengthRange)) %>%
     dplyr::rename(
       day_type = dayType,
+      road_category = roadCategoryCombination,
       length_range = lengthRange.representation,
       #index_i = trafficVolumeIndex.index.indexNumber,
       index_p = volumeIndexNumber.percentageChange,
@@ -1227,7 +1233,7 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
       month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month
     ) %>%
     dplyr::filter(day_type == "ALL") %>%
-    dplyr::select(area_name, year, month, length_range, index_p,
+    dplyr::select(area_name, year, month, road_category, length_range, index_p,
                   confidence_width) %>%
     dplyr::mutate(period = "year_to_date")
 
