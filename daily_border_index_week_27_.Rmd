@@ -79,10 +79,10 @@ border_trp_adt <- border_trps %>%
 
 # From week 27
 borderdata_2019_from <- "2019-07-01T00:00:00+02:00"
-borderdata_2019_to <- "2019-08-26T00:00:00+02:00"
+borderdata_2019_to <- "2019-09-02T00:00:00+02:00"
 
 borderdata_2020_from <- "2020-06-29T00:00:00+02:00"
-borderdata_2020_to <- "2020-08-24T00:00:00+02:00"
+borderdata_2020_to <- "2020-08-31T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -568,7 +568,7 @@ make_border_trp_table(border_trp_dt_201934_202034,
 ```
 
 ```{r trptable_201935}
-# make_border_trp_table(border_trp_dt_201935_202035,
-#                      "Prosentvis endring i trafikkmengde fra uke 35 2019 til uke 35 2020.")
+make_border_trp_table(border_trp_dt_201935_202035,
+                      "Prosentvis endring i trafikkmengde fra uke 35 2019 til uke 35 2020.")
 ```
 

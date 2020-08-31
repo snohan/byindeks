@@ -1244,6 +1244,22 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
 }
 
 
+get_published_index_for_months <- function(index_id, index_year, last_month) {
+
+  index_table <- tibble::as_tibble()
+  i <- 1
+  while (i < last_month + 1) {
+    index_table <- dplyr::bind_rows(index_table,
+                                    get_published_index(index_id, index_year, i))
+    i = i + 1
+  }
+
+  return(index_table)
+}
+
+
+
+
 get_published_pointindex <- function(index_id, indexyear, indexmonth) {
   # Get published index for a given area, year and month
   # Response is paginated if more than 100 points!
