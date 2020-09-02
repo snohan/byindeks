@@ -1,5 +1,5 @@
 ---
-title: Sykkelindekser
+title: Byindekser
 output: 
   word_document:
     reference_docx: svv_notatmal3.docx
@@ -23,23 +23,29 @@ source("get_from_nvdb_api.R")
 
 ```{r get_data, include=FALSE}
 # Fetching published index from Traffic Data API
-# Nedre Glomma
-index_2020_ngl <- get_published_index_for_months(5953, 2020, 7)
-index_2020_grl <- get_published_index_for_months(4953, 2020, 7)
-index_2020_brg <- get_published_index_for_months(5952, 2020, 7)
-index_2020_osl <- get_published_index_for_months(6953, 2020, 7)
-index_2020_njr <- get_published_index_for_months(6952, 2020, 7)
+index_2020_bergen <- get_published_index_for_months(958, 2020, 7)
+index_2020_buskerud <- get_published_index_for_months(954, 2020, 7)
+index_2020_grenland <- get_published_index_for_months(955, 2020, 7)
+index_2020_krs_omegn <- get_published_index_for_months(957, 2020, 7)
+index_2020_glomma <- get_published_index_for_months(953, 2020, 7)
+index_2020_jaren <- get_published_index_for_months(952, 2020, 7)
+index_2020_oslo <- get_published_index_for_months(959, 2020, 7)
+index_2020_tromso <- get_published_index_for_months(961, 2020, 7)
 
-index_2020 <- dplyr::bind_rows(index_2020_ngl,
-                               index_2020_grl,
-                               index_2020_brg,
-                               index_2020_osl,
-                               index_2020_njr)
+index_2020 <- dplyr::bind_rows(index_2020_bergen,
+                               index_2020_buskerud,
+                               index_2020_grenland,
+                               index_2020_krs_omegn,
+                               index_2020_glomma,
+                               index_2020_jaren,
+                               index_2020_oslo,
+                               index_2020_tromso)
 
-#pointindex_2020 <- get_published_pointindex(5953, 2019, 12)
+
+pointindex_2020 <- get_published_pointindex(2952, 2020, 7)
 
 # Index points
-index_points <- pointindex_2020[[1]]
+border_points <- pointindex_2020[[1]]
 
 # Point metadata from Traffic Data API
 points <- get_points() %>%
@@ -128,8 +134,12 @@ points_adt_all %>%
 
 ```{r border_table}
 index_2020_wide <- index_2020 %>% 
-  dplyr::filter(length_range == "[..,..)") %>% 
-  dplyr::select(area_name, year, month, road_category, index = index_p, period) %>% 
+  dplyr::select(area_name, year, month, road_category, length_range, index = index_p, period) %>% 
+  dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "total",
+                                                length_range == "[..,5.6)" ~ "short",
+                                                length_range == "[5.6,..)" ~ "long")) %>% 
+  tidyr::pivot_wider(names_from = length_range, names_prefix = "index_",
+                     values_from = index) %>% 
   dplyr::mutate(period = dplyr::case_when(period == "month" ~ "Måned",
                                           period == "year_to_date" ~ "Hittil i år"),
                 road_category = dplyr::case_when(
@@ -139,7 +149,7 @@ index_2020_wide <- index_2020 %>%
   dplyr::arrange(area_name, month, road_category, desc(period))
 
 # For an SD report
-write.csv2(index_2020_wide, file = "sd/sykkelindeks.csv",
+write.csv2(index_2020_wide, file = "sd/byindeks.csv",
            row.names = F)
 
 # TODO: create table, make new function
