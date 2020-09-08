@@ -14,7 +14,7 @@ sti_veg <- "/veg"
 nvdb_v3_headers <- c(
   "X-Client" = "trafikkdatagruppa",
   "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
-  "Accept" = "application/vnd.vegvesen.nvdb-v3+json"
+  "Accept" = "application/vnd.vegvesen.nvdb-v3-rev1+json"
 )
 
 
@@ -502,7 +502,7 @@ getAadtByRoadlinkposition <- function(roadlink) {
   return(adt_verdi)
 }
 
-roadlink <- "0.26634@181322"
+#roadlink <- "0.26634@181322"
 #roadref <- "1200EV39hp74m14171"
 
 getSpeedLimit <- function(roadref) {
@@ -535,7 +535,7 @@ getSpeedLimit <- function(roadref) {
   return(verdi)
 }
 
-roadlink <- "0.38722@2037772"
+#roadlink <- "0.38722@2037772"
 
 getSpeedLimit_roadlink <- function(roadlink) {
   api_query_105 <- paste0(nvdb_url,
@@ -718,7 +718,59 @@ get_road_length_for_municipality <- function(municipality_number) {
 
 #trondheim_roads <- get_road_length_for_municipality("5001")
 
+rutenavn <- "RUTE6B"
+periode <- "2014-2023%20/%202018-2029"
+get_trafikkmengde_for_riksvegrute <- function(rutenavn, periode) {
+
+  api_query <- paste0(nvdb_url_v3,
+                      sti_vegobjekter,
+                      "/540",
+                      "?inkluder=egenskaper,lokasjon",
+                      "&riksvegrute=%27",
+                      rutenavn,
+                      "%20",
+                      periode,
+                      "%27")
+
+  respons <- httr::GET(api_query,
+                       httr::add_headers(.headers = nvdb_v3_headers))
+
+  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+                      simplifyDataFrame = T,
+                      flatten = T)
+
+  trafikkmengder <- uthenta$objekter %>%
+    dplyr::select(id, egenskaper) %>%
+    tidyr::unnest(egenskaper, names_repair = "unique") %>%
+    dplyr::filter(id...2 %in% c(4621, 4623, 4624)) %>%
+    dplyr::select(id = id...1, navn, verdi) %>%
+    dplyr::mutate(navn = dplyr::case_when(navn == "År, gjelder for" ~ "year",
+                                          navn == "ÅDT, total" ~ "aadt",
+                                          navn == "ÅDT, andel lange kjøretøy" ~ "part_heavy")) %>%
+    tidyr::pivot_wider(names_from = navn, values_from = verdi)
+
+  lengder <- uthenta$objekter %>%
+    dplyr::select(id, lengde = lokasjon.lengde)
+
+  vegsystemreferanser <- uthenta$objekter %>%
+    dplyr::select(id, vegsystemreferanser = lokasjon.vegsystemreferanser) %>%
+    tidyr::unnest(vegsystemreferanser) %>%
+    dplyr::select(id, kortform) %>%
+    dplyr::group_by(id) %>%
+    dplyr::arrange(id, kortform)
+
+  vegsystemreferanser_start <- vegsystemreferanser %>%
+    dplyr::summarise(vegref_start = min(kortform))
+
+  vegsystemreferanser_slutt <- vegsystemreferanser %>%
+    dplyr::summarise(vegref_slutt = max(kortform))
 
 
+  # HERE TODO: join and concatenate vegref
+  trafikkmengder_med_lengder <- trafikkmengder %>%
+    dplyr::left_join(lengder)
+
+  return(verdi)
+}
 
 

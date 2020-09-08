@@ -1172,3 +1172,42 @@ myqueries <- Query$new()
 myqueries$query("mutate_trp", mutate_string)
 cli_trp$exec(myqueries$queries$mutate_trp)
 }
+
+get_manual_points_from_trpapi_httr <- function() {
+  # Get all traffic registration points
+  api_query <-
+    "query mtrps {
+  manualTrafficRegistrationPoints {
+    id
+    name
+    location {
+      municipality {
+        name
+        county {
+          name
+        }
+      }
+      roadReference {
+        shortForm
+      }
+    }
+    direction {
+      from
+      to
+    }
+  }
+}"
+
+  # TODO: Revise from here
+  points_trp <- get_via_httr(api_query) %>%
+    dplyr::rename(
+      mtrp_id = data.manualTrafficRegistrationPoints.id,
+      name = data.manualTrafficRegistrationPoints.name,
+      municipality_name = data.manualTrafficRegistrationPoints.location.municipality.name,
+      county_name = data.manualTrafficRegistrationPoints.location.municipality.county.name,
+      road_reference = data.manualTrafficRegistrationPoints.location.roadReference.shortForm,
+      from = data.manualTrafficRegistrationPoints.direction.from,
+      to = data.manualTrafficRegistrationPoints.direction.to)
+
+  return(points_trp)
+}

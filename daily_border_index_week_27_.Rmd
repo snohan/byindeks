@@ -79,10 +79,10 @@ border_trp_adt <- border_trps %>%
 
 # From week 27
 borderdata_2019_from <- "2019-07-01T00:00:00+02:00"
-borderdata_2019_to <- "2019-09-02T00:00:00+02:00"
+borderdata_2019_to <- "2019-09-09T00:00:00+02:00"
 
 borderdata_2020_from <- "2020-06-29T00:00:00+02:00"
-borderdata_2020_to <- "2020-08-31T00:00:00+02:00"
+borderdata_2020_to <- "2020-09-07T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -163,6 +163,11 @@ border_dt_2019_35 <- border_dt %>%
   filter(weekno == 35) %>% 
   select(point_id, total_volume, weekno, weekday)
 
+border_dt_2019_36 <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 36) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
 # ADD NEW WEEK HERE!!!
 
 
@@ -212,6 +217,11 @@ border_dt_2020_34 <- border_dt %>%
 border_dt_2020_35 <- border_dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 35) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2020_36 <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 36) %>% 
   select(point_id, total_volume, weekno, weekday)
 
 # ADD NEW WEEK HERE!!!
@@ -286,6 +296,11 @@ border_trp_dt_201935_202035 <- calculate_trp_border_index(
   border_dt_2020_35
 )
 
+border_trp_dt_201936_202036 <- calculate_trp_border_index(
+  border_dt_2019_36,
+  border_dt_2020_36
+)
+
 
 # ADD NEW TRP INDEX HERE!!!
 
@@ -356,13 +371,18 @@ border_dt_201935_202035 <- calculate_border_index(
   border_dt_2020_35) %>% 
   mutate(periode = "Uke \n 35")
 
+border_dt_201936_202036 <- calculate_border_index(
+  border_dt_2019_36, 
+  border_dt_2020_36) %>% 
+  mutate(periode = "Uke \n 36")
 
 
 
 
 
 # ADD NEW WEEK HERE!
-border_base_2019 <- bind_rows(border_dt_201935_202035,
+border_base_2019 <- bind_rows(border_dt_201936_202036,
+                              border_dt_201935_202035,
                               border_dt_201934_202034,
                               border_dt_201933_202033,
                               border_dt_201932_202032,
@@ -463,9 +483,9 @@ make_daily_border_plot <- function(area_dt, subtitle_text) {
 
 # Bakgrunn
 
-Som følge av smitteverntiltak i forbindelse med spredningen av det nye koronaviruset SARS-CoV-2, er det interessant å se hvordan trafikken endret seg. De første tiltakene ble annonsert av Regjeringen torsdag 12. mars 2020 (uke 11), og trådde i kraft fredag 13. mars. Grensen til Finland åpnet mandag 15. juni (uke 25).
+Som følge av smitteverntiltak i forbindelse med spredningen av koronaviruset SARS-CoV-2, er det interessant å se hvordan trafikken endret seg. De første tiltakene ble annonsert av Regjeringen torsdag 12. mars 2020 (uke 11), og trådde i kraft fredag 13. mars. Grensen til Finland åpnet mandag 15. juni (uke 25). Senere grenseåpninger og -stenginger er ikke notert her, men skal kunne ses i tallene for det enkelte trafikkregistreringspunkt.
 
-Statens vegvesen har i dag til sammen 30 trafikkregistreringspunkter ved de ulike riksgrenseovergangene fra Svinesund i sør til Storskog i nordøst. Trafikken er ikke registrert i selve grenseovergangen, men litt inn på norsk side. Det er ingen store kryss mellom registreringspunktene og riksgrensen, slik at de fleste kjøretøy som blir registrert antas å krysse riksgrensen, selv om enkelte kjøretøy kan stoppe og eventuelt snu på norsk side.
+Statens vegvesen har i dag til sammen 30 trafikkregistreringspunkter ved de ulike riksgrenseovergangene fra Svinesund i sør til Storskog i nordøst. Trafikken er ikke registrert i selve grenseovergangen, men litt inn på norsk side. Det er ingen store kryss mellom registreringspunktene og riksgrensen, slik at de fleste kjøretøy som blir registrert antas normalt å krysse riksgrensen, selv om enkelte kjøretøy kan stoppe og eventuelt snu på norsk side.
 
 Datagrunnlaget for beregningene hentes fra disse trafikkregistreringspunktene. Det vil gi et representativ utvalg for å kunne beregne trafikkutviklingen. Det gjøres en sammenligning av døgntrafikken, ukedag mot ukedag. Mandag sammenlignes med mandag osv.  
 
@@ -476,9 +496,9 @@ Denne rapporten viser utviklingen fra uke 27 og framover. Trafikkutvikling for t
 
 Alle data er hentet fra [trafikkdata.no](https://www.trafikkdata.no/). Døgntrafikk med minst 99 % dekningsgrad er brukt til å beregne prosentvis endring mellom to dager.
 
-Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
+Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er tidvis utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
 
-Været vil enkelte dager kunne påvirke trafikkmengden. For eksempel vil det ved dårlig føre, som ved stort snøfall eller underkjølt regn, bli redusert framkommelighet og dette fører til mindre trafikk enn normalt. Spesielt gjelder dette en del av grenseovergangene som ligger i fjellstrøk. Enkelte grenseoverganger er vinterstid tidvis stengt på grunn av værforhold.
+Været vil enkelte dager kunne påvirke trafikkmengden. For eksempel vil det ved dårlig føre, som ved stort snøfall eller underkjølt regn, bli redusert framkommelighet og dette fører til mindre trafikk enn normalt. Spesielt gjelder dette en del av grenseovergangene som ligger i fjellstrøk. Enkelte grenseoverganger er vinterstid periodevis stengt på grunn av værforholdene.
 
 
 # Trafikkregistreringspunkt ved riksgrenseovergangene
@@ -510,7 +530,7 @@ border_trp_adt %>%
 
 # Samlet endring i trafikk over riksgrensen
 
-```{r plot_2019, fig.width=8, fig.height=8}
+```{r plot_2019, fig.width=8, fig.height=10}
 make_daily_border_plot(border_base_2019, "Fra 2019 til 2020")
 ```
 
@@ -572,3 +592,7 @@ make_border_trp_table(border_trp_dt_201935_202035,
                       "Prosentvis endring i trafikkmengde fra uke 35 2019 til uke 35 2020.")
 ```
 
+```{r trptable_201936}
+make_border_trp_table(border_trp_dt_201936_202036,
+                      "Prosentvis endring i trafikkmengde fra uke 36 2019 til uke 36 2020.")
+```
