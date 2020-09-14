@@ -79,10 +79,10 @@ border_trp_adt <- border_trps %>%
 
 # From week 27
 borderdata_2019_from <- "2019-07-01T00:00:00+02:00"
-borderdata_2019_to <- "2019-09-09T00:00:00+02:00"
+borderdata_2019_to <- "2019-09-16T00:00:00+02:00"
 
 borderdata_2020_from <- "2020-06-29T00:00:00+02:00"
-borderdata_2020_to <- "2020-09-07T00:00:00+02:00"
+borderdata_2020_to <- "2020-09-14T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -168,6 +168,11 @@ border_dt_2019_36 <- border_dt %>%
   filter(weekno == 36) %>% 
   select(point_id, total_volume, weekno, weekday)
 
+border_dt_2019_37 <- border_dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 37) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
 # ADD NEW WEEK HERE!!!
 
 
@@ -222,6 +227,11 @@ border_dt_2020_35 <- border_dt %>%
 border_dt_2020_36 <- border_dt %>% 
   filter(year == 2020) %>%
   filter(weekno == 36) %>% 
+  select(point_id, total_volume, weekno, weekday)
+
+border_dt_2020_37 <- border_dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 37) %>% 
   select(point_id, total_volume, weekno, weekday)
 
 # ADD NEW WEEK HERE!!!
@@ -301,6 +311,10 @@ border_trp_dt_201936_202036 <- calculate_trp_border_index(
   border_dt_2020_36
 )
 
+border_trp_dt_201937_202037 <- calculate_trp_border_index(
+  border_dt_2019_37,
+  border_dt_2020_37
+)
 
 # ADD NEW TRP INDEX HERE!!!
 
@@ -376,12 +390,17 @@ border_dt_201936_202036 <- calculate_border_index(
   border_dt_2020_36) %>% 
   mutate(periode = "Uke \n 36")
 
+border_dt_201937_202037 <- calculate_border_index(
+  border_dt_2019_37, 
+  border_dt_2020_37) %>% 
+  mutate(periode = "Uke \n 37")
 
 
 
 
 # ADD NEW WEEK HERE!
-border_base_2019 <- bind_rows(border_dt_201936_202036,
+border_base_2019 <- bind_rows(border_dt_201937_202037,
+                              border_dt_201936_202036,
                               border_dt_201935_202035,
                               border_dt_201934_202034,
                               border_dt_201933_202033,
@@ -596,3 +615,11 @@ make_border_trp_table(border_trp_dt_201935_202035,
 make_border_trp_table(border_trp_dt_201936_202036,
                       "Prosentvis endring i trafikkmengde fra uke 36 2019 til uke 36 2020.")
 ```
+
+```{r trptable_201937}
+make_border_trp_table(border_trp_dt_201937_202037,
+                      "Prosentvis endring i trafikkmengde fra uke 37 2019 til uke 37 2020.")
+```
+
+
+

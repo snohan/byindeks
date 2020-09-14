@@ -678,6 +678,7 @@ get_road_length_for_municipality <- function(municipality_number) {
   # How to know if has next page?
   # If "returned" < 1000 !!! Beware of changed page size in their API!
   returned <- uthenta$metadata$returnert
+  # TODO: use page_size given in response as determination
 
   while(returned == 1000) {
     next_page <- uthenta$metadata$neste$href
@@ -718,9 +719,13 @@ get_road_length_for_municipality <- function(municipality_number) {
 
 #trondheim_roads <- get_road_length_for_municipality("5001")
 
-rutenavn <- "RUTE6B"
-periode <- "2014-2023%20/%202018-2029"
+#rutenavn <- "RUTE3"
+#periode <- "2014-2023 / 2018-2029"
 get_trafikkmengde_for_riksvegrute <- function(rutenavn, periode) {
+
+  # TODO: tidspunkt, vegnett gyldig, år gjelder for o.l.
+  periode <- stringr::str_replace_all(periode, " ", "%20")
+  resultat <- tibble::tibble()
 
   api_query <- paste0(nvdb_url_v3,
                       sti_vegobjekter,
@@ -735,22 +740,34 @@ get_trafikkmengde_for_riksvegrute <- function(rutenavn, periode) {
   respons <- httr::GET(api_query,
                        httr::add_headers(.headers = nvdb_v3_headers))
 
+  Sys.sleep(2)
+
   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
                       simplifyDataFrame = T,
                       flatten = T)
 
+  process_response <- function(uthenta) {
+
   trafikkmengder <- uthenta$objekter %>%
     dplyr::select(id, egenskaper) %>%
+    # Avoiding bind_rows to fail due to different data types, when some rows are missing in response
+    dplyr::mutate(egenskaper = map(egenskaper, ~ .x %>%
+                        mutate_all(as.character))) %>%
     tidyr::unnest(egenskaper, names_repair = "unique") %>%
     dplyr::filter(id...2 %in% c(4621, 4623, 4624)) %>%
     dplyr::select(id = id...1, navn, verdi) %>%
     dplyr::mutate(navn = dplyr::case_when(navn == "År, gjelder for" ~ "year",
                                           navn == "ÅDT, total" ~ "aadt",
                                           navn == "ÅDT, andel lange kjøretøy" ~ "part_heavy")) %>%
-    tidyr::pivot_wider(names_from = navn, values_from = verdi)
+    tidyr::pivot_wider(names_from = navn, values_from = verdi) %>%
+    dplyr::mutate(aadt = as.numeric(aadt))
 
   lengder <- uthenta$objekter %>%
     dplyr::select(id, lengde = lokasjon.lengde)
+
+  geometri <- uthenta$objekter %>%
+    dplyr::select(id, geometri = lokasjon.geometri.wkt) %>%
+    dplyr::filter(!is.na(geometri))
 
   vegsystemreferanser <- uthenta$objekter %>%
     dplyr::select(id, vegsystemreferanser = lokasjon.vegsystemreferanser) %>%
@@ -765,12 +782,57 @@ get_trafikkmengde_for_riksvegrute <- function(rutenavn, periode) {
   vegsystemreferanser_slutt <- vegsystemreferanser %>%
     dplyr::summarise(vegref_slutt = max(kortform))
 
-
-  # HERE TODO: join and concatenate vegref
   trafikkmengder_med_lengder <- trafikkmengder %>%
-    dplyr::left_join(lengder)
+    dplyr::left_join(vegsystemreferanser_start) %>%
+    dplyr::left_join(vegsystemreferanser_slutt) %>%
+    dplyr::left_join(lengder) %>%
+    dplyr::left_join(geometri) %>%
+    dplyr::filter(lengde > 0)
 
-  return(verdi)
+  }
+
+  delresultat <- process_response(uthenta)
+
+  resultat <- dplyr::bind_rows(
+    resultat,
+    delresultat
+  )
+
+  # Pagination
+  page_size <- uthenta$metadata$sidestørrelse
+  returned <- uthenta$metadata$returnert
+  total_size <- uthenta$metadata$antall
+
+  while(returned == page_size) {
+    next_page <- uthenta$metadata$neste$href
+
+    respons <- httr::GET(next_page,
+                         httr::add_headers(.headers = nvdb_v3_headers))
+
+    Sys.sleep(2)
+
+    uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+                        simplifyDataFrame = T,
+                        flatten = T)
+
+    delresultat <- process_response(uthenta)
+
+    resultat <- dplyr::bind_rows(
+      resultat,
+      delresultat
+    )
+
+    returned <- uthenta$metadata$returnert
+  }
+
+  resultat_sf <- resultat %>%
+    sf::st_as_sf(wkt = "geometri",
+                 crs = 5973,
+                 na.fail = FALSE) %>%
+    sf::st_zm(drop = T, what = "ZM") %>%
+    sf::st_transform("+proj=longlat +datum=WGS84")
+
+  return(resultat_sf)
 }
 
 

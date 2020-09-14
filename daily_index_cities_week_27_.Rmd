@@ -115,10 +115,10 @@ trps <- dplyr::left_join(cities_points, points) %>%
 
 # Fetch daily traffic
 week_2019_from <- "2019-07-01T00:00:00+02:00"
-week_2019_to <- "2019-09-09T00:00:00+02:00"
+week_2019_to <- "2019-09-16T00:00:00+02:00"
 
 week_2020_from <- "2020-06-29T00:00:00+02:00"
-week_2020_to <- "2020-09-07T00:00:00+02:00"
+week_2020_to <- "2020-09-14T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -341,6 +341,25 @@ dt_2019_36 <- dt %>%
                            "75341V41863",
                            "17961V72812")))
 
+dt_2019_37 <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 37) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("21768V805002",
+                           "41331V443662",
+                           "71258V805748",
+                           "87138V755378",
+                           "91229V886007",
+                           "42754V444240",
+                           "84064V320581",
+                           "36178V320198",
+                           "57836V319878",
+                           "18573V444291",
+                           "04300V72813",
+                           "33808V625649",
+                           "75341V41863",
+                           "17961V72812")))
+
 # ADD NEW WEEK HERE!
 
 
@@ -415,6 +434,14 @@ dt_2020_36<- dt %>%
   filter(!(point_id %in% c("42754V444240",
                            "57279V320244")))
 
+dt_2020_37<- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 37) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("42754V444240",
+                           "57279V320244",
+                           "44660V72811")))
+
 # ADD NEW WEEK HERE!
 
 
@@ -445,6 +472,7 @@ trp_dt_201933_202033 <- calculate_trp_index(dt_2019_33, dt_2020_33)
 trp_dt_201934_202034 <- calculate_trp_index(dt_2019_34, dt_2020_34)
 trp_dt_201935_202035 <- calculate_trp_index(dt_2019_35, dt_2020_35)
 trp_dt_201936_202036 <- calculate_trp_index(dt_2019_36, dt_2020_36)
+trp_dt_201937_202037 <- calculate_trp_index(dt_2019_37, dt_2020_37)
 
 
 
@@ -509,6 +537,10 @@ city_dt_201936_202036 <- calculate_city_index(dt_2019_36, dt_2020_36) %>%
   filter(!(city_area_name %in% c("Bodø"))) %>% 
   mutate(weekno = "36")
 
+city_dt_201937_202037 <- calculate_city_index(dt_2019_37, dt_2020_37) %>% 
+  filter(!(city_area_name %in% c("Bodø"))) %>% 
+  mutate(weekno = "37")
+
 #Cities week by week
 city_dt_2019_2020_weeks = bind_rows(city_dt_201927_202027,
                                     city_dt_201928_202028,
@@ -519,7 +551,8 @@ city_dt_2019_2020_weeks = bind_rows(city_dt_201927_202027,
                                     city_dt_201933_202033,
                                     city_dt_201934_202034,
                                     city_dt_201935_202035,
-                                    city_dt_201936_202036
+                                    city_dt_201936_202036,
+                                    city_dt_201937_202037
                                    )
 
 oslo_og_akershus_dt_2019_2020 <- city_dt_2019_2020_weeks %>% 
