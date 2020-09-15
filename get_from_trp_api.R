@@ -4,7 +4,7 @@ library(httr)
 
 source("H:/Programmering/R/byindeks/trp_api_cookies.R")
 
-trp_api_url <- "https://www.vegvesen.no/datainn/adm/traffic-registration-point/api/"
+trp_api_url <- "https://www.vegvesen.no/datainn/traffic-registration-point/api/"
 
 # Without ghql
 get_via_httr <- function(api_query) {
@@ -28,7 +28,7 @@ get_via_httr <- function(api_query) {
 
 # With ghql
 cli_trp <- GraphqlClient$new(
-    url = "https://www.vegvesen.no/datainn/adm/traffic-registration-point/api/",
+    url = "https://www.vegvesen.no/datainn/traffic-registration-point/api/",
     headers = list(
       #.headers = trp_api_headers,
       .cookies = trp_api_cookies
