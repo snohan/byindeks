@@ -24,17 +24,27 @@ source("get_from_nvdb_api.R")
 ```{r get_data, include=FALSE}
 # Fetching published index from Traffic Data API
 # Nedre Glomma
-index_2020_ngl <- get_published_index_for_months(5953, 2020, 7)
-index_2020_grl <- get_published_index_for_months(4953, 2020, 7)
-index_2020_brg <- get_published_index_for_months(5952, 2020, 7)
-index_2020_osl <- get_published_index_for_months(6953, 2020, 7)
-index_2020_njr <- get_published_index_for_months(6952, 2020, 7)
+index_2020_ngl <- get_published_index_for_months(5953, 2020, 8)
+index_2020_grl <- get_published_index_for_months(4953, 2020, 8)
+index_2020_brg <- get_published_index_for_months(5952, 2020, 8)
+index_2020_osl <- get_published_index_for_months(6953, 2020, 8)
+index_2020_njr <- get_published_index_for_months(6952, 2020, 8)
 
 index_2020 <- dplyr::bind_rows(index_2020_ngl,
                                index_2020_grl,
                                index_2020_brg,
                                index_2020_osl,
-                               index_2020_njr)
+                               index_2020_njr) %>% 
+  dplyr::filter(length_range == "[..,..)",
+                road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG") %>% 
+  dplyr::mutate(index_percent = round(index_p, digits = 1),
+                confidence_width = round(confidence_width, digits = 1)) %>% 
+  dplyr::select(area_name, year, month, period, index_percent, confidence_width) %>% 
+  dplyr::filter(month == 8,
+                period == "year_to_date")
+
+write.csv2(index_2020, file = "sykkelindekser_aug_2020.csv",
+           row.names = F)
 
 #pointindex_2020 <- get_published_pointindex(5953, 2019, 12)
 

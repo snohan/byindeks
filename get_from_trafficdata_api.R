@@ -1246,7 +1246,7 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
 
 get_published_index_for_months <- function(index_id, index_year, last_month) {
 
-  index_table <- tibble::as_tibble()
+  index_table <- tibble::tibble()
   i <- 1
   while (i < last_month + 1) {
     index_table <- dplyr::bind_rows(index_table,
