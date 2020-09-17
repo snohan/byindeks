@@ -24,7 +24,6 @@ source("get_from_nvdb_api.R")
 ```{r get_data, include=FALSE}
 # Fetching published index from Traffic Data API
 index_2020 <- get_published_index_for_months(2952, 2020, 7)
-
 pointindex_2020 <- get_published_pointindex(2952, 2020, 7)
 
 # Index points
@@ -86,6 +85,23 @@ points_adt_all <- bind_rows(with_aadt, missing_aadt) %>%
 # TODO: Point index
 ```
 
+# Riksgrenseindeks
+
+Riksgrenseindeksen er en vegtrafikkindeks for vegene som krysser riksgrensen langs hele Norge. Den estimerer endringen i trafikkmengde i prosent fra et år til det neste.
+
+Statens vegvesen har i dag til sammen 30 trafikkregistreringspunkter ved de ulike riksgrenseovergangene fra Svinesund i sør til Storskog i nordøst. Trafikken er ikke registrert i selve grenseovergangen, men litt inn på norsk side. Det er ingen store kryss mellom registreringspunktene og riksgrensen, slik at de fleste kjøretøy som blir registrert antas normalt å krysse riksgrensen, selv om enkelte kjøretøy kan stoppe og eventuelt snu på norsk side.
+
+Datagrunnlaget for beregningene hentes fra disse trafikkregistreringspunktene. Det vil gi et representativ utvalg for å kunne beregne trafikkutviklingen. Det gjøres en sammenligning av timetrafikken, dato mot dato i kalendermånedene.
+
+Alle data er hentet fra [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/trafikkdata/). Timetrafikk med minst 95 % dekningsgrad inngår i beregningsgrunnlaget.
+
+Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er tidvis utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
+
+Været vil i perioder kunne påvirke trafikkmengden. For eksempel vil det ved dårlig føre, som ved stort snøfall eller underkjølt regn, bli redusert framkommelighet og dette fører til mindre trafikk enn normalt. Spesielt gjelder dette en del av grenseovergangene som ligger i fjellstrøk. Enkelte grenseoverganger er vinterstid periodevis stengt på grunn av værforholdene.
+
+
+# Trafikkregistreringspunkt ved riksgrenseovergangene
+
 ```{r point_table}
 points_adt_all %>%
   select(name, road_reference, adt, aadt_short, aadt_long, year) %>%
@@ -94,7 +110,7 @@ points_adt_all %>%
                 big.mark = " ", digits = 0, na_str = "") %>%
   set_header_labels(name = "Navn",
                     road_reference = "Vegreferanse",
-                    adt = "ÅDT \n total",
+                    adt = "ÅDT \n alle",
                     aadt_short = "ÅDT \n lette",
                     aadt_long = "ÅDT \n tunge",
                     year = "År") %>%
@@ -113,32 +129,138 @@ points_adt_all %>%
   set_caption("Trafikkregistreringspunkt og årsdøgntrafikk (ÅDT). Skillet mellom lette og tunge kjøretøy er basert på målt lengde kortere eller lengre enn 5,6 m. Der ÅDT for lette og tunge er utelatt fra tabellen, er datagrunnlaget for dårlig til at tall kan presenteres. Summen av lette og tunge kan avvike noe fra totalen på grunn av avrunding.")
 ```
 
+I kartet nedenfor vises plasseringen av trafikkregistreringspunktene. Grenseovergangene med mest trafikk er Ev6 og Fv118 ved Svinesund, Ev18 ved Ørje og Rv2 ved Magnor.
 
+```{r map_trp_index}
+create_point_adt_map(points_adt_all)
+```
 
 ```{r border_table}
-index_2020_wide <- index_2020 %>% 
-  dplyr::select(area_name, year, month, road_category, length_range, index = index_p, period) %>% 
-  dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "total",
-                                                length_range == "[..,5.6)" ~ "short",
-                                                length_range == "[5.6,..)" ~ "long")) %>% 
-  tidyr::pivot_wider(names_from = length_range, names_prefix = "index_",
-                     values_from = index) %>% 
-  dplyr::mutate(period = dplyr::case_when(period == "month" ~ "Måned",
-                                          period == "year_to_date" ~ "Hittil i år"),
-                road_category = dplyr::case_when(
+# For an SD report
+# index_2020_wide <- index_2020 %>% 
+#   dplyr::select(area_name, year, month, road_category, length_range, index = index_p, 
+#                 confidence_width, period) %>% 
+#   dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "total",
+#                                                 length_range == "[..,5.6)" ~ "short",
+#                                                 length_range == "[5.6,..)" ~ "long")) %>% 
+#   tidyr::pivot_wider(names_from = length_range,
+#                      values_from = c(index, confidence_width)) %>% 
+#   dplyr::mutate(period = dplyr::case_when(period == "month" ~ "Måned",
+#                                           period == "year_to_date" ~ "Hittil i år"),
+#                 road_category = dplyr::case_when(
+#                   road_category == "FYLKESVEG" ~ "Fylkesveg",
+#                   road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
+#                   road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG" ~ "Europa-, riks- og fylkesveg")) %>% 
+#   dplyr::arrange(month, road_category, desc(period))
+#
+# write.csv2(index_2020_wide, file = "sd/riksgrenseindeks.csv",
+#            row.names = F)
+
+index_2020_upper_lower <- index_2020 %>% 
+  dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "alle",
+                                                length_range == "[..,5.6)" ~ "lette",
+                                                length_range == "[5.6,..)" ~ "tunge")) %>% 
+  dplyr::mutate(road_category = dplyr::case_when(
                   road_category == "FYLKESVEG" ~ "Fylkesveg",
                   road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
                   road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG" ~ "Europa-, riks- og fylkesveg")) %>% 
-  dplyr::arrange(month, road_category, desc(period))
-
-# For an SD report
-write.csv2(index_2020_wide, file = "sd/riksgrenseindeks.csv",
-           row.names = F)
-
-# TODO: create table, make new function
-
-# TODO: CI shown with +-
+  dplyr::mutate(index_lower = index_p - confidence_width,
+                index_upper = index_p + confidence_width,
+                month_object = lubridate::make_date(year = year, month = month),
+                month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)) %>% 
+  dplyr::filter(road_category == "Europa-, riks- og fylkesveg")
 ```
+
+# Samlet endring i trafikk over riksgrensen
+Ved å slå sammen trafikkmengden i de ulike grenseovergangene, kan en samlet endring beregnes.
+
+
+## Per måned
+Samlet endring i trafikkmengde per måned i 2020, sammenlignet med samme måned i 2019.
+
+```{r monthly_index_table}
+index_2020_upper_lower %>%
+  dplyr::filter(period == "month") %>% 
+  dplyr::arrange(length_range, month) %>% 
+  select(month_name, year, length_range, index_lower, index_p, index_upper) %>%
+  flextable() %>%
+  colformat_num(j = 4:6, digits = 1) %>%
+  set_header_labels(month_name = "Måned", year = "År", length_range = "Kjøretøyklasse",
+                    index_lower = "Endring i trafikkmengde (%)") %>%
+  add_header_row(values = c("", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
+  merge_at(i = 1, j = 4:6, part = "header") %>% 
+  align(i = 1, j = 4, align = "center", part = "header") %>%
+  align(i = 2, j = 4:6, align = "right", part = "header") %>% 
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  #autofit() %>%
+  height_all(height = .2) %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Estimert samlet endring i trafikkmengde ved riksgrensen, med nedre og øvre grense for et 95 % konfidensintervall. Trafikken er sammenlignet per måned med samme måned året før.")
+```
+
+```{r lineplot}
+index_2020_upper_lower %>% 
+  dplyr::filter(period == "month") %>% 
+  ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_point() +
+  theme_light() +
+  theme(axis.text.x = element_text(angle = 90),
+        panel.grid.minor.x = element_blank()) +
+  scale_x_date(breaks = scales::breaks_width("months"),
+               labels = scales::label_date("%b")) +
+  scale_color_manual(values = c("alle" = "#008ec2",
+                                "lette" = "#ed9300",
+                                "tunge" = "#444f55"),
+                     name = "Kjøretøyklasse") +
+  labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
+       caption = "Data: Statens vegvesen") +
+  ggtitle("Estimert endring i trafikkmengde ved riksgrensen",
+          subtitle = "Trafikkmengde i 2020 sammenlignet med 2019")
+```
+
+
+
+## Hittil i år
+Samlet endring i trafikkmengde i perioden fra januar til juli 2020, sammenlignet med samme periode i 2019.
+
+```{r year_to_date}
+last_month <- max(index_2020_upper_lower$month)
+
+index_2020_upper_lower %>%
+  dplyr::filter(period == "year_to_date",
+                month == last_month) %>% 
+  dplyr::arrange(length_range, month) %>% 
+  select(month_name, year, length_range, index_lower, index_p, index_upper) %>%
+  flextable() %>%
+  colformat_num(j = 4:6, digits = 1) %>%
+  set_header_labels(month_name = "Måned", year = "År", length_range = "Kjøretøyklasse",
+                    index_lower = "Endring i trafikkmengde (%)") %>%
+  add_header_row(values = c("", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
+  merge_at(i = 1, j = 4:6, part = "header") %>% 
+  align(i = 1, j = 4, align = "center", part = "header") %>%
+  align(i = 2, j = 4:6, align = "right", part = "header") %>% 
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  height_all(height = .2) %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Estimert samlet endring i trafikkmengde ved riksgrensen, med nedre og øvre grense for et 95 % konfidensintervall. Trafikken er sammenlignet for hittil i år med samme periode året før.")
+```
+
+
 
 
 

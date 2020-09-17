@@ -513,7 +513,7 @@ Trafikkutviklingen sammenlignes ved at døgntrafikken sammenlignes med tilsvaren
 Denne rapporten viser utviklingen fra uke 27 og framover. Trafikkutvikling for tidligere uker finnes i egen rapport for uke 10-26.
 
 
-Alle data er hentet fra [trafikkdata.no](https://www.trafikkdata.no/). Døgntrafikk med minst 99 % dekningsgrad er brukt til å beregne prosentvis endring mellom to dager.
+Alle data er hentet fra [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/trafikkdata/). Døgntrafikk med minst 99 % dekningsgrad er brukt til å beregne prosentvis endring mellom to dager.
 
 Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er tidvis utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
 

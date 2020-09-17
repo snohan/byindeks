@@ -717,6 +717,8 @@ get_road_length_for_municipality <- function(municipality_number) {
   return(road_lengths)
 }
 
+
+
 #trondheim_roads <- get_road_length_for_municipality("5001")
 
 #rutenavn <- "RUTE3"
@@ -799,7 +801,7 @@ get_trafikkmengde_for_riksvegrute <- function(rutenavn, periode) {
   )
 
   # Pagination
-  page_size <- uthenta$metadata$sidestørrelse
+  page_size <- uthenta$metadata$'sidestørrelse'
   returned <- uthenta$metadata$returnert
   total_size <- uthenta$metadata$antall
 

@@ -12,6 +12,7 @@ library(lubridate)
 library(RColorBrewer)
 library(webshot)
 library(officer)
+library(scales)
 
 source("index_report_functions.R")
 
