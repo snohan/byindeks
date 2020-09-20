@@ -1,5 +1,5 @@
 ---
-title: Byindekser
+title: Vegtrafikkindeksen
 output: 
   word_document:
     reference_docx: svv_notatmal3.docx
@@ -15,44 +15,25 @@ source("rmd_setup.R")
 
 # Traffic Data API calls to get points metadata and aadt
 source("get_from_trafficdata_api.R")
-source("split_road_system_reference.R")
-source("get_from_nvdb_api.R")
 ```
 
 
 
 ```{r get_data, include=FALSE}
 # Fetching published index from Traffic Data API
-index_2020_bergen <- get_published_index_for_months(958, 2020, 7)
-index_2020_buskerud <- get_published_index_for_months(1952, 2020, 7)
-index_2020_grenland <- get_published_index_for_months(955, 2020, 7)
-index_2020_krs_omegn <- get_published_index_for_months(957, 2020, 7)
-index_2020_glomma <- get_published_index_for_months(953, 2020, 7)
-index_2020_jaren <- get_published_index_for_months(952, 2020, 7)
-index_2020_oslo <- get_published_index_for_months(959, 2020, 7)
-index_2020_tromso <- get_published_index_for_months(961, 2020, 7)
+index_2020 <- get_published_road_traffic_index_for_months(962, 2020, 7)
 
-index_2020 <- dplyr::bind_rows(index_2020_bergen,
-                               index_2020_buskerud,
-                               index_2020_grenland,
-                               index_2020_krs_omegn,
-                               index_2020_glomma,
-                               index_2020_jaren,
-                               index_2020_oslo,
-                               index_2020_tromso)
+# TODO: Include urban and non-urban index
+#index_2020_urban <- get_published_index_for_months(1952, 2020, 7)
+#index_2020_non_urban <- get_published_index_for_months(955, 2020, 7)
 
-# TODO: no points in this report! It'll be too much...
-#pointindex_2020 <- get_published_pointindex(2952, 2020, 7)
-
-# Index points
-#border_points <- pointindex_2020[[1]]
-
+# index_2020 <- dplyr::bind_rows(index_2020_all,
+#                                index_2020_urban,
+#                                index_2020_non_urban)
 ```
 
-# Byindekser
-Dette er en enkel samlerapport for alle byindeksene. For mer detaljer, se egen rapport for hvert byområde på [www.vegvesen.no/fag/trafikk/trafikkdata/indekser/byindeks](https://www.vegvesen.no/fag/trafikk/trafikkdata/indekser/byindeks).
-
-Byindeksen er en vegtrafikkindeks for vegene i et definert byområde. Den estimerer endringen i trafikkmengde i prosent fra et år til det neste.
+# Vegtrafikkindeksen
+Vegtrafikkindeksen estimerer endringen i trafikkmengde i prosent fra et år til det neste.
 
 Datagrunnlaget for beregningene hentes fra trafikkregistreringspunkter i Statens vegvesens trafikkdatasystem. Det vil gi et representativt utvalg for å kunne beregne trafikkutviklingen. Det gjøres en sammenligning av timetrafikken, dato mot dato i kalendermånedene.
 
@@ -62,25 +43,6 @@ Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter e
 
 
 ```{r border_table}
-# index_2020_wide <- index_2020 %>% 
-#   dplyr::select(area_name, year, month, road_category, length_range, index = index_p, period) %>% 
-#   dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "total",
-#                                                 length_range == "[..,5.6)" ~ "short",
-#                                                 length_range == "[5.6,..)" ~ "long")) %>% 
-#   tidyr::pivot_wider(names_from = length_range, names_prefix = "index_",
-#                      values_from = index) %>% 
-#   dplyr::mutate(period = dplyr::case_when(period == "month" ~ "Måned",
-#                                           period == "year_to_date" ~ "Hittil i år"),
-#                 road_category = dplyr::case_when(
-#                   road_category == "FYLKESVEG" ~ "Fylkesveg",
-#                   road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
-#                   road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG" ~ "Europa-, riks- og fylkesveg")) %>% 
-#   dplyr::arrange(area_name, month, road_category, desc(period))
-# 
-# # For an SD report
-# write.csv2(index_2020_wide, file = "sd/byindeks.csv",
-#            row.names = F)
-
 index_2020_upper_lower <- index_2020 %>% 
   dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "alle",
                                                 length_range == "[..,5.6)" ~ "lette",
@@ -88,14 +50,11 @@ index_2020_upper_lower <- index_2020 %>%
   dplyr::mutate(road_category = dplyr::case_when(
                   road_category == "FYLKESVEG" ~ "Fylkesveg",
                   road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
-                  road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG" ~ "Europa-, riks- og fylkesveg")) %>% 
+                  road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG" ~ "Europa-, riks- og fylkesveg")) %>% 
   dplyr::mutate(index_lower = index_p - confidence_width,
                 index_upper = index_p + confidence_width,
                 month_object = lubridate::make_date(year = year, month = month),
-                month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)) %>% 
-  dplyr::filter(road_category == "Europa-, riks- og fylkesveg")
-
-
+                month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE))
 ```
 
 
@@ -103,13 +62,15 @@ index_2020_upper_lower <- index_2020 %>%
 Samlet endring i trafikkmengde per måned i 2020, sammenlignet med samme måned i 2019.
 
 ```{r monthly_index_table}
-index_2020_upper_lower %>%
-  dplyr::filter(period == "month") %>% 
+index_2020_upper_lower  %>% 
+  dplyr::filter(road_category == "Europa-, riks- og fylkesveg") %>%
+  dplyr::filter(period == "month",
+                area_type == "COUNTRY") %>% 
   dplyr::arrange(area_name, length_range, month) %>% 
   select(area_name, month_name, year, length_range, index_lower, index_p, index_upper) %>%
   flextable() %>%
   colformat_num(j = 5:7, digits = 1) %>%
-  set_header_labels(area_name = "Byområde", month_name = "Måned", year = "År", length_range = "Kjøretøyklasse",
+  set_header_labels(area_name = "Område", month_name = "Måned", year = "År", length_range = "Kjøretøyklasse",
                     index_lower = "Endring i trafikkmengde (%)") %>%
   add_header_row(values = c("", "", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
   merge_at(i = 1, j = 5:7, part = "header") %>% 
@@ -136,11 +97,12 @@ index_2020_upper_lower %>%
 ```{r lineplot, fig.height=10}
 # TODO: faceting per length_range or city?
 index_2020_upper_lower %>% 
-  dplyr::filter(period == "month") %>% 
+  dplyr::filter(period == "month",
+                area_type == "COUNTRY") %>% 
   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
   ggplot2::geom_line() +
   ggplot2::geom_point() +
-  ggplot2::facet_grid(rows = vars(area_name)) +
+  ggplot2::facet_grid(rows = vars(road_category)) +
   theme_light() +
   theme(axis.text.x = element_text(angle = 90),
         panel.grid.minor.x = element_blank()) +
@@ -167,17 +129,19 @@ last_month <- max(index_2020_upper_lower$month)
 
 index_2020_upper_lower %>%
   dplyr::filter(period == "year_to_date",
-                month == last_month) %>% 
-  dplyr::arrange(area_name, length_range, month) %>% 
-  select(area_name, month_name, year, length_range, index_lower, index_p, index_upper) %>%
+                month == last_month,
+                area_type == "COUNTRY") %>% 
+  dplyr::arrange(area_name, road_category, length_range, month) %>% 
+  select(area_name, month_name, year, road_category, length_range, index_lower, index_p, index_upper) %>%
   flextable() %>%
-  colformat_num(j = 5:7, digits = 1) %>%
-  set_header_labels(area_name = "Byområde", month_name = "Måned", year = "År", length_range = "Kjøretøyklasse",
+  colformat_num(j = 6:8, digits = 1) %>%
+  set_header_labels(area_name = "Område", month_name = "Måned", year = "År", 
+                    road_category = "Vegkategori", length_range = "Kjøretøyklasse",
                     index_lower = "Endring i trafikkmengde (%)") %>%
-  add_header_row(values = c("", "", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
-  merge_at(i = 1, j = 5:7, part = "header") %>% 
-  align(i = 1, j = 5, align = "center", part = "header") %>%
-  align(i = 2, j = 5:7, align = "right", part = "header") %>% 
+  add_header_row(values = c("", "", "", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
+  merge_at(i = 1, j = 6:8, part = "header") %>% 
+  align(i = 1, j = 6, align = "center", part = "header") %>%
+  align(i = 2, j = 6:8, align = "right", part = "header") %>% 
   bold(part = "header") %>%
   fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
@@ -192,7 +156,7 @@ index_2020_upper_lower %>%
 ```
 
 ```{r year_to_date_plot}
-# TODO: lollipop plot comparing each city, faceted by lenght_range
+# TODO: lollipop plot comparing each county, faceted by lenght_range
 ```
 
 
