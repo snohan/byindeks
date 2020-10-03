@@ -11,6 +11,10 @@ cli <- GraphqlClient$new(
   #  'content-type' = 'application/json')
 )
 
+# Helper functions
+is_even <- function(x) x[x %% 2 == 0]
+is_odd <- function(x) x[x %% 2 == 1]
+
 get_counties <- function() {
   # Get all counties
   query_points <-
@@ -109,6 +113,9 @@ get_points <- function() {
     commissions {
       validFrom
       validTo
+      lanes {
+        laneNumber
+      }
     }
   }
 }"
@@ -120,6 +127,7 @@ get_points <- function() {
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
     as.data.frame() %>%
     tidyr::unnest(cols = c(data.trafficRegistrationPoints.commissions)) %>%
+    #tidyr::unnest(cols = c(lanes)) %>%
     dplyr::rename(trp_id =
                     data.trafficRegistrationPoints.id,
                   name =
@@ -142,12 +150,14 @@ get_points <- function() {
                     data.trafficRegistrationPoints.location.roadLinkSequence.roadLinkSequenceId
                     ) %>%
     dplyr::select(trp_id, name, traffic_type, road_reference, county_name,
-                  county_no, municipality_name, municipality_no, lat, lon,
+                  county_no, municipality_name, municipality_no, lanes, lat, lon,
                   road_network_position, road_network_link, validFrom, validTo
                   ) %>%
-    dplyr::mutate(road_reference = str_replace(road_reference, "HP ", "hp")
-                  ) %>%
-    dplyr::mutate(road_reference = str_replace(road_reference, "Meter ", "m"),
+    dplyr::mutate(lane_numbers = purrr::map(lanes, ~ purrr::pluck(., 1)),
+                  direction_with = purrr::map(lane_numbers, ~ length(is_odd(.)) > 0),
+                  direction_against = purrr::map(lane_numbers, ~ length(is_even(.)) > 0),
+                  number_of_directions = dplyr::if_else(direction_with == TRUE, 1, 0) +
+                    dplyr::if_else(direction_against == TRUE, 1, 0),
                   road_link_position = paste0(road_network_position, "@",
                                               road_network_link),
                   validFrom =
@@ -1557,4 +1567,107 @@ get_published_road_traffic_index_for_months <- function(index_id, index_year, la
   return(index_table)
 }
 
+
+trp_id <- #"79743V1125914"
+  "78481V42532"
+#the_year <- "2019"
+#day_type = "ALL"
+
+get_trp_average_hour_of_day_traffic <- function(trp_id, the_year, day_type) {
+  # Get all AADTs for a trp
+  api_query <- paste0(
+    "query hour_traffic {
+  trafficData (trafficRegistrationPointId: \"", trp_id,"\"){
+    trafficRegistrationPoint {
+      id
+    }
+    volume {
+      average {
+        hourOfDay {
+          byYear (year: ", the_year, ", dayType: ", day_type, "){
+            year
+            dayType
+            total {
+              startOfHour
+              volume {
+                average
+                confidenceInterval {
+                  confidenceWidth
+                }
+              }
+              coverage {
+                percentage
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}")
+
+  myqueries <- Query$new()
+  myqueries$query("data", api_query)
+
+  # TODO: Må splitte opp her med en test om det ikke er noe ÅDT
+  trp_data <- cli$exec(myqueries$queries$data) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
+
+  if(is_empty(trp_data$data$trafficData$volume$average$hourOfDay$byYear) |
+     is.null(trp_data$data$trafficData$volume$average$hourOfDay$byYear$total) |
+     length(trp_data$data$trafficData$volume$average$hourOfDay$byYear$total) == 0
+     #ncol(trp_aadt$data$trafficData$volume$average$daily$byYear) < 5
+  ){
+    # hva gjør vi når det ikke er noe ÅDT?
+    trp_data <- data.frame()
+  }else{
+    trp_data <- trp_data %>%
+      as.data.frame() %>%
+      dplyr::rename(
+        trp_id = data.trafficData.id,
+        year = data.trafficData.volume.average.hourOfDay.byYear.year,
+        day_type = data.trafficData.volume.average.hourOfDay.byYear.dayType,
+        coverage = data.trafficData.volume.average.hourOfDay.byYear.total.coverage.percentage,
+        start_of_hour = data.trafficData.volume.average.hourOfDay.byYear.total.startOfHour,
+        average_hour_of_day_traffic =
+          data.trafficData.volume.average.hourOfDay.byYear.total.volume.average,
+        confidence_width =
+          data.trafficData.volume.average.hourOfDay.byYear.total.volume.confidenceInterval.confidenceWidth) %>%
+      dplyr::mutate(trp_id = as.character(trp_id),
+                    start_of_hour = lubridate::hms(start_of_hour) %>%
+                      lubridate::hour(),
+                    sum_of_hours = sum(average_hour_of_day_traffic),
+                    average_hour_of_day_traffic_relative =
+                      100 * average_hour_of_day_traffic / sum_of_hours)
+  }
+
+  return(trp_data)
+}
+
+
+get_trp_average_hour_of_day_traffic_for_all_day_types <- function(trp_id, the_year) {
+
+ trp_data <- dplyr::bind_rows(
+   get_trp_average_hour_of_day_traffic(trp_id, the_year, "ALL"),
+   get_trp_average_hour_of_day_traffic(trp_id, the_year, "WEEKDAY"),
+   get_trp_average_hour_of_day_traffic(trp_id, the_year, "WEEKEND")
+ )
+}
+
+
+get_trp_average_hour_of_day_traffic_for_all_day_types_for_trp_list <- function(trp_list, the_year) {
+  number_of_points <- length(trp_list)
+  data_points <- data.frame()
+  trp_count <- 1
+
+  while (trp_count <= number_of_points) {
+    data_points <- bind_rows(data_points,
+                             get_trp_average_hour_of_day_traffic_for_all_day_types(trp_list[trp_count],
+                                                                                   the_year))
+    trp_count <- trp_count + 1
+  }
+
+
+  return(data_points)
+}
 
