@@ -21,7 +21,7 @@ source("get_from_trafficdata_api.R")
 
 ```{r get_data, include=FALSE}
 # Fetching published index from Traffic Data API
-index_2020 <- get_published_road_traffic_index_for_months(962, 2020, 7)
+index_2020 <- get_published_road_traffic_index_for_months(962, 2020, 8)
 
 # TODO: Include urban and non-urban index
 #index_2020_urban <- get_published_index_for_months(1952, 2020, 7)
@@ -55,6 +55,8 @@ index_2020_upper_lower <- index_2020 %>%
                 index_upper = index_p + confidence_width,
                 month_object = lubridate::make_date(year = year, month = month),
                 month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE))
+
+last_month <- max(index_2020_upper_lower$month)
 ```
 
 
@@ -70,12 +72,14 @@ index_2020_upper_lower  %>%
   select(area_name, month_name, year, length_range, index_lower, index_p, index_upper) %>%
   flextable() %>%
   colformat_num(j = 5:7, digits = 1) %>%
-  set_header_labels(area_name = "Område", month_name = "Måned", year = "År", length_range = "Kjøretøyklasse",
+  set_header_labels(area_name = "Område", month_name = "Måned", year = "År", length_range = "Kjøretøy-klasse",
                     index_lower = "Endring i trafikkmengde (%)") %>%
   add_header_row(values = c("", "", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
+  merge_at(i = 1:2, j = 4, part = "header") %>% 
   merge_at(i = 1, j = 5:7, part = "header") %>% 
   align(i = 1, j = 5, align = "center", part = "header") %>%
   align(i = 2, j = 5:7, align = "right", part = "header") %>% 
+  align(j = 3, align = "center", part = "all") %>% 
   bold(part = "header") %>%
   fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
@@ -83,8 +87,12 @@ index_2020_upper_lower  %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
+  hline(i = c(last_month, 2 * last_month), part = "body",
+        border = fp_border(color = "#dadada", width = 1)) %>% 
   #autofit() %>%
   height_all(height = .2) %>%
+  width(j = 4, width = .8) %>% 
+  fix_border_issues() %>% 
   padding(padding.top = .3,
           padding.bottom = .3) %>%
   set_caption("Estimert samlet endring i trafikkmengde, med nedre og øvre grense for et 95 % konfidensintervall. Trafikken er sammenlignet per måned med samme måned året før.")
@@ -125,8 +133,6 @@ index_2020_upper_lower %>%
 Samlet endring i trafikkmengde i perioden fra januar til juli 2020, sammenlignet med samme periode i 2019.
 
 ```{r year_to_date}
-last_month <- max(index_2020_upper_lower$month)
-
 index_2020_upper_lower %>%
   dplyr::filter(period == "year_to_date",
                 month == last_month,
@@ -136,12 +142,14 @@ index_2020_upper_lower %>%
   flextable() %>%
   colformat_num(j = 6:8, digits = 1) %>%
   set_header_labels(area_name = "Område", month_name = "Måned", year = "År", 
-                    road_category = "Vegkategori", length_range = "Kjøretøyklasse",
+                    road_category = "Vegkategori", length_range = "Kjøretøy-klasse",
                     index_lower = "Endring i trafikkmengde (%)") %>%
-  add_header_row(values = c("", "", "", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
+  add_header_row(values = c("", "", "", "", "", "Nedre", "Estimat", "Øvre "), top = FALSE) %>% 
+  merge_at(i = 1:2, j = 5, part = "header") %>% 
   merge_at(i = 1, j = 6:8, part = "header") %>% 
   align(i = 1, j = 6, align = "center", part = "header") %>%
   align(i = 2, j = 6:8, align = "right", part = "header") %>% 
+  align(j = 3, align = "center", part = "all") %>% 
   bold(part = "header") %>%
   fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
@@ -149,7 +157,13 @@ index_2020_upper_lower %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
+  hline(i = c(3, 6), part = "body",
+        border = fp_border(color = "#dadada", width = 1)) %>% 
   height_all(height = .2) %>%
+  width(j = 3, width = .5) %>%
+  width(j = 4, width = 1) %>%
+  width(j = 5, width = .8) %>% 
+  fix_border_issues() %>% 
   padding(padding.top = .3,
           padding.bottom = .3) %>%
   set_caption("Estimert samlet endring i trafikkmengde, med nedre og øvre grense for et 95 % konfidensintervall. Trafikken er sammenlignet for hittil i år med samme periode året før.")

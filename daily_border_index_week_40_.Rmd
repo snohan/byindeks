@@ -77,12 +77,12 @@ border_trp_adt <- border_trps %>%
 # Daily traffic ####
 # Same week in 2019
 
-# From week 27
-borderdata_2019_from <- "2019-07-01T00:00:00+02:00"
-borderdata_2019_to <- "2019-09-30T00:00:00+02:00"
+# From week 40
+borderdata_2019_from <- "2019-09-30T00:00:00+02:00"
+borderdata_2019_to <- "2019-10-07T00:00:00+02:00"
 
-borderdata_2020_from <- "2020-06-29T00:00:00+02:00"
-borderdata_2020_to <- "2020-09-28T00:00:00+02:00"
+borderdata_2020_from <- "2020-09-28T00:00:00+02:00"
+borderdata_2020_to <- "2020-10-05T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -118,140 +118,130 @@ border_dt <- bind_rows(border_dt_2019, border_dt_2020) %>%
 
 
 # Weeks 2019 ####
-border_dt_2019_27 <- border_dt %>% 
+border_dt_2019_40 <- border_dt %>% 
   filter(year == 2019) %>%
-  filter(weekno == 27) %>% 
+  filter(weekno == 40) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2019_28 <- border_dt %>% 
+border_dt_2019_41 <- border_dt %>% 
   filter(year == 2019) %>%
-  filter(weekno == 28) %>% 
+  filter(weekno == 41) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2019_29 <- border_dt %>% 
+border_dt_2019_42 <- border_dt %>% 
   filter(year == 2019) %>%
-  filter(weekno == 29) %>% 
+  filter(weekno == 42) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2019_30 <- border_dt %>% 
+border_dt_2019_43 <- border_dt %>% 
   filter(year == 2019) %>%
-  filter(weekno == 30) %>% 
+  filter(weekno == 43) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2019_31 <- border_dt %>% 
+border_dt_2019_44 <- border_dt %>% 
   filter(year == 2019) %>%
-  filter(weekno == 31) %>% 
+  filter(weekno == 44) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2019_32 <- border_dt %>% 
+border_dt_2019_45 <- border_dt %>% 
   filter(year == 2019) %>%
-  filter(weekno == 32) %>% 
+  filter(weekno == 45) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2019_33 <- border_dt %>% 
+border_dt_2019_46 <- border_dt %>% 
   filter(year == 2019) %>%
-  filter(weekno == 33) %>% 
+  filter(weekno == 46) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2019_34 <- border_dt %>% 
+border_dt_2019_47 <- border_dt %>% 
   filter(year == 2019) %>%
-  filter(weekno == 34) %>% 
+  filter(weekno == 47) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2019_35 <- border_dt %>% 
+border_dt_2019_48 <- border_dt %>% 
   filter(year == 2019) %>%
-  filter(weekno == 35) %>% 
+  filter(weekno == 48) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2019_36 <- border_dt %>% 
+border_dt_2019_49 <- border_dt %>% 
   filter(year == 2019) %>%
-  filter(weekno == 36) %>% 
+  filter(weekno == 49) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2019_37 <- border_dt %>% 
+border_dt_2019_50 <- border_dt %>% 
   filter(year == 2019) %>%
-  filter(weekno == 37) %>% 
+  filter(weekno == 50) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2019_38 <- border_dt %>% 
+border_dt_2019_51 <- border_dt %>% 
   filter(year == 2019) %>%
-  filter(weekno == 38) %>% 
+  filter(weekno == 51) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2019_39 <- border_dt %>% 
-  filter(year == 2019) %>%
-  filter(weekno == 39) %>% 
-  select(point_id, total_volume, weekno, weekday)
 
 # ADD NEW WEEK HERE!!!
 
 
 
 # Weeks 2020 ####
-border_dt_2020_27 <- border_dt %>% 
+border_dt_2020_40 <- border_dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 27) %>% 
+  filter(weekno == 40) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2020_28 <- border_dt %>% 
+border_dt_2020_41 <- border_dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 28) %>% 
-  select(point_id, total_volume, weekno, weekday) %>% 
-  filter(point_id != "14158V705081")
-
-border_dt_2020_29 <- border_dt %>% 
-  filter(year == 2020) %>%
-  filter(weekno == 29) %>% 
+  filter(weekno == 41) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2020_30 <- border_dt %>% 
+border_dt_2020_42 <- border_dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 30) %>% 
+  filter(weekno == 42) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2020_31 <- border_dt %>% 
+border_dt_2020_43 <- border_dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 31) %>% 
+  filter(weekno == 43) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2020_32 <- border_dt %>% 
+border_dt_2020_44 <- border_dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 32) %>% 
+  filter(weekno == 44) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2020_33 <- border_dt %>% 
+border_dt_2020_45 <- border_dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 33) %>% 
+  filter(weekno == 45) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2020_34 <- border_dt %>% 
+border_dt_2020_46 <- border_dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 34) %>% 
+  filter(weekno == 46) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2020_35 <- border_dt %>% 
+border_dt_2020_47 <- border_dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 35) %>% 
+  filter(weekno == 47) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2020_36 <- border_dt %>% 
+border_dt_2020_48 <- border_dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 36) %>% 
+  filter(weekno == 48) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2020_37 <- border_dt %>% 
+border_dt_2020_49 <- border_dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 37) %>% 
+  filter(weekno == 49) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2020_38 <- border_dt %>% 
+border_dt_2020_50 <- border_dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 38) %>% 
+  filter(weekno == 50) %>% 
   select(point_id, total_volume, weekno, weekday)
 
-border_dt_2020_39 <- border_dt %>% 
+border_dt_2020_51 <- border_dt %>% 
   filter(year == 2020) %>%
-  filter(weekno == 39) %>% 
+  filter(weekno == 51) %>% 
   select(point_id, total_volume, weekno, weekday)
 
 # ADD NEW WEEK HERE!!!
@@ -281,74 +271,68 @@ calculate_trp_border_index <- function(dt_base, dt_calc) {
 
 
 # Compare week 2020 to same week 2019 ####
-border_trp_dt_201927_202027 <- calculate_trp_border_index(
-  border_dt_2019_27,
-  border_dt_2020_27
+border_trp_dt_40 <- calculate_trp_border_index(
+  border_dt_2019_40,
+  border_dt_2020_40
 )
 
-border_trp_dt_201928_202028 <- calculate_trp_border_index(
-  border_dt_2019_28,
-  border_dt_2020_28
+border_trp_dt_41 <- calculate_trp_border_index(
+  border_dt_2019_41,
+  border_dt_2020_41
 )
 
-border_trp_dt_201929_202029 <- calculate_trp_border_index(
-  border_dt_2019_29,
-  border_dt_2020_29
+border_trp_dt_42 <- calculate_trp_border_index(
+  border_dt_2019_42,
+  border_dt_2020_42
 )
 
-border_trp_dt_201930_202030 <- calculate_trp_border_index(
-  border_dt_2019_30,
-  border_dt_2020_30
+border_trp_dt_43 <- calculate_trp_border_index(
+  border_dt_2019_43,
+  border_dt_2020_43
 )
 
-border_trp_dt_201931_202031 <- calculate_trp_border_index(
-  border_dt_2019_31,
-  border_dt_2020_31
+border_trp_dt_44 <- calculate_trp_border_index(
+  border_dt_2019_44,
+  border_dt_2020_44
 )
 
-border_trp_dt_201932_202032 <- calculate_trp_border_index(
-  border_dt_2019_32,
-  border_dt_2020_32
+border_trp_dt_45 <- calculate_trp_border_index(
+  border_dt_2019_45,
+  border_dt_2020_45
 )
 
-border_trp_dt_201933_202033 <- calculate_trp_border_index(
-  border_dt_2019_33,
-  border_dt_2020_33
+border_trp_dt_46 <- calculate_trp_border_index(
+  border_dt_2019_46,
+  border_dt_2020_46
 )
 
-border_trp_dt_201934_202034 <- calculate_trp_border_index(
-  border_dt_2019_34,
-  border_dt_2020_34
+border_trp_dt_47 <- calculate_trp_border_index(
+  border_dt_2019_47,
+  border_dt_2020_47
 )
 
-border_trp_dt_201935_202035 <- calculate_trp_border_index(
-  border_dt_2019_35,
-  border_dt_2020_35
+border_trp_dt_48 <- calculate_trp_border_index(
+  border_dt_2019_48,
+  border_dt_2020_48
 )
 
-border_trp_dt_201936_202036 <- calculate_trp_border_index(
-  border_dt_2019_36,
-  border_dt_2020_36
+border_trp_dt_49 <- calculate_trp_border_index(
+  border_dt_2019_49,
+  border_dt_2020_49
 )
 
-border_trp_dt_201937_202037 <- calculate_trp_border_index(
-  border_dt_2019_37,
-  border_dt_2020_37
+border_trp_dt_50 <- calculate_trp_border_index(
+  border_dt_2019_50,
+  border_dt_2020_50
 )
 
-border_trp_dt_201938_202038 <- calculate_trp_border_index(
-  border_dt_2019_38,
-  border_dt_2020_38
+border_trp_dt_51 <- calculate_trp_border_index(
+  border_dt_2019_51,
+  border_dt_2020_51
 )
 
-border_trp_dt_201939_202039 <- calculate_trp_border_index(
-  border_dt_2019_39,
-  border_dt_2020_39
-)
 
 # ADD NEW TRP INDEX HERE!!!
-
-
 
 
 
@@ -370,87 +354,80 @@ calculate_border_index <- function(dt_base, dt_calc) {
 
 
 # Compare this week to same week 2019 ####
-border_dt_201927_202027 <- calculate_border_index(
-  border_dt_2019_27, 
-  border_dt_2020_27) %>% 
-  mutate(periode = "Uke \n 27")
+border_dt_40 <- calculate_border_index(
+  border_dt_2019_40, 
+  border_dt_2020_40) %>% 
+  mutate(periode = "Uke \n 40")
 
-border_dt_201928_202028 <- calculate_border_index(
-  border_dt_2019_28, 
-  border_dt_2020_28) %>% 
-  mutate(periode = "Uke \n 28")
+border_dt_41 <- calculate_border_index(
+  border_dt_2019_41, 
+  border_dt_2020_41) %>% 
+  mutate(periode = "Uke \n 41")
 
-border_dt_201929_202029 <- calculate_border_index(
-  border_dt_2019_29, 
-  border_dt_2020_29) %>% 
-  mutate(periode = "Uke \n 29")
+border_dt_42 <- calculate_border_index(
+  border_dt_2019_42, 
+  border_dt_2020_42) %>% 
+  mutate(periode = "Uke \n 42")
 
-border_dt_201930_202030 <- calculate_border_index(
-  border_dt_2019_30, 
-  border_dt_2020_30) %>% 
-  mutate(periode = "Uke \n 30")
+border_dt_43 <- calculate_border_index(
+  border_dt_2019_43, 
+  border_dt_2020_43) %>% 
+  mutate(periode = "Uke \n 43")
 
-border_dt_201931_202031 <- calculate_border_index(
-  border_dt_2019_31, 
-  border_dt_2020_31) %>% 
-  mutate(periode = "Uke \n 31")
+border_dt_44 <- calculate_border_index(
+  border_dt_2019_44, 
+  border_dt_2020_44) %>% 
+  mutate(periode = "Uke \n 44")
 
-border_dt_201932_202032 <- calculate_border_index(
-  border_dt_2019_32, 
-  border_dt_2020_32) %>% 
-  mutate(periode = "Uke \n 32")
+border_dt_45 <- calculate_border_index(
+  border_dt_2019_45, 
+  border_dt_2020_45) %>% 
+  mutate(periode = "Uke \n 45")
 
-border_dt_201933_202033 <- calculate_border_index(
-  border_dt_2019_33, 
-  border_dt_2020_33) %>% 
-  mutate(periode = "Uke \n 33")
+border_dt_46 <- calculate_border_index(
+  border_dt_2019_46, 
+  border_dt_2020_46) %>% 
+  mutate(periode = "Uke \n 46")
 
-border_dt_201934_202034 <- calculate_border_index(
-  border_dt_2019_34, 
-  border_dt_2020_34) %>% 
-  mutate(periode = "Uke \n 34")
+border_dt_47 <- calculate_border_index(
+  border_dt_2019_47, 
+  border_dt_2020_47) %>% 
+  mutate(periode = "Uke \n 47")
 
-border_dt_201935_202035 <- calculate_border_index(
-  border_dt_2019_35, 
-  border_dt_2020_35) %>% 
-  mutate(periode = "Uke \n 35")
+border_dt_48 <- calculate_border_index(
+  border_dt_2019_48, 
+  border_dt_2020_48) %>% 
+  mutate(periode = "Uke \n 48")
 
-border_dt_201936_202036 <- calculate_border_index(
-  border_dt_2019_36, 
-  border_dt_2020_36) %>% 
-  mutate(periode = "Uke \n 36")
+border_dt_49 <- calculate_border_index(
+  border_dt_2019_49, 
+  border_dt_2020_49) %>% 
+  mutate(periode = "Uke \n 49")
 
-border_dt_201937_202037 <- calculate_border_index(
-  border_dt_2019_37, 
-  border_dt_2020_37) %>% 
-  mutate(periode = "Uke \n 37")
+border_dt_50 <- calculate_border_index(
+  border_dt_2019_50, 
+  border_dt_2020_50) %>% 
+  mutate(periode = "Uke \n 50")
 
-border_dt_201938_202038 <- calculate_border_index(
-  border_dt_2019_38, 
-  border_dt_2020_38) %>% 
-  mutate(periode = "Uke \n 38")
-
-border_dt_201939_202039 <- calculate_border_index(
-  border_dt_2019_39, 
-  border_dt_2020_39) %>% 
-  mutate(periode = "Uke \n 39")
-
+border_dt_51 <- calculate_border_index(
+  border_dt_2019_51, 
+  border_dt_2020_51) %>% 
+  mutate(periode = "Uke \n 51")
 
 
 # ADD NEW WEEK HERE!
-border_base_2019 <- bind_rows(border_dt_201939_202039,
-                              border_dt_201938_202038,
-                              border_dt_201937_202037,
-                              border_dt_201936_202036,
-                              border_dt_201935_202035,
-                              border_dt_201934_202034,
-                              border_dt_201933_202033,
-                              border_dt_201932_202032,
-                              border_dt_201931_202031,
-                              border_dt_201930_202030,
-                              border_dt_201929_202029,
-                              border_dt_201928_202028,
-                              border_dt_201927_202027
+border_base_2019 <- bind_rows(border_dt_40,
+                              border_dt_41,
+                              border_dt_42,
+                              border_dt_43,
+                              border_dt_44,
+                              border_dt_45,
+                              border_dt_46,
+                              border_dt_47,
+                              border_dt_48,
+                              border_dt_49,
+                              border_dt_50,
+                              border_dt_51
 )
 
 
@@ -551,7 +528,7 @@ Datagrunnlaget for beregningene hentes fra disse trafikkregistreringspunktene. D
 
 Trafikkutviklingen sammenlignes ved at døgntrafikken sammenlignes med tilsvarende døgntrafikk i samme uke i 2019.
 
-Denne rapporten viser utviklingen fra uke 27 og framover. Trafikkutvikling for tidligere uker finnes i egen rapport for uke 10-26.
+Denne rapporten viser utviklingen fra uke 40 og framover. Trafikkutvikling for tidligere uker finnes i egen rapport for uke 10-26, og 27-39.
 
 
 Alle data er hentet fra [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/trafikkdata/). Døgntrafikk med minst 99 % dekningsgrad er brukt til å beregne prosentvis endring mellom to dager.
@@ -607,69 +584,65 @@ I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet me
 
 # Endring i trafikk ved de enkelte riksgrenseovergangene
 
-```{r trptable_201927}
-make_border_trp_table(border_trp_dt_201927_202027,
-                      "Prosentvis endring i trafikkmengde fra uke 27 2019 til uke 27 2020.")
+```{r trptable_201940}
+make_border_trp_table(border_trp_dt_40,
+                      "Prosentvis endring i trafikkmengde fra uke 40 2019 til uke 40 2020.")
 ```
 
-```{r trptable_201928}
-make_border_trp_table(border_trp_dt_201928_202028,
-                      "Prosentvis endring i trafikkmengde fra uke 28 2019 til uke 28 2020.")
+```{r trptable_201941}
+#make_border_trp_table(border_trp_dt_41,
+#                      "Prosentvis endring i trafikkmengde fra uke 41 2019 til uke 41 2020.")
 ```
 
-```{r trptable_201929}
-make_border_trp_table(border_trp_dt_201929_202029,
-                      "Prosentvis endring i trafikkmengde fra uke 29 2019 til uke 29 2020.")
+```{r trptable_201942}
+#make_border_trp_table(border_trp_dt_42,
+#                      "Prosentvis endring i trafikkmengde fra uke 42 2019 til uke 42 2020.")
 ```
 
-```{r trptable_201930}
-make_border_trp_table(border_trp_dt_201930_202030,
-                      "Prosentvis endring i trafikkmengde fra uke 30 2019 til uke 30 2020.")
+```{r trptable_201943}
+#make_border_trp_table(border_trp_dt_43,
+#                      "Prosentvis endring i trafikkmengde fra uke 43 2019 til uke 43 2020.")
 ```
 
-```{r trptable_201931}
-make_border_trp_table(border_trp_dt_201931_202031,
-                      "Prosentvis endring i trafikkmengde fra uke 31 2019 til uke 31 2020.")
+```{r trptable_201944}
+#make_border_trp_table(border_trp_dt_44,
+#                      "Prosentvis endring i trafikkmengde fra uke 44 2019 til uke 44 2020.")
 ```
 
-```{r trptable_201932}
-make_border_trp_table(border_trp_dt_201932_202032,
-                      "Prosentvis endring i trafikkmengde fra uke 32 2019 til uke 32 2020.")
+```{r trptable_201945}
+#make_border_trp_table(border_trp_dt_45,
+#                      "Prosentvis endring i trafikkmengde fra uke 45 2019 til uke 45 2020.")
 ```
 
-```{r trptable_201933}
-make_border_trp_table(border_trp_dt_201933_202033,
-                      "Prosentvis endring i trafikkmengde fra uke 33 2019 til uke 33 2020.")
+```{r trptable_201946}
+#make_border_trp_table(border_trp_dt_46,
+#                      "Prosentvis endring i trafikkmengde fra uke 46 2019 til uke 46 2020.")
 ```
 
-```{r trptable_201934}
-make_border_trp_table(border_trp_dt_201934_202034,
-                      "Prosentvis endring i trafikkmengde fra uke 34 2019 til uke 34 2020.")
+```{r trptable_201947}
+#make_border_trp_table(border_trp_dt_47,
+#                      "Prosentvis endring i trafikkmengde fra uke 47 2019 til uke 47 2020.")
 ```
 
-```{r trptable_201935}
-make_border_trp_table(border_trp_dt_201935_202035,
-                      "Prosentvis endring i trafikkmengde fra uke 35 2019 til uke 35 2020.")
+```{r trptable_201948}
+#make_border_trp_table(border_trp_dt_48,
+#                      "Prosentvis endring i trafikkmengde fra uke 48 2019 til uke 48 2020.")
 ```
 
-```{r trptable_201936}
-make_border_trp_table(border_trp_dt_201936_202036,
-                      "Prosentvis endring i trafikkmengde fra uke 36 2019 til uke 36 2020.")
+```{r trptable_201949}
+#make_border_trp_table(border_trp_dt_49,
+#                      "Prosentvis endring i trafikkmengde fra uke 49 2019 til uke 49 2020.")
 ```
 
-```{r trptable_201937}
-make_border_trp_table(border_trp_dt_201937_202037,
-                      "Prosentvis endring i trafikkmengde fra uke 37 2019 til uke 37 2020.")
+```{r trptable_201950}
+#make_border_trp_table(border_trp_dt_50,
+#                      "Prosentvis endring i trafikkmengde fra uke 50 2019 til uke 50 2020.")
 ```
 
-```{r trptable_201938}
-make_border_trp_table(border_trp_dt_201938_202038,
-                      "Prosentvis endring i trafikkmengde fra uke 38 2019 til uke 38 2020.")
+```{r trptable_201951}
+#make_border_trp_table(border_trp_dt_51,
+#                      "Prosentvis endring i trafikkmengde fra uke 51 2019 til uke 51 2020.")
 ```
 
-```{r trptable_201939}
-make_border_trp_table(border_trp_dt_201939_202039,
-                      "Prosentvis endring i trafikkmengde fra uke 39 2019 til uke 39 2020.")
-```
 
 
