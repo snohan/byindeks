@@ -103,7 +103,6 @@ index_2020_upper_lower  %>%
 
 
 ```{r lineplot, fig.height=10}
-# TODO: faceting per length_range or city?
 index_2020_upper_lower %>% 
   dplyr::filter(period == "month",
                 area_type == "COUNTRY") %>% 
@@ -123,7 +122,8 @@ index_2020_upper_lower %>%
   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
        caption = "Data: Statens vegvesen") +
   ggtitle("Estimert endring i trafikkmengde",
-          subtitle = "Trafikkmengde i 2020 sammenlignet med 2019")
+          subtitle = "Trafikkmengde i 2020 sammenlignet med 2019") +
+  theme(legend.position = "bottom")
 ```
 
 

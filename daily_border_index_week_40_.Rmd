@@ -567,7 +567,7 @@ border_trp_adt %>%
 
 # Samlet endring i trafikk over riksgrensen
 
-```{r plot_2019, fig.width=8, fig.height=12}
+```{r plot_2019, fig.width=8, fig.height=11}
 make_daily_border_plot(border_base_2019, "Fra 2019 til 2020")
 ```
 

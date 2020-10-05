@@ -23,8 +23,12 @@ source("get_from_nvdb_api.R")
 
 ```{r get_data, include=FALSE}
 # Fetching published index from Traffic Data API
-index_2020 <- get_published_index_for_months(2952, 2020, 7)
-pointindex_2020 <- get_published_pointindex(2952, 2020, 7)
+index_2017 <- get_published_index_for_months(2952, 2017, 12)
+index_2018 <- get_published_index_for_months(2952, 2018, 12)
+index_2019 <- get_published_index_for_months(2952, 2019, 12)
+index_2020 <- get_published_index_for_months(2952, 2020, 9)
+
+pointindex_2020 <- get_published_pointindex(2952, 2020, 9)
 
 # Index points
 border_points <- pointindex_2020[[1]]
@@ -34,6 +38,7 @@ points <- get_points() %>%
   dplyr::distinct(trp_id, .keep_all = T) %>%
   dplyr::select(trp_id, name, road_reference, county_name,
                 municipality_name, lat, lon, road_link_position) %>% 
+  dplyr::mutate(name = stringr::str_to_title(name, locale = "no")) %>% 
   dplyr::filter(trp_id %in% border_points) %>% 
   split_road_system_reference() %>% 
   dplyr::select(trp_id, name, road_reference, road_category, road_number,
@@ -169,6 +174,26 @@ index_2020_upper_lower <- index_2020 %>%
                 month_object = lubridate::make_date(year = year, month = month),
                 month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)) %>% 
   dplyr::filter(road_category == "Europa-, riks- og fylkesveg")
+
+last_month <- max(index_2020_upper_lower$month)
+
+index_complete_years_upper_lower <- dplyr::bind_rows(index_2017,
+                                                     index_2018,
+                                                     index_2019
+                                                     ) %>% 
+  dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "alle",
+                                                length_range == "[..,5.6)" ~ "lette",
+                                                length_range == "[5.6,..)" ~ "tunge")) %>% 
+  dplyr::mutate(road_category = dplyr::case_when(
+                  road_category == "FYLKESVEG" ~ "Fylkesveg",
+                  road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
+                  road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG" ~ "Europa-, riks- og fylkesveg")) %>% 
+  dplyr::mutate(index_lower = index_p - confidence_width,
+                index_upper = index_p + confidence_width,
+                # setting all years to same is a trick to get the plot facet correct
+                month_object = lubridate::make_date(year = 2000, month = month),
+                month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)) %>% 
+  dplyr::filter(road_category == "Europa-, riks- og fylkesveg")
 ```
 
 # Samlet endring i trafikk over riksgrensen
@@ -185,12 +210,14 @@ index_2020_upper_lower %>%
   select(month_name, year, length_range, index_lower, index_p, index_upper) %>%
   flextable() %>%
   colformat_num(j = 4:6, digits = 1) %>%
-  set_header_labels(month_name = "Måned", year = "År", length_range = "Kjøretøyklasse",
+  set_header_labels(month_name = "Måned", year = "År", length_range = "Kjøretøy-klasse",
                     index_lower = "Endring i trafikkmengde (%)") %>%
   add_header_row(values = c("", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
+  merge_at(i = 1:2, j = 3, part = "header") %>% 
   merge_at(i = 1, j = 4:6, part = "header") %>% 
   align(i = 1, j = 4, align = "center", part = "header") %>%
   align(i = 2, j = 4:6, align = "right", part = "header") %>% 
+  align(j = 2, align = "center", part = "all") %>% 
   bold(part = "header") %>%
   fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
@@ -198,8 +225,12 @@ index_2020_upper_lower %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
+  hline(i = c(last_month, 2 * last_month), part = "body",
+        border = fp_border(color = "#dadada", width = 1)) %>% 
   #autofit() %>%
   height_all(height = .2) %>%
+  width(j = 3, width = .8) %>% 
+  fix_border_issues() %>% 
   padding(padding.top = .3,
           padding.bottom = .3) %>%
   set_caption("Estimert samlet endring i trafikkmengde ved riksgrensen, med nedre og øvre grense for et 95 % konfidensintervall. Trafikken er sammenlignet per måned med samme måned året før.")
@@ -223,7 +254,8 @@ index_2020_upper_lower %>%
   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
        caption = "Data: Statens vegvesen") +
   ggtitle("Estimert endring i trafikkmengde ved riksgrensen",
-          subtitle = "Trafikkmengde i 2020 sammenlignet med 2019")
+          subtitle = "Trafikkmengde i 2020 sammenlignet med 2019") +
+  theme(legend.position = "bottom")
 ```
 
 
@@ -232,8 +264,6 @@ index_2020_upper_lower %>%
 Samlet endring i trafikkmengde i perioden fra januar til juli 2020, sammenlignet med samme periode i 2019.
 
 ```{r year_to_date}
-last_month <- max(index_2020_upper_lower$month)
-
 index_2020_upper_lower %>%
   dplyr::filter(period == "year_to_date",
                 month == last_month) %>% 
@@ -241,12 +271,14 @@ index_2020_upper_lower %>%
   select(month_name, year, length_range, index_lower, index_p, index_upper) %>%
   flextable() %>%
   colformat_num(j = 4:6, digits = 1) %>%
-  set_header_labels(month_name = "Måned", year = "År", length_range = "Kjøretøyklasse",
+  set_header_labels(month_name = "Måned", year = "År", length_range = "Kjøretøy-klasse",
                     index_lower = "Endring i trafikkmengde (%)") %>%
   add_header_row(values = c("", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
+  merge_at(i = 1:2, j = 3, part = "header") %>% 
   merge_at(i = 1, j = 4:6, part = "header") %>% 
   align(i = 1, j = 4, align = "center", part = "header") %>%
   align(i = 2, j = 4:6, align = "right", part = "header") %>% 
+  align(j = 2, align = "center", part = "all") %>% 
   bold(part = "header") %>%
   fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
@@ -255,6 +287,8 @@ index_2020_upper_lower %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
   height_all(height = .2) %>%
+  width(j = 3, width = .8) %>% 
+  fix_border_issues() %>% 
   padding(padding.top = .3,
           padding.bottom = .3) %>%
   set_caption("Estimert samlet endring i trafikkmengde ved riksgrensen, med nedre og øvre grense for et 95 % konfidensintervall. Trafikken er sammenlignet for hittil i år med samme periode året før.")
@@ -262,5 +296,27 @@ index_2020_upper_lower %>%
 
 
 
+# Tidligere år
 
-
+```{r lineplot_historic, fig.height=8}
+index_complete_years_upper_lower %>% 
+  dplyr::filter(period == "month") %>% 
+  ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_point() +
+  ggplot2::facet_grid(rows = vars(year)) +
+  theme_light() +
+  theme(axis.text.x = element_text(angle = 90),
+        panel.grid.minor.x = element_blank()) +
+  scale_x_date(breaks = scales::breaks_width("months"),
+               labels = scales::label_date("%b")) +
+  scale_color_manual(values = c("alle" = "#008ec2",
+                                "lette" = "#ed9300",
+                                "tunge" = "#444f55"),
+                     name = "Kjøretøyklasse") +
+  labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
+       caption = "Data: Statens vegvesen") +
+  ggtitle("Estimert endring i trafikkmengde ved riksgrensen",
+          subtitle = "Trafikkmengde per måned sammenlignet med foregående år") +
+  theme(legend.position = "bottom")
+```
