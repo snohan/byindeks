@@ -33,7 +33,8 @@ cities_points_start <- read.csv2("data_points_raw/cities_points.csv") %>%
                                 "14772V41375",
                                 "20570V72811",
                                 "17949V320695",
-                                "75341V41863")))
+                                "75341V41863",
+                                "84064V320581")))
 
 additional_trps <- 
   data.frame(city_area_name = 
@@ -115,10 +116,10 @@ trps <- dplyr::left_join(cities_points, points) %>%
 
 # Fetch daily traffic
 week_2019_from <- "2019-09-30T00:00:00+02:00"
-week_2019_to <- "2019-10-07T00:00:00+02:00"
+week_2019_to <- "2019-10-21T00:00:00+02:00"
 
 week_2020_from <- "2020-09-28T00:00:00+02:00"
-week_2020_to <- "2020-10-05T00:00:00+02:00"
+week_2020_to <- "2020-10-19T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -189,7 +190,8 @@ dt_2019_42 <- dt %>%
                            "81350V444302",
                            "44660V72811",
                            "75341V41863",
-                           "57279V320244"
+                           "57279V320244",
+                           "09105V320634"
     )))
 
 dt_2019_43 <- dt %>% 
@@ -202,7 +204,8 @@ dt_2019_43 <- dt %>%
                            "81350V444302",
                            "44660V72811",
                            "75341V41863",
-                           "57279V320244"
+                           "57279V320244",
+                           "09105V320634"
     )))
 
 dt_2019_44 <- dt %>% 
@@ -215,7 +218,8 @@ dt_2019_44 <- dt %>%
                            "81350V444302",
                            "44660V72811",
                            "75341V41863",
-                           "57279V320244"
+                           "57279V320244",
+                           "09105V320634"
     )))
 
 dt_2019_45 <- dt %>% 
@@ -228,7 +232,8 @@ dt_2019_45 <- dt %>%
                            "81350V444302",
                            "44660V72811",
                            "75341V41863",
-                           "57279V320244"
+                           "57279V320244",
+                           "09105V320634"
     )))
 
 dt_2019_46 <- dt %>% 
@@ -241,7 +246,8 @@ dt_2019_46 <- dt %>%
                            "81350V444302",
                            "44660V72811",
                            "75341V41863",
-                           "57279V320244"
+                           "57279V320244",
+                           "09105V320634"
     )))
 
 dt_2019_47 <- dt %>% 
@@ -254,7 +260,8 @@ dt_2019_47 <- dt %>%
                            "81350V444302",
                            "44660V72811",
                            "75341V41863",
-                           "57279V320244"
+                           "57279V320244",
+                           "09105V320634"
     )))
 
 dt_2019_48 <- dt %>% 
@@ -267,7 +274,8 @@ dt_2019_48 <- dt %>%
                            "81350V444302",
                            "44660V72811",
                            "75341V41863",
-                           "57279V320244"
+                           "57279V320244",
+                           "09105V320634"
     )))
 
 dt_2019_49 <- dt %>% 
@@ -280,7 +288,8 @@ dt_2019_49 <- dt %>%
                            "81350V444302",
                            "44660V72811",
                            "75341V41863",
-                           "57279V320244"
+                           "57279V320244",
+                           "09105V320634"
     )))
 
 dt_2019_50 <- dt %>% 
@@ -293,7 +302,8 @@ dt_2019_50 <- dt %>%
                            "81350V444302",
                            "44660V72811",
                            "75341V41863",
-                           "57279V320244"
+                           "57279V320244",
+                           "09105V320634"
     )))
 
 dt_2019_51 <- dt %>% 
@@ -306,7 +316,8 @@ dt_2019_51 <- dt %>%
                            "81350V444302",
                            "44660V72811",
                            "75341V41863",
-                           "57279V320244"
+                           "57279V320244",
+                           "09105V320634"
     )))
 
 # ADD NEW WEEK HERE!
@@ -433,52 +444,52 @@ city_dt_40 <- calculate_city_index(dt_2019_40, dt_2020_40) %>%
   mutate(weekno = "40")
 
 city_dt_41 <- calculate_city_index(dt_2019_41, dt_2020_41) %>% 
-  filter(!(city_area_name %in% c("Bodø"))) %>% 
   mutate(weekno = "41")
 
 city_dt_42 <- calculate_city_index(dt_2019_42, dt_2020_42) %>% 
-  filter(!(city_area_name %in% c("Bodø"))) %>% 
   mutate(weekno = "42")
 
 city_dt_43 <- calculate_city_index(dt_2019_43, dt_2020_43) %>% 
-  filter(!(city_area_name %in% c("Bodø"))) %>% 
   mutate(weekno = "43")
 
-city_dt_44 <- calculate_city_index(dt_2019_44, dt_2020_44) %>% 
-  filter(!(city_area_name %in% c("Bodø"))) %>% 
+city_dt_44 <- calculate_city_index(dt_2019_44, dt_2020_44) %>%
   mutate(weekno = "44")
 
 city_dt_45 <- calculate_city_index(dt_2019_45, dt_2020_45) %>% 
-  filter(!(city_area_name %in% c("Bodø"))) %>% 
   mutate(weekno = "45")
 
 city_dt_46 <- calculate_city_index(dt_2019_46, dt_2020_46) %>% 
-  filter(!(city_area_name %in% c("Bodø"))) %>% 
   mutate(weekno = "46")
 
 city_dt_47 <- calculate_city_index(dt_2019_47, dt_2020_47) %>% 
-  filter(!(city_area_name %in% c("Bodø"))) %>% 
   mutate(weekno = "47")
 
 city_dt_48 <- calculate_city_index(dt_2019_48, dt_2020_48) %>% 
-  filter(!(city_area_name %in% c("Bodø"))) %>% 
   mutate(weekno = "48")
 
 city_dt_49 <- calculate_city_index(dt_2019_49, dt_2020_49) %>% 
-  filter(!(city_area_name %in% c("Bodø"))) %>% 
   mutate(weekno = "49")
 
 city_dt_50 <- calculate_city_index(dt_2019_50, dt_2020_50) %>% 
-  filter(!(city_area_name %in% c("Bodø"))) %>% 
   mutate(weekno = "50")
 
 city_dt_51 <- calculate_city_index(dt_2019_51, dt_2020_51) %>% 
-  filter(!(city_area_name %in% c("Bodø"))) %>% 
   mutate(weekno = "51")
 
 
-#Cities week by week
-city_dt_2019_2020_weeks = bind_rows(city_dt_40
+# Cities week by week
+city_dt_2019_2020_weeks = bind_rows(city_dt_40,
+                                    city_dt_41,
+                                    city_dt_42,
+                                    city_dt_43,
+                                    city_dt_44,
+                                    city_dt_45,
+                                    city_dt_46,
+                                    city_dt_47,
+                                    city_dt_48,
+                                    city_dt_49,
+                                    city_dt_50,
+                                    city_dt_51
                                    )
 
 oslo_og_akershus_dt_2019_2020 <- city_dt_2019_2020_weeks %>% 
@@ -624,7 +635,7 @@ make_city_table_city(bergen_dt_2019_2020,
                 "Prosentvis endring i trafikkmengde i Bergen 2019 til 2020.")
 ```
 \
-```{r plot_city_bergen, fig.width=8, fig.height=11}
+```{r plot_city_bergen, fig.width=8, fig.height=8}
 make_daily_plot_city(bergen_dt_2019_2020, "")
 ```
 
@@ -634,7 +645,7 @@ make_city_table_city(bodo_dt_2019_2020,
                 "Prosentvis endring i trafikkmengde i Bodø 2019 til 2020.")
 ```
 \
-```{r plot_city_bodo, fig.width=8, fig.height=11}
+```{r plot_city_bodo, fig.width=8, fig.height=8}
 make_daily_plot_city(bodo_dt_2019_2020, "")
 ```
 
@@ -644,7 +655,7 @@ make_city_table_city(nord_jaeren_dt_2019_2020,
                 "Prosentvis endring i trafikkmengde i Nord-Jæren 2019 til 2020.")
 ```
 \
-```{r plot_city_nord_jaeren, fig.width=8, fig.height=11}
+```{r plot_city_nord_jaeren, fig.width=8, fig.height=8}
 make_daily_plot_city(nord_jaeren_dt_2019_2020, "")
 ```
 
@@ -654,7 +665,7 @@ make_city_table_city(oslo_og_akershus_dt_2019_2020,
                 "Prosentvis endring i trafikkmengde i Oslo og Akershus 2019 til 2020.")
 ```
 \
-```{r plot_city_oslo_og_akershus, fig.width=8, fig.height=11}
+```{r plot_city_oslo_og_akershus, fig.width=8, fig.height=8}
 make_daily_plot_city(oslo_og_akershus_dt_2019_2020, "")
 ```
 
@@ -664,7 +675,7 @@ make_city_table_city(tromsoe_dt_2019_2020,
                 "Prosentvis endring i trafikkmengde i Tromsø 2019 til 2020.")
 ```
 \
-```{r plot_city_tromsoe, fig.width=8, fig.height=11}
+```{r plot_city_tromsoe, fig.width=8, fig.height=8}
 make_daily_plot_city(tromsoe_dt_2019_2020, "")
 ```
 
@@ -674,7 +685,7 @@ make_city_table_city(trondheim_dt_2019_2020,
                 "Prosentvis endring i trafikkmengde i Trondheim 2019 til 2020.")
 ```
 \
-```{r plot_city_trondheim, fig.width=8, fig.height=11}
+```{r plot_city_trondheim, fig.width=8, fig.height=8}
 make_daily_plot_city(trondheim_dt_2019_2020, "")
 ```
 

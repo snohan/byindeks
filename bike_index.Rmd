@@ -24,11 +24,11 @@ source("get_from_nvdb_api.R")
 ```{r get_data, include=FALSE}
 # Fetching published index from Traffic Data API
 # Nedre Glomma
-index_2020_ngl <- get_published_index_for_months(5953, 2020, 8)
-index_2020_grl <- get_published_index_for_months(4953, 2020, 8)
-index_2020_brg <- get_published_index_for_months(5952, 2020, 8)
-index_2020_osl <- get_published_index_for_months(6953, 2020, 8)
-index_2020_njr <- get_published_index_for_months(6952, 2020, 8)
+index_2020_ngl <- get_published_index_for_months(5953, 2020, 9)
+index_2020_grl <- get_published_index_for_months(4953, 2020, 9)
+index_2020_brg <- get_published_index_for_months(5952, 2020, 9)
+index_2020_osl <- get_published_index_for_months(6953, 2020, 9)
+index_2020_njr <- get_published_index_for_months(6952, 2020, 9)
 
 index_2020 <- dplyr::bind_rows(index_2020_ngl,
                                index_2020_grl,
