@@ -117,6 +117,10 @@ get_points <- function() {
         laneNumber
       }
     }
+    operationalStatus
+    latestData {
+      volumeByDay
+    }
   }
 }"
 
@@ -147,11 +151,16 @@ get_points <- function() {
                   road_network_position =
                     data.trafficRegistrationPoints.location.roadLinkSequence.relativePosition,
                   road_network_link =
-                    data.trafficRegistrationPoints.location.roadLinkSequence.roadLinkSequenceId
+                    data.trafficRegistrationPoints.location.roadLinkSequence.roadLinkSequenceId,
+                  operational_status =
+                    data.trafficRegistrationPoints.operationalStatus,
+                  latest_day_with_data =
+                    data.trafficRegistrationPoints.latestData.volumeByDay
                     ) %>%
     dplyr::select(trp_id, name, traffic_type, road_reference, county_name,
                   county_no, municipality_name, municipality_no, lanes, lat, lon,
-                  road_network_position, road_network_link, validFrom, validTo
+                  road_network_position, road_network_link, validFrom, validTo,
+                  operational_status, latest_day_with_data
                   ) %>%
     dplyr::mutate(lane_numbers = purrr::map(lanes, ~ purrr::pluck(., 1)),
                   direction_with = purrr::map(lane_numbers, ~ length(is_odd(.)) > 0),
@@ -162,7 +171,8 @@ get_points <- function() {
                                               road_network_link),
                   validFrom =
                     floor_date(with_tz(ymd_hms(validFrom)), unit = "day"),
-                  validTo = floor_date(with_tz(ymd_hms(validTo)), unit = "day")
+                  validTo = floor_date(with_tz(ymd_hms(validTo)), unit = "day"),
+                  latest_day_with_data = floor_date(with_tz(ymd_hms(latest_day_with_data)), unit = "day")
                   )
 
   return(points)
@@ -738,18 +748,20 @@ get_aadt_by_length_for_trp_list <- function(trp_list) {
     trp_count <- trp_count + 1
   }
 
+  number_of_digits = 0 #-1
+
   trp_adt <- data_points %>%
-    dplyr::mutate(aadt_valid_length = round(aadt_valid_length, digits = -1),
-                  aadt_total = round(aadt_total, digits = -1),
-                  aadt_length_range = round(aadt_length_range, digits = -1),
+    dplyr::mutate(aadt_valid_length = round(aadt_valid_length, digits = number_of_digits),
+                  aadt_total = round(aadt_total, digits = number_of_digits),
+                  aadt_length_range = round(aadt_length_range, digits = number_of_digits),
                   aadt_ci_lowerbound_length_range =
-                    round(aadt_ci_lowerbound_length_range, digits = -1),
+                    round(aadt_ci_lowerbound_length_range, digits = number_of_digits),
                   aadt_ci_upperbound_length_range =
-                    round(aadt_ci_upperbound_length_range, digits = -1),
+                    round(aadt_ci_upperbound_length_range, digits = number_of_digits),
                   aadt_ci_upperbound_total =
-                    round(aadt_ci_upperbound_total, digits = -1),
+                    round(aadt_ci_upperbound_total, digits = number_of_digits),
                   aadt_ci_lowerbound_total =
-                    round(aadt_ci_lowerbound_total, digits = -1)
+                    round(aadt_ci_lowerbound_total, digits = number_of_digits)
                   )
 
   return(trp_adt)
@@ -1257,7 +1269,9 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
 get_published_index_for_months <- function(index_id, index_year, last_month) {
 
   index_table <- tibble::tibble()
+
   i <- 1
+
   while (i < last_month + 1) {
     index_table <- dplyr::bind_rows(index_table,
                                     get_published_index(index_id, index_year, i))
@@ -1425,14 +1439,36 @@ get_published_pointindex <- function(index_id, indexyear, indexmonth) {
 }
 
 
+
+get_published_pointindex_for_months <- function(index_id, index_year, last_month) {
+
+  published_pointindex <- tibble::tibble()
+  i <- 1
+
+  # Saving only one version of indexpoints
+  indexpoints <- get_published_pointindex(index_id, index_year, i)[[1]]
+
+  while (i < last_month + 1) {
+
+    published_pointindex <- dplyr::bind_rows(published_pointindex,
+                                    get_published_pointindex(index_id, index_year, i)[[2]])
+    i = i + 1
+  }
+
+  published_points <- list(indexpoints, published_pointindex)
+
+  return(published_points)
+}
+
+
 # Specific for road traffic index
 # TODO: Generalize to one set of functions
 # Only difference being that this includes area_type and
 # uses EUROPA_RIKS_FYLKESVEG instead of the one with KOMMUNALVEG also
 
-index_id <- 962
-indexyear <- 2020
-indexmonth <- 7
+#index_id <- 962
+#indexyear <- 2020
+#indexmonth <- 7
 
 get_published_road_traffic_index <- function(index_id, indexyear, indexmonth) {
   # Get published index for a given area, year and month

@@ -932,6 +932,48 @@ points_trp <- cli_trp$exec(myqueries$queries$points_trp) %>%
 return(points_trp)
 }
 
+get_all_trs_with_trp_httr <- function() {
+  # Get all trs' and their trps
+  api_query <-
+    "query trs_trp{
+ trafficRegistrationStations(
+  withTrps: true){
+  id
+  name
+  trafficType
+  stationType
+  trafficRegistrationPoints{
+    id
+    name
+    legacyNortrafMpn
+  }
+}
+}"
+
+api_query_trimmed <- stringr::str_replace_all(api_query, "[\r\n]", " ")
+
+api_query_string <- paste0('{"query":"', api_query_trimmed, '" }')
+
+response <- httr::POST(url = trp_api_url,
+                       httr::add_headers(.headers = trp_api_headers),
+                       httr::set_cookies(.cookies = trp_api_cookies),
+                       body = api_query_string)
+
+response_parsed <- fromJSON(str_conv(response$content, encoding = "UTF-8"),
+                            simplifyDataFrame = T,
+                            flatten = T) %>%
+  as.data.frame() %>%
+  tidyr::unnest(cols = c(data.trafficRegistrationStations.trafficRegistrationPoints)) %>%
+  dplyr::rename(trs_id = 1,
+                trs_name = 2,
+                traffic_type = 3,
+                station_type = 4,
+                trp_id = 5,
+                trp_name = 6)
+
+return(response_parsed)
+}
+
 # Testing
 # url_trp_api <- "https://www.vegvesen.no/datainn/adm/traffic-registration-point/api/"
 #

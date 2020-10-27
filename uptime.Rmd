@@ -1,0 +1,223 @@
+---
+title: "Oppetid på trafikkregistreringspunkt"
+output: html_notebook
+---
+
+```{r setup, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
+# Packages are loaded through sourcing rmd_setup.R
+source("rmd_setup.R")
+
+# Traffic Data API calls to get points metadata and aadt
+source("get_from_trafficdata_api.R")
+source("split_road_system_reference.R")
+```
+
+Oppetiden er beregnet som gjennomsnittet av dekningsgraden for månedsdøgntrafikk per kontinuerlige trafikkregistreringspunkt. 
+
+Dekningsgrad er definert som andel av den aktuelle perioden som har gode data.
+
+For hvert trafikkregistreringspunkt er første igangsettingsmåned filtrert ut. Dersom sensorene i ett kjørefelt er ute av funksjon, anses hele punktet for å være ute av funksjon. 
+
+Nedetid på grunn av vegarbeid inngår i beregning av dekningsgrad.
+
+
+```{r get_data, include=FALSE}
+# Calculate uptime as mean coverage for all points
+
+periodic_trps <- read.csv2("H:/Programmering/R/trafikkdata/periodic_trp.csv")
+
+# Point metadata from Traffic Data API
+points <- get_points() %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::slice(which.min(validFrom)) %>% 
+  dplyr::filter(!(trp_id %in% periodic_trps$trp_id))
+
+points_er <- points %>% 
+  split_road_system_reference() %>% 
+  dplyr::filter(road_category %in% c("E", "R")) %>% 
+  dplyr::select(trp_id, name, traffic_type, road_reference, county_name,
+                validFrom, latest_day_with_data, operational_status) %>% 
+  dplyr::mutate(area = dplyr::case_when(
+    county_name %in% c("Oslo", "Viken", "Innlandet") ~ "Geodata 1",
+    county_name %in% c("Vestfold og Telemark", "Agder", 
+                       "Rogaland", "Vestland") ~ "Geodata 2",
+    county_name %in% c("Møre og Romsdal", "Trøndelag", 
+                       "Nordland", "Troms og Finnmark") ~ "Geodata 3"
+  ))
+
+# TODO: nye veier, ops
+
+# Fetch MDT for all points with a first commission prior to month
+mdts <- get_mdt_for_trp_list(points_er$trp_id, 2020) %>% 
+  dplyr::select(trp_id, year, month, coverage) 
+
+points_without_any_mdt <- points_er %>% 
+  dplyr::filter(!(trp_id %in% mdts$trp_id)) %>% 
+  dplyr::select(trp_id) %>% 
+  dplyr::mutate(year = 2020,
+                month = 1)
+
+mdts_prepared <- mdts %>% 
+  dplyr::bind_rows(points_without_any_mdt) %>% 
+  tidyr::complete(trp_id, year, month, fill = list(coverage = 0)) %>% 
+  dplyr::mutate(month_object = lubridate::make_date(year = year, month = month),
+                month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE),
+                last_day_of_month = lubridate::ceiling_date(month_object, unit = "month"))
+```
+
+```{r data_prep}
+trp_mdt <- points_er %>% 
+  dplyr::left_join(mdts_prepared) %>% 
+  dplyr::filter(validFrom < month_object) %>% 
+  dplyr::filter(!(operational_status == "RETIRED" & 
+                latest_day_with_data < last_day_of_month)) %>% 
+# TODO: filter based on last end of commission?
+  dplyr::ungroup() 
+
+uptime_geodata <- trp_mdt %>% 
+  dplyr::group_by(month_object, area) %>% 
+  dplyr::summarise(uptime = mean(coverage, na.rm = T),
+                   antall_punkt = n())
+
+uptime_norway <- trp_mdt %>% 
+  dplyr::group_by(month_object) %>% 
+  dplyr::summarise(uptime = mean(coverage, na.rm = T),
+                   antall_punkt = n()) %>% 
+  dplyr::mutate(area = "SVV")
+
+uptime <- dplyr::bind_rows(uptime_geodata,
+                           uptime_norway)
+```
+
+
+
+```{r plot_uptime}
+uptime %>%
+  ggplot2::ggplot(aes(x = month_object, y = uptime)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_point() +
+  ggplot2::facet_grid(rows = vars(area)) +
+  theme_light() +
+  theme(axis.text.x = element_text(angle = 90),
+        panel.grid.minor.x = element_blank()) +
+  scale_x_date(breaks = scales::breaks_width("months"),
+               labels = scales::label_date("%b")) +
+  scale_y_continuous(breaks = c(90, 95)) +
+  labs(x = NULL, y = "Oppetid (%) \n",
+       caption = "Data: Statens vegvesen") +
+  ggtitle("Gjennomsnittlig oppetid på trafikkregistreringspunkt",
+          subtitle = "Europa- og riksveg, 2020")
+```
+
+
+```{r plot_number}
+uptime_geodata %>%
+  ggplot2::ggplot(aes(x = month_object, y = antall_punkt, color = area)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_point() +
+  #ggplot2::facet_grid(rows = vars(area)) +
+  theme_light() +
+  theme(axis.text.x = element_text(angle = 90),
+        panel.grid.minor.x = element_blank()) +
+  scale_x_date(breaks = scales::breaks_width("months"),
+               labels = scales::label_date("%b")) +
+  scale_color_manual(values = c("Geodata 1" = "#008ec2",
+                                "Geodata 2" = "#ed9300",
+                                "Geodata 3" = "#444f55"),
+                      name = "Område") +
+  labs(x = NULL, y = "Antall punkt \n",
+       caption = "Data: Statens vegvesen") +
+  ggtitle("Antall trafikkregistreringspunkt",
+          subtitle = "Europa- og riksveg, 2020")
+```
+
+
+
+```{r table}
+# index_2020_upper_lower %>%
+#   dplyr::filter(period == "month") %>% 
+#   dplyr::arrange(area_name, length_range, month) %>% 
+#   select(area_name, month_name, year, length_range, index_lower, index_p, index_upper) %>%
+#   flextable() %>%
+#   colformat_num(j = 5:7, digits = 1) %>%
+#   set_header_labels(area_name = "Byområde", month_name = "Måned", year = "År", length_range = "Kjøretøyklasse",
+#                     index_lower = "Endring i trafikkmengde (%)") %>%
+#   add_header_row(values = c("", "", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
+#   merge_at(i = 1, j = 5:7, part = "header") %>% 
+#   align(i = 1, j = 5, align = "center", part = "header") %>%
+#   align(i = 2, j = 5:7, align = "right", part = "header") %>% 
+#   bold(part = "header") %>%
+#   fontsize(size = 9, part = "all") %>%
+#   font(fontname = "Lucida Sans Unicode", part = "all") %>%
+#   bg(bg = "#ED9300", part = "header") %>%
+#   border_remove() %>%
+#   hline_top(part = "header", border = borderline) %>%
+#   hline_bottom(part = "all", border = borderline) %>%
+#   #autofit() %>%
+#   height_all(height = .2) %>%
+#   padding(padding.top = .3,
+#           padding.bottom = .3) %>%
+#   set_caption("Estimert samlet endring i trafikkmengde, med nedre og øvre grense for et 95 % konfidensintervall. Trafikken er sammenlignet per måned med samme måned året før.")
+```
+
+
+
+
+
+```{r lineplot, fig.height=10}
+# TODO: faceting per length_range or city?
+# index_2020_upper_lower %>% 
+#   dplyr::filter(period == "month") %>% 
+#   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
+#   ggplot2::geom_line() +
+#   ggplot2::geom_point() +
+#   ggplot2::facet_grid(rows = vars(area_name)) +
+#   theme_light() +
+#   theme(axis.text.x = element_text(angle = 90),
+#         panel.grid.minor.x = element_blank()) +
+#   scale_x_date(breaks = scales::breaks_width("months"),
+#                labels = scales::label_date("%b")) +
+#   scale_color_manual(values = c("alle" = "#008ec2",
+#                                 "lette" = "#ed9300",
+#                                 "tunge" = "#444f55"),
+#                      name = "Kjøretøyklasse") +
+#   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
+#        caption = "Data: Statens vegvesen") +
+#   ggtitle("Estimert endring i trafikkmengde",
+#           subtitle = "Trafikkmengde i 2020 sammenlignet med 2019")
+```
+
+
+
+
+```{r year_to_date}
+# last_month <- max(index_2020_upper_lower$month)
+# 
+# index_2020_upper_lower %>%
+#   dplyr::filter(period == "year_to_date",
+#                 month == last_month) %>% 
+#   dplyr::arrange(area_name, length_range, month) %>% 
+#   select(area_name, month_name, year, length_range, index_lower, index_p, index_upper) %>%
+#   flextable() %>%
+#   colformat_num(j = 5:7, digits = 1) %>%
+#   set_header_labels(area_name = "Byområde", month_name = "Måned", year = "År", length_range = "Kjøretøyklasse",
+#                     index_lower = "Endring i trafikkmengde (%)") %>%
+#   add_header_row(values = c("", "", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
+#   merge_at(i = 1, j = 5:7, part = "header") %>% 
+#   align(i = 1, j = 5, align = "center", part = "header") %>%
+#   align(i = 2, j = 5:7, align = "right", part = "header") %>% 
+#   bold(part = "header") %>%
+#   fontsize(size = 9, part = "all") %>%
+#   font(fontname = "Lucida Sans Unicode", part = "all") %>%
+#   bg(bg = "#ED9300", part = "header") %>%
+#   border_remove() %>%
+#   hline_top(part = "header", border = borderline) %>%
+#   hline_bottom(part = "all", border = borderline) %>%
+#   height_all(height = .2) %>%
+#   padding(padding.top = .3,
+#           padding.bottom = .3) %>%
+#   set_caption("Estimert samlet endring i trafikkmengde, med nedre og øvre grense for et 95 % konfidensintervall. Trafikken er sammenlignet for hittil i år med samme periode året før.")
+```
+
+
+

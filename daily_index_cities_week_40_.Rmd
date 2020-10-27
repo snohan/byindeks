@@ -39,7 +39,7 @@ cities_points_start <- read.csv2("data_points_raw/cities_points.csv") %>%
 additional_trps <- 
   data.frame(city_area_name = 
                c(rep("Trondheim", times = 9),
-                 rep("Nord-Jæren", times = 29),
+                 rep("Nord-Jæren", times = 28),
                  rep("Bodø", times = 11)),
              trp_id = c(
                                   # Trondheim
@@ -68,7 +68,6 @@ additional_trps <-
                                   "12478V320582",
                                   "88125V320152",
                                   "33902V320184",
-                                  "84064V320581",
                                   "08952V320223",
                                   "81631V1727485",
                                   "59675V319722",
@@ -116,10 +115,10 @@ trps <- dplyr::left_join(cities_points, points) %>%
 
 # Fetch daily traffic
 week_2019_from <- "2019-09-30T00:00:00+02:00"
-week_2019_to <- "2019-10-21T00:00:00+02:00"
+week_2019_to <- "2019-10-28T00:00:00+02:00"
 
 week_2020_from <- "2020-09-28T00:00:00+02:00"
-week_2020_to <- "2020-10-19T00:00:00+02:00"
+week_2020_to <- "2020-10-26T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",

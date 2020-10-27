@@ -14,7 +14,7 @@ library(webshot)
 library(officer)
 library(scales)
 
-source("index_report_functions.R")
+source("H:/Programmering/R/byindeks/index_report_functions.R")
 
 # knitr options ####
 knitr::opts_chunk$set(echo = FALSE,
