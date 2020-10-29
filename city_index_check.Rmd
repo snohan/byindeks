@@ -10,6 +10,10 @@ source("rmd_setup.R")
 # Traffic Data API calls to get points metadata and aadt
 source("get_from_trafficdata_api.R")
 source("split_road_system_reference.R")
+source("index_report_functions.R")
+library(ggthemes)
+library(DT)
+library(htmltools)
 ```
 
 
@@ -47,6 +51,10 @@ points <- get_points() %>%
                 municipality_name, lat, lon, road_link_position) %>% 
   dplyr::mutate(name = stringr::str_to_title(name, locale = "no"))
 
+# points_s <- points %>% 
+#   group_by(county_name) %>% 
+#   summarise(ant = n())
+
 city_trps_meta <- points %>% 
   dplyr::filter(trp_id %in% city_trps) %>% 
   split_road_system_reference() %>% 
@@ -55,6 +63,9 @@ city_trps_meta <- points %>%
                 #section_number, subsection_number, meter,
                 #intersection_part_number, intersection_meter,
                 county_name, municipality_name, lat, lon)
+
+# New month's pointindices
+point_index_new <- get_pointindices_for_trp_list(city_trps, index_year)
 ```
 
 ```{r data_prep}
@@ -72,27 +83,99 @@ city_index_prepared <- city_index %>%
   dplyr::filter(road_category == "Europa-, riks- og fylkesveg")
 
 pointindex_prepared <- pointindices %>% 
-  dplyr::filter(period == "month")
+  dplyr::filter(period == "month") %>% 
+  dplyr::select(trp_id, year, month, index_total_p,
+                index_total_coverage, length_excluded, length_coverage,
+                index_short, index_long)
 
+point_index_new_prepared <- point_index_new %>% 
+  dplyr::filter(day_type == "ALL",
+                period == "month",
+                month == index_month + 1) %>% 
+  dplyr::select(trp_id, year, month, index_total_p,
+                index_total_coverage, length_excluded, length_coverage,
+                index_short, index_long)
 
+pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
+                                            point_index_new_prepared) %>% 
+  dplyr::left_join(city_trps_meta) %>% 
+  dplyr::mutate(
+    short_is_least = index_short < index_long,
+    short_is_least_check = index_total_p >= index_short & index_total_p <= index_long,
+    long_is_least_check = index_total_p >= index_long & index_total_p <= index_short,
+    #short_is_least_check = dplyr::between(index_total_p, index_short, index_long),
+    #long_is_least_check = dplyr::between(index_total_p, index_long, index_short),
+    total_short_long_check = dplyr::case_when(
+      short_is_least & short_is_least_check ~ "OK",
+      short_is_least & !short_is_least_check ~ "NOT OK",
+      !short_is_least & long_is_least_check ~ "OK",
+      !short_is_least & !long_is_least_check ~ "NOT OK",
+    ))
+
+# TODO: diff size for the not ok
+     
+city_trps_new_pointindex <- city_trps_meta %>% 
+  dplyr::left_join(point_index_new_prepared)
+
+pointindex_prepared_all_wide_total_index <- pointindex_prepared_all %>% 
+  dplyr::select(name, road_reference, month, index_total_p) %>% 
+  tidyr::pivot_wider(names_from = month, values_from = index_total_p,
+                     names_prefix = "value_") %>% 
+  dplyr::mutate(value_type = "index_total_p")
+
+pointindex_prepared_all_wide_coverage <- pointindex_prepared_all %>% 
+  dplyr::select(name, road_reference, month, index_total_coverage) %>% 
+  tidyr::pivot_wider(names_from = month, values_from = index_total_coverage,
+                     names_prefix = "value_") %>% 
+  dplyr::mutate(value_type = "index_total_coverage")
+
+pointindex_prepared_all_wide_length_coverage <- pointindex_prepared_all %>% 
+  dplyr::select(name, road_reference, month, length_coverage) %>% 
+  tidyr::pivot_wider(names_from = month, values_from = length_coverage,
+                     names_prefix = "value_") %>% 
+  dplyr::mutate(value_type = "length_coverage")
+
+pointindex_prepared_all_wide_short <- pointindex_prepared_all %>% 
+  dplyr::select(name, road_reference, month, index_short) %>% 
+  tidyr::pivot_wider(names_from = month, values_from = index_short,
+                     names_prefix = "value_") %>% 
+  dplyr::mutate(value_type = "index_short")
+
+pointindex_prepared_all_wide_long <- pointindex_prepared_all %>% 
+  dplyr::select(name, road_reference, month, index_long) %>% 
+  tidyr::pivot_wider(names_from = month, values_from = index_long,
+                     names_prefix = "value_") %>% 
+  dplyr::mutate(value_type = "index_long")
+
+pointindex_wide <- dplyr::bind_rows(
+  pointindex_prepared_all_wide_total_index,
+  pointindex_prepared_all_wide_coverage,
+  pointindex_prepared_all_wide_length_coverage,
+  pointindex_prepared_all_wide_short,
+  pointindex_prepared_all_wide_long
+  ) %>% 
+  dplyr::arrange(road_reference)
 
 
 ```
 
-# |`r city_name`
+# `r city_name`
 Graf med byindeks hver måned.
 
 ```{r city_index}
 city_index_prepared %>% 
-  ggplot2::ggplot(aes(x = month_object, y = index_p)) +
+  ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
   ggplot2::geom_line() +
   ggplot2::geom_point() +
-  ggplot2::facet_grid(rows = vars(length_range)) +
   theme_light() +
   theme(axis.text.x = element_text(angle = 90),
         panel.grid.minor.x = element_blank()) +
   scale_x_date(breaks = scales::breaks_width("months"),
                labels = scales::label_date("%b")) +
+  scale_color_manual(values = c("alle" = "#008ec2",
+                                "lette" = "#ed9300",
+                                "tunge" = "#444f55"),
+                     name = "Kjøretøyklasse") +
   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
        caption = "Data: Statens vegvesen") +
   ggtitle("Estimert endring i trafikkmengde",
@@ -101,106 +184,59 @@ city_index_prepared %>%
 
 
 # Punktindeksene
+Punktindeksene for den nye måneden på kart med indekstallet synlig ved siden av prikken.
 
-
-
-
-
-
-## Per måned
-Samlet endring i trafikkmengde per måned i 2020, sammenlignet med samme måned i 2019.
-
-```{r monthly_index_table}
-# index_2020_upper_lower %>%
-#   dplyr::filter(period == "month") %>% 
-#   dplyr::arrange(area_name, length_range, month) %>% 
-#   select(area_name, month_name, year, length_range, index_lower, index_p, index_upper) %>%
-#   flextable() %>%
-#   colformat_num(j = 5:7, digits = 1) %>%
-#   set_header_labels(area_name = "Byområde", month_name = "Måned", year = "År", length_range = "Kjøretøyklasse",
-#                     index_lower = "Endring i trafikkmengde (%)") %>%
-#   add_header_row(values = c("", "", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
-#   merge_at(i = 1, j = 5:7, part = "header") %>% 
-#   align(i = 1, j = 5, align = "center", part = "header") %>%
-#   align(i = 2, j = 5:7, align = "right", part = "header") %>% 
-#   bold(part = "header") %>%
-#   fontsize(size = 9, part = "all") %>%
-#   font(fontname = "Lucida Sans Unicode", part = "all") %>%
-#   bg(bg = "#ED9300", part = "header") %>%
-#   border_remove() %>%
-#   hline_top(part = "header", border = borderline) %>%
-#   hline_bottom(part = "all", border = borderline) %>%
-#   #autofit() %>%
-#   height_all(height = .2) %>%
-#   padding(padding.top = .3,
-#           padding.bottom = .3) %>%
-#   set_caption("Estimert samlet endring i trafikkmengde, med nedre og øvre grense for et 95 % konfidensintervall. Trafikken er sammenlignet per måned med samme måned året før.")
+```{r map_trp_index, message=FALSE}
+city_trps_new_pointindex %>% 
+  dplyr::rename(index = index_total_p) %>% 
+  create_pointindex_map()
 ```
 
+# Kurver
 
+```{r pointindex_sparkline, fig.height=12, fig.width=10}
+pointindex_plot <- pointindex_prepared_all %>% 
+  ggplot2::ggplot(aes(x = month, y = index_total_p, color = name)) +
+  geom_line() +
+  scale_x_discrete(breaks = seq(1, index_month + 1, 1)) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
 
-
-
-```{r lineplot, fig.height=10}
-# TODO: faceting per length_range or city?
-# index_2020_upper_lower %>% 
-#   dplyr::filter(period == "month") %>% 
-#   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
-#   ggplot2::geom_line() +
-#   ggplot2::geom_point() +
-#   ggplot2::facet_grid(rows = vars(area_name)) +
-#   theme_light() +
-#   theme(axis.text.x = element_text(angle = 90),
-#         panel.grid.minor.x = element_blank()) +
-#   scale_x_date(breaks = scales::breaks_width("months"),
-#                labels = scales::label_date("%b")) +
-#   scale_color_manual(values = c("alle" = "#008ec2",
-#                                 "lette" = "#ed9300",
-#                                 "tunge" = "#444f55"),
-#                      name = "Kjøretøyklasse") +
-#   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
-#        caption = "Data: Statens vegvesen") +
-#   ggtitle("Estimert endring i trafikkmengde",
-#           subtitle = "Trafikkmengde i 2020 sammenlignet med 2019")
+pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 ```
 
+# Tabell
 
-
-
-## Hittil i år
-Samlet endring i trafikkmengde i perioden fra januar til juli 2020, sammenlignet med samme periode i 2019.
-
-```{r year_to_date}
-# last_month <- max(index_2020_upper_lower$month)
-# 
-# index_2020_upper_lower %>%
-#   dplyr::filter(period == "year_to_date",
-#                 month == last_month) %>% 
-#   dplyr::arrange(area_name, length_range, month) %>% 
-#   select(area_name, month_name, year, length_range, index_lower, index_p, index_upper) %>%
-#   flextable() %>%
-#   colformat_num(j = 5:7, digits = 1) %>%
-#   set_header_labels(area_name = "Byområde", month_name = "Måned", year = "År", length_range = "Kjøretøyklasse",
-#                     index_lower = "Endring i trafikkmengde (%)") %>%
-#   add_header_row(values = c("", "", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
-#   merge_at(i = 1, j = 5:7, part = "header") %>% 
-#   align(i = 1, j = 5, align = "center", part = "header") %>%
-#   align(i = 2, j = 5:7, align = "right", part = "header") %>% 
-#   bold(part = "header") %>%
-#   fontsize(size = 9, part = "all") %>%
-#   font(fontname = "Lucida Sans Unicode", part = "all") %>%
-#   bg(bg = "#ED9300", part = "header") %>%
-#   border_remove() %>%
-#   hline_top(part = "header", border = borderline) %>%
-#   hline_bottom(part = "all", border = borderline) %>%
-#   height_all(height = .2) %>%
-#   padding(padding.top = .3,
-#           padding.bottom = .3) %>%
-#   set_caption("Estimert samlet endring i trafikkmengde, med nedre og øvre grense for et 95 % konfidensintervall. Trafikken er sammenlignet for hittil i år med samme periode året før.")
+```{r table}
+# DataTables
+# trp_for_vti_aadt %>% 
+#   dplyr::select(#trp_id, 
+#                 county_name, municipality_name, legacyNortrafMpn, 
+#                 name,
+#                 road_reference, 
+#                 #road_category, 
+#                 adt, valid_length_percent) %>%
+#   dplyr::mutate(#county_number = as.character(county_number),
+#                 legacyNortrafMpn = as.character(legacyNortrafMpn)
+#                 ) %>% 
+#   dplyr::rename(#Fylkenr = county_number,
+#                 Fylke = county_name,
+#                 Kommune = municipality_name,
+#                 MSNR = legacyNortrafMpn,
+#                 #Punktid = trp_id,
+#                 Navn = name,
+#                 Vegreferanse = road_reference,
+#                 #Vegkat = road_category,
+#                 AADT = adt,
+#                 Lengdekv. = valid_length_percent) %>% 
+#   DT::datatable(
+#     filter = "top",
+#     extensions = "Buttons",
+#     options = list(
+#       dom = "Blfrtip",
+#       buttons = c("excel"),
+#       pageLength = 25,
+#       lengthMenu = c(25, 50, 100),
+#       autoWidth = TRUE))
 ```
-
-```{r year_to_date_plot}
-# TODO: lollipop plot comparing each city, faceted by lenght_range
-```
-
 
