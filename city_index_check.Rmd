@@ -51,10 +51,6 @@ points <- get_points() %>%
                 municipality_name, lat, lon, road_link_position) %>% 
   dplyr::mutate(name = stringr::str_to_title(name, locale = "no"))
 
-# points_s <- points %>% 
-#   group_by(county_name) %>% 
-#   summarise(ant = n())
-
 city_trps_meta <- points %>% 
   dplyr::filter(trp_id %in% city_trps) %>% 
   split_road_system_reference() %>% 
@@ -68,7 +64,9 @@ city_trps_meta <- points %>%
 point_index_new <- get_pointindices_for_trp_list(city_trps, index_year)
 ```
 
-```{r data_prep}
+
+
+```{r data_prep, message=FALSE}
 city_index_prepared <- city_index %>% 
   dplyr::filter(period == "month") %>% 
   dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "alle",
@@ -110,9 +108,8 @@ pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
       short_is_least & !short_is_least_check ~ "NOT OK",
       !short_is_least & long_is_least_check ~ "OK",
       !short_is_least & !long_is_least_check ~ "NOT OK",
-    ))
-
-# TODO: diff size for the not ok
+      ),
+    diff_total_short = round(index_short - index_total_p, digits = 1))
      
 city_trps_new_pointindex <- city_trps_meta %>% 
   dplyr::left_join(point_index_new_prepared)
@@ -155,14 +152,13 @@ pointindex_wide <- dplyr::bind_rows(
   pointindex_prepared_all_wide_long
   ) %>% 
   dplyr::arrange(road_reference)
-
-
 ```
 
-# `r city_name`
-Graf med byindeks hver måned.
 
-```{r city_index}
+
+## Det som allerede er publisert for `r city_name`
+
+```{r city_index, message=FALSE}
 city_index_prepared %>% 
   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
   ggplot2::geom_line() +
@@ -183,8 +179,8 @@ city_index_prepared %>%
 ```
 
 
-# Punktindeksene
-Punktindeksene for den nye måneden på kart med indekstallet synlig ved siden av prikken.
+
+## Punktindeksene for den nye måneden
 
 ```{r map_trp_index, message=FALSE}
 city_trps_new_pointindex %>% 
@@ -192,7 +188,9 @@ city_trps_new_pointindex %>%
   create_pointindex_map()
 ```
 
-# Kurver
+
+
+## Kurver
 
 ```{r pointindex_sparkline, fig.height=12, fig.width=10}
 pointindex_plot <- pointindex_prepared_all %>% 
@@ -205,38 +203,34 @@ pointindex_plot <- pointindex_prepared_all %>%
 pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 ```
 
-# Tabell
+# Avvik i lengdeklasser
 
-```{r table}
-# DataTables
-# trp_for_vti_aadt %>% 
-#   dplyr::select(#trp_id, 
-#                 county_name, municipality_name, legacyNortrafMpn, 
-#                 name,
-#                 road_reference, 
-#                 #road_category, 
-#                 adt, valid_length_percent) %>%
-#   dplyr::mutate(#county_number = as.character(county_number),
-#                 legacyNortrafMpn = as.character(legacyNortrafMpn)
-#                 ) %>% 
-#   dplyr::rename(#Fylkenr = county_number,
-#                 Fylke = county_name,
-#                 Kommune = municipality_name,
-#                 MSNR = legacyNortrafMpn,
-#                 #Punktid = trp_id,
-#                 Navn = name,
-#                 Vegreferanse = road_reference,
-#                 #Vegkat = road_category,
-#                 AADT = adt,
-#                 Lengdekv. = valid_length_percent) %>% 
-#   DT::datatable(
-#     filter = "top",
-#     extensions = "Buttons",
-#     options = list(
-#       dom = "Blfrtip",
-#       buttons = c("excel"),
-#       pageLength = 25,
-#       lengthMenu = c(25, 50, 100),
-#       autoWidth = TRUE))
+```{r table_diff_between_total_and_short}
+pointindex_prepared_all %>%
+  dplyr::select(name, road_reference, month, index_total_p, index_short, index_long,
+                total_short_long_check, diff_total_short) %>%
+  DT::datatable(
+    filter = "top",
+    #extensions = "Buttons",
+    options = list(
+      dom = "Blfrtip",
+      #buttons = c("excel"),
+      pageLength = 25,
+      lengthMenu = c(25, 50, 100),
+      autoWidth = TRUE))
 ```
 
+# Punkt 
+
+```{r table_trp_consistency}
+pointindex_wide %>%
+  DT::datatable(
+    filter = "top",
+    #extensions = "Buttons",
+    options = list(
+      dom = "Blfrtip",
+      #buttons = c("excel"),
+      pageLength = 25,
+      lengthMenu = c(25, 50, 100),
+      autoWidth = TRUE))
+```
