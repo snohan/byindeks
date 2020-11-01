@@ -94,8 +94,18 @@ point_index_new_prepared <- point_index_new %>%
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
 
+point_index_new_prepared_2 <- point_index_new %>% 
+  dplyr::filter(day_type == "ALL",
+                period == "month",
+                month == index_month + 2) %>% 
+  dplyr::select(trp_id, year, month, index_total_p,
+                index_total_coverage, length_excluded, length_coverage,
+                index_short, index_long)
+
 pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
-                                            point_index_new_prepared) %>% 
+                                            point_index_new_prepared,
+                                            point_index_new_prepared_2
+                                            ) %>% 
   dplyr::left_join(city_trps_meta) %>% 
   dplyr::mutate(
     short_is_least = index_short < index_long,
@@ -104,16 +114,17 @@ pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
     #short_is_least_check = dplyr::between(index_total_p, index_short, index_long),
     #long_is_least_check = dplyr::between(index_total_p, index_long, index_short),
     total_short_long_check = dplyr::case_when(
-      short_is_least & short_is_least_check ~ "OK",
-      short_is_least & !short_is_least_check ~ "NOT OK",
-      !short_is_least & long_is_least_check ~ "OK",
-      !short_is_least & !long_is_least_check ~ "NOT OK",
+      short_is_least & short_is_least_check ~ 0, #"ok",
+      short_is_least & !short_is_least_check ~ 1, #"not ok",
+      !short_is_least & long_is_least_check ~ 0, #"ok",
+      !short_is_least & !long_is_least_check ~ 1, #"not ok",
       ),
     diff_total_short = round(index_short - index_total_p, digits = 1))
      
 city_trps_new_pointindex <- city_trps_meta %>% 
   dplyr::left_join(point_index_new_prepared)
 
+# Widening for table view
 pointindex_prepared_all_wide_total_index <- pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, month, index_total_p) %>% 
   tidyr::pivot_wider(names_from = month, values_from = index_total_p,
@@ -144,21 +155,59 @@ pointindex_prepared_all_wide_long <- pointindex_prepared_all %>%
                      names_prefix = "value_") %>% 
   dplyr::mutate(value_type = "index_long")
 
+pointindex_prepared_all_wide_check <- pointindex_prepared_all %>% 
+  dplyr::select(name, road_reference, month, total_short_long_check) %>% 
+  tidyr::pivot_wider(names_from = month, values_from = total_short_long_check,
+                     names_prefix = "value_") %>% 
+  dplyr::mutate(value_type = "total_short_long_check")
+
+pointindex_prepared_all_wide_diff <- pointindex_prepared_all %>% 
+  dplyr::select(name, road_reference, month, diff_total_short) %>% 
+  tidyr::pivot_wider(names_from = month, values_from = diff_total_short,
+                     names_prefix = "value_") %>% 
+  dplyr::mutate(value_type = "diff_total_short")
+
 pointindex_wide <- dplyr::bind_rows(
   pointindex_prepared_all_wide_total_index,
   pointindex_prepared_all_wide_coverage,
   pointindex_prepared_all_wide_length_coverage,
   pointindex_prepared_all_wide_short,
-  pointindex_prepared_all_wide_long
+  pointindex_prepared_all_wide_long,
+  pointindex_prepared_all_wide_check,
+  pointindex_prepared_all_wide_diff
   ) %>% 
   dplyr::arrange(road_reference)
+
+# Longing :) for plot
+pointindex_long <- pointindex_prepared_all %>% 
+  dplyr::select(trp_id:road_category_and_number)
+
+pointindex_long_total <- pointindex_long %>% 
+  dplyr::select(trp_id, year, month, index = index_total_p, coverage = index_total_coverage,
+                length_excluded, name, road_reference, road_category_and_number) %>% 
+  dplyr::mutate(length_range = "total")
+
+pointindex_long_short <- pointindex_long %>% 
+  dplyr::select(trp_id, year, month, index_short, index_long, coverage = length_coverage, 
+                length_excluded, name, road_reference, road_category_and_number) %>% 
+  tidyr::pivot_longer(cols = c("index_short", "index_long"), 
+                      names_to = "length_range",
+                      values_to = "index")
+
+pointindex_long_2 <- dplyr::bind_rows(pointindex_long_total,
+                                      pointindex_long_short) %>% 
+  dplyr::mutate(length_range = dplyr::case_when(length_range == "total" ~ "alle",
+                                                length_range == "index_short" ~ "lette",
+                                                length_range == "index_long" ~ "tunge")) %>% 
+  dplyr::mutate(month_object = lubridate::make_date(year = year, month = month),
+                month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE))
 ```
 
 
 
-## Det som allerede er publisert for `r city_name`
+## Byindeks per måned så langt for `r city_name`
 
-```{r city_index, message=FALSE}
+```{r city_index, message=FALSE, fig.width=12}
 city_index_prepared %>% 
   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
   ggplot2::geom_line() +
@@ -190,7 +239,7 @@ city_trps_new_pointindex %>%
 
 
 
-## Kurver
+## Kurver per punkt for totaltrafikk
 
 ```{r pointindex_sparkline, fig.height=12, fig.width=10}
 pointindex_plot <- pointindex_prepared_all %>% 
@@ -203,24 +252,40 @@ pointindex_plot <- pointindex_prepared_all %>%
 pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 ```
 
-# Avvik i lengdeklasser
 
-```{r table_diff_between_total_and_short}
-pointindex_prepared_all %>%
-  dplyr::select(name, road_reference, month, index_total_p, index_short, index_long,
-                total_short_long_check, diff_total_short) %>%
-  DT::datatable(
-    filter = "top",
-    #extensions = "Buttons",
-    options = list(
-      dom = "Blfrtip",
-      #buttons = c("excel"),
-      pageLength = 25,
-      lengthMenu = c(25, 50, 100),
-      autoWidth = TRUE))
+
+## Punktsjekk
+Skulle hatt med ÅDT. 
+
+```{r point_plot, message=FALSE, fig.width=12}
+point_number <- 1
+trp_id_here <- city_trps_meta$trp_id[point_number]
+
+trp_name <- city_trps_meta %>% 
+  dplyr::filter(trp_id == trp_id_here) %>% 
+  dplyr::select(name, road_reference) %>% 
+  stringr::str_glue_data("{name}, {road_reference}")
+
+pointindex_long_2 %>% 
+  dplyr::filter(trp_id == trp_id_here) %>% 
+  ggplot2::ggplot(aes(x = month_object, y = index, color = length_range)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_point(aes(alpha = coverage), size = 4) +
+  theme_light() +
+  theme(axis.text.x = element_text(angle = 90),
+        panel.grid.minor.x = element_blank()) +
+  scale_x_date(breaks = scales::breaks_width("months"),
+               labels = scales::label_date("%b")) +
+  scale_color_manual(values = c("alle" = "#008ec2",
+                                "lette" = "#ed9300",
+                                "tunge" = "#444f55"),
+                     name = "Kjøretøyklasse") +
+  scale_alpha(name = "Dekningsgrad") +
+  labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
+       caption = "Data: Statens vegvesen") +
+  ggtitle(trp_name,
+          subtitle = "Trafikkmengde i 2020 sammenlignet med 2019")
 ```
-
-# Punkt 
 
 ```{r table_trp_consistency}
 pointindex_wide %>%
