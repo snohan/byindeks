@@ -34,7 +34,7 @@ library(htmltools)
 
 # Choose
 index_year <- 2020
-index_month <- 8
+index_month <- 10
 city_number <- 958
 
 # Fetch
@@ -81,7 +81,9 @@ city_index_prepared <- city_index %>%
   dplyr::filter(road_category == "Europa-, riks- og fylkesveg")
 
 pointindex_prepared <- pointindices %>% 
-  dplyr::filter(period == "month") %>% 
+  dplyr::filter(period == "month",
+                is_excluded == FALSE,
+                is_manually_excluded == FALSE) %>% 
   dplyr::select(trp_id, year, month, index_total_p,
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
@@ -122,7 +124,7 @@ pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
     diff_total_short = round(index_short - index_total_p, digits = 1))
      
 city_trps_new_pointindex <- city_trps_meta %>% 
-  dplyr::left_join(point_index_new_prepared)
+  dplyr::left_join(point_index_new_prepared_2)
 
 # Widening for table view
 pointindex_prepared_all_wide_total_index <- pointindex_prepared_all %>% 
@@ -211,7 +213,7 @@ pointindex_long_2 <- dplyr::bind_rows(pointindex_long_total,
 city_index_prepared %>% 
   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
   ggplot2::geom_line() +
-  ggplot2::geom_point() +
+  ggplot2::geom_point(size = 4) +
   theme_light() +
   theme(axis.text.x = element_text(angle = 90),
         panel.grid.minor.x = element_blank()) +
@@ -258,7 +260,7 @@ pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 Skulle hatt med ÅDT. 
 
 ```{r point_plot, message=FALSE, fig.width=12}
-point_number <- 1
+point_number <- 48
 trp_id_here <- city_trps_meta$trp_id[point_number]
 
 trp_name <- city_trps_meta %>% 
@@ -285,6 +287,9 @@ pointindex_long_2 %>%
        caption = "Data: Statens vegvesen") +
   ggtitle(trp_name,
           subtitle = "Trafikkmengde i 2020 sammenlignet med 2019")
+
+# Notes
+# Danmarksplass ved ladestasjon ekskludert 6, 8, 9, 10 fordi alle ikke er mellom lette og tunge
 ```
 
 ```{r table_trp_consistency}

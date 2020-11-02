@@ -1145,9 +1145,9 @@ get_dt_for_trp_list <- function(trp_list, from, to) {
 }
 
 
-#index_id <- 2952
-#indexyear <- 2020
-#indexmonth <- 7
+# index_id <- 2952
+# indexyear <- 2020
+# indexmonth <- 7
 
 get_published_index <- function(index_id, indexyear, indexmonth) {
   # Get published index for a given area, year and month
@@ -1307,6 +1307,7 @@ get_published_pointindex <- function(index_id, indexyear, indexmonth) {
         containsPointTrafficVolumeIndices (first: 100) {
           edges {
             node {
+              isManuallyExcluded
               pointTrafficVolumeIndex {
                 trafficRegistrationPoint {
                   id
@@ -1387,6 +1388,7 @@ get_published_pointindex <- function(index_id, indexyear, indexmonth) {
                   month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
                   day_type = dayType,
                   is_excluded = isExcluded,
+                  is_manually_excluded = node.isManuallyExcluded,
                   index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
                   index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
                   length_excluded = lengthRangesTrafficVolumeIndex.isExcluded,
@@ -1402,9 +1404,6 @@ get_published_pointindex <- function(index_id, indexyear, indexmonth) {
                        values_from = length_index) %>%
     dplyr::mutate(period = "month")
 
-
-   # HERE
-
     year_to_date_data <- unnested_data %>%
       tidyr::unnest(cols = c(node.pointTrafficVolumeIndex.volumeIndicesYearToDate)) %>%
       dplyr::select(- node.pointTrafficVolumeIndex.volumeIndicesMonth) %>%
@@ -1415,6 +1414,7 @@ get_published_pointindex <- function(index_id, indexyear, indexmonth) {
                     month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
                     day_type = dayType,
                     is_excluded = isExcluded,
+                    is_manually_excluded = node.isManuallyExcluded,
                     index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
                     index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
                     length_excluded = lengthRangesTrafficVolumeIndex.isExcluded,

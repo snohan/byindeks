@@ -115,10 +115,10 @@ trps <- dplyr::left_join(cities_points, points) %>%
 
 # Fetch daily traffic
 week_2019_from <- "2019-09-30T00:00:00+02:00"
-week_2019_to <- "2019-10-28T00:00:00+02:00"
+week_2019_to <- "2019-11-04T00:00:00+02:00"
 
 week_2020_from <- "2020-09-28T00:00:00+02:00"
-week_2020_to <- "2020-10-26T00:00:00+02:00"
+week_2020_to <- "2020-11-02T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -591,8 +591,8 @@ make_daily_plot_city <- function(area_dt, subtitle_text) {
   geom_hline(yintercept = 0, color = "#000000") +
   facet_grid(weekno ~., switch = "y") +
   scale_y_continuous(position = "right",
-                     limits = c(-20, 20),
-                     breaks = c(-10, 0, 10)) +
+                     limits = c(-25, 25),
+                     breaks = c(-15, 0, 15)) +
   xlab("") +
   ylab("Endring i trafikkmengde (%)\n") +
   ggtitle(label = "Daglig endring i trafikkmengde",
