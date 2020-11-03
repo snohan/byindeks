@@ -85,12 +85,12 @@ borderline <- officer::fp_border(color = "black", style = "solid", width = 1)
 create_city_index_table <- function(city_info) {
 
   city_table <- city_info %>%
-    dplyr::select(year, index, ki_start, ki_slutt) %>%
+    dplyr::select(year_from_to, index_p, ci_start, ci_end) %>%
     flextable::flextable() %>%
-    colformat_num(j = c("index", "ki_start", "ki_slutt"), digits = 1) %>%
-    set_header_labels(year = "Periode",
-                      index = "Endring i trafikkmengde (%)",
-                      ki_start = "95 % konfidensintervall") %>%
+    colformat_num(j = c("index_p", "ci_start", "ci_end"), digits = 1) %>%
+    set_header_labels(year_from_to = "Periode",
+                      index_p = "Endring i trafikkmengde (%)",
+                      ci_start = "95 % konfidensintervall") %>%
     merge_at(i = 1, j = 3:4, part = "header") %>%
     bold(part = "header") %>%
     fontsize(size = 9, part = "all") %>%
@@ -111,13 +111,13 @@ create_city_index_table <- function(city_info) {
 create_monthly_city_index_table <- function(city_monthly) {
 
   monthly_table <- city_monthly %>%
-    dplyr::filter(!is.na(index)) %>%
-    dplyr::select(year, periode, index) %>%
+    dplyr::filter(!is.na(index_p)) %>%
+    dplyr::select(year, month_name, index_p) %>%
     flextable::flextable() %>%
-    colformat_num(j = c("index"), digits = 1) %>%
+    colformat_num(j = c("index_p"), digits = 1) %>%
     set_header_labels(year = "År",
-                      periode = "Periode",
-                      index = "Endring i trafikkmengde (%)") %>%
+                      month_name = "Måned",
+                      index_p = "Endring i trafikkmengde (%)") %>%
     bold(part = "header") %>%
     fontsize(size = 9, part = "all") %>%
     font(fontname = "Lucida Sans Unicode", part = "all") %>%

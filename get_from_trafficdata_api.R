@@ -1232,7 +1232,7 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
       length_range = lengthRange.representation,
       #index_i = trafficVolumeIndex.index.indexNumber,
       index_p = volumeIndexNumber.percentageChange,
-      coverage = volumeIndexCoverage.hours.percentage,
+      #coverage = volumeIndexCoverage.hours.percentage,
       confidence_width = confidenceInterval.confidenceWidth,
       standard_deviation = standardDeviation,
       area_name = area.name,
@@ -1240,8 +1240,8 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
       month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month
       ) %>%
     dplyr::filter(day_type == "ALL") %>%
-    dplyr::select(area_name, year, month, road_category, length_range, index_p,
-                  coverage, standard_deviation, confidence_width) %>%
+    #dplyr::select(area_name, year, month, road_category, length_range, index_p,
+    #              coverage, standard_deviation, confidence_width) %>%
     dplyr::mutate(period = "month")
 
   year_to_date_data <- trp_data$data %>%
@@ -1257,7 +1257,7 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
       length_range = lengthRange.representation,
       #index_i = trafficVolumeIndex.index.indexNumber,
       index_p = volumeIndexNumber.percentageChange,
-      coverage = volumeIndexCoverage.hours.percentage,
+      #coverage = volumeIndexCoverage.hours.percentage,
       confidence_width = confidenceInterval.confidenceWidth,
       standard_deviation = standardDeviation,
       area_name = area.name,
@@ -1265,8 +1265,8 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
       month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month
     ) %>%
     dplyr::filter(day_type == "ALL") %>%
-    dplyr::select(area_name, year, month, road_category, length_range, index_p,
-                  coverage, standard_deviation, confidence_width) %>%
+    #dplyr::select(area_name, year, month, road_category, length_range, index_p,
+    #              coverage, standard_deviation, confidence_width) %>%
     dplyr::mutate(period = "year_to_date")
 
   published_index <- bind_rows(monthly_data,

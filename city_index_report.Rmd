@@ -38,13 +38,13 @@ city_monthly <-
 city_info_all_years <- city_info %>% 
   dplyr::filter(year == "2017-2020")
 
-index_all_years <- round(city_info_all_years$index, digits = 1)
+index_all_years <- round(city_info_all_years$index_p, digits = 1)
 index_all_years_ci_lower <- 
-  round(city_info_all_years$index - 
-          city_info_all_years$konfidensintervall, digits = 1)
+  round(city_info_all_years$index_p - 
+          city_info_all_years$confidence_width, digits = 1)
 index_all_years_ci_upper <- 
-  round(city_info_all_years$index + 
-          city_info_all_years$konfidensintervall, digits = 1)
+  round(city_info_all_years$index_p + 
+          city_info_all_years$confidence_width, digits = 1)
 ```
 
 ```{r child = 'formaal.Rmd'}
@@ -173,11 +173,11 @@ ggplot() +
               color = "#ED9300", size = 2, alpha = 0.25, width = 0.1) +
   geom_hline(yintercept = 0, alpha = 0.3) +
   geom_segment(data = city_info_each_one_year_and_total,
-               aes(x = year, xend = year,
-                   y = 0, yend = index),
+               aes(x = year_from_to, xend = year_from_to,
+                   y = 0, yend = index_p),
                color = "#ED9300", size = 0.6, alpha = 0.9) +
   geom_point(data = city_info_each_one_year_and_total,
-             aes(year, index),
+             aes(year_from_to, index_p),
              color = "#444F55", size = 5, alpha = 0.9) +
   coord_flip() +
   theme_minimal() +
@@ -188,7 +188,7 @@ ggplot() +
 
 ```
 
-Kartet nedenfor viser endringen i byindekspunktene fra referanseåret 2017 til og med april 2020.
+Kartet nedenfor viser endringen i byindekspunktene fra referanseåret 2017 til og med oktober 2020.
 
 ```{r map_trp_index}
 create_pointindex_map(all_point_info)
@@ -239,7 +239,7 @@ all_point_info %>%
 
 \newline
 
-I figuren nedenfor er spredningen i punktindeksene illustrert. Den horisontale grønne streken viser byindeksens samlede verdi for hele perioden 2017 - april 2020.
+I figuren nedenfor er spredningen i punktindeksene illustrert. Den horisontale grønne streken viser byindeksens samlede verdi for hele perioden 2017 - oktober 2020.
 
 \newline
 

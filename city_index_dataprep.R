@@ -212,7 +212,9 @@ city_index <- bind_rows(
   city_year_to_date_18,
   city_year_to_date_19,
   city_year_to_date_20) %>%
-  mutate(index_i = index_converter(index_p),
+  select(area_name, year, period, index_p, standard_deviation, confidence_width) %>%
+  mutate(year_base = year - 1,
+         index_i = index_converter(index_p),
          variance = standard_deviation^2,
          n_points = c(
            n_18,
@@ -232,8 +234,9 @@ city_index_all <- city_index %>%
   bind_rows(years_1_3) %>%
   #bind_rows(first_two_years) %>%
   #bind_rows(last_two_years) %>%
-  dplyr::mutate(ci_start = index_p - confidence_width,
-                ci_slutt = index_P + confidence_width)
+  dplyr::mutate(year_from_to = paste0(year_base, "-", year),
+                ci_start = index_p - confidence_width,
+                ci_end = index_p + confidence_width)
 
 write.csv2(city_index_all,
            file = "data_indexpoints_tidy/byindeks_bergen_2017.csv",
@@ -245,7 +248,9 @@ write.csv2(city_index_all,
 city_monthly <- bind_rows(
   monthly_city_index(city_index_2018),
   monthly_city_index(city_index_2019),
-  monthly_city_index(city_index_2020))
+  monthly_city_index(city_index_2020)) %>%
+  select(area_name, year, month, period, month_object, month_name, index_p,
+         standard_deviation, confidence_width)
 
 write.csv2(city_monthly,
            file = "data_indexpoints_tidy/byindeks_maanedlig_bergen_2017.csv",

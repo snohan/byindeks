@@ -193,7 +193,42 @@ index_converter <- function(index) {
 calculate_two_year_index <- function(city_index_df) {
 
   two_years <- city_index_df %>%
-    select(index, index_i, dekning, variance, n_points) %>%
+    select(index_p, index_i, variance, n_points) %>%
+    slice(1:2)
+
+  year_start <- city_index_df$year_base[1]
+  year_end <- city_index_df$year[2]
+
+  two_years_to_one <- list(
+    index_p = 100 * (prod(two_years$index_i) - 1),
+    index_i = prod(two_years$index_i),
+    year_base = year_start,
+    year = year_end,
+    #year_from_to = paste0(year_start, "-", year_end),
+    # Using Goodman's unbiased estimate (cannot use exact formula as we are
+    # sampling)
+    # But it can be negative if indexes are close to zero, large variance and
+    # small n's.
+    # Resolved by using exact formula
+    # Must be something about the assumptions that are wrong?
+    variance =
+      two_years$index_p[1]^2 * two_years$variance[2] / two_years$n_points[2] +
+      two_years$index_p[2]^2 * two_years$variance[1] / two_years$n_points[1] +
+      two_years$variance[1] * two_years$variance[2] /
+      (two_years$n_points[1] * two_years$n_points[2]),
+    n_points = max(two_years$n_points)
+  ) %>%
+    as_tibble() %>%
+    dplyr::mutate(standard_deviation = sqrt(variance),
+                  confidence_width = 1.96 * sqrt(variance) /
+                    sqrt(2))
+}
+
+calculate_two_year_index_old <- function(city_index_df) {
+
+  two_years <- city_index_df %>%
+    select(index_p, index_i, dekning,
+           variance, n_points) %>%
     slice(1:2)
 
   year_one <- str_sub(city_index_df$year[1], 1, 4)
