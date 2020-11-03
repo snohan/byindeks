@@ -126,7 +126,7 @@ read_city_index_csv <- function(filename) {
 }
 
 #filename <- "data_index_raw/Bergen-2017-12_2016.csv"
-monthly_city_index <- function(filename) {
+monthly_city_index_old <- function(filename) {
   # Read standard csv export from Datainn
   read.csv2(filename, stringsAsFactors = F) %>%
     rename_all(tolower) %>%
@@ -149,6 +149,18 @@ monthly_city_index <- function(filename) {
     select(periode, traffic_index_year, traffic_base_year,
            index, dekning, standardavvik, konfidensintervall) %>%
     as_tibble()
+}
+
+monthly_city_index <- function(city_index_for_a_year) {
+
+  city_monthly <- city_index_for_a_year %>%
+    dplyr::filter(road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+                  length_range == "[..,5.6)",
+                  period == "month") %>%
+    dplyr::mutate(month_object = lubridate::make_date(year = year, month = month),
+                  month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE) %>%
+                    stringr::str_to_title())
+
 }
 
 read_bike_index_csv <- function(filename) {

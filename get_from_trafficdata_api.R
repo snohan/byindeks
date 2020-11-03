@@ -748,7 +748,7 @@ get_aadt_by_length_for_trp_list <- function(trp_list) {
     trp_count <- trp_count + 1
   }
 
-  number_of_digits = 0 #-1
+  number_of_digits = -1
 
   trp_adt <- data_points %>%
     dplyr::mutate(aadt_valid_length = round(aadt_valid_length, digits = number_of_digits),
@@ -1196,9 +1196,15 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
         volumeIndexNumber {
           percentageChange
         }
+        volumeIndexCoverage {
+          hours {
+            percentage
+          }
+        }
         confidenceInterval {
           confidenceWidth
         }
+        standardDeviation
       }
     }
     ")
@@ -1226,14 +1232,16 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
       length_range = lengthRange.representation,
       #index_i = trafficVolumeIndex.index.indexNumber,
       index_p = volumeIndexNumber.percentageChange,
+      coverage = volumeIndexCoverage.hours.percentage,
       confidence_width = confidenceInterval.confidenceWidth,
+      standard_deviation = standardDeviation,
       area_name = area.name,
       year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
       month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month
       ) %>%
     dplyr::filter(day_type == "ALL") %>%
     dplyr::select(area_name, year, month, road_category, length_range, index_p,
-                  confidence_width) %>%
+                  coverage, standard_deviation, confidence_width) %>%
     dplyr::mutate(period = "month")
 
   year_to_date_data <- trp_data$data %>%
@@ -1249,14 +1257,16 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
       length_range = lengthRange.representation,
       #index_i = trafficVolumeIndex.index.indexNumber,
       index_p = volumeIndexNumber.percentageChange,
+      coverage = volumeIndexCoverage.hours.percentage,
       confidence_width = confidenceInterval.confidenceWidth,
+      standard_deviation = standardDeviation,
       area_name = area.name,
       year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
       month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month
     ) %>%
     dplyr::filter(day_type == "ALL") %>%
     dplyr::select(area_name, year, month, road_category, length_range, index_p,
-                  confidence_width) %>%
+                  coverage, standard_deviation, confidence_width) %>%
     dplyr::mutate(period = "year_to_date")
 
   published_index <- bind_rows(monthly_data,

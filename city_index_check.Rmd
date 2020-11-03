@@ -10,8 +10,6 @@ source("rmd_setup.R")
 # Traffic Data API calls to get points metadata and aadt
 source("get_from_trafficdata_api.R")
 source("split_road_system_reference.R")
-source("index_report_functions.R")
-library(ggthemes)
 library(DT)
 library(htmltools)
 ```
@@ -35,7 +33,7 @@ library(htmltools)
 # Choose
 index_year <- 2020
 index_month <- 10
-city_number <- 958
+city_number <- 952
 
 # Fetch
 city_index <- get_published_index_for_months(city_number, index_year, index_month)
@@ -124,7 +122,7 @@ pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
     diff_total_short = round(index_short - index_total_p, digits = 1))
      
 city_trps_new_pointindex <- city_trps_meta %>% 
-  dplyr::left_join(point_index_new_prepared_2)
+  dplyr::left_join(point_index_new_prepared)
 
 # Widening for table view
 pointindex_prepared_all_wide_total_index <- pointindex_prepared_all %>% 
@@ -260,7 +258,7 @@ pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 Skulle hatt med ÅDT. 
 
 ```{r point_plot, message=FALSE, fig.width=12}
-point_number <- 48
+point_number <- 3
 trp_id_here <- city_trps_meta$trp_id[point_number]
 
 trp_name <- city_trps_meta %>% 
@@ -290,6 +288,9 @@ pointindex_long_2 %>%
 
 # Notes
 # Danmarksplass ved ladestasjon ekskludert 6, 8, 9, 10 fordi alle ikke er mellom lette og tunge
+
+# Randabergveien må bort fra 1-4
+# Bbybrua sør skal bort 9-10
 ```
 
 ```{r table_trp_consistency}
