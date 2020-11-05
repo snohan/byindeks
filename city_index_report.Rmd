@@ -41,17 +41,54 @@ source("rmd_setup.R")
 
 
 
-```{r points, include = FALSE}
-road_lengths <- read_road_length_csv("road_lengths/bergen_road_lengths.csv")
+```{r get_data, include = FALSE}
+# City numbers
+# Bergen 958
+# Buskerudbyen 1952
+# Grenland 955
+# Kristiansand og omegn 957
+# Nedre Glomma 953
+# Nord-Jæren 952
+# Oslo 959
+# Trondheim 960
+# Tromsø 961
+
+city_number_county_name <- 
+  tibble::tibble(
+    city_no = c(958, 1952, 955, 957, 953, 952, 959, 960, 961),
+    county_name = c("Vestland", "Viken", "Vestfold og Telemark", "Agder",
+                    "Viken", "Rogaland", "Oslo kommune, Viken", "Trøndelag",
+                    "Troms og Finnmark")
+  )
+
+city_number <- 952
+
+county_name <- city_number_county_name %>% 
+  dplyr::filter(city_no == city_number) %>% 
+  dplyr::select(county_name) %>% 
+  as.character()
+
+caption_credit <- paste0("Data: Statens vegvesen, ",
+                         county_name,
+                         " fylkeskommune.")
+
+road_lengths <- read_road_length_csv(
+  paste0("road_lengths/road_lengths_", city_number, ".csv"))
   
 all_point_info <- 
-  read.csv2("data_indexpoints_tidy/indekspunkt_bergen_2017.csv")
+  read.csv2(
+    paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".csv"))
 
 city_info <-
-    read.csv2("data_indexpoints_tidy/byindeks_bergen_2017.csv")
+    read.csv2(
+      paste0("data_indexpoints_tidy/byindeks_", city_number, ".csv"))
 
 city_monthly <- 
-  read.csv2("data_indexpoints_tidy/byindeks_maanedlig_bergen_2017.csv")
+  read.csv2(
+    paste0("data_indexpoints_tidy/byindeks_maanedlig_", city_number, ".csv"))
+
+latest_month <- max(city_monthly$month_object) %>% 
+  lubridate::month(label = TRUE, abbr = FALSE)
 
 #city_36_month <- 
 #  read.csv2("data_indexpoints_tidy/byindeks_36_maaneder_bergen_2017.csv")
@@ -73,13 +110,15 @@ index_all_years_ci_upper <-
 ```
 
 ## Områdeavgrensing og vegnett
-Rapporteringen av byindeksen per 1. tertial 2020 gjelder for byvekstavtalen for Bergen 2017-2023. Når forslag til ny byvekstavtale for Bergensområdet 2019-2029 er regjeringsbehandlet vil det nye avtaleområdet inkluderes i rapporteringen, dvs. Øygarden, Alver, Bjørnafjorden og Askøy kommuner i tillegg til Bergen kommune. 
+```{r child = 'intro_952.Rmd'}
+```
 
 Veglengder fordelt på vegkatori for gjeldende område er oppsummert i tabellen nedenfor.
 
 ```{r road_length_sum}
 road_lengths %>% create_city_road_length_table()
 ```
+
 ```{r child = 'vegnett.Rmd'}
 ```
 
@@ -147,8 +186,7 @@ create_city_index_table(city_info)
 
 \newline
 **Byindeksen estimerer endringen i trafikkmengden fra 
-2017 til oktober 2020
-til å være 
+2017 til `r latest_month` 2020 til å være 
 `r stringr::str_replace(as.character(index_all_years), "\\.", ",")` %.**
 Usikkerheten knyttet til byindeksen gjenspeiles i et 95 % konfidensintervall som er fra
 `r stringr::str_replace(as.character(index_all_years_ci_lower), "\\.", ",")` % til
@@ -197,14 +235,13 @@ ggplot() +
              color = "#444F55", size = 5, alpha = 0.9) +
   coord_flip() +
   theme_minimal() +
-  labs(x = NULL, y = "Endring i trafikkmengde (%)",
-       caption = "Data: Statens vegvesen, Vestland fylkeskommune") +
+  labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
+       caption = caption_credit) +
   ggtitle("Estimert endring i trafikkmengde",
           subtitle = "Byindeksen (store prikker) og punktene (små prikker)")
-
 ```
 
-Kartet nedenfor viser endringen i byindekspunktene fra referanseåret 2017 til og med oktober 2020.
+Kartet nedenfor viser endringen i byindekspunktene fra referanseåret 2017 til og med `r latest_month` 2020.
 
 ```{r map_trp_index, fig.width=6, fig.height=7, fig.cap="Trafikkregistreringspunktene og endring i trafikkmengde."}
 create_pointindex_map(all_point_info)
@@ -255,13 +292,15 @@ all_point_info %>%
 
 \newline
 
-I figuren nedenfor er spredningen i punktindeksene illustrert. Den horisontale grønne streken viser byindeksens samlede verdi for hele perioden 2017 - oktober 2020.
+I figuren nedenfor er spredningen i punktindeksene illustrert. Den horisontale grønne streken viser byindeksens samlede verdi for hele perioden 2017 - `r latest_month` 2020.
 
 \newline
 
-```{r point_graph, fig.width=6, fig.height=10}
+```{r point_graph, fig.width=6, fig.height=7}
 all_point_info_index <- all_point_info %>% 
   dplyr::filter(!is.na(index)) 
+
+subtitle_here <- paste0("Fra 2017 til ", latest_month, " 2020")
 
 ggplot2::ggplot() +
   geom_point(data = all_point_info_index, 
@@ -270,9 +309,9 @@ ggplot2::ggplot() +
   geom_hline(yintercept = index_all_years, color = "#58B02C") +
   geom_hline(yintercept = 0, color = "#000000") +
   xlab("") +
-  ylab("Endring i trafikkmengde (%)") +
+  ylab("Endring i trafikkmengde (%) \n") +
   ggtitle(label = "ÅDT og endring i trafikkmengde",
-          subtitle = "Fra 2017 til oktober 2020") +
+          subtitle = subtitle_here) +
   coord_flip() +
   scale_size(name = "ÅDT") +
   geom_rect(aes(xmin = -Inf, xmax = Inf, 
@@ -282,12 +321,13 @@ ggplot2::ggplot() +
   theme_minimal() +
   theme(legend.position = "bottom",
         axis.text.y = element_text(size = 7)) +
-  labs(caption = "Data: Statens vegvesen, Vestland fylkeskommune")
+  labs(caption = caption_credit)
 # TODO: Add explaining labels with ggforce?
 ```
 
 ### Spesielle trafikkforhold
-Stor deler av 2020 har Carl Konows gate vært stengt for gjennomkjøring. Dette har omfordelt trafikken i registreringspunktene ved Gyldenpris og Damsgårdsveien. Disse punktene har derfor indeksverdier som avviker fra de andre, men dekker samlet sett utviklingen i området.
+```{r child = 'trafikkforhold_952.Rmd'}
+```
 
 
 ## Endring per måned

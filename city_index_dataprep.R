@@ -52,13 +52,7 @@ points <- get_points() %>%
 #               intersection_part_number, intersection_meter,
 #               county_name, municipality_name, lat, lon, road_link_position)
 
-###
-###
-###
 
-# TODO: Generalize method
-# TODO: Script file per city anyway
-# Still need to specify csv-files for years before 2020 to get the pointindex
 
 # City numbers
 # Bergen 958
@@ -72,24 +66,10 @@ points <- get_points() %>%
 # Tromsø 961
 
 # Choose
-#index_year <- 2020
 index_month <- 10
-city_number <- 958
+city_number <- 952
 
-
-
-# Bergen 2017 points ####
-# Using the same set of trps as with refyear 2016.
-# ØKV say we must use refyear 2017 now.
-# this_citys_trps <- choose_city_trp_ids("Bergen", 2016) %>%
-#   dplyr::left_join(points) %>%
-#   dplyr::arrange(road_category, road_number,
-#                  section_number, subsection_number, meter,
-#                  intersection_part_number, intersection_meter) %>%
-#   dplyr::select(trp_id, msnr, name, road_reference, road_category_and_number,
-#                 county_name, municipality_name,
-#                 lat, lon, road_link_position)
-
+# Pointindices ####
 # TODO: TRPs might differ from year to year!
 
 # Fetch
@@ -97,12 +77,16 @@ city_index_2018 <- get_published_index_for_months(city_number, 2018, 12)
 city_index_2019 <- get_published_index_for_months(city_number, 2019, 12)
 city_index_2020 <- get_published_index_for_months(city_number, 2020, index_month)
 
-pointindex_18 <-
-  readPointindexCSV("data_index_raw/pointindex_bergen-2018-12_2017.csv") %>%
+
+# Still need to specify csv-files for years before 2020 to get the pointindex as they are not in API
+pointindex_18 <- readPointindexCSV(
+  paste0("data_index_raw/pointindex_", city_number, "_", 2018, ".csv")
+  ) %>%
   rename(index_18 = index)
 
-pointindex_19 <-
-  readPointindexCSV("data_index_raw/pointindex_bergen-2019-12_2018.csv") %>%
+pointindex_19 <- readPointindexCSV(
+  paste0("data_index_raw/pointindex_", city_number, "_", 2019, ".csv")
+  ) %>%
   rename(index_19 = index)
 
 pointindex_20_all <- get_published_pointindex_for_months(city_number, 2020, index_month)
@@ -145,11 +129,20 @@ adt_filtered <- adt %>%
   dplyr::select(trp_id, aadt_length_range, year) %>%
   dplyr::rename(adt = 2)
 
+
+# Bergen
 adt_manual <- data.frame(
   trp_id = c("20642V805115", "25132V805616",
              "22439V804830"),
   adt = c(9000, 8800, 6800),
   year = c(2018, 2017, 2017)
+)
+
+# Nord-Jæren
+adt_manual <- data.frame(
+  trp_id = c("68351V319882"),
+  adt = c(31500),
+  year = c(2017)
 )
 
 adt_all <- bind_rows(adt_filtered, adt_manual)
@@ -183,12 +176,12 @@ this_citys_trp_index_refyear <- this_citys_trp_index %>%
 # TODO: 3 year rolling index, but not now - only for the city
 
 write.csv2(this_citys_trp_index_refyear,
-           file = "data_indexpoints_tidy/indekspunkt_bergen_2017.csv",
+           file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".csv"),
            row.names = F)
 
 
 
-# Bergen 2017 city ####
+# City index ####
 city_year_to_date_18 <- city_index_2018 %>%
   dplyr::filter(month == index_month,
                 road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
@@ -239,12 +232,12 @@ city_index_all <- city_index %>%
                 ci_end = index_p + confidence_width)
 
 write.csv2(city_index_all,
-           file = "data_indexpoints_tidy/byindeks_bergen_2017.csv",
+           file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".csv"),
            row.names = F)
 
 
 
-# Bergen 2017 monthly ####
+# City index monthly ####
 city_monthly <- bind_rows(
   monthly_city_index(city_index_2018),
   monthly_city_index(city_index_2019),
@@ -253,5 +246,5 @@ city_monthly <- bind_rows(
          standard_deviation, confidence_width)
 
 write.csv2(city_monthly,
-           file = "data_indexpoints_tidy/byindeks_maanedlig_bergen_2017.csv",
+           file = paste0("data_indexpoints_tidy/byindeks_maanedlig_", city_number, ".csv"),
            row.names = F)
