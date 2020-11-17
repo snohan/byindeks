@@ -771,6 +771,7 @@ get_aadt_by_length_for_trp_list <- function(trp_list) {
 #trp_ids <- "\"44656V72812\", \"77022V72359\""
 #trp_ids <- "35258V2475662"
 #trp_ids <- "47719V443837" # Vollsveien med alle lengdetall ekskludert
+#trp_ids <- "17909V41450" # trp helt uten data
 
 get_pointindices <- function(trp_ids, indexyear) {
   # Get pointindex for trps
@@ -850,45 +851,50 @@ get_pointindices <- function(trp_ids, indexyear) {
   # 2. year to date
   # 3. last 12
 
-  trp_data_data_1 <- trp_data$data %>%
-    as.data.frame() %>%
-    dplyr::select(trafficVolumeIndices.trafficRegistrationPoint.id,
-                  trafficVolumeIndices.calculationMonth.year,
-                  trafficVolumeIndices.calculationMonth.month,
-                  trafficVolumeIndices.roadCategory.id,
-                  trafficVolumeIndices.volumeIndicesMonth) %>%
-    tidyr::unnest(cols = c(trafficVolumeIndices.volumeIndicesMonth)) %>%
-    # Keeping only rows with actual results
-    dplyr::filter(isExcluded == "FALSE") %>%
-    dplyr::mutate(period = "month")
+  if(length(trp_data$data$trafficVolumeIndices) == 0){
+    # If no index
+    trp_data_data_all <- data.frame()
+  }else{
+    trp_data_data_1 <- trp_data$data %>%
+      as.data.frame() %>%
+      dplyr::select(trafficVolumeIndices.trafficRegistrationPoint.id,
+                    trafficVolumeIndices.calculationMonth.year,
+                    trafficVolumeIndices.calculationMonth.month,
+                    trafficVolumeIndices.roadCategory.id,
+                    trafficVolumeIndices.volumeIndicesMonth) %>%
+      tidyr::unnest(cols = c(trafficVolumeIndices.volumeIndicesMonth)) %>%
+      # Keeping only rows with actual results
+      dplyr::filter(isExcluded == "FALSE") %>%
+      dplyr::mutate(period = "month")
 
-  trp_data_data_2 <- trp_data$data %>%
-    as.data.frame() %>%
-    dplyr::select(trafficVolumeIndices.trafficRegistrationPoint.id,
-                  trafficVolumeIndices.calculationMonth.year,
-                  trafficVolumeIndices.calculationMonth.month,
-                  trafficVolumeIndices.roadCategory.id,
-                  trafficVolumeIndices.volumeIndicesYearToDate) %>%
-    tidyr::unnest(cols = c(trafficVolumeIndices.volumeIndicesYearToDate)) %>%
-    # Keeping only rows with actual results
-    dplyr::filter(isExcluded == "FALSE")%>%
-    dplyr::mutate(period = "year_to_date")
+    trp_data_data_2 <- trp_data$data %>%
+      as.data.frame() %>%
+      dplyr::select(trafficVolumeIndices.trafficRegistrationPoint.id,
+                    trafficVolumeIndices.calculationMonth.year,
+                    trafficVolumeIndices.calculationMonth.month,
+                    trafficVolumeIndices.roadCategory.id,
+                    trafficVolumeIndices.volumeIndicesYearToDate) %>%
+      tidyr::unnest(cols = c(trafficVolumeIndices.volumeIndicesYearToDate)) %>%
+      # Keeping only rows with actual results
+      dplyr::filter(isExcluded == "FALSE")%>%
+      dplyr::mutate(period = "year_to_date")
 
-  trp_data_data_3 <- trp_data$data %>%
-    as.data.frame() %>%
-    dplyr::select(trafficVolumeIndices.trafficRegistrationPoint.id,
-                  trafficVolumeIndices.calculationMonth.year,
-                  trafficVolumeIndices.calculationMonth.month,
-                  trafficVolumeIndices.roadCategory.id,
-                  trafficVolumeIndices.volumeIndicesLast12Months) %>%
-    tidyr::unnest(cols = c(trafficVolumeIndices.volumeIndicesLast12Months)) %>%
-    # Keeping only rows with actual results
-    dplyr::filter(isExcluded == "FALSE")%>%
-    dplyr::mutate(period = "last_12_months")
+    trp_data_data_3 <- trp_data$data %>%
+      as.data.frame() %>%
+      dplyr::select(trafficVolumeIndices.trafficRegistrationPoint.id,
+                    trafficVolumeIndices.calculationMonth.year,
+                    trafficVolumeIndices.calculationMonth.month,
+                    trafficVolumeIndices.roadCategory.id,
+                    trafficVolumeIndices.volumeIndicesLast12Months) %>%
+      tidyr::unnest(cols = c(trafficVolumeIndices.volumeIndicesLast12Months)) %>%
+      # Keeping only rows with actual results
+      dplyr::filter(isExcluded == "FALSE")%>%
+      dplyr::mutate(period = "last_12_months")
 
-trp_data_data_all <- dplyr::bind_rows(trp_data_data_1,
-                                      trp_data_data_2,
-                                      trp_data_data_3)
+    trp_data_data_all <- dplyr::bind_rows(trp_data_data_1,
+                                          trp_data_data_2,
+                                          trp_data_data_3)
+  }
 
   if(nrow(trp_data_data_all) == 0){
       # If no index
