@@ -106,7 +106,8 @@ cities_points <- bind_rows(cities_points_start, additional_trps)
 points <- get_points() %>%
   dplyr::select(trp_id, name, road_reference, municipality_name,
                 lat, lon) %>%
-  dplyr::distinct(trp_id, .keep_all = T)
+  dplyr::distinct(trp_id, .keep_all = T) %>% 
+  dplyr::mutate(name = stringr::str_to_title(name, locale = "no"))
 
 # Adding metadata to trps
 trps <- dplyr::left_join(cities_points, points) %>%
@@ -115,10 +116,10 @@ trps <- dplyr::left_join(cities_points, points) %>%
 
 # Fetch daily traffic
 week_2019_from <- "2019-09-30T00:00:00+02:00"
-week_2019_to <- "2019-11-04T00:00:00+02:00"
+week_2019_to <- "2019-11-18T00:00:00+02:00"
 
 week_2020_from <- "2020-09-28T00:00:00+02:00"
-week_2020_to <- "2020-11-02T00:00:00+02:00"
+week_2020_to <- "2020-11-16T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -591,8 +592,8 @@ make_daily_plot_city <- function(area_dt, subtitle_text) {
   geom_hline(yintercept = 0, color = "#000000") +
   facet_grid(weekno ~., switch = "y") +
   scale_y_continuous(position = "right",
-                     limits = c(-25, 25),
-                     breaks = c(-15, 0, 15)) +
+                     limits = c(-35, 35),
+                     breaks = c(-20, 0, 20)) +
   xlab("") +
   ylab("Endring i trafikkmengde (%)\n") +
   ggtitle(label = "Daglig endring i trafikkmengde",
@@ -634,7 +635,7 @@ make_city_table_city(bergen_dt_2019_2020,
                 "Prosentvis endring i trafikkmengde i Bergen 2019 til 2020.")
 ```
 \
-```{r plot_city_bergen, fig.width=8, fig.height=8}
+```{r plot_city_bergen, fig.width=8, fig.height=9}
 make_daily_plot_city(bergen_dt_2019_2020, "")
 ```
 
@@ -644,7 +645,7 @@ make_city_table_city(bodo_dt_2019_2020,
                 "Prosentvis endring i trafikkmengde i Bodø 2019 til 2020.")
 ```
 \
-```{r plot_city_bodo, fig.width=8, fig.height=8}
+```{r plot_city_bodo, fig.width=8, fig.height=9}
 make_daily_plot_city(bodo_dt_2019_2020, "")
 ```
 
@@ -654,7 +655,7 @@ make_city_table_city(nord_jaeren_dt_2019_2020,
                 "Prosentvis endring i trafikkmengde i Nord-Jæren 2019 til 2020.")
 ```
 \
-```{r plot_city_nord_jaeren, fig.width=8, fig.height=8}
+```{r plot_city_nord_jaeren, fig.width=8, fig.height=9}
 make_daily_plot_city(nord_jaeren_dt_2019_2020, "")
 ```
 
@@ -664,7 +665,7 @@ make_city_table_city(oslo_og_akershus_dt_2019_2020,
                 "Prosentvis endring i trafikkmengde i Oslo og Akershus 2019 til 2020.")
 ```
 \
-```{r plot_city_oslo_og_akershus, fig.width=8, fig.height=8}
+```{r plot_city_oslo_og_akershus, fig.width=8, fig.height=9}
 make_daily_plot_city(oslo_og_akershus_dt_2019_2020, "")
 ```
 
@@ -674,7 +675,7 @@ make_city_table_city(tromsoe_dt_2019_2020,
                 "Prosentvis endring i trafikkmengde i Tromsø 2019 til 2020.")
 ```
 \
-```{r plot_city_tromsoe, fig.width=8, fig.height=8}
+```{r plot_city_tromsoe, fig.width=8, fig.height=9}
 make_daily_plot_city(tromsoe_dt_2019_2020, "")
 ```
 
@@ -684,7 +685,7 @@ make_city_table_city(trondheim_dt_2019_2020,
                 "Prosentvis endring i trafikkmengde i Trondheim 2019 til 2020.")
 ```
 \
-```{r plot_city_trondheim, fig.width=8, fig.height=8}
+```{r plot_city_trondheim, fig.width=8, fig.height=9}
 make_daily_plot_city(trondheim_dt_2019_2020, "")
 ```
 

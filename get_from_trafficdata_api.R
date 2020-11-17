@@ -770,6 +770,7 @@ get_aadt_by_length_for_trp_list <- function(trp_list) {
 #indexyear <- "2020"
 #trp_ids <- "\"44656V72812\", \"77022V72359\""
 #trp_ids <- "35258V2475662"
+#trp_ids <- "47719V443837" # Vollsveien med alle lengdetall ekskludert
 
 get_pointindices <- function(trp_ids, indexyear) {
   # Get pointindex for trps
@@ -889,13 +890,35 @@ trp_data_data_all <- dplyr::bind_rows(trp_data_data_1,
                                       trp_data_data_2,
                                       trp_data_data_3)
 
-
   if(nrow(trp_data_data_all) == 0){
-      # hva gjør vi når det ikke er noen indekser?
+      # If no index
       trp_data_data_all <- data.frame()
     }else{
       trp_data_data_all <- trp_data_data_all %>%
-        tidyr::unnest(cols = c(lengthRangesTrafficVolumeIndex.indexNumbers)) %>%
+        tidyr::unnest(cols = c(lengthRangesTrafficVolumeIndex.indexNumbers))
+      # Stop to check if length is excluded
+      if(is.null(trp_data_data_all$index.percentageChange)) {
+        trp_data_data_all <- trp_data_data_all %>%
+          dplyr::select(trp_id = trafficVolumeIndices.trafficRegistrationPoint.id,
+                        year = trafficVolumeIndices.calculationMonth.year,
+                        month = trafficVolumeIndices.calculationMonth.month,
+                        road_category = trafficVolumeIndices.roadCategory.id,
+                        day_type = dayType,
+                        period = period,
+                        index_total = totalTrafficVolumeIndex.indexNumber.index.indexNumber,
+                        index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
+                        index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
+                        length_excluded = lengthRangesTrafficVolumeIndex.isExcluded,
+                        length_range = lengthRange.representation,
+                        length_coverage = lengthRangesTrafficVolumeIndex.indexCoverage.hours.percentage) %>%
+          dplyr::mutate(length_index_p = NA) %>%
+          dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
+          dplyr::mutate(length_range = dplyr::if_else(length_range == "[..,5.6)",
+                                                      "short", "long")) %>%
+          tidyr::pivot_wider(names_from = length_range, names_prefix = "index_",
+                             values_from = length_index_p)
+      }else{
+        trp_data_data_all <- trp_data_data_all %>%
         dplyr::select(trp_id = trafficVolumeIndices.trafficRegistrationPoint.id,
                       year = trafficVolumeIndices.calculationMonth.year,
                       month = trafficVolumeIndices.calculationMonth.month,
@@ -915,6 +938,7 @@ trp_data_data_all <- dplyr::bind_rows(trp_data_data_1,
                                                     "short", "long")) %>%
         tidyr::pivot_wider(names_from = length_range, names_prefix = "index_",
                            values_from = length_index_p)
+      }
     }
 
   return(trp_data_data_all)

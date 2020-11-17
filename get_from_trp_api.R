@@ -1253,3 +1253,71 @@ get_manual_points_from_trpapi_httr <- function() {
 
   return(points_trp)
 }
+
+
+
+get_trs_trp_lanes_httr <- function() {
+  # Get all trs' and their trps
+  api_query <-
+    "query trs_trp_lanes {
+  trafficRegistrationStations (stationType: [CONTINUOUS], trafficType: [VEHICLE], withTrps: true) {
+    id
+    name
+    stationType
+    trafficType
+    location {
+      municipality {
+        name
+        county {
+          number
+          name
+        }
+      }
+    }
+    commissions {
+      validFrom
+      validTo
+      consistsOf {
+        trp {
+          id
+        }
+        lanes {
+          trsLaneNumber
+          trpLaneNumber
+        }
+      }
+    }
+  }
+}
+"
+
+api_query_trimmed <- stringr::str_replace_all(api_query, "[\r\n]", " ")
+
+api_query_string <- paste0('{"query":"', api_query_trimmed, '" }')
+
+response <- httr::POST(url = trp_api_url,
+                       httr::add_headers(.headers = trp_api_headers),
+                       httr::set_cookies(.cookies = trp_api_cookies),
+                       body = api_query_string)
+
+response_parsed <- fromJSON(str_conv(response$content, encoding = "UTF-8"),
+                            simplifyDataFrame = T,
+                            flatten = T) %>%
+  as.data.frame() %>%
+  tidyr::unnest(cols = c(data.trafficRegistrationStations.commissions)) %>%
+  tidyr::unnest(cols = c(consistsOf)) %>%
+  tidyr::unnest(cols = c(lanes)) %>%
+  dplyr::select(trs_id = data.trafficRegistrationStations.id,
+                trs_name = data.trafficRegistrationStations.name,
+                station_type = data.trafficRegistrationStations.stationType,
+                traffic_type = data.trafficRegistrationStations.trafficType,
+                valid_from = validFrom,
+                valid_to = validTo,
+                trs_lane_number = trsLaneNumber,
+                trp_lane_number = trpLaneNumber,
+                trp_id = trp.id,
+                municipality_name = data.trafficRegistrationStations.location.municipality.name,
+                county_name = data.trafficRegistrationStations.location.municipality.county.name)
+
+return(response_parsed)
+}

@@ -2,6 +2,7 @@
 
 source("H:/Programmering/R/byindeks/split_road_system_reference.R")
 
+# deprecated?
 choose_city_trp_ids <- function(city_name,
                                 start_year) {
 
@@ -14,6 +15,7 @@ choose_city_trp_ids <- function(city_name,
     dplyr::filter(!is.na(trp_id))
 }
 
+# deprecated?
 choose_new_city_trp_ids <- function(city_name,
                                 start_year) {
 

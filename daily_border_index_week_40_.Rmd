@@ -53,7 +53,8 @@ border_trp_ids <- c("04904V971774",
 points <- get_points() %>%
   dplyr::select(trp_id, name, road_reference, municipality_name,
                 lat, lon) %>%
-  dplyr::distinct(trp_id, .keep_all = T)
+  dplyr::distinct(trp_id, .keep_all = T) %>% 
+  dplyr::mutate(name = stringr::str_to_title(name, locale = "no"))
 
 # Adding metadata to trps
 border_trps <- points %>%
@@ -79,10 +80,10 @@ border_trp_adt <- border_trps %>%
 
 # From week 40
 borderdata_2019_from <- "2019-09-30T00:00:00+02:00"
-borderdata_2019_to <- "2019-11-04T00:00:00+02:00"
+borderdata_2019_to <- "2019-11-18T00:00:00+02:00"
 
 borderdata_2020_from <- "2020-09-28T00:00:00+02:00"
-borderdata_2020_to <- "2020-11-02T00:00:00+02:00"
+borderdata_2020_to <- "2020-11-16T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -610,13 +611,13 @@ make_border_trp_table(border_trp_dt_44,
 ```
 
 ```{r trptable_201945}
-#make_border_trp_table(border_trp_dt_45,
-#                      "Prosentvis endring i trafikkmengde fra uke 45 2019 til uke 45 2020.")
+make_border_trp_table(border_trp_dt_45,
+                      "Prosentvis endring i trafikkmengde fra uke 45 2019 til uke 45 2020.")
 ```
 
 ```{r trptable_201946}
-#make_border_trp_table(border_trp_dt_46,
-#                      "Prosentvis endring i trafikkmengde fra uke 46 2019 til uke 46 2020.")
+make_border_trp_table(border_trp_dt_46,
+                      "Prosentvis endring i trafikkmengde fra uke 46 2019 til uke 46 2020.")
 ```
 
 ```{r trptable_201947}

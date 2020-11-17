@@ -32,8 +32,8 @@ library(htmltools)
 
 # Choose
 index_year <- 2020
-index_month <- 10
-city_number <- 958
+index_month <- 8
+city_number <- 959
 
 # Fetch
 city_index <- get_published_index_for_months(city_number, index_year, index_month)
@@ -89,7 +89,7 @@ pointindex_prepared <- pointindices %>%
 point_index_new_prepared <- point_index_new %>% 
   dplyr::filter(day_type == "ALL",
                 period == "month",
-                month == index_month) %>% 
+                month == index_month + 1) %>% 
   dplyr::select(trp_id, year, month, index_total_p,
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
@@ -176,7 +176,10 @@ pointindex_wide <- dplyr::bind_rows(
   pointindex_prepared_all_wide_check,
   pointindex_prepared_all_wide_diff
   ) %>% 
-  dplyr::arrange(road_reference)
+  split_road_system_reference() %>% 
+  dplyr::select(name, road = road_category_and_number,
+                value_1:value_type)
+  #dplyr::arrange(road_reference)
 
 # Longing :) for plot
 pointindex_long <- pointindex_prepared_all %>% 
@@ -258,7 +261,7 @@ pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 Skulle hatt med ÅDT. 
 
 ```{r point_plot, message=FALSE, fig.width=12}
-point_number <- 3
+point_number <- 59
 trp_id_here <- city_trps_meta$trp_id[point_number]
 
 trp_name <- city_trps_meta %>% 
@@ -287,10 +290,6 @@ pointindex_long_2 %>%
           subtitle = "Trafikkmengde i 2020 sammenlignet med 2019")
 
 # Notes
-# Danmarksplass ved ladestasjon ekskludert 6, 8, 9, 10 fordi alle ikke er mellom lette og tunge
-
-# Randabergveien må bort fra 1-4
-# Bbybrua sør skal bort 9-10
 ```
 
 ```{r table_trp_consistency}
@@ -301,7 +300,7 @@ pointindex_wide %>%
     options = list(
       dom = "Blfrtip",
       #buttons = c("excel"),
-      pageLength = 25,
-      lengthMenu = c(25, 50, 100),
+      pageLength = 21,
+      lengthMenu = c(21, 42, 70),
       autoWidth = TRUE))
 ```

@@ -67,7 +67,7 @@ points <- get_points() %>%
 
 # Choose
 index_month <- 10
-city_number <- 952
+city_number <- 959
 
 # Pointindices ####
 # TODO: TRPs might differ from year to year!
@@ -124,7 +124,7 @@ adt_filtered <- adt %>%
   dplyr::filter(length_quality > 90) %>%
   dplyr::filter(coverage > 50) %>%
   dplyr::group_by(trp_id) %>%
-  dplyr::filter(year >= 2017) %>%
+  dplyr::filter(year >= 2019) %>%
   dplyr::filter(year == min(year)) %>%
   dplyr::select(trp_id, aadt_length_range, year) %>%
   dplyr::rename(adt = 2)
@@ -144,6 +144,30 @@ adt_manual <- data.frame(
   adt = c(31500),
   year = c(2017)
 )
+
+# Oslo
+this_citys_trp_index_prel <- points %>%
+  dplyr::filter(trp_id %in% city_trps) %>%
+  split_road_system_reference() %>%
+  dplyr::select(trp_id, name, road_reference,
+                road_category_and_number,
+                county_name, municipality_name,
+                lat, lon, road_link_position) %>%
+  left_join(adt_filtered) %>%
+  left_join(pointindex_20)
+
+missing_adt <- this_citys_trp_index_prel %>%
+  dplyr::filter(is.na(adt)) %>%
+  dplyr::mutate(adt = mapply(getAadtByRoadlinkposition, road_link_position))
+
+missing_adt_small_cars <- missing_adt %>%
+  dplyr::mutate(adt = round(0.9 * adt, digits = -2),
+                year = 2019)
+
+this_citys_trp_index <- this_citys_trp_index_prel %>%
+  dplyr::filter(!is.na(adt)) %>%
+  dplyr::bind_rows(missing_adt_small_cars)
+# Oslo end, skip to refyear
 
 adt_all <- bind_rows(adt_filtered, adt_manual)
 

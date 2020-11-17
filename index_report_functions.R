@@ -1,5 +1,34 @@
 #
 
+tabellnummer <- officer::run_autonum(seq_id = "table", pre_label = "Tabell ",
+                                     post_label = ".")
+
+create_point_table <- function(all_point_info_df, caption_text) {
+
+  all_point_info_df %>%
+    select(name, road_reference, adt, year) %>%
+    flextable() %>%
+    colformat_num(j = "adt",
+                  big.mark = " ", digits = 0) %>%
+    set_header_labels(name = "Navn",
+                      road_reference = "Vegreferanse",
+                      adt = "ÅDT",
+                      year = "År") %>%
+    align(i = 1, j = 4, align = "center", part = "header") %>%
+    bold(part = "header") %>%
+    fontsize(size = 9, part = "all") %>%
+    font(fontname = "Lucida Sans Unicode", part = "all") %>%
+    bg(bg = "#ED9300", part = "header") %>%
+    border_remove() %>%
+    hline_top(part = "header", border = borderline) %>%
+    hline_bottom(part = "all", border = borderline) %>%
+    autofit() %>%
+    height_all(height = .2) %>%
+    padding(padding.top = .3,
+            padding.bottom = .3) %>%
+    set_caption(caption_text)
+}
+
 create_point_adt_map <- function(all_point_info_df) {
   palett_adt <-
     colorNumeric(palette = "Greens",
@@ -89,7 +118,7 @@ create_city_index_table <- function(city_info) {
     flextable::flextable() %>%
     colformat_num(j = c("index_p", "ci_start", "ci_end"), digits = 1) %>%
     set_header_labels(year_from_to = "Periode",
-                      index_p = "Endring i trafikkmengde (%)",
+                      index_p = "Endring i \n trafikkmengde (%)",
                       ci_start = "95 % konfidensintervall") %>%
     merge_at(i = 1, j = 3:4, part = "header") %>%
     bold(part = "header") %>%
@@ -117,7 +146,7 @@ create_monthly_city_index_table <- function(city_monthly) {
     colformat_num(j = c("index_p"), digits = 1) %>%
     set_header_labels(year = "År",
                       month_name = "Måned",
-                      index_p = "Endring i trafikkmengde (%)") %>%
+                      index_p = "Endring i \n trafikkmengde (%)") %>%
     bold(part = "header") %>%
     fontsize(size = 9, part = "all") %>%
     font(fontname = "Lucida Sans Unicode", part = "all") %>%
@@ -125,6 +154,7 @@ create_monthly_city_index_table <- function(city_monthly) {
     border_remove() %>%
     hline_top(part = "header", border = borderline) %>%
     hline_bottom(part = "all", border = borderline) %>%
+    align(j = 3, align = "center", part = "header") %>%
     autofit() %>%
     height_all(height = .2) %>%
     padding(padding.top = .3,
@@ -218,7 +248,7 @@ create_city_road_length_table <- function(road_lengths) {
     select(road_category_name, length_km) %>%
     flextable() %>%
     set_header_labels(road_category_name = "Vegkategori",
-                      length_km = "Lengde (km)") %>%
+                      length_km = "Lengde \n (km)") %>%
     bold(part = "header") %>%
     fontsize(size = 9, part = "all") %>%
     font(fontname = "Lucida Sans Unicode", part = "all") %>%
@@ -231,7 +261,9 @@ create_city_road_length_table <- function(road_lengths) {
     height_all(height = .2) %>%
     padding(padding.top = .3,
             padding.bottom = .3) %>%
-    set_caption("Samlet veglengde.")
+    set_caption("Samlet veglengde.",
+                autonum = tabellnummer,
+                style = "Tabelltekst")
 
   return(road_lengths_table)
 }
