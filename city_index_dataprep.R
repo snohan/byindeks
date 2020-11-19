@@ -124,8 +124,8 @@ adt_filtered <- adt %>%
   dplyr::filter(length_quality > 90) %>%
   dplyr::filter(coverage > 50) %>%
   dplyr::group_by(trp_id) %>%
-  dplyr::filter(year >= 2019) %>%
-  dplyr::filter(year == min(year)) %>%
+  #dplyr::filter(year >= 2019) %>%
+  dplyr::filter(year == max(year)) %>%
   dplyr::select(trp_id, aadt_length_range, year) %>%
   dplyr::rename(adt = 2)
 
@@ -166,7 +166,8 @@ missing_adt_small_cars <- missing_adt %>%
 
 this_citys_trp_index <- this_citys_trp_index_prel %>%
   dplyr::filter(!is.na(adt)) %>%
-  dplyr::bind_rows(missing_adt_small_cars)
+  dplyr::bind_rows(missing_adt_small_cars) %>%
+  split_road_system_reference()
 # Oslo end, skip to refyear
 
 adt_all <- bind_rows(adt_filtered, adt_manual)
@@ -197,6 +198,7 @@ refyear <- this_citys_trp_index %>%
 this_citys_trp_index_refyear <- this_citys_trp_index %>%
   bind_cols(refyear)
 
+# TODO: include coverage
 # TODO: 3 year rolling index, but not now - only for the city
 
 write.csv2(this_citys_trp_index_refyear,

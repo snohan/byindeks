@@ -1,12 +1,34 @@
 ---
-title: Riksgrenseindeks
+#title: Riksgrenseindeks
 output: 
-  word_document:
-    reference_docx: svv_notatmal3.docx
+  officedown::rdocx_document:
+    reference_docx: svv_template.docx
     toc: true
     toc_depth: 2
     fig_caption: true
-    fig_width: 7
+    fig_width: 6
+    tables:
+      style: Table
+      layout: autofit
+      width: 1.0
+      caption:
+        style: Tabelltekst
+        pre: 'Tabell'
+        sep: '. '
+      conditional:
+        first_row: true
+        first_column: false
+        last_row: false
+        last_column: false
+        no_hband: false
+        no_vband: true
+    plots:
+      style: Normal
+      align: center
+      caption:
+        style: Figurtekst
+        pre: 'Figur '
+        sep: '. '
 ---
 
 ```{r setup, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
@@ -21,14 +43,14 @@ source("get_from_nvdb_api.R")
 
 
 
-```{r get_data, include=FALSE}
+```{r get_data, include=FALSE, cache=TRUE}
 # Fetching published index from Traffic Data API
 index_2017 <- get_published_index_for_months(2952, 2017, 12)
 index_2018 <- get_published_index_for_months(2952, 2018, 12)
 index_2019 <- get_published_index_for_months(2952, 2019, 12)
-index_2020 <- get_published_index_for_months(2952, 2020, 9)
+index_2020 <- get_published_index_for_months(2952, 2020, 10)
 
-pointindex_2020 <- get_published_pointindex(2952, 2020, 9)
+pointindex_2020 <- get_published_pointindex(2952, 2020, 10)
 
 # Index points
 border_points <- pointindex_2020[[1]]
@@ -88,15 +110,38 @@ points_adt_all <- bind_rows(with_aadt, missing_aadt) %>%
   dplyr::arrange(desc(lat))
 
 # TODO: Point index
+
+# Numbering tables
+table_numbers <- run_autonum(
+  seq_id = "table",
+  pre_label = "Tabell ",
+  post_label = ". ",
+  bkm = NULL,
+  bkm_all = FALSE,
+  prop = NULL
+)
+```
+
+<br>
+
+**Tabelliste**
+```{r list_of_tables}
+officer::block_toc(style = "Tabelltekst")
+```
+<br>
+
+**Figurliste**
+```{r list_of_figures}
+officer::block_toc(style = "Figurtekst")
 ```
 
 # Riksgrenseindeks
 
 Riksgrenseindeksen er en vegtrafikkindeks for vegene som krysser riksgrensen langs hele Norge. Den estimerer endringen i trafikkmengde i prosent fra et år til det neste.
 
-Statens vegvesen har i dag til sammen 30 trafikkregistreringspunkter ved de ulike riksgrenseovergangene fra Svinesund i sør til Storskog i nordøst. Trafikken er ikke registrert i selve grenseovergangen, men litt inn på norsk side. Det er ingen store kryss mellom registreringspunktene og riksgrensen, slik at de fleste kjøretøy som blir registrert antas normalt å krysse riksgrensen, selv om enkelte kjøretøy kan stoppe og eventuelt snu på norsk side.
+Statens vegvesen har i dag 30 trafikkregistreringspunkter ved de ulike riksgrenseovergangene fra Svinesund i sør til Storskog i nordøst. Trafikken er ikke registrert i selve grenseovergangen, men litt inn på norsk side. Det er ingen store kryss mellom registreringspunktene og riksgrensen, slik at de fleste kjøretøy som blir registrert antas normalt å krysse riksgrensen, selv om enkelte kjøretøy kan stoppe og eventuelt snu på norsk side.
 
-Datagrunnlaget for beregningene hentes fra disse trafikkregistreringspunktene. Det vil gi et representativt utvalg for å kunne beregne trafikkutviklingen. Det gjøres en sammenligning av timetrafikken, dato mot dato i kalendermånedene.
+Datagrunnlaget for beregningene hentes fra disse trafikkregistreringspunktene. Det gir et representativt utvalg til å estimere trafikkutviklingen. I beregningen gjøres en sammenligning av timetrafikken, dato mot dato i kalendermånedene.
 
 Alle data er hentet fra [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/trafikkdata/). Timetrafikk med minst 95 % dekningsgrad inngår i beregningsgrunnlaget.
 
@@ -106,6 +151,12 @@ Været vil i perioder kunne påvirke trafikkmengden. For eksempel vil det ved d�
 
 
 # Trafikkregistreringspunkt ved riksgrenseovergangene
+
+Trafikkregistreringspunktene ligger spredt langs hele Fastlands-Norges riksgrense. Informasjon om trafikkmengde og plassering er gjengitt i tabell og kart nedenfor.
+
+Alle kjøretøy som passerer trafikkregistreringspunktene blir registrert og får målt sin lengde. Kjøretøyregistreringene blir delt inn i lengdeklasser. Skillet mellom lette og tunge kjøretøy er basert på målt lengde kortere eller lengre enn 5,6 m. Der årsdøgntrafikk (ÅDT) for lette og tunge er utelatt fra tabellen, er datagrunnlaget for dårlig til at tall kan presenteres. Summen av lette og tunge kan avvike noe fra totalen på grunn av avrunding.
+
+<br>
 
 ```{r point_table}
 points_adt_all %>%
@@ -120,6 +171,7 @@ points_adt_all %>%
                     aadt_long = "ÅDT \n tunge",
                     year = "År") %>%
   align(i = 1, j = 3:5, align = "right", part = "header") %>%
+  align(j = 6, align = "center", part = "all") %>%
   bold(part = "header") %>%
   fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
@@ -131,12 +183,18 @@ points_adt_all %>%
   height_all(height = .2) %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Trafikkregistreringspunkt og årsdøgntrafikk (ÅDT). Skillet mellom lette og tunge kjøretøy er basert på målt lengde kortere eller lengre enn 5,6 m. Der ÅDT for lette og tunge er utelatt fra tabellen, er datagrunnlaget for dårlig til at tall kan presenteres. Summen av lette og tunge kan avvike noe fra totalen på grunn av avrunding.")
+  set_caption("Trafikkregistreringspunktenes vegreferanse og årsdøgntrafikk.",
+              autonum = table_numbers,
+              style = "Tabelltekst")
 ```
+
+`r officer::fpar("", officer::run_pagebreak())`
 
 I kartet nedenfor vises plasseringen av trafikkregistreringspunktene. Grenseovergangene med mest trafikk er Ev6 og Fv118 ved Svinesund, Ev18 ved Ørje og Rv2 ved Magnor.
 
-```{r map_trp_index}
+<br>
+
+```{r map_trp_index, fig.width=6, fig.height=7, fig.cap="Trafikkregistreringspunktene plassering og årsdøgntrafikk.", cache=TRUE}
 create_point_adt_map(points_adt_all)
 ```
 
@@ -177,6 +235,9 @@ index_2020_upper_lower <- index_2020 %>%
 
 last_month <- max(index_2020_upper_lower$month)
 
+last_month_name <- max(index_2020_upper_lower$month_object) %>% 
+  lubridate::month(label = TRUE, abbr = FALSE)
+
 index_complete_years_upper_lower <- dplyr::bind_rows(index_2017,
                                                      index_2018,
                                                      index_2019
@@ -197,11 +258,16 @@ index_complete_years_upper_lower <- dplyr::bind_rows(index_2017,
 ```
 
 # Samlet endring i trafikk over riksgrensen
-Ved å slå sammen trafikkmengden i de ulike grenseovergangene, kan en samlet endring beregnes.
+Et vektet gjennomsnitt av endring i trafikkmengden i de ulike grenseovergangene, gir et estimat på endringen for hele riksgrensetrafikken.
 
+<br>
 
 ## Per måned
-Samlet endring i trafikkmengde per måned i 2020, sammenlignet med samme måned i 2019.
+Tabellen på neste side viser estimert samlet endring i trafikkmengde per måned i 2020, sammenlignet med samme måned i 2019. Usikkerheten i estimatet er synliggjort med et 95 % konfidensintervall.
+
+Fra mars 2020 gikk grensetrafikken betydelig ned som følge av tiltak mot spredningen av det nye koronaviruset.
+
+`r officer::fpar("", officer::run_pagebreak())`
 
 ```{r monthly_index_table}
 index_2020_upper_lower %>%
@@ -210,7 +276,7 @@ index_2020_upper_lower %>%
   select(month_name, year, length_range, index_lower, index_p, index_upper) %>%
   flextable() %>%
   colformat_num(j = 4:6, digits = 1) %>%
-  set_header_labels(month_name = "Måned", year = "År", length_range = "Kjøretøy-klasse",
+  set_header_labels(month_name = "Måned", year = "År", length_range = "Lengde-klasse",
                     index_lower = "Endring i trafikkmengde (%)") %>%
   add_header_row(values = c("", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
   merge_at(i = 1:2, j = 3, part = "header") %>% 
@@ -233,10 +299,14 @@ index_2020_upper_lower %>%
   fix_border_issues() %>% 
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Estimert samlet endring i trafikkmengde ved riksgrensen, med nedre og øvre grense for et 95 % konfidensintervall. Trafikken er sammenlignet per måned med samme måned året før.")
+  set_caption("Riksgrenseindeks per måned.",
+              autonum = table_numbers,
+              style = "Tabelltekst")
 ```
 
-```{r lineplot}
+`r officer::fpar("", officer::run_pagebreak())`
+
+```{r lineplot, fig.cap="Estimert endring i trafikkmengde ved riksgrensen i 2020 sammenlignet med 2019."}
 index_2020_upper_lower %>% 
   dplyr::filter(period == "month") %>% 
   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
@@ -258,10 +328,12 @@ index_2020_upper_lower %>%
   theme(legend.position = "bottom")
 ```
 
-
+<br>
 
 ## Hittil i år
-Samlet endring i trafikkmengde i perioden fra januar til juli 2020, sammenlignet med samme periode i 2019.
+I tabellen nedenfor vises samlet endring i trafikkmengde i perioden fra januar til `r last_month_name` 2020, sammenlignet med samme periode i 2019. Usikkerheten i estimatet er synliggjort med et 95 % konfidensintervall.
+
+<br>
 
 ```{r year_to_date}
 index_2020_upper_lower %>%
@@ -291,14 +363,18 @@ index_2020_upper_lower %>%
   fix_border_issues() %>% 
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Estimert samlet endring i trafikkmengde ved riksgrensen, med nedre og øvre grense for et 95 % konfidensintervall. Trafikken er sammenlignet for hittil i år med samme periode året før.")
+  set_caption("Riksgrenseindeks hittil i år.",
+              autonum = table_numbers,
+              style = "Tabelltekst")
 ```
 
 
 
 # Tidligere år
 
-```{r lineplot_historic, fig.height=8}
+Nedenfor vises månedlig riksgrenseindeks for foregående år. Det som gir størst utslag på indeksen er vanligvis påsketrafikken, og det ses tydelig mellom årene hvor påsken ikke ligger i samme måned.
+
+```{r lineplot_historic, fig.height=7, fig.cap="Riksgrenseindeks foregående år.", cache=TRUE}
 index_complete_years_upper_lower %>% 
   dplyr::filter(period == "month") %>% 
   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +

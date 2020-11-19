@@ -1,7 +1,7 @@
 #
 
 tabellnummer <- officer::run_autonum(seq_id = "table", pre_label = "Tabell ",
-                                     post_label = ".")
+                                     post_label = ". ")
 
 create_point_table <- function(all_point_info_df, caption_text) {
 
@@ -26,7 +26,9 @@ create_point_table <- function(all_point_info_df, caption_text) {
     height_all(height = .2) %>%
     padding(padding.top = .3,
             padding.bottom = .3) %>%
-    set_caption(caption_text)
+    set_caption(caption_text,
+                autonum = table_numbers,
+                style = "Tabelltekst")
 }
 
 create_point_adt_map <- function(all_point_info_df) {
@@ -132,7 +134,9 @@ create_city_index_table <- function(city_info) {
     height_all(height = .2) %>%
     padding(padding.top = .3,
             padding.bottom = .3) %>%
-    set_caption("Estimert endring i trafikkmengde.")
+    set_caption("Estimert endring i trafikkmengde for området.",
+                autonum = table_numbers,
+                style = "Tabelltekst")
 
   return(city_table)
 }
@@ -159,7 +163,9 @@ create_monthly_city_index_table <- function(city_monthly) {
     height_all(height = .2) %>%
     padding(padding.top = .3,
             padding.bottom = .3) %>%
-    set_caption("Estimert endring i trafikkmengde per måned.")
+    set_caption("Estimert endring i trafikkmengde per måned.",
+                autonum = table_numbers,
+                style = "Tabelltekst")
 
   return(monthly_table)
 }
@@ -185,7 +191,9 @@ create_city_36_index_table <- function(city_36_month) {
     height_all(height = .2) %>%
     padding(padding.top = .3,
             padding.bottom = .3) %>%
-    set_caption("Estimert endring i trafikkmengde for siste tre år.")
+    set_caption("Estimert endring i trafikkmengde for siste tre år.",
+                autonum = table_numbers,
+                style = "Tabelltekst")
 
   return(city_table)
 }
@@ -232,7 +240,9 @@ create_municipality_road_length_table <- function(road_lengths) {
     height_all(height = .2) %>%
     padding(padding.top = .3,
             padding.bottom = .3) %>%
-    set_caption("Samlet veglengde per kommune.")
+    set_caption("Samlet veglengde per kommune.",
+                autonum = table_numbers,
+                style = "Tabelltekst")
 
   return(road_lengths_table)
 }
@@ -262,7 +272,7 @@ create_city_road_length_table <- function(road_lengths) {
     padding(padding.top = .3,
             padding.bottom = .3) %>%
     set_caption("Samlet veglengde.",
-                autonum = tabellnummer,
+                autonum = table_numbers,
                 style = "Tabelltekst")
 
   return(road_lengths_table)
@@ -290,7 +300,9 @@ create_corridor_index_table <- function(corridor_index_all_years) {
     height_all(height = .2) %>%
     padding(padding.top = .3,
             padding.bottom = .3) %>%
-    set_caption("Estimert endring i trafikkmengde.")
+    set_caption("Estimert endring i trafikkmengde.",
+                autonum = table_numbers,
+                style = "Tabelltekst")
 
   return(corridor_table)
 }

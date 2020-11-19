@@ -2,7 +2,7 @@
 #title: Trafikkutvikling i byområder
 output: 
   officedown::rdocx_document:
-    reference_docx: svv_notatmal_4.docx
+    reference_docx: svv_template.docx
     toc: true
     toc_depth: 2
     fig_caption: true
@@ -109,13 +109,30 @@ index_all_years_ci_lower <-
 index_all_years_ci_upper <- 
   round(city_info_all_years$index_p + 
           city_info_all_years$confidence_width, digits = 1)
+
+# Numbering tables
+table_numbers <- run_autonum(
+  seq_id = "table",
+  pre_label = "Tabell ",
+  post_label = ". ",
+  bkm = NULL,
+  bkm_all = FALSE,
+  prop = NULL
+)
+```
+
+<br>
+
+**Tabelliste**
+```{r list_of_tables}
+officer::block_toc(style = "Tabelltekst")
 ```
 
 <br>
 
 **Figurliste**
 ```{r list_of_figures}
-block_toc(style = "Figurtekst")
+officer::block_toc(style = "Figurtekst")
 ```
 
 ```{r child = 'formaal.Rmd'}
@@ -125,7 +142,8 @@ block_toc(style = "Figurtekst")
 ```{r child = 'intro_959.Rmd'}
 ```
 
-Veglengder fordelt på vegkatori for gjeldende område er oppsummert i tabellen nedenfor.
+Veglengder fordelt på vegkategori for gjeldende område er oppsummert i tabellen nedenfor.
+
 <br>
 
 ```{r road_length_sum}
@@ -139,33 +157,29 @@ road_lengths %>% create_city_road_length_table()
 
 
 ## Byindekspunktene
-Trafikkregistreringspunktene som inngår i byindeksen er listet opp i følgende tabell.
-<br><br>
+
+Trafikkregistreringspunktene som inngår i byindeksen er listet opp i følgende tabell. Årsdøgntrafikk (ÅDT) er oppgitt for lette biler (målt til kortere enn 5,6 m).
+
+<br>
 
 ```{r point_table_old}
 # Oslo
-create_point_table(all_point_info_old,
-                   "Trafikkregistreringspunktene som inngikk i byindeksen 2017-2019. ÅDT er oppgitt for lette biler (målt til kortere enn 5,6 m), og gjelder for det første året i avtaleperioden med god datakvalitet.")
+#create_point_table(all_point_info_old,
+#                   "Trafikkregistreringspunktene som inngikk i byindeksen 2017-2019. ÅDT er oppgitt for lette biler (målt til kortere enn 5,6 m), og gjelder for det første året i avtaleperioden med god datakvalitet.")
 ```
 
 <br>
+
 ```{r point_table}
 create_point_table(all_point_info,
-                   "Trafikkregistreringspunktene som inngår i byindeksen. ÅDT er oppgitt for lette biler (målt til kortere enn 5,6 m), og gjelder for det første året i avtaleperioden med god datakvalitet.")
+                   "Trafikkregistreringspunktene som inngår i byindeksen.")
 ```
 
 <br>
 
-```{r pagebreak_1}
-officer::fpar("", officer::run_pagebreak())
-```
+`r officer::fpar("", officer::run_pagebreak())`
 
 Kartet nedenfor viser plasseringen av trafikkregistreringspunktene.
-<br>
-
-```{r map_trp_old, fig.width=6, fig.height=7, fig.cap="Trafikkregistreringspunktene og årsdøgntrafikk for tidligere punkter."}
-create_point_adt_map(all_point_info_old)
-```
 
 <br>
 
@@ -194,6 +208,7 @@ Først når månedsindeks er beregnet gjennom tre år eller lenger, kan det bere
 
 ## Endring per år
 Endring i trafikkmengde er også beregnet for hele kalenderår. Tabellen nedenfor viser byindeksen for hvert år, samt for hele perioden.
+
 <br>
 <br>
 
@@ -211,7 +226,7 @@ Usikkerheten knyttet til byindeksen gjenspeiles i et 95 % konfidensintervall som
 `r stringr::str_replace(as.character(index_all_years_ci_upper), "\\.", ",")` %.
 
 ```{r all_point_info_long}
-# Oslo HERE
+# Oslo
 all_point_info_long <- all_point_info %>% 
   dplyr::select(name, road_category_and_number, starts_with("index")) %>% 
   tidyr::pivot_longer(starts_with("index"), 
@@ -276,12 +291,10 @@ all_point_info_long <- dplyr::bind_rows(all_point_info_long_new,
   dplyr::filter(year != "2017-2019")
 ```
 
-```{r pagebreak_6}
-officer::fpar("", officer::run_pagebreak())
-# `r officer::run_pagebreak()`
-```
+`r officer::fpar("", officer::run_pagebreak())`
 
 Nedenfor vises en graf over byindeksene for hver periode, sammen med alle punktindeksene.
+
 <br>
 <br>
 
@@ -313,23 +326,19 @@ ggplot() +
           subtitle = "Byindeksen (store prikker) og punktene (små prikker)")
 ```
 
-```{r pagebreak_2}
-officer::fpar("", officer::run_pagebreak())
-```
-
+`r officer::fpar("", officer::run_pagebreak())`
 
 Kartet nedenfor viser endringen i byindekspunktene fra referanseåret 2019 til og med `r latest_month` 2020.
+
+<br>
 
 ```{r map_trp_index, fig.width=6, fig.height=7, fig.cap="Trafikkregistreringspunktene og endring i trafikkmengde."}
 create_pointindex_map(all_point_info)
 ```
 
-```{r pagebreak_3}
-officer::fpar("", officer::run_pagebreak())
-```
+`r officer::fpar("", officer::run_pagebreak())`
 
-Tabellen nedenfor angir endring i trafikk ved byindekspunktene.
-
+Tabellen nedenfor angir endring i trafikk ved byindekspunktene. Manglende tall skyldes at punktet har for dårlig med data eller er ekskludert fra datagrunnlaget for å unngå skjevhet i utvalget.
 
 <br>
 
@@ -386,7 +395,7 @@ all_point_info %>%
                 digits = 1) %>%
   set_header_labels(name = "Navn",
                     road_category_and_number = "Veg",
-                    index = "Endring i trafikkmengde (%)") %>%
+                    index = "Endring i \n trafikkmengde (%)") %>%
   add_header_row(values = c("", "",
                             #"2016", "2017", "2018",
                             "2019"#, "2016"
@@ -411,12 +420,12 @@ all_point_info %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
   width(j = 3, width = 1) %>%
-  set_caption("Estimert endring i trafikkmengde ved trafikkregistreringspunktene.")
+  set_caption("Estimert endring i trafikkmengde ved trafikkregistreringspunktene.",
+              autonum = table_numbers,
+              style = "Tabelltekst")
 ```
 
-```{r pagebreak_4}
-officer::fpar("", officer::run_pagebreak())
-```
+`r officer::fpar("", officer::run_pagebreak())`
 
 I figuren nedenfor er spredningen i punktindeksene illustrert. Den horisontale grønne streken viser byindeksens samlede verdi for hele perioden 2019 - `r latest_month` 2020.
 
@@ -457,9 +466,7 @@ ggplot2::ggplot() +
 ```{r child = 'trafikkforhold_959.Rmd'}
 ```
 
-```{r pagebreak_5}
-officer::fpar("", officer::run_pagebreak())
-```
+`r officer::fpar("", officer::run_pagebreak())`
 
 ## Endring per måned
 

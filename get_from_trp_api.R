@@ -6,6 +6,15 @@ source("H:/Programmering/R/byindeks/trp_api_cookies.R")
 
 trp_api_url <- "https://www.vegvesen.no/datainn/traffic-registration-point/api/"
 
+parse_and_floor_date <- function(date_column, floor_unit) {
+  # floor_unit is second, minute, day etc.
+  date_column_parsed <-
+  lubridate::floor_date(
+    lubridate::with_tz(
+      lubridate::ymd_hms(date_column)),
+    unit = floor_unit)
+}
+
 # Without ghql
 get_via_httr <- function(api_query) {
 
@@ -1109,6 +1118,81 @@ trps <- points_trp %>%
 
 return(trps)
 }
+
+get_trs_trp_commissions_httr <- function() {
+  # Get all trp's and their commissions (and trs)
+  api_query <-
+    "query trs_commissions {
+  trafficRegistrationStations (stationType: CONTINUOUS) {
+    id
+    name
+    stationType
+    trafficType
+    location {
+      roadReference {
+        shortForm
+      }
+      municipality {
+        county {
+          id
+          geographicNumber
+          name
+        }
+      }
+    }
+    deviceTypeHistory {
+      deviceType
+      validFrom
+      validTo
+    }
+    commissions {
+      validFrom
+      validTo
+    }
+    operationalStatus
+  }
+}
+"
+
+api_query_trimmed <- stringr::str_replace_all(api_query, "[\r\n]", " ")
+
+api_query_string <- paste0('{"query":"', api_query_trimmed, '" }')
+
+response <- httr::POST(url = trp_api_url,
+                       httr::add_headers(.headers = trp_api_headers),
+                       httr::set_cookies(.cookies = trp_api_cookies),
+                       body = api_query_string)
+
+response_parsed <- fromJSON(str_conv(response$content, encoding = "UTF-8"),
+                            simplifyDataFrame = T,
+                            flatten = T) %>%
+  as.data.frame() %>%
+  tidyr::unnest(cols = c(data.trafficRegistrationStations.commissions)) %>%
+  dplyr::rename(commission_from = validFrom,
+                commission_to = validTo) %>%
+  tidyr::unnest(cols = c(data.trafficRegistrationStations.deviceTypeHistory)) %>%
+  dplyr::rename(trs_id = 1,
+                trs_name = 2,
+                traffic_type = 4,
+                station_type = 3,
+                device_type = 5,
+                device_from = validFrom,
+                device_to = validTo,
+                operational_status = 10,
+                road_reference = 11,
+                county_number = 12,
+                geo_number = 13,
+                county_name = 14) %>%
+  dplyr::mutate(trs_id = as.numeric(trs_id),
+                device_from = parse_and_floor_date(device_from, "day"),
+                device_to = parse_and_floor_date(device_to, "day"),
+                commission_from = parse_and_floor_date(commission_from, "day"),
+                commission_to = parse_and_floor_date(commission_to, "day")
+                )
+
+return(response_parsed)
+}
+
 
 get_trs_info <- function() {
 
