@@ -1,8 +1,5 @@
 #
 
-tabellnummer <- officer::run_autonum(seq_id = "table", pre_label = "Tabell ",
-                                     post_label = ". ")
-
 create_point_table <- function(all_point_info_df, caption_text) {
 
   all_point_info_df %>%

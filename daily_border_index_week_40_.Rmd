@@ -1,12 +1,37 @@
 ---
-title: Daglig endring i trafikk ved riksgrensen
+#title: Daglig endring i trafikk ved riksgrensen
 output: 
-  word_document:
-    reference_docx: svv_notatmal3.docx
+  officedown::rdocx_document:
+    reference_docx: svv_template.docx
     toc: true
     toc_depth: 2
     fig_caption: true
     fig_width: 7
+    tables:
+      style: Table
+      layout: autofit
+      width: 1.0
+      caption:
+        style: Tabelltekst
+        pre: 'Tabell'
+        sep: '. '
+      conditional:
+        first_row: true
+        first_column: false
+        last_row: false
+        last_column: false
+        no_hband: false
+        no_vband: true
+    plots:
+      style: Normal
+      align: center
+      caption:
+        style: Figurtekst
+        pre: 'Figur '
+        sep: '. '
+    lists:
+      ol.style: null
+      ul.style: null
 ---
 
 ```{r setup, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
@@ -80,10 +105,10 @@ border_trp_adt <- border_trps %>%
 
 # From week 40
 borderdata_2019_from <- "2019-09-30T00:00:00+02:00"
-borderdata_2019_to <- "2019-11-18T00:00:00+02:00"
+borderdata_2019_to <- "2019-11-25T00:00:00+02:00"
 
 borderdata_2020_from <- "2020-09-28T00:00:00+02:00"
-borderdata_2020_to <- "2020-11-16T00:00:00+02:00"
+borderdata_2020_to <- "2020-11-23T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -460,7 +485,9 @@ make_border_table <- function(border_base, caption_text) {
     height_all(height = .2) %>%
     padding(padding.top = .3,
             padding.bottom = .3) %>%
-    set_caption(caption_text)
+    set_caption(caption_text,
+              autonum = table_numbers,
+              style = "Tabelltekst")
   
   return(border_table)
 }
@@ -487,7 +514,9 @@ make_border_trp_table <- function(border_trp_dt, caption_text) {
     height_all(height = .2) %>%
     padding(padding.top = .3,
             padding.bottom = .3) %>%
-    set_caption(caption_text)
+    set_caption(caption_text,
+              autonum = table_numbers,
+              style = "Tabelltekst")
   
   return(border_trp_table)
 }
@@ -519,13 +548,27 @@ make_daily_border_plot <- function(area_dt, subtitle_text) {
 }
 ```
 
+<br>
+
+**Tabelliste**
+```{r list_of_tables}
+officer::block_toc(style = "Tabelltekst")
+```
+
+<br>
+
+**Figurliste**
+```{r list_of_figures}
+officer::block_toc(style = "Figurtekst")
+```
+
 # Bakgrunn
 
 Som følge av smitteverntiltak i forbindelse med spredningen av koronaviruset SARS-CoV-2, er det interessant å se hvordan trafikken endret seg. De første tiltakene ble annonsert av Regjeringen torsdag 12. mars 2020 (uke 11), og trådde i kraft fredag 13. mars. Grensen til Finland åpnet mandag 15. juni (uke 25). Senere grenseåpninger og -stenginger er ikke notert her, men skal kunne ses i tallene for det enkelte trafikkregistreringspunkt.
 
 Statens vegvesen har i dag til sammen 30 trafikkregistreringspunkter ved de ulike riksgrenseovergangene fra Svinesund i sør til Storskog i nordøst. Trafikken er ikke registrert i selve grenseovergangen, men litt inn på norsk side. Det er ingen store kryss mellom registreringspunktene og riksgrensen, slik at de fleste kjøretøy som blir registrert antas normalt å krysse riksgrensen, selv om enkelte kjøretøy kan stoppe og eventuelt snu på norsk side.
 
-Datagrunnlaget for beregningene hentes fra disse trafikkregistreringspunktene. Det vil gi et representativ utvalg for å kunne beregne trafikkutviklingen. Det gjøres en sammenligning av døgntrafikken, ukedag mot ukedag. Mandag sammenlignes med mandag osv.  
+Datagrunnlaget for beregningene hentes fra disse trafikkregistreringspunktene. Det vil gi et representativt utvalg for å kunne beregne trafikkutviklingen. Det gjøres en sammenligning av døgntrafikken, ukedag mot ukedag. Mandag sammenlignes med mandag osv.  
 
 Trafikkutviklingen sammenlignes ved at døgntrafikken sammenlignes med tilsvarende døgntrafikk i samme uke i 2019.
 
@@ -540,6 +583,9 @@ Været vil enkelte dager kunne påvirke trafikkmengden. For eksempel vil det ved
 
 
 # Trafikkregistreringspunkt ved riksgrenseovergangene
+Trafikkregistreringspunktene som ligger ved riksgrenseovergangene, er listet opp i tabellen nedenfor.
+
+<br>
 
 ```{r trptable}
 border_trp_adt %>%
@@ -561,68 +607,104 @@ border_trp_adt %>%
   autofit() %>%
   height_all(height = .2) %>%
   padding(padding.top = .3,
-          padding.bottom = .3) #%>%
-#  set_caption("Trafikkregistreringspunkter ved riksgrenseovergangene.")
+          padding.bottom = .3) %>%
+  set_caption("Trafikkregistreringspunkter ved riksgrenseovergangene.",
+              autonum = table_numbers,
+              style = "Tabelltekst")
 ```
 
 
 # Samlet endring i trafikk over riksgrensen
+Figurene nedenfor viser samlet endring i trafikk over riksgrensen for hver ukedag.
 
-```{r plot_2019, fig.width=8, fig.height=11}
-make_daily_border_plot(border_base_2019, "Fra 2019 til 2020")
+<br>
+
+```{r plot_2019_1, fig.width=6, fig.height=6, fig.cap="Estimert endring i trafikk over riksgrensen, uke 40 - 45."}
+border_base_2019 %>% 
+  dplyr::filter(periode %in% c("Uke \n 40",
+                               "Uke \n 41",
+                               "Uke \n 42",
+                               "Uke \n 43",
+                               "Uke \n 44",
+                               "Uke \n 45")) %>% 
+  make_daily_border_plot("Fra 2019 til 2020")
 ```
 
+`r officer::fpar("", officer::run_pagebreak())`
+```{r plot_2019_2, fig.width=6, fig.height=3, fig.cap="Estimert endring i trafikk over riksgrensen, uke 46 - 47."}
+border_base_2019 %>% 
+  dplyr::filter(periode %in% c("Uke \n 46",
+                               "Uke \n 47",
+                               "Uke \n 48",
+                               "Uke \n 49",
+                               "Uke \n 50")) %>% 
+  make_daily_border_plot("Fra 2019 til 2020")
+```
 
+<br>
 
 ```{r table_2019}
 make_border_table(border_base_2019,
                   "Prosentvis endring i trafikkmengde fra 2019 til 2020.")
 ```
-\
+
+<br>
+
 I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet med uke tilsvarende uke i 2019 som utgangspunkt. Det vil si at trafikken har gått ned fra år 2019 til samme ukedag i 2020, når prosentverdien er negativ.
-\
+
+<br>
 
 
 # Endring i trafikk ved de enkelte riksgrenseovergangene
+De følgende tabellene viser daglig endring i trafikk ved hvert av trafikkregistreringspunktene.
+
+<br>
 
 ```{r trptable_201940}
 make_border_trp_table(border_trp_dt_40,
                       "Prosentvis endring i trafikkmengde fra uke 40 2019 til uke 40 2020.")
 ```
 
+`r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_201941}
 make_border_trp_table(border_trp_dt_41,
                       "Prosentvis endring i trafikkmengde fra uke 41 2019 til uke 41 2020.")
 ```
 
+`r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_201942}
 make_border_trp_table(border_trp_dt_42,
                       "Prosentvis endring i trafikkmengde fra uke 42 2019 til uke 42 2020.")
 ```
 
+`r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_201943}
 make_border_trp_table(border_trp_dt_43,
                       "Prosentvis endring i trafikkmengde fra uke 43 2019 til uke 43 2020.")
 ```
 
+`r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_201944}
 make_border_trp_table(border_trp_dt_44,
                       "Prosentvis endring i trafikkmengde fra uke 44 2019 til uke 44 2020.")
 ```
 
+`r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_201945}
 make_border_trp_table(border_trp_dt_45,
                       "Prosentvis endring i trafikkmengde fra uke 45 2019 til uke 45 2020.")
 ```
 
+`r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_201946}
 make_border_trp_table(border_trp_dt_46,
                       "Prosentvis endring i trafikkmengde fra uke 46 2019 til uke 46 2020.")
 ```
 
+`r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_201947}
-#make_border_trp_table(border_trp_dt_47,
-#                      "Prosentvis endring i trafikkmengde fra uke 47 2019 til uke 47 2020.")
+make_border_trp_table(border_trp_dt_47,
+                      "Prosentvis endring i trafikkmengde fra uke 47 2019 til uke 47 2020.")
 ```
 
 ```{r trptable_201948}

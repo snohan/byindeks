@@ -21,7 +21,7 @@ library(htmltools)
 
 # City numbers
 # Bergen 958
-# Buskerudbyen 1952
+# Buskerudbyen 954
 # Grenland 955
 # Kristiansand og omegn 957
 # Nedre Glomma 953
@@ -33,7 +33,7 @@ library(htmltools)
 # Choose
 index_year <- 2020
 index_month <- 8
-city_number <- 960
+city_number <- 954
 
 # Fetch
 city_index <- get_published_index_for_months(city_number, index_year, index_month)
@@ -61,7 +61,6 @@ city_trps_meta <- points %>%
 # New month's pointindices
 point_index_new <- get_pointindices_for_trp_list(city_trps, index_year)
 ```
-
 
 
 ```{r data_prep, message=FALSE}
@@ -261,7 +260,7 @@ pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 Skulle hatt med ÅDT. 
 
 ```{r point_plot, message=FALSE, fig.width=12}
-point_number <- 11
+point_number <- 1
 trp_id_here <- city_trps_meta$trp_id[point_number]
 
 trp_name <- city_trps_meta %>% 

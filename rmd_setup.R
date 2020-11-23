@@ -64,3 +64,13 @@ decimal_comma <- function(number) {
 decimal_point <- function(number) {
   stringr::str_replace(as.character(number), ",", "\\.")
 }
+
+# Numbering tables
+table_numbers <- run_autonum(
+  seq_id = "table",
+  pre_label = "Tabell ",
+  post_label = ". ",
+  bkm = NULL,
+  bkm_all = FALSE,
+  prop = NULL
+)

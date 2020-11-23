@@ -1,12 +1,37 @@
 ---
-title: Daglig endring i trafikk i de største byområdene
+#title: Daglig endring i trafikk i de største byområdene
 output: 
-  word_document:
-    reference_docx: svv_notatmal3.docx
+  officedown::rdocx_document:
+    reference_docx: svv_template.docx
     toc: true
     toc_depth: 2
     fig_caption: true
     fig_width: 7
+    tables:
+      style: Table
+      layout: autofit
+      width: 1.0
+      caption:
+        style: Tabelltekst
+        pre: 'Tabell'
+        sep: '. '
+      conditional:
+        first_row: true
+        first_column: false
+        last_row: false
+        last_column: false
+        no_hband: false
+        no_vband: true
+    plots:
+      style: Normal
+      align: center
+      caption:
+        style: Figurtekst
+        pre: 'Figur '
+        sep: '. '
+    lists:
+      ol.style: null
+      ul.style: null
 ---
 
 ```{r setup, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
@@ -116,10 +141,10 @@ trps <- dplyr::left_join(cities_points, points) %>%
 
 # Fetch daily traffic
 week_2019_from <- "2019-09-30T00:00:00+02:00"
-week_2019_to <- "2019-11-18T00:00:00+02:00"
+week_2019_to <- "2019-11-25T00:00:00+02:00"
 
 week_2020_from <- "2020-09-28T00:00:00+02:00"
-week_2020_to <- "2020-11-16T00:00:00+02:00"
+week_2020_to <- "2020-11-23T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -544,7 +569,9 @@ make_city_table <- function(city_dt, caption_text) {
     height_all(height = .2) %>%
     padding(padding.top = .3,
             padding.bottom = .3) %>%
-    set_caption(caption_text)
+    set_caption(caption_text,
+              autonum = table_numbers,
+              style = "Tabelltekst")
   
   return(city_table)
 }
@@ -575,7 +602,9 @@ make_city_table_city <- function(city_dt, caption_text) {
     height_all(height = .2) %>%
     padding(padding.top = .3,
             padding.bottom = .3) %>%
-    set_caption(caption_text)
+    set_caption(caption_text,
+              autonum = table_numbers,
+              style = "Tabelltekst")
   
   return(city_table)
 }
@@ -607,14 +636,27 @@ make_daily_plot_city <- function(area_dt, subtitle_text) {
 }
 ```
 
+<br>
+
+**Tabelliste**
+```{r list_of_tables}
+officer::block_toc(style = "Tabelltekst")
+```
+
+<br>
+
+**Figurliste**
+```{r list_of_figures}
+officer::block_toc(style = "Figurtekst")
+```
 
 # Bakgrunn
 
 Som følge av smitteverntiltak i forbindelse med spredningen av det nye koronaviruset SARS-CoV-2, er det interessant å se hvordan trafikken endret seg. De første tiltakene ble annonsert av Regjeringen torsdag 12. mars 2020 (uke 11), og trådde i kraft fredag 13. mars.
 
-Datagrunnlaget for beregningene hentes fra trafikkregistreringspunktene som inngår i byindeksene. Det vil gi et representativ utvalg for å kunne beregne trafikkutviklingen. Det gjøres en sammenligning av døgntrafikken, ukedag mot ukedag. Mandag sammenlignes med mandag osv.  
+Datagrunnlaget for beregningene hentes fra trafikkregistreringspunktene som inngår i byindeksene. Det vil gi et representativt utvalg for å kunne beregne trafikkutviklingen. Det gjøres en sammenligning av døgntrafikken, ukedag mot ukedag. Mandag sammenlignes med mandag osv.  
 
-For å få et best mulig bilde av trafikkutviklingen sammenligninges her døgntrafikken sammenlignes med tilsvarende døgntrafikk i samme uke i 2019.
+For å få et best mulig bilde av trafikkutviklingen sammenlignes her døgntrafikken sammenlignes med tilsvarende døgntrafikk i samme uke i 2019.
 
 Denne rapporten viser tall fra og med uke 40. Trafikkutvikling for tidligere uker finnes i egen rapport for uke 10-26 og uke 27-39.
 
@@ -627,65 +669,87 @@ Været vil enkelte dager kunne påvirke trafikkmengden. For eksempel vil det ved
 
 
 # Endring i trafikk fra 2019 til 2020
-
+Nedenfor vises daglig endring i trafikk i de største byområdene.
 
 ## Bergen
 ```{r table_city_bergen}
 make_city_table_city(bergen_dt_2019_2020,
-                "Prosentvis endring i trafikkmengde i Bergen 2019 til 2020.")
+                "Prosentvis endring i trafikkmengde i Bergen.")
 ```
-\
-```{r plot_city_bergen, fig.width=8, fig.height=9}
+
+<br>
+
+```{r plot_city_bergen, fig.width=6, fig.height=8, fig.cap="Prosentvis endring i trafikkmengde i Bergen."}
 make_daily_plot_city(bergen_dt_2019_2020, "")
 ```
+
+`r officer::fpar("", officer::run_pagebreak())`
 
 ## Bodø
 ```{r table_city_bodo}
 make_city_table_city(bodo_dt_2019_2020,
-                "Prosentvis endring i trafikkmengde i Bodø 2019 til 2020.")
+                "Prosentvis endring i trafikkmengde i Bodø.")
 ```
-\
-```{r plot_city_bodo, fig.width=8, fig.height=9}
+
+<br>
+
+```{r plot_city_bodo, fig.width=6, fig.height=8, fig.cap="Prosentvis endring i trafikkmengde i Bodø."}
 make_daily_plot_city(bodo_dt_2019_2020, "")
 ```
+
+`r officer::fpar("", officer::run_pagebreak())`
 
 ## Nord-Jæren
 ```{r table_city_nord-jaeren}
 make_city_table_city(nord_jaeren_dt_2019_2020,
-                "Prosentvis endring i trafikkmengde i Nord-Jæren 2019 til 2020.")
+                "Prosentvis endring i trafikkmengde i Nord-Jæren.")
 ```
-\
-```{r plot_city_nord_jaeren, fig.width=8, fig.height=9}
+
+<br>
+
+```{r plot_city_nord_jaeren, fig.width=6, fig.height=8, fig.cap="Prosentvis endring i trafikkmengde i Nord-Jæren."}
 make_daily_plot_city(nord_jaeren_dt_2019_2020, "")
 ```
 
+`r officer::fpar("", officer::run_pagebreak())`
+
 ## Oslo og Akershus
-```{r table_city_oslo_akershus}
+```{r table_city_oslo}
 make_city_table_city(oslo_og_akershus_dt_2019_2020,
-                "Prosentvis endring i trafikkmengde i Oslo og Akershus 2019 til 2020.")
+                "Prosentvis endring i trafikkmengde i Oslo og Viken.")
 ```
-\
-```{r plot_city_oslo_og_akershus, fig.width=8, fig.height=9}
+
+<br>
+
+```{r plot_city_oslo, fig.width=6, fig.height=8, fig.cap="Prosentvis endring i trafikkmengde i Oslo og Viken."}
 make_daily_plot_city(oslo_og_akershus_dt_2019_2020, "")
 ```
+
+`r officer::fpar("", officer::run_pagebreak())`
 
 ## Tromsø
 ```{r table_city_tromsoe}
 make_city_table_city(tromsoe_dt_2019_2020,
-                "Prosentvis endring i trafikkmengde i Tromsø 2019 til 2020.")
+                "Prosentvis endring i trafikkmengde i Tromsø.")
 ```
-\
-```{r plot_city_tromsoe, fig.width=8, fig.height=9}
+
+<br>
+
+```{r plot_city_tromsoe, fig.width=6, fig.height=8, fig.cap="Prosentvis endring i trafikkmengde i Tromsø."}
 make_daily_plot_city(tromsoe_dt_2019_2020, "")
 ```
+
+`r officer::fpar("", officer::run_pagebreak())`
 
 ## Trondheim
 ```{r table_city_trondheim}
 make_city_table_city(trondheim_dt_2019_2020,
-                "Prosentvis endring i trafikkmengde i Trondheim 2019 til 2020.")
+                "Prosentvis endring i trafikkmengde i Trondheim.")
 ```
-\
-```{r plot_city_trondheim, fig.width=8, fig.height=9}
+
+<br>
+
+```{r plot_city_trondheim, fig.width=6, fig.height=8, fig.cap="Prosentvis endring i trafikkmengde i Trondheim."}
 make_daily_plot_city(trondheim_dt_2019_2020, "")
 ```
 

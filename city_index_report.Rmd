@@ -109,16 +109,6 @@ index_all_years_ci_lower <-
 index_all_years_ci_upper <- 
   round(city_info_all_years$index_p + 
           city_info_all_years$confidence_width, digits = 1)
-
-# Numbering tables
-table_numbers <- run_autonum(
-  seq_id = "table",
-  pre_label = "Tabell ",
-  post_label = ". ",
-  bkm = NULL,
-  bkm_all = FALSE,
-  prop = NULL
-)
 ```
 
 <br>
