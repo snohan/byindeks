@@ -60,7 +60,7 @@ city_number_county_name <-
                     "Troms og Finnmark")
   )
 
-city_number <- 959
+city_number <- 1952
 
 county_name <- city_number_county_name %>% 
   dplyr::filter(city_no == city_number) %>% 
@@ -417,7 +417,7 @@ all_point_info %>%
 
 `r officer::fpar("", officer::run_pagebreak())`
 
-I figuren nedenfor er spredningen i punktindeksene illustrert. Den horisontale grønne streken viser byindeksens samlede verdi for hele perioden 2019 - `r latest_month` 2020.
+I figuren nedenfor er spredningen i punktindeksene illustrert. Den vertikale grønne streken viser byindeksens samlede verdi for hele perioden 2019 - `r latest_month` 2020.
 
 <br>
 

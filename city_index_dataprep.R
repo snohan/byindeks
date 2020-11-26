@@ -9,7 +9,7 @@ source("get_from_trafficdata_api.R")
 
 # If necessary, get all TRPs from TRP API
 # TRPs without commissions are not i TD-API!
-source("get_from_trp_api.R")
+#source("get_from_trp_api.R")
 
 # NVDB API calls to get tolling stations or supply missing AADTs
 source("get_from_nvdb_api.R")
@@ -67,7 +67,7 @@ points <- get_points() %>%
 
 # Choose
 index_month <- 10
-city_number <- 959
+city_number <- 1952
 
 # Pointindices ####
 # TODO: TRPs might differ from year to year!
@@ -79,6 +79,12 @@ city_index_2020 <- get_published_index_for_months(city_number, 2020, index_month
 
 
 # Still need to specify csv-files for years before 2020 to get the pointindex as they are not in API
+# Note: not all cities use 2017
+pointindex_17 <- readPointindexCSV(
+  paste0("data_index_raw/pointindex_", city_number, "_", 2017, ".csv")
+) %>%
+  rename(index_17 = index)
+
 pointindex_18 <- readPointindexCSV(
   paste0("data_index_raw/pointindex_", city_number, "_", 2018, ".csv")
   ) %>%
