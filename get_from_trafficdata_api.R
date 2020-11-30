@@ -1486,7 +1486,7 @@ get_published_pointindex_for_months <- function(index_id, index_year, last_month
   i <- 1
 
   # Saving only one version of indexpoints
-  indexpoints <- get_published_pointindex(index_id, index_year, i)[[1]]
+  indexpoints <- get_published_pointindex(index_id, index_year, last_month)[[1]]
 
   while (i < last_month + 1) {
 
