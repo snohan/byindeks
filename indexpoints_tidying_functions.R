@@ -265,22 +265,22 @@ calculate_two_years_index_36_month_version <- function(city_index_df) {
   # TODO: add sd and ci
 
   months_1_24 <- city_index_df %>%
-    select(index, index_i) %>%
+    select(index_p, index_i) %>%
     slice(1:2)
 
   months_25_36 <- city_index_df %>%
-    select(index, index_i) %>%
+    select(index_p, index_i) %>%
     slice(3)
 
   first_24_months <- list(
-    index = 100 * (prod(months_1_24$index_i) - 1),
+    index_p = 100 * (prod(months_1_24$index_i) - 1),
     index_i = prod(months_1_24$index_i)) %>%
     as_tibble()
 
   months_1_36 <- bind_rows(first_24_months, months_25_36)
 
   all_36_months_index <- list(
-    index = 100 * (prod(months_1_36$index_i) - 1),
+    index_p = 100 * (prod(months_1_36$index_i) - 1),
     index_i = prod(months_1_36$index_i)) %>%
     as_tibble()
 
@@ -291,11 +291,8 @@ calculate_all_possible_36_month_indexes <- function(city_monthly_df) {
 
   # A for-loop that loops through all consecutive and possible
   # 36-month periods
-  # Using just single months
-  city_months <- city_monthly_df %>%
-    filter(periode != "Hele året")
 
-  no_months <- nrow(city_months)
+  no_months <- nrow(city_monthly_df)
   n_end <- no_months - 35
 
   all_possible_36_month_indexes <- tibble::tibble()
@@ -307,7 +304,7 @@ calculate_all_possible_36_month_indexes <- function(city_monthly_df) {
     end_month <- 35 + n
 
     # The 36 months for this iteration
-    city_monthly_36 <- city_months %>%
+    city_monthly_36 <- city_monthly_df %>%
       slice(start_month:end_month) %>%
       tibble::rowid_to_column("id") %>%
       mutate(three_year_group = case_when(
@@ -318,19 +315,19 @@ calculate_all_possible_36_month_indexes <- function(city_monthly_df) {
       ))
 
     # The end month for this iteration
-    city_monthly_36_period <- city_months %>%
+    city_monthly_36_period <- city_monthly_df %>%
       slice(end_month) %>%
-      select(periode, year) %>%
-      mutate(year = stringr::str_sub(year, 6, 9))
+      select(month_object, year) #%>%
+      #mutate(year = stringr::str_sub(year, 6, 9))
 
     # The 36 month index for this iteration
     city_monthly_36_index <- city_monthly_36 %>%
       #filter(three_year_group < 4) %>%
       group_by(three_year_group) %>%
-      summarise(volume_index_year = sum(traffic_index_year),
-                volume_base_year = sum(traffic_base_year),
-                index = (volume_index_year / volume_base_year - 1 ) * 100,
-                index_i = volume_index_year / volume_base_year) %>%
+      summarise(volume_calc_year = sum(calc_volume),
+                volume_base_year = sum(base_volume),
+                index_p = (volume_calc_year / volume_base_year - 1 ) * 100,
+                index_i = volume_calc_year / volume_base_year) %>%
       #select(index, index_i) %>%
       calculate_two_years_index_36_month_version() %>%
       bind_cols(city_monthly_36_period)

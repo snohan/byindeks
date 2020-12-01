@@ -209,7 +209,6 @@ this_citys_trp_index <- points %>%
   left_join(pointindex_20)
 
 # Index from refyear
-# TODO: show only for trps with index every year
 trp_index_from_refyear <- this_citys_trp_index %>%
   dplyr::select(trp_id, tidyselect::starts_with("index")) %>%
   dplyr::filter(
@@ -285,17 +284,18 @@ city_index <- bind_rows(
 years_1_2 <- calculate_two_year_index(city_index)
 years_1_3 <- bind_rows(years_1_2, slice(city_index, 3)) %>%
   calculate_two_year_index()
-# years_1_4 <- bind_rows(years_1_3, slice(city_index, 4)) %>%
-#   calculate_two_year_index()
+years_1_4 <- bind_rows(years_1_3, slice(city_index, 4)) %>%
+   calculate_two_year_index()
 
 # Skipping intermediate years, adding just from first to last
 city_index_all <- city_index %>%
-  bind_rows(years_1_3) %>%
-  #bind_rows(first_two_years) %>%
-  #bind_rows(last_two_years) %>%
+  #bind_rows(years_1_2) %>%
+  #bind_rows(years_1_3) %>%
+  bind_rows(years_1_4) %>%
   dplyr::mutate(year_from_to = paste0(year_base, "-", year),
                 ci_start = index_p - confidence_width,
-                ci_end = index_p + confidence_width)
+                ci_end = index_p + confidence_width,
+                area_name = city_name)
 
 write.csv2(city_index_all,
            file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".csv"),
@@ -310,8 +310,21 @@ city_monthly <- bind_rows(
   monthly_city_index(city_index_2019),
   monthly_city_index(city_index_2020)) %>%
   select(area_name, year, month, period, month_object, month_name, index_p,
-         standard_deviation, confidence_width)
+         standard_deviation, confidence_width, base_volume, calc_volume)
 
 write.csv2(city_monthly,
            file = paste0("data_indexpoints_tidy/byindeks_maanedlig_", city_number, ".csv"),
+           row.names = F)
+
+
+# City index three year rolling ####
+# No use in calculating this before 37 months are available
+# The first 36 month index is equal to the first three whole year index!
+# TODO: 36 month rolling index with sd and ci
+
+all_possible_36_month_indexes <-
+  calculate_all_possible_36_month_indexes(city_monthly)
+
+write.csv2(all_possible_36_month_indexes,
+           file = paste0("data_indexpoints_tidy/byindeks_36_maaneder_", city_number, ".csv"),
            row.names = F)
