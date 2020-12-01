@@ -79,8 +79,8 @@ all_point_info <-
     paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".csv"))
 
 # Oslo
-all_point_info_old <- 
-  read.csv2("data_indexpoints_tidy/indekspunkt_959_2017.csv")
+#all_point_info_old <- 
+#  read.csv2("data_indexpoints_tidy/indekspunkt_959_2017.csv")
 
 city_info <-
     read.csv2(

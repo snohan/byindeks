@@ -50,7 +50,7 @@ hent_vegsystemreferanse <- function(veglenkeposisjon) {
                       veglenkeposisjon)
 
   respons <- GET(api_query,
-                 httr::add_headers(.headers = nvdb_v3_headers)))
+                 httr::add_headers(.headers = nvdb_v3_headers))
 
   uthenta <- jsonlite::fromJSON(
     stringr::str_conv(
@@ -110,7 +110,7 @@ hent_kommune_v3 <- function(kommunenr) {
                                   kommunenr)
 
   respons <- GET(api_query_kommune,
-                 httr::add_headers(.headers = nvdb_v3_headers)))
+                 httr::add_headers(.headers = nvdb_v3_headers))
 
   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
                       simplifyDataFrame = T,
@@ -136,7 +136,7 @@ hent_alle_kommuner_v3 <- function() {
                       "?inkluder=kartutsnitt")#&srid=wgs84")
 
   respons <- GET(api_query,
-                 httr::add_headers(.headers = nvdb_v3_headers)))
+                 httr::add_headers(.headers = nvdb_v3_headers))
 
   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
                       simplifyDataFrame = T,
@@ -382,7 +382,7 @@ get_tolling_stations_v3 <- function(kommunenr) {
                                  "&srid=wgs84")
 
   respons <- GET(api_query_45_kommune,
-                 httr::add_headers(.headers = nvdb_v3_headers)))
+                 httr::add_headers(.headers = nvdb_v3_headers))
 
   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
                       simplifyDataFrame = T,
@@ -577,7 +577,7 @@ get_speedlimit_by_roadlink <- function(roadlink) {
                                  roadlink)
 
   respons <- GET(api_query_105_vegref,
-                 httr::add_headers(.headers = nvdb_v3_headers)))
+                 httr::add_headers(.headers = nvdb_v3_headers))
 
   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
                       simplifyDataFrame = T,
