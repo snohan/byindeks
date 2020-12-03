@@ -33,7 +33,7 @@ library(htmltools)
 # Choose
 index_year <- 2020
 index_month <- 8
-city_number <- 954
+city_number <- 961
 
 # Fetch
 city_index <- get_published_index_for_months(city_number, index_year, index_month)
@@ -101,9 +101,19 @@ point_index_new_prepared_2 <- point_index_new %>%
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
 
+point_index_new_prepared_3 <- point_index_new %>% 
+  dplyr::filter(day_type == "ALL",
+                period == "month",
+                month == index_month + 3) %>% 
+  dplyr::select(trp_id, year, month, index_total_p,
+                index_total_coverage, length_excluded, length_coverage,
+                index_short, index_long)
+
+
 pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
                                             point_index_new_prepared,
-                                            point_index_new_prepared_2
+                                            point_index_new_prepared_2,
+                                            point_index_new_prepared_3
                                             ) %>% 
   dplyr::left_join(city_trps_meta) %>% 
   dplyr::mutate(
@@ -260,7 +270,7 @@ pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 Skulle hatt med ÅDT. 
 
 ```{r point_plot, message=FALSE, fig.width=12}
-point_number <- 1
+point_number <-1
 trp_id_here <- city_trps_meta$trp_id[point_number]
 
 trp_name <- city_trps_meta %>% 

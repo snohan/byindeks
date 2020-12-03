@@ -170,11 +170,11 @@ create_monthly_city_index_table <- function(city_monthly) {
 create_city_36_index_table <- function(city_36_month) {
 
   city_table <- city_36_month %>%
-    dplyr::select(periode, year, index) %>%
+    dplyr::select(month_name, year, index_p) %>%
     flextable::flextable() %>%
-    colformat_num(j = c("index"), digits = 1) %>%
-    set_header_labels(periode = "Treårsperiodens slutt",
-                      index = "Endring i trafikkmengde (%)") %>%
+    colformat_num(j = c("index_p"), digits = 1) %>%
+    set_header_labels(month_name = "Treårsperiodens slutt",
+                      index_p = "Endring i \n trafikkmengde (%)") %>%
     merge_at(i = 1, j = 1:2, part = "header") %>%
     bold(part = "header") %>%
     fontsize(size = 9, part = "all") %>%

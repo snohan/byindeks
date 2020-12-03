@@ -1,0 +1,9 @@
+"trp_id";"name";"road_reference";"road_category_and_number";"county_name";"municipality_name";"lat";"lon";"road_link_position";"year";"month";"road_category";"day_type";"period";"index_total";"index_total_p";"index_total_coverage";"length_excluded";"length_coverage";"index_short";"index_long"
+"17291V181259";"Frydenlund";"EV18 S47D1 m206";"Ev18";"Viken";"Lier";59,752435;10,245982;"0.17291@181259";2017;12;"E";"ALL";"year_to_date";1,014;1,35;93,16;FALSE;93,09;1,08;3,73
+"17291V181259";"Frydenlund";"EV18 S47D1 m206";"Ev18";"Viken";"Lier";59,752435;10,245982;"0.17291@181259";2018;12;"E";"ALL";"year_to_date";1,013;1,26;90,63;FALSE;90,59;1,25;1,23
+"17291V181259";"Frydenlund";"EV18 S47D1 m206";"Ev18";"Viken";"Lier";59,752435;10,245982;"0.17291@181259";2019;12;"E";"ALL";"year_to_date";1,003;0,27;75,47;FALSE;75,35;0,24;0,9
+"17291V181259";"Frydenlund";"EV18 S47D1 m206";"Ev18";"Viken";"Lier";59,752435;10,245982;"0.17291@181259";2020;11;"E";"ALL";"year_to_date";0,93;-7,03;72,63;FALSE;72,23;-7,8;-1,2
+"08879V180819";"Lierskogen";"EV18 S47D1 m12890";"Ev18";"Viken";"Lier";59,819146;10,336997;"0.08879@180819";2017;12;"E";"ALL";"year_to_date";1,012;1,22;94,87;FALSE;94,79;0,9;3,37
+"08879V180819";"Lierskogen";"EV18 S47D1 m12890";"Ev18";"Viken";"Lier";59,819146;10,336997;"0.08879@180819";2018;12;"E";"ALL";"year_to_date";1;-0,01;99,9;FALSE;99,79;0,11;-1,36
+"08879V180819";"Lierskogen";"EV18 S47D1 m12890";"Ev18";"Viken";"Lier";59,819146;10,336997;"0.08879@180819";2019;12;"E";"ALL";"year_to_date";0,996;-0,37;97,32;FALSE;97,19;-0,52;0,33
+"08879V180819";"Lierskogen";"EV18 S47D1 m12890";"Ev18";"Viken";"Lier";59,819146;10,336997;"0.08879@180819";2020;11;"E";"ALL";"year_to_date";0,942;-5,8;97,1;FALSE;97;-6,74;0,91

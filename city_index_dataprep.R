@@ -67,7 +67,7 @@ points <- get_points() %>%
 
 # Choose
 index_month <- 11
-city_number <- 1952
+city_number <- 961
 
 # Pointindices ####
 # TODO: TRPs might differ from year to year!
@@ -188,6 +188,20 @@ this_citys_trp_index <- this_citys_trp_index_prel %>%
   dplyr::bind_rows(missing_adt_small_cars) %>%
   split_road_system_reference()
 # Oslo end, skip to refyear
+
+# Grenland
+adt_manual <- data.frame(
+  trp_id = c("26489V521174", "20789V521466"),
+  adt = c(9600, 2400),
+  year = c(2018, 2019)
+)
+
+# Tromsø
+adt_manual <- data.frame(
+  trp_id = c("52043V1664653", "71291V1125935"),
+  adt = c(15000, 10000),
+  year = c(2019, 2019)
+)
 
 adt_all <- bind_rows(adt_filtered,
                      adt_manual
@@ -327,4 +341,32 @@ all_possible_36_month_indexes <-
 
 write.csv2(all_possible_36_month_indexes,
            file = paste0("data_indexpoints_tidy/byindeks_36_maaneder_", city_number, ".csv"),
+           row.names = F)
+
+
+# E18 Buskerudbyen
+trps_e18 <- c("08879V180819", "17291V181259")
+
+point_index_e18 <- dplyr::bind_rows(
+  get_pointindices_for_trp_list(trps_e18, 2017),
+  get_pointindices_for_trp_list(trps_e18, 2018),
+  get_pointindices_for_trp_list(trps_e18, 2019),
+  get_pointindices_for_trp_list(trps_e18, 2020)
+) %>%
+  dplyr::filter(day_type == "ALL",
+                period == "year_to_date") %>%
+  dplyr::group_by(year) %>%
+  dplyr::filter(month == max(month))
+
+trps_e18_index <- points %>%
+  dplyr::filter(trp_id %in% trps_e18) %>%
+  split_road_system_reference() %>%
+  dplyr::select(trp_id, name, road_reference,
+                road_category_and_number,
+                county_name, municipality_name,
+                lat, lon, road_link_position) %>%
+  dplyr::left_join(point_index_e18)
+
+write.csv2(trps_e18_index,
+           file = "data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv",
            row.names = F)

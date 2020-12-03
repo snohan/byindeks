@@ -60,7 +60,7 @@ city_number_county_name <-
                     "Troms og Finnmark")
   )
 
-city_number <- 1952
+city_number <- 961
 
 county_name <- city_number_county_name %>% 
   dplyr::filter(city_no == city_number) %>% 
@@ -93,14 +93,16 @@ city_monthly <-
 latest_month <- max(city_monthly$month_object) %>% 
   lubridate::month(label = TRUE, abbr = FALSE)
 
-#city_36_month <- 
-#  read.csv2("data_indexpoints_tidy/byindeks_36_maaneder_bergen_2017.csv")
+city_36_month <- 
+  read.csv2(
+    paste0("data_indexpoints_tidy/byindeks_36_maaneder_", city_number, ".csv"))
 
-# TODO: change to three year rolling when available
+# TODO: change to three year rolling when available?
 city_info_all_years <- city_info %>% 
+  dplyr::filter(year_from_to == "2016-2020")
   #dplyr::filter(year_from_to == "2017-2020")
   # Oslo ->
-  dplyr::filter(year_from_to == "2019-2020")
+  #dplyr::filter(year_from_to == "2019-2020")
 
 index_all_years <- round(city_info_all_years$index_p, digits = 1)
 index_all_years_ci_lower <- 
@@ -109,6 +111,10 @@ index_all_years_ci_lower <-
 index_all_years_ci_upper <- 
   round(city_info_all_years$index_p + 
           city_info_all_years$confidence_width, digits = 1)
+
+# Linking to child files
+intro_file <- paste0("intro_", city_number, ".Rmd")
+traffic_file <- paste0("trafikkforhold_", city_number, ".Rmd")
 ```
 
 <br>
@@ -129,7 +135,7 @@ officer::block_toc(style = "Figurtekst")
 ```
 
 ## Områdeavgrensing og vegnett
-```{r child = 'intro_959.Rmd'}
+```{r child = intro_file}
 ```
 
 Veglengder fordelt på vegkategori for gjeldende område er oppsummert i tabellen nedenfor.
@@ -150,7 +156,6 @@ road_lengths %>% create_city_road_length_table()
 
 Trafikkregistreringspunktene som inngår i byindeksen er listet opp i følgende tabell. Årsdøgntrafikk (ÅDT) er oppgitt for lette biler (målt til kortere enn 5,6 m).
 
-<br>
 
 ```{r point_table_old}
 # Oslo
@@ -188,10 +193,12 @@ Endring i trafikkmengde er beregnet for hver måned mellom to påfølgende år, 
 
 ## Endring i glidende treårsperiode
 
-Først når månedsindeks er beregnet gjennom tre år eller lenger, kan det beregnes en glidende treårsindeks. Den vil så oppdateres månedlig. Den første treårsindeksen vil inkludere månedsindeksene fra og med januar 2018 til og med desember 2020.
+Først når månedsindeks er beregnet gjennom tre år eller lenger, kan det beregnes en glidende treårsindeks. Den vil så oppdateres månedlig. Den første treårsindeksen vil inkludere månedsindeksene fra og med januar 2017 til og med desember 2019.
+
+<br>
 
 ```{r city_table_36}
-#create_city_36_index_table(city_36_month)
+create_city_36_index_table(city_36_month)
 # TODO: CI
 ```
 
@@ -209,76 +216,118 @@ create_city_index_table(city_info)
 <br>
 
 **Byindeksen estimerer endringen i trafikkmengden fra 
-2019 til `r latest_month` 2020 til å være 
+2016 til `r latest_month` 2020 til å være 
 `r stringr::str_replace(as.character(index_all_years), "\\.", ",")` %.**
 Usikkerheten knyttet til byindeksen gjenspeiles i et 95 % konfidensintervall som er fra
 `r stringr::str_replace(as.character(index_all_years_ci_lower), "\\.", ",")` % til
 `r stringr::str_replace(as.character(index_all_years_ci_upper), "\\.", ",")` %.
 
+<!--
+For Buskerudbyen
+
+
+<br>
+
+### Trafikken på Ev 18
+Til sammenligning viser tabellen nedenfor endringen i trafikkmengden på Ev 18 i samme periode.
+
+<br>
+```{r e18_buskerudbyen}
+read.csv2("data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv") %>% 
+    select(name, road_reference, year, index_short) %>%
+    flextable() %>%
+    colformat_num(j = "index_short", digits = 1) %>%
+    set_header_labels(name = "Navn",
+                      road_reference = "Vegreferanse",
+     #                 adt = "ÅDT",
+                      year = "År",
+                      index_short = "Endring i \n trafikkmengde (%)") %>%
+    #align(i = 1, j = 4, align = "center", part = "header") %>%
+    bold(part = "header") %>%
+    fontsize(size = 9, part = "all") %>%
+    font(fontname = "Lucida Sans Unicode", part = "all") %>%
+    bg(bg = "#ED9300", part = "header") %>%
+    border_remove() %>%
+    hline_top(part = "header", border = borderline) %>%
+    hline_bottom(part = "all", border = borderline) %>%
+    autofit() %>%
+    height_all(height = .2) %>%
+    padding(padding.top = .3,
+            padding.bottom = .3) %>%
+    set_caption("Endring i trafikkmengde på Ev 18.",
+                autonum = table_numbers,
+                style = "Tabelltekst")
+
+
+```
+
+Stopp buskerudbyen her -->
+
 ```{r all_point_info_long}
-# Oslo
 all_point_info_long <- all_point_info %>% 
   dplyr::select(name, road_category_and_number, starts_with("index")) %>% 
   tidyr::pivot_longer(starts_with("index"), 
                       names_to = "period", 
                       values_to = "index_value") %>% 
-  dplyr::mutate(year = case_when(period == "index" ~ "2017-2020",
-                                 #period == "index_17" ~ "2016-2017",
+  dplyr::mutate(year = case_when(#period == "index" ~ "2017-2020",
+                                 period == "index" ~ "2016-2020",
+                                 period == "index_17" ~ "2016-2017",
                                  period == "index_18" ~ "2017-2018",
                                  period == "index_19" ~ "2018-2019",
                                  period == "index_20" ~ "2019-2020"),
-                year = factor(year, levels = c("2017-2020",
+                year = factor(year, levels = c(#"2017-2020",
+                                               "2016-2020",
                                                "2019-2020",
                                                "2018-2019",
-                                               "2017-2018"#,
-                                               #"2016-2017"
+                                               "2017-2018",
+                                               "2016-2017"
                                                ),
                                 ordered = TRUE))
 
 # Oslo
-all_point_info_long_new <- all_point_info %>%
-  dplyr::select(name, road_category_and_number, starts_with("index")) %>%
-  tidyr::pivot_longer(starts_with("index"),
-                      names_to = "period",
-                      values_to = "index_value") %>%
-  # Because it's only one year, remove duplicate
-  dplyr::filter(period != "index_20") %>%
-  dplyr::mutate(year = case_when(period == "index" ~ "2019-2020"#,
-                                 #period == "index_17" ~ "2016-2017",
-                                 #period == "index_18" ~ "2017-2018",
-                                 #period == "index_19" ~ "2018-2019",
-                                 #period == "index_20" ~ "2019-2020"
-                                 ),
-                year = factor(year, levels = c("2017-2019",
-                                               "2019-2020",
-                                               "2018-2019",
-                                               "2017-2018"
-                                               #"2016-2017"
-                                               ),
-                                ordered = TRUE))
-
-all_point_info_long_old <- all_point_info_old %>% 
-  dplyr::select(name, road_category_and_number, starts_with("index")) %>% 
-  tidyr::pivot_longer(starts_with("index"), 
-                      names_to = "period", 
-                      values_to = "index_value") %>% 
-  dplyr::mutate(year = case_when(period == "index" ~ "2017-2019",
-                                 #period == "index_17" ~ "2016-2017",
-                                 period == "index_18" ~ "2017-2018",
-                                 period == "index_19" ~ "2018-2019"#,
-                                 #period == "index_20" ~ "2019-2020"
-                                 ),
-                year = factor(year, levels = c("2017-2019",
-                                               "2019-2020",
-                                               "2018-2019",
-                                               "2017-2018"#,
-                                               #"2016-2017"
-                                               ),
-                                ordered = TRUE))
-
-all_point_info_long <- dplyr::bind_rows(all_point_info_long_new,
-                                        all_point_info_long_old) %>% 
-  dplyr::filter(year != "2017-2019")
+# all_point_info_long_new <- all_point_info %>%
+#   dplyr::select(name, road_category_and_number, starts_with("index")) %>%
+#   tidyr::pivot_longer(starts_with("index"),
+#                       names_to = "period",
+#                       values_to = "index_value") %>%
+#   # Because it's only one year, remove duplicate
+#   dplyr::filter(period != "index_20") %>%
+#   dplyr::mutate(year = case_when(period == "index" ~ "2019-2020"#,
+#                                  #period == "index_17" ~ "2016-2017",
+#                                  #period == "index_18" ~ "2017-2018",
+#                                  #period == "index_19" ~ "2018-2019",
+#                                  #period == "index_20" ~ "2019-2020"
+#                                  ),
+#                 year = factor(year, levels = c("2017-2019",
+#                                                "2019-2020",
+#                                                "2018-2019",
+#                                                "2017-2018"
+#                                                #"2016-2017"
+#                                                ),
+#                                 ordered = TRUE))
+# 
+# all_point_info_long_old <- all_point_info_old %>% 
+#   dplyr::select(name, road_category_and_number, starts_with("index")) %>% 
+#   tidyr::pivot_longer(starts_with("index"), 
+#                       names_to = "period", 
+#                       values_to = "index_value") %>% 
+#   dplyr::mutate(year = case_when(period == "index" ~ "2017-2019",
+#                                  #period == "index_17" ~ "2016-2017",
+#                                  period == "index_18" ~ "2017-2018",
+#                                  period == "index_19" ~ "2018-2019"#,
+#                                  #period == "index_20" ~ "2019-2020"
+#                                  ),
+#                 year = factor(year, levels = c("2017-2019",
+#                                                "2019-2020",
+#                                                "2018-2019",
+#                                                "2017-2018"#,
+#                                                #"2016-2017"
+#                                                ),
+#                                 ordered = TRUE))
+# 
+# all_point_info_long <- dplyr::bind_rows(all_point_info_long_new,
+#                                         all_point_info_long_old) %>% 
+#   dplyr::filter(year != "2017-2019")
 ```
 
 `r officer::fpar("", officer::run_pagebreak())`
@@ -291,10 +340,10 @@ Nedenfor vises en graf over byindeksene for hver periode, sammen med alle punkti
 
 ```{r plot_city_index, fig.width=6, fig.height=5, fig.cap="Estimert endring i trafikkmengde per år."}
 set.seed(123)
-city_info_each_one_year_and_total <- city_info %>% 
+city_info_each_one_year_and_total <- city_info #%>% 
   #dplyr::filter(year_from_to != "2019-2020") %>% 
   # Oslo
-  dplyr::filter(year_from_to != "2017-2020")
+  #dplyr::filter(year_from_to != "2017-2020")
 
 ggplot() +
   geom_jitter(data = all_point_info_long,
@@ -318,21 +367,51 @@ ggplot() +
 
 `r officer::fpar("", officer::run_pagebreak())`
 
-Kartet nedenfor viser endringen i byindekspunktene fra referanseåret 2019 til og med `r latest_month` 2020.
-
-<br>
-
-```{r map_trp_index, fig.width=6, fig.height=7, fig.cap="Trafikkregistreringspunktene og endring i trafikkmengde."}
-create_pointindex_map(all_point_info)
-```
-
-`r officer::fpar("", officer::run_pagebreak())`
-
 Tabellen nedenfor angir endring i trafikk ved byindekspunktene. Manglende tall skyldes at punktet har for dårlig med data eller er ekskludert fra datagrunnlaget for å unngå skjevhet i utvalget.
 
 <br>
 
-```{r point_index_table}
+```{r point_index_table_2016}
+index_column_names <- all_point_info %>%
+  select(starts_with("index")) %>%
+  names()
+
+all_point_info %>%
+  select(name, road_category_and_number, starts_with("index")) %>%
+  flextable() %>%
+  colformat_num(j = index_column_names,
+                digits = 1) %>%
+  set_header_labels(name = "Navn",
+                    road_category_and_number = "Veg",
+                    index_17 = "Endring i trafikkmengde (%)") %>%
+  add_header_row(values = c("", "",
+                            "2016", "2017", "2018",
+                            "2019", "2016"), top = F) %>%
+  add_header_row(values = c("", "",
+                            "-2017", "-2018", "-2019",
+                            "-2020", "-2020"), top = F) %>%
+  merge_at(i = 1, j = 3:7, part = "header") %>%
+  align(i = 1, j = 3, align = "center", part = "header") %>%
+  align(i = 2, j = 3:7, align = "right", part = "header") %>%
+  align(i = 3, j = 3:7, align = "right", part = "header") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  autofit() %>%
+  height_all(height = .2) %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  width(j = 3, width = 1) %>%
+  set_caption("Estimert endring i trafikkmengde ved trafikkregistreringspunktene.",
+               autonum = table_numbers,
+               style = "Tabelltekst")
+```
+
+```{r point_index_table_2017}
 # index_column_names <- all_point_info %>% 
 #   select(starts_with("index")) %>% 
 #   names()
@@ -367,54 +446,57 @@ Tabellen nedenfor angir endring i trafikk ved byindekspunktene. Manglende tall s
 #   padding(padding.top = .3,
 #           padding.bottom = .3) %>%
 # #  width(j = 6, width = 1) %>%
-#   set_caption("Estimert endring i trafikkmengde ved trafikkregistreringspunktene.")
+#   set_caption("Estimert endring i trafikkmengde ved trafikkregistreringspunktene.",
+#               autonum = table_numbers,
+#               style = "Tabelltekst")
 ```
 
 
-```{r point_index_table_oslo}
-index_column_names <- all_point_info %>% 
-  select(starts_with("index")) %>% 
-  select(-index_20) %>% 
-  names()
-
-all_point_info %>%
-  select(name, road_category_and_number, starts_with("index")) %>%
-  select(-index_20) %>% 
-  flextable() %>%
-  colformat_num(j = index_column_names,
-                digits = 1) %>%
-  set_header_labels(name = "Navn",
-                    road_category_and_number = "Veg",
-                    index = "Endring i \n trafikkmengde (%)") %>%
-  add_header_row(values = c("", "",
-                            #"2016", "2017", "2018",
-                            "2019"#, "2016"
-                            ), top = F) %>%
-  add_header_row(values = c("", "",
-                            #"-2017", "-2018", "-2019",
-                            "-2020"#, "-2020"
-                            ), top = F) %>%
-  #merge_at(i = 1, j = 3:7, part = "header") %>%
-  align(i = 1:3, j = 3, align = "center", part = "header") %>%
-  #align(i = 2, j = 3, align = "right", part = "header") %>%
-  #align(i = 3, j = 3, align = "right", part = "header") %>%
-  bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
-  bg(bg = "#ED9300", part = "header") %>%
-  border_remove() %>%
-  hline_top(part = "header", border = borderline) %>%
-  hline_bottom(part = "all", border = borderline) %>%
-  autofit() %>%
-  height_all(height = .2) %>%
-  padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  width(j = 3, width = 1) %>%
-  set_caption("Estimert endring i trafikkmengde ved trafikkregistreringspunktene.",
-              autonum = table_numbers,
-              style = "Tabelltekst")
+```{r point_index_table_2019}
+# index_column_names <- all_point_info %>% 
+#   select(starts_with("index")) %>% 
+#   select(-index_20) %>% 
+#   names()
+# 
+# all_point_info %>%
+#   select(name, road_category_and_number, starts_with("index")) %>%
+#   select(-index_20) %>% 
+#   flextable() %>%
+#   colformat_num(j = index_column_names,
+#                 digits = 1) %>%
+#   set_header_labels(name = "Navn",
+#                     road_category_and_number = "Veg",
+#                     index = "Endring i \n trafikkmengde (%)") %>%
+#   add_header_row(values = c("", "",
+#                             #"2016", "2017", "2018",
+#                             "2019"#, "2016"
+#                             ), top = F) %>%
+#   add_header_row(values = c("", "",
+#                             #"-2017", "-2018", "-2019",
+#                             "-2020"#, "-2020"
+#                             ), top = F) %>%
+#   #merge_at(i = 1, j = 3:7, part = "header") %>%
+#   align(i = 1:3, j = 3, align = "center", part = "header") %>%
+#   #align(i = 2, j = 3, align = "right", part = "header") %>%
+#   #align(i = 3, j = 3, align = "right", part = "header") %>%
+#   bold(part = "header") %>%
+#   fontsize(size = 9, part = "all") %>%
+#   font(fontname = "Lucida Sans Unicode", part = "all") %>%
+#   bg(bg = "#ED9300", part = "header") %>%
+#   border_remove() %>%
+#   hline_top(part = "header", border = borderline) %>%
+#   hline_bottom(part = "all", border = borderline) %>%
+#   autofit() %>%
+#   height_all(height = .2) %>%
+#   padding(padding.top = .3,
+#           padding.bottom = .3) %>%
+#   width(j = 3, width = 1) %>%
+#   set_caption("Estimert endring i trafikkmengde ved trafikkregistreringspunktene.",
+#               autonum = table_numbers,
+#               style = "Tabelltekst")
 ```
 
+<!--
 `r officer::fpar("", officer::run_pagebreak())`
 
 I figuren nedenfor er spredningen i punktindeksene illustrert. Den vertikale grønne streken viser byindeksens samlede verdi for hele perioden 2019 - `r latest_month` 2020.
@@ -422,6 +504,7 @@ I figuren nedenfor er spredningen i punktindeksene illustrert. Den vertikale gr�
 <br>
 
 ```{r point_graph, fig.width=6, fig.height=7, fig.cap="ÅDT og endring i trafikkmengde per trafikkregistreringspunkt."}
+# TODO: a plot per year
 all_point_info_index <- all_point_info %>% 
   dplyr::filter(!is.na(index)) 
 
@@ -450,10 +533,13 @@ ggplot2::ggplot() +
 # TODO: Add explaining labels with ggforce?
 ```
 
+
+-->
+
 <br>
 
 ### Spesielle trafikkforhold
-```{r child = 'trafikkforhold_959.Rmd'}
+```{r child = traffic_file}
 ```
 
 `r officer::fpar("", officer::run_pagebreak())`
@@ -467,6 +553,7 @@ Tabellen viser endring i trafikk per måned, sammenlignet med samme måned året
 ```{r monthly_city_index}
 create_monthly_city_index_table(city_monthly)
 # TODO: CI
+# TODO: faceted plot instead
 ```
 
 
