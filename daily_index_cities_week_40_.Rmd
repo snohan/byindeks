@@ -141,10 +141,10 @@ trps <- dplyr::left_join(cities_points, points) %>%
 
 # Fetch daily traffic
 week_2019_from <- "2019-09-30T00:00:00+02:00"
-week_2019_to <- "2019-12-02T00:00:00+02:00"
+week_2019_to <- "2019-12-09T00:00:00+02:00"
 
 week_2020_from <- "2020-09-28T00:00:00+02:00"
-week_2020_to <- "2020-11-30T00:00:00+02:00"
+week_2020_to <- "2020-12-07T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -555,23 +555,17 @@ make_city_table <- function(city_dt, caption_text) {
     tidyr::pivot_wider(names_from = ukedag,
                 values_from = index)
   
-  ncol_dt <- ncol(city_dt_table_ready)
-  
-  city_table <- city_dt_table_ready %>% 
+    city_table <- city_dt_table_ready %>% 
     flextable() %>%
     set_header_labels(city_area_name = "Byområde") %>%
     bold(part = "header") %>%
-    fontsize(size = 9, part = "all") %>%
-    font(fontname = "Lucida Sans Unicode", part = "all") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%
     hline_top(part = "header", border = borderline) %>%
     hline_bottom(part = "all", border = borderline) %>%
-    colformat_num(j = 2:ncol_dt, na_str = "", digits = 1) %>% 
+    colformat_double(digits = 1) %>% 
     autofit() %>%
     height_all(height = .2) %>%
-    padding(padding.top = .3,
-            padding.bottom = .3) %>%
     set_caption(caption_text,
               autonum = table_numbers,
               style = "Tabelltekst")
@@ -588,23 +582,17 @@ make_city_table_city <- function(city_dt, caption_text) {
     tidyr::pivot_wider(names_from = ukedag,
                 values_from = index)
   
-  ncol_dt <- ncol(city_dt_table_ready)
-  
   city_table <- city_dt_table_ready %>% 
     flextable() %>%
     set_header_labels(weekno = "Uke") %>%
     bold(part = "header") %>%
-    fontsize(size = 9, part = "all") %>%
-    font(fontname = "Lucida Sans Unicode", part = "all") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%
     hline_top(part = "header", border = borderline) %>%
     hline_bottom(part = "all", border = borderline) %>%
-    colformat_num(j = 2:ncol_dt, na_str = "", digits = 1) %>% 
+    colformat_double(digits = 1) %>% 
     autofit() %>%
     height_all(height = .2) %>%
-    padding(padding.top = .3,
-            padding.bottom = .3) %>%
     set_caption(caption_text,
               autonum = table_numbers,
               style = "Tabelltekst")

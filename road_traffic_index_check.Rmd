@@ -1,5 +1,5 @@
 ---
-title: "Sjekk av byindeks"
+title: "Sjekk av vegtrafikkindeks"
 output: html_notebook
 ---
 
@@ -17,29 +17,22 @@ library(htmltools)
 
 
 ```{r get_data, include=FALSE}
-# Look at details in one city at a time
-
-# City numbers
-# Bergen 958
-# Buskerudbyen 954
-# Grenland 955
-# Kristiansand og omegn 957
-# Nedre Glomma 953
-# Nord-Jæren 952
-# Oslo 959
-# Trondheim 960
-# Tromsø 961
+# Look at details in one county at a time
 
 # Choose
 index_year <- 2020
-index_month <- 9
-city_number <- 5952
+# Last published month
+index_month <- 8
+index_id <- 962
 
 # Fetch
-city_index <- get_published_index_for_months(city_number, index_year, index_month)
-pointindex <- get_published_pointindex_for_months(city_number, index_year, index_month)
-# TODO: check bike index
-#bikepointindex <- get_published_bikepointindex_for_months(city_number, index_year, index_month)
+road_traffic_index <- get_published_road_traffic_index_for_months(index_id, index_year, index_month)
+# TODO: pointindex
+pointindex <- get_published_pointindex_for_months(index_id, index_year, index_month)
+
+# HERE
+
+
 city_trps <- pointindex[[1]]
 pointindices <- pointindex[[2]]
 city_name <- city_index$area_name[1]

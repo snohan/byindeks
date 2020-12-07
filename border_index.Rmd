@@ -6,7 +6,7 @@ output:
     toc: true
     toc_depth: 2
     fig_caption: true
-    fig_width: 6
+    fig_width: 7
     tables:
       style: Table
       layout: autofit
@@ -48,9 +48,9 @@ source("get_from_nvdb_api.R")
 index_2017 <- get_published_index_for_months(2952, 2017, 12)
 index_2018 <- get_published_index_for_months(2952, 2018, 12)
 index_2019 <- get_published_index_for_months(2952, 2019, 12)
-index_2020 <- get_published_index_for_months(2952, 2020, 10)
+index_2020 <- get_published_index_for_months(2952, 2020, 11)
 
-pointindex_2020 <- get_published_pointindex(2952, 2020, 10)
+pointindex_2020 <- get_published_pointindex(2952, 2020, 11)
 
 # Index points
 border_points <- pointindex_2020[[1]]
@@ -110,16 +110,6 @@ points_adt_all <- bind_rows(with_aadt, missing_aadt) %>%
   dplyr::arrange(desc(lat))
 
 # TODO: Point index
-
-# Numbering tables
-table_numbers <- run_autonum(
-  seq_id = "table",
-  pre_label = "Tabell ",
-  post_label = ". ",
-  bkm = NULL,
-  bkm_all = FALSE,
-  prop = NULL
-)
 ```
 
 <br>
@@ -154,7 +144,7 @@ Været vil i perioder kunne påvirke trafikkmengden. For eksempel vil det ved d�
 
 Trafikkregistreringspunktene ligger spredt langs hele Fastlands-Norges riksgrense. Informasjon om trafikkmengde og plassering er gjengitt i tabell og kart nedenfor.
 
-Alle kjøretøy som passerer trafikkregistreringspunktene blir registrert og får målt sin lengde. Kjøretøyregistreringene blir delt inn i lengdeklasser. Skillet mellom lette og tunge kjøretøy er basert på målt lengde kortere eller lengre enn 5,6 m. Der årsdøgntrafikk (ÅDT) for lette og tunge er utelatt fra tabellen, er datagrunnlaget for dårlig til at tall kan presenteres. Summen av lette og tunge kan avvike noe fra totalen på grunn av avrunding.
+Alle kjøretøy som passerer trafikkregistreringspunktene, blir registrert og får målt sin lengde. Kjøretøyregistreringene blir delt inn i lengdeklasser. Skillet mellom lette og tunge kjøretøy er basert på målt lengde kortere eller lengre enn 5,6 m. Der årsdøgntrafikk (ÅDT) for lette og tunge er utelatt fra tabellen, er datagrunnlaget for dårlig til at tall kan presenteres. Summen av lette og tunge kan avvike noe fra totalen på grunn av avrunding.
 
 <br>
 
@@ -162,8 +152,8 @@ Alle kjøretøy som passerer trafikkregistreringspunktene blir registrert og få
 points_adt_all %>%
   select(name, road_reference, adt, aadt_short, aadt_long, year) %>%
   flextable() %>%
-  colformat_num(j = 3:5,
-                big.mark = " ", digits = 0, na_str = "") %>%
+  colformat_int(j = 3:5) %>%
+  colformat_int(j = 6, big.mark = "") %>%
   set_header_labels(name = "Navn",
                     road_reference = "Vegreferanse",
                     adt = "ÅDT \n alle",
@@ -173,16 +163,12 @@ points_adt_all %>%
   align(i = 1, j = 3:5, align = "right", part = "header") %>%
   align(j = 6, align = "center", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
   autofit() %>%
   height_all(height = .2) %>%
-  padding(padding.top = .3,
-          padding.bottom = .3) %>%
   set_caption("Trafikkregistreringspunktenes vegreferanse og årsdøgntrafikk.",
               autonum = table_numbers,
               style = "Tabelltekst")
@@ -275,8 +261,9 @@ index_2020_upper_lower %>%
   dplyr::arrange(length_range, month) %>% 
   select(month_name, year, length_range, index_lower, index_p, index_upper) %>%
   flextable() %>%
-  colformat_num(j = 4:6, digits = 1) %>%
-  set_header_labels(month_name = "Måned", year = "År", length_range = "Lengde-klasse",
+  colformat_int(j = 2, big.mark = "") %>%
+  colformat_double(j = 4:6, digits = 1) %>%
+  set_header_labels(month_name = "Måned", year = "År", length_range = "Lengde- \n klasse",
                     index_lower = "Endring i trafikkmengde (%)") %>%
   add_header_row(values = c("", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
   merge_at(i = 1:2, j = 3, part = "header") %>% 
@@ -285,8 +272,6 @@ index_2020_upper_lower %>%
   align(i = 2, j = 4:6, align = "right", part = "header") %>% 
   align(j = 2, align = "center", part = "all") %>% 
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -297,8 +282,6 @@ index_2020_upper_lower %>%
   height_all(height = .2) %>%
   width(j = 3, width = .8) %>% 
   fix_border_issues() %>% 
-  padding(padding.top = .3,
-          padding.bottom = .3) %>%
   set_caption("Riksgrenseindeks per måned.",
               autonum = table_numbers,
               style = "Tabelltekst")
@@ -342,8 +325,9 @@ index_2020_upper_lower %>%
   dplyr::arrange(length_range, month) %>% 
   select(month_name, year, length_range, index_lower, index_p, index_upper) %>%
   flextable() %>%
-  colformat_num(j = 4:6, digits = 1) %>%
-  set_header_labels(month_name = "Måned", year = "År", length_range = "Kjøretøy-klasse",
+  colformat_int(j = 2, big.mark = "") %>%
+  colformat_double(j = 4:6, digits = 1) %>%
+  set_header_labels(month_name = "Måned", year = "År", length_range = "Kjøretøy- \n klasse",
                     index_lower = "Endring i trafikkmengde (%)") %>%
   add_header_row(values = c("", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
   merge_at(i = 1:2, j = 3, part = "header") %>% 
@@ -352,8 +336,6 @@ index_2020_upper_lower %>%
   align(i = 2, j = 4:6, align = "right", part = "header") %>% 
   align(j = 2, align = "center", part = "all") %>% 
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -361,8 +343,6 @@ index_2020_upper_lower %>%
   height_all(height = .2) %>%
   width(j = 3, width = .8) %>% 
   fix_border_issues() %>% 
-  padding(padding.top = .3,
-          padding.bottom = .3) %>%
   set_caption("Riksgrenseindeks hittil i år.",
               autonum = table_numbers,
               style = "Tabelltekst")

@@ -105,10 +105,10 @@ border_trp_adt <- border_trps %>%
 
 # From week 40
 borderdata_2019_from <- "2019-09-30T00:00:00+02:00"
-borderdata_2019_to <- "2019-12-02T00:00:00+02:00"
+borderdata_2019_to <- "2019-12-09T00:00:00+02:00"
 
 borderdata_2020_from <- "2020-09-28T00:00:00+02:00"
-borderdata_2020_to <- "2020-11-30T00:00:00+02:00"
+borderdata_2020_to <- "2020-12-07T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -468,23 +468,17 @@ make_border_table <- function(border_base, caption_text) {
                        values_from = index) %>% 
     dplyr::mutate(periode = stringr::str_replace(periode, " \n", ""))
   
-  ncol_dt <- ncol(border_base_table_ready)
-  
   border_table <- border_base_table_ready %>% 
     flextable() %>%
     set_header_labels(periode = "Sammenlignet") %>%
     bold(part = "header") %>%
-    fontsize(size = 9, part = "all") %>%
-    font(fontname = "Lucida Sans Unicode", part = "all") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%
     hline_top(part = "header", border = borderline) %>%
     hline_bottom(part = "all", border = borderline) %>%
-    colformat_num(j = 2:ncol_dt, na_str = "", digits = 1) %>% 
+    colformat_double(digits = 1) %>% 
     autofit() %>%
     height_all(height = .2) %>%
-    padding(padding.top = .3,
-            padding.bottom = .3) %>%
     set_caption(caption_text,
               autonum = table_numbers,
               style = "Tabelltekst")
@@ -492,28 +486,23 @@ make_border_table <- function(border_base, caption_text) {
   return(border_table)
 }
 
+
 make_border_trp_table <- function(border_trp_dt, caption_text) {
   
   border_trp_dt_table_ready <- border_trp_dt %>%
     select(-road, -adt, -municipality_name)
   
-  ncol_dt <- ncol(border_trp_dt_table_ready)
-  
   border_trp_table <- border_trp_dt_table_ready %>% 
     flextable() %>%
     set_header_labels(name = "Punktnavn") %>%
     bold(part = "header") %>%
-    fontsize(size = 9, part = "all") %>%
-    font(fontname = "Lucida Sans Unicode", part = "all") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%
     hline_top(part = "header", border = borderline) %>%
     hline_bottom(part = "all", border = borderline) %>%
-    colformat_num(j = 2:ncol_dt, na_str = "", digits = 1) %>% 
+    colformat_double(digits = 1) %>% 
     autofit() %>%
     height_all(height = .2) %>%
-    padding(padding.top = .3,
-            padding.bottom = .3) %>%
     set_caption(caption_text,
               autonum = table_numbers,
               style = "Tabelltekst")
@@ -596,18 +585,13 @@ border_trp_adt %>%
                     adt = "ÅDT",
                     municipality_name = "Kommune") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  colformat_num(j = 4, na_str = "", digits = 0,
-                big.mark = " ") %>% 
+  colformat_int(j = 4) %>% 
   autofit() %>%
   height_all(height = .2) %>%
-  padding(padding.top = .3,
-          padding.bottom = .3) %>%
   set_caption("Trafikkregistreringspunkter ved riksgrenseovergangene.",
               autonum = table_numbers,
               style = "Tabelltekst")
@@ -631,13 +615,14 @@ border_base_2019 %>%
 ```
 
 `r officer::fpar("", officer::run_pagebreak())`
-```{r plot_2019_2, fig.width=6, fig.height=3, fig.cap="Estimert endring i trafikk over riksgrensen, uke 46 - 47."}
+```{r plot_2019_2, fig.width=6, fig.height=4, fig.cap="Estimert endring i trafikk over riksgrensen, uke 46 - 49."}
 border_base_2019 %>% 
   dplyr::filter(periode %in% c("Uke \n 46",
                                "Uke \n 47",
                                "Uke \n 48",
                                "Uke \n 49",
-                               "Uke \n 50")) %>% 
+                               "Uke \n 50",
+                               "Uke \n 51")) %>% 
   make_daily_border_plot("Fra 2019 til 2020")
 ```
 
@@ -715,8 +700,8 @@ make_border_trp_table(border_trp_dt_48,
 
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_201949}
-#make_border_trp_table(border_trp_dt_49,
-#                      "Prosentvis endring i trafikkmengde fra uke 49 2019 til uke 49 2020.")
+make_border_trp_table(border_trp_dt_49,
+                      "Prosentvis endring i trafikkmengde fra uke 49 2019 til uke 49 2020.")
 ```
 
 ```{r trptable_201950}

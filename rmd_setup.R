@@ -65,6 +65,17 @@ decimal_point <- function(number) {
   stringr::str_replace(as.character(number), ",", "\\.")
 }
 
+# Flextable defaults
+flextable::set_flextable_defaults(
+  font.size = 9,
+  font.family = "Lucida Sans Unicode",
+  padding.bottom = .3,
+  padding.top = .3,
+  decimal.mark = ",",
+  big.mark = " ",
+  na_str = ""
+)
+
 # Numbering tables
 table_numbers <- run_autonum(
   seq_id = "table",
