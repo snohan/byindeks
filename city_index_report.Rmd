@@ -542,6 +542,9 @@ ggplot2::ggplot() +
 ```{r child = traffic_file}
 ```
 
+```{r child = 'trafikkforhold_korona.Rmd'}
+```
+
 `r officer::fpar("", officer::run_pagebreak())`
 
 ## Endring per måned

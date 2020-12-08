@@ -16,6 +16,7 @@ library(officedown)
 library(scales)
 
 source("H:/Programmering/R/byindeks/index_report_functions.R")
+source("split_road_system_reference.R")
 
 # knitr options ####
 knitr::opts_chunk$set(echo = FALSE,

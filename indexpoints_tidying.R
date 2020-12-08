@@ -53,10 +53,8 @@ points_trp <- get_points_from_trpapi_httr() %>%
 ###
 ###
 
-# TODO: Generalize method
-# TODO: Script file per city anyway
 # Still need to specify csv-files
-# TODO: Use API instead of hassle with zip-files
+
 
 
 

@@ -1,6 +1,5 @@
-# Gathering info on all points and indexes
-
-
+# Preparation of data for reporting
+# Gathering info on all points and indexes and writing them to csv
 
 # Setup ####
 # Packages are to be loaded through sourcing rmd_setup.R in the Rmd report file.
@@ -22,14 +21,18 @@ source("indexpoints_tidying_functions.R")
 
 # Points ####
 
-# Points used in each city
+# Points used in each city:
 cities_points <- read.csv2("data_points_raw/cities_points.csv")
+
+# Connection to old data:
 trp_id_msnr <- cities_points %>%
   dplyr::select(trp_id, msnr = legacyNortrafMpn)
+
+# Shouldn't be necessary:
 #cities_points_unestablished <-
 #  read_csv2("data_points_raw/points_unestablished.csv")
 
-# All points from Traffic Data API
+# All points from Traffic Data API:
 points <- get_points() %>%
   dplyr::distinct(trp_id, .keep_all = T) %>%
   dplyr::select(trp_id, name, road_reference, county_name,
@@ -43,7 +46,7 @@ points <- get_points() %>%
                 county_name, municipality_name, lat, lon, road_link_position)
 
 
-# All points from TRP API (if needed)
+# All points from TRP API (if needed):
 #points_trp <- get_points_from_trpapi_httr() %>%
 #  split_road_system_reference() #%>%
 # dplyr::select(trp_id, name, road_reference, road_category, road_number,
@@ -67,7 +70,7 @@ points <- get_points() %>%
 
 # Choose
 index_month <- 11
-city_number <- 961
+city_number <- 957
 
 # Pointindices ####
 # TODO: TRPs might differ from year to year!

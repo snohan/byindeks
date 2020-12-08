@@ -1,8 +1,8 @@
 # Index tidying functions
 
-source("H:/Programmering/R/byindeks/split_road_system_reference.R")
+#source("H:/Programmering/R/byindeks/split_road_system_reference.R")
 
-# deprecated?
+# deprecated
 choose_city_trp_ids <- function(city_name,
                                 start_year) {
 
@@ -15,7 +15,7 @@ choose_city_trp_ids <- function(city_name,
     dplyr::filter(!is.na(trp_id))
 }
 
-# deprecated?
+# deprecated
 choose_new_city_trp_ids <- function(city_name,
                                 start_year) {
 
@@ -47,6 +47,7 @@ readPointindexCSV <- function(filename) {
     select(msnr, index)
 }
 
+# deprecated
 read_new_pointindex_csv <- function(filename) {
   # Read new csv export from Datainn
   read.csv2(filename) %>%
@@ -62,6 +63,7 @@ read_new_pointindex_csv <- function(filename) {
   select(trp_id, index)
 }
 
+# deprecated
 #filename <- "data_index_raw/punktindeks_trondheim-2020-04.csv"
 read_new_pointindex_csv_with_volumes <- function(filename) {
   # Read new csv export from Datainn
@@ -111,6 +113,7 @@ read_bikepointindex_csv <- function(filename) {
     select(msnr, index)
 }
 
+# deprecated
 read_city_index_csv <- function(filename) {
   # Read standard csv export from Datainn
   read.csv2(filename) %>%
@@ -286,29 +289,29 @@ calculate_all_possible_36_month_indexes <- function(city_monthly_df) {
 
 
 
-split_road_system_reference <- function(df) {
-
-  df_with_split_reference <- df %>%
-    tidyr::separate(road_reference, c("road_system", "intersection_part"),
-                    sep = "[[:blank:]][[:alpha:]]{1}D",
-                    remove = FALSE, fill = "right") %>%
-    dplyr::mutate(road_category = stringr::str_sub(road_system, 1, 1)) %>%
-    dplyr::mutate(road_category = factor(road_category,
-                                         levels = c("E", "R", "F", "K", "P"))) %>%
-    tidyr::separate(road_system, c("road", "section_meter"),
-                    sep = " S") %>%
-    dplyr::mutate(road_number = as.numeric(stringr::str_sub(road, 3, -1))) %>%
-    dplyr::mutate(road_category_and_number = paste0(road_category, "v", road_number)) %>%
-    tidyr::separate(section_meter, c("section_number", "subsection_meter"),
-                    sep = "D", convert = TRUE) %>%
-    tidyr::separate(subsection_meter, c("subsection_number", "meter"),
-                    sep = " m", convert = TRUE) %>%
-    tidyr::separate(intersection_part, c("intersection_part_number", "intersection_meter"),
-                    sep = " m", convert = TRUE)  %>%
-    dplyr::arrange(road_category, road_number,
-                   section_number, subsection_number, meter,
-                   intersection_part_number, intersection_meter)
-}
+# split_road_system_reference <- function(df) {
+#
+#   df_with_split_reference <- df %>%
+#     tidyr::separate(road_reference, c("road_system", "intersection_part"),
+#                     sep = "[[:blank:]][[:alpha:]]{1}D",
+#                     remove = FALSE, fill = "right") %>%
+#     dplyr::mutate(road_category = stringr::str_sub(road_system, 1, 1)) %>%
+#     dplyr::mutate(road_category = factor(road_category,
+#                                          levels = c("E", "R", "F", "K", "P"))) %>%
+#     tidyr::separate(road_system, c("road", "section_meter"),
+#                     sep = " S") %>%
+#     dplyr::mutate(road_number = as.numeric(stringr::str_sub(road, 3, -1))) %>%
+#     dplyr::mutate(road_category_and_number = paste0(road_category, "v", road_number)) %>%
+#     tidyr::separate(section_meter, c("section_number", "subsection_meter"),
+#                     sep = "D", convert = TRUE) %>%
+#     tidyr::separate(subsection_meter, c("subsection_number", "meter"),
+#                     sep = " m", convert = TRUE) %>%
+#     tidyr::separate(intersection_part, c("intersection_part_number", "intersection_meter"),
+#                     sep = " m", convert = TRUE)  %>%
+#     dplyr::arrange(road_category, road_number,
+#                    section_number, subsection_number, meter,
+#                    intersection_part_number, intersection_meter)
+# }
 
 
 
