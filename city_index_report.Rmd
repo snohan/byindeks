@@ -104,6 +104,9 @@ city_info_all_years <- city_info %>%
   # Oslo ->
   #dplyr::filter(year_from_to == "2019-2020")
 
+base_year <- "2016"
+last_year <- "2020"
+
 index_all_years <- round(city_info_all_years$index_p, digits = 1)
 index_all_years_ci_lower <- 
   round(city_info_all_years$index_p - 
@@ -188,12 +191,12 @@ create_point_adt_map(all_point_info)
 
 Nullvekstmålet skal måles ved at trafikkutviklingen vurderes på et treårs glidende snitt, jf. brev fra Samferdselsdepartementet til de fire største byområdene datert 11.12.2019. Måloppnåelsen gjelder fremdeles avtaleperioden sett under ett. Det skal være netto nullvekst i perioden.
 
-Endring i trafikkmengde er beregnet for hver måned mellom to påfølgende år, med januar i året etter referanseåret som første månedsindeks. Glidende tre års indeks bruker de siste 36 månedsindeks som grunnlag.
+Endring i trafikkmengde er beregnet for hver måned mellom to påfølgende år, med januar i året etter referanseåret som første månedsindeks. Glidende tre års indeks bruker de siste 36 månedsindeksene som grunnlag.
 
 
 ## Endring i glidende treårsperiode
 
-Først når månedsindeks er beregnet gjennom tre år eller lenger, kan det beregnes en glidende treårsindeks. Den vil så oppdateres månedlig. Den første treårsindeksen vil inkludere månedsindeksene fra og med januar 2017 til og med desember 2019.
+Først når månedsindeks er beregnet gjennom tre år eller lenger, kan det beregnes en glidende treårsindeks. Den vil så oppdateres månedlig.
 
 <br>
 
@@ -216,7 +219,7 @@ create_city_index_table(city_info)
 <br>
 
 **Byindeksen estimerer endringen i trafikkmengden fra 
-2016 til `r latest_month` 2020 til å være 
+`r base_year` til `r latest_month` `r last_year` til å være 
 `r stringr::str_replace(as.character(index_all_years), "\\.", ",")` %.**
 Usikkerheten knyttet til byindeksen gjenspeiles i et 95 % konfidensintervall som er fra
 `r stringr::str_replace(as.character(index_all_years_ci_lower), "\\.", ",")` % til
@@ -539,10 +542,23 @@ ggplot2::ggplot() +
 <br>
 
 ### Spesielle trafikkforhold
-```{r child = traffic_file}
-```
+Trafikkregistreringspunktene som benyttes i byindeksen dekker kun en andel av det aktuelle vegnettet. Derfor kan det oppstå omfordeling av trafikk i vegnettet som bare delvis fanges opp i datagrunnlaget. Et typisk eksempel er en veg som stenges i en lengre periode i forbindelse med vegarbeid, og som fører til at all trafikken som normalt kjører der må benytte andre veger i området. Da har vi to ulike scenarioer:
 
-```{r child = 'trafikkforhold_korona.Rmd'}
+1. Den totale trafikkmengden i området er fortsatt den samme, siden omkringliggende vegnett har kapasitet til å føre den omdirigerte trafikken, samt at omkjøringen ikke tar så mye lengre tid at turetterspørselen går ned.
+2. Den totale trafikkmengden i området går ned som følge av manglende kapasitet i omkringliggende vegnett, eventuelt at omkjøringsruter blir for lange, og med det tidkrevende, som gjør turetterspørselen lavere.
+
+Formålet med en byindeks er å estimere en generell trend i trafikkutviklingen over tid. Byindeksen skal derfor ikke få et endringsbidrag fra stengingen i scenario 1, mens den skal få det i scenario 2. Med full informasjon om trafikken på alle deler av vegnettet, ville byindeksen uten videre ha fanget opp dette. Men siden byindekspunktene bare har data fra deler av vegnettet, må det tas hensyn til det i utvalget av punkter som bidrar til indeksen til enhver tid.
+
+Er det et byindekspunkt på en stengt veg, er det ikke alltid tilfelle at all den omfordelte trafikken fanges opp i andre byindekspunkt. Dette er avhengig av vegnettets struktur omkring den stengte vegen og fordeling av byindekspunktene der. Nedgangen i punktet på stengt veg veies derfor ikke alltid opp av tilsvarende økning i andre punkter, og det er derfor punkt på stengt veg i noen tilfeller tas ut av datagrunnlaget. Da må eventuelle andre punkt som får økning som følge av stengingen også tas ut.
+
+Trafikkregistreringspunkter må derfor ses i sammenheng med langvarige hendelser på vegnettet som medfører omkjøringsruter.
+
+
+### Trafikale følger av tiltak mot koronaviruspandemien
+Fra mars 2020 er trafikken i stor grad påvirket av tiltak mot spredningen av det nye koronaviruset. Trafikken varierer i takt med de til enhver tid gjeldende tiltak. Enkelte tiltak har ført til nedgang i trafikken, som utstrakt bruk av hjemmekontor og færre arrangementer der folk møtes fysisk. Oppfordringen om å unngå å benytte kollektivtrafikk dersom mulig, har gjerne bidratt til å øke personbiltrafikken noe, men totalt sett har tiltakene stort sett ført til mindre biltrafikk.
+
+
+```{r child = traffic_file}
 ```
 
 `r officer::fpar("", officer::run_pagebreak())`
