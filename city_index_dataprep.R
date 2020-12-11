@@ -26,7 +26,8 @@ cities_points <- read.csv2("data_points_raw/cities_points.csv")
 
 # Connection to old data:
 trp_id_msnr <- cities_points %>%
-  dplyr::select(trp_id, msnr = legacyNortrafMpn)
+  dplyr::select(trp_id, msnr = legacyNortrafMpn) %>%
+  dplyr::distinct()
 
 # Shouldn't be necessary:
 #cities_points_unestablished <-
@@ -61,7 +62,7 @@ points <- get_points() %>%
 # Bergen 958
 # Buskerudbyen 1952
 # Grenland 955
-# Kristiansand og omegn 957
+# Kristiansand og omegn 957 kommune 956
 # Nedre Glomma 953
 # Nord-Jæren 952
 # Oslo 959
@@ -70,7 +71,7 @@ points <- get_points() %>%
 
 # Choose
 index_month <- 11
-city_number <- 957
+city_number <- 956
 
 # Pointindices ####
 # TODO: TRPs might differ from year to year!
@@ -206,6 +207,14 @@ adt_manual <- data.frame(
   year = c(2019, 2019)
 )
 
+# Kristiansand
+adt_manual <- data.frame(
+  trp_id = c("33412V121301", "40820V121304", "00000V1702725",
+             "47254V121508"),
+  adt = c(40000, 19500, 8500, 8000),
+  year = c(2017, 2018, 2017, 2017)
+)
+
 adt_all <- bind_rows(adt_filtered,
                      adt_manual
                      )
@@ -273,7 +282,6 @@ city_year_to_date_19 <- city_index_2019 %>%
                 road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
                 length_range == "[..,5.6)",
                 period == "year_to_date")
-
 
 city_year_to_date_20 <- city_index_2020 %>%
   dplyr::filter(month == index_month,

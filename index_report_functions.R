@@ -5,7 +5,7 @@ create_point_table <- function(all_point_info_df, caption_text) {
   all_point_info_df %>%
     select(name, road_reference, adt, year) %>%
     flextable() %>%
-    colformat_int(j = "adt") %>%
+    colformat_int(j = "year", big.mark = "") %>%
     set_header_labels(name = "Navn",
                       road_reference = "Vegreferanse",
                       adt = "ÅDT",
@@ -45,7 +45,7 @@ create_point_adt_map <- function(all_point_info_df) {
       fillColor = ~palett_adt(adt),
       fillOpacity = 0.8
     ) %>%
-    addLegend("bottomright",
+    addLegend("bottomleft",
               pal = palett_adt,
               values = ~adt,
               title = "ADT",
@@ -135,6 +135,7 @@ create_monthly_city_index_table <- function(city_monthly) {
     dplyr::filter(!is.na(index_p)) %>%
     dplyr::select(year, month_name, index_p) %>%
     flextable::flextable() %>%
+    colformat_int(j = "year", big.mark = "") %>%
     colformat_double(j = c("index_p"), digits = 1) %>%
     set_header_labels(year = "År",
                       month_name = "Måned",
@@ -159,6 +160,7 @@ create_city_36_index_table <- function(city_36_month) {
   city_table <- city_36_month %>%
     dplyr::select(month_name, year, index_p) %>%
     flextable::flextable() %>%
+    colformat_int(j = "year", big.mark = "") %>%
     colformat_double(j = c("index_p"), digits = 1) %>%
     set_header_labels(month_name = "Treårsperiodens slutt",
                       index_p = "Endring i \n trafikkmengde (%)") %>%

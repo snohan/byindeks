@@ -60,7 +60,7 @@ city_number_county_name <-
                     "Troms og Finnmark")
   )
 
-city_number <- 961
+city_number <- 957
 
 county_name <- city_number_county_name %>% 
   dplyr::filter(city_no == city_number) %>% 
@@ -81,6 +81,7 @@ all_point_info <-
 # Oslo
 #all_point_info_old <- 
 #  read.csv2("data_indexpoints_tidy/indekspunkt_959_2017.csv")
+# Stop Oslo
 
 city_info <-
     read.csv2(
@@ -118,6 +119,19 @@ index_all_years_ci_upper <-
 # Linking to child files
 intro_file <- paste0("intro_", city_number, ".Rmd")
 traffic_file <- paste0("trafikkforhold_", city_number, ".Rmd")
+
+
+# Egen variant for KRS kommune, dvs. gamle kommunen før den ble 
+# slått sammen med Songdalen og Søgne
+
+city_info_kommune <-
+    read.csv2("data_indexpoints_tidy/byindeks_956.csv")
+
+city_monthly_kommune <- 
+  read.csv2("data_indexpoints_tidy/byindeks_maanedlig_956.csv")
+
+city_36_month_kommune <- 
+  read.csv2("data_indexpoints_tidy/byindeks_36_maaneder_956.csv")
 ```
 
 <br>
@@ -146,7 +160,10 @@ Veglengder fordelt på vegkategori for gjeldende område er oppsummert i tabelle
 <br>
 
 ```{r road_length_sum}
-road_lengths %>% create_city_road_length_table()
+#road_lengths %>% create_city_road_length_table()
+
+# Kristiansand
+road_lengths %>% create_municipality_road_length_table()
 ```
 
 <br>
@@ -205,6 +222,16 @@ create_city_36_index_table(city_36_month)
 # TODO: CI
 ```
 
+<!-- Kristiansand -->
+Tilsvarende for gamle Kristiansand kommune.
+
+```{r city_table_36_kommune}
+create_city_36_index_table(city_36_month_kommune)
+# TODO: CI
+```
+
+<!-- Kristiansand -->
+
 
 ## Endring per år
 Endring i trafikkmengde er også beregnet for hele kalenderår. Tabellen nedenfor viser byindeksen for hvert år, samt for hele perioden.
@@ -215,6 +242,15 @@ Endring i trafikkmengde er også beregnet for hele kalenderår. Tabellen nedenfo
 ```{r city_table}
 create_city_index_table(city_info)
 ```
+
+<!-- Kristiansand -->
+```{r city_table_kommune}
+create_city_index_table(city_info_kommune) %>% 
+  set_caption("Estimert endring i trafikkmengde i gamle Kristiansand kommune.",
+                autonum = table_numbers,
+                style = "Tabelltekst")
+```
+<!-- Kristiansand -->
 
 <br>
 
@@ -382,8 +418,8 @@ index_column_names <- all_point_info %>%
 all_point_info %>%
   select(name, road_category_and_number, starts_with("index")) %>%
   flextable() %>%
-  colformat_num(j = index_column_names,
-                digits = 1) %>%
+  colformat_double(j = index_column_names,
+                   digits = 1) %>%
   set_header_labels(name = "Navn",
                     road_category_and_number = "Veg",
                     index_17 = "Endring i trafikkmengde (%)") %>%
@@ -575,7 +611,14 @@ create_monthly_city_index_table(city_monthly)
 # TODO: faceted plot instead
 ```
 
-
+<!-- Kristiansand -->
+```{r monthly_city_index_kommune}
+create_monthly_city_index_table(city_monthly_kommune) %>% 
+  set_caption("Estimert endring i trafikkmengde per måned i gamle Kristiansand kommune.",
+                autonum = table_numbers,
+                style = "Tabelltekst")
+```
+<!-- Kristiansand -->
 
 
 
