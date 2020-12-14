@@ -141,10 +141,10 @@ trps <- dplyr::left_join(cities_points, points) %>%
 
 # Fetch daily traffic
 week_2019_from <- "2019-09-30T00:00:00+02:00"
-week_2019_to <- "2019-12-09T00:00:00+02:00"
+week_2019_to <- "2019-12-16T00:00:00+02:00"
 
 week_2020_from <- "2020-09-28T00:00:00+02:00"
-week_2020_to <- "2020-12-07T00:00:00+02:00"
+week_2020_to <- "2020-12-14T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -704,7 +704,7 @@ make_daily_plot_city(nord_jaeren_dt_2019_2020, "")
 
 `r officer::fpar("", officer::run_pagebreak())`
 
-## Oslo og Akershus
+## Oslo og Viken
 ```{r table_city_oslo}
 make_city_table_city(oslo_og_akershus_dt_2019_2020,
                 "Prosentvis endring i trafikkmengde i Oslo og Viken.")
