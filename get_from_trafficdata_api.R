@@ -1175,9 +1175,9 @@ get_dt_for_trp_list <- function(trp_list, from, to) {
 }
 
 
-# index_id <- 2952
+# index_id <- 953
 # indexyear <- 2020
-# indexmonth <- 7
+# indexmonth <- 10
 
 get_published_index <- function(index_id, indexyear, indexmonth) {
   # Get published index for a given area, year and month
