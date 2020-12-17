@@ -83,7 +83,7 @@ all_point_info <-
     paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".csv"))
 
 # Oslo
-# TODO: remove this?
+# TODO: remove this? No, need them for plotting
 all_point_info_old <- 
   read.csv2("data_indexpoints_tidy/indekspunkt_959_2017.csv")
 # Stop Oslo
@@ -106,9 +106,9 @@ city_36_month <-
 # TODO: change to three year rolling when available?
 city_info_all_years <- city_info %>% 
   #dplyr::filter(year_from_to == "2016-2020")
-  dplyr::filter(year_from_to == "2017-2020")
+  #dplyr::filter(year_from_to == "2017-2020")
   # Oslo ->
-  #dplyr::filter(year_from_to == "2019-2020")
+  dplyr::filter(year_from_to == "2019-2020")
 
 base_year <- "2017"
 last_year <- "2020"
@@ -183,9 +183,9 @@ Trafikkregistreringspunktene som inngår i byindeksen er listet opp i følgende 
 
 
 ```{r point_table_old}
-# Oslo
-create_point_table(all_point_info_old,
-                   "Trafikkregistreringspunktene som inngikk i byindeksen 2017-2019. ÅDT er oppgitt for lette biler (målt til kortere enn 5,6 m), og gjelder for det første året i avtaleperioden med god datakvalitet.")
+# Oslo, but do not use
+# create_point_table(all_point_info_old,
+#                    "Trafikkregistreringspunktene som inngikk i byindeksen 2017-2019. ÅDT er oppgitt for lette biler (målt til kortere enn 5,6 m), og gjelder for det første året i avtaleperioden med god datakvalitet.")
 # TODO: replace this with a point_table with all points all years below, that is based on all_point_info with all necessary data
 ```
 
@@ -309,70 +309,70 @@ read.csv2("data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv") %>%
 !-- Stopp buskerudbyen her -->
 
 ```{r all_point_info_long}
-all_point_info_long <- all_point_info %>% 
-  dplyr::select(name, road_category_and_number, starts_with("index")) %>% 
-  tidyr::pivot_longer(starts_with("index"), 
-                      names_to = "period", 
-                      values_to = "index_value") %>% 
-  dplyr::mutate(year = case_when(period == "index" ~ "2017-2020",
-                                 #period == "index" ~ "2016-2020",
-                                 #period == "index_17" ~ "2016-2017",
-                                 period == "index_18" ~ "2017-2018",
-                                 period == "index_19" ~ "2018-2019",
-                                 period == "index_20" ~ "2019-2020"),
-                year = factor(year, levels = c("2017-2020",
-                                               "2016-2020",
-                                               "2019-2020",
-                                               "2018-2019",
-                                               "2017-2018",
-                                               "2016-2017"
-                                               ),
-                                ordered = TRUE))
-
-# Oslo
-# all_point_info_long_new <- all_point_info %>%
-#   dplyr::select(name, road_category_and_number, starts_with("index")) %>%
-#   tidyr::pivot_longer(starts_with("index"),
-#                       names_to = "period",
-#                       values_to = "index_value") %>%
-#   # Because it's only one year, remove duplicate
-#   dplyr::filter(period != "index_20") %>%
-#   dplyr::mutate(year = case_when(period == "index" ~ "2019-2020"#,
-#                                  #period == "index_17" ~ "2016-2017",
-#                                  #period == "index_18" ~ "2017-2018",
-#                                  #period == "index_19" ~ "2018-2019",
-#                                  #period == "index_20" ~ "2019-2020"
-#                                  ),
-#                 year = factor(year, levels = c("2017-2019",
-#                                                "2019-2020",
-#                                                "2018-2019",
-#                                                "2017-2018"
-#                                                #"2016-2017"
-#                                                ),
-#                                 ordered = TRUE))
-# 
-# all_point_info_long_old <- all_point_info_old %>% 
+# all_point_info_long <- all_point_info %>% 
 #   dplyr::select(name, road_category_and_number, starts_with("index")) %>% 
 #   tidyr::pivot_longer(starts_with("index"), 
 #                       names_to = "period", 
 #                       values_to = "index_value") %>% 
-#   dplyr::mutate(year = case_when(period == "index" ~ "2017-2019",
+#   dplyr::mutate(year = case_when(period == "index" ~ "2017-2020",
+#                                  #period == "index" ~ "2016-2020",
 #                                  #period == "index_17" ~ "2016-2017",
 #                                  period == "index_18" ~ "2017-2018",
-#                                  period == "index_19" ~ "2018-2019"#,
-#                                  #period == "index_20" ~ "2019-2020"
-#                                  ),
-#                 year = factor(year, levels = c("2017-2019",
+#                                  period == "index_19" ~ "2018-2019",
+#                                  period == "index_20" ~ "2019-2020"),
+#                 year = factor(year, levels = c("2017-2020",
+#                                                "2016-2020",
 #                                                "2019-2020",
 #                                                "2018-2019",
-#                                                "2017-2018"#,
-#                                                #"2016-2017"
+#                                                "2017-2018",
+#                                                "2016-2017"
 #                                                ),
 #                                 ordered = TRUE))
-# 
-# all_point_info_long <- dplyr::bind_rows(all_point_info_long_new,
-#                                         all_point_info_long_old) %>% 
-#   dplyr::filter(year != "2017-2019")
+
+# Oslo
+all_point_info_long_new <- all_point_info %>%
+  dplyr::select(name, road_category_and_number, starts_with("index")) %>%
+  tidyr::pivot_longer(starts_with("index"),
+                      names_to = "period",
+                      values_to = "index_value") %>%
+  # Because it's only one year, remove duplicate
+  dplyr::filter(period != "index_20") %>%
+  dplyr::mutate(year = case_when(period == "index" ~ "2019-2020"#,
+                                 #period == "index_17" ~ "2016-2017",
+                                 #period == "index_18" ~ "2017-2018",
+                                 #period == "index_19" ~ "2018-2019",
+                                 #period == "index_20" ~ "2019-2020"
+                                 ),
+                year = factor(year, levels = c("2017-2019",
+                                               "2019-2020",
+                                               "2018-2019",
+                                               "2017-2018"
+                                               #"2016-2017"
+                                               ),
+                                ordered = TRUE))
+
+all_point_info_long_old <- all_point_info_old %>%
+  dplyr::select(name, road_category_and_number, starts_with("index")) %>%
+  tidyr::pivot_longer(starts_with("index"),
+                      names_to = "period",
+                      values_to = "index_value") %>%
+  dplyr::mutate(year = case_when(period == "index" ~ "2017-2019",
+                                 #period == "index_17" ~ "2016-2017",
+                                 period == "index_18" ~ "2017-2018",
+                                 period == "index_19" ~ "2018-2019"#,
+                                 #period == "index_20" ~ "2019-2020"
+                                 ),
+                year = factor(year, levels = c("2017-2019",
+                                               "2019-2020",
+                                               "2018-2019",
+                                               "2017-2018"#,
+                                               #"2016-2017"
+                                               ),
+                                ordered = TRUE))
+
+all_point_info_long <- dplyr::bind_rows(all_point_info_long_new,
+                                        all_point_info_long_old) %>%
+  dplyr::filter(year != "2017-2019")
 ```
 
 `r officer::fpar("", officer::run_pagebreak())`
@@ -385,10 +385,10 @@ Nedenfor vises en graf over byindeksene for hver periode, sammen med alle punkti
 
 ```{r plot_city_index, fig.width=6, fig.height=5, fig.cap="Estimert endring i trafikkmengde per år."}
 set.seed(123)
-city_info_each_one_year_and_total <- city_info #%>% 
+city_info_each_one_year_and_total <- city_info %>% 
   #dplyr::filter(year_from_to != "2019-2020") %>% 
   # Oslo
-  #dplyr::filter(year_from_to != "2017-2020")
+  dplyr::filter(year_from_to != "2017-2020")
 
 ggplot() +
   geom_jitter(data = all_point_info_long,
@@ -498,26 +498,27 @@ all_point_info %>%
 
 
 ```{r point_index_table_2019}
-# index_column_names <- all_point_info %>% 
-#   select(starts_with("index")) %>% 
-#   select(-index_20) %>% 
+# TODO: Needs repair
+# index_column_names <- all_point_info %>%
+#   select(starts_with("index")) %>%
+#   #select(-index_20) %>%
 #   names()
 # 
 # all_point_info %>%
 #   select(name, road_category_and_number, starts_with("index")) %>%
-#   select(-index_20) %>% 
+#   #select(-index_20) %>%
 #   flextable() %>%
-#   colformat_num(j = index_column_names,
+#   colformat_double(j = index_column_names,
 #                 digits = 1) %>%
 #   set_header_labels(name = "Navn",
 #                     road_category_and_number = "Veg",
 #                     index = "Endring i \n trafikkmengde (%)") %>%
 #   add_header_row(values = c("", "",
-#                             #"2016", "2017", "2018",
-#                             "2019"#, "2016"
+#                             #"2017", "2018",
+#                             "2019"#, "2017"
 #                             ), top = F) %>%
 #   add_header_row(values = c("", "",
-#                             #"-2017", "-2018", "-2019",
+#                             #"-2018", "-2019",
 #                             "-2020"#, "-2020"
 #                             ), top = F) %>%
 #   #merge_at(i = 1, j = 3:7, part = "header") %>%

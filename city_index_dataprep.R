@@ -28,7 +28,6 @@ cities_points <- read.csv2("data_points_raw/cities_points.csv")
 trp_id_msnr <- cities_points %>%
   dplyr::select(trp_id, msnr = legacyNortrafMpn) %>%
   dplyr::distinct()
-# TODO: fill in msnr for oslo 2019 to avoid duplicates in all_point_info
 
 # Shouldn't be necessary:
 #cities_points_unestablished <-
