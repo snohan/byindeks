@@ -70,8 +70,8 @@ points <- get_points() %>%
 # Tromsø 961
 
 # Choose
-index_month <- 11
-city_number <- 953
+index_month <- 10
+city_number <- 960
 
 # Pointindices ####
 # TODO: TRPs might differ from year to year!
@@ -131,6 +131,12 @@ n_19 <- pointindex_19 %>%
 n_20 <- pointindex_20  %>%
   dplyr::filter(!is.na(index_20)) %>%
   nrow()
+
+# Trondheim start
+# Specific code to inculde toll stations:
+source("city_index_dataprep_trondheim_toll_stations")
+# Skip to refyear, but not relevant before 2021
+# Trondheim stop
 
 adt <- get_aadt_by_length_for_trp_list(city_trps)
 

@@ -1,0 +1,170 @@
+# Tolling stations with metadata
+kommunenr <- "5001"
+kommunenavn <- hent_kommune(kommunenr)[[1]]
+
+kommune_bomer_uttak <-
+  get_tolling_stations_v3(kommunenr)
+
+kommune_bomer <- kommune_bomer_uttak %>%
+  dplyr::mutate(station_type = "Bom") %>%
+  dplyr::mutate(trp_id = msnr,
+                msnr = as.numeric(msnr)) %>%
+  dplyr::select(trp_id, everything()) %>%
+  dplyr::filter(trp_id %in% c("51", "52", "53", "54", "55", "56", "58",
+                              "59", "60", "61", "62", "64", "65", "66",
+                              "67", "68", "69", "85", "86", "72"))
+
+# Names from toll data files
+bom_felt_og_stasjon <- read.csv2(
+  "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_felt_og_stasjon.csv"
+) %>%
+  dplyr::select(-felt) %>%
+  dplyr::rename(name = stasjon)
+
+trh_bomer <- kommune_bomer %>%
+  dplyr::select(-name) %>%
+  dplyr::left_join(bom_felt_og_stasjon, by = c("msnr" = "kode")) %>%
+  dplyr::select(-msnr) %>%
+  dplyr::mutate(municipality_name = "Trondheim")
+
+# TRPs
+this_citys_trps <- points %>%
+  dplyr::filter(trp_id %in% city_trps) %>%
+  dplyr::select(trp_id, name, road_reference,
+                municipality_name,
+                lat, lon, road_link_position) %>%
+  dplyr::mutate(station_type = "Trafikkregistrering")
+
+# All points
+this_citys_trps_all <- bind_rows(this_citys_trps, trh_bomer) %>%
+  split_road_system_reference() %>%
+  dplyr::select(trp_id, name, road_reference,
+                road_category_and_number,
+                municipality_name, lat, lon, road_link_position,
+                station_type)
+
+# Index results from CSV-files
+# Pointindex for trps fetched in parent file
+
+tollpointindex <- read.csv2(
+  "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_aarsindekser.csv") %>%
+  dplyr::rename(trp_id = kode,
+                index = indeks) %>%
+  dplyr::mutate(trp_id = as.character(trp_id)) %>%
+  dplyr::select(-felt, -stasjon) %>%
+  dplyr::select(trp_id, base_volume, calc_volume, index, year)
+
+# TODO: get month volumes in API query
+pointindex_20_trp_toll <- tollpointindex %>%
+  dplyr::filter(year == 2020) %>%
+  dplyr::mutate(index_20 = round(index, digits = 1)) %>%
+  dplyr::select(trp_id, base_volume, calc_volume, index_20) %>%
+  dplyr::bind_rows(pointindex_20)
+
+n_20 <- pointindex_20_trp_toll %>%
+  dplyr::filter(!is.na(index_20)) %>%
+  nrow()
+
+
+
+
+
+# ADT
+adt_trp_id <- this_citys_trps_all %>%
+  dplyr::filter(station_type == "Trafikkregistrering")
+
+adt_trp <- get_aadt_by_length_for_trp_list(adt_trp_id$trp_id)
+
+adt_trp_filtered <- adt_trp %>%
+  dplyr::filter(length_range == "[..,5.6)") %>%
+  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  dplyr::filter(length_quality > 90) %>%
+  dplyr::filter(coverage > 50) %>%
+  dplyr::group_by(trp_id) %>%
+  #dplyr::filter(year >= 2019) %>%
+  dplyr::filter(year == max(year)) %>%
+  dplyr::select(trp_id, aadt_length_range, year) %>%
+  dplyr::rename(adt = 2)
+
+this_citys_trps_all_adt <- this_citys_trps_all %>%
+  dplyr::left_join(adt_trp_filtered)
+
+missing_adt <- this_citys_trps_all_adt %>%
+  dplyr::filter(is.na(adt)) %>%
+  dplyr::mutate(adt = mapply(getAadtByRoadlinkposition, road_link_position))
+
+missing_adt_small_cars <- missing_adt %>%
+  dplyr::mutate(adt = round(0.9 * adt, digits = -2),
+                year = 2019)
+
+# Correcting wrong values
+missing_adt_small_cars$adt[missing_adt_small_cars$trp_id == 56] <- 44000
+
+# Finally all adt
+this_citys_trps_all_adt_final <- this_citys_trps_all_adt %>%
+  dplyr::filter(!is.na(adt)) %>%
+  dplyr::bind_rows(missing_adt_small_cars)
+
+# Adding pointindices to all points
+this_citys_trps_all_adt_final_index <- this_citys_trps_all_adt_final %>%
+  dplyr::left_join(select(pointindex_20_trp_toll, 1, 4))
+
+# TODO: include refyear from 2021
+this_citys_trp_index_refyear <- this_citys_trps_all_adt_final_index
+
+# Write file in parent script
+
+
+
+# City index
+# Must calculate based on all pointindices
+city_index_20 <- pointindex_20_trp_toll %>%
+  dplyr::summarise(base_volume_all = sum(base_volume),
+                   calc_volume_all = sum(calc_volume),
+                   index = (calc_volume_all / base_volume_all - 1 ) * 100,
+                   n_points = n(),
+                   year = "2019-2020")
+
+# To find weighted variance and ci
+pointindex_20_trp_toll_sd <- pointindex_20_trp_toll %>%
+  dplyr::filter(!is.na(index_20)) %>%
+  dplyr::mutate(city_index = city_index_20$index,
+                city_base_volume = city_index_20$base_volume_all,
+                diff = (base_volume / city_base_volume) *
+                  (index_20 - city_index)^2,
+                weight = (base_volume / city_base_volume)^2) %>%
+  dplyr::summarise(standardavvik = sqrt((1 / (1 - sum(weight) )) * sum(diff) ))
+
+city_index_20_sd <- city_index_20 %>%
+  dplyr::bind_cols(pointindex_20_all_sd) %>%
+  dplyr::mutate(variance = standardavvik^2,
+                konfidensintervall = qt(0.975, n_points - 1) * standardavvik /
+                  sqrt(n_points))
+
+city_index <- bind_rows(city_index_20_sd#,
+                        #city_index_21_sd,
+                        #city_index_22_sd
+) %>%
+  dplyr::select(-base_volume_all, -calc_volume_all) %>%
+  dplyr::mutate(index_i = index_converter(index),
+                # TODO: True coverage
+                dekning = 100)
+
+
+# TODO: fom refyear from 2021
+
+city_index_all <- city_index %>%
+  #bind_rows(next_two_years) %>%
+  #bind_rows(first_two_years) %>%
+  #bind_rows(last_two_years) %>%
+  dplyr::mutate(ki_start = index - konfidensintervall,
+                ki_slutt = index + konfidensintervall)
+
+
+
+write.csv2(city_index_all,
+           file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".csv"),
+           row.names = F)
+
+# Monthly city index
+# TODO: do it
