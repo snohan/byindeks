@@ -96,9 +96,23 @@ data_to_plot %>%
 ```
 
 ```{r indeksplott1, fig.width=8, fig.height=8}
-stepplot_by_class(bomindeks_trondheim_maanedlig, 1, 10)
+stepplot_by_class(bomindeks_trondheim_maanedlig, 1, 5)
 ```
 
 ```{r indeksplott2, fig.width=8, fig.height=8}
-stepplot_by_class(bomindeks_trondheim_maanedlig, 11, 20)
+stepplot_by_class(bomindeks_trondheim_maanedlig, 6, 10)
 ```
+
+
+
+```{r indeksplott3, fig.width=8, fig.height=8}
+stepplot_by_class(bomindeks_trondheim_maanedlig, 11, 15)
+```
+
+
+```{r indeksplott4, fig.width=8, fig.height=8}
+stepplot_by_class(bomindeks_trondheim_maanedlig, 16, 20)
+```
+
+
+
