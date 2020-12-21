@@ -1,51 +1,51 @@
-"trp_id";"name";"road_reference";"road_category_and_number";"municipality_name";"lat";"lon";"road_link_position";"station_type";"adt";"year";"index_20"
-"21801V72158";"Brattørbrua";"EV6 S75D140 m187";"Ev6";"Trondheim";63,434645;10,40504;"0.21802@72158";"Trafikkregistrering";7280;2019;NA
-"20570V72811";"Sundland";"EV6 S76D1 m1539";"Ev6";"Trondheim";63,402321;10,406876;"0.20574@72811";"Trafikkregistrering";39000;2019;NA
-"40649V2411511";"Grillstadtunnelen Fra Rotvoll";"EV6 S76D1 m6960 KD2 m325";"Ev6";"Trondheim";63,430977;10,494072;"0.66034@2411511";"Trafikkregistrering";4920;2019;-13,32
-"44210V2411509";"Grillstadtunnelen Til Rotvoll";"EV6 S76D1 m6960 KD6 m100";"Ev6";"Trondheim";63,431343;10,493692;"0.22103@2411509";"Trafikkregistrering";5190;2019;-9,71
-"94210V2411536";"Grillstadtunnelen Vest";"EV6 S76D1 m7308";"Ev6";"Trondheim";63,430955;10,494998;"0.94234@2411536";"Trafikkregistrering";20480;2019;-9,98
-"22504V72241";"Øysand";"EV39 S1D1 m2825";"Ev39";"Melhus";63,323305;10,247763;"0.22507@72241";"Trafikkregistrering";12500;2019;-3,75
-"77022V72359";"Oslovegen";"RV706 S1D1 m2495";"Rv706";"Trondheim";63,403862;10,387448;"0.7703@72359";"Trafikkregistrering";11940;2019;-3,89
-"81077V72158";"Havnegata";"RV706 S1D1 m8458";"Rv706";"Trondheim";63,43891;10,406326;"0.81077@72158";"Trafikkregistrering";15390;2019;-8,48
-"73951V2394243";"Strindheimtunnelen Mot Nyhavna";"RV706 S2D1 m1340";"Rv706";"Trondheim";63,43309;10,435691;"0.73951@2394243";"Trafikkregistrering";10000;2019;-11,22
-"21571V2394246";"Strindheimtunnelen Mot Leangen";"RV706 S2D1 m3938";"Rv706";"Trondheim";63,433297;10,435812;"0.21571@2394246";"Trafikkregistrering";9710;2019;-10,89
-"27372V72852";"Søndre Ilevollen";"FV6650 S1D1 m1149";"Fv6650";"Trondheim";63,428933;10,370088;"0.27372@72852";"Trafikkregistrering";8450;2019;-7,2
-"17909V41450";"Byåsveien Ved Nyveibakken";"FV6650 S2D1 m559";"Fv6650";"Trondheim";63,423608;10,371994;"0.17909@41450";"Trafikkregistrering";11820;2017;NA
-"14772V41375";"Bjørndalsbrua Vest";"FV6650 S2D1 m9563";"Fv6650";"Trondheim";63,370844;10,36472;"0.10472@41375";"Trafikkregistrering";17960;2018;NA
-"75341V41863";"Jonsvannsveien Vest For Steinanvegen";"FV6660 S1D1 m329";"Fv6660";"Trondheim";63,408359;10,446365;"0.75341@41863";"Trafikkregistrering";9750;2019;NA
-"65625V41945";"Kong Øysteins Veg Ved Eberg";"FV6664 S1D1 m2152";"Fv6664";"Trondheim";63,419179;10,436044;"0.86638@41945";"Trafikkregistrering";4870;2018;NA
-"06750V2429605";"Bromstadvegens Forlengelse";"FV6664 S1D1 m4426";"Fv6664";"Trondheim";63,436624;10,458943;"0.0675@2429605";"Trafikkregistrering";12780;2019;NA
-"81008V41567";"Festningsgata";"FV6666 S1D1 m1857";"Fv6666";"Trondheim";63,428343;10,416221;"0.81134@41567";"Trafikkregistrering";8450;2019;NA
-"90656V41781";"Haakon Vii Gt Øst";"FV6668 S1D1 m3034";"Fv6668";"Trondheim";63,44002;10,461145;"0.90628@41781";"Trafikkregistrering";14250;2018;NA
-"25280V41723";"Heimdalsvegen Ved Esp";"FV6682 S1D1 m1100";"Fv6682";"Trondheim";63,328545;10,325948;"0.2528@41723";"Trafikkregistrering";3240;2019;-3,64
-"48351V2411216";"Østre Rosten Ved Sandmoen";"FV6686 S1D1 m5638";"Fv6686";"Trondheim";63,333888;10,367378;"0.48351@2411216";"Trafikkregistrering";4490;2018;NA
-"10236V72161";"Innherredsveien Ved Bakke Kirke";"FV6690 S1D1 m447";"Fv6690";"Trondheim";63,433039;10,410484;"0.24124@72161";"Trafikkregistrering";7520;2019;-14,5
-"16219V72812";"Prinsens Gt Nord For Elgeseter Bru";"FV6690 S3D1 m640";"Fv6690";"Trondheim";63,424987;10,393782;"0.64127@72812";"Trafikkregistrering";16720;2019;-14,22
-"88356V72157";"Jernbanebrua";"FV6692 S1D1 m243";"Fv6692";"Trondheim";63,435497;10,400043;"0.88356@72157";"Trafikkregistrering";4660;2019;-24,09
-"04300V72813";"Innherredsveien Ved Fjæregata";"FV6692 S2D1 m160";"Fv6692";"Trondheim";63,436144;10,420863;"0.043@72813";"Trafikkregistrering";5900;2019;-4,21
-"34938V72813";"Innherredsveien Ved Saxenborg Alle";"FV6692 S2D1 m1291";"Fv6692";"Trondheim";63,437778;10,443222;"0.34938@72813";"Trafikkregistrering";4820;2019;-1,98
-"03476V41818";"Jakobslivegen Ved Skovgård";"KV3330 S1D1 m70";"Kv3330";"Trondheim";63,428213;10,495449;"0.03476@41818";"Trafikkregistrering";8340;2019;-13,09
-"52";"Klett - E6";"EV6 S73D1 m1972";"Ev6";"Trondheim";63,326093;10,341289;"0.61418692@3112188";"Bom";24500;2019;4,7
-"06970V72811";"Kroppanbrua";"EV6 S75D1 m2632";"Ev6";"Trondheim";63,391793;10,384529;"0.02779@72811";"Trafikkregistrering";44700;2019;-4,66
-"72";"Ranheim";"EV6 S77D1 m1436";"Ev6";"Trondheim";63,422601;10,554756;"0.16055915@72155";"Bom";18300;2019;-12,7
-"18672V578623";"Meådalen";"EV14 S5D1 m2692";"Ev14";"Stjørdal";63,465314;11,495305;"0.30433@578095";"Trafikkregistrering";2600;2019;NA
-"54";"Bjørndalen (Oslovn.)";"RV706 S1D1 m1378";"Rv706";"Trondheim";63,394235;10,384506;"0.42546865@72359";"Bom";9000;2019;-6,1
-"46684V1842951";"Marienborgtunnelen";"RV706 S1D1 m4524";"Rv706";"Trondheim";63,419946;10,372674;"0.4667@1842951";"Trafikkregistrering";6500;2019;NA
-"55";"Nord for Sluppen bru (Tempevn)";"RV706 S1D80 m202";"Rv706";"Trondheim";63,396464;10,388237;"0.50809783@72863";"Bom";13300;2019;-6,3
-"59";"Rv 706 Leangensletta";"RV706 S2D1 m6287";"Rv706";"Trondheim";63,431381;10,47933;"0.74722838@2394249";"Bom";23100;2019;-8,7
-"85";"Fv 704 Torgårdsletta";"FV704 S1D1 m1282";"Fv704";"Trondheim";63,326371;10,367595;"0.08178507@72832";"Bom";6200;2019;12,9
-"51";"Klett - Rv.707";"FV707 S2D1 m10842";"Fv707";"Trondheim";63,324425;10,306641;"0.85873099@72314";"Bom";5300;2019;1,4
-"58";"Være (Gml. E6)";"FV950 S1D1 m4460";"Fv950";"Trondheim";63,43057;10,566582;"0.55792781@41620";"Bom";8100;2019;-6,7
-"68";"Byåsveien";"FV6650 S2D1 m2781";"Fv6650";"Trondheim";63,405451;10,358914;"0.15254578@1684268";"Bom";8400;2019;-3,3
-"67";"Bøckmans veg";"FV6656 S1D1 m525";"Fv6656";"Trondheim";63,405479;10,382963;"0.22001901@41468";"Bom";4700;2019;-6,7
-"64";"Thorbjørn Bratts veg";"FV6658 S1D1 m688";"Fv6658";"Trondheim";63,408781;10,420685;"0.82201616@42636";"Bom";12100;2019;-9,4
-"60";"Haakon VII s gt ";"FV6668 S1D1 m4411";"Fv6668";"Trondheim";63,430184;10,476018;"0.64977347@2449259";"Bom";10500;2019;-1,3
-"65";"Bratsbergveien";"FV6680 S1D1 m330";"Fv6680";"Trondheim";63,402406;10,400545;"0.39966273@41394";"Bom";5300;2019;-4,3
-"86";"Tillerbrua";"FV6680 S1D1 m7589";"Fv6680";"Trondheim";63,348996;10,437413;"0.31061835@42831";"Bom";1200;2019;-45,7
-"56";"Kroppan bru";"FV6690 S4D1 m565";"Fv6690";"Trondheim";63,399149;10,394246;"0.03882139@72812";"Bom";44000;2019;-6,7
-"53";"Nedre Leirfoss (Fossestuvegen)";"KV1827 S1D1 m794";"Kv1827";"Trondheim";63,381561;10,392406;"0.75353368@41587";"Bom";1900;2019;-1,5
-"69";"Gamle Oslovei";"KV2020 S1D1 m1301";"Kv2020";"Trondheim";63,406508;10,34658;"0.52917111@41628";"Bom";4200;2019;-0,4
-"61";"Landbruksvegen";"KV4235 S1D1 m313";"Kv4235";"Trondheim";63,426825;10,475053;"0.88418079@42003";"Bom";4000;2019;-1
-"66";"Tempeveien";"KV7440 S2D1 m258";"Kv7440";"Trondheim";63,406283;10,397135;"0.20559896@42597";"Bom";3900;2019;-12,6
-"62";"Tungasletta";"KV7703 S1D1 m311";"Kv7703";"Trondheim";63,422193;10,462099;"0.78505722@42659";"Bom";9300;2019;-4,5
-"84826V42881";"Tungasletta Mot I. Ystgaardsv.";"KV7703 S3D1 m283";"Kv7703";"Trondheim";63,419533;10,464411;"0.84826@42881";"Trafikkregistrering";4500;2019;NA
+"trp_id";"name";"road_reference";"road";"section_number";"subsection_number";"meter";"intersection_part_number";"intersection_meter";"road_category_and_number";"municipality_name";"lat";"lon";"road_link_position";"station_type";"adt";"year";"index_20";"road_category";"road_number"
+"52";"Klett - E6";"EV6 S73D1 m1972";"EV6";73;1;1972;NA;NA;"Ev6";"Trondheim";63,326093;10,341289;"0.61418692@3112188";"Bom";24500;2019;4,7;"E";6
+"06970V72811";"Kroppanbrua";"EV6 S75D1 m2632";"EV6";75;1;2632;NA;NA;"Ev6";"Trondheim";63,391793;10,384529;"0.02779@72811";"Trafikkregistrering";44700;2019;-4,66;"E";6
+"21801V72158";"Brattørbrua";"EV6 S75D140 m187";"EV6";75;140;187;NA;NA;"Ev6";"Trondheim";63,434645;10,40504;"0.21802@72158";"Trafikkregistrering";7280;2019;NA;"E";6
+"20570V72811";"Sundland";"EV6 S76D1 m1539";"EV6";76;1;1539;NA;NA;"Ev6";"Trondheim";63,402321;10,406876;"0.20574@72811";"Trafikkregistrering";39000;2019;NA;"E";6
+"40649V2411511";"Grillstadtunnelen Fra Rotvoll";"EV6 S76D1 m6960 KD2 m325";"EV6";76;1;6960;2;325;"Ev6";"Trondheim";63,430977;10,494072;"0.66034@2411511";"Trafikkregistrering";4920;2019;-13,32;"E";6
+"44210V2411509";"Grillstadtunnelen Til Rotvoll";"EV6 S76D1 m6960 KD6 m100";"EV6";76;1;6960;6;100;"Ev6";"Trondheim";63,431343;10,493692;"0.22103@2411509";"Trafikkregistrering";5190;2019;-9,71;"E";6
+"94210V2411536";"Grillstadtunnelen Vest";"EV6 S76D1 m7308";"EV6";76;1;7308;NA;NA;"Ev6";"Trondheim";63,430955;10,494998;"0.94234@2411536";"Trafikkregistrering";20480;2019;-9,98;"E";6
+"72";"Ranheim";"EV6 S77D1 m1436";"EV6";77;1;1436;NA;NA;"Ev6";"Trondheim";63,422601;10,554756;"0.16055915@72155";"Bom";18300;2019;-12,7;"E";6
+"18672V578623";"Meådalen";"EV14 S5D1 m2692";"EV14";5;1;2692;NA;NA;"Ev14";"Stjørdal";63,465314;11,495305;"0.30433@578095";"Trafikkregistrering";2600;2019;NA;"E";14
+"22504V72241";"Øysand";"EV39 S1D1 m2825";"EV39";1;1;2825;NA;NA;"Ev39";"Melhus";63,323305;10,247763;"0.22507@72241";"Trafikkregistrering";12500;2019;-3,75;"E";39
+"54";"Bjørndalen (Oslovn.)";"RV706 S1D1 m1378";"RV706";1;1;1378;NA;NA;"Rv706";"Trondheim";63,394235;10,384506;"0.42546865@72359";"Bom";9000;2019;-6,1;"R";706
+"77022V72359";"Oslovegen";"RV706 S1D1 m2495";"RV706";1;1;2495;NA;NA;"Rv706";"Trondheim";63,403862;10,387448;"0.7703@72359";"Trafikkregistrering";11940;2019;-3,89;"R";706
+"46684V1842951";"Marienborgtunnelen";"RV706 S1D1 m4524";"RV706";1;1;4524;NA;NA;"Rv706";"Trondheim";63,419946;10,372674;"0.4667@1842951";"Trafikkregistrering";6500;2019;NA;"R";706
+"81077V72158";"Havnegata";"RV706 S1D1 m8458";"RV706";1;1;8458;NA;NA;"Rv706";"Trondheim";63,43891;10,406326;"0.81077@72158";"Trafikkregistrering";15390;2019;-8,48;"R";706
+"55";"Nord for Sluppen bru (Tempevn)";"RV706 S1D80 m202";"RV706";1;80;202;NA;NA;"Rv706";"Trondheim";63,396464;10,388237;"0.50809783@72863";"Bom";13300;2019;-6,3;"R";706
+"73951V2394243";"Strindheimtunnelen Mot Nyhavna";"RV706 S2D1 m1340";"RV706";2;1;1340;NA;NA;"Rv706";"Trondheim";63,43309;10,435691;"0.73951@2394243";"Trafikkregistrering";10000;2019;-11,22;"R";706
+"21571V2394246";"Strindheimtunnelen Mot Leangen";"RV706 S2D1 m3938";"RV706";2;1;3938;NA;NA;"Rv706";"Trondheim";63,433297;10,435812;"0.21571@2394246";"Trafikkregistrering";9710;2019;-10,89;"R";706
+"59";"Rv 706 Leangensletta";"RV706 S2D1 m6287";"RV706";2;1;6287;NA;NA;"Rv706";"Trondheim";63,431381;10,47933;"0.74722838@2394249";"Bom";23100;2019;-8,7;"R";706
+"85";"Fv 704 Torgårdsletta";"FV704 S1D1 m1282";"FV704";1;1;1282;NA;NA;"Fv704";"Trondheim";63,326371;10,367595;"0.08178507@72832";"Bom";6200;2019;12,9;"F";704
+"51";"Klett - Rv.707";"FV707 S2D1 m10842";"FV707";2;1;10842;NA;NA;"Fv707";"Trondheim";63,324425;10,306641;"0.85873099@72314";"Bom";5300;2019;1,4;"F";707
+"58";"Være (Gml. E6)";"FV950 S1D1 m4460";"FV950";1;1;4460;NA;NA;"Fv950";"Trondheim";63,43057;10,566582;"0.55792781@41620";"Bom";8100;2019;-6,7;"F";950
+"27372V72852";"Søndre Ilevollen";"FV6650 S1D1 m1149";"FV6650";1;1;1149;NA;NA;"Fv6650";"Trondheim";63,428933;10,370088;"0.27372@72852";"Trafikkregistrering";8450;2019;-7,2;"F";6650
+"17909V41450";"Byåsveien Ved Nyveibakken";"FV6650 S2D1 m559";"FV6650";2;1;559;NA;NA;"Fv6650";"Trondheim";63,423608;10,371994;"0.17909@41450";"Trafikkregistrering";11820;2017;NA;"F";6650
+"68";"Byåsveien";"FV6650 S2D1 m2781";"FV6650";2;1;2781;NA;NA;"Fv6650";"Trondheim";63,405451;10,358914;"0.15254578@1684268";"Bom";8400;2019;-3,3;"F";6650
+"14772V41375";"Bjørndalsbrua Vest";"FV6650 S2D1 m9563";"FV6650";2;1;9563;NA;NA;"Fv6650";"Trondheim";63,370844;10,36472;"0.10472@41375";"Trafikkregistrering";17960;2018;NA;"F";6650
+"67";"Bøckmans veg";"FV6656 S1D1 m525";"FV6656";1;1;525;NA;NA;"Fv6656";"Trondheim";63,405479;10,382963;"0.22001901@41468";"Bom";4700;2019;-6,7;"F";6656
+"64";"Thorbjørn Bratts veg";"FV6658 S1D1 m688";"FV6658";1;1;688;NA;NA;"Fv6658";"Trondheim";63,408781;10,420685;"0.82201616@42636";"Bom";12100;2019;-9,4;"F";6658
+"75341V41863";"Jonsvannsveien Vest For Steinanvegen";"FV6660 S1D1 m329";"FV6660";1;1;329;NA;NA;"Fv6660";"Trondheim";63,408359;10,446365;"0.75341@41863";"Trafikkregistrering";9750;2019;NA;"F";6660
+"65625V41945";"Kong Øysteins Veg Ved Eberg";"FV6664 S1D1 m2152";"FV6664";1;1;2152;NA;NA;"Fv6664";"Trondheim";63,419179;10,436044;"0.86638@41945";"Trafikkregistrering";4870;2018;NA;"F";6664
+"06750V2429605";"Bromstadvegens Forlengelse";"FV6664 S1D1 m4426";"FV6664";1;1;4426;NA;NA;"Fv6664";"Trondheim";63,436624;10,458943;"0.0675@2429605";"Trafikkregistrering";12780;2019;NA;"F";6664
+"81008V41567";"Festningsgata";"FV6666 S1D1 m1857";"FV6666";1;1;1857;NA;NA;"Fv6666";"Trondheim";63,428343;10,416221;"0.81134@41567";"Trafikkregistrering";8450;2019;NA;"F";6666
+"90656V41781";"Haakon Vii Gt Øst";"FV6668 S1D1 m3034";"FV6668";1;1;3034;NA;NA;"Fv6668";"Trondheim";63,44002;10,461145;"0.90628@41781";"Trafikkregistrering";14250;2018;NA;"F";6668
+"60";"Haakon VII s gt ";"FV6668 S1D1 m4411";"FV6668";1;1;4411;NA;NA;"Fv6668";"Trondheim";63,430184;10,476018;"0.64977347@2449259";"Bom";10500;2019;-1,3;"F";6668
+"65";"Bratsbergveien";"FV6680 S1D1 m330";"FV6680";1;1;330;NA;NA;"Fv6680";"Trondheim";63,402406;10,400545;"0.39966273@41394";"Bom";5300;2019;-4,3;"F";6680
+"86";"Tillerbrua";"FV6680 S1D1 m7589";"FV6680";1;1;7589;NA;NA;"Fv6680";"Trondheim";63,348996;10,437413;"0.31061835@42831";"Bom";1200;2019;-45,7;"F";6680
+"25280V41723";"Heimdalsvegen Ved Esp";"FV6682 S1D1 m1100";"FV6682";1;1;1100;NA;NA;"Fv6682";"Trondheim";63,328545;10,325948;"0.2528@41723";"Trafikkregistrering";3240;2019;-3,64;"F";6682
+"48351V2411216";"Østre Rosten Ved Sandmoen";"FV6686 S1D1 m5638";"FV6686";1;1;5638;NA;NA;"Fv6686";"Trondheim";63,333888;10,367378;"0.48351@2411216";"Trafikkregistrering";4490;2018;NA;"F";6686
+"10236V72161";"Innherredsveien Ved Bakke Kirke";"FV6690 S1D1 m447";"FV6690";1;1;447;NA;NA;"Fv6690";"Trondheim";63,433039;10,410484;"0.24124@72161";"Trafikkregistrering";7520;2019;-14,5;"F";6690
+"16219V72812";"Prinsens Gt Nord For Elgeseter Bru";"FV6690 S3D1 m640";"FV6690";3;1;640;NA;NA;"Fv6690";"Trondheim";63,424987;10,393782;"0.64127@72812";"Trafikkregistrering";16720;2019;-14,22;"F";6690
+"56";"Kroppan bru";"FV6690 S4D1 m565";"FV6690";4;1;565;NA;NA;"Fv6690";"Trondheim";63,399149;10,394246;"0.03882139@72812";"Bom";44000;2019;-6,7;"F";6690
+"88356V72157";"Jernbanebrua";"FV6692 S1D1 m243";"FV6692";1;1;243;NA;NA;"Fv6692";"Trondheim";63,435497;10,400043;"0.88356@72157";"Trafikkregistrering";4660;2019;-24,09;"F";6692
+"04300V72813";"Innherredsveien Ved Fjæregata";"FV6692 S2D1 m160";"FV6692";2;1;160;NA;NA;"Fv6692";"Trondheim";63,436144;10,420863;"0.043@72813";"Trafikkregistrering";5900;2019;-4,21;"F";6692
+"34938V72813";"Innherredsveien Ved Saxenborg Alle";"FV6692 S2D1 m1291";"FV6692";2;1;1291;NA;NA;"Fv6692";"Trondheim";63,437778;10,443222;"0.34938@72813";"Trafikkregistrering";4820;2019;-1,98;"F";6692
+"53";"Nedre Leirfoss (Fossestuvegen)";"KV1827 S1D1 m794";"KV1827";1;1;794;NA;NA;"Kv1827";"Trondheim";63,381561;10,392406;"0.75353368@41587";"Bom";1900;2019;-1,5;"K";1827
+"69";"Gamle Oslovei";"KV2020 S1D1 m1301";"KV2020";1;1;1301;NA;NA;"Kv2020";"Trondheim";63,406508;10,34658;"0.52917111@41628";"Bom";4200;2019;-0,4;"K";2020
+"03476V41818";"Jakobslivegen Ved Skovgård";"KV3330 S1D1 m70";"KV3330";1;1;70;NA;NA;"Kv3330";"Trondheim";63,428213;10,495449;"0.03476@41818";"Trafikkregistrering";8340;2019;-13,09;"K";3330
+"61";"Landbruksvegen";"KV4235 S1D1 m313";"KV4235";1;1;313;NA;NA;"Kv4235";"Trondheim";63,426825;10,475053;"0.88418079@42003";"Bom";4000;2019;-1;"K";4235
+"66";"Tempeveien";"KV7440 S2D1 m258";"KV7440";2;1;258;NA;NA;"Kv7440";"Trondheim";63,406283;10,397135;"0.20559896@42597";"Bom";3900;2019;-12,6;"K";7440
+"62";"Tungasletta";"KV7703 S1D1 m311";"KV7703";1;1;311;NA;NA;"Kv7703";"Trondheim";63,422193;10,462099;"0.78505722@42659";"Bom";9300;2019;-4,5;"K";7703
+"84826V42881";"Tungasletta Mot I. Ystgaardsv.";"KV7703 S3D1 m283";"KV7703";3;1;283;NA;NA;"Kv7703";"Trondheim";63,419533;10,464411;"0.84826@42881";"Trafikkregistrering";4500;2019;NA;"K";7703

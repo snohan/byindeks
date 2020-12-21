@@ -104,7 +104,8 @@ this_citys_trps_all_adt_final <- this_citys_trps_all_adt %>%
 
 # Adding pointindices to all points
 this_citys_trps_all_adt_final_index <- this_citys_trps_all_adt_final %>%
-  dplyr::left_join(select(pointindex_20_trp_toll, 1, 4))
+  dplyr::left_join(select(pointindex_20_trp_toll, 1, 4)) %>%
+  split_road_system_reference()
 
 # TODO: include refyear from 2021
 this_citys_trp_index_refyear <- this_citys_trps_all_adt_final_index
@@ -118,9 +119,9 @@ this_citys_trp_index_refyear <- this_citys_trps_all_adt_final_index
 city_index_20 <- pointindex_20_trp_toll %>%
   dplyr::summarise(base_volume_all = sum(base_volume),
                    calc_volume_all = sum(calc_volume),
-                   index = (calc_volume_all / base_volume_all - 1 ) * 100,
+                   index_p = (calc_volume_all / base_volume_all - 1 ) * 100,
                    n_points = n(),
-                   year = "2019-2020")
+                   year_from_to = "2019-2020")
 
 # To find weighted variance and ci
 pointindex_20_trp_toll_sd <- pointindex_20_trp_toll %>%
@@ -135,7 +136,7 @@ pointindex_20_trp_toll_sd <- pointindex_20_trp_toll %>%
 city_index_20_sd <- city_index_20 %>%
   dplyr::bind_cols(pointindex_20_trp_toll_sd) %>%
   dplyr::mutate(variance = standardavvik^2,
-                konfidensintervall = qt(0.975, n_points - 1) * standardavvik /
+                confidence_width = qt(0.975, n_points - 1) * standardavvik /
                   sqrt(n_points))
 
 city_index <- bind_rows(city_index_20_sd#,
@@ -143,7 +144,7 @@ city_index <- bind_rows(city_index_20_sd#,
                         #city_index_22_sd
 ) %>%
   dplyr::select(-base_volume_all, -calc_volume_all) %>%
-  dplyr::mutate(index_i = index_converter(index),
+  dplyr::mutate(index_i = index_converter(index_p),
                 # TODO: True coverage
                 dekning = 100)
 
@@ -154,8 +155,8 @@ city_index_all <- city_index %>%
   #bind_rows(next_two_years) %>%
   #bind_rows(first_two_years) %>%
   #bind_rows(last_two_years) %>%
-  dplyr::mutate(ki_start = index - konfidensintervall,
-                ki_slutt = index + konfidensintervall)
+  dplyr::mutate(ci_start = index_p - confidence_width,
+                ci_end = index_p + confidence_width)
 
 
 
