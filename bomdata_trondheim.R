@@ -175,3 +175,15 @@ write.csv2(aarsindekser,
            row.names = F)
 
 # Se plott for å se etter avvik i bomdata_trondheim.Rmd
+
+city_monthly_toll_indeces <- maanedsindekser %>%
+  dplyr::group_by(felt, aar_maaned) %>%
+  dplyr::summarise(base_volume = sum(monthly_volume_base),
+                   calc_volume = sum(monthly_volume_calc),
+                   indeks = (calc_volume /
+                               base_volume - 1) * 100) %>%
+  dplyr::left_join(felt_og_stasjon)
+
+write.csv2(city_monthly_toll_indeces,
+           file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_bymaanedsindekser.csv",
+           row.names = F)

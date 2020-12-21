@@ -1,4 +1,4 @@
-# Tolling stations with metadata
+# Tolling stations with metadata ####
 kommunenr <- "5001"
 kommunenavn <- hent_kommune(kommunenr)[[1]]
 
@@ -27,7 +27,7 @@ trh_bomer <- kommune_bomer %>%
   dplyr::select(-msnr) %>%
   dplyr::mutate(municipality_name = "Trondheim")
 
-# TRPs
+# TRPs ####
 this_citys_trps <- points %>%
   dplyr::filter(trp_id %in% city_trps) %>%
   dplyr::select(trp_id, name, road_reference,
@@ -35,7 +35,7 @@ this_citys_trps <- points %>%
                 lat, lon, road_link_position) %>%
   dplyr::mutate(station_type = "Trafikkregistrering")
 
-# All points
+# All points ####
 this_citys_trps_all <- bind_rows(this_citys_trps, trh_bomer) %>%
   split_road_system_reference() %>%
   dplyr::select(trp_id, name, road_reference,
@@ -43,7 +43,8 @@ this_citys_trps_all <- bind_rows(this_citys_trps, trh_bomer) %>%
                 municipality_name, lat, lon, road_link_position,
                 station_type)
 
-# Index results from CSV-files
+# Index results per year ####
+# from CSV-files
 # Pointindex for trps fetched in parent file
 
 tollpointindex <- read.csv2(
@@ -54,7 +55,6 @@ tollpointindex <- read.csv2(
   dplyr::select(-felt, -stasjon) %>%
   dplyr::select(trp_id, base_volume, calc_volume, index, year)
 
-# TODO: get month volumes in API query
 pointindex_20_trp_toll <- tollpointindex %>%
   dplyr::filter(year == 2020) %>%
   dplyr::mutate(index_20 = round(index, digits = 1)) %>%
@@ -64,9 +64,6 @@ pointindex_20_trp_toll <- tollpointindex %>%
 n_20 <- pointindex_20_trp_toll %>%
   dplyr::filter(!is.na(index_20)) %>%
   nrow()
-
-
-
 
 
 # ADT
@@ -116,7 +113,7 @@ this_citys_trp_index_refyear <- this_citys_trps_all_adt_final_index
 
 
 
-# City index
+# City index ####
 # Must calculate based on all pointindices
 city_index_20 <- pointindex_20_trp_toll %>%
   dplyr::summarise(base_volume_all = sum(base_volume),
@@ -136,7 +133,7 @@ pointindex_20_trp_toll_sd <- pointindex_20_trp_toll %>%
   dplyr::summarise(standardavvik = sqrt((1 / (1 - sum(weight) )) * sum(diff) ))
 
 city_index_20_sd <- city_index_20 %>%
-  dplyr::bind_cols(pointindex_20_all_sd) %>%
+  dplyr::bind_cols(pointindex_20_trp_toll_sd) %>%
   dplyr::mutate(variance = standardavvik^2,
                 konfidensintervall = qt(0.975, n_points - 1) * standardavvik /
                   sqrt(n_points))
@@ -168,3 +165,48 @@ write.csv2(city_index_all,
 
 # Monthly city index
 # TODO: do it
+# City index monthly ####
+
+tollpointindex_monthly <- read.csv2(
+  "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_bymaanedsindekser.csv") %>%
+  dplyr::rename(trp_id = kode,
+                index = indeks) %>%
+  dplyr::mutate(trp_id = as.character(trp_id)) %>%
+  dplyr::select(-felt, -stasjon) %>%
+  dplyr::select(trp_id, base_volume, calc_volume, index, year_month = aar_maaned) %>%
+  dplyr::mutate(month_object = lubridate::ymd(year_month)) %>%
+  dplyr::select(trp_id, base_volume, calc_volume, index, month_object)
+
+pointindex_20_monthly <- pointindex_20_all[[2]] %>%
+  dplyr::filter(day_type == "ALL",
+                is_excluded == FALSE,
+                is_manually_excluded == FALSE,
+                length_excluded == FALSE,
+                period == "month") %>%
+  dplyr::select(trp_id, base_volume, calc_volume, index = index_short, year, month) %>%
+  dplyr::mutate(month_object = lubridate::make_date(year = year, month = month)) %>%
+  dplyr::select(trp_id, base_volume, calc_volume, index, month_object)
+
+
+pointindex_20_trp_toll_monthly <- tollpointindex_monthly %>%
+  dplyr::bind_rows(pointindex_20_monthly) %>%
+  dplyr::mutate(year = lubridate::year(month_object)) %>%
+  dplyr::filter(year == 2020) %>%
+  dplyr::mutate(index = round(index, digits = 1)) %>%
+  dplyr::group_by(month_object) %>%
+  dplyr::summarise(base_volume_all = sum(base_volume),
+                   calc_volume_all = sum(calc_volume),
+                   index_p = (calc_volume_all / base_volume_all - 1 ) * 100,
+                   n_points = n()) %>%
+  dplyr::mutate(area_name = "Trondheim",
+                year = lubridate::year(month_object),
+                month = lubridate::month(month_object),
+                period = "month",
+                month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE) %>%
+                  stringr::str_to_title())
+
+# TODO: sd and ci
+
+write.csv2(pointindex_20_trp_toll_monthly,
+           file = paste0("data_indexpoints_tidy/byindeks_maanedlig_", city_number, ".csv"),
+           row.names = F)

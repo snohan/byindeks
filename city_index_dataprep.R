@@ -112,7 +112,7 @@ pointindex_20 <- pointindex_20_all[[2]] %>%
                 length_excluded == FALSE,
                 period == "year_to_date",
                 month == index_month) %>%
-  dplyr::select(trp_id, index_20 = index_short)
+  dplyr::select(trp_id, base_volume, calc_volume, index_20 = index_short)
 
 city_name <- city_index_2020$area_name[1]
 

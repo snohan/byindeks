@@ -1377,6 +1377,8 @@ get_published_pointindex <- function(index_id, indexyear, indexmonth) {
           }
           index {
             percentageChange
+            calculationVolume
+            baseVolume
           }
         }
         indexCoverage {
@@ -1393,6 +1395,8 @@ get_published_pointindex <- function(index_id, indexyear, indexmonth) {
         }
         index {
           percentageChange
+          calculationVolume
+          baseVolume
         }
       }
       indexCoverage {
@@ -1432,6 +1436,8 @@ get_published_pointindex <- function(index_id, indexyear, indexmonth) {
                   is_excluded = isExcluded,
                   is_manually_excluded = node.isManuallyExcluded,
                   index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
+                  calc_volume = totalTrafficVolumeIndex.indexNumber.index.calculationVolume,
+                  base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
                   index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
                   length_excluded = lengthRangesTrafficVolumeIndex.isExcluded,
                   length_range = lengthRange.representation,
@@ -1458,6 +1464,8 @@ get_published_pointindex <- function(index_id, indexyear, indexmonth) {
                     is_excluded = isExcluded,
                     is_manually_excluded = node.isManuallyExcluded,
                     index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
+                    calc_volume = totalTrafficVolumeIndex.indexNumber.index.calculationVolume,
+                    base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
                     index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
                     length_excluded = lengthRangesTrafficVolumeIndex.isExcluded,
                     length_range = lengthRange.representation,
