@@ -15,7 +15,7 @@ cli <- GraphqlClient$new(
 is_even <- function(x) x[x %% 2 == 0]
 is_odd <- function(x) x[x %% 2 == 1]
 
-get_counties <- function() {
+get_counties_deprecated <- function() {
   # Get all counties
   query_points <-
     "query counties {
@@ -55,6 +55,38 @@ get_counties <- function() {
 
   return(counties)
 }
+
+get_counties <- function() {
+  # Get all counties
+  api_query <-
+    "query counties {
+       areas {
+         counties {
+           number
+           name
+           geographicNumber
+         }
+       }
+    }"
+
+  myqueries <- Query$new()
+  myqueries$query("data", api_query)
+
+  counties <- cli$exec(myqueries$queries$data) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
+    as.data.frame() %>%
+    dplyr::rename(county_number =
+                    data.areas.counties.number,
+                  geo_number =
+                    data.areas.counties.geographicNumber,
+                  county_name =
+                    data.areas.counties.name
+    ) %>%
+    arrange(geo_number)
+
+  return(counties)
+}
+
 
 get_municipalities <- function() {
 
@@ -996,7 +1028,9 @@ getHourlytraffic <- function(trpID, from, to) {
           node {
             from
             total {
-              volume
+              volumeNumbers {
+                volume
+              }
               coverage {
                 percentage
               }
@@ -1488,7 +1522,206 @@ get_published_pointindex <- function(index_id, indexyear, indexmonth) {
   return(published_points)
 }
 
+query_published_pointindex_page <- function(index_id, indexyear, indexmonth,
+                                            cursor) {
 
+  # TODO: report a bug in the API, as it doesn't work with cursors other than null
+  api_query <- paste0(
+    'query published_pointindex {
+      publishedAreaTrafficVolumeIndex (
+        id: ', index_id, ',
+        year: ', indexyear, ',
+        month: ', indexmonth, ') {
+        id
+        name
+        period {
+          calculationMonth {
+            year
+            month
+          }
+        }
+        containsPointTrafficVolumeIndices (after: ', cursor, ') {
+          pageInfo {
+            endCursor
+            hasNextPage
+          }
+          edges {
+            node {
+              isManuallyExcluded
+              pointTrafficVolumeIndex {
+                trafficRegistrationPoint {
+                  id
+                }
+                volumeIndicesMonth {
+                  ...indexFields
+                }
+                volumeIndicesYearToDate {
+                  ...indexFields
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    fragment indexFields on TrafficVolumeIndexByDayType {
+      dayType
+      isExcluded
+      totalTrafficVolumeIndex {
+        indexNumber {
+          lengthRange {
+            representation
+          }
+          index {
+            percentageChange
+            calculationVolume
+            baseVolume
+          }
+        }
+        indexCoverage {
+          hours {
+            percentage
+          }
+        }
+      }
+    lengthRangesTrafficVolumeIndex {
+      isExcluded
+      indexNumbers {
+        lengthRange {
+          representation
+        }
+        index {
+          percentageChange
+          calculationVolume
+          baseVolume
+        }
+      }
+      indexCoverage {
+        hours {
+          percentage
+        }
+      }
+    }
+  }')
+
+}
+
+
+#index_id <- 962
+#indexyear <- 2020
+#indexmonth <- 1
+
+get_published_pointindex_paginated <- function(index_id, indexyear, indexmonth) {
+  # TODO: fix cursor bug in API
+  # Get published index for a given area, year and month
+  # Response is paginated if more than 100 points!
+  # Pagination is ignored here
+  # Returns: list with two elements; trp_ids, pointindices
+
+  # Initial values of pagination variables
+  hasNextPage <- TRUE
+  cursor <- "null"
+  fetched_pages_data <- data.frame()
+
+  while(hasNextPage == TRUE) {
+
+    myqueries <- Query$new()
+    myqueries$query("data", query_published_pointindex_page(index_id,
+                                                            indexyear,
+                                                            indexmonth,
+                                                            cursor))
+
+    trp_data <- cli$exec(myqueries$queries$data) %>%
+      jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
+
+    trp_data_page <-
+      trp_data$data$publishedAreaTrafficVolumeIndex$containsPointTrafficVolumeIndices.edges %>%
+      as.data.frame()
+
+    end_cursor_string <-
+      trp_data$data$publishedAreaTrafficVolumeIndex$containsPointTrafficVolumeIndices.pageInfo.endCursor %>%
+      as.character()
+
+    cursor <- paste0('"', end_cursor_string, '"')
+
+    hasNextPage <-
+      trp_data$data$publishedAreaTrafficVolumeIndex$containsPointTrafficVolumeIndices.pageInfo.hasNextPage
+
+    fetched_pages_data <- bind_rows(fetched_pages_data, trp_data_page)
+  }
+
+  indexpoints <- fetched_pages_data$node.pointTrafficVolumeIndex.trafficRegistrationPoint.id
+
+  # Unwrap one part at a time
+  # 1. month
+  # 2. yearToDate
+
+  monthly_data <- fetched_pages_data %>%
+    tidyr::unnest(cols = c(node.pointTrafficVolumeIndex.volumeIndicesMonth)) %>%
+    dplyr::select(-node.pointTrafficVolumeIndex.volumeIndicesYearToDate) %>%
+    tidyr::unnest(cols = c(lengthRangesTrafficVolumeIndex.indexNumbers)) %>%
+    dplyr::select(area_name = publishedAreaTrafficVolumeIndex.name,
+                  trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
+                  year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
+                  month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
+                  day_type = dayType,
+                  is_excluded = isExcluded,
+                  is_manually_excluded = node.isManuallyExcluded,
+                  index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
+                  calc_volume = totalTrafficVolumeIndex.indexNumber.index.calculationVolume,
+                  base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
+                  index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
+                  length_excluded = lengthRangesTrafficVolumeIndex.isExcluded,
+                  length_range = lengthRange.representation,
+                  length_index = index.percentageChange,
+                  length_coverage = lengthRangesTrafficVolumeIndex.indexCoverage.hours.percentage
+    ) %>%
+    dplyr::filter(day_type == "ALL") %>%
+    dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
+    dplyr::mutate(length_range = if_else(length_range == "[..,5.6)",
+                                         "short", "long")) %>%
+    tidyr::pivot_wider(names_from = length_range, names_prefix = "index_",
+                       values_from = length_index) %>%
+    dplyr::mutate(period = "month")
+
+  year_to_date_data <- fetched_pages_data %>%
+    tidyr::unnest(cols = c(node.pointTrafficVolumeIndex.volumeIndicesYearToDate)) %>%
+    dplyr::select(- node.pointTrafficVolumeIndex.volumeIndicesMonth) %>%
+    tidyr::unnest(cols = c(lengthRangesTrafficVolumeIndex.indexNumbers)) %>%
+    dplyr::select(area_name = publishedAreaTrafficVolumeIndex.name,
+                  trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
+                  year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
+                  month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
+                  day_type = dayType,
+                  is_excluded = isExcluded,
+                  is_manually_excluded = node.isManuallyExcluded,
+                  index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
+                  calc_volume = totalTrafficVolumeIndex.indexNumber.index.calculationVolume,
+                  base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
+                  index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
+                  length_excluded = lengthRangesTrafficVolumeIndex.isExcluded,
+                  length_range = lengthRange.representation,
+                  length_index = index.percentageChange,
+                  length_coverage = lengthRangesTrafficVolumeIndex.indexCoverage.hours.percentage
+    ) %>%
+    dplyr::filter(day_type == "ALL") %>%
+    dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
+    dplyr::mutate(length_range = if_else(length_range == "[..,5.6)",
+                                         "short", "long")) %>%
+    tidyr::pivot_wider(names_from = length_range, names_prefix = "index_",
+                       values_from = length_index) %>%
+    dplyr::mutate(period = "year_to_date")
+
+  published_index <- bind_rows(monthly_data,
+                               year_to_date_data)
+
+  published_points <- list(indexpoints, published_index)
+
+  return(published_points)
+}
+
+#test_pi <- get_published_pointindex_paginated(962, 2020, 1)
 
 get_published_pointindex_for_months <- function(index_id, index_year, last_month) {
 
@@ -1500,8 +1733,12 @@ get_published_pointindex_for_months <- function(index_id, index_year, last_month
 
   while (i < last_month + 1) {
 
-    published_pointindex <- dplyr::bind_rows(published_pointindex,
-                                    get_published_pointindex(index_id, index_year, i)[[2]])
+    published_pointindex <-
+      dplyr::bind_rows(
+        published_pointindex,
+        get_published_pointindex(index_id, index_year, i)[[2]]
+        )
+
     i = i + 1
   }
 
