@@ -935,7 +935,8 @@ get_pointindices <- function(trp_ids, indexyear) {
       trp_data_data_all <- trp_data_data_all %>%
         tidyr::unnest(cols = c(lengthRangesTrafficVolumeIndex.indexNumbers))
       # Stop to check if length is excluded
-      if(is.null(trp_data_data_all$index.percentageChange)) {
+      #if(is.null(trp_data_data_all$index.percentageChange)) {
+      if(!("index.percentageChange" %in% colnames(trp_data_data_all))) {
         trp_data_data_all <- trp_data_data_all %>%
           dplyr::select(trp_id = trafficVolumeIndices.trafficRegistrationPoint.id,
                         year = trafficVolumeIndices.calculationMonth.year,

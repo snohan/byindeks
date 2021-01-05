@@ -170,6 +170,29 @@ create_city_index_table <- function(city_info) {
   return(city_table)
 }
 
+create_city_index_table_sd <- function(city_info) {
+
+  city_table <- city_info %>%
+    dplyr::select(year_from_to, index_p, standard_deviation) %>%
+    flextable::flextable() %>%
+    colformat_double(j = c("index_p", "standard_deviation"), digits = 1) %>%
+    set_header_labels(year_from_to = "Periode",
+                      index_p = "Endring i \n trafikkmengde (%)",
+                      standard_deviation = "Standardavvik (%)") %>%
+    bold(part = "header") %>%
+    bg(bg = "#ED9300", part = "header") %>%
+    border_remove() %>%
+    hline_top(part = "header", border = borderline) %>%
+    hline_bottom(part = "all", border = borderline) %>%
+    autofit() %>%
+    height_all(height = .2) %>%
+    set_caption("Estimert endring i trafikkmengde for området.",
+                autonum = table_numbers,
+                style = "Tabelltekst")
+
+  return(city_table)
+}
+
 create_monthly_city_index_table <- function(city_monthly) {
 
   monthly_table <- city_monthly %>%
@@ -316,4 +339,26 @@ create_corridor_index_table <- function(corridor_index_all_years) {
                 style = "Tabelltekst")
 
   return(corridor_table)
+}
+
+
+create_city_monthly_index_plot <- function(city_monthly) {
+
+  city_monthly %>%
+    ggplot2::ggplot(aes(x = month_object, y = index_p)) +
+    ggplot2::geom_line() +
+    ggplot2::geom_point() +
+    ggplot2::facet_grid(rows = vars(year)) +
+    theme_light() +
+    theme(axis.text.x = element_text(angle = 90),
+          panel.grid.minor.x = element_blank(),
+          #legend.position = "bottom"
+          ) +
+    scale_x_date(breaks = scales::breaks_width("months"),
+                 labels = scales::label_date("%b")) +
+    labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
+         caption = caption_credit) +
+    ggtitle("Estimert endring i trafikkmengde per måned",
+            subtitle = "Trafikkmengde sammenlignet med samme måned året før")
+
 }

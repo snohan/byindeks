@@ -1,5 +1,5 @@
 ---
-title: "Sjekk av byindeks"
+title: "Sjekk av riksgrenseindeks"
 output: html_notebook
 ---
 
@@ -17,32 +17,18 @@ library(htmltools)
 
 
 ```{r get_data, include=FALSE}
-# Look at details in one city at a time
-
-# City numbers
-# Bergen 958
-# Buskerudbyen 1952
-# Grenland 955
-# Kristiansand og omegn 957
-# Nedre Glomma 953
-# Nord-Jæren 952
-# Oslo 959
-# Trondheim 960
-# Tromsø 961
-
 # Choose
 index_year <- 2020
+# Last published month
 index_month <- 11
-city_number <- 957
+index_id <- 2952
 
 # Fetch
-city_index <- get_published_index_for_months(city_number, index_year, index_month)
-pointindex <- get_published_pointindex_for_months(city_number, index_year, index_month)
-# TODO: check bike index
-#bikepointindex <- get_published_bikepointindex_for_months(city_number, index_year, index_month)
-city_trps <- pointindex[[1]]
+border_index <- get_published_index_for_months(index_id, index_year, index_month)
+pointindex <- get_published_pointindex_for_months(index_id, index_year, index_month)
+
+border_trps <- pointindex[[1]]
 pointindices <- pointindex[[2]]
-city_name <- city_index$area_name[1]
 
 # Point metadata from Traffic Data API
 points <- get_points() %>%
@@ -51,8 +37,8 @@ points <- get_points() %>%
                 municipality_name, lat, lon, road_link_position) %>% 
   dplyr::mutate(name = stringr::str_to_title(name, locale = "no"))
 
-city_trps_meta <- points %>% 
-  dplyr::filter(trp_id %in% city_trps) %>% 
+trps_meta <- points %>% 
+  dplyr::filter(trp_id %in% border_trps) %>% 
   split_road_system_reference() %>% 
   dplyr::select(trp_id, name, road_reference, 
                 road_category_and_number,
@@ -61,63 +47,48 @@ city_trps_meta <- points %>%
                 county_name, municipality_name, lat, lon)
 
 # New month's pointindices
-point_index_new <- get_pointindices_for_trp_list(city_trps, index_year)
+point_index_new <- get_pointindices_for_trp_list(border_trps, index_year)
 ```
 
 
 ```{r data_prep, message=FALSE}
-city_index_prepared <- city_index %>% 
-  dplyr::filter(period == "month") %>% 
+border_index_prepared <- border_index %>% 
+  dplyr::filter(period == "month"
+                ) %>% 
   dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "alle",
                                                 length_range == "[..,5.6)" ~ "lette",
-                                                length_range == "[5.6,..)" ~ "tunge")) %>% 
+                                                length_range == "[5.6,..)" ~ "tunge")
+                ) %>% 
   dplyr::mutate(road_category = dplyr::case_when(
-                  road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG" ~ "Europa-, riks- og fylkesveg")) %>% 
+                  road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG" ~ "Europa-, riks- og fylkesveg",
+                  road_category == "EUROPAVEG_RIKSVEG" ~ "Europa-, riksveg",
+                  road_category == "FYLKESVEG" ~ "Fylkesveg",)
+                ) %>% 
   dplyr::mutate(index_lower = index_p - confidence_width,
                 index_upper = index_p + confidence_width,
                 month_object = lubridate::make_date(year = year, month = month),
-                month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)) %>% 
-  dplyr::filter(road_category == "Europa-, riks- og fylkesveg")
+                month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)
+                )
 
-pointindex_prepared <- pointindices %>% 
+pointindex_prepared <- pointindices %>%
   dplyr::filter(period == "month",
                 is_excluded == FALSE,
-                is_manually_excluded == FALSE) %>% 
+                is_manually_excluded == FALSE) %>%
   dplyr::select(trp_id, year, month, index_total_p,
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
 
-point_index_new_prepared <- point_index_new %>% 
+point_index_new_prepared <- point_index_new %>%
   dplyr::filter(day_type == "ALL",
                 period == "month",
-                month == index_month + 1) %>% 
+                month == index_month + 1) %>%
   dplyr::select(trp_id, year, month, index_total_p,
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
 
-# point_index_new_prepared_2 <- point_index_new %>% 
-#   dplyr::filter(day_type == "ALL",
-#                 period == "month",
-#                 month == index_month + 2) %>% 
-#   dplyr::select(trp_id, year, month, index_total_p,
-#                 index_total_coverage, length_excluded, length_coverage,
-#                 index_short, index_long)
-# 
-# point_index_new_prepared_3 <- point_index_new %>% 
-#   dplyr::filter(day_type == "ALL",
-#                 period == "month",
-#                 month == index_month + 3) %>% 
-#   dplyr::select(trp_id, year, month, index_total_p,
-#                 index_total_coverage, length_excluded, length_coverage,
-#                 index_short, index_long)
-
-
 pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
-                                            point_index_new_prepared#,
-                                            #point_index_new_prepared_2,
-                                            #point_index_new_prepared_3
-                                            ) %>% 
-  dplyr::left_join(city_trps_meta) %>% 
+                                            point_index_new_prepared) %>% 
+  dplyr::left_join(trps_meta) %>% 
   dplyr::mutate(
     short_is_least = index_short < index_long,
     short_is_least_check = index_total_p >= index_short & index_total_p <= index_long,
@@ -132,8 +103,9 @@ pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
       ),
     diff_total_short = round(index_short - index_total_p, digits = 1))
      
-city_trps_new_pointindex <- city_trps_meta %>% 
-  dplyr::left_join(point_index_new_prepared)
+trps_new_pointindex <- trps_meta %>% 
+  dplyr::inner_join(point_index_new_prepared)
+
 
 # Widening for table view
 pointindex_prepared_all_wide_total_index <- pointindex_prepared_all %>% 
@@ -219,13 +191,14 @@ pointindex_long_2 <- dplyr::bind_rows(pointindex_long_total,
 
 
 
-## Byindeks per måned så langt for `r city_name`
+## Riksgrenseindeks per måned så langt
 
 ```{r city_index, message=FALSE, fig.width=12}
-city_index_prepared %>% 
+border_index_prepared %>% 
   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
   ggplot2::geom_line() +
   ggplot2::geom_point(size = 4) +
+  ggplot2::facet_grid(rows = vars(road_category)) +
   theme_light() +
   theme(axis.text.x = element_text(angle = 90),
         panel.grid.minor.x = element_blank(),
@@ -247,11 +220,10 @@ city_index_prepared %>%
 ## Punktindeksene for den nye måneden
 
 ```{r map_trp_index, message=FALSE}
-city_trps_new_pointindex %>% 
+trps_new_pointindex %>% 
   dplyr::rename(index = index_total_p) %>% 
   create_pointindex_map()
 ```
-
 
 
 ## Kurver per punkt for totaltrafikk
@@ -274,9 +246,9 @@ Skulle hatt med ÅDT.
 
 ```{r point_plot, message=FALSE, fig.width=12}
 point_number <-1
-trp_id_here <- city_trps_meta$trp_id[point_number]
+trp_id_here <- trps_meta$trp_id[point_number]
 
-trp_name <- city_trps_meta %>% 
+trp_name <- trps_meta %>% 
   dplyr::filter(trp_id == trp_id_here) %>% 
   dplyr::select(name, road_reference) %>% 
   stringr::str_glue_data("{name}, {road_reference}")

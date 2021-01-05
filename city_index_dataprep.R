@@ -70,8 +70,8 @@ points <- get_points() %>%
 # Tromsø 961
 
 # Choose
-index_month <- 10
-city_number <- 960
+index_month <- 12
+city_number <- 952
 
 # Pointindices ####
 # TODO: TRPs might differ from year to year!
@@ -242,7 +242,7 @@ this_citys_trp_index <- points %>%
                 lat, lon, road_link_position) %>%
   dplyr::left_join(trp_id_msnr) %>%
   left_join(adt_all) %>%
-  left_join(pointindex_17) %>%
+  #left_join(pointindex_17) %>%
   left_join(pointindex_18) %>%
   left_join(pointindex_19) %>%
   left_join(pointindex_20)
@@ -303,7 +303,7 @@ city_year_to_date_20 <- city_index_2020 %>%
                 period == "year_to_date")
 
 city_index <- bind_rows(
-  city_year_to_date_17,
+#  city_year_to_date_17,
   city_year_to_date_18,
   city_year_to_date_19,
   city_year_to_date_20) %>%
@@ -312,7 +312,7 @@ city_index <- bind_rows(
          index_i = index_converter(index_p),
          variance = standard_deviation^2,
          n_points = c(
-           n_17,
+          # n_17,
            n_18,
            n_19,
            n_20))
@@ -328,8 +328,8 @@ years_1_4 <- bind_rows(years_1_3, slice(city_index, 4)) %>%
 # Skipping intermediate years, adding just from first to last
 city_index_all <- city_index %>%
   #bind_rows(years_1_2) %>%
-  #bind_rows(years_1_3) %>%
-  bind_rows(years_1_4) %>%
+  bind_rows(years_1_3) %>%
+  #bind_rows(years_1_4) %>%
   dplyr::mutate(year_from_to = paste0(year_base, "-", year),
                 ci_start = index_p - confidence_width,
                 ci_end = index_p + confidence_width,
@@ -343,7 +343,7 @@ write.csv2(city_index_all,
 
 # City index monthly ####
 city_monthly <- bind_rows(
-  monthly_city_index(city_index_2017),
+  #monthly_city_index(city_index_2017),
   monthly_city_index(city_index_2018),
   monthly_city_index(city_index_2019),
   monthly_city_index(city_index_2020)) %>%

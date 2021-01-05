@@ -48,9 +48,9 @@ source("get_from_nvdb_api.R")
 index_2017 <- get_published_index_for_months(2952, 2017, 12)
 index_2018 <- get_published_index_for_months(2952, 2018, 12)
 index_2019 <- get_published_index_for_months(2952, 2019, 12)
-index_2020 <- get_published_index_for_months(2952, 2020, 11)
+index_2020 <- get_published_index_for_months(2952, 2020, 12)
 
-pointindex_2020 <- get_published_pointindex(2952, 2020, 11)
+pointindex_2020 <- get_published_pointindex(2952, 2020, 12)
 
 # Index points
 border_points <- pointindex_2020[[1]]
@@ -153,7 +153,7 @@ points_adt_all %>%
   select(name, road_reference, adt, aadt_short, aadt_long, year) %>%
   flextable() %>%
   colformat_int(j = 3:5) %>%
-  colformat_int(j = 6, big.mark = "") %>%
+  colformat_double(j = 6, big.mark = "", digits = 0) %>%
   set_header_labels(name = "Navn",
                     road_reference = "Vegreferanse",
                     adt = "ÅDT \n alle",
@@ -249,7 +249,7 @@ Et vektet gjennomsnitt av endring i trafikkmengden i de ulike grenseovergangene,
 <br>
 
 ## Per måned
-Tabellen på neste side viser estimert samlet endring i trafikkmengde per måned i 2020, sammenlignet med samme måned i 2019. Usikkerheten i estimatet er synliggjort med et 95 % konfidensintervall.
+Tabellen på neste side viser estimert samlet endring i trafikkmengde per måned i 2020, sammenlignet med samme måned i 2019. Usikkerheten i estimatet er synliggjort med et standardavvik.
 
 Fra mars 2020 gikk grensetrafikken betydelig ned som følge av tiltak mot spredningen av det nye koronaviruset.
 
@@ -259,17 +259,14 @@ Fra mars 2020 gikk grensetrafikken betydelig ned som følge av tiltak mot spredn
 index_2020_upper_lower %>%
   dplyr::filter(period == "month") %>% 
   dplyr::arrange(length_range, month) %>% 
-  select(month_name, year, length_range, index_lower, index_p, index_upper) %>%
+  select(month_name, year, length_range, index_p, standard_deviation) %>%
   flextable() %>%
   colformat_int(j = 2, big.mark = "") %>%
-  colformat_double(j = 4:6, digits = 1) %>%
+  colformat_double(j = 4:5, digits = 1) %>%
   set_header_labels(month_name = "Måned", year = "År", length_range = "Lengde- \n klasse",
-                    index_lower = "Endring i trafikkmengde (%)") %>%
-  add_header_row(values = c("", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
-  merge_at(i = 1:2, j = 3, part = "header") %>% 
-  merge_at(i = 1, j = 4:6, part = "header") %>% 
-  align(i = 1, j = 4, align = "center", part = "header") %>%
-  align(i = 2, j = 4:6, align = "right", part = "header") %>% 
+                    index_p = "Endring i trafikkmengde (%)",
+                    standard_deviation = "Standardavvik (%)") %>%
+  align(i = 1, j = 4:5, align = "right", part = "header") %>% 
   align(j = 2, align = "center", part = "all") %>% 
   bold(part = "header") %>%
   bg(bg = "#ED9300", part = "header") %>%
@@ -289,7 +286,7 @@ index_2020_upper_lower %>%
 
 `r officer::fpar("", officer::run_pagebreak())`
 
-```{r lineplot, fig.cap="Estimert endring i trafikkmengde ved riksgrensen i 2020 sammenlignet med 2019."}
+```{r lineplot, fig.width=6, fig.height=5, fig.cap="Estimert endring i trafikkmengde ved riksgrensen i 2020 sammenlignet med 2019."}
 index_2020_upper_lower %>% 
   dplyr::filter(period == "month") %>% 
   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
@@ -314,7 +311,7 @@ index_2020_upper_lower %>%
 <br>
 
 ## Hittil i år
-I tabellen nedenfor vises samlet endring i trafikkmengde i perioden fra januar til `r last_month_name` 2020, sammenlignet med samme periode i 2019. Usikkerheten i estimatet er synliggjort med et 95 % konfidensintervall.
+I tabellen nedenfor vises samlet endring i trafikkmengde i perioden fra januar til `r last_month_name` 2020, sammenlignet med samme periode i 2019. Usikkerheten i estimatet er synliggjort med et standardavvik.
 
 <br>
 
@@ -323,18 +320,19 @@ index_2020_upper_lower %>%
   dplyr::filter(period == "year_to_date",
                 month == last_month) %>% 
   dplyr::arrange(length_range, month) %>% 
-  select(month_name, year, length_range, index_lower, index_p, index_upper) %>%
+  select(month_name, year, length_range, index_p, standard_deviation) %>%
   flextable() %>%
   colformat_int(j = 2, big.mark = "") %>%
-  colformat_double(j = 4:6, digits = 1) %>%
+  colformat_double(j = 4:5, digits = 1) %>%
   set_header_labels(month_name = "Måned", year = "År", length_range = "Kjøretøy- \n klasse",
-                    index_lower = "Endring i trafikkmengde (%)") %>%
-  add_header_row(values = c("", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
-  merge_at(i = 1:2, j = 3, part = "header") %>% 
-  merge_at(i = 1, j = 4:6, part = "header") %>% 
-  align(i = 1, j = 4, align = "center", part = "header") %>%
-  align(i = 2, j = 4:6, align = "right", part = "header") %>% 
-  align(j = 2, align = "center", part = "all") %>% 
+                    index_p = "Endring i trafikkmengde (%)",
+                    standard_deviation = "Standardavvik (%)") %>%
+  #add_header_row(values = c("", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
+  #merge_at(i = 1:2, j = 3, part = "header") %>% 
+  #merge_at(i = 1, j = 4:6, part = "header") %>% 
+  #align(i = 1, j = 4, align = "center", part = "header") %>%
+  align(i = 1, j = 4:5, align = "right", part = "header") %>% 
+  align(j = 1, align = "center", part = "all") %>% 
   bold(part = "header") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
@@ -354,7 +352,7 @@ index_2020_upper_lower %>%
 
 Nedenfor vises månedlig riksgrenseindeks for foregående år. Det som gir størst utslag på indeksen er vanligvis påsketrafikken, og det ses tydelig mellom årene hvor påsken ikke ligger i samme måned.
 
-```{r lineplot_historic, fig.height=7, fig.cap="Riksgrenseindeks foregående år.", cache=TRUE}
+```{r lineplot_historic, fig.width=6, fig.height=7, fig.cap="Riksgrenseindeks foregående år.", cache=TRUE}
 index_complete_years_upper_lower %>% 
   dplyr::filter(period == "month") %>% 
   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
