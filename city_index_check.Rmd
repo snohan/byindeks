@@ -20,7 +20,7 @@ library(htmltools)
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 958
+# Bergen 8952
 # Buskerudbyen 1952
 # Grenland 955
 # Kristiansand og omegn 957
@@ -33,7 +33,7 @@ library(htmltools)
 # Choose
 index_year <- 2020
 index_month <- 11
-city_number <- 957
+city_number <- 8952
 
 # Fetch
 city_index <- get_published_index_for_months(city_number, index_year, index_month)
@@ -309,10 +309,8 @@ pointindex_long_2 %>%
 pointindex_wide %>%
   DT::datatable(
     filter = "top",
-    #extensions = "Buttons",
     options = list(
       dom = "Blfrtip",
-      #buttons = c("excel"),
       pageLength = 21,
       lengthMenu = c(21, 42, 70),
       autoWidth = TRUE))

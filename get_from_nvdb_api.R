@@ -638,7 +638,7 @@ get_road_length_for_municipality <- function(municipality_number) {
                       "&veglenketype=hoved",
                       "&trafikantgruppe=K",
                       "&geometritoleranse=30",
-                      "&tidspunkt='2020-01-01'")
+                      "&tidspunkt='2021-01-01'")
 
   respons <- httr::GET(api_query,
                       httr::add_headers(.headers = nvdb_v3_headers))

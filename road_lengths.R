@@ -15,18 +15,18 @@ municipalities <- get_municipalities()
 
 # Bergen ####
 bergen <- get_road_length_for_municipality(4601)
-#alver <- get_road_length_for_municipality(4631)
-#askoy <- get_road_length_for_municipality(4627)
-#bjornafjorden <- get_road_length_for_municipality(4624)
+alver <- get_road_length_for_municipality(4631)
+askoy <- get_road_length_for_municipality(4627)
+bjornafjorden <- get_road_length_for_municipality(4624)
 
-bergen_all <- dplyr::bind_rows(bergen#,
-#                               alver,
-#                               askoy,
-#                               bjornafjorden
+bergen_all <- dplyr::bind_rows(bergen,
+                               alver,
+                               askoy,
+                               bjornafjorden
 ) %>%
   dplyr::left_join(municipalities)
 
-write.csv2(bergen_all, file = "road_lengths/bergen_road_lengths.csv",
+write.csv2(bergen_all, file = "road_lengths/road_lengths_8952.csv",
            row.names = FALSE)
 
 
