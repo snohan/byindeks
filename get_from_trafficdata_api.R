@@ -296,6 +296,72 @@ get_points_2 <- function() {
 }
 
 
+get_points_with_direction <- function() {
+  # Get all traffic registration points
+  api_query <-
+    "query punkter_med_retning {
+  trafficRegistrationPoints {
+    id
+    name
+    location {
+      county {
+        geographicNumber
+        name
+      }
+      municipality {
+        name
+      }
+      roadReference {
+        roadCategory {
+          id
+        }
+        shortForm
+      }
+    }
+    direction {
+      from
+      to
+    }
+    operationalStatus
+    latestData {
+      volumeByDay
+    }
+  }
+}"
+
+  myqueries <- Query$new()
+  myqueries$query("api_data", api_query)
+
+  api_response <- cli$exec(myqueries$queries$api_data) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
+    as.data.frame() %>%
+    dplyr::select(trp_id =
+                    data.trafficRegistrationPoints.id,
+                  name =
+                    data.trafficRegistrationPoints.name,
+                  road_category =
+                    data.trafficRegistrationPoints.location.roadReference.roadCategory.id,
+                  road_reference =
+                    data.trafficRegistrationPoints.location.roadReference.shortForm,
+                  operational_status =
+                    data.trafficRegistrationPoints.operationalStatus,
+                  latest_day_with_data =
+                    data.trafficRegistrationPoints.latestData.volumeByDay,
+                  county_name = data.trafficRegistrationPoints.location.county.name,
+                  county_no = data.trafficRegistrationPoints.location.county.geographicNumber,
+                  municipality_name = data.trafficRegistrationPoints.location.municipality.name,
+                  from = data.trafficRegistrationPoints.direction.from,
+                  to = data.trafficRegistrationPoints.direction.to
+
+    ) %>%
+    dplyr::mutate(latest_day_with_data =
+                    floor_date(with_tz(ymd_hms(latest_day_with_data)), unit = "day")
+    )
+
+  return(api_response)
+}
+
+
 get_trps_latest_data <- function() {
   # Get all traffic registration points
   query_points <-
@@ -2133,3 +2199,128 @@ get_trp_average_hour_of_day_traffic_for_all_day_types_for_trp_list <- function(t
   return(data_points)
 }
 
+
+#trp_id <- "79743V1125914"
+# "78481V42532"
+#the_year <- "2019"
+#the_month <- 1
+#day_type = "ALL"
+
+get_trp_average_day_of_week_traffic_by_month <- function(trp_id,
+                                                         the_year,
+                                                         the_month,
+                                                         day_type = "ALL") {
+
+  api_query <- paste0(
+    "
+    query day_of_week_traffic {
+      trafficData (trafficRegistrationPointId: \"", trp_id,"\"){
+    trafficRegistrationPoint {
+      id
+    }
+    volume {
+      average {
+        dayOfWeek {
+          byMonth (year: ", the_year,
+          ", month:", the_month,
+          ", dayType: ", day_type, "){
+            yearMonth {
+              year
+              month
+            }
+            dayType
+            total {
+              day
+              volume {
+                average
+                standardDeviation
+              }
+              coverage {
+                percentage
+                included {
+                  numerator
+                  denominator
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}")
+
+  myqueries <- Query$new()
+  myqueries$query("data", api_query)
+
+  # TODO: Må splitte opp her med en test om det ikke er noe ÅDT
+  trp_data <- cli$exec(myqueries$queries$data) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
+
+  if(is_empty(trp_data$data$trafficData$volume$average$dayOfWeek$byMonth) |
+     is.null(trp_data$data$trafficData$volume$average$dayOfWeek$byMonth$total) |
+     length(trp_data$data$trafficData$volume$average$dayOfWeek$byMonth$total) == 0
+  ){
+    # returnerer tom tabell for å ikke krasje loopen
+    trp_data <- data.frame()
+  }else{
+    trp_data <- trp_data %>%
+      as.data.frame() %>%
+      dplyr::select(
+        trp_id = data.trafficData.id,
+        year = data.trafficData.volume.average.dayOfWeek.byMonth.yearMonth.year,
+        month = data.trafficData.volume.average.dayOfWeek.byMonth.yearMonth.month,
+        day_name = data.trafficData.volume.average.dayOfWeek.byMonth.total.day,
+        day_type = data.trafficData.volume.average.dayOfWeek.byMonth.dayType,
+        coverage = data.trafficData.volume.average.dayOfWeek.byMonth.total.coverage.percentage,
+        included_days = data.trafficData.volume.average.dayOfWeek.byMonth.total.coverage.included.numerator,
+        possible_days = data.trafficData.volume.average.dayOfWeek.byMonth.total.coverage.included.denominator,
+        average_day_of_week_traffic =
+          data.trafficData.volume.average.dayOfWeek.byMonth.total.volume.average,
+        standard_deviation =
+          data.trafficData.volume.average.dayOfWeek.byMonth.total.volume.standardDeviation)
+  }
+
+  return(trp_data)
+}
+
+
+
+get_trp_average_day_of_week_traffic_by_month_for_a_year <- function(trp_id, the_year) {
+
+  data_points <- data.frame()
+  month_count <- 1
+
+  while (month_count <= 12) {
+
+    data_points <- dplyr::bind_rows(
+      data_points,
+      get_trp_average_day_of_week_traffic_by_month(trp_id, the_year, month_count)
+    )
+
+    month_count <- month_count + 1
+  }
+
+  return(data_points)
+}
+
+
+
+get_trp_average_day_of_week_traffic_by_month_for_a_year_for_trp_list <- function(trp_list, the_year) {
+
+  number_of_points <- length(trp_list)
+  data_points <- data.frame()
+  trp_count <- 1
+
+  while (trp_count <= number_of_points) {
+
+    data_points <- dplyr::bind_rows(
+      data_points,
+      get_trp_average_day_of_week_traffic_by_month_for_a_year(trp_list[trp_count], the_year))
+
+    trp_count <- trp_count + 1
+
+  }
+
+  return(data_points)
+}

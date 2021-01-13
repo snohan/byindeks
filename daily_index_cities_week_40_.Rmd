@@ -45,7 +45,7 @@ source("get_from_trafficdata_api.R")
 cities_points_start <- read.csv2("data_points_raw/cities_points.csv") %>% 
   dplyr::filter(city_area_name %in% c("Bergen",
                                       "Nord-Jæren",
-                                      "Oslo og Akershus",
+                                      "Oslo og Viken",
                                       "Trondheim",
                                       "Tromsø"),
                 !is.na(trp_id)) %>% 
@@ -141,10 +141,10 @@ trps <- dplyr::left_join(cities_points, points) %>%
 
 # Fetch daily traffic
 week_2019_from <- "2019-09-30T00:00:00+02:00"
-week_2019_to <- "2019-12-16T00:00:00+02:00"
+week_2019_to <- "2020-01-06T00:00:00+01:00"
 
 week_2020_from <- "2020-09-28T00:00:00+02:00"
-week_2020_to <- "2020-12-14T00:00:00+02:00"
+week_2020_to <- "2021-01-04T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -348,6 +348,196 @@ dt_2019_51 <- dt %>%
                            "09105V320634"
     )))
 
+dt_2019_lillejulaften <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 52,
+         weekday == 1) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "Lille julaften") %>% 
+  filter(!(point_id %in% c("42754V444240",
+                           "33808V625649",
+                           "18573V444291",
+                           "81350V444302",
+                           "44660V72811",
+                           "75341V41863",
+                           "57279V320244",
+                           "09105V320634"
+    )))
+
+dt_2019_julaften <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 52,
+         weekday == 2) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "Julaften") %>% 
+  filter(!(point_id %in% c("42754V444240",
+                           "33808V625649",
+                           "18573V444291",
+                           "81350V444302",
+                           "44660V72811",
+                           "75341V41863",
+                           "57279V320244",
+                           "09105V320634"
+    )))
+
+
+dt_2019_1juledag <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 52,
+         weekday == 3) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "1. juledag") %>% 
+  filter(!(point_id %in% c("42754V444240",
+                           "33808V625649",
+                           "18573V444291",
+                           "81350V444302",
+                           "44660V72811",
+                           "75341V41863",
+                           "57279V320244",
+                           "09105V320634"
+    )))
+
+dt_2019_2juledag <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 52,
+         weekday == 4) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "2. juledag") %>% 
+  filter(!(point_id %in% c("42754V444240",
+                           "33808V625649",
+                           "18573V444291",
+                           "81350V444302",
+                           "44660V72811",
+                           "75341V41863",
+                           "57279V320244",
+                           "09105V320634"
+    )))
+
+dt_2019_3juledag <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 52,
+         weekday == 5) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "3. juledag") %>% 
+  filter(!(point_id %in% c("42754V444240",
+                           "33808V625649",
+                           "18573V444291",
+                           "81350V444302",
+                           "44660V72811",
+                           "75341V41863",
+                           "57279V320244",
+                           "09105V320634"
+    )))
+
+dt_2019_4juledag <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 52,
+         weekday == 6) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "4. juledag") %>% 
+  filter(!(point_id %in% c("42754V444240",
+                           "33808V625649",
+                           "18573V444291",
+                           "81350V444302",
+                           "44660V72811",
+                           "75341V41863",
+                           "57279V320244",
+                           "09105V320634"
+    )))
+
+dt_2019_5juledag <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 52,
+         weekday == 7) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "5. juledag") %>% 
+  filter(!(point_id %in% c("42754V444240",
+                           "33808V625649",
+                           "18573V444291",
+                           "81350V444302",
+                           "44660V72811",
+                           "75341V41863",
+                           "57279V320244",
+                           "09105V320634"
+    )))
+
+dt_2019_6juledag <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 1,
+         weekday == 1) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "6. juledag") %>% 
+  filter(!(point_id %in% c("42754V444240",
+                           "33808V625649",
+                           "18573V444291",
+                           "81350V444302",
+                           "44660V72811",
+                           "75341V41863",
+                           "57279V320244",
+                           "09105V320634"
+    )))
+
+dt_2019_new_years_eve <- dt %>% 
+  filter(year == 2019) %>%
+  filter(weekno == 1,
+         weekday == 2) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "Nyttårsaften") %>% 
+  filter(!(point_id %in% c("42754V444240",
+                           "33808V625649",
+                           "18573V444291",
+                           "81350V444302",
+                           "44660V72811",
+                           "75341V41863",
+                           "57279V320244",
+                           "09105V320634"
+    )))
+
+dt_2019_new_years_day <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 1,
+         weekday == 3) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "1. nyttårsdag") %>% 
+  filter(!(point_id %in% c("42754V444240",
+                           "33808V625649",
+                           "18573V444291",
+                           "81350V444302",
+                           "44660V72811",
+                           "75341V41863",
+                           "57279V320244",
+                           "09105V320634"
+    )))
+
+
+dt_2019_jul <- bind_rows(
+  dt_2019_lillejulaften,
+  dt_2019_julaften,
+  dt_2019_1juledag,
+  dt_2019_2juledag,
+  dt_2019_3juledag,
+  dt_2019_4juledag,
+  dt_2019_5juledag,
+  dt_2019_6juledag,
+  dt_2019_new_years_eve,
+  dt_2019_new_years_day
+)
+
+dt_2020_1 <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 1,
+         weekday > 5) %>%
+  select(point_id, total_volume, weekno, weekday) %>% 
+  filter(!(point_id %in% c("42754V444240",
+                           "33808V625649",
+                           "18573V444291",
+                           "81350V444302",
+                           "44660V72811",
+                           "75341V41863",
+                           "57279V320244",
+                           "09105V320634"
+    )))
+
 # ADD NEW WEEK HERE!
 
 
@@ -412,6 +602,102 @@ dt_2020_51 <- dt %>%
   filter(weekno == 51) %>% 
   select(point_id, total_volume, weekno, weekday) 
 
+dt_2020_52 <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 52,
+         # Removing Christmas
+         weekday < 3) %>% 
+  select(point_id, total_volume, weekno, weekday) 
+
+dt_2020_lillejulaften <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 52,
+         weekday == 3) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "Lille julaften")
+
+dt_2020_julaften <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 52,
+         weekday == 4) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "Julaften")
+
+dt_2020_1juledag <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 52,
+         weekday == 5) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "1. juledag")
+
+dt_2020_2juledag <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 52,
+         weekday == 6) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "2. juledag") 
+
+dt_2020_3juledag <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 52,
+         weekday == 7) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "3. juledag")
+
+dt_2020_4juledag <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 53,
+         weekday == 1) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "4. juledag")
+
+dt_2020_5juledag <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 53,
+         weekday == 2) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "5. juledag")
+
+dt_2020_6juledag <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 53,
+         weekday == 3) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "6. juledag")
+
+dt_2020_new_years_eve <- dt %>% 
+  filter(year == 2020) %>%
+  filter(weekno == 53,
+         weekday == 4) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "Nyttårsaften")
+
+dt_2020_new_years_day <- dt %>% 
+  filter(year == 2021) %>%
+  filter(weekno == 53,
+         weekday == 5) %>% 
+  select(point_id, total_volume, weekno, weekday) %>% 
+  mutate(weekday = "1. nyttårsdag")
+
+dt_2020_jul <- bind_rows(
+  dt_2020_lillejulaften,
+  dt_2020_julaften,
+  dt_2020_1juledag,
+  dt_2020_2juledag,
+  dt_2020_3juledag,
+  dt_2020_4juledag,
+  dt_2020_5juledag,
+  dt_2020_6juledag,
+  dt_2020_new_years_eve,
+  dt_2020_new_years_day
+)
+
+dt_2020_53_last <- dt %>% 
+  filter(year == 2021) %>%
+  filter(weekno == 53,
+         weekday > 5) %>% 
+  select(point_id, total_volume, weekno, weekday) 
+
 
 # ADD NEW WEEK HERE!
 
@@ -432,6 +718,18 @@ calculate_trp_index <- function(dt_base, dt_calc) {
   arrange(city_area_name, road_reference)
 }
 
+calculate_trp_index_movable_days <- function(dt_base, dt_calc) {
+  trp_daily_index <- inner_join(dt_base, dt_calc,
+                            by = c("point_id", "weekday"),
+                            suffix = c("_b", "_c")) %>% 
+  mutate(index = round((total_volume_c / total_volume_b - 1) * 100, digits = 1)) %>% 
+  #left_join(norske_ukedager) %>% 
+  select(point_id, weekday, index) %>% 
+  left_join(points, by = c("point_id" = "trp_id")) %>% 
+  left_join(cities_points, by = c("point_id" = "trp_id")) %>% 
+  select(weekday, name, road_reference, city_area_name, index)
+}
+
 # Compare week 2020 to same week 2019 ####
 trp_dt_40 <- calculate_trp_index(dt_2019_40, dt_2020_40) 
 trp_dt_41 <- calculate_trp_index(dt_2019_41, dt_2020_41)
@@ -445,6 +743,10 @@ trp_dt_48 <- calculate_trp_index(dt_2019_48, dt_2020_48)
 trp_dt_49 <- calculate_trp_index(dt_2019_49, dt_2020_49)
 trp_dt_50 <- calculate_trp_index(dt_2019_50, dt_2020_50)
 trp_dt_51 <- calculate_trp_index(dt_2019_51, dt_2020_51)
+trp_dt_52 <- calculate_trp_index(dt_2019_51, dt_2020_52)
+trp_dt_jul <- calculate_trp_index_movable_days(
+  dt_2019_jul, dt_2020_jul)
+trp_dt_53 <- calculate_trp_index(dt_2020_1, dt_2020_53_last)
 
 
 # City index ####
@@ -504,6 +806,43 @@ city_dt_50 <- calculate_city_index(dt_2019_50, dt_2020_50) %>%
 city_dt_51 <- calculate_city_index(dt_2019_51, dt_2020_51) %>% 
   mutate(weekno = "51")
 
+city_dt_52 <- calculate_city_index(dt_2019_51, dt_2020_52) %>% 
+  mutate(weekno = "52")
+
+# Need special function
+juledager <- c(
+  "Lille julaften",
+  "Julaften",
+  "1. juledag",
+  "2. juledag",
+  "3. juledag",
+  "4. juledag",
+  "5. juledag",
+  "6. juledag",
+  "Nyttårsaften",
+  "1. nyttårsdag"
+)
+
+city_dt_jul <- inner_join(dt_2019_jul, dt_2020_jul,
+                            by = c("point_id", "weekday"),
+                            suffix = c("_b", "_c")) %>% 
+  left_join(cities_points, by = c("point_id" = "trp_id")) %>% 
+  group_by(weekday, city_area_name) %>% 
+  summarise(city_volume_b = sum(total_volume_b),
+            city_volume_c = sum(total_volume_c),
+            no_trp = n()
+            ) %>% 
+  mutate(index = round((city_volume_c / city_volume_b - 1) * 100, 
+                       digits = 1),
+         weekday = factor(weekday, levels = juledager)) %>% 
+  select(city_area_name, weekday, index) %>% 
+  arrange(weekday, city_area_name) %>% 
+  tidyr::pivot_wider(names_from = weekday,
+                     values_from = index)
+
+city_dt_53 <- calculate_city_index(dt_2020_1, dt_2020_53_last) %>% 
+  mutate(weekno = "53")
+
 
 # Cities week by week
 city_dt_2019_2020_weeks = bind_rows(city_dt_40,
@@ -517,11 +856,13 @@ city_dt_2019_2020_weeks = bind_rows(city_dt_40,
                                     city_dt_48,
                                     city_dt_49,
                                     city_dt_50,
-                                    city_dt_51
+                                    city_dt_51,
+                                    city_dt_52,
+                                    city_dt_53
                                    )
 
 oslo_og_akershus_dt_2019_2020 <- city_dt_2019_2020_weeks %>% 
-  filter(city_area_name == "Oslo og Akershus") %>% 
+  filter(city_area_name == "Oslo og Viken") %>% 
   select(weekday, ukedag, no_trp, index, weekno)
 
 bergen_dt_2019_2020 <- city_dt_2019_2020_weeks %>% 
@@ -746,5 +1087,23 @@ make_daily_plot_city(trondheim_dt_2019_2020, "")
 
 
 
+# Jul og nyttår
+
+```{r table_city_jul}
+city_dt_jul %>% 
+    flextable() %>%
+    set_header_labels(city_area_name = "Byområde") %>%
+    bold(part = "header") %>%
+    bg(bg = "#ED9300", part = "header") %>%
+    border_remove() %>%
+    hline_top(part = "header", border = borderline) %>%
+    hline_bottom(part = "all", border = borderline) %>%
+    colformat_double(digits = 1) %>% 
+    autofit() %>%
+    height_all(height = .2) %>%
+    set_caption("Prosentvis endring i trafikkmengde ved jul og nyttår.",
+              autonum = table_numbers,
+              style = "Tabelltekst")
+```
 
 
