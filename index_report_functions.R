@@ -45,7 +45,7 @@ create_point_adt_map <- function(all_point_info_df) {
       fillColor = ~palett_adt(adt),
       fillOpacity = 0.8
     ) %>%
-    addLegend("bottomright",
+    addLegend("topleft",
               pal = palett_adt,
               values = ~adt,
               title = "ADT",

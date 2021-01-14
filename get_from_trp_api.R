@@ -3,6 +3,7 @@
 library(httr)
 
 source("H:/Programmering/R/byindeks/trp_api_cookies.R")
+source("H:/Programmering/R/byindeks/split_road_system_reference.R")
 
 trp_api_url <- "https://www.vegvesen.no/datainn/traffic-registration-point/api/"
 
@@ -100,44 +101,52 @@ getPointsFromTRPAPI <- function() {
   return(points_trp)
 }
 
-get_points_from_trpapi_httr <- function() {
+get_points_from_trp_api <- function() {
   # Get all traffic registration points
+
   api_query <-
-    "query allPoints{
-  trafficRegistrationPoints{
-    id
-    name
-    location{
-      coordinates{
-        latlon{
-          latitude
-          longitude
-        }
-      }
-       municipality {
-        name
-        number
-        county {
-          name
-        }
-      }
-      roadReference{
-        shortForm
-      }
-      roadLink{
+    "query all_trps {
+      trafficRegistrationPoints {
         id
-        position
+        name
+        trafficType
+        operationalStatus
+        registrationFrequency
+        location{
+          coordinates{
+            latlon{
+              latitude
+              longitude
+            }
+          }
+          municipality {
+            name
+            number
+            county {
+              geographicNumber
+              name
+            }
+          }
+          roadReference {
+            shortForm
+          }
+          roadLink {
+            id
+            position
+          }
+        }
       }
-    }
-    legacyNortrafMpn
-  }
-}"
+    }"
 
   points_trp <- get_via_httr(api_query) %>%
     dplyr::rename(
       trp_id = data.trafficRegistrationPoints.id,
       name = data.trafficRegistrationPoints.name,
+      traffic_type = data.trafficRegistrationPoints.trafficType,
+      trp_status = data.trafficRegistrationPoints.operationalStatus,
+      registration_frequency = data.trafficRegistrationPoints.registrationFrequency,
       municipality_name = data.trafficRegistrationPoints.location.municipality.name,
+      county_geono = data.trafficRegistrationPoints.location.municipality.county.geographicNumber,
       county_name = data.trafficRegistrationPoints.location.municipality.county.name,
       lat = data.trafficRegistrationPoints.location.coordinates.latlon.latitude,
       lon = data.trafficRegistrationPoints.location.coordinates.latlon.longitude,
@@ -145,13 +154,12 @@ get_points_from_trpapi_httr <- function() {
       road_network_position =
         data.trafficRegistrationPoints.location.roadLink.position,
       road_network_link =
-        data.trafficRegistrationPoints.location.roadLink.id,
-      legacyNortrafMpn = data.trafficRegistrationPoints.legacyNortrafMpn) %>%
+        data.trafficRegistrationPoints.location.roadLink.id) %>%
     dplyr::mutate(road_link_position = paste0(road_network_position, "@",
                                               road_network_link)) %>%
-    dplyr::select(trp_id, name, county_name, municipality_name,
-                  road_reference, road_link_position, lat, lon,
-                  legacyNortrafMpn)
+    dplyr::select(trp_id, name, traffic_type, trp_status, registration_frequency,
+                  county_geono, county_name, municipality_name,
+                  road_reference, road_link_position, lat, lon)
 
   return(points_trp)
 }
@@ -181,10 +189,13 @@ getPointsFromTRPAPI_filtered <- function() {
 get_periodic_trps_with_commission <- function() {
 
   api_query <-
-    "query hentTRP{
-  trafficRegistrationPoints(stationType: PERIODIC, trafficType: VEHICLE) {
+    "query hentTRP {
+  trafficRegistrationPoints(stationType: [PERIODIC]) {
     id
     name
+    trafficType
+    operationalStatus
+    registrationFrequency
     location {
       roadLink {
         id
@@ -194,14 +205,6 @@ get_periodic_trps_with_commission <- function() {
         latlon {
           latitude
           longitude
-          wkt
-          srid
-        }
-        utm33 {
-          north
-          east
-          wkt
-          srid
         }
       }
       roadReference {
@@ -217,19 +220,8 @@ get_periodic_trps_with_commission <- function() {
   }
 }"
 
-  api_query_trimmed <- stringr::str_replace_all(api_query, "[\r\n]", " ")
-
-  api_query_string <- paste0('{"query":"', api_query_trimmed, '" }')
-
-  response <- httr::POST(url = trp_api_url,
-                         httr::add_headers(.headers = trp_api_headers),
-                         httr::set_cookies(.cookies = trp_api_cookies),
-                         body = api_query_string)
-
-  response_parsed <- fromJSON(str_conv(response$content, encoding = "UTF-8"),
-                              simplifyDataFrame = T,
-                              flatten = T) %>%
-    as.data.frame() %>%
+  response_parsed <-
+    get_via_httr(api_query) %>%
     tidyr::unnest(cols =
                     c("data.trafficRegistrationPoints.commissionElements"))
 
@@ -237,88 +229,34 @@ get_periodic_trps_with_commission <- function() {
 }
 
 
-get_periodic_trps <- function() {
-  # Many periodic stations have no trps defined, therefore assuming
-  # there is a trp where the station is located
+get_periodic_trs_and_trp_id <- function() {
+  # Many periodic stations have no trps defined
 
   api_query <-
-    "query periodic_trs {
-  trafficRegistrationStations (stationType: PERIODIC, trafficType: VEHICLE) {
-    id
-    name
-    stationType
-    location {
-      roadLink {
+    "query trs {
+      trafficRegistrationStations (stationType: [PERIODIC]) {
         id
-        position
-      }
-      coordinates {
-        latlon {
-          latitude
-          longitude
-          wkt
-          srid
-        }
-        utm33 {
-          north
-          east
-          wkt
-          srid
-        }
-      }
-      roadReference {
-        shortForm
-        roadCategory {
-          id
-          name
-        }
-      }
-      municipality {
         name
-        county {
-          name
+        operationalStatus
+        stationType
+        trafficType
+        trafficRegistrationPoints {
+          id
         }
       }
-    }
-    trafficRegistrationPoints {
-      id
-    }
-  }
-}"
+    }"
 
-  api_query_trimmed <- stringr::str_replace_all(api_query, "[\r\n]", " ")
-
-  api_query_string <- paste0('{"query":"', api_query_trimmed, '" }')
-
-  response <- httr::POST(url = trp_api_url,
-                         httr::add_headers(.headers = trp_api_headers),
-                         httr::set_cookies(.cookies = trp_api_cookies),
-                         body = api_query_string)
-
-  response_parsed <- fromJSON(str_conv(response$content, encoding = "UTF-8"),
-                              simplifyDataFrame = T,
-                              flatten = T) %>%
-    as.data.frame() %>%
+  response_parsed <-
+    get_via_httr(api_query) %>%
     tidyr::unnest(cols =
                     c("data.trafficRegistrationStations.trafficRegistrationPoints"),
                   keep_empty = TRUE) %>%
-    dplyr::select(trs_id = 1,
-                  trs_name = 2,
-                  trp_id = 4,
-                  roadlink = 5,
-                  position = 6,
-                  lat = 7,
-                  lon = 8,
-                  latlon_wkt = 9,
-                  latlon_srid = 10,
-                  utm33_n = 11,
-                  utm33_e = 12,
-                  utm33_wkt = 13,
-                  utm33_srid = 14,
-                  road_reference = 15,
-                  road_category = 16,
-                  municipality = 18,
-                  county = 19)
+    dplyr::select(trs_id = data.trafficRegistrationStations.id,
+                  trs_name = data.trafficRegistrationStations.name,
+                  trs_status = data.trafficRegistrationStations.operationalStatus,
+                  trs_type = data.trafficRegistrationStations.stationType,
+                  trs_traffic_type = data.trafficRegistrationStations.trafficType,
+                  trp_id = id)
 
   return(response_parsed)
 }
@@ -554,23 +492,15 @@ get_trp_for_adt <- function() {
     location{
       roadReference{
         shortForm
-        roadCategory {
-          id
+      }
+      municipality {
+        name
+        county {
+          geographicNumber
+          name
         }
       }
-      county {
-        number
-        name
-      }
     }
-    roadReferenceHistory {
-      validFrom
-      validTo
-      roadReference {
-        shortForm
-      }
-    }
-    legacyNortrafMpn
     commissionElements {
       commission {
         validFrom
@@ -580,26 +510,31 @@ get_trp_for_adt <- function() {
   }
 }"
 
-  myqueries <- Query$new()
-  myqueries$query("api_data", api_query)
+  api_query_trimmed <- stringr::str_replace_all(api_query, "[\r\n]", " ")
 
-  points_trp <- cli_trp$exec(myqueries$queries$api_data) %>%
-    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
+  api_query_string <- paste0('{"query":"', api_query_trimmed, '" }')
+
+  response <- httr::POST(url = trp_api_url,
+                         httr::add_headers(.headers = trp_api_headers),
+                         httr::set_cookies(.cookies = trp_api_cookies),
+                         body = api_query_string)
+
+  response_parsed <- fromJSON(str_conv(response$content, encoding = "UTF-8"),
+                              simplifyDataFrame = T,
+                              flatten = T) %>%
     as.data.frame() %>%
     tidyr::unnest(cols =
                     c("data.trafficRegistrationPoints.commissionElements")) %>%
     dplyr::rename(
       trp_id = data.trafficRegistrationPoints.id,
       name = data.trafficRegistrationPoints.name,
-      road_system_reference =
+      road_reference =
         data.trafficRegistrationPoints.location.roadReference.shortForm,
-      legacyNortrafMpn = data.trafficRegistrationPoints.legacyNortrafMpn,
       valid_from = commission.validFrom,
       valid_to = commission.validTo,
-      county_number = data.trafficRegistrationPoints.location.county.number,
-      county_name = data.trafficRegistrationPoints.location.county.name,
-      road_category =
-        data.trafficRegistrationPoints.location.roadReference.roadCategory.id) %>%
+      municipality_name = data.trafficRegistrationPoints.location.municipality.name,
+      county_geonumber = data.trafficRegistrationPoints.location.municipality.county.geographicNumber,
+      county_name = data.trafficRegistrationPoints.location.municipality.county.name) %>%
     # Removing points without commissions
     dplyr::filter(!is.na(valid_from)) %>%
     dplyr::mutate(valid_from = lubridate::floor_date(
@@ -608,26 +543,18 @@ get_trp_for_adt <- function() {
       unit = "second")) %>%
     dplyr::group_by(trp_id) %>%
     dplyr::slice(which.min(valid_from)) %>%
-    dplyr::mutate(first_commission_datainn = lubridate::floor_date(
+    dplyr::mutate(first_commission = lubridate::floor_date(
                     valid_from, unit = "day")) %>%
     dplyr::select(-valid_from, - valid_to) %>%
-    tidyr::unnest(cols = "data.trafficRegistrationPoints.roadReferenceHistory") %>%
-    # Removing points without road_reference
-    dplyr::filter(!is.na(validFrom)) %>%
-    dplyr::mutate(validFrom = lubridate::floor_date(
-      lubridate::with_tz(
-        lubridate::ymd_hms(validFrom)),
-      unit = "second")) %>%
-    dplyr::slice(which.max(validFrom)) %>%
-    dplyr::select(-validTo, -validFrom) %>%
-    dplyr::rename(road_reference = roadReference.shortForm) %>%
-    dplyr::select(county_number, county_name, trp_id, legacyNortrafMpn, name,
-                  road_category, road_system_reference, road_reference,
-                  first_commission_datainn) %>%
-    dplyr::arrange(county_number, road_category, road_system_reference) %>%
+    dplyr::select(county_geonumber, county_name, trp_id, name,
+                  road_reference, first_commission) %>%
+    split_road_system_reference() %>%
+    dplyr::select(-road, -road_number) %>%
+    dplyr::relocate(road_category, .before = road_reference) %>%
+    dplyr::arrange(county_geonumber) %>%
     dplyr::ungroup()
 
-  return(points_trp)
+  return(response_parsed)
 }
 
 get_stations_from_TRPAPI <- function() {
