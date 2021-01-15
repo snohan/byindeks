@@ -223,7 +223,26 @@ get_periodic_trps_with_commission <- function() {
   response_parsed <-
     get_via_httr(api_query) %>%
     tidyr::unnest(cols =
-                    c("data.trafficRegistrationPoints.commissionElements"))
+                    c("data.trafficRegistrationPoints.commissionElements")) %>%
+    dplyr::select(trp_id = data.trafficRegistrationPoints.id,
+                  trp_name = data.trafficRegistrationPoints.name,
+                  trafficType = data.trafficRegistrationPoints.trafficType,
+                  status = data.trafficRegistrationPoints.operationalStatus,
+                  registration_frequency = data.trafficRegistrationPoints.registrationFrequency,
+                  commission_from = commission.validFrom,
+                  commission_to = commission.validTo,
+                  road_link = data.trafficRegistrationPoints.location.roadLink.id,
+                  road_link_position = data.trafficRegistrationPoints.location.roadLink.position,
+                  lat = data.trafficRegistrationPoints.location.coordinates.latlon.latitude,
+                  lon = data.trafficRegistrationPoints.location.coordinates.latlon.longitude,
+                  road_reference = data.trafficRegistrationPoints.location.roadReference.shortForm) %>%
+    dplyr::mutate(commission_from = parse_and_floor_date(commission_from, "day"),
+                  commission_to = parse_and_floor_date(commission_to, "day"),
+                  commission_interval = lubridate::interval(commission_from,
+                                                            commission_to),
+                  commission_length_in_days = round(commission_interval / lubridate::ddays(1),
+                                                     digits = 0)
+                  )
 
   return(response_parsed)
 }
