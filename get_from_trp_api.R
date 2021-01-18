@@ -1,6 +1,9 @@
 # Get data directly from TRP-API
 
+library(tidyverse)
+library(jsonlite)
 library(httr)
+library(ghql)
 
 source("H:/Programmering/R/byindeks/trp_api_cookies.R")
 source("H:/Programmering/R/byindeks/split_road_system_reference.R")

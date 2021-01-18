@@ -1,6 +1,7 @@
 # Fetching data from Trafikkdata-API or TRP-API
 
 library(tidyverse)
+library(jsonlite)
 library(ghql)
 library(lubridate)
 library(magrittr)
@@ -129,6 +130,7 @@ get_points <- function() {
       county {
         name
         number
+        geographicNumber
       }
       municipality {
         name
@@ -172,6 +174,7 @@ get_points <- function() {
                     data.trafficRegistrationPoints.trafficRegistrationType,
                   county_name = data.trafficRegistrationPoints.location.county.name,
                   county_no = data.trafficRegistrationPoints.location.county.number,
+                  county_geono = data.trafficRegistrationPoints.location.county.geographicNumber,
                   municipality_name = data.trafficRegistrationPoints.location.municipality.name,
                   municipality_no = data.trafficRegistrationPoints.location.municipality.number,
                   lat =
@@ -189,7 +192,7 @@ get_points <- function() {
                   latest_day_with_data =
                     data.trafficRegistrationPoints.latestData.volumeByDay
                     ) %>%
-    dplyr::select(trp_id, name, traffic_type, road_reference, county_name,
+    dplyr::select(trp_id, name, traffic_type, road_reference, county_geono, county_name,
                   county_no, municipality_name, municipality_no, lanes, lat, lon,
                   road_network_position, road_network_link, validFrom, validTo,
                   operational_status, latest_day_with_data
@@ -1152,9 +1155,9 @@ getHourlytraffic <- function(trpID, from, to) {
   return(hourlyTraffic)
 }
 
-# trpID <- "81077V72158"
-# from <- "2020-06-09T00:00:00+01:00"
-# to <- "2020-06-18T00:00:00+01:00"
+# trpID <- "68068V521218"
+# from <- "2020-01-01T00:00:00+01:00"
+# to <- "2021-01-01T00:00:00+01:00"
 # test1 <- get_daily_traffic(trps$trp_id[1], from, to)
 # test2 <- get_daily_traffic(trps$trp_id[2], from, to)
 #
@@ -1248,6 +1251,7 @@ get_daily_traffic <- function(trpID, from, to) {
 
   # To avoid error when joining, cast column type
   dailyTraffic <- dailyTraffic %>%
+    dplyr::select(point_id, point_name, from, total_volume, coverage) %>%
     dplyr::mutate(point_id = as.character(point_id),
                   point_name = as.character(point_name),
                   from = with_tz(ymd_hms(from), "CET"),
