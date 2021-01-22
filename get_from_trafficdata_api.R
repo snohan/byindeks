@@ -1155,15 +1155,15 @@ getHourlytraffic <- function(trpID, from, to) {
   return(hourlyTraffic)
 }
 
-# trpID <- "68068V521218"
-# from <- "2020-01-01T00:00:00+01:00"
-# to <- "2021-01-01T00:00:00+01:00"
+ # trp_id <- "68068V521218"
+ # from <- "2020-01-01T00:00:00+01:00"
+ # to <- "2021-01-01T00:00:00+01:00"
 # test1 <- get_daily_traffic(trps$trp_id[1], from, to)
 # test2 <- get_daily_traffic(trps$trp_id[2], from, to)
 #
 # test_bind <- bind_rows(test1, test2)
 
-get_daily_traffic <- function(trpID, from, to) {
+get_daily_traffic <- function(trp_id, from, to) {
   # Default values
   hasNextPage <- TRUE
   cursor <- ""
@@ -1173,7 +1173,7 @@ get_daily_traffic <- function(trpID, from, to) {
     query_traffic <- paste0(
       'query point_day_volumes {
     trafficData(trafficRegistrationPointId: "',
-      trpID,
+      trp_id,
       '"){
         trafficRegistrationPoint {
           id
@@ -1278,6 +1278,145 @@ get_dt_for_trp_list <- function(trp_list, from, to) {
 
   return(data_points)
 }
+
+
+get_dt_by_length_for_trp <- function(trp_id, from, to) {
+  # Default values
+  hasNextPage <- TRUE
+  cursor <- ""
+  dailyTraffic <- data.frame()
+
+  build_query <- function() {
+
+    query_traffic <- paste0(
+      'query dt_with_length {
+        trafficData (trafficRegistrationPointId: "', trp_id, '"){
+          trafficRegistrationPoint {
+            id
+          }
+          volume {
+            byDay (
+              from: "', from, '",
+              to: "', to, '",
+              after: "', cursor, '") {
+          edges {
+            node {
+              from
+              total {
+                volumeNumbers {
+                  volume
+                  validLength {
+                    percentage
+                  }
+                }
+                coverage {
+                  percentage
+                }
+              }
+              byLengthRange {
+                lengthRange {
+                  representation
+                }
+                total {
+                  volumeNumbers {
+                    volume
+                  }
+                }
+              }
+            }
+          }
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+        }
+      }
+    }
+  }')
+  }
+
+  while(hasNextPage == TRUE){
+
+    myqueries <- Query$new()
+    myqueries$query("dailyTraffic", build_query())
+
+    trafficData <- cli$exec(myqueries$queries$dailyTraffic) %>%
+      fromJSON(simplifyDataFrame = T, flatten = T)
+
+    if(length(trafficData$data$trafficData$volume$byDay$edges) == 0)
+      break;
+
+    trafficData %<>% as.data.frame()
+
+    cursor <-
+      trafficData$data.trafficData.volume.byDay.pageInfo.endCursor[1] %>%
+      as.character()
+    hasNextPage <-
+      trafficData$data.trafficData.volume.byDay.pageInfo.hasNextPage[1]
+
+    # Skip pasring page if no volume numbers
+    if(length(trafficData$data.trafficData.volume.byDay.edges.node.total.volumeNumbers.volume) == 0) {
+      trafficData <- data.frame()
+    }else{
+      trafficData %<>% select(-data.trafficData.volume.byDay.pageInfo.hasNextPage,
+                              -data.trafficData.volume.byDay.pageInfo.endCursor) %>%
+        tidyr::unnest(cols = data.trafficData.volume.byDay.edges.node.byLengthRange) %>%
+        dplyr::select(point_id = data.trafficData.id,
+                      from = data.trafficData.volume.byDay.edges.node.from,
+                      total_volume = data.trafficData.volume.byDay.edges.node.total.volumeNumbers.volume,
+                      coverage = data.trafficData.volume.byDay.edges.node.total.coverage.percentage,
+                      length_range = lengthRange.representation,
+                      length_range_volume = total.volumeNumbers.volume,
+                      valid_length = data.trafficData.volume.byDay.edges.node.total.volumeNumbers.validLength.percentage
+                      )
+    }
+
+    dailyTraffic <- bind_rows(dailyTraffic, trafficData)
+  }
+
+  colunm_names <- c("point_id", "from", "total_volume", "coverage",
+                    "length_range", "length_range_volume", "valid_length")
+
+  if(nrow(dailyTraffic) == 0) {
+    dailyTraffic <- setNames(data.frame(matrix(ncol = 7, nrow = 0)),
+                             colunm_names)
+  }else{
+    #colnames(dailyTraffic) <- colunm_names
+  }
+
+  # To avoid error when joining, cast column type
+  dailyTraffic <- dailyTraffic %>%
+    dplyr::filter(!is.na(total_volume)) %>%
+    dplyr::mutate(point_id = as.character(point_id),
+                  from = with_tz(ymd_hms(from), "CET"),
+                  total_volume = as.integer(total_volume),
+                  coverage = as.numeric(coverage),
+                  length_range = as.character(length_range),
+                  length_range_volume = as.integer(length_range_volume),
+                  valid_length = as.numeric(valid_length)
+                  )
+
+  return(dailyTraffic)
+}
+
+
+get_dt_by_length_for_trp_list <- function(trp_list, from, to) {
+  number_of_points <- length(trp_list)
+  data_points <- data.frame()
+  trp_count <- 1
+
+  while (trp_count <= number_of_points) {
+    data_points <- bind_rows(data_points,
+                             get_dt_by_length_for_trp(
+                               trp_list[trp_count],
+                               from,
+                               to))
+    trp_count <- trp_count + 1
+  }
+
+  return(data_points)
+}
+
 
 
 # index_id <- 953
@@ -1706,9 +1845,14 @@ get_published_pointindex_paginated <- function(index_id, indexyear, indexmonth) 
     trp_data <- cli$exec(myqueries$queries$data) %>%
       jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
 
+    index_year_page <- trp_data$data$publishedAreaTrafficVolumeIndex$period.calculationMonth.year
+    index_month_page <- trp_data$data$publishedAreaTrafficVolumeIndex$period.calculationMonth.month
+
     trp_data_page <-
       trp_data$data$publishedAreaTrafficVolumeIndex$containsPointTrafficVolumeIndices.edges %>%
-      as.data.frame()
+      as.data.frame() %>%
+      dplyr::mutate(index_year_page = index_year_page,
+                    index_month_page = index_month_page)
 
     end_cursor_string <-
       trp_data$data$publishedAreaTrafficVolumeIndex$containsPointTrafficVolumeIndices.pageInfo.endCursor %>%
@@ -1732,10 +1876,9 @@ get_published_pointindex_paginated <- function(index_id, indexyear, indexmonth) 
     tidyr::unnest(cols = c(node.pointTrafficVolumeIndex.volumeIndicesMonth)) %>%
     dplyr::select(-node.pointTrafficVolumeIndex.volumeIndicesYearToDate) %>%
     tidyr::unnest(cols = c(lengthRangesTrafficVolumeIndex.indexNumbers)) %>%
-    dplyr::select(area_name = publishedAreaTrafficVolumeIndex.name,
-                  trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
-                  year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
-                  month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
+    dplyr::select(trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
+                  year = index_year_page,
+                  month = index_month_page,
                   day_type = dayType,
                   is_excluded = isExcluded,
                   is_manually_excluded = node.isManuallyExcluded,
@@ -1760,10 +1903,9 @@ get_published_pointindex_paginated <- function(index_id, indexyear, indexmonth) 
     tidyr::unnest(cols = c(node.pointTrafficVolumeIndex.volumeIndicesYearToDate)) %>%
     dplyr::select(- node.pointTrafficVolumeIndex.volumeIndicesMonth) %>%
     tidyr::unnest(cols = c(lengthRangesTrafficVolumeIndex.indexNumbers)) %>%
-    dplyr::select(area_name = publishedAreaTrafficVolumeIndex.name,
-                  trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
-                  year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
-                  month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
+    dplyr::select(trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
+                  year = index_year_page,
+                  month = index_month_page,
                   day_type = dayType,
                   is_excluded = isExcluded,
                   is_manually_excluded = node.isManuallyExcluded,
@@ -1809,6 +1951,30 @@ get_published_pointindex_for_months <- function(index_id, index_year, last_month
         published_pointindex,
         get_published_pointindex(index_id, index_year, i)[[2]]
         )
+
+    i = i + 1
+  }
+
+  published_points <- list(indexpoints, published_pointindex)
+
+  return(published_points)
+}
+
+get_published_pointindex_for_months_paginated <- function(index_id, index_year, last_month) {
+
+  published_pointindex <- tibble::tibble()
+  i <- 1
+
+  # Saving only one version of indexpoints
+  indexpoints <- get_published_pointindex_paginated(index_id, index_year, last_month)[[1]]
+
+  while (i < last_month + 1) {
+
+    published_pointindex <-
+      dplyr::bind_rows(
+        published_pointindex,
+        get_published_pointindex_paginated(index_id, index_year, i)[[2]]
+      )
 
     i = i + 1
   }

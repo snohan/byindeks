@@ -10,6 +10,7 @@ nvdb_url <- "https://www.vegvesen.no/nvdb/api/v2"
 nvdb_url_v3 <- "https://www.vegvesen.no/nvdb/api/v3"
 sti_vegobjekter <- "/vegobjekter"
 sti_veg <- "/veg"
+sti_posisjon <- "/posisjon"
 
 nvdb_v3_headers <- c(
   "X-Client" = "trafikkdatagruppa",
@@ -64,6 +65,75 @@ hent_vegsystemreferanse <- function(veglenkeposisjon) {
 
   return(result)
 }
+
+
+hent_vegpunkt_via_latlon <- function(lat, lon) {
+
+  api_query <- paste0(nvdb_url_v3,
+                      sti_posisjon,
+                      "?lat=",
+                      lat,
+                      "&lon=",
+                      lon,
+                      "&maks_avstand=60&maks_antall=6&konnekteringslenker=false&detaljerte_lenker=false&vegsystemreferanse=E,R,F,K&srid=4326")
+
+  respons <- httr::GET(api_query,
+                       httr::add_headers(.headers = nvdb_v3_headers))
+
+  uthenta <- jsonlite::fromJSON(
+    stringr::str_conv(
+      respons$content, encoding = "UTF-8"),
+    simplifyDataFrame = T,
+    flatten = T)
+
+  # TODO: allow more responses, filter by traffic_Type and choose closest remaining
+
+  return(uthenta)
+}
+
+# trp_df <- data.frame(row_id = "58.44_6.02",
+#                     lat = "58.4401",
+#                     lon = "6.611268")
+
+hent_vegpunkt_via_latlon_for_flere_punkter <- function(trp_df) {
+
+  # Takes a trp_list with columns named 'lat' and 'lon' and 'row_id' (for rejoining)
+  number_of_points <- nrow(trp_df)
+  data_points <- data.frame()
+  trp_count <- 1
+
+  while (trp_count <= number_of_points) {
+
+    new_data_point <- data.frame(
+      row_id = trp_df$row_id[trp_count],
+      hent_vegpunkt_via_latlon(trp_df$lat[trp_count],
+                               trp_df$lon[trp_count])
+    )
+
+    if (ncol(new_data_point) < 10) {
+      data_points <- data_points
+    } else {
+      data_points <- bind_rows(data_points, new_data_point)
+    }
+
+    trp_count <- trp_count + 1
+  }
+
+  trp_data <- data_points %>%
+    dplyr::select(site_id = row_id,
+                  road_reference = vegsystemreferanse.kortform,
+                  traffic_type = vegsystemreferanse.strekning.trafikantgruppe,
+                  road_link_position = veglenkesekvens.kortform,
+                  distance = avstand,
+                  municipality = kommune
+                 ) %>%
+    dplyr::filter(traffic_type == "K") %>%
+    dplyr::group_by(site_id) %>%
+    dplyr::slice_min(distance)
+
+  return(trp_data)
+}
+
 
 # Hent trafikkregistreringsstasjoner i en kommune
 hent_kommune <- function(kommunenr) {

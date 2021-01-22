@@ -39,7 +39,7 @@ get_via_httr <- function(api_query) {
   return(response_parsed)
 }
 
-# With ghql
+# With ghql (doesn't work anymore, unknown why)
 cli_trp <- GraphqlClient$new(
     url = "https://www.vegvesen.no/datainn/traffic-registration-point/api/",
     headers = list(
@@ -49,60 +49,6 @@ cli_trp <- GraphqlClient$new(
       #httr::add_headers(.headers = trp_api_headers),
       #httr::set_cookies(.cookies = trp_api_cookies)
   )
-
-getPointsFromTRPAPI <- function() {
-  # Get all traffic registration points
-  query_points_trp <-
-    "query allPoints{
-  trafficRegistrationPoints{
-    id
-    name
-    location{
-      coordinates{
-        latlon{
-          latitude
-          longitude
-        }
-      }
-      roadReference{
-        shortForm
-      }
-      roadLink{
-        id
-        position
-      }
-    }
-    legacyNortrafMpn
-  }
-}"
-
-  myqueries <- Query$new()
-  myqueries$query("points_trp", query_points_trp)
-
-  points_trp <- cli_trp$exec(myqueries$queries$points_trp) %>%
-    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
-    as.data.frame() %>%
-    #tidyr::unnest()%>%
-    dplyr::rename(
-      trp_id = data.trafficRegistrationPoints.id,
-      name = data.trafficRegistrationPoints.name,
-      lat = data.trafficRegistrationPoints.location.coordinates.latlon.latitude,
-      lon = data.trafficRegistrationPoints.location.coordinates.latlon.longitude,
-      road_reference = data.trafficRegistrationPoints.location.roadReference.shortForm,
-      road_network_position =
-        data.trafficRegistrationPoints.location.roadLink.position,
-      road_network_link =
-        data.trafficRegistrationPoints.location.roadLink.id,
-      legacyNortrafMpn = data.trafficRegistrationPoints.legacyNortrafMpn) %>%
-    dplyr::mutate(road_link_position = paste0(road_network_position, "@",
-                                              road_network_link)) %>%
-    dplyr::select(trp_id, name, road_reference, road_link_position, lat, lon,
-                  legacyNortrafMpn) %>%
-    dplyr::mutate(road_reference = str_replace(road_reference, "HP ", "hp")) %>%
-    dplyr::mutate(road_reference = str_replace(road_reference, "Meter ", "m"))
-
-  return(points_trp)
-}
 
 get_points_from_trp_api <- function() {
   # Get all traffic registration points
@@ -167,33 +113,12 @@ get_points_from_trp_api <- function() {
   return(points_trp)
 }
 
-getPointsFromTRPAPI_filtered <- function() {
-  # Get all traffic registration points
-  query_points_trp <-
-    "query hentTRP{
-  trafficRegistrationPoints(stationType: PERIODIC, trafficType: VEHICLE) {
-    id
-  }
-}"
-
-  myqueries <- Query$new()
-  myqueries$query("points_trp", query_points_trp)
-
-  points_trp <- cli_trp$exec(myqueries$queries$points_trp) %>%
-    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
-    as.data.frame() %>%
-    dplyr::rename(
-      trp_id = id)
-
-  return(points_trp)
-}
-
 
 get_periodic_trps_with_commission <- function() {
 
   api_query <-
     "query hentTRP {
-  trafficRegistrationPoints(stationType: [PERIODIC]) {
+      trafficRegistrationPoints(stationType: [PERIODIC]) {
     id
     name
     trafficType
@@ -264,6 +189,7 @@ get_periodic_trs_and_trp_id <- function() {
         trafficType
         trafficRegistrationPoints {
           id
+          registrationFrequency
         }
       }
     }"
@@ -278,7 +204,8 @@ get_periodic_trs_and_trp_id <- function() {
                   trs_status = data.trafficRegistrationStations.operationalStatus,
                   trs_type = data.trafficRegistrationStations.stationType,
                   trs_traffic_type = data.trafficRegistrationStations.trafficType,
-                  trp_id = id)
+                  trp_id = id,
+                  trp_type = registrationFrequency)
 
   return(response_parsed)
 }

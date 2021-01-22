@@ -1,5 +1,5 @@
 ---
-#title: Daglig endring i trafikk ved riksgrensen
+#title: Daglig endring i trafikk i de største byområdene
 output: 
   officedown::rdocx_document:
     reference_docx: svv_template.docx
@@ -196,7 +196,7 @@ day_of_week_traffic_average <- read.csv2("city_normal_days.csv")
 # Daily traffic ####
 
 data_this_year_from <- "2021-01-04T00:00:00+01:00"
-data_this_year_to <- "2021-01-11T00:00:00+01:00"
+data_this_year_to <- "2021-01-18T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -263,6 +263,7 @@ get_trp_index_for_weeknumber <- function(weekno) {
 }
 
 trp_index_1 <- get_trp_index_for_weeknumber(1)
+trp_index_2 <- get_trp_index_for_weeknumber(2)
 
 
 # City index ####
@@ -277,7 +278,7 @@ city_index <- trp_index %>%
 
 
 # Function for generating table
-make_city_table <- function(caption_text) {
+make_city_table <- function(city_index, caption_text) {
   
   table_ready <- city_index %>%
     tidyr::pivot_wider(names_from = ukedag,
@@ -364,26 +365,29 @@ Været vil enkelte dager kunne påvirke trafikkmengden. For eksempel vil det ved
 
 
 # Endring i trafikk
-Nedenfor vises daglig endring i trafikk i de største byområdene.
+Nedenfor vises daglig endring i trafikk i de største byområdene, sammenlignet med tilsvarende ukedag i normalperioden 2016 - 2019. Det vil si at trafikken har gått ned når prosentverdien er negativ.
 
 <br>
 
 ```{r table}
 # TODO: split by city
-make_city_table("Estimert endring i trafikk i 2021, avvik fra normalperioden 2016 - 2019.")
+#make_city_table("Estimert endring i trafikk i 2021, avvik fra normalperioden 2016 - 2019.")
 ```
-
-<br>
-
-I tabellen over er endringen i trafikkmengden oppgitt i prosent, sammenlignet med tilsvarende ukedag i normalperioden 2016 - 2019. Det vil si at trafikken har gått ned når prosentverdien er negativ.
-
-<br>
 
 ## Bergen
 ```{r plot_brg, fig.width=6, fig.height=3, fig.cap="Estimert endring i trafikk i Bergensområdet."}
 city_index %>% 
   dplyr::filter(city_area_name == "Bergensområdet") %>% 
   make_daily_plot()
+```
+
+<br>
+
+```{r table_bergen}
+city_index %>% 
+  dplyr::filter(city_area_name == "Bergensområdet") %>% 
+  dplyr::select(-city_area_name) %>% 
+  make_city_table("Estimert endring i trafikk i 2021, avvik fra normalperioden 2016 - 2019.")
 ```
 
 <br>
@@ -395,6 +399,14 @@ city_index %>%
   make_daily_plot()
 ```
 
+<br>
+
+```{r table_nj}
+city_index %>% 
+  dplyr::filter(city_area_name == "Nord-Jæren") %>% 
+  dplyr::select(-city_area_name) %>% 
+  make_city_table("Estimert endring i trafikk i 2021, avvik fra normalperioden 2016 - 2019.")
+```
 
 <br>
 
@@ -405,6 +417,14 @@ city_index %>%
   make_daily_plot()
 ```
 
+<br>
+
+```{r table_oslo}
+city_index %>% 
+  dplyr::filter(city_area_name == "Osloområdet") %>% 
+  dplyr::select(-city_area_name) %>% 
+  make_city_table("Estimert endring i trafikk i 2021, avvik fra normalperioden 2016 - 2019.")
+```
 
 <br>
 
@@ -417,6 +437,15 @@ city_index %>%
 
 <br>
 
+```{r table_trd}
+city_index %>% 
+  dplyr::filter(city_area_name == "Trondheim") %>% 
+  dplyr::select(-city_area_name) %>% 
+  make_city_table("Estimert endring i trafikk i 2021, avvik fra normalperioden 2016 - 2019.")
+```
+
+<br>
+
 ## Tromsø
 ```{r plot_trs, fig.width=6, fig.height=3, fig.cap="Estimert endring i trafikk i Tromsø."}
 city_index %>% 
@@ -424,3 +453,11 @@ city_index %>%
   make_daily_plot()
 ```
 
+<br>
+
+```{r table_trs}
+city_index %>% 
+  dplyr::filter(city_area_name == "Tromsø") %>% 
+  dplyr::select(-city_area_name) %>% 
+  make_city_table("Estimert endring i trafikk i 2021, avvik fra normalperioden 2016 - 2019.")
+```
