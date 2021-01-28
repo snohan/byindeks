@@ -19,19 +19,19 @@ library(htmltools)
 ```{r get_data, include=FALSE}
 # Look at details in one county at a time
 
-# 30 Viken
-#  3 Oslo
-# 34 Innlandet              11
-# 38 Vestfold og Telemark
-# 42 Agder
+# 30 Viken                  12
+#  3 Oslo                   12
+# 34 Innlandet              12
+# 38 Vestfold og Telemark   12 (mangler noen ekskluderinger)
+# 42 Agder                  12
 # 11 Rogaland
-# 46 Vestland
-# 15 Møre og Romsdal
-# 50 Trøndelag
-# 18 Nordland
-# 54 Troms og Finnmark
+# 46 Vestland               12
+# 15 Møre og Romsdal        12
+# 50 Trøndelag              12
+# 18 Nordland               12
+# 54 Troms og Finnmark      12
 
-county_number_chosen <- 38
+county_number_chosen <- 11
 
 # Choose
 index_year <- 2020
@@ -61,9 +61,11 @@ trps_meta <- points %>%
                 road_category_and_number, county_no,
                 #section_number, subsection_number, meter,
                 #intersection_part_number, intersection_meter,
-                county_name, municipality_name, lat, lon)%>% 
+                county_name, municipality_name, lat, lon) %>% 
   dplyr::filter(county_no == county_number_chosen)
 
+# write.csv2(trps_meta, file = "vegtrafikkindekspunkter.csv",
+#            row.names = F)
 
 # Before the bugfix, use csv instead
 # pointindices <- readr::read_csv2("punktindeks-2020-11.csv",
@@ -215,7 +217,12 @@ pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
       !short_is_least & long_is_least_check ~ 0, #"ok",
       !short_is_least & !long_is_least_check ~ 1, #"not ok",
       ),
-    diff_total_short = round(index_short - index_total_p, digits = 1))
+    diff_total_short = round(index_short - index_total_p, digits = 1),
+    index_total_p = round(index_total_p, digits = 1),
+    index_short = round(index_short, digits = 1),
+    index_long = round(index_long, digits = 1),
+    index_total_coverage = round(index_total_coverage, digits = 0),
+    length_coverage = round(length_coverage, digits = 0))
      
 trps_new_pointindex <- trps_meta %>% 
   dplyr::inner_join(point_index_new_prepared)
@@ -234,43 +241,43 @@ trps_new_pointindex_4 <- trps_meta %>%
 pointindex_prepared_all_wide_total_index <- pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, month, index_total_p) %>% 
   tidyr::pivot_wider(names_from = month, values_from = index_total_p,
-                     names_prefix = "value_") %>% 
+                     names_prefix = "m_") %>% 
   dplyr::mutate(value_type = "index_total_p")
 
 pointindex_prepared_all_wide_coverage <- pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, month, index_total_coverage) %>% 
   tidyr::pivot_wider(names_from = month, values_from = index_total_coverage,
-                     names_prefix = "value_") %>% 
+                     names_prefix = "m_") %>% 
   dplyr::mutate(value_type = "index_total_coverage")
 
 pointindex_prepared_all_wide_length_coverage <- pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, month, length_coverage) %>% 
   tidyr::pivot_wider(names_from = month, values_from = length_coverage,
-                     names_prefix = "value_") %>% 
+                     names_prefix = "m_") %>% 
   dplyr::mutate(value_type = "length_coverage")
 
 pointindex_prepared_all_wide_short <- pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, month, index_short) %>% 
   tidyr::pivot_wider(names_from = month, values_from = index_short,
-                     names_prefix = "value_") %>% 
+                     names_prefix = "m_") %>% 
   dplyr::mutate(value_type = "index_short")
 
 pointindex_prepared_all_wide_long <- pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, month, index_long) %>% 
   tidyr::pivot_wider(names_from = month, values_from = index_long,
-                     names_prefix = "value_") %>% 
+                     names_prefix = "m_") %>% 
   dplyr::mutate(value_type = "index_long")
 
 pointindex_prepared_all_wide_check <- pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, month, total_short_long_check) %>% 
   tidyr::pivot_wider(names_from = month, values_from = total_short_long_check,
-                     names_prefix = "value_") %>% 
+                     names_prefix = "m_") %>% 
   dplyr::mutate(value_type = "total_short_long_check")
 
 pointindex_prepared_all_wide_diff <- pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, month, diff_total_short) %>% 
   tidyr::pivot_wider(names_from = month, values_from = diff_total_short,
-                     names_prefix = "value_") %>% 
+                     names_prefix = "m_") %>% 
   dplyr::mutate(value_type = "diff_total_short")
 
 pointindex_wide <- dplyr::bind_rows(
@@ -284,7 +291,7 @@ pointindex_wide <- dplyr::bind_rows(
   ) %>% 
   split_road_system_reference() %>% 
   dplyr::select(name, road = road_category_and_number,
-                value_1:value_type)
+                m_1:value_type)
   #dplyr::arrange(road_reference)
 
 # Longing :) for plot
@@ -425,7 +432,7 @@ pointindex_long_2 %>%
   ggtitle(trp_name,
           subtitle = "Trafikkmengde i 2020 sammenlignet med 2019")
 
-# Notes
+# Notes 
 ```
 
 ```{r table_trp_consistency}

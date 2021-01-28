@@ -2128,9 +2128,9 @@ get_published_bikepointindex_for_months <- function(index_id, index_year, last_m
 # Only difference being that this includes area_type and
 # uses EUROPA_RIKS_FYLKESVEG instead of the one with KOMMUNALVEG also
 
-index_id <- 962
-indexyear <- 2020
-indexmonth <- 8
+#index_id <- 962
+#indexyear <- 2020
+#indexmonth <- 8
 
 get_published_road_traffic_index <- function(index_id, indexyear, indexmonth) {
   # Get published index for a given area, year and month
@@ -2180,6 +2180,7 @@ get_published_road_traffic_index <- function(index_id, indexyear, indexmonth) {
         volumeIndexNumber {
           percentageChange
         }
+        standardDeviation
         confidenceInterval {
           confidenceWidth
         }
@@ -2210,6 +2211,7 @@ get_published_road_traffic_index <- function(index_id, indexyear, indexmonth) {
       length_range = lengthRange.representation,
       #index_i = trafficVolumeIndex.index.indexNumber,
       index_p = volumeIndexNumber.percentageChange,
+      standard_deviation = standardDeviation,
       confidence_width = confidenceInterval.confidenceWidth,
       area_name = area.name,
       area_type = area.type,
@@ -2218,7 +2220,7 @@ get_published_road_traffic_index <- function(index_id, indexyear, indexmonth) {
     ) %>%
     dplyr::filter(day_type == "ALL") %>%
     dplyr::select(area_name, area_type, year, month, road_category, length_range, index_p,
-                  confidence_width) %>%
+                  standard_deviation) %>%
     dplyr::mutate(period = "month")
 
   year_to_date_data <- trp_data$data %>%
@@ -2234,6 +2236,7 @@ get_published_road_traffic_index <- function(index_id, indexyear, indexmonth) {
       length_range = lengthRange.representation,
       #index_i = trafficVolumeIndex.index.indexNumber,
       index_p = volumeIndexNumber.percentageChange,
+      standard_deviation = standardDeviation,
       confidence_width = confidenceInterval.confidenceWidth,
       area_name = area.name,
       area_type = area.type,
@@ -2242,7 +2245,7 @@ get_published_road_traffic_index <- function(index_id, indexyear, indexmonth) {
     ) %>%
     dplyr::filter(day_type == "ALL") %>%
     dplyr::select(area_name, area_type, year, month, road_category, length_range, index_p,
-                  confidence_width) %>%
+                  standard_deviation) %>%
     dplyr::mutate(period = "year_to_date")
 
   published_index <- bind_rows(monthly_data,

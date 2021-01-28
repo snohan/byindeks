@@ -1,12 +1,37 @@
 ---
-title: Vegtrafikkindeksen
+#title: Vegtrafikkindeksen
 output: 
-  word_document:
-    reference_docx: svv_notatmal3.docx
+  officedown::rdocx_document:
+    reference_docx: svv_template.docx
     toc: true
     toc_depth: 2
     fig_caption: true
     fig_width: 7
+    tables:
+      style: Table
+      layout: autofit
+      width: 1.0
+      caption:
+        style: Tabelltekst
+        pre: 'Tabell'
+        sep: '. '
+      conditional:
+        first_row: true
+        first_column: false
+        last_row: false
+        last_column: false
+        no_hband: false
+        no_vband: true
+    plots:
+      style: Normal
+      align: center
+      caption:
+        style: Figurtekst
+        pre: 'Figur '
+        sep: '. '
+    lists:
+      ol.style: null
+      ul.style: null
 ---
 
 ```{r setup, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
@@ -17,11 +42,13 @@ source("rmd_setup.R")
 source("get_from_trafficdata_api.R")
 ```
 
-
-
 ```{r get_data, include=FALSE}
+this_year <- 2020
+latest_month_number <- 12
+
 # Fetching published index from Traffic Data API
-index_2020 <- get_published_road_traffic_index_for_months(962, 2020, 8)
+index_2020 <- get_published_road_traffic_index_for_months(962, this_year, latest_month_number)
+# TODO: include day_type
 
 # TODO: Include urban and non-urban index
 #index_2020_urban <- get_published_index_for_months(1952, 2020, 7)
@@ -32,18 +59,8 @@ index_2020 <- get_published_road_traffic_index_for_months(962, 2020, 8)
 #                                index_2020_non_urban)
 ```
 
-# Vegtrafikkindeksen
-Vegtrafikkindeksen estimerer endringen i trafikkmengde i prosent fra et år til det neste.
-
-Datagrunnlaget for beregningene hentes fra trafikkregistreringspunkter i Statens vegvesens trafikkdatasystem. Det vil gi et representativt utvalg for å kunne beregne trafikkutviklingen. Det gjøres en sammenligning av timetrafikken, dato mot dato i kalendermånedene.
-
-Alle data er hentet fra [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/trafikkdata/). Timetrafikk med minst 95 % dekningsgrad inngår i beregningsgrunnlaget.
-
-Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er tidvis utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
-
-
-```{r border_table}
-index_2020_upper_lower <- index_2020 %>% 
+```{r prepare_data}
+index_2020_prepared <- index_2020 %>% 
   dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "alle",
                                                 length_range == "[..,5.6)" ~ "lette",
                                                 length_range == "[5.6,..)" ~ "tunge")) %>% 
@@ -51,35 +68,145 @@ index_2020_upper_lower <- index_2020 %>%
                   road_category == "FYLKESVEG" ~ "Fylkesveg",
                   road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
                   road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG" ~ "Europa-, riks- og fylkesveg")) %>% 
-  dplyr::mutate(index_lower = index_p - confidence_width,
-                index_upper = index_p + confidence_width,
+  dplyr::mutate(standard_deviation = round(standard_deviation, digits = 1),
                 month_object = lubridate::make_date(year = year, month = month),
                 month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE))
 
-last_month <- max(index_2020_upper_lower$month)
+latest_month_name <- max(index_2020_prepared$month_name) %>% as.character()
+
+index_this_month <- index_2020_prepared %>% 
+  dplyr::filter(area_type == "COUNTRY",
+                period == "month",
+                length_range == "alle",
+                road_category == "Europa-, riks- og fylkesveg",
+                month == latest_month_number)
+
+less_or_more_month <- dplyr::if_else(index_this_month$index_p < 0, "mindre", "mer")
+
+index_so_far_this_year_all <- index_2020_prepared %>% 
+  dplyr::filter(area_type == "COUNTRY",
+                period == "year_to_date",
+                length_range == "alle",
+                road_category == "Europa-, riks- og fylkesveg",
+                month == latest_month_number) %>% 
+  dplyr::select(index_p) %>% 
+  round(digits = 1)
+
+less_or_more_so_far <- dplyr::if_else(index_so_far_this_year_all$index_p < 0, "mindre", "mer")
+
+index_so_far_this_year_all_character <- index_so_far_this_year_all %>% 
+  abs() %>% 
+  as.character() %>% 
+  decimal_comma()
+
+index_so_far_this_year_light <- index_2020_prepared %>% 
+  dplyr::filter(area_type == "COUNTRY",
+                period == "year_to_date",
+                length_range == "lette",
+                road_category == "Europa-, riks- og fylkesveg",
+                month == latest_month_number) %>% 
+  dplyr::select(index_p) %>% 
+  round(digits = 1) %>% 
+  as.character() %>% 
+  decimal_comma()
+
+index_so_far_this_year_heavy <- index_2020_prepared %>% 
+  dplyr::filter(area_type == "COUNTRY",
+                period == "year_to_date",
+                length_range == "tunge",
+                road_category == "Europa-, riks- og fylkesveg",
+                month == latest_month_number ) %>% 
+  dplyr::select(index_p) %>% 
+  round(digits = 1) %>% 
+  as.character() %>% 
+  decimal_comma()
+
+index_so_far_this_year_r <- index_2020_prepared %>% 
+  dplyr::filter(area_type == "COUNTRY",
+                period == "year_to_date",
+                length_range == "alle",
+                road_category == "Europa- og riksveg",
+                month == latest_month_number ) %>% 
+  dplyr::select(index_p) %>% 
+  round(digits = 1) %>% 
+  as.character() %>% 
+  decimal_comma()
+
+index_so_far_this_year_f <- index_2020_prepared %>% 
+  dplyr::filter(area_type == "COUNTRY",
+                period == "year_to_date",
+                length_range == "alle",
+                road_category == "Fylkesveg",
+                month == latest_month_number ) %>% 
+  dplyr::select(index_p) %>% 
+  round(digits = 1) %>% 
+  as.character() %>% 
+  decimal_comma()
 ```
 
+<br>
 
-## Per måned
-Samlet endring i trafikkmengde per måned i 2020, sammenlignet med samme måned i 2019.
+**Tabelliste**
+```{r list_of_tables}
+officer::block_toc(style = "Tabelltekst")
+```
 
-```{r monthly_index_table}
-index_2020_upper_lower  %>% 
-  dplyr::filter(road_category == "Europa-, riks- og fylkesveg") %>%
-  dplyr::filter(period == "month",
-                area_type == "COUNTRY") %>% 
-  dplyr::arrange(area_name, length_range, month) %>% 
-  select(area_name, month_name, year, length_range, index_lower, index_p, index_upper) %>%
-  flextable() %>%
-  colformat_num(j = 5:7, digits = 1) %>%
-  set_header_labels(area_name = "Område", month_name = "Måned", year = "År", length_range = "Kjøretøy-klasse",
-                    index_lower = "Endring i trafikkmengde (%)") %>%
-  add_header_row(values = c("", "", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
-  merge_at(i = 1:2, j = 4, part = "header") %>% 
-  merge_at(i = 1, j = 5:7, part = "header") %>% 
-  align(i = 1, j = 5, align = "center", part = "header") %>%
-  align(i = 2, j = 5:7, align = "right", part = "header") %>% 
-  align(j = 3, align = "center", part = "all") %>% 
+<br>
+
+**Figurliste**
+```{r list_of_figures}
+officer::block_toc(style = "Figurtekst")
+```
+
+# Vegtrafikkindeksen
+
+Vegtrafikkindeksen er i `r this_year` rekna ut frå om lag 1 200 utvalde trafikkregistreringspunkt som er eigd av Statens vegvesen og fylkeskommunane. Trafikken vert registrert kontinuerleg kvar time heile året, og for kvart trafikkregistreringspunkt vert trafikken samanlikna time for time, dato mot dato i kalendermånadene. Utvalet gir truleg eit godt bilete av utviklinga i trafikkarbeidet. Tala er gitt som endring i prosent i forhold til same tidsperiode året før. 
+
+Ver merksam på at ulike forhold kan gi store utslag i tala per månad frå år til år. Slike hendingar kan vera helgedagar utan fast dato, til dømes påske og pinse. Veret er også ein faktor som kan gi utslag på månadstala. Koronapandemien påverkar sterkt utviklinga i trafikken i 2020. 
+Alle data er henta frå [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/trafikkdata/). Timetrafikk med minst 99 % dekningsgrad inngår i berekningsgrunnlaget.
+
+Nokre trafikkregistreringspunkt er periodevis utelatne på grunn av feil på utstyr eller at dei ligg på vegar som er påverka av vegarbeid o.l.
+
+
+## Definisjonar
+**Helgedøgn**: Laurdag og søndag kl. 00:00-23:59, alle offentlege fridagar og jule- og nyårskvelden. <br>
+**Yrkedøgn**: Alle døgn minus helgedøgn.
+
+**Lette køyretøy**: Lengde < 5,6 meter <br>
+**Tunge køyretøy**: Lengde ≥ 5,6 meter
+
+
+# Trafikkutviklinga i Noreg
+
+Kort oppsummert har trafikkutviklinga vore som følgjer: <br>
+Det var `r index_so_far_this_year_all_character` % *`r less_or_more_so_far`* trafikk i `r this_year` enn i `r this_year - 1`. 
+
+Utviklinga for lette og tunge køyretøy i `r this_year` er berekna til `r index_so_far_this_year_light` % og `r index_so_far_this_year_heavy` %.
+
+Trafikkauken for ulike vegkategoriar: <br>
+Riksvegar i alt (Ev + Rv): `r index_so_far_this_year_r` %. <br>
+Fylkesvegar: `r index_so_far_this_year_f` %.
+
+
+## Trafikkutviklinga for heile året
+
+I tabellen nedanfor visast trafikkutviklinga for heile Noreg. Den statistiske spreiinga i datagrunnlaget er gitt av standardavviket.
+
+```{r so_far_this_year_table}
+index_2020_prepared %>%
+  dplyr::filter(period == "year_to_date",
+                month == latest_month_number,
+                area_type == "COUNTRY") %>%
+  dplyr::arrange(road_category, length_range) %>%
+  dplyr::mutate(area_name_here = "Noreg") %>% 
+  dplyr::select(area_name_here, road_category, length_range, index_p, standard_deviation) %>%
+  flextable::flextable() %>%
+  colformat_double(j = 4:5, digits = 1) %>%
+  set_header_labels(area_name_here = "Område", 
+                    road_category = "Vegkategori", length_range = "Køyretøy-klasse",
+                    index_p = "Endring i trafikkmengde (%)",
+                    standard_deviation = "Standardavvik") %>%
+  align(j = 4:5, align = "center", part = "all") %>%
   bold(part = "header") %>%
   fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
@@ -87,25 +214,25 @@ index_2020_upper_lower  %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  hline(i = c(last_month, 2 * last_month), part = "body",
-        border = fp_border(color = "#dadada", width = 1)) %>% 
-  #autofit() %>%
   height_all(height = .2) %>%
-  width(j = 4, width = .8) %>% 
-  fix_border_issues() %>% 
+  width(j = 2, width = 2.1) %>%
+  fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Estimert samlet endring i trafikkmengde, med nedre og øvre grense for et 95 % konfidensintervall. Trafikken er sammenlignet per måned med samme måned året før.")
+  set_caption("Estimert samla endring i trafikkmengde frå 2019 til 2020.",
+               autonum = table_numbers,
+               style = "Tabelltekst")
 ```
 
 
+## Trafikkutviklinga for kvar månad
 
+Utviklinga per månad gjennom året, visast i figur 1 på neste side.
 
-
-```{r lineplot, fig.height=10}
-index_2020_upper_lower %>% 
+```{r lineplot, fig.width=6.5, fig.height=9, fig.cap="Trafikkutvikling i Norge per måned."}
+index_2020_prepared %>%
   dplyr::filter(period == "month",
-                area_type == "COUNTRY") %>% 
+                area_type == "COUNTRY") %>%
   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
   ggplot2::geom_line() +
   ggplot2::geom_point() +
@@ -126,51 +253,41 @@ index_2020_upper_lower %>%
   theme(legend.position = "bottom")
 ```
 
+## Trafikkutviklinga i yrke- og helgedøgn
 
-
-
-## Hittil i år
-Samlet endring i trafikkmengde i perioden fra januar til juli 2020, sammenlignet med samme periode i 2019.
-
-```{r year_to_date}
-index_2020_upper_lower %>%
-  dplyr::filter(period == "year_to_date",
-                month == last_month,
-                area_type == "COUNTRY") %>% 
-  dplyr::arrange(area_name, road_category, length_range, month) %>% 
-  select(area_name, month_name, year, road_category, length_range, index_lower, index_p, index_upper) %>%
-  flextable() %>%
-  colformat_num(j = 6:8, digits = 1) %>%
-  set_header_labels(area_name = "Område", month_name = "Måned", year = "År", 
-                    road_category = "Vegkategori", length_range = "Kjøretøy-klasse",
-                    index_lower = "Endring i trafikkmengde (%)") %>%
-  add_header_row(values = c("", "", "", "", "", "Nedre", "Estimat", "Øvre "), top = FALSE) %>% 
-  merge_at(i = 1:2, j = 5, part = "header") %>% 
-  merge_at(i = 1, j = 6:8, part = "header") %>% 
-  align(i = 1, j = 6, align = "center", part = "header") %>%
-  align(i = 2, j = 6:8, align = "right", part = "header") %>% 
-  align(j = 3, align = "center", part = "all") %>% 
-  bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
-  bg(bg = "#ED9300", part = "header") %>%
-  border_remove() %>%
-  hline_top(part = "header", border = borderline) %>%
-  hline_bottom(part = "all", border = borderline) %>%
-  hline(i = c(3, 6), part = "body",
-        border = fp_border(color = "#dadada", width = 1)) %>% 
-  height_all(height = .2) %>%
-  width(j = 3, width = .5) %>%
-  width(j = 4, width = 1) %>%
-  width(j = 5, width = .8) %>% 
-  fix_border_issues() %>% 
-  padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption("Estimert samlet endring i trafikkmengde, med nedre og øvre grense for et 95 % konfidensintervall. Trafikken er sammenlignet for hittil i år med samme periode året før.")
+```{r day_type_plot_monthly}
+# 
 ```
+
+```{r day_type_table_so_far}
+# 
+```
+
+
+
+
+# Landsdel
+
+## heile året
+
+## månad
+
 
 ```{r year_to_date_plot}
 # TODO: lollipop plot comparing each county, faceted by lenght_range
 ```
 
+
+
+
+# Fylke
+
+## heile året
+
+## månad
+
+<!--
+## Historisk utvikling
+# TODO: distance matrix
+-->
 

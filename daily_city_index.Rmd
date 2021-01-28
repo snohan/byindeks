@@ -196,7 +196,7 @@ day_of_week_traffic_average <- read.csv2("city_normal_days.csv")
 # Daily traffic ####
 
 data_this_year_from <- "2021-01-04T00:00:00+01:00"
-data_this_year_to <- "2021-01-18T00:00:00+01:00"
+data_this_year_to <- "2021-01-25T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -264,6 +264,7 @@ get_trp_index_for_weeknumber <- function(weekno) {
 
 trp_index_1 <- get_trp_index_for_weeknumber(1)
 trp_index_2 <- get_trp_index_for_weeknumber(2)
+trp_index_3 <- get_trp_index_for_weeknumber(3)
 
 
 # City index ####

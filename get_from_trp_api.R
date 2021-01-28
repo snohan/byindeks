@@ -176,12 +176,12 @@ get_periodic_trps_with_commission <- function() {
 }
 
 
-get_periodic_trs_and_trp_id <- function() {
-  # Many periodic stations have no trps defined
+get_trs_and_trp_id <- function() {
+  # Many stations have no trps defined
 
   api_query <-
     "query trs {
-      trafficRegistrationStations (stationType: [PERIODIC]) {
+      trafficRegistrationStations {
         id
         name
         operationalStatus
@@ -189,7 +189,6 @@ get_periodic_trs_and_trp_id <- function() {
         trafficType
         trafficRegistrationPoints {
           id
-          registrationFrequency
         }
       }
     }"
@@ -204,8 +203,7 @@ get_periodic_trs_and_trp_id <- function() {
                   trs_status = data.trafficRegistrationStations.operationalStatus,
                   trs_type = data.trafficRegistrationStations.stationType,
                   trs_traffic_type = data.trafficRegistrationStations.trafficType,
-                  trp_id = id,
-                  trp_type = registrationFrequency)
+                  trp_id = id)
 
   return(response_parsed)
 }
