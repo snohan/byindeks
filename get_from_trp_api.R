@@ -94,9 +94,9 @@ get_points_from_trp_api <- function() {
       traffic_type = data.trafficRegistrationPoints.trafficType,
       trp_status = data.trafficRegistrationPoints.operationalStatus,
       registration_frequency = data.trafficRegistrationPoints.registrationFrequency,
-      municipality_name = data.trafficRegistrationPoints.location.municipality.name,
-      county_geono = data.trafficRegistrationPoints.location.municipality.county.geographicNumber,
-      county_name = data.trafficRegistrationPoints.location.municipality.county.name,
+      #municipality_name = data.trafficRegistrationPoints.location.municipality.name,
+      #county_geono = data.trafficRegistrationPoints.location.municipality.county.geographicNumber,
+      #county_name = data.trafficRegistrationPoints.location.municipality.county.name,
       lat = data.trafficRegistrationPoints.location.coordinates.latlon.latitude,
       lon = data.trafficRegistrationPoints.location.coordinates.latlon.longitude,
       road_reference = data.trafficRegistrationPoints.location.roadReference.shortForm,
@@ -107,7 +107,7 @@ get_points_from_trp_api <- function() {
     dplyr::mutate(road_link_position = paste0(road_network_position, "@",
                                               road_network_link)) %>%
     dplyr::select(trp_id, name, traffic_type, trp_status, registration_frequency,
-                  county_geono, county_name, municipality_name,
+                  #county_geono, county_name, municipality_name,
                   road_reference, road_link_position, lat, lon)
 
   return(points_trp)

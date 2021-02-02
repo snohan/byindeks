@@ -196,7 +196,7 @@ day_of_week_traffic_average <- read.csv2("city_normal_days.csv")
 # Daily traffic ####
 
 data_this_year_from <- "2021-01-04T00:00:00+01:00"
-data_this_year_to <- "2021-01-25T00:00:00+01:00"
+data_this_year_to <- "2021-02-01T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -242,7 +242,8 @@ trp_index <- dt_this_year %>%
   dplyr::select(trp_id = point_id, city_area_name, ukedag, ukenr = weekno, 
                 total_volume, daily_traffic, index) %>% 
   dplyr::arrange(factor(ukedag, levels = ukedager)) %>% 
-  dplyr::filter(!(trp_id %in% c("18573V444291" # Fjellsrud
+  dplyr::filter(!(trp_id %in% c("18573V444291", # Fjellsrud
+                                "81008V41567" # Festningsgata
                                 )))
 
   
@@ -257,7 +258,8 @@ get_trp_index_for_weeknumber <- function(weekno) {
 
   trp_index_for_week <- trps %>% 
     dplyr::left_join(week_data) %>% 
-    dplyr::select(name, city_area_name, ukenr:'Søndag')
+    dplyr::select(name, city_area_name, ukenr:'Søndag') %>% 
+    dplyr::arrange(city_area_name) %>% 
   
   return(trp_index_for_week)
 }
@@ -265,6 +267,7 @@ get_trp_index_for_weeknumber <- function(weekno) {
 trp_index_1 <- get_trp_index_for_weeknumber(1)
 trp_index_2 <- get_trp_index_for_weeknumber(2)
 trp_index_3 <- get_trp_index_for_weeknumber(3)
+trp_index_4 <- get_trp_index_for_weeknumber(4)
 
 
 # City index ####
@@ -376,7 +379,7 @@ Nedenfor vises daglig endring i trafikk i de største byområdene, sammenlignet 
 ```
 
 ## Bergen
-```{r plot_brg, fig.width=6, fig.height=3, fig.cap="Estimert endring i trafikk i Bergensområdet."}
+```{r plot_brg, fig.width=6, fig.height=4, fig.cap="Estimert endring i trafikk i Bergensområdet."}
 city_index %>% 
   dplyr::filter(city_area_name == "Bergensområdet") %>% 
   make_daily_plot()
@@ -394,7 +397,7 @@ city_index %>%
 <br>
 
 ## Nord-Jæren
-```{r plot_nrj, fig.width=6, fig.height=3, fig.cap="Estimert endring i trafikk på Nord-Jæren."}
+```{r plot_nrj, fig.width=6, fig.height=4, fig.cap="Estimert endring i trafikk på Nord-Jæren."}
 city_index %>% 
   dplyr::filter(city_area_name == "Nord-Jæren") %>% 
   make_daily_plot()
@@ -412,7 +415,7 @@ city_index %>%
 <br>
 
 ## Osloområdet
-```{r plot_osl, fig.width=6, fig.height=3, fig.cap="Estimert endring i trafikk i Osloområdet."}
+```{r plot_osl, fig.width=6, fig.height=4, fig.cap="Estimert endring i trafikk i Osloområdet."}
 city_index %>% 
   dplyr::filter(city_area_name == "Osloområdet") %>% 
   make_daily_plot()
@@ -430,7 +433,7 @@ city_index %>%
 <br>
 
 ## Trondheim
-```{r plot_trd, fig.width=6, fig.height=3, fig.cap="Estimert endring i trafikk i Trondheim."}
+```{r plot_trd, fig.width=6, fig.height=4, fig.cap="Estimert endring i trafikk i Trondheim."}
 city_index %>% 
   dplyr::filter(city_area_name == "Trondheim") %>% 
   make_daily_plot()
@@ -448,7 +451,7 @@ city_index %>%
 <br>
 
 ## Tromsø
-```{r plot_trs, fig.width=6, fig.height=3, fig.cap="Estimert endring i trafikk i Tromsø."}
+```{r plot_trs, fig.width=6, fig.height=4, fig.cap="Estimert endring i trafikk i Tromsø."}
 city_index %>% 
   dplyr::filter(city_area_name == "Tromsø") %>% 
   make_daily_plot()

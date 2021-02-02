@@ -2218,9 +2218,8 @@ get_published_road_traffic_index <- function(index_id, indexyear, indexmonth) {
       year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
       month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month
     ) %>%
-    dplyr::filter(day_type == "ALL") %>%
-    dplyr::select(area_name, area_type, year, month, road_category, length_range, index_p,
-                  standard_deviation) %>%
+    dplyr::select(area_name, area_type, year, month, road_category, length_range, day_type,
+                  index_p, standard_deviation) %>%
     dplyr::mutate(period = "month")
 
   year_to_date_data <- trp_data$data %>%
@@ -2243,9 +2242,8 @@ get_published_road_traffic_index <- function(index_id, indexyear, indexmonth) {
       year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
       month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month
     ) %>%
-    dplyr::filter(day_type == "ALL") %>%
-    dplyr::select(area_name, area_type, year, month, road_category, length_range, index_p,
-                  standard_deviation) %>%
+    dplyr::select(area_name, area_type, year, month, road_category, length_range, day_type,
+                  index_p, standard_deviation) %>%
     dplyr::mutate(period = "year_to_date")
 
   published_index <- bind_rows(monthly_data,

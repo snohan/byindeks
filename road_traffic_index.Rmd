@@ -48,7 +48,6 @@ latest_month_number <- 12
 
 # Fetching published index from Traffic Data API
 index_2020 <- get_published_road_traffic_index_for_months(962, this_year, latest_month_number)
-# TODO: include day_type
 
 # TODO: Include urban and non-urban index
 #index_2020_urban <- get_published_index_for_months(1952, 2020, 7)
@@ -63,7 +62,10 @@ index_2020 <- get_published_road_traffic_index_for_months(962, this_year, latest
 index_2020_prepared <- index_2020 %>% 
   dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "alle",
                                                 length_range == "[..,5.6)" ~ "lette",
-                                                length_range == "[5.6,..)" ~ "tunge")) %>% 
+                                                length_range == "[5.6,..)" ~ "tunge"),
+                day_type = dplyr::case_when(day_type == "ALL" ~ "alle",
+                                            day_type == "WEEKDAY" ~ "yrkedøgn",
+                                            day_type == "WEEKEND" ~ "helgedøgn")) %>% 
   dplyr::mutate(road_category = dplyr::case_when(
                   road_category == "FYLKESVEG" ~ "Fylkesveg",
                   road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
@@ -79,6 +81,7 @@ index_this_month <- index_2020_prepared %>%
                 period == "month",
                 length_range == "alle",
                 road_category == "Europa-, riks- og fylkesveg",
+                day_type == "alle",
                 month == latest_month_number)
 
 less_or_more_month <- dplyr::if_else(index_this_month$index_p < 0, "mindre", "mer")
@@ -88,6 +91,7 @@ index_so_far_this_year_all <- index_2020_prepared %>%
                 period == "year_to_date",
                 length_range == "alle",
                 road_category == "Europa-, riks- og fylkesveg",
+                day_type == "alle",
                 month == latest_month_number) %>% 
   dplyr::select(index_p) %>% 
   round(digits = 1)
@@ -104,6 +108,7 @@ index_so_far_this_year_light <- index_2020_prepared %>%
                 period == "year_to_date",
                 length_range == "lette",
                 road_category == "Europa-, riks- og fylkesveg",
+                day_type == "alle",
                 month == latest_month_number) %>% 
   dplyr::select(index_p) %>% 
   round(digits = 1) %>% 
@@ -115,6 +120,7 @@ index_so_far_this_year_heavy <- index_2020_prepared %>%
                 period == "year_to_date",
                 length_range == "tunge",
                 road_category == "Europa-, riks- og fylkesveg",
+                day_type == "alle",
                 month == latest_month_number ) %>% 
   dplyr::select(index_p) %>% 
   round(digits = 1) %>% 
@@ -126,6 +132,7 @@ index_so_far_this_year_r <- index_2020_prepared %>%
                 period == "year_to_date",
                 length_range == "alle",
                 road_category == "Europa- og riksveg",
+                day_type == "alle",
                 month == latest_month_number ) %>% 
   dplyr::select(index_p) %>% 
   round(digits = 1) %>% 
@@ -137,6 +144,7 @@ index_so_far_this_year_f <- index_2020_prepared %>%
                 period == "year_to_date",
                 length_range == "alle",
                 road_category == "Fylkesveg",
+                day_type == "alle",
                 month == latest_month_number ) %>% 
   dplyr::select(index_p) %>% 
   round(digits = 1) %>% 
@@ -169,22 +177,27 @@ Nokre trafikkregistreringspunkt er periodevis utelatne på grunn av feil på uts
 
 
 ## Definisjonar
-**Helgedøgn**: Laurdag og søndag kl. 00:00-23:59, alle offentlege fridagar og jule- og nyårskvelden. <br>
+**Helgedøgn**: Laurdag og søndag kl. 00:00-23:59, alle offentlege fridagar og jule- og nyårskvelden. 
+<br>
 **Yrkedøgn**: Alle døgn minus helgedøgn.
 
-**Lette køyretøy**: Lengde < 5,6 meter <br>
+**Lette køyretøy**: Lengde < 5,6 meter 
+<br>
 **Tunge køyretøy**: Lengde ≥ 5,6 meter
 
 
 # Trafikkutviklinga i Noreg
 
-Kort oppsummert har trafikkutviklinga vore som følgjer: <br>
+Kort oppsummert har trafikkutviklinga vore som følgjer: 
+<br>
 Det var `r index_so_far_this_year_all_character` % *`r less_or_more_so_far`* trafikk i `r this_year` enn i `r this_year - 1`. 
 
 Utviklinga for lette og tunge køyretøy i `r this_year` er berekna til `r index_so_far_this_year_light` % og `r index_so_far_this_year_heavy` %.
 
-Trafikkauken for ulike vegkategoriar: <br>
-Riksvegar i alt (Ev + Rv): `r index_so_far_this_year_r` %. <br>
+Trafikkauken for ulike vegkategoriar: 
+<br>
+Riksvegar i alt (Ev + Rv): `r index_so_far_this_year_r` %. 
+<br>
 Fylkesvegar: `r index_so_far_this_year_f` %.
 
 
@@ -192,10 +205,13 @@ Fylkesvegar: `r index_so_far_this_year_f` %.
 
 I tabellen nedanfor visast trafikkutviklinga for heile Noreg. Den statistiske spreiinga i datagrunnlaget er gitt av standardavviket.
 
-```{r so_far_this_year_table}
+<br>
+
+```{r so_far_this_year_table_road_category}
 index_2020_prepared %>%
   dplyr::filter(period == "year_to_date",
                 month == latest_month_number,
+                day_type == "alle",
                 area_type == "COUNTRY") %>%
   dplyr::arrange(road_category, length_range) %>%
   dplyr::mutate(area_name_here = "Noreg") %>% 
@@ -214,24 +230,66 @@ index_2020_prepared %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
+  hline(i = c(3, 6), part = "body",
+        border = fp_border(color = "#dadada", width = 1)) %>% 
   height_all(height = .2) %>%
   width(j = 2, width = 2.1) %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Estimert samla endring i trafikkmengde frå 2019 til 2020.",
+  set_caption("Estimert samla endring i trafikkmengde frå 2019 til 2020 per vegkategori.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
 
+<br>
+
+
+```{r so_far_this_year_table_day_type}
+index_2020_prepared %>%
+  dplyr::filter(period == "year_to_date",
+                month == latest_month_number,
+                road_category == "Europa-, riks- og fylkesveg",
+                area_type == "COUNTRY") %>%
+  dplyr::arrange(day_type, length_range) %>%
+  dplyr::mutate(area_name_here = "Noreg") %>% 
+  dplyr::select(area_name_here, day_type, length_range, index_p, standard_deviation) %>%
+  flextable::flextable() %>%
+  colformat_double(j = 4:5, digits = 1) %>%
+  set_header_labels(area_name_here = "Område", 
+                    day_type = "Døgntype", length_range = "Køyretøy-klasse",
+                    index_p = "Endring i trafikkmengde (%)",
+                    standard_deviation = "Standardavvik") %>%
+  align(j = 4:5, align = "center", part = "all") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  hline(i = c(3, 6), part = "body",
+        border = fp_border(color = "#dadada", width = 1)) %>% 
+  height_all(height = .2) %>%
+  width(j = 2, width = 2.1) %>%
+  fix_border_issues() %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Estimert samla endring i trafikkmengde frå 2019 til 2020 per døgntype.",
+               autonum = table_numbers,
+               style = "Tabelltekst")
+```
+
+<br>
 
 ## Trafikkutviklinga for kvar månad
 
 Utviklinga per månad gjennom året, visast i figur 1 på neste side.
 
-```{r lineplot, fig.width=6.5, fig.height=9, fig.cap="Trafikkutvikling i Norge per måned."}
+```{r road_category_plot, fig.width=6.5, fig.height=7, fig.cap="Månadleg trafikkutvikling i Noreg per vegkategori."}
 index_2020_prepared %>%
   dplyr::filter(period == "month",
+                day_type == "alle",
                 area_type == "COUNTRY") %>%
   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
   ggplot2::geom_line() +
@@ -247,7 +305,7 @@ index_2020_prepared %>%
                                 "tunge" = "#444f55"),
                      name = "Kjøretøyklasse") +
   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
-       caption = "Data: Statens vegvesen") +
+       caption = "Data: Statens vegvesen og fylkeskommunane") +
   ggtitle("Estimert endring i trafikkmengde",
           subtitle = "Trafikkmengde i 2020 sammenlignet med 2019") +
   theme(legend.position = "bottom")
@@ -255,22 +313,43 @@ index_2020_prepared %>%
 
 ## Trafikkutviklinga i yrke- og helgedøgn
 
-```{r day_type_plot_monthly}
-# 
+```{r day_type_plot_monthly, fig.width=6.5, fig.height=7, fig.cap="Månadleg trafikkutvikling i Noreg per døgntype."}
+index_2020_prepared %>%
+  dplyr::filter(period == "month",
+                road_category == "Europa-, riks- og fylkesveg",
+                area_type == "COUNTRY") %>%
+  ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_point() +
+  ggplot2::facet_grid(rows = vars(day_type)) +
+  theme_light() +
+  theme(axis.text.x = element_text(angle = 90),
+        panel.grid.minor.x = element_blank()) +
+  scale_x_date(breaks = scales::breaks_width("months"),
+               labels = scales::label_date("%b")) +
+  scale_color_manual(values = c("alle" = "#008ec2",
+                                "lette" = "#ed9300",
+                                "tunge" = "#444f55"),
+                     name = "Kjøretøyklasse") +
+  labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
+       caption = "Data: Statens vegvesen og fylkeskommunane") +
+  ggtitle("Estimert endring i trafikkmengde",
+          subtitle = "Trafikkmengde i 2020 sammenlignet med 2019") +
+  theme(legend.position = "bottom")
 ```
 
 ```{r day_type_table_so_far}
-# 
+
 ```
 
 
 
 
-# Landsdel
+# Trafikkutviklinga i landsdelane
 
-## heile året
+## Trafikkutviklinga for heile året
 
-## månad
+## Trafikkutviklinga for kvar månad
 
 
 ```{r year_to_date_plot}
@@ -280,11 +359,11 @@ index_2020_prepared %>%
 
 
 
-# Fylke
+# Trafikkutviklinga i fylka
 
-## heile året
+## Trafikkutviklinga for heile året
 
-## månad
+## Trafikkutviklinga for kvar månad
 
 <!--
 ## Historisk utvikling

@@ -131,7 +131,7 @@ day_of_week_traffic_average <- read.csv2("border_normal_days.csv")
 # Daily traffic ####
 
 borderdata_this_year_from <- "2021-01-04T00:00:00+01:00"
-borderdata_this_year_to <- "2021-01-25T00:00:00+01:00"
+borderdata_this_year_to <- "2021-02-01T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -194,6 +194,7 @@ get_border_trp_index_for_weeknumber <- function(weekno) {
 border_trp_index_1 <- get_border_trp_index_for_weeknumber(1)
 border_trp_index_2 <- get_border_trp_index_for_weeknumber(2)
 border_trp_index_3 <- get_border_trp_index_for_weeknumber(3)
+border_trp_index_4 <- get_border_trp_index_for_weeknumber(4)
 
 
 # Border index ####
@@ -353,7 +354,7 @@ Figuren nedenfor viser samlet endring i trafikk over riksgrensen for hver ukedag
 
 <br>
 
-```{r plot_1, fig.width=6, fig.height=3, fig.cap="Estimert endring i trafikk over riksgrensen, avvik fra normalperioden 2016 - 2019."}
+```{r plot_1, fig.width=6, fig.height=4, fig.cap="Estimert endring i trafikk over riksgrensen, avvik fra normalperioden 2016 - 2019."}
 border_index %>% 
   make_daily_border_plot("Sammenlignet med normalperioden 2016 - 2019")
 ```
@@ -396,4 +397,8 @@ make_border_trp_table(border_trp_index_3,
                       "Estimert endring i trafikk over riksgrensen, avvik fra normalen i perioden 2016 - 2019, uke 3 2021.")
 ```
 
-
+`r officer::fpar("", officer::run_pagebreak())`
+```{r trptable_4}
+make_border_trp_table(border_trp_index_4,
+                      "Estimert endring i trafikk over riksgrensen, avvik fra normalen i perioden 2016 - 2019, uke 4 2021.")
+```
