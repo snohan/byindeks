@@ -88,6 +88,29 @@ get_counties <- function() {
   return(counties)
 }
 
+get_country_parts <- function() {
+
+  query_api <-
+    "query country_parts {
+      areas {
+        countryParts {
+          id
+          name
+        }
+      }
+    }"
+
+  myqueries <- Query$new()
+  myqueries$query("response", query_api)
+
+  country_parts <- cli$exec(myqueries$queries$response) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
+    as.data.frame() %>%
+    dplyr::rename(country_part_number = 1,
+                  country_part_name = 2) %>%
+    dplyr::arrange(country_part_number)
+}
+
 
 get_municipalities <- function() {
 
