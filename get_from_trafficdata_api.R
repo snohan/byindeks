@@ -66,6 +66,10 @@ get_counties <- function() {
            number
            name
            geographicNumber
+           countryPart {
+            id
+            name
+          }
          }
        }
     }"
@@ -81,7 +85,11 @@ get_counties <- function() {
                   geo_number =
                     data.areas.counties.geographicNumber,
                   county_name =
-                    data.areas.counties.name
+                    data.areas.counties.name,
+                  country_part_number =
+                    data.areas.counties.countryPart.id,
+                  country_part_name =
+                    data.areas.counties.countryPart.name
     ) %>%
     arrange(geo_number)
 
@@ -198,6 +206,8 @@ get_points <- function() {
                   county_name = data.trafficRegistrationPoints.location.county.name,
                   county_no = data.trafficRegistrationPoints.location.county.number,
                   county_geono = data.trafficRegistrationPoints.location.county.geographicNumber,
+                  #country_part_name =
+                  #  data.trafficRegistrationPoints.location.county.countryPart.name,
                   municipality_name = data.trafficRegistrationPoints.location.municipality.name,
                   municipality_no = data.trafficRegistrationPoints.location.municipality.number,
                   lat =
@@ -1846,7 +1856,6 @@ query_published_pointindex_page <- function(index_id, indexyear, indexmonth,
 #indexmonth <- 1
 
 get_published_pointindex_paginated <- function(index_id, indexyear, indexmonth) {
-  # TODO: fix cursor bug in API
   # Get published index for a given area, year and month
   # Response is paginated if more than 100 points!
   # Pagination is ignored here
@@ -1914,7 +1923,7 @@ get_published_pointindex_paginated <- function(index_id, indexyear, indexmonth) 
                   length_index = index.percentageChange,
                   length_coverage = lengthRangesTrafficVolumeIndex.indexCoverage.hours.percentage
     ) %>%
-    dplyr::filter(day_type == "ALL") %>%
+    #dplyr::filter(day_type == "ALL") %>%
     dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
     dplyr::mutate(length_range = if_else(length_range == "[..,5.6)",
                                          "short", "long")) %>%
@@ -1941,7 +1950,7 @@ get_published_pointindex_paginated <- function(index_id, indexyear, indexmonth) 
                   length_index = index.percentageChange,
                   length_coverage = lengthRangesTrafficVolumeIndex.indexCoverage.hours.percentage
     ) %>%
-    dplyr::filter(day_type == "ALL") %>%
+    #dplyr::filter(day_type == "ALL") %>%
     dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
     dplyr::mutate(length_range = if_else(length_range == "[..,5.6)",
                                          "short", "long")) %>%
