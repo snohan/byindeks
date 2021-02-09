@@ -2,6 +2,7 @@
 
 library(tidyverse)
 library(jsonlite)
+library(lubridate)
 library(httr)
 library(ghql)
 
@@ -346,7 +347,6 @@ get_trp_for_vti_httr <- function() {
         name
       }
     }
-    legacyNortrafMpn
     commissionElements {
       commission {
         validFrom
@@ -356,19 +356,7 @@ get_trp_for_vti_httr <- function() {
   }
 }"
 
-  api_query_trimmed <- stringr::str_replace_all(api_query, "[\r\n]", " ")
-
-  api_query_string <- paste0('{"query":"', api_query_trimmed, '" }')
-
-  response <- httr::POST(url = trp_api_url,
-                    httr::add_headers(.headers = trp_api_headers),
-                    httr::set_cookies(.cookies = trp_api_cookies),
-                    body = api_query_string)
-
-  response_parsed <- fromJSON(str_conv(response$content, encoding = "UTF-8"),
-                         simplifyDataFrame = T,
-                         flatten = T) %>%
-    as.data.frame() %>%
+  response_parsed <- get_via_httr(api_query) %>%
     tidyr::unnest(cols =
                     c("data.trafficRegistrationPoints.commissionElements" )) %>%
     dplyr::rename(
@@ -382,7 +370,6 @@ get_trp_for_vti_httr <- function() {
         data.trafficRegistrationPoints.location.roadLink.position,
       road_network_link =
         data.trafficRegistrationPoints.location.roadLink.id,
-      legacyNortrafMpn = data.trafficRegistrationPoints.legacyNortrafMpn,
       valid_from = commission.validFrom,
       valid_to = commission.validTo,
       county_number = data.trafficRegistrationPoints.location.municipality.county.number,
@@ -417,7 +404,7 @@ get_trp_for_vti_httr <- function() {
     dplyr::left_join(counties_numbers) %>%
     dplyr::select(geo_number, county_name,
                   municipality_name,
-                  trp_id, legacyNortrafMpn, name,
+                  trp_id, name,
                   road_reference, road_category,
                   #road_number, parsell, meter,
                   road_link_position, lat, lon, first_commission_datainn) %>%
@@ -683,7 +670,7 @@ get_stations_and_trps_with_coordinates_from_TRPAPI_httr <- function() {
   return(points_trp)
 }
 
-get_manual_labels <- function() {
+get_manual_labels_deprecated <- function() {
   # Get all manual labels
   query_points_trp <-
     "query hentMM{
@@ -741,6 +728,79 @@ get_manual_labels <- function() {
     ))
 
   return(points_trp)
+}
+
+#county <- "50"
+#road_cat <- "F"
+get_manual_labels_by_county <- function(county, road_cat) {
+
+  api_query <- paste0(
+    "query manual_labels {
+      trafficRegistrationPoints (counties: [",
+      county,
+      "], roadCategory: [",
+      road_cat,
+      "]) {
+        id
+        name
+            location {
+              municipality {
+                county {
+                  name
+                }
+              }
+              roadReference {
+                shortForm
+              }
+            }
+        trafficType
+        registrationFrequency
+        manualLabels{
+          id
+          validFrom
+          validTo
+          created
+          description
+          labelLanes{
+            lane
+            states
+          }
+        }
+      }
+    }")
+
+  response_parsed <- get_via_httr(api_query) %>%
+    tidyr::unnest(cols = c(data.trafficRegistrationPoints.manualLabels)) %>%
+    tidyr::unnest(cols = c(labelLanes)) %>%
+    #dplyr::mutate(states = stringr::str_c(states, collapse = ", ")) %>%
+    dplyr::select(-labelLanes) %>%
+    dplyr::select(trp_id = data.trafficRegistrationPoints.id,
+                  punktnavn = data.trafficRegistrationPoints.name,
+                  fylke = data.trafficRegistrationPoints.location.municipality.county.name,
+                  vegreferanse = data.trafficRegistrationPoints.location.roadReference.shortForm,
+                  trafikanttype = data.trafficRegistrationPoints.trafficType,
+                  registreringshyppighet = data.trafficRegistrationPoints.registrationFrequency,
+                  merke_id = id,
+                  gjelder_fra = validFrom,
+                  gjelder_til = validTo,
+                  lagt_inn = created,
+                  beskrivelse = description,
+                  felt = lane,
+                  grunn = states) %>%
+    dplyr::mutate(gjelder_fra =
+                    lubridate::with_tz(
+                      lubridate::ymd_hms(gjelder_fra)),
+                  gjelder_til =
+                    lubridate::with_tz(
+                      lubridate::ymd_hms(gjelder_til)),
+                  lagt_inn =
+                    lubridate::with_tz(
+                      lubridate::ymd_hms(lagt_inn)
+                    )) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(grunn = stringr::str_c(grunn, collapse = ", "))
+
+  return(response_parsed)
 }
 
 get_trs_trp <- function() {

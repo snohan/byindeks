@@ -7,7 +7,7 @@ Trafikkregistreringspunkter som skal benyttes i Vegtrafikkindeksen.
 
 ```{r setup, message=FALSE, warning=FALSE, results='hide'}
 source("H:/Programmering/R/byindeks/rmd_setup.R")
-source("H:/Programmering/R/byindeks/get_from_trp_api.R")
+source("H:/Programmering/R/byindeks/split_road_system_reference.R")
 source("H:/Programmering/R/byindeks/get_from_trafficdata_api.R")
 
 library(DT)
@@ -15,40 +15,77 @@ library(htmltools)
 ```
 
 ```{r get_trp, results='hide', message=FALSE}
-trp_for_vti <- get_trp_for_vti_httr()
-trp_latest_data <- get_trps_latest_data()
+trp_for_vti <- get_points()
 
-trp_for_vti_latest_data <- trp_for_vti %>% 
-  dplyr::filter(!stringr::str_detect(road_reference, "KD")) %>% 
-  dplyr::filter(!stringr::str_detect(road_reference, "KV")) %>% 
-  dplyr::left_join(trp_latest_data) %>% 
-  dplyr::filter(latest_data_by_hour > "2020-01-12 00:00:00")
+trp_for_vti_tidy <- trp_for_vti %>% 
+  dplyr::select(trp_id, name, traffic_type, registration_frequency,
+                county_geono, county_name, municipality_name,
+                road_reference, road_link_position, 
+                lat, lon, valid_from = validFrom,
+                operational_status, latest_day_with_data) %>% 
+  dplyr::group_by(trp_id) %>%
+  dplyr::slice(which.min(valid_from)) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::filter(traffic_type == "VEHICLE",
+                registration_frequency == "CONTINUOUS",
+                operational_status == "OPERATIONAL") %>% 
+  split_road_system_reference() %>% 
+  dplyr::filter(road_category != "K",
+                valid_from < "2020-01-01",
+                latest_day_with_data > "2021-01-01") %>% 
+  dplyr::mutate(road_category = dplyr::case_when(road_category == "E" ~ "R",
+                                                 road_category == "R" ~ "R",
+                                                 road_category == "F" ~ "F")) %>% 
+  dplyr::select(trp_id, name, county_geono, county_name, municipality_name, road_category,
+                road_reference, road_link_position, 
+                lat, lon, latest_day_with_data)
 
+# AADT coverage and length_quality in 2020
+trp_aadts <- trp_for_vti_tidy$trp_id %>% 
+  get_aadt_for_trp_list() %>% 
+  dplyr::filter(year == 2020)
+
+# TODO: index coverage
+pointindex <- get_published_pointindex_paginated(962, 2020, 12)
+
+pointindices <- pointindex[[2]]
+
+pointindices_filtered <- pointindices %>% 
+  dplyr::filter(day_type == "ALL",
+                period == "year_to_date") %>% 
+  dplyr::select(trp_id, index_total_coverage)
+
+trp_for_vti_aadt <- trp_for_vti_tidy %>% 
+  dplyr::left_join(trp_aadts) %>% 
+  dplyr::left_join(pointindices_filtered) %>% 
+  dplyr::filter(!is.na(adt),
+                coverage > 95,
+                adt > 500#,
+                #index_total_coverage > 80 # DO NOT EXCLUDE NEW POINTS WITHOUT INDEX 2020 JUST BECAUSE WE DIDN'T USE'EM!!!
+                ) %>% 
+  dplyr::mutate(valid_length_percent = round(valid_length_volume /adt * 100, digits = 1)) %>%
+  dplyr::filter(valid_length_percent > 99) %>% 
+  dplyr::mutate(trp_label = paste(name, road_reference, sep = "<br/>"),
+                trp_label = lapply(trp_label, htmltools::HTML))
+
+
+# TODO: remove excluded from last year
 trp_vti_ekskluderte <- read.csv2("vti_trp_ekskluderte.csv")
 
 trp_for_vti_latest_data <- trp_for_vti_latest_data %>% 
   filter(!(trp_id %in% trp_vti_ekskluderte$trpid))
 
-trp_aadts <- trp_for_vti_latest_data$trp_id %>% 
-  get_aadt_for_trp_list() %>% 
-  dplyr::filter(year == 2019)
 
-trp_for_vti_aadt <- trp_for_vti_latest_data %>% 
-  dplyr::left_join(trp_aadts) %>% 
-  dplyr::filter(!is.na(adt),
-                coverage > 90,
-                adt > 500) %>% 
-  dplyr::mutate(valid_length_percent = round(valid_length_volume /adt * 100, digits = 1)) %>%
-  dplyr::mutate(trp_label = paste(name, road_reference, sep = "<br/>"),
-                trp_label = lapply(trp_label, htmltools::HTML))
 
-trp_for_vti_aadt %>% 
-  dplyr::select(-trp_label) %>% 
-  write.csv2(file = "trp_for_vti_2020.csv", row.names = F)
 
-trp_for_vti_aadt %>% 
-  dplyr::select(trp_id) %>% 
-  write.csv2(file = "trp_id_vti_def.csv", row.names = F)
+
+# trp_for_vti_aadt %>% 
+#   dplyr::select(-trp_label) %>% 
+#   write.csv2(file = "trp_for_vti_2020.csv", row.names = F)
+# 
+# trp_for_vti_aadt %>% 
+#   dplyr::select(trp_id) %>% 
+#   write.csv2(file = "trp_id_vti_def.csv", row.names = F)
 
 ```
 
@@ -56,25 +93,21 @@ trp_for_vti_aadt %>%
 # DataTables
 trp_for_vti_aadt %>% 
   dplyr::select(#trp_id, 
-                county_name, municipality_name, legacyNortrafMpn, 
+                county_name, municipality_name, 
                 name,
                 road_reference, 
                 #road_category, 
-                adt, valid_length_percent) %>%
-  dplyr::mutate(#county_number = as.character(county_number),
-                legacyNortrafMpn = as.character(legacyNortrafMpn)
-                ) %>% 
-  dplyr::rename(#Fylkenr = county_number,
-                Fylke = county_name,
+                adt) %>%
+  #dplyr::mutate(county_number = as.character(county_number)) %>% 
+  dplyr::rename(Fylke = county_name,
                 Kommune = municipality_name,
-                MSNR = legacyNortrafMpn,
                 #Punktid = trp_id,
                 Navn = name,
                 Vegreferanse = road_reference,
                 #Vegkat = road_category,
-                AADT = adt,
-                Lengdekv. = valid_length_percent) %>% 
+                AADT = adt) %>% 
   DT::datatable(
+    rownames = FALSE,
     filter = "top",
     extensions = "Buttons",
     options = list(
@@ -84,6 +117,28 @@ trp_for_vti_aadt %>%
       lengthMenu = c(25, 50, 100),
       autoWidth = TRUE))
 ```
+
+
+```{r table_summary}
+# DataTables
+trp_for_vti_aadt %>% 
+  dplyr::group_by(county_geono, county_name, road_category) %>% 
+  dplyr::summarise(n_trp = n()) %>%
+  dplyr::arrange(county_geono) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::select(-county_geono) %>% 
+  dplyr::rename(Fylke = county_name,
+                Vegkategori = road_category,
+                Antall_punkt = n_trp) %>% 
+  DT::datatable(
+    rownames = FALSE,
+    filter = "none",
+    options = list(
+      dom = "t",
+      pageLength = 25,
+      autoWidth = TRUE))
+```
+
 
 ```{r map, message=FALSE}
 palett_adt <-

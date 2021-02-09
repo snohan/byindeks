@@ -151,6 +151,7 @@ get_points <- function() {
     id
     name
     trafficRegistrationType
+    registrationFrequency
     location {
       coordinates {
         latLon {
@@ -203,6 +204,7 @@ get_points <- function() {
                     data.trafficRegistrationPoints.name,
                   traffic_type =
                     data.trafficRegistrationPoints.trafficRegistrationType,
+                  registration_frequency = data.trafficRegistrationPoints.registrationFrequency,
                   county_name = data.trafficRegistrationPoints.location.county.name,
                   county_no = data.trafficRegistrationPoints.location.county.number,
                   county_geono = data.trafficRegistrationPoints.location.county.geographicNumber,
@@ -225,7 +227,8 @@ get_points <- function() {
                   latest_day_with_data =
                     data.trafficRegistrationPoints.latestData.volumeByDay
                     ) %>%
-    dplyr::select(trp_id, name, traffic_type, road_reference, county_geono, county_name,
+    dplyr::select(trp_id, name, traffic_type, registration_frequency,
+                  road_reference, county_geono, county_name,
                   county_no, municipality_name, municipality_no, lanes, lat, lon,
                   road_network_position, road_network_link, validFrom, validTo,
                   operational_status, latest_day_with_data
@@ -524,7 +527,6 @@ get_trp_aadt_with_coverage <- function(trp_id) {
   myqueries <- Query$new()
   myqueries$query("aadts", query_aadt)
 
-  # TODO: Må splitte opp her med en test om det ikke er noe ÅDT
   trp_aadt <- cli$exec(myqueries$queries$aadts) %>%
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
 
