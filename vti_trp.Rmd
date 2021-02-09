@@ -20,7 +20,8 @@ trp_for_vti <- get_points()
 trp_for_vti_tidy <- trp_for_vti %>% 
   dplyr::select(trp_id, name, traffic_type, registration_frequency,
                 county_geono, county_name, municipality_name,
-                road_reference, road_link_position, 
+                road_reference,
+                road_link_position, 
                 lat, lon, valid_from = validFrom,
                 operational_status, latest_day_with_data) %>% 
   dplyr::group_by(trp_id) %>%
@@ -32,80 +33,76 @@ trp_for_vti_tidy <- trp_for_vti %>%
   split_road_system_reference() %>% 
   dplyr::filter(road_category != "K",
                 valid_from < "2020-01-01",
-                latest_day_with_data > "2021-01-01") %>% 
+                latest_day_with_data > "2021-02-01") %>% 
   dplyr::mutate(road_category = dplyr::case_when(road_category == "E" ~ "R",
                                                  road_category == "R" ~ "R",
-                                                 road_category == "F" ~ "F")) %>% 
+                                                 road_category == "F" ~ "F"),
+                name = stringr::str_to_title(name, locale = "no")) %>% 
   dplyr::select(trp_id, name, county_geono, county_name, municipality_name, road_category,
-                road_reference, road_link_position, 
+                road_category_and_number, road_link_position, 
                 lat, lon, latest_day_with_data)
 
 # AADT coverage and length_quality in 2020
-trp_aadts <- trp_for_vti_tidy$trp_id %>% 
-  get_aadt_for_trp_list() %>% 
-  dplyr::filter(year == 2020)
+#trp_aadts <- trp_for_vti_tidy$trp_id %>% 
+#  get_aadt_for_trp_list() %>% 
+#  dplyr::filter(year == 2020)
 
-# TODO: index coverage
+#write.csv2(trp_aadts, file = "trp_aadts.csv", row.names = FALSE)
+trp_aadts <- read.csv2("trp_aadts.csv")
+
+# Exclude trps with low index coverage last year
+# CAUTION: Problem could lie in year before last year...
 pointindex <- get_published_pointindex_paginated(962, 2020, 12)
 
-pointindices <- pointindex[[2]]
-
-pointindices_filtered <- pointindices %>% 
+pointindices <- pointindex[[2]] %>% 
   dplyr::filter(day_type == "ALL",
                 period == "year_to_date") %>% 
   dplyr::select(trp_id, index_total_coverage)
 
 trp_for_vti_aadt <- trp_for_vti_tidy %>% 
   dplyr::left_join(trp_aadts) %>% 
-  dplyr::left_join(pointindices_filtered) %>% 
+  dplyr::left_join(pointindices) %>% 
+  dplyr::mutate(valid_length_percent = round(valid_length_volume / adt * 100, digits = 1),
+                index_ok = dplyr::case_when(is.na(index_total_coverage) ~ "OK",
+                                            index_total_coverage > 90 ~ "OK",
+                                            TRUE ~ "NOT_OK")) %>% 
   dplyr::filter(!is.na(adt),
                 coverage > 95,
-                adt > 500#,
-                #index_total_coverage > 80 # DO NOT EXCLUDE NEW POINTS WITHOUT INDEX 2020 JUST BECAUSE WE DIDN'T USE'EM!!!
-                ) %>% 
-  dplyr::mutate(valid_length_percent = round(valid_length_volume /adt * 100, digits = 1)) %>%
-  dplyr::filter(valid_length_percent > 99) %>% 
-  dplyr::mutate(trp_label = paste(name, road_reference, sep = "<br/>"),
+                adt > 500,
+                valid_length_percent > 99,
+                index_ok == "OK") %>%
+  dplyr::mutate(trp_label = paste(name, road_category_and_number, adt, sep = "<br/>"),
                 trp_label = lapply(trp_label, htmltools::HTML))
 
+# Write a file to manually update if the trp is chosen
+# trp_for_vti_aadt %>%
+#   dplyr::select(trp_id, name, county_geono, county_name, municipality_name,
+#                 road_category, road_category_and_number, adt) %>%
+#   dplyr::mutate(chosen = NA) %>% 
+#   write.csv2(file = "trp_for_vti_2021.csv", row.names = F)
 
-# TODO: remove excluded from last year
-trp_vti_ekskluderte <- read.csv2("vti_trp_ekskluderte.csv")
-
-trp_for_vti_latest_data <- trp_for_vti_latest_data %>% 
-  filter(!(trp_id %in% trp_vti_ekskluderte$trpid))
-
-
-
-
-
-# trp_for_vti_aadt %>% 
-#   dplyr::select(-trp_label) %>% 
-#   write.csv2(file = "trp_for_vti_2020.csv", row.names = F)
-# 
-# trp_for_vti_aadt %>% 
-#   dplyr::select(trp_id) %>% 
-#   write.csv2(file = "trp_id_vti_def.csv", row.names = F)
-
+# Read back in the result of chosen trps
+# TODO: filter away the not chosen ones
 ```
 
+
+# Punktene
+
 ```{r table}
-# DataTables
 trp_for_vti_aadt %>% 
   dplyr::select(#trp_id, 
                 county_name, municipality_name, 
                 name,
-                road_reference, 
-                #road_category, 
+                road_category_and_number, 
+                road_category, 
                 adt) %>%
-  #dplyr::mutate(county_number = as.character(county_number)) %>% 
   dplyr::rename(Fylke = county_name,
                 Kommune = municipality_name,
                 #Punktid = trp_id,
                 Navn = name,
-                Vegreferanse = road_reference,
-                #Vegkat = road_category,
-                AADT = adt) %>% 
+                Veg = road_category_and_number,
+                Vegkat = road_category,
+                ADT = adt) %>% 
   DT::datatable(
     rownames = FALSE,
     filter = "top",
@@ -119,8 +116,9 @@ trp_for_vti_aadt %>%
 ```
 
 
+# Fylkesoversikt
+
 ```{r table_summary}
-# DataTables
 trp_for_vti_aadt %>% 
   dplyr::group_by(county_geono, county_name, road_category) %>% 
   dplyr::summarise(n_trp = n()) %>%
@@ -140,7 +138,9 @@ trp_for_vti_aadt %>%
 ```
 
 
-```{r map, message=FALSE}
+# Kart
+
+```{r map, message=FALSE, fig.height=9}
 palett_adt <-
  colorNumeric(palette = "Greens",
               domain = NULL)
@@ -148,10 +148,10 @@ palett_adt <-
 # TODO: county polygons (nice to have)
 
 trp_for_vti_aadt_R <- trp_for_vti_aadt %>% 
-  dplyr::filter(!stringr::str_detect(road_reference, "F"))
+  dplyr::filter(road_category == "R")
 
 trp_for_vti_aadt_F <- trp_for_vti_aadt %>% 
-  dplyr::filter(stringr::str_detect(road_reference, "F"))
+  dplyr::filter(road_category == "F")
 
 trp_for_vti_aadt %>% 
   leaflet(width = "100%",
@@ -165,7 +165,7 @@ trp_for_vti_aadt %>%
     radius = 6,
     stroke = T,
     weight = 2,
-    color = "#008ec2",
+    color = "#58b02c",
     opacity = 0.8,
     fill = T,
     fillColor = ~palett_adt(adt),
@@ -178,7 +178,7 @@ trp_for_vti_aadt %>%
     radius = 6,
     stroke = T,
     weight = 2,
-    color = "#ed9300",
+    color = "#008ec2",
     opacity = 0.8,
     fill = T,
     fillColor = ~palett_adt(adt),
