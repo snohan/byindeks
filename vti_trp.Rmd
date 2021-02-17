@@ -12,6 +12,7 @@ source("H:/Programmering/R/byindeks/get_from_trafficdata_api.R")
 
 library(DT)
 library(htmltools)
+library(readxl)
 ```
 
 ```{r get_trp, results='hide', message=FALSE}
@@ -39,7 +40,7 @@ trp_for_vti_tidy <- trp_for_vti %>%
                                                  road_category == "F" ~ "F"),
                 name = stringr::str_to_title(name, locale = "no")) %>% 
   dplyr::select(trp_id, name, county_geono, county_name, municipality_name, road_category,
-                road_category_and_number, road_link_position, 
+                road_category_and_number, road_reference, road_link_position, 
                 lat, lon, latest_day_with_data)
 
 # AADT coverage and length_quality in 2020
@@ -63,26 +64,31 @@ trp_for_vti_aadt <- trp_for_vti_tidy %>%
   dplyr::left_join(trp_aadts) %>% 
   dplyr::left_join(pointindices) %>% 
   dplyr::mutate(valid_length_percent = round(valid_length_volume / adt * 100, digits = 1),
-                index_ok = dplyr::case_when(is.na(index_total_coverage) ~ "OK",
-                                            index_total_coverage > 90 ~ "OK",
-                                            TRUE ~ "NOT_OK")) %>% 
+                index_ok = dplyr::case_when(is.na(index_total_coverage) ~ TRUE,
+                                            index_total_coverage > 90 ~ TRUE,
+                                            TRUE ~ FALSE)) %>% 
   dplyr::filter(!is.na(adt),
                 coverage > 95,
-                adt > 500,
-                valid_length_percent > 99,
-                index_ok == "OK") %>%
+                #adt >= 200,
+                valid_length_percent > 99#,
+                #index_ok == TRUE
+                ) %>%
   dplyr::mutate(trp_label = paste(name, road_category_and_number, adt, sep = "<br/>"),
                 trp_label = lapply(trp_label, htmltools::HTML))
 
 # Write a file to manually update if the trp is chosen
 # trp_for_vti_aadt %>%
 #   dplyr::select(trp_id, name, county_geono, county_name, municipality_name,
-#                 road_category, road_category_and_number, adt) %>%
-#   dplyr::mutate(chosen = NA) %>% 
+#                 road_category, road_reference, adt) %>%
+#   dplyr::mutate(chosen = NA) %>%
 #   write.csv2(file = "trp_for_vti_2021.csv", row.names = F)
 
 # Read back in the result of chosen trps
-# TODO: filter away the not chosen ones
+not_chosen <- readxl::read_xlsx("trp_for_vti_2021.xlsx") %>% 
+  dplyr::filter(chosen == FALSE)
+
+trp_for_vti_aadt <- trp_for_vti_aadt %>% 
+  dplyr::filter(!(trp_id %in% not_chosen$trp_id))
 ```
 
 
@@ -116,18 +122,20 @@ trp_for_vti_aadt %>%
 ```
 
 
-# Fylkesoversikt
+# Antall punkt per fylke of vegkategori
 
 ```{r table_summary}
+# TODO: add road lengths
 trp_for_vti_aadt %>% 
   dplyr::group_by(county_geono, county_name, road_category) %>% 
   dplyr::summarise(n_trp = n()) %>%
   dplyr::arrange(county_geono) %>% 
   dplyr::ungroup() %>% 
   dplyr::select(-county_geono) %>% 
+  tidyr::pivot_wider(names_from = road_category, values_from = n_trp) %>% 
   dplyr::rename(Fylke = county_name,
-                Vegkategori = road_category,
-                Antall_punkt = n_trp) %>% 
+                Fylkesveg = 'F',
+                Riksveg = R) %>% 
   DT::datatable(
     rownames = FALSE,
     filter = "none",

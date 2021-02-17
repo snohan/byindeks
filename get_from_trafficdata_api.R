@@ -1,5 +1,6 @@
 # Fetching data from Trafikkdata-API or TRP-API
 
+# Libraries and helper functions ####
 library(tidyverse)
 library(jsonlite)
 library(ghql)
@@ -16,6 +17,8 @@ cli <- GraphqlClient$new(
 is_even <- function(x) x[x %% 2 == 0]
 is_odd <- function(x) x[x %% 2 == 1]
 
+
+# Areas ####
 get_counties_deprecated <- function() {
   # Get all counties
   query_points <-
@@ -128,6 +131,9 @@ get_municipalities <- function() {
          municipalities {
            number
            name
+           county {
+            number
+           }
          }
        }
      }"
@@ -139,9 +145,12 @@ get_municipalities <- function() {
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
     as.data.frame() %>%
     dplyr::rename(municipality_number = 1,
-                  municipality_name = 2)
+                  municipality_name = 2,
+                  county_number = 3)
 }
 
+
+# Traffic registration points (TRPs) ####
 
 get_points <- function() {
   # Get all traffic registration points
@@ -432,6 +441,9 @@ get_trps_latest_data <- function() {
   return(points)
 }
 
+
+
+# Average traffic ####
 #trp_id = "55265V521064"
 #trp_id <- "43849B2033722"
 
@@ -903,6 +915,9 @@ get_aadt_by_length_for_trp_list <- function(trp_list) {
   return(trp_adt)
 }
 
+
+
+# Point indices ####
 #indexyear <- "2020"
 #trp_ids <- "\"44656V72812\", \"77022V72359\""
 #trp_ids <- "35258V2475662"
@@ -1100,6 +1115,9 @@ get_pointindices_for_trp_list <- function(trp_list, index_year) {
 
   return(data_points)
 }
+
+
+# Hourly and daily traffic ####
 
 getHourlytraffic <- function(trpID, from, to) {
   # Default values
@@ -1453,7 +1471,7 @@ get_dt_by_length_for_trp_list <- function(trp_list, from, to) {
 }
 
 
-
+# Published indices ####
 # index_id <- 953
 # indexyear <- 2020
 # indexmonth <- 10
@@ -2301,6 +2319,8 @@ get_published_road_traffic_index_for_months <- function(index_id, index_year, la
 }
 
 
+
+# Average hourly and daily traffic ####
 #trp_id <- #"79743V1125914"
  # "78481V42532"
 #the_year <- "2019"
