@@ -1,0 +1,137 @@
+---
+title: "Vegtrafikkindekspunkter"
+output: html_notebook
+---
+
+Trafikkregistreringspunkter som skal benyttes i Vegtrafikkindeksen.
+
+```{r setup, message=FALSE, warning=FALSE, results='hide'}
+source("H:/Programmering/R/byindeks/rmd_setup.R")
+source("H:/Programmering/R/byindeks/split_road_system_reference.R")
+source("H:/Programmering/R/byindeks/get_from_trafficdata_api.R")
+
+library(DT)
+library(htmltools)
+library(readxl)
+library(writexl)
+```
+
+```{r get_trp, results='hide', message=FALSE}
+trp_for_aadt <- get_points()
+
+trp_for_aadt_tidy <- trp_for_aadt %>% 
+  dplyr::select(trp_id, name, traffic_type, registration_frequency,
+                county_geono, county_name, municipality_name,
+                road_reference,
+                road_link_position, 
+                lat, lon, valid_from = validFrom,
+                operational_status, latest_day_with_data) %>% 
+  dplyr::group_by(trp_id) %>%
+  dplyr::slice(which.min(valid_from)) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::filter(traffic_type == "VEHICLE",
+                registration_frequency == "CONTINUOUS") %>% 
+  split_road_system_reference() %>% 
+  dplyr::filter(road_category != "K"#,
+                #valid_from < "2020-01-01"
+                ) %>% 
+  dplyr::mutate(road_category = dplyr::case_when(road_category == "E" ~ "R",
+                                                 road_category == "R" ~ "R",
+                                                 road_category == "F" ~ "F"),
+                name = stringr::str_to_title(name, locale = "no")) %>% 
+  dplyr::select(trp_id, name, county_geono, county_name, municipality_name, road_category,
+                road_category_and_number, road_reference, 
+                #road_link_position, lat, lon, 
+                latest_day_with_data)
+
+# AADT coverage and length_quality in 2020
+# trp_aadts <- trp_for_aadt_tidy$trp_id %>% 
+#   get_aadt_for_trp_list() %>% 
+#   dplyr::filter(year == 2020)
+# 
+# write.csv2(trp_aadts, file = "trp_aadts.csv", row.names = FALSE)
+trp_aadts <- read.csv2("trp_aadts.csv")
+
+trp_aadt <- trp_for_aadt_tidy %>% 
+  dplyr::left_join(trp_aadts) %>% 
+  dplyr::mutate(valid_length_percent = round(valid_length_volume / adt * 100, digits = 1))
+
+# trp_aadt %>%
+#   dplyr::select(trp_id, name, county_geono, county_name, municipality_name,
+#                 road_category, road_reference, year, adt, valid_length_percent, 
+#                 coverage, standard_error, standard_deviation) %>%
+#   writexl::write_xlsx(path = "trp_aadt_2020.xlsx")
+```
+
+
+# Fordeling av standardfeil
+
+```{r plot_1}
+trp_aadt %>% 
+  dplyr::filter(adt < 5000) %>% 
+  ggplot(aes(adt, standard_error, color = coverage)) +
+  geom_point() +
+  theme_minimal()
+```
+
+
+```{r plot_2}
+trp_aadt %>% 
+  dplyr::filter(adt >= 5000,
+                adt < 10000) %>% 
+  ggplot(aes(adt, standard_error, color = coverage)) +
+  geom_point() +
+  theme_minimal()
+```
+
+
+```{r plot_3}
+trp_aadt %>% 
+  dplyr::filter(adt >= 10000) %>% 
+  ggplot(aes(adt, standard_error, color = coverage)) +
+  geom_point() +
+  theme_minimal()
+```
+
+
+# Gjennomsnittlig standardfeil per ÅDT-klasse
+Gjelder alle ÅDT med lavere dekningsgrad enn 90 %.
+
+```{r table_summary}
+trp_aadt %>% 
+  dplyr::filter(coverage < 90) %>% 
+  dplyr::mutate(adt_group = dplyr::case_when(
+    adt < 500 ~ "< 500",
+    adt < 1000 ~ "< 1 000",
+    adt < 5000 ~ "< 5 000",
+    adt < 10000 ~ "< 10 000",
+    adt < 30000 ~ "< 30 000",
+    TRUE ~ ">= 30 000"
+  ),
+  adt_group = factor(adt_group, levels = c("< 500", "< 1 000", "< 5 000",
+                                              "< 10 000", "< 30 000", ">= 30 000"))
+  ) %>% 
+  dplyr::group_by(adt_group) %>%
+  dplyr::summarise(mean_standard_error = round(mean(standard_error, na.rm = TRUE),
+                                               digits = 0),
+                   #rounding_size = ceiling(mean_standard_error / 50) *50,
+                   sd_of_se = round(sd(standard_error, na.rm = TRUE),
+                                               digits = 0),
+                   mean_coverage = round(mean(coverage, na.rm = TRUE),
+                                               digits = 0),
+                   sd_of_coverage = round(sd(coverage, na.rm = TRUE),
+                                               digits = 0),
+                   n_trp = n()) %>% 
+  dplyr::mutate(rounding = c(20, 50, 100, 200, 500, 1000)) %>% 
+  DT::datatable(
+    rownames = FALSE,
+    filter = "none",
+    options = list(
+      dom = "t",
+      pageLength = 25,
+      autoWidth = TRUE))
+```
+
+
+
+Avrundingstallene er foreslått med utgangspunkt i standarfeilen, ganget med to (95 % konfidensintervall), og rundet opp til et passe rundt tall.

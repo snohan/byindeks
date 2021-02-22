@@ -518,6 +518,10 @@ get_trp_aadt_with_coverage <- function(trp_id) {
           total{
             coverage{
               percentage
+              included {
+                numerator
+                denominator
+              }
             }
             validLengthVolume{
               average
@@ -527,6 +531,7 @@ get_trp_aadt_with_coverage <- function(trp_id) {
             }
             volume{
               average
+              standardDeviation
             }
           }
         }
@@ -554,11 +559,16 @@ get_trp_aadt_with_coverage <- function(trp_id) {
       dplyr::rename(
         trp_id = data.trafficData.id,
         year = data.trafficData.volume.average.daily.byYear.year,
-        coverage = 3,
-        valid_length_volume = 4,
-        valid_speed_volume = 5,
-        adt = 6) %>%
-      dplyr::mutate(trp_id = as.character(trp_id))
+        coverage = data.trafficData.volume.average.daily.byYear.total.coverage.percentage,
+        n_days = data.trafficData.volume.average.daily.byYear.total.coverage.included.numerator,
+        n_days_of_year = data.trafficData.volume.average.daily.byYear.total.coverage.included.denominator,
+        valid_length_volume = data.trafficData.volume.average.daily.byYear.total.validLengthVolume.average,
+        valid_speed_volume = data.trafficData.volume.average.daily.byYear.total.validSpeedVolume.average,
+        adt = data.trafficData.volume.average.daily.byYear.total.volume.average,
+        standard_deviation = data.trafficData.volume.average.daily.byYear.total.volume.standardDeviation) %>%
+      dplyr::mutate(trp_id = as.character(trp_id),
+                    standard_error = round(standard_deviation / sqrt(n_days) *
+                                             sqrt((n_days_of_year - n_days) / (n_days_of_year - 1)), digits = 2))
   }
 
   return(trp_aadt)
