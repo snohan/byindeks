@@ -1,9 +1,10 @@
 ---
-title: "Vegtrafikkindekspunkter"
+title: "Usikkerhet i årsdøgntrafikk"
 output: html_notebook
 ---
 
-Trafikkregistreringspunkter som skal benyttes i Vegtrafikkindeksen.
+Hvordan påvirkes ÅDT av spredning i døgntrafikk og lav dekningsgrad?
+Ser også på yrke- og helgedøgn.
 
 ```{r setup, message=FALSE, warning=FALSE, results='hide'}
 source("H:/Programmering/R/byindeks/rmd_setup.R")
@@ -45,16 +46,47 @@ trp_for_aadt_tidy <- trp_for_aadt %>%
                 latest_day_with_data)
 
 # AADT coverage and length_quality in 2020
-# trp_aadts <- trp_for_aadt_tidy$trp_id %>% 
-#   get_aadt_for_trp_list() %>% 
+# trp_aadts <- trp_for_aadt_tidy$trp_id %>%
+#   get_aadt_for_trp_list() %>%
 #   dplyr::filter(year == 2020)
 # 
 # write.csv2(trp_aadts, file = "trp_aadts.csv", row.names = FALSE)
-trp_aadts <- read.csv2("trp_aadts.csv")
 
-trp_aadt <- trp_for_aadt_tidy %>% 
+# trp_aadts_weekday <- trp_for_aadt_tidy$trp_id %>%
+#   get_aadt_for_trp_list("WEEKDAY") %>%
+#   dplyr::filter(year == 2020)
+# 
+# write.csv2(trp_aadts_weekday, file = "trp_aadts_weekday.csv", row.names = FALSE)
+
+# trp_aadts_weekend <- trp_for_aadt_tidy$trp_id %>%
+#   get_aadt_for_trp_list("WEEKEND") %>%
+#   dplyr::filter(year == 2020)
+# 
+# write.csv2(trp_aadts_weekend, file = "trp_aadts_weekend.csv", row.names = FALSE)
+
+trp_aadts <- read.csv2("trp_aadts.csv")
+trp_aadts_weekday <- read.csv2("trp_aadts_weekday.csv")
+trp_aadts_weekend <- read.csv2("trp_aadts_weekend.csv")
+
+tidy_aadts <- function(trp_aadts) {
+
+  trp_aadt <- trp_for_aadt_tidy %>% 
   dplyr::left_join(trp_aadts) %>% 
-  dplyr::mutate(valid_length_percent = round(valid_length_volume / adt * 100, digits = 1))
+  dplyr::mutate(#valid_length_percent = round(valid_length_volume / adt * 100, digits = 1)
+    standard_error = round(standard_error, digits = 0),
+    standard_error_relative = round(standard_error / adt * 100, digits = 0)) %>% 
+  dplyr::filter(!is.na(adt),
+                adt > 0,
+                n_days > 7) %>% 
+  dplyr::select(-valid_speed_volume, -valid_length_volume, -n_days_of_year,
+                -latest_day_with_data, -year)
+
+}
+
+
+trp_aadt <- tidy_aadts(trp_aadts)
+trp_aadt_weekday <- tidy_aadts(trp_aadts_weekday)
+trp_aadt_weekend <- tidy_aadts(trp_aadts_weekend)
 
 # trp_aadt %>%
 #   dplyr::select(trp_id, name, county_geono, county_name, municipality_name,
@@ -64,7 +96,9 @@ trp_aadt <- trp_for_aadt_tidy %>%
 ```
 
 
-# Fordeling av standardfeil
+# Alle dager
+
+## Fordeling av standardfeil
 
 ```{r plot_1}
 trp_aadt %>% 
@@ -94,8 +128,8 @@ trp_aadt %>%
 ```
 
 
-# Gjennomsnittlig standardfeil per ÅDT-klasse
-Gjelder alle ÅDT med lavere dekningsgrad enn 90 %.
+## Gjennomsnittlig standardfeil per ÅDT-klasse
+Gjelder alle ÅDT med lavere dekningsgrad enn 90 %. Hvordan bør vi runde av ÅDT i disse tilfellene?
 
 ```{r table_summary}
 trp_aadt %>% 
@@ -133,5 +167,88 @@ trp_aadt %>%
 ```
 
 
+Avrundingstallene er foreslått med utgangspunkt i gejnnomsnittlig standarfeil, ganget med to (som tilsvarer omtrent 95 % konfidensintervall), og rundet opp til et passe rundt tall.
 
-Avrundingstallene er foreslått med utgangspunkt i standarfeilen, ganget med to (95 % konfidensintervall), og rundet opp til et passe rundt tall.
+# Yrkedøgn
+
+## Gjennomsnittlig standardfeil per ÅDT-klasse
+Gjelder alle ÅDT med lavere dekningsgrad enn 90 %. Hvordan bør vi runde av ÅDT i disse tilfellene?
+
+```{r table_summary_weekday}
+trp_aadt_weekday %>% 
+  dplyr::filter(coverage < 90) %>% 
+  dplyr::mutate(adt_group = dplyr::case_when(
+    adt < 500 ~ "< 500",
+    adt < 1000 ~ "< 1 000",
+    adt < 5000 ~ "< 5 000",
+    adt < 10000 ~ "< 10 000",
+    adt < 30000 ~ "< 30 000",
+    TRUE ~ ">= 30 000"
+  ),
+  adt_group = factor(adt_group, levels = c("< 500", "< 1 000", "< 5 000",
+                                              "< 10 000", "< 30 000", ">= 30 000"))
+  ) %>% 
+  dplyr::group_by(adt_group) %>%
+  dplyr::summarise(mean_standard_error = round(mean(standard_error, na.rm = TRUE),
+                                               digits = 0),
+                   #rounding_size = ceiling(mean_standard_error / 50) *50,
+                   sd_of_se = round(sd(standard_error, na.rm = TRUE),
+                                               digits = 0),
+                   mean_coverage = round(mean(coverage, na.rm = TRUE),
+                                               digits = 0),
+                   sd_of_coverage = round(sd(coverage, na.rm = TRUE),
+                                               digits = 0),
+                   n_trp = n()) %>% 
+  dplyr::mutate(rounding = c(20, 50, 100, 200, 500, 1000)) %>% 
+  DT::datatable(
+    rownames = FALSE,
+    filter = "none",
+    options = list(
+      dom = "t",
+      pageLength = 25,
+      autoWidth = TRUE))
+```
+
+# Helgedøgn
+
+## Gjennomsnittlig standardfeil per ÅDT-klasse
+Gjelder alle ÅDT med lavere dekningsgrad enn 90 %. Hvordan bør vi runde av ÅDT i disse tilfellene?
+
+```{r table_summary_weekend}
+trp_aadt_weekend %>% 
+  dplyr::filter(coverage < 90) %>% 
+  dplyr::mutate(adt_group = dplyr::case_when(
+    adt < 500 ~ "< 500",
+    adt < 1000 ~ "< 1 000",
+    adt < 5000 ~ "< 5 000",
+    adt < 10000 ~ "< 10 000",
+    adt < 30000 ~ "< 30 000",
+    TRUE ~ ">= 30 000"
+  ),
+  adt_group = factor(adt_group, levels = c("< 500", "< 1 000", "< 5 000",
+                                              "< 10 000", "< 30 000", ">= 30 000"))
+  ) %>% 
+  dplyr::group_by(adt_group) %>%
+  dplyr::summarise(mean_standard_error = round(mean(standard_error, na.rm = TRUE),
+                                               digits = 0),
+                   #rounding_size = ceiling(mean_standard_error / 50) *50,
+                   sd_of_se = round(sd(standard_error, na.rm = TRUE),
+                                               digits = 0),
+                   mean_coverage = round(mean(coverage, na.rm = TRUE),
+                                               digits = 0),
+                   sd_of_coverage = round(sd(coverage, na.rm = TRUE),
+                                               digits = 0),
+                   n_trp = n()) %>% 
+  dplyr::mutate(rounding = c(20, 50, 100, 200, 500, 1000)) %>% 
+  DT::datatable(
+    rownames = FALSE,
+    filter = "none",
+    options = list(
+      dom = "t",
+      pageLength = 25,
+      autoWidth = TRUE))
+```
+
+
+
+

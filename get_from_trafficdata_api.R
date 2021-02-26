@@ -502,7 +502,9 @@ getTrpAadt <- function(trp_id) {
   return(trp_aadt)
 }
 
-get_trp_aadt_with_coverage <- function(trp_id) {
+#trp_id <- "61425V181294"
+#day_type <- "ALL"
+get_trp_aadt_with_coverage <- function(trp_id, day_type = "ALL") {
   # Get all AADTs for a trp
   query_aadt <- paste0(
     "query trp_adt{
@@ -513,8 +515,9 @@ get_trp_aadt_with_coverage <- function(trp_id) {
       volume{
     average{
       daily{
-        byYear{
+        byYear (dayType: ", day_type, "){
           year
+          dayType
           total{
             coverage{
               percentage
@@ -559,6 +562,7 @@ get_trp_aadt_with_coverage <- function(trp_id) {
       dplyr::rename(
         trp_id = data.trafficData.id,
         year = data.trafficData.volume.average.daily.byYear.year,
+        day_type = data.trafficData.volume.average.daily.byYear.dayType,
         coverage = data.trafficData.volume.average.daily.byYear.total.coverage.percentage,
         n_days = data.trafficData.volume.average.daily.byYear.total.coverage.included.numerator,
         n_days_of_year = data.trafficData.volume.average.daily.byYear.total.coverage.included.denominator,
@@ -835,14 +839,15 @@ getAdtForpoints <- function(trp_list) {
   return(trp_adt)
 }
 
-get_aadt_for_trp_list <- function(trp_list) {
+get_aadt_for_trp_list <- function(trp_list, day_type = "ALL") {
   number_of_points <- length(trp_list)
   data_points <- data.frame()
   trp_count <- 1
 
   while (trp_count <= number_of_points) {
     data_points <- bind_rows(data_points,
-                             get_trp_aadt_with_coverage(trp_list[trp_count]))
+                             get_trp_aadt_with_coverage(trp_list[trp_count],
+                                                        day_type))
     trp_count <- trp_count + 1
   }
 
