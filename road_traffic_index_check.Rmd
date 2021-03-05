@@ -19,17 +19,17 @@ library(htmltools)
 ```{r get_data, include=FALSE}
 # Look at details in one county at a time
 
-# 30 Viken                  12
-#  3 Oslo                   12
-# 34 Innlandet              12
+# 30 Viken                  2
+#  3 Oslo                   2
+# 34 Innlandet              2
 # 38 Vestfold og Telemark   12
 # 42 Agder                  12
 # 11 Rogaland               12
-# 46 Vestland               12
-# 15 Møre og Romsdal        12
-# 50 Trøndelag              12
-# 18 Nordland               12
-# 54 Troms og Finnmark      12
+# 46 Vestland               2
+# 15 Møre og Romsdal        2
+# 50 Trøndelag              2
+# 18 Nordland               2
+# 54 Troms og Finnmark      2
 
 county_number_chosen <- 54
 

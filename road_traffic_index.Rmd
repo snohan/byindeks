@@ -180,10 +180,11 @@ index_2020_prepared <- index_2020 %>%
                 day_type = dplyr::case_when(day_type == "ALL" ~ "alle",
                                             day_type == "WEEKDAY" ~ "yrkedøgn",
                                             day_type == "WEEKEND" ~ "helgedøgn")) %>% 
-  dplyr::mutate(road_category = dplyr::case_when(
-                  road_category == "FYLKESVEG" ~ "Fylkesveg",
-                  road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
-                  road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG" ~ "Europa-, riks- og fylkesveg")) %>% 
+  dplyr::mutate(
+    road_category = dplyr::case_when(
+      road_category == "FYLKESVEG" ~ "Fylkesveg",
+      road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
+      road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG" ~ "Europa-, riks- og fylkesveg")) %>% 
   dplyr::mutate(month_object = lubridate::make_date(year = year, month = month),
                 month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)) %>% 
   dplyr::left_join(number_of_point_indices,
@@ -283,6 +284,19 @@ index_2020_prepared_wide <- index_2020_prepared %>%
   dplyr::select(area_name, index_p, month_name_short) %>% 
   tidyr::pivot_wider(names_from = month_name_short, values_from = index_p) %>% 
   dplyr::arrange(area_name)
+
+index_2020_prepared_wide_country <- index_2020_prepared %>% 
+  dplyr::filter(area_type == "COUNTRY",
+                period == "month",
+                length_range == "alle",
+                road_category == "Europa-, riks- og fylkesveg"#,
+                #day_type == "alle"
+                ) %>% 
+  dplyr::mutate(month_name_short = lubridate::month(month_object, label = TRUE, abbr = TRUE),
+                index_p = round(index_p, digits = 1),
+                area_name = "Noreg") %>% 
+  dplyr::select(area_name, day_type, index_p, month_name_short) %>% 
+  tidyr::pivot_wider(names_from = month_name_short, values_from = index_p) 
 ```
 
 <br>
@@ -429,6 +443,34 @@ index_2020_prepared %>%
 `r officer::fpar("", officer::run_pagebreak())`
 
 ## Trafikkutviklinga for kvar månad
+
+Trafikkutviklinga i Noreg for kvar månad, har vore som vist i tabellen nedanfor.
+
+```{r country_monthly_table}
+index_2020_prepared_wide_country %>%
+  flextable::flextable() %>%
+  colformat_double(j = 3:14, digits = 1) %>%
+  set_header_labels(area_name = "Område",
+                    day_type = "Døgntype") %>%
+  align(j = 3:14, align = "right", part = "all") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  height_all(height = .2) %>%
+  width(j = 1, width = 1.9) %>%
+  fix_border_issues() %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Endring i trafikkmengde i Noreg for kvar månad frå 2019 til 2020.",
+               autonum = table_numbers,
+               style = "Tabelltekst")
+```
+
+<br>
 
 Figurane på dei neste sidene viser utviklinga for kvar månad gjennom året, fordelt på høvesvis vegkategori og døgntype.
 
