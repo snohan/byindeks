@@ -606,19 +606,7 @@ get_trs_trp_commissions_httr <- function() {
 }
 "
 
-api_query_trimmed <- stringr::str_replace_all(api_query, "[\r\n]", " ")
-
-api_query_string <- paste0('{"query":"', api_query_trimmed, '" }')
-
-response <- httr::POST(url = trp_api_url,
-                       httr::add_headers(.headers = trp_api_headers),
-                       httr::set_cookies(.cookies = trp_api_cookies),
-                       body = api_query_string)
-
-response_parsed <- fromJSON(str_conv(response$content, encoding = "UTF-8"),
-                            simplifyDataFrame = T,
-                            flatten = T) %>%
-  as.data.frame() %>%
+response_parsed <- get_via_httr(api_query) %>%
   tidyr::unnest(cols = c(data.trafficRegistrationStations.commissions)) %>%
   dplyr::rename(commission_from = validFrom,
                 commission_to = validTo) %>%
@@ -640,6 +628,69 @@ response_parsed <- fromJSON(str_conv(response$content, encoding = "UTF-8"),
                 device_to = parse_and_floor_date(device_to, "day"),
                 commission_from = parse_and_floor_date(commission_from, "day"),
                 commission_to = parse_and_floor_date(commission_to, "day")
+  )
+
+return(response_parsed)
+}
+
+get_trs_commissions <- function() {
+
+  api_query <-
+    "query trs_commissions {
+      trafficRegistrationStations {
+        id
+        name
+        operationalStatus
+        stationType
+        trafficType
+        location {
+          roadReference {
+            shortForm
+          }
+          municipality {
+            name
+            county {
+              name
+            }
+          }
+        }
+        commissions {
+          source
+          validFrom
+          validTo
+        }
+        trafficRegistrationPoints {
+          id
+          name
+          location {
+            roadReference {
+              shortForm
+            }
+          }
+        }
+      }
+    }
+    "
+
+response_parsed <- get_via_httr(api_query) %>%
+  tidyr::unnest(cols = c(data.trafficRegistrationStations.commissions)) %>%
+  tidyr::unnest(cols = c(data.trafficRegistrationStations.trafficRegistrationPoints)) %>%
+  dplyr::select(trs_id = data.trafficRegistrationStations.id,
+                trs_name = data.trafficRegistrationStations.name,
+                operational_status = data.trafficRegistrationStations.operationalStatus,
+                traffic_type = data.trafficRegistrationStations.trafficType,
+                station_type = data.trafficRegistrationStations.stationType,
+                trs_road_reference = data.trafficRegistrationStations.location.roadReference.shortForm,
+                county_name = data.trafficRegistrationStations.location.municipality.county.name,
+                municipality_name = data.trafficRegistrationStations.location.municipality.name,
+                system_name = source,
+                commission_from = validFrom,
+                commission_to = validTo,
+                trp_id = id,
+                trp_name = name,
+                trp_road_reference = location.roadReference.shortForm) %>%
+  dplyr::mutate(commission_from = parse_and_floor_date(commission_from, "hour"),
+                commission_to = parse_and_floor_date(commission_to, "hour")
   )
 
 return(response_parsed)

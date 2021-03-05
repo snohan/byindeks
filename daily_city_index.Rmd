@@ -196,7 +196,7 @@ day_of_week_traffic_average <- read.csv2("city_normal_days.csv")
 # Daily traffic ####
 
 data_this_year_from <- "2021-01-04T00:00:00+01:00"
-data_this_year_to <- "2021-02-22T00:00:00+01:00"
+data_this_year_to <- "2021-03-01T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -249,7 +249,14 @@ trp_index <- dt_this_year %>%
                                 "57279V320244", # Storhaugtunnelen
                                 "68351V319882", # Kannik
                                 "33808V625649", # Helsfyr 1234 
-                                "75341V41863" # Jonsvannsveien
+                                "75341V41863", # Jonsvannsveien
+                                "01316V804837", # Munkebotntunnelen
+                                "57211V805408", # Ibsensgate
+                                "13093V804836", # Amalie F
+                                "78845V804838", # Amalie S
+                                "18788V1811746", # Mogreina på
+                                "67263V1811577", # Mogreina
+                                "63515V1811747" # Mogreina av
                                 )))
 
   
@@ -277,6 +284,7 @@ trp_index_4 <- get_trp_index_for_weeknumber(4)
 trp_index_5 <- get_trp_index_for_weeknumber(5)
 trp_index_6 <- get_trp_index_for_weeknumber(6)
 trp_index_7 <- get_trp_index_for_weeknumber(7)
+trp_index_8 <- get_trp_index_for_weeknumber(8)
 
 
 # City index ####

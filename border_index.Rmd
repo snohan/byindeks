@@ -49,9 +49,9 @@ index_2017 <- get_published_index_for_months(2952, 2017, 12)
 index_2018 <- get_published_index_for_months(2952, 2018, 12)
 index_2019 <- get_published_index_for_months(2952, 2019, 12)
 index_2020 <- get_published_index_for_months(2952, 2020, 12)
-index_2021 <- get_published_index_for_months(2952, 2021, 1)
+index_2021 <- get_published_index_for_months(2952, 2021, 2)
 
-pointindex <- get_published_pointindex(2952, 2021, 1)
+pointindex <- get_published_pointindex_for_months_paginated(2952, 2021, 2)
 
 # Index points
 border_points <- pointindex[[1]]
@@ -87,10 +87,11 @@ adt_filtered <- adt %>%
   #dplyr::filter(length_quality > 90) %>%
   dplyr::filter(coverage > 50) %>%
   dplyr::group_by(trp_id) %>%
+  #dplyr::filter(year < 2020) %>%
   dplyr::filter(year == max(year)) %>%
   dplyr::select(trp_id, year, aadt_total, coverage, aadt_short, aadt_long, length_quality) %>%
   dplyr::rename(adt = aadt_total) %>% 
-  dplyr::mutate(aadt_short = if_else(length_quality > 99, aadt_short, NA_real_),
+  dplyr::mutate(aadt_short = if_else(length_quality > 90, aadt_short, NA_real_),
                 aadt_long = if_else(length_quality > 99, aadt_long, NA_real_)) %>% 
   dplyr::select(-length_quality)
 
@@ -112,6 +113,42 @@ points_adt_all <- bind_rows(with_aadt, missing_aadt) %>%
 
 # TODO: Point index
 ```
+
+```{r prepare_data, include=FALSE}
+pointindices <- pointindex[[2]]
+
+pointindices_all <- pointindices %>% 
+  dplyr::filter(day_type == "ALL",
+                is_excluded == FALSE,
+                is_manually_excluded == FALSE,
+                !is.na(index_total_p)) %>% 
+  dplyr::select(trp_id, year, month, period, day_type, index_p = index_total_p) %>% 
+  dplyr::mutate(length_range = "alle") 
+
+pointindices_light_n_heavy <- pointindices %>% 
+  dplyr::filter(day_type == "ALL",
+                is_excluded == FALSE,
+                is_manually_excluded == FALSE,
+                length_excluded == FALSE) %>% 
+  dplyr::select(trp_id, year, month, period, day_type, index_short, index_long) %>% 
+  tidyr::pivot_longer(cols = c("index_short", "index_long"), names_to = "length_range",
+                      values_to = "index_p") %>% 
+  dplyr::mutate(length_range = dplyr::case_when(length_range == "index_short" ~ "lette",
+                                                length_range == "index_long" ~ "tunge"))
+
+pointindices_by_length <- dplyr::bind_rows(pointindices_all,
+                                           pointindices_light_n_heavy) %>% 
+  dplyr::mutate(day_type = dplyr::case_when(day_type == "ALL" ~ "alle",
+                                            day_type == "WEEKDAY" ~ "yrkedøgn",
+                                            day_type == "WEEKEND" ~ "helgedøgn")) 
+
+n_points <- pointindices_by_length %>% 
+  dplyr::group_by(year, month, period, day_type, length_range) %>% 
+  dplyr::summarise(no_points = n()) %>% 
+  dplyr::mutate(road_category = "Europa-, riks- og fylkesveg") %>% 
+  dplyr::ungroup()
+```
+
 
 <br>
 
@@ -216,7 +253,14 @@ index_this_year <- index_2021 %>%
                   road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG" ~ "Europa-, riks- og fylkesveg")) %>% 
   dplyr::mutate(month_object = lubridate::make_date(year = year, month = month),
                 month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)) %>% 
-  dplyr::filter(road_category == "Europa-, riks- og fylkesveg")
+  dplyr::filter(road_category == "Europa-, riks- og fylkesveg") %>% 
+  dplyr::select(road_category, length_range, year, month, period, month_object, month_name,
+                standard_deviation, index_p) %>%
+  dplyr::left_join(n_points, 
+                   by = c("year", "month", "period",
+                          "road_category", "length_range")) %>% 
+  dplyr::mutate(standard_error = round(standard_deviation / sqrt(no_points), digits = 1),
+                standard_deviation = round(standard_deviation, digits = 1))
 
 last_month <- max(index_this_year$month)
 
@@ -247,23 +291,28 @@ Et vektet gjennomsnitt av endring i trafikkmengden i de ulike grenseovergangene,
 <br>
 
 ## Per måned
-Tabellen på neste side viser estimert samlet endring i trafikkmengde per måned, sammenlignet med samme måned i fjor. Usikkerheten i estimatet er synliggjort med et standardavvik.
+Tabellen på neste side viser estimert samlet endring i trafikkmengde per måned, sammenlignet med samme måned i fjor. Usikkerheten i estimatet er synliggjort med standardfeil og standardavvik. Standardfeilen sier noe om hvor nære indeksen (som er et estimat) er den faktiske endringen i trafikken, mens standardavviket sier noe om hvor ulik trafikkendringen var på punktene.
 
 Fra mars 2020 gikk grensetrafikken betydelig ned som følge av tiltak mot spredningen av det nye koronaviruset.
+
+`r officer::fpar("", officer::run_pagebreak())`
 
 ```{r monthly_index_table}
 index_this_year %>%
   dplyr::filter(period == "month") %>% 
   dplyr::arrange(length_range, month) %>% 
-  select(month_name, year, length_range, index_p, standard_deviation) %>%
+  dplyr::select(month_name, year, length_range, index_p, standard_error, 
+                standard_deviation, no_points) %>%
   flextable() %>%
   colformat_int(j = 2, big.mark = "") %>%
-  colformat_double(j = 4:5, digits = 1) %>%
-  set_header_labels(month_name = "Måned", year = "År", length_range = "Lengde- \n klasse",
-                    index_p = "Endring i trafikkmengde (%)",
-                    standard_deviation = "Standardavvik (%)") %>%
-  align(i = 1, j = 4:5, align = "right", part = "header") %>% 
-  align(j = 2, align = "center", part = "all") %>% 
+  colformat_double(j = 4:6, digits = 1) %>%
+  set_header_labels(month_name = "Måned", year = "År", 
+                    length_range = "Kjøretøy- \n klasse",
+                    index_p = "Endring i \n trafikkmengde (%)",
+                    standard_error = "Standardfeil \n (%)",
+                    standard_deviation = "Standardavvik \n (%)",
+                    no_points = "Antall \n punkt") %>%
+  align(j = 4:7, align = "center", part = "all") %>%
   bold(part = "header") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
@@ -304,7 +353,7 @@ index_this_year %>%
   theme(legend.position = "bottom")
 ```
 
-<br>
+`r officer::fpar("", officer::run_pagebreak())`
 
 ## Hittil i år
 I tabellen nedenfor vises samlet endring i trafikkmengde i perioden fra januar til `r last_month_name` i år, sammenlignet med samme periode i fjor. Usikkerheten i estimatet er synliggjort med et standardavvik.
@@ -316,19 +365,18 @@ index_this_year %>%
   dplyr::filter(period == "year_to_date",
                 month == last_month) %>% 
   dplyr::arrange(length_range, month) %>% 
-  select(month_name, year, length_range, index_p, standard_deviation) %>%
+  dplyr::select(month_name, year, length_range, index_p, standard_error, 
+                standard_deviation, no_points) %>%
   flextable() %>%
   colformat_int(j = 2, big.mark = "") %>%
-  colformat_double(j = 4:5, digits = 1) %>%
-  set_header_labels(month_name = "Måned", year = "År", length_range = "Kjøretøy- \n klasse",
-                    index_p = "Endring i trafikkmengde (%)",
-                    standard_deviation = "Standardavvik (%)") %>%
-  #add_header_row(values = c("", "", "", "Nedre", "Estimat", "Øvre"), top = FALSE) %>% 
-  #merge_at(i = 1:2, j = 3, part = "header") %>% 
-  #merge_at(i = 1, j = 4:6, part = "header") %>% 
-  #align(i = 1, j = 4, align = "center", part = "header") %>%
-  align(i = 1, j = 4:5, align = "right", part = "header") %>% 
-  align(j = 1, align = "center", part = "all") %>% 
+  colformat_double(j = 4:6, digits = 1) %>%
+  set_header_labels(month_name = "Måned", year = "År", 
+                    length_range = "Kjøretøy- \n klasse",
+                    index_p = "Endring i \n trafikkmengde (%)",
+                    standard_error = "Standardfeil \n (%)",
+                    standard_deviation = "Standardavvik \n (%)",
+                    no_points = "Antall \n punkt") %>%
+  align(j = 4:7, align = "center", part = "all") %>% 
   bold(part = "header") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
@@ -348,7 +396,7 @@ index_this_year %>%
 
 Nedenfor vises månedlig riksgrenseindeks for foregående år. Det som gir størst utslag på indeksen er vanligvis påsketrafikken, og det ses tydelig mellom årene hvor påsken ikke ligger i samme måned.
 
-```{r lineplot_historic, fig.width=6, fig.height=8, fig.cap="Riksgrenseindeks foregående år.", cache=TRUE}
+```{r lineplot_historic, fig.width=6, fig.height=7, fig.cap="Riksgrenseindeks foregående år.", cache=TRUE}
 index_complete_years %>% 
   dplyr::filter(period == "month") %>% 
   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +

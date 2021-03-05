@@ -184,13 +184,13 @@ index_2020_prepared <- index_2020 %>%
                   road_category == "FYLKESVEG" ~ "Fylkesveg",
                   road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
                   road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG" ~ "Europa-, riks- og fylkesveg")) %>% 
-  dplyr::mutate(standard_deviation = round(standard_deviation, digits = 1),
-                month_object = lubridate::make_date(year = year, month = month),
+  dplyr::mutate(month_object = lubridate::make_date(year = year, month = month),
                 month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)) %>% 
   dplyr::left_join(number_of_point_indices,
                    by = c("area_name", "area_type", "year", "month", "period",
                           "road_category", "length_range", "day_type")) %>% 
-  dplyr::mutate(standard_error = round(standard_deviation / sqrt(no_points), digits = 1))
+  dplyr::mutate(standard_error = round(standard_deviation / sqrt(no_points), digits = 1),
+                standard_deviation = round(standard_deviation, digits = 1))
 
 latest_month_name <- max(index_2020_prepared$month_name) %>% as.character()
 

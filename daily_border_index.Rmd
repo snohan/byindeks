@@ -131,7 +131,7 @@ day_of_week_traffic_average <- read.csv2("border_normal_days.csv")
 # Daily traffic ####
 
 borderdata_this_year_from <- "2021-01-04T00:00:00+01:00"
-borderdata_this_year_to <- "2021-02-22T00:00:00+01:00"
+borderdata_this_year_to <- "2021-03-01T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -198,6 +198,7 @@ border_trp_index_4 <- get_border_trp_index_for_weeknumber(4)
 border_trp_index_5 <- get_border_trp_index_for_weeknumber(5)
 border_trp_index_6 <- get_border_trp_index_for_weeknumber(6)
 border_trp_index_7 <- get_border_trp_index_for_weeknumber(7)
+border_trp_index_8 <- get_border_trp_index_for_weeknumber(8)
 
 
 # Border index ####
@@ -384,42 +385,48 @@ De følgende tabellene viser daglig endring i trafikk ved hvert av trafikkregist
 
 ```{r trptable_1}
 make_border_trp_table(border_trp_index_1,
-                      "Estimert endring i trafikk over riksgrensen, avvik fra normalperioden 2016 - 2019, uke 1 2021.")
+                      "Estimert endring i trafikk, avvik fra normalperioden 2016 - 2019, uke 1 2021.")
 ```
 
 
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_2}
 make_border_trp_table(border_trp_index_2,
-                      "Estimert endring i trafikk over riksgrensen, avvik fra normalen i perioden 2016 - 2019, uke 2 2021.")
+                      "Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 2 2021.")
 ```
 
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_3}
 make_border_trp_table(border_trp_index_3,
-                      "Estimert endring i trafikk over riksgrensen, avvik fra normalen i perioden 2016 - 2019, uke 3 2021.")
+                      "Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 3 2021.")
 ```
 
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_4}
 make_border_trp_table(border_trp_index_4,
-                      "Estimert endring i trafikk over riksgrensen, avvik fra normalen i perioden 2016 - 2019, uke 4 2021.")
+                      "Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 4 2021.")
 ```
 
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_5}
 make_border_trp_table(border_trp_index_5,
-                      "Estimert endring i trafikk over riksgrensen, avvik fra normalen i perioden 2016 - 2019, uke 5 2021.")
+                      "Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 5 2021.")
 ```
 
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_6}
 make_border_trp_table(border_trp_index_6,
-                      "Estimert endring i trafikk over riksgrensen, avvik fra normalen i perioden 2016 - 2019, uke 6 2021.")
+                      "Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 6 2021.")
 ```
 
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_7}
 make_border_trp_table(border_trp_index_7,
-                      "Estimert endring i trafikk over riksgrensen, avvik fra normalen i perioden 2016 - 2019, uke 7 2021.")
+                      "Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 7 2021.")
+```
+
+`r officer::fpar("", officer::run_pagebreak())`
+```{r trptable_8}
+make_border_trp_table(border_trp_index_8,
+                      "Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 8 2021.")
 ```

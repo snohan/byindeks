@@ -22,21 +22,21 @@ library(htmltools)
 # 30 Viken                  12
 #  3 Oslo                   12
 # 34 Innlandet              12
-# 38 Vestfold og Telemark   12 (mangler noen ekskluderinger)
+# 38 Vestfold og Telemark   12
 # 42 Agder                  12
-# 11 Rogaland
+# 11 Rogaland               12
 # 46 Vestland               12
 # 15 Møre og Romsdal        12
 # 50 Trøndelag              12
 # 18 Nordland               12
 # 54 Troms og Finnmark      12
 
-county_number_chosen <- 11
+county_number_chosen <- 54
 
 # Choose
 index_year <- 2020
 # Last published month
-index_month <- 8
+index_month <- 12
 index_id <- 962
 
 # Fetch
@@ -324,33 +324,33 @@ pointindex_long_2 <- dplyr::bind_rows(pointindex_long_total,
 ## Vegtrafikkindeks per måned så langt for `r county_name_chosen_here`
 
 ```{r city_index, message=FALSE, fig.width=12}
-road_traffic_index_prepared %>% 
-  dplyr::filter(area_name == county_name_chosen_here) %>% 
-  ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
-  ggplot2::geom_line() +
-  ggplot2::geom_point(size = 4) +
-  ggplot2::facet_grid(rows = vars(road_category)) +
-  theme_light() +
-  theme(axis.text.x = element_text(angle = 90),
-        panel.grid.minor.x = element_blank(),
-        legend.position = "bottom") +
-  scale_x_date(breaks = scales::breaks_width("months"),
-               labels = scales::label_date("%b")) +
-  scale_color_manual(values = c("alle" = "#008ec2",
-                                "lette" = "#ed9300",
-                                "tunge" = "#444f55"),
-                     name = "Kjøretøyklasse") +
-  labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
-       caption = "Data: Statens vegvesen") +
-  ggtitle("Estimert endring i trafikkmengde",
-          subtitle = "Trafikkmengde i 2020 sammenlignet med 2019")
+# road_traffic_index_prepared %>% 
+#   dplyr::filter(area_name == county_name_chosen_here) %>% 
+#   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
+#   ggplot2::geom_line() +
+#   ggplot2::geom_point(size = 4) +
+#   ggplot2::facet_grid(rows = vars(road_category)) +
+#   theme_light() +
+#   theme(axis.text.x = element_text(angle = 90),
+#         panel.grid.minor.x = element_blank(),
+#         legend.position = "bottom") +
+#   scale_x_date(breaks = scales::breaks_width("months"),
+#                labels = scales::label_date("%b")) +
+#   scale_color_manual(values = c("alle" = "#008ec2",
+#                                 "lette" = "#ed9300",
+#                                 "tunge" = "#444f55"),
+#                      name = "Kjøretøyklasse") +
+#   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
+#        caption = "Data: Statens vegvesen") +
+#   ggtitle("Estimert endring i trafikkmengde",
+#           subtitle = "Trafikkmengde i 2020 sammenlignet med 2019")
 ```
 
 
 
 ## Punktindeksene for de nye månedene
 
-### September
+### Januar
 
 ```{r map_trp_index, message=FALSE}
 trps_new_pointindex %>% 
@@ -358,42 +358,41 @@ trps_new_pointindex %>%
   create_pointindex_map()
 ```
 
-### Oktober
+
 
 ```{r map_trp_index_2, message=FALSE}
-trps_new_pointindex_2 %>% 
-  dplyr::rename(index = index_total_p) %>% 
-  create_pointindex_map()
+# trps_new_pointindex_2 %>% 
+#   dplyr::rename(index = index_total_p) %>% 
+#   create_pointindex_map()
 ```
 
-### November
 
 ```{r map_trp_index_3, message=FALSE}
-trps_new_pointindex_3 %>% 
-  dplyr::rename(index = index_total_p) %>% 
-  create_pointindex_map()
+# trps_new_pointindex_3 %>% 
+#   dplyr::rename(index = index_total_p) %>% 
+#   create_pointindex_map()
 ```
 
-### Desember
+
 
 ```{r map_trp_index_4, message=FALSE}
-trps_new_pointindex_4 %>% 
-  dplyr::rename(index = index_total_p) %>% 
-  create_pointindex_map()
+# trps_new_pointindex_4 %>% 
+#   dplyr::rename(index = index_total_p) %>% 
+#   create_pointindex_map()
 ```
 
 
 ## Kurver per punkt for totaltrafikk
 
 ```{r pointindex_sparkline, fig.height=12, fig.width=10}
-pointindex_plot <- pointindex_prepared_all %>% 
-  ggplot2::ggplot(aes(x = month, y = index_total_p, color = name)) +
-  geom_line() +
-  scale_x_discrete(breaks = seq(1, index_month + 1, 1)) +
-  theme_minimal() +
-  theme(legend.position = "bottom")
-
-pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
+# pointindex_plot <- pointindex_prepared_all %>% 
+#   ggplot2::ggplot(aes(x = month, y = index_total_p, color = name)) +
+#   geom_line() +
+#   scale_x_discrete(breaks = seq(1, index_month + 1, 1)) +
+#   theme_minimal() +
+#   theme(legend.position = "bottom")
+# 
+# pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 ```
 
 
