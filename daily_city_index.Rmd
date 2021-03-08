@@ -195,8 +195,8 @@ day_of_week_traffic_average <- read.csv2("city_normal_days.csv")
 
 # Daily traffic ####
 
-data_this_year_from <- "2021-01-04T00:00:00+01:00"
-data_this_year_to <- "2021-03-01T00:00:00+01:00"
+data_this_year_from <- "2021-03-01T00:00:00+01:00"
+data_this_year_to <- "2021-03-08T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -277,14 +277,16 @@ get_trp_index_for_weeknumber <- function(weekno) {
   return(trp_index_for_week)
 }
 
-trp_index_1 <- get_trp_index_for_weeknumber(1)
-trp_index_2 <- get_trp_index_for_weeknumber(2)
-trp_index_3 <- get_trp_index_for_weeknumber(3)
-trp_index_4 <- get_trp_index_for_weeknumber(4)
-trp_index_5 <- get_trp_index_for_weeknumber(5)
-trp_index_6 <- get_trp_index_for_weeknumber(6)
-trp_index_7 <- get_trp_index_for_weeknumber(7)
-trp_index_8 <- get_trp_index_for_weeknumber(8)
+trp_index_9 <- get_trp_index_for_weeknumber(9)
+# trp_index_2 <- get_trp_index_for_weeknumber(2)
+# trp_index_3 <- get_trp_index_for_weeknumber(3)
+# trp_index_4 <- get_trp_index_for_weeknumber(4)
+# trp_index_5 <- get_trp_index_for_weeknumber(5)
+# trp_index_6 <- get_trp_index_for_weeknumber(6)
+# trp_index_7 <- get_trp_index_for_weeknumber(7)
+# trp_index_8 <- get_trp_index_for_weeknumber(8)
+
+fig_height <- 3 # min 3, max 6.5
 
 
 # City index ####
@@ -376,7 +378,7 @@ Datagrunnlaget for beregningene hentes fra trafikkregistreringspunktene som inng
 
 Trafikkutviklingen sammenlignes ved at døgntrafikken i år sammenlignes med tilsvarende gjennomsnittlig døgntrafikk (per ukedag, per måned) i perioden 2016 - 2019.
 
-Denne rapporten viser utviklingen i uke 1 2021 framover. Trafikkutvikling for 2020 finnes i egne rapporter.
+Denne rapporten viser utviklingen i uke 9 2021 og framover. Trafikkutvikling for 2020 og første del av 2021 finnes i egne rapporter.
 
 Alle data er hentet fra [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/trafikkdata/). Døgntrafikk med minst 99 % dekningsgrad er brukt til å beregne prosentvis endring.
 
@@ -396,7 +398,7 @@ Nedenfor vises daglig endring i trafikk i de største byområdene, sammenlignet 
 ```
 
 ## Bergen
-```{r plot_brg, fig.width=6, fig.height=6.5, fig.cap="Estimert endring i trafikk i Bergensområdet."}
+```{r plot_brg, fig.width=6, fig.height=fig_height, fig.cap="Estimert endring i trafikk i Bergensområdet."}
 city_index %>% 
   dplyr::filter(city_area_name == "Bergensområdet") %>% 
   make_daily_plot()
@@ -414,7 +416,7 @@ city_index %>%
 <br>
 
 ## Nord-Jæren
-```{r plot_nrj, fig.width=6, fig.height=6.5, fig.cap="Estimert endring i trafikk på Nord-Jæren."}
+```{r plot_nrj, fig.width=6, fig.height=fig_height, fig.cap="Estimert endring i trafikk på Nord-Jæren."}
 city_index %>% 
   dplyr::filter(city_area_name == "Nord-Jæren") %>% 
   make_daily_plot()
@@ -432,7 +434,7 @@ city_index %>%
 <br>
 
 ## Osloområdet
-```{r plot_osl, fig.width=6, fig.height=6.5, fig.cap="Estimert endring i trafikk i Osloområdet."}
+```{r plot_osl, fig.width=6, fig.height=fig_height, fig.cap="Estimert endring i trafikk i Osloområdet."}
 city_index %>% 
   dplyr::filter(city_area_name == "Osloområdet") %>% 
   make_daily_plot()
@@ -450,7 +452,7 @@ city_index %>%
 <br>
 
 ## Trondheim
-```{r plot_trd, fig.width=6, fig.height=6.5, fig.cap="Estimert endring i trafikk i Trondheim."}
+```{r plot_trd, fig.width=6, fig.height=fig_height, fig.cap="Estimert endring i trafikk i Trondheim."}
 city_index %>% 
   dplyr::filter(city_area_name == "Trondheim") %>% 
   make_daily_plot()
@@ -468,7 +470,7 @@ city_index %>%
 <br>
 
 ## Tromsø
-```{r plot_trs, fig.width=6, fig.height=6.5, fig.cap="Estimert endring i trafikk i Tromsø."}
+```{r plot_trs, fig.width=6, fig.height=fig_height, fig.cap="Estimert endring i trafikk i Tromsø."}
 city_index %>% 
   dplyr::filter(city_area_name == "Tromsø") %>% 
   make_daily_plot()

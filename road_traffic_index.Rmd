@@ -60,11 +60,11 @@ points <- get_points() %>%
   )) %>% 
   dplyr::left_join(counties)
 
-this_year <- 2020
-latest_month_number <- 12
+this_year <- 2021
+latest_month_number <- 2
 
 # Fetching published index from Traffic Data API
-index_2020 <- get_published_road_traffic_index_for_months(962, this_year, latest_month_number)
+index_this_year <- get_published_road_traffic_index_for_months(962, this_year, latest_month_number)
 
 # Fetching pointindices for last month's year_to_date in order to calculate the standard error
 pointindex_this_year <- get_published_pointindex_paginated(962, this_year, latest_month_number)
@@ -173,7 +173,7 @@ number_of_point_indices <- dplyr::bind_rows(
   number_of_pointindices_country_rf
 )
 
-index_2020_prepared <- index_2020 %>% 
+index_this_year_prepared <- index_this_year %>% 
   dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "alle",
                                                 length_range == "[..,5.6)" ~ "lette",
                                                 length_range == "[5.6,..)" ~ "tunge"),
@@ -193,9 +193,9 @@ index_2020_prepared <- index_2020 %>%
   dplyr::mutate(standard_error = round(standard_deviation / sqrt(no_points), digits = 1),
                 standard_deviation = round(standard_deviation, digits = 1))
 
-latest_month_name <- max(index_2020_prepared$month_name) %>% as.character()
+latest_month_name <- max(index_this_year_prepared$month_name) %>% as.character()
 
-index_this_month <- index_2020_prepared %>% 
+index_this_month <- index_this_year_prepared %>% 
   dplyr::filter(area_type == "COUNTRY",
                 period == "month",
                 length_range == "alle",
@@ -205,7 +205,7 @@ index_this_month <- index_2020_prepared %>%
 
 less_or_more_month <- dplyr::if_else(index_this_month$index_p < 0, "mindre", "mer")
 
-index_so_far_this_year_all <- index_2020_prepared %>% 
+index_so_far_this_year_all <- index_this_year_prepared %>% 
   dplyr::filter(area_type == "COUNTRY",
                 period == "year_to_date",
                 length_range == "alle",
@@ -222,7 +222,7 @@ index_so_far_this_year_all_character <- index_so_far_this_year_all %>%
   as.character() %>% 
   decimal_comma()
 
-index_so_far_this_year_light <- index_2020_prepared %>% 
+index_so_far_this_year_light <- index_this_year_prepared %>% 
   dplyr::filter(area_type == "COUNTRY",
                 period == "year_to_date",
                 length_range == "lette",
@@ -234,7 +234,7 @@ index_so_far_this_year_light <- index_2020_prepared %>%
   as.character() %>% 
   decimal_comma()
 
-index_so_far_this_year_heavy <- index_2020_prepared %>% 
+index_so_far_this_year_heavy <- index_this_year_prepared %>% 
   dplyr::filter(area_type == "COUNTRY",
                 period == "year_to_date",
                 length_range == "tunge",
@@ -246,7 +246,7 @@ index_so_far_this_year_heavy <- index_2020_prepared %>%
   as.character() %>% 
   decimal_comma()
 
-index_so_far_this_year_r <- index_2020_prepared %>% 
+index_so_far_this_year_r <- index_this_year_prepared %>% 
   dplyr::filter(area_type == "COUNTRY",
                 period == "year_to_date",
                 length_range == "alle",
@@ -258,7 +258,7 @@ index_so_far_this_year_r <- index_2020_prepared %>%
   as.character() %>% 
   decimal_comma()
 
-index_so_far_this_year_f <- index_2020_prepared %>% 
+index_so_far_this_year_f <- index_this_year_prepared %>% 
   dplyr::filter(area_type == "COUNTRY",
                 period == "year_to_date",
                 length_range == "alle",
@@ -272,7 +272,7 @@ index_so_far_this_year_f <- index_2020_prepared %>%
 
 country_parts <- get_country_parts()
 
-index_2020_prepared_wide <- index_2020_prepared %>% 
+index_this_year_prepared_wide <- index_this_year_prepared %>% 
   dplyr::filter(area_type == "COUNTY",
                 period == "month",
                 length_range == "alle",
@@ -285,7 +285,7 @@ index_2020_prepared_wide <- index_2020_prepared %>%
   tidyr::pivot_wider(names_from = month_name_short, values_from = index_p) %>% 
   dplyr::arrange(area_name)
 
-index_2020_prepared_wide_country <- index_2020_prepared %>% 
+index_this_year_prepared_wide_country <- index_this_year_prepared %>% 
   dplyr::filter(area_type == "COUNTRY",
                 period == "month",
                 length_range == "alle",
@@ -315,9 +315,9 @@ officer::block_toc(style = "Figurtekst")
 
 # Vegtrafikkindeksen
 
-Vegtrafikkindeksen er i `r this_year` rekna ut frå om lag 1 200 utvalde trafikkregistreringspunkt som er eigd av Statens vegvesen og fylkeskommunane. Trafikken vert registrert kontinuerleg kvar time heile året, og for kvart trafikkregistreringspunkt vert trafikken samanlikna time for time, dato mot dato i kalendermånadene. Utvalet gir truleg eit godt bilete av utviklinga i trafikkarbeidet. Tala er gitt som endring i prosent i forhold til same tidsperiode året før. 
+Vegtrafikkindeksen er i `r this_year` rekna ut frå om lag 1 000 utvalde trafikkregistreringspunkt som er eigd av Statens vegvesen og fylkeskommunane. Trafikken vert registrert kontinuerleg kvar time heile året, og for kvart trafikkregistreringspunkt vert trafikken samanlikna time for time, dato mot dato i kalendermånadene. Utvalet gir truleg eit godt bilete av utviklinga i trafikkarbeidet. Tala er gitt som endring i prosent i forhold til same tidsperiode året før. 
 
-Ver merksam på at ulike forhold kan gi store utslag i tala per månad frå år til år. Slike hendingar kan vera helgedagar utan fast dato, til dømes påske og pinse. Veret er også ein faktor som kan gi utslag på månadstala. Koronapandemien påverkar sterkt utviklinga i trafikken i 2020. 
+Ver merksam på at ulike forhold kan gi store utslag i tala per månad frå år til år. Slike hendingar kan vera helgedagar utan fast dato, til dømes påske og pinse. Veret er også ein faktor som kan gi utslag på månadstala. Koronapandemien og smitteverntiltaka påverkar sterkt utviklinga i trafikken i 2021. 
 Alle data er henta frå [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/trafikkdata/). Timetrafikk med minst 99 % dekningsgrad inngår i berekningsgrunnlaget.
 
 Nokre trafikkregistreringspunkt er periodevis utelatne på grunn av feil på utstyr eller at dei ligg på vegar som er påverka av vegarbeid o.l.
@@ -354,6 +354,8 @@ Trafikkauken for ulike vegkategoriar:
 * Riksvegar i alt (Ev + Rv): `r index_so_far_this_year_r` %.
 * Fylkesvegar: `r index_so_far_this_year_f` %.
 
+<br>
+
 
 ## Trafikkutviklinga for heile året
 
@@ -362,7 +364,7 @@ Tabellen nedanfor viser trafikkutviklinga for heile Noreg.
 <br>
 
 ```{r so_far_this_year_table_road_category}
-index_2020_prepared %>%
+index_this_year_prepared %>%
   dplyr::filter(period == "year_to_date",
                 month == latest_month_number,
                 day_type == "alle",
@@ -403,7 +405,7 @@ index_2020_prepared %>%
 `r officer::fpar("", officer::run_pagebreak())`
 
 ```{r so_far_this_year_table_day_type}
-index_2020_prepared %>%
+index_this_year_prepared %>%
   dplyr::filter(period == "year_to_date",
                 month == latest_month_number,
                 road_category == "Europa-, riks- og fylkesveg",
@@ -446,8 +448,10 @@ index_2020_prepared %>%
 
 Trafikkutviklinga i Noreg for kvar månad, har vore som vist i tabellen nedanfor.
 
+<br>
+
 ```{r country_monthly_table}
-index_2020_prepared_wide_country %>%
+index_this_year_prepared_wide_country %>%
   flextable::flextable() %>%
   colformat_double(j = 3:14, digits = 1) %>%
   set_header_labels(area_name = "Område",
@@ -477,7 +481,7 @@ Figurane på dei neste sidene viser utviklinga for kvar månad gjennom året, fo
 <br>
 
 ```{r road_category_plot, fig.width=6.5, fig.height=7, fig.cap="Månadleg trafikkutvikling i Noreg per vegkategori."}
-index_2020_prepared %>%
+index_this_year_prepared %>%
   dplyr::filter(period == "month",
                 day_type == "alle",
                 area_type == "COUNTRY") %>%
@@ -504,7 +508,7 @@ index_2020_prepared %>%
 <br>
 
 ```{r day_type_plot_monthly, fig.width=6.5, fig.height=7, fig.cap="Månadleg trafikkutvikling i Noreg per døgntype."}
-index_2020_prepared %>%
+index_this_year_prepared %>%
   dplyr::filter(period == "month",
                 road_category == "Europa-, riks- og fylkesveg",
                 area_type == "COUNTRY") %>%
@@ -545,7 +549,7 @@ Landsdelane er inndelt etter fylka, jamfør Statistisk sentralbyrå:
 ## Trafikkutviklinga for heile året
 
 ```{r so_far_this_year_table_road_category_country_part}
-index_2020_prepared %>%
+index_this_year_prepared %>%
   dplyr::filter(period == "year_to_date",
                 month == latest_month_number,
                 day_type == "alle",
@@ -591,7 +595,7 @@ index_2020_prepared %>%
 <br>
 
 ```{r country_part_plot_monthly, fig.width=6.5, fig.height=5, fig.cap="Månadleg trafikkutvikling i landsdelane."}
-index_2020_prepared %>%
+index_this_year_prepared %>%
   dplyr::filter(period == "month",
                 road_category == "Europa-, riks- og fylkesveg",
                 day_type == "alle",
@@ -627,7 +631,7 @@ index_2020_prepared %>%
 ## Trafikkutviklinga for heile året
 
 ```{r so_far_this_year_table_road_category_county}
-index_2020_prepared %>%
+index_this_year_prepared %>%
   dplyr::filter(period == "year_to_date",
                 month == latest_month_number,
                 day_type == "alle",
@@ -669,7 +673,7 @@ index_2020_prepared %>%
 ## Trafikkutviklinga for kvar månad
 
 ```{r county_monthly_table}
-index_2020_prepared_wide %>%
+index_this_year_prepared_wide %>%
   flextable::flextable() %>%
   colformat_double(j = 2:13, digits = 1) %>%
   set_header_labels(area_name = "Fylke") %>%
