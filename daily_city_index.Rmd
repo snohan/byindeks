@@ -196,7 +196,7 @@ day_of_week_traffic_average <- read.csv2("city_normal_days.csv")
 # Daily traffic ####
 
 data_this_year_from <- "2021-03-01T00:00:00+01:00"
-data_this_year_to <- "2021-03-08T00:00:00+01:00"
+data_this_year_to <- "2021-03-15T00:00:00+01:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -278,16 +278,13 @@ get_trp_index_for_weeknumber <- function(weekno) {
 }
 
 trp_index_9 <- get_trp_index_for_weeknumber(9)
-# trp_index_2 <- get_trp_index_for_weeknumber(2)
+trp_index_10 <- get_trp_index_for_weeknumber(10)
 # trp_index_3 <- get_trp_index_for_weeknumber(3)
 # trp_index_4 <- get_trp_index_for_weeknumber(4)
 # trp_index_5 <- get_trp_index_for_weeknumber(5)
 # trp_index_6 <- get_trp_index_for_weeknumber(6)
 # trp_index_7 <- get_trp_index_for_weeknumber(7)
 # trp_index_8 <- get_trp_index_for_weeknumber(8)
-
-fig_height <- 3 # min 3, max 6.5
-
 
 # City index ####
 city_index <- trp_index %>% 
@@ -299,6 +296,14 @@ city_index <- trp_index %>%
                               digits = 1)) %>% 
   dplyr::select(city_area_name, ukedag, index, ukenr)
 
+number_of_weeks <- length(unique(city_index$ukenr)) # min 1, max 8
+# fig_height min 3, max 6.5
+fig_height <- dplyr::case_when(
+  number_of_weeks <= 3 ~ 3,
+  number_of_weeks == 4 ~ 4,
+  number_of_weeks == 5 ~ 5,
+  number_of_weeks == 6 ~ 6,
+  TRUE ~ 6.5)
 
 # Function for generating table
 make_city_table <- function(city_index, caption_text) {
@@ -332,6 +337,8 @@ make_daily_plot <- function(area_index) {
   
   area_index %>%
     dplyr::mutate(periode = paste0("Uke \n ", ukenr)) %>%
+    dplyr::mutate(periode = factor(periode, 
+                                   levels = stringr::str_sort(periode, numeric = TRUE))) %>%
     ggplot2::ggplot(aes(ukedag, index)) +
     geom_bar(aes(fill = index > 0), stat = "identity",
              color = "#000000",

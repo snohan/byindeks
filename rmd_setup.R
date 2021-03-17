@@ -23,7 +23,8 @@ knitr::opts_chunk$set(echo = FALSE,
                       warning = FALSE,
                       message = FALSE,
                       error = FALSE,
-                      cache = FALSE)
+                      cache = FALSE,
+                      dpi = 200)
 
 # Map essentials ####
 nvdb_map_url <-

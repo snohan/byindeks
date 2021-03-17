@@ -343,11 +343,11 @@ Indekstala er oppgitt i lag med mål på spreiinga i datagrunnlaget:
 
 # Trafikkutviklinga i Noreg
 
-Kort summert har trafikkutviklinga vore som følgjer:
+Kort summert har trafikkutviklinga vore som følgjer i perioden januar - `r latest_month_name`, `r this_year`:
 
-Det var `r index_so_far_this_year_all_character` % *`r less_or_more_so_far`* trafikk i `r this_year` enn i `r this_year - 1`. 
+Det var `r index_so_far_this_year_all_character` % *`r less_or_more_so_far`* trafikk så langt i `r this_year` enn i same periode i `r this_year - 1`. 
 
-Utviklinga for lette og tunge køyretøy i `r this_year` er berekna til `r index_so_far_this_year_light` % og `r index_so_far_this_year_heavy` %.
+Utviklinga for lette og tunge køyretøy er berekna til `r index_so_far_this_year_light` % og `r index_so_far_this_year_heavy` %.
 
 Trafikkauken for ulike vegkategoriar: 
 
@@ -397,7 +397,7 @@ index_this_year_prepared %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Endring i trafikkmengde i heile Noreg frå 2019 til 2020, per vegkategori.",
+  set_caption("Endring i trafikkmengde i heile Noreg i januar og februar, frå 2020 til 2021, per vegkategori.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -437,7 +437,7 @@ index_this_year_prepared %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Endring i trafikkmengde i heile Noreg frå 2019 til 2020, per døgntype.",
+  set_caption("Endring i trafikkmengde i heile Noreg i januar og februar, frå 2020 til 2021, per døgntype.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -451,12 +451,14 @@ Trafikkutviklinga i Noreg for kvar månad, har vore som vist i tabellen nedanfor
 <br>
 
 ```{r country_monthly_table}
+number_of_columns <- ncol(index_this_year_prepared_wide_country)
+
 index_this_year_prepared_wide_country %>%
   flextable::flextable() %>%
-  colformat_double(j = 3:14, digits = 1) %>%
+  colformat_double(j = 3:number_of_columns, digits = 1) %>%
   set_header_labels(area_name = "Område",
                     day_type = "Døgntype") %>%
-  align(j = 3:14, align = "right", part = "all") %>%
+  align(j = 3:number_of_columns, align = "right", part = "all") %>%
   bold(part = "header") %>%
   fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
@@ -469,7 +471,7 @@ index_this_year_prepared_wide_country %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Endring i trafikkmengde i Noreg for kvar månad frå 2019 til 2020.",
+  set_caption("Endring i trafikkmengde i Noreg for kvar månad frå 2020 til 2021.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -501,7 +503,7 @@ index_this_year_prepared %>%
   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
        caption = "Data: Statens vegvesen og fylkeskommunane") +
   ggtitle("Endring i trafikkmengde per vegkategori",
-          subtitle = "2020 samanlikna med 2019") +
+          subtitle = "2021 samanlikna med 2020") +
   theme(legend.position = "bottom")
 ```
 
@@ -528,7 +530,7 @@ index_this_year_prepared %>%
   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
        caption = "Data: Statens vegvesen og fylkeskommunane") +
   ggtitle("Endring i trafikkmengde per døgntype",
-          subtitle = "2020 samanlikna med 2019") +
+          subtitle = "2021 samanlikna med 2020") +
   theme(legend.position = "bottom")
 ```
 
@@ -583,7 +585,7 @@ index_this_year_prepared %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Endring i trafikkmengde i landsdelane frå 2019 til 2020.",
+  set_caption("Endring i trafikkmengde i landsdelane i januar og februar, frå 2020 til 2021.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -620,7 +622,7 @@ index_this_year_prepared %>%
   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
        caption = "Data: Statens vegvesen og fylkeskommunane") +
   ggtitle("Endring i trafikkmengde per landsdel",
-          subtitle = "2020 samanlikna med 2019") +
+          subtitle = "2021 samanlikna med 2020") +
   theme(legend.position = "bottom")
 ```
 
@@ -665,7 +667,7 @@ index_this_year_prepared %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Endring i trafikkmengde i fylka frå 2019 til 2020.",
+  set_caption("Endring i trafikkmengde i fylka i januar og februar, frå 2020 til 2021.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -673,11 +675,13 @@ index_this_year_prepared %>%
 ## Trafikkutviklinga for kvar månad
 
 ```{r county_monthly_table}
+number_of_columns_2 <- ncol(index_this_year_prepared_wide)
+
 index_this_year_prepared_wide %>%
   flextable::flextable() %>%
-  colformat_double(j = 2:13, digits = 1) %>%
+  colformat_double(j = 2:number_of_columns_2, digits = 1) %>%
   set_header_labels(area_name = "Fylke") %>%
-  align(j = 2:13, align = "right", part = "all") %>%
+  align(j = 2:number_of_columns_2, align = "right", part = "all") %>%
   bold(part = "header") %>%
   fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
@@ -690,7 +694,7 @@ index_this_year_prepared_wide %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Endring i trafikkmengde i fylka frå 2019 til 2020.",
+  set_caption("Endring i trafikkmengde i fylka frå 2020 til 2021.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
