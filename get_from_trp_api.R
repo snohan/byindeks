@@ -11,7 +11,8 @@ source("H:/Programmering/R/byindeks/trp_api_cookies.R")
 source("H:/Programmering/R/byindeks/split_road_system_reference.R")
 
 # Definitions ####
-trp_api_url <- "https://www.vegvesen.no/datainn/traffic-registration-point/api/"
+#trp_api_url <- "https://www.vegvesen.no/datainn/traffic-registration-point/api/"
+trp_api_url <- "https://trafikkdata-adm.atlas.vegvesen.no/datainn/traffic-registration-point/api/"
 
 parse_and_floor_date <- function(date_column, floor_unit) {
   # floor_unit is second, minute, day etc.
@@ -546,6 +547,7 @@ return(points_trp)
 
 get_all_trs_with_trp <- function() {
   # Get all trs' and their trps
+  # NB! Is not including trp's on trs' without commissions
   api_query <-
     "query trs_trp{
  trafficRegistrationStations(
@@ -570,6 +572,37 @@ response_parsed <- get_via_httr(api_query) %>%
                 station_type = 4,
                 trp_id = 5,
                 trp_name = 6)
+
+return(response_parsed)
+}
+
+get_all_trs_with_trp_via_sensorconfig <- function() {
+  # Get all trs' and their trps
+  api_query <-
+"query trs_trp {
+  trafficRegistrationStations {
+    id
+    name
+    trafficType
+    stationType
+    sensorConfigurations {
+      trafficRegistrationPoint {
+        id
+        name
+      }
+    }
+  }
+}
+"
+
+response_parsed <- get_via_httr(api_query) %>%
+  tidyr::unnest(cols = c(data.trafficRegistrationStations.sensorConfigurations)) %>%
+  dplyr::select(trs_id = data.trafficRegistrationStations.id,
+                trs_name = data.trafficRegistrationStations.name,
+                traffic_type = data.trafficRegistrationStations.trafficType,
+                station_type = data.trafficRegistrationStations.stationType,
+                trp_id = trafficRegistrationPoint.id,
+                trp_name = trafficRegistrationPoint.name)
 
 return(response_parsed)
 }
@@ -983,9 +1016,10 @@ get_trs_device <- function() {
 }
 
 get_trs_history <- function() {
-  # Get all trs' and their device type history
-  query_trs <-
-    "query all_trs{trafficRegistrationStations (withTrps: true) {
+  # Get all trs' and their history
+  api_query <-
+    "query all_trs {
+    trafficRegistrationStations {
 	id
   name
   deviceTypeHistory {
@@ -1006,12 +1040,7 @@ get_trs_history <- function() {
 }
 "
 
-myqueries <- Query$new()
-myqueries$query("points_trp", query_trs)
-
-trs <- cli_trp$exec(myqueries$queries$points_trp) %>%
-  jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
-  as.data.frame() %>%
+response_parsed <- get_via_httr(api_query) %>%
   tidyr::unnest(cols = c(data.trafficRegistrationStations.commissions),
                 keep_empty = TRUE) %>%
   dplyr::rename(commission_valid_from = validFrom,
