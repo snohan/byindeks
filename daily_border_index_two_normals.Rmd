@@ -48,7 +48,8 @@ source("daily_index_report_functions.R")
 # Points on border crossings
 # Fetching those used in the monthly index
 border_monthly_index_data <- get_published_pointindex(2952, 2020, 12)
-border_trp_ids <- border_monthly_index_data[[1]]
+border_trp_ids <- border_monthly_index_data[[1]] %>% 
+  dplyr::mutate(area_name = "Riksgrensen")
 
 # All points from Traffic Data API
 points_metadata <- get_points() %>%
@@ -108,74 +109,33 @@ border_trp_index <- calculate_daily_point_index(border_dt_this_year,
                                                 day_of_week_traffic_average)
 border_trp_index_2020 <- calculate_daily_point_index(border_dt_this_year, 
                                                      day_of_week_traffic_average_2020)
-
-# border_trp_index <- border_dt_this_year %>%
-#   dplyr::select(-point_name) %>%
-#   dplyr::mutate(year = lubridate::year(from),
-#                 month = lubridate::month(from),
-#                 weekno = lubridate::isoweek(from),
-#                 weekday = lubridate::wday(
-#                   from,
-#                   week_start = getOption("lubridate.week.start", 1))) %>%
-#   dplyr::select(-from) %>% 
-#   dplyr::filter(coverage > 99) %>% 
-#   dplyr::left_join(day_of_week_traffic_average,
-#                    by = c(
-#                      "point_id" = "trp_id",
-#                      "month" = "month",
-#                      "weekday" = "day_number_of_week"
-#                    )) %>% 
-#   dplyr::filter(!is.na(daily_traffic)) %>% 
-#   dplyr::mutate(index = round((total_volume / daily_traffic - 1) * 100,
-#                 digits = 1),
-#                 index = dplyr::na_if(index, "Inf")) %>% 
-#   dplyr::left_join(norske_ukedager) %>% 
-#   dplyr::select(trp_id = point_id, ukedag, ukenr = weekno, total_volume, daily_traffic, index) %>% 
-#   dplyr::arrange(factor(ukedag, levels = ukedager))
   
 # Per week
-get_border_trp_index_for_weeknumber <- function(weekno) {
+# Need to have this function here because sourcing it here with 'Søndag' doesn't work
+get_trp_index_for_weeknumber <- function(weekno, trps, trp_index_table) {
 
-  week_data <- border_trp_index %>% 
+  week_data <- trp_index_table %>% 
   dplyr::select(trp_id, ukedag, ukenr, index) %>% 
   dplyr::filter(ukenr == weekno) %>% 
   tidyr::pivot_wider(names_from = ukedag,
                      values_from = index)
 
-  border_trp_index_for_week <- border_trps %>% 
+  trp_index_for_week <- trps %>% 
     dplyr::left_join(week_data) %>% 
-    dplyr::select(name, ukenr:'Søndag')
+    dplyr::select(name, area_name, ukenr:'Søndag') %>% 
+    dplyr::arrange(area_name)
   
-  return(border_trp_index_for_week)
+  return(trp_index_for_week)
 }
 
-get_border_trp_index_for_weeknumber_2020 <- function(weekno) {
 
-  week_data <- border_trp_index_2020 %>% 
-  dplyr::select(trp_id, ukedag, ukenr, index) %>% 
-  dplyr::filter(ukenr == weekno) %>% 
-  tidyr::pivot_wider(names_from = ukedag,
-                     values_from = index)
+border_trp_index_9 <- get_trp_index_for_weeknumber(9, border_trps, border_trp_index)
+border_trp_index_10 <- get_trp_index_for_weeknumber(10, border_trps, border_trp_index)
+border_trp_index_11 <- get_trp_index_for_weeknumber(11, border_trps, border_trp_index)
 
-  border_trp_index_for_week <- border_trps %>% 
-    dplyr::left_join(week_data) %>% 
-    dplyr::select(name, ukenr:'Søndag')
-  
-  return(border_trp_index_for_week)
-}
-
-border_trp_index_9 <- get_border_trp_index_for_weeknumber(9)
-border_trp_index_10 <- get_border_trp_index_for_weeknumber(10)
-border_trp_index_11 <- get_border_trp_index_for_weeknumber(11)
-#border_trp_index_4 <- get_border_trp_index_for_weeknumber(4)
-#border_trp_index_5 <- get_border_trp_index_for_weeknumber(5)
-#border_trp_index_6 <- get_border_trp_index_for_weeknumber(6)
-#border_trp_index_7 <- get_border_trp_index_for_weeknumber(7)
-#border_trp_index_8 <- get_border_trp_index_for_weeknumber(8)
-
-border_trp_index_9_2020 <- get_border_trp_index_for_weeknumber_2020(9)
-border_trp_index_10_2020 <- get_border_trp_index_for_weeknumber_2020(10)
-border_trp_index_11_2020 <- get_border_trp_index_for_weeknumber_2020(11)
+border_trp_index_9_2020 <- get_trp_index_for_weeknumber(9, border_trps, border_trp_index_2020)
+border_trp_index_10_2020 <- get_trp_index_for_weeknumber(10, border_trps, border_trp_index_2020)
+border_trp_index_11_2020 <- get_trp_index_for_weeknumber(11, border_trps, border_trp_index_2020)
 
 
 # Border index ####
