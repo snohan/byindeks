@@ -586,6 +586,7 @@ get_all_trs_with_trp_via_sensorconfig <- function() {
     trafficType
     stationType
     sensorConfigurations {
+      errors
       trafficRegistrationPoint {
         id
         name
@@ -601,6 +602,7 @@ response_parsed <- get_via_httr(api_query) %>%
                 trs_name = data.trafficRegistrationStations.name,
                 traffic_type = data.trafficRegistrationStations.trafficType,
                 station_type = data.trafficRegistrationStations.stationType,
+                errors = errors,
                 trp_id = trafficRegistrationPoint.id,
                 trp_name = trafficRegistrationPoint.name)
 

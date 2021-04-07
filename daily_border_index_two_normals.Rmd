@@ -48,8 +48,7 @@ source("daily_index_report_functions.R")
 # Points on border crossings
 # Fetching those used in the monthly index
 border_monthly_index_data <- get_published_pointindex(2952, 2020, 12)
-border_trp_ids <- border_monthly_index_data[[1]] %>% 
-  dplyr::mutate(area_name = "Riksgrensen")
+border_trp_ids <- border_monthly_index_data[[1]]
 
 # All points from Traffic Data API
 points_metadata <- get_points() %>%
@@ -61,8 +60,8 @@ points_metadata <- get_points() %>%
 # Adding metadata to trps
 border_trps <- points_metadata %>%
   dplyr::filter(trp_id %in% border_trp_ids) %>% 
-  dplyr::arrange(desc(lat))
-
+  dplyr::arrange(desc(lat)) %>% 
+  dplyr::mutate(area_name = "Riksgrensen")
 
 # TRP AADT ####
 adt <- get_aadt_for_trp_list(border_trps$trp_id)
@@ -85,7 +84,7 @@ day_of_week_traffic_average_2020 <- read.csv2("border_normal_days_2020.csv")
 
 # Daily traffic ####
 borderdata_this_year_from <- "2021-03-01T00:00:00+01:00"
-borderdata_this_year_to <- "2021-03-22T00:00:00+01:00"
+borderdata_this_year_to <- "2021-04-05T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -103,7 +102,8 @@ norske_ukedager <- data.frame(weekday = c(1, 2, 3, 4, 5, 6, 7),
 border_dt_this_year <- get_dt_for_trp_list(
   border_trps$trp_id,
   borderdata_this_year_from,
-  borderdata_this_year_to) 
+  borderdata_this_year_to) %>% 
+  dplyr::mutate(area_name = "Riksgrensen")
 
 border_trp_index <- calculate_daily_point_index(border_dt_this_year, 
                                                 day_of_week_traffic_average)
@@ -132,11 +132,14 @@ get_trp_index_for_weeknumber <- function(weekno, trps, trp_index_table) {
 border_trp_index_9 <- get_trp_index_for_weeknumber(9, border_trps, border_trp_index)
 border_trp_index_10 <- get_trp_index_for_weeknumber(10, border_trps, border_trp_index)
 border_trp_index_11 <- get_trp_index_for_weeknumber(11, border_trps, border_trp_index)
+border_trp_index_12 <- get_trp_index_for_weeknumber(12, border_trps, border_trp_index)
+border_trp_index_13 <- get_trp_index_for_weeknumber(13, border_trps, border_trp_index)
 
 border_trp_index_9_2020 <- get_trp_index_for_weeknumber(9, border_trps, border_trp_index_2020)
 border_trp_index_10_2020 <- get_trp_index_for_weeknumber(10, border_trps, border_trp_index_2020)
 border_trp_index_11_2020 <- get_trp_index_for_weeknumber(11, border_trps, border_trp_index_2020)
-
+border_trp_index_12_2020 <- get_trp_index_for_weeknumber(12, border_trps, border_trp_index_2020)
+border_trp_index_13_2020 <- get_trp_index_for_weeknumber(13, border_trps, border_trp_index_2020)
 
 # Border index ####
 border_index <- border_trp_index %>% 
@@ -163,10 +166,10 @@ number_of_weeks <- length(unique(border_index$ukenr)) # min 1, max 8
 # fig_height min 4, max 6.5
 fig_height <- dplyr::case_when(
   #number_of_weeks <= 3 ~ 3,
-  number_of_weeks <= 4 ~ 4,
-  number_of_weeks == 5 ~ 5,
-  number_of_weeks == 6 ~ 6,
-  TRUE ~ 6.5)
+  number_of_weeks <= 4 ~ 5,
+  number_of_weeks == 5 ~ 6,
+  number_of_weeks == 6 ~ 7,
+  TRUE ~ 7.5)
 
 # Need to have this function here because sourcing it here with 'Søndag' doesn't work
 make_border_table <- function(border_base, caption_text) {
@@ -180,7 +183,7 @@ make_border_table <- function(border_base, caption_text) {
 
   border_table <- border_base_table_ready %>%
     flextable() %>%
-    set_header_labels(periode = "") %>%
+    set_header_labels(periode = "Uke") %>%
     bold(part = "header") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%
@@ -215,7 +218,7 @@ officer::block_toc(style = "Figurtekst")
 
 Som følge av smitteverntiltak i forbindelse med spredningen av koronaviruset SARS-CoV-2, har trafikkmengden endret seg. De første tiltakene ble annonsert av Regjeringen torsdag 12. mars 2020 (uke 11), og trådde i kraft fredag 13. mars. 
 
-I perioder har riksgresenovergangene vært stengt. Lørdag 3. januar 2021 kl. 10.00 ble alle riksgrenseoverganger stengt på grunn av koronatesting av alle som skal inn i landet. Ikke alle grenseåpninger og -stenginger er notert her, men det skal kunne ses i tallene for det enkelte trafikkregistreringspunkt.
+I perioder har riksgrenseovergangene vært stengt. Lørdag 3. januar 2021 kl. 10.00 ble alle riksgrenseoverganger stengt på grunn av koronatesting av alle som skal inn i landet. Ikke alle grenseåpninger og -stenginger er notert her, men det skal kunne ses i tallene for det enkelte trafikkregistreringspunkt.
 
 Statens vegvesen har i dag til sammen 30 trafikkregistreringspunkter ved de ulike riksgrenseovergangene fra Svinesund i sør til Storskog i nordøst. Trafikken er ikke registrert i selve grenseovergangen, men litt inn på norsk side. Det er ingen store kryss mellom disse registreringspunktene og riksgrensen, slik at de fleste kjøretøy som blir registrert antas normalt å krysse riksgrensen, selv om enkelte kjøretøy kan stoppe og eventuelt snu på norsk side.
 
@@ -223,7 +226,7 @@ Datagrunnlaget for beregningene hentes fra disse trafikkregistreringspunktene. D
 
 Trafikkutviklingen sammenlignes ved at døgntrafikken i år sammenlignes med tilsvarende gjennomsnittlig døgntrafikk (per ukedag, per måned) i perioden 2016 - 2019, og med 2020 for seg.
 
-Denne rapporten viser utviklingen i uke 9 2021 framover. Trafikkutvikling for 2020 og første del av 2021 finnes i egne rapporter.
+Denne rapporten viser utviklingen i uke 9 2021 framover, men uten å ta hensyn til påskens plassering i de ulike årene. En egen påskesammenligning, samt trafikkutvikling for 2020 og første del av 2021 finnes i egne rapporter på [www.vegvesen.no/fag/trafikk/trafikkdata/trafikkutvikling-under-korona](https://www.vegvesen.no/fag/trafikk/trafikkdata/trafikkutvikling-under-korona).
 
 Alle data er hentet fra [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/trafikkdata/). Døgntrafikk med minst 99 % dekningsgrad er brukt til å beregne prosentvis endring.
 
@@ -239,7 +242,7 @@ Trafikkregistreringspunktene som ligger ved riksgrenseovergangene, er listet opp
 
 ```{r trptable}
 border_trp_adt %>%
-  select(-trp_id, -lat, -lon, -year, -coverage) %>% 
+  select(-trp_id, -lat, -lon, -year, -coverage, -area_name) %>% 
   flextable() %>%
   set_header_labels(name = "Punktnavn",
                     road_reference = "Vegsystemreferanse",
@@ -264,10 +267,11 @@ Figuren nedenfor viser samlet endring i trafikk over riksgrensen for hver ukedag
 
 <br>
 
-```{r plot, fig.width=6, fig.height=fig_height, fig.cap="Estimert endring i trafikk over riksgrensen, avvik fra normalperioden 2016 - 2019."}
+```{r plot, fig.width=6, fig.height=fig_height, fig.cap="Estimert endring i trafikk over riksgrensen."}
 dplyr::bind_rows(border_index,
                  border_index_2020) %>% 
-  make_daily_dodged_bar_plot("Sammenlignet med gjennomsnittlig døgntrafikk i 2016 - 2019 og 2020")
+  make_daily_dodged_bar_plot("Sammenlignet med gjennomsnittlig døgntrafikk i 2016 - 2019 og 2020",
+                             -80, 0)
 ```
 
 
@@ -298,38 +302,44 @@ De følgende tabellene viser daglig endring i trafikk ved hvert av trafikkregist
 <br>
 
 ```{r trptable_1}
-make_border_trp_table(border_trp_index_9,
-                      "Estimert endring i trafikk, avvik fra normalperioden 2016 - 2019, uke 9 2021.")
+border_trp_index_9 %>% 
+  dplyr::select(-area_name) %>% 
+  make_border_trp_table("Estimert endring i trafikk, avvik fra normalperioden 2016 - 2019, uke 9 2021.")
 ```
 
 
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_2}
-make_border_trp_table(border_trp_index_10,
-                      "Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 10 2021.")
+border_trp_index_10 %>% 
+  dplyr::select(-area_name) %>% 
+  make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 10 2021.")
 ```
 
 
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_3}
-make_border_trp_table(border_trp_index_11,
-                      "Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 11 2021.")
+border_trp_index_11 %>% 
+  dplyr::select(-area_name) %>% 
+  make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 11 2021.")
 ```
 
+
+
+`r officer::fpar("", officer::run_pagebreak())`
+```{r trptable_12}
+border_trp_index_12 %>% 
+  dplyr::select(-area_name) %>% 
+  make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 12 2021.")
+```
+
+`r officer::fpar("", officer::run_pagebreak())`
+```{r trptable_13}
+border_trp_index_13 %>% 
+  dplyr::select(-area_name) %>% 
+  make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 13 2021.")
+```
 
 <!--
-`r officer::fpar("", officer::run_pagebreak())`
-```{r trptable_4}
-#make_border_trp_table(border_trp_index_4,
-#                      "Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 4 2021.")
-```
-
-`r officer::fpar("", officer::run_pagebreak())`
-```{r trptable_5}
-#make_border_trp_table(border_trp_index_5,
-#                      "Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 5 2021.")
-```
-
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_6}
 #make_border_trp_table(border_trp_index_6,
