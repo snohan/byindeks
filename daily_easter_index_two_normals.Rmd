@@ -1,0 +1,403 @@
+---
+#title: Sammenligning av påsketrafikken
+output: 
+  officedown::rdocx_document:
+    reference_docx: svv_template.docx
+    toc: true
+    toc_depth: 2
+    fig_caption: true
+    fig_width: 7
+    tables:
+      style: Table
+      layout: autofit
+      width: 1.0
+      caption:
+        style: Tabelltekst
+        pre: 'Tabell'
+        sep: '. '
+      conditional:
+        first_row: true
+        first_column: false
+        last_row: false
+        last_column: false
+        no_hband: false
+        no_vband: true
+    plots:
+      style: Normal
+      align: center
+      caption:
+        style: Figurtekst
+        pre: 'Figur '
+        sep: '. '
+    lists:
+      ol.style: null
+      ul.style: null
+---
+
+```{r setup, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
+# Packages are loaded through sourcing rmd_setup.R
+source("rmd_setup.R")
+
+# Traffic Data API calls to get points metadata and aadt
+source("get_from_trafficdata_api.R")
+
+source("daily_index_report_functions.R")
+
+# Points from city index
+# Fetching those used in the monthly index
+oslo_monthly_index_data <- get_published_pointindex(959, 2020, 12)
+oslo_trp_ids <- data.frame(trp_id = oslo_monthly_index_data[[1]]) %>% 
+  dplyr::mutate(area_name = "Osloområdet")
+
+bergen_monthly_index_data <- get_published_pointindex(8952, 2020, 12)
+bergen_trp_ids <- data.frame(trp_id = bergen_monthly_index_data[[1]]) %>% 
+  dplyr::mutate(area_name = "Bergensområdet")
+
+nord_jaeren_monthly_index_data <- get_published_pointindex(952, 2020, 12)
+nord_jaeren_trp_ids <- data.frame(trp_id = nord_jaeren_monthly_index_data[[1]]) %>% 
+  dplyr::mutate(area_name = "Nord-Jæren")
+
+trondheim_monthly_index_data <- get_published_pointindex(960, 2020, 10)
+trondheim_trp_ids <- data.frame(trp_id = trondheim_monthly_index_data[[1]]) %>% 
+  dplyr::mutate(area_name = "Trondheim")
+
+tromso_monthly_index_data <- get_published_pointindex(961, 2020, 12)
+tromso_trp_ids <- data.frame(trp_id = tromso_monthly_index_data[[1]]) %>% 
+  dplyr::mutate(area_name = "Tromsø")
+
+border_monthly_index_data <- get_published_pointindex(2952, 2020, 12)
+border_trp_ids <- data.frame(trp_id = border_monthly_index_data[[1]]) %>% 
+  dplyr::mutate(area_name = "Riksgrensen")
+
+chosen_trps_start <- 
+  dplyr::bind_rows(
+    oslo_trp_ids,
+    bergen_trp_ids,
+    nord_jaeren_trp_ids,
+    trondheim_trp_ids,
+    tromso_trp_ids,
+    border_trp_ids
+  )
+
+additional_trps <- 
+  data.frame(area_name = 
+               c(rep("Trondheim", times = 8),
+                 rep("Nord-Jæren", times = 28)),
+             trp_id = c(
+                                  # Trondheim
+                                  "04211V1677432",
+                                  "78492V2394249",
+                                  "44660V72811",
+                                  "17961V72812",
+                                  "36935V72359",
+                                  "01676V41944",
+                                  "60797V2801059",
+                                  "66126V3112188",
+                                  # Nord-Jæren
+                                  #"93189V320582",
+                                  "52780V320689",
+                                  "13715V2721330",
+                                  "14570V320273",
+                                  #"50749V319525",
+                                  "11531V320190",
+                                  #"71535V319524",
+                                  "50741V1727509",
+                                  "41451V320581",
+                                  "64211V2520554",
+                                  "55507V319881",
+                                  "33926V2721315",
+                                  "12478V320582",
+                                  "88125V320152",
+                                  "33902V320184",
+                                  "08952V320223",
+                                  "81631V1727485",
+                                  "59675V319722",
+                                  "58562V320296",
+                                  "03819V320689",
+                                  "45342V320223",
+                                  "44083V319868",
+                                  "35382V1727514",
+                                  "24330V320678",
+                                  "36178V320198",
+                                  #"92102V319885",
+                                  #"32842V319521",
+                                  "61487V319872",
+                                  "00462V320124",
+                                  "48362V320684",
+                                  "89794V320138",
+                                  "05658V320707",
+                                  "57836V319878"
+                                  ))
+
+points_to_exclude <- c("18573V444291", # Fjellsrud
+                       "81008V41567", # Festningsgata
+                       "14630V805616", # Danmarks plass ved ladestasjon
+                       "17949V320695", # Bybrua sør
+                       "57279V320244", # Storhaugtunnelen
+                       "68351V319882", # Kannik
+                       "33808V625649", # Helsfyr 1234 
+                       "75341V41863", # Jonsvannsveien
+                       "01316V804837", # Munkebotntunnelen
+                       "57211V805408", # Ibsensgate
+                       "13093V804836", # Amalie F
+                       "78845V804838", # Amalie S
+                       "18788V1811746", # Mogreina på
+                       "67263V1811577", # Mogreina
+                       "63515V1811747" # Mogreina av
+)
+
+chosen_trps <- bind_rows(chosen_trps_start, additional_trps) %>% 
+  dplyr::filter(!(trp_id %in% points_to_exclude))
+
+# All points from Traffic Data API
+points_metadata <- get_points() %>%
+  dplyr::select(trp_id, name, road_reference, municipality_name,
+                lat, lon) %>%
+  dplyr::distinct(trp_id, .keep_all = T) %>% 
+  dplyr::mutate(name = stringr::str_to_title(name, locale = "no"))
+
+# Adding metadata to trps
+trps <- dplyr::left_join(chosen_trps, points_metadata) %>%
+  dplyr::filter(!is.na(name))
+```
+
+```{r calculate, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
+# Fetching normal days and daily easter traffic
+easter_normal_days_2017_2019_from_file <- read.csv2("easter_normal_days_2017_2019.csv")
+easter_2020_from_file <- read.csv2("easter_days_2020.csv")
+easter_2021_from_file <- read.csv2("easter_days_2021.csv")
+
+trp_index_easter_2021_vs_2017_2019 <- 
+  calculate_daily_easter_point_index(easter_2021_from_file, 
+                                     easter_normal_days_2017_2019_from_file)
+
+trp_index_easter_2020_vs_2017_2019 <- 
+  calculate_daily_easter_point_index(easter_2020_from_file, 
+                                     easter_normal_days_2017_2019_from_file)
+
+trp_index_easter_2021_vs_2020 <- 
+  calculate_daily_easter_point_index(easter_2021_from_file, 
+                                     easter_2020_from_file)
+
+trp_index_easter <- dplyr::bind_rows(
+  trp_index_easter_2021_vs_2017_2019,
+  trp_index_easter_2020_vs_2017_2019,
+  trp_index_easter_2021_vs_2020
+)
+
+# Area index ####
+area_index_easter_per_day <- 
+  calculate_area_index_easter_per_day(trp_index_easter)
+
+area_index_easter <- 
+  calculate_area_index_easter(trp_index_easter)
+
+
+
+
+# Need to have this function here because sourcing it here with 'Søndag' doesn't work
+make_city_table <- function(city_index, caption_text) {
+
+  table_ready <- city_index %>%
+    tidyr::pivot_wider(names_from = ukedag,
+                       values_from = index) %>%
+    dplyr::mutate(periode = paste0("Uke ", ukenr)) %>%
+    dplyr::select(periode, Mandag:'Søndag')
+
+  city_table <- table_ready %>%
+    flextable() %>%
+    set_header_labels(area_name = "Byområde",
+                      periode = "Uke") %>%
+    bold(part = "header") %>%
+    bg(bg = "#ED9300", part = "header") %>%
+    border_remove() %>%
+    hline_top(part = "header", border = borderline) %>%
+    hline_bottom(part = "all", border = borderline) %>%
+    colformat_double(digits = 1) %>%
+    autofit() %>%
+    height_all(height = .2) %>%
+    set_caption(caption_text,
+                autonum = table_numbers,
+                style = "Tabelltekst")
+
+  return(city_table)
+}
+```
+
+<br>
+
+**Tabelliste**
+```{r list_of_tables}
+officer::block_toc(style = "Tabelltekst")
+```
+
+<br>
+
+**Figurliste**
+```{r list_of_figures}
+officer::block_toc(style = "Figurtekst")
+```
+
+# Bakgrunn
+
+Som følge av smitteverntiltak i forbindelse med spredningen av koronaviruset SARS-CoV-2, har trafikkmengden endret seg. De første tiltakene ble annonsert av Regjeringen torsdag 12. mars 2020 (uke 11), og trådde i kraft fredag 13. mars. I denne rapporten presenteres tall for endring i påsketrafikken for utvalgte områder.
+
+Datagrunnlaget for beregningene hentes fra trafikkregistreringspunktene som har data med god kvalitet gjennom hele påsken. Trafikkregistreringspunktene utgjør et representativt utvalg for å kunne beregne trafikkutviklingen for det respektive området. Det gjøres en sammenligning av døgntrafikken, ukedag mot ukedag. For påsketrafikken sammenlignes Skjærtorsdag med Skjærtorsdag osv. Påsken er her definert som perioden fra og med fredag før Palmesøndag og til og med 2. påskedag.
+
+Denne rapporten er et supplement til rapportene for daglig trafikkutvikling for 2020 og 2021 som finnes på [www.vegvesen.no/fag/trafikk/trafikkdata/trafikkutvikling-under-korona](https://www.vegvesen.no/fag/trafikk/trafikkdata/trafikkutvikling-under-korona).
+
+Alle data er hentet fra [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/trafikkdata/). Døgntrafikk med minst 99 % dekningsgrad er brukt til å beregne prosentvis endring.
+
+Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
+
+Været vil enkelte dager kunne påvirke trafikkmengden. For eksempel vil det ved dårlig føre, som ved stort snøfall eller underkjølt regn, bli redusert framkommelighet og dette fører til mindre trafikk enn normalt.
+
+
+# Endring i trafikk
+Påsketrafikken er sammenlignet mellom tre perioder: gjennomsnittet av påsketrafikken i årene 2017-2019, påsken 2020 og påsken 2021. Endringen oppgis i prosent, og trafikken har gått ned når prosentverdien er negativ.
+
+## Samlet endring for hele påsken
+
+<br>
+
+## Bergen
+```{r plot_brg, fig.width=6, fig.height=fig_height, fig.cap="Estimert endring i trafikk i Bergensområdet."}
+dplyr::bind_rows(city_index,
+                 city_index_2020) %>% 
+  dplyr::filter(area_name == "Bergensområdet") %>% 
+  make_daily_dodged_bar_plot("Bergensområdet", -70, 30)
+```
+
+<br>
+
+```{r table_bergen}
+city_index %>% 
+  dplyr::filter(area_name == "Bergensområdet") %>% 
+  dplyr::select(-area_name) %>% 
+  make_city_table("Estimert endring i trafikk i 2021, avvik fra normalperioden 2016 - 2019.")
+```
+
+<br>
+
+```{r table_bergen_2020}
+city_index_2020 %>% 
+  dplyr::filter(area_name == "Bergensområdet") %>% 
+  dplyr::select(-area_name) %>% 
+  make_city_table("Estimert endring i trafikk i 2021, avvik fra gjennomsnittlig ukedagtrafikk i 2020.")
+```
+
+<br>
+
+## Nord-Jæren
+```{r plot_nrj, fig.width=6, fig.height=fig_height, fig.cap="Estimert endring i trafikk på Nord-Jæren."}
+dplyr::bind_rows(city_index,
+                 city_index_2020) %>% 
+  dplyr::filter(area_name == "Nord-Jæren") %>% 
+  make_daily_dodged_bar_plot("Nord-Jæren", -70, 30)
+```
+
+<br>
+
+```{r table_nj}
+city_index %>% 
+  dplyr::filter(area_name == "Nord-Jæren") %>% 
+  dplyr::select(-area_name) %>% 
+  make_city_table("Estimert endring i trafikk i 2021, avvik fra normalperioden 2016 - 2019.")
+```
+
+<br>
+
+```{r table_nj_2020}
+city_index_2020 %>% 
+  dplyr::filter(area_name == "Nord-Jæren") %>% 
+  dplyr::select(-area_name) %>% 
+  make_city_table("Estimert endring i trafikk i 2021, avvik fra gjennomsnittlig ukedagtrafikk i 2020.")
+```
+
+<br>
+
+## Osloområdet
+```{r plot_osl, fig.width=6, fig.height=fig_height, fig.cap="Estimert endring i trafikk i Osloområdet."}
+dplyr::bind_rows(city_index,
+                 city_index_2020) %>% 
+  dplyr::filter(area_name == "Osloområdet") %>% 
+  make_daily_dodged_bar_plot("Osloområdet", -70, 30)
+```
+
+<br>
+
+```{r table_oslo}
+city_index %>% 
+  dplyr::filter(area_name == "Osloområdet") %>% 
+  dplyr::select(-area_name) %>% 
+  make_city_table("Estimert endring i trafikk i 2021, avvik fra normalperioden 2016 - 2019.")
+```
+
+<br>
+
+```{r table_oslo_2020}
+city_index_2020 %>% 
+  dplyr::filter(area_name == "Osloområdet") %>% 
+  dplyr::select(-area_name) %>% 
+  make_city_table("Estimert endring i trafikk i 2021, avvik fra gjennomsnittlig ukedagtrafikk i 2020.")
+```
+
+<br>
+
+## Trondheim
+```{r plot_trd, fig.width=6, fig.height=fig_height, fig.cap="Estimert endring i trafikk i Trondheim."}
+dplyr::bind_rows(city_index,
+                 city_index_2020) %>% 
+  dplyr::filter(area_name == "Trondheim") %>% 
+  make_daily_dodged_bar_plot("Trondheim", -70, 30)
+```
+
+<br>
+
+```{r table_trd}
+city_index %>% 
+  dplyr::filter(area_name == "Trondheim") %>% 
+  dplyr::select(-area_name) %>% 
+  make_city_table("Estimert endring i trafikk i 2021, avvik fra normalperioden 2016 - 2019.")
+```
+
+<br>
+
+```{r table_trd_2020}
+city_index_2020 %>% 
+  dplyr::filter(area_name == "Trondheim") %>% 
+  dplyr::select(-area_name) %>% 
+  make_city_table("Estimert endring i trafikk i 2021, avvik fra gjennomsnittlig ukedagtrafikk i 2020.")
+```
+
+<br>
+
+## Tromsø
+```{r plot_trs, fig.width=6, fig.height=fig_height, fig.cap="Estimert endring i trafikk i Tromsø."}
+dplyr::bind_rows(city_index,
+                 city_index_2020) %>% 
+  dplyr::filter(area_name == "Tromsø") %>% 
+  make_daily_dodged_bar_plot("Tromsø", -70, 30)
+```
+
+<br>
+
+```{r table_trs}
+city_index %>% 
+  dplyr::filter(area_name == "Tromsø") %>% 
+  dplyr::select(-area_name) %>% 
+  make_city_table("Estimert endring i trafikk i 2021, avvik fra normalperioden 2016 - 2019.")
+```
+
+<br>
+
+```{r table_trs_2020}
+city_index_2020 %>% 
+  dplyr::filter(area_name == "Tromsø") %>% 
+  dplyr::select(-area_name) %>% 
+  make_city_table("Estimert endring i trafikk i 2021, avvik fra gjennomsnittlig ukedagtrafikk i 2020.")
+```
+
+## Riksgrensen
+
+

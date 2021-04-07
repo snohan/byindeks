@@ -176,4 +176,53 @@ calculate_daily_point_index <- function(dt_table, normal_days) {
     dplyr::arrange(factor(ukedag, levels = ukedager))
 }
 
+calculate_daily_easter_point_index <- function(easter_to_compare, easter_to_compare_by) {
+
+  trp_index <- easter_to_compare %>%
+    dplyr::select(point_id, index_total_volume = total_volume,
+                  easter_day, index_period = period) %>%
+    dplyr::inner_join(easter_to_compare_by,
+                     by = c(
+                       "point_id" = "point_id",
+                       "easter_day" = "easter_day"
+                     )) %>%
+    dplyr::mutate(index = round((index_total_volume / total_volume - 1) * 100,
+                                digits = 1),
+                  index = dplyr::na_if(index, "Inf"),
+                  compared = stringr::str_c(index_period, period, sep = " mot ")) %>%
+    dplyr::left_join(trps,
+                     by = c(
+                       "point_id" = "trp_id")) %>%
+    dplyr::select(trp_id = point_id, area_name, name, road_reference, municipality_name,
+                  easter_day, compared, index_total_volume, total_volume, index) %>%
+    dplyr::arrange(area_name, factor(easter_day, levels = easter_days))
+}
+
+calculate_area_index_easter_per_day <- function(trp_index) {
+
+  area_index <- trp_index %>%
+    dplyr::select(trp_id, area_name, compared, easter_day, index_total_volume, total_volume) %>%
+    dplyr::group_by(area_name, compared, easter_day) %>%
+    dplyr::summarise(volume_this_year = sum(index_total_volume),
+                     volume_to_compare_by = sum(total_volume),
+                     n_points = n()) %>%
+    dplyr::mutate(index = round((volume_this_year / volume_to_compare_by - 1) * 100,
+                                digits = 1),
+                  easter_day = factor(easter_day, levels = easter_days)) %>%
+    dplyr::select(area_name, compared, n_points, easter_day, index) %>%
+    dplyr::arrange(area_name, compared, easter_day)
+}
+
+calculate_area_index_easter <- function(trp_index) {
+
+  area_index <- trp_index %>%
+    dplyr::select(trp_id, area_name, compared, index_total_volume, total_volume) %>%
+    dplyr::group_by(area_name, compared) %>%
+    dplyr::summarise(volume_this_year = sum(index_total_volume),
+                     volume_to_compare_by = sum(total_volume)) %>%
+    dplyr::mutate(index = round((volume_this_year / volume_to_compare_by - 1) * 100,
+                                digits = 1)) %>%
+    dplyr::select(area_name, compared, index) %>%
+    dplyr::arrange(area_name, compared)
+}
 
