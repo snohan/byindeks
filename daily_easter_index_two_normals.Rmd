@@ -41,6 +41,18 @@ source("rmd_setup.R")
 # Traffic Data API calls to get points metadata and aadt
 source("get_from_trafficdata_api.R")
 
+easter_days <- c("Fredag",
+                 "Lørdag",
+                 "Palmesøndag",
+                 "Mandag",
+                 "Tirsdag",
+                 "Onsdag",
+                 "Skjærtorsdag",
+                 "Langfredag",
+                 "Påskeaften",
+                 "1. påskedag",
+                 "2. påskedag")
+
 source("daily_index_report_functions.R")
 
 # Points from city index
@@ -189,25 +201,22 @@ trp_index_easter <- dplyr::bind_rows(
 area_index_easter_per_day <- 
   calculate_area_index_easter_per_day(trp_index_easter)
 
+area_index_easter_per_day_table_ready <- area_index_easter_per_day %>%
+  tidyr::pivot_wider(names_from = easter_day,
+                     values_from = index) %>% 
+  dplyr::ungroup()
+
 area_index_easter <- 
   calculate_area_index_easter(trp_index_easter)
 
+make_easter_day_table <- function(chosen_area_name, caption_text) {
 
-
-
-# Need to have this function here because sourcing it here with 'Søndag' doesn't work
-make_city_table <- function(city_index, caption_text) {
-
-  table_ready <- city_index %>%
-    tidyr::pivot_wider(names_from = ukedag,
-                       values_from = index) %>%
-    dplyr::mutate(periode = paste0("Uke ", ukenr)) %>%
-    dplyr::select(periode, Mandag:'Søndag')
-
-  city_table <- table_ready %>%
+  area_index_easter_per_day_table_ready %>%
+    dplyr::filter(area_name == chosen_area_name) %>%
+    dplyr::select(-n_points, -area_name) %>%
     flextable() %>%
-    set_header_labels(area_name = "Byområde",
-                      periode = "Uke") %>%
+    set_header_labels(area_name = "Område",
+                      compared = "Sammenligningsperiode") %>%
     bold(part = "header") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%
@@ -219,8 +228,35 @@ make_city_table <- function(city_index, caption_text) {
     set_caption(caption_text,
                 autonum = table_numbers,
                 style = "Tabelltekst")
+}
 
-  return(city_table)
+make_daily_easter_plot <- function(area_index, chosen_area_name) {
+
+  area_index %>%
+    dplyr::filter(area_name == chosen_area_name) %>%
+    dplyr::mutate(compared = stringr::str_replace_all(compared, " ", "\n ")) %>%
+    ggplot2::ggplot(aes(easter_day, index)) +
+    geom_bar(aes(fill = index > 0), stat = "identity",
+             color = "#000000",
+             alpha = 0.6) +
+    scale_fill_manual(guide = FALSE, breaks = c(FALSE, TRUE),
+                      values = c("#ed1c2e", "#58b02c")) +
+    geom_hline(yintercept = 0, color = "#000000") +
+    facet_grid(compared ~., switch = "y") +
+    scale_y_continuous(position = "right",
+                       limits = c(-55, 55),
+                       breaks = c(-25, 0, 25)) +
+    xlab("") +
+    ylab("Endring i trafikkmengde (%)\n") +
+    ggtitle(label = "Daglig endring i påsketrafikken") +
+    theme(strip.text.y = element_text(angle = 180),
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1),
+          axis.ticks.x = element_blank(),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          panel.background = element_blank(),
+          strip.background = element_blank()) +
+    labs(caption = "Data: Statens vegvesen og fylkeskommunene")
 }
 ```
 
@@ -257,147 +293,193 @@ Været vil enkelte dager kunne påvirke trafikkmengden. For eksempel vil det ved
 Påsketrafikken er sammenlignet mellom tre perioder: gjennomsnittet av påsketrafikken i årene 2017-2019, påsken 2020 og påsken 2021. Endringen oppgis i prosent, og trafikken har gått ned når prosentverdien er negativ.
 
 ## Samlet endring for hele påsken
+Nedenfor vises en sammenligning av trafikken i hele påskeperioden.
 
 <br>
 
-## Bergen
-```{r plot_brg, fig.width=6, fig.height=fig_height, fig.cap="Estimert endring i trafikk i Bergensområdet."}
-dplyr::bind_rows(city_index,
-                 city_index_2020) %>% 
-  dplyr::filter(area_name == "Bergensområdet") %>% 
-  make_daily_dodged_bar_plot("Bergensområdet", -70, 30)
+```{r easter_plot, fig.width=6, fig.height=5, fig.cap="Estimert endring i påsketrafikk i utvalgte byområder."}
+area_index_easter %>%
+  dplyr::filter(area_name != "Riksgrensen") %>% 
+  ggplot2::ggplot(aes(compared, index)) +
+  geom_bar(aes(fill = index > 0), stat = "identity",
+           color = "#000000",
+           alpha = 0.6) +
+  scale_fill_manual(guide = FALSE, breaks = c(FALSE, TRUE),
+                    values = c("#ed1c2e", "#58b02c")) +
+  geom_hline(yintercept = 0, color = "#000000") +
+  facet_grid(area_name ~ ., switch = "y") +
+  scale_y_continuous(position = "right",
+                     limits = c(-25, 25),
+                     breaks = c(-20, 0, 20)) +
+  xlab("") +
+  ylab("Endring i trafikkmengde (%)\n") +
+  ggtitle(label = "Sammenligning av påsketrafikken i de største byområdene") +
+  theme(strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        strip.background = element_blank()) +
+  labs(caption = "Data: Statens vegvesen og fylkeskommunene")
+```
+
+<br>
+
+```{r easter_plot_border, fig.width=6, fig.height=3, fig.cap="Estimert endring i påsketrafikk ved riksgrensen."}
+area_index_easter %>%
+  dplyr::filter(area_name == "Riksgrensen") %>% 
+  ggplot2::ggplot(aes(compared, index)) +
+  geom_bar(aes(fill = index > 0), stat = "identity",
+           color = "#000000",
+           alpha = 0.6) +
+  scale_fill_manual(guide = FALSE, breaks = c(FALSE, TRUE),
+                    values = c("#ed1c2e", "#58b02c")) +
+  geom_hline(yintercept = 0, color = "#000000") +
+  facet_grid(area_name ~ ., switch = "y") +
+  scale_y_continuous(position = "right",
+                     limits = c(-100, 15),
+                     breaks = c(-100, 0, 10)) +
+  xlab("") +
+  ylab("Endring i trafikkmengde (%)\n") +
+  ggtitle(label = "Sammenligning av påsketrafikken ved riksgrensen") +
+  theme(strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        strip.background = element_blank()) +
+  labs(caption = "Data: Statens vegvesen og fylkeskommunene")
+```
+
+<br>
+
+```{r table_easter}
+area_index_easter %>%
+  flextable() %>%
+  colformat_int(j = "n_points", big.mark = "") %>%
+  set_header_labels(area_name = "Område",
+                    compared = "Sammenligningsperioder",
+                    n_points = "Antall \n trafikkregistreringspunkt \n i utvalget",
+                    index = "Endring i \n trafikkmengde \n (%)") %>%
+  bold(part = "header") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  hline(i = c(3, 6, 9, 12, 15), part = "body",
+        border = fp_border(color = "#dadada", width = 1)) %>%
+  #colformat_double(digits = 1) %>%
+  autofit() %>%
+  height_all(height = .2) %>%
+  set_caption("Endring i påsketrafikken i utvalgte områder.",
+              autonum = table_numbers,
+              style = "Tabelltekst")
+```
+
+<br>
+
+## Endring for hver dag i påsken
+I det følgende er trafikken sammenlignet dag for dag i påskeperioden.
+
+<br>
+
+### Bergensområdet
+```{r plot_brg, fig.width=6, fig.height=4, fig.cap="Estimert endring i påsketrafikk i Bergensområdet."}
+make_daily_easter_plot(area_index_easter_per_day, "Bergensområdet")
 ```
 
 <br>
 
 ```{r table_bergen}
-city_index %>% 
-  dplyr::filter(area_name == "Bergensområdet") %>% 
-  dplyr::select(-area_name) %>% 
-  make_city_table("Estimert endring i trafikk i 2021, avvik fra normalperioden 2016 - 2019.")
+make_easter_day_table("Bergensområdet", "Endring i påsketrafikken i Bergensområdet.")
 ```
+
 
 <br>
 
-```{r table_bergen_2020}
-city_index_2020 %>% 
-  dplyr::filter(area_name == "Bergensområdet") %>% 
-  dplyr::select(-area_name) %>% 
-  make_city_table("Estimert endring i trafikk i 2021, avvik fra gjennomsnittlig ukedagtrafikk i 2020.")
-```
-
-<br>
-
-## Nord-Jæren
-```{r plot_nrj, fig.width=6, fig.height=fig_height, fig.cap="Estimert endring i trafikk på Nord-Jæren."}
-dplyr::bind_rows(city_index,
-                 city_index_2020) %>% 
-  dplyr::filter(area_name == "Nord-Jæren") %>% 
-  make_daily_dodged_bar_plot("Nord-Jæren", -70, 30)
+### Nord-Jæren
+```{r plot_nrj, fig.width=6, fig.height=4, fig.cap="Estimert endring i påsketrafikk på Nord-Jæren."}
+make_daily_easter_plot(area_index_easter_per_day, "Nord-Jæren")
 ```
 
 <br>
 
 ```{r table_nj}
-city_index %>% 
-  dplyr::filter(area_name == "Nord-Jæren") %>% 
-  dplyr::select(-area_name) %>% 
-  make_city_table("Estimert endring i trafikk i 2021, avvik fra normalperioden 2016 - 2019.")
+make_easter_day_table("Nord-Jæren", "Endring i påsketrafikken på Nord-Jæren.")
 ```
+
 
 <br>
 
-```{r table_nj_2020}
-city_index_2020 %>% 
-  dplyr::filter(area_name == "Nord-Jæren") %>% 
-  dplyr::select(-area_name) %>% 
-  make_city_table("Estimert endring i trafikk i 2021, avvik fra gjennomsnittlig ukedagtrafikk i 2020.")
-```
-
-<br>
-
-## Osloområdet
-```{r plot_osl, fig.width=6, fig.height=fig_height, fig.cap="Estimert endring i trafikk i Osloområdet."}
-dplyr::bind_rows(city_index,
-                 city_index_2020) %>% 
-  dplyr::filter(area_name == "Osloområdet") %>% 
-  make_daily_dodged_bar_plot("Osloområdet", -70, 30)
+### Osloområdet
+```{r plot_osl, fig.width=6, fig.height=4, fig.cap="Estimert endring i påsketrafikk i Osloområdet."}
+make_daily_easter_plot(area_index_easter_per_day, "Osloområdet")
 ```
 
 <br>
 
 ```{r table_oslo}
-city_index %>% 
-  dplyr::filter(area_name == "Osloområdet") %>% 
-  dplyr::select(-area_name) %>% 
-  make_city_table("Estimert endring i trafikk i 2021, avvik fra normalperioden 2016 - 2019.")
+make_easter_day_table("Osloområdet", "Endring i påsketrafikken i Osloområdet.")
 ```
 
 <br>
 
-```{r table_oslo_2020}
-city_index_2020 %>% 
-  dplyr::filter(area_name == "Osloområdet") %>% 
-  dplyr::select(-area_name) %>% 
-  make_city_table("Estimert endring i trafikk i 2021, avvik fra gjennomsnittlig ukedagtrafikk i 2020.")
-```
-
-<br>
-
-## Trondheim
-```{r plot_trd, fig.width=6, fig.height=fig_height, fig.cap="Estimert endring i trafikk i Trondheim."}
-dplyr::bind_rows(city_index,
-                 city_index_2020) %>% 
-  dplyr::filter(area_name == "Trondheim") %>% 
-  make_daily_dodged_bar_plot("Trondheim", -70, 30)
+### Trondheim
+```{r plot_trd, fig.width=6, fig.height=4, fig.cap="Estimert endring i påsketrafikk i Trondheim."}
+make_daily_easter_plot(area_index_easter_per_day, "Trondheim")
 ```
 
 <br>
 
 ```{r table_trd}
-city_index %>% 
-  dplyr::filter(area_name == "Trondheim") %>% 
-  dplyr::select(-area_name) %>% 
-  make_city_table("Estimert endring i trafikk i 2021, avvik fra normalperioden 2016 - 2019.")
+make_easter_day_table("Trondheim", "Endring i påsketrafikken i Trondheim")
 ```
+
 
 <br>
 
-```{r table_trd_2020}
-city_index_2020 %>% 
-  dplyr::filter(area_name == "Trondheim") %>% 
-  dplyr::select(-area_name) %>% 
-  make_city_table("Estimert endring i trafikk i 2021, avvik fra gjennomsnittlig ukedagtrafikk i 2020.")
-```
-
-<br>
-
-## Tromsø
-```{r plot_trs, fig.width=6, fig.height=fig_height, fig.cap="Estimert endring i trafikk i Tromsø."}
-dplyr::bind_rows(city_index,
-                 city_index_2020) %>% 
-  dplyr::filter(area_name == "Tromsø") %>% 
-  make_daily_dodged_bar_plot("Tromsø", -70, 30)
+### Tromsø
+```{r plot_trs, fig.width=6, fig.height=4, fig.cap="Estimert endring i påsketrafikk i Tromsø."}
+make_daily_easter_plot(area_index_easter_per_day, "Tromsø")
 ```
 
 <br>
 
 ```{r table_trs}
-city_index %>% 
-  dplyr::filter(area_name == "Tromsø") %>% 
-  dplyr::select(-area_name) %>% 
-  make_city_table("Estimert endring i trafikk i 2021, avvik fra normalperioden 2016 - 2019.")
+make_easter_day_table("Tromsø", "Endring i påsketrafikken i Tromsø")
 ```
 
 <br>
 
-```{r table_trs_2020}
-city_index_2020 %>% 
-  dplyr::filter(area_name == "Tromsø") %>% 
-  dplyr::select(-area_name) %>% 
-  make_city_table("Estimert endring i trafikk i 2021, avvik fra gjennomsnittlig ukedagtrafikk i 2020.")
+### Riksgrensen
+```{r plot_rgr, fig.width=6, fig.height=4, fig.cap="Estimert endring i påsketrafikk ved riksgrensen."}
+area_index_easter_per_day %>%
+    dplyr::filter(area_name == "Riksgrensen") %>% 
+    dplyr::mutate(compared = stringr::str_replace_all(compared, " ", "\n ")) %>% 
+    ggplot2::ggplot(aes(easter_day, index)) +
+    geom_bar(aes(fill = index > 0), stat = "identity",
+             color = "#000000",
+             alpha = 0.6) +
+    scale_fill_manual(guide = FALSE, breaks = c(FALSE, TRUE),
+                      values = c("#ed1c2e", "#58b02c")) +
+    geom_hline(yintercept = 0, color = "#000000") +
+    facet_grid(compared ~., switch = "y") +
+    scale_y_continuous(position = "right",
+                       limits = c(-100, 20),
+                       breaks = c(-100, -50, 0, 20)) +
+    xlab("") +
+    ylab("Endring i trafikkmengde (%)\n") +
+    ggtitle(label = "Daglig endring i påsketrafikken") +
+    theme(strip.text.y = element_text(angle = 180),
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1),
+          axis.ticks.x = element_blank(),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          panel.background = element_blank(),
+          strip.background = element_blank()) +
+    labs(caption = "Data: Statens vegvesen og fylkeskommunene")
 ```
 
-## Riksgrensen
+<br>
 
-
+```{r table_rgr}
+make_easter_day_table("Riksgrensen", "Endring i påsketrafikken ved riksgrensen")
+```

@@ -219,10 +219,14 @@ calculate_area_index_easter <- function(trp_index) {
     dplyr::select(trp_id, area_name, compared, index_total_volume, total_volume) %>%
     dplyr::group_by(area_name, compared) %>%
     dplyr::summarise(volume_this_year = sum(index_total_volume),
-                     volume_to_compare_by = sum(total_volume)) %>%
+                     volume_to_compare_by = sum(total_volume),
+                     n_points = n() / 11) %>%
     dplyr::mutate(index = round((volume_this_year / volume_to_compare_by - 1) * 100,
                                 digits = 1)) %>%
-    dplyr::select(area_name, compared, index) %>%
+    dplyr::select(area_name, compared, n_points, index) %>%
     dplyr::arrange(area_name, compared)
 }
+
+
+
 
