@@ -91,6 +91,11 @@ get_points_from_trp_api <- function() {
             position
           }
         }
+        meteringDirectionChanged
+        direction {
+          from
+          to
+        }
       }
     }"
 
@@ -111,12 +116,26 @@ get_points_from_trp_api <- function() {
       road_network_position =
         data.trafficRegistrationPoints.location.roadLink.position,
       road_network_link =
-        data.trafficRegistrationPoints.location.roadLink.id) %>%
+        data.trafficRegistrationPoints.location.roadLink.id#,
+      #metering_direction_changed = data.trafficRegistrationPoints.meteringDirectionChanged,
+      #direction_from = data.trafficRegistrationPoints.direction.from,
+      #direction_to = data.trafficRegistrationPoints.direction.to
+      ) %>%
     dplyr::mutate(road_link_position = paste0(road_network_position, "@",
-                                              road_network_link)) %>%
+                                              road_network_link)#,
+                  #direction_for_odd_lanenumbers =
+                  #  dplyr::if_else(metering_direction_changed == FALSE,
+                  #                 paste0("Fra ", direction_from, " til ", direction_to),
+                  #                 paste0("Fra ", direction_to, " til ", direction_from)),
+                  #direction_for_even_lanenumbers =
+                  #  dplyr::if_else(metering_direction_changed == FALSE,
+                  #                 paste0("Fra ", direction_to, " til ", direction_from),
+                  #                 paste0("Fra ", direction_from, " til ", direction_to))
+                  ) %>%
     dplyr::select(trp_id, legacy_nortraf_mpn, name, traffic_type, trp_status, registration_frequency,
                   #county_geono,
                   county_name, municipality_name,
+                  #metering_direction_changed, direction_from, direction_to,
                   road_reference, road_link_position, lat, lon)
 
   return(points_trp)
@@ -445,7 +464,7 @@ get_stations_from_TRPAPI <- function() {
   return(points_trp)
 }
 
-get_stations_and_trps_with_coordinates_from_TRPAPI_httr <- function() {
+get_trs_and_trps_with_coordinates_from_trp_api <- function() {
   # Get all traffic registration stations
   api_query <-
     "query getStation{
@@ -473,13 +492,15 @@ get_stations_and_trps_with_coordinates_from_TRPAPI_httr <- function() {
             longitude
           }
         }
-        currentRoadReference{
+       roadReference {
           shortForm
-          countyInformation {
-            id
+        }
+        municipality {
+          name
+          county {
+            geographicNumber
             name
           }
-          category
         }
       }
     }
@@ -498,12 +519,10 @@ get_stations_and_trps_with_coordinates_from_TRPAPI_httr <- function() {
       punktnavn = name,
       punkt_lat = location.coordinates.latlon.latitude,
       punkt_lon = location.coordinates.latlon.longitude,
-      punkt_vegref = location.currentRoadReference.shortForm,
-      punkt_vegref_kort = location.currentRoadReference,
-      punkt_vegkategori = location.currentRoadReference.category,
-      fylkenr = location.currentRoadReference.countyInformation.id,
-      fylkenavn = location.currentRoadReference.countyInformation.name) %>%
-    dplyr::select(-punkt_vegref_kort)
+      punkt_vegref = location.roadReference.shortForm,
+      kommunenavn = location.municipality.name,
+      fylkenr = location.municipality.county.geographicNumber,
+      fylkenavn = location.municipality.county.name)
 
   return(points_trp)
 }
@@ -585,6 +604,7 @@ get_all_trs_with_trp_via_sensorconfig <- function() {
     name
     trafficType
     stationType
+    operationalStatus
     sensorConfigurations {
       errors
       trafficRegistrationPoint {
@@ -602,6 +622,7 @@ response_parsed <- get_via_httr(api_query) %>%
                 trs_name = data.trafficRegistrationStations.name,
                 traffic_type = data.trafficRegistrationStations.trafficType,
                 station_type = data.trafficRegistrationStations.stationType,
+                operational_status = data.trafficRegistrationStations.operationalStatus,
                 errors = errors,
                 trp_id = trafficRegistrationPoint.id,
                 trp_name = trafficRegistrationPoint.name)

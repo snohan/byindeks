@@ -409,6 +409,42 @@ get_points_with_direction <- function() {
   return(api_response)
 }
 
+get_trps_with_direction <- function() {
+  # Get all traffic registration points
+  api_query <-
+    "query trps_and_direction {
+      trafficRegistrationPoints {
+        id
+        meteringDirectionChanged
+        direction {
+          from
+          fromAccordingToMetering
+          to
+          toAccordingToMetering
+        }
+      }
+    }"
+
+  myqueries <- Query$new()
+  myqueries$query("api_data", api_query)
+
+  api_response <- cli$exec(myqueries$queries$api_data) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
+    as.data.frame() %>%
+    dplyr::select(trp_id =
+                    data.trafficRegistrationPoints.id,
+                  metering_direction_changed =
+                    data.trafficRegistrationPoints.meteringDirectionChanged,
+                  from = data.trafficRegistrationPoints.direction.from,
+                  to = data.trafficRegistrationPoints.direction.to,
+                  from_according_to_metering =
+                    data.trafficRegistrationPoints.direction.fromAccordingToMetering,
+                  to_according_to_metering =
+                    data.trafficRegistrationPoints.direction.toAccordingToMetering)
+  # TODO: join direction names for odd and even lanes
+
+  return(api_response)
+}
 
 get_trps_latest_data <- function() {
   # Get all traffic registration points
