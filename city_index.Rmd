@@ -23,14 +23,14 @@ source("get_from_nvdb_api.R")
 
 ```{r get_data, include=FALSE}
 # Fetching published index from Traffic Data API
-index_2020_bergen <- get_published_index_for_months(958, 2020, 7)
-index_2020_buskerud <- get_published_index_for_months(1952, 2020, 7)
-index_2020_grenland <- get_published_index_for_months(955, 2020, 7)
-index_2020_krs_omegn <- get_published_index_for_months(957, 2020, 7)
-index_2020_glomma <- get_published_index_for_months(953, 2020, 7)
-index_2020_jaren <- get_published_index_for_months(952, 2020, 7)
-index_2020_oslo <- get_published_index_for_months(959, 2020, 7)
-index_2020_tromso <- get_published_index_for_months(961, 2020, 7)
+index_2020_bergen <- get_published_index_for_months(8952, 2020, 12)
+index_2020_buskerud <- get_published_index_for_months(1952, 2020, 12)
+index_2020_grenland <- get_published_index_for_months(955, 2020, 12)
+index_2020_krs_omegn <- get_published_index_for_months(957, 2020, 12)
+index_2020_glomma <- get_published_index_for_months(953, 2020, 12)
+index_2020_jaren <- get_published_index_for_months(952, 2020, 12)
+index_2020_oslo <- get_published_index_for_months(959, 2020, 12)
+index_2020_tromso <- get_published_index_for_months(961, 2020, 12)
 
 index_2020 <- dplyr::bind_rows(index_2020_bergen,
                                index_2020_buskerud,
@@ -41,12 +41,19 @@ index_2020 <- dplyr::bind_rows(index_2020_bergen,
                                index_2020_oslo,
                                index_2020_tromso)
 
-# TODO: no points in this report! It'll be too much...
-#pointindex_2020 <- get_published_pointindex(2952, 2020, 7)
+# Including Trondheim with results in csv:
+city_trd <-
+    read.csv2(
+      paste0("data_indexpoints_tidy/byindeks_960.csv"))
 
-# Index points
-#border_points <- pointindex_2020[[1]]
+city_monthly_trd <- 
+  read.csv2(
+    paste0("data_indexpoints_tidy/byindeks_maanedlig_960.csv")) %>% 
+  dplyr::mutate(# setting all years to same is a trick to get the plot facet correct
+                month_object = lubridate::make_date(year = 2000, month = month),
+                month_name_short = lubridate::month(month_object, label = TRUE))
 
+# No points in this report! It'll be too much...
 ```
 
 # Byindekser

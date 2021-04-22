@@ -24,23 +24,23 @@ feltkoder <- tibble::enframe(unique(bomdata_trondheim_maanedlig$felt))
 
 areaplot_by_class <- function(data_to_plot, station_no_from, station_no_to) {
   
-data_to_plot %>% 
-  dplyr::filter(
-    felt %in% feltkoder$value[station_no_from:station_no_to]) %>% 
-  ggplot2::ggplot(aes(aar_maaned, trafikkvolum_andel,
-                      fill = klasse, alpha)) +
-  geom_area() +
-  scale_fill_brewer() +
-  facet_grid(stasjon ~ ., switch = "y") +
-  theme_minimal() +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        axis.text.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        panel.grid = element_blank(),
-        strip.text.y = element_text(angle = 180)) +
-  ggtitle(label = "Relativ andel kjøretøy i klasser", 
-          subtitle = "Data fra bomstasjonene som er med i byindeks for Trondheim")
+  data_to_plot %>% 
+    dplyr::filter(
+      felt %in% feltkoder$value[station_no_from:station_no_to]) %>% 
+    ggplot2::ggplot(aes(aar_maaned, trafikkvolum_andel,
+                        fill = klasse, alpha)) +
+    geom_area() +
+    scale_fill_brewer() +
+    facet_grid(stasjon ~ ., switch = "y") +
+    theme_minimal() +
+    theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks.y = element_blank(),
+          panel.grid = element_blank(),
+          strip.text.y = element_text(angle = 180)) +
+    ggtitle(label = "Relativ andel kjøretøy i klasser", 
+            subtitle = "Data fra bomstasjonene som er med i byindeks for Trondheim")
   
 }
 ```
@@ -76,42 +76,50 @@ feltkoder <- tibble::enframe(unique(bomindeks_trondheim_maanedlig$felt))
 
 stepplot_by_class <- function(data_to_plot, station_no_from, station_no_to) {
   
-data_to_plot %>% 
-  dplyr::filter(
-    felt %in% feltkoder$value[station_no_from:station_no_to]) %>% 
-  ggplot2::ggplot(aes(aar_maaned, indeks)) +
-  geom_bar(stat = "identity") +
-  facet_grid(stasjon ~ ., switch = "y") +
-  theme_minimal() +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        axis.text.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        panel.grid = element_blank(),
-        strip.text.y = element_text(angle = 180)) +
-  ggtitle(label = "Indeks", 
-          subtitle = "Data fra bomstasjonene som er med i byindeks for Trondheim")
+  data_to_plot %>% 
+    dplyr::filter(
+      felt %in% feltkoder$value[station_no_from:station_no_to]) %>% 
+    ggplot2::ggplot(aes(aar_maaned, indeks)) +
+    geom_bar(stat = "identity") +
+    facet_grid(stasjon ~ ., switch = "y") +
+    theme_minimal() +
+    theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks.y = element_blank(),
+          panel.grid = element_blank(),
+          strip.text.y = element_text(angle = 180)) +
+    ggtitle(label = "Indeks", 
+            subtitle = "Data fra bomstasjonene som er med i byindeks for Trondheim")
   
 }
 ```
 
 ```{r indeksplott1, fig.width=8, fig.height=8}
-stepplot_by_class(bomindeks_trondheim_maanedlig, 1, 5)
+bomindeks_trondheim_maanedlig %>% 
+  dplyr::filter(klasse == "Liten_bil") %>% 
+  stepplot_by_class(1, 5)
 ```
 
 ```{r indeksplott2, fig.width=8, fig.height=8}
-stepplot_by_class(bomindeks_trondheim_maanedlig, 6, 10)
+bomindeks_trondheim_maanedlig %>% 
+  dplyr::filter(klasse == "Liten_bil") %>% 
+  stepplot_by_class(6, 10)
 ```
 
 
 
 ```{r indeksplott3, fig.width=8, fig.height=8}
-stepplot_by_class(bomindeks_trondheim_maanedlig, 11, 15)
+bomindeks_trondheim_maanedlig %>% 
+  dplyr::filter(klasse == "Liten_bil") %>% 
+  stepplot_by_class(11, 15)
 ```
 
 
 ```{r indeksplott4, fig.width=8, fig.height=8}
-stepplot_by_class(bomindeks_trondheim_maanedlig, 16, 20)
+bomindeks_trondheim_maanedlig %>% 
+  dplyr::filter(klasse == "Liten_bil") %>% 
+  stepplot_by_class(16, 20)
 ```
 
 

@@ -1,3 +1,6 @@
+# This script adds trp index and toll station index
+# An extra to city_index_dataprep.R
+
 # Tolling stations with metadata ####
 kommunenr <- "5001"
 kommunenavn <- hent_kommune(kommunenr)[[1]]
@@ -28,6 +31,7 @@ trh_bomer <- kommune_bomer %>%
   dplyr::mutate(municipality_name = "Trondheim")
 
 # TRPs ####
+# Note: points and city_trps is made in city_index_dataprep.R
 this_citys_trps <- points %>%
   dplyr::filter(trp_id %in% city_trps) %>%
   dplyr::select(trp_id, name, road_reference,
@@ -43,6 +47,7 @@ this_citys_trps_all <- bind_rows(this_citys_trps, trh_bomer) %>%
                 municipality_name, lat, lon, road_link_position,
                 station_type)
 
+
 # Index results per year ####
 # from CSV-files
 # Pointindex for trps fetched in parent file
@@ -53,16 +58,23 @@ tollpointindex <- read.csv2(
                 index = indeks) %>%
   dplyr::mutate(trp_id = as.character(trp_id)) %>%
   dplyr::select(-felt, -stasjon) %>%
-  dplyr::select(trp_id, base_volume, calc_volume, index, year)
+  dplyr::select(trp_id, length_range = klasse, base_volume, calc_volume, index, year)
 
 pointindex_20_trp_toll <- tollpointindex %>%
   dplyr::filter(year == 2020) %>%
-  dplyr::mutate(index_20 = round(index, digits = 1)) %>%
-  dplyr::select(trp_id, base_volume, calc_volume, index_20) %>%
-  dplyr::bind_rows(pointindex_20)
+  dplyr::filter(length_range != "Ukjent") %>%
+  dplyr::mutate(index = round(index, digits = 1),
+                length_range = dplyr::case_when(
+                  length_range == "Alle" ~ "all",
+                  length_range == "Liten_bil" ~ "short",
+                  length_range == "Stor_bil" ~ "long"
+                )) %>%
+  dplyr::select(trp_id, length_range, base_volume, calc_volume, index) %>%
+  dplyr::bind_rows(pointindex_20_long_year_to_date)
 
 n_20 <- pointindex_20_trp_toll %>%
-  dplyr::filter(!is.na(index_20)) %>%
+  dplyr::filter(length_range == "short") %>%
+  dplyr::filter(!is.na(index)) %>%
   nrow()
 
 
@@ -102,39 +114,46 @@ this_citys_trps_all_adt_final <- this_citys_trps_all_adt %>%
   dplyr::filter(!is.na(adt)) %>%
   dplyr::bind_rows(missing_adt_small_cars)
 
+
+pointindex_20_trp_toll_short <- pointindex_20_trp_toll %>%
+  dplyr::filter(length_range == "short")
+
 # Adding pointindices to all points
 this_citys_trps_all_adt_final_index <- this_citys_trps_all_adt_final %>%
-  dplyr::left_join(select(pointindex_20_trp_toll, 1, 4)) %>%
+  dplyr::left_join(select(pointindex_20_trp_toll_short, 1, 4)) %>%
   split_road_system_reference()
 
-# TODO: include refyear from 2021
+# TODO: include refyear from completed 2021
 this_citys_trp_index_refyear <- this_citys_trps_all_adt_final_index
 
 # Write file in parent script
 
 
-
 # City index ####
 # Must calculate based on all pointindices
 city_index_20 <- pointindex_20_trp_toll %>%
+  dplyr::group_by(length_range) %>%
   dplyr::summarise(base_volume_all = sum(base_volume),
                    calc_volume_all = sum(calc_volume),
                    index_p = (calc_volume_all / base_volume_all - 1 ) * 100,
                    n_points = n(),
                    year_from_to = "2019-2020")
 
+city_index_20_short <- city_index_20 %>%
+  dplyr::filter(length_range == "short")
+
 # To find weighted variance and ci
 pointindex_20_trp_toll_sd <- pointindex_20_trp_toll %>%
-  dplyr::filter(!is.na(index_20)) %>%
-  dplyr::mutate(city_index = city_index_20$index,
-                city_base_volume = city_index_20$base_volume_all,
-                diff = (base_volume / city_base_volume) *
-                  (index_20 - city_index)^2,
-                weight = (base_volume / city_base_volume)^2) %>%
+  dplyr::filter(!is.na(index)) %>%
+  dplyr::left_join(city_index_20) %>%
+  dplyr::mutate(diff = (base_volume / base_volume_all) *
+                  (index - index_p)^2,
+                weight = (base_volume / base_volume_all)^2) %>%
+  dplyr::group_by(length_range) %>%
   dplyr::summarise(standardavvik = sqrt((1 / (1 - sum(weight) )) * sum(diff) ))
 
 city_index_20_sd <- city_index_20 %>%
-  dplyr::bind_cols(pointindex_20_trp_toll_sd) %>%
+  dplyr::left_join(pointindex_20_trp_toll_sd) %>%
   dplyr::mutate(variance = standardavvik^2,
                 confidence_width = qt(0.975, n_points - 1) * standardavvik /
                   sqrt(n_points))
@@ -150,7 +169,7 @@ city_index <- bind_rows(city_index_20_sd#,
 
 
 # TODO: fom refyear from 2021
-
+# TODO: replace ci with se
 city_index_all <- city_index %>%
   #bind_rows(next_two_years) %>%
   #bind_rows(first_two_years) %>%
@@ -164,9 +183,8 @@ write.csv2(city_index_all,
            file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".csv"),
            row.names = F)
 
-# Monthly city index
-# TODO: do it
-# City index monthly ####
+
+# City index monthly ----
 
 tollpointindex_monthly <- read.csv2(
   "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_bymaanedsindekser.csv") %>%
@@ -174,9 +192,9 @@ tollpointindex_monthly <- read.csv2(
                 index = indeks) %>%
   dplyr::mutate(trp_id = as.character(trp_id)) %>%
   dplyr::select(-felt, -stasjon) %>%
-  dplyr::select(trp_id, base_volume, calc_volume, index, year_month = aar_maaned) %>%
+  dplyr::select(trp_id, length_range = klasse, base_volume, calc_volume, index, year_month = aar_maaned) %>%
   dplyr::mutate(month_object = lubridate::ymd(year_month)) %>%
-  dplyr::select(trp_id, base_volume, calc_volume, index, month_object)
+  dplyr::select(trp_id, length_range, base_volume, calc_volume, index, month_object)
 
 pointindex_20_monthly <- pointindex_20_all[[2]] %>%
   dplyr::filter(day_type == "ALL",
@@ -184,17 +202,23 @@ pointindex_20_monthly <- pointindex_20_all[[2]] %>%
                 is_manually_excluded == FALSE,
                 length_excluded == FALSE,
                 period == "month") %>%
-  dplyr::select(trp_id, base_volume, calc_volume, index = index_short, year, month) %>%
+  dplyr::select(trp_id, length_range, base_volume, calc_volume, index, year, month) %>%
   dplyr::mutate(month_object = lubridate::make_date(year = year, month = month)) %>%
-  dplyr::select(trp_id, base_volume, calc_volume, index, month_object)
-
+  dplyr::select(trp_id, length_range, base_volume, calc_volume, index, month_object)
 
 pointindex_20_trp_toll_monthly <- tollpointindex_monthly %>%
+  dplyr::filter(length_range != "Ukjent") %>%
+  dplyr::mutate(index = round(index, digits = 1),
+                length_range = dplyr::case_when(
+                  length_range == "Alle" ~ "all",
+                  length_range == "Liten_bil" ~ "short",
+                  length_range == "Stor_bil" ~ "long"
+                )) %>%
   dplyr::bind_rows(pointindex_20_monthly) %>%
   dplyr::mutate(year = lubridate::year(month_object)) %>%
   dplyr::filter(year == 2020) %>%
   dplyr::mutate(index = round(index, digits = 1)) %>%
-  dplyr::group_by(month_object) %>%
+  dplyr::group_by(month_object, length_range) %>%
   dplyr::summarise(base_volume_all = sum(base_volume),
                    calc_volume_all = sum(calc_volume),
                    index_p = (calc_volume_all / base_volume_all - 1 ) * 100,
