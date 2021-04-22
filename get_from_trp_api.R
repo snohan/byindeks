@@ -5,17 +5,17 @@ library(tidyverse)
 library(jsonlite)
 library(lubridate)
 library(httr)
-library(ghql)
+#library(ghql)
+library(data.table)
 
 source("H:/Programmering/R/byindeks/trp_api_cookies.R")
 source("H:/Programmering/R/byindeks/split_road_system_reference.R")
 
 # Definitions ####
-#trp_api_url <- "https://www.vegvesen.no/datainn/traffic-registration-point/api/"
 trp_api_url <- "https://trafikkdata-adm.atlas.vegvesen.no/datainn/traffic-registration-point/api/"
 
 parse_and_floor_date <- function(date_column, floor_unit) {
-  # floor_unit is second, minute, day etc.
+  # floor_unit is "second", "minute", "day" etc.
   date_column_parsed <-
   lubridate::floor_date(
     lubridate::with_tz(
@@ -35,9 +35,15 @@ get_via_httr <- function(api_query) {
                          httr::set_cookies(.cookies = trp_api_cookies),
                          body = api_query_string)
 
-  response_parsed <- fromJSON(str_conv(response$content, encoding = "UTF-8"),
-                              simplifyDataFrame = T,
-                              flatten = T) %>%
+  # response_parsed <- jsonlite::fromJSON(
+  #   stringr::str_conv(response$content, encoding = "UTF-8"),
+  #                             simplifyDataFrame = T,
+  #                             flatten = T) %>%
+  #   as.data.frame()
+
+  response_parsed <- response$content %>%
+    stringr::str_conv(encoding = "UTF-8") %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
     as.data.frame()
 
   return(response_parsed)
@@ -55,10 +61,10 @@ get_via_httr <- function(api_query) {
 # )
 
 
-# Points ####
+# TRP ####
 get_points_from_trp_api <- function() {
-  # Get all traffic registration points
 
+  # Get all traffic registration points
   api_query <-
     "query all_trps {
       trafficRegistrationPoints {
@@ -141,6 +147,7 @@ get_points_from_trp_api <- function() {
   return(points_trp)
 }
 
+
 get_periodic_trps_with_commission <- function() {
 
   api_query <-
@@ -201,6 +208,7 @@ get_periodic_trps_with_commission <- function() {
 
   return(response_parsed)
 }
+
 
 get_trp_for_vti <- function() {
 
@@ -307,6 +315,7 @@ get_trp_for_vti <- function() {
   return(response_parsed)
 }
 
+
 get_trp_for_adt <- function() {
 
   api_query <-
@@ -335,19 +344,7 @@ get_trp_for_adt <- function() {
   }
 }"
 
-  api_query_trimmed <- stringr::str_replace_all(api_query, "[\r\n]", " ")
-
-  api_query_string <- paste0('{"query":"', api_query_trimmed, '" }')
-
-  response <- httr::POST(url = trp_api_url,
-                         httr::add_headers(.headers = trp_api_headers),
-                         httr::set_cookies(.cookies = trp_api_cookies),
-                         body = api_query_string)
-
-  response_parsed <- fromJSON(str_conv(response$content, encoding = "UTF-8"),
-                              simplifyDataFrame = T,
-                              flatten = T) %>%
-    as.data.frame() %>%
+  response_parsed <- get_via_httr(api_query) %>%
     tidyr::unnest(cols =
                     c("data.trafficRegistrationPoints.commissionElements")) %>%
     dplyr::rename(
@@ -382,11 +379,11 @@ get_trp_for_adt <- function() {
   return(response_parsed)
 }
 
-# Stations ####
 
+# TRS ####
 get_trs_and_trp_id <- function() {
-  # Many stations have no trps defined
 
+  # Many stations have no trps defined
   api_query <-
     "query trs {
       trafficRegistrationStations {
@@ -416,9 +413,11 @@ get_trs_and_trp_id <- function() {
   return(response_parsed)
 }
 
+
 get_stations_from_TRPAPI <- function() {
+
   # Get all traffic registration stations
-  query_points_trp <-
+  api_query <-
     "query getStation{
   trafficRegistrationStations{
     id
@@ -443,12 +442,7 @@ get_stations_from_TRPAPI <- function() {
   }
 }"
 
-  myqueries <- Query$new()
-  myqueries$query("points_trp", query_points_trp)
-
-  points_trp <- cli_trp$exec(myqueries$queries$points_trp) %>%
-    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
-    as.data.frame() %>%
+  response_parsed <- get_via_httr(api_query) %>%
     tidyr::unnest() %>%
     dplyr::rename(
       stasjonnr = data.trafficRegistrationStations.id,
@@ -461,10 +455,12 @@ get_stations_from_TRPAPI <- function() {
       fylkenr = location.currentRoadReference.countyInformation.id,
       fylkenavn = location.currentRoadReference.countyInformation.name)
 
-  return(points_trp)
+  return(response_parsed)
 }
 
+
 get_trs_and_trps_with_coordinates_from_trp_api <- function() {
+
   # Get all traffic registration stations
   api_query <-
     "query getStation{
@@ -527,44 +523,43 @@ get_trs_and_trps_with_coordinates_from_trp_api <- function() {
   return(points_trp)
 }
 
+
 get_trs_trp <- function() {
+
   # Get all trs' and their trps
-  query_points_trp <-
+  api_query <-
     "query trs_trp{
- trafficRegistrationStations(
-  trafficType: VEHICLE,
-  withTrps: true,
-  stationType: CONTINUOUS){
-  id
-  name
-  trafficType
-  stationType
-  trafficRegistrationPoints{
-    id
-    name
-    legacyNortrafMpn
-  }
+       trafficRegistrationStations(
+        trafficType: VEHICLE,
+        withTrps: true,
+        stationType: CONTINUOUS){
+        id
+        name
+        trafficType
+        stationType
+        trafficRegistrationPoints{
+          id
+          name
+          legacyNortrafMpn
+        }
+      }
+    }"
+
+  response_parsed <- get_via_httr(api_query) %>%
+    tidyr::unnest(cols = c(data.trafficRegistrationStations.trafficRegistrationPoints)) %>%
+    dplyr::rename(trs_id = 1,
+                  trs_name = 2,
+                  traffic_type = 3,
+                  station_type = 4,
+                  trp_id = 5,
+                  trp_name = 6)
+
+  return(response_parsed)
 }
-}"
 
-myqueries <- Query$new()
-myqueries$query("points_trp", query_points_trp)
-
-points_trp <- cli_trp$exec(myqueries$queries$points_trp) %>%
-  jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
-  as.data.frame() %>%
-  tidyr::unnest(cols = c(data.trafficRegistrationStations.trafficRegistrationPoints)) %>%
-  dplyr::rename(trs_id = 1,
-                trs_name = 2,
-                traffic_type = 3,
-                station_type = 4,
-                trp_id = 5,
-                trp_name = 6)
-
-return(points_trp)
-}
 
 get_all_trs_with_trp <- function() {
+
   # Get all trs' and their trps
   # NB! Is not including trp's on trs' without commissions
   api_query <-
@@ -595,7 +590,9 @@ response_parsed <- get_via_httr(api_query) %>%
 return(response_parsed)
 }
 
+
 get_all_trs_with_trp_via_sensorconfig <- function() {
+
   # Get all trs' and their trps
   api_query <-
 "query trs_trp {
@@ -613,8 +610,7 @@ get_all_trs_with_trp_via_sensorconfig <- function() {
       }
     }
   }
-}
-"
+}"
 
 response_parsed <- get_via_httr(api_query) %>%
   tidyr::unnest(cols = c(data.trafficRegistrationStations.sensorConfigurations)) %>%
@@ -630,7 +626,9 @@ response_parsed <- get_via_httr(api_query) %>%
 return(response_parsed)
 }
 
+
 get_trs_trp_commissions_httr <- function() {
+
   # Get all trp's and their commissions (and trs)
   api_query <-
     "query trs_commissions {
@@ -691,6 +689,7 @@ response_parsed <- get_via_httr(api_query) %>%
 
 return(response_parsed)
 }
+
 
 get_trs_commissions <- function() {
 
@@ -755,6 +754,7 @@ response_parsed <- get_via_httr(api_query) %>%
 return(response_parsed)
 }
 
+
 get_trs_info <- function() {
 
 api_query <-
@@ -798,7 +798,9 @@ trs <- get_via_httr(api_query) %>%
 return(trs)
 }
 
+
 get_trs_trp_lanes_httr <- function() {
+
   # Get all trs' and their trps
   api_query <-
     "query trs_trp_lanes {
@@ -833,19 +835,7 @@ get_trs_trp_lanes_httr <- function() {
 }
 "
 
-api_query_trimmed <- stringr::str_replace_all(api_query, "[\r\n]", " ")
-
-api_query_string <- paste0('{"query":"', api_query_trimmed, '" }')
-
-response <- httr::POST(url = trp_api_url,
-                       httr::add_headers(.headers = trp_api_headers),
-                       httr::set_cookies(.cookies = trp_api_cookies),
-                       body = api_query_string)
-
-response_parsed <- fromJSON(str_conv(response$content, encoding = "UTF-8"),
-                            simplifyDataFrame = T,
-                            flatten = T) %>%
-  as.data.frame() %>%
+response_parsed <- get_via_httr(api_query) %>%
   tidyr::unnest(cols = c(data.trafficRegistrationStations.commissions)) %>%
   tidyr::unnest(cols = c(consistsOf)) %>%
   tidyr::unnest(cols = c(lanes)) %>%
@@ -867,8 +857,9 @@ return(response_parsed)
 
 # Manual labels ####
 get_manual_labels_deprecated <- function() {
+
   # Get all manual labels
-  query_points_trp <-
+  api_query <-
     "query hentMM{
   trafficRegistrationPoints{
     id
@@ -890,12 +881,7 @@ get_manual_labels_deprecated <- function() {
   }
 }"
 
-  myqueries <- Query$new()
-  myqueries$query("points_trp", query_points_trp)
-
-  points_trp <- cli_trp$exec(myqueries$queries$points_trp) %>%
-    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
-    as.data.frame() %>%
+  response_parsed <- get_via_httr(api_query) %>%
     tidyr::unnest(cols = c(data.trafficRegistrationPoints.manualLabels)) %>%
     tidyr::unnest(cols = c(labelLanes)) %>%
     dplyr::mutate(states = stringr::str_c(states)) %>%
@@ -923,8 +909,9 @@ get_manual_labels_deprecated <- function() {
                       lubridate::ymd_hms(lagt_inn)
     ))
 
-  return(points_trp)
+  return(response_parsed)
 }
+
 
 #county <- "50"
 #road_cat <- "F"
@@ -1002,66 +989,63 @@ get_manual_labels_by_county <- function(county, road_cat) {
 
 # Devices ####
 get_trs_device <- function() {
-  # Get all trs' and their device type history
-  query_trs <-
-    "query getTRS {
-  trafficRegistrationStations(
-    withTrps: true,
-    trafficType: VEHICLE,
-    stationType: CONTINUOUS) {
+
+  # Get all trs' and their device type history (from sep 2014)
+  # NOTE: all CMUs are called EMU here!
+  api_query <-
+    "query get_device_types {
+      trafficRegistrationStations {
+        id
+        deviceTypeHistory {
+          validFrom
+          validTo
+          deviceType
+        }
+      }
+    }"
+
+  response_parsed <- get_via_httr(api_query) %>%
+    tidyr::unnest(cols = c(2)) %>%
+    dplyr::rename(trs_id = data.trafficRegistrationStations.id,
+                  valid_from = validFrom,
+                  valid_to = validTo,
+                  device_type = deviceType) %>%
+    dplyr::mutate(trs_id = as.numeric(trs_id),
+                  valid_from = parse_and_floor_date(valid_from, "seconds"),
+                  valid_to = parse_and_floor_date(valid_to, "seconds")) %>%
+    dplyr::arrange(trs_id, valid_from)
+
+  return(response_parsed)
+}
+
+
+# I am about to deprecate this...
+get_trs_history <- function() {
+  # Get all trs' and their history
+api_query <-
+  "query trs_history {
+  trafficRegistrationStations {
     id
-    trafficRegistrationPoints {
-      id
-    }
+    name
+    trafficType
     deviceTypeHistory {
       validFrom
       validTo
       deviceType
     }
+    firmwareHistory {
+      validFrom
+      validTo
+      firmwareVersion
+    }
+    commissions {
+      id
+      sourceSystem
+      validFrom
+      validTo
+    }
   }
-}
-"
-
-  myqueries <- Query$new()
-  myqueries$query("points_trp", query_trs)
-
-  trs <- cli_trp$exec(myqueries$queries$points_trp) %>%
-    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
-    as.data.frame() %>%
-    tidyr::unnest(cols = c(2)) %>%
-    tidyr::unnest(cols = c(3)) %>%
-    # Keeping only last device
-    dplyr::filter(is.na(validTo)) %>%
-    dplyr::rename(trs_id = 1,
-                  trp_id = 2)
-
-  return(trs)
-}
-
-get_trs_history <- function() {
-  # Get all trs' and their history
-  api_query <-
-    "query all_trs {
-    trafficRegistrationStations {
-	id
-  name
-  deviceTypeHistory {
-    validFrom
-    validTo
-    deviceType
-  }
-  firmwareHistory {
-    validFrom
-    validTo
-    firmwareVersion
-  }
-  commissions {
-    validFrom
-    validTo
-  }
-	}
-}
-"
+}"
 
 response_parsed <- get_via_httr(api_query) %>%
   tidyr::unnest(cols = c(data.trafficRegistrationStations.commissions),
@@ -1078,7 +1062,36 @@ response_parsed <- get_via_httr(api_query) %>%
                 firmware_valid_to = validTo,
                 trs_id = 1)
 
-  return(trs)
+  return(response_parsed)
+}
+
+
+# Firmware history from datamottak endpoint
+# Using same token as in trp-api
+# Firmware history starts 26-10-2017
+# NOTE: Device name history here starts 23-02-2018, but in trp-api it is from 2014!
+get_firmware_history <- function() {
+
+  firmware_history_endpoint <-
+    "https://trafikkdata-adm.atlas.vegvesen.no/datainn/adm/rest/station/upgradelog"
+
+  upgradelog <- httr::GET(url = firmware_history_endpoint,
+                           httr::add_headers(.headers = trp_api_headers),
+                           httr::set_cookies(.cookies = trp_api_cookies))
+
+  upgradelog_parsed <- fromJSON(str_conv(upgradelog$content, encoding = "UTF-8"),
+                                simplifyDataFrame = T,
+                                flatten = T) %>%
+    data.table::rbindlist(fill = TRUE) %>%
+    dplyr::rename(trs_id = measurePointNumber,
+                  firmware_version = version,
+                  device_name = deviceName,
+                  serial_number = serialNumber,
+                  valid_from = timestamp) %>%
+    dplyr::mutate(valid_from = parse_and_floor_date(valid_from, "seconds")) %>%
+    dplyr::arrange(trs_id, valid_from)
+
+  return(upgradelog_parsed)
 }
 
 
@@ -1086,7 +1099,8 @@ response_parsed <- get_via_httr(api_query) %>%
 #trp_id <- "16334V971464"
 
 get_specific_trp <- function(trp_id) {
-  query_points_trp <-
+
+  api_query <-
     paste0(
     "query hentTRP{
   trafficRegistrationPointsById(trpIds: \"", trp_id,"\") {
@@ -1107,22 +1121,17 @@ get_specific_trp <- function(trp_id) {
   }
 }")
 
-myqueries <- Query$new()
-myqueries$query("points_trp", query_points_trp)
+  response_parsed <- get_via_httr(api_query) %>%
+    dplyr::rename(trp_id = 1,
+                  trp_name = 2,
+                  traffic_type = 3,
+                  legacy_nortraf_mpn = 4,
+                  road_link_id = 5,
+                  road_link_position = 6,
+                  direction_from = 7,
+                  direction_to = 8)
 
-trp <- cli_trp$exec(myqueries$queries$points_trp) %>%
-  jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
-  as.data.frame() %>%
-  dplyr::rename(trp_id = 1,
-                trp_name = 2,
-                traffic_type = 3,
-                legacy_nortraf_mpn = 4,
-                road_link_id = 5,
-                road_link_position = 6,
-                direction_from = 7,
-                direction_to = 8)
-
-return(trp)
+return(response_parsed)
 }
 
 
@@ -1162,6 +1171,7 @@ cli_trp$exec(myqueries$queries$mutate_trp)
 
 # Manual trps ####
 get_manual_points_from_trpapi_httr <- function() {
+
   # Get all traffic registration points
   api_query <-
     "query mtrps {

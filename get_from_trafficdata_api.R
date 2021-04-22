@@ -435,13 +435,31 @@ get_trps_with_direction <- function() {
                     data.trafficRegistrationPoints.id,
                   metering_direction_changed =
                     data.trafficRegistrationPoints.meteringDirectionChanged,
-                  from = data.trafficRegistrationPoints.direction.from,
-                  to = data.trafficRegistrationPoints.direction.to,
+                  #from = data.trafficRegistrationPoints.direction.from,
+                  #to = data.trafficRegistrationPoints.direction.to,
                   from_according_to_metering =
                     data.trafficRegistrationPoints.direction.fromAccordingToMetering,
                   to_according_to_metering =
-                    data.trafficRegistrationPoints.direction.toAccordingToMetering)
-  # TODO: join direction names for odd and even lanes
+                    data.trafficRegistrationPoints.direction.toAccordingToMetering) %>%
+    dplyr::mutate(from_according_to_metering =
+                    stringr::str_to_title(from_according_to_metering, locale = "no"),
+                  to_according_to_metering =
+                    stringr::str_to_title(to_according_to_metering, locale = "no"),
+                  odd =
+                    paste0("Fra ", from_according_to_metering,
+                           " til ", to_according_to_metering),
+                  even =
+                    paste0("Fra ", to_according_to_metering,
+                           " til ", from_according_to_metering)) %>%
+    tidyr::pivot_longer(cols = c("odd", "even"),
+                        names_to = "lane_parity_api",
+                        values_to = "direction") %>%
+    dplyr::mutate(lane_parity_kibana = dplyr::case_when(
+      metering_direction_changed == FALSE & lane_parity_api == "odd" ~ "odd",
+      metering_direction_changed == FALSE & lane_parity_api == "even" ~ "even",
+      metering_direction_changed == TRUE & lane_parity_api == "odd" ~ "even",
+      metering_direction_changed == TRUE & lane_parity_api == "even" ~ "odd"
+    ))
 
   return(api_response)
 }
