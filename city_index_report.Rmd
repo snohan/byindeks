@@ -53,10 +53,10 @@ source("rmd_setup.R")
 # Nedre Glomma           953 (2016) 12
 # Tromsø                 961 (2016) 12
 
-# Trondheim              960 (2019) 10
+# Trondheim              960 (2019) 03
 
 # Choose city number:
-city_number <- 957
+city_number <- 960
 
 city_number_county_name <- 
   tibble::tibble(

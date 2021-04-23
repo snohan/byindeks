@@ -1,12 +1,37 @@
 ---
-title: Byindekser
+#title: Byindekser
 output: 
-  word_document:
-    reference_docx: svv_notatmal3.docx
+  officedown::rdocx_document:
+    reference_docx: svv_template.docx
     toc: true
     toc_depth: 2
     fig_caption: true
     fig_width: 7
+    tables:
+      style: Table
+      layout: autofit
+      width: 1.0
+      caption:
+        style: Tabelltekst
+        pre: 'Tabell'
+        sep: '. '
+      conditional:
+        first_row: true
+        first_column: false
+        last_row: false
+        last_column: false
+        no_hband: false
+        no_vband: true
+    plots:
+      style: Normal
+      align: center
+      caption:
+        style: Figurtekst
+        pre: 'Figur '
+        sep: '. '
+    lists:
+      ol.style: null
+      ul.style: null
 ---
 
 ```{r setup, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
@@ -23,6 +48,7 @@ source("get_from_nvdb_api.R")
 
 ```{r get_data, include=FALSE}
 # Fetching published index from Traffic Data API
+# TODO: include n_points, needed to calculate se
 index_2020_bergen <- get_published_index_for_months(8952, 2020, 12)
 index_2020_buskerud <- get_published_index_for_months(1952, 2020, 12)
 index_2020_grenland <- get_published_index_for_months(955, 2020, 12)
@@ -39,19 +65,62 @@ index_2020 <- dplyr::bind_rows(index_2020_bergen,
                                index_2020_glomma,
                                index_2020_jaren,
                                index_2020_oslo,
-                               index_2020_tromso)
+                               index_2020_tromso) %>% 
+  dplyr::select(area_name, road_category, length_range, year, month, period,
+                index_p) %>% 
+  dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "alle",
+                                                length_range == "[..,5.6)" ~ "lette",
+                                                length_range == "[5.6,..)" ~ "tunge")) %>% 
+  dplyr::mutate(road_category = dplyr::case_when(
+                  road_category == "FYLKESVEG" ~ "Fylkesveg",
+                  road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
+                  road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG" ~ "Europa-, riks- og fylkesveg")) %>% 
+  dplyr::filter(road_category == "Europa-, riks- og fylkesveg") %>% 
+  dplyr::select(-road_category)
 
 # Including Trondheim with results in csv:
 city_trd <-
     read.csv2(
-      paste0("data_indexpoints_tidy/byindeks_960.csv"))
+      paste0("data_indexpoints_tidy/byindeks_960.csv")) %>% 
+  dplyr::mutate(area_name = "Trondheim",
+                period = "year_to_date",
+                year = 2020,
+                month = 12) %>% 
+  dplyr::select(area_name, length_range, year, month, period, index_p)
 
 city_monthly_trd <- 
   read.csv2(
     paste0("data_indexpoints_tidy/byindeks_maanedlig_960.csv")) %>% 
-  dplyr::mutate(# setting all years to same is a trick to get the plot facet correct
-                month_object = lubridate::make_date(year = 2000, month = month),
-                month_name_short = lubridate::month(month_object, label = TRUE))
+    dplyr::select(area_name, length_range, year, month, period, index_p)
+
+index_2020_complete <- dplyr::bind_rows(index_2020,
+                                        city_trd,
+                                        city_monthly_trd)
+
+# For Grethe
+library(writexl)
+chosen_cities_and_months <- index_2020_complete %>% 
+  dplyr::filter(period == "month",
+                area_name %in% c("Bergensområdet",
+                                 "Nord-Jæren",
+                                 "Trondheim",
+                                 "Oslo og Viken"))
+
+chosen_cities_year_to_date <- index_2020_complete %>% 
+  dplyr::filter(period == "year_to_date",
+                month == 12,
+                area_name %in% c("Bergensområdet",
+                                 "Nord-Jæren",
+                                 "Trondheim",
+                                 "Oslo og Viken"))
+
+writexl::write_xlsx(list(hele_aaret = chosen_cities_year_to_date, 
+                         maanedlig = chosen_cities_and_months),
+                    path = "byindekser_2020_utvalgte.xlsx")
+
+  # dplyr::mutate(# setting all years to same is a trick to get the plot facet correct
+  #               month_object = lubridate::make_date(year = 2000, month = month),
+  #               month_name_short = lubridate::month(month_object, label = TRUE)) %>% 
 
 # No points in this report! It'll be too much...
 ```
@@ -68,7 +137,7 @@ Alle data er hentet fra [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/t
 Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er tidvis utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
 
 
-```{r border_table}
+```{r wrangle}
 # index_2020_wide <- index_2020 %>% 
 #   dplyr::select(area_name, year, month, road_category, length_range, index = index_p, period) %>% 
 #   dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "total",

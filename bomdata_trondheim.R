@@ -65,10 +65,10 @@ write.csv2(all_data_monthly_by_class,
 
 
 # Evt. henter inn ferdig vasket bomdata ####
-# all_data_monthly_by_class <- read_csv2(
-#   file = "H:/Programmering/R/byindeks/data_index_raw/bomdata_trondheim_maanedlig_new.csv",
-#   locale = readr::locale(encoding = "latin1")
-# )
+all_data_monthly_by_class <- read_csv2(
+  file = "H:/Programmering/R/byindeks/data_index_raw/bomdata_trondheim_maanedlig_new.csv",
+  locale = readr::locale(encoding = "latin1")
+)
 
 # Ekskluderinger ####
 # Tungasletta høy andel ukjente
@@ -165,11 +165,14 @@ write.csv2(maanedsindekser,
            file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.csv",
            row.names = F)
 
+maanedsindekser <- read.csv2("H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.csv")
+
 # TODO: Dekningsgrad for antall måneder
 aarsindekser <- maanedsindekser %>%
   dplyr::mutate(year = year(aar_maaned)) %>%
   dplyr::group_by(felt, year, klasse) %>%
-  dplyr::summarise(base_volume = sum(monthly_volume_base),
+  dplyr::summarise(month = n(),
+                   base_volume = sum(monthly_volume_base),
                    calc_volume = sum(monthly_volume_calc),
                    indeks = (calc_volume /
                                base_volume - 1) * 100) %>%
@@ -180,7 +183,8 @@ write.csv2(aarsindekser,
            row.names = F)
 
 # Se plott for å se etter avvik i bomdata_trondheim.Rmd
-city_monthly_toll_indeces <- maanedsindekser %>%
+
+city_monthly_toll_indices <- maanedsindekser %>%
   dplyr::group_by(felt, aar_maaned, klasse) %>%
   dplyr::summarise(base_volume = sum(monthly_volume_base),
                    calc_volume = sum(monthly_volume_calc),
@@ -188,6 +192,6 @@ city_monthly_toll_indeces <- maanedsindekser %>%
                                base_volume - 1) * 100) %>%
   dplyr::left_join(felt_og_stasjon)
 
-write.csv2(city_monthly_toll_indeces,
+write.csv2(city_monthly_toll_indices,
            file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_bymaanedsindekser.csv",
            row.names = F)

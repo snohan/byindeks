@@ -67,6 +67,10 @@ points <- get_points() %>%
 # Trondheim 960
 # Tromsø 961
 
+# Trondheim has its own script, all inclusive:
+source("city_index_dataprep_trondheim_toll_stations")
+# Trondheim stop
+
 # Choose
 index_month <- 12
 city_number <- 960
@@ -76,7 +80,7 @@ city_number <- 960
 
 # Fetch city indexes
 # Note: not all cities use 2017
-# Note: not needed for Trondheim
+# Note: just neede for city_name for Trondheim
 city_index_2017 <- get_published_index_for_months(city_number, 2017, 12)
 city_index_2018 <- get_published_index_for_months(city_number, 2018, 12)
 city_index_2019 <- get_published_index_for_months(city_number, 2019, 12)
@@ -116,33 +120,6 @@ pointindex_19 <- pointindex_19_all[[2]] %>%
                 index_19 = index_short)
 # Bergen end
 
-# Trondheim start
-# TODO: move this to the TRD script?
-pointindex_20_all <- get_published_pointindex_for_months_trondheim(city_number, 2020, index_month)
-city_trps <- pointindex_20_all[[1]]
-
-pointindex_20_longformat <- pointindex_20_all[[2]] %>%
-  dplyr::filter(day_type == "ALL",
-                is_excluded == FALSE,
-                is_manually_excluded == FALSE,
-                length_excluded == FALSE)
-
-pointindex_20_long_year_to_date <- pointindex_20_longformat %>%
-  dplyr::filter(period == "year_to_date",
-                month == index_month) %>%
-  dplyr::select(trp_id, length_range, base_volume, calc_volume, index)
-
-# Use the long version to calculate city index per vehicle_type
-# Continue here with pointindex for just short ???
-pointindex_20 <- pointindex_20_longformat %>%
-  dplyr::filter(length_range == "short",
-                period == "year_to_date",
-                month == index_month) %>%
-  dplyr::select(trp_id, index_20 = index)
-
-# Skip to city_name
-# Trondheim end
-
 pointindex_20_all <- get_published_pointindex_for_months(city_number, 2020, index_month)
 
 city_trps <- pointindex_20_all[[1]]
@@ -174,11 +151,6 @@ n_20 <- pointindex_20  %>%
   dplyr::filter(!is.na(index_20)) %>%
   nrow()
 
-# Trondheim start
-# Specific code to include toll stations:
-source("city_index_dataprep_trondheim_toll_stations")
-# Skip to refyear (which isn't relevant before 2021)
-# Trondheim stop
 
 adt <- get_aadt_by_length_for_trp_list(city_trps)
 

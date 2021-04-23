@@ -1979,7 +1979,7 @@ get_published_pointindex_trondheim <- function(index_id, indexyear, indexmonth) 
                   coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
                   length_excluded = lengthRangesTrafficVolumeIndex.isExcluded
     ) %>%
-    dplyr::mutate(length_range = "all") %>%
+    dplyr::mutate(length_range = "alle") %>%
     dplyr::relocate(length_range, .before = index) %>%
     dplyr::filter(day_type == "ALL") %>%
     dplyr::distinct(trp_id, .keep_all = T)
@@ -2002,7 +2002,7 @@ get_published_pointindex_trondheim <- function(index_id, indexyear, indexmonth) 
     dplyr::filter(day_type == "ALL") %>%
     dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
     dplyr::mutate(length_range = if_else(length_range == "[..,5.6)",
-                                         "short", "long"))
+                                         "lette", "tunge"))
 
   monthly_data_long <- dplyr::bind_rows(monthly_data_all,
                                         monthly_data_short_long) %>%
@@ -2029,7 +2029,7 @@ get_published_pointindex_trondheim <- function(index_id, indexyear, indexmonth) 
                   coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
                   length_excluded = lengthRangesTrafficVolumeIndex.isExcluded
     ) %>%
-    dplyr::mutate(length_range = "all") %>%
+    dplyr::mutate(length_range = "alle") %>%
     dplyr::relocate(length_range, .before = index) %>%
     dplyr::filter(day_type == "ALL") %>%
     dplyr::distinct(trp_id, .keep_all = T)
@@ -2052,7 +2052,7 @@ get_published_pointindex_trondheim <- function(index_id, indexyear, indexmonth) 
     dplyr::filter(day_type == "ALL") %>%
     dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
     dplyr::mutate(length_range = if_else(length_range == "[..,5.6)",
-                                         "short", "long"))
+                                         "lette", "tunge"))
 
   year_to_date_data_long <- dplyr::bind_rows(year_to_date_data_all,
                                              year_to_date_data_short_long) %>%
