@@ -84,14 +84,17 @@ all_point_info <-
 
 city_info <-
     read.csv2(
-      paste0("data_indexpoints_tidy/byindeks_", city_number, ".csv"))
+      paste0("data_indexpoints_tidy/byindeks_", city_number, ".csv")) %>%
+  dplyr::filter(length_range == "lette")
+# TODO: implement lenght range index
 
 city_monthly <- 
   read.csv2(
     paste0("data_indexpoints_tidy/byindeks_maanedlig_", city_number, ".csv")) %>% 
   dplyr::mutate(# setting all years to same is a trick to get the plot facet correct
                 month_object = lubridate::make_date(year = 2000, month = month),
-                month_name_short = lubridate::month(month_object, label = TRUE))
+                month_name_short = lubridate::month(month_object, label = TRUE)) %>%
+  dplyr::filter(length_range == "lette")
 
 latest_month <- max(city_monthly$month_object) %>% 
   lubridate::month(label = TRUE, abbr = FALSE)
@@ -102,13 +105,13 @@ city_36_month <-
 
 # TODO: change to three year rolling when available?
 city_info_all_years <- city_info %>% 
-  dplyr::filter(year_from_to == "2016-2020")
-  #dplyr::filter(year_from_to == "2017-2020")
-  #dplyr::filter(year_from_to == "2018-2020")
-  #dplyr::filter(year_from_to == "2019-2020")
+  #dplyr::filter(year_from_to == "2016-2021")
+  #dplyr::filter(year_from_to == "2017-2021")
+  #dplyr::filter(year_from_to == "2018-2021")
+  dplyr::filter(year_from_to == "2019-2021")
 
-base_year <- "2016"
-last_year <- "2020"
+base_year <- "2019"
+last_year <- "2021"
 
 index_all_years <- round(city_info_all_years$index_p, digits = 1)
 index_all_years_ci_lower <- 
@@ -165,10 +168,10 @@ Veglengder fordelt på vegkategori for gjeldende område er oppsummert i tabelle
 <br>
 
 ```{r road_length_sum}
-#road_lengths %>% create_city_road_length_table()
+road_lengths %>% create_city_road_length_table()
 
 # Kristiansand
-road_lengths %>% create_municipality_road_length_table()
+#road_lengths %>% create_municipality_road_length_table()
 ```
 
 <br>
@@ -217,15 +220,15 @@ Først når månedsindeks er beregnet gjennom tre år eller lenger, kan det bere
 <br>
 
 ```{r city_table_36}
-create_city_36_index_table(city_36_month)
+#create_city_36_index_table(city_36_month)
 # TODO: SD
 ```
 
-<!-- Kristiansand -->
+<!-- Kristiansand
 Tilsvarende for gamle Kristiansand kommune.
 
 ```{r city_table_36_kommune}
-create_city_36_index_table(city_36_month_kommune)
+#create_city_36_index_table(city_36_month_kommune)
 # TODO: CI
 ```
 
@@ -242,13 +245,13 @@ Endring i trafikkmengde er også beregnet for hele kalenderår. Tabellen nedenfo
 create_city_index_table_sd(city_info)
 ```
 
-<!-- Kristiansand -->
+<!-- Kristiansand
 <br>
 ```{r city_table_kommune}
-create_city_index_table_sd(city_info_kommune) %>% 
-  set_caption("Estimert endring i trafikkmengde i gamle Kristiansand kommune.",
-                autonum = table_numbers,
-                style = "Tabelltekst")
+#create_city_index_table_sd(city_info_kommune) %>% 
+#  set_caption("Estimert endring i trafikkmengde i gamle Kristiansand kommune.",
+#                autonum = table_numbers,
+#                style = "Tabelltekst")
 ```
 <!-- Kristiansand -->
 
@@ -312,25 +315,30 @@ all_point_info_long <- all_point_info %>%
   tidyr::pivot_longer(starts_with("index"),
                       names_to = "period",
                       values_to = "index_value") %>%
-  dplyr::mutate(year = case_when(period == "index" ~ "2016-2020",
+  dplyr::mutate(year = case_when(#period == "index" ~ "2016-2020",
                                  #period == "index" ~ "2017-2020",
                                  #period == "index" ~ "2018-2020",
-                                 period == "index_17" ~ "2016-2017",
-                                 period == "index_18" ~ "2017-2018",
-                                 period == "index_19" ~ "2018-2019",
-                                 period == "index_20" ~ "2019-2020"),
-                year = factor(year, levels = c("2016-2020",
-                                               "2017-2020",
-                                               "2018-2020",
+                                 period == "index" ~ "2019-2021",
+                                 #period == "index_17" ~ "2016-2017",
+                                 #period == "index_18" ~ "2017-2018",
+                                 #period == "index_19" ~ "2018-2019",
+                                 period == "index_20" ~ "2019-2020",
+                                 period == "index_21" ~ "2020-2021"),
+                year = factor(year, levels = c("2016-2021",
+                                               "2017-2021",
+                                               "2018-2021",
+                                               "2019-2021",
+                                               "2020-2021",
                                                "2019-2020",
                                                "2018-2019",
                                                "2017-2018",
                                                "2016-2017"
                                                ),
-                                ordered = TRUE)) %>%
-  dplyr::filter(year != "2016-2020")
+                                ordered = TRUE)) #%>%
+  #dplyr::filter(year != "2016-2020")
   #dplyr::filter(year != "2017-2020")
   #dplyr::filter(year != "2018-2020")
+  #dplyr::filter(year != "2016-2020")
 ```
 
 `r officer::fpar("", officer::run_pagebreak())`
@@ -633,25 +641,25 @@ city_monthly %>%
             subtitle = "Trafikkmengde sammenlignet med samme måned året før")
 ```
 
-<!-- Kristiansand -->
+<!-- Kristiansand
 ```{r monthly_city_index_kommune, fig.width=6, fig.height=5, fig.cap="Estimert endring i trafikkmengde per måned i gamle Kristiansand kommune."}
 
-city_monthly_kommune %>%
-    ggplot2::ggplot(aes(x = month_object, y = index_p)) +
-    ggplot2::geom_line() +
-    ggplot2::geom_point() +
-    ggplot2::facet_grid(rows = vars(year)) +
-    theme_light() +
-    theme(axis.text.x = element_text(angle = 90),
-          panel.grid.minor.x = element_blank(),
-          #legend.position = "bottom"
-          ) +
-    scale_x_date(breaks = scales::breaks_width("months"),
-                 labels = scales::label_date("%b")) +
-    labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
-         caption = caption_credit) +
-    ggtitle("Estimert endring i trafikkmengde per måned, lette kjøretøy",
-            subtitle = "Trafikkmengde sammenlignet med samme måned året før")
+#city_monthly_kommune %>%
+#    ggplot2::ggplot(aes(x = month_object, y = index_p)) +
+#    ggplot2::geom_line() +
+#    ggplot2::geom_point() +
+#    ggplot2::facet_grid(rows = vars(year)) +
+#    theme_light() +
+#    theme(axis.text.x = element_text(angle = 90),
+#          panel.grid.minor.x = element_blank(),
+#          #legend.position = "bottom"
+#          ) +
+#    scale_x_date(breaks = scales::breaks_width("months"),
+#                 labels = scales::label_date("%b")) +
+#    labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
+#         caption = caption_credit) +
+#    ggtitle("Estimert endring i trafikkmengde per måned, lette kjøretøy",
+#            subtitle = "Trafikkmengde sammenlignet med samme måned året før")
 ```
 <!-- Kristiansand -->
 

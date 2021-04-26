@@ -195,12 +195,13 @@ calculate_two_year_index <- function(city_index_df) {
       two_years$index_p[2]^2 * two_years$variance[1] / two_years$n_points[1] +
       two_years$variance[1] * two_years$variance[2] /
       (two_years$n_points[1] * two_years$n_points[2]),
+    # TODO: find the correct number of points that have contributed over the two years -
+    # their index must exist in both years? Not exactly, because all points contribute
     n_points = max(two_years$n_points)
   ) %>%
     as_tibble() %>%
     dplyr::mutate(standard_deviation = sqrt(variance),
-                  confidence_width = 1.96 * sqrt(variance) /
-                    sqrt(2))
+                  standard_error = round(standard_deviation / sqrt(n_points), digits = 1))
 }
 
 
