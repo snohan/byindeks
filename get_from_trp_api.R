@@ -799,12 +799,12 @@ return(trs)
 }
 
 
-get_trs_trp_lanes_httr <- function() {
+get_trs_trp_lanes <- function() {
 
   # Get all trs' and their trps
   api_query <-
     "query trs_trp_lanes {
-  trafficRegistrationStations (stationType: [CONTINUOUS], trafficType: [VEHICLE], withTrps: true) {
+  trafficRegistrationStations (stationType: [CONTINUOUS], withTrps: true) {
     id
     name
     stationType

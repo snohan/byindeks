@@ -84,7 +84,10 @@ all_point_info <-
 
 city_info <-
     read.csv2(
-      paste0("data_indexpoints_tidy/byindeks_", city_number, ".csv")) %>%
+      paste0("data_indexpoints_tidy/byindeks_", city_number, ".csv")) %>% 
+  dplyr::mutate(month_object = lubridate::make_date(year = year, month = month),
+                month_name_short = lubridate::month(month_object, label = TRUE),
+                period = paste0("jan-", month_name_short)) %>%
   dplyr::filter(length_range == "lette")
 # TODO: implement lenght range index
 
@@ -96,12 +99,17 @@ city_monthly <-
                 month_name_short = lubridate::month(month_object, label = TRUE)) %>%
   dplyr::filter(length_range == "lette")
 
-latest_month <- max(city_monthly$month_object) %>% 
-  lubridate::month(label = TRUE, abbr = FALSE)
+latest_month <- city_monthly %>% 
+  dplyr::slice_max(year) %>% 
+  dplyr::slice_max(month) %>% 
+  dplyr::select(month_name) %>% 
+  as.character() %>% 
+  stringr::str_to_lower()
 
-city_36_month <- 
-  read.csv2(
-    paste0("data_indexpoints_tidy/byindeks_36_maaneder_", city_number, ".csv"))
+
+# city_36_month <- 
+#   read.csv2(
+#     paste0("data_indexpoints_tidy/byindeks_36_maaneder_", city_number, ".csv"))
 
 # TODO: change to three year rolling when available?
 city_info_all_years <- city_info %>% 
@@ -114,32 +122,41 @@ base_year <- "2019"
 last_year <- "2021"
 
 index_all_years <- round(city_info_all_years$index_p, digits = 1)
-index_all_years_ci_lower <- 
-  round(city_info_all_years$index_p - 
-          city_info_all_years$confidence_width, digits = 1)
-index_all_years_ci_upper <- 
-  round(city_info_all_years$index_p + 
-          city_info_all_years$confidence_width, digits = 1)
+
+# TODO: state SE in text?
+# TODO: remove all use of CI
+# index_all_years_ci_lower <- 
+#   round(city_info_all_years$index_p - 
+#           city_info_all_years$confidence_width, digits = 1)
+# index_all_years_ci_upper <- 
+#   round(city_info_all_years$index_p + 
+#           city_info_all_years$confidence_width, digits = 1)
+# 
+# index_all_years_se <- 
+#   round(city_info_all_years$standard_error, digits = 1)
+
 
 # Linking to child files
 intro_file <- paste0("intro_", city_number, ".Rmd")
 traffic_file <- paste0("trafikkforhold_", city_number, ".Rmd")
 
 
+# Start Kristisand
 # Egen variant for KRS kommune, dvs. gamle kommunen før den ble 
 # slått sammen med Songdalen og Søgne
 
-city_info_kommune <-
-  read.csv2("data_indexpoints_tidy/byindeks_956.csv")
- 
-city_monthly_kommune <- 
-  read.csv2("data_indexpoints_tidy/byindeks_maanedlig_956.csv") %>% 
-  dplyr::mutate(# setting all years to same is a trick to get the plot facet correct
-                month_object = lubridate::make_date(year = 2000, month = month),
-                month_name_short = lubridate::month(month_object, label = TRUE))
-
-city_36_month_kommune <- 
-  read.csv2("data_indexpoints_tidy/byindeks_36_maaneder_956.csv")
+# city_info_kommune <-
+#   read.csv2("data_indexpoints_tidy/byindeks_956.csv")
+#  
+# city_monthly_kommune <- 
+#   read.csv2("data_indexpoints_tidy/byindeks_maanedlig_956.csv") %>% 
+#   dplyr::mutate(# setting all years to same is a trick to get the plot facet correct
+#                 month_object = lubridate::make_date(year = 2000, month = month),
+#                 month_name_short = lubridate::month(month_object, label = TRUE))
+# 
+# city_36_month_kommune <- 
+#   read.csv2("data_indexpoints_tidy/byindeks_36_maaneder_956.csv")
+# Slutt Kristisand
 ```
 
 <br>
@@ -195,13 +212,18 @@ create_point_table(all_point_info,
 
 `r officer::fpar("", officer::run_pagebreak())`
 
-Kartet nedenfor viser plasseringen av trafikkregistreringspunktene.
+Kartet nedenfor viser plasseringen av trafikkregistreringspunktene. 
+
+<!-- TRD -->
+Punktet Meådalen på Ev 14 mellom Stjørdal og Meråker er utelatt fra kartvisningen.
 
 <br>
 
-```{r map_trp, fig.width=6.5, fig.height=7, fig.cap="Trafikkregistreringspunktene og årsdøgntrafikk."}
-create_point_adt_map(all_point_info)
-#create_point_adt_map_trondheim(all_point_info)
+```{r map_trp, dpi=100, fig.width=6, fig.height=7, fig.cap="Trafikkregistreringspunktene og årsdøgntrafikk."}
+#create_point_adt_map(all_point_info)
+all_point_info %>% 
+  dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
+  create_point_adt_map_trondheim()
 ```
 
 
@@ -262,11 +284,6 @@ create_city_index_table_sd(city_info)
 `r stringr::str_replace(as.character(index_all_years), "\\.", ",")` %.**
 
 
-<!--Usikkerheten knyttet til byindeksen gjenspeiles i et 95 % konfidensintervall som er fra
-`r stringr::str_replace(as.character(index_all_years_ci_lower), "\\.", ",")` % til
-`r stringr::str_replace(as.character(index_all_years_ci_upper), "\\.", ",")` %.
--->
-
 <!--
 For Buskerudbyen --
 
@@ -322,8 +339,8 @@ all_point_info_long <- all_point_info %>%
                                  #period == "index_17" ~ "2016-2017",
                                  #period == "index_18" ~ "2017-2018",
                                  #period == "index_19" ~ "2018-2019",
-                                 period == "index_20" ~ "2019-2020",
-                                 period == "index_21" ~ "2020-2021"),
+                                 period == "index_2020" ~ "2019-2020",
+                                 period == "index_2021" ~ "2020-2021"),
                 year = factor(year, levels = c("2016-2021",
                                                "2017-2021",
                                                "2018-2021",
@@ -352,10 +369,11 @@ Nedenfor vises en graf over byindeksene for hver periode, sammen med alle punkti
 ```{r plot_city_index, fig.width=6, fig.height=5, fig.cap="Estimert endring i trafikkmengde for lette kjøretøy per år."}
 set.seed(123)
 city_info_each_one_year_and_total <- city_info %>% 
-  dplyr::filter(year_from_to != "2016-2020") #%>% 
+  #dplyr::filter(year_from_to != "2016-2020") #%>% 
   #dplyr::filter(year_from_to != "2017-2020") #%>% 
   #dplyr::filter(year_from_to != "2018-2020") #%>% 
   #dplyr::filter(year_from_to != "2019-2020")
+  dplyr::filter(year_from_to != "2019-2021")
   
 
 ggplot() +
@@ -385,43 +403,43 @@ Tabellen nedenfor angir endring i trafikk ved byindekspunktene. Manglende tall s
 <br>
 
 ```{r point_index_table_2016}
-index_column_names <- all_point_info %>%
-  select(starts_with("index")) %>%
-  names()
-
-all_point_info %>%
-  select(name, road_category_and_number, starts_with("index")) %>%
-  flextable() %>%
-  colformat_double(j = index_column_names,
-                   digits = 1) %>%
-  set_header_labels(name = "Navn",
-                    road_category_and_number = "Veg",
-                    index_17 = "Endring i trafikkmengde (%)") %>%
-  add_header_row(values = c("", "",
-                            "2016", "2017", "2018",
-                            "2019", "2016"), top = F) %>%
-  add_header_row(values = c("", "",
-                            "-2017", "-2018", "-2019",
-                            "-2020", "-2020"), top = F) %>%
-  merge_at(i = 1, j = 3:7, part = "header") %>%
-  align(i = 1, j = 3, align = "center", part = "header") %>%
-  align(i = 2, j = 3:7, align = "right", part = "header") %>%
-  align(i = 3, j = 3:7, align = "right", part = "header") %>%
-  bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
-  bg(bg = "#ED9300", part = "header") %>%
-  border_remove() %>%
-  hline_top(part = "header", border = borderline) %>%
-  hline_bottom(part = "all", border = borderline) %>%
-  autofit() %>%
-  height_all(height = .2) %>%
-  padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  width(j = 3, width = 1) %>%
-  set_caption("Estimert endring i trafikkmengde ved trafikkregistreringspunktene.",
-               autonum = table_numbers,
-               style = "Tabelltekst")
+# index_column_names <- all_point_info %>%
+#   select(starts_with("index")) %>%
+#   names()
+# 
+# all_point_info %>%
+#   select(name, road_category_and_number, starts_with("index")) %>%
+#   flextable() %>%
+#   colformat_double(j = index_column_names,
+#                    digits = 1) %>%
+#   set_header_labels(name = "Navn",
+#                     road_category_and_number = "Veg",
+#                     index_17 = "Endring i trafikkmengde (%)") %>%
+#   add_header_row(values = c("", "",
+#                             "2016", "2017", "2018",
+#                             "2019", "2016"), top = F) %>%
+#   add_header_row(values = c("", "",
+#                             "-2017", "-2018", "-2019",
+#                             "-2020", "-2020"), top = F) %>%
+#   merge_at(i = 1, j = 3:7, part = "header") %>%
+#   align(i = 1, j = 3, align = "center", part = "header") %>%
+#   align(i = 2, j = 3:7, align = "right", part = "header") %>%
+#   align(i = 3, j = 3:7, align = "right", part = "header") %>%
+#   bold(part = "header") %>%
+#   fontsize(size = 9, part = "all") %>%
+#   font(fontname = "Lucida Sans Unicode", part = "all") %>%
+#   bg(bg = "#ED9300", part = "header") %>%
+#   border_remove() %>%
+#   hline_top(part = "header", border = borderline) %>%
+#   hline_bottom(part = "all", border = borderline) %>%
+#   autofit() %>%
+#   height_all(height = .2) %>%
+#   padding(padding.top = .3,
+#           padding.bottom = .3) %>%
+#   width(j = 3, width = 1) %>%
+#   set_caption("Estimert endring i trafikkmengde ved trafikkregistreringspunktene.",
+#                autonum = table_numbers,
+#                style = "Tabelltekst")
 ```
 
 ```{r point_index_table_2017}
@@ -505,47 +523,47 @@ all_point_info %>%
 ```
 
 ```{r point_index_table_2019}
-# index_column_names <- all_point_info %>%
-#   select(starts_with("index")) %>%
-#   #select(-index_20) %>%
-#   names()
-# 
-# all_point_info %>%
-#   select(name, road_category_and_number, starts_with("index")) %>%
-#   #select(-index_20) %>%
-#   flextable() %>%
-#   colformat_double(j = index_column_names,
-#                 digits = 1) %>%
-#   set_header_labels(name = "Navn",
-#                     road_category_and_number = "Veg",
-#                     index_20 = "Endring i \n trafikkmengde (%)") %>%
-#   add_header_row(values = c("", "",
-#                             #"2017", "2018",
-#                             "2019"#, "2017"
-#                             ), top = F) %>%
-#   add_header_row(values = c("", "",
-#                             #"-2018", "-2019",
-#                             "-2020"#, "-2020"
-#                             ), top = F) %>%
-#   #merge_at(i = 1, j = 3:7, part = "header") %>%
-#   align(i = 1:3, j = 3, align = "center", part = "header") %>%
-#   #align(i = 2, j = 3, align = "right", part = "header") %>%
-#   #align(i = 3, j = 3, align = "right", part = "header") %>%
-#   bold(part = "header") %>%
-#   fontsize(size = 9, part = "all") %>%
-#   font(fontname = "Lucida Sans Unicode", part = "all") %>%
-#   bg(bg = "#ED9300", part = "header") %>%
-#   border_remove() %>%
-#   hline_top(part = "header", border = borderline) %>%
-#   hline_bottom(part = "all", border = borderline) %>%
-#   autofit() %>%
-#   height_all(height = .2) %>%
-#   padding(padding.top = .3,
-#           padding.bottom = .3) %>%
-#   width(j = 3, width = 1) %>%
-#   set_caption("Estimert endring i trafikkmengde ved trafikkregistreringspunktene.",
-#               autonum = table_numbers,
-#              style = "Tabelltekst")
+index_column_names <- all_point_info %>%
+  select(starts_with("index")) %>%
+  #select(-index_20) %>%
+  names()
+
+all_point_info %>%
+  select(name, road_category_and_number, starts_with("index")) %>%
+  #select(-index_20) %>%
+  flextable() %>%
+  colformat_double(j = index_column_names,
+                digits = 1) %>%
+  set_header_labels(name = "Navn",
+                    road_category_and_number = "Veg",
+                    index_2020 = "Endring i \n trafikkmengde (%)") %>%
+  add_header_row(values = c("", "",
+                            #"2017", "2018",
+                            "2019", "2020"
+                            ), top = F) %>%
+  add_header_row(values = c("", "",
+                            #"-2018", "-2019",
+                            "-2020", "-2021"
+                            ), top = F) %>%
+  merge_at(i = 1, j = 3:4, part = "header") %>%
+  align(i = 1:3, j = 3, align = "center", part = "header") %>%
+  #align(i = 2, j = 3, align = "right", part = "header") %>%
+  #align(i = 3, j = 3, align = "right", part = "header") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  autofit() %>%
+  height_all(height = .2) %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  width(j = 3, width = 1) %>%
+  set_caption("Estimert endring i trafikkmengde ved trafikkregistreringspunktene.",
+              autonum = table_numbers,
+             style = "Tabelltekst")
 ```
 
 <!--

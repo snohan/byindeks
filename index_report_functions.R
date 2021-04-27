@@ -173,12 +173,19 @@ create_city_index_table <- function(city_info) {
 create_city_index_table_sd <- function(city_info) {
 
   city_table <- city_info %>%
-    dplyr::select(year_from_to, index_p, standard_deviation) %>%
+    dplyr::select(year_from_to, period, index_p,
+                  standard_deviation, standard_error) %>%
     flextable::flextable() %>%
-    colformat_double(j = c("index_p", "standard_deviation"), digits = 1) %>%
+    colformat_double(j = c("index_p", "standard_deviation", "standard_error"), digits = 1) %>%
     set_header_labels(year_from_to = "Periode",
-                      index_p = "Endring i \n trafikkmengde (%)",
-                      standard_deviation = "Standardavvik (%)") %>%
+                      period = "",
+                      index_p = "Endring i \n trafikkmengde \n (%)",
+                      standard_deviation = "Standardavvik \n (%)",
+                      standard_error = "Standardfeil \n (%)") %>%
+    align(j = c("index_p", "standard_deviation", "standard_error"),
+          align = "center", part = "header") %>%
+    padding(j = c("index_p", "standard_deviation", "standard_error"),
+            padding.right = 25, part = "body") %>%
     bold(part = "header") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%

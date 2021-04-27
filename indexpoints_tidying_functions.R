@@ -177,12 +177,14 @@ calculate_two_year_index <- function(city_index_df) {
 
   year_start <- city_index_df$year_base[1]
   year_end <- city_index_df$year[2]
+  last_month <- city_index_df$month[2]
 
   two_years_to_one <- list(
     index_p = 100 * (prod(two_years$index_i) - 1),
     index_i = prod(two_years$index_i),
     year_base = year_start,
     year = year_end,
+    month = last_month,
     #year_from_to = paste0(year_start, "-", year_end),
     # Using Goodman's unbiased estimate (cannot use exact formula as we are
     # sampling)

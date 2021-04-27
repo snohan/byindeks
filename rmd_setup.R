@@ -25,7 +25,8 @@ knitr::opts_chunk$set(echo = FALSE,
                       error = FALSE,
                       cache = FALSE,
                       dpi = 200,
-                      dev = "ragg_png")
+                      dev = "ragg_png"
+                      )
 
 # Map essentials ####
 nvdb_map_url <-

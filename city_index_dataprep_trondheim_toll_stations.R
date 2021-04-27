@@ -174,12 +174,10 @@ write.csv2(this_citys_trp_index_refyear,
            row.names = F)
 
 
-# HERE 26.04.2021
-
 # City index ----
 # Must calculate based on all pointindices
 city_index <- pointindex_trp_toll %>%
-  dplyr::group_by(length_range, year) %>%
+  dplyr::group_by(length_range, year, month) %>%
   dplyr::summarise(base_volume_all = sum(base_volume),
                    calc_volume_all = sum(calc_volume),
                    index_p = (calc_volume_all / base_volume_all - 1 ) * 100,
