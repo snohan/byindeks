@@ -57,7 +57,7 @@ nord_jaeren_monthly_index_data <- get_published_pointindex(952, 2020, 12)
 nord_jaeren_trp_ids <- data.frame(trp_id = nord_jaeren_monthly_index_data[[1]]) %>% 
   dplyr::mutate(area_name = "Nord-Jæren")
 
-trondheim_monthly_index_data <- get_published_pointindex(960, 2020, 10)
+trondheim_monthly_index_data <- get_published_pointindex(960, 2020, 12)
 trondheim_trp_ids <- data.frame(trp_id = trondheim_monthly_index_data[[1]]) %>% 
   dplyr::mutate(area_name = "Trondheim")
 
@@ -163,8 +163,8 @@ day_of_week_traffic_average <- read.csv2("city_normal_days.csv")
 day_of_week_traffic_average_2020 <- read.csv2("city_normal_days_2020.csv")
 
 # Daily traffic ####
-data_this_year_from <- "2021-03-01T00:00:00+01:00"
-data_this_year_to <- "2021-04-26T00:00:00+02:00"
+data_this_year_from <- "2021-04-26T00:00:00+02:00"
+data_this_year_to <- "2021-05-03T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -252,9 +252,8 @@ get_trp_index_for_weeknumber <- function(weekno, trps, trp_index_table) {
   return(trp_index_for_week)
 }
 
-trp_index_this <- get_trp_index_for_weeknumber(16, trps, trp_index)
-
-trp_index_2020_this <- get_trp_index_for_weeknumber(16, trps, trp_index_2020)
+trp_index_this <- get_trp_index_for_weeknumber(17, trps, trp_index)
+trp_index_2020_this <- get_trp_index_for_weeknumber(17, trps, trp_index_2020)
 
 # City index ####
 city_index <- trp_index %>% 
@@ -280,9 +279,9 @@ city_index_2020 <- trp_index_2020 %>%
 number_of_weeks <- length(unique(city_index$ukenr)) # min 1, max 8
 # fig_height min 3, max 6.5
 fig_height <- dplyr::case_when(
-  #number_of_weeks <= 3 ~ 3,
-  #number_of_weeks <= 4 ~ 4,
-  number_of_weeks <= 5 ~ 6,
+  number_of_weeks <= 3 ~ 4,
+  number_of_weeks == 4 ~ 5,
+  number_of_weeks == 5 ~ 6,
   number_of_weeks == 6 ~ 7,
   TRUE ~ 7.5)
 
@@ -361,7 +360,7 @@ Nedenfor vises daglig endring i trafikk i de største byområdene, sammenlignet 
 dplyr::bind_rows(city_index,
                  city_index_2020) %>% 
   dplyr::filter(area_name == "Bergensområdet") %>% 
-  make_daily_dodged_bar_plot("Bergensområdet", -70, 30)
+  make_daily_dodged_bar_plot("Bergensområdet", -30, 50)
 ```
 
 <br>
@@ -389,7 +388,7 @@ city_index_2020 %>%
 dplyr::bind_rows(city_index,
                  city_index_2020) %>% 
   dplyr::filter(area_name == "Nord-Jæren") %>% 
-  make_daily_dodged_bar_plot("Nord-Jæren", -70, 30)
+  make_daily_dodged_bar_plot("Nord-Jæren", -30, 50)
 ```
 
 <br>
@@ -417,7 +416,7 @@ city_index_2020 %>%
 dplyr::bind_rows(city_index,
                  city_index_2020) %>% 
   dplyr::filter(area_name == "Osloområdet") %>% 
-  make_daily_dodged_bar_plot("Osloområdet", -70, 30)
+  make_daily_dodged_bar_plot("Osloområdet", -30, 50)
 ```
 
 <br>
@@ -445,7 +444,7 @@ city_index_2020 %>%
 dplyr::bind_rows(city_index,
                  city_index_2020) %>% 
   dplyr::filter(area_name == "Trondheim") %>% 
-  make_daily_dodged_bar_plot("Trondheim", -70, 30)
+  make_daily_dodged_bar_plot("Trondheim", -30, 50)
 ```
 
 <br>
@@ -473,7 +472,7 @@ city_index_2020 %>%
 dplyr::bind_rows(city_index,
                  city_index_2020) %>% 
   dplyr::filter(area_name == "Tromsø") %>% 
-  make_daily_dodged_bar_plot("Tromsø", -70, 51)
+  make_daily_dodged_bar_plot("Tromsø", -30, 50)
 ```
 
 <br>

@@ -218,7 +218,7 @@ I kartet nedenfor vises plasseringen av trafikkregistreringspunktene. Grenseover
 
 <br>
 
-```{r map_trp_index, fig.width=6, fig.height=7, fig.cap="Trafikkregistreringspunktene plassering og årsdøgntrafikk.", cache=TRUE}
+```{r map_trp_index, dpi=100, fig.width=6, fig.height=7, fig.cap="Trafikkregistreringspunktene plassering og årsdøgntrafikk.", cache=TRUE}
 create_point_adt_map(points_adt_all)
 ```
 
@@ -332,6 +332,11 @@ index_this_year %>%
 `r officer::fpar("", officer::run_pagebreak())`
 
 ```{r lineplot, fig.width=6, fig.height=5, fig.cap="Estimert endring i trafikkmengde ved riksgrensen sammenlignet med i fjor."}
+month_start = lubridate::make_date(year = 2021, month = 1)
+month_end = lubridate::make_date(year = 2021, month = 12)
+
+full_year_x_axis <- c(month_start, month_end)
+
 index_this_year %>% 
   dplyr::filter(period == "month") %>% 
   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
@@ -341,7 +346,8 @@ index_this_year %>%
   theme(axis.text.x = element_text(angle = 90),
         panel.grid.minor.x = element_blank()) +
   scale_x_date(breaks = scales::breaks_width("months"),
-               labels = scales::label_date("%b")) +
+               labels = scales::label_date("%b"),
+               limits = full_year_x_axis) +
   scale_color_manual(values = c("alle" = "#008ec2",
                                 "lette" = "#ed9300",
                                 "tunge" = "#444f55"),
@@ -356,7 +362,7 @@ index_this_year %>%
 `r officer::fpar("", officer::run_pagebreak())`
 
 ## Hittil i år
-I tabellen nedenfor vises samlet endring i trafikkmengde i perioden fra januar til `r last_month_name` i år, sammenlignet med samme periode i fjor. Usikkerheten i estimatet er synliggjort med et standardavvik.
+I tabellen nedenfor vises samlet endring i trafikkmengde i perioden fra januar til `r last_month_name` i år, sammenlignet med samme periode i fjor. Usikkerheten i estimatet er synliggjort med standardfeil. Hvor ulik trafikkendringen er ved de ulike trafikkregistreringspunktene, vises av standardavviket.
 
 <br>
 

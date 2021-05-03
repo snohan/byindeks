@@ -56,7 +56,7 @@ source("rmd_setup.R")
 # Trondheim              960 (2019) 03
 
 # Choose city number:
-city_number <- 960
+city_number <- 8952
 
 city_number_county_name <- 
   tibble::tibble(
@@ -115,10 +115,10 @@ latest_month <- city_monthly %>%
 city_info_all_years <- city_info %>% 
   #dplyr::filter(year_from_to == "2016-2021")
   #dplyr::filter(year_from_to == "2017-2021")
-  #dplyr::filter(year_from_to == "2018-2021")
-  dplyr::filter(year_from_to == "2019-2021")
+  dplyr::filter(year_from_to == "2018-2021")
+  #dplyr::filter(year_from_to == "2019-2021")
 
-base_year <- "2019"
+base_year <- "2018"
 last_year <- "2021"
 
 index_all_years <- round(city_info_all_years$index_p, digits = 1)
@@ -214,8 +214,9 @@ create_point_table(all_point_info,
 
 Kartet nedenfor viser plasseringen av trafikkregistreringspunktene. 
 
-<!-- TRD -->
+<!-- TRD 
 Punktet Meådalen på Ev 14 mellom Stjørdal og Meråker er utelatt fra kartvisningen.
+-->
 
 <br>
 

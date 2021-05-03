@@ -31,9 +31,9 @@ library(htmltools)
 # Tromsø 961
 
 # Choose
-index_year <- 2020
-index_month <- 11
-city_number <- 960
+index_year <- 2021
+index_month <- 2 # latest published
+city_number <- 8952
 
 # Fetch
 city_index <- get_published_index_for_months(city_number, index_year, index_month)
@@ -95,13 +95,13 @@ point_index_new_prepared <- point_index_new %>%
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
 
-# point_index_new_prepared_2 <- point_index_new %>% 
-#   dplyr::filter(day_type == "ALL",
-#                 period == "month",
-#                 month == index_month + 2) %>% 
-#   dplyr::select(trp_id, year, month, index_total_p,
-#                 index_total_coverage, length_excluded, length_coverage,
-#                 index_short, index_long)
+point_index_new_prepared_2 <- point_index_new %>%
+  dplyr::filter(day_type == "ALL",
+                period == "month",
+                month == index_month + 2) %>%
+  dplyr::select(trp_id, year, month, index_total_p,
+                index_total_coverage, length_excluded, length_coverage,
+                index_short, index_long)
 # 
 # point_index_new_prepared_3 <- point_index_new %>% 
 #   dplyr::filter(day_type == "ALL",
@@ -113,8 +113,8 @@ point_index_new_prepared <- point_index_new %>%
 
 
 pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
-                                            point_index_new_prepared#,
-                                            #point_index_new_prepared_2,
+                                            point_index_new_prepared,
+                                            point_index_new_prepared_2,
                                             #point_index_new_prepared_3
                                             ) %>% 
   dplyr::left_join(city_trps_meta) %>% 
@@ -134,6 +134,9 @@ pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
      
 city_trps_new_pointindex <- city_trps_meta %>% 
   dplyr::left_join(point_index_new_prepared)
+
+city_trps_new_pointindex_2 <- city_trps_meta %>% 
+  dplyr::left_join(point_index_new_prepared_2)
 
 # Widening for table view
 pointindex_prepared_all_wide_total_index <- pointindex_prepared_all %>% 
@@ -222,6 +225,11 @@ pointindex_long_2 <- dplyr::bind_rows(pointindex_long_total,
 ## Byindeks per måned så langt for `r city_name`
 
 ```{r city_index, message=FALSE, fig.width=12}
+month_start = lubridate::make_date(year = 2021, month = 1)
+month_end = lubridate::make_date(year = 2021, month = 12)
+
+full_year_x_axis <- c(month_start, month_end)
+
 city_index_prepared %>% 
   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
   ggplot2::geom_line() +
@@ -231,15 +239,16 @@ city_index_prepared %>%
         panel.grid.minor.x = element_blank(),
         legend.position = "bottom") +
   scale_x_date(breaks = scales::breaks_width("months"),
-               labels = scales::label_date("%b")) +
+               labels = scales::label_date("%b"),
+               limits = full_year_x_axis) +
   scale_color_manual(values = c("alle" = "#008ec2",
                                 "lette" = "#ed9300",
                                 "tunge" = "#444f55"),
                      name = "Kjøretøyklasse") +
   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
-       caption = "Data: Statens vegvesen") +
+       caption = "Data: Statens vegvesen og fylkeskommunene") +
   ggtitle("Estimert endring i trafikkmengde",
-          subtitle = "Trafikkmengde i 2020 sammenlignet med 2019")
+          subtitle = "Trafikkmengde i år sammenlignet med i fjor")
 ```
 
 
@@ -253,6 +262,11 @@ city_trps_new_pointindex %>%
 ```
 
 
+```{r map_trp_index_2, message=FALSE}
+city_trps_new_pointindex_2 %>% 
+  dplyr::rename(index = index_total_p) %>% 
+  create_pointindex_map()
+```
 
 ## Kurver per punkt for totaltrafikk
 
@@ -300,7 +314,7 @@ pointindex_long_2 %>%
   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
        caption = "Data: Statens vegvesen") +
   ggtitle(trp_name,
-          subtitle = "Trafikkmengde i 2020 sammenlignet med 2019")
+          subtitle = "Trafikkmengde i år sammenlignet med i fjor")
 
 # Notes
 ```
@@ -314,4 +328,11 @@ pointindex_wide %>%
       pageLength = 21,
       lengthMenu = c(21, 42, 70),
       autoWidth = TRUE))
+
+# Notater
+# Jan eks: Storeklubben, alle tre punkter
+# Bjørndalstræ ut hele året (sløyfefeil?)
+# Damsgårdveien mars og apr
 ```
+
+

@@ -148,8 +148,25 @@ get_published_road_traffic_index_for_months <- function(index_id, index_year, la
   return(index_table)
 }
 
-this_year <- 2021
-latest_month_number <- 2
-
 # Fetching published index from Traffic Data API
-index_this_year <- get_published_road_traffic_index_for_months(962, this_year, latest_month_number)
+index_2021 <- get_published_road_traffic_index_for_months(962, 2021, 2) %>%
+  dplyr::mutate(area_type = dplyr::case_when(area_type == "COUNTY" ~ "Fylke",
+                                             area_type == "COUNTRY_PART" ~ "Landsdel",
+                                             area_type == "COUNTRY" ~ "Hele landet"),
+                Lengdeklasse = dplyr::case_when(length_range == "[..,..)" ~ "Alle kjøretøy",
+                                                length_range == "[..,5.6)" ~ "Lette kjøretøy",
+                                                length_range == "[5.6,..)" ~ "Tunge kjøretøy"),
+                Dagtype = dplyr::case_when(day_type == "ALL" ~ "Alle døgn",
+                                           day_type == "WEEKDAY" ~ "Yrkedøgn",
+                                           day_type == "WEEKEND" ~ "Helgedøgn"),
+                Vegkategori = dplyr::case_when(
+                  road_category == "FYLKESVEG" ~ "Fylkesveg",
+                  road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
+                  road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG" ~ "Europa-, riks- og fylkesveg"),
+                Indeks = round(index_p, digits = 1),
+                Standardavvik = round(standard_deviation, digits = 1),
+                Periode = dplyr::case_when(period == "month" ~ "Måned",
+                                           period == "year_to_date" ~ "Hittil i år")
+                ) %>%
+  dplyr::select(area_name, area_type, year, month, Vegkategori, Lengdeklasse, Dagtype,
+                Indeks, Standardavvik, Periode)
