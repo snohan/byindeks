@@ -190,7 +190,7 @@ city_index <- pointindex_trp_toll %>%
 city_index_short <- city_index %>%
   dplyr::filter(length_range == "lette")
 
-# To find weighted variance and ci
+# To find weighted variance and SE
 pointindex_trp_toll_sd <- pointindex_trp_toll %>%
   dplyr::filter(!is.na(index)) %>%
   dplyr::left_join(city_index) %>%

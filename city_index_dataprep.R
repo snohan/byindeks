@@ -67,7 +67,7 @@ points <- get_points() %>%
 # Trondheim 960
 # Tromsø 961
 
-# Trondheim has its own script, all inclusive:
+## Trondheim has its own script, all inclusive ----
 #source("city_index_dataprep_trondheim_toll_stations")
 # Trondheim stop
 
@@ -116,7 +116,7 @@ pointindex_19 <- pointindex_19_all[[2]] %>%
                 is_manually_excluded == FALSE,
                 length_excluded == FALSE,
                 period == "year_to_date",
-                month == index_month) %>%
+                month == 12) %>%
   dplyr::select(trp_id, #base_volume, calc_volume,
                 index_19 = index_short)
 # Bergen end
@@ -133,7 +133,7 @@ pointindex_20 <- pointindex_20_all[[2]] %>%
                 is_manually_excluded == FALSE,
                 length_excluded == FALSE,
                 period == "year_to_date",
-                month == index_month) %>%
+                month == 12) %>%
   dplyr::select(trp_id, index_20 = index_short)
 
 pointindex_21 <- pointindex_21_all[[2]] %>%
@@ -167,7 +167,21 @@ n_21 <- pointindex_21  %>%
   dplyr::filter(!is.na(index_21)) %>%
   nrow()
 
+# Number of points per month for SE in monthly city index
+n_points_per_month <- dplyr::bind_rows(
+    pointindex_19_all[[2]],
+    pointindex_20_all[[2]],
+    pointindex_21_all[[2]]
+  ) %>%
+  dplyr::filter(day_type == "ALL",
+                is_excluded == FALSE,
+                is_manually_excluded == FALSE,
+                length_excluded == FALSE,
+                period == "month") %>%
+  dplyr::group_by(year, month) %>%
+  dplyr::summarise(n_points = n())
 
+## AADT ----
 adt <- get_aadt_by_length_for_trp_list(city_trps)
 
 adt_filtered <- adt %>%
@@ -182,28 +196,28 @@ adt_filtered <- adt %>%
   dplyr::rename(adt = 2)
 
 
-# Bergen
+### Bergen ----
 adt_manual <- data.frame(
   trp_id = c("04939V804763", "58509V804762", "27366V805728"),
   adt = c(100, 1700, 6800),
   year = c(2020, 2020, 2020)
 )
 
-# Nord-Jæren
+### Nord-Jæren ----
 adt_manual <- data.frame(
   trp_id = c("68351V319882"),
   adt = c(31500),
   year = c(2017)
 )
 
-# Buskerudbyen
+### Buskerudbyen ----
 adt_manual <- data.frame(
   trp_id = c("26634V181322", "06687V181318"),
   adt = c(2200, 26500),
   year = c(2019, 2019)
 )
 
-# Oslo
+### Oslo ----
 this_citys_trp_index_prel <- points %>%
   dplyr::filter(trp_id %in% city_trps) %>%
   split_road_system_reference() %>%
@@ -231,17 +245,17 @@ this_citys_trp_index <- this_citys_trp_index_prel %>%
   split_road_system_reference()
 # Oslo end, skip to refyear
 
-# Grenland
+### Grenland ----
 adt_manual <- data.frame(
   trp_id = c("26489V521174"),
   adt = c(9600),
   year = c(2018)
 )
 
-# Tromsø
+### Tromsø ----
 adt_manual <- data.frame()
 
-# Kristiansand
+### Kristiansand ----
 adt_manual <- data.frame(
   trp_id = c("33412V121301", "40820V121304", "00000V1702725",
              "47254V121508"),
@@ -249,15 +263,15 @@ adt_manual <- data.frame(
   year = c(2017, 2018, 2017, 2017)
 )
 
-# Nedre Glomma
+### Nedre Glomma ----
 adt_manual <- data.frame()
 
-# All
+### All ----
 adt_all <- bind_rows(adt_filtered,
                      adt_manual
                      )
 
-# Final table
+## Final table ----
 this_citys_trp_index <- points %>%
   dplyr::filter(trp_id %in% city_trps) %>%
   split_road_system_reference() %>%
@@ -322,7 +336,7 @@ city_year_to_date_19 <- city_index_2019 %>%
                 period == "year_to_date")
 
 city_year_to_date_20 <- city_index_2020 %>%
-  dplyr::filter(month == index_month,
+  dplyr::filter(month == 12,
                 road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
                 length_range == "[..,5.6)",
                 period == "year_to_date")
@@ -333,14 +347,13 @@ city_year_to_date_21 <- city_index_2021 %>%
                 length_range == "[..,5.6)",
                 period == "year_to_date")
 
-# TODO: include month to explitly state incomplete year
 city_index <- bind_rows(
   #city_year_to_date_17,
   #city_year_to_date_18,
   city_year_to_date_19,
   city_year_to_date_20,
   city_year_to_date_21) %>%
-  select(area_name, year, period, index_p, standard_deviation, confidence_width) %>%
+  select(area_name, year, month, period, index_p, standard_deviation, confidence_width) %>%
   mutate(year_base = year - 1,
          index_i = index_converter(index_p),
          variance = standard_deviation^2,
@@ -349,9 +362,11 @@ city_index <- bind_rows(
            #n_18,
            n_19,
            n_20,
-           n_21))
+           n_21),
+         standard_error = round(standard_deviation / sqrt(n_points), digits = 1))
 
-# Accumulated index
+
+## Accumulated index ----
 # TODO: Functionize!
 years_1_2 <- calculate_two_year_index(city_index)
 years_1_3 <- bind_rows(years_1_2, slice(city_index, 3)) %>%
@@ -362,11 +377,9 @@ years_1_4 <- bind_rows(years_1_3, slice(city_index, 4)) %>%
 # Skipping intermediate years, adding just from first to last
 city_index_all <- city_index %>%
   #bind_rows(years_1_2) %>%
-  #bind_rows(years_1_3) %>%
-  bind_rows(years_1_4) %>%
+  bind_rows(years_1_3) %>%
+  #bind_rows(years_1_4) %>%
   dplyr::mutate(year_from_to = paste0(year_base, "-", year),
-                ci_start = index_p - confidence_width,
-                ci_end = index_p + confidence_width,
                 area_name = city_name)
 
 write.csv2(city_index_all,
@@ -380,16 +393,19 @@ city_monthly <- bind_rows(
   #monthly_city_index(city_index_2017),
   #monthly_city_index(city_index_2018),
   monthly_city_index(city_index_2019),
-  monthly_city_index(city_index_2020)) %>%
+  monthly_city_index(city_index_2020),
+  monthly_city_index(city_index_2021)) %>%
   select(area_name, year, month, period, month_object, month_name, index_p,
-         standard_deviation, confidence_width, base_volume, calc_volume)
+         standard_deviation, confidence_width, base_volume, calc_volume) %>%
+  dplyr::left_join(n_points_per_month) %>%
+  dplyr::mutate(standard_error = round(standard_deviation / sqrt(n_points), digits = 1))
 
 write.csv2(city_monthly,
            file = paste0("data_indexpoints_tidy/byindeks_maanedlig_", city_number, ".csv"),
            row.names = F)
 
 
-# City index three year rolling ####
+# City index three year rolling ----
 # No use in calculating this before 37 months are available
 # The first 36 month index is equal to the first three whole year index!
 # TODO: 36 month rolling index with sd and ci
