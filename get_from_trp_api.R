@@ -148,11 +148,11 @@ get_points_from_trp_api <- function() {
 }
 
 
-get_periodic_trps_with_commission <- function() {
+get_trps_with_commission <- function() {
 
   api_query <-
     "query hentTRP {
-      trafficRegistrationPoints(stationType: [PERIODIC]) {
+      trafficRegistrationPoints {
     id
     name
     trafficType
@@ -172,12 +172,21 @@ get_periodic_trps_with_commission <- function() {
       roadReference {
         shortForm
       }
+      municipality {
+        county {
+          name
+        }
+      }
     }
     commissionElements {
       commission {
+        sourceSystem
         validFrom
         validTo
       }
+    }
+    publicVisibility {
+      isVisible
     }
   }
 }"
@@ -188,16 +197,19 @@ get_periodic_trps_with_commission <- function() {
                     c("data.trafficRegistrationPoints.commissionElements")) %>%
     dplyr::select(trp_id = data.trafficRegistrationPoints.id,
                   trp_name = data.trafficRegistrationPoints.name,
-                  trafficType = data.trafficRegistrationPoints.trafficType,
+                  traffic_type = data.trafficRegistrationPoints.trafficType,
                   status = data.trafficRegistrationPoints.operationalStatus,
                   registration_frequency = data.trafficRegistrationPoints.registrationFrequency,
+                  source_system = commission.sourceSystem,
                   commission_from = commission.validFrom,
                   commission_to = commission.validTo,
                   road_link = data.trafficRegistrationPoints.location.roadLink.id,
                   road_link_position = data.trafficRegistrationPoints.location.roadLink.position,
                   lat = data.trafficRegistrationPoints.location.coordinates.latlon.latitude,
                   lon = data.trafficRegistrationPoints.location.coordinates.latlon.longitude,
-                  road_reference = data.trafficRegistrationPoints.location.roadReference.shortForm) %>%
+                  road_reference = data.trafficRegistrationPoints.location.roadReference.shortForm,
+                  county_name = data.trafficRegistrationPoints.location.municipality.county.name,
+                  is_visible = data.trafficRegistrationPoints.publicVisibility.isVisible) %>%
     dplyr::mutate(commission_from = parse_and_floor_date(commission_from, "day"),
                   commission_to = parse_and_floor_date(commission_to, "day"),
                   commission_interval = lubridate::interval(commission_from,

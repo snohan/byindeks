@@ -43,7 +43,7 @@ source("rmd_setup.R")
 ```{r get_data, include = FALSE}
 # City numbers
 
-# Bergen                 8952 (2018) 12 
+# Bergen                 8952 (2018) 04
 # Nord-Jæren             952 (2017) 12
 # Oslo                   959 (2018) 12
 

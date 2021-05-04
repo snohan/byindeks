@@ -24,74 +24,142 @@ Nedetid på grunn av vegarbeid inngår i beregning av dekningsgrad.
 ```{r get_data, include=FALSE}
 # Calculate uptime as mean coverage for all points
 
-periodic_trps <- read.csv2("H:/Programmering/R/trafikkdata/periodic_trp.csv")
+# To remove points with first commission after our interest period
+# replace with just td-api query when this timestamp is available there NO - need to consider visibility!
+points_trp_api <- get_trps_with_commission()
+
+points_first_commission_in_trafikkdata <- points_trp_api %>%
+  dplyr::filter(source_system == "TRAFIKKDATA") %>% 
+  dplyr::group_by(trp_id) %>%
+  dplyr::slice(which.min(commission_from)) %>% 
+  dplyr::filter(registration_frequency == "CONTINUOUS",
+                status %in% c("OPERATIONAL", "NON_OPERATIONAL")) %>% 
+  dplyr::select(trp_id, trp_name, traffic_type, road_reference, county_name,
+                first_commission_in_trafikkdata = commission_from, operational_status = status, is_visible)
+
+# 
+# points_first_commission_in_trafikkdata %>% 
+#   dplyr::filter(is_visible == FALSE) %>% 
+#   writexl::write_xlsx(path = "spesialuttak/usynlige_punkter.xlsx")
 
 # Point metadata from Traffic Data API
-points <- get_points() %>%
-  dplyr::group_by(trp_id) %>%
-  dplyr::slice(which.min(validFrom)) %>% 
-  dplyr::filter(!(trp_id %in% periodic_trps$trp_id))
+# points <- get_points() %>%
+#   dplyr::group_by(trp_id) %>%
+#   dplyr::slice(which.min(validFrom)) %>%
+#   dplyr::filter(registration_frequency == "CONTINUOUS"#,
+#                 #operational_status %in% c("OPERATIONAL", "TEMPORARILY_OUT_OF_SERVICE")
+#                 ) %>%
+#   dplyr::select(trp_id, county_name) %>% 
+#   dplyr::right_join(points_first_commission_in_trafikkdata)
 
-points_er <- points %>% 
+
+points_er <- points_first_commission_in_trafikkdata %>% 
   split_road_system_reference() %>% 
-  dplyr::filter(road_category %in% c("E", "R")) %>% 
-  dplyr::select(trp_id, name, traffic_type, road_reference, county_name,
-                validFrom, latest_day_with_data, operational_status) %>% 
+  dplyr::filter(road_category %in% c("E", "R"),
+                is_visible == TRUE) %>% 
+  dplyr::select(trp_id, trp_name, road_reference, county_name, operational_status,
+                first_commission_in_trafikkdata) %>% 
   dplyr::mutate(area = dplyr::case_when(
-    county_name %in% c("Oslo", "Viken", "Innlandet") ~ "Geodata 1",
+    county_name %in% c("Oslo", "Viken", "Innlandet") ~ "Geodata 3",
     county_name %in% c("Vestfold og Telemark", "Agder", 
                        "Rogaland", "Vestland") ~ "Geodata 2",
     county_name %in% c("Møre og Romsdal", "Trøndelag", 
-                       "Nordland", "Troms og Finnmark") ~ "Geodata 3"
+                       "Nordland", "Troms og Finnmark") ~ "Geodata 1"
   ))
 
 # TODO: nye veier, ops
+# TODO: fylkene
+# TODO: remove points out of service because of external factors
 
-# Fetch MDT for all points with a first commission prior to month
-mdts <- get_mdt_for_trp_list(points_er$trp_id, 2020) %>% 
+points_f <- points_first_commission_in_trafikkdata %>% 
+  split_road_system_reference() %>% 
+  dplyr::filter(road_category %in% c("F"),
+                is_visible == TRUE) %>% 
+  dplyr::select(trp_id, trp_name, road_reference, county_name, operational_status,
+                first_commission_in_trafikkdata) %>% 
+  dplyr::mutate(area = county_name)
+```
+
+```{r mdt_er}
+mdts_er <- get_mdt_for_trp_list(points_er$trp_id, 2021) %>% 
   dplyr::select(trp_id, year, month, coverage) 
 
-points_without_any_mdt <- points_er %>% 
-  dplyr::filter(!(trp_id %in% mdts$trp_id)) %>% 
+points_without_any_mdt_er <- points_er %>% 
+  dplyr::filter(!(trp_id %in% mdts_er$trp_id)) %>% 
   dplyr::select(trp_id) %>% 
-  dplyr::mutate(year = 2020,
+  dplyr::mutate(year = 2021,
                 month = 1)
 
-mdts_prepared <- mdts %>% 
-  dplyr::bind_rows(points_without_any_mdt) %>% 
+mdts_prepared_er <- mdts_er %>% 
+  dplyr::bind_rows(points_without_any_mdt_er) %>% 
   tidyr::complete(trp_id, year, month, fill = list(coverage = 0)) %>% 
   dplyr::mutate(month_object = lubridate::make_date(year = year, month = month),
                 month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE),
                 last_day_of_month = lubridate::ceiling_date(month_object, unit = "month"))
-```
 
-```{r data_prep}
-trp_mdt <- points_er %>% 
-  dplyr::left_join(mdts_prepared) %>% 
-  dplyr::filter(validFrom < month_object) %>% 
-  dplyr::filter(!(operational_status == "RETIRED" & 
-                latest_day_with_data < last_day_of_month)) %>% 
+trp_mdt_er <- points_er %>% 
+  dplyr::left_join(mdts_prepared_er) %>% 
+  dplyr::filter(month_object > first_commission_in_trafikkdata) %>% 
 # TODO: filter based on last end of commission?
   dplyr::ungroup() 
 
-uptime_geodata <- trp_mdt %>% 
+uptime_geodata <- trp_mdt_er %>% 
   dplyr::group_by(month_object, area) %>% 
   dplyr::summarise(uptime = mean(coverage, na.rm = T),
                    antall_punkt = n())
 
-uptime_norway <- trp_mdt %>% 
+uptime_svv <- trp_mdt_er %>% 
   dplyr::group_by(month_object) %>% 
   dplyr::summarise(uptime = mean(coverage, na.rm = T),
                    antall_punkt = n()) %>% 
   dplyr::mutate(area = "SVV")
 
 uptime <- dplyr::bind_rows(uptime_geodata,
-                           uptime_norway)
+                           uptime_svv) %>% 
+  dplyr::ungroup()
+```
+
+```{r mdt_f}
+mdts_f <- get_mdt_for_trp_list(points_f$trp_id, 2021) %>% 
+  dplyr::select(trp_id, year, month, coverage) 
+
+points_without_any_mdt_f <- points_f %>% 
+  dplyr::filter(!(trp_id %in% mdts_f$trp_id)) %>% 
+  dplyr::select(trp_id) %>% 
+  dplyr::mutate(year = 2021,
+                month = 1)
+
+mdts_prepared_f <- mdts_f %>% 
+  dplyr::bind_rows(points_without_any_mdt_f) %>% 
+  tidyr::complete(trp_id, year, month, fill = list(coverage = 0)) %>% 
+  dplyr::mutate(month_object = lubridate::make_date(year = year, month = month),
+                month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE),
+                last_day_of_month = lubridate::ceiling_date(month_object, unit = "month"))
+
+trp_mdt_f <- points_f %>% 
+  dplyr::left_join(mdts_prepared_f) %>% 
+  dplyr::filter(month_object > first_commission_in_trafikkdata) %>% 
+# TODO: filter based on last end of commission?
+  dplyr::ungroup() 
+
+uptime_f <- trp_mdt_f %>% 
+  dplyr::group_by(month_object, area) %>% 
+  dplyr::summarise(uptime = mean(coverage, na.rm = T),
+                   antall_punkt = n()) %>% 
+  dplyr::ungroup()
+```
+
+
+```{r data_prep}
+# To plot full year x axis
+month_start = lubridate::make_date(year = 2021, month = 1)
+month_end = lubridate::make_date(year = 2021, month = 12)
+full_year_x_axis <- c(month_start, month_end)
 ```
 
 
 
-```{r plot_uptime}
+```{r plot_uptime_er}
 uptime %>%
   ggplot2::ggplot(aes(x = month_object, y = uptime)) +
   ggplot2::geom_line() +
@@ -101,16 +169,42 @@ uptime %>%
   theme(axis.text.x = element_text(angle = 90),
         panel.grid.minor.x = element_blank()) +
   scale_x_date(breaks = scales::breaks_width("months"),
-               labels = scales::label_date("%b")) +
-  scale_y_continuous(breaks = c(90, 95)) +
+               labels = scales::label_date("%b"),
+               limits = full_year_x_axis) +
+  #scale_y_continuous(breaks = c(90, 95)) +
   labs(x = NULL, y = "Oppetid (%) \n",
        caption = "Data: Statens vegvesen") +
   ggtitle("Gjennomsnittlig oppetid på trafikkregistreringspunkt",
-          subtitle = "Europa- og riksveg, 2020")
+          subtitle = "Europa- og riksveg, 2021")
+```
+
+```{r table_er}
+uptime %>%
+  dplyr::mutate(month_name = lubridate::month(month_object, label = TRUE)) %>% 
+  dplyr::select(month_name, area, uptime) %>%
+  tidyr::pivot_wider(names_from = month_name, values_from = uptime) %>% 
+  flextable::flextable() %>%
+  colformat_double(j = c(2:5), digits = 1) %>%
+  set_header_labels(area = "Vegforvalter") %>%
+  align(i = 1, j = c(2:5), align = "center", part = "header") %>% 
+  padding(j = c(2:5),
+          padding.right = 25, part = "body") %>%
+  bold(part = "header") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  autofit() %>%
+  height_all(height = .2) %>%
+  set_caption("Gjennomsnittlig oppetid på trafikkregistreringspunkt (%).",
+              autonum = table_numbers,
+              style = "Tabelltekst")
 ```
 
 
-```{r plot_number}
+
+
+```{r plot_n_points_er}
 uptime_geodata %>%
   ggplot2::ggplot(aes(x = month_object, y = antall_punkt, color = area)) +
   ggplot2::geom_line() +
@@ -120,7 +214,8 @@ uptime_geodata %>%
   theme(axis.text.x = element_text(angle = 90),
         panel.grid.minor.x = element_blank()) +
   scale_x_date(breaks = scales::breaks_width("months"),
-               labels = scales::label_date("%b")) +
+               labels = scales::label_date("%b"),
+               limits = full_year_x_axis) +
   scale_color_manual(values = c("Geodata 1" = "#008ec2",
                                 "Geodata 2" = "#ed9300",
                                 "Geodata 3" = "#444f55"),
@@ -128,10 +223,77 @@ uptime_geodata %>%
   labs(x = NULL, y = "Antall punkt \n",
        caption = "Data: Statens vegvesen") +
   ggtitle("Antall trafikkregistreringspunkt",
-          subtitle = "Europa- og riksveg, 2020")
+          subtitle = "Europa- og riksveg, 2021")
+```
+
+```{r plot_uptime_f, fig.height=10}
+uptime_f %>%
+  ggplot2::ggplot(aes(x = month_object, y = uptime)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_point() +
+  ggplot2::facet_grid(rows = vars(area)) +
+  theme_light() +
+  theme(axis.text.x = element_text(angle = 90),
+        panel.grid.minor.x = element_blank()) +
+  scale_x_date(breaks = scales::breaks_width("months"),
+               labels = scales::label_date("%b"),
+               limits = full_year_x_axis) +
+  #scale_y_continuous(breaks = c(90, 95)) +
+  labs(x = NULL, y = "Oppetid (%) \n",
+       caption = "Data: Fylkeskommunene") +
+  ggtitle("Gjennomsnittlig oppetid på trafikkregistreringspunkt",
+          subtitle = "Fylkesveg, 2021")
 ```
 
 
+
+```{r table_f}
+uptime_f %>%
+  dplyr::mutate(month_name = lubridate::month(month_object, label = TRUE)) %>% 
+  dplyr::select(month_name, area, uptime) %>%
+  tidyr::pivot_wider(names_from = month_name, values_from = uptime) %>% 
+  flextable::flextable() %>%
+  colformat_double(j = c(2:5), digits = 1) %>%
+  set_header_labels(area = "Vegforvalter") %>%
+  align(i = 1, j = c(2:5), align = "center", part = "header") %>% 
+  padding(j = c(2:5),
+          padding.right = 25, part = "body") %>%
+  bold(part = "header") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  autofit() %>%
+  height_all(height = .2) %>%
+  set_caption("Gjennomsnittlig oppetid på trafikkregistreringspunkt (%).",
+              autonum = table_numbers,
+              style = "Tabelltekst")
+```
+
+
+
+```{r table_f_n}
+uptime_f %>%
+  dplyr::mutate(month_name = lubridate::month(month_object, label = TRUE)) %>% 
+  dplyr::select(month_name, area, antall_punkt) %>%
+  tidyr::pivot_wider(names_from = month_name, values_from = antall_punkt) %>% 
+  flextable::flextable() %>%
+  colformat_double(j = c(2:5), digits = 0) %>%
+  set_header_labels(area = "Vegforvalter") %>%
+  align(i = 1, j = c(2:5), align = "center", part = "header") %>% 
+  padding(j = c(2:5),
+          padding.right = 25, part = "body") %>%
+  bold(part = "header") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  autofit() %>%
+  height_all(height = .2) %>%
+  set_caption("Antall trafikkregistreringspunkt.",
+              autonum = table_numbers,
+              style = "Tabelltekst")
+```
 
 ```{r table}
 # index_2020_upper_lower %>%
