@@ -47,6 +47,35 @@ readPointindexCSV <- function(filename) {
     select(msnr, index)
 }
 
+read_old_pointindex_csv_monthly <- function(filename, given_year) {
+  # Read standard csv export from old VTI-app in Datainn
+  read.csv2(filename) %>%
+    filter(døgn == "Alle",
+           lengdeklasse == "< 5,6m",
+           !(periode %in% c("Hittil i år", "Siste 12 måneder")),
+           indeks != "-") %>%
+    mutate(trs = as.numeric(msnr),
+           year = given_year,
+           month = dplyr::case_when(
+             periode == "Januar" ~ 1,
+             periode == "Februar" ~ 2,
+             periode == "Mars" ~ 3,
+             periode == "April" ~ 4,
+             periode == "Mai" ~ 5,
+             periode == "Juni" ~ 6,
+             periode == "Juli" ~ 7,
+             periode == "August" ~ 8,
+             periode == "September" ~ 9,
+             periode == "Oktober" ~ 10,
+             periode == "November" ~ 11,
+             periode == "Desember" ~ 12
+           ),
+           index = decimal_point(indeks) %>%
+             as.numeric()) %>%
+    select(trs, year, month, index) %>%
+    rename(msnr = trs)
+}
+
 # deprecated
 read_new_pointindex_csv <- function(filename) {
   # Read new csv export from Datainn
@@ -203,7 +232,10 @@ calculate_two_year_index <- function(city_index_df) {
   ) %>%
     as_tibble() %>%
     dplyr::mutate(standard_deviation = sqrt(variance),
-                  standard_error = round(standard_deviation / sqrt(n_points), digits = 1))
+                  standard_error = round(standard_deviation / sqrt(n_points), digits = 1)) %>%
+    select(year_base, year, month, index_p, index_i,
+           standard_deviation, variance, n_points, standard_error)
+
 }
 
 
@@ -275,7 +307,10 @@ calculate_all_possible_36_month_indexes <- function(city_monthly_df) {
       summarise(volume_calc_year = sum(calc_volume),
                 volume_base_year = sum(base_volume),
                 index_p = (volume_calc_year / volume_base_year - 1 ) * 100,
-                index_i = volume_calc_year / volume_base_year) %>%
+                index_i = volume_calc_year / volume_base_year,
+                n_points = max(n_points)
+                # TODO: variance (would be easier if this index was calculated directly from point index)
+                ) %>%
       #select(index, index_i) %>%
       calculate_two_years_index_36_month_version() %>%
       bind_cols(city_monthly_36_period)

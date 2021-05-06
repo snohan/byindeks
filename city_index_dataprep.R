@@ -73,7 +73,7 @@ points <- get_points() %>%
 
 # Choose
 index_month <- 4 # the one to be published now
-city_number <- 8952
+city_number <- 961
 
 # Pointindices ----
 # TODO: TRPs might differ from year to year!
@@ -81,8 +81,8 @@ city_number <- 8952
 # Fetch city indexes
 # Note: not all cities use 2017
 # Note: just neede for city_name for Trondheim
-#city_index_2017 <- get_published_index_for_months(city_number, 2017, 12)
-#city_index_2018 <- get_published_index_for_months(city_number, 2018, 12)
+city_index_2017 <- get_published_index_for_months(city_number, 2017, 12)
+city_index_2018 <- get_published_index_for_months(city_number, 2018, 12)
 city_index_2019 <- get_published_index_for_months(city_number, 2019, 12)
 city_index_2020 <- get_published_index_for_months(city_number, 2020, 12)
 city_index_2021 <- get_published_index_for_months(city_number, 2021, index_month)
@@ -90,20 +90,41 @@ city_index_2021 <- get_published_index_for_months(city_number, 2021, index_month
 ## Old results on csv ----
 # Still need to specify csv-files for years before 2020 to get the pointindex as they are not in API
 # Note: not all cities use 2017
-# pointindex_17 <- readPointindexCSV(
-#   paste0("data_index_raw/pointindex_", city_number, "_", 2017, ".csv")
-# ) %>%
-#   rename(index_17 = index)
-#
-# pointindex_18 <- readPointindexCSV(
-#   paste0("data_index_raw/pointindex_", city_number, "_", 2018, ".csv")
-#   ) %>%
-#   rename(index_18 = index)
+pointindex_17 <- readPointindexCSV(
+  paste0("data_index_raw/pointindex_", city_number, "_", 2017, ".csv")
+) %>%
+  rename(index_17 = index)
 
-# pointindex_19 <- readPointindexCSV(
-#   paste0("data_index_raw/pointindex_", city_number, "_", 2019, ".csv")
-#   ) %>%
-#   rename(index_19 = index)
+pointindex_17_monthly <- read_old_pointindex_csv_monthly(
+  paste0("data_index_raw/pointindex_", city_number, "_", 2017, ".csv"),
+  2017
+) %>%
+  dplyr::left_join(trp_id_msnr) %>%
+  dplyr::select(-msnr)
+
+pointindex_18 <- readPointindexCSV(
+  paste0("data_index_raw/pointindex_", city_number, "_", 2018, ".csv")
+  ) %>%
+  rename(index_18 = index)
+
+pointindex_18_monthly <- read_old_pointindex_csv_monthly(
+  paste0("data_index_raw/pointindex_", city_number, "_", 2018, ".csv"),
+  2018
+) %>%
+  dplyr::left_join(trp_id_msnr) %>%
+  dplyr::select(-msnr)
+
+pointindex_19 <- readPointindexCSV(
+  paste0("data_index_raw/pointindex_", city_number, "_", 2019, ".csv")
+  ) %>%
+  rename(index_19 = index)
+
+pointindex_19_monthly <- read_old_pointindex_csv_monthly(
+  paste0("data_index_raw/pointindex_", city_number, "_", 2019, ".csv"),
+  2019
+) %>%
+  dplyr::left_join(trp_id_msnr) %>%
+  dplyr::select(-msnr)
 
 ## New results from api ----
 # Bergen
@@ -147,13 +168,13 @@ pointindex_21 <- pointindex_21_all[[2]] %>%
 
 
 
-# n_17 <- pointindex_17 %>%
-#   dplyr::filter(!is.na(index_17)) %>%
-#   nrow()
-#
-# n_18 <- pointindex_18 %>%
-#   dplyr::filter(!is.na(index_18)) %>%
-#   nrow()
+n_17 <- pointindex_17 %>%
+  dplyr::filter(!is.na(index_17)) %>%
+  nrow()
+
+n_18 <- pointindex_18 %>%
+  dplyr::filter(!is.na(index_18)) %>%
+  nrow()
 
 n_19 <- pointindex_19 %>%
   dplyr::filter(!is.na(index_19)) %>%
@@ -169,7 +190,9 @@ n_21 <- pointindex_21  %>%
 
 # Number of points per month for SE in monthly city index
 n_points_per_month <- dplyr::bind_rows(
-    pointindex_19_all[[2]],
+  # Pointindex from API here
+    #pointindex_18_all[[2]],
+    #pointindex_19_all[[2]],
     pointindex_20_all[[2]],
     pointindex_21_all[[2]]
   ) %>%
@@ -178,6 +201,13 @@ n_points_per_month <- dplyr::bind_rows(
                 is_manually_excluded == FALSE,
                 length_excluded == FALSE,
                 period == "month") %>%
+  dplyr::select(trp_id, year, month, index = index_short) %>%
+  dplyr::bind_rows(
+    # Pointindex from old csv files here:
+    pointindex_17_monthly,
+    pointindex_18_monthly,
+    pointindex_19_monthly
+  ) %>%
   dplyr::group_by(year, month) %>%
   dplyr::summarise(n_points = n())
 
@@ -205,9 +235,9 @@ adt_manual <- data.frame(
 
 ### Nord-Jæren ----
 adt_manual <- data.frame(
-  trp_id = c("68351V319882"),
-  adt = c(31500),
-  year = c(2017)
+  #trp_id = c("68351V319882"),
+  #adt = c(31500),
+  #year = c(2017)
 )
 
 ### Buskerudbyen ----
@@ -281,8 +311,8 @@ this_citys_trp_index <- points %>%
                 lat, lon, road_link_position) %>%
   dplyr::left_join(trp_id_msnr) %>%
   left_join(adt_all) %>%
-  #left_join(pointindex_17) %>%
-  #left_join(pointindex_18) %>%
+  left_join(pointindex_17) %>%
+  left_join(pointindex_18) %>%
   left_join(pointindex_19) %>%
   left_join(pointindex_20) %>%
   left_join(pointindex_21)
@@ -317,17 +347,17 @@ write.csv2(this_citys_trp_index_refyear,
 
 
 # City index ----
-# city_year_to_date_17 <- city_index_2017 %>%
-#   dplyr::filter(month == 12,
-#                 road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
-#                 length_range == "[..,5.6)",
-#                 period == "year_to_date")
-#
-# city_year_to_date_18 <- city_index_2018 %>%
-#   dplyr::filter(month == 12,
-#                 road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
-#                 length_range == "[..,5.6)",
-#                 period == "year_to_date")
+city_year_to_date_17 <- city_index_2017 %>%
+  dplyr::filter(month == 12,
+                road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+                length_range == "[..,5.6)",
+                period == "year_to_date")
+
+city_year_to_date_18 <- city_index_2018 %>%
+  dplyr::filter(month == 12,
+                road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+                length_range == "[..,5.6)",
+                period == "year_to_date")
 
 city_year_to_date_19 <- city_index_2019 %>%
   dplyr::filter(month == 12,
@@ -348,37 +378,51 @@ city_year_to_date_21 <- city_index_2021 %>%
                 period == "year_to_date")
 
 city_index <- bind_rows(
-  #city_year_to_date_17,
-  #city_year_to_date_18,
+  city_year_to_date_17,
+  city_year_to_date_18,
   city_year_to_date_19,
   city_year_to_date_20,
   city_year_to_date_21) %>%
-  select(area_name, year, month, period, index_p, standard_deviation, confidence_width) %>%
   mutate(year_base = year - 1,
          index_i = index_converter(index_p),
          variance = standard_deviation^2,
          n_points = c(
-           #n_17,
-           #n_18,
+           n_17,
+           n_18,
            n_19,
            n_20,
            n_21),
-         standard_error = round(standard_deviation / sqrt(n_points), digits = 1))
+         standard_error = round(standard_deviation / sqrt(n_points), digits = 1)) %>%
+  select(year_base, year, month, index_p, index_i,
+         standard_deviation, variance, n_points, standard_error) %>%
+  dplyr::arrange(year)
 
 
 ## Accumulated index ----
 # TODO: Functionize!
+#calculate_each_index_from_reference_year <- function(city_index_df) {
+  # In order to calculate SD and SE, do it iteratively for two years at a time
+#  city_index_n_years <- nrow(city_index)
+#  ref_year <- min(city_index$year_base)
+#}
+
 years_1_2 <- calculate_two_year_index(city_index)
+
 years_1_3 <- bind_rows(years_1_2, slice(city_index, 3)) %>%
   calculate_two_year_index()
+
 years_1_4 <- bind_rows(years_1_3, slice(city_index, 4)) %>%
    calculate_two_year_index()
 
-# Skipping intermediate years, adding just from first to last
+years_1_5 <- bind_rows(years_1_4, slice(city_index, 5)) %>%
+  calculate_two_year_index()
+
+# Skipping intermediate years, adding just from first to last?
 city_index_all <- city_index %>%
-  #bind_rows(years_1_2) %>%
+  bind_rows(years_1_2) %>%
   bind_rows(years_1_3) %>%
-  #bind_rows(years_1_4) %>%
+  bind_rows(years_1_4) %>%
+  bind_rows(years_1_5) %>%
   dplyr::mutate(year_from_to = paste0(year_base, "-", year),
                 area_name = city_name)
 
@@ -390,8 +434,8 @@ write.csv2(city_index_all,
 
 # City index monthly ----
 city_monthly <- bind_rows(
-  #monthly_city_index(city_index_2017),
-  #monthly_city_index(city_index_2018),
+  monthly_city_index(city_index_2017),
+  monthly_city_index(city_index_2018),
   monthly_city_index(city_index_2019),
   monthly_city_index(city_index_2020),
   monthly_city_index(city_index_2021)) %>%

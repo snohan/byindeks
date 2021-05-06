@@ -45,7 +45,7 @@ create_point_adt_map <- function(all_point_info_df) {
       fillColor = ~palett_adt(adt),
       fillOpacity = 0.8
     ) %>%
-    addLegend("topleft",
+    addLegend("bottomright",
               pal = palett_adt,
               values = ~adt,
               title = "ADT",
@@ -409,3 +409,37 @@ calculate_all_index_chain_combinations <- function(df_index_i) {
   return(resulting_df)
 
 }
+
+
+#I figuren nedenfor er spredningen i punktindeksene illustrert. Den vertikale grønne streken viser byindeksens samlede verdi for hele perioden 2019 - `r latest_month` 2020.
+
+#```{r point_graph, fig.width=6, fig.height=7, fig.cap="ÅDT og endring i trafikkmengde per trafikkregistreringspunkt."}
+# TODO: a plot per year
+# all_point_info_index <- all_point_info %>%
+#   dplyr::filter(!is.na(index))
+#
+# subtitle_here <- paste0("Fra 2019 til ", latest_month, " 2020")
+#
+# ggplot2::ggplot() +
+#   geom_point(data = all_point_info_index,
+#              aes(x = reorder(name, index), y = index, size = adt),
+#              color = "#ED9300", alpha = 0.6) +
+#   geom_hline(yintercept = index_all_years, color = "#58B02C") +
+#   geom_hline(yintercept = 0, color = "#000000") +
+#   xlab("") +
+#   ylab("Endring i trafikkmengde (%) \n") +
+#   ggtitle(label = "ÅDT og endring i trafikkmengde",
+#           subtitle = subtitle_here) +
+#   coord_flip() +
+#   scale_size(name = "ÅDT") +
+#   geom_rect(aes(xmin = -Inf, xmax = Inf,
+#                 ymin = index_all_years_ci_lower,
+#                 ymax = index_all_years_ci_upper),
+#             alpha = 0.1, fill = "#008EC2") +
+#   theme_minimal() +
+#   theme(legend.position = "bottom",
+#         axis.text.y = element_text(size = 7)) +
+#   labs(caption = caption_credit)
+# TODO: Add explaining labels with ggforce?
+#```
+

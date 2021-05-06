@@ -33,7 +33,7 @@ library(htmltools)
 # Choose
 index_year <- 2021
 index_month <- 2 # latest published
-city_number <- 952
+city_number <- 961
 
 # Fetch
 city_index <- get_published_index_for_months(city_number, index_year, index_month)
@@ -330,7 +330,17 @@ pointindex_wide %>%
       autoWidth = TRUE))
 
 # Notater
-
+# Eks jan:
+#  
+#  
+# Eks feb:
+#  
+# Eks fra mars: 
+#  
+#  
+# Eks fra april:
+#  
+#  
 ```
 
 
