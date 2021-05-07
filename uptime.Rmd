@@ -21,6 +21,7 @@ For hvert trafikkregistreringspunkt er første igangsettingsmåned filtrert ut. 
 
 Nedetid på grunn av vegarbeid inngår i beregning av dekningsgrad, da det ikke er lett å automatisere filtrering på denne typen årsak til nedetid.
 
+</br>
 
 ```{r get_data, include=FALSE}
 # To remove points with first commission after our interest period
@@ -110,6 +111,8 @@ trp_mdt <- points %>%
   dplyr::filter(month_object > first_commission_in_trafikkdata) %>% 
 # TODO: filter based on last end of commission?
   dplyr::ungroup()
+
+write.csv(trp_mdt, file = "spesialuttak/trp_mdt_2021-04.csv", row.names = F)
 ```
 
 ```{r calculate_uptime}
@@ -128,7 +131,7 @@ uptime_svv <- trp_mdt %>%
   dplyr::mutate(area = "Statens vegvesen",
                 adm_category = "R")
 
-uptime_f <- trp_mdt_f %>% 
+uptime_f <- trp_mdt %>% 
   dplyr::filter(road_category %in% c("F")) %>% 
   dplyr::group_by(month_object, area) %>% 
   dplyr::summarise(uptime = mean(coverage, na.rm = T),
@@ -155,9 +158,9 @@ full_year_x_axis <- c(month_start, month_end)
 
 
 
-```{r plot_uptime_r}
+```{r plot_uptime_r, fig.height=7, fig.width=9}
 uptime  %>% 
-  dplyr::filter(adm_category = "R") %>%
+  dplyr::filter(adm_category == "R") %>%
   ggplot2::ggplot(aes(x = month_object, y = uptime)) +
   ggplot2::geom_line() +
   ggplot2::geom_point() +
@@ -175,7 +178,9 @@ uptime  %>%
           subtitle = "Europa- og riksveg, 2021")
 ```
 
-```{r table_er}
+</br>
+
+```{r table}
 uptime %>%
   dplyr::mutate(month_name = lubridate::month(month_object, label = TRUE)) %>% 
   dplyr::select(month_name, area, uptime) %>%
@@ -198,34 +203,13 @@ uptime %>%
               style = "Tabelltekst")
 ```
 
+</br>
 
+</br>
 
-
-```{r plot_n_points_er}
-# uptime_geodata %>%
-#   ggplot2::ggplot(aes(x = month_object, y = antall_punkt, color = area)) +
-#   ggplot2::geom_line() +
-#   ggplot2::geom_point() +
-#   #ggplot2::facet_grid(rows = vars(area)) +
-#   theme_light() +
-#   theme(axis.text.x = element_text(angle = 90),
-#         panel.grid.minor.x = element_blank()) +
-#   scale_x_date(breaks = scales::breaks_width("months"),
-#                labels = scales::label_date("%b"),
-#                limits = full_year_x_axis) +
-#   scale_color_manual(values = c("Geodata 1" = "#008ec2",
-#                                 "Geodata 2" = "#ed9300",
-#                                 "Geodata 3" = "#444f55"),
-#                       name = "Område") +
-#   labs(x = NULL, y = "Antall punkt \n",
-#        caption = "Data: Statens vegvesen") +
-#   ggtitle("Antall trafikkregistreringspunkt",
-#           subtitle = "Europa- og riksveg, 2021")
-```
-
-```{r plot_uptime_f, fig.height=10}
+```{r plot_uptime_f, fig.height=11, fig.width=9}
 uptime %>%
-  dplyr::filter(adm_category = "F") %>%
+  dplyr::filter(adm_category == "F") %>%
   ggplot2::ggplot(aes(x = month_object, y = uptime)) +
   ggplot2::geom_line() +
   ggplot2::geom_point() +
@@ -243,32 +227,7 @@ uptime %>%
           subtitle = "Fylkesveg, 2021")
 ```
 
-
-
-```{r table_f}
-# uptime_f %>%
-#   dplyr::mutate(month_name = lubridate::month(month_object, label = TRUE)) %>% 
-#   dplyr::select(month_name, area, uptime) %>%
-#   tidyr::pivot_wider(names_from = month_name, values_from = uptime) %>% 
-#   flextable::flextable() %>%
-#   colformat_double(j = c(2:5), digits = 1) %>%
-#   set_header_labels(area = "Vegforvalter") %>%
-#   align(i = 1, j = c(2:5), align = "center", part = "header") %>% 
-#   padding(j = c(2:5),
-#           padding.right = 25, part = "body") %>%
-#   bold(part = "header") %>%
-#   bg(bg = "#ED9300", part = "header") %>%
-#   border_remove() %>%
-#   hline_top(part = "header", border = borderline) %>%
-#   hline_bottom(part = "all", border = borderline) %>%
-#   autofit() %>%
-#   height_all(height = .2) %>%
-#   set_caption("Gjennomsnittlig oppetid på trafikkregistreringspunkt (%).",
-#               autonum = table_numbers,
-#               style = "Tabelltekst")
-```
-
-
+</br>
 
 ```{r table_n}
 uptime %>%

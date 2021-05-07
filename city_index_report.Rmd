@@ -47,7 +47,7 @@ source("rmd_setup.R")
 # Nord-Jæren             952 (2017) 04
 # Oslo                   959 (2018) 12
 
-# Buskerudbyen          1952 (2016) 12
+# Buskerudbyen          1952 (2016) 04
 # Grenland               955 (2016) 12
 # Kristiansand og omegn  957 (2016) 12
 # Nedre Glomma           953 (2016) 12
@@ -56,7 +56,7 @@ source("rmd_setup.R")
 # Trondheim              960 (2019) 03
 
 # Choose city number:
-city_number <- 961
+city_number <- 955
 
 city_number_county_name <- 
   tibble::tibble(
@@ -473,7 +473,7 @@ Figuren nedenfor viser endring i trafikk per måned, sammenlignet med samme mån
 
 <br>
 
-```{r monthly_city_index, fig.width=6, fig.height=5, fig.cap="Estimert endring i trafikkmengde per måned."}
+```{r monthly_city_index, fig.width=6, fig.height=7, fig.cap="Estimert endring i trafikkmengde per måned."}
 #create_monthly_city_index_table(city_monthly)
 
 city_monthly %>%
