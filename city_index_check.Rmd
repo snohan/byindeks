@@ -20,15 +20,15 @@ library(htmltools)
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 8952
-# Buskerudbyen 1952
-# Grenland 955
-# Kristiansand og omegn 957
-# Nedre Glomma 953
-# Nord-Jæren 952
-# Oslo 959
-# Trondheim 960
-# Tromsø 961
+# Bergen 8952                 4 Snorre
+# Buskerudbyen 1952           4 Snorre
+# Grenland 955                4 Snorre
+# Kristiansand og omegn 957   2 Million
+# Nedre Glomma 953            4 Trond
+# Nord-Jæren 952              4 Snorre
+# Oslo 959                    2 Trond
+# Trondheim 960               3 Snorre
+# Tromsø 961                  4 Snorre
 
 # Choose
 index_year <- 2021

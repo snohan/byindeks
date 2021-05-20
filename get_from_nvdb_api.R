@@ -5,9 +5,10 @@ library(httr)
 library(jsonlite)
 library(sf)
 
-# Definer URI og sti ####
+# Definer URI og sti ----
 nvdb_url <- "https://www.vegvesen.no/nvdb/api/v2"
-nvdb_url_v3 <- "https://www.vegvesen.no/nvdb/api/v3"
+nvdb_url_v3 <- #"https://www.vegvesen.no/nvdb/api/v3"
+  "https://nvdbapiles-v3.atlas.vegvesen.no"
 sti_vegobjekter <- "/vegobjekter"
 sti_veg <- "/veg"
 sti_posisjon <- "/posisjon"
@@ -19,6 +20,7 @@ nvdb_v3_headers <- c(
 )
 
 
+# Vegnett ----
 #vegsystemreferanse <- "KV6064S1D1m30"
 #kommunenr <- "5001"
 # Hent stedfesting i punkt på vegnettet
@@ -41,6 +43,36 @@ hent_vegpunkt <- function(vegsystemreferanse, kommunenr) {
 
   kommune <- bind_rows(uthenta$objekter$egenskaper, .id = "kid")
 }
+
+
+hent_veglenkesekvens <- function(veglenkesekvens_id) {
+
+  api_query <- paste0(nvdb_url_v3,
+                      "/vegnett",
+                      "/veglenkesekvenser/",
+                      veglenkesekvens_id)
+
+  respons <- httr::GET(api_query,
+                       httr::add_headers(.headers = nvdb_v3_headers))
+
+  uthenta <- jsonlite::fromJSON(
+    stringr::str_conv(
+      respons$content, encoding = "UTF-8"),
+    simplifyDataFrame = T,
+    flatten = T)
+
+  resultat <- dplyr::bind_rows(uthenta$veglenker) %>%
+    dplyr::arrange(veglenkenummer) %>%
+    dplyr::select(veglenkenummer, type, startposisjon, sluttposisjon, lengde,
+                  'detaljnivå', typeVeg, feltoversikt, startdato,
+                  geometri.wkt, geometri.srid, geometri.kommune, geometri.lengde) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(feltoversikt = stringr::str_c(feltoversikt, collapse = ", "))
+
+  return(resultat)
+}
+
+
 
 #veglenkeposisjon <- "0.25636836@423823"
 # Hent stedfesting i punkt på vegnettet
@@ -135,7 +167,8 @@ hent_vegpunkt_via_latlon_for_flere_punkter <- function(trp_df) {
 }
 
 
-# Hent trafikkregistreringsstasjoner i en kommune
+# Geografiske områder ----
+
 hent_kommune <- function(kommunenr) {
   api_query_536 <- paste0(nvdb_url,
                           sti_vegobjekter,
@@ -260,6 +293,8 @@ hent_alle_kommuner_v3 <- function() {
 #   return(svar)
 # }
 
+
+# Hent målestasjoner ----
 hent_trafikkregistreringsstasjon_for_omraade <- function(omraadenr) {
   # Fire siffer angir kommunenr.
   # Ett eller to siffer angir fylkenr.
@@ -327,6 +362,8 @@ hent_trafikkregistreringsstasjon_for_omraade <- function(omraadenr) {
   return(trser)
 }
 
+
+# Bomstasjoner ----
 # Deprecated
 hent_bomstasjon_for_kommune <- function(kommunenr) {
   # Laget for Trondheim
@@ -500,6 +537,8 @@ get_tolling_stations_v3 <- function(kommunenr) {
   return(bomer)
 }
 
+
+# Årsdøgntrafikk ----
 getAadtByRoadReference <- function(roadref) {
   api_query_540 <- paste0(nvdb_url,
                          sti_vegobjekter,
@@ -565,6 +604,7 @@ getAadtByRoadlinkposition <- function(roadlink) {
 #roadlink <- "0.26634@181322"
 #roadref <- "1200EV39hp74m14171"
 
+# Fartsgrense ----
 getSpeedLimit <- function(roadref) {
   api_query_105 <- paste0(nvdb_url,
                           sti_vegobjekter,
@@ -689,6 +729,8 @@ get_speedlimit_by_roadlink <- function(roadlink) {
   return(verdi)
 }
 
+
+# Veglengder ----
 #municipality_number <- "5001"
 get_road_length_for_municipality <- function(municipality_number) {
 
@@ -779,6 +821,8 @@ get_road_length_for_municipality <- function(municipality_number) {
 
 #trondheim_roads <- get_road_length_for_municipality("5001")
 
+
+# ÅDT-belegging per riksvegrute ----
 #rutenavn <- "RUTE3"
 #periode <- "2014-2023 / 2018-2029"
 get_trafikkmengde_for_riksvegrute <- function(rutenavn, periode) {
