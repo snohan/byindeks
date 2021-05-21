@@ -23,15 +23,15 @@ library(htmltools)
 #  3 Oslo                   4 Trond
 # 34 Innlandet              4 Snorre
 # 38 Vestfold og Telemark   4 Trond
-# 42 Agder                  2 Million
-# 11 Rogaland               2 Million
-# 46 Vestland               2 Snorre
+# 42 Agder                  4 Million
+# 11 Rogaland               4 Million
+# 46 Vestland               2 Trond
 # 15 Møre og Romsdal        4 Snorre
 # 50 Trøndelag              4 Snorre
 # 18 Nordland               4 Snorre
 # 54 Troms og Finnmark      4 Snorre
 
-county_number_chosen <- 42
+county_number_chosen <- 11
 # Choose
 index_year <- 2021
 # Last published month
@@ -465,7 +465,7 @@ pointindex_wide %>%
       lengthMenu = c(21, 42, 70),
       autoWidth = TRUE))
 
-# Trond:
+# Trond: (sjekk at disse er ekskludert)
 # Skullerud avrampe 1 2 3
 # Skullerud pårampe 1 2 3
 # E6 Alnabru n 1 2 3
@@ -473,7 +473,16 @@ pointindex_wide %>%
 # Meheia stasjon 1 2 3
 # Bjøberg 2 3 4
 # Skibakk Kløfta 3 4
-# Vadfosstunnelen 1 2 3 4
+# Vadfosstunnelen 1 2 3
+# Heiane bru 1 2 3
+# Lyderhorntunnelen 1 3 4
+# Storeklubben X 1
+# Bortnetunnelen 1 2 3 4
 
+
+# Mine:
 # Høgsetvollen 1 2
+# Volleberg 1
+# Grim 1
+
 ```
