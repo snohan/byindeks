@@ -465,7 +465,8 @@ pointindex_wide %>%
       lengthMenu = c(21, 42, 70),
       autoWidth = TRUE))
 
-# Trond: (sjekk at disse er ekskludert)
+# Ekskluderinger:
+# Trond:
 # Skullerud avrampe 1 2 3
 # Skullerud pårampe 1 2 3
 # E6 Alnabru n 1 2 3

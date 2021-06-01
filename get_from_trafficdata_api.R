@@ -781,6 +781,81 @@ get_trp_mdt_by_lane <- function(trp_id, mdt_year) {
   return(trp_aadt)
 }
 
+
+#trp_id <- "61425V181294"
+#mdt_year <- "2020"
+get_trp_mdt_by_direction <- function(trp_id, mdt_year) {
+  # Get all MDTs for a trp
+  query_mdt <- paste0(
+    "query trp_mdt{
+    trafficData(trafficRegistrationPointId: \"", trp_id,"\"){
+      trafficRegistrationPoint{
+        id
+      }
+      volume{
+    average{
+      daily{
+        byMonth(dayType: ALL, year: ", mdt_year, "){
+          year
+          month
+          byDirection {
+            heading
+            total{
+              coverage{
+                percentage
+              }
+              validLengthVolume{
+                average
+              }
+              validSpeedVolume{
+                average
+              }
+              volume{
+                average
+                confidenceInterval{
+                  confidenceWidth
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+}")
+
+  myqueries <- Query$new()
+  myqueries$query("mdts", query_mdt)
+
+  trp_aadt <- cli$exec(myqueries$queries$mdts) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
+
+  # Check if no value
+  if(is_empty(trp_aadt$data$trafficData$volume$average$daily$byMonth$byDirection[1]) |
+     is.null(trp_aadt$data$trafficData$volume$average$daily$byMonth$byDirection[[1]]$total.volume.average)){
+    # Når det ikke er noe MDT
+    trp_aadt <- data.frame()
+  }else{
+    trp_aadt <- trp_aadt %>%
+      as.data.frame() %>%
+      tidyr::unnest(cols = data.trafficData.volume.average.daily.byMonth.byDirection) %>%
+      dplyr::rename(
+        trp_id = data.trafficData.id,
+        year = data.trafficData.volume.average.daily.byMonth.year,
+        month = data.trafficData.volume.average.daily.byMonth.month,
+        coverage = total.coverage.percentage,
+        valid_length_volume = total.validLengthVolume.average,
+        valid_speed_volume = total.validSpeedVolume.average,
+        mdt = total.volume.average) %>%
+      dplyr::mutate(trp_id = as.character(trp_id),
+                    heading = stringr::str_to_title(heading, locale = "no"))
+  }
+
+  return(trp_aadt)
+}
+
+
 #mdt_test <- get_trp_mdt_with_coverage("91582V930281", "2020")
 #mdt_test_2 <- get_trp_mdt_by_lane("91582V930281", "2020")
 
@@ -949,6 +1024,29 @@ get_mdt_by_lane_for_trp_list <- function(trp_list, mdt_year) {
 
   return(trp_mdt)
 }
+
+
+get_mdt_by_direction_for_trp_list <- function(trp_list, mdt_year) {
+  number_of_points <- length(trp_list)
+  data_points <- data.frame()
+  trp_count <- 1
+
+  while (trp_count <= number_of_points) {
+    data_points <- bind_rows(data_points,
+                             get_trp_mdt_by_direction(
+                               trp_list[trp_count],
+                               mdt_year))
+    trp_count <- trp_count + 1
+  }
+
+  trp_mdt <- data_points %>%
+    dplyr::mutate(mdt = round(mdt, digits = -1))
+
+  return(trp_mdt)
+}
+
+
+
 
 #trp_list <- trp_distinct$trp_id[1:2]
 #test_list <- trp_id = c("91582V930281", "01316V804837")

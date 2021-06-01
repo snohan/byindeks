@@ -20,17 +20,17 @@ library(htmltools)
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 5952         2
+# Bergen 5952         4
 # Førde 9952          2018 12
-# Grenland 4953       2
-# Nedre Glomma 5953   2
+# Grenland 4953       4
+# Nedre Glomma 5953   4
 # Nord-Jæren 6952     2
 # Osloområdet 6953    2
 
 # Choose
 index_year <- 2021
 index_month <- 2 # latest published
-city_number <- 5952
+city_number <- 5953
 
 # Fetch
 city_index <- get_published_index_for_months(city_number, index_year, index_month)
@@ -221,32 +221,30 @@ pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 ## Punktsjekk
 
 ```{r point_plot, message=FALSE, fig.width=12}
-point_number <-1
-trp_id_here <- city_trps_meta$trp_id[point_number]
-
-trp_name <- city_trps_meta %>% 
-  dplyr::filter(trp_id == trp_id_here) %>% 
-  dplyr::select(name, road_reference) %>% 
-  stringr::str_glue_data("{name}, {road_reference}")
-
-pointindex_long %>% 
-  dplyr::filter(trp_id == trp_id_here) %>% 
-  ggplot2::ggplot(aes(x = month_object, y = index_total_p)) +
-  ggplot2::geom_line() +
-  ggplot2::geom_point(aes(alpha = index_total_coverage), size = 4) +
-  theme_light() +
-  theme(axis.text.x = element_text(angle = 90),
-        panel.grid.minor.x = element_blank(),
-        legend.position = "bottom") +
-  scale_x_date(breaks = scales::breaks_width("months"),
-               labels = scales::label_date("%b")) +
-  scale_alpha(name = "Dekningsgrad") +
-  labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
-       caption = "Data: Statens vegvesen") +
-  ggtitle(trp_name,
-          subtitle = "Trafikkmengde i år sammenlignet med i fjor")
-
-# Notes
+# point_number <-1
+# trp_id_here <- city_trps_meta$trp_id[point_number]
+# 
+# trp_name <- city_trps_meta %>% 
+#   dplyr::filter(trp_id == trp_id_here) %>% 
+#   dplyr::select(name, road_reference) %>% 
+#   stringr::str_glue_data("{name}, {road_reference}")
+# 
+# pointindex_long %>% 
+#   dplyr::filter(trp_id == trp_id_here) %>% 
+#   ggplot2::ggplot(aes(x = month_object, y = index_total_p)) +
+#   ggplot2::geom_line() +
+#   ggplot2::geom_point(aes(alpha = index_total_coverage), size = 4) +
+#   theme_light() +
+#   theme(axis.text.x = element_text(angle = 90),
+#         panel.grid.minor.x = element_blank(),
+#         legend.position = "bottom") +
+#   scale_x_date(breaks = scales::breaks_width("months"),
+#                labels = scales::label_date("%b")) +
+#   scale_alpha(name = "Dekningsgrad") +
+#   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
+#        caption = "Data: Statens vegvesen") +
+#   ggtitle(trp_name,
+#           subtitle = "Trafikkmengde i år sammenlignet med i fjor")
 ```
 
 ```{r table_trp_consistency}

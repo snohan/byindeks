@@ -92,7 +92,7 @@ adt_filtered <- adt %>%
   dplyr::select(trp_id, year, aadt_total, coverage, aadt_short, aadt_long, length_quality) %>%
   dplyr::rename(adt = aadt_total) %>% 
   dplyr::mutate(aadt_short = if_else(length_quality > 90, aadt_short, NA_real_),
-                aadt_long = if_else(length_quality > 99, aadt_long, NA_real_)) %>% 
+                aadt_long = if_else(length_quality > 90, aadt_long, NA_real_)) %>% 
   dplyr::select(-length_quality)
 
 points_adt <- left_join(points, adt_filtered)
