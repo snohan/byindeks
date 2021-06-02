@@ -112,6 +112,52 @@ points_adt_all <- bind_rows(with_aadt, missing_aadt) %>%
   dplyr::arrange(desc(lat))
 
 # TODO: Point index
+
+
+# TODO: include info on all crossings:
+adt <- get_aadt_by_length_for_trp_list(border_trps$trp_id)
+
+adt_filtered <- adt %>%
+  dplyr::select(-sd_length_range, 
+                -aadt_ci_lowerbound_length_range,
+                -aadt_ci_upperbound_length_range
+                ) %>% 
+  dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
+  dplyr::mutate(length_range = if_else(length_range == "[..,5.6)",
+                                         "short", "long")) %>%
+  tidyr::pivot_wider(names_from = length_range, names_prefix = "aadt_",
+                     values_from = aadt_length_range) %>%
+  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  dplyr::filter(coverage > 50) %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year < 2020) %>%
+  dplyr::filter(year == max(year)) %>%
+  dplyr::select(trp_id, year, aadt_total, coverage, aadt_short, aadt_long, length_quality) %>%
+  dplyr::rename(adt = aadt_total) %>% 
+  dplyr::mutate(aadt_short = if_else(length_quality > 90, aadt_short, NA_real_),
+                aadt_long = if_else(length_quality > 90, aadt_long, NA_real_)) %>% 
+  dplyr::select(-length_quality, -coverage)
+
+border_trps_adt <- left_join(border_trps, adt_filtered)
+
+# Must supply missing AADTs from NVDB based on road reference
+missing_aadt <- border_trps_adt %>%
+  dplyr::filter(adt == 0 | is.na(adt)) %>%
+  dplyr::mutate(
+    #adt = mapply(getAadtByRoadlinkposition, road_link_position)) %>%
+    adt = purrr::map_dbl(road_link_position, getAadtByRoadlinkposition)) %>%
+  dplyr::mutate(year = 2019)
+
+with_aadt <- border_trps_adt %>%
+  dplyr::filter(adt > 0)
+
+border_trps_adt_all <- bind_rows(with_aadt, missing_aadt)
+
+border_crossings_adt <- border_crossings %>% 
+  dplyr::filter(trp_id == "") %>% 
+  dplyr::bind_rows(border_trps_adt_all) %>% 
+  dplyr::arrange(desc(geo_number), desc(municipality_number)) %>% 
+  dplyr::select(-geo_number, -municipality_number)
 ```
 
 ```{r prepare_data, include=FALSE}

@@ -17,7 +17,6 @@ library(htmltools)
 
 
 ```{r crossings_and_adt, include=FALSE, cache=TRUE}
-
 counties <- get_counties() %>% 
   dplyr::select(county_number, county_name, geo_number)
 
@@ -31,11 +30,22 @@ points <- get_points() %>%
                 lat, lon, road_link_position) %>% 
   dplyr::mutate(name = stringr::str_to_title(name, locale = "no")) 
 
+headings_from_norway <- c("Riksgrensen",
+                          "Storskog",
+                          "Finland",
+                          "Sverige",
+                          "Valsjöbyn",
+                          "Duved",
+                          "Storlien",
+                          "Lintorpet / Sverige",
+                          "Umbukta")
+
 # All border crossings
 border_crossings <- read.csv2("border_crossings_complete.csv") %>% 
-  dplyr::mutate(road_category_and_number = paste0(road_category_shortname, "v ", road_number),
-                aadt_short = round(adt * (1 - heavy_ratio / 100), digits = 0),
-                aadt_long = adt - aadt_short) %>% 
+  dplyr::mutate(road_category_and_number = paste0(road_category_shortname, "v ", road_number)#,
+                #aadt_short = round(adt * (1 - heavy_ratio / 100), digits = 0),
+                #aadt_long = adt - aadt_short
+                ) %>% 
   dplyr::left_join(municipalities) %>% 
   dplyr::arrange(desc(geo_number), desc(municipality_number)) %>% 
   dplyr::select(road_category_and_number, street_name,
@@ -43,7 +53,8 @@ border_crossings <- read.csv2("border_crossings_complete.csv") %>%
                 county_name,
                 municipality_number, 
                 municipality_name,
-                border_country, adt, aadt_short, aadt_long, year, trp_id) %>% 
+                border_country, adt, #aadt_short, aadt_long, 
+                year, trp_id) %>% 
   dplyr::left_join(points)
 
 # TODO: find all 51 crossings in NVDB (remove csv dependency)
@@ -52,39 +63,26 @@ border_crossings <- read.csv2("border_crossings_complete.csv") %>%
 # TODO: all from same source
 border_trps <- border_crossings %>% 
   dplyr::filter(trp_id != "") %>% 
-  dplyr::select(-adt, -aadt_short, -aadt_long, -year)
+  dplyr::select(-adt, #-aadt_short, -aadt_long, 
+                -year)
 
-adt <- get_aadt_by_length_for_trp_list(border_trps$trp_id)
+adt <- get_aadt_by_direction_for_trp_list(border_trps$trp_id)
 
-adt_filtered <- adt %>%
-  dplyr::select(-sd_length_range, 
-                -aadt_ci_lowerbound_length_range,
-                -aadt_ci_upperbound_length_range
-                ) %>% 
-  dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
-  dplyr::mutate(length_range = if_else(length_range == "[..,5.6)",
-                                         "short", "long")) %>%
-  tidyr::pivot_wider(names_from = length_range, names_prefix = "aadt_",
-                     values_from = aadt_length_range) %>%
-  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+adt_incoming <- adt %>%
+  dplyr::filter(!(heading %in% headings_from_norway)) %>% 
   dplyr::filter(coverage > 50) %>%
   dplyr::group_by(trp_id) %>%
   dplyr::filter(year < 2020) %>%
   dplyr::filter(year == max(year)) %>%
-  dplyr::select(trp_id, year, aadt_total, coverage, aadt_short, aadt_long, length_quality) %>%
-  dplyr::rename(adt = aadt_total) %>% 
-  dplyr::mutate(aadt_short = if_else(length_quality > 90, aadt_short, NA_real_),
-                aadt_long = if_else(length_quality > 90, aadt_long, NA_real_)) %>% 
-  dplyr::select(-length_quality, -coverage)
-
-border_trps_adt <- left_join(border_trps, adt_filtered)
+  dplyr::select(trp_id, heading, year, adt, coverage)
+  
+border_trps_adt <- left_join(border_trps, adt_incoming)
 
 # Must supply missing AADTs from NVDB based on road reference
 missing_aadt <- border_trps_adt %>%
   dplyr::filter(adt == 0 | is.na(adt)) %>%
   dplyr::mutate(
-    #adt = mapply(getAadtByRoadlinkposition, road_link_position)) %>%
-    adt = purrr::map_dbl(road_link_position, getAadtByRoadlinkposition)) %>%
+    adt = 0.5 * purrr::map_dbl(road_link_position, getAadtByRoadlinkposition)) %>%
   dplyr::mutate(year = 2019)
 
 with_aadt <- border_trps_adt %>%
@@ -94,16 +92,15 @@ border_trps_adt_all <- bind_rows(with_aadt, missing_aadt)
 
 border_crossings_adt <- border_crossings %>% 
   dplyr::filter(trp_id == "") %>% 
+  dplyr::mutate(adt = floor(adt / 2)) %>% 
   dplyr::bind_rows(border_trps_adt_all) %>% 
   dplyr::arrange(desc(geo_number), desc(municipality_number)) %>% 
   dplyr::select(-geo_number, -municipality_number)
 ```
 
-Her presenteres data om trafikkmengden ved riksgrenseovergangene. Formålet er å anslå trafikkmengden i juli og august 2021 basert på data om trafikkmengde før pandemien (normaltrafikk i 2019), trafikk under pandemien (juni-august 2020), samt trafikknivået like før den aktuelle perioden (mai 2021).
+Her presenteres data om trafikkmengden ved riksgrenseovergangene, med fokus på innreise. Formålet er å anslå trafikkmengden i juli og august 2021 basert på data om trafikkmengde før pandemien (normaltrafikk i 2019), trafikk under pandemien (juni-august 2020), samt trafikknivået like før den aktuelle perioden (mai 2021).
 
 Statens vegvesen har i dag trafikkregistreringspunkt på 32 av de 51 riksgrenseovergangene på Europa-, riks- og fylkesvegnettet fra Svinesund i sør til Storskog i nordøst. Trafikken er ikke registrert i selve grenseovergangen, men litt inn på norsk side. Det er ingen store kryss mellom registreringspunktene og riksgrensen, slik at de fleste kjøretøy som blir registrert antas normalt å krysse riksgrensen, selv om enkelte kjøretøy kan stoppe og eventuelt snu på norsk side.
-
-Det er ikke tilgjengelig informasjon om opprinnelsessted eller oppholdstid for personer som sitter i kjøretøy som kommer inn over riksgrensen. 
 
 [Statens vegvesens trafikkdataportal](https://www.vegvesen.no/trafikkdata/) blir fortløpende oppdatert (2-3 timer etter sanntid) med trafikkmengde for hver time.
 
@@ -125,7 +122,7 @@ border_crossings_adt %>%
                     county_name = "Fylke",
                     municipality_name = "Kommune",
                     border_country = "Grense til",
-                    adt = "ÅDT \n alle",
+                    adt = "ÅDT",
                     year = "År",
                     name = "Trafikkregistreringspunkt") %>%
   align(i = 1, j = 6, align = "right", part = "header") %>%
@@ -137,7 +134,7 @@ border_crossings_adt %>%
   hline_bottom(part = "all", border = borderline) %>%
   autofit() %>%
   height_all(height = .2) %>%
-  set_caption("Grenseoverganger og årsdøgntrafikk (ÅDT), begge retninger.",
+  set_caption("Grenseoverganger og årsdøgntrafikk (ÅDT) inn i Norge.",
               autonum = table_numbers,
               style = "Tabelltekst")
 
@@ -178,7 +175,9 @@ border_crossings_adt %>%
 
 ```{r map_trp_index, dpi=100, fig.width=6, fig.height=7, fig.cap="Trafikkregistreringspunktene plassering og årsdøgntrafikk.", cache=TRUE, message=FALSE}
 # TODO: map all
-create_point_adt_map(border_crossings_adt)
+border_crossings_adt %>% 
+  dplyr::filter(!is.na(lat)) %>% 
+  create_point_adt_map()
 ```
 
 
@@ -189,7 +188,6 @@ Tabellen viser hvor mange kjøretøy som kommer inn over grensen hver dag i de a
 ```{r get_mdt}
 # TODO: Per direction
 # TODO: daily traffic in May, show development per week?
-# TODO: find percentage of july traffic in aadt etc.
 # TODO: mdt too crude, must shpw daily variation, ie. mean weekday traffic for these months
 
 mdts <- dplyr::bind_rows(
@@ -202,16 +200,6 @@ unique_headings <- mdts %>%
   dplyr::select(trp_id, heading) %>% 
   dplyr::group_by(trp_id) %>% 
   unique()
-
-headings_from_norway <- c("Riksgrensen",
-                          "Storskog",
-                          "Finland",
-                          "Sverige",
-                          "Valsjöbyn",
-                          "Duved",
-                          "Storlien",
-                          "Lintorpet / Sverige",
-                          "Umbukta")
 
 unique_headings_from_norway <- mdts %>% 
   dplyr::select(trp_id, heading) %>% 
@@ -230,7 +218,7 @@ mdts_chosen <- mdts %>%
   tidyr::pivot_wider(names_from = year_month, names_prefix = "mdt_",
                      values_from = mdt)
   
-points_mdt <- left_join(border_trps, mdts_chosen) %>%
+points_mdt <- dplyr::left_join(border_trps, mdts_chosen) %>%
   dplyr::arrange(desc(geo_number), desc(municipality_number)) %>% 
   dplyr::select(road_category_and_number, name, border_country, heading, 
                 tidyselect::starts_with("mdt"))
@@ -270,6 +258,9 @@ points_mdt_for_table %>%
 # TODO: ## Ukedagtrafikk
 ```
 
+Det er verdt å merke seg at trafikken i 2020 ikke hadde særlig økning rundt juli, slik den normalt har. Dette skyldes nok kombinasjonen av de rådende innreiserestriksjoner og smitteverntiltak som gjaldt gjennom sommeren 2020.
+
+
 ### Trafikknivå i mai 2021
 
 Tabellen nedenfor viser hvor stor andel trafikk det er i mai 2021 sammenlignet med mai 2019.
@@ -282,49 +273,51 @@ border_trps_adt_all_selected <- border_trps_adt_all %>%
 # Assuming equal traffic in both directions for adt
 adt_and_mdt <- dplyr::left_join(border_trps_adt_all_selected, mdts_chosen) %>% 
   dplyr::mutate(ratio_may_21_of_may_19 = mdt_2021.5 / mdt_2019.5 * 100,
-                ratio_may_19_of_adt_19 = mdt_2019.5 / (adt / 2) * 100,
-                ratio_jun_19_of_adt_19 = mdt_2019.6 / (adt / 2) * 100,
-                ratio_jul_19_of_adt_19 = mdt_2019.7 / (adt / 2) * 100,
-                ratio_aug_19_of_adt_19 = mdt_2019.8 / (adt / 2) * 100) %>% 
+                ratio_may_19_of_adt_19 = mdt_2019.5 / adt * 100,
+                ratio_jun_19_of_adt_19 = mdt_2019.6 / adt * 100,
+                ratio_jul_19_of_adt_19 = mdt_2019.7 / adt * 100,
+                ratio_aug_19_of_adt_19 = mdt_2019.8 / adt * 100) %>% 
   dplyr::mutate(across(.cols = starts_with("ratio"), .fns = round, digits = 1))
 
-# Mean ratio of traffic per month for the crossings without trps, looking at trps with adt less than 1 000
-ratio_summer_traffic_on_crossings_without_trps <- adt_and_mdt %>% 
-  dplyr::filter(adt < 1000) %>%
-  dplyr::summarise(across(.cols = starts_with("ratio"), mean, na.rm = TRUE)) %>% 
-  tidyr::pivot_longer(cols = everything(), names_to = "month", values_to = "ratio")
-
+# Mean ratio of traffic per month 
 mean_may_ratio_21 <- adt_and_mdt %>% 
   dplyr::filter(!is.na(mdt_2021.5),
                 !is.na(mdt_2019.5)) %>% 
   dplyr::summarise(ratio = sum(mdt_2021.5) / sum(mdt_2019.5)) %>% 
   dplyr::pull(ratio)
 
-# TODO: use this weighted mean instead
+mean_may_ratio <- adt_and_mdt %>% 
+  dplyr::filter(!is.na(mdt_2019.5)) %>% 
+  dplyr::summarise(ratio = sum(mdt_2019.5) / sum(adt)) %>% 
+  dplyr::pull(ratio)
 
+mean_jun_ratio <- adt_and_mdt %>% 
+  dplyr::filter(!is.na(mdt_2019.6)) %>% 
+  dplyr::summarise(ratio = sum(mdt_2019.6) / sum(adt)) %>% 
+  dplyr::pull(ratio)
 
-mean_may_ratio <- ratio_summer_traffic_on_crossings_without_trps %>% 
-  dplyr::filter(month == "ratio_may_19_of_adt_19")
+mean_jul_ratio <- adt_and_mdt %>% 
+  dplyr::filter(!is.na(mdt_2019.7)) %>% 
+  dplyr::summarise(ratio = sum(mdt_2019.7) / sum(adt)) %>% 
+  dplyr::pull(ratio)
 
-mean_jun_ratio <- ratio_summer_traffic_on_crossings_without_trps %>% 
-  dplyr::filter(month == "ratio_jun_19_of_adt_19")
-
-mean_jul_ratio <- ratio_summer_traffic_on_crossings_without_trps %>% 
-  dplyr::filter(month == "ratio_jul_19_of_adt_19")
-
-mean_aug_ratio <- ratio_summer_traffic_on_crossings_without_trps %>% 
-  dplyr::filter(month == "ratio_aug_19_of_adt_19")
+mean_aug_ratio <- adt_and_mdt %>% 
+  dplyr::filter(!is.na(mdt_2019.8)) %>% 
+  dplyr::summarise(ratio = sum(mdt_2019.8) / sum(adt)) %>% 
+  dplyr::pull(ratio)
 ```
 
 ```{r may_ratio}
-points_mdt_may_ratio <- left_join(border_trps, adt_and_mdt) %>%
+points_mdt_may_ratio <- border_trps %>% 
+  dplyr::select(-border_country) %>% 
+  dplyr::left_join(adt_and_mdt) %>%
   dplyr::arrange(desc(geo_number), desc(municipality_number)) %>% 
   dplyr::select(road_category_and_number, name, border_country,
                 ratio_may_21_of_may_19)
 
 points_mdt_may_ratio %>%
   flextable() %>%
-  colformat_double(j = 4, big.mark = " ", digits = 1) %>%
+  colformat_double(j = 4, big.mark = " ", digits = 0) %>%
   set_header_labels(road_category_and_number = "Vegnummer",
                     border_country = "Trafikk fra",
                     name = "Trafikkregistreringspunkt",
@@ -341,18 +334,18 @@ points_mdt_may_ratio %>%
               style = "Tabelltekst")
 ```
 
-Vi ser av tabellen at andelen maitrafikk varierer veldig, fra `r min(points_mdt_may_ratio$ratio_may_21_of_may_19, na.rm = TRUE)` % til `r max(points_mdt_may_ratio$ratio_may_21_of_may_19, na.rm = TRUE)` %. Gjennomsnittet er `r round(mean_may_ratio_21, digits = 0)` %.  Derfor vil vi videre i analysen kun se på summen av grensepasseringene og bruke gjennomsnittsverdier bergnet med data fra trafikkregistreringspunktene.
+Vi ser av tabellen at andelen maitrafikk varierer veldig, fra `r round(min(points_mdt_may_ratio$ratio_may_21_of_may_19, na.rm = TRUE), digits = 0)` % til `r round(max(points_mdt_may_ratio$ratio_may_21_of_may_19, na.rm = TRUE), digits = 0)` %. Gjennomsnittet er `r round(100 * mean_may_ratio_21, digits = 0)` %.  Derfor vil vi videre i analysen kun se på summen av grensepasseringene og bruke gjennomsnittsverdier bergnet med data fra trafikkregistreringspunktene.
 
 
 # Estimert trafikk ved alle grenseoverganger
 
-Vi tar videre utgangspunkt i årsdøgntrafikken, som vi har for alle grenseovergangene. Månedsdøgntrafikk har vi kun på de stedene hvor vi har trafikkregistreringspunkt.
+Vi tar videre utgangspunkt i maitrafikken og den normale årsdøgntrafikken, som vi har for alle grenseovergangene. Månedsdøgntrafikk har vi kun på de stedene hvor vi har trafikkregistreringspunkt.
 
-Følgende antagelser ligger til grunn for den videre beregningen:
+Følgende **antagelser** ligger til grunn for den videre beregningen:
 
-- Halvparten av den gjennomsnittlig daglige trafikken ved grensen kommer inn til Norge.
-- Relativ størrelse på juni-, juli- og augustdøgntrafikk sammenlignet med ÅDT er lik for alle grenseoverganger.
-- Det er i gjennomsnitt følgende antall personer i hvert kjøretøy (antar høyere antall i sommermånedene enn ellers):
+- Halvparten av den gjennomsnittlig daglige trafikken ved grensen kommer inn til Norge. Dette virker å være en ganske grei antakelse, med unntak av Svinesund hvor trafikken under normale forhold fordeler seg ulikt på den nye og gamle vegen ved inn- og utreise. Dette er tatt hensyn til i beregningene.
+- Relativ størrelse på juni-, juli- og augustdøgntrafikk sammenlignet med ÅDT er lik for alle grenseoverganger. Dette kan nok variere noe fra sted til sted, men for trafikken samlet er det en grei antakelse.
+- Det er i gjennomsnitt følgende antall personer i hvert kjøretøy (antar høyere antall i sommermånedene enn ellers, men disse antagelsene er usikre og mangler underbyggende datagrunnlag.):
   - mai: 1,5
   - juni: 1,8
   - juli: 2,0
@@ -360,11 +353,12 @@ Følgende antagelser ligger til grunn for den videre beregningen:
 
 Ved å sammenligne mai-, juni-, juli- og augustdøgntrafikk med ÅDT for alle trafikkregistreringspunkter i 2019, er den gjennomsnittlige andelen for alle punkt:
 
-- mai: `r round(mean_may_ratio$ratio, digits = 0)` %
-- juni: `r round(mean_jun_ratio$ratio, digits = 0)` %
-- juli: `r round(mean_jul_ratio$ratio, digits = 0)` %
-- august: `r round(mean_aug_ratio$ratio, digits = 0)` %
+- mai: `r round(mean_may_ratio * 100, digits = 0)` %
+- juni: `r round(mean_jun_ratio * 100, digits = 0)` %
+- juli: `r round(mean_jul_ratio * 100, digits = 0)` %
+- august: `r round(mean_aug_ratio * 100, digits = 0)` %
 
+Tabellen nedenfor angir grove estimater på antall innreisende per dag for alle 51 riksgrenseovergangene summert.
 
 ```{r analysis}
 n_persons_by_vehicle <- data.frame(
@@ -373,14 +367,14 @@ n_persons_by_vehicle <- data.frame(
 )
 
 border_crossing_estimates_normal <- border_crossings_adt %>% 
-  dplyr::summarise(incoming_all_year = sum(adt) / 2) %>% 
-  dplyr::mutate(mai = mean_may_ratio$ratio * 0.01 * incoming_all_year,
-                juni = mean_jun_ratio$ratio * 0.01 * incoming_all_year, 
-                juli = mean_jul_ratio$ratio * 0.01 * incoming_all_year,
-                august = mean_aug_ratio$ratio * 0.01 * incoming_all_year) %>% 
+  dplyr::summarise(incoming_all_year = sum(adt)) %>% 
+  dplyr::mutate(mai = mean_may_ratio * incoming_all_year,
+                juni = mean_jun_ratio * incoming_all_year, 
+                juli = mean_jul_ratio * incoming_all_year,
+                august = mean_aug_ratio * incoming_all_year) %>% 
   dplyr::select(-incoming_all_year) %>% 
   tidyr::pivot_longer(cols = everything(), names_to = "month", values_to = "normal_vehicles") %>% 
-  dplyr::left_join(n_persons_by_vehicle) %>% 
+  dplyr::left_join(n_persons_by_vehicle, by = "month") %>% 
   dplyr::mutate(normal = normal_vehicles * n_persons)
 
 n_may <- border_crossing_estimates_normal %>% 
@@ -388,15 +382,15 @@ n_may <- border_crossing_estimates_normal %>%
   dplyr::pull(normal)
 
 border_crossing_estimates <- border_crossing_estimates_normal %>% 
-  dplyr::mutate(same_as_may_2021 = n_may * mean_may_ratio_21#,
-                #mai_2021x12 = mai_2021 * 12
-                ) %>% 
-  dplyr::mutate(across(where(is.numeric), round, digits = -2))
+  dplyr::mutate(same_as_may_2021 = n_may * mean_may_ratio_21,
+                increase_25_pct = same_as_may_2021 * 1.25,
+                increase_50_pct = same_as_may_2021 * 1.5,
+                increase_100_pct = same_as_may_2021 * 2,
+                increase_6x = same_as_may_2021 * 6,
+                increase_9x = same_as_may_2021 * 9,
+                increase_12x = same_as_may_2021 * 12) %>% 
+  dplyr::mutate(across(where(is.numeric) & !n_persons, round, digits = -2))
 
-# Two alternatives:
-# 1. Estimate mdt for may 21 and use levels of increase
-
-# TODO: guess 2 persons per vehicle
 # TODO: guess distribution per country by living and by staying (10 days)
 
 # Target is to estimate n people coming in per day for each period:
@@ -410,3 +404,40 @@ border_crossing_estimates <- border_crossing_estimates_normal %>%
 # Not now: Rough estimate: 75 % Norway, 20 % Swe, 5 % other European countries
 ```
 
+```{r estimates_table}
+border_crossing_estimates %>%
+  flextable() %>%
+  colformat_double(j = 2, big.mark = " ", digits = 0) %>%
+  colformat_double(j = 3, big.mark = " ", digits = 1) %>%
+  colformat_double(j = 4:11, big.mark = " ", digits = 0) %>%
+  set_header_labels(month = "Måned",
+                    normal_vehicles = "Normalt \n antall \n kjøretøy",
+                    n_persons = "Antatt \n antall personer \n per kjøretøy",
+                    normal = "Normalt \n antall innreisende",
+                    same_as_may_2021 = "Innreisende mai 2021",
+                    increase_25_pct = "Trinn 2 \n 25 % økning",
+                    increase_50_pct = "Trinn 2 \n 50 % økning",
+                    increase_100_pct = "Trinn 2 \n 100 % økning",
+                    increase_6x = "Trinn 3 \n 6 ganger økning",
+                    increase_9x = "Trinn 3 \n 9 ganger økning",
+                    increase_12x = "Trinn 3 \n 12 ganger økning"
+                    ) %>%
+  bold(part = "header") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  autofit() %>%
+  height_all(height = .2) %>%
+  set_caption("Estimert antall innreisende per dag.",
+              autonum = table_numbers,
+              style = "Tabelltekst")
+```
+
+Estimert antall innreisende per mai 2021 overgår det antallet som er oppgitt registrert i IRRS (innreiseregistreringssystemet). Hva det skyldes er ikke klart, men et spørsmål er om IRRS dekker alle overganger og alle personer. Hvis det er kun personer som ankommer Norge fra et område som medfører karanteneplikt, som er pliktig til å registrere seg i IRRS før innreise til Norge, så kan det også være en del av forklaringen.
+
+Antall innreisende i Trinn 3 med 9 og 12 ganger dagens nivå virker urealistisk høye da de overgår normaltrafikken. Det kan neppe forventes mer enn normal trafikk selv ved fjerning av alle restriksjoner og tiltak.
+
+Det er ikke tilgjengelig informasjon om opprinnelsessted eller oppholdstid for personer som sitter i kjøretøy som kommer inn over riksgrensen. Det ble gjennomført en spørreundersøkelse ved Svinesund og Ørje i september 2018, men dette er ikke representativt for sommertrafikken.
+
+En mulighet som det ikke ble tid til å forfølge, er om Tolletaten kan ha noe informasjon om antall personer i hvert kjøretøy og opprinnelsesland.

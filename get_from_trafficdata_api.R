@@ -632,6 +632,79 @@ get_trp_aadt_with_coverage <- function(trp_id, day_type = "ALL") {
   return(trp_aadt)
 }
 
+
+get_trp_aadt_by_direction <- function(trp_id) {
+  # Get all MDTs for a trp
+  my_query <- paste0(
+    "query aadt {
+    trafficData(trafficRegistrationPointId: \"", trp_id,"\"){
+      trafficRegistrationPoint{
+        id
+      }
+      volume{
+    average{
+      daily{
+        byYear (dayType: ALL){
+          year
+          dayType
+          byDirection {
+            heading
+            total{
+              coverage{
+                percentage
+              }
+              validLengthVolume{
+                average
+              }
+              validSpeedVolume{
+                average
+              }
+              volume{
+                average
+                standardDeviation
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+}")
+
+  myqueries <- Query$new()
+  myqueries$query("aadts", my_query)
+
+  trp_aadt <- cli$exec(myqueries$queries$aadts) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
+
+  # Check if no value
+  if(is_empty(trp_aadt$data$trafficData$volume$average$daily$byYear$byDirection[1]) |
+     is.null(trp_aadt$data$trafficData$volume$average$daily$byYear$byDirection[[1]]$total.volume.average)){
+    # Når det ikke er noe MDT
+    trp_aadt <- data.frame()
+  }else{
+    trp_aadt <- trp_aadt %>%
+      as.data.frame() %>%
+      tidyr::unnest(cols = data.trafficData.volume.average.daily.byYear.byDirection) %>%
+      dplyr::rename(
+        trp_id = data.trafficData.id,
+        year = data.trafficData.volume.average.daily.byYear.year,
+        day_type = data.trafficData.volume.average.daily.byYear.dayType,
+        coverage = total.coverage.percentage,
+        valid_length_volume = total.validLengthVolume.average,
+        valid_speed_volume = total.validSpeedVolume.average,
+        adt = total.volume.average,
+        standard_deviation = total.volume.standardDeviation) %>%
+      dplyr::mutate(trp_id = as.character(trp_id),
+                    heading = stringr::str_to_title(heading, locale = "no"))
+  }
+
+  return(trp_aadt)
+}
+
+
+
 get_trp_mdt_with_coverage <- function(trp_id, mdt_year) {
   # Get all MDTs for a trp
   query_aadt <- paste0(
@@ -986,6 +1059,24 @@ get_aadt_for_trp_list <- function(trp_list, day_type = "ALL") {
 
   return(trp_adt)
 }
+
+get_aadt_by_direction_for_trp_list <- function(trp_list) {
+  number_of_points <- length(trp_list)
+  data_points <- data.frame()
+  trp_count <- 1
+
+  while (trp_count <= number_of_points) {
+    data_points <- bind_rows(data_points,
+                             get_trp_aadt_by_direction(trp_list[trp_count]))
+    trp_count <- trp_count + 1
+  }
+
+  trp_adt <- data_points %>%
+    dplyr::mutate(adt = round(adt, digits = -1))
+
+  return(trp_adt)
+}
+
 
 get_mdt_for_trp_list <- function(trp_list, mdt_year) {
   number_of_points <- length(trp_list)
