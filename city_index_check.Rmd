@@ -342,24 +342,7 @@ pointindex_wide %>%
       lengthMenu = c(21, 42, 70),
       autoWidth = TRUE))
 
-# Sjekk at disse er ekskludert:
-# Nedre Glomma:
-# Stabburet 1 2 3
-
-# Oslo:
-# Helsfyr 3 4
-# Mogreina ramper 3 4
-# Gardermoen kontroll 3 4
-# Gjelleråsen 3 4
-# Kong Håkons gate (begge) 1 2 3 4
-# Grorud stasjon 1 2 3 4
-# Fjerdingby 1 3 4
-# Finnmarksgata 1 4
-# Vøyen bru 3 4
-# Sørkedalsveien 4
-# Bygdøy alle 3 4
-# Maridalsveien 3 4
-# Nedre Kalbakkvei 3 4
+# Ekskluderes:
 
 
 ```

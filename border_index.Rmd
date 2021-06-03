@@ -41,20 +41,12 @@ source("split_road_system_reference.R")
 source("get_from_nvdb_api.R")
 ```
 
+```{r crossings_info}
+counties <- get_counties() %>% 
+  dplyr::select(county_number, county_name, geo_number)
 
-
-```{r get_data, include=FALSE, cache=TRUE}
-# Fetching published index from Traffic Data API
-index_2017 <- get_published_index_for_months(2952, 2017, 12)
-index_2018 <- get_published_index_for_months(2952, 2018, 12)
-index_2019 <- get_published_index_for_months(2952, 2019, 12)
-index_2020 <- get_published_index_for_months(2952, 2020, 12)
-index_2021 <- get_published_index_for_months(2952, 2021, 4)
-
-pointindex <- get_published_pointindex_for_months_paginated(2952, 2021, 4)
-
-# Index points
-border_points <- pointindex[[1]]
+municipalities <- get_municipalities() %>% 
+  dplyr::left_join(counties)
 
 # Point metadata from Traffic Data API
 points <- get_points() %>%
@@ -62,16 +54,42 @@ points <- get_points() %>%
   dplyr::select(trp_id, name, road_reference, county_name,
                 municipality_name, lat, lon, road_link_position) %>% 
   dplyr::mutate(name = stringr::str_to_title(name, locale = "no")) %>% 
-  dplyr::filter(trp_id %in% border_points) %>% 
   split_road_system_reference() %>% 
-  dplyr::select(trp_id, name, road_reference, road_category, road_number,
-                road_category_and_number,
-                section_number, subsection_number, meter,
-                intersection_part_number, intersection_meter,
-                county_name, municipality_name, lat, lon, road_link_position)
+  dplyr::select(trp_id, name, #road_reference, road_category, road_number,
+                #road_category_and_number,
+                #section_number, subsection_number, meter,
+                #intersection_part_number, intersection_meter,
+                #county_name, municipality_name, 
+                lat, lon, road_link_position)
+
+# All border crossings
+border_crossings <- read.csv2("border_crossings_complete.csv") %>% 
+  dplyr::mutate(road_category_and_number = paste0(road_category_shortname, "v ", road_number),
+                aadt_short = round(adt * (1 - heavy_ratio / 100), digits = 0),
+                aadt_long = adt - aadt_short
+                ) %>% 
+  dplyr::left_join(municipalities, by = "municipality_number") %>% 
+  dplyr::arrange(desc(geo_number), desc(municipality_number)) %>% 
+  dplyr::select(road_category_and_number, street_name,
+                geo_number, 
+                county_name,
+                municipality_number, 
+                municipality_name,
+                border_country, adt, aadt_short, aadt_long, 
+                year, trp_id) %>% 
+  dplyr::left_join(points, by = "trp_id")
+
+# TODO: find all 51 crossings in NVDB (remove csv dependency)
 
 # Point AADT
-adt <- get_aadt_by_length_for_trp_list(points$trp_id)
+# TODO: all from same source
+border_trps <- border_crossings %>% 
+  dplyr::filter(trp_id != "") %>% 
+  dplyr::select(-adt, -aadt_short, -aadt_long, 
+                -year)
+
+# Point AADT
+adt <- get_aadt_by_length_for_trp_list(border_trps$trp_id)
 
 adt_filtered <- adt %>%
   dplyr::select(-sd_length_range, 
@@ -95,56 +113,12 @@ adt_filtered <- adt %>%
                 aadt_long = if_else(length_quality > 90, aadt_long, NA_real_)) %>% 
   dplyr::select(-length_quality)
 
-points_adt <- left_join(points, adt_filtered)
-
-# Must supply missing AADTs from NVDB based on road reference
-missing_aadt <- points_adt %>%
-  dplyr::filter(adt == 0 | is.na(adt)) %>%
-  dplyr::mutate(
-    #adt = mapply(getAadtByRoadlinkposition, road_link_position)) %>%
-    adt = purrr::map_dbl(road_link_position, getAadtByRoadlinkposition)) %>%
-  dplyr::mutate(year = 2019)
-
-with_aadt <- points_adt %>%
-  dplyr::filter(adt > 0)
-
-points_adt_all <- bind_rows(with_aadt, missing_aadt) %>%
-  dplyr::arrange(desc(lat))
-
-# TODO: Point index
-
-
-# TODO: include info on all crossings:
-adt <- get_aadt_by_length_for_trp_list(border_trps$trp_id)
-
-adt_filtered <- adt %>%
-  dplyr::select(-sd_length_range, 
-                -aadt_ci_lowerbound_length_range,
-                -aadt_ci_upperbound_length_range
-                ) %>% 
-  dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
-  dplyr::mutate(length_range = if_else(length_range == "[..,5.6)",
-                                         "short", "long")) %>%
-  tidyr::pivot_wider(names_from = length_range, names_prefix = "aadt_",
-                     values_from = aadt_length_range) %>%
-  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
-  dplyr::filter(coverage > 50) %>%
-  dplyr::group_by(trp_id) %>%
-  dplyr::filter(year < 2020) %>%
-  dplyr::filter(year == max(year)) %>%
-  dplyr::select(trp_id, year, aadt_total, coverage, aadt_short, aadt_long, length_quality) %>%
-  dplyr::rename(adt = aadt_total) %>% 
-  dplyr::mutate(aadt_short = if_else(length_quality > 90, aadt_short, NA_real_),
-                aadt_long = if_else(length_quality > 90, aadt_long, NA_real_)) %>% 
-  dplyr::select(-length_quality, -coverage)
-
-border_trps_adt <- left_join(border_trps, adt_filtered)
+border_trps_adt <- left_join(border_trps, adt_filtered, by = "trp_id")
 
 # Must supply missing AADTs from NVDB based on road reference
 missing_aadt <- border_trps_adt %>%
   dplyr::filter(adt == 0 | is.na(adt)) %>%
   dplyr::mutate(
-    #adt = mapply(getAadtByRoadlinkposition, road_link_position)) %>%
     adt = purrr::map_dbl(road_link_position, getAadtByRoadlinkposition)) %>%
   dplyr::mutate(year = 2019)
 
@@ -158,6 +132,20 @@ border_crossings_adt <- border_crossings %>%
   dplyr::bind_rows(border_trps_adt_all) %>% 
   dplyr::arrange(desc(geo_number), desc(municipality_number)) %>% 
   dplyr::select(-geo_number, -municipality_number)
+```
+
+
+
+
+```{r get_index_data, include=FALSE, cache=TRUE}
+# Fetching published index from Traffic Data API
+index_2017 <- get_published_index_for_months(2952, 2017, 12)
+index_2018 <- get_published_index_for_months(2952, 2018, 12)
+index_2019 <- get_published_index_for_months(2952, 2019, 12)
+index_2020 <- get_published_index_for_months(2952, 2020, 12)
+index_2021 <- get_published_index_for_months(2952, 2021, 5)
+
+pointindex <- get_published_pointindex_for_months_paginated(2952, 2021, 5)
 ```
 
 ```{r prepare_data, include=FALSE}
@@ -213,7 +201,7 @@ officer::block_toc(style = "Figurtekst")
 
 Riksgrenseindeksen er en vegtrafikkindeks for vegene som krysser riksgrensen langs hele Norge. Den estimerer endringen i trafikkmengde i prosent fra et år til det neste.
 
-Statens vegvesen har i dag 30 trafikkregistreringspunkter ved de ulike riksgrenseovergangene fra Svinesund i sør til Storskog i nordøst. Trafikken er ikke registrert i selve grenseovergangen, men litt inn på norsk side. Det er ingen store kryss mellom registreringspunktene og riksgrensen, slik at de fleste kjøretøy som blir registrert antas normalt å krysse riksgrensen, selv om enkelte kjøretøy kan stoppe og eventuelt snu på norsk side.
+Statens vegvesen har i dag trafikkregistreringspunkt ved 32 av de 51 riksgrenseovergangene på Europa-, riks- og fylkesvegnettet fra Svinesund i sør til Storskog i nordøst. Trafikken er ikke registrert i selve grenseovergangen, men litt inn på norsk side. Det er ingen store kryss mellom registreringspunktene og riksgrensen, slik at de fleste kjøretøy som blir registrert antas normalt å krysse riksgrensen, selv om enkelte kjøretøy kan stoppe og eventuelt snu på norsk side.
 
 Datagrunnlaget for beregningene hentes fra disse trafikkregistreringspunktene. Det gir et representativt utvalg til å estimere trafikkutviklingen. I beregningen gjøres en sammenligning av timetrafikken, dato mot dato i kalendermånedene.
 
@@ -233,19 +221,26 @@ Alle kjøretøy som passerer trafikkregistreringspunktene, blir registrert og f�
 <br>
 
 ```{r point_table}
-points_adt_all %>%
-  select(name, road_reference, adt, aadt_short, aadt_long, year) %>%
+border_crossings_adt %>%
+  select(road_category_and_number, street_name, #county_name, 
+         municipality_name,
+         border_country, adt, aadt_short, aadt_long, year,
+         name) %>%
   flextable() %>%
-  colformat_int(j = 3:5) %>%
-  colformat_double(j = 6, big.mark = "", digits = 0) %>%
-  set_header_labels(name = "Navn",
-                    road_reference = "Vegreferanse",
+  #colformat_int(j = 6:8) %>%
+  colformat_double(j = 5:8, big.mark = "", digits = 0) %>%
+  set_header_labels(road_category_and_number = "Veg-nummer",
+                    street_name = "Vegnavn",
+                    #county_name = "Fylke",
+                    municipality_name = "Kommune",
+                    border_country = "Grense til",
                     adt = "ÅDT \n alle",
                     aadt_short = "ÅDT \n lette",
                     aadt_long = "ÅDT \n tunge",
-                    year = "År") %>%
-  align(i = 1, j = 3:5, align = "right", part = "header") %>%
-  align(j = 6, align = "center", part = "all") %>%
+                    year = "År",
+                    name = "Trafikk-registrerings-punkt") %>%
+  align(i = 1, j = 5:7, align = "right", part = "header") %>%
+  align(j = 8, align = "center", part = "all") %>%
   bold(part = "header") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
@@ -253,9 +248,33 @@ points_adt_all %>%
   hline_bottom(part = "all", border = borderline) %>%
   autofit() %>%
   height_all(height = .2) %>%
-  set_caption("Trafikkregistreringspunktenes vegreferanse og årsdøgntrafikk.",
+  set_caption("Grenseoverganger og årsdøgntrafikk.",
               autonum = table_numbers,
               style = "Tabelltekst")
+
+# points_adt_all %>%
+#   select(name, road_reference, adt, aadt_short, aadt_long, year) %>%
+#   flextable() %>%
+#   colformat_int(j = 3:5) %>%
+#   colformat_double(j = 6, big.mark = "", digits = 0) %>%
+#   set_header_labels(name = "Navn",
+#                     road_reference = "Vegreferanse",
+#                     adt = "ÅDT \n alle",
+#                     aadt_short = "ÅDT \n lette",
+#                     aadt_long = "ÅDT \n tunge",
+#                     year = "År") %>%
+#   align(i = 1, j = 3:5, align = "right", part = "header") %>%
+#   align(j = 6, align = "center", part = "all") %>%
+#   bold(part = "header") %>%
+#   bg(bg = "#ED9300", part = "header") %>%
+#   border_remove() %>%
+#   hline_top(part = "header", border = borderline) %>%
+#   hline_bottom(part = "all", border = borderline) %>%
+#   autofit() %>%
+#   height_all(height = .2) %>%
+#   set_caption("Trafikkregistreringspunktenes vegreferanse og årsdøgntrafikk.",
+#               autonum = table_numbers,
+#               style = "Tabelltekst")
 ```
 
 `r officer::fpar("", officer::run_pagebreak())`
@@ -265,7 +284,9 @@ I kartet nedenfor vises plasseringen av trafikkregistreringspunktene. Grenseover
 <br>
 
 ```{r map_trp_index, dpi=100, fig.width=6, fig.height=7, fig.cap="Trafikkregistreringspunktene plassering og årsdøgntrafikk.", cache=TRUE}
-create_point_adt_map(points_adt_all)
+border_crossings_adt %>% 
+  dplyr::filter(!is.na(lat)) %>% 
+  create_point_adt_map()
 ```
 
 ```{r border_table}
@@ -419,10 +440,11 @@ index_this_year %>%
   dplyr::arrange(length_range, month) %>% 
   dplyr::select(month_name, year, length_range, index_p, standard_error, 
                 standard_deviation, no_points) %>%
+  dplyr::mutate(month_name = paste0("januar - ", month_name)) %>% 
   flextable() %>%
   colformat_int(j = 2, big.mark = "") %>%
   colformat_double(j = 4:6, digits = 1) %>%
-  set_header_labels(month_name = "Måned", year = "År", 
+  set_header_labels(month_name = "Periode", year = "År", 
                     length_range = "Kjøretøy- \n klasse",
                     index_p = "Endring i \n trafikkmengde (%)",
                     standard_error = "Standardfeil \n (%)",

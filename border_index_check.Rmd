@@ -18,9 +18,9 @@ library(htmltools)
 
 ```{r get_data, include=FALSE}
 # Choose
-index_year <- 2020
+index_year <- 2021
 # Last published month
-index_month <- 11
+index_month <- 4
 index_id <- 2952
 
 # Fetch
@@ -288,4 +288,6 @@ pointindex_wide %>%
       pageLength = 21,
       lengthMenu = c(21, 42, 70),
       autoWidth = TRUE))
+
+
 ```

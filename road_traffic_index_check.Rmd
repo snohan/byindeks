@@ -466,24 +466,4 @@ pointindex_wide %>%
       autoWidth = TRUE))
 
 # Ekskluderinger:
-# Trond:
-# Skullerud avrampe 1 2 3
-# Skullerud pårampe 1 2 3
-# E6 Alnabru n 1 2 3
-# E6 Alnabru s 1 2 3 4
-# Meheia stasjon 1 2 3
-# Bjøberg 2 3 4
-# Skibakk Kløfta 3 4
-# Vadfosstunnelen 1 2 3
-# Heiane bru 1 2 3
-# Lyderhorntunnelen 1 3 4
-# Storeklubben X 1
-# Bortnetunnelen 1 2 3 4
-
-
-# Mine:
-# Høgsetvollen 1 2
-# Volleberg 1
-# Grim 1
-
 ```

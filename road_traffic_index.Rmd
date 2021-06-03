@@ -61,7 +61,7 @@ points <- get_points() %>%
   dplyr::left_join(counties)
 
 this_year <- 2021
-latest_month_number <- 2
+latest_month_number <- 4
 
 # Fetching published index from Traffic Data API
 index_this_year <- get_published_road_traffic_index_for_months(962, this_year, latest_month_number)
@@ -203,7 +203,7 @@ index_this_month <- index_this_year_prepared %>%
                 day_type == "alle",
                 month == latest_month_number)
 
-less_or_more_month <- dplyr::if_else(index_this_month$index_p < 0, "mindre", "mer")
+less_or_more_month <- dplyr::if_else(index_this_month$index_p < 0, "mindre", "meir")
 
 index_so_far_this_year_all <- index_this_year_prepared %>% 
   dplyr::filter(area_type == "COUNTRY",
@@ -215,7 +215,7 @@ index_so_far_this_year_all <- index_this_year_prepared %>%
   dplyr::select(index_p) %>% 
   round(digits = 1)
 
-less_or_more_so_far <- dplyr::if_else(index_so_far_this_year_all$index_p < 0, "mindre", "mer")
+less_or_more_so_far <- dplyr::if_else(index_so_far_this_year_all$index_p < 0, "mindre", "meir")
 
 index_so_far_this_year_all_character <- index_so_far_this_year_all %>% 
   abs() %>% 
