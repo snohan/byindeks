@@ -10,7 +10,7 @@ split_road_system_reference <- function(df) {
     tidyr::separate(road_system, c("road", "section_meter"),
                     sep = " S") %>%
     dplyr::mutate(road_number = as.numeric(stringr::str_sub(road, 3, -1))) %>%
-    dplyr::mutate(road_category_and_number = paste0(road_category, "v", road_number)) %>%
+    dplyr::mutate(road_category_and_number = paste0(road_category, "v ", road_number)) %>%
     tidyr::separate(section_meter, c("section_number", "subsection_meter"),
                     sep = "D", convert = TRUE) %>%
     tidyr::separate(subsection_meter, c("subsection_number", "meter"),

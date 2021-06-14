@@ -1,0 +1,397 @@
+"trp_id";"name";"county_name";"road_reference";"month"
+"00430V249404";"Glomstad";"Møre og Romsdal";"FV6192 S3D1 m8606";1
+"02489V121427";"Vollevatn";"Agder";"FV452 S1D1 m246";1
+"04403V2172075";"Skoger";"Vestfold og Telemark";"EV18 S45D1 m1356";1
+"07599V2390266";"Keiseråsen Mot Vanvikan";"Trøndelag";"FV715 S5D1 m2900";1
+"10795V320297";"Randabergveien";"Rogaland";"FV4570 S1D1 m1760";1
+"18554V248977";"Furnestunnelen";"Møre og Romsdal";"FV61 S1D1 m1659";1
+"18672V521400";"Smieøya  ";"Vestfold og Telemark";"FV59 S1D1 m2222";1
+"26983V971358";"Nye Ørje Vest";"Viken";"EV18 S67D1 m5882";1
+"30937V444231";"Svartskog";"Viken";"EV18 S57D1 m5999";1
+"32842V319521";"Mosheim";"Rogaland";"FV440 S1D1 m1872";1
+"37462V1060672";"Høljerast";"Innlandet";"FV33 S12D1 m13418";1
+"40696V1727469";"Folkvord Bru";"Rogaland";"RV444 S1D1 m4345";1
+"61760V521240";"Ballestadhøgda";"Vestfold og Telemark";"FV3270 S1D1 m3476";1
+"66438V1688187";"Hvidevoll";"Vestland";"FV5048 S1D1 m13";1
+"68114V1175858";"Mulvika";"Vestfold og Telemark";"FV313 S5D1 m661";1
+"68539V625646";"Karihaugen Rampe Mot Furuset";"Oslo";"RV159 S1D1 m1206";1
+"71780V1683910";"Aure";"Møre og Romsdal";"FV60 S4D1 m29";1
+"75341V41863";"Jonsvannsveien Vest For Steinanvegen";"Trøndelag";"FV6660 S1D1 m329";1
+"77223V521180";"Elstrømbrua  ";"Vestfold og Telemark";"FV357 S1D10 m256";1
+"80669V444288";"Brynsv V/Levre";"Viken";"FV164 S2D1 m1800";1
+"85865V1125817";"Langvassbukt Sør";"Troms og Finnmark";"RV85 S4D1 m14151";1
+"88800V521399";"Sandviksvegen";"Vestfold og Telemark";"FV32 S7D1 m2432";1
+"90697V625213";"E6 Alnabru Nordgående Ulven Furuset";"Oslo";"EV6 S16D1 m6547";1
+"96138V1175818";"Solum";"Vestfold og Telemark";"FV2962 S1D1 m5807";1
+"00430V249404";"Glomstad";"Møre og Romsdal";"FV6192 S3D1 m8606";2
+"04403V2172075";"Skoger";"Vestfold og Telemark";"EV18 S45D1 m1356";2
+"07068V704846";"Imerslund N";"Innlandet";"FV1796 S1D1 m700";2
+"07599V2390266";"Keiseråsen Mot Vanvikan";"Trøndelag";"FV715 S5D1 m2900";2
+"07954V1125849";"Fagernes Øst";"Troms og Finnmark";"FV91 S1D1 m767";2
+"09648V249643";"Mjosundet";"Møre og Romsdal";"FV680 S9D1 m480";2
+"10795V320297";"Randabergveien";"Rogaland";"FV4570 S1D1 m1760";2
+"14354V444104";"Karlstua, Råholt";"Viken";"FV1551 S2D1 m5924";2
+"17219V705297";"Hjellum";"Innlandet";"FV225 S1D1 m1702";2
+"18554V248977";"Furnestunnelen";"Møre og Romsdal";"FV61 S1D1 m1659";2
+"18672V521400";"Smieøya  ";"Vestfold og Telemark";"FV59 S1D1 m2222";2
+"22540V121303";"Prestebekken";"Agder";"EV18 S1D1 m5776";2
+"26983V971358";"Nye Ørje Vest";"Viken";"EV18 S67D1 m5882";2
+"32426V249052";"Fiskarstrand";"Møre og Romsdal";"FV657 S1D1 m2696";2
+"32842V319521";"Mosheim";"Rogaland";"FV440 S1D1 m1872";2
+"35874V704871";"Klevfoss ";"Innlandet";"FV1836 S1D1 m853";2
+"37462V1060672";"Høljerast";"Innlandet";"FV33 S12D1 m13418";2
+"40696V1727469";"Folkvord Bru";"Rogaland";"RV444 S1D1 m4345";2
+"40820V121304";"Baneheia Østgående";"Agder";"EV18 S1D1 m1804";2
+"50892V971562";"Rakkestad Sør";"Viken";"FV124 S3D1 m590";2
+"54474V320611";"Søyland";"Rogaland";"FV44 S12D1 m5260";2
+"57166V121303";"Baneheia Vestgående";"Agder";"EV18 S1D1 m4726";2
+"61760V521240";"Ballestadhøgda";"Vestfold og Telemark";"FV3270 S1D1 m3476";2
+"66438V1688187";"Hvidevoll";"Vestland";"FV5048 S1D1 m13";2
+"66678V320582";"Auglend";"Rogaland";"EV39 S100D1 m11957";2
+"68539V625646";"Karihaugen Rampe Mot Furuset";"Oslo";"RV159 S1D1 m1206";2
+"71780V1683910";"Aure";"Møre og Romsdal";"FV60 S4D1 m29";2
+"75341V41863";"Jonsvannsveien Vest For Steinanvegen";"Trøndelag";"FV6660 S1D1 m329";2
+"76967V2523547";"Furnes Vegkryss S";"Innlandet";"FV1726 S1D1 m150";2
+"77223V521180";"Elstrømbrua  ";"Vestfold og Telemark";"FV357 S1D10 m256";2
+"78996V930347";"Fuglenesvegen";"Troms og Finnmark";"RV94 S7D1 m2095";2
+"85865V1125817";"Langvassbukt Sør";"Troms og Finnmark";"RV85 S4D1 m14151";2
+"88800V521399";"Sandviksvegen";"Vestfold og Telemark";"FV32 S7D1 m2432";2
+"96138V1175818";"Solum";"Vestfold og Telemark";"FV2962 S1D1 m5807";2
+"00430V249404";"Glomstad";"Møre og Romsdal";"FV6192 S3D1 m8606";3
+"04403V2172075";"Skoger";"Vestfold og Telemark";"EV18 S45D1 m1356";3
+"07068V704846";"Imerslund N";"Innlandet";"FV1796 S1D1 m700";3
+"07599V2390266";"Keiseråsen Mot Vanvikan";"Trøndelag";"FV715 S5D1 m2900";3
+"07954V1125849";"Fagernes Øst";"Troms og Finnmark";"FV91 S1D1 m767";3
+"08325V705282";"Nydal";"Innlandet";"FV1726 S1D1 m749";3
+"09648V249643";"Mjosundet";"Møre og Romsdal";"FV680 S9D1 m480";3
+"10795V320297";"Randabergveien";"Rogaland";"FV4570 S1D1 m1760";3
+"14354V444104";"Karlstua, Råholt";"Viken";"FV1551 S2D1 m5924";3
+"17219V705297";"Hjellum";"Innlandet";"FV225 S1D1 m1702";3
+"18554V248977";"Furnestunnelen";"Møre og Romsdal";"FV61 S1D1 m1659";3
+"18672V521400";"Smieøya  ";"Vestfold og Telemark";"FV59 S1D1 m2222";3
+"22540V121303";"Prestebekken";"Agder";"EV18 S1D1 m5776";3
+"26983V971358";"Nye Ørje Vest";"Viken";"EV18 S67D1 m5882";3
+"32426V249052";"Fiskarstrand";"Møre og Romsdal";"FV657 S1D1 m2696";3
+"32842V319521";"Mosheim";"Rogaland";"FV440 S1D1 m1872";3
+"35874V704871";"Klevfoss ";"Innlandet";"FV1836 S1D1 m853";3
+"37462V1060672";"Høljerast";"Innlandet";"FV33 S12D1 m13418";3
+"40696V1727469";"Folkvord Bru";"Rogaland";"RV444 S1D1 m4345";3
+"40820V121304";"Baneheia Østgående";"Agder";"EV18 S1D1 m1804";3
+"44756V1863949";"Bjørvikatunell Østgående";"Oslo";"EV18 S55D1 m7304";3
+"50892V971562";"Rakkestad Sør";"Viken";"FV124 S3D1 m590";3
+"54474V320611";"Søyland";"Rogaland";"FV44 S12D1 m5260";3
+"57166V121303";"Baneheia Vestgående";"Agder";"EV18 S1D1 m4726";3
+"59192V1878201";"Bjørvikatunell Vestgående";"Oslo";"EV18 S55D1 m8974";3
+"61760V521240";"Ballestadhøgda";"Vestfold og Telemark";"FV3270 S1D1 m3476";3
+"66438V1688187";"Hvidevoll";"Vestland";"FV5048 S1D1 m13";3
+"66678V320582";"Auglend";"Rogaland";"EV39 S100D1 m11957";3
+"68539V625646";"Karihaugen Rampe Mot Furuset";"Oslo";"RV159 S1D1 m1206";3
+"71780V1683910";"Aure";"Møre og Romsdal";"FV60 S4D1 m29";3
+"75341V41863";"Jonsvannsveien Vest For Steinanvegen";"Trøndelag";"FV6660 S1D1 m329";3
+"76967V2523547";"Furnes Vegkryss S";"Innlandet";"FV1726 S1D1 m150";3
+"77223V521180";"Elstrømbrua  ";"Vestfold og Telemark";"FV357 S1D10 m256";3
+"78996V930347";"Fuglenesvegen";"Troms og Finnmark";"RV94 S7D1 m2095";3
+"85865V1125817";"Langvassbukt Sør";"Troms og Finnmark";"RV85 S4D1 m14151";3
+"88800V521399";"Sandviksvegen";"Vestfold og Telemark";"FV32 S7D1 m2432";3
+"90697V625213";"E6 Alnabru Nordgående Ulven Furuset";"Oslo";"EV6 S16D1 m6547";3
+"96138V1175818";"Solum";"Vestfold og Telemark";"FV2962 S1D1 m5807";3
+"00430V249404";"Glomstad";"Møre og Romsdal";"FV6192 S3D1 m8606";4
+"04403V2172075";"Skoger";"Vestfold og Telemark";"EV18 S45D1 m1356";4
+"05293V1125916";"Breiviktunnelen";"Troms og Finnmark";"FV862 S1D1 m2604";4
+"07599V2390266";"Keiseråsen Mot Vanvikan";"Trøndelag";"FV715 S5D1 m2900";4
+"09648V249643";"Mjosundet";"Møre og Romsdal";"FV680 S9D1 m480";4
+"10795V320297";"Randabergveien";"Rogaland";"FV4570 S1D1 m1760";4
+"12357V625212";"Klemetsrud";"Oslo";"EV6 S15D1 m1191";4
+"17219V705297";"Hjellum";"Innlandet";"FV225 S1D1 m1702";4
+"18554V248977";"Furnestunnelen";"Møre og Romsdal";"FV61 S1D1 m1659";4
+"18672V521400";"Smieøya  ";"Vestfold og Telemark";"FV59 S1D1 m2222";4
+"22540V121303";"Prestebekken";"Agder";"EV18 S1D1 m5776";4
+"31498V2574580";"Salhusveien";"Vestland";"FV5300 S1D1 m43";4
+"40696V1727469";"Folkvord Bru";"Rogaland";"RV444 S1D1 m4345";4
+"40820V121304";"Baneheia Østgående";"Agder";"EV18 S1D1 m1804";4
+"46960V1060417";"Storhove Sør";"Innlandet";"FV2522 S1D1 m1200";4
+"53155V1665289";"Rullestadtunnelen";"Vestland";"EV134 S9D1 m4267";4
+"56658V804775";"Vallaheiene";"Vestland";"EV39 S79D1 m2754";4
+"57166V121303";"Baneheia Vestgående";"Agder";"EV18 S1D1 m4726";4
+"61760V521240";"Ballestadhøgda";"Vestfold og Telemark";"FV3270 S1D1 m3476";4
+"66438V1688187";"Hvidevoll";"Vestland";"FV5048 S1D1 m13";4
+"66678V320582";"Auglend";"Rogaland";"EV39 S100D1 m11957";4
+"68392V2574613";"Åsamyrene Sør";"Vestland";"FV578 S2D1 m300";4
+"68539V625646";"Karihaugen Rampe Mot Furuset";"Oslo";"RV159 S1D1 m1206";4
+"71780V1683910";"Aure";"Møre og Romsdal";"FV60 S4D1 m29";4
+"75341V41863";"Jonsvannsveien Vest For Steinanvegen";"Trøndelag";"FV6660 S1D1 m329";4
+"76967V2523547";"Furnes Vegkryss S";"Innlandet";"FV1726 S1D1 m150";4
+"77223V521180";"Elstrømbrua  ";"Vestfold og Telemark";"FV357 S1D10 m256";4
+"77749V249641";"Sålåsundbrua";"Møre og Romsdal";"FV680 S5D1 m153";4
+"85865V1125817";"Langvassbukt Sør";"Troms og Finnmark";"RV85 S4D1 m14151";4
+"88800V521399";"Sandviksvegen";"Vestfold og Telemark";"FV32 S7D1 m2432";4
+"90697V625213";"E6 Alnabru Nordgående Ulven Furuset";"Oslo";"EV6 S16D1 m6547";4
+"96138V1175818";"Solum";"Vestfold og Telemark";"FV2962 S1D1 m5807";4
+"00430V249404";"Glomstad";"Møre og Romsdal";"FV6192 S3D1 m8606";5
+"07072V930629";"Kvalsund Fartstavle";"Troms og Finnmark";"RV94 S2D1 m12017";5
+"07599V2390266";"Keiseråsen Mot Vanvikan";"Trøndelag";"FV715 S5D1 m2900";5
+"10795V320297";"Randabergveien";"Rogaland";"FV4570 S1D1 m1760";5
+"12707V625214";"E6 Alnabru Sydgående Furuset Ulven";"Oslo";"EV6 S16D1 m7239";5
+"17219V705297";"Hjellum";"Innlandet";"FV225 S1D1 m1702";5
+"18554V248977";"Furnestunnelen";"Møre og Romsdal";"FV61 S1D1 m1659";5
+"22540V121303";"Prestebekken";"Agder";"EV18 S1D1 m5776";5
+"32842V319521";"Mosheim";"Rogaland";"FV440 S1D1 m1872";5
+"33386V180972";"Lierstranda";"Viken";"FV282 S1D1 m1025";5
+"34157V2312145";"Økerntunellen Mot Sentrum Datter";"Oslo";"RV163 S1D1 m786";5
+"40696V1727469";"Folkvord Bru";"Rogaland";"RV444 S1D1 m4345";5
+"41471V443658";"Steinshøgda";"Viken";"FV168 S1D1 m6804";5
+"52295V2228379";"Norheim Industri";"Rogaland";"FV4848 S1D1 m6253";5
+"59387V22200";"Strengereid";"Agder";"FV410 S4D1 m618";5
+"59675V319722";"Brueland";"Rogaland";"FV44 S15D1 m3977";5
+"63904V885194";"E10 Vaterfjorden";"Nordland";"EV10 S15D1 m6925";5
+"66438V1688187";"Hvidevoll";"Vestland";"FV5048 S1D1 m13";5
+"66678V320582";"Auglend";"Rogaland";"EV39 S100D1 m11957";5
+"71780V1683910";"Aure";"Møre og Romsdal";"FV60 S4D1 m29";5
+"72438V180781";"Rasteplass Ny E16";"Viken";"EV16 S47D40 m5633";5
+"75341V41863";"Jonsvannsveien Vest For Steinanvegen";"Trøndelag";"FV6660 S1D1 m329";5
+"76967V2523547";"Furnes Vegkryss S";"Innlandet";"FV1726 S1D1 m150";5
+"90697V625213";"E6 Alnabru Nordgående Ulven Furuset";"Oslo";"EV6 S16D1 m6547";5
+"96138V1175818";"Solum";"Vestfold og Telemark";"FV2962 S1D1 m5807";5
+"01646V121757";"Rekevik";"Agder";"EV39 S112D1 m3879";6
+"01676V41944";"Leirbrua Ved Granåsen";"Trøndelag";"FV6650 S2D1 m6736";6
+"03455V521131";"Tinnsjøvn.";"Vestfold og Telemark";"FV37 S12D1 m4441";6
+"04300V72813";"Innherredsveien Ved Fjæregata";"Trøndelag";"FV6692 S2D1 m161";6
+"07599V2390266";"Keiseråsen Mot Vanvikan";"Trøndelag";"FV715 S5D1 m2900";6
+"07983V1059998";"Fokstua Sør";"Innlandet";"EV6 S54D1 m10266";6
+"10795V320297";"Randabergveien";"Rogaland";"FV4570 S1D1 m1760";6
+"12707V625214";"E6 Alnabru Sydgående Furuset Ulven";"Oslo";"EV6 S16D1 m7239";6
+"17219V705297";"Hjellum";"Innlandet";"FV225 S1D1 m1702";6
+"18554V248977";"Furnestunnelen";"Møre og Romsdal";"FV61 S1D1 m1659";6
+"22540V121303";"Prestebekken";"Agder";"EV18 S1D1 m5776";6
+"26581V704695";"Kirkenær Ø";"Innlandet";"FV201 S1D1 m2598";6
+"32842V319521";"Mosheim";"Rogaland";"FV440 S1D1 m1872";6
+"33808V625649";"Helsfyr 1,2,3,4";"Oslo";"EV6 S16D20 m2636";6
+"40696V1727469";"Folkvord Bru";"Rogaland";"RV444 S1D1 m4345";6
+"45162V443741";"Løkenveien";"Viken";"FV1370 S1D1 m3716";6
+"53155V1665289";"Rullestadtunnelen";"Vestland";"EV134 S9D1 m4267";6
+"66438V1688187";"Hvidevoll";"Vestland";"FV5048 S1D1 m13";6
+"66678V320582";"Auglend";"Rogaland";"EV39 S100D1 m11957";6
+"68960V578600";"Mæresmyra";"Trøndelag";"EV6 S88D1 m10499";6
+"70046V180859";"Gml. Kongsberg Kro";"Viken";"FV40 S13D1 m1861";6
+"71780V1683910";"Aure";"Møre og Romsdal";"FV60 S4D1 m29";6
+"75341V41863";"Jonsvannsveien Vest For Steinanvegen";"Trøndelag";"FV6660 S1D1 m329";6
+"76967V2523547";"Furnes Vegkryss S";"Innlandet";"FV1726 S1D1 m150";6
+"90697V625213";"E6 Alnabru Nordgående Ulven Furuset";"Oslo";"EV6 S16D1 m6547";6
+"96138V1175818";"Solum";"Vestfold og Telemark";"FV2962 S1D1 m5807";6
+"00430V249404";"Glomstad";"Møre og Romsdal";"FV6192 S3D1 m8606";7
+"07057V705058";"Løvberget";"Innlandet";"FV2142 S1D1 m665";7
+"07599V2390266";"Keiseråsen Mot Vanvikan";"Trøndelag";"FV715 S5D1 m2900";7
+"07983V1059998";"Fokstua Sør";"Innlandet";"EV6 S54D1 m10266";7
+"08255V705294";"Buttekvern S";"Innlandet";"FV184 S2D1 m4075";7
+"10795V320297";"Randabergveien";"Rogaland";"FV4570 S1D1 m1760";7
+"12707V625214";"E6 Alnabru Sydgående Furuset Ulven";"Oslo";"EV6 S16D1 m7239";7
+"17219V705297";"Hjellum";"Innlandet";"FV225 S1D1 m1702";7
+"18554V248977";"Furnestunnelen";"Møre og Romsdal";"FV61 S1D1 m1659";7
+"22540V121303";"Prestebekken";"Agder";"EV18 S1D1 m5776";7
+"32842V319521";"Mosheim";"Rogaland";"FV440 S1D1 m1872";7
+"33386V180972";"Lierstranda";"Viken";"FV282 S1D1 m1025";7
+"33808V625649";"Helsfyr 1,2,3,4";"Oslo";"EV6 S16D20 m2636";7
+"36178V320198";"Ullandhaugveien";"Rogaland";"FV4548 S1D1 m495";7
+"40696V1727469";"Folkvord Bru";"Rogaland";"RV444 S1D1 m4345";7
+"45162V443741";"Løkenveien";"Viken";"FV1370 S1D1 m3716";7
+"49248V444298";"Lystad";"Viken";"FV172 S1D1 m4430";7
+"50892V971562";"Rakkestad Sør";"Viken";"FV124 S3D1 m590";7
+"64839V705283";"Kylstad";"Innlandet";"FV227 S1D1 m6192";7
+"66438V1688187";"Hvidevoll";"Vestland";"FV5048 S1D1 m13";7
+"67171V521237";"Lanner Kontrollstasjon";"Vestfold og Telemark";"FV3260 S1D1 m4431";7
+"70046V180859";"Gml. Kongsberg Kro";"Viken";"FV40 S13D1 m1861";7
+"71780V1683910";"Aure";"Møre og Romsdal";"FV60 S4D1 m29";7
+"75341V41863";"Jonsvannsveien Vest For Steinanvegen";"Trøndelag";"FV6660 S1D1 m329";7
+"76967V2523547";"Furnes Vegkryss S";"Innlandet";"FV1726 S1D1 m150";7
+"90528V249433";"Reknes Stadion";"Møre og Romsdal";"FV537 S1D1 m1640";7
+"90697V625213";"E6 Alnabru Nordgående Ulven Furuset";"Oslo";"EV6 S16D1 m6547";7
+"92382V72805";"Berkåk";"Trøndelag";"EV6 S65D1 m7474";7
+"96138V1175818";"Solum";"Vestfold og Telemark";"FV2962 S1D1 m5807";7
+"00430V249404";"Glomstad";"Møre og Romsdal";"FV6192 S3D1 m8606";8
+"02602V705157";"Osmoen N";"Innlandet";"FV2266 S1D1 m174";8
+"05293V1125916";"Breiviktunnelen";"Troms og Finnmark";"FV862 S1D1 m2604";8
+"07599V2390266";"Keiseråsen Mot Vanvikan";"Trøndelag";"FV715 S5D1 m2900";8
+"07983V1059998";"Fokstua Sør";"Innlandet";"EV6 S54D1 m10266";8
+"08255V705294";"Buttekvern S";"Innlandet";"FV184 S2D1 m4075";8
+"10795V320297";"Randabergveien";"Rogaland";"FV4570 S1D1 m1760";8
+"12707V625214";"E6 Alnabru Sydgående Furuset Ulven";"Oslo";"EV6 S16D1 m7239";8
+"13124V1060174";"Redalen";"Innlandet";"FV249 S1D1 m1276";8
+"17219V705297";"Hjellum";"Innlandet";"FV225 S1D1 m1702";8
+"18554V248977";"Furnestunnelen";"Møre og Romsdal";"FV61 S1D1 m1659";8
+"18573V444291";"Fjellsrud";"Viken";"FV169 S10D1 m1764";8
+"22540V121303";"Prestebekken";"Agder";"EV18 S1D1 m5776";8
+"23111V704635";"Brenneriroa V";"Innlandet";"RV25 S4D1 m2452";8
+"27436V2172082";"Hanekleiv Syd";"Vestfold og Telemark";"EV18 S43D1 m5301";8
+"27813V705193";"Grundset S";"Innlandet";"RV3 S4D10 m2227";8
+"28955V704576";"Ebru";"Innlandet";"RV3 S3D10 m2866";8
+"32842V319521";"Mosheim";"Rogaland";"FV440 S1D1 m1872";8
+"33808V625649";"Helsfyr 1,2,3,4";"Oslo";"EV6 S16D20 m2636";8
+"40696V1727469";"Folkvord Bru";"Rogaland";"RV444 S1D1 m4345";8
+"42686V971784";"Tistedal Nord";"Viken";"FV21 S2D1 m920";8
+"45162V443741";"Løkenveien";"Viken";"FV1370 S1D1 m3716";8
+"45892V886032";"Frøskeland";"Nordland";"FV820 S2D1 m19";8
+"49728V21778";"Heistad";"Agder";"FV42 S1D10 m973";8
+"50892V971562";"Rakkestad Sør";"Viken";"FV124 S3D1 m590";8
+"56742V1126289";"Nordkjosbotn Sør";"Troms og Finnmark";"EV6 S179D1 m12164";8
+"59199V72809";"Melhus Sør";"Trøndelag";"EV6 HP 15 Meter 1859";8
+"60071V21853";"Vesterveien";"Agder";"FV420 S2D1 m2917";8
+"64839V705283";"Kylstad";"Innlandet";"FV227 S1D1 m6192";8
+"66164V886014";"Fv82 Andenes Vest (Merket)";"Nordland";"FV82 S14D1 m9580";8
+"66438V1688187";"Hvidevoll";"Vestland";"FV5048 S1D1 m13";8
+"66678V320582";"Auglend";"Rogaland";"EV39 S100D1 m11957";8
+"70046V180859";"Gml. Kongsberg Kro";"Viken";"FV40 S13D1 m1861";8
+"71780V1683910";"Aure";"Møre og Romsdal";"FV60 S4D1 m29";8
+"74343V705192";"Segla Bru ";"Innlandet";"RV3 S2D10 m4881";8
+"75341V41863";"Jonsvannsveien Vest For Steinanvegen";"Trøndelag";"FV6660 S1D1 m329";8
+"76967V2523547";"Furnes Vegkryss S";"Innlandet";"FV1726 S1D1 m150";8
+"79479V885468";"Novikveien V/Butikk";"Nordland";"FV7268 S1D1 m4165";8
+"84064V320581";"Forus Ved Stv.aftenblad";"Rogaland";"EV39 S101D1 m815";8
+"90697V625213";"E6 Alnabru Nordgående Ulven Furuset";"Oslo";"EV6 S16D1 m6547";8
+"92382V72805";"Berkåk";"Trøndelag";"EV6 S65D1 m7474";8
+"94975V2411852";"Rostad";"Trøndelag";"EV6 S70D1 m1365";8
+"96138V1175818";"Solum";"Vestfold og Telemark";"FV2962 S1D1 m5807";8
+"00000V443295";"Drengsrud Ved Liahagen Bru";"Viken";"EV18 S48D1 m1600";9
+"00430V249404";"Glomstad";"Møre og Romsdal";"FV6192 S3D1 m8606";9
+"00989V704704";"Roverud S";"Innlandet";"FV205 S1D1 m173";9
+"02602V705157";"Osmoen N";"Innlandet";"FV2266 S1D1 m174";9
+"07599V2390266";"Keiseråsen Mot Vanvikan";"Trøndelag";"FV715 S5D1 m2900";9
+"08255V705294";"Buttekvern S";"Innlandet";"FV184 S2D1 m4075";9
+"09105V320634";"Rege";"Rogaland";"FV510 S2D1 m996";9
+"10795V320297";"Randabergveien";"Rogaland";"FV4570 S1D1 m1760";9
+"12707V625214";"E6 Alnabru Sydgående Furuset Ulven";"Oslo";"EV6 S16D1 m7239";9
+"13124V1060174";"Redalen";"Innlandet";"FV249 S1D1 m1276";9
+"17219V705297";"Hjellum";"Innlandet";"FV225 S1D1 m1702";9
+"18554V248977";"Furnestunnelen";"Møre og Romsdal";"FV61 S1D1 m1659";9
+"18573V444291";"Fjellsrud";"Viken";"FV169 S10D1 m1764";9
+"27227V885156";"Trældaltunnelen";"Nordland";"EV10 S32D1 m3266";9
+"27813V705193";"Grundset S";"Innlandet";"RV3 S4D10 m2227";9
+"28955V704576";"Ebru";"Innlandet";"RV3 S3D10 m2866";9
+"32842V319521";"Mosheim";"Rogaland";"FV440 S1D1 m1872";9
+"33808V625649";"Helsfyr 1,2,3,4";"Oslo";"EV6 S16D20 m2636";9
+"37931V249569";"Valldal";"Møre og Romsdal";"FV63 S8D1 m3778";9
+"38613V2620349";"Nansetveien";"Vestfold og Telemark";"FV2990 S1D1 m2618";9
+"40696V1727469";"Folkvord Bru";"Rogaland";"RV444 S1D1 m4345";9
+"44000V1944383";"Svortland Vest";"Vestland";"FV542 S2D1 m8154";9
+"45162V443741";"Løkenveien";"Viken";"FV1370 S1D1 m3716";9
+"50892V971562";"Rakkestad Sør";"Viken";"FV124 S3D1 m590";9
+"51934V2523546";"Snarud N";"Innlandet";"FV184 S1D1 m3431";9
+"56742V1126289";"Nordkjosbotn Sør";"Troms og Finnmark";"EV6 S179D1 m12164";9
+"59199V72809";"Melhus Sør";"Trøndelag";"EV6 HP 15 Meter 1859";9
+"60071V21853";"Vesterveien";"Agder";"FV420 S2D1 m2917";9
+"66438V1688187";"Hvidevoll";"Vestland";"FV5048 S1D1 m13";9
+"66678V320582";"Auglend";"Rogaland";"EV39 S100D1 m11957";9
+"71780V1683910";"Aure";"Møre og Romsdal";"FV60 S4D1 m29";9
+"74343V705192";"Segla Bru ";"Innlandet";"RV3 S2D10 m4881";9
+"75341V41863";"Jonsvannsveien Vest For Steinanvegen";"Trøndelag";"FV6660 S1D1 m329";9
+"76967V2523547";"Furnes Vegkryss S";"Innlandet";"FV1726 S1D1 m150";9
+"81350V444302";"Nordre Brauter";"Viken";"FV175 S3D1 m6096";9
+"86634V2038034";"Minnekrysset";"Viken";"EV6 S25D1 m11511";9
+"90697V625213";"E6 Alnabru Nordgående Ulven Furuset";"Oslo";"EV6 S16D1 m6547";9
+"91051V705252";"Masterud S";"Innlandet";"FV202 S6D1 m4441";9
+"92382V72805";"Berkåk";"Trøndelag";"EV6 S65D1 m7474";9
+"93060V319679";"Lovra";"Rogaland";"RV13 S12D1 m6154";9
+"94975V2411852";"Rostad";"Trøndelag";"EV6 S70D1 m1365";9
+"96138V1175818";"Solum";"Vestfold og Telemark";"FV2962 S1D1 m5807";9
+"00000V443295";"Drengsrud Ved Liahagen Bru";"Viken";"EV18 S48D1 m1600";10
+"00844V249651";"Rotevatn";"Møre og Romsdal";"FV5894 S1D1 m104";10
+"00989V704704";"Roverud S";"Innlandet";"FV205 S1D1 m173";10
+"07599V2390266";"Keiseråsen Mot Vanvikan";"Trøndelag";"FV715 S5D1 m2900";10
+"10795V320297";"Randabergveien";"Rogaland";"FV4570 S1D1 m1760";10
+"12707V625214";"E6 Alnabru Sydgående Furuset Ulven";"Oslo";"EV6 S16D1 m7239";10
+"17219V705297";"Hjellum";"Innlandet";"FV225 S1D1 m1702";10
+"18554V248977";"Furnestunnelen";"Møre og Romsdal";"FV61 S1D1 m1659";10
+"18573V444291";"Fjellsrud";"Viken";"FV169 S10D1 m1764";10
+"27813V705193";"Grundset S";"Innlandet";"RV3 S4D10 m2227";10
+"32842V319521";"Mosheim";"Rogaland";"FV440 S1D1 m1872";10
+"33808V625649";"Helsfyr 1,2,3,4";"Oslo";"EV6 S16D20 m2636";10
+"38613V2620349";"Nansetveien";"Vestfold og Telemark";"FV2990 S1D1 m2618";10
+"40696V1727469";"Folkvord Bru";"Rogaland";"RV444 S1D1 m4345";10
+"44000V1944383";"Svortland Vest";"Vestland";"FV542 S2D1 m8154";10
+"45162V443741";"Løkenveien";"Viken";"FV1370 S1D1 m3716";10
+"49611V249530";"Silset";"Møre og Romsdal";"EV39 S21D1 m1426";10
+"50892V971562";"Rakkestad Sør";"Viken";"FV124 S3D1 m590";10
+"51934V2523546";"Snarud N";"Innlandet";"FV184 S1D1 m3431";10
+"56742V1126289";"Nordkjosbotn Sør";"Troms og Finnmark";"EV6 S179D1 m12164";10
+"59215V444233";"Asker";"Viken";"EV18 S48D1 m5480";10
+"60071V21853";"Vesterveien";"Agder";"FV420 S2D1 m2917";10
+"63047V249016";"Sunndalsøra";"Møre og Romsdal";"RV70 S8D1 m7239";10
+"66438V1688187";"Hvidevoll";"Vestland";"FV5048 S1D1 m13";10
+"66678V320582";"Auglend";"Rogaland";"EV39 S100D1 m11957";10
+"67171V521237";"Lanner Kontrollstasjon";"Vestfold og Telemark";"FV3260 S1D1 m4431";10
+"71780V1683910";"Aure";"Møre og Romsdal";"FV60 S4D1 m29";10
+"74343V705192";"Segla Bru ";"Innlandet";"RV3 S2D10 m4881";10
+"74892V1059997";"Dombås Sør";"Innlandet";"EV6 S53D1 m11765";10
+"75341V41863";"Jonsvannsveien Vest For Steinanvegen";"Trøndelag";"FV6660 S1D1 m329";10
+"76967V2523547";"Furnes Vegkryss S";"Innlandet";"FV1726 S1D1 m150";10
+"86634V2038034";"Minnekrysset";"Viken";"EV6 S25D1 m11511";10
+"90697V625213";"E6 Alnabru Nordgående Ulven Furuset";"Oslo";"EV6 S16D1 m6547";10
+"91051V705252";"Masterud S";"Innlandet";"FV202 S6D1 m4441";10
+"92382V72805";"Berkåk";"Trøndelag";"EV6 S65D1 m7474";10
+"94975V2411852";"Rostad";"Trøndelag";"EV6 S70D1 m1365";10
+"96138V1175818";"Solum";"Vestfold og Telemark";"FV2962 S1D1 m5807";10
+"00430V249404";"Glomstad";"Møre og Romsdal";"FV6192 S3D1 m8606";11
+"00844V249651";"Rotevatn";"Møre og Romsdal";"FV5894 S1D1 m104";11
+"07599V2390266";"Keiseråsen Mot Vanvikan";"Trøndelag";"FV715 S5D1 m2900";11
+"08255V705294";"Buttekvern S";"Innlandet";"FV184 S2D1 m4075";11
+"10795V320297";"Randabergveien";"Rogaland";"FV4570 S1D1 m1760";11
+"12707V625214";"E6 Alnabru Sydgående Furuset Ulven";"Oslo";"EV6 S16D1 m7239";11
+"17219V705297";"Hjellum";"Innlandet";"FV225 S1D1 m1702";11
+"18554V248977";"Furnestunnelen";"Møre og Romsdal";"FV61 S1D1 m1659";11
+"18573V444291";"Fjellsrud";"Viken";"FV169 S10D1 m1764";11
+"27813V705193";"Grundset S";"Innlandet";"RV3 S4D10 m2227";11
+"28955V704576";"Ebru";"Innlandet";"RV3 S3D10 m2866";11
+"32842V319521";"Mosheim";"Rogaland";"FV440 S1D1 m1872";11
+"33808V625649";"Helsfyr 1,2,3,4";"Oslo";"EV6 S16D20 m2636";11
+"38613V2620349";"Nansetveien";"Vestfold og Telemark";"FV2990 S1D1 m2618";11
+"40696V1727469";"Folkvord Bru";"Rogaland";"RV444 S1D1 m4345";11
+"44000V1944383";"Svortland Vest";"Vestland";"FV542 S2D1 m8154";11
+"45162V443741";"Løkenveien";"Viken";"FV1370 S1D1 m3716";11
+"50892V971562";"Rakkestad Sør";"Viken";"FV124 S3D1 m590";11
+"51934V2523546";"Snarud N";"Innlandet";"FV184 S1D1 m3431";11
+"54688V625212";"Skullerud Hovedkjørefelt";"Oslo";"EV6 S15D1 m5271";11
+"56742V1126289";"Nordkjosbotn Sør";"Troms og Finnmark";"EV6 S179D1 m12164";11
+"60071V21853";"Vesterveien";"Agder";"FV420 S2D1 m2917";11
+"66438V1688187";"Hvidevoll";"Vestland";"FV5048 S1D1 m13";11
+"67171V521237";"Lanner Kontrollstasjon";"Vestfold og Telemark";"FV3260 S1D1 m4431";11
+"71780V1683910";"Aure";"Møre og Romsdal";"FV60 S4D1 m29";11
+"74343V705192";"Segla Bru ";"Innlandet";"RV3 S2D10 m4881";11
+"74892V1059997";"Dombås Sør";"Innlandet";"EV6 S53D1 m11765";11
+"75341V41863";"Jonsvannsveien Vest For Steinanvegen";"Trøndelag";"FV6660 S1D1 m329";11
+"76967V2523547";"Furnes Vegkryss S";"Innlandet";"FV1726 S1D1 m150";11
+"86634V2038034";"Minnekrysset";"Viken";"EV6 S25D1 m11511";11
+"90697V625213";"E6 Alnabru Nordgående Ulven Furuset";"Oslo";"EV6 S16D1 m6547";11
+"92382V72805";"Berkåk";"Trøndelag";"EV6 S65D1 m7474";11
+"96138V1175818";"Solum";"Vestfold og Telemark";"FV2962 S1D1 m5807";11
+"07599V2390266";"Keiseråsen Mot Vanvikan";"Trøndelag";"FV715 S5D1 m2900";12
+"08255V705294";"Buttekvern S";"Innlandet";"FV184 S2D1 m4075";12
+"10795V320297";"Randabergveien";"Rogaland";"FV4570 S1D1 m1760";12
+"12707V625214";"E6 Alnabru Sydgående Furuset Ulven";"Oslo";"EV6 S16D1 m7239";12
+"17219V705297";"Hjellum";"Innlandet";"FV225 S1D1 m1702";12
+"18554V248977";"Furnestunnelen";"Møre og Romsdal";"FV61 S1D1 m1659";12
+"18573V444291";"Fjellsrud";"Viken";"FV169 S10D1 m1764";12
+"24650V320633";"Bore Krk.";"Rogaland";"FV510 S1D1 m3128";12
+"26983V971358";"Nye Ørje Vest";"Viken";"EV18 S67D1 m5882";12
+"27813V705193";"Grundset S";"Innlandet";"RV3 S4D10 m2227";12
+"32842V319521";"Mosheim";"Rogaland";"FV440 S1D1 m1872";12
+"33808V625649";"Helsfyr 1,2,3,4";"Oslo";"EV6 S16D20 m2636";12
+"37462V1060672";"Høljerast";"Innlandet";"FV33 S12D1 m13418";12
+"38613V2620349";"Nansetveien";"Vestfold og Telemark";"FV2990 S1D1 m2618";12
+"40696V1727469";"Folkvord Bru";"Rogaland";"RV444 S1D1 m4345";12
+"44000V1944383";"Svortland Vest";"Vestland";"FV542 S2D1 m8154";12
+"45162V443741";"Løkenveien";"Viken";"FV1370 S1D1 m3716";12
+"51934V2523546";"Snarud N";"Innlandet";"FV184 S1D1 m3431";12
+"54688V625212";"Skullerud Hovedkjørefelt";"Oslo";"EV6 S15D1 m5271";12
+"60071V21853";"Vesterveien";"Agder";"FV420 S2D1 m2917";12
+"64557V625518";"Munkedamsveien";"Oslo";"RV162 S1D1 m4942";12
+"66438V1688187";"Hvidevoll";"Vestland";"FV5048 S1D1 m13";12
+"66678V320582";"Auglend";"Rogaland";"EV39 S100D1 m11957";12
+"67171V521237";"Lanner Kontrollstasjon";"Vestfold og Telemark";"FV3260 S1D1 m4431";12
+"71780V1683910";"Aure";"Møre og Romsdal";"FV60 S4D1 m29";12
+"74343V705192";"Segla Bru ";"Innlandet";"RV3 S2D10 m4881";12
+"74892V1059997";"Dombås Sør";"Innlandet";"EV6 S53D1 m11765";12
+"75341V41863";"Jonsvannsveien Vest For Steinanvegen";"Trøndelag";"FV6660 S1D1 m329";12
+"76967V2523547";"Furnes Vegkryss S";"Innlandet";"FV1726 S1D1 m150";12
+"86634V2038034";"Minnekrysset";"Viken";"EV6 S25D1 m11511";12
+"90697V625213";"E6 Alnabru Nordgående Ulven Furuset";"Oslo";"EV6 S16D1 m6547";12
+"92382V72805";"Berkåk";"Trøndelag";"EV6 S65D1 m7474";12
+"96138V1175818";"Solum";"Vestfold og Telemark";"FV2962 S1D1 m5807";12

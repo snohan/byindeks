@@ -53,18 +53,33 @@ points <- get_points() %>%
   dplyr::mutate(name = stringr::str_to_title(name, locale = "no")) %>%
   split_road_system_reference() %>% 
   dplyr::select(trp_id, road_category, county_name) %>% 
+  # For finding manually excluded trps:
+  #dplyr::select(trp_id, name, road_category, road_reference, county_name) %>% 
   dplyr::mutate(road_category = dplyr::case_when(
     road_category == "F" ~ "Fylkesveg",
     road_category == "E" ~ "Europa- og riksveg",
     road_category == "R" ~ "Europa- og riksveg"
   )) %>% 
-  dplyr::left_join(counties)
+  dplyr::left_join(counties, by = "county_name")
 
 this_year <- 2021
 latest_month_number <- 4
 
 # Fetching published index from Traffic Data API
 index_this_year <- get_published_road_traffic_index_for_months(962, this_year, latest_month_number)
+
+# Fetching all months pointindices to fin all manually excluded
+# pointindex_all_months_this_year <- get_published_pointindex_for_months_paginated(962, this_year, latest_month_number)
+# 
+# manually_excluded_trps <- pointindex_all_months_this_year[[2]] %>% 
+#   dplyr::filter(is_manually_excluded == TRUE,
+#                 period == "month",
+#                 day_type == "ALL") %>% 
+#   dplyr::left_join(points, by = "trp_id") %>% 
+#   dplyr::select(trp_id, name, county_name, road_reference, month)
+# 
+# write.csv2(manually_excluded_trps, file = "manuelt_ekskluderte_punkter.csv",
+#            row.names = F)
 
 # Fetching pointindices for last month's year_to_date in order to calculate the standard error
 pointindex_this_year <- get_published_pointindex_paginated(962, this_year, latest_month_number)
@@ -317,7 +332,7 @@ officer::block_toc(style = "Figurtekst")
 
 Vegtrafikkindeksen er i `r this_year` rekna ut frå om lag 1 000 utvalde trafikkregistreringspunkt som er eigd av Statens vegvesen og fylkeskommunane. Trafikken vert registrert kontinuerleg kvar time heile året, og for kvart trafikkregistreringspunkt vert trafikken samanlikna time for time, dato mot dato i kalendermånadene. Utvalet gir truleg eit godt bilete av utviklinga i trafikkarbeidet. Tala er gitt som endring i prosent i forhold til same tidsperiode året før. 
 
-Ver merksam på at ulike forhold kan gi store utslag i tala per månad frå år til år. Slike hendingar kan vera helgedagar utan fast dato, til dømes påske og pinse. Veret er også ein faktor som kan gi utslag på månadstala. Koronapandemien og smitteverntiltaka påverkar sterkt utviklinga i trafikken i 2021. 
+Ver merksam på at ulike forhold kan gi store utslag i tala per månad frå år til år. Slike hendingar kan vera helgedagar utan fast dato, til dømes påske og pinse. Veret er også ein faktor som kan gi utslag på månadstala. Koronapandemien og smitteverntiltaka påverkar sterkt utviklinga i trafikken i 2020 og 2021. 
 Alle data er henta frå [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/trafikkdata/). Timetrafikk med minst 99 % dekningsgrad inngår i berekningsgrunnlaget.
 
 Nokre trafikkregistreringspunkt er periodevis utelatne på grunn av feil på utstyr eller at dei ligg på vegar som er påverka av vegarbeid o.l.

@@ -1,4 +1,4 @@
-# Funksjoner for å hente nødvendig info fra NVDB-API v2 og v3.
+# Funksjoner for å hente nødvendig info fra NVDB-API v3.
 
 library(tidyverse)
 library(httr)
@@ -7,8 +7,7 @@ library(sf)
 
 # Definer URI og sti ----
 nvdb_url <- "https://www.vegvesen.no/nvdb/api/v2"
-nvdb_url_v3 <- #"https://www.vegvesen.no/nvdb/api/v3"
-  "https://nvdbapiles-v3.atlas.vegvesen.no"
+nvdb_url_v3 <- "https://nvdbapiles-v3.atlas.vegvesen.no"
 sti_vegobjekter <- "/vegobjekter"
 sti_veg <- "/veg"
 sti_posisjon <- "/posisjon"
@@ -940,3 +939,72 @@ get_trafikkmengde_for_riksvegrute <- function(rutenavn, periode) {
 }
 
 
+# Nasjonale turistveger ----
+
+get_national_tourist_roads <- function() {
+
+  api_query <- paste0(nvdb_url_v3,
+                      "/vegobjekter/777?segmentering=true&inkluder=lokasjon,egenskaper")
+
+  respons <- httr::GET(api_query,
+                       httr::add_headers(.headers = nvdb_v3_headers))
+
+  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+                      simplifyDataFrame = T,
+                      flatten = T)
+
+  navn <- uthenta$objekter %>%
+    dplyr::select(objekt_id = id, egenskaper) %>%
+    tidyr::unnest(egenskaper) %>%
+    dplyr::filter(id %in% c(8128, 8129)) %>%
+    dplyr::select(objekt_id, navn, verdi) %>%
+    tidyr::spread(navn, verdi)
+
+  vegreferanser <- uthenta$objekter %>%
+    dplyr::select(objekt_id = id, lokasjon.vegsystemreferanser) %>%
+    tidyr::unnest(lokasjon.vegsystemreferanser) %>%
+    dplyr::mutate(veg = paste0(vegsystem.vegkategori, "v ", vegsystem.nummer)) %>%
+    dplyr::select(objekt_id, veg) %>%
+    dplyr::distinct()
+
+  # For å finne hvilke trper som ligger på strekningene
+  veglenkeposisjoner <- uthenta$objekter %>%
+    dplyr::select(objekt_id = id, lokasjon.stedfestinger) %>%
+    tidyr::unnest(lokasjon.stedfestinger) %>%
+    dplyr::select(objekt_id, veglenkesekvensid, startposisjon, sluttposisjon,
+                  kortform)
+
+  lengder <- uthenta$objekter %>%
+    dplyr::select(objekt_id = id, lokasjon.lengde)
+
+  geometri <- uthenta$objekter %>%
+    dplyr::select(objekt_id = id, lokasjon.geometri.wkt)
+
+  srid <- uthenta$objekter %>%
+    dplyr::select(objekt_id = id, lokasjon.geometri.srid)
+
+  turistveg_vegreferanser <- navn %>%
+    dplyr::left_join(vegreferanser, by = "objekt_id") %>%
+    dplyr::left_join(lengder, by = "objekt_id")
+
+  turistveg_veglenkeposisjoner <- navn %>%
+    dplyr::left_join(veglenkeposisjoner, by = "objekt_id") %>%
+    dplyr::left_join(lengder, by = "objekt_id")
+
+  turistveg_geometri <- navn %>%
+    dplyr::left_join(geometri, by = "objekt_id") %>%
+    dplyr::left_join(srid, by = "objekt_id") %>%
+    sf::st_as_sf(wkt = "lokasjon.geometri.wkt",
+                 crs = 5973,
+                 na.fail = FALSE) %>%
+    sf::st_zm(drop = T, what = "ZM") %>%
+    sf::st_transform("+proj=longlat +datum=WGS84")
+
+  turistveger <- list(
+    vegreferanser = turistveg_vegreferanser,
+    veglenkeposisjoner = turistveg_veglenkeposisjoner,
+    geometri = turistveg_geometri
+  )
+
+  return(turistveger)
+}
