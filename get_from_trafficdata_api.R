@@ -258,45 +258,21 @@ get_points <- function() {
   return(points)
 }
 
-get_points_2 <- function() {
-  # The thought was to fetch individual components of the road system reference,
-  # but those are not available in the API...
-  # Get all traffic registration points
+get_trp_data_time_span <- function() {
+
   query_points <-
     "query all_trps {
-  trafficRegistrationPoints {
-    id
-    name
-    trafficRegistrationType
-    location {
-      coordinates {
-        latLon {
-          lat
-          lon
+      trafficRegistrationPoints {
+        id
+        dataTimeSpan {
+          firstData
+          firstDataWithQualityMetrics
+          latestData {
+            volumeByDay
+          }
         }
       }
-      county {
-        name
-        number
-      }
-      municipality {
-        name
-        number
-      }
-      roadReference {
-          shortForm
-      }
-      roadLinkSequence {
-        relativePosition
-        roadLinkSequenceId
-      }
-    }
-    commissions {
-      validFrom
-      validTo
-    }
-  }
-}"
+    }"
 
   myqueries <- Query$new()
   myqueries$query("points", query_points)
@@ -304,40 +280,20 @@ get_points_2 <- function() {
   points <- cli$exec(myqueries$queries$points) %>%
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
     as.data.frame() %>%
-    tidyr::unnest(cols = c(data.trafficRegistrationPoints.commissions)) %>%
     dplyr::rename(trp_id =
                     data.trafficRegistrationPoints.id,
-                  name =
-                    data.trafficRegistrationPoints.name,
-                  traffic_type =
-                    data.trafficRegistrationPoints.trafficRegistrationType,
-                  county_name = data.trafficRegistrationPoints.location.county.name,
-                  county_no = data.trafficRegistrationPoints.location.county.number,
-                  municipality_name = data.trafficRegistrationPoints.location.municipality.name,
-                  municipality_no = data.trafficRegistrationPoints.location.municipality.number,
-                  lat =
-                    data.trafficRegistrationPoints.location.coordinates.latLon.lat,
-                  lon =
-                    data.trafficRegistrationPoints.location.coordinates.latLon.lon,
-                  road_reference =
-                    data.trafficRegistrationPoints.location.roadReference.shortForm,
-                  road_network_position =
-                    data.trafficRegistrationPoints.location.roadLinkSequence.relativePosition,
-                  road_network_link =
-                    data.trafficRegistrationPoints.location.roadLinkSequence.roadLinkSequenceId
+                  first_data =
+                    data.trafficRegistrationPoints.dataTimeSpan.firstData,
+                  first_data_with_quality_metrics =
+                    data.trafficRegistrationPoints.dataTimeSpan.firstDataWithQualityMetrics,
+                  latest_daily_traffic =
+                    data.trafficRegistrationPoints.dataTimeSpan.latestData.volumeByDay
+
     ) %>%
-    dplyr::select(trp_id, name, traffic_type, road_reference, county_name,
-                  county_no, municipality_name, municipality_no, lat, lon,
-                  road_network_position, road_network_link, validFrom, validTo
-    ) %>%
-    dplyr::mutate(road_reference = str_replace(road_reference, "HP ", "hp")
-    ) %>%
-    dplyr::mutate(road_reference = str_replace(road_reference, "Meter ", "m"),
-                  road_link_position = paste0(road_network_position, "@",
-                                              road_network_link),
-                  validFrom =
-                    floor_date(with_tz(ymd_hms(validFrom)), unit = "day"),
-                  validTo = floor_date(with_tz(ymd_hms(validTo)), unit = "day")
+    dplyr::mutate(
+      dplyr::across(.cols = !trp_id,
+                    .fns = ~ floor_date(with_tz(ymd_hms(.x)), unit = "day")
+                    )
     )
 
   return(points)
@@ -1301,6 +1257,8 @@ get_pointindices <- function(trp_ids, indexyear) {
         index {
           indexNumber
           percentageChange
+          baseVolume
+          calculationVolume
         }
         lengthRange {
           representation
@@ -1405,6 +1363,8 @@ get_pointindices <- function(trp_ids, indexyear) {
                         period = period,
                         index_total = totalTrafficVolumeIndex.indexNumber.index.indexNumber,
                         index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
+                        base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
+                        calculation_volume = totalTrafficVolumeIndex.indexNumber.index.calculationVolume,
                         index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
                         length_excluded = lengthRangesTrafficVolumeIndex.isExcluded,
                         length_range = lengthRange.representation,
@@ -1425,6 +1385,8 @@ get_pointindices <- function(trp_ids, indexyear) {
                       period = period,
                       index_total = totalTrafficVolumeIndex.indexNumber.index.indexNumber,
                       index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
+                      base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
+                      calculation_volume = totalTrafficVolumeIndex.indexNumber.index.calculationVolume,
                       index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
                       length_excluded = lengthRangesTrafficVolumeIndex.isExcluded,
                       length_range = lengthRange.representation,

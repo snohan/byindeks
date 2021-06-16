@@ -63,7 +63,7 @@ trps_meta <- points %>%
                 county_name, municipality_name, lat, lon) %>% 
   dplyr::filter(county_no == county_number_chosen)
 
-# write.csv2(trps_meta, file = "vegtrafikkindekspunkter.csv",
+# write.csv2(trps_meta, file = "vegtrafikkindekspunkter_2020.csv",
 #            row.names = F)
 
 ## AADT ----
