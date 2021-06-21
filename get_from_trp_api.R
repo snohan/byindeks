@@ -12,7 +12,8 @@ source("H:/Programmering/R/byindeks/trp_api_cookies.R")
 source("H:/Programmering/R/byindeks/split_road_system_reference.R")
 
 # Definitions ####
-trp_api_url <- "https://trafikkdata-adm.atlas.vegvesen.no/datainn/traffic-registration-point/api/"
+trp_api_url <- #"https://trafikkdata-adm.atlas.vegvesen.no/datainn/traffic-registration-point/api/"
+  "https://trafikkdata-auth-proxy.atlas.vegvesen.no/datainn/traffic-registration-point/api/"
 
 parse_and_floor_date <- function(date_column, floor_unit) {
   # floor_unit is "second", "minute", "day" etc.
@@ -1045,11 +1046,6 @@ api_query <-
       validTo
       deviceType
     }
-    firmwareHistory {
-      validFrom
-      validTo
-      firmwareVersion
-    }
     commissions {
       id
       sourceSystem
@@ -1067,11 +1063,7 @@ response_parsed <- get_via_httr(api_query) %>%
   tidyr::unnest(cols = c(data.trafficRegistrationStations.deviceTypeHistory),
                 keep_empty = TRUE) %>%
   dplyr::rename(device_valid_from = validFrom,
-                device_valid_to = validTo) %>%
-  tidyr::unnest(cols = c(data.trafficRegistrationStations.firmwareHistory),
-                keep_empty = TRUE) %>%
-  dplyr::rename(firmware_valid_from = validFrom,
-                firmware_valid_to = validTo,
+                device_valid_to = validTo,
                 trs_id = 1)
 
   return(response_parsed)
@@ -1081,11 +1073,12 @@ response_parsed <- get_via_httr(api_query) %>%
 # Firmware history from datamottak endpoint
 # Using same token as in trp-api
 # Firmware history starts 26-10-2017
-# NOTE: Device name history here starts 23-02-2018, but in trp-api it is from 2014!
+# NOTE: Device name history here starts 23-02-2018,
+# but in trp-api deviceTypeHistory it is from 2014!
 get_firmware_history <- function() {
 
   firmware_history_endpoint <-
-    "https://trafikkdata-adm.atlas.vegvesen.no/datainn/adm/rest/station/upgradelog"
+    "https://trafikkdata-auth-proxy.atlas.vegvesen.no/datainn/adm/rest/station/upgradelog"
 
   upgradelog <- httr::GET(url = firmware_history_endpoint,
                            httr::add_headers(.headers = trp_api_headers),
