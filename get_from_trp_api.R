@@ -779,6 +779,16 @@ api_query <-
       stationType
       trafficType
       location {
+        coordinates {
+          utm33 {
+            wkt
+            srid
+          }
+        }
+        roadLink {
+          id
+          position
+        }
         roadReference {
           shortForm
         }
@@ -799,14 +809,19 @@ trs <- get_via_httr(api_query) %>%
                 status = data.trafficRegistrationStations.operationalStatus,
                 registration_frequency = data.trafficRegistrationStations.stationType,
                 traffic_type = data.trafficRegistrationStations.trafficType,
+                utm33.wkt = data.trafficRegistrationStations.location.coordinates.utm33.wkt,
+                srid = data.trafficRegistrationStations.location.coordinates.utm33.srid,
+                road_link_id = data.trafficRegistrationStations.location.roadLink.id,
+                road_link_position = data.trafficRegistrationStations.location.roadLink.position,
                 road_reference = data.trafficRegistrationStations.location.roadReference.shortForm,
                 municipality_name = data.trafficRegistrationStations.location.municipality.name,
                 county_name = data.trafficRegistrationStations.location.municipality.county.name,
                 geo_no = data.trafficRegistrationStations.location.municipality.county.geographicNumber
                 ) %>%
   split_road_system_reference() %>%
-  dplyr::select(trs_id, name, status, registration_frequency, traffic_type, road_category,
-                road_reference, geo_no, county_name, municipality_name)
+  dplyr::select(trs_id, name, status, registration_frequency, traffic_type,
+                utm33.wkt, srid, road_link_id, road_link_position,
+                road_category, road_reference, geo_no, county_name, municipality_name)
 
 return(trs)
 }
