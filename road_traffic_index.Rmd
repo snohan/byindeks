@@ -68,7 +68,10 @@ latest_month_number <- 4
 # Fetching published index from Traffic Data API
 index_this_year <- get_published_road_traffic_index_for_months(962, this_year, latest_month_number)
 
-# Fetching all months pointindices to fin all manually excluded
+#index_this_year <- get_published_road_traffic_index_for_months(962, 2019, 12)
+#write.csv2(index_this_year, file = "spesialuttak/vegtrafikkindeks_2019.csv",
+#           row.names = F)
+# Fetching all months pointindices to find all manually excluded
 # pointindex_all_months_this_year <- get_published_pointindex_for_months_paginated(962, this_year, latest_month_number)
 # 
 # manually_excluded_trps <- pointindex_all_months_this_year[[2]] %>% 
