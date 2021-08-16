@@ -567,6 +567,8 @@ getAadtByRoadReference <- function(roadref) {
 
   return(adt_verdi)
 }
+#test <- getAadtByRoadReference("EV6S76D1m6450")
+
 
 #roadlink <- "0.81008@41567"
 getAadtByRoadlinkposition <- function(roadlink) {
@@ -599,8 +601,8 @@ getAadtByRoadlinkposition <- function(roadlink) {
 
   return(adt_verdi)
 }
-
-#roadlink <- "0.26634@181322"
+test <- getAadtByRoadlinkposition("0.4@2411536")
+roadlink <- "0.4@2411536"
 #roadref <- "1200EV39hp74m14171"
 
 # Fartsgrense ----

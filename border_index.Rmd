@@ -143,9 +143,9 @@ index_2017 <- get_published_index_for_months(2952, 2017, 12)
 index_2018 <- get_published_index_for_months(2952, 2018, 12)
 index_2019 <- get_published_index_for_months(2952, 2019, 12)
 index_2020 <- get_published_index_for_months(2952, 2020, 12)
-index_2021 <- get_published_index_for_months(2952, 2021, 6)
+index_2021 <- get_published_index_for_months(2952, 2021, 7)
 
-pointindex <- get_published_pointindex_for_months_paginated(2952, 2021, 6)
+pointindex <- get_published_pointindex_for_months_paginated(2952, 2021, 7)
 ```
 
 ```{r prepare_data, include=FALSE}
