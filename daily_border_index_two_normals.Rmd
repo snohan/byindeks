@@ -83,8 +83,8 @@ day_of_week_traffic_average <- read.csv2("border_normal_days.csv")
 day_of_week_traffic_average_2020 <- read.csv2("border_normal_days_2020.csv")
 
 # Daily traffic ####
-borderdata_this_year_from <- "2021-06-21T00:00:00+02:00"
-borderdata_this_year_to <- "2021-08-16T00:00:00+02:00"
+borderdata_this_year_from <- "2021-08-16T00:00:00+02:00"
+borderdata_this_year_to <- "2021-08-23T00:00:00+02:00"
 
 ukedager <- c("Mandag",
               "Tirsdag",
@@ -129,23 +129,23 @@ get_trp_index_for_weeknumber <- function(weekno, trps, trp_index_table) {
 }
 
 
-border_trp_index_25 <- get_trp_index_for_weeknumber(25, border_trps, border_trp_index)
-border_trp_index_26 <- get_trp_index_for_weeknumber(26, border_trps, border_trp_index)
-border_trp_index_27 <- get_trp_index_for_weeknumber(27, border_trps, border_trp_index)
-border_trp_index_28 <- get_trp_index_for_weeknumber(28, border_trps, border_trp_index)
-border_trp_index_29 <- get_trp_index_for_weeknumber(29, border_trps, border_trp_index)
-border_trp_index_30 <- get_trp_index_for_weeknumber(30, border_trps, border_trp_index)
-border_trp_index_31 <- get_trp_index_for_weeknumber(31, border_trps, border_trp_index)
-border_trp_index_32 <- get_trp_index_for_weeknumber(32, border_trps, border_trp_index)
+border_trp_index_33 <- get_trp_index_for_weeknumber(33, border_trps, border_trp_index)
+# border_trp_index_34 <- get_trp_index_for_weeknumber(34, border_trps, border_trp_index)
+# border_trp_index_35 <- get_trp_index_for_weeknumber(35, border_trps, border_trp_index)
+# border_trp_index_36 <- get_trp_index_for_weeknumber(36, border_trps, border_trp_index)
+# border_trp_index_37 <- get_trp_index_for_weeknumber(37, border_trps, border_trp_index)
+# border_trp_index_38 <- get_trp_index_for_weeknumber(38, border_trps, border_trp_index)
+# border_trp_index_39 <- get_trp_index_for_weeknumber(39, border_trps, border_trp_index)
+# border_trp_index_40 <- get_trp_index_for_weeknumber(40, border_trps, border_trp_index)
 
-border_trp_index_2020_25 <- get_trp_index_for_weeknumber(25, border_trps, border_trp_index_2020)
-border_trp_index_2020_26 <- get_trp_index_for_weeknumber(26, border_trps, border_trp_index_2020)
-border_trp_index_2020_27 <- get_trp_index_for_weeknumber(27, border_trps, border_trp_index_2020)
-border_trp_index_2020_28 <- get_trp_index_for_weeknumber(28, border_trps, border_trp_index_2020)
-border_trp_index_2020_29 <- get_trp_index_for_weeknumber(29, border_trps, border_trp_index_2020)
-border_trp_index_2020_30 <- get_trp_index_for_weeknumber(30, border_trps, border_trp_index_2020)
-border_trp_index_2020_31 <- get_trp_index_for_weeknumber(31, border_trps, border_trp_index_2020)
-border_trp_index_2020_32 <- get_trp_index_for_weeknumber(32, border_trps, border_trp_index_2020)
+border_trp_index_2020_33 <- get_trp_index_for_weeknumber(33, border_trps, border_trp_index_2020)
+# border_trp_index_2020_34 <- get_trp_index_for_weeknumber(34, border_trps, border_trp_index_2020)
+# border_trp_index_2020_35 <- get_trp_index_for_weeknumber(35, border_trps, border_trp_index_2020)
+# border_trp_index_2020_36 <- get_trp_index_for_weeknumber(36, border_trps, border_trp_index_2020)
+# border_trp_index_2020_37 <- get_trp_index_for_weeknumber(37, border_trps, border_trp_index_2020)
+# border_trp_index_2020_38 <- get_trp_index_for_weeknumber(38, border_trps, border_trp_index_2020)
+# border_trp_index_2020_39 <- get_trp_index_for_weeknumber(39, border_trps, border_trp_index_2020)
+# border_trp_index_2020_40 <- get_trp_index_for_weeknumber(40, border_trps, border_trp_index_2020)
 
 # Border index ####
 border_index <- border_trp_index %>% 
@@ -277,7 +277,7 @@ Figuren nedenfor viser samlet endring i trafikk over riksgrensen for hver ukedag
 dplyr::bind_rows(border_index,
                  border_index_2020) %>% 
   make_daily_dodged_bar_plot("Sammenlignet med gjennomsnittlig døgntrafikk i 2016 - 2019 og 2020",
-                             -100, 70)
+                             -70, 40)
 ```
 
 
@@ -308,67 +308,67 @@ De følgende tabellene viser daglig endring i trafikk ved hvert av trafikkregist
 <br>
 
 ```{r trptable_1}
-border_trp_index_25 %>% 
+border_trp_index_33 %>% 
   dplyr::select(-area_name) %>% 
-  make_border_trp_table("Estimert endring i trafikk, avvik fra normalperioden 2016 - 2019, uke 25 2021.")
+  make_border_trp_table("Estimert endring i trafikk, avvik fra normalperioden 2016 - 2019, uke 33 2021.")
 ```
 
-
+<!--
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_2}
-border_trp_index_26 %>%
- dplyr::select(-area_name) %>%
- make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 26 2021.")
+# border_trp_index_34 %>%
+#  dplyr::select(-area_name) %>%
+#  make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 34 2021.")
 ```
 
 
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_3}
-border_trp_index_27 %>%
-  dplyr::select(-area_name) %>%
-  make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 27 2021.")
+# border_trp_index_35 %>%
+#   dplyr::select(-area_name) %>%
+#   make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 35 2021.")
 ```
 
 
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_4}
-border_trp_index_28 %>%
- dplyr::select(-area_name) %>%
- make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 28 2021.")
+# border_trp_index_36 %>%
+#  dplyr::select(-area_name) %>%
+#  make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 36 2021.")
 ```
 
 
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_5}
-border_trp_index_29 %>%
-  dplyr::select(-area_name) %>%
-  make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 29 2021.")
+# border_trp_index_37 %>%
+#   dplyr::select(-area_name) %>%
+#   make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 37 2021.")
 ```
 
 
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_6}
-border_trp_index_30 %>%
-  dplyr::select(-area_name) %>%
-  make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 30 2021.")
+# border_trp_index_38 %>%
+#   dplyr::select(-area_name) %>%
+#   make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 38 2021.")
 ```
 
 
 
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_7}
-border_trp_index_31 %>%
- dplyr::select(-area_name) %>%
- make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 31 2021.")
+# border_trp_index_39 %>%
+#  dplyr::select(-area_name) %>%
+#  make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 39 2021.")
 ```
 
 
 
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_8}
-border_trp_index_32 %>%
- dplyr::select(-area_name) %>%
- make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 32 2021.")
+# border_trp_index_40 %>%
+#  dplyr::select(-area_name) %>%
+#  make_border_trp_table("Estimert endring i trafikk, avvik fra normalen i perioden 2016 - 2019, uke 40 2021.")
 ```
-<!--
+
 -->

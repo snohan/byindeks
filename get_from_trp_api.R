@@ -1108,7 +1108,8 @@ get_firmware_history <- function() {
                   device_name = deviceName,
                   serial_number = serialNumber,
                   valid_from = timestamp) %>%
-    dplyr::mutate(valid_from = parse_and_floor_date(valid_from, "seconds")) %>%
+    dplyr::mutate(valid_from = parse_and_floor_date(valid_from, "seconds"),
+                  trs_id = as.character(trs_id)) %>%
     dplyr::arrange(trs_id, valid_from)
 
   return(upgradelog_parsed)
