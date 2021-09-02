@@ -120,7 +120,7 @@ missing_aadt <- border_trps_adt %>%
   dplyr::filter(adt == 0 | is.na(adt)) %>%
   dplyr::mutate(
     adt = purrr::map_dbl(road_link_position, getAadtByRoadlinkposition)) %>%
-  dplyr::mutate(year = 2019)
+  dplyr::mutate(year = 2020)
 
 with_aadt <- border_trps_adt %>%
   dplyr::filter(adt > 0)
@@ -143,9 +143,9 @@ index_2017 <- get_published_index_for_months(2952, 2017, 12)
 index_2018 <- get_published_index_for_months(2952, 2018, 12)
 index_2019 <- get_published_index_for_months(2952, 2019, 12)
 index_2020 <- get_published_index_for_months(2952, 2020, 12)
-index_2021 <- get_published_index_for_months(2952, 2021, 7)
+index_2021 <- get_published_index_for_months(2952, 2021, 8)
 
-pointindex <- get_published_pointindex_for_months_paginated(2952, 2021, 7)
+pointindex <- get_published_pointindex_for_months_paginated(2952, 2021, 8)
 ```
 
 ```{r prepare_data, include=FALSE}
@@ -395,6 +395,10 @@ index_this_year %>%
               autonum = table_numbers,
               style = "Tabelltekst")
 ```
+
+<br>
+
+Ved enkelte trafikkregistreringspunkter er det såpass lav kvalitet på lengdemålingene at indeksen er beregnet kun for totaltrafikken. Dette kan i enkelte måneder føre til at indeks for totaltrafikk avviker fra indeks for lette og tunge. Det er alltid indeks for totaltrafikk som har størst datagrunnlag og dermed minst usikkerhet. I disse tilfellene er det derfor rimelig å anta at indeks for lette kjøretøy egentlig ligger nærmere indeks for totaltrafikk enn det tallene viser.
 
 `r officer::fpar("", officer::run_pagebreak())`
 

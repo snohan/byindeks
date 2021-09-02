@@ -20,7 +20,7 @@ library(htmltools)
 # Choose
 index_year <- 2021
 # Last published month
-index_month <- 6
+index_month <- 7
 index_id <- 2952
 
 # Fetch
@@ -212,7 +212,7 @@ border_index_prepared %>%
   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
        caption = "Data: Statens vegvesen") +
   ggtitle("Estimert endring i trafikkmengde",
-          subtitle = "Trafikkmengde i 2020 sammenlignet med 2019")
+          subtitle = "Trafikkmengde i 2021 sammenlignet med 2020")
 ```
 
 
@@ -242,10 +242,9 @@ pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 
 
 ## Punktsjekk
-Skulle hatt med ÅDT. 
 
 ```{r point_plot, message=FALSE, fig.width=12}
-point_number <-1
+point_number <- 2
 trp_id_here <- trps_meta$trp_id[point_number]
 
 trp_name <- trps_meta %>% 
@@ -272,7 +271,7 @@ pointindex_long_2 %>%
   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
        caption = "Data: Statens vegvesen") +
   ggtitle(trp_name,
-          subtitle = "Trafikkmengde i 2020 sammenlignet med 2019")
+          subtitle = "Trafikkmengde i 2021 sammenlignet med 2020")
 
 # Notes
 ```
