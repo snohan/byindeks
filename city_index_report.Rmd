@@ -43,20 +43,20 @@ source("rmd_setup.R")
 ```{r get_data, include = FALSE}
 # City numbers
 
-# Bergen                 8952 (2018) 04
-# Nord-Jæren             952 (2017) 04
-# Oslo                   959 (2018) 12
+# Bergen                 8952 (2018) 08
+# Nord-Jæren             952 (2017) 08
+# Oslo                   959 (2018) 04
 
 # Buskerudbyen          1952 (2016) 04
 # Grenland               955 (2016) 04
 # Kristiansand og omegn  957 (2016) 04
-# Nedre Glomma           953 (2016) 12
+# Nedre Glomma           953 (2016) 04
 # Tromsø                 961 (2016) 04
 
 # Trondheim              960 (2019) 03
 
 # Choose city number:
-city_number <- 959
+city_number <- 952
 
 city_number_county_name <- 
   tibble::tibble(
@@ -108,9 +108,9 @@ latest_month <- city_monthly %>%
   as.character() %>% 
   stringr::str_to_lower()
 
-# city_36_month <-
-#   read.csv2(
-#     paste0("data_indexpoints_tidy/byindeks_36_maaneder_", city_number, ".csv"))
+city_36_month <-
+  read.csv2(
+    paste0("data_indexpoints_tidy/byindeks_36_maaneder_", city_number, ".csv"))
 
 base_year <- min(city_info$year_base)
 last_year <- max(city_info$year)
@@ -235,7 +235,7 @@ Først når månedsindeks er beregnet gjennom tre år eller lenger, kan det bere
 <br>
 
 ```{r city_table_36}
-#create_city_36_index_table(city_36_month)
+create_city_36_index_table(city_36_month)
 # TODO: SD and SE
 ```
 
@@ -250,7 +250,7 @@ Tilsvarende for gamle Kristiansand kommune.
 <!-- Kristiansand -->
 
 ```{r city_plot_36}
-#create_city_36_index_table(city_36_month)
+create_city_36_index_table(city_36_month)
 ```
 
 ## Endring per år
