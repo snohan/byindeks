@@ -20,20 +20,20 @@ library(htmltools)
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 8952                 4 Snorre
-# Buskerudbyen 1952           4 Snorre
+# Bergen 8952                 8 Snorre
+# Buskerudbyen 1952           8 Snorre
 # Grenland 955                4 Snorre
 # Kristiansand og omegn 957   4 Million
 # Nedre Glomma 953            4 Trond
-# Nord-Jæren 952              4 Snorre
-# Oslo 959                    2 Trond
+# Nord-Jæren 952              8 Snorre
+# Oslo 959                    4 Trond
 # Trondheim 960               3 Snorre
-# Tromsø 961                  4 Snorre
+# Tromsø 961                  8 Snorre
 
 # Choose
 index_year <- 2021
 index_month <- 4 # latest published
-city_number <- 961
+city_number <- 955
 
 # Fetch
 city_index <- get_published_index_for_months(city_number, index_year, index_month)
@@ -370,7 +370,6 @@ pointindex_wide %>%
       autoWidth = TRUE))
 
 # Ekskluderes:
-
 
 ```
 

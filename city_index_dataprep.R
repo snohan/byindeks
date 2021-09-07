@@ -73,7 +73,7 @@ points <- get_points() %>%
 
 # Choose
 index_month <- 8 # the one to be published now
-city_number <- 952
+city_number <- 1952
 
 # Pointindices ----
 # TODO: TRPs might differ from year to year!
@@ -81,7 +81,7 @@ city_number <- 952
 # Fetch city indexes
 # Note: not all cities use 2017
 # Note: just needed for city_name for Trondheim
-#city_index_2017 <- get_published_index_for_months(city_number, 2017, 12)
+city_index_2017 <- get_published_index_for_months(city_number, 2017, 12)
 city_index_2018 <- get_published_index_for_months(city_number, 2018, 12)
 city_index_2019 <- get_published_index_for_months(city_number, 2019, 12)
 city_index_2020 <- get_published_index_for_months(city_number, 2020, 12)
@@ -204,7 +204,7 @@ n_points_per_month <- dplyr::bind_rows(
   dplyr::select(trp_id, year, month, index = index_short) %>%
   dplyr::bind_rows(
     # Pointindex from old csv files here:
-    #pointindex_17_monthly,
+    pointindex_17_monthly,
     pointindex_18_monthly,
     pointindex_19_monthly
   ) %>%
@@ -242,9 +242,9 @@ adt_manual <- data.frame(
 
 ### Buskerudbyen ----
 adt_manual <- data.frame(
-  trp_id = c("26634V181322", "06687V181318", "63545V180918", "38645V181031"),
-  adt = c(2200, 26500, 6000, 7500),
-  year = c(2019, 2019, 2018, 2018)
+  trp_id = c("26634V181322", "06687V181318", "63545V180918"),
+  adt = c(2200, 26500, 6000),
+  year = c(2019, 2019, 2018)
 )
 
 ### Oslo ----
@@ -312,7 +312,7 @@ this_citys_trp_index <- points %>%
                 lat, lon, road_link_position) %>%
   dplyr::left_join(trp_id_msnr) %>%
   left_join(adt_all) %>%
-  #left_join(pointindex_17) %>%
+  left_join(pointindex_17) %>%
   left_join(pointindex_18) %>%
   left_join(pointindex_19) %>%
   left_join(pointindex_20) %>%
@@ -379,7 +379,7 @@ city_year_to_date_21 <- city_index_2021 %>%
                 period == "year_to_date")
 
 city_index <- bind_rows(
-  #city_year_to_date_17,
+  city_year_to_date_17,
   city_year_to_date_18,
   city_year_to_date_19,
   city_year_to_date_20,
@@ -388,7 +388,7 @@ city_index <- bind_rows(
          index_i = index_converter(index_p),
          variance = standard_deviation^2,
          n_points = c(
-#           n_17,
+           n_17,
            n_18,
            n_19,
            n_20,
@@ -423,7 +423,7 @@ city_index_all <- city_index %>%
   bind_rows(years_1_2) %>%
   bind_rows(years_1_3) %>%
   bind_rows(years_1_4) %>%
- # bind_rows(years_1_5) %>%
+  bind_rows(years_1_5) %>%
   dplyr::mutate(year_from_to = paste0(year_base, "-", year),
                 area_name = city_name)
 
@@ -435,7 +435,7 @@ write.csv2(city_index_all,
 
 # City index monthly ----
 city_monthly <- bind_rows(
-  #monthly_city_index(city_index_2017),
+  monthly_city_index(city_index_2017),
   monthly_city_index(city_index_2018),
   monthly_city_index(city_index_2019),
   monthly_city_index(city_index_2020),

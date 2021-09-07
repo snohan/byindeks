@@ -51,12 +51,12 @@ source("rmd_setup.R")
 # Grenland               955 (2016) 04
 # Kristiansand og omegn  957 (2016) 04
 # Nedre Glomma           953 (2016) 04
-# Tromsø                 961 (2016) 04
+# Tromsø                 961 (2016) 08
 
 # Trondheim              960 (2019) 03
 
 # Choose city number:
-city_number <- 952
+city_number <- 1952
 
 city_number_county_name <- 
   tibble::tibble(
@@ -250,7 +250,7 @@ Tilsvarende for gamle Kristiansand kommune.
 <!-- Kristiansand -->
 
 ```{r city_plot_36}
-create_city_36_index_table(city_36_month)
+#create_city_36_index_table(city_36_month)
 ```
 
 ## Endring per år
@@ -281,7 +281,7 @@ create_city_index_table_sd(city_info)
 
 
 <!--
-For Buskerudbyen --
+For Buskerudbyen -->
 
 
 <br>
@@ -320,7 +320,7 @@ read.csv2("data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv") %>%
 
 ```
 
-!-- Stopp buskerudbyen her -->
+<!-- Stopp buskerudbyen her -->
 
 ```{r all_point_info_long}
 # Want to show nothing but consecutive years in plot
