@@ -56,7 +56,7 @@ source("rmd_setup.R")
 # Trondheim              960 (2019) 03
 
 # Choose city number:
-city_number <- 1952
+city_number <- 955
 
 city_number_county_name <- 
   tibble::tibble(
@@ -281,7 +281,7 @@ create_city_index_table_sd(city_info)
 
 
 <!--
-For Buskerudbyen -->
+For Buskerudbyen --
 
 
 <br>
@@ -291,36 +291,36 @@ Til sammenligning viser tabellen nedenfor endringen i trafikkmengden på Ev 18 i
 
 <br>
 ```{r e18_buskerudbyen}
-read.csv2("data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv") %>% 
-    select(name, road_reference, year, index_short) %>%
-    flextable() %>%
-    colformat_int(j = "year", big.mark = "") %>%
-    colformat_double(j = "index_short", digits = 1) %>%
-    set_header_labels(name = "Navn",
-                      road_reference = "Vegreferanse",
-     #                 adt = "ÅDT",
-                      year = "År",
-                      index_short = "Endring i \n trafikkmengde (%)") %>%
-    #align(i = 1, j = 4, align = "center", part = "header") %>%
-    bold(part = "header") %>%
-    fontsize(size = 9, part = "all") %>%
-    font(fontname = "Lucida Sans Unicode", part = "all") %>%
-    bg(bg = "#ED9300", part = "header") %>%
-    border_remove() %>%
-    hline_top(part = "header", border = borderline) %>%
-    hline_bottom(part = "all", border = borderline) %>%
-    autofit() %>%
-    height_all(height = .2) %>%
-    padding(padding.top = .3,
-            padding.bottom = .3) %>%
-    set_caption("Endring i trafikkmengde på Ev 18.",
-                autonum = table_numbers,
-                style = "Tabelltekst")
+# read.csv2("data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv") %>%
+#     select(name, road_reference, year, index_short) %>%
+#     flextable() %>%
+#     colformat_int(j = "year", big.mark = "") %>%
+#     colformat_double(j = "index_short", digits = 1) %>%
+#     set_header_labels(name = "Navn",
+#                       road_reference = "Vegreferanse",
+#      #                 adt = "ÅDT",
+#                       year = "År",
+#                       index_short = "Endring i \n trafikkmengde (%)") %>%
+#     #align(i = 1, j = 4, align = "center", part = "header") %>%
+#     bold(part = "header") %>%
+#     fontsize(size = 9, part = "all") %>%
+#     font(fontname = "Lucida Sans Unicode", part = "all") %>%
+#     bg(bg = "#ED9300", part = "header") %>%
+#     border_remove() %>%
+#     hline_top(part = "header", border = borderline) %>%
+#     hline_bottom(part = "all", border = borderline) %>%
+#     autofit() %>%
+#     height_all(height = .2) %>%
+#     padding(padding.top = .3,
+#             padding.bottom = .3) %>%
+#     set_caption("Endring i trafikkmengde på Ev 18.",
+#                 autonum = table_numbers,
+#                 style = "Tabelltekst")
 
 
 ```
 
-<!-- Stopp buskerudbyen her -->
+!-- Stopp buskerudbyen her -->
 
 ```{r all_point_info_long}
 # Want to show nothing but consecutive years in plot

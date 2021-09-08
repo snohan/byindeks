@@ -73,7 +73,7 @@ points <- get_points() %>%
 
 # Choose
 index_month <- 8 # the one to be published now
-city_number <- 1952
+city_number <- 955
 
 # Pointindices ----
 # TODO: TRPs might differ from year to year!

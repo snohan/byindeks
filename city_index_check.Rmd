@@ -32,8 +32,8 @@ library(htmltools)
 
 # Choose
 index_year <- 2021
-index_month <- 4 # latest published
-city_number <- 955
+index_month <- 3 # latest published
+city_number <- 960
 
 # Fetch
 city_index <- get_published_index_for_months(city_number, index_year, index_month)
@@ -131,11 +131,20 @@ point_index_new_prepared_4 <- point_index_new %>%
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
 
+point_index_new_prepared_5 <- point_index_new %>%
+  dplyr::filter(day_type == "ALL",
+                period == "month",
+                month == index_month + 5) %>%
+  dplyr::select(trp_id, year, month, index_total_p,
+                index_total_coverage, length_excluded, length_coverage,
+                index_short, index_long)
+
 pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
                                             point_index_new_prepared,
                                             point_index_new_prepared_2,
                                             point_index_new_prepared_3,
-                                            point_index_new_prepared_4
+                                            point_index_new_prepared_4,
+                                            point_index_new_prepared_5
                                             ) %>% 
   dplyr::left_join(city_trps_meta) %>% 
   dplyr::left_join(adt_filtered) %>% 
@@ -164,6 +173,9 @@ city_trps_new_pointindex_3 <- city_trps_meta %>%
 
 city_trps_new_pointindex_4 <- city_trps_meta %>% 
   dplyr::left_join(point_index_new_prepared_4)
+
+city_trps_new_pointindex_5 <- city_trps_meta %>% 
+  dplyr::left_join(point_index_new_prepared_5)
 
 # Widening for table view
 pointindex_prepared_all_wide_total_index <- pointindex_prepared_all %>% 
@@ -307,6 +319,11 @@ city_trps_new_pointindex_4 %>%
   create_pointindex_map()
 ```
 
+```{r map_trp_index_5, message=FALSE}
+city_trps_new_pointindex_5 %>% 
+  dplyr::rename(index = index_total_p) %>% 
+  create_pointindex_map()
+```
 
 ## Kurver per punkt for totaltrafikk
 
@@ -324,7 +341,6 @@ pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 
 
 ## Punktsjekk
-Skulle hatt med ÅDT. 
 
 ```{r point_plot, message=FALSE, fig.width=12}
 point_number <-1
@@ -370,6 +386,10 @@ pointindex_wide %>%
       autoWidth = TRUE))
 
 # Ekskluderes:
+# Sundland 6-8
+# Bromstadvegens forlengelse 1-3
+# Innherredsvegen ved Fjæregata 1-8
+# OSlovegen 8
 
 ```
 
