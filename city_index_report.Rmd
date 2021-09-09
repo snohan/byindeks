@@ -47,16 +47,16 @@ source("rmd_setup.R")
 # Nord-Jæren             952 (2017) 08
 # Oslo                   959 (2018) 04
 
-# Buskerudbyen          1952 (2016) 04
-# Grenland               955 (2016) 04
+# Buskerudbyen          1952 (2016) 08
+# Grenland               955 (2016) 08
 # Kristiansand og omegn  957 (2016) 04
-# Nedre Glomma           953 (2016) 04
+# Nedre Glomma           953 (2016) 08
 # Tromsø                 961 (2016) 08
 
-# Trondheim              960 (2019) 03
+# Trondheim              960 (2019) 08
 
 # Choose city number:
-city_number <- 955
+city_number <- 959
 
 city_number_county_name <- 
   tibble::tibble(
