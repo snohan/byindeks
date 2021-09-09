@@ -34,7 +34,9 @@ points_first_commission_in_trafikkdata <- points_trp_api %>%
   dplyr::group_by(trp_id) %>%
   dplyr::slice(which.min(commission_from)) %>% 
   dplyr::filter(registration_frequency == "CONTINUOUS",
-                status %in% c("OPERATIONAL", "NON_OPERATIONAL")) %>% 
+                status %in% c("OPERATIONAL", "NON_OPERATIONAL"),
+                is_visible == TRUE,
+                commission_from < "2021-05-01") %>% 
   dplyr::select(trp_id, trp_name, traffic_type, road_reference, county_name,
                 first_commission_in_trafikkdata = commission_from, 
                 operational_status = status, is_visible)
@@ -59,14 +61,14 @@ points_er <- points_first_commission_in_trafikkdata %>%
   dplyr::filter(road_category %in% c("E", "R"),
                 is_visible == TRUE) %>% 
   dplyr::select(trp_id, trp_name, road_category, road_reference, county_name, operational_status,
-                first_commission_in_trafikkdata) %>% 
-  dplyr::mutate(area = dplyr::case_when(
-    county_name %in% c("Oslo", "Viken", "Innlandet") ~ "Geodata 3",
-    county_name %in% c("Vestfold og Telemark", "Agder", 
-                       "Rogaland", "Vestland") ~ "Geodata 2",
-    county_name %in% c("Møre og Romsdal", "Trøndelag", 
-                       "Nordland", "Troms og Finnmark") ~ "Geodata 1"
-  ))
+                first_commission_in_trafikkdata) #%>% 
+  # dplyr::mutate(area = dplyr::case_when(
+  #   county_name %in% c("Oslo", "Viken", "Innlandet") ~ "Geodata 3",
+  #   county_name %in% c("Vestfold og Telemark", "Agder", 
+  #                      "Rogaland", "Vestland") ~ "Geodata 2",
+  #   county_name %in% c("Møre og Romsdal", "Trøndelag", 
+  #                      "Nordland", "Troms og Finnmark") ~ "Geodata 1"
+  # ))
 
 # TODO: nye veier, ops
 # TODO: remove points out of service because of external factors (but how?)
@@ -80,7 +82,9 @@ points_f <- points_first_commission_in_trafikkdata %>%
                 first_commission_in_trafikkdata) %>% 
   dplyr::mutate(area = county_name)
 
-points <- dplyr::bind_rows(points_er, points_f)
+points <- dplyr::bind_rows(points_er#, 
+                           #points_f
+                           )
 ```
 
 ```{r get_mdt}
@@ -91,8 +95,9 @@ mdts_er <- get_mdt_for_trp_list(points_er$trp_id, 2021) %>%
 mdts_f <- get_mdt_for_trp_list(points_f$trp_id, 2021) %>% 
   dplyr::select(trp_id, year, month, coverage) 
 
-mdts <- dplyr::bind_rows(mdts_er, mdts_f)
-
+mdts <- dplyr::bind_rows(mdts_er#, mdts_f
+                         )
+# Må få med de som ikke har noen mdt i det hele tatt (skal telle negativt på oppetid)
 points_without_any_mdt <- points %>% 
   dplyr::filter(!(trp_id %in% mdts$trp_id)) %>% 
   dplyr::select(trp_id) %>% 
@@ -104,7 +109,10 @@ mdts_prepared <- mdts %>%
   tidyr::complete(trp_id, year, month, fill = list(coverage = 0)) %>% 
   dplyr::mutate(month_object = lubridate::make_date(year = year, month = month),
                 month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE),
-                last_day_of_month = lubridate::ceiling_date(month_object, unit = "month"))
+                last_day_of_month = lubridate::ceiling_date(month_object, unit = "month"),
+                tertial = dplyr::case_when(month < 5 ~ 1,
+                                           month < 9 ~ 2,
+                                           TRUE ~ 3))
 
 trp_mdt <- points %>% 
   dplyr::left_join(mdts_prepared) %>% 
@@ -112,7 +120,7 @@ trp_mdt <- points %>%
 # TODO: filter based on last end of commission?
   dplyr::ungroup()
 
-write.csv(trp_mdt, file = "spesialuttak/trp_mdt_2021-04.csv", row.names = F)
+write.csv(trp_mdt, file = "spesialuttak/trp_mdt_2021-08.csv", row.names = F)
 ```
 
 ```{r calculate_uptime}
@@ -125,9 +133,8 @@ uptime_geodata <- trp_mdt %>%
 
 uptime_svv <- trp_mdt %>% 
   dplyr::filter(road_category %in% c("E", "R")) %>% 
-  dplyr::group_by(month_object) %>% 
-  dplyr::summarise(uptime = mean(coverage, na.rm = T),
-                   antall_punkt = n()) %>% 
+  dplyr::group_by(tertial) %>% 
+  dplyr::summarise(uptime = mean(coverage, na.rm = T)) %>% 
   dplyr::mutate(area = "Statens vegvesen",
                 adm_category = "R")
 
