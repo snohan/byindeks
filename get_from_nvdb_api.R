@@ -727,6 +727,8 @@ get_speedlimit_by_roadlink <- function(roadlink) {
     }
   }
 
+  verdi <- as.numeric(verdi)
+
   return(verdi)
 }
 

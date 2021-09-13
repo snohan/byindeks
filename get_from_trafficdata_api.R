@@ -193,9 +193,6 @@ get_points <- function() {
       }
     }
     operationalStatus
-    latestData {
-      volumeByDay
-    }
   }
 }"
 
@@ -206,7 +203,6 @@ get_points <- function() {
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
     as.data.frame() %>%
     tidyr::unnest(cols = c(data.trafficRegistrationPoints.commissions)) %>%
-    #tidyr::unnest(cols = c(lanes)) %>%
     dplyr::rename(trp_id =
                     data.trafficRegistrationPoints.id,
                   name =
@@ -232,15 +228,13 @@ get_points <- function() {
                   road_network_link =
                     data.trafficRegistrationPoints.location.roadLinkSequence.roadLinkSequenceId,
                   operational_status =
-                    data.trafficRegistrationPoints.operationalStatus,
-                  latest_day_with_data =
-                    data.trafficRegistrationPoints.latestData.volumeByDay
-                    ) %>%
+                    data.trafficRegistrationPoints.operationalStatus
+                  ) %>%
     dplyr::select(trp_id, name, traffic_type, registration_frequency,
                   road_reference, county_geono, county_name,
                   county_no, municipality_name, municipality_no, lanes, lat, lon,
                   road_network_position, road_network_link, validFrom, validTo,
-                  operational_status, latest_day_with_data
+                  operational_status
                   ) %>%
     dplyr::mutate(lane_numbers = purrr::map(lanes, ~ purrr::pluck(., 1)),
                   direction_with = purrr::map(lane_numbers, ~ length(is_odd(.)) > 0),
@@ -251,8 +245,7 @@ get_points <- function() {
                                               road_network_link),
                   validFrom =
                     floor_date(with_tz(ymd_hms(validFrom)), unit = "day"),
-                  validTo = floor_date(with_tz(ymd_hms(validTo)), unit = "day"),
-                  latest_day_with_data = floor_date(with_tz(ymd_hms(latest_day_with_data)), unit = "day")
+                  validTo = floor_date(with_tz(ymd_hms(validTo)), unit = "day")
                   )
 
   return(points)
