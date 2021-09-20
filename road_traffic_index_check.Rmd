@@ -19,23 +19,23 @@ library(htmltools)
 ```{r get_data, include=FALSE}
 # Look at details in one county at a time
 
-# 30 Viken                  4 Trond
-#  3 Oslo                   4 Trond
-# 34 Innlandet              4 Snorre
-# 38 Vestfold og Telemark   4 Trond
+# 30 Viken                  8 Trond
+#  3 Oslo                   8 Trond
+# 34 Innlandet              8 Snorre
+# 38 Vestfold og Telemark   8 Trond
 # 42 Agder                  4 Million
-# 11 Rogaland               4 Million
-# 46 Vestland               2 Trond
+# 11 Rogaland               4 Snorre
+# 46 Vestland               8 Trond
 # 15 Møre og Romsdal        4 Snorre
 # 50 Trøndelag              4 Snorre
 # 18 Nordland               4 Snorre
-# 54 Troms og Finnmark      4 Snorre
+# 54 Troms og Finnmark      8 Snorre
 
-county_number_chosen <- 11
+county_number_chosen <- 15
 # Choose
 index_year <- 2021
 # Last published month
-index_month <- 2
+index_month <- 4
 index_id <- 962
 
 # Fetch
@@ -191,29 +191,29 @@ point_index_new_prepared_2 <- point_index_new %>%
   dplyr::select(trp_id, year, month, index_total_p,
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
-# 
-# point_index_new_prepared_3 <- point_index_new %>%
-#   dplyr::filter(day_type == "ALL",
-#                 period == "month",
-#                 month == index_month + 3) %>%
-#   dplyr::select(trp_id, year, month, index_total_p,
-#                 index_total_coverage, length_excluded, length_coverage,
-#                 index_short, index_long)
-# 
-# point_index_new_prepared_4 <- point_index_new %>%
-#   dplyr::filter(day_type == "ALL",
-#                 period == "month",
-#                 month == index_month + 4) %>%
-#   dplyr::select(trp_id, year, month, index_total_p,
-#                 index_total_coverage, length_excluded, length_coverage,
-#                 index_short, index_long)
+
+point_index_new_prepared_3 <- point_index_new %>%
+  dplyr::filter(day_type == "ALL",
+                period == "month",
+                month == index_month + 3) %>%
+  dplyr::select(trp_id, year, month, index_total_p,
+                index_total_coverage, length_excluded, length_coverage,
+                index_short, index_long)
+
+point_index_new_prepared_4 <- point_index_new %>%
+  dplyr::filter(day_type == "ALL",
+                period == "month",
+                month == index_month + 4) %>%
+  dplyr::select(trp_id, year, month, index_total_p,
+                index_total_coverage, length_excluded, length_coverage,
+                index_short, index_long)
 
 # When using CSV we do not need new pointindex from api
 pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
                                             point_index_new_prepared,
-                                            point_index_new_prepared_2#,
-                                            #point_index_new_prepared_3,
-                                            #point_index_new_prepared_4
+                                            point_index_new_prepared_2,
+                                            point_index_new_prepared_3,
+                                            point_index_new_prepared_4
                                             ) %>% 
   dplyr::left_join(trps_meta) %>% 
   dplyr::left_join(adt_filtered) %>% 
@@ -241,12 +241,12 @@ trps_new_pointindex <- trps_meta %>%
 
 trps_new_pointindex_2 <- trps_meta %>% 
   dplyr::inner_join(point_index_new_prepared_2)
-# 
-# trps_new_pointindex_3 <- trps_meta %>% 
-#   dplyr::inner_join(point_index_new_prepared_3)
-# 
-# trps_new_pointindex_4 <- trps_meta %>% 
-#   dplyr::inner_join(point_index_new_prepared_4)
+
+trps_new_pointindex_3 <- trps_meta %>%
+  dplyr::inner_join(point_index_new_prepared_3)
+
+trps_new_pointindex_4 <- trps_meta %>%
+  dplyr::inner_join(point_index_new_prepared_4)
 
 
 # Widening for table view
@@ -369,7 +369,7 @@ road_traffic_index_prepared %>%
 
 ## Punktindeksene for de nye månedene
 
-### Mars
+### Mai
 
 ```{r map_trp_index, message=FALSE}
 trps_new_pointindex %>% 
@@ -378,7 +378,7 @@ trps_new_pointindex %>%
 ```
 
 
-### April
+### Juni
 
 ```{r map_trp_index_2, message=FALSE}
 trps_new_pointindex_2 %>% 
@@ -386,19 +386,20 @@ trps_new_pointindex_2 %>%
   create_pointindex_map()
 ```
 
+### Juli
 
 ```{r map_trp_index_3, message=FALSE}
-# trps_new_pointindex_3 %>% 
-#   dplyr::rename(index = index_total_p) %>% 
-#   create_pointindex_map()
+trps_new_pointindex_3 %>%
+  dplyr::rename(index = index_total_p) %>%
+  create_pointindex_map()
 ```
 
-
+### August
 
 ```{r map_trp_index_4, message=FALSE}
-# trps_new_pointindex_4 %>% 
-#   dplyr::rename(index = index_total_p) %>% 
-#   create_pointindex_map()
+trps_new_pointindex_4 %>%
+  dplyr::rename(index = index_total_p) %>%
+  create_pointindex_map()
 ```
 
 
@@ -421,7 +422,7 @@ pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 
 
 ```{r point_plot, message=FALSE, fig.width=12}
-point_number <-1
+point_number <- 1
 trp_id_here <- trps_meta$trp_id[point_number]
 
 trp_name <- trps_meta %>% 
@@ -466,4 +467,7 @@ pointindex_wide %>%
       autoWidth = TRUE))
 
 # Ekskluderinger:
+# Høgberget 6-8
+# Oppdater datagrunnlag 6-8
+# ROAVVEGIEDDI RIKSGRENSE 7
 ```
