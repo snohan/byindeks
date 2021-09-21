@@ -63,7 +63,7 @@ points <- get_points() %>%
   dplyr::left_join(counties, by = "county_name")
 
 this_year <- 2021
-latest_month_number <- 4
+latest_month_number <- 8
 
 # Fetching published index from Traffic Data API
 index_this_year <- get_published_road_traffic_index_for_months(962, this_year, latest_month_number)
@@ -415,7 +415,7 @@ index_this_year_prepared %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Endring i trafikkmengde i heile Noreg i januar og februar, frå 2020 til 2021, per vegkategori.",
+  set_caption(paste0("Endring i trafikkmengde i heile Noreg i januar-", latest_month_name,", frå 2020 til 2021, per vegkategori."),
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -455,7 +455,7 @@ index_this_year_prepared %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Endring i trafikkmengde i heile Noreg i januar og februar, frå 2020 til 2021, per døgntype.",
+  set_caption(paste0("Endring i trafikkmengde i heile Noreg i januar-", latest_month_name,", frå 2020 til 2021, per døgntype."),
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -603,7 +603,7 @@ index_this_year_prepared %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Endring i trafikkmengde i landsdelane i januar og februar, frå 2020 til 2021.",
+  set_caption(paste0("Endring i trafikkmengde i landsdelane i januar-", latest_month_name, ", frå 2020 til 2021."),
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -685,7 +685,7 @@ index_this_year_prepared %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Endring i trafikkmengde i fylka i januar og februar, frå 2020 til 2021.",
+  set_caption(paste0("Endring i trafikkmengde i fylka i januar-", latest_month_name, ", frå 2020 til 2021."),
                autonum = table_numbers,
                style = "Tabelltekst")
 ```

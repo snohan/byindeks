@@ -23,15 +23,15 @@ library(htmltools)
 #  3 Oslo                   8 Trond
 # 34 Innlandet              8 Snorre
 # 38 Vestfold og Telemark   8 Trond
-# 42 Agder                  4 Million
-# 11 Rogaland               4 Snorre
+# 42 Agder                  8 Million
+# 11 Rogaland               8 Snorre
 # 46 Vestland               8 Trond
-# 15 Møre og Romsdal        4 Snorre
-# 50 Trøndelag              4 Snorre
-# 18 Nordland               4 Snorre
+# 15 Møre og Romsdal        8 Snorre
+# 50 Trøndelag              8 Snorre
+# 18 Nordland               8 Snorre
 # 54 Troms og Finnmark      8 Snorre
 
-county_number_chosen <- 15
+county_number_chosen <- 42
 # Choose
 index_year <- 2021
 # Last published month
@@ -467,7 +467,4 @@ pointindex_wide %>%
       autoWidth = TRUE))
 
 # Ekskluderinger:
-# Høgberget 6-8
-# Oppdater datagrunnlag 6-8
-# ROAVVEGIEDDI RIKSGRENSE 7
 ```
