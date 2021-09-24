@@ -538,36 +538,87 @@ get_tolling_stations_v3 <- function(kommunenr) {
 
 
 # Årsdøgntrafikk ----
+#roadref <- "fv76s1d1m18400"
 getAadtByRoadReference <- function(roadref) {
-  api_query_540 <- paste0(nvdb_url,
+  api_query_540 <- paste0(nvdb_url_v3,
                          sti_vegobjekter,
                          "/540",
                          "?inkluder=egenskaper")
 
   api_query_540_vegref <- paste0(api_query_540,
-                                 "&vegreferanse=",
+                                 "&vegsystemreferanse=",
                                  roadref)
 
   respons <- GET(api_query_540_vegref,
                  add_headers("X-Client" = "trafikkdatagruppa",
                              "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
-                             "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
+                             "Accept" = "application/vnd.vegvesen.nvdb-v3+json"))
 
   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
                       simplifyDataFrame = T,
                       flatten = T)
 
   adt_total <- uthenta$objekter %>%
-    select(id, egenskaper) %>%
-    unnest() %>%
-    filter(id1 %in% c(4623)) %>%
+    dplyr::select(id, egenskaper) %>%
+    rename(id1 = id) %>%
+    tidyr::unnest(cols = egenskaper) %>%
+    filter(id %in% c(4623)) %>%
     select(verdi)
 
   adt_verdi <- round(as.numeric(adt_total[1, 1]), digits = -2)
 
   return(adt_verdi)
 }
-#test <- getAadtByRoadReference("EV6S76D1m6450")
+
+
+get_historic_aadt_by_roadlinkposition <- function(roadlinkposition) {
+
+  api_query_540 <- paste0(nvdb_url_v3,
+                          sti_vegobjekter,
+                          "/540",
+                          "?inkluder=egenskaper")
+
+  api_query_540_vegref <- paste0(api_query_540,
+                                 "&veglenkesekvens=",
+                                 roadlinkposition,
+                                 "&alle_versjoner=TRUE")
+
+  respons <- httr::GET(
+    api_query_540_vegref,
+    add_headers("X-Client" = "trafikkdatagruppa",
+                "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+                "Accept" = "application/vnd.vegvesen.nvdb-v3+json"))
+
+  uthenta <- jsonlite::fromJSON(
+    str_conv(respons$content, encoding = "UTF-8"),
+    simplifyDataFrame = T,
+    flatten = T)
+
+  adt_history <- uthenta$objekter %>%
+    dplyr::select(id, egenskaper) %>%
+    dplyr::rename(id1 = id) %>%
+    tibble::as_tibble() %>%
+    tibble::rowid_to_column("versjon_id") %>%
+    tidyr::unnest(cols = egenskaper) %>%
+    dplyr::filter(id %in% c(4621, 4623, 4624, 4625)) %>%
+    dplyr::select(versjon_id, id, navn, verdi) %>%
+    dplyr::mutate(value_name = dplyr::case_when(
+      id == 4621 ~ "year",
+      id == 4623 ~ "aadt_total",
+      id == 4624 ~ "heavy_percentage",
+      id == 4625 ~ "source",
+      TRUE ~ "unspecified"
+    )) %>%
+    dplyr::select(versjon_id, value_name, verdi) %>%
+    tidyr::pivot_wider(names_from = value_name, values_from = verdi) %>%
+    dplyr::select(-versjon_id) %>%
+    dplyr::mutate(aadt_total = as.numeric(aadt_total),
+                  heavy_percentage = as.numeric(heavy_percentage)) %>%
+    dplyr::distinct() %>%
+    dplyr::arrange(year)
+
+  return(adt_history)
+}
 
 
 #roadlink <- "0.81008@41567"
