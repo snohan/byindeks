@@ -2,6 +2,7 @@
 
 # Packages ####
 library(tidyverse)
+library(rmarkdown)
 library(leaflet)
 library(knitr)
 library(flextable)

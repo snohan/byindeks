@@ -1,7 +1,7 @@
 ---
 #title: Riksgrenseindeks
 output: 
-  officedown::rdocx_document:
+  officedown::rdocx_document:    
     reference_docx: svv_template.docx
     toc: true
     toc_depth: 2
@@ -143,9 +143,9 @@ index_2017 <- get_published_index_for_months(2952, 2017, 12)
 index_2018 <- get_published_index_for_months(2952, 2018, 12)
 index_2019 <- get_published_index_for_months(2952, 2019, 12)
 index_2020 <- get_published_index_for_months(2952, 2020, 12)
-index_2021 <- get_published_index_for_months(2952, 2021, 8)
+index_2021 <- get_published_index_for_months(2952, 2021, 9)
 
-pointindex <- get_published_pointindex_for_months_paginated(2952, 2021, 8)
+pointindex <- get_published_pointindex_for_months_paginated(2952, 2021, 9)
 ```
 
 ```{r prepare_data, include=FALSE}
@@ -283,10 +283,16 @@ I kartet nedenfor vises plasseringen av trafikkregistreringspunktene. Grenseover
 
 <br>
 
-```{r map_trp_index, dpi=100, fig.width=6, fig.height=7, fig.cap="Trafikkregistreringspunktene plassering og årsdøgntrafikk.", cache=TRUE}
-border_crossings_adt %>% 
-  dplyr::filter(!is.na(lat)) %>% 
-  create_point_adt_map()
+```{r map_trp_index}
+#| dpi = 100,
+#| fig.width = 6,
+#| fig.height = 7,
+#| fig.cap = "Trafikkregistreringspunktene plassering og årsdøgntrafikk.",
+#| cache = FALSE
+
+border_crossings_adt %>%
+ dplyr::filter(!is.na(lat)) %>%
+ create_point_adt_map()
 ```
 
 ```{r border_table}
@@ -402,7 +408,11 @@ Ved enkelte trafikkregistreringspunkter er det såpass lav kvalitet på lengdem�
 
 `r officer::fpar("", officer::run_pagebreak())`
 
-```{r lineplot, fig.width=6, fig.height=5, fig.cap="Estimert endring i trafikkmengde ved riksgrensen sammenlignet med i fjor."}
+```{r lineplot}
+#| fig.width = 6,
+#| fig.height = 5,
+#| fig.cap = "Estimert endring i trafikkmengde ved riksgrensen sammenlignet med i fjor."
+
 month_start = lubridate::make_date(year = 2021, month = 1)
 month_end = lubridate::make_date(year = 2021, month = 12)
 
@@ -474,7 +484,14 @@ index_this_year %>%
 
 Nedenfor vises månedlig riksgrenseindeks for foregående år. Det som gir størst utslag på indeksen er vanligvis påsketrafikken, og det ses tydelig mellom årene hvor påsken ikke ligger i samme måned.
 
-```{r lineplot_historic, fig.width=6, fig.height=7, fig.cap="Riksgrenseindeks foregående år.", cache=TRUE}
+<\br>
+
+```{r lineplot_historic}
+#| fig.width = 6,
+#| fig.height = 7,
+#| fig.cap = "Riksgrenseindeks foregående år.", 
+#| cache = FALSE
+
 index_complete_years %>% 
   dplyr::filter(period == "month") %>% 
   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
