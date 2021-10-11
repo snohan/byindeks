@@ -505,7 +505,7 @@ getTrpAadt <- function(trp_id) {
   return(trp_aadt)
 }
 
-#trp_id <- "61425V181294"
+#trp_id <- "66220V72824"
 #day_type <- "ALL"
 get_trp_aadt_with_coverage <- function(trp_id, day_type = "ALL") {
   # Get all AADTs for a trp
@@ -554,10 +554,11 @@ get_trp_aadt_with_coverage <- function(trp_id, day_type = "ALL") {
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
 
   if(is_empty(trp_aadt$data$trafficData$volume$average$daily$byYear) |
-     is.null(trp_aadt$data$trafficData$volume$average$daily$byYear$total.volume.average)
+     is.null(trp_aadt$data$trafficData$volume$average$daily$byYear$total.volume.average) |
+     is.null(trp_aadt$data$trafficData$volume$average$daily$byYear$total.coverage.percentage)
+     # prevents query from failing when just old data are available
      #ncol(trp_aadt$data$trafficData$volume$average$daily$byYear) < 5
      ){
-    # hva gjør vi når det ikke er noe ÅDT?
     trp_aadt <- data.frame()
   }else{
     trp_aadt <- trp_aadt %>%
@@ -1054,6 +1055,7 @@ getAdtForpoints <- function(trp_list) {
   return(trp_adt)
 }
 
+#trp_list <- border_trps$trp_id
 get_aadt_for_trp_list <- function(trp_list, day_type = "ALL") {
   number_of_points <- length(trp_list)
   data_points <- data.frame()
