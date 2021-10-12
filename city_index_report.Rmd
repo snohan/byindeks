@@ -38,8 +38,6 @@ output:
 source("rmd_setup.R")
 ```
 
-
-
 ```{r get_data, include = FALSE}
 # City numbers
 

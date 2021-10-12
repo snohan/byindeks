@@ -1819,6 +1819,7 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
         }
         volumeIndexNumber {
           percentageChange
+          indexNumber
           calculationVolume
           baseVolume
         }
@@ -1856,7 +1857,7 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
       day_type = dayType,
       road_category = roadCategoryCombination,
       length_range = lengthRange.representation,
-      #index_i = trafficVolumeIndex.index.indexNumber,
+      index_i = volumeIndexNumber.indexNumber,
       index_p = volumeIndexNumber.percentageChange,
       calc_volume = volumeIndexNumber.calculationVolume,
       base_volume = volumeIndexNumber.baseVolume,
@@ -1881,7 +1882,7 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
       day_type = dayType,
       road_category = roadCategoryCombination,
       length_range = lengthRange.representation,
-      #index_i = trafficVolumeIndex.index.indexNumber,
+      index_i = volumeIndexNumber.indexNumber,
       index_p = volumeIndexNumber.percentageChange,
       calc_volume = volumeIndexNumber.calculationVolume,
       base_volume = volumeIndexNumber.baseVolume,

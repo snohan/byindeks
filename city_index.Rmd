@@ -1,5 +1,5 @@
 ---
-#title: Byindekser
+#title: Byindekser - trafikkutvikling i byområder
 output: 
   officedown::rdocx_document:
     reference_docx: svv_template.docx
@@ -48,26 +48,38 @@ source("get_from_nvdb_api.R")
 
 ```{r get_data, include=FALSE}
 # Fetching published index from Traffic Data API
-# TODO: include n_points, needed to calculate se
-index_2020_bergen <- get_published_index_for_months(8952, 2021, 4)
-index_2020_buskerud <- get_published_index_for_months(1952, 2021, 4)
-index_2020_grenland <- get_published_index_for_months(955, 2021, 4)
-index_2020_krs_omegn <- get_published_index_for_months(957, 2021, 4)
-index_2020_glomma <- get_published_index_for_months(953, 2021, 4)
-index_2020_jaren <- get_published_index_for_months(952, 2021, 4)
-index_2020_oslo <- get_published_index_for_months(959, 2021, 4)
-index_2020_tromso <- get_published_index_for_months(961, 2021, 4)
+# TODO: include n_points, needed to calculate SE
 
-index_2020 <- dplyr::bind_rows(index_2020_bergen,
-                               index_2020_buskerud,
-                               index_2020_grenland,
-                               index_2020_krs_omegn,
-                               index_2020_glomma,
-                               index_2020_jaren,
-                               index_2020_oslo,
-                               index_2020_tromso) %>% 
-  dplyr::select(area_name, road_category, length_range, year, month, period,
-                index_p) %>% 
+# City numbers                Refyear Last update
+# Bergen 8952                 2018    2021-8
+# Buskerudbyen 1952           2016    2021-8
+# Grenland 955                2016    2021-8
+# Kristiansand og omegn 957   2016    2021-4
+# Nedre Glomma 953            2016    2021-8
+# Nord-Jæren 952              2017    2021-8
+# Oslo 959                    2018    2021-8
+# Trondheim 960               2019    2021-3
+# Tromsø 961                  2016    2021-8
+
+city_indices <- dplyr::bind_rows(
+  # Bergen
+  get_published_index(8952, 2019, 12),
+  get_published_index(8952, 2020, 12),
+  get_published_index(8952, 2021, 8),
+  # Nord-Jæren
+  get_published_index(952, 2019, 12),
+  get_published_index(952, 2020, 12),
+  get_published_index(952, 2021, 8),
+  # Oslo
+  get_published_index(959, 2019, 12),
+  get_published_index(959, 2020, 12),
+  get_published_index(959, 2021, 8)
+  ) 
+
+city_indices_tidy <- city_indices %>% 
+  dplyr::select(area_id = publishedAreaTrafficVolumeIndex.id, 
+                area_name, road_category, length_range, year, month, period,
+                index_p, index_i, standard_deviation) %>% 
   dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "alle",
                                                 length_range == "[..,5.6)" ~ "lette",
                                                 length_range == "[5.6,..)" ~ "tunge")) %>% 
@@ -75,41 +87,76 @@ index_2020 <- dplyr::bind_rows(index_2020_bergen,
                   road_category == "FYLKESVEG" ~ "Fylkesveg",
                   road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
                   road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG" ~ "Europa-, riks- og fylkesveg")) %>% 
-  dplyr::filter(road_category == "Europa-, riks- og fylkesveg") %>% 
-  dplyr::select(-road_category)
+  dplyr::filter(road_category == "Europa-, riks- og fylkesveg",
+                period == "year_to_date") %>% 
+  dplyr::select(-road_category, -period)
+
+# The last name is the correct one
+city_index_names <- city_indices_tidy %>% 
+  dplyr::group_by(area_id) %>% 
+  dplyr::filter(length_range == "alle") %>% 
+  dplyr::slice_max(year) %>% 
+  dplyr::select(area_id, area_name)
+
+# Consistent names
+city_indices_tidy_names <- city_indices_tidy %>% 
+  dplyr::select(-area_name) %>% 
+  dplyr::left_join(city_index_names, by = "area_id") %>% 
+  dplyr::select(-area_id) %>% 
+  dplyr::mutate(year_base = year - 1,
+                variance = standard_deviation^2,
+                n_points = NA,
+                standard_error = NA)
 
 # Including Trondheim with results in csv:
 city_trd <-
     read.csv2(
       paste0("data_indexpoints_tidy/byindeks_960.csv")) %>% 
-  dplyr::filter(year == 2021,
-                month == 3,
-                year_base == 2020) %>% 
-  dplyr::mutate(period = "year_to_date") %>% 
-  dplyr::select(area_name, length_range, year, month, period, index_p)
+  dplyr::filter(year_from_to != "2019-2021") %>% 
+  dplyr::select(-year_from_to)
 
-city_monthly_trd <- 
-  read.csv2(
-    paste0("data_indexpoints_tidy/byindeks_maanedlig_960.csv")) %>% 
-  dplyr::filter(year == 2021) %>% 
-  dplyr::select(area_name, length_range, year, month, period, index_p)
+# All cities
+city_index_all <- dplyr::bind_rows(
+  city_indices_tidy_names,
+  city_trd
+  )
 
-index_2020_complete <- dplyr::bind_rows(index_2020,
-                                        city_trd,
-                                        city_monthly_trd) %>% 
-  dplyr::mutate(month_object = lubridate::make_date(year = year, month = month),
-                month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE))
+# TODO: include last 36 month index?
+# TODO: include index for all years, set ref year to 100 (a common year)
 
-# Write to file for use in PowerBI (because TRD is special)
-index_2020_complete %>% 
-  dplyr::mutate(length_range = stringr::str_to_title(length_range),
-                period = dplyr::case_when(
-                  period == "month" ~ "Måned",
-                  period == "year_to_date" ~ "Hittil i år"
-                )) %>% 
-  write.csv2(file = "city_indices_for_powerbi.csv", row.names = F)
+city_index_cumulative_start <- city_index_all %>% 
+  dplyr::select(area_name, length_range, year, index_i) %>% 
+  dplyr::group_by(area_name, length_range) %>% 
+  dplyr::slice_min(year) %>% 
+  dplyr::mutate(year = year - 1,
+                index_i = 1)
 
-# For Grethe
+city_index_cumulative <- city_index_all %>% 
+  dplyr::select(area_name, length_range, year, index_i) %>% 
+  dplyr::bind_rows(city_index_cumulative_start) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::arrange(area_name, length_range, year) %>% 
+  tidyr::pivot_wider(names_from = year, names_prefix = "year_",
+                     values_from = index_i) %>% 
+  dplyr::mutate(
+    cum_year_2020 = year_2019 * year_2020,
+    cum_year_2021 = cum_year_2020 * year_2021
+    # Add years here!
+    ) %>% 
+  dplyr::select(area_name, length_range,
+                cum_year_2018 = year_2018,
+                cum_year_2019 = year_2019,
+                cum_year_2020,
+                cum_year_2021) %>% 
+  dplyr::mutate(across(is.numeric, ~ . * 100)) %>% 
+  tidyr::pivot_longer(cols = starts_with("cum_year"), 
+                      names_to = "year",
+                      names_prefix = "cum_year_",
+                      values_to = "index_ic") %>% 
+  dplyr::mutate(year = as.numeric(year)) %>% 
+  dplyr::ungroup()
+
+# For Grethe Vikane, spesialbestilling
 # library(writexl)
 # chosen_cities_and_months <- index_2020_complete %>% 
 #   dplyr::filter(period == "month",
@@ -134,7 +181,6 @@ index_2020_complete %>%
   #               month_object = lubridate::make_date(year = 2000, month = month),
   #               month_name_short = lubridate::month(month_object, label = TRUE)) %>% 
 
-# No points in this report! It'll be too much...
 ```
 
 # Byindekser
@@ -142,11 +188,11 @@ Dette er en enkel samlerapport for alle byindeksene. For mer detaljer, se egen r
 
 Byindeksen er en vegtrafikkindeks for vegene i et definert byområde. Den estimerer endringen i trafikkmengde i prosent fra et år til det neste.
 
-Datagrunnlaget for beregningene hentes fra trafikkregistreringspunkter i Statens vegvesens trafikkdatasystem. Det vil gi et representativt utvalg for å kunne beregne trafikkutviklingen. Det gjøres en sammenligning av timetrafikken, dato mot dato i kalendermånedene.
+Datagrunnlaget for beregningene hentes fra trafikkregistreringspunkter i Statens vegvesens trafikkdatasystem. De utvalgte punktene utgjør et representativt utvalg trafikklenker for beregning av trafikkutviklingen. Metodikken går i korte trekk ut på å sammenligne timetrafikk, dato mot dato i kalendermånedene. Det må eksistere et minimum av godkjente timer for sammenligning.
 
 Alle data er hentet fra [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/trafikkdata/). Timetrafikk med minst 95 % dekningsgrad inngår i beregningsgrunnlaget.
 
-Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er tidvis utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
+Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er tidvis utelatt på grunn av feil på utstyr eller at de ligger på veger som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
 
 
 ```{r wrangle}
@@ -171,19 +217,38 @@ Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter e
 ```
 
 
-## Per måned
-Samlet endring i trafikkmengde per måned i 2021, sammenlignet med samme måned i 2020.
+## Trafikkutviklingen siden referanseåret
+Kumulativ endring i trafikkmengde fra referanseår er vist i tabellen nedenfor. Trafikkmengden i referanseåret er satt til 100. Dersom indeksen er 95, har trafikken gått ned med 5 % siden referanseåret.
 
-```{r monthly_index_table}
-index_2020_complete %>%
-  dplyr::filter(period == "month") %>% 
-  dplyr::arrange(area_name, length_range, month) %>% 
-  select(area_name, month_name, year, length_range, index_p) %>%
-  tidyr::pivot_wider(names_from = length_range, values_from = index_p) %>% 
+```{r table}
+# index_2020_complete %>%
+#   dplyr::filter(period == "month") %>% 
+#   dplyr::arrange(area_name, length_range, month) %>% 
+#   select(area_name, month_name, year, length_range, index_p) %>%
+#   tidyr::pivot_wider(names_from = length_range, values_from = index_p) %>% 
+#   flextable() %>%
+#   colformat_num(j = 3, big.mark ="", digits = 0) %>%
+#   colformat_double(j = 4:6, digits = 1) %>%
+#   set_header_labels(area_name = "Byområde", month_name = "Måned", year = "År") %>% 
+#   align(i = 1, j = 3:6, align = "right", part = "header") %>%
+#   bold(part = "header") %>%
+#   fontsize(size = 9, part = "all") %>%
+#   font(fontname = "Lucida Sans Unicode", part = "all") %>%
+#   bg(bg = "#ED9300", part = "header") %>%
+#   border_remove() %>%
+#   hline_top(part = "header", border = borderline) %>%
+#   hline_bottom(part = "all", border = borderline) %>%
+#   #autofit() %>%
+#   height_all(height = .2) %>%
+#   padding(padding.top = .3,
+#           padding.bottom = .3) %>%
+#   set_caption("Estimert endring i trafikkmengde per kjøretøyklasse. Trafikken er sammenlignet per måned med samme måned året før.")
+
+city_index_cumulative %>%
+  tidyr::pivot_wider(names_from = year, values_from = index_ic) %>% 
   flextable() %>%
-  colformat_num(j = 3, big.mark ="", digits = 0) %>%
-  colformat_double(j = 4:6, digits = 1) %>%
-  set_header_labels(area_name = "Byområde", month_name = "Måned", year = "År") %>% 
+  colformat_double(j = 3:6, digits = 0) %>%
+  set_header_labels(area_name = "Byområde", length_range = "Kjøretøyklasse") %>% 
   align(i = 1, j = 3:6, align = "right", part = "header") %>%
   bold(part = "header") %>%
   fontsize(size = 9, part = "all") %>%
@@ -192,70 +257,107 @@ index_2020_complete %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  #autofit() %>%
   height_all(height = .2) %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Estimert endring i trafikkmengde per kjøretøyklasse. Trafikken er sammenlignet per måned med samme måned året før.")
+  set_caption("Estimert endring i trafikkmengde fra referanseår (100).")
 ```
 
 
+I figuren nedenfor sammenlignes utviklingen for lette og tunge kjøretøy i hvert byområde.
 
-
-
-```{r lineplot, fig.height=10}
+```{r city_facets, fig.height=6}
 # TODO: faceting per length_range or city?
-index_2020_complete %>% 
-  dplyr::filter(period == "month") %>% 
-  ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
+# index_2020_complete %>% 
+#   dplyr::filter(period == "month") %>% 
+#   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
+#   ggplot2::geom_line() +
+#   ggplot2::geom_point() +
+#   ggplot2::facet_grid(rows = vars(area_name)) +
+#   theme_light() +
+#   theme(axis.text.x = element_text(angle = 90),
+#         panel.grid.minor.x = element_blank()) +
+#   scale_x_date(breaks = scales::breaks_width("months"),
+#                labels = scales::label_date("%b")) +
+#   scale_color_manual(values = c("alle" = "#008ec2",
+#                                 "lette" = "#ed9300",
+#                                 "tunge" = "#444f55"),
+#                      name = "Kjøretøyklasse") +
+#   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
+#        caption = "Data: Statens vegvesen og fylkeskommunene") +
+#   ggtitle("Estimert endring i trafikkmengde",
+#           subtitle = "Trafikkmengde i 2021 sammenlignet med 2020")
+
+city_index_cumulative %>%
+  ggplot2::ggplot(aes(x = year, y = index_ic, color = length_range)) +
   ggplot2::geom_line() +
   ggplot2::geom_point() +
-  ggplot2::facet_grid(rows = vars(area_name)) +
-  theme_light() +
-  theme(axis.text.x = element_text(angle = 90),
-        panel.grid.minor.x = element_blank()) +
-  scale_x_date(breaks = scales::breaks_width("months"),
-               labels = scales::label_date("%b")) +
+  ggplot2::facet_grid(rows = vars(area_name),
+                      labeller = label_wrap_gen()) +
+  theme_bw() +
+  theme(panel.grid.minor.x = element_blank(),
+        strip.text.y = element_text(angle = 90)) +
   scale_color_manual(values = c("alle" = "#008ec2",
                                 "lette" = "#ed9300",
                                 "tunge" = "#444f55"),
                      name = "Kjøretøyklasse") +
   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
-       caption = "Data: Statens vegvesen og fylkeskommunene") +
+       caption = "Data: Statens vegvesen, fylkeskommunene, kommunene") +
   ggtitle("Estimert endring i trafikkmengde",
-          subtitle = "Trafikkmengde i 2021 sammenlignet med 2020")
+          subtitle = "Trafikkmengden i referanseåret er satt til 100")
+```
+
+
+I figuren nedenfor sammenlignes utviklingen for lette kjøretøy mellom alle byområdene.
+
+```{r compare_cities_light}
+city_index_cumulative %>%
+  dplyr::filter(length_range == "lette") %>% 
+  ggplot2::ggplot(aes(x = year, y = index_ic, color = area_name)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_point() +
+  theme_bw() +
+  theme(panel.grid.minor.x = element_blank()) +
+  scale_color_brewer(palette = "Set1",
+                     name = "") +
+  #scale_color_manual(values = c("alle" = "#008ec2",
+  #                              "lette" = "#ed9300",
+  #                              "tunge" = "#444f55"),
+  #                   name = "Kjøretøyklasse") +
+  labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
+       caption = "Data: Statens vegvesen, fylkeskommunene, kommunene") +
+  ggtitle("Estimert endring i trafikkmengde (lette kjøretøy)",
+          subtitle = "Trafikkmengden i referanseåret er satt til 100")
 ```
 
 
 
-
-## Hittil i år
-Samlet endring i trafikkmengde i perioden fra januar til så langt i 2021, sammenlignet med samme periode i 2020.
-
 ```{r year_to_date}
-index_2020_complete %>%
-  dplyr::filter(period == "year_to_date") %>% 
-  dplyr::group_by(area_name) %>% 
-  dplyr::slice_max(month, n = 1) %>% 
-  dplyr::mutate(period = paste0("januar - ", month_name)) %>% 
-  select(area_name, period, year, length_range, index_p) %>%
-  tidyr::pivot_wider(names_from = length_range, values_from = index_p) %>% 
-  flextable() %>%
-  colformat_num(j = 3, big.mark ="", digits = 0) %>%
-  colformat_double(j = 4:6, digits = 1) %>%
-  set_header_labels(area_name = "Byområde", period = "Periode", year = "År") %>% 
-  align(i = 1, j = 3:6, align = "right", part = "header") %>%
-  bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
-  bg(bg = "#ED9300", part = "header") %>%
-  border_remove() %>%
-  hline_top(part = "header", border = borderline) %>%
-  hline_bottom(part = "all", border = borderline) %>%
-  height_all(height = .2) %>%
-  padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption("Estimert endring i trafikkmengde per kjøretøyklasse. Trafikken er sammenlignet med samme periode året før.")
+## Hittil i år
+#Samlet endring i trafikkmengde i perioden fra januar til så langt i 2021, sammenlignet med samme periode i 2020.
+# index_2020_complete %>%
+#   dplyr::filter(period == "year_to_date") %>% 
+#   dplyr::group_by(area_name) %>% 
+#   dplyr::slice_max(month, n = 1) %>% 
+#   dplyr::mutate(period = paste0("januar - ", month_name)) %>% 
+#   select(area_name, period, year, length_range, index_p) %>%
+#   tidyr::pivot_wider(names_from = length_range, values_from = index_p) %>% 
+#   flextable() %>%
+#   colformat_num(j = 3, big.mark ="", digits = 0) %>%
+#   colformat_double(j = 4:6, digits = 1) %>%
+#   set_header_labels(area_name = "Byområde", period = "Periode", year = "År") %>% 
+#   align(i = 1, j = 3:6, align = "right", part = "header") %>%
+#   bold(part = "header") %>%
+#   fontsize(size = 9, part = "all") %>%
+#   font(fontname = "Lucida Sans Unicode", part = "all") %>%
+#   bg(bg = "#ED9300", part = "header") %>%
+#   border_remove() %>%
+#   hline_top(part = "header", border = borderline) %>%
+#   hline_bottom(part = "all", border = borderline) %>%
+#   height_all(height = .2) %>%
+#   padding(padding.top = .3,
+#           padding.bottom = .3) %>%
+#   set_caption("Estimert endring i trafikkmengde per kjøretøyklasse. Trafikken er sammenlignet med samme periode året før.")
 ```
 
 ```{r year_to_date_plot}
