@@ -63,17 +63,19 @@ source("get_from_nvdb_api.R")
 
 city_indices <- dplyr::bind_rows(
   # Bergen
+  get_published_index(958, 2017, 12),
+  get_published_index(958, 2018, 12),
   get_published_index(8952, 2019, 12),
   get_published_index(8952, 2020, 12),
-  get_published_index(8952, 2021, 8),
+  get_published_index(8952, 2021, 8)#,
   # Nord-Jæren
-  get_published_index(952, 2019, 12),
-  get_published_index(952, 2020, 12),
-  get_published_index(952, 2021, 8),
+  #get_published_index(952, 2019, 12),
+  #get_published_index(952, 2020, 12),
+  #get_published_index(952, 2021, 8),
   # Oslo
-  get_published_index(959, 2019, 12),
-  get_published_index(959, 2020, 12),
-  get_published_index(959, 2021, 8)
+  #get_published_index(959, 2019, 12),
+  #get_published_index(959, 2020, 12),
+  #get_published_index(959, 2021, 8)
   ) 
 
 city_indices_tidy <- city_indices %>% 
@@ -82,11 +84,16 @@ city_indices_tidy <- city_indices %>%
                 index_p, index_i, standard_deviation) %>% 
   dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "alle",
                                                 length_range == "[..,5.6)" ~ "lette",
-                                                length_range == "[5.6,..)" ~ "tunge")) %>% 
+                                                length_range == "[5.6,..)" ~ "tunge"),
+                area_id = as.character(area_id)) %>% 
   dplyr::mutate(road_category = dplyr::case_when(
                   road_category == "FYLKESVEG" ~ "Fylkesveg",
                   road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
-                  road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG" ~ "Europa-, riks- og fylkesveg")) %>% 
+                  road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG" ~ "Europa-, riks- og fylkesveg"),
+                area_id = dplyr::case_when(
+                  area_id == "958" ~ "8952",
+                  TRUE ~ area_id
+                )) %>% 
   dplyr::filter(road_category == "Europa-, riks- og fylkesveg",
                 period == "year_to_date") %>% 
   dplyr::select(-road_category, -period)
@@ -117,12 +124,11 @@ city_trd <-
 
 # All cities
 city_index_all <- dplyr::bind_rows(
-  city_indices_tidy_names,
-  city_trd
+  city_indices_tidy_names#,
+  #city_trd
   )
 
 # TODO: include last 36 month index?
-# TODO: include index for all years, set ref year to 100 (a common year)
 
 city_index_cumulative_start <- city_index_all %>% 
   dplyr::select(area_name, length_range, year, index_i) %>% 
@@ -139,16 +145,18 @@ city_index_cumulative <- city_index_all %>%
   tidyr::pivot_wider(names_from = year, names_prefix = "year_",
                      values_from = index_i) %>% 
   dplyr::mutate(
-    cum_year_2020 = year_2019 * year_2020,
+    # TODO: generalize? cumprod?
+    cum_year_2017 = year_2016 * year_2017,
+    cum_year_2018 = cum_year_2017 * year_2018,
+    cum_year_2019 = cum_year_2018 * year_2019,
+    cum_year_2020 = cum_year_2019 * year_2020,
     cum_year_2021 = cum_year_2020 * year_2021
     # Add years here!
     ) %>% 
   dplyr::select(area_name, length_range,
-                cum_year_2018 = year_2018,
-                cum_year_2019 = year_2019,
-                cum_year_2020,
-                cum_year_2021) %>% 
-  dplyr::mutate(across(is.numeric, ~ . * 100)) %>% 
+                cum_year_2016 = year_2016,
+                starts_with("cum_year")) %>% 
+  dplyr::mutate(across(where(is.numeric), ~ . * 100)) %>% 
   tidyr::pivot_longer(cols = starts_with("cum_year"), 
                       names_to = "year",
                       names_prefix = "cum_year_",
@@ -247,9 +255,9 @@ Kumulativ endring i trafikkmengde fra referanseår er vist i tabellen nedenfor. 
 city_index_cumulative %>%
   tidyr::pivot_wider(names_from = year, values_from = index_ic) %>% 
   flextable() %>%
-  colformat_double(j = 3:6, digits = 0) %>%
+  colformat_double(j = 3:8, digits = 0) %>%
   set_header_labels(area_name = "Byområde", length_range = "Kjøretøyklasse") %>% 
-  align(i = 1, j = 3:6, align = "right", part = "header") %>%
+  align(i = 1, j = 3:8, align = "right", part = "header") %>%
   bold(part = "header") %>%
   fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%

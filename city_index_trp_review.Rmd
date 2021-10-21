@@ -1,0 +1,138 @@
+---
+title: "Trafikkregistreringspunkter i byindeks"
+output: html_notebook
+---
+
+```{r setup, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
+# Packages are loaded through sourcing rmd_setup.R
+source("rmd_setup.R")
+
+# Traffic Data API calls to get points metadata and aadt
+source("get_from_trafficdata_api.R")
+source("split_road_system_reference.R")
+library(DT)
+library(htmltools)
+```
+
+
+```{r get_data, include=FALSE}
+# City numbers
+# Bergen 8952                 
+# Buskerudbyen 1952           
+# Grenland 955                
+# Kristiansand og omegn 957   
+# Nedre Glomma 953            
+# Nord-Jæren 952              
+# Oslo 959                    
+# Trondheim 960
+# Tromsø 961                  
+
+# The trps used today
+index_year <- 2021
+index_month <- 1
+city_number <- 952
+
+city_index <- get_published_index_for_months(city_number, index_year, index_month)
+pointindex <- get_published_pointindex_for_months(city_number, index_year, index_month)
+
+city_trps <- pointindex[[1]]
+city_name <- city_index$area_name[1]
+
+# All trps
+points <- get_points() %>%
+  dplyr::distinct(trp_id, .keep_all = T) 
+
+trp_time_span <- get_trp_data_time_span()
+
+trps_filtered <- points %>%
+  dplyr::filter(traffic_type == "VEHICLE",
+                registration_frequency == "CONTINUOUS",
+                operational_status != "RETIRED") %>% 
+  dplyr::mutate(name = stringr::str_to_title(name, locale = "no"),
+                operational_status = 
+                  stringr::str_to_lower(operational_status, locale = "no")) %>% 
+  dplyr::filter(municipality_name %in% 
+                  c("Randaberg", "Sola", "Stavanger", "Sandnes")) %>% 
+  dplyr::mutate(included = trp_id %in% city_trps) %>% 
+  dplyr::left_join(trp_time_span) %>% 
+  dplyr::filter(!is.na(first_data_with_quality_metrics)) %>% 
+  split_road_system_reference() %>% 
+  dplyr::select(trp_id, name, operational_status, road_reference,
+                #road_category_and_number,
+                #section_number, subsection_number, meter,
+                #intersection_part_number, intersection_meter,
+                municipality_name, lat, lon, included,
+                first_data, first_data_with_quality_metrics,
+                latest_daily_traffic)
+
+# point out unsuited trps
+trps_unsuited <- c(
+  "74885V319528",
+  "07793V319942"
+)
+
+trps_filtered_classified <- trps_filtered %>% 
+  dplyr::mutate(unsuited = trp_id %in% trps_unsuited,
+                status = dplyr::case_when(
+                  included == TRUE ~ "Er med",
+                  included == FALSE & unsuited == FALSE ~ "Tas med",
+                  included == FALSE & unsuited == TRUE ~ "Utelates",
+                ))
+
+## AADT ----
+adt <- get_aadt_for_trp_list(trps_filtered$trp_id)
+
+adt_filtered <- adt %>%
+  #dplyr::filter(length_range == "[..,5.6)") %>%
+  #dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  #dplyr::filter(length_quality > 90) %>%
+  #dplyr::filter(coverage > 50) %>%
+  dplyr::group_by(trp_id) %>%
+  #dplyr::filter(year >= 2019) %>%
+  dplyr::filter(year == 2020) %>%
+  dplyr::select(trp_id, adt)
+
+trps_filtered_adt <- trps_filtered_classified %>% 
+  dplyr::left_join(adt_filtered, by = "trp_id")
+```
+
+I byområdet `r city_name` er det nå `r nrow(trps_filtered)` trafikkregistreringspunkter, hvorav `r length(city_trps)` er med i dagens byindeks.
+
+I kartet nedenfor er punkter som _ikke_ er med i byindeksen merket med rosa sirkel.
+
+```{r map, message=FALSE}
+trps_filtered_adt %>% 
+  create_point_adt_map_review()
+```
+
+
+```{r table}
+trps_filtered %>%
+  dplyr::select(#trp_id, 
+                name, operational_status, road_reference,
+                #road_category_and_number,
+                #section_number, subsection_number, meter,
+                #intersection_part_number, intersection_meter,
+                #municipality_name, lat, lon, 
+                included,
+                #first_data, 
+                first_data_with_quality_metrics
+                #latest_daily_traffic
+                ) %>% 
+  DT::datatable(
+    filter = "top",
+    colnames = c("Navn" = "name",
+                 "Status" = "operational_status",
+                 "Vegreferanse" = "road_reference",
+                 "Inkludert" = "included",
+                 "Oppstart" = "first_data_with_quality_metrics"),
+    options = list(
+      dom = "Blfrtip",
+      pageLength = 25,
+      #lengthMenu = c(21, 42, 70),
+      autoWidth = TRUE)) %>% 
+  DT::formatDate("Oppstart",
+                 method = "toLocaleDateString")
+```
+
+
