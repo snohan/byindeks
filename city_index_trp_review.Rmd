@@ -68,7 +68,42 @@ trps_filtered <- points %>%
 # point out unsuited trps
 trps_unsuited <- c(
   "74885V319528",
-  "07793V319942"
+  "07793V319942",
+  "50233V320584",
+  "22478V1814807",
+  "68684V319527",
+  "40190V319527",
+  "55439V320125",
+  "45995V320592",
+  "03108V320583",
+  "45342V320223",
+  "10028V320295",
+  "93189V320582",
+  "55507V319881",
+  "71535V319524",
+  "03819V320689",
+  "74137V319919",
+  "12478V320582",
+  "84064V320581",
+  "71798V319583",
+  "13433V319582",
+  "35382V1727514",
+  "50741V1727509",
+  "10569V2580836",
+  "74012V320634",
+  "95626V320634",
+  "13715V2721330",
+  "63247V3131641",
+  "58400V2721295",
+  "33926V2721315",
+  "91556V2721320",
+  "20586V2721334",
+  "41451V320581",
+  "00462V320124",
+  "13000V2783697",
+  "94180V2726102",
+  "65096V2726170",
+  "06011V2726196"
 )
 
 trps_filtered_classified <- trps_filtered %>% 
@@ -78,6 +113,10 @@ trps_filtered_classified <- trps_filtered %>%
                   included == FALSE & unsuited == FALSE ~ "Tas med",
                   included == FALSE & unsuited == TRUE ~ "Utelates",
                 ))
+
+n_to_include <-  trps_filtered_classified %>% 
+  dplyr::filter(status == "Tas med") %>% 
+  nrow()
 
 ## AADT ----
 adt <- get_aadt_for_trp_list(trps_filtered$trp_id)
@@ -96,7 +135,7 @@ trps_filtered_adt <- trps_filtered_classified %>%
   dplyr::left_join(adt_filtered, by = "trp_id")
 ```
 
-I byområdet `r city_name` er det nå `r nrow(trps_filtered)` trafikkregistreringspunkter, hvorav `r length(city_trps)` er med i dagens byindeks.
+I byområdet `r city_name` er det nå `r nrow(trps_filtered)` trafikkregistreringspunkter, hvorav `r length(city_trps)` er med i dagens byindeks. Det foreslås her i inkludere ytterligere `r n_to_include`, slik at antall punkter i byindeksen blir `r length(city_trps) + n_to_include`.
 
 I kartet nedenfor er punkter som _ikke_ er med i byindeksen merket med rosa sirkel.
 
@@ -107,16 +146,17 @@ trps_filtered_adt %>%
 
 
 ```{r table}
-trps_filtered %>%
+trps_filtered_classified %>%
   dplyr::select(#trp_id, 
                 name, operational_status, road_reference,
                 #road_category_and_number,
                 #section_number, subsection_number, meter,
                 #intersection_part_number, intersection_meter,
                 #municipality_name, lat, lon, 
-                included,
+                #included,
                 #first_data, 
-                first_data_with_quality_metrics
+                first_data_with_quality_metrics,
+                status
                 #latest_daily_traffic
                 ) %>% 
   DT::datatable(
@@ -124,8 +164,8 @@ trps_filtered %>%
     colnames = c("Navn" = "name",
                  "Status" = "operational_status",
                  "Vegreferanse" = "road_reference",
-                 "Inkludert" = "included",
-                 "Oppstart" = "first_data_with_quality_metrics"),
+                 "Oppstart" = "first_data_with_quality_metrics",
+                 "I byindeks" = "status"),
     options = list(
       dom = "Blfrtip",
       pageLength = 25,

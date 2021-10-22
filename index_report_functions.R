@@ -99,12 +99,15 @@ create_point_adt_map_trondheim <- function(all_point_info_df) {
 
 
 create_point_adt_map_review <- function(all_point_info_df) {
+
   palett_stasjonstype <-
-    colorFactor(palette = c("#db3b99", "#444f55"),
-                domain = c("TRUE", "FALSE"))
+    colorFactor(
+      palette = c("#31a354", "#db3b99", "#878787"),
+      levels = c("Er med", "Tas med", "Utelates")
+      )
 
   palett_adt <-
-    colorNumeric(palette = "Greens",
+    colorNumeric(palette = "Purples",
                  domain = NULL)
 
   point_adt_map <- all_point_info_df %>%
@@ -119,8 +122,8 @@ create_point_adt_map_review <- function(all_point_info_df) {
       lat = ~lat,
       radius = 6,
       stroke = T,
-      weight = 2,
-      color = ~palett_stasjonstype(included),
+      weight = 3,
+      color = ~palett_stasjonstype(status),
       opacity = 0.8,
       fill = T,
       fillColor = ~palett_adt(adt),
@@ -129,8 +132,8 @@ create_point_adt_map_review <- function(all_point_info_df) {
     ) %>%
     addLegend("bottomright",
               pal = palett_stasjonstype,
-              values = ~included,
-              title = "Inkludert",
+              values = ~status,
+              title = "I byindeks",
               opacity = 0.7) %>%
     addLegend("bottomright",
               pal = palett_adt,
