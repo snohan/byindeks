@@ -1,0 +1,179 @@
+---
+title: "Sykkelindeks"
+output: 
+  slidy_presentation:
+    widescreen: true
+    css: svv_pres.css
+    logo: vegvesen-logo-farger-pos-rgb.png
+---
+
+```{r setup, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
+# Packages are loaded through sourcing rmd_setup.R
+source("rmd_setup.R")
+
+# Traffic Data API calls to get points metadata and aadt
+source("get_from_trafficdata_api.R")
+library(DT)
+library(htmltools)
+```
+
+```{r prep}
+index_year <- 2021
+index_month <- 1
+
+# Point metadata from Traffic Data API
+points <- get_points() %>%
+  dplyr::distinct(trp_id, .keep_all = T) %>%
+  dplyr::select(trp_id, name, road_reference, county_name,
+                municipality_name, lat, lon, road_link_position) %>% 
+  dplyr::mutate(name = stringr::str_to_title(name, locale = "no"))
+```
+
+```{r functions}
+get_city_index_bike_trps <- function(city_index_number) {
+  
+  city_index <- get_published_index_for_months(
+    city_index_number, 
+    index_year, 
+    index_month)
+  
+  pointindex <- get_published_bikepointindex_for_months(
+    city_index_number,
+    index_year, 
+    index_month)
+  
+  city_trps <- pointindex[[1]]
+  city_name <- city_index$area_name[1]
+  
+  city_trps_meta <- points %>% 
+    dplyr::filter(trp_id %in% city_trps) %>% 
+    split_road_system_reference() %>% 
+    dplyr::select(trp_id, name, road_reference, 
+                  road_category_and_number,
+                  #section_number, subsection_number, meter,
+                  #intersection_part_number, intersection_meter,
+                  county_name, municipality_name, lat, lon)
+  
+  adt <- getAdtForpoints(city_trps_meta$trp_id)
+  
+  adt_filtered <- adt %>%
+    dplyr::filter(coverage > 50) %>%
+    dplyr::group_by(trp_id) %>%
+    dplyr::filter(year == max(year)) %>%
+    dplyr::select(trp_id, adt)
+  
+  city_trps_adt <- city_trps_meta %>% 
+    dplyr::left_join(adt_filtered, by = "trp_id")
+  
+  return(city_trps_adt)
+}
+
+make_trp_table <- function(trp_df) {
+  
+  trp_df %>%
+    dplyr::select(name, road_category_and_number, municipality_name, adt) %>% 
+    DT::datatable(
+      filter = "top",
+      rownames = FALSE,
+      colnames = c("Navn" = "name",
+                   "Veg" = "road_category_and_number",
+                   "Kommune" = "municipality_name",
+                   "ÅDT" = "adt"),
+      width = 750,
+      options = list(
+        dom = "Blfrtip",
+        pageLength = 25,
+        lengthMenu = c(25, 50),
+        autoWidth = TRUE))
+}
+```
+
+
+# Hva er en sykkelindeks?
+
+- Et estimat på endring i sykkeltrafikk
+- Datagrunnlag fra et representativt antall sykkelregistreringspunkter
+- Sykkelregistreringspunkter som er tilgjengelig i Statens vegvesens trafikkdatasystem
+
+
+# Sykkelindeks - metodikk
+
+- Samme metodikk som benyttes i byindeks og vegtrafikkindeks
+- Timetrafikk sammenlignes time for time, dato for dato i to påfølgende år
+- Minst 16 godkjente timer i døgnet
+- Minst 16 godkjente dager i måneden
+- Indeksen beregnes per måned og år
+
+
+# Krav til sykkelregistreringspunkt
+
+- Ethvert sykkelregistreringspunkt skal registrere minst 90 % av de passerende syklene
+- Alle punkt blir manuelt kontrollert før data tilgjengeliggjøres (sjekk registreringsandelen av minst 60 sykler)
+- Sykkelregistreringsutstyret må kommunisere med Statens vegvesens datainnsamlingsnett (Telia-ruter, OPC UA-server)
+
+
+# Elsparkesykler
+
+Testing har vist at elsparkesykler ikke registreres av alle utstyrstyper
+
+- Loop Monitor (vanligst utstyr) registrerer _ikke_ elsparkesykler
+- ComEth (fåtall) registrerer _ikke_ elsparkesykler
+- CMU (fåtall) registrerer elsparkesykler 
+
+
+# Sykkelindeks Osloområdet kart
+
+```{r oslo_map, fig.width=4}
+bike_trps_oslo <- get_city_index_bike_trps(6953)
+
+bike_trps_oslo %>% 
+  create_point_adt_map()
+```
+
+# Sykkelindeks Osloområdet tabell
+
+```{r table_oslo}
+bike_trps_oslo %>%
+  make_trp_table()
+```
+
+
+# Sykkelindeks Bergen kart
+
+```{r bergen_map, fig.width=4}
+bike_trps_bergen <- get_city_index_bike_trps(5952)
+
+bike_trps_bergen %>% 
+  create_point_adt_map()
+```
+
+
+# Sykkelindeks Bergen tabell
+
+```{r table_bergen}
+bike_trps_bergen %>%
+  make_trp_table()
+```
+
+
+# Sykkelindeks Nord-Jæren kart
+
+```{r nj_map, fig.width=4}
+bike_trps_nj <- get_city_index_bike_trps(6952)
+
+bike_trps_nj %>% 
+  create_point_adt_map()
+```
+
+
+# Sykkelindeks Nord-Jæren tabell
+
+```{r table_nj}
+bike_trps_nj %>%
+  make_trp_table()
+```
+
+
+
+
+

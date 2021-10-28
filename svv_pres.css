@@ -1,0 +1,52 @@
+body {
+  background-color: #FFFFFF;
+  font-family: Calibri;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  padding-bottom: .4em;
+  padding-top: 1em;
+}
+
+caption {
+  color: black;
+  padding-bottom: .1em;
+  padding-top: .8em;
+  margin-bottom: 2px;
+}
+
+table {
+  margin-top: 2px;
+}
+
+li {
+  list-style-type: disc;
+}
+
+li::marker {
+  color: #FF9600;
+  list-style-type: disc;
+}
+
+.gdbar img {
+  width: 300px !important;
+  height: 150px !important;
+  margin: 8px 8px;
+}
+
+.gdbar {
+  width: 400px !important;
+  height: 170px !important;
+}
+
+ slides > slide:not(.title-slide) {
+   background-image: url("vegvesen-logo-farger-pos-rgb.png");
+   background-size: 20%;
+   background-repeat: no-repeat;
+   background-position: 3% 96%;
+ }
+
+ slides > slide.title-slide {
+    background-image: url("vegvesen-logo-farger-pos-rgb.png");
+    background-size: 100% 100%;
+}
