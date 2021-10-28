@@ -103,6 +103,7 @@ make_trp_table <- function(trp_df) {
 - Minst 16 godkjente timer i døgnet
 - Minst 16 godkjente dager i måneden
 - Indeksen beregnes per måned og år
+- Punkt som er påvirket av stenginger tas ut
 
 
 # Krav til sykkelregistreringspunkt
