@@ -135,17 +135,15 @@ border_crossings_adt <- border_crossings %>%
 ```
 
 
-
-
 ```{r get_index_data, include=FALSE, cache=TRUE}
 # Fetching published index from Traffic Data API
 index_2017 <- get_published_index_for_months(2952, 2017, 12)
 index_2018 <- get_published_index_for_months(2952, 2018, 12)
 index_2019 <- get_published_index_for_months(2952, 2019, 12)
 index_2020 <- get_published_index_for_months(2952, 2020, 12)
-index_2021 <- get_published_index_for_months(2952, 2021, 9)
+index_2021 <- get_published_index_for_months(2952, 2021, 10)
 
-pointindex <- get_published_pointindex_for_months_paginated(2952, 2021, 9)
+pointindex <- get_published_pointindex_for_months_paginated(2952, 2021, 10)
 ```
 
 ```{r prepare_data, include=FALSE}
@@ -238,7 +236,7 @@ border_crossings_adt %>%
                     aadt_short = "ÅDT \n lette",
                     aadt_long = "ÅDT \n tunge",
                     year = "År",
-                    name = "Trafikk-registrerings-punkt") %>%
+                    name = "Trafikk-registreringspunkt") %>%
   align(i = 1, j = 5:7, align = "right", part = "header") %>%
   align(j = 8, align = "center", part = "all") %>%
   bold(part = "header") %>%
@@ -366,7 +364,7 @@ Et vektet gjennomsnitt av endring i trafikkmengden i de ulike grenseovergangene,
 ## Per måned
 Tabellen på neste side viser estimert samlet endring i trafikkmengde per måned, sammenlignet med samme måned i fjor. Usikkerheten i estimatet er synliggjort med standardfeil og standardavvik. Standardfeilen sier noe om hvor nære indeksen (som er et estimat) er den faktiske endringen i trafikken, mens standardavviket sier noe om hvor ulik trafikkendringen var på punktene.
 
-Fra mars 2020 gikk grensetrafikken betydelig ned som følge av tiltak mot spredningen av det nye koronaviruset.
+Fra mars 2020 gikk grensetrafikken betydelig ned som følge av tiltak mot spredningen av det nye koronaviruset. 6. oktober 2021 ble grenseovergangene gjenåpnet.
 
 `r officer::fpar("", officer::run_pagebreak())`
 
@@ -479,12 +477,10 @@ index_this_year %>%
 ```
 
 
-
 # Tidligere år
-
 Nedenfor vises månedlig riksgrenseindeks for foregående år. Det som gir størst utslag på indeksen er vanligvis påsketrafikken, og det ses tydelig mellom årene hvor påsken ikke ligger i samme måned.
 
-<\br>
+<br>
 
 ```{r lineplot_historic}
 #| fig.width = 6,

@@ -945,7 +945,7 @@ get_trp_mdt_by_direction <- function(trp_id, mdt_year) {
 #mdt_test <- get_trp_mdt_with_coverage("91582V930281", "2020")
 #mdt_test_2 <- get_trp_mdt_by_lane("91582V930281", "2020")
 
-#trp_id <- "45313V1125788"
+#trp_id <- "66220V72824"
 #trp_id <- "01316V804837"
 #trp_adt <- getTrpAadt_byLength(trp_id)
 
@@ -1022,6 +1022,30 @@ get_aadt_by_length_for_trp <- function(trp_id) {
         length_range = lengthRange.representation,
         aadt_length_range = total.volume.average,
         sd_length_range = total.volume.standardDeviation,
+        aadt_total = data.trafficData.volume.average.daily.byYear.total.volume.average
+      ) %>%
+      dplyr::mutate(
+        aadt_ci_lowerbound_length_range = NA,
+        aadt_ci_upperbound_length_range = NA,
+        aadt_valid_length = NA,
+        coverage = NA,
+        aadt_ci_lowerbound_total = NA,
+        aadt_ci_upperbound_total = NA
+      ) %>%
+      dplyr::mutate(trp_id = as.character(trp_id))
+  }
+
+  if(all(is.na(trp_aadt$total.volume.standardDeviation))
+    ){
+    trp_aadt <- trp_aadt
+  }else{
+    trp_aadt <- trp_aadt %>%
+      dplyr::rename(
+        trp_id = data.trafficData.id,
+        year = data.trafficData.volume.average.daily.byYear.year,
+        length_range = lengthRange.representation,
+        aadt_length_range = total.volume.average,
+        sd_length_range = total.volume.standardDeviation,
         aadt_ci_lowerbound_length_range = total.volume.confidenceInterval.lowerBound,
         aadt_ci_upperbound_length_range = total.volume.confidenceInterval.upperBound,
         aadt_valid_length = data.trafficData.volume.average.daily.byYear.total.validLengthVolume.average,
@@ -1029,7 +1053,7 @@ get_aadt_by_length_for_trp <- function(trp_id) {
         aadt_total = data.trafficData.volume.average.daily.byYear.total.volume.average,
         aadt_ci_lowerbound_total = data.trafficData.volume.average.daily.byYear.total.volume.confidenceInterval.lowerBound,
         aadt_ci_upperbound_total = data.trafficData.volume.average.daily.byYear.total.volume.confidenceInterval.upperBound
-        ) %>%
+      ) %>%
       dplyr::mutate(trp_id = as.character(trp_id))
   }
 
