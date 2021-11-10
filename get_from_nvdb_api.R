@@ -202,6 +202,7 @@ hent_kommune <- function(kommunenr) {
 
 #kommunenr <- "5001"
 hent_kommune_v3 <- function(kommunenr) {
+
   api_query <- paste0(nvdb_url_v3,
                           sti_vegobjekter,
                           "/946",
@@ -652,9 +653,90 @@ getAadtByRoadlinkposition <- function(roadlink) {
 
   return(adt_verdi)
 }
-test <- getAadtByRoadlinkposition("0.4@2411536")
-roadlink <- "0.4@2411536"
+#test <- getAadtByRoadlinkposition("0.4@2411536")
+#roadlink <- "0.4@2411536"
 #roadref <- "1200EV39hp74m14171"
+#roadcat_number <- "RV15"
+
+get_aadt_by_road <- function(roadcat_number) {
+
+  api_query <-
+    paste0(
+      nvdb_url_v3,
+      sti_vegobjekter,
+      "/540",
+      "?inkluder=egenskaper,lokasjon"
+    )
+
+  api_query_vegref <-
+    paste0(
+      api_query,
+      "&vegsystemreferanse=",
+      roadcat_number
+    )
+
+  respons <-
+    httr::GET(
+      api_query_vegref,
+      httr::add_headers(.headers = nvdb_v3_headers)
+    )
+
+  uthenta <-
+    jsonlite::fromJSON(
+      str_conv(respons$content, encoding = "UTF-8"),
+      simplifyDataFrame = T,
+      flatten = T
+    )
+
+  adt <- uthenta$objekter %>%
+    dplyr::select(id, egenskaper) %>%
+    dplyr::rename(nvdb_objekt_id = id) %>%
+    tibble::as_tibble() %>%
+    tibble::rowid_to_column("objekt_nr") %>%
+    tidyr::unnest(cols = egenskaper) %>%
+    dplyr::filter(id %in% c(4621, # År, gjelder for
+                            4623, # ÅDT total
+                            4624, # Andel lange
+                            4625  # Grunnlag
+                            )) %>%
+    dplyr::select(nvdb_objekt_id, egenskap_id = id, verdi) %>%
+    dplyr::mutate(value_name = dplyr::case_when(
+      egenskap_id == 4621 ~ "year",
+      egenskap_id == 4623 ~ "aadt_total",
+      egenskap_id == 4624 ~ "heavy_percentage",
+      egenskap_id == 4625 ~ "source",
+      TRUE ~ "unspecified"
+    )) %>%
+    dplyr::select(nvdb_objekt_id, value_name, verdi) %>%
+    tidyr::pivot_wider(
+      names_from = value_name,
+      values_from = verdi
+    ) %>%
+    dplyr::mutate(aadt_total = as.numeric(aadt_total),
+                  heavy_percentage = as.numeric(heavy_percentage))
+
+    location <- uthenta$objekter %>%
+      dplyr::select(id, geometry = lokasjon.geometri.wkt) %>%
+      dplyr::rename(nvdb_objekt_id = id) %>%
+      tibble::as_tibble() %>%
+      sf::st_as_sf(wkt = "geometry",
+                   crs = 5973) %>%
+      sf::st_zm(drop = T, what = "ZM") %>%
+      sf::st_transform("+proj=longlat +datum=WGS84")
+
+    counties <- uthenta$objekter %>%
+      dplyr::select(id, county_numbers = lokasjon.fylker) %>%
+      dplyr::rename(nvdb_objekt_id = id) %>%
+      tibble::as_tibble()
+
+  adt_location <-
+    dplyr::left_join(adt, location, by = "nvdb_objekt_id") %>%
+    sf::st_as_sf() %>%
+    dplyr::left_join(counties, by = "nvdb_objekt_id")
+
+  return(adt_location)
+}
+
 
 # Fartsgrense ----
 getSpeedLimit <- function(roadref) {
