@@ -323,8 +323,6 @@ border_trp_index_42 %>%
 ```
 
 
-
-
 `r officer::fpar("", officer::run_pagebreak())`
 ```{r trptable_3}
 border_trp_index_43 %>%

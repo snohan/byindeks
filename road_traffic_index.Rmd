@@ -728,13 +728,36 @@ historic <- read.csv2("road_traffic_index_historic.csv") %>%
   tibble::as_tibble()
 
 historic_all <- historic %>% 
-  dplyr::filter(length_range == "alle") %>% 
+  dplyr::filter(length_range == "alle",
+                road_category == "ERF") %>% 
   dplyr::mutate(index_i = 1 + (index_p / 100),
                 cum_index_i = round(cumprod(index_i) * 100, digits = 1)
                 ) %>% 
   dplyr::select(year, index_i)
 
 historic_all_combinations <- calculate_all_index_chain_combinations(historic_all)
+
+historic_f <- historic %>% 
+  dplyr::filter(length_range == "alle",
+                road_category == "F") %>% 
+  dplyr::mutate(index_i = 1 + (index_p / 100),
+                cum_index_i = round(cumprod(index_i) * 100, digits = 1)
+                ) %>% 
+  dplyr::select(year, index_i)
+
+historic_f_all_combinations <- calculate_all_index_chain_combinations(historic_f)
+
+historic_er <- historic %>% 
+  dplyr::filter(length_range == "alle",
+                road_category == "ER") %>% 
+  dplyr::mutate(index_i = 1 + (index_p / 100),
+                cum_index_i = round(cumprod(index_i) * 100, digits = 1)
+                ) %>% 
+  dplyr::select(year, index_i)
+
+historic_er_all_combinations <- calculate_all_index_chain_combinations(historic_er)
+
+# TODO: historic light and heavy (the numbers are in the csv)
 ```
 
 ```{r historic_all_table_1}
@@ -812,4 +835,51 @@ historic_all_combinations %>%
                style = "Tabelltekst")
 ```
 
+<br>
 
+```{r historic_f_table}
+historic_f_all_combinations %>% 
+  flextable::flextable() %>%
+  colformat_double(j = 2:6, digits = 1) %>%
+  set_header_labels(year = "År") %>%
+  align(j = 2:6, align = "right", part = "all") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  height_all(height = .2) %>%
+  fix_border_issues() %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Kumulativ trafikkutvikling på fylkesvegar i Noreg frå 2015 til 2020.",
+               autonum = table_numbers,
+               style = "Tabelltekst")
+```
+
+
+<br>
+
+```{r historic_er_table}
+historic_er_all_combinations %>% 
+  flextable::flextable() %>%
+  colformat_double(j = 2:6, digits = 1) %>%
+  set_header_labels(year = "År") %>%
+  align(j = 2:6, align = "right", part = "all") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  height_all(height = .2) %>%
+  fix_border_issues() %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Kumulativ trafikkutvikling på Europa- og riksvegar i Noreg frå 2015 til 2020.",
+               autonum = table_numbers,
+               style = "Tabelltekst")
+```
