@@ -13,7 +13,7 @@ output:
       width: 1.0
       caption:
         style: Tabelltekst
-        pre: 'Tabell'
+        pre: 'Tabell '
         sep: '. '
       conditional:
         first_row: true
@@ -293,7 +293,7 @@ border_crossings_adt %>%
  create_point_adt_map()
 ```
 
-```{r border_table}
+```{r prep}
 # For an SD report
 # index_2020_wide <- index_2020 %>% 
 #   dplyr::select(area_name, year, month, road_category, length_range, index = index_p, 
@@ -355,6 +355,7 @@ index_complete_years <- dplyr::bind_rows(index_2017,
                 month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)) %>% 
   dplyr::filter(road_category == "Europa-, riks- og fylkesveg")
 ```
+
 
 # Samlet endring i trafikk over riksgrensen
 Et vektet gjennomsnitt av endring i trafikkmengden i de ulike grenseovergangene, gir et estimat på endringen for hele riksgrensetrafikken.

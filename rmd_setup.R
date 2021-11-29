@@ -20,14 +20,15 @@ source("H:/Programmering/R/byindeks/index_report_functions.R")
 source("H:/Programmering/R/byindeks/split_road_system_reference.R")
 
 # knitr options ####
-knitr::opts_chunk$set(echo = FALSE,
-                      warning = FALSE,
-                      message = FALSE,
-                      error = FALSE,
-                      cache = FALSE,
-                      dpi = 200,
-                      dev = "ragg_png"
-                      )
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  error = FALSE,
+  cache = FALSE,
+  dpi = 200,
+  dev = "ragg_png"
+  )
 
 # Map essentials ####
 nvdb_map_url <-
@@ -83,7 +84,7 @@ flextable::set_flextable_defaults(
 )
 
 # Numbering tables
-table_numbers <- run_autonum(
+table_numbers <- officer::run_autonum(
   seq_id = "table",
   pre_label = "Tabell ",
   post_label = ". ",
