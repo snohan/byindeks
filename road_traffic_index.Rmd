@@ -727,6 +727,7 @@ Vegtrafikkindeksen er berekna kvart år sidan 1995, og tabellane nedan viser kum
 historic <- read.csv2("road_traffic_index_historic.csv") %>% 
   tibble::as_tibble()
 
+# all
 historic_all <- historic %>% 
   dplyr::filter(length_range == "alle",
                 road_category == "ERF") %>% 
@@ -737,6 +738,7 @@ historic_all <- historic %>%
 
 historic_all_combinations <- calculate_all_index_chain_combinations(historic_all)
 
+# road category
 historic_f <- historic %>% 
   dplyr::filter(length_range == "alle",
                 road_category == "F") %>% 
@@ -756,6 +758,27 @@ historic_er <- historic %>%
   dplyr::select(year, index_i)
 
 historic_er_all_combinations <- calculate_all_index_chain_combinations(historic_er)
+
+# light and heavy
+historic_l <- historic %>% 
+  dplyr::filter(length_range == "lette",
+                road_category == "ERF") %>% 
+  dplyr::mutate(index_i = 1 + (index_p / 100),
+                cum_index_i = round(cumprod(index_i) * 100, digits = 1)
+                ) %>% 
+  dplyr::select(year, index_i)
+
+historic_l_combinations <- calculate_all_index_chain_combinations(historic_l)
+
+historic_h <- historic %>% 
+  dplyr::filter(length_range == "tunge",
+                road_category == "ERF") %>% 
+  dplyr::mutate(index_i = 1 + (index_p / 100),
+                cum_index_i = round(cumprod(index_i) * 100, digits = 1)
+                ) %>% 
+  dplyr::select(year, index_i)
+
+historic_h_combinations <- calculate_all_index_chain_combinations(historic_h)
 
 # TODO: historic light and heavy (the numbers are in the csv)
 ```
@@ -883,3 +906,172 @@ historic_er_all_combinations %>%
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
+
+
+<br>
+
+```{r historic_l_table_1}
+historic_l_combinations %>% 
+  dplyr::select(1:11) %>% 
+  flextable::flextable() %>%
+  colformat_double(j = 2:6, digits = 1) %>%
+  set_header_labels(year = "År") %>%
+  align(j = 2:6, align = "right", part = "all") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  height_all(height = .2) %>%
+  fix_border_issues() %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 1998 til 2020.",
+               autonum = table_numbers,
+               style = "Tabelltekst")
+```
+
+<br>
+
+```{r historic_l_table_2}
+historic_l_combinations %>% 
+  dplyr::slice(-(1:10)) %>% 
+  dplyr::select(1, 12:21) %>% 
+  flextable::flextable() %>%
+  colformat_double(j = 2:11, digits = 1) %>%
+  set_header_labels(year = "År") %>%
+  align(j = 2:11, align = "right", part = "all") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  height_all(height = .2) %>%
+  fix_border_issues() %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2008 til 2020.",
+               autonum = table_numbers,
+               style = "Tabelltekst")
+```
+
+<br>
+
+```{r historic_l_table_3}
+historic_l_combinations %>% 
+  dplyr::slice(-(1:20)) %>% 
+  dplyr::select(1, 22:23) %>% 
+  flextable::flextable() %>%
+  colformat_double(j = 2:3, digits = 1) %>%
+  set_header_labels(year = "År") %>%
+  align(j = 2:3, align = "right", part = "all") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  height_all(height = .2) %>%
+  fix_border_issues() %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2018 til 2020.",
+               autonum = table_numbers,
+               style = "Tabelltekst")
+```
+
+<br>
+
+```{r historic_h_table_1}
+historic_h_combinations %>% 
+  dplyr::select(1:11) %>% 
+  flextable::flextable() %>%
+  colformat_double(j = 2:6, digits = 1) %>%
+  set_header_labels(year = "År") %>%
+  align(j = 2:6, align = "right", part = "all") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  height_all(height = .2) %>%
+  fix_border_issues() %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 1998 til 2020.",
+               autonum = table_numbers,
+               style = "Tabelltekst")
+```
+
+<br>
+
+```{r historic_h_table_2}
+historic_h_combinations %>% 
+  dplyr::slice(-(1:10)) %>% 
+  dplyr::select(1, 12:21) %>% 
+  flextable::flextable() %>%
+  colformat_double(j = 2:11, digits = 1) %>%
+  set_header_labels(year = "År") %>%
+  align(j = 2:11, align = "right", part = "all") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  height_all(height = .2) %>%
+  fix_border_issues() %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2008 til 2020.",
+               autonum = table_numbers,
+               style = "Tabelltekst")
+```
+
+<br>
+
+```{r historic_h_table_3}
+historic_h_combinations %>% 
+  dplyr::slice(-(1:20)) %>% 
+  dplyr::select(1, 22:23) %>% 
+  flextable::flextable() %>%
+  colformat_double(j = 2:3, digits = 1) %>%
+  set_header_labels(year = "År") %>%
+  align(j = 2:3, align = "right", part = "all") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  height_all(height = .2) %>%
+  fix_border_issues() %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2018 til 2020.",
+               autonum = table_numbers,
+               style = "Tabelltekst")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
