@@ -141,9 +141,9 @@ index_2017 <- get_published_index_for_months(2952, 2017, 12)
 index_2018 <- get_published_index_for_months(2952, 2018, 12)
 index_2019 <- get_published_index_for_months(2952, 2019, 12)
 index_2020 <- get_published_index_for_months(2952, 2020, 12)
-index_2021 <- get_published_index_for_months(2952, 2021, 10)
+index_2021 <- get_published_index_for_months(2952, 2021, 11)
 
-pointindex <- get_published_pointindex_for_months_paginated(2952, 2021, 10)
+pointindex <- get_published_pointindex_for_months_paginated(2952, 2021, 11)
 ```
 
 ```{r prepare_data, include=FALSE}
@@ -195,8 +195,8 @@ officer::block_toc(style = "Tabelltekst")
 officer::block_toc(style = "Figurtekst")
 ```
 
-# Riksgrenseindeks
 
+# Riksgrenseindeks
 Riksgrenseindeksen er en vegtrafikkindeks for vegene som krysser riksgrensen langs hele Norge. Den estimerer endringen i trafikkmengde i prosent fra et år til det neste.
 
 Statens vegvesen har i dag trafikkregistreringspunkt ved 32 av de 51 riksgrenseovergangene på Europa-, riks- og fylkesvegnettet fra Svinesund i sør til Storskog i nordøst. Trafikken er ikke registrert i selve grenseovergangen, men litt inn på norsk side. Det er ingen store kryss mellom registreringspunktene og riksgrensen, slik at de fleste kjøretøy som blir registrert antas normalt å krysse riksgrensen, selv om enkelte kjøretøy kan stoppe og eventuelt snu på norsk side.
@@ -211,7 +211,6 @@ Været vil i perioder kunne påvirke trafikkmengden. For eksempel vil det ved d�
 
 
 # Trafikkregistreringspunkt ved riksgrenseovergangene
-
 Trafikkregistreringspunktene ligger spredt langs hele Fastlands-Norges riksgrense. Informasjon om trafikkmengde og plassering er gjengitt i tabell og kart nedenfor.
 
 Alle kjøretøy som passerer trafikkregistreringspunktene, blir registrert og får målt sin lengde. Kjøretøyregistreringene blir delt inn i lengdeklasser. Skillet mellom lette og tunge kjøretøy er basert på målt lengde kortere eller lengre enn 5,6 m. Der årsdøgntrafikk (ÅDT) for lette og tunge er utelatt fra tabellen, er datagrunnlaget for dårlig til at tall kan presenteres. Summen av lette og tunge kan avvike noe fra totalen på grunn av avrunding.
@@ -424,6 +423,10 @@ index_this_year %>%
   ggplot2::geom_point() +
   theme_light() +
   theme(axis.text.x = element_text(angle = 90),
+        axis.title.y = element_text(
+          margin = margin(t = 0, r = 15, b = 0, l = 0)),
+        axis.title.x = element_text(
+          margin = margin(t = 15, r = 0, b = 0, l = 0)),
         panel.grid.minor.x = element_blank()) +
   scale_x_date(breaks = scales::breaks_width("months"),
                labels = scales::label_date("%b"),
@@ -478,14 +481,14 @@ index_this_year %>%
 ```
 
 
-# Tidligere år
+# Historisk trafikkutvikling
 Nedenfor vises månedlig riksgrenseindeks for foregående år. Det som gir størst utslag på indeksen er vanligvis påsketrafikken, og det ses tydelig mellom årene hvor påsken ikke ligger i samme måned.
 
 <br>
 
 ```{r lineplot_historic}
 #| fig.width = 6,
-#| fig.height = 7,
+#| fig.height = 6.2,
 #| fig.cap = "Riksgrenseindeks foregående år.", 
 #| cache = FALSE
 
@@ -497,6 +500,10 @@ index_complete_years %>%
   ggplot2::facet_grid(rows = vars(year)) +
   theme_light() +
   theme(axis.text.x = element_text(angle = 90),
+        axis.title.y = element_text(
+          margin = margin(t = 0, r = 15, b = 0, l = 0)),
+        axis.title.x = element_text(
+          margin = margin(t = 15, r = 0, b = 0, l = 0)),
         panel.grid.minor.x = element_blank()) +
   scale_x_date(breaks = scales::breaks_width("months"),
                labels = scales::label_date("%b")) +
@@ -510,3 +517,133 @@ index_complete_years %>%
           subtitle = "Trafikkmengde per måned sammenlignet med foregående år") +
   theme(legend.position = "bottom")
 ```
+
+<br>
+
+
+## Trafikkutvikling siden 2016
+Riksgrenseindeksen er beregnet siden 2016, og tabellene nedenfor viser kumulativ trafikkutvikling for hele perioden. Tallene er her beregnet ved å sette basisåret til 100, og den prosentvise utviklingen vil en da finne ved å trekke fra 100.
+
+<br>
+
+```{r historic_per_year}
+historic <- index_complete_years %>% 
+  dplyr::filter(
+     day_type == "ALL",
+     road_category == "Europa-, riks- og fylkesveg",
+     period == "year_to_date",
+     month == 12
+  ) %>% 
+    dplyr::select(
+    year,
+    length_range,
+    index_i
+  )
+
+historic_all <- historic %>% 
+  dplyr::filter(
+    length_range == "alle"
+  ) %>% 
+  dplyr::mutate(
+    cum_index_i = round(cumprod(index_i) * 100, digits = 1)
+  ) %>% 
+  dplyr::select(year, index_i)
+
+historic_all_combinations <- calculate_all_index_chain_combinations(historic_all)
+
+historic_light <- historic %>% 
+  dplyr::filter(
+    length_range == "lette"
+  ) %>% 
+  dplyr::mutate(
+    cum_index_i = round(cumprod(index_i) * 100, digits = 1)
+  ) %>% 
+  dplyr::select(year, index_i)
+
+historic_light_combinations <- calculate_all_index_chain_combinations(historic_light)
+
+historic_heavy <- historic %>% 
+  dplyr::filter(
+    length_range == "tunge"
+  ) %>% 
+  dplyr::mutate(
+    cum_index_i = round(cumprod(index_i) * 100, digits = 1)
+  ) %>% 
+  dplyr::select(year, index_i)
+
+historic_heavy_combinations <- calculate_all_index_chain_combinations(historic_heavy)
+```
+
+
+<br>
+
+```{r historic_all_table}
+historic_all_combinations %>% 
+  flextable::flextable() %>%
+  colformat_double(j = 2:5, digits = 1) %>%
+  set_header_labels(year = "År") %>%
+  align(j = 2:5, align = "right", part = "all") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  height_all(height = .2) %>%
+  fix_border_issues() %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Kumulativ trafikkutvikling på riksgrenseovergangene fra 2016 til 2020.",
+               autonum = table_numbers,
+               style = "Tabelltekst")
+```
+
+<br>
+
+```{r historic_light_table}
+historic_light_combinations %>% 
+  flextable::flextable() %>%
+  colformat_double(j = 2:5, digits = 1) %>%
+  set_header_labels(year = "År") %>%
+  align(j = 2:5, align = "right", part = "all") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  height_all(height = .2) %>%
+  fix_border_issues() %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Kumulativ trafikkutvikling for lette kjøretøy på riksgrenseovergangene fra 2016 til 2020.",
+               autonum = table_numbers,
+               style = "Tabelltekst")
+```
+
+<br>
+
+```{r historic_heavy_table}
+historic_heavy_combinations %>% 
+  flextable::flextable() %>%
+  colformat_double(j = 2:5, digits = 1) %>%
+  set_header_labels(year = "År") %>%
+  align(j = 2:5, align = "right", part = "all") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  height_all(height = .2) %>%
+  fix_border_issues() %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) %>%
+  set_caption("Kumulativ trafikkutvikling for tunge kjøretøy på riksgrenseovergangene fra 2016 til 2020.",
+               autonum = table_numbers,
+               style = "Tabelltekst")
+```
+
