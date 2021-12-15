@@ -27,7 +27,8 @@ knitr::opts_chunk$set(
   error = FALSE,
   cache = FALSE,
   dpi = 200,
-  dev = "ragg_png"
+  dev = "ragg_png",
+  tab.topcaption = TRUE
   )
 
 # Map essentials ####
