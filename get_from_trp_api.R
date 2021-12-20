@@ -15,6 +15,9 @@ source("H:/Programmering/R/byindeks/split_road_system_reference.R")
 trp_api_url <- #"https://trafikkdata-adm.atlas.vegvesen.no/datainn/traffic-registration-point/api/"
   "https://trafikkdata-auth-proxy.atlas.vegvesen.no/datainn/traffic-registration-point/api/"
 
+trp_api_url_utv <-
+  "https://trafikkdata-auth-proxy.utv.atlas.vegvesen.no/datainn/traffic-registration-point/api/"
+
 parse_and_floor_date <- function(date_column, floor_unit) {
   # floor_unit is "second", "minute", "day" etc.
   date_column_parsed <-
@@ -32,6 +35,31 @@ get_via_httr <- function(api_query) {
   api_query_string <- paste0('{"query":"', api_query_trimmed, '" }')
 
   response <- httr::POST(url = trp_api_url,
+                         httr::add_headers(.headers = trp_api_headers),
+                         httr::set_cookies(.cookies = trp_api_cookies),
+                         body = api_query_string)
+
+  # response_parsed <- jsonlite::fromJSON(
+  #   stringr::str_conv(response$content, encoding = "UTF-8"),
+  #                             simplifyDataFrame = T,
+  #                             flatten = T) %>%
+  #   as.data.frame()
+
+  response_parsed <- response$content %>%
+    stringr::str_conv(encoding = "UTF-8") %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
+    as.data.frame()
+
+  return(response_parsed)
+}
+
+get_via_httr_utv <- function(api_query) {
+
+  api_query_trimmed <- stringr::str_replace_all(api_query, "[\r\n]", " ")
+
+  api_query_string <- paste0('{"query":"', api_query_trimmed, '" }')
+
+  response <- httr::POST(url = trp_api_url_utv,
                          httr::add_headers(.headers = trp_api_headers),
                          httr::set_cookies(.cookies = trp_api_cookies),
                          body = api_query_string)
@@ -222,6 +250,81 @@ get_trps_with_commission <- function() {
   return(response_parsed)
 }
 
+get_mobile_trps_with_commission <- function() {
+
+  api_query <-
+    "query mobile_trp {
+  trafficRegistrationPoints(installationType: MOBILE) {
+    id
+    name
+    registrationFrequency
+    installationType
+    trafficType
+    location {
+      roadReference {
+        shortForm
+      }
+      roadLink {
+        id
+        position
+      }
+      municipality {
+        name
+        county {
+          name
+        }
+      }
+    }
+    trpCommissions {
+      validFrom
+      validTo
+    }
+  }
+}
+"
+
+  response_parsed <-
+    get_via_httr_utv(
+      api_query
+      ) %>%
+    tidyr::unnest(
+      cols = c("data.trafficRegistrationPoints.trpCommissions")
+      ) %>%
+    dplyr::select(
+      trp_id = data.trafficRegistrationPoints.id,
+      trp_name = data.trafficRegistrationPoints.name,
+      traffic_type = data.trafficRegistrationPoints.trafficType,
+      installation_type = data.trafficRegistrationPoints.installationType,
+      registration_frequency = data.trafficRegistrationPoints.registrationFrequency,
+      commission_from = validFrom,
+      commission_to = validTo,
+      road_network_position =
+        data.trafficRegistrationPoints.location.roadLink.position,
+      road_network_link =
+        data.trafficRegistrationPoints.location.roadLink.id,
+      #lat = data.trafficRegistrationPoints.location.coordinates.latlon.latitude,
+      #lon = data.trafficRegistrationPoints.location.coordinates.latlon.longitude,
+      road_reference = data.trafficRegistrationPoints.location.roadReference.shortForm,
+      county_name = data.trafficRegistrationPoints.location.municipality.county.name,
+      municipality_name = data.trafficRegistrationPoints.location.municipality.name
+      ) %>%
+    dplyr::mutate(
+      road_link_position = paste0(
+        road_network_position, "@",
+        road_network_link),
+      commission_from = parse_and_floor_date(commission_from, "minute"),
+      commission_to = parse_and_floor_date(commission_to, "minute"),
+      commission_interval = lubridate::interval(
+        commission_from,
+        commission_to),
+      commission_length_in_days = round(
+        commission_interval / lubridate::ddays(1),
+        digits = 0
+        )
+    )
+
+  return(response_parsed)
+}
 
 get_trp_for_vti <- function() {
 

@@ -6,7 +6,7 @@ split_road_system_reference <- function(df) {
                     remove = FALSE, fill = "right") %>%
     dplyr::mutate(road_category = stringr::str_sub(road_system, 1, 1)) %>%
     dplyr::mutate(road_category = factor(road_category,
-                                         levels = c("E", "R", "F", "K", "P"))) %>%
+                                         levels = c("E", "R", "F", "K", "P", "S"))) %>%
     tidyr::separate(road_system, c("road", "section_meter"),
                     sep = " S") %>%
     dplyr::mutate(road_number = as.numeric(stringr::str_sub(road, 3, -1))) %>%
