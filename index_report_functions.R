@@ -75,6 +75,8 @@ create_point_adt_map_trondheim <- function(all_point_info_df) {
     addTiles(urlTemplate = nvdb_map_url,
              attribution = nvdb_map_attribution) %>%
     addCircleMarkers(
+      lng = ~lon,
+      lat = ~lat,
       radius = 6,
       stroke = T,
       weight = 2,
@@ -130,7 +132,7 @@ create_point_adt_map_review <- function(all_point_info_df) {
       fill = T,
       fillColor = ~palett_adt(adt),
       fillOpacity = 0.8,
-      popup = ~htmlEscape(name)
+      label = ~label_text
     ) %>%
     addLegend("bottomright",
               pal = palett_stasjonstype,
@@ -176,6 +178,8 @@ create_pointindex_map <- function(all_point_info_df) {
     addTiles(urlTemplate = nvdb_map_url,
              attribution = nvdb_map_attribution) %>%
     addCircleMarkers(
+      lng = ~lon,
+      lat = ~lat,
       radius = 6,
       stroke = T,
       weight = 2,
@@ -183,7 +187,8 @@ create_pointindex_map <- function(all_point_info_df) {
       opacity = 0.8,
       fill = T,
       fillColor = ~palett_index(index),
-      fillOpacity = 0.8
+      fillOpacity = 0.8,
+      label = ~label_text
     ) %>%
     addLegend("bottomright",
               pal = palett_index,

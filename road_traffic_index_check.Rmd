@@ -22,20 +22,20 @@ library(htmltools)
 # 30 Viken                  8 Trond
 #  3 Oslo                   8 Trond
 # 34 Innlandet              8 Snorre
-# 38 Vestfold og Telemark   8 Trond
-# 42 Agder                  8 Million
-# 11 Rogaland               8 Snorre
-# 46 Vestland               8 Trond
-# 15 Møre og Romsdal        8 Snorre
-# 50 Trøndelag              8 Snorre
-# 18 Nordland               8 Snorre
-# 54 Troms og Finnmark      8 Snorre
+# 38 Vestfold og Telemark   11 Trond
+# 42 Agder                  11 Snorre
+# 11 Rogaland               11 Snorre
+# 46 Vestland               11 Trond
+# 15 Møre og Romsdal        11 Snorre
+# 50 Trøndelag              11 Snorre
+# 18 Nordland               11 Snorre
+# 54 Troms og Finnmark      11 Snorre
 
-county_number_chosen <- 42
+county_number_chosen <- 38
 # Choose
 index_year <- 2021
 # Last published month
-index_month <- 4
+index_month <- 8
 index_id <- 962
 
 # Fetch
@@ -53,7 +53,7 @@ points <- get_points() %>%
 
 trps_meta <- points %>% 
   dplyr::filter(trp_id %in% road_traffic_trps) %>% 
-  dplyr::left_join(pointindices) %>%
+  dplyr::left_join(pointindices, by = "trp_id") %>%
   dplyr::distinct(trp_id, .keep_all = TRUE) %>% 
   split_road_system_reference() %>% 
   dplyr::select(trp_id, name, road_reference, 
@@ -73,7 +73,7 @@ adt_filtered <- adt %>%
   dplyr::filter(length_range == "[..,5.6)") %>%
   #dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
   #dplyr::filter(length_quality > 90) %>%
-  dplyr::filter(coverage > 50) %>%
+  #dplyr::filter(coverage > 50) %>%
   dplyr::group_by(trp_id) %>%
   #dplyr::filter(year >= 2019) %>%
   dplyr::filter(year == max(year)) %>%
@@ -200,23 +200,29 @@ point_index_new_prepared_3 <- point_index_new %>%
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
 
-point_index_new_prepared_4 <- point_index_new %>%
-  dplyr::filter(day_type == "ALL",
-                period == "month",
-                month == index_month + 4) %>%
-  dplyr::select(trp_id, year, month, index_total_p,
-                index_total_coverage, length_excluded, length_coverage,
-                index_short, index_long)
+# point_index_new_prepared_4 <- point_index_new %>%
+#   dplyr::filter(day_type == "ALL",
+#                 period == "month",
+#                 month == index_month + 4) %>%
+#   dplyr::select(trp_id, year, month, index_total_p,
+#                 index_total_coverage, length_excluded, length_coverage,
+#                 index_short, index_long)
 
 # When using CSV we do not need new pointindex from api
-pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
-                                            point_index_new_prepared,
-                                            point_index_new_prepared_2,
-                                            point_index_new_prepared_3,
-                                            point_index_new_prepared_4
-                                            ) %>% 
-  dplyr::left_join(trps_meta) %>% 
-  dplyr::left_join(adt_filtered) %>% 
+pointindex_prepared_all <- 
+  dplyr::bind_rows(
+    pointindex_prepared,
+    point_index_new_prepared,
+    point_index_new_prepared_2,
+    point_index_new_prepared_3#,
+    #point_index_new_prepared_4
+    ) %>% 
+  dplyr::left_join(
+    trps_meta, by = "trp_id"
+    ) %>% 
+  dplyr::left_join(
+    adt_filtered, by = "trp_id"
+    ) %>% 
   dplyr::mutate(
     short_is_least = index_short < index_long,
     short_is_least_check = index_total_p >= index_short & index_total_p <= index_long,
@@ -237,16 +243,43 @@ pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
     length_coverage = round(length_coverage, digits = 0))
      
 trps_new_pointindex <- trps_meta %>% 
-  dplyr::inner_join(point_index_new_prepared)
+  dplyr::inner_join(
+    point_index_new_prepared, by = "trp_id"
+  ) %>% 
+  dplyr::mutate(
+    label_text = 
+      paste(name, ", ",
+            road_category_and_number, "<br/>",
+            index_total_p, " %", "<br/>",
+            index_total_coverage, " %"),
+    label_text = lapply(label_text, htmltools::HTML))
 
 trps_new_pointindex_2 <- trps_meta %>% 
-  dplyr::inner_join(point_index_new_prepared_2)
+  dplyr::inner_join(
+    point_index_new_prepared_2, by = "trp_id"
+  ) %>% 
+  dplyr::mutate(
+    label_text = 
+      paste(name, ", ",
+            road_category_and_number, "<br/>",
+            index_total_p, " %", "<br/>",
+            index_total_coverage, " %"),
+    label_text = lapply(label_text, htmltools::HTML))
 
 trps_new_pointindex_3 <- trps_meta %>%
-  dplyr::inner_join(point_index_new_prepared_3)
+  dplyr::inner_join(
+    point_index_new_prepared_3, by = "trp_id"
+  ) %>% 
+  dplyr::mutate(
+    label_text = 
+      paste(name, ", ",
+            road_category_and_number, "<br/>",
+            index_total_p, " %", "<br/>",
+            index_total_coverage, " %"),
+    label_text = lapply(label_text, htmltools::HTML))
 
-trps_new_pointindex_4 <- trps_meta %>%
-  dplyr::inner_join(point_index_new_prepared_4)
+# trps_new_pointindex_4 <- trps_meta %>%
+#   dplyr::inner_join(point_index_new_prepared_4)
 
 
 # Widening for table view
@@ -369,7 +402,7 @@ road_traffic_index_prepared %>%
 
 ## Punktindeksene for de nye månedene
 
-### Mai
+### September
 
 ```{r map_trp_index, message=FALSE}
 trps_new_pointindex %>% 
@@ -378,7 +411,7 @@ trps_new_pointindex %>%
 ```
 
 
-### Juni
+### Oktober
 
 ```{r map_trp_index_2, message=FALSE}
 trps_new_pointindex_2 %>% 
@@ -386,7 +419,7 @@ trps_new_pointindex_2 %>%
   create_pointindex_map()
 ```
 
-### Juli
+### November
 
 ```{r map_trp_index_3, message=FALSE}
 trps_new_pointindex_3 %>%
@@ -394,12 +427,12 @@ trps_new_pointindex_3 %>%
   create_pointindex_map()
 ```
 
-### August
+
 
 ```{r map_trp_index_4, message=FALSE}
-trps_new_pointindex_4 %>%
-  dplyr::rename(index = index_total_p) %>%
-  create_pointindex_map()
+# trps_new_pointindex_4 %>%
+#   dplyr::rename(index = index_total_p) %>%
+#   create_pointindex_map()
 ```
 
 
@@ -466,5 +499,26 @@ pointindex_wide %>%
       lengthMenu = c(21, 42, 70),
       autoWidth = TRUE))
 
-# Ekskluderinger:
+# Reberegn:
+# Harstad byskillet 10, 11
+# Lunheim 11
+# Breiviktunnelen 10, 11
+# Tuv sør 10, 11
+
+# Ekskluder:
+# Fv367 Kirkenes X E6 1,2,3,4
+# Storeidet 5,6,7
+# Mebonden 6,7
+# Sørås - Lagunen, 6
+# Hesselbergs gate 10,11,12
+
+# Avekskluder:
+# Ørviksletta 5,6,7,8
+# Bambletunnelen syd 5,6,7,8
+
+# Fjern fra def:
+# Selsbakk
+# Sundland
+# Rotvollekra
+# Havnegata
 ```
