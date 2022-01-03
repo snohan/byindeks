@@ -46,7 +46,7 @@ counties <- get_counties() %>%
   dplyr::select(county_number, county_name, geo_number)
 
 municipalities <- get_municipalities() %>% 
-  dplyr::left_join(counties)
+  dplyr::left_join(counties, by = "county_number")
 
 # Point metadata from Traffic Data API
 points <- get_points() %>%
@@ -141,9 +141,9 @@ index_2017 <- get_published_index_for_months(2952, 2017, 12)
 index_2018 <- get_published_index_for_months(2952, 2018, 12)
 index_2019 <- get_published_index_for_months(2952, 2019, 12)
 index_2020 <- get_published_index_for_months(2952, 2020, 12)
-index_2021 <- get_published_index_for_months(2952, 2021, 11)
+index_2021 <- get_published_index_for_months(2952, 2021, 12)
 
-pointindex <- get_published_pointindex_for_months_paginated(2952, 2021, 11)
+pointindex <- get_published_pointindex_for_months_paginated(2952, 2021, 12)
 ```
 
 ```{r prepare_data, include=FALSE}
@@ -340,7 +340,8 @@ last_month_name <- max(index_this_year$month_object) %>%
 index_complete_years <- dplyr::bind_rows(index_2017,
                                          index_2018,
                                          index_2019,
-                                         index_2020
+                                         index_2020,
+                                         index_2021
                                          ) %>% 
   dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "alle",
                                                 length_range == "[..,5.6)" ~ "lette",
@@ -364,7 +365,7 @@ Et vektet gjennomsnitt av endring i trafikkmengden i de ulike grenseovergangene,
 ## Per måned
 Tabellen på neste side viser estimert samlet endring i trafikkmengde per måned, sammenlignet med samme måned i fjor. Usikkerheten i estimatet er synliggjort med standardfeil og standardavvik. Standardfeilen sier noe om hvor nære indeksen (som er et estimat) er den faktiske endringen i trafikken, mens standardavviket sier noe om hvor ulik trafikkendringen var på punktene.
 
-Fra mars 2020 gikk grensetrafikken betydelig ned som følge av tiltak mot spredningen av det nye koronaviruset. 6. oktober 2021 ble grenseovergangene gjenåpnet.
+Fra mars 2020 gikk grensetrafikken betydelig ned som følge av tiltak mot spredningen av det nye koronaviruset. 6. oktober 2021 ble grenseovergangene gjenåpnet. Smitteverntiltak ble deretter gjeninnført i desember 2021.
 
 `r officer::fpar("", officer::run_pagebreak())`
 

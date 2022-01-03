@@ -20,7 +20,7 @@ library(htmltools)
 # Choose
 index_year <- 2021
 # Last published month
-index_month <- 10
+index_month <- 11
 index_id <- 2952
 
 # Fetch
@@ -88,7 +88,7 @@ point_index_new_prepared <- point_index_new %>%
 
 pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
                                             point_index_new_prepared) %>% 
-  dplyr::left_join(trps_meta) %>% 
+  dplyr::left_join(trps_meta, by = "trp_id") %>% 
   dplyr::mutate(
     short_is_least = index_short < index_long,
     short_is_least_check = index_total_p >= index_short & index_total_p <= index_long,
@@ -104,7 +104,14 @@ pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
     diff_total_short = round(index_short - index_total_p, digits = 1))
      
 trps_new_pointindex <- trps_meta %>% 
-  dplyr::inner_join(point_index_new_prepared)
+  dplyr::inner_join(point_index_new_prepared, by = "trp_id") %>% 
+  dplyr::mutate(
+    label_text = 
+      paste(name, ", ",
+            road_category_and_number, "<br/>",
+            index_total_p, " %", "<br/>",
+            index_total_coverage, " %"),
+    label_text = lapply(label_text, htmltools::HTML))
 
 
 # Widening for table view
@@ -244,7 +251,7 @@ pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 ## Punktsjekk
 
 ```{r point_plot, message=FALSE, fig.width=12}
-point_number <- 2
+point_number <- 9
 trp_id_here <- trps_meta$trp_id[point_number]
 
 trp_name <- trps_meta %>% 

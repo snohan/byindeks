@@ -454,7 +454,12 @@ calculate_all_index_chain_combinations <- function(df_index_i) {
       dplyr::mutate({{base_year}} := round(cumprod(index_i) * 100, digits = 1)) %>%
       dplyr::select(-index_i)
 
-    resulting_df <- dplyr::left_join(resulting_df, next_column)
+    resulting_df <-
+      dplyr::left_join(
+        resulting_df,
+        next_column,
+        by = "year"
+      )
 
     year_count <- year_count + 1
   }

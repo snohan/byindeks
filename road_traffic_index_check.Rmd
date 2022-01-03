@@ -20,8 +20,8 @@ library(htmltools)
 # Look at details in one county at a time
 
 # 30 Viken                  8 Trond
-#  3 Oslo                   8 Trond
-# 34 Innlandet              8 Snorre
+#  3 Oslo                   12 Trond
+# 34 Innlandet              12 Snorre
 # 38 Vestfold og Telemark   11 Trond
 # 42 Agder                  11 Snorre
 # 11 Rogaland               11 Snorre
@@ -31,7 +31,7 @@ library(htmltools)
 # 18 Nordland               11 Snorre
 # 54 Troms og Finnmark      11 Snorre
 
-county_number_chosen <- 38
+county_number_chosen <- 30
 # Choose
 index_year <- 2021
 # Last published month
@@ -200,13 +200,13 @@ point_index_new_prepared_3 <- point_index_new %>%
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
 
-# point_index_new_prepared_4 <- point_index_new %>%
-#   dplyr::filter(day_type == "ALL",
-#                 period == "month",
-#                 month == index_month + 4) %>%
-#   dplyr::select(trp_id, year, month, index_total_p,
-#                 index_total_coverage, length_excluded, length_coverage,
-#                 index_short, index_long)
+point_index_new_prepared_4 <- point_index_new %>%
+  dplyr::filter(day_type == "ALL",
+                period == "month",
+                month == index_month + 4) %>%
+  dplyr::select(trp_id, year, month, index_total_p,
+                index_total_coverage, length_excluded, length_coverage,
+                index_short, index_long)
 
 # When using CSV we do not need new pointindex from api
 pointindex_prepared_all <- 
@@ -214,8 +214,8 @@ pointindex_prepared_all <-
     pointindex_prepared,
     point_index_new_prepared,
     point_index_new_prepared_2,
-    point_index_new_prepared_3#,
-    #point_index_new_prepared_4
+    point_index_new_prepared_3,
+    point_index_new_prepared_4
     ) %>% 
   dplyr::left_join(
     trps_meta, by = "trp_id"
@@ -278,9 +278,17 @@ trps_new_pointindex_3 <- trps_meta %>%
             index_total_coverage, " %"),
     label_text = lapply(label_text, htmltools::HTML))
 
-# trps_new_pointindex_4 <- trps_meta %>%
-#   dplyr::inner_join(point_index_new_prepared_4)
-
+trps_new_pointindex_4 <- trps_meta %>%
+  dplyr::inner_join(
+    point_index_new_prepared_4, by = "trp_id"
+  ) %>% 
+  dplyr::mutate(
+    label_text = 
+      paste(name, ", ",
+            road_category_and_number, "<br/>",
+            index_total_p, " %", "<br/>",
+            index_total_coverage, " %"),
+    label_text = lapply(label_text, htmltools::HTML))
 
 # Widening for table view
 pointindex_prepared_all_wide_total_index <- pointindex_prepared_all %>% 
@@ -427,12 +435,12 @@ trps_new_pointindex_3 %>%
   create_pointindex_map()
 ```
 
-
+### Desember
 
 ```{r map_trp_index_4, message=FALSE}
-# trps_new_pointindex_4 %>%
-#   dplyr::rename(index = index_total_p) %>%
-#   create_pointindex_map()
+trps_new_pointindex_4 %>%
+  dplyr::rename(index = index_total_p) %>%
+  create_pointindex_map()
 ```
 
 
@@ -504,6 +512,8 @@ pointindex_wide %>%
 # Lunheim 11
 # Breiviktunnelen 10, 11
 # Tuv sør 10, 11
+# Høgberget 6,7,8,9,10
+# Fåberg 11
 
 # Ekskluder:
 # Fv367 Kirkenes X E6 1,2,3,4
@@ -511,6 +521,13 @@ pointindex_wide %>%
 # Mebonden 6,7
 # Sørås - Lagunen, 6
 # Hesselbergs gate 10,11,12
+# Hageland 7,8,9,10,11
+# Jernbanetunnelen 7,8,9,10,11
+# Mågård 8,9
+# Haug 8
+# E6 Alnabru Sydgående Furuset Ulven 10,11,12
+# E6 Alnabru Nordgående Ulven Furuset 10,11,12
+# Meheia stasjon 9,10,11,12
 
 # Avekskluder:
 # Ørviksletta 5,6,7,8
@@ -521,4 +538,13 @@ pointindex_wide %>%
 # Sundland
 # Rotvollekra
 # Havnegata
+# Åshøgda
+# Brugata
+# Skolegata
+# Ringgata
+# Ringsaker grense
+# Alle Rv 163 Brobekk
+# Værstebrua
+# Borgenkrysset pårampe
+# Borgenkrysset avrampe
 ```
