@@ -234,6 +234,7 @@ hent_kommune_v3 <- function(kommunenr) {
 }
 
 hent_alle_kommuner_v3 <- function() {
+
   api_query <- paste0(nvdb_url_v3,
                       "/omrader/kommuner",
                       "?inkluder=kartutsnitt")#&srid=wgs84")
@@ -1145,3 +1146,98 @@ get_national_tourist_roads <- function() {
 
   return(turistveger)
 }
+
+
+# Trafikklenker ----
+#filter_string <- "&kommune=3030&vegsystemreferanse=Ev6"
+
+get_traffic_links <- function (filter_string) {
+
+  # TODO: paginering, sidestørrelse 300
+  # filter_string must be of type "&fylke=30&vegsystemreferanse=Ev6"
+  api_query <-
+    paste0(
+      nvdb_url_v3,
+      "/vegobjekter/967?inkluder=lokasjon,egenskaper",
+      filter_string
+    )
+
+  respons <- httr::GET(api_query,
+                       httr::add_headers(.headers = nvdb_v3_headers))
+
+  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+                      simplifyDataFrame = T,
+                      flatten = T)
+
+  trafikklenke_id <- uthenta$objekter %>%
+    dplyr::select(object_id = id, egenskaper) %>%
+    tidyr::unnest(egenskaper) %>%
+    dplyr::filter(id %in% c(12212)) %>%
+    dplyr::select(object_id, year = verdi)
+
+  vegreferanser <- uthenta$objekter %>%
+    dplyr::select(object_id = id, lokasjon.vegsystemreferanser) %>%
+    tidyr::unnest(lokasjon.vegsystemreferanser) %>%
+    dplyr::mutate(road = paste0(vegsystem.vegkategori, "v ", vegsystem.nummer)) %>%
+    dplyr::select(
+      object_id,
+      road,
+      road_reference = kortform,
+      road_category = vegsystem.vegkategori,
+      #separate_carriageways = 'strekning.adskilte_løp',
+      section_direction = strekning.retning,
+      intersection_direction = kryssystem.retning
+    ) %>%
+    dplyr::distinct()
+
+  # For å finne hvilke trper som ligger på strekningene
+  veglenkeposisjoner <- uthenta$objekter %>%
+    dplyr::select(object_id = id, lokasjon.stedfestinger) %>%
+    tidyr::unnest(lokasjon.stedfestinger) %>%
+    dplyr::select(
+      object_id,
+      veglenkesekvensid,
+      startposisjon,
+      sluttposisjon,
+      kortform
+    )
+
+  lengder <- uthenta$objekter %>%
+    dplyr::select(object_id = id, length_m = lokasjon.lengde)
+
+  geometri <- uthenta$objekter %>%
+    dplyr::select(object_id = id, lokasjon.geometri.wkt)
+
+  srid <- uthenta$objekter %>%
+    dplyr::select(object_id = id, lokasjon.geometri.srid)
+
+  trafikklenke_vegreferanser <- trafikklenke_id %>%
+    dplyr::left_join(vegreferanser, by = "object_id") %>%
+    dplyr::left_join(lengder, by = "object_id")
+
+  trafikklenke_veglenkeposisjoner <- trafikklenke_id %>%
+    dplyr::left_join(veglenkeposisjoner, by = "object_id") %>%
+    dplyr::left_join(lengder, by = "object_id")
+
+  trafikklenke_geometri <- trafikklenke_id %>%
+    dplyr::left_join(geometri, by = "object_id") %>%
+    dplyr::left_join(srid, by = "object_id") %>%
+    sf::st_as_sf(wkt = "lokasjon.geometri.wkt",
+                 crs = 5973,
+                 na.fail = FALSE) %>%
+    sf::st_zm(drop = T, what = "ZM") %>%
+    sf::st_transform("+proj=longlat +datum=WGS84")
+
+  trafikklenker <- list(
+    vegreferanser = trafikklenke_vegreferanser,
+    veglenkeposisjoner = trafikklenke_veglenkeposisjoner,
+    geometri = trafikklenke_geometri
+  )
+
+  return(trafikklenker)
+}
+
+#test <- get_traffic_links("&kommune=3030&vegsystemreferanse=Ev6")
+
+
+

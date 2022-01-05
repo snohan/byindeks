@@ -19,19 +19,19 @@ library(htmltools)
 ```{r get_data, include=FALSE}
 # Look at details in one county at a time
 
-# 30 Viken                  8 Trond
+# 30 Viken                  12 Trond
 #  3 Oslo                   12 Trond
 # 34 Innlandet              12 Snorre
-# 38 Vestfold og Telemark   11 Trond
-# 42 Agder                  11 Snorre
-# 11 Rogaland               11 Snorre
-# 46 Vestland               11 Trond
+# 38 Vestfold og Telemark   12 Trond
+# 42 Agder                  12 Snorre
+# 11 Rogaland               12 Snorre
+# 46 Vestland               12 Trond
 # 15 Møre og Romsdal        11 Snorre
 # 50 Trøndelag              11 Snorre
 # 18 Nordland               11 Snorre
 # 54 Troms og Finnmark      11 Snorre
 
-county_number_chosen <- 30
+county_number_chosen <- 15
 # Choose
 index_year <- 2021
 # Last published month
@@ -519,7 +519,7 @@ pointindex_wide %>%
 # Fv367 Kirkenes X E6 1,2,3,4
 # Storeidet 5,6,7
 # Mebonden 6,7
-# Sørås - Lagunen, 6
+# Sørås - Lagunen, 6, 12
 # Hesselbergs gate 10,11,12
 # Hageland 7,8,9,10,11
 # Jernbanetunnelen 7,8,9,10,11
