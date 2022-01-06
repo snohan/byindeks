@@ -26,12 +26,12 @@ library(htmltools)
 # 42 Agder                  12 Snorre
 # 11 Rogaland               12 Snorre
 # 46 Vestland               12 Trond
-# 15 Møre og Romsdal        11 Snorre
-# 50 Trøndelag              11 Snorre
-# 18 Nordland               11 Snorre
-# 54 Troms og Finnmark      11 Snorre
+# 15 Møre og Romsdal        12 Snorre
+# 50 Trøndelag              12 Snorre
+# 18 Nordland               12 Snorre
+# 54 Troms og Finnmark      12 Snorre
 
-county_number_chosen <- 15
+county_number_chosen <- 54
 # Choose
 index_year <- 2021
 # Last published month
@@ -457,6 +457,31 @@ pointindex_plot <- pointindex_prepared_all %>%
 pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 ```
 
+## Kurver per punkt for lette biler
+
+```{r pointindex_sparkline_light, fig.height=12, fig.width=10}
+pointindex_plot <- pointindex_prepared_all %>%
+  ggplot2::ggplot(aes(x = month, y = index_short, color = name)) +
+  geom_line() +
+  scale_x_discrete(breaks = seq(1, index_month + 1, 1)) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
+```
+
+## Kurver per punkt for tunge biler
+
+```{r pointindex_sparkline_heavy, fig.height=12, fig.width=10}
+pointindex_plot <- pointindex_prepared_all %>%
+  ggplot2::ggplot(aes(x = month, y = index_long, color = name)) +
+  geom_line() +
+  scale_x_discrete(breaks = seq(1, index_month + 1, 1)) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
+```
 
 
 ## Punktsjekk
@@ -528,6 +553,7 @@ pointindex_wide %>%
 # E6 Alnabru Sydgående Furuset Ulven 10,11,12
 # E6 Alnabru Nordgående Ulven Furuset 10,11,12
 # Meheia stasjon 9,10,11,12
+# Sørsundbrua 11,12
 
 # Avekskluder:
 # Ørviksletta 5,6,7,8

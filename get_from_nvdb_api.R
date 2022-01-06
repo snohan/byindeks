@@ -1206,7 +1206,7 @@ get_traffic_links <- function (filter_string) {
     dplyr::select(object_id = id, length_m = lokasjon.lengde)
 
   geometri <- uthenta$objekter %>%
-    dplyr::select(object_id = id, lokasjon.geometri.wkt)
+    dplyr::select(object_id = id, geometry_wkt = lokasjon.geometri.wkt)
 
   srid <- uthenta$objekter %>%
     dplyr::select(object_id = id, lokasjon.geometri.srid)
@@ -1222,7 +1222,7 @@ get_traffic_links <- function (filter_string) {
   trafikklenke_geometri <- trafikklenke_id %>%
     dplyr::left_join(geometri, by = "object_id") %>%
     dplyr::left_join(srid, by = "object_id") %>%
-    sf::st_as_sf(wkt = "lokasjon.geometri.wkt",
+    sf::st_as_sf(wkt = "geometry_wkt",
                  crs = 5973,
                  na.fail = FALSE) %>%
     sf::st_zm(drop = T, what = "ZM") %>%
