@@ -13,7 +13,7 @@ output:
       width: 1.0
       caption:
         style: Tabelltekst
-        pre: 'Tabell'
+        pre: 'Tabell '
         sep: '. '
       conditional:
         first_row: true
@@ -188,6 +188,9 @@ city_index_cumulative <- city_index_all %>%
   # dplyr::mutate(# setting all years to same is a trick to get the plot facet correct
   #               month_object = lubridate::make_date(year = 2000, month = month),
   #               month_name_short = lubridate::month(month_object, label = TRUE)) %>% 
+
+
+# Historic indices
 
 ```
 
@@ -371,5 +374,95 @@ city_index_cumulative %>%
 ```{r year_to_date_plot}
 # TODO: lollipop plot comparing each city, faceted by lenght_range
 ```
+
+
+# Historisk trafikkutvikling i Noreg
+Vegtrafikkindeksen er berekna kvart år sidan 1995, og tabellane nedan viser kumulativ trafikkutvikling for heile perioden. Tala er her berekna ved å setje basisåret til 100, og den prosentvise utviklinga vil ein då finne ved å trekkje frå 100.
+
+<br>
+
+```{r historic}
+historic <- read.csv2("city_traffic_index_historic.csv") %>% 
+  tibble::as_tibble()
+
+# light
+historic_l <- historic %>% 
+  dplyr::filter(length_range == "lette",
+                road_category == "ERFK") %>% 
+  dplyr::mutate(index_i = 1 + (index_p / 100),
+                cum_index_i = round(cumprod(index_i) * 100, digits = 1)
+                ) %>% 
+  dplyr::select(name, year, index_i)
+
+historic_l_oslo <- historic_l %>% 
+  dplyr::filter(name == "Osloområdet") %>% 
+  dplyr::select(-name) %>% 
+  dplyr::arrange(year) %>% 
+  calculate_all_index_chain_combinations() %>% 
+  dplyr::mutate(name = "Osloområdet")
+
+historic_l_trd <- historic_l %>% 
+  dplyr::filter(name == "Trondheim") %>% 
+  dplyr::select(-name) %>% 
+  dplyr::arrange(year) %>% 
+  calculate_all_index_chain_combinations() %>% 
+  dplyr::mutate(name = "Trondheim")
+
+historic_l_brg <- historic_l %>% 
+  dplyr::filter(name == "Bergensområdet") %>% 
+  dplyr::select(-name) %>% 
+  dplyr::arrange(year) %>% 
+  calculate_all_index_chain_combinations() %>% 
+  dplyr::mutate(name = "Bergensområdet")
+
+historic_l_all <- 
+  dplyr::bind_rows(
+    historic_l_oslo,
+    historic_l_trd,
+    historic_l_brg
+  ) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::mutate(
+    year = as.numeric(year)
+  )
+
+```
+
+I figuren nedenfor sammenlignes utviklingen for lette kjøretøy mellom alle byområdene.
+
+```{r compare_cities_light_2016}
+historic_l_all %>%
+  dplyr::select(name, year, index_ic = '2016') %>% 
+  ggplot2::ggplot(aes(x = year, y = index_ic, color = name)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_point() +
+  theme_bw() +
+  theme(
+    panel.grid.minor.x = element_blank(),
+    axis.title.y = element_text(
+      margin = margin(t = 0, r = 15, b = 0, l = 0)),
+    axis.title.x = element_text(
+      margin = margin(t = 15, r = 0, b = 0, l = 0))
+  ) +
+  #scale_color_brewer(palette = "Set1",
+  #                   name = "") +
+  scale_color_manual(values = c("Trondheim" = "#ed9300",
+                                "Osloområdet" = "#008ec2",
+                                "Bergensområdet" = "#444f55"),
+                     name = "") +
+  labs(x = NULL, y = "Indeks for trafikkmengde (%)",
+       caption = "Data: Statens vegvesen, fylkeskommunene, kommunene") +
+  ggtitle("Estimert endring i trafikkmengde (lette kjøretøy)",
+          subtitle = "Trafikkmengden i referanseåret er satt til 100")
+```
+
+```{r write}
+historic_l_all %>% 
+  writexl::write_xlsx(path = "byindeks_historisk.xlsx")
+```
+
+
+
+
 
 
