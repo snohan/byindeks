@@ -1153,13 +1153,14 @@ get_national_tourist_roads <- function() {
 
 get_traffic_links <- function (filter_string) {
 
-  # TODO: paginering, sidestørrelse 300
+  # TODO: paginering, sidestørrelse 300?
   # filter_string must be of type "&fylke=30&vegsystemreferanse=Ev6"
   api_query <-
     paste0(
       nvdb_url_v3,
       "/vegobjekter/967?inkluder=lokasjon,egenskaper",
-      filter_string
+      filter_string,
+      "&segmentering=false"
     )
 
   respons <- httr::GET(api_query,

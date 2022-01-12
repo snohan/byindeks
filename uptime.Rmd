@@ -36,7 +36,7 @@ points_first_commission_in_trafikkdata <- points_trp_api %>%
   dplyr::filter(registration_frequency == "CONTINUOUS",
                 status %in% c("OPERATIONAL", "NON_OPERATIONAL"),
                 is_visible == TRUE,
-                commission_from < "2021-05-01") %>% 
+                commission_from < "2022-01-01") %>% 
   dplyr::select(trp_id, trp_name, traffic_type, road_reference, county_name,
                 first_commission_in_trafikkdata = commission_from, 
                 operational_status = status, is_visible)
@@ -82,8 +82,8 @@ points_f <- points_first_commission_in_trafikkdata %>%
                 first_commission_in_trafikkdata) %>% 
   dplyr::mutate(area = county_name)
 
-points <- dplyr::bind_rows(points_er#, 
-                           #points_f
+points <- dplyr::bind_rows(points_er, 
+                           points_f
                            )
 ```
 
@@ -95,8 +95,12 @@ mdts_er <- get_mdt_for_trp_list(points_er$trp_id, 2021) %>%
 mdts_f <- get_mdt_for_trp_list(points_f$trp_id, 2021) %>% 
   dplyr::select(trp_id, year, month, coverage) 
 
-mdts <- dplyr::bind_rows(mdts_er#, mdts_f
-                         )
+mdts <- 
+  dplyr::bind_rows(
+    mdts_er, 
+    mdts_f
+  )
+
 # Må få med de som ikke har noen mdt i det hele tatt (skal telle negativt på oppetid)
 points_without_any_mdt <- points %>% 
   dplyr::filter(!(trp_id %in% mdts$trp_id)) %>% 
@@ -120,27 +124,35 @@ trp_mdt <- points %>%
 # TODO: filter based on last end of commission?
   dplyr::ungroup()
 
-write.csv(trp_mdt, file = "spesialuttak/trp_mdt_2021-08.csv", row.names = F)
+write.csv(trp_mdt, file = "spesialuttak/trp_mdt_2021.csv", row.names = F)
 ```
 
 ```{r calculate_uptime}
 uptime_geodata <- trp_mdt %>% 
   dplyr::filter(road_category %in% c("E", "R")) %>% 
-  dplyr::group_by(month_object, area) %>% 
-  dplyr::summarise(uptime = mean(coverage, na.rm = T),
-                   antall_punkt = n()) %>% 
+  dplyr::group_by(
+    #month_object,
+    area
+  ) %>% 
+  dplyr::summarise(
+    uptime = mean(coverage, na.rm = T),
+    antall_punkt = n()
+  ) %>% 
   dplyr::mutate(adm_category = "R")
 
 uptime_svv <- trp_mdt %>% 
   dplyr::filter(road_category %in% c("E", "R")) %>% 
-  dplyr::group_by(tertial) %>% 
+  #dplyr::group_by(tertial) %>% 
   dplyr::summarise(uptime = mean(coverage, na.rm = T)) %>% 
   dplyr::mutate(area = "Statens vegvesen",
                 adm_category = "R")
 
 uptime_f <- trp_mdt %>% 
   dplyr::filter(road_category %in% c("F")) %>% 
-  dplyr::group_by(month_object, area) %>% 
+  dplyr::group_by(
+  #  month_object, 
+    area
+  ) %>% 
   dplyr::summarise(uptime = mean(coverage, na.rm = T),
                    antall_punkt = n())  %>% 
   dplyr::mutate(adm_category = "F")
