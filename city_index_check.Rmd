@@ -23,8 +23,8 @@ library(htmltools)
 # Bergen 8952                 8 Snorre
 # Buskerudbyen 1952           8 Snorre
 # Grenland 955                8 Snorre
-# Kristiansand og omegn 957   4 Million
-# Nedre Glomma 953            8 Trond
+# Kristiansand og omegn 957   8 Million
+# Nedre Glomma 953            12 Trond
 # Nord-Jæren 952              8 Snorre
 # Oslo 959                    8 Trond
 # Trondheim 960               8 Snorre
@@ -32,8 +32,8 @@ library(htmltools)
 
 # Choose
 index_year <- 2021
-index_month <- 4 # latest published
-city_number <- 957
+index_month <- 8 # latest published
+city_number <- 959
 
 # Fetch
 city_index <- get_published_index_for_months(city_number, index_year, index_month)
@@ -58,6 +58,30 @@ city_trps_meta <- points %>%
                 #section_number, subsection_number, meter,
                 #intersection_part_number, intersection_meter,
                 county_name, municipality_name, lat, lon)
+
+# TRP device types
+trp_devices <- 
+  readRDS("H:/Programmering/R/trafikkdata/trs_trp/trp_device_types.rds")
+
+city_trp_devices <-
+  city_trps_meta %>% 
+  dplyr::left_join(
+    trp_devices,
+    by = "trp_id"
+  ) %>% 
+  dplyr::filter(
+    device_type == "EMU",
+    is.na(valid_to) | valid_to > "2020-01-01T00:00:00"
+  ) %>% 
+  dplyr::select(
+    trp_id,
+    name,
+    road_category_and_number,
+    municipality_name,
+    trs_id,
+    device_type
+  ) %>% 
+  dplyr::distinct()
 
 ## AADT ----
 adt <- get_aadt_by_length_for_trp_list(city_trps_meta$trp_id)
@@ -163,16 +187,56 @@ pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
     diff_total_short = round(index_short - index_total_p, digits = 1))
      
 city_trps_new_pointindex <- city_trps_meta %>% 
-  dplyr::left_join(point_index_new_prepared)
+  dplyr::left_join(
+    point_index_new_prepared,
+    by = "trp_id"
+  ) %>% 
+  dplyr::mutate(
+    label_text = 
+      paste(name, ", ",
+            road_category_and_number, "<br/>",
+            index_total_p, " %", "<br/>",
+            index_total_coverage, " %"),
+    label_text = lapply(label_text, htmltools::HTML))
 
 city_trps_new_pointindex_2 <- city_trps_meta %>% 
-  dplyr::left_join(point_index_new_prepared_2)
+  dplyr::left_join(
+    point_index_new_prepared_2,
+    by = "trp_id"
+  ) %>% 
+  dplyr::mutate(
+    label_text = 
+      paste(name, ", ",
+            road_category_and_number, "<br/>",
+            index_total_p, " %", "<br/>",
+            index_total_coverage, " %"),
+    label_text = lapply(label_text, htmltools::HTML))
 
 city_trps_new_pointindex_3 <- city_trps_meta %>% 
-  dplyr::left_join(point_index_new_prepared_3)
+  dplyr::left_join(
+    point_index_new_prepared_3,
+      by = "trp_id"
+  ) %>% 
+  dplyr::mutate(
+    label_text = 
+      paste(name, ", ",
+            road_category_and_number, "<br/>",
+            index_total_p, " %", "<br/>",
+            index_total_coverage, " %"),
+    label_text = lapply(label_text, htmltools::HTML))
 
 city_trps_new_pointindex_4 <- city_trps_meta %>% 
-  dplyr::left_join(point_index_new_prepared_4)
+  dplyr::left_join(
+    point_index_new_prepared_4,
+      by = "trp_id"
+  ) %>% 
+  dplyr::mutate(
+    label_text = 
+      paste(name, ", ",
+            road_category_and_number, "<br/>",
+            index_total_p, " %", "<br/>",
+            index_total_coverage, " %"),
+    label_text = lapply(label_text, htmltools::HTML))
 
 # city_trps_new_pointindex_5 <- city_trps_meta %>% 
 #   dplyr::left_join(point_index_new_prepared_5)

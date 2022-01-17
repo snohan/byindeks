@@ -516,15 +516,21 @@ get_trs_and_trp_id <- function() {
 
   response_parsed <-
     get_via_httr(api_query) %>%
-    tidyr::unnest(cols =
-                    c("data.trafficRegistrationStations.trafficRegistrationPoints"),
-                  keep_empty = TRUE) %>%
-    dplyr::select(trs_id = data.trafficRegistrationStations.id,
-                  trs_name = data.trafficRegistrationStations.name,
-                  trs_status = data.trafficRegistrationStations.operationalStatus,
-                  trs_type = data.trafficRegistrationStations.stationType,
-                  trs_traffic_type = data.trafficRegistrationStations.trafficType,
-                  trp_id = id)
+    tidyr::unnest(
+      cols = c("data.trafficRegistrationStations.trafficRegistrationPoints"),
+      keep_empty = TRUE
+    ) %>%
+    dplyr::select(
+      trs_id = data.trafficRegistrationStations.id,
+      trs_name = data.trafficRegistrationStations.name,
+      trs_status = data.trafficRegistrationStations.operationalStatus,
+      trs_type = data.trafficRegistrationStations.stationType,
+      trs_traffic_type = data.trafficRegistrationStations.trafficType,
+      trp_id = id
+    ) %>%
+    dplyr::mutate(
+      trs_id = as.character(trs_id)
+    )
 
   return(response_parsed)
 }
@@ -1135,16 +1141,26 @@ get_trs_device <- function() {
       }
     }"
 
-  response_parsed <- get_via_httr(api_query) %>%
-    tidyr::unnest(cols = c(2)) %>%
-    dplyr::rename(trs_id = data.trafficRegistrationStations.id,
-                  valid_from = validFrom,
-                  valid_to = validTo,
-                  device_type = deviceType) %>%
-    dplyr::mutate(trs_id = as.numeric(trs_id),
-                  valid_from = parse_and_floor_date(valid_from, "seconds"),
-                  valid_to = parse_and_floor_date(valid_to, "seconds")) %>%
-    dplyr::arrange(trs_id, valid_from)
+  response_parsed <-
+    get_via_httr(api_query) %>%
+    tidyr::unnest(
+      cols = c(2)
+      ) %>%
+    dplyr::rename(
+      trs_id = data.trafficRegistrationStations.id,
+      valid_from = validFrom,
+      valid_to = validTo,
+      device_type = deviceType
+    ) %>%
+    dplyr::mutate(
+      #trs_id = as.numeric(trs_id),
+      valid_from = parse_and_floor_date(valid_from, "seconds"),
+      valid_to = parse_and_floor_date(valid_to, "seconds")
+    ) %>%
+    dplyr::arrange(
+      trs_id,
+      valid_from
+    )
 
   return(response_parsed)
 }

@@ -544,7 +544,7 @@ pointindex_wide %>%
 # Fv367 Kirkenes X E6 1,2,3,4
 # Storeidet 5,6,7
 # Mebonden 6,7
-# Sørås - Lagunen, 6, 12
+# Sørås - Lagunen, 6
 # Hesselbergs gate 10,11,12
 # Hageland 7,8,9,10,11
 # Jernbanetunnelen 7,8,9,10,11
@@ -573,4 +573,5 @@ pointindex_wide %>%
 # Værstebrua
 # Borgenkrysset pårampe
 # Borgenkrysset avrampe
+# Natland bomstasjon
 ```

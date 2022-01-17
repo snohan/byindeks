@@ -946,10 +946,11 @@ get_trp_mdt_by_direction <- function(trp_id, mdt_year) {
 #mdt_test_2 <- get_trp_mdt_by_lane("91582V930281", "2020")
 
 #trp_id <- "66220V72824"
-#trp_id <- "01316V804837"
+#trp_id <- "08132V1984223"
 #trp_adt <- getTrpAadt_byLength(trp_id)
 
 get_aadt_by_length_for_trp <- function(trp_id) {
+
   # Get all AADTs for a trp
   query_aadt <- paste0(
     "query trp_adt {
@@ -971,10 +972,7 @@ get_aadt_by_length_for_trp <- function(trp_id) {
               }
               volume {
                 average
-                confidenceInterval {
-                  lowerBound
-                  upperBound
-                }
+                standardDeviation
               }
             }
             byLengthRange {
@@ -985,10 +983,6 @@ get_aadt_by_length_for_trp <- function(trp_id) {
                 volume {
                   average
                   standardDeviation
-                  confidenceInterval{
-                    lowerBound
-                    upperBound
-                  }
                 }
               }
             }
@@ -1003,58 +997,59 @@ get_aadt_by_length_for_trp <- function(trp_id) {
   myqueries <- Query$new()
   myqueries$query("aadts", query_aadt)
 
-  trp_aadt <- cli$exec(myqueries$queries$aadts) %>%
-    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
+  trp_aadt <-
+    cli$exec(myqueries$queries$aadts) %>%
+    jsonlite::fromJSON(
+      simplifyDataFrame = T,
+      flatten = T
+    )
 
-  trp_aadt_length <- length(trp_aadt$data$trafficData$volume$average$daily$byYear$byLengthRange)
+  trp_aadt_length <-
+    length(trp_aadt$data$trafficData$volume$average$daily$byYear$byLengthRange)
 
   if(is_empty(trp_aadt$data$trafficData$volume$average$daily$byYear) |
      is_empty(trp_aadt$data$trafficData$volume$average$daily$byYear$byLengthRange[[trp_aadt_length]])
      ){
+    # if no total aadt
+    # if no length range aadt
     trp_aadt <- data.frame()
   }else{
     trp_aadt <- trp_aadt %>%
       as.data.frame() %>%
-      tidyr::unnest(cols = c(data.trafficData.volume.average.daily.byYear.byLengthRange)) %>%
+      tidyr::unnest(
+        cols = c(data.trafficData.volume.average.daily.byYear.byLengthRange),
+        names_sep = "."
+      ) %>%
+      # rename only columns that will exist if solely old data
       dplyr::rename(
         trp_id = data.trafficData.id,
         year = data.trafficData.volume.average.daily.byYear.year,
-        length_range = lengthRange.representation,
-        aadt_length_range = total.volume.average,
-        sd_length_range = total.volume.standardDeviation,
+        length_range = data.trafficData.volume.average.daily.byYear.byLengthRange.lengthRange.representation,
+        aadt_length_range = data.trafficData.volume.average.daily.byYear.byLengthRange.total.volume.average,
+        # include sd to test if all data are old in next step
+        sd_length_range = data.trafficData.volume.average.daily.byYear.byLengthRange.total.volume.standardDeviation,
         aadt_total = data.trafficData.volume.average.daily.byYear.total.volume.average
-      ) %>%
-      dplyr::mutate(
-        aadt_ci_lowerbound_length_range = NA,
-        aadt_ci_upperbound_length_range = NA,
-        aadt_valid_length = NA,
-        coverage = NA,
-        aadt_ci_lowerbound_total = NA,
-        aadt_ci_upperbound_total = NA
       ) %>%
       dplyr::mutate(trp_id = as.character(trp_id))
   }
 
-  if(all(is.na(trp_aadt$total.volume.standardDeviation))
+  if(all(is.na(trp_aadt$sd_length_range))
     ){
-    trp_aadt <- trp_aadt
+    trp_aadt <-
+      trp_aadt %>%
+      # if all old data, create empty columns (they are missing from API response)
+      dplyr::mutate(
+        aadt_valid_length = NA,
+        coverage = NA
+      )
   }else{
-    trp_aadt <- trp_aadt %>%
+    trp_aadt <-
+      trp_aadt %>%
       dplyr::rename(
-        trp_id = data.trafficData.id,
-        year = data.trafficData.volume.average.daily.byYear.year,
-        length_range = lengthRange.representation,
-        aadt_length_range = total.volume.average,
-        sd_length_range = total.volume.standardDeviation,
-        aadt_ci_lowerbound_length_range = total.volume.confidenceInterval.lowerBound,
-        aadt_ci_upperbound_length_range = total.volume.confidenceInterval.upperBound,
         aadt_valid_length = data.trafficData.volume.average.daily.byYear.total.validLengthVolume.average,
         coverage = data.trafficData.volume.average.daily.byYear.total.coverage.percentage,
-        aadt_total = data.trafficData.volume.average.daily.byYear.total.volume.average,
-        aadt_ci_lowerbound_total = data.trafficData.volume.average.daily.byYear.total.volume.confidenceInterval.lowerBound,
-        aadt_ci_upperbound_total = data.trafficData.volume.average.daily.byYear.total.volume.confidenceInterval.upperBound
-      ) %>%
-      dplyr::mutate(trp_id = as.character(trp_id))
+        sd_total = data.trafficData.volume.average.daily.byYear.total.volume.standardDeviation
+      )
   }
 
   return(trp_aadt)
@@ -1183,31 +1178,30 @@ get_mdt_by_direction_for_trp_list <- function(trp_list, mdt_year) {
 #test_adt <- getAdtForpoints_by_length(test_list)
 
 get_aadt_by_length_for_trp_list <- function(trp_list) {
+
   number_of_points <- length(trp_list)
   data_points <- data.frame()
   trp_count <- 1
 
   while (trp_count <= number_of_points) {
-    data_points <- bind_rows(data_points,
-                             get_aadt_by_length_for_trp(trp_list[trp_count]))
+
+    data_points <-
+      bind_rows(
+        data_points,
+        get_aadt_by_length_for_trp(trp_list[trp_count])
+      )
+
     trp_count <- trp_count + 1
   }
 
   number_of_digits = -1
 
   trp_adt <- data_points %>%
-    dplyr::mutate(aadt_valid_length = round(aadt_valid_length, digits = number_of_digits),
-                  aadt_total = round(aadt_total, digits = number_of_digits),
-                  aadt_length_range = round(aadt_length_range, digits = number_of_digits),
-                  aadt_ci_lowerbound_length_range =
-                    round(aadt_ci_lowerbound_length_range, digits = number_of_digits),
-                  aadt_ci_upperbound_length_range =
-                    round(aadt_ci_upperbound_length_range, digits = number_of_digits),
-                  aadt_ci_upperbound_total =
-                    round(aadt_ci_upperbound_total, digits = number_of_digits),
-                  aadt_ci_lowerbound_total =
-                    round(aadt_ci_lowerbound_total, digits = number_of_digits)
-                  )
+    dplyr::mutate(
+      aadt_valid_length = round(aadt_valid_length, digits = number_of_digits),
+      aadt_total = round(aadt_total, digits = number_of_digits),
+      aadt_length_range = round(aadt_length_range, digits = number_of_digits)
+    )
 
   return(trp_adt)
 }

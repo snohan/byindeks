@@ -72,8 +72,8 @@ points <- get_points() %>%
 # Trondheim stop
 
 # Choose
-index_month <- 8 # the one to be published now
-city_number <- 957
+index_month <- 12 # the one to be published now
+city_number <- 953
 
 # Pointindices ----
 # TODO: TRPs might differ from year to year!
@@ -214,17 +214,54 @@ n_points_per_month <- dplyr::bind_rows(
 ## AADT ----
 adt <- get_aadt_by_length_for_trp_list(city_trps)
 
-adt_filtered <- adt %>%
-  dplyr::filter(length_range == "[..,5.6)") %>%
-  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
-  dplyr::filter(length_quality > 90) %>%
-  dplyr::filter(coverage > 50) %>%
+adt_filtered <-
+  adt %>%
+  dplyr::filter(
+    length_range %in% c("[..,5.6)", "[5.6,..)")
+    ) %>%
+  dplyr::mutate(
+    length_quality = round(aadt_valid_length / aadt_total * 100)
+  ) %>%
+  #dplyr::filter(
+  #  length_quality > 90
+  #) %>%
+  dplyr::filter(
+    coverage > 50
+  ) %>%
+  dplyr::mutate(
+    length_range =
+      dplyr::case_when(
+        length_range == "[..,5.6)" ~ "lette",
+        length_range == "[5.6,..)" ~ "tunge",
+        TRUE ~ length_range
+      )
+  ) %>%
+  dplyr::select(
+    trp_id,
+    year,
+    length_range,
+    aadt_length_range,
+    coverage,
+    aadt_total,
+    sd_total,
+    length_quality
+  ) %>%
+  tidyr::pivot_wider(
+    names_from = "length_range",
+    names_prefix = "aadt_",
+    values_from = "aadt_length_range"
+  ) %>%
   dplyr::group_by(trp_id) %>%
-  #dplyr::filter(year >= 2019) %>%
   dplyr::filter(year == max(year)) %>%
-  dplyr::select(trp_id, aadt_length_range, year) %>%
-  dplyr::rename(adt = 2)
-
+  dplyr::select(
+    trp_id,
+    year,
+    coverage,
+    length_quality,
+    aadt_total,
+    aadt_lette,
+    aadt_tunge
+  )
 
 ### Bergen ----
 adt_manual <- data.frame(
