@@ -21,14 +21,14 @@ library(htmltools)
 
 # City numbers
 # Bergen 8952                 8 Snorre
-# Buskerudbyen 1952           8 Snorre
-# Grenland 955                8 Snorre
-# Kristiansand og omegn 957   8 Million
+# Buskerudbyen 1952           12 Snorre
+# Grenland 955                12 Snorre
+# Kristiansand og omegn 957   12 Million
 # Nedre Glomma 953            12 Trond
-# Nord-Jæren 952              8 Snorre
-# Oslo 959                    8 Trond
+# Nord-Jæren 952              12 Snorre
+# Oslo 959                    12 Trond
 # Trondheim 960               8 Snorre
-# Tromsø 961                  8 Snorre
+# Tromsø 961                  12 Snorre
 
 # Choose
 index_year <- 2021
@@ -82,6 +82,12 @@ city_trp_devices <-
     device_type
   ) %>% 
   dplyr::distinct()
+
+# city_trp_devices %>% 
+#   write.csv2(
+#     file = "byindekspunkter_med_emu3_buskerud.csv",
+#     row.names = FALSE
+#   )
 
 ## AADT ----
 adt <- get_aadt_by_length_for_trp_list(city_trps_meta$trp_id)
@@ -449,7 +455,44 @@ pointindex_wide %>%
       lengthMenu = c(21, 42, 70),
       autoWidth = TRUE))
 
-# Ekskluderes:
+# OSlo
+# Før reberegning av 30 punkter, var det for 2021:
+# årsindeksen for lette 2,4, alle 2,5
+# dekningsgrad for lette 60,3, alle 80,9
+
+# NJ
+# reberegn
+# Austråttunnelen
+
+# Grenland
+# Reberegn
+# Menstadbrua
+
+# Bergen
+# Eks
+# Ibsensgate 10-12
+#
+# Reberegn 
+# Blindheim
+# Osterøybrua
+# HErland
+# Trengereidtunnelen
+# Vallaheiene
+# Moberg v
+# Flesland
+# Knarvik - ISdalstø
+# Gullbotn
+# Fana Kirkevoll
+# Fjell kirke
+# Juvik n
+# Kalfarbakken
+#
+# Ta en siste sjekk til slutt
+
+# TRD
+# Ekskl
+# Bomstasjon N for Sluppen bru 5-8
+# Bom Bjørndalen 5-8
 ```
 
 

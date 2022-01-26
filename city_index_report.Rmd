@@ -41,20 +41,20 @@ source("rmd_setup.R")
 ```{r get_data, include = FALSE}
 # City numbers
 
-# Bergen                 8952 (2018) 08
-# Nord-Jæren             952 (2017) 08
+# Bergen                8952 (2018) 08
+# Nord-Jæren             952 (2017) 12
 # Oslo                   959 (2018) 08
 
-# Buskerudbyen          1952 (2016) 08
+# Buskerudbyen          1952 (2016) 12
 # Grenland               955 (2016) 08
 # Kristiansand og omegn  957 (2016) 08
 # Nedre Glomma           953 (2016) 12
-# Tromsø                 961 (2016) 08
+# Tromsø                 961 (2016) 12
 
 # Trondheim              960 (2019) 08
 
 # Choose city number:
-city_number <- 953
+city_number <- 957
 
 city_number_county_name <- 
   tibble::tibble(
@@ -130,20 +130,20 @@ traffic_file <- paste0("trafikkforhold_", city_number, ".Rmd")
 # Egen variant for KRS kommune, dvs. gamle kommunen før den ble 
 # slått sammen med Songdalen og Søgne
 # 
-# city_info_kommune <-
-#   read.csv2("data_indexpoints_tidy/byindeks_956.csv") %>%
-#   dplyr::mutate(month_object = lubridate::make_date(year = year, month = month),
-#                 month_name_short = lubridate::month(month_object, label = TRUE),
-#                 period = paste0("jan-", month_name_short))
-# 
-# city_monthly_kommune <-
-#   read.csv2("data_indexpoints_tidy/byindeks_maanedlig_956.csv") %>%
-#   dplyr::mutate(# setting all years to same is a trick to get the plot facet correct
-#                 month_object = lubridate::make_date(year = 2000, month = month),
-#                 month_name_short = lubridate::month(month_object, label = TRUE))
-# 
-# city_36_month_kommune <-
-#   read.csv2("data_indexpoints_tidy/byindeks_36_maaneder_956.csv")
+city_info_kommune <-
+  read.csv2("data_indexpoints_tidy/byindeks_956.csv") %>%
+  dplyr::mutate(month_object = lubridate::make_date(year = year, month = month),
+                month_name_short = lubridate::month(month_object, label = TRUE),
+                period = paste0("jan-", month_name_short))
+
+city_monthly_kommune <-
+  read.csv2("data_indexpoints_tidy/byindeks_maanedlig_956.csv") %>%
+  dplyr::mutate(# setting all years to same is a trick to get the plot facet correct
+                month_object = lubridate::make_date(year = 2000, month = month),
+                month_name_short = lubridate::month(month_object, label = TRUE))
+
+city_36_month_kommune <-
+  read.csv2("data_indexpoints_tidy/byindeks_36_maaneder_956.csv")
 # Slutt Kristisand
 ```
 
@@ -246,18 +246,18 @@ create_city_36_index_table(city_36_month)
 # TODO: SD and SE
 ```
 
-<!-- Kristiansand
+<!-- Kristiansand -->
 Tilsvarende for gamle Kristiansand kommune.
 
 
 <br>
 
 ```{r city_table_36_kommune}
-#create_city_36_index_table(city_36_month_kommune)
+create_city_36_index_table(city_36_month_kommune)
 # TODO: CI
 ```
 
-Kristiansand -->
+<!-- Kristiansand -->
 
 ```{r city_plot_36}
 #create_city_36_index_table(city_36_month)
@@ -273,13 +273,13 @@ Endring i trafikkmengde er også beregnet for hele kalenderår. Tabellen nedenfo
 create_city_index_table_sd(city_info)
 ```
 
-<!-- Kristiansand
+<!-- Kristiansand -->
 <br>
 ```{r city_table_kommune}
-#create_city_index_table_sd(city_info_kommune) %>%
-#set_caption("Estimert endring i trafikkmengde i gamle Kristiansand kommune.",
-#              autonum = table_numbers,
-#              style = "Tabelltekst")
+create_city_index_table_sd(city_info_kommune) %>%
+set_caption("Estimert endring i trafikkmengde i gamle Kristiansand kommune.",
+             autonum = table_numbers,
+             style = "Tabelltekst")
 ```
 <!-- Kristiansand -->
 
@@ -297,7 +297,7 @@ For Buskerudbyen --
 <br>
 
 ### Trafikken på Ev 18
-Til sammenligning viser tabellen nedenfor endringen i trafikkmengden på Ev 18 i samme periode.
+Til sammenligning viser tabellen nedenfor endringen i trafikkmengden for lette biler på Ev 18 i samme periode.
 
 <br>
 ```{r e18_buskerudbyen}
@@ -517,25 +517,25 @@ city_monthly %>%
 
 <br>
 
-<!-- Kristiansand
+<!-- Kristiansand -->
 ```{r monthly_city_index_kommune, fig.width=6, fig.height=7, fig.cap="Estimert endring i trafikkmengde per måned i gamle Kristiansand kommune."}
 
-# city_monthly_kommune %>%
-#    ggplot2::ggplot(aes(x = month_object, y = index_p)) +
-#    ggplot2::geom_line() +
-#    ggplot2::geom_point() +
-#    ggplot2::facet_grid(rows = vars(year)) +
-#    theme_light() +
-#    theme(axis.text.x = element_text(angle = 90),
-#          panel.grid.minor.x = element_blank(),
-#          #legend.position = "bottom"
-#          ) +
-#    scale_x_date(breaks = scales::breaks_width("months"),
-#                 labels = scales::label_date("%b")) +
-#    labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
-#         caption = caption_credit) +
-#    ggtitle("Estimert endring i trafikkmengde per måned, lette kjøretøy",
-#             subtitle = "Trafikkmengde sammenlignet med samme måned året før")
+city_monthly_kommune %>%
+   ggplot2::ggplot(aes(x = month_object, y = index_p)) +
+   ggplot2::geom_line() +
+   ggplot2::geom_point() +
+   ggplot2::facet_grid(rows = vars(year)) +
+   theme_light() +
+   theme(axis.text.x = element_text(angle = 90),
+         panel.grid.minor.x = element_blank(),
+         #legend.position = "bottom"
+         ) +
+   scale_x_date(breaks = scales::breaks_width("months"),
+                labels = scales::label_date("%b")) +
+   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
+        caption = caption_credit) +
+   ggtitle("Estimert endring i trafikkmengde per måned, lette kjøretøy",
+            subtitle = "Trafikkmengde sammenlignet med samme måned året før")
 ```
 <!-- Kristiansand -->
 

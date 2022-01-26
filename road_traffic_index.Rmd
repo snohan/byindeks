@@ -13,7 +13,7 @@ output:
       width: 1.0
       caption:
         style: Tabelltekst
-        pre: 'Tabell'
+        pre: 'Tabell '
         sep: '. '
       conditional:
         first_row: true
@@ -63,7 +63,7 @@ points <- get_points() %>%
   dplyr::left_join(counties, by = "county_name")
 
 this_year <- 2021
-latest_month_number <- 8
+latest_month_number <- 12
 
 # Fetching published index from Traffic Data API
 index_this_year <- get_published_road_traffic_index_for_months(962, this_year, latest_month_number)
@@ -801,7 +801,7 @@ historic_all_combinations %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Kumulativ trafikkutvikling i Noreg frå 1995 til 2020.",
+  set_caption("Kumulativ trafikkutvikling i Noreg frå 1995 til 2021.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -827,7 +827,7 @@ historic_all_combinations %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Kumulativ trafikkutvikling i Noreg frå 2005 til 2020.",
+  set_caption("Kumulativ trafikkutvikling i Noreg frå 2005 til 2021.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -837,7 +837,7 @@ historic_all_combinations %>%
 ```{r historic_all_table_3}
 historic_all_combinations %>% 
   dplyr::slice(-(1:20)) %>% 
-  dplyr::select(1, 22:26) %>% 
+  dplyr::select(1, 22:27) %>% 
   flextable::flextable() %>%
   colformat_double(j = 2:6, digits = 1) %>%
   set_header_labels(year = "År") %>%
@@ -853,7 +853,7 @@ historic_all_combinations %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Kumulativ trafikkutvikling i Noreg frå 2015 til 2020.",
+  set_caption("Kumulativ trafikkutvikling i Noreg frå 2015 til 2021.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -877,7 +877,7 @@ historic_f_all_combinations %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Kumulativ trafikkutvikling på fylkesvegar i Noreg frå 2015 til 2020.",
+  set_caption("Kumulativ trafikkutvikling på fylkesvegar i Noreg frå 2015 til 2021.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -902,7 +902,7 @@ historic_er_all_combinations %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Kumulativ trafikkutvikling på Europa- og riksvegar i Noreg frå 2015 til 2020.",
+  set_caption("Kumulativ trafikkutvikling på Europa- og riksvegar i Noreg frå 2015 til 2021.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -928,7 +928,7 @@ historic_l_combinations %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 1998 til 2020.",
+  set_caption("Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 1998 til 2021.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -954,7 +954,7 @@ historic_l_combinations %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2008 til 2020.",
+  set_caption("Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2008 til 2021.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -964,7 +964,7 @@ historic_l_combinations %>%
 ```{r historic_l_table_3}
 historic_l_combinations %>% 
   dplyr::slice(-(1:20)) %>% 
-  dplyr::select(1, 22:23) %>% 
+  dplyr::select(1, 22:24) %>% 
   flextable::flextable() %>%
   colformat_double(j = 2:3, digits = 1) %>%
   set_header_labels(year = "År") %>%
@@ -980,7 +980,7 @@ historic_l_combinations %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2018 til 2020.",
+  set_caption("Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2018 til 2021.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -1005,7 +1005,7 @@ historic_h_combinations %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 1998 til 2020.",
+  set_caption("Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 1998 til 2021.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -1031,7 +1031,7 @@ historic_h_combinations %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2008 til 2020.",
+  set_caption("Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2008 til 2021.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
@@ -1041,7 +1041,7 @@ historic_h_combinations %>%
 ```{r historic_h_table_3}
 historic_h_combinations %>% 
   dplyr::slice(-(1:20)) %>% 
-  dplyr::select(1, 22:23) %>% 
+  dplyr::select(1, 22:24) %>% 
   flextable::flextable() %>%
   colformat_double(j = 2:3, digits = 1) %>%
   set_header_labels(year = "År") %>%
@@ -1057,7 +1057,7 @@ historic_h_combinations %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
           padding.bottom = .3) %>%
-  set_caption("Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2018 til 2020.",
+  set_caption("Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2018 til 2021.",
                autonum = table_numbers,
                style = "Tabelltekst")
 ```

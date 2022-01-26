@@ -73,7 +73,7 @@ points <- get_points() %>%
 
 # Choose
 index_month <- 12 # the one to be published now
-city_number <- 953
+city_number <- 957
 
 # Pointindices ----
 # TODO: TRPs might differ from year to year!
@@ -325,10 +325,9 @@ adt_manual <- data.frame()
 
 ### Kristiansand ----
 adt_manual <- data.frame(
-  trp_id = c("33412V121301",
-             "47254V121508"),
-  adt = c(40000, 8000),
-  year = c(2017, 2017)
+  trp_id = c("33412V121301"),
+  aadt_lette = c(40000),
+  year = c(2017)
 )
 
 ### Nedre Glomma ----

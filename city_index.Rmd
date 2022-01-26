@@ -63,19 +63,19 @@ source("get_from_nvdb_api.R")
 
 city_indices <- dplyr::bind_rows(
   # Bergen
-  get_published_index(958, 2017, 12),
-  get_published_index(958, 2018, 12),
-  get_published_index(8952, 2019, 12),
-  get_published_index(8952, 2020, 12),
-  get_published_index(8952, 2021, 8)#,
+  # get_published_index(958, 2017, 12),
+  # get_published_index(958, 2018, 12),
+  # get_published_index(8952, 2019, 12),
+  # get_published_index(8952, 2020, 12),
+  # get_published_index(8952, 2021, 8)#,
   # Nord-Jæren
   #get_published_index(952, 2019, 12),
   #get_published_index(952, 2020, 12),
   #get_published_index(952, 2021, 8),
   # Oslo
-  #get_published_index(959, 2019, 12),
-  #get_published_index(959, 2020, 12),
-  #get_published_index(959, 2021, 8)
+  get_published_index(959, 2019, 12),
+  get_published_index(959, 2020, 12),
+  get_published_index(959, 2021, 12)
   ) 
 
 city_indices_tidy <- city_indices %>% 
@@ -146,15 +146,17 @@ city_index_cumulative <- city_index_all %>%
                      values_from = index_i) %>% 
   dplyr::mutate(
     # TODO: generalize? cumprod?
-    cum_year_2017 = year_2016 * year_2017,
-    cum_year_2018 = cum_year_2017 * year_2018,
-    cum_year_2019 = cum_year_2018 * year_2019,
+    #cum_year_2017 = year_2016 * year_2017,
+    cum_year_2019 = year_2018 * year_2019,
+    #cum_year_2018 = cum_year_2017 * year_2018,
+    #cum_year_2019 = cum_year_2018 * year_2019,
     cum_year_2020 = cum_year_2019 * year_2020,
     cum_year_2021 = cum_year_2020 * year_2021
     # Add years here!
     ) %>% 
   dplyr::select(area_name, length_range,
-                cum_year_2016 = year_2016,
+                #cum_year_2016 = year_2016,
+                cum_year_2018 = year_2018,
                 starts_with("cum_year")) %>% 
   dplyr::mutate(across(where(is.numeric), ~ . * 100)) %>% 
   tidyr::pivot_longer(cols = starts_with("cum_year"), 
@@ -258,9 +260,9 @@ Kumulativ endring i trafikkmengde fra referanseår er vist i tabellen nedenfor. 
 city_index_cumulative %>%
   tidyr::pivot_wider(names_from = year, values_from = index_ic) %>% 
   flextable() %>%
-  colformat_double(j = 3:8, digits = 0) %>%
+  #colformat_double(j = 3:8, digits = 0) %>%
   set_header_labels(area_name = "Byområde", length_range = "Kjøretøyklasse") %>% 
-  align(i = 1, j = 3:8, align = "right", part = "header") %>%
+  #align(i = 1, j = 3:8, align = "right", part = "header") %>%
   bold(part = "header") %>%
   fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
