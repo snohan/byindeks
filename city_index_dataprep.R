@@ -73,7 +73,7 @@ points <- get_points() %>%
 
 # Choose
 index_month <- 12 # the one to be published now
-city_number <- 957
+city_number <- 959
 
 # Pointindices ----
 # TODO: TRPs might differ from year to year!
@@ -204,8 +204,8 @@ n_points_per_month <- dplyr::bind_rows(
   dplyr::select(trp_id, year, month, index = index_short) %>%
   dplyr::bind_rows(
     # Pointindex from old csv files here:
-    pointindex_17_monthly,
-    pointindex_18_monthly,
+    #pointindex_17_monthly,
+    #pointindex_18_monthly,
     pointindex_19_monthly
   ) %>%
   dplyr::group_by(year, month) %>%
@@ -348,8 +348,8 @@ this_citys_trp_index <- points %>%
                 lat, lon, road_link_position) %>%
   dplyr::left_join(trp_id_msnr) %>%
   left_join(adt_all) %>%
-  left_join(pointindex_17) %>%
-  left_join(pointindex_18) %>%
+  #left_join(pointindex_17) %>%
+  #left_join(pointindex_18) %>%
   left_join(pointindex_19) %>%
   left_join(pointindex_20) %>%
   left_join(pointindex_21)
@@ -415,8 +415,8 @@ city_year_to_date_21 <- city_index_2021 %>%
                 period == "year_to_date")
 
 city_index <- bind_rows(
-  city_year_to_date_17,
-  city_year_to_date_18,
+  #city_year_to_date_17,
+  #city_year_to_date_18,
   city_year_to_date_19,
   city_year_to_date_20,
   city_year_to_date_21) %>%
@@ -424,8 +424,8 @@ city_index <- bind_rows(
          index_i = index_converter(index_p),
          variance = standard_deviation^2,
          n_points = c(
-           n_17,
-           n_18,
+           #n_17,
+           #n_18,
            n_19,
            n_20,
            n_21),
@@ -458,8 +458,8 @@ years_1_5 <- bind_rows(years_1_4, slice(city_index, 5)) %>%
 city_index_all <- city_index %>%
   bind_rows(years_1_2) %>%
   bind_rows(years_1_3) %>%
-  bind_rows(years_1_4) %>%
-  bind_rows(years_1_5) %>%
+  #bind_rows(years_1_4) %>%
+  #bind_rows(years_1_5) %>%
   dplyr::mutate(year_from_to = paste0(year_base, "-", year),
                 area_name = city_name)
 
@@ -471,8 +471,8 @@ write.csv2(city_index_all,
 
 # City index monthly ----
 city_monthly <- bind_rows(
-  monthly_city_index(city_index_2017),
-  monthly_city_index(city_index_2018),
+  #monthly_city_index(city_index_2017),
+  #monthly_city_index(city_index_2018),
   monthly_city_index(city_index_2019),
   monthly_city_index(city_index_2020),
   monthly_city_index(city_index_2021)) %>%

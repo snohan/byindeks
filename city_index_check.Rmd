@@ -33,7 +33,7 @@ library(htmltools)
 # Choose
 index_year <- 2021
 index_month <- 8 # latest published
-city_number <- 959
+city_number <- 8952
 
 # Fetch
 city_index <- get_published_index_for_months(city_number, index_year, index_month)
@@ -83,11 +83,11 @@ city_trp_devices <-
   ) %>% 
   dplyr::distinct()
 
-# city_trp_devices %>% 
-#   write.csv2(
-#     file = "byindekspunkter_med_emu3_buskerud.csv",
-#     row.names = FALSE
-#   )
+city_trp_devices %>%
+  write.csv2(
+    file = "byindekspunkter_med_emu3_brg.csv",
+    row.names = FALSE
+  )
 
 ## AADT ----
 adt <- get_aadt_by_length_for_trp_list(city_trps_meta$trp_id)
