@@ -261,6 +261,14 @@ get_mobile_trps_with_commission <- function() {
     installationType
     trafficType
     location {
+      coordinates {
+        latlon {
+          latitude
+          longitude
+          wkt
+          srid
+        }
+      }
       roadReference {
         shortForm
       }
@@ -269,6 +277,7 @@ get_mobile_trps_with_commission <- function() {
         position
       }
       municipality {
+        number
         name
         county {
           name
@@ -278,6 +287,9 @@ get_mobile_trps_with_commission <- function() {
     trpCommissions {
       validFrom
       validTo
+      ... on MobilePeriodicTrpCommission {
+        deviceId
+      }
     }
   }
 }
@@ -296,17 +308,21 @@ get_mobile_trps_with_commission <- function() {
       traffic_type = data.trafficRegistrationPoints.trafficType,
       installation_type = data.trafficRegistrationPoints.installationType,
       registration_frequency = data.trafficRegistrationPoints.registrationFrequency,
+      device_id = deviceId,
       commission_from = validFrom,
       commission_to = validTo,
+      lat = data.trafficRegistrationPoints.location.coordinates.latlon.latitude,
+      lon = data.trafficRegistrationPoints.location.coordinates.latlon.longitude,
+      wkt = data.trafficRegistrationPoints.location.coordinates.latlon.wkt,
+      srid = data.trafficRegistrationPoints.location.coordinates.latlon.srid,
       road_network_position =
         data.trafficRegistrationPoints.location.roadLink.position,
       road_network_link =
         data.trafficRegistrationPoints.location.roadLink.id,
-      #lat = data.trafficRegistrationPoints.location.coordinates.latlon.latitude,
-      #lon = data.trafficRegistrationPoints.location.coordinates.latlon.longitude,
       road_reference = data.trafficRegistrationPoints.location.roadReference.shortForm,
       county_name = data.trafficRegistrationPoints.location.municipality.county.name,
-      municipality_name = data.trafficRegistrationPoints.location.municipality.name
+      municipality_name = data.trafficRegistrationPoints.location.municipality.name,
+      municipality_number = data.trafficRegistrationPoints.location.municipality.number
       ) %>%
     dplyr::mutate(
       road_link_position = paste0(
@@ -320,7 +336,12 @@ get_mobile_trps_with_commission <- function() {
       commission_length_in_days = round(
         commission_interval / lubridate::ddays(1),
         digits = 0
-        )
+        ),
+      device_type = dplyr::case_when(
+        stringr::str_sub(device_id, 1, 3) == "arm" ~ "Armadillo",
+        stringr::str_sub(device_id, 1, 3) == "top" ~ "TOPO",
+        TRUE ~ "unknown"
+      )
     )
 
   return(response_parsed)
