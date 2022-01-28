@@ -455,11 +455,6 @@ pointindex_wide %>%
       lengthMenu = c(21, 42, 70),
       autoWidth = TRUE))
 
-# OSlo
-# Før reberegning av 30 punkter, var det for 2021:
-# årsindeksen for lette 2,4, alle 2,5
-# dekningsgrad for lette 60,3, alle 80,9
-
 # NJ
 # reberegn
 # Austråttunnelen
@@ -469,25 +464,8 @@ pointindex_wide %>%
 # Menstadbrua
 
 # Bergen
-# Eks
-# Ibsensgate 10-12
-#
 # Reberegn 
-# Blindheim
-# Osterøybrua
-# HErland
-# Trengereidtunnelen
-# Vallaheiene
-# Moberg v
-# Flesland
-# Knarvik - ISdalstø
-# Gullbotn
-# Fana Kirkevoll
-# Fjell kirke
 # Juvik n
-# Kalfarbakken
-#
-# Ta en siste sjekk til slutt
 
 # TRD
 # Ekskl

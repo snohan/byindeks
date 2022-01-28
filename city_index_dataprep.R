@@ -73,7 +73,7 @@ points <- get_points() %>%
 
 # Choose
 index_month <- 12 # the one to be published now
-city_number <- 959
+city_number <- 8952
 
 # Pointindices ----
 # TODO: TRPs might differ from year to year!
@@ -192,7 +192,7 @@ n_21 <- pointindex_21  %>%
 n_points_per_month <- dplyr::bind_rows(
   # Pointindex from API here
     #pointindex_18_all[[2]],
-    #pointindex_19_all[[2]],
+    pointindex_19_all[[2]],
     pointindex_20_all[[2]],
     pointindex_21_all[[2]]
   ) %>%
@@ -206,7 +206,7 @@ n_points_per_month <- dplyr::bind_rows(
     # Pointindex from old csv files here:
     #pointindex_17_monthly,
     #pointindex_18_monthly,
-    pointindex_19_monthly
+    #pointindex_19_monthly
   ) %>%
   dplyr::group_by(year, month) %>%
   dplyr::summarise(n_points = n())
@@ -334,9 +334,11 @@ adt_manual <- data.frame(
 adt_manual <- data.frame()
 
 ### All ----
-adt_all <- bind_rows(adt_filtered,
-                     adt_manual
-                     )
+adt_all <-
+  bind_rows(
+    adt_filtered,
+    adt_manual
+  )
 
 ## Final table ----
 this_citys_trp_index <- points %>%
