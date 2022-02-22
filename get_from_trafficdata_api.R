@@ -582,9 +582,9 @@ get_trp_aadt_with_coverage <- function(trp_id, day_type = "ALL") {
   return(trp_aadt)
 }
 
-
+#trp_id <-"49427V805599"
 get_trp_aadt_by_direction <- function(trp_id) {
-  # Get all MDTs for a trp
+
   my_query <- paste0(
     "query aadt {
     trafficData(trafficRegistrationPointId: \"", trp_id,"\"){
@@ -629,25 +629,36 @@ get_trp_aadt_by_direction <- function(trp_id) {
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
 
   # Check if no value
-  if(is_empty(trp_aadt$data$trafficData$volume$average$daily$byYear$byDirection[1]) |
-     is.null(trp_aadt$data$trafficData$volume$average$daily$byYear$byDirection[[1]]$total.volume.average)){
-    # Når det ikke er noe MDT
+  if(
+    is_empty(
+      trp_aadt$data$trafficData$volume$average$daily$byYear$byDirection[1]
+    ) |
+     is.null(
+       trp_aadt$data$trafficData$volume$average$daily$byYear$byDirection[[1]]$total.volume.average
+     )
+    ){
+    # Når det ikke er noe data
     trp_aadt <- data.frame()
   }else{
     trp_aadt <- trp_aadt %>%
       as.data.frame() %>%
-      tidyr::unnest(cols = data.trafficData.volume.average.daily.byYear.byDirection) %>%
+      tidyr::unnest(
+        cols = data.trafficData.volume.average.daily.byYear.byDirection
+      ) %>%
       dplyr::rename(
         trp_id = data.trafficData.id,
         year = data.trafficData.volume.average.daily.byYear.year,
         day_type = data.trafficData.volume.average.daily.byYear.dayType,
-        coverage = total.coverage.percentage,
-        valid_length_volume = total.validLengthVolume.average,
-        valid_speed_volume = total.validSpeedVolume.average,
+        #coverage = total.coverage.percentage,
+        #valid_length_volume = total.validLengthVolume.average,
+        #valid_speed_volume = total.validSpeedVolume.average,
         adt = total.volume.average,
-        standard_deviation = total.volume.standardDeviation) %>%
-      dplyr::mutate(trp_id = as.character(trp_id),
-                    heading = stringr::str_to_title(heading, locale = "no"))
+        standard_deviation = total.volume.standardDeviation
+      ) %>%
+      dplyr::mutate(
+        trp_id = as.character(trp_id),
+        heading = stringr::str_to_title(heading, locale = "no")
+      )
   }
 
   return(trp_aadt)
@@ -725,7 +736,7 @@ get_trp_mdt_with_coverage <- function(trp_id, mdt_year) {
   return(trp_aadt)
 }
 
-given_year <- "2020"
+
 get_trp_sdt <- function(trp_id, given_year) {
 
   dt_query <- paste0(
@@ -773,13 +784,22 @@ get_trp_sdt <- function(trp_id, given_year) {
     trp_data <- trp_data %>%
       as.data.frame() %>%
       dplyr::rename(
-        trp_id = data.trafficData.id,
-        day_type = data.trafficData.volume.average.daily.bySeason.dayType,
-        season = data.trafficData.volume.average.daily.bySeason.season.name,
-        year = given_year,
-        coverage = data.trafficData.volume.average.daily.bySeason.total.coverage.percentage,
-        sdt = data.trafficData.volume.average.daily.bySeason.total.volume.average,
-        standard_deviation = data.trafficData.volume.average.daily.bySeason.total.volume.standardDeviation) #%>%
+        trp_id =
+          data.trafficData.id,
+        day_type =
+          data.trafficData.volume.average.daily.bySeason.dayType,
+        season =
+          data.trafficData.volume.average.daily.bySeason.season.name,
+        coverage =
+          data.trafficData.volume.average.daily.bySeason.total.coverage.percentage,
+        sdt =
+          data.trafficData.volume.average.daily.bySeason.total.volume.average,
+        standard_deviation =
+          data.trafficData.volume.average.daily.bySeason.total.volume.standardDeviation
+      ) %>%
+      dplyr::mutate(
+        year = given_year
+      )
     #dplyr::mutate(trp_id = as.character(trp_id),
     #             coverage = round(coverage, digits = 1),
     #              uncertainty = signif(uncertainty, 2))
@@ -1007,8 +1027,13 @@ get_aadt_by_length_for_trp <- function(trp_id) {
   trp_aadt_length <-
     length(trp_aadt$data$trafficData$volume$average$daily$byYear$byLengthRange)
 
-  if(is_empty(trp_aadt$data$trafficData$volume$average$daily$byYear) |
-     is_empty(trp_aadt$data$trafficData$volume$average$daily$byYear$byLengthRange[[trp_aadt_length]])
+  if(
+    is_empty(
+      trp_aadt$data$trafficData$volume$average$daily$byYear
+    ) |
+    is_empty(
+      trp_aadt$data$trafficData$volume$average$daily$byYear$byLengthRange[[trp_aadt_length]]
+    )
      ){
     # if no total aadt
     # if no length range aadt
@@ -1094,6 +1119,7 @@ get_aadt_for_trp_list <- function(trp_list, day_type = "ALL") {
 }
 
 get_aadt_by_direction_for_trp_list <- function(trp_list) {
+
   number_of_points <- length(trp_list)
   data_points <- data.frame()
   trp_count <- 1
@@ -1188,7 +1214,9 @@ get_aadt_by_length_for_trp_list <- function(trp_list) {
     data_points <-
       bind_rows(
         data_points,
-        get_aadt_by_length_for_trp(trp_list[trp_count])
+        get_aadt_by_length_for_trp(
+          trp_list[trp_count]
+        )
       )
 
     trp_count <- trp_count + 1
@@ -1196,31 +1224,43 @@ get_aadt_by_length_for_trp_list <- function(trp_list) {
 
   number_of_digits = -1
 
-  trp_adt <- data_points %>%
+  trp_adt <-
+    data_points %>%
     dplyr::mutate(
-      aadt_valid_length = round(aadt_valid_length, digits = number_of_digits),
-      aadt_total = round(aadt_total, digits = number_of_digits),
-      aadt_length_range = round(aadt_length_range, digits = number_of_digits)
+      aadt_valid_length =
+        round(aadt_valid_length, digits = number_of_digits),
+      aadt_total =
+        round(aadt_total, digits = number_of_digits),
+      aadt_length_range =
+        round(aadt_length_range, digits = number_of_digits)
     )
 
   return(trp_adt)
 }
 
+#trp_list <- trp_distinct$trp_id[1:3]
+#mdt_year <- "2021"
 get_sdt_for_trp_list <- function(trp_list, mdt_year) {
+
   number_of_points <- length(trp_list)
   data_points <- data.frame()
   trp_count <- 1
 
   while (trp_count <= number_of_points) {
-    data_points <- bind_rows(data_points,
-                             get_trp_sdt(
-                               trp_list[trp_count],
-                               mdt_year))
+    data_points <-
+      bind_rows(
+        data_points,
+        get_trp_sdt(
+          trp_list[trp_count],
+          mdt_year
+        )
+      )
     trp_count <- trp_count + 1
   }
-
   trp_dt <- data_points %>%
-    dplyr::mutate(sdt = round(sdt, digits = -1))
+    dplyr::mutate(
+      sdt = round(sdt, digits = -1)
+    )
 
   return(trp_dt)
 }

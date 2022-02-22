@@ -43,30 +43,59 @@ hent_vegpunkt <- function(vegsystemreferanse, kommunenr) {
   kommune <- bind_rows(uthenta$objekter$egenskaper, .id = "kid")
 }
 
-
+#veglenkesekvens_id <- "2441493"
 hent_veglenkesekvens <- function(veglenkesekvens_id) {
 
-  api_query <- paste0(nvdb_url_v3,
-                      "/vegnett",
-                      "/veglenkesekvenser/",
-                      veglenkesekvens_id)
+  api_query <-
+    paste0(
+      nvdb_url_v3,
+      "/vegnett",
+      "/veglenkesekvenser/",
+      veglenkesekvens_id
+    )
 
-  respons <- httr::GET(api_query,
-                       httr::add_headers(.headers = nvdb_v3_headers))
+  respons <-
+    httr::GET(
+      api_query,
+      httr::add_headers(.headers = nvdb_v3_headers)
+    )
 
-  uthenta <- jsonlite::fromJSON(
-    stringr::str_conv(
-      respons$content, encoding = "UTF-8"),
-    simplifyDataFrame = T,
-    flatten = T)
+  uthenta <-
+    jsonlite::fromJSON(
+      stringr::str_conv(
+        respons$content, encoding = "UTF-8"
+      ),
+      simplifyDataFrame = T,
+      flatten = T
+    )
 
-  resultat <- dplyr::bind_rows(uthenta$veglenker) %>%
+  resultat <-
+    dplyr::bind_rows(uthenta$veglenker) %>%
     dplyr::arrange(veglenkenummer) %>%
-    dplyr::select(veglenkenummer, type, startposisjon, sluttposisjon, lengde,
-                  'detaljnivå', typeVeg, feltoversikt, startdato,
-                  geometri.wkt, geometri.srid, geometri.kommune, geometri.lengde) %>%
+    dplyr::select(
+      veglenkenummer,
+      type,
+      startposisjon,
+      sluttposisjon,
+      lengde,
+      'detaljnivå',
+      typeVeg,
+      feltoversikt,
+      startdato,
+      geometri.wkt,
+      geometri.srid,
+      geometri.kommune,
+      geometri.lengde
+    ) %>%
     dplyr::rowwise() %>%
-    dplyr::mutate(feltoversikt = stringr::str_c(feltoversikt, collapse = ", "))
+    dplyr::mutate(
+      feltoversikt = stringr::str_c(feltoversikt, collapse = ", "),
+      veglenkesekvens_id = veglenkesekvens_id
+    ) %>%
+    dplyr::relocate(
+      veglenkesekvens_id,
+      .before = "veglenkenummer"
+    )
 
   return(resultat)
 }
@@ -580,16 +609,18 @@ get_historic_aadt_by_roadlinkposition <- function(roadlinkposition) {
                           "/540",
                           "?inkluder=egenskaper")
 
-  api_query_540_vegref <- paste0(api_query_540,
-                                 "&veglenkesekvens=",
-                                 roadlinkposition,
-                                 "&alle_versjoner=TRUE")
+  api_query_540_vegref <-
+    paste0(
+      api_query_540,
+      "&veglenkesekvens=",
+      roadlinkposition,
+      "&alle_versjoner=TRUE"
+    )
 
   respons <- httr::GET(
     api_query_540_vegref,
-    add_headers("X-Client" = "trafikkdatagruppa",
-                "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
-                "Accept" = "application/vnd.vegvesen.nvdb-v3+json"))
+    httr::add_headers(.headers = nvdb_v3_headers)
+    )
 
   uthenta <- jsonlite::fromJSON(
     str_conv(respons$content, encoding = "UTF-8"),
@@ -770,72 +801,93 @@ getSpeedLimit <- function(roadref) {
   return(verdi)
 }
 
-#roadlink <- "0.38722@2037772"
 
-getSpeedLimit_roadlink <- function(roadlink) {
-  api_query_105 <- paste0(nvdb_url,
-                          sti_vegobjekter,
-                          "/105",
-                          "?inkluder=egenskaper")
+# getSpeedLimit_roadlink <- function(roadlink) {
+#   api_query_105 <- paste0(nvdb_url,
+#                           sti_vegobjekter,
+#                           "/105",
+#                           "?inkluder=egenskaper")
+#
+#   api_query_105_vegref <- paste0(api_query_105,
+#                                  "&veglenke=",
+#                                  roadlink)
+#
+#   respons <- GET(api_query_105_vegref,
+#                  add_headers("X-Client" = "trafikkdatagruppa",
+#                              "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+#                              "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
+#
+#   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+#                       simplifyDataFrame = T,
+#                       flatten = T)
+#
+#   objekter <- uthenta$objekter
+#
+#   if(length(objekter) == 0) {
+#     verdi = NA
+#   }else{
+#     speed_limit <- objekter %>%
+#       select(id, egenskaper) %>%
+#       # If more than one response, choosing the first (lazily avoiding
+#       # unnest to crash). Not sure what would be the right response to choose.
+#       slice(1) %>%
+#       unnest() %>%
+#       filter(id1 %in% c(2021)) %>%
+#       select(verdi)
+#
+#     verdi <- speed_limit[1, 1]
+#   }
+#
+#   return(verdi)
+# }
 
-  api_query_105_vegref <- paste0(api_query_105,
-                                 "&veglenke=",
-                                 roadlink)
-
-  respons <- GET(api_query_105_vegref,
-                 add_headers("X-Client" = "trafikkdatagruppa",
-                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
-                             "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
-
-  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-                      simplifyDataFrame = T,
-                      flatten = T)
-
-  objekter <- uthenta$objekter
-
-  if(length(objekter) == 0) {
-    verdi = NA
-  }else{
-    speed_limit <- objekter %>%
-      select(id, egenskaper) %>%
-      # If more than one response, choosing the first (lazily avoiding
-      # unnest to crash). Not sure what would be the right response to choose.
-      slice(1) %>%
-      unnest() %>%
-      filter(id1 %in% c(2021)) %>%
-      select(verdi)
-
-    verdi <- speed_limit[1, 1]
-  }
-
-  return(verdi)
-}
+#roadlink <- "0.86357@444219"
 
 get_speedlimit_by_roadlink <- function(roadlink) {
-  api_query_105 <- paste0(nvdb_url_v3,
-                          sti_vegobjekter,
-                          "/105",
-                          "?inkluder=egenskaper")
 
-  api_query_105_vegref <- paste0(api_query_105,
-                                 "&veglenkesekvens=",
-                                 roadlink)
+  api_query_105 <-
+    paste0(
+      nvdb_url_v3,
+      sti_vegobjekter,
+      "/105",
+      "?inkluder=egenskaper"
+    )
 
-  respons <- GET(api_query_105_vegref,
-                 httr::add_headers(.headers = nvdb_v3_headers))
+  api_query_105_vegref <-
+    paste0(
+      api_query_105,
+      "&veglenkesekvens=",
+      roadlink,
+      "&alle_versjoner=TRUE"
+    )
 
-  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-                      simplifyDataFrame = T,
-                      flatten = T)
+  respons <-
+    GET(
+      api_query_105_vegref,
+      httr::add_headers(
+        .headers = nvdb_v3_headers
+      )
+    )
 
-  objekter <- uthenta$objekter
+  uthenta <-
+    jsonlite::fromJSON(
+      str_conv(respons$content, encoding = "UTF-8"),
+      simplifyDataFrame = T,
+      flatten = T
+    )
+
+  objekter <-
+    uthenta$objekter
 
   if(length(objekter) == 0) {
-    verdi = NA
+    verdi = NA_integer_
   }else{
     speed_limit_raw <- objekter %>%
+      dplyr::slice(1) %>% # avoid incompatible types
       dplyr::select(egenskaper) %>%
-      tidyr::unnest(cols = c(egenskaper))
+      tidyr::unnest(
+        cols = c(egenskaper)
+      )
 
     # Some responses lack 5127 (valid from date)
     if(5127 %in% speed_limit_raw) {
@@ -849,15 +901,19 @@ get_speedlimit_by_roadlink <- function(roadlink) {
                       valid_from = 2) %>%
         dplyr::mutate(valid_from = lubridate::ymd(valid_from)) %>%
         # Choosing latest
+        # History is not complete in NVDB as users sometime just replace
+        # old speed limit with the new value (sic!)
         dplyr::filter(valid_from == max(valid_from))
 
-      verdi <- speed_limit$speed_limit[1]
+      verdi <- speed_limit$speed_limit[1] %>%
+        as.numeric()
     }else{
       speed_limit <- speed_limit_raw %>%
         dplyr::filter(id %in% c(2021)) %>%
         dplyr::select(navn, verdi)
 
-      verdi <- speed_limit$verdi[1]
+      verdi <- speed_limit$verdi[1] %>%
+        as.numeric()
     }
   }
 
