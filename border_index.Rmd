@@ -359,6 +359,9 @@ Trafikkregistreringspunktene ligger spredt langs hele Fastlands-Norges riksgrens
 
 Alle kjøretøy som passerer trafikkregistreringspunktene, blir registrert og får målt sin lengde. Kjøretøyregistreringene blir delt inn i lengdeklasser. Skillet mellom lette og tunge kjøretøy er basert på målt lengde kortere eller lengre enn 5,6 m. Der årsdøgntrafikk (ÅDT) for lette og tunge er utelatt fra tabellen, er datagrunnlaget for dårlig til at tall kan presenteres. Summen av lette og tunge kan avvike noe fra totalen på grunn av avrunding.
 
+Fra og med 2016 er datagrunnlaget godt nok til å beregne endringen i antall kjøretøy som passerer riksgrensen fra år til år. Et vektet gjennomsnitt av endring i trafikkmengden i de ulike grenseovergangene, gir et estimat på endringen for hele riksgrensetrafikken samlet.
+
+
 <br>
 
 ```{r point_table}

@@ -255,9 +255,10 @@ hent_kommune_v3 <- function(kommunenr) {
                   kommunenr = Kommunenummer,
                   polygon = 1) %>%
     sf::st_as_sf(wkt = "polygon",
-                 crs = 5973) %>%
-    sf::st_zm(drop = T, what = "ZM") %>%
-    sf::st_transform("+proj=longlat +datum=WGS84")
+                 #crs = 5973) %>%
+                 crs = 25833) %>%
+    sf::st_zm(drop = T, what = "ZM") #%>%
+    #sf::st_transform("+proj=longlat +datum=WGS84")
 
   return(kommuneinfo)
 }
