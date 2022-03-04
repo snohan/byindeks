@@ -12,7 +12,7 @@ source("H:/Programmering/R/byindeks/get_from_trafficdata_api.R")
 
 library(DT)
 library(htmltools)
-library(htmlwidgets)
+#library(htmlwidgets)
 library(readxl)
 ```
 
@@ -81,12 +81,12 @@ trp_for_vti_tidy <- trp_for_vti %>%
   )
 
 # AADT coverage and length_quality previous year
-trp_aadts <- trp_for_vti_tidy$trp_id %>% 
-  get_aadt_for_trp_list() 
+#trp_aadts <- trp_for_vti_tidy$trp_id %>% 
+#  get_aadt_for_trp_list() 
 
-saveRDS(trp_aadts, file = "trp_aadt.rds")
+#saveRDS(trp_aadts, file = "trp_aadt.rds")
 
-#trp_aadts <- readRDS("trp_aadt.rds")
+trp_aadts <- readRDS("trp_aadt.rds")
 
 
 # Exclude trps with low index coverage last year
@@ -122,22 +122,22 @@ trp_for_vti_aadt <-
   )
 
 # Write a file to manually update if the trp is chosen
-trp_for_vti_aadt %>%
-  dplyr::select(
-    trp_id, 
-    name, 
-    county_geono, 
-    county_name, 
-    municipality_name,
-    road_category, 
-    road_reference, 
-    adt
-  ) %>%
-  dplyr::mutate(chosen = NA) %>%
-  write.csv2(
-    file = "trp_for_vti_2022.csv", 
-    row.names = F
-  )
+# trp_for_vti_aadt %>%
+#   dplyr::select(
+#     trp_id, 
+#     name, 
+#     county_geono, 
+#     county_name, 
+#     municipality_name,
+#     road_category, 
+#     road_reference, 
+#     adt
+#   ) %>%
+#   dplyr::mutate(chosen = NA) %>%
+#   write.csv2(
+#     file = "trp_for_vti_2022.csv", 
+#     row.names = F
+#   )
 
 # Read back in the result of chosen trps
 not_chosen <- 
@@ -155,59 +155,59 @@ trp_for_vti_aadt <-
 # Punktene
 
 ```{r table}
-trp_for_vti_aadt %>% 
-  dplyr::select(
-    #trp_id, 
-    county_name, 
-    municipality_name, 
-    name,
-    road_category_and_number, 
-    road_category, 
-    adt
-  ) %>%
-  dplyr::rename(
-    Fylke = county_name,
-    Kommune = municipality_name,
-    #Punktid = trp_id,
-    Navn = name,
-    Veg = road_category_and_number,
-    Vegkat = road_category,
-    ADT = adt
-  ) %>% 
-  DT::datatable(
-    rownames = FALSE,
-    filter = "top",
-    extensions = "Buttons",
-    options = list(
-      dom = "Blfrtip",
-      buttons = c("excel"),
-      pageLength = 25,
-      lengthMenu = c(25, 50, 100),
-      autoWidth = TRUE))
+# trp_for_vti_aadt %>% 
+#   dplyr::select(
+#     #trp_id, 
+#     county_name, 
+#     municipality_name, 
+#     name,
+#     road_category_and_number, 
+#     road_category, 
+#     adt
+#   ) %>%
+#   dplyr::rename(
+#     Fylke = county_name,
+#     Kommune = municipality_name,
+#     #Punktid = trp_id,
+#     Navn = name,
+#     Veg = road_category_and_number,
+#     Vegkat = road_category,
+#     ADT = adt
+#   ) %>% 
+#   DT::datatable(
+#     rownames = FALSE,
+#     filter = "top",
+#     extensions = "Buttons",
+#     options = list(
+#       dom = "Blfrtip",
+#       buttons = c("excel"),
+#       pageLength = 25,
+#       lengthMenu = c(25, 50, 100),
+#       autoWidth = TRUE))
 ```
 
 
 # Antall punkt per fylke of vegkategori
 
 ```{r table_summary}
-# TODO: add road lengths
-trp_for_vti_aadt %>% 
-  dplyr::group_by(county_geono, county_name, road_category) %>% 
-  dplyr::summarise(n_trp = n()) %>%
-  dplyr::arrange(county_geono) %>% 
-  dplyr::ungroup() %>% 
-  dplyr::select(-county_geono) %>% 
-  tidyr::pivot_wider(names_from = road_category, values_from = n_trp) %>% 
-  dplyr::rename(Fylke = county_name,
-                Fylkesveg = 'F',
-                Riksveg = R) %>% 
-  DT::datatable(
-    rownames = FALSE,
-    filter = "none",
-    options = list(
-      dom = "t",
-      pageLength = 25,
-      autoWidth = TRUE))
+# # TODO: add road lengths
+# trp_for_vti_aadt %>% 
+#   dplyr::group_by(county_geono, county_name, road_category) %>% 
+#   dplyr::summarise(n_trp = n()) %>%
+#   dplyr::arrange(county_geono) %>% 
+#   dplyr::ungroup() %>% 
+#   dplyr::select(-county_geono) %>% 
+#   tidyr::pivot_wider(names_from = road_category, values_from = n_trp) %>% 
+#   dplyr::rename(Fylke = county_name,
+#                 Fylkesveg = 'F',
+#                 Riksveg = R) %>% 
+#   DT::datatable(
+#     rownames = FALSE,
+#     filter = "none",
+#     options = list(
+#       dom = "t",
+#       pageLength = 25,
+#       autoWidth = TRUE))
 ```
 
 
