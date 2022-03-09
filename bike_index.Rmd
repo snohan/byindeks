@@ -13,7 +13,7 @@ output:
       width: 1.0
       caption:
         style: Tabelltekst
-        pre: 'Tabell'
+        pre: 'Tabell '
         sep: '. '
       conditional:
         first_row: true
@@ -66,14 +66,12 @@ index_2020_osl <- get_published_index_for_months(6953, 2020, 12)
 index_2020_njr <- get_published_index_for_months(6952, 2020, 12)
 index_2020_frd <- get_published_index_for_months(9952, 2020, 12)
 
-index_month <- 8
-index_year <- 2021
-index_2021_ngl <- get_published_index_for_months(5953, index_year, index_month)
-index_2021_grl <- get_published_index_for_months(4953, index_year, index_month)
-index_2021_brg <- get_published_index_for_months(5952, index_year, index_month)
-index_2021_osl <- get_published_index_for_months(6953, index_year, index_month)
-index_2021_njr <- get_published_index_for_months(6952, index_year, index_month)
-index_2021_frd <- get_published_index_for_months(9952, index_year, index_month)
+index_2021_ngl <- get_published_index_for_months(5953, 2021, 12)
+index_2021_grl <- get_published_index_for_months(4953, 2021, 12)
+index_2021_brg <- get_published_index_for_months(5952, 2021, 12)
+index_2021_osl <- get_published_index_for_months(6953, 2021, 12)
+index_2021_njr <- get_published_index_for_months(6952, 2021, 12)
+index_2021_frd <- get_published_index_for_months(9952, 2021, 12)
 
 index_all_years <- dplyr::bind_rows(
   index_2018_grl,
@@ -155,7 +153,7 @@ Været vil i perioder kunne påvirke trafikkmengden. For eksempel vil det ved d�
 ## Per år
 Sykkelindeksene har ulike startår, men i figuren nedenfor vises årlig utvikling per område.
 
-<\br>
+<br>
 
 ```{r yearplot, fig.width=6.5, fig.height=6, fig.cap="Estimert årlig endring i sykkeltrafikk i utvalgte byområder."}
 index_all_years %>% 
@@ -213,7 +211,7 @@ index_all_years %>%
                autonum = table_numbers,
                style = "Tabelltekst")
 ```
-<\br>
+<br>
 
 Standardavvikene er her relativt store, noe som gjenspeiler at sykkeltrafikken varierer mye mellom de ulike trafikkregistreringspunktene i hvert område.
 
@@ -223,7 +221,7 @@ Standardavvikene er her relativt store, noe som gjenspeiler at sykkeltrafikken v
 ## Per måned
 I figuren nedenfor vises månedlig utvikling per område. Tall for en måned er sammenlignet med den samme måneden året før.
 
-<\br>
+<br>
 
 ```{r monthly_index_table}
 # index_2020 %>%

@@ -270,23 +270,28 @@ get_trp_data_time_span <- function() {
   myqueries <- Query$new()
   myqueries$query("points", query_points)
 
-  points <- cli$exec(myqueries$queries$points) %>%
-    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
+  points <-
+    cli$exec(myqueries$queries$points) %>%
+    jsonlite::fromJSON(
+      simplifyDataFrame = T,
+      flatten = T
+    ) %>%
     as.data.frame() %>%
-    dplyr::rename(trp_id =
-                    data.trafficRegistrationPoints.id,
-                  first_data =
-                    data.trafficRegistrationPoints.dataTimeSpan.firstData,
-                  first_data_with_quality_metrics =
-                    data.trafficRegistrationPoints.dataTimeSpan.firstDataWithQualityMetrics,
-                  latest_daily_traffic =
-                    data.trafficRegistrationPoints.dataTimeSpan.latestData.volumeByDay
+    dplyr::rename(
+      trp_id = data.trafficRegistrationPoints.id,
+      first_data =
+        data.trafficRegistrationPoints.dataTimeSpan.firstData,
+      first_data_with_quality_metrics =
+        data.trafficRegistrationPoints.dataTimeSpan.firstDataWithQualityMetrics,
+      latest_daily_traffic =
+        data.trafficRegistrationPoints.dataTimeSpan.latestData.volumeByDay
 
     ) %>%
     dplyr::mutate(
-      dplyr::across(.cols = !trp_id,
-                    .fns = ~ floor_date(with_tz(ymd_hms(.x)), unit = "day")
-                    )
+      dplyr::across(
+        .cols = !trp_id,
+        .fns = ~ floor_date(with_tz(ymd_hms(.x)), unit = "day")
+      )
     )
 
   return(points)

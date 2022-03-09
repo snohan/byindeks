@@ -58,6 +58,56 @@ create_point_adt_map <- function(all_point_info_df) {
   return(point_adt_map)
 }
 
+
+create_point_adt_map_with_labels <- function(all_point_info_df) {
+
+  palett_adt <-
+    colorNumeric(
+      palette = "Greens",
+      domain = NULL
+    )
+
+  point_adt_map <-
+    all_point_info_df %>%
+    leaflet(
+      width = "100%",
+      height = 700,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F
+        )
+    ) %>%
+    addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) %>%
+    addCircleMarkers(
+      lng = ~lon,
+      lat = ~lat,
+      radius = 6,
+      stroke = T,
+      weight = 2,
+      color = "#444f55",
+      opacity = 0.8,
+      fill = T,
+      fillColor = ~palett_adt(adt),
+      fillOpacity = 0.8,
+      label = ~label_text
+    ) %>%
+    addLegend(
+      #"bottomleft",
+      "bottomright",
+      pal = palett_adt,
+      values = ~adt,
+      title = "ADT",
+      opacity = 0.7,
+      labFormat = labelFormat(big.mark = " ")
+    )
+
+  return(point_adt_map)
+}
+
 create_point_adt_map_trondheim <- function(all_point_info_df) {
   palett_stasjonstype <-
     colorFactor(palette = c("#db3b99", "#444f55"),
@@ -151,6 +201,7 @@ create_point_adt_map_review <- function(all_point_info_df) {
 
 
 create_pointindex_map <- function(all_point_info_df) {
+
   # Create a red-green scale based on index values
   negative_value <-
     round(abs(min(all_point_info_df$index, na.rm = T)), digits = 0) + 1
@@ -175,12 +226,19 @@ create_pointindex_map <- function(all_point_info_df) {
                  domain = NULL)
 
   pointindex_map <- all_point_info_df %>%
-    leaflet(width = "100%",
-            height = 700,
-            options = leafletOptions(crs = nvdb_crs,
-                                     zoomControl = F)) %>%
-    addTiles(urlTemplate = nvdb_map_url,
-             attribution = nvdb_map_attribution) %>%
+    leaflet(
+      width = "100%",
+      height = 700,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F
+          )
+    ) %>%
+    addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) %>%
     addCircleMarkers(
       lng = ~lon,
       lat = ~lat,

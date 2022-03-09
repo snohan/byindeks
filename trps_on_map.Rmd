@@ -1,0 +1,125 @@
+---
+title: "Sykkelregistreringspunkt Nord-Jæren"
+output: html_notebook
+---
+
+```{r setup, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
+# Packages are loaded through sourcing rmd_setup.R
+source("rmd_setup.R")
+
+# Traffic Data API calls to get points metadata and aadt
+source("get_from_trafficdata_api.R")
+source("split_road_system_reference.R")
+library(DT)
+library(htmltools)
+```
+
+```{r get_data, include=FALSE}
+# All TRPs from Traffic Data API
+trps <- 
+  get_points() %>%
+  dplyr::distinct(
+    trp_id, 
+    .keep_all = T
+  ) %>%
+  dplyr::mutate(
+    name = stringr::str_to_title(name, locale = "no")
+  )
+
+# Filter
+trps_chosen <- 
+  trps %>% 
+  dplyr::filter(
+    municipality_name %in% 
+      c("Randaberg",
+        "Sola",
+        "Stavanger",
+        "Sandnes"),
+    traffic_type == "BICYCLE",
+    registration_frequency == "CONTINUOUS"
+  ) %>% 
+  split_road_system_reference() %>% 
+  dplyr::select(
+    trp_id, 
+    name, 
+    road_reference, 
+    road_category_and_number,
+    #section_number, subsection_number, meter,
+    #intersection_part_number, intersection_meter,
+    county_name, 
+    municipality_name, 
+    lat, lon
+  )
+
+
+# Data span
+trp_data_span <-
+  get_trp_data_time_span()
+
+# AADT
+adt <- getAdtForpoints(trps_chosen$trp_id)
+
+adt_filtered <- adt %>%
+  dplyr::filter(coverage > 50) %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year == max(year)) %>%
+  dplyr::select(trp_id, adt, year)
+
+
+# TRPs with info
+trps_info <-
+  trps_chosen %>% 
+  dplyr::left_join(
+    trp_data_span,
+    by = "trp_id"
+  ) %>% 
+  dplyr::left_join(
+    adt_filtered,
+    by = "trp_id"
+  ) %>% 
+  dplyr::arrange(
+    name
+  ) %>% 
+  dplyr::mutate(
+    label_text = 
+      paste0(
+        name, ", ",
+        road_category_and_number, "<br/>",
+        "ÅDT: ", adt, " (", year, ")"
+      ),
+    label_text = lapply(label_text, htmltools::HTML)
+  )
+```
+
+```{r map}
+create_point_adt_map_with_labels(trps_info)
+```
+
+
+
+```{r table}
+trps_info %>%
+  dplyr::select(
+    Punkt = name,
+    Vegnr. = road_category_and_number,
+    Kommune = municipality_name,
+    Datastart = first_data_with_quality_metrics,
+    #latest_daily_traffic,
+    ÅDT = adt
+    #År = year
+  ) %>% 
+  DT::datatable(
+    filter = "top",
+    options = 
+      list(
+        dom = "Blfrtip",
+        pageLength = 25,
+        lengthMenu = c(25, 50, 100),
+        autoWidth = TRUE
+      )
+  ) %>% 
+  DT::formatDate(
+    columns = 4,
+    method = "toLocaleDateString"
+  )
+```
