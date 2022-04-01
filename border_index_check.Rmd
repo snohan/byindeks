@@ -18,14 +18,16 @@ library(htmltools)
 
 ```{r get_data, include=FALSE}
 # Choose
-index_year <- 2021
+index_year <- 2022
 # Last published month
-index_month <- 11
+index_month <- 2
 index_id <- 2952
 
 # Fetch
-border_index <- get_published_index_for_months(index_id, index_year, index_month)
-pointindex <- get_published_pointindex_for_months(index_id, index_year, index_month)
+border_index <- 
+  get_published_index_for_months(index_id, index_year, index_month)
+pointindex <- 
+  get_published_pointindex_for_months(index_id, index_year, index_month)
 
 border_trps <- pointindex[[1]]
 pointindices <- pointindex[[2]]
@@ -52,23 +54,33 @@ point_index_new <- get_pointindices_for_trp_list(border_trps, index_year)
 
 
 ```{r data_prep, message=FALSE}
-border_index_prepared <- border_index %>% 
-  dplyr::filter(period == "month"
-                ) %>% 
-  dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "alle",
-                                                length_range == "[..,5.6)" ~ "lette",
-                                                length_range == "[5.6,..)" ~ "tunge")
-                ) %>% 
-  dplyr::mutate(road_category = dplyr::case_when(
-                  road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG" ~ "Europa-, riks- og fylkesveg",
-                  road_category == "EUROPAVEG_RIKSVEG" ~ "Europa-, riksveg",
-                  road_category == "FYLKESVEG" ~ "Fylkesveg",)
-                ) %>% 
-  dplyr::mutate(index_lower = index_p - confidence_width,
-                index_upper = index_p + confidence_width,
-                month_object = lubridate::make_date(year = year, month = month),
-                month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)
-                )
+border_index_prepared <- 
+  border_index %>% 
+  dplyr::filter(
+    period == "month"
+  ) %>% 
+  dplyr::mutate(
+    length_range = 
+      dplyr::case_when(
+        length_range == "[..,..)" ~ "alle",
+        length_range == "[..,5.6)" ~ "lette",
+        length_range == "[5.6,..)" ~ "tunge"
+      )
+  ) %>% 
+  dplyr::mutate(
+    road_category = 
+      dplyr::case_when(
+        road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG" ~ "Europa-, riks- og fylkesveg",
+        road_category == "EUROPAVEG_RIKSVEG" ~ "Europa-, riksveg",
+          road_category == "FYLKESVEG" ~ "Fylkesveg",
+      )
+  ) %>% 
+  dplyr::mutate(
+    index_lower = index_p - confidence_width,
+    index_upper = index_p + confidence_width,
+    month_object = lubridate::make_date(year = year, month = month),
+    month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)
+  )
 
 pointindex_prepared <- pointindices %>%
   dplyr::filter(period == "month",
@@ -86,8 +98,11 @@ point_index_new_prepared <- point_index_new %>%
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
 
-pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
-                                            point_index_new_prepared) %>% 
+pointindex_prepared_all <- 
+  dplyr::bind_rows(
+    pointindex_prepared,
+    point_index_new_prepared
+  ) %>% 
   dplyr::left_join(trps_meta, by = "trp_id") %>% 
   dplyr::mutate(
     short_is_least = index_short < index_long,
@@ -172,28 +187,62 @@ pointindex_wide <- dplyr::bind_rows(
   #dplyr::arrange(road_reference)
 
 # Longing :) for plot
-pointindex_long <- pointindex_prepared_all %>% 
+pointindex_long <- 
+  pointindex_prepared_all %>% 
   dplyr::select(trp_id:road_category_and_number)
 
-pointindex_long_total <- pointindex_long %>% 
-  dplyr::select(trp_id, year, month, index = index_total_p, coverage = index_total_coverage,
-                length_excluded, name, road_reference, road_category_and_number) %>% 
+pointindex_long_total <- 
+  pointindex_long %>% 
+  dplyr::select(
+    trp_id, 
+    year, 
+    month, 
+    index = index_total_p, 
+    coverage = index_total_coverage,
+    length_excluded, 
+    name, 
+    road_reference, 
+    road_category_and_number
+  ) %>% 
   dplyr::mutate(length_range = "total")
 
-pointindex_long_short <- pointindex_long %>% 
-  dplyr::select(trp_id, year, month, index_short, index_long, coverage = length_coverage, 
-                length_excluded, name, road_reference, road_category_and_number) %>% 
-  tidyr::pivot_longer(cols = c("index_short", "index_long"), 
-                      names_to = "length_range",
-                      values_to = "index")
+pointindex_long_short <- 
+  pointindex_long %>% 
+  dplyr::select(
+    trp_id, 
+    year, 
+    month, 
+    index_short, 
+    index_long, 
+    coverage = length_coverage, 
+    length_excluded, 
+    name, 
+    road_reference, 
+    road_category_and_number
+  ) %>% 
+  tidyr::pivot_longer(
+    cols = c("index_short", "index_long"), 
+    names_to = "length_range",
+    values_to = "index"
+  )
 
-pointindex_long_2 <- dplyr::bind_rows(pointindex_long_total,
-                                      pointindex_long_short) %>% 
-  dplyr::mutate(length_range = dplyr::case_when(length_range == "total" ~ "alle",
-                                                length_range == "index_short" ~ "lette",
-                                                length_range == "index_long" ~ "tunge")) %>% 
-  dplyr::mutate(month_object = lubridate::make_date(year = year, month = month),
-                month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE))
+pointindex_long_2 <- 
+  dplyr::bind_rows(
+    pointindex_long_total,
+    pointindex_long_short
+  ) %>% 
+  dplyr::mutate(
+    length_range = 
+      dplyr::case_when(
+        length_range == "total" ~ "alle",
+        length_range == "index_short" ~ "lette",
+        length_range == "index_long" ~ "tunge"
+      )
+  ) %>% 
+  dplyr::mutate(
+    month_object = lubridate::make_date(year = year, month = month),
+    month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)
+  )
 ```
 
 
