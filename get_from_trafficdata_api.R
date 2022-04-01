@@ -2615,7 +2615,11 @@ get_published_pointindex_for_months_paginated <- function(index_id, index_year, 
   i <- 1
 
   # Saving only one version of indexpoints
-  indexpoints <- get_published_pointindex_paginated(index_id, index_year, last_month)[[1]]
+  indexpoints <-
+    get_published_pointindex_paginated(
+      index_id,
+      index_year,
+      last_month)[[1]]
 
   while (i < last_month + 1) {
 
