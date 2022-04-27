@@ -1,0 +1,126 @@
+---
+title: "Byindeks Nord-Jæren - 24 vs. 59 punkter"
+output: html_notebook
+---
+
+```{r setup, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
+# Packages are loaded through sourcing rmd_setup.R
+source("rmd_setup.R")
+
+# Traffic Data API calls to get points metadata and aadt
+source("get_from_trafficdata_api.R")
+source("split_road_system_reference.R")
+library(DT)
+library(htmltools)
+```
+
+```{r get_data, include=FALSE}
+city_index_1 <- 
+  dplyr::bind_rows(
+    get_published_index_for_months(
+      952, 
+      2021, 
+      12
+    ),
+    get_published_index_for_months(
+      952, 
+      2022, 
+      3
+    )
+  ) %>% 
+  dplyr::filter(
+    road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+    day_type == "ALL",
+    length_range == "[..,5.6)"
+  ) %>% 
+  dplyr::select(
+    area_name,
+    year,
+    month,
+    period,
+    index_p,
+    standard_deviation
+  )
+
+city_index_2 <- 
+  dplyr::bind_rows(
+    get_published_index_for_months(
+      10952, 
+      2021, 
+      12
+    ),
+    get_published_index_for_months(
+      10952, 
+      2022, 
+      3
+    )
+  ) %>% 
+  dplyr::filter(
+    road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+    day_type == "ALL",
+    length_range == "[..,5.6)"
+  ) %>% 
+  dplyr::select(
+    area_name,
+    year,
+    month,
+    period,
+    index_p,
+    standard_deviation
+  )
+  
+pointindex_1 <- 
+  dplyr::bind_rows(
+    get_published_pointindex_for_months(
+      952, 
+      2021,
+      12
+    )[[2]],
+    get_published_pointindex_for_months(
+      952, 
+      2022,
+      3
+    )[[2]]
+  )
+
+pointindex_2 <- 
+  dplyr::bind_rows(
+    get_published_pointindex_for_months(
+      10952, 
+      2021,
+      12
+    )[[2]],
+    get_published_pointindex_for_months(
+      10952, 
+      2022,
+      3
+    )[[2]]
+  )
+  
+
+city_name_1 <- city_index_1$area_name[1]
+city_name_2 <- city_index_2$area_name[1]
+```
+
+```{r calculate}
+
+# TODO: calculate SE
+```
+
+
+```{r traffic_links}
+# TODO: fetch traffic links and match with trp
+```
+
+
+Byindeks for Nord-Jæren er per i dag beregnet med datagrunnlag for 24 trafikkregistreringspunkter. Disse ble valgt ut ved oppstart av nåværende avtaleperiode med referanseår 2017. Senere er det etablert en rekke nye trafikkregistreringspunkter i byområdet. Derfor er det nå beregnet en ny versjon av byindeksen med ytterligere 35 trafikkregistreringspunkter. Dette dokumentet viser en sammenligning av disse to versjonene av byindeksen, som altså har ulikt datagrunnlag.
+
+```{r table}
+# TODO: gt compare city months and so far this year
+```
+
+
+```{r roadnet_map_1}
+# TODO: show traffic links in map, enhance ones with TRP
+```
+

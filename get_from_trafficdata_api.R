@@ -42,19 +42,22 @@ get_counties_deprecated <- function() {
                   county_name =
                     data.areas.counties.name
     ) %>%
-    mutate(geo_number = case_when(
-      county_number ==  3 ~ 1,
-      county_number == 30 ~ 2,
-      county_number == 34 ~ 3,
-      county_number == 38 ~ 4,
-      county_number == 42 ~ 5,
-      county_number == 11 ~ 6,
-      county_number == 46 ~ 7,
-      county_number == 15 ~ 8,
-      county_number == 50 ~ 9,
-      county_number == 18 ~ 10,
-      county_number == 54 ~ 11
-    )) %>%
+    mutate(
+      geo_number =
+        case_when(
+          county_number ==  3 ~ 1,
+          county_number == 30 ~ 2,
+          county_number == 34 ~ 3,
+          county_number == 38 ~ 4,
+          county_number == 42 ~ 5,
+          county_number == 11 ~ 6,
+          county_number == 46 ~ 7,
+          county_number == 15 ~ 8,
+          county_number == 50 ~ 9,
+          county_number == 18 ~ 10,
+          county_number == 54 ~ 11
+        )
+    ) %>%
     arrange(geo_number)
 
   return(counties)
@@ -80,19 +83,16 @@ get_counties <- function() {
   myqueries <- Query$new()
   myqueries$query("data", api_query)
 
-  counties <- cli$exec(myqueries$queries$data) %>%
+  counties <-
+    cli$exec(myqueries$queries$data) %>%
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
     as.data.frame() %>%
-    dplyr::rename(county_number =
-                    data.areas.counties.number,
-                  geo_number =
-                    data.areas.counties.geographicNumber,
-                  county_name =
-                    data.areas.counties.name,
-                  country_part_number =
-                    data.areas.counties.countryPart.id,
-                  country_part_name =
-                    data.areas.counties.countryPart.name
+    dplyr::rename(
+      county_number = data.areas.counties.number,
+      geo_number = data.areas.counties.geographicNumber,
+      county_name = data.areas.counties.name,
+      country_part_number = data.areas.counties.countryPart.id,
+      country_part_name = data.areas.counties.countryPart.name
     ) %>%
     arrange(geo_number)
 
@@ -587,7 +587,7 @@ get_trp_aadt_with_coverage <- function(trp_id, day_type = "ALL") {
   return(trp_aadt)
 }
 
-#trp_id <-"49427V805599"
+#trp_id <-"43623V704583"
 get_trp_aadt_by_direction <- function(trp_id) {
 
   my_query <- paste0(
@@ -607,6 +607,10 @@ get_trp_aadt_by_direction <- function(trp_id) {
             total{
               coverage{
                 percentage
+                included {
+                  numerator
+                  denominator
+                }
               }
               validLengthVolume{
                 average
@@ -662,8 +666,27 @@ get_trp_aadt_by_direction <- function(trp_id) {
       ) %>%
       dplyr::mutate(
         trp_id = as.character(trp_id),
-        heading = stringr::str_to_title(heading, locale = "no")
+        heading = stringr::str_to_title(heading, locale = "no"),
       )
+  }
+
+    if(
+      "total.coverage.included.numerator" %in% colnames(trp_aadt)
+    ){
+      trp_aadt <-
+        trp_aadt %>%
+        dplyr::rename(
+          days_included = total.coverage.included.numerator,
+          days_in_year = total.coverage.included.denominator
+        ) %>%
+        dplyr::mutate(
+          se_mean =
+            standard_deviation /
+            sqrt(days_included) *
+            sqrt((days_in_year - days_included) / (days_in_year - 1))
+        )
+    }else{
+      trp_aadt <- trp_aadt
   }
 
   return(trp_aadt)
@@ -1130,8 +1153,12 @@ get_aadt_by_direction_for_trp_list <- function(trp_list) {
   trp_count <- 1
 
   while (trp_count <= number_of_points) {
-    data_points <- bind_rows(data_points,
-                             get_trp_aadt_by_direction(trp_list[trp_count]))
+    data_points <-
+      bind_rows(
+        data_points,
+        get_trp_aadt_by_direction(trp_list[trp_count])
+      )
+
     trp_count <- trp_count + 1
   }
 

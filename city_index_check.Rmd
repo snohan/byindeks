@@ -33,7 +33,7 @@ library(htmltools)
 # Choose
 index_year <- 2021
 index_month <- 8 # latest published
-city_number <- 8952
+city_number <- 10952
 
 # Fetch
 city_index <- get_published_index_for_months(city_number, index_year, index_month)
@@ -60,34 +60,34 @@ city_trps_meta <- points %>%
                 county_name, municipality_name, lat, lon)
 
 # TRP device types
-trp_devices <- 
-  readRDS("H:/Programmering/R/trafikkdata/trs_trp/trp_device_types.rds")
-
-city_trp_devices <-
-  city_trps_meta %>% 
-  dplyr::left_join(
-    trp_devices,
-    by = "trp_id"
-  ) %>% 
-  dplyr::filter(
-    device_type == "EMU",
-    is.na(valid_to) | valid_to > "2020-01-01T00:00:00"
-  ) %>% 
-  dplyr::select(
-    trp_id,
-    name,
-    road_category_and_number,
-    municipality_name,
-    trs_id,
-    device_type
-  ) %>% 
-  dplyr::distinct()
-
-city_trp_devices %>%
-  write.csv2(
-    file = "byindekspunkter_med_emu3_brg.csv",
-    row.names = FALSE
-  )
+# trp_devices <- 
+#   readRDS("H:/Programmering/R/trafikkdata/trs_trp/trp_device_types.rds")
+# 
+# city_trp_devices <-
+#   city_trps_meta %>% 
+#   dplyr::left_join(
+#     trp_devices,
+#     by = "trp_id"
+#   ) %>% 
+#   dplyr::filter(
+#     device_type == "EMU",
+#     is.na(valid_to) | valid_to > "2020-01-01T00:00:00"
+#   ) %>% 
+#   dplyr::select(
+#     trp_id,
+#     name,
+#     road_category_and_number,
+#     municipality_name,
+#     trs_id,
+#     device_type
+#   ) %>% 
+#   dplyr::distinct()
+# 
+# city_trp_devices %>%
+#   write.csv2(
+#     file = "byindekspunkter_med_emu3_brg.csv",
+#     row.names = FALSE
+#   )
 
 ## AADT ----
 adt <- get_aadt_by_length_for_trp_list(city_trps_meta$trp_id)
@@ -108,17 +108,29 @@ point_index_new <- get_pointindices_for_trp_list(city_trps, index_year)
 
 
 ```{r data_prep, message=FALSE}
-city_index_prepared <- city_index %>% 
+city_index_prepared <- 
+  city_index %>% 
   dplyr::filter(period == "month") %>% 
-  dplyr::mutate(length_range = dplyr::case_when(length_range == "[..,..)" ~ "alle",
-                                                length_range == "[..,5.6)" ~ "lette",
-                                                length_range == "[5.6,..)" ~ "tunge")) %>% 
-  dplyr::mutate(road_category = dplyr::case_when(
-                  road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG" ~ "Europa-, riks- og fylkesveg")) %>% 
-  dplyr::mutate(index_lower = index_p - confidence_width,
-                index_upper = index_p + confidence_width,
-                month_object = lubridate::make_date(year = year, month = month),
-                month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)) %>% 
+  dplyr::mutate(
+    length_range = 
+      dplyr::case_when(
+        length_range == "[..,..)" ~ "alle",
+        length_range == "[..,5.6)" ~ "lette",
+        length_range == "[5.6,..)" ~ "tunge"
+      )
+  ) %>% 
+  dplyr::mutate(
+    road_category = 
+      dplyr::case_when(
+        road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG" ~ "Europa-, riks- og fylkesveg"
+      )
+  ) %>% 
+  dplyr::mutate(
+    index_lower = index_p - confidence_width,
+    index_upper = index_p + confidence_width,
+    month_object = lubridate::make_date(year = year, month = month),
+    month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)
+  ) %>% 
   dplyr::filter(road_category == "Europa-, riks- og fylkesveg")
 
 pointindex_prepared <- pointindices %>% 
@@ -169,13 +181,15 @@ point_index_new_prepared_4 <- point_index_new %>%
 #                 index_total_coverage, length_excluded, length_coverage,
 #                 index_short, index_long)
 
-pointindex_prepared_all <- dplyr::bind_rows(pointindex_prepared,
-                                            point_index_new_prepared,
-                                            point_index_new_prepared_2,
-                                            point_index_new_prepared_3,
-                                            point_index_new_prepared_4#,
-                                            #point_index_new_prepared_5
-                                            ) %>% 
+pointindex_prepared_all <- 
+  dplyr::bind_rows(
+    pointindex_prepared,
+    point_index_new_prepared,
+    point_index_new_prepared_2,
+    point_index_new_prepared_3,
+    point_index_new_prepared_4#,
+    #point_index_new_prepared_5
+  ) %>% 
   dplyr::left_join(city_trps_meta) %>% 
   dplyr::left_join(adt_filtered) %>% 
   dplyr::mutate(
@@ -455,17 +469,15 @@ pointindex_wide %>%
       lengthMenu = c(21, 42, 70),
       autoWidth = TRUE))
 
-# NJ
-# reberegn
-# Austråttunnelen
+# NJ test
+# Brueland 1-3
+# Bybrua s 4
+# forusb/br 3
+# ganddal s 11, 12
+# hana ved rovik 11, 12
+# randabergveien 1-12
+# storhaugtunnelen 4, 5
 
-# Grenland
-# Reberegn
-# Menstadbrua
-
-# Bergen
-# Reberegn 
-# Juvik n
 
 # TRD
 # Ekskl
