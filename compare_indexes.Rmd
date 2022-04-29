@@ -1,6 +1,8 @@
 ---
-title: "Byindeks Nord-Jæren - 24 vs. 59 punkter"
-output: html_notebook
+title: "Byindeks Nord-Jæren med 24 og 59 punkter"
+output: 
+  html_document:
+    css: svv.css
 ---
 
 ```{r setup, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
@@ -12,9 +14,13 @@ source("get_from_trafficdata_api.R")
 source("split_road_system_reference.R")
 library(DT)
 library(htmltools)
+
+flextable::set_flextable_defaults(
+  font.size = 12,
+)
 ```
 
-```{r get_data, include=FALSE}
+```{r get_data, include=FALSE, cache=TRUE}
 city_index_1 <- 
   dplyr::bind_rows(
     get_published_index_for_months(
@@ -39,7 +45,8 @@ city_index_1 <-
     month,
     period,
     index_p,
-    standard_deviation
+    standard_deviation,
+    confidence_width
   )
 
 city_index_2 <- 
@@ -66,9 +73,13 @@ city_index_2 <-
     month,
     period,
     index_p,
-    standard_deviation
+    standard_deviation,
+    confidence_width
   )
-  
+
+city_name_1 <- city_index_1$area_name[1]
+city_name_2 <- city_index_2$area_name[1]
+
 pointindex_1 <- 
   dplyr::bind_rows(
     get_published_pointindex_for_months(
@@ -96,15 +107,65 @@ pointindex_2 <-
       3
     )[[2]]
   )
-  
-
-city_name_1 <- city_index_1$area_name[1]
-city_name_2 <- city_index_2$area_name[1]
 ```
 
 ```{r calculate}
+n_trp_1 <-
+  pointindex_1 %>% 
+  dplyr::filter(
+    is_excluded == FALSE,
+    is_manually_excluded == FALSE
+  ) %>% 
+  dplyr::group_by(
+    year,
+    month,
+    period
+  ) %>% 
+  dplyr::summarise(
+    n_trp = n(),
+    .groups = "drop"
+  )
 
-# TODO: calculate SE
+n_trp_2 <-
+  pointindex_2 %>% 
+  dplyr::filter(
+    is_excluded == FALSE,
+    is_manually_excluded == FALSE
+  ) %>% 
+  dplyr::group_by(
+    year,
+    month,
+    period
+  ) %>% 
+  dplyr::summarise(
+    n_trp = n(),
+    .groups = "drop"
+  )
+
+city_index_n_1 <-
+  city_index_1 %>% 
+  dplyr::left_join(
+    n_trp_1,
+    by = c("year", "month", "period")
+  )
+
+city_index_n_2 <-
+  city_index_2 %>% 
+  dplyr::left_join(
+    n_trp_2,
+    by = c("year", "month", "period")
+  )
+
+compare_city_indexes <-
+  dplyr::inner_join(
+    city_index_n_1,
+    city_index_n_2,
+    by = c("year", "month", "period"),
+    suffix = c("_1", "_2")
+  ) %>% 
+  dplyr::mutate(
+    pm = "±"
+  )
 ```
 
 
@@ -113,11 +174,267 @@ city_name_2 <- city_index_2$area_name[1]
 ```
 
 
-Byindeks for Nord-Jæren er per i dag beregnet med datagrunnlag for 24 trafikkregistreringspunkter. Disse ble valgt ut ved oppstart av nåværende avtaleperiode med referanseår 2017. Senere er det etablert en rekke nye trafikkregistreringspunkter i byområdet. Derfor er det nå beregnet en ny versjon av byindeksen med ytterligere 35 trafikkregistreringspunkter. Dette dokumentet viser en sammenligning av disse to versjonene av byindeksen, som altså har ulikt datagrunnlag.
+Byindeks for Nord-Jæren har siden 2017 blitt beregnet med utgangspunkt i datagrunnlag fra 24 trafikkregistreringspunkter. Disse ble valgt ut ved oppstart av nåværende avtaleperiode med referanseår 2017. Senere er det etablert en rekke nye trafikkregistreringspunkter i byområdet. Derfor er det nå også beregnet en ny versjon av byindeksen med ytterligere 35 trafikkregistreringspunkter. Nedenfor vises en sammenligning av disse to versjonene av byindeksen.
 
-```{r table}
-# TODO: gt compare city months and so far this year
+De to versjonene har som utgangspunkt henholdsvis 24 og 59 trafikkregistreringspunkt. På grunn av nedetid på registreringsutstyr, stengt veg eller endringer i trafikkbildet som blir fanget opp skjevt, er enkelte trafikkregistreringspunkt midlertidig utelatt fra beregningene. Det faktiske antallet punkter som har bidratt med data er derfor oppgitt ved hver indeksverdi.
+
+<br>
+
+Tabell 1 nedenfor viser månedlige indeksverdier.
+
+<br>
+
+```{r table_monthly}
+compare_city_indexes %>% 
+  dplyr::filter(
+    period == "month"
+  ) %>% 
+  dplyr::select(
+    year,
+    month,
+    index_p_1,
+    pm_1 = pm,
+    confidence_width_1,
+    n_trp_1,
+    index_p_2,
+    pm_2 = pm,
+    confidence_width_2,
+    n_trp_2
+  ) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_int(
+    j = 1,
+    big.mark = ""
+  ) %>% 
+  flextable::colformat_double(
+    j = c(3, 5, 7, 9),
+    digits = 1
+  ) %>% 
+  flextable::add_header_row(
+    values = c("", "24 punkter", "59 punkter"),
+    colwidths = c(2, 4, 4)
+  ) %>% 
+  flextable::add_header_row(
+    values = c("Tabell 1. Månedlig sammenligning av de to indeksvariantene."),
+    colwidths = c(10)
+  ) %>% 
+  flextable::vline(
+    j = c(2, 6)
+  ) %>% 
+  flextable::align(
+    i = 1,
+    align = "left",
+    part = "header"
+  ) %>% 
+  flextable::align(
+    i = 2:3,
+    align = "center",
+    part = "header"
+  ) %>% 
+  flextable::align(
+    align = "center",
+    part = "body"
+  ) %>% 
+  flextable::padding(
+    padding = 2,
+    part = "all"
+  ) %>% 
+  flextable::merge_h_range(
+    i = 3,
+    j1 = "index_p_1",
+    j2 = "confidence_width_1",
+    part = "header"
+  ) %>% 
+  flextable::merge_h_range(
+    i = 3,
+    j1 = "index_p_2",
+    j2 = "confidence_width_2",
+    part = "header"
+  ) %>% 
+  flextable::set_header_labels(
+    year = "År",
+    month = "Måned",
+    n_trp_1 = "n",
+    n_trp_2 = "n",
+    index_p_1 = "Indeks (%)",
+    index_p_2 = "Indeks (%)"
+  ) %>% 
+  flextable::padding(
+    j = c(4, 8),
+    padding.left = 0,
+    padding.right = 0,
+    part = "body"
+  ) %>% 
+  flextable::padding(
+    j = c(3, 7),
+    padding.right = 0,
+    part = "body"
+  ) %>% 
+  flextable::width(
+    j = c(4, 8),
+    width = 0.1
+  ) %>% 
+  flextable::padding(
+    j = c(5, 9),
+    padding.left = 0,
+    part = "body"
+  ) %>% 
+  flextable::footnote(
+    i = 3,
+    j = c(3, 6, 7, 10),
+    value = flextable::as_paragraph(
+      c(
+        "Usikkerheten er angitt som et 95 % konfidensintervall.",
+        "Antall trafikkregistreringspunkt som bidro med data.",
+        "Samme som a.",
+        "Samme som b."
+        )),
+    ref_symbols = c("a", "b", "c", "d"),
+    part = "header"
+  ) %>% 
+  flextable::fontsize(
+    size = 10,
+    part = "footer"
+  )
 ```
+
+<br>
+
+Indeksverdiene ligger stort sett ganske nære hverandre. Usikkerheten skal generelt sett bli noe lavere med flere punkt, men dette er ikke alltid tilfelle og kan skyldes at enkelte punkt har variert mye i forbindelse med større omlegginger av vegnettet.
+
+<br>
+
+Tabell 2 nedenfor viser årlige indeksverdier. For 2022 gjelder dette kun januar-mars, da det var dette som var tilgjengelig ved utarbeidelse av denne sammenligningen.
+
+<br>
+
+```{r table_yearly}
+# TODO: gt compare city months and so far this year
+compare_city_indexes %>% 
+  dplyr::filter(
+    period == "year_to_date"
+  ) %>% 
+  dplyr::group_by(
+    year
+  ) %>% 
+  dplyr::slice_max(
+    month
+  ) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::select(
+    year,
+    month,
+    index_p_1,
+    pm_1 = pm,
+    confidence_width_1,
+    n_trp_1,
+    index_p_2,
+    pm_2 = pm,
+    confidence_width_2,
+    n_trp_2
+  ) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_int(
+    j = 1,
+    big.mark = ""
+  ) %>% 
+  flextable::colformat_double(
+    j = c(3, 5, 7, 9),
+    digits = 1
+  ) %>% 
+  flextable::add_header_row(
+    values = c("", "24 punkter", "59 punkter"),
+    colwidths = c(2, 4, 4)
+  ) %>% 
+  flextable::add_header_row(
+    values = c("Tabell 2. Årlig sammenligning av de to indeksvariantene."),
+    colwidths = c(10)
+  ) %>% 
+  flextable::vline(
+    j = c(2, 6)
+  ) %>% 
+  flextable::align(
+    i = 1,
+    align = "left",
+    part = "header"
+  ) %>% 
+  flextable::align(
+    i = 2:3,
+    align = "center",
+    part = "header"
+  ) %>% 
+  flextable::align(
+    align = "center",
+    part = "body"
+  ) %>% 
+  flextable::padding(
+    padding = 2,
+    part = "all"
+  ) %>% 
+  flextable::merge_h_range(
+    i = 3,
+    j1 = "index_p_1",
+    j2 = "confidence_width_1",
+    part = "header"
+  ) %>% 
+  flextable::merge_h_range(
+    i = 3,
+    j1 = "index_p_2",
+    j2 = "confidence_width_2",
+    part = "header"
+  ) %>% 
+  flextable::set_header_labels(
+    year = "År",
+    month = "Antall måneder",
+    n_trp_1 = "n",
+    n_trp_2 = "n",
+    index_p_1 = "Indeks (%)",
+    index_p_2 = "Indeks (%)"
+  ) %>% 
+  flextable::padding(
+    j = c(4, 8),
+    padding.left = 0,
+    padding.right = 0,
+    part = "body"
+  ) %>% 
+  flextable::padding(
+    j = c(3, 7),
+    padding.right = 0,
+    part = "body"
+  ) %>% 
+  flextable::width(
+    j = c(4, 8),
+    width = 0.1
+  ) %>% 
+  flextable::padding(
+    j = c(5, 9),
+    padding.left = 0,
+    part = "all"
+  ) %>% 
+  flextable::footnote(
+    i = 3,
+    j = c(3, 6, 7, 10),
+    value = flextable::as_paragraph(
+      c(
+        "Usikkerheten er angitt som et 95 % konfidensintervall.",
+        "Antall trafikkregistreringspunkt som bidro med data.",
+        "Samme som a.",
+        "Samme som b."
+        )),
+    ref_symbols = c("a", "b", "c", "d"),
+    part = "header"
+  ) %>% 
+  flextable::fontsize(
+    size = 10,
+    part = "footer"
+  )
+```
+
+<br>
+
+Også her er indeksverdiene ganske nære hverandre, og usikkerheten er lik eller lavere med flere punkt. Det er uansett rimelig å anta at versjonen med flere punkt har større representativitet for trafikkbildet i området, og at denne indeksverdien er nærmere sannheten.
+
+<br>
 
 
 ```{r roadnet_map_1}

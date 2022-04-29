@@ -189,7 +189,8 @@ n_21 <- pointindex_21  %>%
   nrow()
 
 # Number of points per month for SE in monthly city index
-n_points_per_month <- dplyr::bind_rows(
+n_points_per_month <-
+  dplyr::bind_rows(
   # Pointindex from API here
     #pointindex_18_all[[2]],
     pointindex_19_all[[2]],
