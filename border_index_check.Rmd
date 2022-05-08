@@ -20,7 +20,7 @@ library(htmltools)
 # Choose
 index_year <- 2022
 # Last published month
-index_month <- 2
+index_month <- 3
 index_id <- 2952
 
 # Fetch

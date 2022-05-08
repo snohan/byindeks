@@ -298,6 +298,188 @@ get_trp_data_time_span <- function() {
 }
 
 
+get_trp_labels <- function(trp_id) {
+
+  query_points <-
+    paste0(
+      "query labels {
+        trafficRegistrationPoints (trafficRegistrationPointIds: \"", trp_id,"\"){
+      id
+      manualLabels {
+        validFrom
+        validTo
+        affectedLanes {
+          lane {
+            laneNumber
+          }
+          states
+        }
+      }
+    }
+  }")
+
+  myqueries <- Query$new()
+  myqueries$query("points", query_points)
+
+  points <-
+    cli$exec(myqueries$queries$points) %>%
+    jsonlite::fromJSON(
+      simplifyDataFrame = T,
+      flatten = T
+    ) %>%
+    as.data.frame() %>%
+    tidyr::unnest(data.trafficRegistrationPoints.manualLabels)
+
+  if (nrow(points) == 0) {
+    labels = data.frame()
+  } else {
+    labels <- points %>%
+      tidyr::unnest(
+        affectedLanes,
+        keep_empty = TRUE
+      ) %>%
+      dplyr::rename(
+        trp_id = data.trafficRegistrationPoints.id,
+        label_start = validFrom,
+        label_end = validTo
+      ) %>%
+      dplyr::mutate(
+        dplyr::across(
+          .cols = c(label_start, label_end),
+          .fns = ~ floor_date(with_tz(ymd_hms(.x)), unit = "day")
+        ),
+        date_interval = lubridate::interval(label_start, label_end)
+      )
+  }
+
+  return(labels)
+}
+
+
+get_labels_for_trp_list <- function(trp_list) {
+
+  number_of_points <- length(trp_list)
+  data_points <- data.frame()
+  trp_count <- 1
+
+  while (trp_count <= number_of_points) {
+
+    data_points <-
+      dplyr::bind_rows(
+        data_points,
+        get_trp_labels(trp_list[trp_count]))
+
+    trp_count <- trp_count + 1
+
+  }
+
+  label_df <- data_points %>%
+    dplyr::rename(
+      lane = lane.laneNumber
+    )
+
+  return(label_df)
+}
+
+
+
+
+get_trp_labels_2 <- function(trp_id) {
+
+  query_points <-
+    paste0(
+      "query labels {
+        trafficRegistrationPoints (trafficRegistrationPointIds: \"", trp_id,"\"){
+      id
+      manualLabels {
+        validFrom
+        validTo
+        affectedLanes {
+          lane {
+            laneNumber
+          }
+          states
+        }
+      }
+    }
+  }")
+
+  myqueries <- Query$new()
+  myqueries$query("points", query_points)
+
+  labels <-
+    cli$exec(myqueries$queries$points) %>%
+    jsonlite::fromJSON(
+      simplifyDataFrame = T,
+      flatten = T
+    ) %>%
+    as.data.frame() %>%
+    tidyr::unnest(
+      data.trafficRegistrationPoints.manualLabels,
+      keep_empty = FALSE
+    )
+
+  return(labels)
+}
+
+
+get_labels_for_trp_list_2 <- function(trp_list) {
+
+  number_of_points <- length(trp_list)
+  data_points <- data.frame()
+  trp_count <- 1
+
+  while (trp_count <= number_of_points) {
+
+    data_points <-
+      dplyr::bind_rows(
+        data_points,
+        get_trp_labels_2(trp_list[trp_count])
+      )
+
+    trp_count <- trp_count + 1
+
+  }
+
+  # labels_1 <-
+  #   data_points %>%
+  #   tidyr::unnest(
+  #     data.trafficRegistrationPoints.manualLabels,
+  #     keep_empty = FALSE
+  #   )
+
+  if (nrow(data_points) == 0) {
+    labels = data.frame()
+  } else {
+    labels <- data_points[17,] %>%
+      tidyr::unnest(
+        affectedLanes,
+        keep_empty = TRUE
+      ) %>%
+      dplyr::rename(
+        trp_id = data.trafficRegistrationPoints.id,
+        label_start = validFrom,
+        label_end = validTo,
+        lane = lane.laneNumber
+      ) %>%
+      dplyr::mutate(
+        dplyr::across(
+          .cols = c(label_start, label_end),
+          .fns = ~ floor_date(with_tz(ymd_hms(.x)), unit = "day")
+        ),
+        date_interval = lubridate::interval(label_start, label_end)
+      )
+  }
+
+  return(labels)
+}
+
+
+
+
+
+
+
 get_points_with_direction <- function() {
   # Get all traffic registration points
   api_query <-
