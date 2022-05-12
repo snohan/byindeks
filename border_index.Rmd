@@ -42,7 +42,7 @@ source("get_from_nvdb_api.R")
 ```
 
 ```{r crossings_info}
-latest_published_month <- 3
+latest_published_month <- 4
 
 counties <- 
   get_counties() %>% 

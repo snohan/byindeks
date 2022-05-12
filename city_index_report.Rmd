@@ -41,15 +41,15 @@ source("rmd_setup.R")
 ```{r get_data, include = FALSE}
 # City numbers
 
-# Bergen                8952 (2018) 08
-# Nord-Jæren             952 (2017) 12
+# Bergen                8952 (2018) 04
+# Nord-Jæren             952 (2017) 04
 # Oslo                   959 (2018) 12
 
-# Buskerudbyen          1952 (2016) 12
-# Grenland               955 (2016) 12
-# Kristiansand og omegn  957 (2016) 12
-# Nedre Glomma           953 (2016) 12
-# Tromsø                 961 (2016) 12
+# Buskerudbyen          1952 (2016) 04
+# Grenland               955 (2016) 04
+# Kristiansand og omegn  957 (2016) 04
+# Nedre Glomma           953 (2016) 04
+# Tromsø                 961 (2016) 04
 
 # Trondheim              960 (2019) 08
 
@@ -81,21 +81,31 @@ all_point_info <-
     paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".csv"))
 
 city_info <-
-    read.csv2(
-      paste0("data_indexpoints_tidy/byindeks_", city_number, ".csv")) %>% 
-  dplyr::mutate(month_object = lubridate::make_date(year = year, month = month),
-                month_name_short = lubridate::month(month_object, label = TRUE),
-                period = paste0("jan-", month_name_short)) #%>%
+  read.csv2(
+    paste0("data_indexpoints_tidy/byindeks_", city_number, ".csv")
+  ) %>% 
+  dplyr::mutate(
+    month_object = lubridate::make_date(year = year, month = month),
+    month_name_short = lubridate::month(month_object, label = TRUE),
+    period = paste0("jan-", month_name_short)
+  ) #%>%
   # Trondheim:
   #dplyr::filter(length_range == "lette")
 # TODO: implement lenght range index
 
 city_monthly <- 
   read.csv2(
-    paste0("data_indexpoints_tidy/byindeks_maanedlig_", city_number, ".csv")) %>% 
-  dplyr::mutate(# setting all years to same is a trick to get the plot facet correct
-                month_object = lubridate::make_date(year = 2000, month = month),
-                month_name_short = lubridate::month(month_object, label = TRUE)) #%>%
+    paste0(
+      "data_indexpoints_tidy/byindeks_maanedlig_", 
+      city_number, 
+      ".csv"
+    )
+  ) %>% 
+  dplyr::mutate(
+    # setting all years to same is a trick to get the plot facet correct
+    month_object = lubridate::make_date(year = 2000, month = month),
+    month_name_short = lubridate::month(month_object, label = TRUE)
+  ) #%>%
   # Trondheim:
   #dplyr::filter(length_range == "lette")
 
@@ -107,8 +117,9 @@ latest_month <- city_monthly %>%
   stringr::str_to_lower()
 
 city_36_month <-
-  read.csv2(
-    paste0("data_indexpoints_tidy/byindeks_36_maaneder_", city_number, ".csv"))
+  readr::read_rds(
+    paste0("data_indexpoints_tidy/byindeks_36_maaneder_", city_number, ".rds")
+  )
 
 base_year <- min(city_info$year_base)
 last_year <- max(city_info$year)
@@ -126,7 +137,7 @@ intro_file <- paste0("intro_", city_number, ".Rmd")
 traffic_file <- paste0("trafikkforhold_", city_number, ".Rmd")
 
 
-# Start Kristisand
+# Start Kristiansand
 # Egen variant for KRS kommune, dvs. gamle kommunen før den ble 
 # slått sammen med Songdalen og Søgne
 # 
@@ -138,13 +149,17 @@ traffic_file <- paste0("trafikkforhold_", city_number, ".Rmd")
 # 
 # city_monthly_kommune <-
 #   read.csv2("data_indexpoints_tidy/byindeks_maanedlig_956.csv") %>%
-#   dplyr::mutate(# setting all years to same is a trick to get the plot facet correct
-#                 month_object = lubridate::make_date(year = 2000, month = month),
-#                 month_name_short = lubridate::month(month_object, label = TRUE))
+#   dplyr::mutate(
+#     # setting all years to same is a trick to get the plot facet correct
+#     month_object = lubridate::make_date(year = 2000, month = month),
+#     month_name_short = lubridate::month(month_object, label = TRUE)
+#   )
 # 
 # city_36_month_kommune <-
-#   read.csv2("data_indexpoints_tidy/byindeks_36_maaneder_956.csv")
-# Slutt Kristisand
+#   readr::read_rds(
+#     paste0("data_indexpoints_tidy/byindeks_36_maaneder_956.rds")
+#   )
+# Slutt Kristiansand
 ```
 
 <br>
@@ -246,6 +261,50 @@ create_city_36_index_table(city_36_month)
 # TODO: SD and SE
 ```
 
+<br>
+
+
+```{r city_plot_36, fig.width=6, fig.height=7, fig.cap="Estimert endring i trafikkmengde siste 3 år."}
+city_36_month %>%
+  ggplot2::ggplot(aes(x = month_object, y = index_p)) +
+  ggplot2::geom_hline(
+      yintercept = 0,
+      color = "#58b02c",
+      size = 0.8,
+      alpha = 0.3
+    ) +
+  ggplot2::geom_line() +
+  ggplot2::geom_point() +
+  theme_light() +
+  theme(
+    axis.text.x = element_text(angle = 90, vjust = 0.5),
+    axis.title.y = element_text(
+      margin = margin(t = 0, r = 15, b = 0, l = 0)),
+    axis.title.x = element_text(
+      margin = margin(t = 15, r = 0, b = 0, l = 0)),
+    panel.grid.minor.x = element_blank(),
+    plot.caption = 
+      element_text(
+        face = "italic", 
+        size = 8, 
+        lineheight = 1.5,
+        vjust = 0
+      )
+  ) +
+  scale_x_date(
+    labels = scales::label_date("%b %Y")
+  ) +
+  ylim(-5, 5) +
+  labs(
+    x = NULL, y = "Endring i trafikkmengde (%)",
+    caption = caption_credit) +
+  ggtitle(
+    "Estimert endring i trafikkmengde siste 3 år for lette kjøretøy",
+  )
+```
+
+<br>
+
 <!-- Kristiansand --
 Tilsvarende for gamle Kristiansand kommune.
 
@@ -257,11 +316,49 @@ Tilsvarende for gamle Kristiansand kommune.
 # TODO: CI
 ```
 
-!-- Kristiansand -->
+<br>
 
-```{r city_plot_36}
-#create_city_36_index_table(city_36_month)
+
+```{r city_plot_36_krs, fig.width=6, fig.height=7, fig.cap="Estimert endring i trafikkmengde siste 3 år, Kristiansand kommune."}
+# city_36_month_kommune %>%
+#   ggplot2::ggplot(aes(x = month_object, y = index_p)) +
+#   ggplot2::geom_hline(
+#       yintercept = 0,
+#       color = "#58b02c",
+#       size = 0.8,
+#       alpha = 0.3
+#     ) +
+#   ggplot2::geom_line() +
+#   ggplot2::geom_point() +
+#   theme_light() +
+#   theme(
+#     axis.text.x = element_text(angle = 90, vjust = 0.5),
+#     axis.title.y = element_text(
+#       margin = margin(t = 0, r = 15, b = 0, l = 0)),
+#     axis.title.x = element_text(
+#       margin = margin(t = 15, r = 0, b = 0, l = 0)),
+#     panel.grid.minor.x = element_blank(),
+#     plot.caption = 
+#       element_text(
+#         face = "italic", 
+#         size = 8, 
+#         lineheight = 1.5,
+#         vjust = 0
+#       )
+#   ) +
+#   scale_x_date(
+#     labels = scales::label_date("%b %Y")
+#   ) +
+#   ylim(-5, 7) +
+#   labs(
+#     x = NULL, y = "Endring i trafikkmengde (%)",
+#     caption = caption_credit) +
+#   ggtitle(
+#     "Estimert endring i trafikkmengde siste 3 år for lette kjøretøy",
+#   )
 ```
+
+<!-- Kristiansand -->
 
 ## Endring per år
 Endring i trafikkmengde er også beregnet for hele kalenderår. Tabellen nedenfor viser byindeksen for hvert år, samt for hele perioden.
@@ -276,8 +373,8 @@ create_city_index_table_sd(city_info)
 <!-- Kristiansand --
 <br>
 ```{r city_table_kommune}
-#create_city_index_table_sd(city_info_kommune) %>%
-#set_caption("Estimert endring i trafikkmengde i gamle Kristiansand kommune.",
+# create_city_index_table_sd(city_info_kommune) %>%
+# set_caption("Estimert endring i trafikkmengde i gamle Kristiansand kommune.",
 #             autonum = table_numbers,
 #             style = "Tabelltekst")
 ```
@@ -334,28 +431,47 @@ Til sammenligning viser tabellen nedenfor endringen i trafikkmengden for lette b
 
 ```{r all_point_info_long}
 # Want to show nothing but consecutive years in plot
-all_point_info_long <- all_point_info %>%
+all_point_info_long <- 
+  all_point_info %>%
   dplyr::select(-index) %>% 
-  dplyr::select(name, road_category_and_number, starts_with("index")) %>%
-  tidyr::pivot_longer(starts_with("index"),
-                      names_to = "period",
-                      values_to = "index_value") %>%
-  dplyr::mutate(year = case_when(period == "index_17" ~ "2016-2017",
-                                 period == "index_18" ~ "2017-2018",
-                                 period == "index_19" ~ "2018-2019",
-                                 period == "index_20" ~ "2019-2020",
-                                 period == "index_21" ~ "2020-2021",
-                                 # Trondheim TODO: harmonize!
-                                 period == "index_2020" ~ "2019-2020",
-                                 period == "index_2021" ~ "2020-2021"
-                                 ),
-                year = factor(year, levels = c("2020-2021",
-                                               "2019-2020",
-                                               "2018-2019",
-                                               "2017-2018",
-                                               "2016-2017"
-                                               ),
-                                ordered = TRUE))
+  dplyr::select(
+    name, 
+    road_category_and_number, 
+    starts_with("index")
+  ) %>%
+  tidyr::pivot_longer(
+    starts_with("index"),
+    names_to = "period",
+    values_to = "index_value"
+  ) %>%
+  dplyr::mutate(
+    year = 
+      case_when(
+        period == "index_17" ~ "2016-2017",
+        period == "index_18" ~ "2017-2018",
+        period == "index_19" ~ "2018-2019",
+        period == "index_20" ~ "2019-2020",
+        period == "index_21" ~ "2020-2021",
+        period == "index_22" ~ "2021-2022",
+        # Trondheim TODO: harmonize!
+        period == "index_2020" ~ "2019-2020",
+        period == "index_2021" ~ "2020-2021"
+      ),
+    year = 
+      factor(
+        year, 
+        levels = 
+          c(
+            "2021-2022",
+            "2020-2021",
+            "2019-2020",
+            "2018-2019",
+            "2017-2018",
+            "2016-2017"
+          ),
+        ordered = TRUE
+      )
+  )
 ```
 
 `r officer::fpar("", officer::run_pagebreak())`
@@ -387,10 +503,18 @@ ggplot() +
   coord_flip() +
   theme_minimal() +
   theme(
-    axis.title.y = element_text(
-      margin = margin(t = 0, r = 15, b = 0, l = 0)),
+    axis.title.x = element_text(
+      margin = margin(t = 15, r = 0, b = 0, l = 0)),
+    axis.text.y = element_text(vjust = 0.5),
+    plot.caption = 
+      element_text(
+        face = "italic", 
+        size = 8, 
+        lineheight = 1.5,
+        vjust = 0
+      )
   ) +
-  labs(x = NULL, y = "\n Endring i trafikkmengde (%) \n",
+  labs(x = NULL, y = "Endring i trafikkmengde (%)",
        caption = caption_credit) +
   ggtitle("Estimert endring i trafikkmengde for lette kjøretøy",
           subtitle = "Byindeksen (store prikker) og punktene (små prikker)")
@@ -407,15 +531,19 @@ index_column_names <- all_point_info %>%
   select(starts_with("index")) %>%
   names()
 
-header_row_values_from_year <- c("", "", base_year:(last_year-1), base_year) %>% 
+header_row_values_from_year <- 
+  c("", "", base_year:(last_year-1), base_year) %>% 
   as.character()
 
-header_row_values_to_year_numbers <- c((base_year+1):last_year, last_year) %>% 
+header_row_values_to_year_numbers <- 
+  c((base_year+1):last_year, last_year) %>% 
   as.character()
 
-header_row_values_to_year_chr <- paste0("-", header_row_values_to_year_numbers)
+header_row_values_to_year_chr <- 
+  paste0("-", header_row_values_to_year_numbers)
 
-header_row_values_to_year <- c("", "", header_row_values_to_year_chr)
+header_row_values_to_year <- 
+  c("", "", header_row_values_to_year_chr)
 
 number_of_years <- last_year - base_year
 
@@ -476,7 +604,7 @@ Ved innføring eller fjerning av bomring, tilføring eller fjerning av bomstasjo
 
 
 ### Trafikale følger av tiltak mot koronaviruspandemien
-Fra mars 2020 er trafikken i stor grad påvirket av tiltak mot spredningen av det nye koronaviruset. Trafikken varierer i takt med de til enhver tid gjeldende tiltak. Enkelte tiltak har ført til nedgang i trafikken, som utstrakt bruk av hjemmekontor og færre arrangementer der folk møtes fysisk. Oppfordringen om å unngå å benytte kollektivtrafikk dersom mulig, har gjerne bidratt til å øke personbiltrafikken noe, men totalt sett har tiltakene stort sett ført til mindre biltrafikk.
+I store deler av perioden fra mars 2020 til mars 2022 ble trafikken i stor grad påvirket av tiltak mot spredningen av det nye koronaviruset. Trafikken varierte i takt med de til enhver tid gjeldende tiltak. Enkelte tiltak førte til nedgang i trafikken, som utstrakt bruk av hjemmekontor og færre arrangementer der folk kunne møtes fysisk. Oppfordringen om å unngå å benytte kollektivtrafikk dersom mulig, kunne nok isolert sett øke personbiltrafikken noe, men totalt sett førte tiltakene til mindre biltrafikk.
 
 
 ```{r child = traffic_file}
@@ -495,21 +623,35 @@ Figuren nedenfor viser endring i trafikk per måned, sammenlignet med samme mån
 
 city_monthly %>%
     ggplot2::ggplot(aes(x = month_object, y = index_p)) +
+    ggplot2::geom_hline(
+      yintercept = 0,
+      color = "#58b02c",
+      size = 0.8,
+      alpha = 0.3
+    ) +
     ggplot2::geom_line() +
     ggplot2::geom_point() +
     ggplot2::facet_grid(rows = vars(year)) +
     theme_light() +
-    theme(axis.text.x = element_text(angle = 90),
-          axis.title.y = element_text(
-          margin = margin(t = 0, r = 15, b = 0, l = 0)),
-          axis.title.x = element_text(
-          margin = margin(t = 15, r = 0, b = 0, l = 0)),
-          panel.grid.minor.x = element_blank(),
+    theme(
+      axis.text.x = element_text(angle = 90, vjust = 0.5),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption = 
+        element_text(
+          face = "italic", 
+          size = 8, 
+          lineheight = 1.5,
+          vjust = 0
+        )
           #legend.position = "bottom"
-          ) +
+    ) +
     scale_x_date(breaks = scales::breaks_width("months"),
                  labels = scales::label_date("%b")) +
-    labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
+    labs(x = NULL, y = "Endring i trafikkmengde (%)",
          caption = caption_credit) +
     ggtitle("Estimert endring i trafikkmengde per måned, lette kjøretøy",
             subtitle = "Trafikkmengde sammenlignet med samme måned året før")
@@ -521,20 +663,38 @@ city_monthly %>%
 ```{r monthly_city_index_kommune, fig.width=6, fig.height=7, fig.cap="Estimert endring i trafikkmengde per måned i gamle Kristiansand kommune."}
 
 # city_monthly_kommune %>%
-#    ggplot2::ggplot(aes(x = month_object, y = index_p)) +
-#    ggplot2::geom_line() +
-#    ggplot2::geom_point() +
-#    ggplot2::facet_grid(rows = vars(year)) +
-#    theme_light() +
-#    theme(axis.text.x = element_text(angle = 90),
-#          panel.grid.minor.x = element_blank(),
-#          #legend.position = "bottom"
-#          ) +
-#    scale_x_date(breaks = scales::breaks_width("months"),
-#                 labels = scales::label_date("%b")) +
-#    labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
-#         caption = caption_credit) +
-#    ggtitle("Estimert endring i trafikkmengde per måned, lette kjøretøy",
+#     ggplot2::ggplot(aes(x = month_object, y = index_p)) +
+#     ggplot2::geom_hline(
+#       yintercept = 0,
+#       color = "#58b02c",
+#       size = 0.8,
+#       alpha = 0.3
+#     ) +
+#     ggplot2::geom_line() +
+#     ggplot2::geom_point() +
+#     ggplot2::facet_grid(rows = vars(year)) +
+#     theme_light() +
+#     theme(
+#       axis.text.x = element_text(angle = 90, vjust = 0.5),
+#       axis.title.y = element_text(
+#         margin = margin(t = 0, r = 15, b = 0, l = 0)),
+#       axis.title.x = element_text(
+#         margin = margin(t = 15, r = 0, b = 0, l = 0)),
+#       panel.grid.minor.x = element_blank(),
+#       plot.caption = 
+#         element_text(
+#           face = "italic", 
+#           size = 8, 
+#           lineheight = 1.5,
+#           vjust = 0
+#         )
+#           #legend.position = "bottom"
+#     ) +
+#     scale_x_date(breaks = scales::breaks_width("months"),
+#                  labels = scales::label_date("%b")) +
+#     labs(x = NULL, y = "Endring i trafikkmengde (%)",
+#          caption = caption_credit) +
+#     ggtitle("Estimert endring i trafikkmengde per måned, lette kjøretøy",
 #             subtitle = "Trafikkmengde sammenlignet med samme måned året før")
 ```
 <!-- Kristiansand -->

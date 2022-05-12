@@ -269,7 +269,10 @@ create_city_index_table <- function(city_info) {
   city_table <- city_info %>%
     dplyr::select(year_from_to, index_p, ci_start, ci_end) %>%
     flextable::flextable() %>%
-    colformat_double(j = c("index_p", "ci_start", "ci_end"), digits = 1) %>%
+    colformat_double(
+      j = c("index_p", "ci_start", "ci_end"),
+      digits = 1
+    ) %>%
     set_header_labels(year_from_to = "Periode",
                       index_p = "Endring i \n trafikkmengde (%)",
                       ci_start = "95 % konfidensintervall") %>%
@@ -349,11 +352,11 @@ create_city_36_index_table <- function(city_36_month) {
   city_table <- city_36_month %>%
     dplyr::select(month_name, year, index_p) %>%
     flextable::flextable() %>%
-    colformat_int(j = "year", big.mark = "") %>%
     colformat_double(j = c("index_p"), digits = 1) %>%
     set_header_labels(month_name = "Treårsperiodens slutt",
                       index_p = "Endring i \n trafikkmengde (%)") %>%
     merge_at(i = 1, j = 1:2, part = "header") %>%
+    colformat_double(j = c("year"), big.mark = "", digits = 0) %>%
     bold(part = "header") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%

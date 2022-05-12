@@ -23,10 +23,14 @@ source("indexpoints_tidying_functions.R")
 
 ## Connection to old data ----
 # Points used in each city:
-cities_points <- read.csv2("data_points_raw/cities_points.csv")
-trp_id_msnr <- cities_points %>%
+cities_points <-
+  read.csv2("data_points_raw/cities_points.csv")
+
+trp_id_msnr <-
+  cities_points %>%
   dplyr::select(trp_id, msnr = legacyNortrafMpn) %>%
   dplyr::distinct()
+
 # Shouldn't be necessary:
 #cities_points_unestablished <-
 #  read_csv2("data_points_raw/points_unestablished.csv")
@@ -34,16 +38,30 @@ trp_id_msnr <- cities_points %>%
 ## All points from Traffic Data API ----
 points <- get_points() %>%
   dplyr::distinct(trp_id, .keep_all = T) %>%
-  dplyr::select(trp_id, name, road_reference, county_name,
-                municipality_name, lat, lon, road_link_position) %>%
+  dplyr::select(
+    trp_id,
+    name,
+    road_reference,
+    county_name,
+    municipality_name,
+    lat, lon, road_link_position
+  ) %>%
   split_road_system_reference() %>%
-  dplyr::mutate(name = stringr::str_to_title(name, locale = "no")) %>%
-  dplyr::select(trp_id, name, road_reference, road_category, road_number,
-                road_category_and_number,
-                section_number, subsection_number, meter,
-                intersection_part_number, intersection_meter,
-                county_name, municipality_name, lat, lon, road_link_position)
-
+  dplyr::mutate(
+    name = stringr::str_to_title(name, locale = "no")
+  ) %>%
+  dplyr::select(
+    trp_id,
+    name,
+    road_reference,
+    road_category,
+    road_number,
+    road_category_and_number,
+    section_number, subsection_number, meter,
+    intersection_part_number, intersection_meter,
+    county_name, municipality_name,
+    lat, lon, road_link_position
+    )
 
 # All points from TRP API (if needed):
 #points_trp <- get_points_from_trpapi_httr() %>%
@@ -72,7 +90,7 @@ points <- get_points() %>%
 # Trondheim stop
 
 # Choose
-index_month <- 12 # the one to be published now
+index_month <- 4 # the one to be published now
 city_number <- 8952
 
 # Pointindices ----
@@ -85,7 +103,8 @@ city_index_2017 <- get_published_index_for_months(city_number, 2017, 12)
 city_index_2018 <- get_published_index_for_months(city_number, 2018, 12)
 city_index_2019 <- get_published_index_for_months(city_number, 2019, 12)
 city_index_2020 <- get_published_index_for_months(city_number, 2020, 12)
-city_index_2021 <- get_published_index_for_months(city_number, 2021, index_month)
+city_index_2021 <- get_published_index_for_months(city_number, 2021, 12)
+city_index_2022 <- get_published_index_for_months(city_number, 2022, index_month)
 
 ## Old results on csv ----
 # Still need to specify csv-files for years before 2020 to get the pointindex as they are not in API
@@ -142,11 +161,15 @@ pointindex_19 <- pointindex_19_all[[2]] %>%
                 index_19 = index_short)
 # Bergen end
 
-pointindex_20_all <- get_published_pointindex_for_months(city_number, 2020, 12)
-pointindex_21_all <- get_published_pointindex_for_months(city_number, 2021, index_month)
+pointindex_20_all <-
+  get_published_pointindex_for_months(city_number, 2020, 12)
+pointindex_21_all <-
+  get_published_pointindex_for_months(city_number, 2021, 12)
+pointindex_22_all <-
+  get_published_pointindex_for_months(city_number, 2022, index_month)
 
-city_trps <- pointindex_21_all[[1]]
-city_name <- city_index_2021$area_name[1]
+city_trps <- pointindex_22_all[[1]]
+city_name <- city_index_2022$area_name[1]
 
 pointindex_20 <- pointindex_20_all[[2]] %>%
   dplyr::filter(day_type == "ALL",
@@ -166,6 +189,14 @@ pointindex_21 <- pointindex_21_all[[2]] %>%
                 month == index_month) %>%
   dplyr::select(trp_id, index_21 = index_short)
 
+pointindex_22 <- pointindex_22_all[[2]] %>%
+  dplyr::filter(day_type == "ALL",
+                is_excluded == FALSE,
+                is_manually_excluded == FALSE,
+                length_excluded == FALSE,
+                period == "year_to_date",
+                month == index_month) %>%
+  dplyr::select(trp_id, index_22 = index_short)
 
 
 n_17 <- pointindex_17 %>%
@@ -188,6 +219,10 @@ n_21 <- pointindex_21  %>%
   dplyr::filter(!is.na(index_21)) %>%
   nrow()
 
+n_22 <- pointindex_22  %>%
+  dplyr::filter(!is.na(index_22)) %>%
+  nrow()
+
 # Number of points per month for SE in monthly city index
 n_points_per_month <-
   dplyr::bind_rows(
@@ -195,13 +230,16 @@ n_points_per_month <-
     #pointindex_18_all[[2]],
     pointindex_19_all[[2]],
     pointindex_20_all[[2]],
-    pointindex_21_all[[2]]
+    pointindex_21_all[[2]],
+    pointindex_22_all[[2]]
   ) %>%
-  dplyr::filter(day_type == "ALL",
-                is_excluded == FALSE,
-                is_manually_excluded == FALSE,
-                length_excluded == FALSE,
-                period == "month") %>%
+  dplyr::filter(
+    day_type == "ALL",
+    is_excluded == FALSE,
+    is_manually_excluded == FALSE,
+    length_excluded == FALSE,
+    period == "month"
+  ) %>%
   dplyr::select(trp_id, year, month, index = index_short) %>%
   dplyr::bind_rows(
     # Pointindex from old csv files here:
@@ -345,23 +383,32 @@ adt_all <-
 this_citys_trp_index <- points %>%
   dplyr::filter(trp_id %in% city_trps) %>%
   split_road_system_reference() %>%
-  dplyr::select(trp_id, name, road_reference,
-                road_category_and_number,
-                county_name, municipality_name,
-                lat, lon, road_link_position) %>%
+  dplyr::select(
+    trp_id,
+    name,
+    road_reference,
+    road_category_and_number,
+    county_name, municipality_name,
+    lat, lon, road_link_position
+  ) %>%
   dplyr::left_join(trp_id_msnr) %>%
-  left_join(adt_all) %>%
-  #left_join(pointindex_17) %>%
-  #left_join(pointindex_18) %>%
-  left_join(pointindex_19) %>%
-  left_join(pointindex_20) %>%
-  left_join(pointindex_21)
+  dplyr::left_join(adt_all) %>%
+  #dplyr::left_join(pointindex_17) %>%
+  #dplyr::left_join(pointindex_18) %>%
+  dplyr::left_join(pointindex_19) %>%
+  dplyr::left_join(pointindex_20) %>%
+  dplyr::left_join(pointindex_21) %>%
+  dplyr::left_join(pointindex_22)
 
 # Index from refyear
-trp_index_from_refyear <- this_citys_trp_index %>%
-  dplyr::select(trp_id, tidyselect::starts_with("index")) %>%
+trp_index_from_refyear <-
+  this_citys_trp_index %>%
+  dplyr::select(
+    trp_id,
+    tidyselect::starts_with("index")
+  ) %>%
   dplyr::filter(
-    dplyr::across(
+    dplyr::if_all(
       .cols = tidyselect::starts_with("index"),
       .fns = ~ !is.na(.x)
     )
@@ -369,21 +416,25 @@ trp_index_from_refyear <- this_citys_trp_index %>%
   dplyr::mutate(
     dplyr::across(
       .cols = tidyselect::starts_with("index"),
-      .fns = ~ index_converter(.))) %>%
+      .fns = ~ index_converter(.))
+  ) %>%
   dplyr::rowwise() %>%
   dplyr::mutate(index = prod(c_across(tidyselect::starts_with("index")))) %>%
   dplyr::mutate(index = round(100 * (index - 1), digits = 1)) %>%
   dplyr::select(trp_id, index)
 
-this_citys_trp_index_refyear <- this_citys_trp_index %>%
+this_citys_trp_index_refyear <-
+  this_citys_trp_index %>%
   dplyr::left_join(trp_index_from_refyear)
 
 # TODO: include coverage
 # TODO: 3 year rolling index, but not now - only for the city
 
-write.csv2(this_citys_trp_index_refyear,
-           file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".csv"),
-           row.names = F)
+write.csv2(
+  this_citys_trp_index_refyear,
+  file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".csv"),
+  row.names = F
+)
 
 
 # City index ----
@@ -412,29 +463,52 @@ city_year_to_date_20 <- city_index_2020 %>%
                 period == "year_to_date")
 
 city_year_to_date_21 <- city_index_2021 %>%
+  dplyr::filter(month == 12,
+                road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+                length_range == "[..,5.6)",
+                period == "year_to_date")
+
+city_year_to_date_22 <- city_index_2022 %>%
   dplyr::filter(month == index_month,
                 road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
                 length_range == "[..,5.6)",
                 period == "year_to_date")
 
-city_index <- bind_rows(
-  #city_year_to_date_17,
-  #city_year_to_date_18,
-  city_year_to_date_19,
-  city_year_to_date_20,
-  city_year_to_date_21) %>%
-  mutate(year_base = year - 1,
-         index_i = index_converter(index_p),
-         variance = standard_deviation^2,
-         n_points = c(
-           #n_17,
-           #n_18,
-           n_19,
-           n_20,
-           n_21),
-         standard_error = round(standard_deviation / sqrt(n_points), digits = 1)) %>%
-  select(year_base, year, month, index_p, index_i,
-         standard_deviation, variance, n_points, standard_error) %>%
+city_index <-
+  dplyr::bind_rows(
+    #city_year_to_date_17,
+    #city_year_to_date_18,
+    city_year_to_date_19,
+    city_year_to_date_20,
+    city_year_to_date_21,
+    city_year_to_date_22
+  ) %>%
+  dplyr::mutate(
+    year_base = year - 1,
+    index_i = index_converter(index_p),
+    variance = standard_deviation^2,
+    n_points = c(
+      #n_17,
+      #n_18,
+      n_19,
+      n_20,
+      n_21,
+      n_22
+    ),
+   standard_error =
+     base::round(standard_deviation / sqrt(n_points), digits = 1)
+  ) %>%
+  dplyr::select(
+    year_base,
+    year,
+    month,
+    index_p,
+    index_i,
+    standard_deviation,
+    variance,
+    n_points,
+    standard_error
+  ) %>%
   dplyr::arrange(year)
 
 
@@ -457,36 +531,66 @@ years_1_4 <- bind_rows(years_1_3, slice(city_index, 4)) %>%
 years_1_5 <- bind_rows(years_1_4, slice(city_index, 5)) %>%
   calculate_two_year_index()
 
-# Skipping intermediate years, adding just from first to last?
-city_index_all <- city_index %>%
-  bind_rows(years_1_2) %>%
-  bind_rows(years_1_3) %>%
-  #bind_rows(years_1_4) %>%
-  #bind_rows(years_1_5) %>%
-  dplyr::mutate(year_from_to = paste0(year_base, "-", year),
-                area_name = city_name)
+years_1_6 <- bind_rows(years_1_5, slice(city_index, 6)) %>%
+  calculate_two_year_index()
 
-write.csv2(city_index_all,
-           file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".csv"),
-           row.names = F)
+# Skipping intermediate years, adding just from first to last?
+city_index_all <-
+  city_index %>%
+  dplyr::bind_rows(years_1_2) %>%
+  dplyr::bind_rows(years_1_3) %>%
+  dplyr::bind_rows(years_1_4) %>%
+  #dplyr::bind_rows(years_1_5) %>%
+  #dplyr::bind_rows(years_1_6) %>%
+  dplyr::mutate(
+    year_from_to = paste0(year_base, "-", year),
+    area_name = city_name
+  )
+
+write.csv2(
+  city_index_all,
+  file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".csv"),
+  row.names = F
+)
 
 
 
 # City index monthly ----
-city_monthly <- bind_rows(
-  #monthly_city_index(city_index_2017),
-  #monthly_city_index(city_index_2018),
-  monthly_city_index(city_index_2019),
-  monthly_city_index(city_index_2020),
-  monthly_city_index(city_index_2021)) %>%
-  select(area_name, year, month, period, month_object, month_name, index_p,
-         standard_deviation, confidence_width, base_volume, calc_volume) %>%
-  dplyr::left_join(n_points_per_month) %>%
-  dplyr::mutate(standard_error = round(standard_deviation / sqrt(n_points), digits = 1))
+city_monthly <-
+  dplyr::bind_rows(
+    #monthly_city_index(city_index_2017),
+    #monthly_city_index(city_index_2018),
+    monthly_city_index(city_index_2019),
+    monthly_city_index(city_index_2020),
+    monthly_city_index(city_index_2021),
+    monthly_city_index(city_index_2022)
+  ) %>%
+  dplyr::select(
+    area_name,
+    year,
+    month,
+    period,
+    month_object,
+    month_name,
+    index_p,
+    standard_deviation,
+    confidence_width,
+    base_volume,
+    calc_volume
+  ) %>%
+  dplyr::left_join(
+    n_points_per_month,
+    by = c("year", "month")
+  ) %>%
+  dplyr::mutate(
+    standard_error = round(standard_deviation / sqrt(n_points), digits = 1)
+  )
 
-write.csv2(city_monthly,
-           file = paste0("data_indexpoints_tidy/byindeks_maanedlig_", city_number, ".csv"),
-           row.names = F)
+write.csv2(
+  city_monthly,
+  file = paste0("data_indexpoints_tidy/byindeks_maanedlig_", city_number, ".csv"),
+  row.names = F
+)
 
 
 # City index three year rolling ----
@@ -497,35 +601,52 @@ write.csv2(city_monthly,
 all_possible_36_month_indexes <-
   calculate_all_possible_36_month_indexes(city_monthly)
 
-write.csv2(all_possible_36_month_indexes,
-           file = paste0("data_indexpoints_tidy/byindeks_36_maaneder_", city_number, ".csv"),
-           row.names = F)
+readr::write_rds(
+  all_possible_36_month_indexes,
+  file =
+    paste0(
+      "data_indexpoints_tidy/byindeks_36_maaneder_",
+      city_number,
+      ".rds"
+    )
+)
 
 
 # E18 Buskerudbyen ----
 trps_e18 <- c("08879V180819", "17291V181259")
 
-point_index_e18 <- dplyr::bind_rows(
-  get_pointindices_for_trp_list(trps_e18, 2017),
-  get_pointindices_for_trp_list(trps_e18, 2018),
-  get_pointindices_for_trp_list(trps_e18, 2019),
-  get_pointindices_for_trp_list(trps_e18, 2020),
-  get_pointindices_for_trp_list(trps_e18, 2021)
-) %>%
-  dplyr::filter(day_type == "ALL",
-                period == "year_to_date") %>%
+point_index_e18 <-
+  dplyr::bind_rows(
+    get_pointindices_for_trp_list(trps_e18, 2017),
+    get_pointindices_for_trp_list(trps_e18, 2018),
+    get_pointindices_for_trp_list(trps_e18, 2019),
+    get_pointindices_for_trp_list(trps_e18, 2020),
+    get_pointindices_for_trp_list(trps_e18, 2021),
+    get_pointindices_for_trp_list(trps_e18, 2022)
+  ) %>%
+  dplyr::filter(
+    day_type == "ALL",
+    period == "year_to_date"
+  ) %>%
   dplyr::group_by(year) %>%
   dplyr::filter(month == max(month))
 
-trps_e18_index <- points %>%
+trps_e18_index <-
+  points %>%
   dplyr::filter(trp_id %in% trps_e18) %>%
   split_road_system_reference() %>%
-  dplyr::select(trp_id, name, road_reference,
-                road_category_and_number,
-                county_name, municipality_name,
-                lat, lon, road_link_position) %>%
+  dplyr::select(
+    trp_id,
+    name,
+    road_reference,
+    road_category_and_number,
+    county_name, municipality_name,
+    lat, lon, road_link_position
+  ) %>%
   dplyr::left_join(point_index_e18)
 
-write.csv2(trps_e18_index,
-           file = "data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv",
-           row.names = F)
+write.csv2(
+  trps_e18_index,
+  file = "data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv",
+  row.names = F
+)

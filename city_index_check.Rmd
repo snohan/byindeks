@@ -34,7 +34,7 @@ library(htmltools)
 # Choose
 index_year <- 2022
 index_month <- 2 # latest published
-city_number <- 960
+city_number <- 959
 
 # Fetch
 city_index <- get_published_index_for_months(city_number, index_year, index_month)
@@ -481,7 +481,8 @@ pointindex_wide %>%
       autoWidth = TRUE))
 
 # Oslo
-# Reberegn Mogreina, SLattum
+# Reberegn Mogreina, SLattum 1, 2, 3, 4
+
 
 # TRD
 # Ekskl 2021

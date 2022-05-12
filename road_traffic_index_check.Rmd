@@ -19,45 +19,45 @@ library(htmltools)
 ```{r get_data, include=FALSE}
 # Look at details in one county at a time
 
-# 30 Viken                  02 Trond
-#  3 Oslo                   02 Trond
+# 30 Viken                  04 Trond
+#  3 Oslo                   04 Trond
 # 34 Innlandet              02 Snorre
-# 38 Vestfold og Telemark   02 Trond
-# 42 Agder                  02 Snorre
-# 11 Rogaland               02 Snorre
-# 46 Vestland               02 Trond
-# 15 Møre og Romsdal        02 Snorre
-# 50 Trøndelag              02 Snorre
-# 18 Nordland               02 Snorre
-# 54 Troms og Finnmark      02 Snorre
+# 38 Vestfold og Telemark   04 Trond
+# 42 Agder                  04 Snorre
+# 11 Rogaland               04 Snorre
+# 46 Vestland               04 Trond
+# 15 Møre og Romsdal        04 Snorre
+# 50 Trøndelag              04 Snorre
+# 18 Nordland               04 Snorre
+# 54 Troms og Finnmark      04 Snorre
 
-county_number_chosen <- 3
+county_number_chosen <- 34
 index_year <- 2022
 # Last published month
-index_month <- 0
+index_month <- 2
 
 index_id <- 962
 
 # If none published so far this year, use draft csv
-trp_index_january <- 
-  read.csv2(
-    "new_vti/punktindeks-2022-01.csv"
-  ) %>% 
-  dplyr::rename(
-    trp_id = trpid,
-    day_type = 'døgn'
-  ) %>% 
-  dplyr::filter(
-    day_type == "Alle",
-    periode == "Januar",
-    dekning > 0
-  )
-
-road_traffic_trps <- 
-  trp_index_january %>% 
-  dplyr::distinct(trp_id, .keep_all = T) 
-
-pointindices <- data.frame() # No published so far
+# trp_index_january <- 
+#   read.csv2(
+#     "new_vti/punktindeks-2022-01.csv"
+#   ) %>% 
+#   dplyr::rename(
+#     trp_id = trpid,
+#     day_type = 'døgn'
+#   ) %>% 
+#   dplyr::filter(
+#     day_type == "Alle",
+#     periode == "Januar",
+#     dekning > 0
+#   )
+# 
+# road_traffic_trps <- 
+#   trp_index_january %>% 
+#   dplyr::distinct(trp_id, .keep_all = T) 
+# 
+# pointindices <- data.frame() # No published so far
 
 # Skip to S1
 # Else use API
@@ -103,7 +103,7 @@ points <-
 trps_meta <- 
   points %>% 
   dplyr::filter(
-    trp_id %in% road_traffic_trps$trp_id
+    trp_id %in% road_traffic_trps#$trp_id
   ) %>% 
   # dplyr::left_join(
   #   pointindices, 
@@ -190,6 +190,110 @@ point_index_new <-
   )
 ```
 
+
+
+
+```{r prepare_county_index}
+## Fylkesindeksene
+# index_this_year_prepared <- 
+#   road_traffic_index %>% 
+#   dplyr::mutate(
+#     length_range = 
+#       dplyr::case_when(
+#         length_range == "[..,..)" ~ "alle",
+#         length_range == "[..,5.6)" ~ "lette",
+#         length_range == "[5.6,..)" ~ "tunge"
+#       ),
+#     day_type = 
+#       dplyr::case_when(
+#         day_type == "ALL" ~ "alle",
+#         day_type == "WEEKDAY" ~ "yrkedøgn",
+#         day_type == "WEEKEND" ~ "helgedøgn"
+#       )
+#   ) %>% 
+#   dplyr::mutate(
+#     road_category = dplyr::case_when(
+#       road_category == "FYLKESVEG" ~ "Fylkesveg",
+#       road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
+#       road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG" ~ "Europa-, riks- og fylkesveg")
+#   ) %>% 
+#   dplyr::mutate(
+#     month_object = lubridate::make_date(year = year, month = month),
+#     month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)
+#   ) %>% 
+#   dplyr::mutate(
+#     road_category = 
+#       factor(
+#         road_category,
+#         levels = 
+#           c(
+#             "Fylkesveg",
+#             "Europa- og riksveg",
+#             "Europa-, riks- og fylkesveg"
+#             ),
+#         ordered = TRUE
+#         )
+#   )
+# 
+# index_this_year_prepared_wide <- 
+#   index_this_year_prepared %>% 
+#   dplyr::filter(
+#     area_type == "COUNTY",
+#     period == "month",
+#     length_range == "alle",
+#     road_category == "Europa-, riks- og fylkesveg",
+#     day_type == "alle"
+#   ) %>% 
+#   dplyr::mutate(
+#     month_name_short = 
+#       lubridate::month(month_object, label = TRUE, abbr = TRUE),
+#     index_p = round(index_p, digits = 1),
+#     area_name = factor(area_name, levels = counties$county_name)
+#   ) %>% 
+#   dplyr::select(
+#     area_name, 
+#     index_p, 
+#     month_name_short
+#   ) %>% 
+#   tidyr::pivot_wider(
+#     names_from = month_name_short, 
+#     values_from = index_p
+#   ) %>% 
+#   dplyr::arrange(area_name)
+
+```
+
+
+```{r county_monthly_table}
+# number_of_columns_2 <- ncol(index_this_year_prepared_wide)
+# 
+# index_this_year_prepared_wide %>%
+#   flextable::flextable() %>%
+#   colformat_double(j = 2:number_of_columns_2, digits = 1) %>%
+#   set_header_labels(area_name = "Fylke") %>%
+#   align(j = 2:number_of_columns_2, align = "right", part = "all") %>%
+#   bold(part = "header") %>%
+#   fontsize(size = 9, part = "all") %>%
+#   font(fontname = "Lucida Sans Unicode", part = "all") %>%
+#   bg(bg = "#ED9300", part = "header") %>%
+#   border_remove() %>%
+#   hline_top(part = "header", border = borderline) %>%
+#   hline_bottom(part = "all", border = borderline) %>%
+#   height_all(height = .2) %>%
+#   width(j = 1, width = 1.9) %>%
+#   fix_border_issues() %>%
+#   padding(padding.top = .3,
+#           padding.bottom = .3) %>%
+#   set_caption(
+#     paste0(
+#       "Endring i trafikkmengde i fylka frå ",
+#       this_year - 1,
+#       " til ",
+#       this_year,
+#       "."),
+#     autonum = table_numbers,
+#     style = "Tabelltekst")
+```
 
 ```{r data_prep, include=FALSE}
 road_traffic_index_prepared <- 
@@ -294,7 +398,7 @@ point_index_new_prepared_2 <-
 # When using CSV we do not need new pointindex from api
 pointindex_prepared_all <- 
   dplyr::bind_rows(
-    #pointindex_prepared,
+    pointindex_prepared,
     point_index_new_prepared_1,
     point_index_new_prepared_2,
     #point_index_new_prepared_3,
@@ -546,7 +650,7 @@ pointindex_long_2 <-
 
 ## Punktindeksene for de nye månedene
 
-### Januar
+### Mars
 
 ```{r map_trp_index, message=FALSE}
 trps_new_pointindex_1 %>% 
@@ -555,7 +659,7 @@ trps_new_pointindex_1 %>%
 ```
 
 
-### Februar
+### April
 
 ```{r map_trp_index_2, message=FALSE}
 trps_new_pointindex_2 %>% 
@@ -668,7 +772,7 @@ pointindex_wide %>%
       lengthMenu = c(21, 42, 63),
       autoWidth = TRUE))
 
-
+# Ekskluder:
 ```
 
 
