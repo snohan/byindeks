@@ -91,7 +91,7 @@ points <- get_points() %>%
 
 # Choose
 index_month <- 4 # the one to be published now
-city_number <- 8952
+city_number <- 959
 
 # Pointindices ----
 # TODO: TRPs might differ from year to year!
@@ -228,7 +228,7 @@ n_points_per_month <-
   dplyr::bind_rows(
   # Pointindex from API here
     #pointindex_18_all[[2]],
-    pointindex_19_all[[2]],
+    #pointindex_19_all[[2]],
     pointindex_20_all[[2]],
     pointindex_21_all[[2]],
     pointindex_22_all[[2]]
@@ -245,7 +245,7 @@ n_points_per_month <-
     # Pointindex from old csv files here:
     #pointindex_17_monthly,
     #pointindex_18_monthly,
-    #pointindex_19_monthly
+    pointindex_19_monthly
   ) %>%
   dplyr::group_by(year, month) %>%
   dplyr::summarise(n_points = n())
@@ -324,32 +324,32 @@ adt_manual <- data.frame(
 )
 
 ### Oslo ----
-this_citys_trp_index_prel <- points %>%
-  dplyr::filter(trp_id %in% city_trps) %>%
-  split_road_system_reference() %>%
-  dplyr::select(trp_id, name, road_reference,
-                road_category_and_number,
-                county_name, municipality_name,
-                lat, lon, road_link_position) %>%
-  dplyr::left_join(trp_id_msnr) %>%
-  left_join(adt_filtered) %>%
-  #left_join(pointindex_18) %>%
-  left_join(pointindex_19) %>%
-  left_join(pointindex_20) %>%
-  left_join(pointindex_21)
-
-missing_adt <- this_citys_trp_index_prel %>%
-  dplyr::filter(is.na(adt)) %>%
-  dplyr::mutate(adt = mapply(getAadtByRoadlinkposition, road_link_position))
-
-missing_adt_small_cars <- missing_adt %>%
-  dplyr::mutate(adt = round(0.9 * adt, digits = -2),
-                year = 2019)
-
-this_citys_trp_index <- this_citys_trp_index_prel %>%
-  dplyr::filter(!is.na(adt)) %>%
-  dplyr::bind_rows(missing_adt_small_cars) %>%
-  split_road_system_reference()
+# this_citys_trp_index_prel <- points %>%
+#   dplyr::filter(trp_id %in% city_trps) %>%
+#   split_road_system_reference() %>%
+#   dplyr::select(trp_id, name, road_reference,
+#                 road_category_and_number,
+#                 county_name, municipality_name,
+#                 lat, lon, road_link_position) %>%
+#   dplyr::left_join(trp_id_msnr) %>%
+#   left_join(adt_filtered) %>%
+#   #left_join(pointindex_18) %>%
+#   left_join(pointindex_19) %>%
+#   left_join(pointindex_20) %>%
+#   left_join(pointindex_21)
+#
+# missing_adt <- this_citys_trp_index_prel %>%
+#   dplyr::filter(is.na(adt)) %>%
+#   dplyr::mutate(adt = mapply(getAadtByRoadlinkposition, road_link_position))
+#
+# missing_adt_small_cars <- missing_adt %>%
+#   dplyr::mutate(adt = round(0.9 * adt, digits = -2),
+#                 year = 2019)
+#
+# this_citys_trp_index <- this_citys_trp_index_prel %>%
+#   dplyr::filter(!is.na(adt)) %>%
+#   dplyr::bind_rows(missing_adt_small_cars) %>%
+#   split_road_system_reference()
 # Oslo end, skip to refyear
 
 ### Grenland ----

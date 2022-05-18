@@ -54,7 +54,7 @@ source("rmd_setup.R")
 # Trondheim              960 (2019) 08
 
 # Choose city number:
-city_number <- 8952
+city_number <- 959
 
 city_number_county_name <- 
   tibble::tibble(
