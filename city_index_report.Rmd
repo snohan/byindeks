@@ -69,9 +69,12 @@ county_name <- city_number_county_name %>%
   dplyr::select(county_name) %>% 
   as.character()
 
-caption_credit <- paste0("Data: Statens vegvesen, ",
-                         county_name,
-                         " fylkeskommune.")
+caption_credit <- 
+  paste0(
+    "Data: Statens vegvesen, ",
+    county_name,
+    " fylkeskommune."
+  )
 
 road_lengths <- read_road_length_csv(
   paste0("road_lengths/road_lengths_", city_number, ".csv"))
@@ -127,7 +130,8 @@ last_year <- max(city_info$year)
 from_base_year_to_last_year <- paste0(base_year, "-", last_year)
 
 # TODO: change to three year rolling when available?
-city_info_all_years <- city_info %>% 
+city_info_all_years <- 
+  city_info %>% 
   dplyr::filter(year_from_to == from_base_year_to_last_year)
   
 index_all_years <- round(city_info_all_years$index_p, digits = 1)

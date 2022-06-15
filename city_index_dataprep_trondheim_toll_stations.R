@@ -142,9 +142,11 @@ this_citys_trps_all_adt_final <-
 # but here we only want index from 2020 onwards
 tollpointindex <-
   read.csv2(
-  "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_aarsindekser.csv") %>%
-  dplyr::rename(trp_id = kode,
-                index = indeks) %>%
+    "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_aarsindekser.csv") %>%
+  dplyr::rename(
+    trp_id = kode,
+    index = indeks
+  ) %>%
   dplyr::mutate(trp_id = as.character(trp_id)) %>%
   dplyr::select(-felt, -stasjon) %>%
   dplyr::select(trp_id, year, month, length_range = klasse, base_volume, calc_volume, index)
@@ -179,8 +181,11 @@ pointindex_trp_toll_short <-
   pointindex_trp_toll %>%
   dplyr::filter(length_range == "lette") %>%
   dplyr::select(trp_id, year, index) %>%
-  tidyr::pivot_wider(names_from = year, names_prefix = "index_",
-                     values_from = index)
+  tidyr::pivot_wider(
+    names_from = year,
+    names_prefix = "index_",
+    values_from = index
+  )
 
 
 # Adding pointindices to all points
@@ -190,11 +195,14 @@ this_citys_trps_all_adt_final_index <-
   split_road_system_reference()
 
 # TODO: include refyear from completed 2021
-this_citys_trp_index_refyear <- this_citys_trps_all_adt_final_index
+this_citys_trp_index_refyear <-
+  this_citys_trps_all_adt_final_index
 
-write.csv2(this_citys_trp_index_refyear,
-           file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".csv"),
-           row.names = F)
+write.csv2(
+  this_citys_trp_index_refyear,
+  file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".csv"),
+  row.names = F
+)
 
 
 # City index ----
@@ -249,9 +257,11 @@ city_index_all <- city_index_sd %>%
   dplyr::mutate(year_from_to = paste0(year_base, "-", year),
                 area_name = city_name)
 
-write.csv2(city_index_all,
-           file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".csv"),
-           row.names = F)
+write.csv2(
+  city_index_all,
+  file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".csv"),
+  row.names = F
+)
 
 
 # City index monthly ----
