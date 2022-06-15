@@ -294,6 +294,11 @@ saveRDS(
   file = "data_index_raw/trd_toll_data_2019_monthly.rds",
 )
 
+tolling_data_monthly_by_class <-
+  readRDS(
+    file = "data_index_raw/trd_toll_data_2019_monthly.rds",
+  )
+
 
 # Exclusions ----
 
@@ -422,7 +427,6 @@ tolling_station_index_2022 <-
   tolling_data_monthly_by_all_classes %>%
   calculate_monthly_index_for_tolling_stations(2021)
 
-
 tolling_station_indices <-
   dplyr::bind_rows(
     #bomindeks_2017,
@@ -433,48 +437,65 @@ tolling_station_indices <-
     tolling_station_index_2022
   )
 
-# write.csv2(
-#   maanedsindekser,
-#   file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.csv",
-#   row.names = F
-#   )
-#
+write.csv2(
+  tolling_station_indices,
+  file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.csv",
+  row.names = F
+  )
+
 # maanedsindekser <-
 #   read.csv2(
 #     "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.csv"
 #   )
 
 # TODO: Dekningsgrad for antall måneder
-aarsindekser <-
-  maanedsindekser %>%
-  dplyr::mutate(year = year(aar_maaned)) %>%
+tolling_station_indices_yearly <-
+  tolling_station_indices %>%
+  dplyr::mutate(year = year(month_as_date)) %>%
   dplyr::group_by(
-    felt,
+    trp_id,
     year,
-    klasse
+    class
   ) %>%
   dplyr::summarise(
-    month = n(),
+    month = max(month), # latest month per year
     base_volume = sum(monthly_volume_base),
     calc_volume = sum(monthly_volume_calc),
-    indeks = (calc_volume / base_volume - 1) * 100
+    index_p = (calc_volume / base_volume - 1) * 100,
+    .groups = "drop"
+  ) #%>%
+  #dplyr::left_join(felt_og_stasjon)
+
+saveRDS(
+  tolling_station_indices_yearly,
+  file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_aarsindekser.rds"
+)
+
+# write.csv2(
+#   tolling_station_indices_yearly,
+#   file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_aarsindekser.csv",
+#   row.names = F
+# )
+
+# Plott for å se etter avvik: bomdata_trondheim.Rmd
+
+city_monthly_toll_indices <-
+  tolling_station_indices %>%
+  dplyr::group_by(
+    trp_id,
+    month_as_date,
+    class
   ) %>%
-  dplyr::left_join(felt_og_stasjon)
+  dplyr::summarise(
+    base_volume = sum(monthly_volume_base),
+    calc_volume = sum(monthly_volume_calc),
+    index_p = (calc_volume / base_volume - 1) * 100,
+    .groups = "drop"
+  ) #%>%
+  #dplyr::left_join(felt_og_stasjon)
 
-write.csv2(aarsindekser,
-           file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_aarsindekser.csv",
-           row.names = F)
-
-# Se plott for å se etter avvik: bomdata_trondheim.Rmd
-
-city_monthly_toll_indices <- maanedsindekser %>%
-  dplyr::group_by(felt, aar_maaned, klasse) %>%
-  dplyr::summarise(base_volume = sum(monthly_volume_base),
-                   calc_volume = sum(monthly_volume_calc),
-                   indeks = (calc_volume /
-                               base_volume - 1) * 100) %>%
-  dplyr::left_join(felt_og_stasjon)
-
-write.csv2(city_monthly_toll_indices,
-           file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_bymaanedsindekser.csv",
-           row.names = F)
+write.csv2(
+  city_monthly_toll_indices,
+  file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_bymaanedsindekser.csv",
+  row.names = F
+)
