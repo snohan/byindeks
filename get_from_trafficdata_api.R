@@ -348,7 +348,7 @@ get_labels_for_trp_list <- function(trp_list) {
     data_points <-
       dplyr::bind_rows(
         data_points,
-        get_trp_labels_2(trp_list[trp_count])
+        get_trp_labels(trp_list[trp_count])
       )
 
     trp_count <- trp_count + 1

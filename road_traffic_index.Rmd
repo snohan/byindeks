@@ -90,9 +90,35 @@ index_this_year <-
     latest_month_number
   )
 
-#index_this_year <- get_published_road_traffic_index_for_months(962, 2019, 12)
-#write.csv2(index_this_year, file = "spesialuttak/vegtrafikkindeks_2019.csv",
-#           row.names = F)
+# index_2017 <- get_published_road_traffic_index_for_months(962, 2017, 12)
+# index_2018 <- get_published_road_traffic_index_for_months(962, 2018, 12)
+# index_2019 <- get_published_road_traffic_index_for_months(962, 2019, 12)
+# index_2020 <- get_published_road_traffic_index_for_months(962, 2020, 12)
+# index_2021 <- get_published_road_traffic_index_for_months(962, 2021, 12)
+# index_2022 <- get_published_road_traffic_index_for_months(962, 2022, 4)
+# 
+# index_2017_2022 <- 
+#   dplyr::bind_rows(
+#     index_2017,
+#     index_2018,
+#     index_2019,
+#     index_2020,
+#     index_2021,
+#     index_2022
+#   )
+# 
+# write.csv2(
+#   index_2017_2022, 
+#   file = "spesialuttak/vegtrafikkindeks_2017_2022.csv",
+#   row.names = F
+#   )
+# 
+# library(writexl)
+# writexl::write_xlsx(
+#   index_2017_2022,
+#   path = "spesialuttak/vegtrafikkindeks_2017_2022.xlsx"
+# )
+
 # Fetching all months pointindices to find all manually excluded
 # pointindex_all_months_this_year <- get_published_pointindex_for_months_paginated(962, this_year, latest_month_number)
 # 
@@ -1109,7 +1135,8 @@ historic_all <-
   ) %>% 
   dplyr::select(year, index_i)
 
-historic_all_combinations <- calculate_all_index_chain_combinations(historic_all)
+historic_all_combinations <- 
+  calculate_all_index_chain_combinations(historic_all)
 
 # road category
 historic_f <- 

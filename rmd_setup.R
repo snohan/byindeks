@@ -1,6 +1,7 @@
 # Common set ups
 
 # Packages ####
+base::Sys.setlocale(locale = "nb.utf8")
 library(tidyverse)
 library(rmarkdown)
 library(leaflet)
