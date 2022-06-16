@@ -317,8 +317,6 @@ tolling_data_monthly_by_class_excluded <-
   dplyr::filter(!(trp_id == "54" & month == "2021-03-01")) %>%
   dplyr::filter(!(trp_id == "54" & month == "2021-08-01")) %>%
   dplyr::filter(!(trp_id == "54" & month == "2022-01-01")) %>%
-  dplyr::filter(!(trp_id == "55" & month == "2021-03-01")) %>%
-  dplyr::filter(!(trp_id == "55" & month == "2021-04-01")) %>%
   dplyr::filter(!(trp_id == "85" & month == "2021-01-01")) %>%
   dplyr::filter(!(trp_id == "85" & month == "2021-03-01")) %>%
   dplyr::filter(!(trp_id == "85" & month == "2021-04-01")) %>%
@@ -443,28 +441,50 @@ write.csv2(
   row.names = F
   )
 
-# maanedsindekser <-
-#   read.csv2(
-#     "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.csv"
-#   )
+tolling_station_indices <-
+  read.csv2(
+    "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.csv"
+  )
 
 # TODO: Dekningsgrad for antall måneder
-tolling_station_indices_yearly <-
+
+# Not all toll stations have value in latest month
+tolling_station_indices_latest_month_per_year <-
   tolling_station_indices %>%
   dplyr::mutate(year = year(month_as_date)) %>%
+  dplyr::group_by(
+    year
+  ) %>%
+  dplyr::summarise(
+    month = max(month),
+    .groups = "drop"
+  )
+
+# As of June 2022, data for April 2021 is missing. Treat them as present:
+tolling_station_indices_latest_month_per_year$month[c(3)] <- 4
+
+tolling_station_indices_yearly <-
+  tolling_station_indices %>%
+  dplyr::mutate(
+    year = year(month_as_date),
+    trp_id = as.character(trp_id)
+  ) %>%
   dplyr::group_by(
     trp_id,
     year,
     class
   ) %>%
   dplyr::summarise(
-    month = max(month), # latest month per year
+    #month = max(month), # latest month per year
     base_volume = sum(monthly_volume_base),
     calc_volume = sum(monthly_volume_calc),
     index_p = (calc_volume / base_volume - 1) * 100,
     .groups = "drop"
-  ) #%>%
-  #dplyr::left_join(felt_og_stasjon)
+  ) %>%
+  dplyr::left_join(
+    tolling_station_indices_latest_month_per_year,
+    by = "year"
+  )
 
 saveRDS(
   tolling_station_indices_yearly,

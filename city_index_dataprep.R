@@ -240,15 +240,24 @@ n_points_per_month <-
     length_excluded == FALSE,
     period == "month"
   ) %>%
-  dplyr::select(trp_id, year, month, index = index_short) %>%
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    index = index_short
+  ) %>%
   dplyr::bind_rows(
     # Pointindex from old csv files here:
     #pointindex_17_monthly,
     #pointindex_18_monthly,
     pointindex_19_monthly
   ) %>%
-  dplyr::group_by(year, month) %>%
+  dplyr::group_by(
+    year,
+    month
+  ) %>%
   dplyr::summarise(n_points = n())
+
 
 ## AADT ----
 adt <- get_aadt_by_length_for_trp_list(city_trps)
@@ -522,16 +531,20 @@ city_index <-
 
 years_1_2 <- calculate_two_year_index(city_index)
 
-years_1_3 <- bind_rows(years_1_2, slice(city_index, 3)) %>%
+years_1_3 <-
+  bind_rows(years_1_2, slice(city_index, 3)) %>%
   calculate_two_year_index()
 
-years_1_4 <- bind_rows(years_1_3, slice(city_index, 4)) %>%
+years_1_4 <-
+  bind_rows(years_1_3, slice(city_index, 4)) %>%
    calculate_two_year_index()
 
-years_1_5 <- bind_rows(years_1_4, slice(city_index, 5)) %>%
+years_1_5 <-
+  bind_rows(years_1_4, slice(city_index, 5)) %>%
   calculate_two_year_index()
 
-years_1_6 <- bind_rows(years_1_5, slice(city_index, 6)) %>%
+years_1_6 <-
+  bind_rows(years_1_5, slice(city_index, 6)) %>%
   calculate_two_year_index()
 
 # Skipping intermediate years, adding just from first to last?

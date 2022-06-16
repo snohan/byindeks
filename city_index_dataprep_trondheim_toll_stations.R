@@ -99,43 +99,40 @@ adt_trp_id <-
   dplyr::filter(station_type == "Trafikkregistrering")
 
 # TODO: change to AADT for total traffic
-adt_trp <- get_aadt_by_length_for_trp_list(adt_trp_id$trp_id)
+adt_trp <-
+  get_aadt_for_trp_list(adt_trp_id$trp_id)
 
 adt_trp_filtered <-
   adt_trp %>%
-  dplyr::filter(length_range == "[..,5.6)") %>%
-  dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
-  dplyr::filter(length_quality > 90) %>%
+  #dplyr::filter(length_range == "[..,5.6)") %>%
+  #dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  #dplyr::filter(length_quality > 90) %>%
   dplyr::filter(coverage > 50) %>%
   dplyr::group_by(trp_id) %>%
   #dplyr::filter(year >= 2019) %>%
   dplyr::filter(year == max(year)) %>%
-  dplyr::select(trp_id, aadt_length_range, year) %>%
-  dplyr::rename(adt = 2)
+  dplyr::select(trp_id, adt, year)
 
 this_citys_trps_all_adt <-
   this_citys_trps_all %>%
-  dplyr::left_join(adt_trp_filtered)
-
-missing_adt <- this_citys_trps_all_adt %>%
-  dplyr::filter(is.na(adt)) %>%
-  dplyr::mutate(adt = mapply(getAadtByRoadlinkposition, road_link_position))
-
-missing_adt_small_cars <-
-  missing_adt %>%
-  dplyr::mutate(
-    adt = round(0.9 * adt, digits = -2),
-    year = 2019
+  dplyr::left_join(
+    adt_trp_filtered,
+    by = "trp_id"
   )
 
-# Correcting wrong values
-missing_adt_small_cars$adt[missing_adt_small_cars$trp_id == 56] <- 44000
+missing_adt <-
+  this_citys_trps_all_adt %>%
+  dplyr::filter(is.na(adt)) %>%
+  dplyr::mutate(
+    adt = mapply(getAadtByRoadlinkposition, road_link_position),
+    year = 2021
+  )
 
 # Finally all aadt
 this_citys_trps_all_adt_final <-
   this_citys_trps_all_adt %>%
   dplyr::filter(!is.na(adt)) %>%
-  dplyr::bind_rows(missing_adt_small_cars)
+  dplyr::bind_rows(missing_adt)
 
 
 # Index results per year ----
@@ -198,12 +195,40 @@ pointindex_trp_toll_short <-
 # Adding pointindices to all points
 this_citys_trps_all_adt_final_index <-
   this_citys_trps_all_adt_final %>%
-  dplyr::left_join(pointindex_trp_toll_short) %>%
+  dplyr::left_join(
+    pointindex_trp_toll_short,
+    by = "trp_id"
+  ) %>%
   split_road_system_reference()
 
-# TODO: include refyear from completed 2021
+trp_index_refyear <-
+  this_citys_trps_all_adt_final_index %>%
+  dplyr::select(
+    trp_id,
+    tidyselect::starts_with("index")
+  ) %>%
+  dplyr::filter(
+    dplyr::if_all(
+      .cols = tidyselect::starts_with("index"),
+      .fns = ~ !is.na(.x)
+    )
+  ) %>%
+  dplyr::mutate(
+    dplyr::across(
+      .cols = tidyselect::starts_with("index"),
+      .fns = ~ index_converter(.))
+  ) %>%
+  dplyr::rowwise() %>%
+  dplyr::mutate(index = prod(c_across(tidyselect::starts_with("index")))) %>%
+  dplyr::mutate(index = round(100 * (index - 1), digits = 1)) %>%
+  dplyr::select(trp_id, index)
+
 this_citys_trp_index_refyear <-
-  this_citys_trps_all_adt_final_index
+  this_citys_trps_all_adt_final_index %>%
+  dplyr::left_join(
+    trp_index_refyear,
+    by = "trp_id"
+  )
 
 write.csv2(
   this_citys_trp_index_refyear,
@@ -273,12 +298,19 @@ city_index_sd <-
     index_i = index_converter(index_p)
   )
 
+city_index_light <-
+  city_index_sd %>%
+  dplyr::ungroup() %>%
+  dplyr::filter(length_range == "lette")
 
 # TODO: fom refyear from 2021 per length_range
 years_1_2 <-
-  city_index_sd %>%
-  dplyr::ungroup() %>%
-  dplyr::filter(length_range == "lette") %>%
+  city_index_light %>%
+  calculate_two_year_index() %>%
+  dplyr::mutate(length_range = "lette")
+
+years_1_3 <-
+  bind_rows(years_1_2, slice(city_index_light, 3)) %>%
   calculate_two_year_index() %>%
   dplyr::mutate(length_range = "lette")
 
@@ -286,7 +318,7 @@ years_1_2 <-
 city_index_all <-
   city_index_sd %>%
   bind_rows(years_1_2) %>%
-  #bind_rows(years_1_3) %>%
+  bind_rows(years_1_3) %>%
   #bind_rows(years_1_4) %>%
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -306,21 +338,19 @@ tollpointindex_monthly <-
     "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_bymaanedsindekser.csv"
   ) %>%
   dplyr::rename(
-    trp_id = kode,
-    index = indeks
+    index = index_p
   ) %>%
   dplyr::mutate(trp_id = as.character(trp_id)) %>%
-  dplyr::select(-felt, -stasjon) %>%
   dplyr::select(
     trp_id,
-    length_range = klasse,
+    length_range = class,
     base_volume,
     calc_volume,
     index,
-    year_month = aar_maaned
+    month_as_date
   ) %>%
   dplyr::mutate(
-    month_object = lubridate::ymd(year_month)
+    month_object = lubridate::ymd(month_as_date)
   ) %>%
   dplyr::select(
     trp_id,
@@ -359,14 +389,14 @@ pointindex_monthly <-
 
 pointindex_trp_toll_monthly <-
   tollpointindex_monthly %>%
-  dplyr::filter(length_range != "Ukjent") %>%
+  dplyr::filter(length_range != "unknown") %>%
   dplyr::mutate(
     index = round(index, digits = 1),
     length_range =
       dplyr::case_when(
-        length_range == "Alle" ~ "alle",
-        length_range == "Liten_bil" ~ "lette",
-        length_range == "Stor_bil" ~ "tunge"
+        length_range == "all" ~ "alle",
+        length_range == "light" ~ "lette",
+        length_range == "heavy" ~ "tunge"
       )
   ) %>%
   dplyr::bind_rows(pointindex_monthly)
@@ -432,3 +462,11 @@ write.csv2(
   file = paste0("data_indexpoints_tidy/byindeks_maanedlig_", city_number, ".csv"),
   row.names = F
 )
+
+# Check:
+# pi_wide <-
+#   pointindex_trp_toll_monthly %>%
+#   dplyr::filter(
+#     length_range == "lette",
+#     month_object >= "2022-01-01"
+#   )
