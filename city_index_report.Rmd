@@ -43,7 +43,7 @@ source("rmd_setup.R")
 
 # Bergen                8952 (2018) 04
 # Nord-Jæren             952 (2017) 04
-# Oslo                   959 (2018) 12
+# Oslo                   959 (2018) 04
 
 # Buskerudbyen          1952 (2016) 04
 # Grenland               955 (2016) 04
@@ -51,10 +51,10 @@ source("rmd_setup.R")
 # Nedre Glomma           953 (2016) 04
 # Tromsø                 961 (2016) 04
 
-# Trondheim              960 (2019) 08
+# Trondheim              960 (2019) 04
 
 # Choose city number:
-city_number <- 959
+city_number <- 960
 
 city_number_county_name <- 
   tibble::tibble(
@@ -91,9 +91,9 @@ city_info <-
     month_object = lubridate::make_date(year = year, month = month),
     month_name_short = lubridate::month(month_object, label = TRUE),
     period = paste0("jan-", month_name_short)
-  ) #%>%
+  ) %>%
   # Trondheim:
-  #dplyr::filter(length_range == "lette")
+  dplyr::filter(length_range == "lette")
 # TODO: implement lenght range index
 
 city_monthly <- 
@@ -108,9 +108,9 @@ city_monthly <-
     # setting all years to same is a trick to get the plot facet correct
     month_object = lubridate::make_date(year = 2000, month = month),
     month_name_short = lubridate::month(month_object, label = TRUE)
-  ) #%>%
+  ) %>%
   # Trondheim:
-  #dplyr::filter(length_range == "lette")
+  dplyr::filter(length_range == "lette")
 
 latest_month <- city_monthly %>% 
   dplyr::slice_max(year) %>% 
@@ -119,10 +119,10 @@ latest_month <- city_monthly %>%
   as.character() %>% 
   stringr::str_to_lower()
 
-city_36_month <-
-  readr::read_rds(
-    paste0("data_indexpoints_tidy/byindeks_36_maaneder_", city_number, ".rds")
-  )
+# city_36_month <-
+#   readr::read_rds(
+#     paste0("data_indexpoints_tidy/byindeks_36_maaneder_", city_number, ".rds")
+#   )
 
 base_year <- min(city_info$year_base)
 last_year <- max(city_info$year)
@@ -213,7 +213,9 @@ Trafikkregistreringspunktene som inngår i byindeksen er listet opp i følgende 
 ```{r point_table}
 all_point_info %>% 
   dplyr::rename(
-    adt = aadt_lette
+    #adt = aadt_lette
+    # Trondheim:
+    adt = adt
   ) %>%
   create_point_table(
   "Trafikkregistreringspunktene som inngår i byindeksen."
@@ -226,21 +228,21 @@ all_point_info %>%
 
 Kartet nedenfor viser plasseringen av trafikkregistreringspunktene. 
 
-<!-- TRD 
+<!-- TRD -->
 Punktet Meådalen på Ev 14 mellom Stjørdal og Meråker er utelatt fra kartvisningen.
--->
+<!-- -->
 
 <br>
 
 ```{r map_trp, dpi=100, fig.width=6, fig.height=7, fig.cap="Trafikkregistreringspunktene og årsdøgntrafikk."}
-all_point_info %>% 
-  dplyr::rename(
-    adt = aadt_lette
-  ) %>%
-  create_point_adt_map()
+# all_point_info %>% 
+#   dplyr::rename(
+#     adt = aadt_lette
+#   ) %>%
+#   create_point_adt_map()
 
 # Trondheim
-# all_point_info %>% 
+# all_point_info %>%
 #   dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
 #   create_point_adt_map_trondheim()
 ```
@@ -261,7 +263,7 @@ Først når månedsindeks er beregnet gjennom tre år eller lenger, kan det bere
 <br>
 
 ```{r city_table_36}
-create_city_36_index_table(city_36_month)
+#create_city_36_index_table(city_36_month)
 # TODO: SD and SE
 ```
 
@@ -269,42 +271,42 @@ create_city_36_index_table(city_36_month)
 
 
 ```{r city_plot_36, fig.width=6, fig.height=7, fig.cap="Estimert endring i trafikkmengde siste 3 år."}
-city_36_month %>%
-  ggplot2::ggplot(aes(x = month_object, y = index_p)) +
-  ggplot2::geom_hline(
-      yintercept = 0,
-      color = "#58b02c",
-      size = 0.8,
-      alpha = 0.3
-    ) +
-  ggplot2::geom_line() +
-  ggplot2::geom_point() +
-  theme_light() +
-  theme(
-    axis.text.x = element_text(angle = 90, vjust = 0.5),
-    axis.title.y = element_text(
-      margin = margin(t = 0, r = 15, b = 0, l = 0)),
-    axis.title.x = element_text(
-      margin = margin(t = 15, r = 0, b = 0, l = 0)),
-    panel.grid.minor.x = element_blank(),
-    plot.caption = 
-      element_text(
-        face = "italic", 
-        size = 8, 
-        lineheight = 1.5,
-        vjust = 0
-      )
-  ) +
-  scale_x_date(
-    labels = scales::label_date("%b %Y")
-  ) +
-  ylim(-5, 5) +
-  labs(
-    x = NULL, y = "Endring i trafikkmengde (%)",
-    caption = caption_credit) +
-  ggtitle(
-    "Estimert endring i trafikkmengde siste 3 år for lette kjøretøy",
-  )
+# city_36_month %>%
+#   ggplot2::ggplot(aes(x = month_object, y = index_p)) +
+#   ggplot2::geom_hline(
+#       yintercept = 0,
+#       color = "#58b02c",
+#       size = 0.8,
+#       alpha = 0.3
+#     ) +
+#   ggplot2::geom_line() +
+#   ggplot2::geom_point() +
+#   theme_light() +
+#   theme(
+#     axis.text.x = element_text(angle = 90, vjust = 0.5),
+#     axis.title.y = element_text(
+#       margin = margin(t = 0, r = 15, b = 0, l = 0)),
+#     axis.title.x = element_text(
+#       margin = margin(t = 15, r = 0, b = 0, l = 0)),
+#     panel.grid.minor.x = element_blank(),
+#     plot.caption = 
+#       element_text(
+#         face = "italic", 
+#         size = 8, 
+#         lineheight = 1.5,
+#         vjust = 0
+#       )
+#   ) +
+#   scale_x_date(
+#     labels = scales::label_date("%b %Y")
+#   ) +
+#   ylim(-5, 5) +
+#   labs(
+#     x = NULL, y = "Endring i trafikkmengde (%)",
+#     caption = caption_credit) +
+#   ggtitle(
+#     "Estimert endring i trafikkmengde siste 3 år for lette kjøretøy",
+#   )
 ```
 
 <br>
@@ -459,7 +461,8 @@ all_point_info_long <-
         period == "index_22" ~ "2021-2022",
         # Trondheim TODO: harmonize!
         period == "index_2020" ~ "2019-2020",
-        period == "index_2021" ~ "2020-2021"
+        period == "index_2021" ~ "2020-2021",
+        period == "index_2022" ~ "2021-2022"
       ),
     year = 
       factor(
