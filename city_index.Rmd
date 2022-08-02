@@ -61,6 +61,74 @@ source("get_from_nvdb_api.R")
 # Trondheim 960               2019    2021-3
 # Tromsø 961                  2016    2021-8
 
+
+# Get n TRPs
+n_brg <- 
+  get_published_pointindex_for_months(8952, 2022, 6)[[1]] |> 
+  base::length()
+
+n_nja <- 
+  get_published_pointindex_for_months(952, 2022, 6)[[1]] |> 
+  base::length()
+
+n_osl <- 
+  get_published_pointindex_for_months(959, 2022, 6)[[1]] |> 
+  base::length()
+
+n_trps_possible <-
+  tibble::tibble(
+    area_name = c(
+      "Bergensområdet",
+      "Nord-Jæren",
+      "Osloområdet"
+    ),
+    n_trp_max = c(
+      n_brg,
+      n_nja,
+      n_osl
+    )
+  )
+
+pointindices <- 
+  dplyr::bind_rows(
+    get_published_pointindex_for_months(8952, 2022, 6)[[2]],
+    get_published_pointindex_for_months(952, 2022, 6)[[2]],
+    get_published_pointindex_for_months(959, 2022, 6)[[2]]
+  )
+
+n_trps_actual <- 
+  pointindices |> 
+  dplyr::filter(
+    period == "month",
+    is_excluded == "FALSE",
+    is_manually_excluded == "FALSE",
+    !is.na(index_short)
+  ) |> 
+  dplyr::group_by(
+    area_name,
+    year,
+    month
+  ) |> 
+  dplyr::summarise(
+    n_trp_with_data = n(),
+    .groups = "drop"
+  ) |> 
+  dplyr::left_join(
+    n_trps_possible,
+    by = "area_name"
+  ) |> 
+  dplyr::mutate(
+    percentage = round(100 * n_trp_with_data / n_trp_max)
+  )
+# TODO: use this n...
+
+base::write.csv2(
+  n_trps_actual,
+  file = "antall_punkter_med_data.csv",
+  fileEncoding = "latin1"
+)
+
+
 city_indices <- dplyr::bind_rows(
   # Bergen
   # get_published_index(958, 2017, 12),

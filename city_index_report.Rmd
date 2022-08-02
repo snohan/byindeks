@@ -242,9 +242,9 @@ Punktet Meådalen på Ev 14 mellom Stjørdal og Meråker er utelatt fra kartvisn
 #   create_point_adt_map()
 
 # Trondheim
-# all_point_info %>%
-#   dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
-#   create_point_adt_map_trondheim()
+all_point_info %>%
+  dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
+  create_point_adt_map_trondheim()
 ```
 
 

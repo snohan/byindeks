@@ -20,20 +20,20 @@ library(htmltools)
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 8952                 4 Snorre
+# Bergen 8952                 6 Trond
 # Buskerudbyen 1952           4 Snorre
 # Grenland 955                4 Snorre
 # Kristiansand og omegn 957   4 Snorre (Million)
 # Nedre Glomma 953            4 Trond
-# Nord-Jæren 952              4 Snorre
-# Oslo 959                    12 Trond
+# Nord-Jæren 952              6 Snorre
+# Oslo 959                    6 Trond
 # Tromsø 961                  4 Snorre
-# Trondheim 960               3 Snorre (mangler mye i april)
+# Trondheim 960, uoffisiell   7 Snorre (mangler mye bomdata i april 2021)
 
 
 # Choose
 index_year <- 2022
-index_month <- 2 # latest published
+index_month <- 6 # latest published
 city_number <- 960
 
 # Fetch
@@ -41,7 +41,7 @@ city_index <- get_published_index_for_months(city_number, index_year, index_mont
 pointindex <- get_published_pointindex_for_months(city_number, index_year, index_month)
 
 city_trps <- pointindex[[1]]
-pointindices <- pointindex[[2]]
+pointindices <- pointindexc
 city_name <- city_index$area_name[1]
 
 # Point metadata from Traffic Data API
@@ -150,13 +150,13 @@ point_index_new_prepared <- point_index_new %>%
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
 
-point_index_new_prepared_2 <- point_index_new %>%
-  dplyr::filter(day_type == "ALL",
-                period == "month",
-                month == index_month + 2) %>%
-  dplyr::select(trp_id, year, month, index_total_p,
-                index_total_coverage, length_excluded, length_coverage,
-                index_short, index_long)
+# point_index_new_prepared_2 <- point_index_new %>%
+#   dplyr::filter(day_type == "ALL",
+#                 period == "month",
+#                 month == index_month + 2) %>%
+#   dplyr::select(trp_id, year, month, index_total_p,
+#                 index_total_coverage, length_excluded, length_coverage,
+#                 index_short, index_long)
 
 # point_index_new_prepared_3 <- point_index_new %>%
 #   dplyr::filter(day_type == "ALL",
@@ -186,7 +186,7 @@ pointindex_prepared_all <-
   dplyr::bind_rows(
     pointindex_prepared,
     point_index_new_prepared,
-    point_index_new_prepared_2,
+    #point_index_new_prepared_2,
     # point_index_new_prepared_3,
     # point_index_new_prepared_4#,
     #point_index_new_prepared_5
@@ -220,18 +220,18 @@ city_trps_new_pointindex <- city_trps_meta %>%
             index_total_coverage, " %"),
     label_text = lapply(label_text, htmltools::HTML))
 
-city_trps_new_pointindex_2 <- city_trps_meta %>% 
-  dplyr::left_join(
-    point_index_new_prepared_2,
-    by = "trp_id"
-  ) %>% 
-  dplyr::mutate(
-    label_text = 
-      paste(name, ", ",
-            road_category_and_number, "<br/>",
-            index_total_p, " %", "<br/>",
-            index_total_coverage, " %"),
-    label_text = lapply(label_text, htmltools::HTML))
+# city_trps_new_pointindex_2 <- city_trps_meta %>% 
+#   dplyr::left_join(
+#     point_index_new_prepared_2,
+#     by = "trp_id"
+#   ) %>% 
+#   dplyr::mutate(
+#     label_text = 
+#       paste(name, ", ",
+#             road_category_and_number, "<br/>",
+#             index_total_p, " %", "<br/>",
+#             index_total_coverage, " %"),
+#     label_text = lapply(label_text, htmltools::HTML))
 
 # city_trps_new_pointindex_3 <- city_trps_meta %>% 
 #   dplyr::left_join(
@@ -397,9 +397,9 @@ city_trps_new_pointindex %>%
 
 
 ```{r map_trp_index_2, message=FALSE}
-city_trps_new_pointindex_2 %>% 
-  dplyr::rename(index = index_total_p) %>% 
-  create_pointindex_map()
+# city_trps_new_pointindex_2 %>% 
+#   dplyr::rename(index = index_total_p) %>% 
+#   create_pointindex_map()
 ```
 
 ```{r map_trp_index_3, message=FALSE}
@@ -480,18 +480,24 @@ pointindex_wide %>%
       lengthMenu = c(21, 42, 70),
       autoWidth = TRUE))
 
+# BRG
+# Ekskluder
+# Osterøy-Trengereid 1
+# Trengereid-Osterøy 3, 5
+#	Rampe Osterøy Til Arna 3, 5
+#	Rampe Arna Til Osterøy 1
+# Heldal 5
+
 # Oslo
-# Reberegn Mogreina, SLattum 1, 2, 3, 4
+# Ekskluder
+# Slattum 2, 5
+# Helsfyr 5
 
 
 # TRD
 # Ekskl 2021
 # Bomstasjon N for Sluppen bru 5-8
 # Bom Bjørndalen 5-8
-# 2022
-# Håper å få inn data for april for (ruterfeil)
-# Grillstad,
-# Marienborg
 ```
 
 
