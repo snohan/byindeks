@@ -20,13 +20,13 @@ library(htmltools)
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 8952                 6 Trond
+# Bergen 8952                 7 Trond
 # Buskerudbyen 1952           4 Snorre
 # Grenland 955                4 Snorre
 # Kristiansand og omegn 957   4 Snorre (Million)
 # Nedre Glomma 953            4 Trond
-# Nord-Jæren 952              6 Snorre
-# Oslo 959                    6 Trond
+# Nord-Jæren 952              7 Snorre
+# Oslo 959                    7 Trond
 # Tromsø 961                  4 Snorre
 # Trondheim 960, uoffisiell   7 Snorre (mangler mye bomdata i april 2021)
 
@@ -34,14 +34,14 @@ library(htmltools)
 # Choose
 index_year <- 2022
 index_month <- 6 # latest published
-city_number <- 960
+city_number <- 959
 
 # Fetch
 city_index <- get_published_index_for_months(city_number, index_year, index_month)
 pointindex <- get_published_pointindex_for_months(city_number, index_year, index_month)
 
 city_trps <- pointindex[[1]]
-pointindices <- pointindexc
+pointindices <- pointindex[[2]]
 city_name <- city_index$area_name[1]
 
 # Point metadata from Traffic Data API

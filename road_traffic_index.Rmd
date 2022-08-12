@@ -80,7 +80,7 @@ points <- get_points() %>%
   )
 
 this_year <- 2022
-latest_month_number <- 4
+latest_month_number <- 7
 
 # Fetching published index from Traffic Data API
 index_this_year <- 
