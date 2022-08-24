@@ -1202,6 +1202,126 @@ get_aadt_by_length_for_trp <- function(trp_id) {
 }
 
 
+# trp_id <- "43623V704583"
+# mdt_year <- 2015
+#
+# test <- get_mdt_by_length_for_trp("43623V704583", 2014)
+
+get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
+
+  # Get all MDTs for a trp
+  api_query <-
+    paste0(
+      "query trp_mdt {
+        trafficData(trafficRegistrationPointId: \"", trp_id,"\") {
+          trafficRegistrationPoint {
+            id
+          }
+    volume {
+      average {
+        daily {
+          byMonth(dayType: ALL, year: ", mdt_year, "){
+            year
+            month
+            total {
+              validLengthVolume {
+                average
+              }
+              coverage {
+                percentage
+              }
+              volume {
+                average
+                standardDeviation
+              }
+            }
+            byLengthRange {
+              lengthRange{
+                representation
+              }
+              total {
+                volume {
+                  average
+                  standardDeviation
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+")
+
+  myqueries <- Query$new()
+  myqueries$query("mdts", api_query)
+
+  trp_mdt <-
+    cli$exec(myqueries$queries$mdts) %>%
+    jsonlite::fromJSON(
+      simplifyDataFrame = T,
+      flatten = T
+    )
+
+  trp_mdt_length <-
+    length(trp_mdt$data$trafficData$volume$average$daily$byMonth$byLengthRange)
+
+  if(
+    is_empty(
+      trp_mdt$data$trafficData$volume$average$daily$byMonth
+    ) |
+    is_empty(
+      trp_mdt$data$trafficData$volume$average$daily$byMonth$byLengthRange[[trp_mdt_length]]
+    )
+  ){
+    # if no total mdt
+    # if no length range mdt
+    trp_mdt <- data.frame()
+  }else{
+    trp_mdt <- trp_mdt %>%
+      as.data.frame() %>%
+      tidyr::unnest(
+        cols = c(data.trafficData.volume.average.daily.byMonth.byLengthRange),
+        names_sep = "."
+      ) %>%
+      # rename only columns that will exist if solely old data
+      dplyr::rename(
+        trp_id = data.trafficData.id,
+        year = data.trafficData.volume.average.daily.byMonth.year,
+        month = data.trafficData.volume.average.daily.byMonth.month,
+        length_range = data.trafficData.volume.average.daily.byMonth.byLengthRange.lengthRange.representation,
+        mdt_length_range = data.trafficData.volume.average.daily.byMonth.byLengthRange.total.volume.average,
+        # include sd to test if all data are old in next step
+        sd_length_range = data.trafficData.volume.average.daily.byMonth.byLengthRange.total.volume.standardDeviation,
+        mdt_total = data.trafficData.volume.average.daily.byMonth.total.volume.average
+      ) %>%
+      dplyr::mutate(trp_id = as.character(trp_id))
+  }
+
+  if(all(is.na(trp_mdt$sd_length_range))
+  ){
+    trp_mdt <-
+      trp_mdt %>%
+      # if all old data, create empty columns (they are missing from API response)
+      dplyr::mutate(
+        mdt_valid_length = NA,
+        coverage = NA
+      )
+  }else{
+    trp_mdt <-
+      trp_mdt %>%
+      dplyr::rename(
+        mdt_valid_length = data.trafficData.volume.average.daily.byMonth.total.validLengthVolume.average,
+        coverage = data.trafficData.volume.average.daily.byMonth.total.coverage.percentage,
+        sd_total = data.trafficData.volume.average.daily.byMonth.total.volume.standardDeviation
+      )
+  }
+
+  return(trp_mdt)
+}
+
+
 # Hente ÅDt for mange punkter
 getAdtForpoints <- function(trp_list) {
   number_of_points <- length(trp_list)
