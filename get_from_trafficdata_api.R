@@ -1483,6 +1483,43 @@ get_aadt_by_length_for_trp_list <- function(trp_list) {
   return(trp_adt)
 }
 
+
+get_mdt_by_length_for_trp_list <- function(trp_list) {
+
+  number_of_points <- length(trp_list)
+  data_points <- data.frame()
+  trp_count <- 1
+
+  while (trp_count <= number_of_points) {
+
+    data_points <-
+      bind_rows(
+        data_points,
+        get_mdt_by_length_for_trp(
+          trp_list[trp_count]
+        )
+      )
+
+    trp_count <- trp_count + 1
+  }
+
+  number_of_digits = -1
+
+  trp_mdt <-
+    data_points %>%
+    dplyr::mutate(
+      mdt_valid_length =
+        round(mdt_valid_length, digits = number_of_digits),
+      mdt_total =
+        round(mdt_total, digits = number_of_digits),
+      mdt_length_range =
+        round(mdt_length_range, digits = number_of_digits)
+    )
+
+  return(trp_mdt)
+}
+
+
 #trp_list <- trp_distinct$trp_id[1:3]
 #mdt_year <- "2021"
 get_sdt_for_trp_list <- function(trp_list, mdt_year) {
