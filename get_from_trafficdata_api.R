@@ -1205,8 +1205,8 @@ get_aadt_by_length_for_trp <- function(trp_id) {
 # trp_id <- "43623V704583"
 # mdt_year <- 2015
 #
-test <- get_mdt_by_length_for_trp("43623V704583", 2014)
-test_2 <- get_mdt_by_length_for_trp("43623V704583", 2019)
+#test <- get_mdt_by_length_for_trp("43623V704583", 2014)
+#test_2 <- get_mdt_by_length_for_trp("43623V704583", 2019)
 
 get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
 
@@ -1310,11 +1310,6 @@ get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
         mdt_valid_length = NA,
         coverage = NA,
         sd_total = NA
-      ) |>
-      dplyr::select(
-        -data.trafficData.volume.average.daily.byMonth.total.validLengthVolume,
-        -data.trafficData.volume.average.daily.byMonth.total.coverage,
-        -data.trafficData.volume.average.daily.byMonth.total.volume.standardDeviation
       )
   }else{
     trp_mdt <-
@@ -1325,6 +1320,21 @@ get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
         sd_total = data.trafficData.volume.average.daily.byMonth.total.volume.standardDeviation
       )
   }
+
+  trp_mdt <-
+    trp_mdt |>
+    dplyr::select(
+      trp_id,
+      year,
+      month,
+      length_range,
+      mdt_length_range,
+      sd_length_range,
+      mdt_valid_length,
+      coverage,
+      mdt_total,
+      sd_total
+    )
 
   return(trp_mdt)
 }
