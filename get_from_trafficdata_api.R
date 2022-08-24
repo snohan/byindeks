@@ -1202,10 +1202,10 @@ get_aadt_by_length_for_trp <- function(trp_id) {
 }
 
 
-# trp_id <- "43623V704583"
-# mdt_year <- 2015
+# trp_id <- "57211V805408"
+# mdt_year <- 2018
 #
-#test <- get_mdt_by_length_for_trp("43623V704583", 2014)
+# test <- get_mdt_by_length_for_trp("57211V805408", 2016)
 #test_2 <- get_mdt_by_length_for_trp("43623V704583", 2019)
 
 get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
@@ -1321,20 +1321,25 @@ get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
       )
   }
 
-  trp_mdt <-
-    trp_mdt |>
-    dplyr::select(
-      trp_id,
-      year,
-      month,
-      length_range,
-      mdt_length_range,
-      sd_length_range,
-      mdt_valid_length,
-      coverage,
-      mdt_total,
-      sd_total
-    )
+  if(trp_mdt_length == 0
+  ){
+    trp_mdt <- trp_mdt
+  }else{
+    trp_mdt <-
+      trp_mdt |>
+      dplyr::select(
+        trp_id,
+        year,
+        month,
+        length_range,
+        mdt_length_range,
+        sd_length_range,
+        mdt_valid_length,
+        coverage,
+        mdt_total,
+        sd_total
+      )
+  }
 
   return(trp_mdt)
 }
