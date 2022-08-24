@@ -1205,7 +1205,8 @@ get_aadt_by_length_for_trp <- function(trp_id) {
 # trp_id <- "43623V704583"
 # mdt_year <- 2015
 #
-# test <- get_mdt_by_length_for_trp("43623V704583", 2014)
+test <- get_mdt_by_length_for_trp("43623V704583", 2014)
+test_2 <- get_mdt_by_length_for_trp("43623V704583", 2019)
 
 get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
 
@@ -1279,7 +1280,8 @@ get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
     # if no length range mdt
     trp_mdt <- data.frame()
   }else{
-    trp_mdt <- trp_mdt %>%
+    trp_mdt <-
+      trp_mdt %>%
       as.data.frame() %>%
       tidyr::unnest(
         cols = c(data.trafficData.volume.average.daily.byMonth.byLengthRange),
@@ -1306,7 +1308,13 @@ get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
       # if all old data, create empty columns (they are missing from API response)
       dplyr::mutate(
         mdt_valid_length = NA,
-        coverage = NA
+        coverage = NA,
+        sd_total = NA
+      ) |>
+      dplyr::select(
+        -data.trafficData.volume.average.daily.byMonth.total.validLengthVolume,
+        -data.trafficData.volume.average.daily.byMonth.total.coverage,
+        -data.trafficData.volume.average.daily.byMonth.total.volume.standardDeviation
       )
   }else{
     trp_mdt <-
@@ -1484,7 +1492,7 @@ get_aadt_by_length_for_trp_list <- function(trp_list) {
 }
 
 
-get_mdt_by_length_for_trp_list <- function(trp_list) {
+get_mdt_by_length_for_trp_list <- function(trp_list, mdt_year) {
 
   number_of_points <- length(trp_list)
   data_points <- data.frame()
@@ -1496,7 +1504,8 @@ get_mdt_by_length_for_trp_list <- function(trp_list) {
       bind_rows(
         data_points,
         get_mdt_by_length_for_trp(
-          trp_list[trp_count]
+          trp_list[trp_count],
+          mdt_year
         )
       )
 
