@@ -1202,11 +1202,13 @@ get_aadt_by_length_for_trp <- function(trp_id) {
 }
 
 
-# trp_id <- "57211V805408"
-# mdt_year <- 2018
-#
-# test <- get_mdt_by_length_for_trp("57211V805408", 2016)
-#test_2 <- get_mdt_by_length_for_trp("43623V704583", 2019)
+#trp_id <- "01316V804837"
+#mdt_year <- 2022
+
+# test_all_nortraf <- get_mdt_by_length_for_trp("43623V704583", 2014)
+# test_mix_nortraf_new <- get_mdt_by_length_for_trp("43623V704583", 2015)
+# test_all_new <- get_mdt_by_length_for_trp("43623V704583", 2016)
+# test_none <- get_mdt_by_length_for_trp("01316V804837", 2022)
 
 get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
 
@@ -1265,16 +1267,30 @@ get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
       flatten = T
     )
 
-  trp_mdt_length <-
-    length(trp_mdt$data$trafficData$volume$average$daily$byMonth$byLengthRange)
+  # trp_mdt_length <-
+  #   length(trp_mdt$data$trafficData$volume$average$daily$byMonth$byLengthRange)
+
+  # Is there any length range MDTs?
+  n_length_range <-
+    purrr::map_int(
+      trp_mdt$data$trafficData$volume$average$daily$byMonth$byLengthRange,
+      ~ length(.x)
+    ) |>
+    sum() / 3
+
 
   if(
-    is_empty(
-      trp_mdt$data$trafficData$volume$average$daily$byMonth
-    ) |
-    is_empty(
-      trp_mdt$data$trafficData$volume$average$daily$byMonth$byLengthRange[[trp_mdt_length]]
-    )
+    is.null(trp_mdt$data$trafficData$volume$average$daily$byMonth$total.volume.average)
+    #all(is.na(trp_mdt$data$trafficData$volume$average$daily$byMonth$total))
+    #rlang::is_empty(
+    #  trp_mdt$data$trafficData$volume$average$daily$byMonth
+    #)
+    |
+    n_length_range == 0
+#    rlang::is_empty(
+#      trp_mdt$data$trafficData$volume$average$daily$byMonth$byLengthRange
+      #trp_mdt$data$trafficData$volume$average$daily$byMonth$byLengthRange[[trp_mdt_length]]
+#    )
   ){
     # if no total mdt
     # if no length range mdt
@@ -1321,7 +1337,7 @@ get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
       )
   }
 
-  if(trp_mdt_length == 0
+  if(n_length_range == 0
   ){
     trp_mdt <- trp_mdt
   }else{
@@ -1445,6 +1461,7 @@ get_mdt_by_lane_for_trp_list <- function(trp_list, mdt_year) {
 
 
 get_mdt_by_direction_for_trp_list <- function(trp_list, mdt_year) {
+
   number_of_points <- length(trp_list)
   data_points <- data.frame()
   trp_count <- 1
