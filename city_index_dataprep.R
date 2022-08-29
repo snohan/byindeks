@@ -23,6 +23,7 @@ source("indexpoints_tidying_functions.R")
 
 ## Connection to old data ----
 # Points used in each city:
+# (This is only used to match old index data from before 2020)
 cities_points <-
   read.csv2("data_points_raw/cities_points.csv")
 
@@ -111,7 +112,7 @@ city_index_2022 <- get_published_index_for_months(city_number, 2022, index_month
 # Still need to specify csv-files for years before 2020 to get the pointindex as they are not in API
 # Note: not all cities use 2017
 pointindex_17 <-
-  readPointindexCSV(
+  read_pointindex_CSV(
     paste0("data_index_raw/pointindex_", city_number, "_", 2017, ".csv")
   ) %>%
   dplyr::rename(index_17 = index)
@@ -120,12 +121,15 @@ pointindex_17_monthly <-
   read_old_pointindex_csv_monthly(
     paste0("data_index_raw/pointindex_", city_number, "_", 2017, ".csv"),
     2017
-  ) %>%
-  dplyr::left_join(trp_id_msnr) %>%
+  ) |>
+  dplyr::left_join(
+    trp_id_msnr,
+    by = "msnr"
+  ) |>
   dplyr::select(-msnr)
 
 pointindex_18 <-
-  readPointindexCSV(
+  read_pointindex_CSV(
     paste0("data_index_raw/pointindex_", city_number, "_", 2018, ".csv")
   ) %>%
   dplyr::rename(index_18 = index)
@@ -135,11 +139,14 @@ pointindex_18_monthly <-
     paste0("data_index_raw/pointindex_", city_number, "_", 2018, ".csv"),
     2018
   ) %>%
-  dplyr::left_join(trp_id_msnr) %>%
+  dplyr::left_join(
+    trp_id_msnr,
+    by = "msnr"
+  ) %>%
   dplyr::select(-msnr)
 
 pointindex_19 <-
-  readPointindexCSV(
+  read_pointindex_CSV(
     paste0("data_index_raw/pointindex_", city_number, "_", 2019, ".csv")
   ) %>%
   dplyr::rename(index_19 = index)
@@ -149,7 +156,10 @@ pointindex_19_monthly <-
     paste0("data_index_raw/pointindex_", city_number, "_", 2019, ".csv"),
     2019
   ) %>%
-  dplyr::left_join(trp_id_msnr) %>%
+  dplyr::left_join(
+    trp_id_msnr,
+    by = "msnr"
+  ) %>%
   dplyr::select(-msnr)
 
 
@@ -276,8 +286,8 @@ n_points_per_month <-
   ) %>%
   dplyr::bind_rows(
     # Pointindex from old csv files here:
-    #pointindex_17_monthly,
-    #pointindex_18_monthly,
+    pointindex_17_monthly,
+    pointindex_18_monthly,
     pointindex_19_monthly
   ) %>%
   dplyr::group_by(
@@ -417,7 +427,8 @@ adt_all <-
   )
 
 ## Final table ----
-this_citys_trp_index <- points %>%
+this_citys_trp_index <-
+  points %>%
   dplyr::filter(trp_id %in% city_trps) %>%
   split_road_system_reference() %>%
   dplyr::select(
@@ -430,14 +441,14 @@ this_citys_trp_index <- points %>%
   ) %>%
   dplyr::left_join(trp_id_msnr) %>%
   dplyr::left_join(adt_all) %>%
-  #dplyr::left_join(pointindex_17) %>%
-  #dplyr::left_join(pointindex_18) %>%
+  dplyr::left_join(pointindex_17) %>%
+  dplyr::left_join(pointindex_18) %>%
   dplyr::left_join(pointindex_19) %>%
   dplyr::left_join(pointindex_20) %>%
   dplyr::left_join(pointindex_21) %>%
   dplyr::left_join(pointindex_22)
 
-# Index from refyear
+# Chained pointindex from reference year
 trp_index_from_refyear <-
   this_citys_trp_index %>%
   dplyr::select(
@@ -532,7 +543,7 @@ city_year_to_date_22 <-
 city_index <-
   dplyr::bind_rows(
     #city_year_to_date_17,
-    #city_year_to_date_18,
+    city_year_to_date_18,
     city_year_to_date_19,
     city_year_to_date_20,
     city_year_to_date_21,
@@ -544,7 +555,7 @@ city_index <-
     variance = standard_deviation^2,
     n_points = c(
       #n_17,
-      #n_18,
+      n_18,
       n_19,
       n_20,
       n_21,
@@ -567,7 +578,7 @@ city_index <-
   dplyr::arrange(year)
 
 
-## Chained index ----
+## Chained city index ----
 # TODO: Functionize!
 #calculate_each_index_from_reference_year <- function(city_index_df) {
   # In order to calculate SD and SE, do it iteratively for two years at a time
@@ -599,7 +610,7 @@ city_index_all <-
   dplyr::bind_rows(years_1_2) %>%
   dplyr::bind_rows(years_1_3) %>%
   dplyr::bind_rows(years_1_4) %>%
-  #dplyr::bind_rows(years_1_5) %>%
+  dplyr::bind_rows(years_1_5) %>%
   #dplyr::bind_rows(years_1_6) %>%
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -618,7 +629,7 @@ write.csv2(
 city_monthly <-
   dplyr::bind_rows(
     #monthly_city_index(city_index_2017),
-    #monthly_city_index(city_index_2018),
+    monthly_city_index(city_index_2018),
     monthly_city_index(city_index_2019),
     monthly_city_index(city_index_2020),
     monthly_city_index(city_index_2021),
@@ -662,36 +673,37 @@ write.csv2(
 # The first 36 month index is equal to the first three whole year index!
 # TODO: 36 month rolling index with sd and ci
 
-all_possible_36_month_indexes <-
-  calculate_all_possible_36_month_indexes(city_monthly)
+# all_possible_36_month_indexes <-
+#   calculate_all_possible_36_month_indexes(city_monthly)
+#
+# readr::write_rds(
+#   all_possible_36_month_indexes,
+#   file =
+#     paste0(
+#       "data_indexpoints_tidy/byindeks_36_maaneder_",
+#       city_number,
+#       ".rds"
+#     )
+# )
 
-readr::write_rds(
-  all_possible_36_month_indexes,
-  file =
-    paste0(
-      "data_indexpoints_tidy/byindeks_36_maaneder_",
-      city_number,
-      ".rds"
-    )
-)
 
+# 36 month window using MDTs ----
 
-## 36 month window using MDTs ----
+# TODO: Check MDT validity
 
-# TODO: Check that TRPs should not be excluded
-# TODO: How to avoid som many TRPs to be excluded?
-# TODO: Check correctness of 36 month indices
-# TODO: Calculate uncertainty
+## Get MDTs ----
+present_year <-
+  lubridate::today() |>
+  lubridate::year()
+
+years_from_reference_to_today <-
+  base::seq(reference_year, present_year)
 
 mdt <-
-  dplyr::bind_rows(
-    get_mdt_by_length_for_trp_list(city_trps, 2017),
-    get_mdt_by_length_for_trp_list(city_trps, 2018),
-    get_mdt_by_length_for_trp_list(city_trps, 2019),
-    get_mdt_by_length_for_trp_list(city_trps, 2020),
-    get_mdt_by_length_for_trp_list(city_trps, 2021),
-    get_mdt_by_length_for_trp_list(city_trps, 2022)
-  )
+  purrr::map_dfr(
+    years_from_reference_to_today,
+    ~ get_mdt_by_length_for_trp_list(city_trps, .x)
+)
 
 mdt_filtered <-
   mdt |>
@@ -721,6 +733,8 @@ mdt_filtered <-
   ) |>
   tibble::as_tibble()
 
+# TODO: add exclusions as manual table
+
 # city_mdts <-
 #   mdt_filtered |>
 #   dplyr::left_join(
@@ -743,118 +757,68 @@ readr::write_rds(
     )
 )
 
-
-filter_mdt <- function(mdt_df, year_dbl) {
-
-  mdt_df |>
-    dplyr::filter(
-      year == year_dbl,
-      coverage >= 50,
-      length_quality >= 99
-    ) |>
-    dplyr::select(
-      trp_id,
-      year,
-      month,
-      mdt
-    ) |>
-    dplyr::group_by(
-      trp_id
-    ) |>
-    dplyr::summarise(
-      n_months = n(),
-      mean_mdt = mean(mdt)
-    ) |>
-    dplyr::filter(
-      n_months >= 10
+mdt_filtered <-
+  readr::read_rds(
+    paste0(
+      "data_indexpoints_tidy/mdt_",
+      city_number,
+      ".rds"
     )
-
-}
-
-mdt_ref_year <-
-  mdt_filtered |>
-  dplyr::filter(
-    year == reference_year,
-    coverage >= 50,
-    length_quality >= 99
-  ) |>
-  dplyr::select(
-    trp_id,
-    year,
-    month,
-    mdt
-  ) |>
-  dplyr::group_by(
-    trp_id
-  ) |>
-  dplyr::summarise(
-    n_months = n(),
-    mean_mdt = mean(mdt)
   )
 
-calculate_rolling_indices_by_mdt <-
-  function(base_year, last_year_month, window_length, mdt_df) {
 
-    # Window length is a number of months, preferably a multiple of 12
+## TRP MDT table ----
+# To show MDTs in a table in the report
+mdt_each_year <-
+  purrr::map_dfr(
+    years_from_reference_to_today,
+    ~ filter_mdt(mdt_filtered, .x)
+  ) |>
+  dplyr::select(
+    -n_months
+  ) |>
+  tidyr::pivot_wider(
+    names_from = year,
+    names_prefix = "mdt_",
+    values_from = mean_mdt
+  )
 
-    last_year_month <-
-      lubridate::as_date(last_year_month)
+city_trps_mdt <-
+  points %>%
+  dplyr::filter(trp_id %in% city_trps) %>%
+  split_road_system_reference() %>%
+  dplyr::select(
+    trp_id,
+    name,
+    road_category_and_number
+  ) %>%
+  dplyr::left_join(
+    mdt_each_year,
+    by = "trp_id"
+  ) |>
+  dplyr::mutate(
+    dplyr::across(
+      tidyselect::starts_with("mdt_"),
+      ~ round(
+        .x,
+        digits = -1
+        )
+    )
+  )
 
-    mean_mdt_in_window <-
-      mdt_df |>
-      dplyr::filter(
-        year_month %in%
-          base::seq.Date(
-            from = last_year_month - base::months(window_length - 1),
-            to = last_year_month,
-            by = "month"
-          )
-      ) |>
-      dplyr::filter(
-        coverage >= 50,
-        length_quality >= 99
-      ) |>
-      dplyr::group_by(
-        trp_id
-      ) |>
-      dplyr::summarise(
-        n_months = n(),
-        mean_mdt = base::mean(mdt)
-      ) |>
-      dplyr::filter(
-        n_months >= window_length - 3*2
-      )
+readr::write_rds(
+  city_trps_mdt,
+  file =
+    paste0(
+      "data_indexpoints_tidy/city_trps_mdt_",
+      city_number,
+      ".rds"
+    )
+)
 
-    index_df <-
-      dplyr::inner_join(
-        filter_mdt(mdt_df, base_year),
-        mean_mdt_in_window,
-        by = "trp_id"
-      ) |>
-      dplyr::summarise(
-        index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
-        index_p = (index_i - 1) * 100,
-        n_trp = n()
-      ) |>
-      dplyr::mutate(
-        index_period =
-          paste0(
-            base_year,
-            "--(",
-            last_year_month - base::months(window_length - 1),
-            "--",
-            last_year_month,
-            ")"
-          )
-      )
 
-    return(index_df)
 
-  }
-
-present_year <-
-  lubridate::today() |>
-  lubridate::year()
+## All possible 36 month window indices ----
 
 first_possible_year_month <-
   lubridate::as_date(

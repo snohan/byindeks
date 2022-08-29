@@ -26,54 +26,80 @@ choose_new_city_trp_ids <- function(city_name,
     dplyr::filter(!is.na(trp_id))
 }
 
-readPointindexCSV <- function(filename) {
+
+read_pointindex_CSV <- function(filename) {
+
   # Read standard csv export from Datainn
-  read.csv2(filename) %>%
-    filter(døgn == "Alle",
-           lengdeklasse == "< 5,6m",
-           periode == "Hittil i år") %>%
-    mutate(trs = as.numeric(msnr),
-           trafikkmengde.basisaar = as.numeric(
-             as.character(trafikkmengde.basisår)),
-           trafikkmengde.indeksaar = as.numeric(
-             as.character(trafikkmengde.indeksår))) %>%
-    group_by(trs) %>%
-    summarise(trafikkmengde_basisaar = sum(trafikkmengde.basisaar),
-              trafikkmengde_indeksaar = sum(trafikkmengde.indeksaar),
-              index = round((trafikkmengde_indeksaar/
-                               trafikkmengde_basisaar - 1) * 100,
-                            digits = 1)) %>%
-    rename(msnr = trs) %>%
-    select(msnr, index)
+
+  read.csv2(
+    filename,
+    encoding = "latin1"
+    #check.names = FALSE
+    ) |>
+    dplyr::filter(
+      døgn == "Alle",
+      lengdeklasse == "< 5,6m",
+      periode == "Hittil i år") %>%
+    dplyr::mutate(
+      trs = as.numeric(msnr),
+      trafikkmengde.basisaar =
+        as.numeric(as.character(trafikkmengde.basisår)),
+      trafikkmengde.indeksaar =
+        as.numeric(as.character(trafikkmengde.indeksår))
+    ) |>
+    dplyr::group_by(trs) %>%
+    dplyr::summarise(
+      trafikkmengde_basisaar = sum(trafikkmengde.basisaar),
+      trafikkmengde_indeksaar = sum(trafikkmengde.indeksaar),
+      index =
+        round(
+          (trafikkmengde_indeksaar/
+            trafikkmengde_basisaar - 1) * 100,
+          digits = 1
+        )
+    ) |>
+    dplyr::rename(msnr = trs) %>%
+    dplyr::select(msnr, index)
+
 }
 
 read_old_pointindex_csv_monthly <- function(filename, given_year) {
+
   # Read standard csv export from old VTI-app in Datainn
-  read.csv2(filename) %>%
-    filter(døgn == "Alle",
-           lengdeklasse == "< 5,6m",
-           !(periode %in% c("Hittil i år", "Siste 12 måneder")),
-           indeks != "-") %>%
-    mutate(trs = as.numeric(msnr),
-           year = given_year,
-           month = dplyr::case_when(
-             periode == "Januar" ~ 1,
-             periode == "Februar" ~ 2,
-             periode == "Mars" ~ 3,
-             periode == "April" ~ 4,
-             periode == "Mai" ~ 5,
-             periode == "Juni" ~ 6,
-             periode == "Juli" ~ 7,
-             periode == "August" ~ 8,
-             periode == "September" ~ 9,
-             periode == "Oktober" ~ 10,
-             periode == "November" ~ 11,
-             periode == "Desember" ~ 12
-           ),
-           index = decimal_point(indeks) %>%
-             as.numeric()) %>%
-    select(trs, year, month, index) %>%
-    rename(msnr = trs)
+
+  read.csv2(
+    filename,
+    encoding = "latin1"
+  ) |>
+  dplyr::filter(
+    døgn == "Alle",
+    lengdeklasse == "< 5,6m",
+    !(periode %in% c("Hittil i år", "Siste 12 måneder")),
+    indeks != "-"
+  ) |>
+    dplyr::mutate(
+      trs = as.numeric(msnr),
+      year = given_year,
+      month = dplyr::case_when(
+        periode == "Januar" ~ 1,
+        periode == "Februar" ~ 2,
+        periode == "Mars" ~ 3,
+        periode == "April" ~ 4,
+        periode == "Mai" ~ 5,
+        periode == "Juni" ~ 6,
+        periode == "Juli" ~ 7,
+        periode == "August" ~ 8,
+        periode == "September" ~ 9,
+        periode == "Oktober" ~ 10,
+        periode == "November" ~ 11,
+        periode == "Desember" ~ 12
+     ),
+     index = decimal_point(indeks) |>
+       as.numeric()
+    ) |>
+    dplyr::select(trs, year, month, index) |>
+    dplyr::rename(msnr = trs)
+
 }
 
 # deprecated
@@ -161,13 +187,18 @@ read_city_index_csv <- function(filename) {
 
 monthly_city_index <- function(city_index_for_a_year) {
 
-  city_monthly <- city_index_for_a_year %>%
-    dplyr::filter(road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
-                  length_range == "[..,5.6)",
-                  period == "month") %>%
-    dplyr::mutate(month_object = lubridate::make_date(year = year, month = month),
-                  month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE) %>%
-                    stringr::str_to_title())
+  city_monthly <-
+    city_index_for_a_year %>%
+    dplyr::filter(
+      road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+      length_range == "[..,5.6)",
+      period == "month"
+    ) %>%
+    dplyr::mutate(
+      month_object = lubridate::make_date(year = year, month = month),
+      month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE) %>%
+        stringr::str_to_title()
+    )
 
 }
 
@@ -351,6 +382,126 @@ calculate_all_possible_36_month_indexes <- function(city_monthly_df) {
 #                    intersection_part_number, intersection_meter)
 # }
 
+
+filter_mdt <- function(mdt_df, year_dbl) {
+
+  mdt_df |>
+    dplyr::filter(
+      year == year_dbl,
+      coverage >= 50,
+      length_quality >= 99
+    ) |>
+    dplyr::select(
+      trp_id,
+      year,
+      month,
+      mdt
+    ) |>
+    dplyr::group_by(
+      trp_id,
+      year
+    ) |>
+    dplyr::summarise(
+      n_months = n(),
+      mean_mdt = mean(mdt),
+      .groups = "drop"
+    ) |>
+    dplyr::filter(
+      n_months >= 10
+    )
+
+}
+
+
+
+# mdt_df <- mdt_filtered
+# window_length <- 36
+# base_year <- reference_year
+# last_year_month <- "2021-12-01"
+
+calculate_rolling_indices_by_mdt <-
+  function(base_year, last_year_month, window_length, mdt_df) {
+
+    # Window length is a number of months, preferably a multiple of 12
+
+    last_year_month <-
+      lubridate::as_date(last_year_month)
+
+    mean_mdt_in_window <-
+      mdt_df |>
+      dplyr::filter(
+        year_month %in%
+          base::seq.Date(
+            from = last_year_month - base::months(window_length - 1),
+            to = last_year_month,
+            by = "month"
+          )
+      ) |>
+      dplyr::filter(
+        coverage >= 50,
+        length_quality >= 99
+      ) |>
+      dplyr::group_by(
+        trp_id,
+        month
+      ) |>
+      dplyr::summarise(
+        n_months = n(),
+        mean_mdt = base::mean(mdt),
+        .groups = "drop_last"
+      ) |>
+      dplyr::filter(
+        n_months >= 2
+        # This presumes window length of 36!
+      ) |>
+      dplyr::group_by(
+        trp_id
+      ) |>
+      dplyr::summarise(
+        n_months = sum(n_months),
+        mean_mdt = base::mean(mean_mdt),
+        .groups = "drop"
+      ) |>
+      dplyr::filter(
+        n_months >= 31
+        # I.e. up to 6 months may be missing (they can be consecutive)
+        # This presumes window length of 36!
+      )
+
+    index_df <-
+      dplyr::inner_join(
+        filter_mdt(mdt_df, base_year),
+        mean_mdt_in_window,
+        by = "trp_id"
+      ) |>
+      dplyr::summarise(
+        index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
+        index_p = (index_i - 1) * 100,
+        n_trp = n(),
+        standard_deviation_p =
+          100 * index_p *
+          sqrt(
+            (sd(mean_mdt.y) / sum(mean_mdt.y))^2 +
+              (sd(mean_mdt.x) / sum(mean_mdt.x))^2
+          ),
+        standard_error = standard_deviation_p / sqrt(n_trp),
+        .groups = "drop"
+      ) |>
+      dplyr::mutate(
+        index_period =
+          paste0(
+            base_year,
+            "--(",
+            last_year_month - base::months(window_length - 1),
+            "--",
+            last_year_month,
+            ")"
+          )
+      )
+
+    return(index_df)
+
+  }
 
 
 
