@@ -1,6 +1,7 @@
 # Index tidying functions
 
 #source("H:/Programmering/R/byindeks/split_road_system_reference.R")
+library(ggpattern)
 
 # deprecated
 choose_city_trp_ids <- function(city_name,
@@ -474,34 +475,129 @@ calculate_rolling_indices_by_mdt <-
         mean_mdt_in_window,
         by = "trp_id"
       ) |>
+      dplyr::mutate(
+        w = mean_mdt.x / sum(mean_mdt.x),
+        trp_index_i = mean_mdt.y / mean_mdt.x,
+        #weigted_mean = sum(w * trp_index_i), # same as index_i :)
+        index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
+        sd_component = w * (trp_index_i - index_i)^2
+      ) |>
       dplyr::summarise(
         index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
         index_p = (index_i - 1) * 100,
         n_trp = n(),
-        standard_deviation_p =
-          100 * index_p *
-          sqrt(
-            (sd(mean_mdt.y) / sum(mean_mdt.y))^2 +
-              (sd(mean_mdt.x) / sum(mean_mdt.x))^2
-          ),
-        standard_error = standard_deviation_p / sqrt(n_trp),
+        n_eff = 1 / sum(w^2),
+        sd_sample_p = 100 * sqrt(sum(sd_component) * (1/(1 - 1/n_eff))),
+        standard_error_p = sd_sample_p / sqrt(n_eff),
         .groups = "drop"
       ) |>
       dplyr::mutate(
         index_period =
           paste0(
             base_year,
-            "--(",
-            last_year_month - base::months(window_length - 1),
-            "--",
-            last_year_month,
+            " - (",
+            (last_year_month - base::months(window_length - 1)) |>
+              lubridate::month(label = TRUE),
+            " ",
+            (last_year_month - base::months(window_length - 1)) |>
+              lubridate::year(),
+            " - ",
+            last_year_month |>
+              lubridate::month(label = TRUE),
+            " ",
+            last_year_month |>
+              lubridate::year(),
             ")"
-          )
+          ),
+        month_object = last_year_month
       )
 
     return(index_df)
 
   }
 
+#trp_mdt_long_format <- test
+create_mdt_barplot <- function(trp_mdt_long_format) {
+
+  #min_month_object <- min(trp_mdt_long_format$month_object)
+  #max_month_object <- max(trp_mdt_long_format$month_object)
+
+  trp_mdt_long_format %>%
+    dplyr::mutate(
+      year = as.character(year)
+    ) %>%
+    ggplot2::ggplot(
+      aes(
+        x = month, #month_object,
+        y = mdt,
+        fill = year,
+        pattern = valid_quality
+      )
+    ) +
+    ggpattern::geom_col_pattern(
+      position = "dodge", #position_dodge(preserve = 'single'),
+      pattern_density = 0.5,
+      pattern_spacing = 0.03
+    ) +
+    geom_text(
+      aes(
+        x = month, #month_object,
+        label = if_else(mdt == 0, "NA", NULL)
+      ),
+      position = position_dodge(0.8),
+      vjust = 1
+    ) +
+    ggplot2::facet_grid(
+      rows = vars(road_category_and_number_and_point_name),
+      labeller = label_wrap_gen(width = 12),
+      scales = "free_y"
+    ) +
+    theme_light(base_size = 10) +
+    theme(
+      #axis.text.x = element_text(angle = 90),
+      axis.ticks.x = element_blank(),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.y = element_blank(),
+      strip.text.y = element_text(angle = 90),
+      strip.background = element_rect(fill = "#444f55"),
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.position = "bottom",
+      legend.background = element_rect(fill = svv_background_color),
+      legend.key = element_blank()
+    ) +
+    # scale_x_date(
+    #   breaks = scales::breaks_width("months"),
+    #   labels = scales::label_date("%b"),
+    #   #limits = c(min_month_object, max_month_object)
+    # ) +
+    scale_fill_viridis_d(
+      name = "\u00c5r",
+      option = "viridis"
+    ) +
+    ggpattern::scale_pattern_manual(
+      name = "Godkjent",
+      values = c(
+        "TRUE" = "none",
+        "FALSE" = "stripe"
+      )
+    ) +
+    scale_x_continuous(
+      #labels = as.character(month),
+      breaks = seq(1, 12)
+    ) +
+    labs(
+      x = NULL,
+      y = "M\u00e5nedsd\u00f8gntrafikk",
+      caption = "Data: Statens vegvesen og fylkeskommunene"
+    ) +
+    ggtitle(
+      "Gjennomsnittlig antall passeringer per dag",
+      subtitle = ""
+    )
+}
 
 

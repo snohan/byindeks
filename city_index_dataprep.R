@@ -17,6 +17,10 @@ source("get_from_nvdb_api.R")
 # source TAKLER IKKE Ø som brukes i kolonneoverskrift i csv-ene! Må åpne fila og kjøre alt derfra.
 source("indexpoints_tidying_functions.R")
 
+library(viridis)
+options(warn=-1)
+svv_background_color <- "#F5F5F5"
+
 
 
 # Points ----
@@ -91,9 +95,28 @@ points <- get_points() %>%
 # Trondheim stop
 
 # Choose
-index_month <- 7 # the one to be published now
-city_number <- 952
-reference_year <- 2017
+index_month <- 8 # the one to be published now
+city_number <- 8952
+reference_year <-
+  dplyr::case_when(
+    city_number %in% c(
+      953,
+      955,
+      957,
+      961,
+      1952
+    ) ~ 2016,
+    city_number %in% c(
+      952
+    ) ~ 2017,
+    city_number %in% c(
+      959,
+      8952
+    ) ~ 2018,
+    city_number %in% c(
+      960
+    ) ~ 2019
+  )
 
 # Pointindices ----
 # TODO: TRPs might differ from year to year!
@@ -197,7 +220,9 @@ pointindex_21_all <-
 pointindex_22_all <-
   get_published_pointindex_for_months(city_number, 2022, index_month)
 
-city_trps <- pointindex_22_all[[1]]
+city_trps <-
+  pointindex_22_all[[1]] |>
+  base::sort()
 city_name <- city_index_2022$area_name[1]
 
 pointindex_20 <-
@@ -262,11 +287,11 @@ n_22 <-
   nrow()
 
 # Number of points per month for SE in monthly city index
-n_points_per_month <-
+trp_index_monthly <-
   dplyr::bind_rows(
   # Pointindex from API here
     #pointindex_18_all[[2]],
-    #pointindex_19_all[[2]],
+    pointindex_19_all[[2]],
     pointindex_20_all[[2]],
     pointindex_21_all[[2]],
     pointindex_22_all[[2]]
@@ -286,15 +311,57 @@ n_points_per_month <-
   ) %>%
   dplyr::bind_rows(
     # Pointindex from old csv files here:
-    pointindex_17_monthly,
-    pointindex_18_monthly,
-    pointindex_19_monthly
-  ) %>%
+    #pointindex_17_monthly,
+    #pointindex_18_monthly,
+    #pointindex_19_monthly
+  )
+
+
+n_points_per_month <-
+  trp_index_monthly %>%
   dplyr::group_by(
     year,
     month
   ) %>%
   dplyr::summarise(n_points = n())
+
+trp_index_monthly_wide <-
+  trp_index_monthly |>
+  tidyr::complete(
+    trp_id,
+    year,
+    month
+  ) |>
+  dplyr::mutate(
+    month_label = lubridate::make_date(
+      year = 2000,
+      month = month,
+      day = 1
+    ) |>
+      lubridate::month(label = TRUE)
+  ) |>
+  dplyr::select(
+    -month
+  ) |>
+  tidyr::pivot_wider(
+    names_from = "month_label",
+    values_from = "index"
+  ) |>
+  dplyr::left_join(
+    points,
+    by = "trp_id"
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    road_category_and_number,
+    year,
+    jan:des
+  ) |>
+  dplyr::arrange(
+    trp_id,
+    year
+  )
 
 
 ## AADT ----
@@ -441,8 +508,8 @@ this_citys_trp_index <-
   ) %>%
   dplyr::left_join(trp_id_msnr) %>%
   dplyr::left_join(adt_all) %>%
-  dplyr::left_join(pointindex_17) %>%
-  dplyr::left_join(pointindex_18) %>%
+  #dplyr::left_join(pointindex_17) %>%
+  #dplyr::left_join(pointindex_18) %>%
   dplyr::left_join(pointindex_19) %>%
   dplyr::left_join(pointindex_20) %>%
   dplyr::left_join(pointindex_21) %>%
@@ -543,7 +610,7 @@ city_year_to_date_22 <-
 city_index <-
   dplyr::bind_rows(
     #city_year_to_date_17,
-    city_year_to_date_18,
+    #city_year_to_date_18,
     city_year_to_date_19,
     city_year_to_date_20,
     city_year_to_date_21,
@@ -555,7 +622,7 @@ city_index <-
     variance = standard_deviation^2,
     n_points = c(
       #n_17,
-      n_18,
+      #n_18,
       n_19,
       n_20,
       n_21,
@@ -610,7 +677,7 @@ city_index_all <-
   dplyr::bind_rows(years_1_2) %>%
   dplyr::bind_rows(years_1_3) %>%
   dplyr::bind_rows(years_1_4) %>%
-  dplyr::bind_rows(years_1_5) %>%
+  #dplyr::bind_rows(years_1_5) %>%
   #dplyr::bind_rows(years_1_6) %>%
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -629,7 +696,7 @@ write.csv2(
 city_monthly <-
   dplyr::bind_rows(
     #monthly_city_index(city_index_2017),
-    monthly_city_index(city_index_2018),
+    #monthly_city_index(city_index_2018),
     monthly_city_index(city_index_2019),
     monthly_city_index(city_index_2020),
     monthly_city_index(city_index_2021),
@@ -688,8 +755,6 @@ write.csv2(
 
 
 # 36 month window using MDTs ----
-
-# TODO: Check MDT validity
 
 ## Get MDTs ----
 present_year <-
@@ -767,6 +832,98 @@ mdt_filtered <-
   )
 
 
+## Check MDT validity
+mdt_filtered |>
+  dplyr::filter(
+    trp_id %in% city_trps[79:83]
+  ) |>
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    mdt,
+    coverage,
+    length_quality
+  ) |>
+  tidyr::complete(
+    trp_id,
+    year,
+    month,
+    fill = list(
+      mdt = 0,
+      coverage = 0,
+      length_quality = 0
+    )
+  ) |>
+  dplyr::mutate(
+    month_object =
+      lubridate::make_date(
+        year = 2000,
+        month = month,
+        day = 1
+      )
+  ) |>
+  dplyr::left_join(
+    points,
+    by = "trp_id"
+  ) |>
+  dplyr::mutate(
+    road_category_and_number_and_point_name =
+      paste0(
+        road_category_and_number,
+        " ",
+        name
+      )
+  ) |>
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    mdt,
+    coverage,
+    length_quality,
+    month_object,
+    road_category_and_number_and_point_name
+  ) |>
+  dplyr::mutate(
+    valid_quality = coverage >= 50 & length_quality >= 99
+  ) |>
+  create_mdt_barplot()
+
+# Exclude trp-months
+mdt_validated <-
+  mdt_filtered |>
+  dplyr::filter(
+    # Bybrua sør
+    !(trp_id == "17949V320695" & year > 2019)
+  ) |>
+  dplyr::filter(
+    # Åsedalen
+    !(trp_id == "43296V319721" & year > 2018)
+  ) |>
+  dplyr::filter(
+    # Storhaugtunnelen
+    !(trp_id == "57279V320244" & year > 2020)
+  ) |>
+  dplyr::filter(
+    # Randabergveien
+    !(trp_id == "10795V320297" &
+        year_month %in% base::seq.Date(
+          lubridate::make_date(2020, 11, 01),
+          lubridate::make_date(2022, 9, 01),
+          by = "month")
+      )
+  ) |>
+  dplyr::filter(
+    # nordvik
+    !(trp_id == "62279V805789" &
+        year_month %in% base::seq.Date(
+          lubridate::make_date(2022, 3, 01),
+          lubridate::make_date(2022, 4, 01),
+          by = "month")
+    )
+  )
+
 ## TRP MDT table ----
 # To show MDTs in a table in the report
 mdt_each_year <-
@@ -819,7 +976,6 @@ readr::write_rds(
 
 
 ## All possible 36 month window indices ----
-
 first_possible_year_month <-
   lubridate::as_date(
     paste0(
@@ -848,7 +1004,7 @@ year_months_possible <-
 all_36_month_indices <-
   purrr::map_dfr(
     year_months_possible,
-    ~ calculate_rolling_indices_by_mdt(reference_year, .x, 36, mdt_filtered)
+    ~ calculate_rolling_indices_by_mdt(reference_year, .x, 36, mdt_validated)
   )
 
 

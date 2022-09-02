@@ -293,20 +293,37 @@ create_city_index_table <- function(city_info) {
 
 create_city_index_table_sd <- function(city_info) {
 
-  city_table <- city_info %>%
-    dplyr::select(year_from_to, period, index_p,
-                  standard_deviation, standard_error) %>%
+  city_table <-
+    city_info %>%
+    dplyr::select(
+      year_from_to,
+      period,
+      n_points,
+      index_p,
+      standard_deviation,
+      standard_error
+    ) %>%
     flextable::flextable() %>%
-    colformat_double(j = c("index_p", "standard_deviation", "standard_error"), digits = 1) %>%
-    set_header_labels(year_from_to = "Periode",
-                      period = "",
-                      index_p = "Endring i \n trafikkmengde \n (%)",
-                      standard_deviation = "Standardavvik \n (%)",
-                      standard_error = "Standardfeil \n (%)") %>%
-    align(j = c("index_p", "standard_deviation", "standard_error"),
-          align = "center", part = "header") %>%
-    padding(j = c("index_p", "standard_deviation", "standard_error"),
-            padding.right = 25, part = "body") %>%
+    colformat_double(
+      j = c("index_p", "standard_deviation", "standard_error"),
+      digits = 1
+    ) %>%
+    set_header_labels(
+      year_from_to = "Periode",
+      period = "",
+      n_points = "Antall punkt",
+      index_p = "Endring i \n trafikkmengde \n (%)",
+      standard_deviation = "Standardavvik \n (%)",
+      standard_error = "Standardfeil \n (%)"
+    ) %>%
+    align(
+      j = c("index_p", "standard_deviation", "standard_error"),
+      align = "center", part = "header"
+    ) %>%
+    padding(
+      j = c("index_p", "standard_deviation", "standard_error"),
+      padding.right = 25, part = "body"
+    ) %>%
     bold(part = "header") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%
@@ -372,6 +389,43 @@ create_city_36_index_table <- function(city_36_month) {
   return(city_table)
 }
 
+create_city_mdt_36_index_table <- function(city_36_month) {
+
+  city_table <-
+    city_36_month %>%
+    dplyr::select(
+      index_period,
+      n_trp,
+      index_p,
+      sd_sample_p,
+      standard_error_p
+    ) %>%
+    flextable::flextable() %>%
+    colformat_double(
+      j = c("index_p", "sd_sample_p", "standard_error_p"),
+      digits = 1
+    ) %>%
+    set_header_labels(
+      index_period = "Sammenligningsperiode",
+      index_p = "Endring i \ntrafikkmengde (%)",
+      n_trp = "Antall \npunkt",
+      sd_sample_p = "Standardavvik \n(prosentpoeng)",
+      standard_error_p = "Standardfeil \n(prosentpoeng)"
+    ) %>%
+    bold(part = "header") %>%
+    bg(bg = "#ED9300", part = "header") %>%
+    border_remove() %>%
+    hline_top(part = "header", border = borderline) %>%
+    hline_bottom(part = "all", border = borderline) %>%
+    align(j = 2, align = "left") %>%
+    autofit() %>%
+    height_all(height = .2) %>%
+    set_caption("Estimert endring i trafikkmengde i treårsperioder.",
+                autonum = table_numbers,
+                style = "Tabelltekst")
+
+  return(city_table)
+}
 
 road_category_names <- data.frame(
   road_category = c("E", "R", "F", "K"),
@@ -568,4 +622,49 @@ calculate_all_index_chain_combinations <- function(df_index_i) {
 #   labs(caption = caption_credit)
 # TODO: Add explaining labels with ggforce?
 #```
+
+
+visualize_city_36_mdt_index <-
+  function(city_36_month_df, caption_text, title_text) {
+
+    city_36_month_df %>%
+    ggplot2::ggplot(aes(x = month_object, y = index_p)) +
+    ggplot2::geom_hline(
+      yintercept = 0,
+      color = "#58b02c",
+      size = 0.8,
+      alpha = 0.3
+    ) +
+    ggplot2::geom_line() +
+    ggplot2::geom_point() +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(angle = 90, vjust = 0.5),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        )
+    ) +
+    scale_x_date(
+      labels = scales::label_date("%b %Y")
+    ) +
+    ylim(
+      -max(abs(city_36_month_df$index_p)),
+      max(abs(city_36_month_df$index_p))
+    ) +
+    labs(
+      x = NULL, y = "Endring i trafikkmengde (%)",
+      caption = caption_text) +
+    ggtitle(
+      title_text
+    )
+}
 

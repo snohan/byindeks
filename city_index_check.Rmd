@@ -33,12 +33,57 @@ library(htmltools)
 
 # Choose
 index_year <- 2022
-index_month <- 6 # latest published
+index_month <- 7 # latest published
 city_number <- 959
 
+
+reference_year <- 
+  dplyr::case_when(
+    city_number %in% c(
+      953,
+      955,
+      957,
+      961,
+      1952
+    ) ~ 2016,
+    city_number %in% c(
+      952
+    ) ~ 2017,
+    city_number %in% c(
+      959,
+      8952
+    ) ~ 2018,
+    city_number %in% c(
+      960
+    ) ~ 2019
+  )
+
+previous_index_years <- 
+  base::seq(
+    reference_year + 1,
+    index_year - 1
+  )
+
 # Fetch
-city_index <- get_published_index_for_months(city_number, index_year, index_month)
-pointindex <- get_published_pointindex_for_months(city_number, index_year, index_month)
+city_index <- 
+  get_published_index_for_months(
+    city_number, 
+    index_year, 
+    index_month
+  )
+
+pointindex <- 
+  get_published_pointindex_for_months(
+    city_number, 
+    index_year, 
+    index_month
+  )
+
+# former_pointindices <-
+#   purrr::map_dfr(
+#     previous_index_years,
+#     ~ get_published_pointindex_for_months(city_number, .x, 12)[[2]]
+#   )
 
 city_trps <- pointindex[[1]]
 pointindices <- pointindex[[2]]
@@ -54,11 +99,17 @@ points <- get_points() %>%
 city_trps_meta <- points %>% 
   dplyr::filter(trp_id %in% city_trps) %>% 
   split_road_system_reference() %>% 
-  dplyr::select(trp_id, name, road_reference, 
-                road_category_and_number,
-                #section_number, subsection_number, meter,
-                #intersection_part_number, intersection_meter,
-                county_name, municipality_name, lat, lon)
+  dplyr::select(
+    trp_id, 
+    name, 
+    road_reference, 
+    road_category_and_number,
+    #section_number, subsection_number, meter,
+    #intersection_part_number, intersection_meter,
+    county_name, 
+    municipality_name, 
+    lat, lon
+  )
 
 # TRP device types
 # trp_devices <- 
@@ -91,9 +142,11 @@ city_trps_meta <- points %>%
 #   )
 
 ## AADT ----
-adt <- get_aadt_by_length_for_trp_list(city_trps_meta$trp_id)
+adt <- 
+  get_aadt_by_length_for_trp_list(city_trps_meta$trp_id)
 
-adt_filtered <- adt %>%
+adt_filtered <- 
+  adt %>%
   dplyr::filter(length_range == "[..,5.6)") %>%
   #dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
   #dplyr::filter(length_quality > 90) %>%
@@ -104,7 +157,11 @@ adt_filtered <- adt %>%
   dplyr::select(trp_id, adt = aadt_total)
 
 # New month's pointindices
-point_index_new <- get_pointindices_for_trp_list(city_trps, index_year)
+point_index_new <- 
+  get_pointindices_for_trp_list(
+    city_trps, 
+    index_year
+  )
 ```
 
 
@@ -480,19 +537,9 @@ pointindex_wide %>%
       lengthMenu = c(21, 42, 70),
       autoWidth = TRUE))
 
-# BRG
-# Ekskluder
-# Osterøy-Trengereid 1
-# Trengereid-Osterøy 3, 5
-#	Rampe Osterøy Til Arna 3, 5
-#	Rampe Arna Til Osterøy 1
-# Heldal 5
 
-# Oslo
-# Ekskluder
-# Slattum 2, 5
-# Helsfyr 5
-
+# OSL
+# Mastemyr 8
 
 # TRD
 # Ekskl 2021

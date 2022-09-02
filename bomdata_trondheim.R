@@ -46,6 +46,12 @@ kommune_bomer <-
     trp_id
   )
 
+# write.csv2(
+#   kommune_bomer,
+#   file = "trd_toll_stations.csv",
+#   fileEncoding = "latin1"
+# )
+
 # Names from toll data files
 # bom_felt_og_stasjon <-
 #   read.csv2(
