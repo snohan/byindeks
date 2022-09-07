@@ -240,10 +240,55 @@ saveRDS(
   file = "bomdata_trondheim/tolling_data_daily.rds"
 )
 
-# tolling_data_daily <-
-#   readRDS(
-#     file = "bomdata_trondheim/tolling_data_daily.rds"
-#   )
+tolling_data_daily <-
+  readRDS(
+    file = "bomdata_trondheim/tolling_data_daily.rds"
+  )
+
+## From APAR ----
+apar_apr_2022 <-
+  readr::read_csv(
+    "H:/Programmering/R/byindeks/bomdata_trondheim/apar/april_2022.csv",
+    locale = readr::locale(encoding = "latin1")
+  ) |>
+  dplyr::select(
+    trp_id = 'toll station code',
+    date,
+    class = 'vehicle class ID',
+    traffic_apar = 'Accepted passages'
+  ) |>
+  dplyr::mutate(
+    trp_id = as.character(trp_id),
+    date = lubridate::date(date),
+    class = dplyr::case_when(
+      class == 1 ~ "light",
+      class == 2 ~ "heavy",
+      TRUE ~ "unknown"
+    )
+  )
+
+compare_apar <-
+  apar_apr_2022 |>
+  dplyr::left_join(
+    tolling_data_daily,
+    by = c("trp_id", "date", "class")
+  ) |>
+  dplyr::select(
+    trp_id,
+    date,
+    class,
+    traffic,
+    traffic_apar
+  ) |>
+  dplyr::mutate(
+    diff = traffic - traffic_apar
+  )
+
+write.csv2(
+  compare_apar,
+  file = "sammenligning_apar.csv",
+  row.names = F
+)
 
 # Plot to see if data are ok
 tolling_data_daily %>%

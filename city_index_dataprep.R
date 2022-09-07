@@ -96,12 +96,13 @@ points <- get_points() %>%
 
 # Choose
 index_month <- 8 # the one to be published now
-city_number <- 8952
+city_number <- 956
 reference_year <-
   dplyr::case_when(
     city_number %in% c(
       953,
       955,
+      956,
       957,
       961,
       1952
@@ -291,7 +292,7 @@ trp_index_monthly <-
   dplyr::bind_rows(
   # Pointindex from API here
     #pointindex_18_all[[2]],
-    pointindex_19_all[[2]],
+    #pointindex_19_all[[2]],
     pointindex_20_all[[2]],
     pointindex_21_all[[2]],
     pointindex_22_all[[2]]
@@ -311,9 +312,9 @@ trp_index_monthly <-
   ) %>%
   dplyr::bind_rows(
     # Pointindex from old csv files here:
-    #pointindex_17_monthly,
-    #pointindex_18_monthly,
-    #pointindex_19_monthly
+    pointindex_17_monthly,
+    pointindex_18_monthly,
+    pointindex_19_monthly
   )
 
 
@@ -508,8 +509,8 @@ this_citys_trp_index <-
   ) %>%
   dplyr::left_join(trp_id_msnr) %>%
   dplyr::left_join(adt_all) %>%
-  #dplyr::left_join(pointindex_17) %>%
-  #dplyr::left_join(pointindex_18) %>%
+  dplyr::left_join(pointindex_17) %>%
+  dplyr::left_join(pointindex_18) %>%
   dplyr::left_join(pointindex_19) %>%
   dplyr::left_join(pointindex_20) %>%
   dplyr::left_join(pointindex_21) %>%
@@ -609,8 +610,8 @@ city_year_to_date_22 <-
 
 city_index <-
   dplyr::bind_rows(
-    #city_year_to_date_17,
-    #city_year_to_date_18,
+    city_year_to_date_17,
+    city_year_to_date_18,
     city_year_to_date_19,
     city_year_to_date_20,
     city_year_to_date_21,
@@ -621,8 +622,8 @@ city_index <-
     index_i = index_converter(index_p),
     variance = standard_deviation^2,
     n_points = c(
-      #n_17,
-      #n_18,
+      n_17,
+      n_18,
       n_19,
       n_20,
       n_21,
@@ -677,8 +678,8 @@ city_index_all <-
   dplyr::bind_rows(years_1_2) %>%
   dplyr::bind_rows(years_1_3) %>%
   dplyr::bind_rows(years_1_4) %>%
-  #dplyr::bind_rows(years_1_5) %>%
-  #dplyr::bind_rows(years_1_6) %>%
+  dplyr::bind_rows(years_1_5) %>%
+  dplyr::bind_rows(years_1_6) %>%
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
     area_name = city_name
@@ -695,8 +696,8 @@ write.csv2(
 # City index monthly ----
 city_monthly <-
   dplyr::bind_rows(
-    #monthly_city_index(city_index_2017),
-    #monthly_city_index(city_index_2018),
+    monthly_city_index(city_index_2017),
+    monthly_city_index(city_index_2018),
     monthly_city_index(city_index_2019),
     monthly_city_index(city_index_2020),
     monthly_city_index(city_index_2021),
@@ -776,7 +777,15 @@ mdt_filtered <-
     length_range == "[..,5.6)"
   ) |>
   dplyr::mutate(
-    length_quality = round(mdt_valid_length / mdt_total * 100)
+    mdt_valid_length = dplyr::case_when(
+      is.na(sd_length_range) ~ mdt_total, # If NorTraf, assume high quality
+      TRUE ~ mdt_valid_length
+    ),
+    length_quality = round(mdt_valid_length / mdt_total * 100),
+    coverage = dplyr::case_when(
+      is.na(sd_length_range) ~ 100, # If NorTraf, assume high quality
+      TRUE ~ coverage
+    )
   ) |>
   dplyr::select(
     trp_id,
@@ -797,20 +806,6 @@ mdt_filtered <-
     )
   ) |>
   tibble::as_tibble()
-
-# TODO: add exclusions as manual table
-
-# city_mdts <-
-#   mdt_filtered |>
-#   dplyr::left_join(
-#     city_trps_meta,
-#     by = "trp_id"
-#   )
-#
-# base::saveRDS(
-#   city_mdts,
-#   "mdt.rds"
-# )
 
 readr::write_rds(
   mdt_filtered,
@@ -835,7 +830,7 @@ mdt_filtered <-
 ## Check MDT validity
 mdt_filtered |>
   dplyr::filter(
-    trp_id %in% city_trps[79:83]
+    trp_id %in% city_trps[34:36]
   ) |>
   dplyr::select(
     trp_id,
@@ -891,38 +886,7 @@ mdt_filtered |>
   create_mdt_barplot()
 
 # Exclude trp-months
-mdt_validated <-
-  mdt_filtered |>
-  dplyr::filter(
-    # Bybrua sør
-    !(trp_id == "17949V320695" & year > 2019)
-  ) |>
-  dplyr::filter(
-    # Åsedalen
-    !(trp_id == "43296V319721" & year > 2018)
-  ) |>
-  dplyr::filter(
-    # Storhaugtunnelen
-    !(trp_id == "57279V320244" & year > 2020)
-  ) |>
-  dplyr::filter(
-    # Randabergveien
-    !(trp_id == "10795V320297" &
-        year_month %in% base::seq.Date(
-          lubridate::make_date(2020, 11, 01),
-          lubridate::make_date(2022, 9, 01),
-          by = "month")
-      )
-  ) |>
-  dplyr::filter(
-    # nordvik
-    !(trp_id == "62279V805789" &
-        year_month %in% base::seq.Date(
-          lubridate::make_date(2022, 3, 01),
-          lubridate::make_date(2022, 4, 01),
-          by = "month")
-    )
-  )
+source("exclude_trp_mdts.R")
 
 ## TRP MDT table ----
 # To show MDTs in a table in the report

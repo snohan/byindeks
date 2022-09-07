@@ -43,10 +43,15 @@ source("get_from_trafficdata_api.R")
 ```
 
 ```{r get_data, include=FALSE}
-counties <- get_counties() %>% 
-  dplyr::select(county_name, country_part_name)
+counties <- 
+  get_counties() %>% 
+  dplyr::select(
+    county_name, 
+    country_part_name
+  )
 
-points <- get_points() %>%
+points <- 
+  get_points() %>%
   dplyr::distinct(trp_id, .keep_all = T) %>%
   dplyr::select(
     trp_id, 
@@ -61,10 +66,10 @@ points <- get_points() %>%
   ) %>%
   split_road_system_reference() %>% 
   dplyr::select(
-    trp_id, 
-    road_category, 
+    trp_id,
+    road_category,
     county_name
-  ) %>% 
+  ) %>%
   # For finding manually excluded trps:
   #dplyr::select(trp_id, name, road_category, road_reference, county_name) %>% 
   dplyr::mutate(
@@ -119,18 +124,39 @@ index_this_year <-
 #   path = "spesialuttak/vegtrafikkindeks_2017_2022.xlsx"
 # )
 
-# Fetching all months pointindices to find all manually excluded
-# pointindex_all_months_this_year <- get_published_pointindex_for_months_paginated(962, this_year, latest_month_number)
+# Fetching all months pointindices to find all manually excluded (NILU)
+# pointindex_all_months_this_year <- 
+#   get_published_pointindex_for_months_paginated(
+#     962, 
+#     this_year, 
+#     latest_month_number
+#   )
 # 
-# manually_excluded_trps <- pointindex_all_months_this_year[[2]] %>% 
-#   dplyr::filter(is_manually_excluded == TRUE,
-#                 period == "month",
-#                 day_type == "ALL") %>% 
-#   dplyr::left_join(points, by = "trp_id") %>% 
-#   dplyr::select(trp_id, name, county_name, road_reference, month)
+# manually_excluded_trps <- 
+#   pointindex_all_months_this_year[[2]] %>%
+#   dplyr::filter(
+#     is_manually_excluded == TRUE,
+#     period == "month",
+#     day_type == "ALL"
+#   ) %>%
+#   dplyr::left_join(
+#     points, 
+#     by = "trp_id"
+#   ) %>%
+#   dplyr::select(
+#     trp_id, 
+#     name, 
+#     county_name, 
+#     road_reference, 
+#     month
+#   )
 # 
-# write.csv2(manually_excluded_trps, file = "manuelt_ekskluderte_punkter.csv",
-#            row.names = F)
+# write.csv2(
+#   manually_excluded_trps,
+#   file = "manuelt_ekskluderte_punkter.csv",
+#   row.names = F,
+#   fileEncoding = "latin1"
+# )
 
 # Fetching pointindices for last month's year_to_date 
 # in order to calculate the standard error
