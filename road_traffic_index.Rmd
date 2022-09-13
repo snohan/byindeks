@@ -71,7 +71,13 @@ points <-
     county_name
   ) %>%
   # For finding manually excluded trps:
-  #dplyr::select(trp_id, name, road_category, road_reference, county_name) %>% 
+  # dplyr::select(
+  #   trp_id, 
+  #   name, 
+  #   road_category, 
+  #   road_reference, 
+  #   county_name
+  # ) %>% 
   dplyr::mutate(
     road_category = dplyr::case_when(
       road_category == "F" ~ "Fylkesveg",
@@ -124,15 +130,15 @@ index_this_year <-
 #   path = "spesialuttak/vegtrafikkindeks_2017_2022.xlsx"
 # )
 
-# Fetching all months pointindices to find all manually excluded (NILU)
-# pointindex_all_months_this_year <- 
+#Fetching all months pointindices to find all manually excluded (NILU)
+# pointindex_all_months_this_year <-
 #   get_published_pointindex_for_months_paginated(
-#     962, 
-#     this_year, 
-#     latest_month_number
+#     962,
+#     2021,
+#     12
 #   )
 # 
-# manually_excluded_trps <- 
+# manually_excluded_trps <-
 #   pointindex_all_months_this_year[[2]] %>%
 #   dplyr::filter(
 #     is_manually_excluded == TRUE,
@@ -140,20 +146,20 @@ index_this_year <-
 #     day_type == "ALL"
 #   ) %>%
 #   dplyr::left_join(
-#     points, 
+#     points,
 #     by = "trp_id"
 #   ) %>%
 #   dplyr::select(
-#     trp_id, 
-#     name, 
-#     county_name, 
-#     road_reference, 
+#     trp_id,
+#     name,
+#     county_name,
+#     road_reference,
 #     month
 #   )
 # 
 # write.csv2(
 #   manually_excluded_trps,
-#   file = "manuelt_ekskluderte_punkter.csv",
+#   file = "manuelt_ekskluderte_punkter_2021.csv",
 #   row.names = F,
 #   fileEncoding = "latin1"
 # )

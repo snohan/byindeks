@@ -96,7 +96,7 @@ points <- get_points() %>%
 
 # Choose
 index_month <- 8 # the one to be published now
-city_number <- 956
+city_number <- 953
 reference_year <-
   dplyr::case_when(
     city_number %in% c(
@@ -433,9 +433,9 @@ adt_manual <- data.frame(
 
 ### Buskerudbyen ----
 adt_manual <- data.frame(
-  trp_id = c("26634V181322", "06687V181318", "63545V180918"),
-  adt = c(2200, 26500, 6000),
-  year = c(2019, 2019, 2018)
+  # trp_id = c("26634V181322", "06687V181318", "63545V180918"),
+  # adt = c(2200, 26500, 6000),
+  # year = c(2019, 2019, 2018)
 )
 
 ### Oslo ----
@@ -830,7 +830,7 @@ mdt_filtered <-
 ## Check MDT validity
 mdt_filtered |>
   dplyr::filter(
-    trp_id %in% city_trps[34:36]
+    trp_id %in% city_trps[10:12]
   ) |>
   dplyr::select(
     trp_id,

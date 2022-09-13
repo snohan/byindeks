@@ -21,20 +21,20 @@ library(htmltools)
 
 # City numbers
 # Bergen 8952                 8 Trond
-# Buskerudbyen 1952           4 Snorre
-# Grenland 955                4 Snorre
-# Kristiansand og omegn 957   4 Snorre (Million)
-# Nedre Glomma 953            4 Trond
+# Buskerudbyen 1952           8 Snorre
+# Grenland 955                8 Snorre
+# Kristiansand og omegn 957   8 Snorre (Million)
+# Nedre Glomma 953            8 Trond
 # Nord-Jæren 952              8 Snorre
 # Oslo 959                    8 Trond
-# Tromsø 961                  4 Snorre
+# Tromsø 961                  8 Snorre
 # Trondheim 960, uoffisiell   8 Snorre (mangler mye bomdata i april 2021)
 
 
 # Choose
 index_year <- 2022
 index_month <- 4 # latest published
-city_number <- 957
+city_number <- 953
 
 
 reference_year <- 
