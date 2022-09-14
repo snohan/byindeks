@@ -19,22 +19,22 @@ library(htmltools)
 ```{r get_data, include=FALSE}
 # Look at details in one county at a time
 
-# 30 Viken                  07 Trond
-#  3 Oslo                   07 Trond
-# 34 Innlandet              07 Snorre
-# 38 Vestfold og Telemark   07 Trond
-# 42 Agder                  07 Snorre
-# 11 Rogaland               07 Snorre
-# 46 Vestland               07 Trond
-# 15 Møre og Romsdal        07 Snorre
-# 50 Trøndelag              07 Snorre
-# 18 Nordland               07 Snorre
+# 30 Viken                  08 Trond
+#  3 Oslo                   08 Trond
+# 34 Innlandet              08 Snorre
+# 38 Vestfold og Telemark   08 Trond
+# 42 Agder                  08 Snorre
+# 11 Rogaland               08 Snorre
+# 46 Vestland               08 Trond
+# 15 Møre og Romsdal        08 Snorre
+# 50 Trøndelag              08 Snorre
+# 18 Nordland               08 Snorre
 # 54 Troms og Finnmark      07 Snorre
 
-county_number_chosen <- 34
+county_number_chosen <- 54
 index_year <- 2022
 # Last published month
-index_month <- 4
+index_month <- 7
 
 index_id <- 962
 
@@ -368,23 +368,23 @@ point_index_new_prepared_1 <-
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
 
-point_index_new_prepared_2 <- 
-  point_index_new %>%
-  dplyr::filter(day_type == "ALL",
-                period == "month",
-                month == index_month + 2) %>%
-  dplyr::select(trp_id, year, month, index_total_p,
-                index_total_coverage, length_excluded, length_coverage,
-                index_short, index_long)
-
-point_index_new_prepared_3 <-
-  point_index_new %>%
-  dplyr::filter(day_type == "ALL",
-                period == "month",
-                month == index_month + 3) %>%
-  dplyr::select(trp_id, year, month, index_total_p,
-                index_total_coverage, length_excluded, length_coverage,
-                index_short, index_long)
+# point_index_new_prepared_2 <- 
+#   point_index_new %>%
+#   dplyr::filter(day_type == "ALL",
+#                 period == "month",
+#                 month == index_month + 2) %>%
+#   dplyr::select(trp_id, year, month, index_total_p,
+#                 index_total_coverage, length_excluded, length_coverage,
+#                 index_short, index_long)
+# 
+# point_index_new_prepared_3 <-
+#   point_index_new %>%
+#   dplyr::filter(day_type == "ALL",
+#                 period == "month",
+#                 month == index_month + 3) %>%
+#   dplyr::select(trp_id, year, month, index_total_p,
+#                 index_total_coverage, length_excluded, length_coverage,
+#                 index_short, index_long)
 # 
 # point_index_new_prepared_4 <- 
 #   point_index_new %>%
@@ -400,8 +400,8 @@ pointindex_prepared_all <-
   dplyr::bind_rows(
     pointindex_prepared,
     point_index_new_prepared_1,
-    point_index_new_prepared_2,
-    point_index_new_prepared_3,
+    #point_index_new_prepared_2,
+    #point_index_new_prepared_3,
     #point_index_new_prepared_4
     ) %>% 
   dplyr::left_join(
@@ -443,33 +443,33 @@ trps_new_pointindex_1 <-
             index_total_coverage, " %"),
     label_text = lapply(label_text, htmltools::HTML))
 
-trps_new_pointindex_2 <- 
-  trps_meta %>% 
-  dplyr::inner_join(
-    point_index_new_prepared_2, 
-    by = "trp_id"
-  ) %>% 
-  dplyr::mutate(
-    label_text = 
-      paste(name, ", ",
-            road_category_and_number, "<br/>",
-            index_total_p, " %", "<br/>",
-            index_total_coverage, " %"),
-    label_text = lapply(label_text, htmltools::HTML)
-  )
-
-trps_new_pointindex_3 <-
-  trps_meta %>%
-  dplyr::inner_join(
-    point_index_new_prepared_3, by = "trp_id"
-  ) %>%
-  dplyr::mutate(
-    label_text =
-      paste(name, ", ",
-            road_category_and_number, "<br/>",
-            index_total_p, " %", "<br/>",
-            index_total_coverage, " %"),
-    label_text = lapply(label_text, htmltools::HTML))
+# trps_new_pointindex_2 <- 
+#   trps_meta %>% 
+#   dplyr::inner_join(
+#     point_index_new_prepared_2, 
+#     by = "trp_id"
+#   ) %>% 
+#   dplyr::mutate(
+#     label_text = 
+#       paste(name, ", ",
+#             road_category_and_number, "<br/>",
+#             index_total_p, " %", "<br/>",
+#             index_total_coverage, " %"),
+#     label_text = lapply(label_text, htmltools::HTML)
+#   )
+# 
+# trps_new_pointindex_3 <-
+#   trps_meta %>%
+#   dplyr::inner_join(
+#     point_index_new_prepared_3, by = "trp_id"
+#   ) %>%
+#   dplyr::mutate(
+#     label_text =
+#       paste(name, ", ",
+#             road_category_and_number, "<br/>",
+#             index_total_p, " %", "<br/>",
+#             index_total_coverage, " %"),
+#     label_text = lapply(label_text, htmltools::HTML))
 # 
 # trps_new_pointindex_4 <- 
 #   trps_meta %>%
@@ -650,7 +650,7 @@ pointindex_long_2 <-
 
 ## Punktindeksene for de nye månedene
 
-### Mai
+### August
 
 ```{r map_trp_index, message=FALSE}
 trps_new_pointindex_1 %>% 
@@ -659,20 +659,20 @@ trps_new_pointindex_1 %>%
 ```
 
 
-### Juni
+
 
 ```{r map_trp_index_2, message=FALSE}
-trps_new_pointindex_2 %>% 
-  dplyr::rename(index = index_total_p) %>% 
-  create_pointindex_map()
+# trps_new_pointindex_2 %>% 
+#   dplyr::rename(index = index_total_p) %>% 
+#   create_pointindex_map()
 ```
 
-## Juli
+
 
 ```{r map_trp_index_3, message=FALSE}
-trps_new_pointindex_3 %>%
-  dplyr::rename(index = index_total_p) %>%
-  create_pointindex_map()
+# trps_new_pointindex_3 %>%
+#   dplyr::rename(index = index_total_p) %>%
+#   create_pointindex_map()
 ```
 
 
@@ -774,24 +774,19 @@ pointindex_wide %>%
       autoWidth = TRUE))
 
 # Ekskluder:
-# Senjahopen hele året
-# Grong mot Bergsmo hele året
-# Venskrysset ø hele året
-# Knappetunnelen ved Dolvik - Fyllingsdalsveien hele året
-# Knappetunnelen ved Dolvik - Ytrebygdsvegen hele året
-# Nauen byttes med Tveiten
+# Mågård 9
+# Hageland 9-11
+# Jernbanetunnelen 9-11
 
-# Sæbøvik 5,6,7
-# Klauvaneset Nordh... 6
-# Hattvik f 6,7
+# Steane 8
+# Hattvik 8
+# Dalseid aust 8
 
-# Forsølvegen 3
-# Grilstadtunnelen (alle) 3
-# Kvislabakken 3
-# Meltingen 3
-# Nordvik 3,4
-# Stange s 5
-# Innbygda s 4
+# Fjern helt
+# Kronborg s
+# Kronborg n
+# Ølholmslykkja
+# Grong mot Bergsmo
 
 ```
 

@@ -21,17 +21,17 @@ library(htmltools)
 
 # City numbers
 # Bergen 5952         2019 - 2022-07
-# Førde 9952          2018 - 2022-07
-# Grenland 4953       2018 - 2022-07
-# Nedre Glomma 5953   2019 - 2022-07
-# Nord-Jæren 6952     2020 - 2022-07
-# Osloområdet 6953    2018 - 2022-07
-# Tromsø 11952        2021 - 2022-07
+# Førde 9952          2018 - 2022-08
+# Grenland 4953       2018 - 2022-08
+# Nedre Glomma 5953   2019 - 2022-08
+# Nord-Jæren 6952     2020 - 2022-08
+# Osloområdet 6953    2018 - 2022-08
+# Tromsø 11952        2021 - 2022-08
 
 # Choose
 index_year <- 2022
-index_month <- 5 # latest published
-city_number <- 11952
+index_month <- 7 # latest published
+city_number <- 5952
 
 # Fetch
 city_index <- 
@@ -68,7 +68,8 @@ points <- get_points() %>%
     name = stringr::str_to_title(name, locale = "no")
   )
 
-city_trps_meta <- points %>% 
+city_trps_meta <- 
+  points %>% 
   dplyr::filter(trp_id %in% city_trps) %>% 
   split_road_system_reference() %>% 
   dplyr::select(
@@ -82,6 +83,14 @@ city_trps_meta <- points %>%
     municipality_name, 
     lat, lon
   )
+
+# missing_trp <-
+#   tibble::tibble(
+#     trp_id = city_trps
+#   ) |>
+#   dplyr::filter(
+#     !(trp_id %in% city_trps_meta$trp_id)
+#   )
 
 ## AADT ----
 adt <- getAdtForpoints(city_trps_meta$trp_id)

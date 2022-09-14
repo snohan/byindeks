@@ -20,7 +20,7 @@ library(htmltools)
 # Choose
 index_year <- 2022
 # Last published month
-index_month <- 3
+index_month <- 8
 index_id <- 2952
 
 # Fetch
@@ -344,5 +344,6 @@ pointindex_wide %>%
       lengthMenu = c(21, 42, 70),
       autoWidth = TRUE))
 
-
+# Ekskluder
+# Berby 5
 ```

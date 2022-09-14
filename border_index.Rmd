@@ -42,7 +42,7 @@ source("get_from_nvdb_api.R")
 ```
 
 ```{r crossings_info}
-latest_published_month <- 4
+latest_published_month <- 8
 
 counties <- 
   get_counties() %>% 
@@ -92,7 +92,10 @@ points <-
 
 # All border crossings
 border_crossings <- 
-  read.csv2("border_crossings_complete.csv") %>% 
+  read.csv2(
+    "border_crossings_complete.csv",
+    encoding = "latin1"
+  ) %>% 
   dplyr::mutate(
     road_category_and_number = 
       paste0(road_category_shortname, "v ", road_number),
