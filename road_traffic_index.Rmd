@@ -91,7 +91,7 @@ points <-
   )
 
 this_year <- 2022
-latest_month_number <- 7
+latest_month_number <- 9
 
 # Fetching published index from Traffic Data API
 index_this_year <- 
@@ -645,7 +645,7 @@ Trafikkauken for ulike vegkategoriar:
 
 ## Trafikkutviklinga hittil i år
 
-Tabellen nedanfor viser trafikkutviklinga for heile Noreg til og med `r latest_month_name`, `r this_year`.
+Tabellen nedanfor viser trafikkutviklinga for heile Noreg til og med `r latest_month_name` `r this_year`.
 
 <br>
 
@@ -918,7 +918,7 @@ Landsdelane er inndelt etter fylka, jamfør Statistisk sentralbyrå:
 
 ## Trafikkutviklinga hittil i år
 
-Tabellen nedanfor viser trafikkutviklinga i landsdelane til og med `r latest_month_name`, `r this_year`.
+Tabellen nedanfor viser trafikkutviklinga i landsdelane til og med `r latest_month_name` `r this_year`.
 
 <br>
 
@@ -1044,7 +1044,7 @@ index_this_year_prepared %>%
 # Trafikkutviklinga i fylka
 
 ## Trafikkutviklinga hittil i år
-Tabellen nedanfor viser trafikkutviklinga i fylka til og med `r latest_month_name`, `r this_year`.
+Tabellen nedanfor viser trafikkutviklinga i fylka til og med `r latest_month_name` `r this_year`.
 
 <br>
 

@@ -30,8 +30,8 @@ library(htmltools)
 
 # Choose
 index_year <- 2022
-index_month <- 7 # latest published
-city_number <- 5952
+index_month <- 8 # latest published
+city_number <- 11952
 
 # Fetch
 city_index <- 

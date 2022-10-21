@@ -96,7 +96,7 @@ points <- get_points() %>%
 
 # Choose
 index_month <- 8 # the one to be published now
-city_number <- 953
+city_number <- 1952
 reference_year <-
   dplyr::case_when(
     city_number %in% c(
@@ -771,6 +771,71 @@ mdt <-
     ~ get_mdt_by_length_for_trp_list(city_trps, .x)
 )
 
+# How many MDTs in reference year from NorTraf?
+n_nortraf_mdt_reference_year <-
+  mdt |>
+  dplyr::filter(
+    length_range == "[..,5.6)",
+    year == reference_year
+  ) |>
+  dplyr::mutate(
+    is_nortraf = dplyr::if_else(is.na(coverage), 1, 0)
+  ) |>
+  dplyr::group_by(
+    trp_id
+  ) |>
+  dplyr::summarise(
+    n_months_nortraf = sum(is_nortraf)
+  )
+
+n_valid_mdt_reference_year <-
+  mdt_validated |>
+  dplyr::filter(
+    year == reference_year
+  ) |>
+  dplyr::mutate(
+    valid_quality = coverage >= 50 & length_quality >= 99
+  ) |>
+  dplyr::filter(
+    valid_quality == TRUE
+  ) |>
+  dplyr::group_by(
+    trp_id
+  ) |>
+  dplyr::summarise(
+    n_months_good_quality = n()
+  )
+
+this_citys_trp_nortraf_reference_year <-
+  points |>
+  dplyr::filter(trp_id %in% city_trps) |>
+  split_road_system_reference() |>
+  dplyr::select(
+    trp_id,
+    name,
+    road_category_and_number
+  ) |>
+  dplyr::left_join(
+    n_valid_mdt_reference_year,
+    by = "trp_id"
+  ) |>
+  dplyr::left_join(
+    n_nortraf_mdt_reference_year,
+    by = "trp_id"
+  ) |>
+  dplyr::filter(
+    n_months_good_quality >= 10,
+    n_months_nortraf > 4
+  )
+
+write.csv2(
+  this_citys_trp_nortraf_reference_year,
+  file = "nortraf_buskerudbyen.csv",
+  row.names = F,
+  fileEncoding = "latin1"
+)
+
+
 mdt_filtered <-
   mdt |>
   dplyr::filter(
@@ -887,6 +952,7 @@ mdt_filtered |>
 
 # Exclude trp-months
 source("exclude_trp_mdts.R")
+
 
 ## TRP MDT table ----
 # To show MDTs in a table in the report

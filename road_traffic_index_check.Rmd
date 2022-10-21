@@ -15,26 +15,10 @@ library(htmltools)
 ```
 
 
-
 ```{r get_data, include=FALSE}
-# Look at details in one county at a time
-
-# 30 Viken                  08 Trond
-#  3 Oslo                   08 Trond
-# 34 Innlandet              08 Snorre
-# 38 Vestfold og Telemark   08 Trond
-# 42 Agder                  08 Snorre
-# 11 Rogaland               08 Snorre
-# 46 Vestland               08 Trond
-# 15 Møre og Romsdal        08 Snorre
-# 50 Trøndelag              08 Snorre
-# 18 Nordland               08 Snorre
-# 54 Troms og Finnmark      07 Snorre
-
-county_number_chosen <- 54
 index_year <- 2022
 # Last published month
-index_month <- 7
+index_month <- 8
 
 index_id <- 962
 
@@ -99,6 +83,27 @@ points <-
   dplyr::mutate(
     name = stringr::str_to_title(name, locale = "no")
   )
+
+counties <- get_counties()
+```
+
+
+```{r filter_for_county, include=FALSE}
+# Look at details in one county at a time
+
+# 30 Viken                  09 Trond
+#  3 Oslo                   09 Trond
+# 34 Innlandet              09 Snorre
+# 38 Vestfold og Telemark   09 Trond
+# 42 Agder                  09 Snorre
+# 11 Rogaland               09 Snorre
+# 46 Vestland               09 Trond
+# 15 Møre og Romsdal        09 Snorre
+# 50 Trøndelag              09 Snorre
+# 18 Nordland               09 Snorre
+# 54 Troms og Finnmark      09 Snorre
+
+county_number_chosen <- 54
 
 trps_meta <- 
   points %>% 
@@ -175,8 +180,6 @@ adt_filtered <- adt %>%
 #                                                 length_range == "< 5,6m" ~ "lette",
 #                                                 length_range == ">= 5,6m" ~ "tunge"))
 
-counties <- get_counties()
-
 county_name_chosen <- counties %>% 
   dplyr::filter(county_number == county_number_chosen) 
 
@@ -189,8 +192,6 @@ point_index_new <-
     index_year
   )
 ```
-
-
 
 
 ```{r prepare_county_index}
@@ -650,7 +651,7 @@ pointindex_long_2 <-
 
 ## Punktindeksene for de nye månedene
 
-### August
+### September
 
 ```{r map_trp_index, message=FALSE}
 trps_new_pointindex_1 %>% 
@@ -778,16 +779,11 @@ pointindex_wide %>%
 # Hageland 9-11
 # Jernbanetunnelen 9-11
 
-# Steane 8
-# Hattvik 8
-# Dalseid aust 8
-
 # Fjern helt
 # Kronborg s
 # Kronborg n
 # Ølholmslykkja
 # Grong mot Bergsmo
-
 ```
 
 

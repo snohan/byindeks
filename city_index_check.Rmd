@@ -20,20 +20,20 @@ library(htmltools)
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 8952                 8 Trond
-# Buskerudbyen 1952           8 Snorre
-# Grenland 955                8 Snorre
-# Kristiansand og omegn 957   8 Snorre (Million)
-# Nedre Glomma 953            8 Trond
-# Nord-Jæren 952              8 Snorre
-# Oslo 959                    8 Trond
-# Tromsø 961                  8 Snorre
-# Trondheim 960, uoffisiell   8 Snorre (mangler mye bomdata i april 2021)
+# Bergen 8952                 9 Trond
+# Buskerudbyen 1952           9 Snorre
+# Grenland 955                9 Snorre
+# Kristiansand og omegn 957   9 Snorre (Million)
+# Nedre Glomma 953            9 Trond
+# Nord-Jæren 952              9 Snorre
+# Oslo 959                    9 Trond
+# Tromsø 961                  9 Snorre
+# Trondheim 960, uoffisiell   9 Snorre (mangler mye bomdata i april 2021)
 
 
 # Choose
 index_year <- 2022
-index_month <- 4 # latest published
+index_month <- 8 # latest published
 city_number <- 953
 
 
@@ -207,29 +207,29 @@ point_index_new_prepared <- point_index_new %>%
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
 
-point_index_new_prepared_2 <- point_index_new %>%
-  dplyr::filter(day_type == "ALL",
-                period == "month",
-                month == index_month + 2) %>%
-  dplyr::select(trp_id, year, month, index_total_p,
-                index_total_coverage, length_excluded, length_coverage,
-                index_short, index_long)
-
-point_index_new_prepared_3 <- point_index_new %>%
-  dplyr::filter(day_type == "ALL",
-                period == "month",
-                month == index_month + 3) %>%
-  dplyr::select(trp_id, year, month, index_total_p,
-                index_total_coverage, length_excluded, length_coverage,
-                index_short, index_long)
-
-point_index_new_prepared_4 <- point_index_new %>%
-  dplyr::filter(day_type == "ALL",
-                period == "month",
-                month == index_month + 4) %>%
-  dplyr::select(trp_id, year, month, index_total_p,
-                index_total_coverage, length_excluded, length_coverage,
-                index_short, index_long)
+# point_index_new_prepared_2 <- point_index_new %>%
+#   dplyr::filter(day_type == "ALL",
+#                 period == "month",
+#                 month == index_month + 2) %>%
+#   dplyr::select(trp_id, year, month, index_total_p,
+#                 index_total_coverage, length_excluded, length_coverage,
+#                 index_short, index_long)
+# 
+# point_index_new_prepared_3 <- point_index_new %>%
+#   dplyr::filter(day_type == "ALL",
+#                 period == "month",
+#                 month == index_month + 3) %>%
+#   dplyr::select(trp_id, year, month, index_total_p,
+#                 index_total_coverage, length_excluded, length_coverage,
+#                 index_short, index_long)
+# 
+# point_index_new_prepared_4 <- point_index_new %>%
+#   dplyr::filter(day_type == "ALL",
+#                 period == "month",
+#                 month == index_month + 4) %>%
+#   dplyr::select(trp_id, year, month, index_total_p,
+#                 index_total_coverage, length_excluded, length_coverage,
+#                 index_short, index_long)
 
 # point_index_new_prepared_5 <- point_index_new %>%
 #   dplyr::filter(day_type == "ALL",
@@ -243,9 +243,9 @@ pointindex_prepared_all <-
   dplyr::bind_rows(
     pointindex_prepared,
     point_index_new_prepared,
-    point_index_new_prepared_2,
-     point_index_new_prepared_3,
-     point_index_new_prepared_4#,
+    #point_index_new_prepared_2,
+    #point_index_new_prepared_3,
+    #point_index_new_prepared_4#,
     #point_index_new_prepared_5
   ) %>% 
   dplyr::left_join(city_trps_meta) %>% 
@@ -277,44 +277,44 @@ city_trps_new_pointindex <- city_trps_meta %>%
             index_total_coverage, " %"),
     label_text = lapply(label_text, htmltools::HTML))
 
-city_trps_new_pointindex_2 <- city_trps_meta %>%
-  dplyr::left_join(
-    point_index_new_prepared_2,
-    by = "trp_id"
-  ) %>%
-  dplyr::mutate(
-    label_text =
-      paste(name, ", ",
-            road_category_and_number, "<br/>",
-            index_total_p, " %", "<br/>",
-            index_total_coverage, " %"),
-    label_text = lapply(label_text, htmltools::HTML))
-
-city_trps_new_pointindex_3 <- city_trps_meta %>%
-  dplyr::left_join(
-    point_index_new_prepared_3,
-      by = "trp_id"
-  ) %>%
-  dplyr::mutate(
-    label_text =
-      paste(name, ", ",
-            road_category_and_number, "<br/>",
-            index_total_p, " %", "<br/>",
-            index_total_coverage, " %"),
-    label_text = lapply(label_text, htmltools::HTML))
-
-city_trps_new_pointindex_4 <- city_trps_meta %>%
-  dplyr::left_join(
-    point_index_new_prepared_4,
-      by = "trp_id"
-  ) %>%
-  dplyr::mutate(
-    label_text =
-      paste(name, ", ",
-            road_category_and_number, "<br/>",
-            index_total_p, " %", "<br/>",
-            index_total_coverage, " %"),
-    label_text = lapply(label_text, htmltools::HTML))
+# city_trps_new_pointindex_2 <- city_trps_meta %>%
+#   dplyr::left_join(
+#     point_index_new_prepared_2,
+#     by = "trp_id"
+#   ) %>%
+#   dplyr::mutate(
+#     label_text =
+#       paste(name, ", ",
+#             road_category_and_number, "<br/>",
+#             index_total_p, " %", "<br/>",
+#             index_total_coverage, " %"),
+#     label_text = lapply(label_text, htmltools::HTML))
+# 
+# city_trps_new_pointindex_3 <- city_trps_meta %>%
+#   dplyr::left_join(
+#     point_index_new_prepared_3,
+#       by = "trp_id"
+#   ) %>%
+#   dplyr::mutate(
+#     label_text =
+#       paste(name, ", ",
+#             road_category_and_number, "<br/>",
+#             index_total_p, " %", "<br/>",
+#             index_total_coverage, " %"),
+#     label_text = lapply(label_text, htmltools::HTML))
+# 
+# city_trps_new_pointindex_4 <- city_trps_meta %>%
+#   dplyr::left_join(
+#     point_index_new_prepared_4,
+#       by = "trp_id"
+#   ) %>%
+#   dplyr::mutate(
+#     label_text =
+#       paste(name, ", ",
+#             road_category_and_number, "<br/>",
+#             index_total_p, " %", "<br/>",
+#             index_total_coverage, " %"),
+#     label_text = lapply(label_text, htmltools::HTML))
 
 # city_trps_new_pointindex_5 <- city_trps_meta %>% 
 #   dplyr::left_join(point_index_new_prepared_5)
@@ -454,21 +454,21 @@ city_trps_new_pointindex %>%
 
 
 ```{r map_trp_index_2, message=FALSE}
-city_trps_new_pointindex_2 %>%
-  dplyr::rename(index = index_total_p) %>%
-  create_pointindex_map()
+# city_trps_new_pointindex_2 %>%
+#   dplyr::rename(index = index_total_p) %>%
+#   create_pointindex_map()
 ```
 
 ```{r map_trp_index_3, message=FALSE}
-city_trps_new_pointindex_3 %>%
-  dplyr::rename(index = index_total_p) %>%
-  create_pointindex_map()
+# city_trps_new_pointindex_3 %>%
+#   dplyr::rename(index = index_total_p) %>%
+#   create_pointindex_map()
 ```
 
 ```{r map_trp_index_4, message=FALSE}
-city_trps_new_pointindex_4 %>%
-  dplyr::rename(index = index_total_p) %>%
-  create_pointindex_map()
+# city_trps_new_pointindex_4 %>%
+#   dplyr::rename(index = index_total_p) %>%
+#   create_pointindex_map()
 ```
 
 ```{r map_trp_index_5, message=FALSE}

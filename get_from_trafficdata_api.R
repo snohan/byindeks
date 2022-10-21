@@ -398,7 +398,14 @@ get_points_with_direction <- function() {
   trafficRegistrationPoints {
     id
     name
+    trafficRegistrationType
     location {
+      coordinates {
+        latLon {
+          lat
+          lon
+        }
+      }
       county {
         geographicNumber
         name
@@ -427,30 +434,36 @@ get_points_with_direction <- function() {
   myqueries <- Query$new()
   myqueries$query("api_data", api_query)
 
-  api_response <- cli$exec(myqueries$queries$api_data) %>%
+  api_response <-
+    cli$exec(myqueries$queries$api_data) %>%
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
     as.data.frame() %>%
-    dplyr::select(trp_id =
-                    data.trafficRegistrationPoints.id,
-                  name =
-                    data.trafficRegistrationPoints.name,
-                  road_category =
-                    data.trafficRegistrationPoints.location.roadReference.roadCategory.id,
-                  road_reference =
-                    data.trafficRegistrationPoints.location.roadReference.shortForm,
-                  operational_status =
-                    data.trafficRegistrationPoints.operationalStatus,
-                  latest_day_with_data =
-                    data.trafficRegistrationPoints.latestData.volumeByDay,
-                  county_name = data.trafficRegistrationPoints.location.county.name,
-                  county_no = data.trafficRegistrationPoints.location.county.geographicNumber,
-                  municipality_name = data.trafficRegistrationPoints.location.municipality.name,
-                  from = data.trafficRegistrationPoints.direction.from,
-                  to = data.trafficRegistrationPoints.direction.to
-
+    dplyr::select(
+      trp_id = data.trafficRegistrationPoints.id,
+      name = data.trafficRegistrationPoints.name,
+      traffic_type =
+        data.trafficRegistrationPoints.trafficRegistrationType,
+      road_category =
+        data.trafficRegistrationPoints.location.roadReference.roadCategory.id,
+      road_reference =
+        data.trafficRegistrationPoints.location.roadReference.shortForm,
+      operational_status =
+        data.trafficRegistrationPoints.operationalStatus,
+      latest_day_with_data =
+        data.trafficRegistrationPoints.latestData.volumeByDay,
+      county_name = data.trafficRegistrationPoints.location.county.name,
+      county_no = data.trafficRegistrationPoints.location.county.geographicNumber,
+      municipality_name = data.trafficRegistrationPoints.location.municipality.name,
+      from = data.trafficRegistrationPoints.direction.from,
+      to = data.trafficRegistrationPoints.direction.to,
+      lat =
+        data.trafficRegistrationPoints.location.coordinates.latLon.lat,
+      lon =
+        data.trafficRegistrationPoints.location.coordinates.latLon.lon
     ) %>%
-    dplyr::mutate(latest_day_with_data =
-                    floor_date(with_tz(ymd_hms(latest_day_with_data)), unit = "day")
+    dplyr::mutate(
+      latest_day_with_data =
+        floor_date(with_tz(ymd_hms(latest_day_with_data)), unit = "day")
     )
 
   return(api_response)

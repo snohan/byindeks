@@ -264,6 +264,41 @@ create_pointindex_map <- function(all_point_info_df) {
 
 borderline <- officer::fp_border(color = "black", style = "solid", width = 1)
 
+
+map_links_with_trp <- function(link_df) {
+
+  map <-
+    link_df |>
+    leaflet(
+      width = "100%",
+      height = 700,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F
+        )
+    ) |>
+    addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) |>
+    addPolylines(
+      data = link_df,
+      label = ~label_text,
+      opacity = 0.8,
+      highlightOptions = highlightOptions(
+        bringToFront = TRUE,
+        sendToBack = FALSE,
+        color = "purple",
+        opacity = 0.6
+      )
+    )
+
+  return(map)
+}
+
+
+
 create_city_index_table <- function(city_info) {
 
   city_table <- city_info %>%

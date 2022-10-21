@@ -6,7 +6,7 @@ library(jsonlite)
 library(sf)
 
 # Definer URI og sti ----
-nvdb_url <- "https://www.vegvesen.no/nvdb/api/v2"
+#nvdb_url <- "https://www.vegvesen.no/nvdb/api/v2"
 nvdb_url_v3 <- "https://nvdbapiles-v3.atlas.vegvesen.no"
 sti_vegobjekter <- "/vegobjekter"
 sti_veg <- "/veg"
@@ -129,16 +129,22 @@ hent_vegsystemreferanse <- function(veglenkeposisjon) {
 
 hent_vegpunkt_via_latlon <- function(lat, lon) {
 
-  api_query <- paste0(nvdb_url_v3,
-                      sti_posisjon,
-                      "?lat=",
-                      lat,
-                      "&lon=",
-                      lon,
-                      "&maks_avstand=60&maks_antall=6&konnekteringslenker=false&detaljerte_lenker=false&vegsystemreferanse=E,R,F,K&srid=4326")
+  api_query <-
+    paste0(
+      nvdb_url_v3,
+      sti_posisjon,
+      "?lat=",
+      lat,
+      "&lon=",
+      lon,
+      "&maks_avstand=60&maks_antall=6&konnekteringslenker=false&detaljerte_lenker=false&vegsystemreferanse=E,R,F,K&srid=4326"
+    )
 
-  respons <- httr::GET(api_query,
-                       httr::add_headers(.headers = nvdb_v3_headers))
+  respons <-
+    httr::GET(
+      api_query,
+      httr::add_headers(.headers = nvdb_v3_headers)
+    )
 
   uthenta <- jsonlite::fromJSON(
     stringr::str_conv(
@@ -766,6 +772,215 @@ get_aadt_by_road <- function(roadcat_number) {
     dplyr::left_join(adt, location, by = "nvdb_objekt_id") %>%
     sf::st_as_sf() %>%
     dplyr::left_join(counties, by = "nvdb_objekt_id")
+
+  return(adt_location)
+}
+
+#test <- get_aadt_by_county("3")
+#area_number <- 3403
+get_aadt_by_area <- function(area_number) {
+
+  # County numbers
+  # 3  Oslo
+  # 30 Viken
+  # 34 Innlandet
+  # 38 Vestfold og Telemark
+  # 42 Agder
+  # 11 Rogaland
+  # 46 Vestland
+  # 15 Møre og Romsdal
+  # 50 Trøndelag
+  # 18 Nordland
+  # 54 Troms og Finnmark
+
+  # Municipality numbers are four digits
+
+  area_number <- as.character(area_number)
+
+  api_query_root <-
+    paste0(
+      nvdb_url_v3,
+      sti_vegobjekter,
+      "/540",
+      "?segmentering=false&inkluder=egenskaper,lokasjon"
+    )
+
+  base::ifelse(
+    stringr::str_length(area_number) < 3,
+    api_query_full <-
+      paste0(
+        api_query_root,
+        "&fylke=",
+        area_number
+      ),
+    api_query_full <-
+      paste0(
+        api_query_root,
+        "&kommune=",
+        area_number
+      )
+  )
+
+  respons <-
+    httr::GET(
+      api_query_full,
+      httr::add_headers(.headers = nvdb_v3_headers)
+    )
+
+  uthenta <-
+    jsonlite::fromJSON(
+      str_conv(respons$content, encoding = "UTF-8"),
+      simplifyDataFrame = T,
+      flatten = T
+    )
+
+  metadata_antall <- uthenta$metadata$antall
+  metadata_returnert <- uthenta$metadata$returnert
+
+  n_pages_to_add <- floor(metadata_antall / metadata_returnert)
+
+  respons_objekter <- uthenta$objekter
+
+
+  while (n_pages_to_add > 0) {
+
+    respons <-
+      httr::GET(
+        uthenta$metadata$neste$href,
+        httr::add_headers(.headers = nvdb_v3_headers)
+      )
+
+    uthenta <-
+      jsonlite::fromJSON(
+        str_conv(respons$content, encoding = "UTF-8"),
+        simplifyDataFrame = T,
+        flatten = T
+      )
+
+    respons_objekter <-
+      dplyr::bind_rows(
+        respons_objekter,
+        uthenta$objekter
+      )
+
+    n_pages_to_add <- n_pages_to_add - 1
+
+  }
+
+
+  adt <-
+    respons_objekter %>%
+    dplyr::select(id, egenskaper) %>%
+    dplyr::rename(nvdb_objekt_id = id) %>%
+    tibble::as_tibble() %>%
+    tibble::rowid_to_column("objekt_nr") %>%
+    # Some objects lack "Grunnlag" which is a character
+    # Then these will have only numeric values in "Verdi"
+    # thus causing unnest to get incompatibel types.
+    # Therefore changing all to character first.
+    dplyr::mutate(
+      egenskaper =
+        purrr::map(
+          egenskaper,
+          ~ mutate(.x, verdi = as.character(verdi))
+        )
+    ) |>
+    tidyr::unnest(
+      col = egenskaper
+    ) %>%
+    dplyr::filter(
+      id %in% c(4621, # År, gjelder for
+                4623, # ÅDT total
+                4624, # Andel lange
+                4625  # Grunnlag
+              )
+    ) %>%
+    dplyr::select(
+      nvdb_objekt_id,
+      egenskap_id = id,
+      verdi
+    ) %>%
+    dplyr::mutate(value_name = dplyr::case_when(
+      egenskap_id == 4621 ~ "year",
+      egenskap_id == 4623 ~ "aadt_total",
+      egenskap_id == 4624 ~ "heavy_percentage",
+      egenskap_id == 4625 ~ "source",
+      TRUE ~ "unspecified"
+    )) %>%
+    dplyr::select(
+      nvdb_objekt_id,
+      value_name,
+      verdi
+    ) %>%
+    tidyr::pivot_wider(
+      names_from = value_name,
+      values_from = verdi
+    ) %>%
+    dplyr::mutate(
+      aadt_total = as.numeric(aadt_total),
+      heavy_percentage = as.numeric(heavy_percentage)
+    )
+
+  location <-
+    respons_objekter %>%
+    dplyr::select(id, geometry = lokasjon.geometri.wkt) %>%
+    dplyr::rename(nvdb_objekt_id = id) %>%
+    tibble::as_tibble() %>%
+    sf::st_as_sf(wkt = "geometry",
+                 crs = 5973) %>%
+    sf::st_zm(drop = T, what = "ZM") %>%
+    sf::st_transform("+proj=longlat +datum=WGS84")
+
+  counties <-
+    respons_objekter %>%
+    dplyr::select(id, county_numbers = lokasjon.fylker) %>%
+    dplyr::rename(nvdb_objekt_id = id) %>%
+    tibble::as_tibble()
+
+  road_category <-
+    respons_objekter %>%
+    dplyr::select(id, road_reference = lokasjon.vegsystemreferanser) %>%
+    dplyr::rename(nvdb_objekt_id = id) %>%
+    tibble::as_tibble() |>
+    tidyr::unnest(
+      cols = road_reference
+    ) |>
+    dplyr::select(
+      nvdb_objekt_id,
+      shortform = kortform,
+      road_category = vegsystem.vegkategori,
+      road_number = vegsystem.nummer
+    ) |>
+    dplyr::distinct(
+      nvdb_objekt_id,
+      .keep_all = TRUE
+    ) |>
+    dplyr::mutate(
+      road_category_and_number =
+        paste0(
+          road_category,
+          "v ",
+          road_number
+        ),
+      intersection_part =
+        stringr::str_detect(shortform, "KD")
+    )
+
+  adt_location <-
+    dplyr::left_join(
+      adt,
+      location,
+      by = "nvdb_objekt_id"
+    ) %>%
+    sf::st_as_sf() %>%
+    dplyr::left_join(
+      counties,
+      by = "nvdb_objekt_id"
+    ) |>
+    dplyr::left_join(
+      road_category,
+      by = "nvdb_objekt_id"
+    )
 
   return(adt_location)
 }
