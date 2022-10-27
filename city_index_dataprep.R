@@ -224,6 +224,7 @@ pointindex_22_all <-
 city_trps <-
   pointindex_22_all[[1]] |>
   base::sort()
+
 city_name <- city_index_2022$area_name[1]
 
 pointindex_20 <-
@@ -621,7 +622,7 @@ city_index <-
     year_base = year - 1,
     index_i = index_converter(index_p),
     variance = standard_deviation^2,
-    n_points = c(
+    n_trp = c(
       n_17,
       n_18,
       n_19,
@@ -630,7 +631,7 @@ city_index <-
       n_22
     ),
    standard_error =
-     base::round(standard_deviation / sqrt(n_points), digits = 1)
+     base::round(standard_deviation / sqrt(n_trp), digits = 1)
   ) %>%
   dplyr::select(
     year_base,
@@ -640,7 +641,7 @@ city_index <-
     index_i,
     standard_deviation,
     variance,
-    n_points,
+    n_trp,
     standard_error
   ) %>%
   dplyr::arrange(year)

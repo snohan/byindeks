@@ -1,0 +1,189 @@
+---
+title: "Sykkelindeks Osloområdet"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    number-sections: true
+    toc-title: "Innhold"
+    self-contained: true
+crossref: 
+  fig-title: 'Figur'
+  tbl-title: 'Tabell'
+knitr: 
+  opts_chunk: 
+    echo: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+source("H:/Programmering/R/byindeks/rmd_setup.R")
+
+# City numbers ----
+# Bergen 5952
+# Førde 9952
+# Grenland 4953
+# Nedre Glomma 5953
+# Nord-Jæren 6952
+# Oslo 6953
+# Tromsø 11952
+
+# Choose
+city_number <- 6953
+```
+
+```{r get_data}
+#| label: read
+
+trp <- 
+  readr::read_rds(
+    file =
+      paste0(
+        "tidy_data/trp_",
+        city_number,
+        ".rds"
+      )
+  )
+
+aadt <-
+  readr::read_rds(
+    file =
+      paste0(
+        "tidy_data/aadt_",
+        city_number,
+        ".rds"
+      )
+  )
+
+index <-
+  readr::read_rds(
+    file =
+      paste0(
+        "tidy_data/index_",
+        city_number,
+        ".rds"
+      )
+  )
+```
+
+# Om sykkelindeks
+Sykkelindeks er et estimat på endring i trafikkmengde for et område. Indeksen er beregnet med datagrunnlag fra sykkelregistreringspunkter i Statens vegvesens trafikkdatasystem, <https://www.vegvesen.no/trafikkdata/>. 
+
+Indeksen kan benytte trafikkregistreringspunkter på riks-, fylkes- og  kommunalveger. Det inngår et visst antall registreringspunkter som gir et representativt bilde av trafikken i området. 
+
+For hvert trafikkregistreringspunkt sammenlignes registrert trafikk dato for dato og time for time mellom to påfølgende år. Det tas hensyn til perioder hvor registreringsutstyret ikke har vært i drift, og perioder hvor trafikken i stor grad er påvirket av stenginger og omkjøringer.
+
+
+# Sykkelregistreringspunktene
+Sykkelregistreringspunktene som inngår i sykkelindeksen er vist i tabell og kart nedenfor.
+
+```{r table_trp}
+#| tbl-cap: Sykkelregistreringspunkter
+ 
+trp |> 
+  dplyr::select(
+    name, 
+    road_reference, 
+    municipality_name
+  ) |> 
+  dplyr::arrange(
+    municipality_name,
+    road_reference
+  ) |> 
+  flextable::flextable() |> 
+  flextable::set_header_labels(
+    name = "Navn",
+    road_reference = "Vegreferanse",
+    municipality_name = "Kommune"
+  ) |> 
+  flextable::bold(part = "header") |> 
+  flextable::bg(bg = "#ED9300", part = "header") |> 
+  flextable::border_remove() |> 
+  flextable::hline_top(part = "header", border = borderline) |> 
+  flextable::hline_bottom(part = "all", border = borderline) |> 
+  flextable::autofit() 
+```
+
+
+
+```{r map}
+#| echo: false
+#| fig-cap: Sykkelregistreringspunktenes plassering.
+
+trp |> 
+  create_point_adt_map()
+```
+
+
+# Årsdøgntrafikk
+Årsdøgntrafikk (ÅDT) i sykkelregistreringspunktene er vist i tabellen nedenfor. ÅDT er tatt med for hvert år sykkelindeksen gjelder for, samt referanseåret. 
+
+```{r}
+#| label: table_adt
+#| tbl-cap: Årsdøgntrafikk. Manglende tall skyldes at punktet ikke var i drift eller at data hadde for dårlig kvalitet.
+
+aadt |> 
+  flextable::flextable() |> 
+  flextable::set_header_labels(
+    name = "Sykkelregistreringspunkt",
+    aadt_2017 = "2017",
+    aadt_2018 = "2018",
+    aadt_2019 = "2019",
+    aadt_2020 = "2020",
+    aadt_2021 = "2021"
+  ) |> 
+  flextable::bold(part = "header") |> 
+  flextable::bg(bg = "#ED9300", part = "header") |> 
+  flextable::border_remove() |> 
+  flextable::hline_top(part = "header", border = borderline) |> 
+  flextable::hline_bottom(part = "all", border = borderline) |> 
+  flextable::autofit() 
+```
+
+# Sykkelindeks
+Resultater for sykkelindeksen er vist i tabellen nedenfor.
+
+```{r}
+#| label: table_index
+#| tbl-cap: Estimert endring i trafikkmengde for området.
+
+index |> 
+  dplyr::select(
+    year_from_to,
+    period,
+    n_trp,
+    index_p,
+    standard_deviation,
+    standard_error
+  ) |> 
+  flextable::flextable() %>%
+  colformat_double(
+    j = c("index_p", "standard_deviation", "standard_error"),
+    digits = 1
+  ) %>%
+  set_header_labels(
+    year_from_to = "Periode",
+    period = "",
+    n_trp = "Antall punkt",
+    index_p = "Endring i \n trafikkmengde \n (%)",
+    standard_deviation = "Standardavvik \n (%)",
+    standard_error = "Standardfeil \n (%)"
+  ) %>%
+  align(
+    j = c("index_p", "standard_deviation", "standard_error"),
+    align = "center", part = "header"
+  ) %>%
+  padding(
+    j = c("index_p", "standard_deviation", "standard_error"),
+    padding.right = 25, part = "body"
+  ) %>%
+  bold(part = "header") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  autofit()
+```
+

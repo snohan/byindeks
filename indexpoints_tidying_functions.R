@@ -232,44 +232,62 @@ index_converter <- function(index) {
 
 calculate_two_year_index <- function(city_index_df) {
 
-  two_years <- city_index_df %>%
-    select(index_p, index_i, variance, n_points) %>%
-    slice(1:2)
+  two_years <-
+    city_index_df |>
+    dplyr::select(
+      index_p,
+      index_i,
+      variance,
+      n_trp
+    ) %>%
+    dplyr::slice(1:2)
 
   year_start <- city_index_df$year_base[1]
   year_end <- city_index_df$year[2]
   last_month <- city_index_df$month[2]
 
-  two_years_to_one <- list(
-    index_p = 100 * (prod(two_years$index_i) - 1),
-    index_i = prod(two_years$index_i),
-    year_base = year_start,
-    year = year_end,
-    month = last_month,
-    #year_from_to = paste0(year_start, "-", year_end),
-    # Using Goodman's unbiased estimate (cannot use exact formula as we are
-    # sampling)
-    # But it can be negative if indexes are close to zero, large variance and
-    # small n's.
-    # Resolved by using exact formula
-    # Must be something about the assumptions that are wrong?
-    variance =
-      two_years$index_p[1]^2 * two_years$variance[2] / two_years$n_points[2] +
-      two_years$index_p[2]^2 * two_years$variance[1] / two_years$n_points[1] +
-      two_years$variance[1] * two_years$variance[2] /
-      (two_years$n_points[1] * two_years$n_points[2]),
-    # TODO: find the correct number of points that have contributed over the two years -
-    # their index must exist in both years? Not exactly, because all points contribute
-    n_points = max(two_years$n_points)
-  ) %>%
+  two_years_to_one <-
+    list(
+      index_p = 100 * (prod(two_years$index_i) - 1),
+      index_i = prod(two_years$index_i),
+      year_base = year_start,
+      year = year_end,
+      month = last_month,
+      #year_from_to = paste0(year_start, "-", year_end),
+      # Using Goodman's unbiased estimate (cannot use exact formula as we are
+      # sampling)
+      # But it can be negative if indexes are close to zero, large variance and
+      # small n's.
+      # Resolved by using exact formula
+      # Must be something about the assumptions that are wrong?
+      variance =
+        two_years$index_p[1]^2 * two_years$variance[2] / two_years$n_trp[2] +
+        two_years$index_p[2]^2 * two_years$variance[1] / two_years$n_trp[1] +
+        two_years$variance[1] * two_years$variance[2] /
+        (two_years$n_trp[1] * two_years$n_trp[2]),
+      # TODO: find the correct number of TRPs that have contributed
+      # over the two years - their index must exist in both years?
+      # Not exactly, because all TRPs contribute.
+      n_trp = max(two_years$n_trp)
+    ) %>%
     as_tibble() %>%
-    dplyr::mutate(standard_deviation = sqrt(variance),
-                  standard_error = round(standard_deviation / sqrt(n_points), digits = 1)) %>%
-    select(year_base, year, month, index_p, index_i,
-           standard_deviation, variance, n_points, standard_error)
-
+    dplyr::mutate(
+      standard_deviation = sqrt(variance),
+      standard_error =
+        round(standard_deviation / sqrt(n_trp), digits = 1)
+    ) %>%
+    select(
+      year_base,
+      year,
+      month,
+      index_p,
+      index_i,
+      standard_deviation,
+      variance,
+      n_trp,
+      standard_error
+    )
 }
-
 
 
 calculate_two_years_index_36_month_version <- function(city_index_df) {

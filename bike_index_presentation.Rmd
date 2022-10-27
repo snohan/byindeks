@@ -122,59 +122,60 @@ Testing har vist at elsparkesykler ikke registreres av alle utstyrstyper
 - CMU (fåtall) registrerer elsparkesykler 
 
 
+<!--
 # Sykkelindeks Osloområdet kart
 
 ```{r oslo_map, fig.width=4}
-bike_trps_oslo <- get_city_index_bike_trps(6953)
-
-bike_trps_oslo %>% 
-  create_point_adt_map()
+# bike_trps_oslo <- get_city_index_bike_trps(6953)
+# 
+# bike_trps_oslo %>% 
+#   create_point_adt_map()
 ```
 
 # Sykkelindeks Osloområdet tabell
 
 ```{r table_oslo}
-bike_trps_oslo %>%
-  make_trp_table()
+# bike_trps_oslo %>%
+#   make_trp_table()
 ```
 
 
 # Sykkelindeks Bergen kart
 
 ```{r bergen_map, fig.width=4}
-bike_trps_bergen <- get_city_index_bike_trps(5952)
-
-bike_trps_bergen %>% 
-  create_point_adt_map()
+# bike_trps_bergen <- get_city_index_bike_trps(5952)
+# 
+# bike_trps_bergen %>% 
+#   create_point_adt_map()
 ```
 
 
 # Sykkelindeks Bergen tabell
 
 ```{r table_bergen}
-bike_trps_bergen %>%
-  make_trp_table()
+# bike_trps_bergen %>%
+#   make_trp_table()
 ```
 
 
 # Sykkelindeks Nord-Jæren kart
 
 ```{r nj_map, fig.width=4}
-bike_trps_nj <- get_city_index_bike_trps(6952)
-
-bike_trps_nj %>% 
-  create_point_adt_map()
+# bike_trps_nj <- get_city_index_bike_trps(6952)
+# 
+# bike_trps_nj %>% 
+#   create_point_adt_map()
 ```
 
 
 # Sykkelindeks Nord-Jæren tabell
 
 ```{r table_nj}
-bike_trps_nj %>%
-  make_trp_table()
+# bike_trps_nj %>%
+#   make_trp_table()
 ```
 
-
+-->
 
 
 

@@ -24,6 +24,7 @@ create_point_table <- function(all_point_info_df, caption_text) {
 }
 
 create_point_adt_map <- function(all_point_info_df) {
+
   palett_adt <-
     colorNumeric(palette = "Greens",
                  domain = NULL)
@@ -51,7 +52,7 @@ create_point_adt_map <- function(all_point_info_df) {
               "bottomright",
               pal = palett_adt,
               values = ~adt,
-              title = "ADT",
+              title = "\u00c5DT",
               opacity = 0.7,
               labFormat = labelFormat(big.mark = " "))
 
@@ -200,6 +201,50 @@ create_point_adt_map_review <- function(all_point_info_df) {
 }
 
 
+map_trp_with_category <- function(all_point_info_df) {
+
+  palette_category <-
+    leaflet::colorFactor(
+      palette = c("#db3b99", "#444f55"),
+      domain = c("Ja", "Nei"))
+
+  map <-
+    all_point_info_df |>
+    leaflet(
+      width = "100%",
+      height = 700,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F)
+    ) |>
+    addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) |>
+    addCircleMarkers(
+      radius = 6,
+      stroke = T,
+      weight = 2,
+      color = ~palette_category(city_index),
+      opacity = 0.8,
+      fill = T,
+      fillColor = ~palette_category(city_index),
+      fillOpacity = 0.8,
+      label = ~label_text,
+    ) |>
+    addLegend(
+      "bottomright",
+      pal = palette_category,
+      values = ~city_index,
+      title = "Med i indeks",
+      opacity = 0.7
+    )
+
+  return(map)
+}
+
+
 create_pointindex_map <- function(all_point_info_df) {
 
   # Create a red-green scale based on index values
@@ -298,6 +343,51 @@ map_links_with_trp <- function(link_df) {
 }
 
 
+map_links_with_trp_in_index <- function(link_df) {
+
+  palett_in_index <-
+    colorFactor(
+      palette = c("#db3b99", "#444f55"),
+      domain = c("Ja", "Nei")
+    )
+
+  map <-
+    link_df |>
+    leaflet(
+      width = "100%",
+      height = 700,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F)
+    ) |>
+    addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) |>
+    addPolylines(
+      data = link_df,
+      label = ~label_text,
+      opacity = 0.8,
+      color = ~palett_in_index(city_index),
+      highlightOptions = highlightOptions(
+        bringToFront = TRUE,
+        sendToBack = FALSE,
+        color = "purple",
+        opacity = 0.6
+      )
+    ) |>
+    addLegend(
+      "bottomright",
+      pal = palett_in_index,
+      values = ~city_index,
+      title = "Med i byindeks",
+      opacity = 0.7
+    )
+
+  return(map)
+}
+
 
 create_city_index_table <- function(city_info) {
 
@@ -333,7 +423,7 @@ create_city_index_table_sd <- function(city_info) {
     dplyr::select(
       year_from_to,
       period,
-      n_points,
+      n_trp,
       index_p,
       standard_deviation,
       standard_error
@@ -346,7 +436,7 @@ create_city_index_table_sd <- function(city_info) {
     set_header_labels(
       year_from_to = "Periode",
       period = "",
-      n_points = "Antall punkt",
+      n_trp = "Antall punkt",
       index_p = "Endring i \n trafikkmengde \n (%)",
       standard_deviation = "Standardavvik \n (%)",
       standard_error = "Standardfeil \n (%)"
