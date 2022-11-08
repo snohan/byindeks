@@ -20,21 +20,21 @@ library(htmltools)
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 8952                 9 Trond
-# Buskerudbyen 1952           9 Snorre
-# Grenland 955                9 Snorre
-# Kristiansand og omegn 957   9 Snorre (Million)
-# Nedre Glomma 953            9 Trond
-# Nord-Jæren 952              9 Snorre
+# Bergen 8952                 10 Trond
+# Buskerudbyen 1952           10 Snorre
+# Grenland 955                10 Snorre
+# Kristiansand og omegn 957   10 Snorre (Million)
+# Nedre Glomma 953            10 Trond
+# Nord-Jæren 952              10 Snorre
 # Oslo 959                    9 Trond
-# Tromsø 961                  9 Snorre
-# Trondheim 960, uoffisiell   9 Snorre (mangler mye bomdata i april 2021)
+# Tromsø 961                  10 Snorre
+# Trondheim 960, uoffisiell   10 Snorre (mangler mye bomdata i april 2021)
 
 
 # Choose
 index_year <- 2022
-index_month <- 8 # latest published
-city_number <- 953
+index_month <- 9 # latest published
+city_number <- 959
 
 
 reference_year <- 
@@ -543,6 +543,15 @@ pointindex_wide %>%
 # Ekskl 2021! SIC!
 # Bomstasjon N for Sluppen bru 5-8
 # Bom Bjørndalen 5-8
+
+# BRG
+# Torget 8, 9
+
+# OSL
+# Slattum 10
+# Mogreina inn igjen hele året?
+# Karihaugen mot Furuset 10
+# General Ruge 6
 ```
 
 

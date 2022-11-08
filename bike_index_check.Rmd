@@ -20,17 +20,17 @@ library(htmltools)
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 5952         2019 - 2022-07
-# Førde 9952          2018 - 2022-08
-# Grenland 4953       2018 - 2022-08
-# Nedre Glomma 5953   2019 - 2022-08
-# Nord-Jæren 6952     2020 - 2022-08
-# Osloområdet 6953    2018 - 2022-08
-# Tromsø 11952        2021 - 2022-08
+# Bergen 5952         2019 - 2022-10
+# Førde 9952          2018 - 2022-10
+# Grenland 4953       2018 - 2022-10
+# Nedre Glomma 5953   2019 - 2022-10
+# Nord-Jæren 6952     2020 - 2022-10
+# Osloområdet 6953    2018 - 2022-10
+# Tromsø 11952        2021 - 2022-10
 
 # Choose
 index_year <- 2022
-index_month <- 8 # latest published
+index_month <- 9 # latest published
 city_number <- 11952
 
 # Fetch

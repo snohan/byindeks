@@ -11,7 +11,7 @@ source("get_from_trafficdata_api.R")
 #source("get_from_trp_api.R")
 
 # NVDB API calls to get tolling stations or supply missing AADTs
-source("get_from_nvdb_api.R")
+#source("get_from_nvdb_api.R")
 
 # Functions
 # source TAKLER IKKE Ø som brukes i kolonneoverskrift i csv-ene! Må åpne fila og kjøre alt derfra.
@@ -97,6 +97,7 @@ points <- get_points() %>%
 # Choose
 index_month <- 8 # the one to be published now
 city_number <- 1952
+
 reference_year <-
   dplyr::case_when(
     city_number %in% c(
@@ -325,7 +326,7 @@ n_points_per_month <-
     year,
     month
   ) %>%
-  dplyr::summarise(n_points = n())
+  dplyr::summarise(n_trp = n())
 
 trp_index_monthly_wide <-
   trp_index_monthly |>
