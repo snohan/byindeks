@@ -19,40 +19,7 @@ nvdb_v3_headers <- c(
 )
 
 
-# Vegnett ----
-#vegsystemreferanse <- "KV6064S1D1m30"
-#kommunenr <- "5001"
-# Hent stedfesting i punkt på vegnettet
-hent_vegpunkt <- function(vegsystemreferanse, kommunenr) {
-  api_query <- paste0(nvdb_url_v3,
-                      sti_veg,
-                      "?vegsystemreferanse=",
-                      vegsystemreferanse,
-                      "&kommune=",
-                      kommunenr)
-
-  respons <- httr::GET(api_query,
-                 httr::add_headers(.headers = nvdb_v3_headers))
-
-  uthenta <- jsonlite::fromJSON(
-    stringr::str_conv(
-    respons$content, encoding = "UTF-8"),
-                      simplifyDataFrame = T,
-                      flatten = T)
-
-  kommune <- bind_rows(uthenta$objekter$egenskaper, .id = "kid")
-}
-
-#veglenkesekvens_id <- "2441493"
-hent_veglenkesekvens <- function(veglenkesekvens_id) {
-
-  api_query <-
-    paste0(
-      nvdb_url_v3,
-      "/vegnett",
-      "/veglenkesekvenser/",
-      veglenkesekvens_id
-    )
+call_and_parse_nvdb_api <- function(api_query) {
 
   respons <-
     httr::GET(
@@ -63,11 +30,58 @@ hent_veglenkesekvens <- function(veglenkesekvens_id) {
   uthenta <-
     jsonlite::fromJSON(
       stringr::str_conv(
-        respons$content, encoding = "UTF-8"
+        respons$content,
+        encoding = "UTF-8"
       ),
       simplifyDataFrame = T,
       flatten = T
     )
+
+  return(uthenta)
+
+}
+
+# Vegnett ----
+# Hent stedfesting i punkt på vegnettet
+
+hent_vegpunkt <- function(vegsystemreferanse, kommunenr) {
+
+  # vegsystemreferanse <- "KV6064S1D1m30"
+  # kommunenr <- "5001"
+
+  api_query <-
+    paste0(
+      nvdb_url_v3,
+      sti_veg,
+      "?vegsystemreferanse=",
+      vegsystemreferanse,
+      "&kommune=",
+      kommunenr
+    )
+
+  uthenta <- call_and_parse_nvdb_api(api_query)
+
+  kommune <-
+    dplyr::bind_rows(
+      uthenta$objekter$egenskaper,
+      .id = "kid"
+    )
+}
+
+
+hent_veglenkesekvens <- function(veglenkesekvens_id) {
+
+  # veglenkesekvens_id <- "2441493"
+
+  api_query <-
+    paste0(
+      nvdb_url_v3,
+      "/vegnett",
+      "/veglenkesekvenser/",
+      veglenkesekvens_id
+    )
+
+  uthenta <- call_and_parse_nvdb_api(api_query)
 
   resultat <-
     dplyr::bind_rows(uthenta$veglenker) %>%
@@ -101,27 +115,28 @@ hent_veglenkesekvens <- function(veglenkesekvens_id) {
 }
 
 
-
-#veglenkeposisjon <- "0.25636836@423823"
-# Hent stedfesting i punkt på vegnettet
 hent_vegsystemreferanse <- function(veglenkeposisjon) {
-  api_query <- paste0(nvdb_url_v3,
-                      sti_veg,
-                      "?veglenkesekvens=",
-                      veglenkeposisjon)
 
-  respons <- GET(api_query,
-                 httr::add_headers(.headers = nvdb_v3_headers))
+  # veglenkeposisjon <- "0.25636836@423823"
 
-  uthenta <- jsonlite::fromJSON(
-    stringr::str_conv(
-      respons$content, encoding = "UTF-8"),
-    simplifyDataFrame = T,
-    flatten = T)
+  api_query <-
+    paste0(
+      nvdb_url_v3,
+      sti_veg,
+      "?veglenkesekvens=",
+      veglenkeposisjon
+    )
+
+  uthenta <- call_and_parse_nvdb_api(api_query)
 
   vegsystemreferanse <- uthenta$vegsystemreferanse$kortform
 
-  result <- dplyr::if_else(is.null(vegsystemreferanse), "", vegsystemreferanse)
+  result <-
+    dplyr::if_else(
+      is.null(vegsystemreferanse),
+      "",
+      vegsystemreferanse
+    )
 
   return(result)
 }
@@ -137,20 +152,15 @@ hent_vegpunkt_via_latlon <- function(lat, lon) {
       lat,
       "&lon=",
       lon,
-      "&maks_avstand=60&maks_antall=6&konnekteringslenker=false&detaljerte_lenker=false&vegsystemreferanse=E,R,F,K&srid=4326"
+      "&maks_avstand=60",
+      "&maks_antall=6",
+      "&konnekteringslenker=false",
+      "&detaljerte_lenker=false",
+      "&vegsystemreferanse=E,R,F,K",
+      "&srid=4326"
     )
 
-  respons <-
-    httr::GET(
-      api_query,
-      httr::add_headers(.headers = nvdb_v3_headers)
-    )
-
-  uthenta <- jsonlite::fromJSON(
-    stringr::str_conv(
-      respons$content, encoding = "UTF-8"),
-    simplifyDataFrame = T,
-    flatten = T)
+  uthenta <- call_and_parse_nvdb_api(api_query)
 
   # TODO: allow more responses, filter by traffic_Type and choose closest remaining
 
@@ -163,7 +173,8 @@ hent_vegpunkt_via_latlon <- function(lat, lon) {
 
 hent_vegpunkt_via_latlon_for_flere_punkter <- function(trp_df) {
 
-  # Takes a trp_list with columns named 'lat' and 'lon' and 'row_id' (for rejoining)
+  # Takes a trp_list with columns named 'lat' and 'lon'
+  # and 'row_id' (for rejoining)
   number_of_points <- nrow(trp_df)
   data_points <- data.frame()
   trp_count <- 1
@@ -185,14 +196,16 @@ hent_vegpunkt_via_latlon_for_flere_punkter <- function(trp_df) {
     trp_count <- trp_count + 1
   }
 
-  trp_data <- data_points %>%
-    dplyr::select(site_id = row_id,
-                  road_reference = vegsystemreferanse.kortform,
-                  traffic_type = vegsystemreferanse.strekning.trafikantgruppe,
-                  road_link_position = veglenkesekvens.kortform,
-                  distance = avstand,
-                  municipality = kommune
-                 ) %>%
+  trp_data <-
+    data_points %>%
+    dplyr::select(
+      site_id = row_id,
+      road_reference = vegsystemreferanse.kortform,
+      traffic_type = vegsystemreferanse.strekning.trafikantgruppe,
+      road_link_position = veglenkesekvens.kortform,
+      distance = avstand,
+      municipality = kommune
+    ) %>%
     dplyr::filter(traffic_type == "K") %>%
     dplyr::group_by(site_id) %>%
     dplyr::slice_min(distance)
@@ -203,123 +216,44 @@ hent_vegpunkt_via_latlon_for_flere_punkter <- function(trp_df) {
 
 # Geografiske områder ----
 
-hent_kommune <- function(kommunenr) {
-  api_query_536 <- paste0(nvdb_url,
-                          sti_vegobjekter,
-                          "/536",
-                          "?inkluder=egenskaper,lokasjon")
-
-  api_query_536_kommune <- paste0(api_query_536,
-                                  "&kommune=",
-                                  kommunenr,
-                                  "&srid=wgs84")
-
-  respons <- GET(api_query_536_kommune,
-                 add_headers("X-Client" = "trafikkdatagruppa",
-                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
-                             "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
-
-  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-                      simplifyDataFrame = T,
-                      flatten = T)
-
-  kommune <- bind_rows(uthenta$objekter$egenskaper, .id = "kid") %>%
-    filter(id %in% c(4585))
-
-  kommunenavn <- kommune$verdi
-
-  polygon <- uthenta$objekter$lokasjon.geometri.wkt
-
-  svar <- list(kommunenavn, polygon)
-
-  return(svar)
-}
-
-#kommunenr <- "5001"
-hent_kommune_v3 <- function(kommunenr) {
-
-  api_query <- paste0(nvdb_url_v3,
-                          sti_vegobjekter,
-                          "/946",
-                          "?inkluder=egenskaper")
-
-  api_query_kommune <- paste0(api_query,
-                                  "&kommune=",
-                                  kommunenr)
-
-  respons <- GET(api_query_kommune,
-                 httr::add_headers(.headers = nvdb_v3_headers))
-
-  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-                      simplifyDataFrame = T,
-                      flatten = T)
-
-  kommuneinfo <- bind_rows(uthenta$objekter$egenskaper[[1]], .id = "kid") %>%
-    dplyr::select(navn, verdi) %>%
-    tidyr::pivot_wider(names_from = navn, values_from = verdi) %>%
-    dplyr::select(kommunenavn = Kommunenavn,
-                  kommunenr = Kommunenummer,
-                  polygon = 1) %>%
-    sf::st_as_sf(wkt = "polygon",
-                 #crs = 5973) %>%
-                 crs = 25833) %>%
-    sf::st_zm(drop = T, what = "ZM") #%>%
-    #sf::st_transform("+proj=longlat +datum=WGS84")
-
-  return(kommuneinfo)
-}
-
-hent_alle_kommuner_v3 <- function() {
-
-  api_query <- paste0(nvdb_url_v3,
-                      "/omrader/kommuner",
-                      "?inkluder=kartutsnitt")#&srid=wgs84")
-
-  respons <- GET(api_query,
-                 httr::add_headers(.headers = nvdb_v3_headers))
-
-  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-                      simplifyDataFrame = T,
-                      flatten = T)
-
-  uthenta_sf <- uthenta %>%
-    sf::st_as_sf(wkt = "kartutsnitt.wkt",
-                 crs = 5973) %>%
-    sf::st_zm(drop = T, what = "ZM") %>%
-    #dplyr::select(GEOMETRY) %>%
-    sf::st_transform("+proj=longlat +datum=WGS84")
-
-  # uthenta_sf <- sf::st_as_sf(uthenta,
-  #                            wkt = "kartutsnitt.wkt",
-  #                            crs = "+proj=longlat +datum=WGS84")
-  #
-  return(uthenta_sf)
-}
-
-# kommunenr <- "5031"
-# hent_kommune_v3 <- function(kommunenr) {
+# hent_kommune <- function(kommunenr) {
 #
-#   api_query <- paste0(nvdb_url_v3,
-#                       sti_vegobjekter,
-#                       "/946",
-#                       "?inkluder=egenskaper,lokasjon")
+#   api_query <-
+#     paste0(
+#       nvdb_url_v3,
+#       sti_vegobjekter,
+#       "/536",
+#       "?inkluder=egenskaper,lokasjon"
+#     )
 #
-#   api_query_kommune <- paste0(api_query,
-#                                   "?kommune=",
-#                                   kommunenr,
-#                                   "&srid=wgs84")
+#   api_query_536_kommune <-
+#     paste0(
+#       api_query,
+#       "&kommune=",
+#       kommunenr,
+#       "&srid=wgs84"
+#     )
 #
-#   respons <- GET(api_query_kommune,
-#                  add_headers("X-Client" = "trafikkdatagruppa",
-#                              "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
-#                              "Accept" = "application/vnd.vegvesen.nvdb-v3-rev1+json"))
+#   respons <-
+#     httr::GET(
+#       api_query_536_kommune,
+#       httr::add_headers(.headers = nvdb_v3_headers)
+#     )
 #
-#   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-#                       simplifyDataFrame = T,
-#                       flatten = T)
+#   uthenta <-
+#     jsonlite::fromJSON(
+#       stringr::str_conv(
+#         respons$content, encoding = "UTF-8"),
+#       simplifyDataFrame = T,
+#       flatten = T
+#     )
 #
-#   kommune <- bind_rows(uthenta$objekter$egenskaper, .id = "kid") %>%
-#     filter(id %in% c(4585))
+#   kommune <-
+#     dplyr::bind_rows(
+#       uthenta$objekter$egenskaper,
+#       .id = "kid"
+#     ) %>%
+#     dplyr::filter(id %in% c(4585))
 #
 #   kommunenavn <- kommune$verdi
 #
@@ -331,206 +265,291 @@ hent_alle_kommuner_v3 <- function() {
 # }
 
 
-# Hent målestasjoner ----
-hent_trafikkregistreringsstasjon_for_omraade <- function(omraadenr) {
-  # Fire siffer angir kommunenr.
-  # Ett eller to siffer angir fylkenr.
+hent_kommune_v3 <- function(kommunenr) {
 
-  api_query_482 <- paste0(nvdb_url,
-                          sti_vegobjekter,
-                          "/482",
-                          "?inkluder=egenskaper,lokasjon")
+  # kommunenr <- "5001"
 
-  omraadestreng <- ifelse(nchar(omraadenr) <= 2,
-                          "&fylke=",
-                          "&kommune="
-  )
+  api_query_root <-
+    paste0(
+      nvdb_url_v3,
+      sti_vegobjekter,
+      "/946",
+      "?inkluder=egenskaper"
+    )
 
-  api_query_482_omraade <- paste0(api_query_482,
-                                  omraadestreng,
-                                  omraadenr,
-                                  "&srid=wgs84",
-                                  "&egenskap='3910=4892'")
-  # Over: Filtrerer på kontinuerlige stasjoner
+  api_query <-
+    paste0(
+      api_query_root,
+      "&kommune=",
+      kommunenr
+    )
 
-  respons <- GET(api_query_482_omraade,
-                 add_headers("X-Client" = "trafikkdatagruppa",
-                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
-                             "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
+  uthenta <- call_and_parse_nvdb_api(api_query)
 
-  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-                      simplifyDataFrame = T,
-                      flatten = T)
+  kommuneinfo <-
+    dplyr::bind_rows(
+      uthenta$objekter$egenskaper[[1]],
+      .id = "kid"
+    ) %>%
+    dplyr::select(navn, verdi) %>%
+    tidyr::pivot_wider(
+      names_from = navn,
+      values_from = verdi
+    ) %>%
+    dplyr::select(
+      kommunenavn = Kommunenavn,
+      kommunenr = Kommunenummer,
+      polygon = 1
+    ) %>%
+    sf::st_as_sf(
+      wkt = "polygon",
+      #crs = 5973) %>%
+      crs = 25833
+    ) %>%
+    sf::st_zm(
+      drop = T,
+      what = "ZM"
+    ) #%>%
+    #sf::st_transform("+proj=longlat +datum=WGS84")
 
-  trs <- uthenta$objekter %>%
-    select(id, egenskaper) %>%
-    unnest() %>%
-    filter(id1 %in% c(4626, 4627, 5201, 9293, 3910)) %>%
-    select(id, navn, verdi) %>%
-    spread(navn, verdi)
-
-  vegreferanser <- uthenta$objekter %>%
-    select(id, lokasjon.vegreferanser) %>%
-    unnest()
-
-  # TODO: Ta bort fylkenr, kommunenr og mellomrom, slik at vegreferansen er på kortform
-  # som kan brukes direkte i spørring etter trafikkmengde i NVDB-API.
-
-  koordinater <- uthenta$objekter %>%
-    select(id, lokasjon.geometri.wkt) %>%
-    unnest() %>%
-    mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 10, -2)) %>%
-    separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
-             convert = T) %>%
-    select(id, lat, lon)
-
-  trser <- trs %>%
-    left_join(vegreferanser) %>%
-    left_join(koordinater) %>%
-    filter(Trafikantgruppe == "Motorkjøretøy") %>%
-    filter(Status != "Nedlagt, ikke lov å bruke") %>%
-    mutate(Veg = paste0(kategori, nummer)) %>%
-    select(2, 5, 14:17) %>%
-    mutate(Kommune = kommunenavn)
-
-  colnames(trser) <- c("Stasjonnr", "Navn", "Vegreferanse",
-                       "lat", "lon", "Veg", "Kommune")
-
-  return(trser)
+  return(kommuneinfo)
 }
+
+hent_alle_kommuner_v3 <- function() {
+
+  api_query <-
+    paste0(
+      nvdb_url_v3,
+      "/omrader/kommuner",
+      "?inkluder=kartutsnitt"
+    )#&srid=wgs84")
+
+  uthenta <- call_and_parse_nvdb_api(api_query)
+
+  uthenta_sf <-
+    uthenta %>%
+    sf::st_as_sf(
+      wkt = "kartutsnitt.wkt",
+      crs = 5973
+    ) %>%
+    sf::st_zm(drop = T, what = "ZM") %>%
+    #dplyr::select(GEOMETRY) %>%
+    sf::st_transform("+proj=longlat +datum=WGS84")
+
+  # uthenta_sf <- sf::st_as_sf(uthenta,
+  #                            wkt = "kartutsnitt.wkt",
+  #                            crs = "+proj=longlat +datum=WGS84")
+  #
+  return(uthenta_sf)
+}
+
+
+# Hent målestasjoner ----
+# hent_trafikkregistreringsstasjon_for_omraade <- function(omraadenr) {
+#
+#   # Fire siffer angir kommunenr.
+#   # Ett eller to siffer angir fylkenr.
+#
+#   api_query_482 <- paste0(nvdb_url,
+#                           sti_vegobjekter,
+#                           "/482",
+#                           "?inkluder=egenskaper,lokasjon")
+#
+#   omraadestreng <- ifelse(nchar(omraadenr) <= 2,
+#                           "&fylke=",
+#                           "&kommune="
+#   )
+#
+#   api_query_482_omraade <- paste0(api_query_482,
+#                                   omraadestreng,
+#                                   omraadenr,
+#                                   "&srid=wgs84",
+#                                   "&egenskap='3910=4892'")
+#   # Over: Filtrerer på kontinuerlige stasjoner
+#
+#   respons <- GET(api_query_482_omraade,
+#                  add_headers("X-Client" = "trafikkdatagruppa",
+#                              "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+#                              "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
+#
+#   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+#                       simplifyDataFrame = T,
+#                       flatten = T)
+#
+#   trs <- uthenta$objekter %>%
+#     select(id, egenskaper) %>%
+#     unnest() %>%
+#     filter(id1 %in% c(4626, 4627, 5201, 9293, 3910)) %>%
+#     select(id, navn, verdi) %>%
+#     spread(navn, verdi)
+#
+#   vegreferanser <- uthenta$objekter %>%
+#     select(id, lokasjon.vegreferanser) %>%
+#     unnest()
+#
+#   # TODO: Ta bort fylkenr, kommunenr og mellomrom, slik at vegreferansen er på kortform
+#   # som kan brukes direkte i spørring etter trafikkmengde i NVDB-API.
+#
+#   koordinater <- uthenta$objekter %>%
+#     select(id, lokasjon.geometri.wkt) %>%
+#     unnest() %>%
+#     mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 10, -2)) %>%
+#     separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
+#              convert = T) %>%
+#     select(id, lat, lon)
+#
+#   trser <- trs %>%
+#     left_join(vegreferanser) %>%
+#     left_join(koordinater) %>%
+#     filter(Trafikantgruppe == "Motorkjøretøy") %>%
+#     filter(Status != "Nedlagt, ikke lov å bruke") %>%
+#     mutate(Veg = paste0(kategori, nummer)) %>%
+#     select(2, 5, 14:17) %>%
+#     mutate(Kommune = kommunenavn)
+#
+#   colnames(trser) <- c("Stasjonnr", "Navn", "Vegreferanse",
+#                        "lat", "lon", "Veg", "Kommune")
+#
+#   return(trser)
+# }
 
 
 # Bomstasjoner ----
 # Deprecated
-hent_bomstasjon_for_kommune <- function(kommunenr) {
-  # Laget for Trondheim
-  api_query_45 <- paste0(nvdb_url,
-                         sti_vegobjekter,
-                         "/45",
-                         "?inkluder=egenskaper,lokasjon")
+# hent_bomstasjon_for_kommune <- function(kommunenr) {
+#   # Laget for Trondheim
+#   api_query_45 <- paste0(nvdb_url,
+#                          sti_vegobjekter,
+#                          "/45",
+#                          "?inkluder=egenskaper,lokasjon")
+#
+#   api_query_45_kommune <- paste0(api_query_45,
+#                                  "&kommune=",
+#                                  kommunenr,
+#                                  "&srid=wgs84")
+#
+#   respons <- GET(api_query_45_kommune,
+#                  add_headers("X-Client" = "trafikkdatagruppa",
+#                              "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+#                              "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
+#
+#   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+#                       simplifyDataFrame = T,
+#                       flatten = T)
+#
+#   bom <- uthenta$objekter %>%
+#     select(id, egenskaper) %>%
+#     unnest() %>%
+#     filter(id1 %in% c(1078, 9595)) %>%
+#     select(id, navn, verdi) %>%
+#     spread(navn, verdi)
+#
+#   vegreferanser <- uthenta$objekter %>%
+#     select(id, lokasjon.vegreferanser) %>%
+#     unnest()
+#
+#   koordinater <- uthenta$objekter %>%
+#     select(id, lokasjon.geometri.wkt) %>%
+#     unnest() %>%
+#     mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 10, -2)) %>%
+#     separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
+#              convert = T) %>%
+#     select(id, lat, lon)
+#
+#   bomer <- bom %>%
+#     left_join(vegreferanser) %>%
+#     left_join(koordinater) %>%
+#     mutate(Veg = paste0(kategori, nummer)) %>%
+#     select(-id, -fylke, -kommune, -kategori, -nummer,
+#            -status, -hp, -meter) %>%
+#     mutate(Kommune = kommunenavn)
+#
+#   colnames(bomer) <- c("Stasjonnr", "Navn", "Vegreferanse",
+#                        "lat", "lon", "Veg", "Kommune")
+#
+#   return(bomer)
+# }
 
-  api_query_45_kommune <- paste0(api_query_45,
-                                 "&kommune=",
-                                 kommunenr,
-                                 "&srid=wgs84")
-
-  respons <- GET(api_query_45_kommune,
-                 add_headers("X-Client" = "trafikkdatagruppa",
-                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
-                             "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
-
-  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-                      simplifyDataFrame = T,
-                      flatten = T)
-
-  bom <- uthenta$objekter %>%
-    select(id, egenskaper) %>%
-    unnest() %>%
-    filter(id1 %in% c(1078, 9595)) %>%
-    select(id, navn, verdi) %>%
-    spread(navn, verdi)
-
-  vegreferanser <- uthenta$objekter %>%
-    select(id, lokasjon.vegreferanser) %>%
-    unnest()
-
-  koordinater <- uthenta$objekter %>%
-    select(id, lokasjon.geometri.wkt) %>%
-    unnest() %>%
-    mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 10, -2)) %>%
-    separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
-             convert = T) %>%
-    select(id, lat, lon)
-
-  bomer <- bom %>%
-    left_join(vegreferanser) %>%
-    left_join(koordinater) %>%
-    mutate(Veg = paste0(kategori, nummer)) %>%
-    select(-id, -fylke, -kommune, -kategori, -nummer,
-           -status, -hp, -meter) %>%
-    mutate(Kommune = kommunenavn)
-
-  colnames(bomer) <- c("Stasjonnr", "Navn", "Vegreferanse",
-                       "lat", "lon", "Veg", "Kommune")
-
-  return(bomer)
-}
-
-get_tolling_stations <- function(kommunenr) {
-  # Laget for Trondheim
-  api_query_45 <- paste0(nvdb_url,
-                         sti_vegobjekter,
-                         "/45",
-                         "?inkluder=egenskaper,lokasjon")
-
-  api_query_45_kommune <- paste0(api_query_45,
-                                 "&kommune=",
-                                 kommunenr,
-                                 "&srid=wgs84")
-
-  respons <- GET(api_query_45_kommune,
-                 add_headers("X-Client" = "trafikkdatagruppa",
-                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
-                             "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
-
-  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-                      simplifyDataFrame = T,
-                      flatten = T)
-
-  bom <- uthenta$objekter %>%
-    select(id, egenskaper) %>%
-    rename(id1 = id) %>%
-    unnest(cols = c(egenskaper)) %>%
-    filter(id %in% c(1078, 9595)) %>%
-    select(id1, navn, verdi) %>%
-    rename(id = id1) %>%
-    spread(navn, verdi)
-
-  vegreferanser <- uthenta$objekter %>%
-    select(id, lokasjon.vegreferanser) %>%
-    unnest(cols = c(lokasjon.vegreferanser))
-
-  koordinater <- uthenta$objekter %>%
-    select(id, lokasjon.geometri.wkt) %>%
-    unnest(cols = c(lokasjon.geometri.wkt)) %>%
-    mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 10, -2)) %>%
-    separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
-             convert = T) %>%
-    select(id, lat, lon)
-
-  bomer <- bom %>%
-    left_join(vegreferanser) %>%
-    left_join(koordinater) %>%
-    mutate(Veg = paste0(kategori, nummer)) %>%
-    select(-id, -fylke, -kommune, -kategori, -nummer,
-           -status, -hp, -meter) %>%
-    mutate(Kommune = kommunenavn,
-           kortform = str_sub(kortform, 6))
-
-  colnames(bomer) <- c("msnr", "name", "road_reference",
-                       "lat", "lon", "road", "kommune")
-
-  return(bomer)
-}
+# get_tolling_stations <- function(kommunenr) {
+#
+#   # Laget for Trondheim
+#
+#   api_query_45 <- paste0(nvdb_url,
+#                          sti_vegobjekter,
+#                          "/45",
+#                          "?inkluder=egenskaper,lokasjon")
+#
+#   api_query_45_kommune <- paste0(api_query_45,
+#                                  "&kommune=",
+#                                  kommunenr,
+#                                  "&srid=wgs84")
+#
+#   respons <- GET(api_query_45_kommune,
+#                  add_headers("X-Client" = "trafikkdatagruppa",
+#                              "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+#                              "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
+#
+#   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+#                       simplifyDataFrame = T,
+#                       flatten = T)
+#
+#   bom <- uthenta$objekter %>%
+#     select(id, egenskaper) %>%
+#     rename(id1 = id) %>%
+#     unnest(cols = c(egenskaper)) %>%
+#     filter(id %in% c(1078, 9595)) %>%
+#     select(id1, navn, verdi) %>%
+#     rename(id = id1) %>%
+#     spread(navn, verdi)
+#
+#   vegreferanser <- uthenta$objekter %>%
+#     select(id, lokasjon.vegreferanser) %>%
+#     unnest(cols = c(lokasjon.vegreferanser))
+#
+#   koordinater <- uthenta$objekter %>%
+#     select(id, lokasjon.geometri.wkt) %>%
+#     unnest(cols = c(lokasjon.geometri.wkt)) %>%
+#     mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 10, -2)) %>%
+#     separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
+#              convert = T) %>%
+#     select(id, lat, lon)
+#
+#   bomer <- bom %>%
+#     left_join(vegreferanser) %>%
+#     left_join(koordinater) %>%
+#     mutate(Veg = paste0(kategori, nummer)) %>%
+#     select(-id, -fylke, -kommune, -kategori, -nummer,
+#            -status, -hp, -meter) %>%
+#     mutate(Kommune = kommunenavn,
+#            kortform = str_sub(kortform, 6))
+#
+#   colnames(bomer) <- c("msnr", "name", "road_reference",
+#                        "lat", "lon", "road", "kommune")
+#
+#   return(bomer)
+# }
 
 get_tolling_stations_v3 <- function(kommunenr) {
+
   # Laget for Trondheim
-  api_query_45 <- paste0(nvdb_url_v3,
-                         sti_vegobjekter,
-                         "/45",
-                         "?inkluder=egenskaper,lokasjon")
 
-  api_query_45_kommune <- paste0(api_query_45,
-                                 "&kommune=",
-                                 kommunenr,
-                                 "&srid=wgs84")
+  api_query_45 <-
+    paste0(
+      nvdb_url_v3,
+      sti_vegobjekter,
+      "/45",
+      "?inkluder=egenskaper,lokasjon"
+    )
 
-  respons <- GET(api_query_45_kommune,
-                 httr::add_headers(.headers = nvdb_v3_headers))
+  api_query <-
+    paste0(
+      api_query_45,
+     "&kommune=",
+     kommunenr,
+     "&srid=wgs84"
+    )
 
-  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-                      simplifyDataFrame = T,
-                      flatten = T)
+  uthenta <- call_and_parse_nvdb_api(api_query)
 
   bom <- uthenta$objekter %>%
     dplyr::select(id, egenskaper) %>%
@@ -578,25 +597,26 @@ get_tolling_stations_v3 <- function(kommunenr) {
 # Årsdøgntrafikk ----
 #roadref <- "fv76s1d1m18400"
 getAadtByRoadReference <- function(roadref) {
-  api_query_540 <- paste0(nvdb_url_v3,
-                         sti_vegobjekter,
-                         "/540",
-                         "?inkluder=egenskaper")
 
-  api_query_540_vegref <- paste0(api_query_540,
-                                 "&vegsystemreferanse=",
-                                 roadref)
+  api_query_540 <-
+    paste0(
+      nvdb_url_v3,
+      sti_vegobjekter,
+      "/540",
+      "?inkluder=egenskaper"
+    )
 
-  respons <- GET(api_query_540_vegref,
-                 add_headers("X-Client" = "trafikkdatagruppa",
-                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
-                             "Accept" = "application/vnd.vegvesen.nvdb-v3+json"))
+  api_query <-
+    paste0(
+      api_query_540,
+      "&vegsystemreferanse=",
+      roadref
+    )
 
-  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-                      simplifyDataFrame = T,
-                      flatten = T)
+  uthenta <- call_and_parse_nvdb_api(api_query)
 
-  adt_total <- uthenta$objekter %>%
+  adt_total <-
+    uthenta$objekter %>%
     dplyr::select(id, egenskaper) %>%
     rename(id1 = id) %>%
     tidyr::unnest(cols = egenskaper) %>%
@@ -611,12 +631,15 @@ getAadtByRoadReference <- function(roadref) {
 
 get_historic_aadt_by_roadlinkposition <- function(roadlinkposition) {
 
-  api_query_540 <- paste0(nvdb_url_v3,
-                          sti_vegobjekter,
-                          "/540",
-                          "?inkluder=egenskaper")
+  api_query_540 <-
+    paste0(
+      nvdb_url_v3,
+      sti_vegobjekter,
+      "/540",
+      "?inkluder=egenskaper"
+    )
 
-  api_query_540_vegref <-
+  api_query <-
     paste0(
       api_query_540,
       "&veglenkesekvens=",
@@ -624,17 +647,10 @@ get_historic_aadt_by_roadlinkposition <- function(roadlinkposition) {
       "&alle_versjoner=TRUE"
     )
 
-  respons <- httr::GET(
-    api_query_540_vegref,
-    httr::add_headers(.headers = nvdb_v3_headers)
-    )
+  uthenta <- call_and_parse_nvdb_api(api_query)
 
-  uthenta <- jsonlite::fromJSON(
-    str_conv(respons$content, encoding = "UTF-8"),
-    simplifyDataFrame = T,
-    flatten = T)
-
-  adt_history <- uthenta$objekter %>%
+  adt_history <-
+    uthenta$objekter %>%
     dplyr::select(id, egenskaper) %>%
     dplyr::rename(id1 = id) %>%
     tibble::as_tibble() %>%
@@ -662,36 +678,38 @@ get_historic_aadt_by_roadlinkposition <- function(roadlinkposition) {
 
 
 #roadlink <- "0.81008@41567"
-getAadtByRoadlinkposition <- function(roadlink) {
-  api_query_540 <- paste0(nvdb_url,
-                          sti_vegobjekter,
-                          "/540",
-                          "?inkluder=egenskaper")
+# getAadtByRoadlinkposition <- function(roadlink) {
+#
+#   api_query_540 <- paste0(nvdb_url,
+#                           sti_vegobjekter,
+#                           "/540",
+#                           "?inkluder=egenskaper")
+#
+#   api_query_540_vegref <- paste0(api_query_540,
+#                                  "&veglenke=",
+#                                  roadlink)
+#
+#   respons <- GET(api_query_540_vegref,
+#                  add_headers("X-Client" = "trafikkdatagruppa",
+#                              "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+#                              "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
+#
+#   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+#                       simplifyDataFrame = T,
+#                       flatten = T)
+#
+#   adt_total <- uthenta$objekter %>%
+#     select(id, egenskaper) %>%
+#     rename(id1 = id) %>%
+#     unnest(cols = c(egenskaper)) %>%
+#     filter(id %in% c(4623)) %>%
+#     select(verdi)
+#
+#   adt_verdi <- round(as.numeric(adt_total[1, 1]), digits = -1)
+#
+#   return(adt_verdi)
+# }
 
-  api_query_540_vegref <- paste0(api_query_540,
-                                 "&veglenke=",
-                                 roadlink)
-
-  respons <- GET(api_query_540_vegref,
-                 add_headers("X-Client" = "trafikkdatagruppa",
-                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
-                             "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
-
-  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-                      simplifyDataFrame = T,
-                      flatten = T)
-
-  adt_total <- uthenta$objekter %>%
-    select(id, egenskaper) %>%
-    rename(id1 = id) %>%
-    unnest(cols = c(egenskaper)) %>%
-    filter(id %in% c(4623)) %>%
-    select(verdi)
-
-  adt_verdi <- round(as.numeric(adt_total[1, 1]), digits = -1)
-
-  return(adt_verdi)
-}
 #test <- getAadtByRoadlinkposition("0.4@2411536")
 #roadlink <- "0.4@2411536"
 #roadref <- "1200EV39hp74m14171"
@@ -699,7 +717,7 @@ getAadtByRoadlinkposition <- function(roadlink) {
 
 get_aadt_by_road <- function(roadcat_number) {
 
-  api_query <-
+  api_query_root <-
     paste0(
       nvdb_url_v3,
       sti_vegobjekter,
@@ -707,25 +725,14 @@ get_aadt_by_road <- function(roadcat_number) {
       "?inkluder=egenskaper,lokasjon"
     )
 
-  api_query_vegref <-
+  api_query <-
     paste0(
-      api_query,
+      api_query_root,
       "&vegsystemreferanse=",
       roadcat_number
     )
 
-  respons <-
-    httr::GET(
-      api_query_vegref,
-      httr::add_headers(.headers = nvdb_v3_headers)
-    )
-
-  uthenta <-
-    jsonlite::fromJSON(
-      str_conv(respons$content, encoding = "UTF-8"),
-      simplifyDataFrame = T,
-      flatten = T
-    )
+  uthenta <- call_and_parse_nvdb_api(api_query)
 
   adt <- uthenta$objekter %>%
     dplyr::select(id, egenskaper) %>%
@@ -821,18 +828,7 @@ get_aadt_by_area <- function(area_number) {
       )
   )
 
-  respons <-
-    httr::GET(
-      api_query_full,
-      httr::add_headers(.headers = nvdb_v3_headers)
-    )
-
-  uthenta <-
-    jsonlite::fromJSON(
-      str_conv(respons$content, encoding = "UTF-8"),
-      simplifyDataFrame = T,
-      flatten = T
-    )
+  uthenta <- call_and_parse_nvdb_api(api_query_full)
 
   metadata_antall <- uthenta$metadata$antall
   metadata_returnert <- uthenta$metadata$returnert
@@ -987,35 +983,35 @@ get_aadt_by_area <- function(area_number) {
 
 
 # Fartsgrense ----
-getSpeedLimit <- function(roadref) {
-  api_query_105 <- paste0(nvdb_url,
-                          sti_vegobjekter,
-                          "/105",
-                          "?inkluder=egenskaper")
-
-  api_query_105_vegref <- paste0(api_query_105,
-                                 "&vegreferanse=",
-                                 roadref)
-
-  respons <- GET(api_query_105_vegref,
-                 add_headers("X-Client" = "trafikkdatagruppa",
-                             "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
-                             "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
-
-  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-                      simplifyDataFrame = T,
-                      flatten = T)
-
-  speed_limit <- uthenta$objekter %>%
-    select(id, egenskaper) %>%
-    unnest() %>%
-    filter(id1 %in% c(2021)) %>%
-    select(verdi)
-
-  verdi <- speed_limit[1, 1]
-
-  return(verdi)
-}
+# getSpeedLimit <- function(roadref) {
+#   api_query_105 <- paste0(nvdb_url,
+#                           sti_vegobjekter,
+#                           "/105",
+#                           "?inkluder=egenskaper")
+#
+#   api_query_105_vegref <- paste0(api_query_105,
+#                                  "&vegreferanse=",
+#                                  roadref)
+#
+#   respons <- GET(api_query_105_vegref,
+#                  add_headers("X-Client" = "trafikkdatagruppa",
+#                              "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
+#                              "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
+#
+#   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
+#                       simplifyDataFrame = T,
+#                       flatten = T)
+#
+#   speed_limit <- uthenta$objekter %>%
+#     select(id, egenskaper) %>%
+#     unnest() %>%
+#     filter(id1 %in% c(2021)) %>%
+#     select(verdi)
+#
+#   verdi <- speed_limit[1, 1]
+#
+#   return(verdi)
+# }
 
 
 # getSpeedLimit_roadlink <- function(roadlink) {
@@ -1069,7 +1065,7 @@ get_speedlimit_by_roadlink <- function(roadlink) {
       "?inkluder=egenskaper"
     )
 
-  api_query_105_vegref <-
+  api_query <-
     paste0(
       api_query_105,
       "&veglenkesekvens=",
@@ -1077,20 +1073,7 @@ get_speedlimit_by_roadlink <- function(roadlink) {
       "&alle_versjoner=TRUE"
     )
 
-  respons <-
-    GET(
-      api_query_105_vegref,
-      httr::add_headers(
-        .headers = nvdb_v3_headers
-      )
-    )
-
-  uthenta <-
-    jsonlite::fromJSON(
-      str_conv(respons$content, encoding = "UTF-8"),
-      simplifyDataFrame = T,
-      flatten = T
-    )
+  uthenta <- call_and_parse_nvdb_api(api_query)
 
   objekter <-
     uthenta$objekter
@@ -1161,12 +1144,7 @@ get_road_length_for_municipality <- function(municipality_number) {
                       "&geometritoleranse=30",
                       "&tidspunkt='2021-01-01'")
 
-  respons <- httr::GET(api_query,
-                      httr::add_headers(.headers = nvdb_v3_headers))
-
-  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-                      simplifyDataFrame = T,
-                      flatten = T)
+  uthenta <- call_and_parse_nvdb_api(api_query)
 
   road_segment_info <- uthenta$objekter %>%
     dplyr::select(link_type = type,
@@ -1192,12 +1170,7 @@ get_road_length_for_municipality <- function(municipality_number) {
   while(returned == 1000) {
     next_page <- uthenta$metadata$neste$href
 
-    respons <- httr::GET(next_page,
-                         httr::add_headers(.headers = nvdb_v3_headers))
-
-    uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-                        simplifyDataFrame = T,
-                        flatten = T)
+    uthenta <- call_and_parse_nvdb_api(next_page)
 
     road_segment_info <- uthenta$objekter %>%
       dplyr::select(link_type = type,
@@ -1353,15 +1326,13 @@ get_trafikkmengde_for_riksvegrute <- function(rutenavn, periode) {
 
 get_national_tourist_roads <- function() {
 
-  api_query <- paste0(nvdb_url_v3,
-                      "/vegobjekter/777?segmentering=true&inkluder=lokasjon,egenskaper")
+  api_query <-
+    paste0(
+      nvdb_url_v3,
+      "/vegobjekter/777?segmentering=true&inkluder=lokasjon,egenskaper"
+    )
 
-  respons <- httr::GET(api_query,
-                       httr::add_headers(.headers = nvdb_v3_headers))
-
-  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-                      simplifyDataFrame = T,
-                      flatten = T)
+  uthenta <- call_and_parse_nvdb_api(api_query)
 
   navn <- uthenta$objekter %>%
     dplyr::select(objekt_id = id, egenskaper) %>%
@@ -1435,12 +1406,7 @@ get_traffic_links <- function (filter_string) {
       "&segmentering=false"
     )
 
-  respons <- httr::GET(api_query,
-                       httr::add_headers(.headers = nvdb_v3_headers))
-
-  uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-                      simplifyDataFrame = T,
-                      flatten = T)
+  uthenta <- call_and_parse_nvdb_api(api_query)
 
   trafikklenke_id <- uthenta$objekter %>%
     dplyr::select(object_id = id, egenskaper) %>%

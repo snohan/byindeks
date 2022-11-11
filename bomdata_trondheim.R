@@ -8,15 +8,26 @@ library(readxl)
 
 # The 20 to use
 tolling_station_ids <-
-  c("51", "52", "53", "54", "55", "56", "58",
-    "59", "60", "61", "62", "64", "65", "66", "67",
-    "68", "69", "85", "86", "72")
+  c(
+    "51",  # Dette er egentlig to ulike, hver med to felt
+    # Klett (1,2), Røddeveien (3,4)
+    # Endrer nedenfor Røddeveien til id 512 og felt 1 og 2
+    "512",
+    "52", "53", "54", "55",
+    "56", # "Kroppan bru", som egentlig ikke er på Kroppan bru, men
+    # Holtermannsvegen utenfor Siemens er to stasjoner, også 57
+    # Slår disse sammen nedenfor, og setter feltnummer etter dagens metrering
+    "58", "59", "60", "61", "62", "64", "65", "66", "67",
+    "68", "69", "85", "86", "72"
+    )
 
 
 # Tolling station info ----
 kommunenr <- "5001"
 kommunenavn <-
-  hent_kommune(kommunenr)[[1]]
+  hent_kommune_v3(kommunenr) |>
+  dplyr::select(kommunenavn) |>
+  purrr::pluck(1)
 
 kommune_bomer_uttak <-
   get_tolling_stations_v3(kommunenr)
@@ -34,6 +45,11 @@ kommune_bomer <-
     trp_id %in% tolling_station_ids
   ) %>%
   dplyr::mutate(
+    trp_id =
+      dplyr::case_when(
+        name == "Røddeveien" ~ "512",
+        TRUE ~ trp_id
+      ),
     name = stringr::str_replace(name, "\\,.+$", ""),
     name = stringr::str_replace(name, " M-snitt\\)$", ""),
     name = stringr::str_replace(name, "\\. K-snitt$", ""),
@@ -68,7 +84,7 @@ kommune_bomer <-
 #   dplyr::mutate(municipality_name = "Trondheim")
 
 
-# Read hourly ----
+# Read and prepare hourly ----
 
 # Different formats:
 # 2017--2021-03
@@ -77,7 +93,7 @@ kommune_bomer <-
 # Storing together
 
 
-## 2019--2021-03 ----
+## 2019-01--2021-03 Vegamot files ----
 
 # Adding station ID
 # Implicitly adding the two Kroppan bru to one trp
@@ -88,6 +104,9 @@ tolling_station_codes <-
   ) %>%
   dplyr::mutate(
     trp_id = as.character(trp_id)
+  ) |>
+  dplyr::arrange(
+    trp_id
   )
 
 
@@ -122,6 +141,14 @@ data_2019_2021_hourly <-
   dplyr::mutate(
     date = lubridate::dmy(date),
     hour = stringr::str_sub(hour, 1, 2) %>% as.numeric(),
+    station_code = stringr::str_replace(station_code, "KROP-N-2", "KROP-6"),
+    station_code = stringr::str_replace(station_code, "KROP-N-3", "KROP-4"),
+    station_code = stringr::str_replace(station_code, "KROP-N-4", "KROP-2"),
+    station_code = stringr::str_replace(station_code, "KROP-S-2", "KROP-1"),
+    station_code = stringr::str_replace(station_code, "KROP-S-3", "KROP-3"),
+    lane =
+      stringr::str_extract(station_code, "-[:digit:]+") |>
+      stringr::str_sub(2, -1),
     station_code = stringr::str_sub(station_code, 1, 5),
     station_code = stringr::str_replace(station_code, "KLE-1", "KLETT-E6"),
     station_code = stringr::str_replace(station_code, "KLE-2", "KLETT-E6"),
@@ -136,9 +163,9 @@ data_2019_2021_hourly <-
       )
   ) %>%
   dplyr::filter(
-    !(station_code %in% c("BUVIK", "E39-T", "HOMVI", "JONSV",
-                          "RAMPE", "Rodde", "THAMS",
-                          "TONST", "ØYSAN", "LEIST"))
+    !(station_code %in%
+        c("BUVIK", "E39-T", "HOMVI", "JONSV", "RAMPE", "THAMS",
+          "TONST", "ØYSAN", "LEIST"))
   ) %>%
   dplyr::left_join(
     # Herein lies the adding of 56 and 57 to just 56
@@ -147,21 +174,43 @@ data_2019_2021_hourly <-
   ) %>%
   dplyr::select(
     trp_id,
+    lane,
     date,
     hour,
     class,
     traffic
+  ) |>
+  dplyr::arrange(
+    date,
+    hour,
+    trp_id,
+    lane,
+    class
   )
 
-saveRDS(
+readr::write_rds(
   data_2019_2021_hourly,
   file = "bomdata_trondheim/data_2019_2021_hourly.rds"
   )
 
 remove(data_2019_2021)
 
+data_2019_2021_hourly <-
+  readr::read_rds(
+    file = "bomdata_trondheim/data_2019_2021_hourly.rds"
+  )
 
-## 2021--05- ----
+## 2021-04 ----
+# Status per november 2022:
+# Har fått et datasett for april 2021, men dette er ikke komplett siden det
+# mangler fritakspasseringer. Dersom ikke APAR en gang får komplette data må
+# denne måneden anses som tapt. Dermed forsinner bomdata fra indeksen også
+# for mars.
+
+# TODO: se nøyere på data: om noe kan brukes?
+
+
+## 2021-05--2022-04 Vegamot files ----
 data_2021_ <-
   readr::read_csv2(
     "H:/Programmering/R/byindeks/bomdata_trondheim/raw_2021-5_/bom_2021-05_2022-04.csv",
@@ -185,67 +234,59 @@ data_2021_hourly <-
         class == 1 ~ "light",
         class == 2 ~ "heavy"
       ),
-    # Adding the two Kroppan bru tolling stations 56 and 57
-    trp_id = stringr::str_replace(trp_id, "57", "56"),
     trp_id = stringr::str_replace(trp_id, ".*\\[0", ""),
     trp_id = stringr::str_replace(trp_id, "\\]", ""),
     traffic = stringr::str_replace(traffic, " ", ""),
     traffic = as.numeric(traffic)
   ) %>%
+  dplyr::mutate(
+    trp_id =
+      dplyr::case_when(
+        trp_id == "51" & lane %in% c(3, 4) ~ "512",
+        TRUE ~ trp_id
+      ),
+    lane =
+      dplyr::case_when(
+        trp_id == "512" & lane == 3 ~ 1,
+        trp_id == "512" & lane == 4 ~ 2,
+        trp_id == "56" & lane == 2 ~ 6,
+        trp_id == "56" & lane == 3 ~ 4,
+        trp_id == "56" & lane == 4 ~ 2,
+        trp_id == "57" & lane == 2 ~ 1,
+        trp_id == "57" & lane == 3 ~ 3,
+        TRUE ~ lane
+      ),
+    # Merging the two Kroppan bru tolling stations 56 and 57
+    trp_id = stringr::str_replace(trp_id, "57", "56"),
+    lane = as.character(lane)
+  ) |>
   dplyr::filter(
     # Just one day with data in May 2022 thus far
     date < "2022-05-01"
-  ) %>%
-  dplyr::group_by(
-    trp_id,
+  ) |>
+  dplyr::arrange(
     date,
     hour,
-    class
-  ) %>%
-  dplyr::summarise(
-    traffic = sum(traffic),
-    .groups = "drop"
+    trp_id,
+    lane
   )
+
+readr::write_rds(
+  data_2021_hourly,
+  file = "bomdata_trondheim/data_2021_hourly.rds"
+)
 
 remove(data_2021_)
 
-
-# Daily ----
-# Assuming all days are complete, exclusions will be done on months
-tolling_data_daily <-
-  dplyr::bind_rows(
-    data_2019_2021_hourly,
-    data_2021_hourly
-  ) %>%
-  dplyr::filter(
-    trp_id %in% tolling_station_ids
-  ) %>%
-  dplyr::group_by(
-    trp_id,
-    date,
-    class
-  ) %>%
-  dplyr::summarise(
-    traffic = sum(traffic),
-    .groups = "drop"
-  ) %>%
-  dplyr::mutate(
-    day = lubridate::mday(date),
-    month = lubridate::floor_date(date, "month"),
-    year = lubridate::year(date)
+data_2021_hourly <-
+  readr::read_rds(
+    file = "bomdata_trondheim/data_2021_hourly.rds"
   )
 
-saveRDS(
-  tolling_data_daily,
-  file = "bomdata_trondheim/tolling_data_daily.rds"
-)
 
-tolling_data_daily <-
-  readRDS(
-    file = "bomdata_trondheim/tolling_data_daily.rds"
-  )
+## 2021-05- APAR test ----
+# Just a test with file fetched via PowerBI
 
-## From APAR ----
 apar_apr_2022 <-
   readr::read_csv(
     "H:/Programmering/R/byindeks/bomdata_trondheim/apar/april_2022.csv",
@@ -290,17 +331,84 @@ write.csv2(
   row.names = F
 )
 
-# Plot to see if data are ok
-tolling_data_daily %>%
-  dplyr::filter(
-    trp_id == 56,
-    year %in% c(2021, 2022)
+
+## 2021-05- APAR API ----
+
+# TODO: compare APAR API data with data from Vegamot files
+# Awaiting unfiltered and complete data in APAR
+
+# TODO: Prepare data quality check independent of source
+
+
+# Daily ----
+# Quality check: look first at daily traffic per lane
+# If anything strange, look at hourly
+
+tolling_data_daily_lane <-
+  dplyr::bind_rows(
+    data_2019_2021_hourly,
+    data_2021_hourly
   ) %>%
-  ggplot(aes(day, traffic, color = class)) +
-  geom_line() +
+  dplyr::filter(
+    trp_id %in% tolling_station_ids
+  ) %>%
+  dplyr::group_by(
+    trp_id,
+    lane,
+    date,
+    class
+  ) %>%
+  dplyr::summarise(
+    traffic = sum(traffic),
+    .groups = "drop"
+  ) %>%
+  dplyr::mutate(
+    day = lubridate::mday(date),
+    month = lubridate::floor_date(date, "month"),
+    year = lubridate::year(date)
+  )
+
+tolling_data_daily <-
+  tolling_data_daily_lane |>
+  dplyr::group_by(
+    trp_id,
+    date,
+    class
+  ) %>%
+  dplyr::summarise(
+    traffic = sum(traffic),
+    .groups = "drop"
+  ) %>%
+  dplyr::mutate(
+    day = lubridate::mday(date),
+    month = lubridate::floor_date(date, "month"),
+    year = lubridate::year(date)
+  )
+
+readr::write_rds(
+  tolling_data_daily,
+  file = "bomdata_trondheim/tolling_data_daily.rds"
+)
+
+tolling_data_daily <-
+  readRDS(
+    file = "bomdata_trondheim/tolling_data_daily.rds"
+  )
+
+
+## Plot ----
+# Plot to see if data are ok
+tolling_data_daily_lane %>%
+  dplyr::filter(
+    trp_id == 51,
+    year %in% c(2021)
+  ) %>%
+  ggplot(aes(day, traffic, color = lane, linetype = class)) +
+  geom_line(size = 1) +
   facet_grid(
     rows = vars(month)
-  )
+  ) +
+  theme_minimal()
 
 
 # Monthly ----
@@ -340,13 +448,13 @@ tolling_data_monthly_by_class <-
         digits = 2)
   )
 
-saveRDS(
+readr::write_rds(
   tolling_data_monthly_by_class,
   file = "data_index_raw/trd_toll_data_2019_monthly.rds",
 )
 
 tolling_data_monthly_by_class <-
-  readRDS(
+  readr::read_rds(
     file = "data_index_raw/trd_toll_data_2019_monthly.rds",
   )
 
