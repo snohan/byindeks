@@ -96,7 +96,7 @@ points <- get_points() %>%
 
 # Choose
 index_month <- 8 # the one to be published now
-city_number <- 1952
+city_number <- 959
 
 reference_year <-
   dplyr::case_when(
@@ -314,7 +314,7 @@ trp_index_monthly <-
   ) %>%
   dplyr::bind_rows(
     # Pointindex from old csv files here:
-    pointindex_17_monthly,
+    #pointindex_17_monthly,
     pointindex_18_monthly,
     pointindex_19_monthly
   )
@@ -571,6 +571,7 @@ city_year_to_date_18 <-
     month == 12,
     road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
     length_range == "[..,5.6)",
+    #length_range == "[5.6,..)",
     period == "year_to_date"
   )
 
@@ -580,6 +581,7 @@ city_year_to_date_19 <-
     month == 12,
     road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
     length_range == "[..,5.6)",
+    #length_range == "[5.6,..)",
     period == "year_to_date"
   )
 
@@ -589,6 +591,7 @@ city_year_to_date_20 <-
     month == 12,
     road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
     length_range == "[..,5.6)",
+    #length_range == "[5.6,..)",
     period == "year_to_date"
   )
 
@@ -598,6 +601,7 @@ city_year_to_date_21 <-
     month == 12,
     road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
     length_range == "[..,5.6)",
+    #length_range == "[5.6,..)",
     period == "year_to_date"
   )
 
@@ -607,13 +611,14 @@ city_year_to_date_22 <-
     month == index_month,
     road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
     length_range == "[..,5.6)",
+  #  length_range == "[5.6,..)",
     period == "year_to_date"
   )
 
 city_index <-
   dplyr::bind_rows(
-    city_year_to_date_17,
-    city_year_to_date_18,
+    #city_year_to_date_17,
+    #city_year_to_date_18,
     city_year_to_date_19,
     city_year_to_date_20,
     city_year_to_date_21,
@@ -624,8 +629,8 @@ city_index <-
     index_i = index_converter(index_p),
     variance = standard_deviation^2,
     n_trp = c(
-      n_17,
-      n_18,
+      #n_17,
+      #n_18,
       n_19,
       n_20,
       n_21,
@@ -680,8 +685,8 @@ city_index_all <-
   dplyr::bind_rows(years_1_2) %>%
   dplyr::bind_rows(years_1_3) %>%
   dplyr::bind_rows(years_1_4) %>%
-  dplyr::bind_rows(years_1_5) %>%
-  dplyr::bind_rows(years_1_6) %>%
+  #dplyr::bind_rows(years_1_5) %>%
+  #dplyr::bind_rows(years_1_6) %>%
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
     area_name = city_name

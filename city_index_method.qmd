@@ -1,0 +1,37 @@
+---
+title: "Metodikk for beregning av byindeks"
+format: 
+  pdf:
+    toc: true
+    number-sections: true
+    toc-title: Innhold
+    mainfont: "Lucida Sans Unicode"
+    include-in-header:
+      text: |
+        \newfontfamily\sectionfont[Color=ed9300]{Lucida Sans Unicode}
+        \newfontfamily\subsectionfont[Color=444f55]{Lucida Sans Unicode}
+        \newfontfamily\subsubsectionfont[Color=ed9300]{Lucida Sans Unicode}
+        \addtokomafont{section}{\sectionfont}
+        \addtokomafont{subsection}{\subsectionfont}
+        \addtokomafont{subsubsection}{\subsubsectionfont}
+---
+
+# Metodebeskrivelse for byindeksen
+
+Byindeksen er en metode for å estimere endringen i trafikkmengden på vegnettet i byområder. Beregningsmetoden er den samme som for vegtrafikkindeksens fylkesindeks, men det geografiske området avgrenses av de utvalgte trafikkregistreringspunktene i byområdet.
+
+Byindeksen brukes til oppfølging av byvekstavtaler og belønningsavtaler.
+
+
+## Datagrunnlag
+
+Byindeksen bygger på datagrunnlaget som samles inn fra utvalgte trafikkregistreringsstasjoner, der utstyr kontinuerlig registrerer trafikkdata i hvert kjørefelt. En trafikkregistreringsstasjon er geografisk tilknyttet et punkt på vegens senterlinje, og registrerer all trafikk som passerer gjennom en tenkt linje som dekker alle kjørefelt på den aktuelle vegen. Dette kaller vi et trafikkregistreringssnitt. Vanligvis brukes begrepet *registreringspunkt* om stedet der det registreres trafikk i alle kjørefelt gjennom trafikkregistreringssnittet. I forbindelse med byindeks omtales punktene gjerne også som indekspunkt.
+
+Standarden for utstyr i dag er at data om kjøretøy registreres og lagres enkeltvis. Motorsykler registreres på lik linje med andre motorkjøretøy. For indekser som beregnes til og med 2019 holdes motorsykler utenfor datagrunnlaget. Kriteriet for å filtrere ut motorsykler (o.l.) er at de klassifiseres som motorsykler (klasse 1) eller har kjøretøylengde <= 1,8 m. Fra og med 2020 vil motorsykler inngå i datagrunnlaget, både i basis- og beregningsår.
+
+Videre består datagrunnlaget for indeksen av trafikkvolumet aggregert til timenivå. Alle data som inngår i beregningen av byindeksen skal bruke trafikkvolumet $Q$, fra trafikkregistreringspunkt $j$, aggregert til timenivå og summert over alle kjørefelt for begge kjøreretninger:
+
+$$Q_{j,h,d,s,t} \,,$$
+
+
+### Test

@@ -46,8 +46,8 @@ call_and_parse_nvdb_api <- function(api_query) {
 
 hent_vegpunkt <- function(vegsystemreferanse, kommunenr) {
 
-  # vegsystemreferanse <- "KV6064S1D1m30"
-  # kommunenr <- "5001"
+   #vegsystemreferanse <- "EV6S88D120m3330"
+   #kommunenr <- "5006"
 
   api_query <-
     paste0(
@@ -61,11 +61,33 @@ hent_vegpunkt <- function(vegsystemreferanse, kommunenr) {
 
   uthenta <- call_and_parse_nvdb_api(api_query)
 
-  kommune <-
-    dplyr::bind_rows(
-      uthenta$objekter$egenskaper,
-      .id = "kid"
+  vegposisjon <-
+    uthenta$veglenkesekvens |>
+    tibble::enframe()
+
+  vegsystemreferanse <-
+    uthenta$vegsystemreferanse |>
+    tibble::enframe() |>
+    dplyr::filter(
+      name == "kortform"
+    ) |>
+    dplyr::mutate(
+      name = dplyr::case_when(
+        name == "kortform" ~ "vegreferanse"
+      )
     )
+
+  respons <-
+    dplyr::bind_rows(
+      vegposisjon,
+      vegsystemreferanse
+    ) |>
+    tidyr::pivot_wider(
+      names_from = name,
+      values_from = value
+    )
+
+  return(respons)
 }
 
 
