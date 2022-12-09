@@ -2102,17 +2102,23 @@ get_dt_by_length_for_trp <- function(trp_id, from, to) {
     if(length(trafficData$data.trafficData.volume.byDay.edges.node.total.volumeNumbers.volume) == 0) {
       trafficData <- data.frame()
     }else{
-      trafficData %<>% select(-data.trafficData.volume.byDay.pageInfo.hasNextPage,
-                              -data.trafficData.volume.byDay.pageInfo.endCursor) %>%
-        tidyr::unnest(cols = data.trafficData.volume.byDay.edges.node.byLengthRange) %>%
-        dplyr::select(point_id = data.trafficData.id,
-                      from = data.trafficData.volume.byDay.edges.node.from,
-                      total_volume = data.trafficData.volume.byDay.edges.node.total.volumeNumbers.volume,
-                      coverage = data.trafficData.volume.byDay.edges.node.total.coverage.percentage,
-                      length_range = lengthRange.representation,
-                      length_range_volume = total.volumeNumbers.volume,
-                      valid_length = data.trafficData.volume.byDay.edges.node.total.volumeNumbers.validLength.percentage
-                      )
+      trafficData %<>%
+        select(
+          -data.trafficData.volume.byDay.pageInfo.hasNextPage,
+          -data.trafficData.volume.byDay.pageInfo.endCursor
+        ) %>%
+        tidyr::unnest(
+          cols = data.trafficData.volume.byDay.edges.node.byLengthRange
+        ) %>%
+        dplyr::select(
+          point_id = data.trafficData.id,
+          from = data.trafficData.volume.byDay.edges.node.from,
+          total_volume = data.trafficData.volume.byDay.edges.node.total.volumeNumbers.volume,
+          coverage = data.trafficData.volume.byDay.edges.node.total.coverage.percentage,
+          length_range = lengthRange.representation,
+          length_range_volume = total.volumeNumbers.volume,
+          valid_length = data.trafficData.volume.byDay.edges.node.total.volumeNumbers.validLength.percentage
+          )
     }
 
     dailyTraffic <- bind_rows(dailyTraffic, trafficData)
@@ -2132,7 +2138,8 @@ get_dt_by_length_for_trp <- function(trp_id, from, to) {
   dailyTraffic <- dailyTraffic %>%
     dplyr::filter(!is.na(total_volume)) %>%
     dplyr::mutate(point_id = as.character(point_id),
-                  from = with_tz(ymd_hms(from), "CET"),
+                  #from = with_tz(ymd_hms(from), "CET"),
+                  from = clock::date_parse(from),
                   total_volume = as.integer(total_volume),
                   coverage = as.numeric(coverage),
                   length_range = as.character(length_range),

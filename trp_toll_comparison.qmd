@@ -1,0 +1,190 @@
+---
+title: "Sammenligning av trafikkmengde fra trafikkregistreringspunkt og bomstasjon"
+format: 
+  html:
+    css: svv.css
+    number-sections: true
+    toc: true
+    toc-location: left
+    toc-title: "Innhold"
+    df-print: paged
+    self-contained: true
+crossref:
+  fig-title: Figur
+  tbl-title: Tabell
+  title-delim: .
+  fig-prefix: figur
+  tbl-prefix: tabell
+editor: source
+knitr: 
+  opts_chunk: 
+    echo: false
+---
+
+```{r}
+#| label: read
+#| include: false
+#| echo: false
+
+source("H:/Programmering/R/byindeks/rmd_setup.R")
+source("trp_toll_comparison_functions.R")
+
+moholt_rds <-
+  readr::read_rds(
+    "toll_comparison_data/moholt.rds"
+  )
+
+moholt_total_compare_string <-
+  moholt_rds[[2]] |> 
+  create_compare_string()
+
+storlersbakken_rds <-
+  readr::read_rds(
+    "toll_comparison_data/storlersbakken.rds"
+  )
+
+storlersbakken_total_compare_string <-
+  storlersbakken_rds[[2]] |> 
+  create_compare_string()
+
+rotvoll_rds <-
+  readr::read_rds(
+    "toll_comparison_data/rotvoll.rds"
+  )
+
+rotvoll_total_compare_string <-
+  rotvoll_rds[[2]] |> 
+  create_compare_string()
+
+langmoas_rds <-
+  readr::read_rds(
+    "toll_comparison_data/langmoas.rds"
+  )
+
+langmoas_total_compare_string <-
+  langmoas_rds[[2]] |> 
+  create_compare_string()
+
+jernbaneveien_rds <-
+  readr::read_rds(
+    "toll_comparison_data/jernbaneveien.rds"
+  )
+
+jernbaneveien_total_compare_string <-
+  jernbaneveien_rds[[2]] |> 
+  create_compare_string()
+
+skjeringa_rds <-
+  readr::read_rds(
+    "toll_comparison_data/skjeringa.rds"
+  )
+
+skjeringa_total_compare_string <-
+  skjeringa_rds[[2]] |> 
+  create_compare_string()
+
+svartdalstunnelen_rds <-
+  readr::read_rds(
+    "toll_comparison_data/svartdalstunnelen.rds"
+  )
+
+svartdalstunnelen_total_compare_string <-
+  svartdalstunnelen_rds[[2]] |> 
+  create_compare_string()
+
+# TODO:
+# lenght vs. toll class
+# norsikt l2 vs. toll class
+# MC
+```
+
+
+# Bakgrunn
+Noen trafikklenker har både trafikkregistreringspunkt og bomstasjon. Tilgang til data fra begge kilder gjør det mulig å sammenligne trafikkmengde på disse trafikklenkene.
+
+Data fra trafikkregistreringspunkt er hentet fra Statens vegvesens trafikkdatasystem, og data fra bomstasjonene er hentet fra AutoPASS APAR.
+
+Periode for sammenligningene her er ukene 44-47 2022.
+
+Denne første versjonen av notatet tar for seg totaltrafikken. Senere versjoner kan sammenligne klassifisering av lette og tunge kjøretøy.
+
+
+# Ev6 Moholt, Trondheim
+På Moholt har avkjøringsrampen Ev 6 S76D1 KD3 data fra begge kilder. @fig-moholt viser at trafikkmengden som er veldig lik. I gjennomsnitt registrerte AutoPASS `r moholt_total_compare_string` trafikkregistreringspunktet.
+
+```{r}
+#| label: fig-moholt
+#| fig-cap: "Trafikkmengde sammenlignet per dag."
+
+visualize_comparison_total_traffic(moholt_rds[[1]])
+```
+
+# Ev6 Storlersbakken, Trondheim
+På Ev6 sør for Trondheim har strekningen i Storlersbakken data fra begge kilder. @fig-storlersbakken viser at trafikkmengden er noe ulik. I gjennomsnitt registrerte AutoPASS `r storlersbakken_total_compare_string` trafikkregistreringspunktet. Onsdag 16. november er trafikkmengden fra AutoPASS betydelig lavere enn tilsvarende dager. Begge felt i retning Trondheim mangler registreringer helt mellom kl. 14 og kl. 18.
+
+```{r}
+#| label: fig-storlersbakken
+#| fig-cap: "Trafikkmengde sammenlignet per dag."
+
+visualize_comparison_total_traffic(storlersbakken_rds[[1]])
+```
+
+
+
+
+
+# Rv706 Rotvoll, Trondheim
+På Rv706 i Trondheim har strekningen ved Rotvoll data fra begge kilder. @fig-rotvoll viser at trafikkmengden er noe ulik. I gjennomsnitt registrerte AutoPASS `r rotvoll_total_compare_string` trafikkregistreringspunktet.
+
+En kjent feilkilde i trafikkregistreringspunktet er at feltskifte akkurat over sensorene fører til noen duplikate registreringer, og dermed er trafikkmengden herfra noe større enn reellt.
+
+```{r}
+#| label: fig-rotvoll
+#| fig-cap: "Trafikkmengde sammenlignet per dag."
+
+visualize_comparison_total_traffic(rotvoll_rds[[1]])
+```
+
+
+# Ev6 Langmoås, Vefsn
+På Ev6 i Vefsn har strekningen ved Langmoåsen data fra begge kilder. @fig-langmoas viser at trafikkmengden er noe ulik. I gjennomsnitt registrerte AutoPASS `r langmoas_total_compare_string` trafikkregistreringspunktet. 
+
+```{r}
+#| label: fig-langmoas
+#| fig-cap: "Trafikkmengde sammenlignet per dag."
+
+visualize_comparison_total_traffic(langmoas_rds[[1]])
+```
+
+
+# Rv80 Jernbaneveien, Bodø
+På Rv80 i Bodø har strekningen ved Jernbaneveien data fra begge kilder. @fig-jernbane viser at trafikkmengden er noe ulik. I gjennomsnitt registrerte AutoPASS `r jernbaneveien_total_compare_string` trafikkregistreringspunktet. 
+
+```{r}
+#| label: fig-jernbane
+#| fig-cap: "Trafikkmengde sammenlignet per dag."
+
+visualize_comparison_total_traffic(jernbaneveien_rds[[1]])
+```
+
+
+# Rv80 Skjæringa, Bodø
+På Rv80 i Bodø har strekningen ved Skjæringa data fra begge kilder. @fig-skjeringa viser at trafikkmengden er noe ulik. I gjennomsnitt registrerte AutoPASS `r skjeringa_total_compare_string` trafikkregistreringspunktet. 
+
+```{r}
+#| label: fig-skjeringa
+#| fig-cap: "Trafikkmengde sammenlignet per dag."
+
+visualize_comparison_total_traffic(skjeringa_rds[[1]])
+```
+
+
+# Ev6 Svartdalstunnelen, Oslo
+På Ev6 i Oslo har strekningen ved Svartdalstunnelen data fra begge kilder. @fig-svartdal viser at trafikkmengden er noe ulik. I gjennomsnitt registrerte AutoPASS `r svartdalstunnelen_total_compare_string` trafikkregistreringspunktet. 
+
+```{r}
+#| label: fig-svartdal
+#| fig-cap: "Trafikkmengde sammenlignet per dag."
+
+visualize_comparison_total_traffic(svartdalstunnelen_rds[[1]])
+```

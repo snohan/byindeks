@@ -15,11 +15,15 @@ tolling_station_ids <-
     "512",
     "52", "53", "54", "55",
     "56", # "Kroppan bru", som egentlig ikke er på Kroppan bru, men
-    # Holtermannsvegen utenfor Siemens er to stasjoner, også 57
+    # Holtermannsvegen utenfor Siemens er to stasjoner, også 57.
     # Slår disse sammen nedenfor, og setter feltnummer etter dagens metrering
     "58", "59", "60", "61", "62", "64", "65", "66", "67",
     "68", "69", "85", "86", "72"
     )
+
+# Moholt
+# 63 felt 5 er KD3
+# Antar: 63 felt 6 er KD4
 
 
 # Tolling station info ----
