@@ -92,6 +92,15 @@ svartdalstunnelen_total_compare_string <-
   svartdalstunnelen_rds[[2]] |> 
   create_compare_string()
 
+holmene_rds <-
+  readr::read_rds(
+    "toll_comparison_data/holmene.rds"
+  )
+
+holmene_total_compare_string <-
+  holmene_rds[[2]] |> 
+  create_compare_string()
+
 # TODO:
 # lenght vs. toll class
 # norsikt l2 vs. toll class
@@ -187,4 +196,15 @@ På Ev6 i Oslo har strekningen ved Svartdalstunnelen data fra begge kilder. @fig
 #| fig-cap: "Trafikkmengde sammenlignet per dag."
 
 visualize_comparison_total_traffic(svartdalstunnelen_rds[[1]])
+```
+
+
+# Ev18 Holmene, Sandefjord
+På Ev18 i Sandefjord har strekningen ved Holmene data fra begge kilder. @fig-holmene viser at trafikkmengden er noe ulik. I gjennomsnitt registrerte AutoPASS `r holmene_total_compare_string` trafikkregistreringspunktet. 
+
+```{r}
+#| label: fig-holmene
+#| fig-cap: "Trafikkmengde sammenlignet per dag."
+
+visualize_comparison_total_traffic(holmene_rds[[1]])
 ```

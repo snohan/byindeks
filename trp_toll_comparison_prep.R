@@ -390,3 +390,56 @@ svartdalstunnelen_info <-
   readr::write_rds(
     file = "toll_comparison_data/svartdalstunnelen.rds"
   )
+
+
+# Holmene ----
+holmene_toll <-
+  read_apar_csv(
+    "toll_comparison_data/holmene.csv"
+  )
+
+holmene_trp <-
+  get_trp_dt(
+    trp_id = "25000V2252921",
+    from = min(holmene_toll$date),
+    to = max(holmene_toll$date) |> clock::add_days(1)
+  ) |>
+  tibble::as_tibble()
+
+holmene <-
+  dplyr::bind_rows(
+    holmene_toll,
+    holmene_trp
+  ) |>
+  dplyr::group_by(
+    date,
+    source
+  ) |>
+  dplyr::summarise(
+    traffic_volume = sum(traffic_volume),
+    .groups = "drop"
+  )
+
+holmene_diff <-
+  holmene |>
+  tidyr::pivot_wider(
+    names_from = source,
+    names_prefix = "traffic_volume_",
+    values_from = traffic_volume
+  ) |>
+  dplyr::summarise(
+    mean_diff =
+      mean(traffic_volume_AutoPASS - traffic_volume_TRP) |>
+      round()
+  ) |>
+  purrr::pluck(1)
+
+holmene_info <-
+  list(
+    holmene,
+    holmene_diff
+  ) |>
+  readr::write_rds(
+    file = "toll_comparison_data/holmene.rds"
+  )
+
