@@ -4,15 +4,7 @@ output: html_notebook
 ---
 
 ```{r setup, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
-library(tidyverse)
-library(lubridate)
-
-knitr::opts_chunk$set(
-  echo = FALSE,
-  warning = FALSE,
-  message = FALSE,
-  error = FALSE
-)
+source("rmd_setup.R")
 ```
  
 

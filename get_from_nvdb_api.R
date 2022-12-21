@@ -551,7 +551,7 @@ hent_alle_kommuner_v3 <- function() {
 #   return(bomer)
 # }
 
-get_tolling_stations_v3 <- function(kommunenr) {
+get_tolling_stations <- function(kommunenr) {
 
   # Laget for Trondheim
 
@@ -605,9 +605,9 @@ get_tolling_stations_v3 <- function(kommunenr) {
 
   # Setter sammen
   bomer <- bom %>%
-    dplyr::left_join(vegreferanser) %>%
-    dplyr::left_join(koordinater) %>%
-    dplyr::left_join(veglenkeposisjoner) %>%
+    dplyr::left_join(vegreferanser, by = "id") %>%
+    dplyr::left_join(koordinater, by = "id") %>%
+    dplyr::left_join(veglenkeposisjoner, by = "id") %>%
     dplyr::select(-id) %>%
     dplyr::select(msnr, name, road_reference,
                   road_link_position, lat, lon)
@@ -677,6 +677,17 @@ get_historic_aadt_by_roadlinkposition <- function(roadlinkposition) {
     dplyr::rename(id1 = id) %>%
     tibble::as_tibble() %>%
     tibble::rowid_to_column("versjon_id") %>%
+    # Some responses have less rows in egenskaper, leading R to potentially
+    # deduce diffrent data type for the verdi column - this will amend that
+    dplyr::mutate(
+      egenskaper = purrr::map(
+        egenskaper,
+        ~ dplyr::mutate(
+          .x,
+          verdi = as.character(verdi)
+        )
+      )
+    ) |>
     tidyr::unnest(cols = egenskaper) %>%
     dplyr::filter(id %in% c(4621, 4623, 4624, 4625)) %>%
     dplyr::select(versjon_id, id, navn, verdi) %>%
@@ -688,12 +699,20 @@ get_historic_aadt_by_roadlinkposition <- function(roadlinkposition) {
       TRUE ~ "unspecified"
     )) %>%
     dplyr::select(versjon_id, value_name, verdi) %>%
-    tidyr::pivot_wider(names_from = value_name, values_from = verdi) %>%
+    tidyr::pivot_wider(
+      names_from = value_name,
+      values_from = verdi
+    ) %>%
     dplyr::select(-versjon_id) %>%
-    dplyr::mutate(aadt_total = as.numeric(aadt_total),
-                  heavy_percentage = as.numeric(heavy_percentage)) %>%
+    dplyr::mutate(
+      aadt_total = as.numeric(aadt_total),
+      heavy_percentage = as.numeric(heavy_percentage)
+    ) %>%
     dplyr::distinct() %>%
-    dplyr::arrange(year)
+    dplyr::arrange(year) |>
+    dplyr::mutate(
+      road_link_position = roadlinkposition
+    )
 
   return(adt_history)
 }

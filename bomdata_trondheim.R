@@ -34,7 +34,7 @@ kommunenavn <-
   purrr::pluck(1)
 
 kommune_bomer_uttak <-
-  get_tolling_stations_v3(kommunenr)
+  get_tolling_stations(kommunenr)
 
 kommune_bomer <-
   kommune_bomer_uttak %>%
@@ -49,28 +49,27 @@ kommune_bomer <-
     trp_id %in% tolling_station_ids
   ) %>%
   dplyr::mutate(
-    trp_id =
-      dplyr::case_when(
-        name == "Røddeveien" ~ "512",
-        TRUE ~ trp_id
-      ),
     name = stringr::str_replace(name, "\\,.+$", ""),
     name = stringr::str_replace(name, " M-snitt\\)$", ""),
     name = stringr::str_replace(name, "\\. K-snitt$", ""),
     name = stringr::str_replace(name, " \\(Nordgående\\)$", ""),
     name = stringr::str_replace(name, " \\(Sørgående\\)$", ""),
     name = stringr::str_replace(name, "Rv.707", "Fv 707"),
+    trp_id =
+      dplyr::case_when(
+        name == "Klett Røddeveien" ~ "512",
+        TRUE ~ trp_id
+      ),
     municipality_name = "Trondheim"
   ) %>%
   dplyr::arrange(
     trp_id
   )
 
-# write.csv2(
-#   kommune_bomer,
-#   file = "trd_toll_stations.csv",
-#   fileEncoding = "latin1"
-# )
+readr::write_rds(
+  kommune_bomer,
+  file = "bomdata_trondheim/trd_toll_stations.rds"
+)
 
 # Names from toll data files
 # bom_felt_og_stasjon <-
@@ -91,8 +90,8 @@ kommune_bomer <-
 # Read and prepare hourly ----
 
 # Different formats:
-# 2017--2021-03
-# 2021--05-
+# - 2017--2021-03
+# - 2021--05-
 # Normalizing data
 # Storing together
 
@@ -161,9 +160,9 @@ data_2019_2021_hourly <-
     station_code = stringr::str_replace(station_code, "Rødde", "Rodde"),
     class =
       dplyr::case_when(
-        class == "Ukjent" ~ "unknown",
-        class == "Liten bil" ~ "light",
-        class == "Stor bil" ~ "heavy"
+        class == "Ukjent" ~ "ukjent",
+        class == "Liten bil" ~ "lette",
+        class == "Stor bil" ~ "tunge"
       )
   ) %>%
   dplyr::filter(
@@ -206,142 +205,281 @@ data_2019_2021_hourly <-
 
 ## 2021-04 ----
 # Status per november 2022:
-# Har fått et datasett for april 2021, men dette er ikke komplett siden det
-# mangler fritakspasseringer. Dersom ikke APAR en gang får komplette data må
-# denne måneden anses som tapt. Dermed forsinner bomdata fra indeksen også
-# for mars.
+# Har fått et datasett for april 2021, men dette skal etter sigende
+# mangle fritakspasseringer. Men etter en titt på dataene så virker det ikke
+# som om dette er et problem.
 
-# TODO: se nøyere på data: om noe kan brukes?
+april_2021_daily <-
+  readxl::read_xlsx(
+    path = "H:/Programmering/R/byindeks/bomdata_trondheim/raw_2021-5_/bom_2021-04.xlsx"
+  ) |>
+  dplyr::select(
+    date = Dato,
+    Stasjon,
+    lane = 'Kjørefelt',
+    class = Klasse,
+    traffic = Passeringer
+  ) |>
+  dplyr::mutate(
+    date = lubridate::as_date(date),
+    trp_id = stringr::str_extract(Stasjon, "\\[?[:digit:]+\\]{1}") |>
+      stringr::str_sub(2, -2) |>
+      base::as.numeric() |>
+      base::as.character(),
+    trp_id =
+      dplyr::case_when(
+        trp_id %in% c("10034", "10035") ~ "512",
+        trp_id %in% c("57") ~ "56",
+        TRUE ~ trp_id
+      ),
+    lane = base::as.character(lane),
+    class =
+      dplyr::case_when(
+        class == "Ukjent" ~ "ukjent",
+        class == "1" ~ "lette",
+        class == "2" ~ "tunge"
+      )
+  ) |>
+  dplyr::filter(
+    trp_id %in% tolling_station_ids
+  ) |>
+  dplyr::select(
+    trp_id,
+    lane,
+    date,
+    class,
+    traffic
+  ) |>
+  # Data set has a hidden parameter (hour rule, maybe) - summarize
+  dplyr::group_by(
+    trp_id,
+    lane,
+    date,
+    class
+  ) |>
+  dplyr::summarise(
+    traffic = sum(traffic),
+    .groups = "drop"
+  ) |>
+  dplyr::mutate(
+    day = lubridate::mday(date),
+    month = lubridate::floor_date(date, "month"),
+    year = lubridate::year(date)
+  )
 
 
 ## 2021-05--2022-04 Vegamot files ----
-data_2021_ <-
-  readr::read_csv2(
-    "H:/Programmering/R/byindeks/bomdata_trondheim/raw_2021-5_/bom_2021-05_2022-04.csv",
-    locale = readr::locale(encoding = "latin1")
-  )
+# data_2021_ <-
+#   readr::read_csv2(
+#     "H:/Programmering/R/byindeks/bomdata_trondheim/raw_2021-5_/bom_2021-05_2022-04.csv",
+#     locale = readr::locale(encoding = "latin1")
+#   )
 
-data_2021_hourly <-
-  data_2021_ %>%
-  dplyr::select(
-    trp_id = stasjon,
-    lane = felt,
-    date = dato,
-    hour = time,
-    class = klasse,
-    traffic = trafikk
-  ) %>%
-  dplyr::mutate(
-    date = lubridate::dmy(date),
-    class =
-      dplyr::case_when(
-        class == 1 ~ "light",
-        class == 2 ~ "heavy"
-      ),
-    trp_id = stringr::str_replace(trp_id, ".*\\[0", ""),
-    trp_id = stringr::str_replace(trp_id, "\\]", ""),
-    traffic = stringr::str_replace(traffic, " ", ""),
-    traffic = as.numeric(traffic)
-  ) %>%
-  dplyr::mutate(
-    trp_id =
-      dplyr::case_when(
-        trp_id == "51" & lane %in% c(3, 4) ~ "512",
-        TRUE ~ trp_id
-      ),
-    lane =
-      dplyr::case_when(
-        trp_id == "512" & lane == 3 ~ 1,
-        trp_id == "512" & lane == 4 ~ 2,
-        trp_id == "56" & lane == 2 ~ 6,
-        trp_id == "56" & lane == 3 ~ 4,
-        trp_id == "56" & lane == 4 ~ 2,
-        trp_id == "57" & lane == 2 ~ 1,
-        trp_id == "57" & lane == 3 ~ 3,
-        TRUE ~ lane
-      ),
-    # Merging the two Kroppan bru tolling stations 56 and 57
-    trp_id = stringr::str_replace(trp_id, "57", "56"),
-    lane = as.character(lane)
-  ) |>
-  dplyr::filter(
-    # Just one day with data in May 2022 thus far
-    date < "2022-05-01"
-  ) |>
-  dplyr::arrange(
-    date,
-    hour,
-    trp_id,
-    lane
-  )
+# data_2021_hourly <-
+#   data_2021_ %>%
+#   dplyr::select(
+#     trp_id = stasjon,
+#     lane = felt,
+#     date = dato,
+#     hour = time,
+#     class = klasse,
+#     traffic = trafikk
+#   ) %>%
+#   dplyr::mutate(
+#     date = lubridate::dmy(date),
+#     class =
+#       dplyr::case_when(
+#         class == 1 ~ "light",
+#         class == 2 ~ "heavy"
+#       ),
+#     trp_id = stringr::str_replace(trp_id, ".*\\[0", ""),
+#     trp_id = stringr::str_replace(trp_id, "\\]", ""),
+#     traffic = stringr::str_replace(traffic, " ", ""),
+#     traffic = as.numeric(traffic)
+#   ) %>%
+#   dplyr::mutate(
+#     trp_id =
+#       dplyr::case_when(
+#         trp_id == "51" & lane %in% c(3, 4) ~ "512",
+#         TRUE ~ trp_id
+#       ),
+#     lane =
+#       dplyr::case_when(
+#         trp_id == "512" & lane == 3 ~ 1,
+#         trp_id == "512" & lane == 4 ~ 2,
+#         trp_id == "56" & lane == 2 ~ 6,
+#         trp_id == "56" & lane == 3 ~ 4,
+#         trp_id == "56" & lane == 4 ~ 2,
+#         trp_id == "57" & lane == 2 ~ 1,
+#         trp_id == "57" & lane == 3 ~ 3,
+#         TRUE ~ lane
+#       ),
+#     # Merging the two Kroppan bru tolling stations 56 and 57
+#     trp_id = stringr::str_replace(trp_id, "57", "56"),
+#     lane = as.character(lane)
+#   ) |>
+#   dplyr::filter(
+#     # Just one day with data in May 2022 thus far
+#     date < "2022-05-01"
+#   ) |>
+#   dplyr::arrange(
+#     date,
+#     hour,
+#     trp_id,
+#     lane
+#   )
 
-readr::write_rds(
-  data_2021_hourly,
-  file = "bomdata_trondheim/data_2021_hourly.rds"
-)
+# readr::write_rds(
+#   data_2021_hourly,
+#   file = "bomdata_trondheim/data_2021_hourly.rds"
+# )
+#
+# remove(data_2021_)
 
-remove(data_2021_)
-
-data_2021_hourly <-
-  readr::read_rds(
-    file = "bomdata_trondheim/data_2021_hourly.rds"
-  )
+# data_2021_hourly <-
+#   readr::read_rds(
+#     file = "bomdata_trondheim/data_2021_hourly.rds"
+#   )
 
 
 ## 2021-05- APAR test ----
 # Just a test with file fetched via PowerBI
 
-apar_apr_2022 <-
-  readr::read_csv(
-    "H:/Programmering/R/byindeks/bomdata_trondheim/apar/april_2022.csv",
-    locale = readr::locale(encoding = "latin1")
-  ) |>
-  dplyr::select(
-    trp_id = 'toll station code',
-    date,
-    class = 'vehicle class ID',
-    traffic_apar = 'Accepted passages'
-  ) |>
-  dplyr::mutate(
-    trp_id = as.character(trp_id),
-    date = lubridate::date(date),
-    class = dplyr::case_when(
-      class == 1 ~ "light",
-      class == 2 ~ "heavy",
-      TRUE ~ "unknown"
-    )
-  )
-
-compare_apar <-
-  apar_apr_2022 |>
-  dplyr::left_join(
-    tolling_data_daily,
-    by = c("trp_id", "date", "class")
-  ) |>
-  dplyr::select(
-    trp_id,
-    date,
-    class,
-    traffic,
-    traffic_apar
-  ) |>
-  dplyr::mutate(
-    diff = traffic - traffic_apar
-  )
-
-write.csv2(
-  compare_apar,
-  file = "sammenligning_apar.csv",
-  row.names = F
-)
+# apar_apr_2022 <-
+#   readr::read_csv(
+#     "H:/Programmering/R/byindeks/bomdata_trondheim/apar/april_2022.csv",
+#     locale = readr::locale(encoding = "latin1")
+#   ) |>
+#   dplyr::select(
+#     trp_id = 'toll station code',
+#     date,
+#     class = 'vehicle class ID',
+#     traffic_apar = 'Accepted passages'
+#   ) |>
+#   dplyr::mutate(
+#     trp_id = as.character(trp_id),
+#     date = lubridate::date(date),
+#     class = dplyr::case_when(
+#       class == 1 ~ "light",
+#       class == 2 ~ "heavy",
+#       TRUE ~ "unknown"
+#     )
+#   )
+#
+# compare_apar <-
+#   apar_apr_2022 |>
+#   dplyr::left_join(
+#     tolling_data_daily,
+#     by = c("trp_id", "date", "class")
+#   ) |>
+#   dplyr::select(
+#     trp_id,
+#     date,
+#     class,
+#     traffic,
+#     traffic_apar
+#   ) |>
+#   dplyr::mutate(
+#     diff = traffic - traffic_apar
+#   )
+#
+# write.csv2(
+#   compare_apar,
+#   file = "sammenligning_apar.csv",
+#   row.names = F
+# )
 
 
 ## 2021-05- APAR API ----
 
-# TODO: compare APAR API data with data from Vegamot files
-# Awaiting unfiltered and complete data in APAR
+### Fetch ----
+source("apar.R")
 
-# TODO: Prepare data quality check independent of source
+tolling_station_ids_apar <-
+  c(
+    "51",  # Dette er egentlig to ulike, hver med to felt
+    # Klett (1,2), Røddeveien (3,4)
+    # Endrer nedenfor Røddeveien til id 512 og felt 1 og 2
+    #"512",
+    "52", "53", "54", "55",
+    "56", "57", # "Kroppan bru", som egentlig ikke er på Kroppan bru, men
+    # Holtermannsvegen utenfor Siemens er to stasjoner, også 57.
+    # Slår disse sammen nedenfor, og setter feltnummer etter dagens metrering
+    "58", "59", "60", "61", "62", "64", "65", "66", "67",
+    "68", "69", "85", "86", "72"
+  )
+
+# Fetch all data for all trp_ids for a month, and store
+month_string <- "november"
+year_number <- 2022
+
+apar_data_for_month <-
+  purrr::map_dfr(
+    tolling_station_ids_apar,
+    ~ get_apar_data(
+      dataset_id = trondheim_apar_id,
+      station_code = .,
+      month_string = month_string,
+      year_number = year_number
+    )
+  )
+
+apar_data_for_month_tidy <-
+  apar_data_for_month |>
+  dplyr::select(
+    trp_id = toll_station_code,
+    lane,
+    date,
+    hour = hour_start,
+    class = vehicle_class_ID,
+    traffic
+  ) |>
+  dplyr::mutate(
+    trp_id =
+      dplyr::case_when(
+        trp_id == "51" & lane %in% c("3", "4") ~ "512",
+        trp_id == "57" ~ "56",
+        TRUE ~ trp_id
+      ),
+    class =
+      dplyr::case_when(
+        class == "1" ~ "lette",
+        class == "2" ~ "tunge",
+        TRUE ~ "ukjent"
+      ),
+    traffic = as.numeric(traffic)
+  )
+
+readr::write_rds(
+  apar_data_for_month_tidy,
+  file = paste0(
+    "H:/Programmering/R/byindeks/bomdata_trondheim/raw_apar_2021-5_/apar_trd_",
+    year_number,
+    "-",
+    month_string
+  )
+)
+
+
+### Gather all hourly APAR data ----
+apar_files <-
+  list.files(
+    "H:/Programmering/R/byindeks/bomdata_trondheim/raw_apar_2021-5_",
+    #pattern = "2021.*",
+    pattern = "2022.*|2023.*|2024.*",
+    all.files = TRUE,
+    no.. = TRUE,
+    full.names = TRUE
+  )
+
+apar_data_hourly <-
+  do.call(
+    bind_rows,
+    lapply(
+      apar_files,
+      readr::read_rds
+    )
+  )
 
 
 # Daily ----
@@ -350,8 +488,8 @@ write.csv2(
 
 tolling_data_daily_lane <-
   dplyr::bind_rows(
-    data_2019_2021_hourly,
-    data_2021_hourly
+    #data_2019_2021_hourly,
+    apar_data_hourly
   ) %>%
   dplyr::filter(
     trp_id %in% tolling_station_ids
@@ -367,13 +505,21 @@ tolling_data_daily_lane <-
     .groups = "drop"
   ) %>%
   dplyr::mutate(
+    date = lubridate::as_date(date),
     day = lubridate::mday(date),
     month = lubridate::floor_date(date, "month"),
     year = lubridate::year(date)
-  )
+  ) #|>
+  # dplyr::bind_rows(
+  #   april_2021_daily
+  # )
 
 tolling_data_daily <-
   tolling_data_daily_lane |>
+  # Removing unknowns since they are not vehicles (presumably)
+  dplyr::filter(
+    class != "ukjent"
+  ) |>
   dplyr::group_by(
     trp_id,
     date,
@@ -383,168 +529,261 @@ tolling_data_daily <-
     traffic = sum(traffic),
     .groups = "drop"
   ) %>%
+  tidyr::complete(
+    trp_id,
+    tidyr::nesting(
+      date,
+      class
+    ),
+    fill = list(traffic = 0)
+  ) |>
   dplyr::mutate(
     day = lubridate::mday(date),
     month = lubridate::floor_date(date, "month"),
     year = lubridate::year(date)
   )
 
-readr::write_rds(
-  tolling_data_daily,
-  file = "bomdata_trondheim/tolling_data_daily.rds"
-)
 
-tolling_data_daily <-
-  readRDS(
-    file = "bomdata_trondheim/tolling_data_daily.rds"
-  )
-
-
+# Exclusions ----
 ## Plot ----
 # Plot to see if data are ok
+# Check by lane
 tolling_data_daily_lane %>%
   dplyr::filter(
-    trp_id == 51,
-    year %in% c(2021)
+    trp_id == "86",
+    year %in% c(2022)
   ) %>%
   ggplot(aes(day, traffic, color = lane, linetype = class)) +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   facet_grid(
     rows = vars(month)
   ) +
   theme_minimal()
 
 
-# Monthly ----
-tolling_data_monthly <-
-  tolling_data_daily %>%
+# Exclusions may be monthly or daily
+
+# Tungasletta høy andel ukjente juli og aug 2018, ukjentandel er over 30 %!
+# 54 2021-08
+# 85 and 86: 2021-01, 2021-03--2021-04 (high ratio of unknowns intermittently)
+# Keep Nord for Sluppen bru (55) and not Bjørndalen (54) when Oslovegen is closed?
+# - Bjørndalen is out of service.
+# 56 siste halvdel av 2022: ombygging av veg (kulverter) med innsnevring har nok ført til flytting
+# av bomstasjoner og mulig redusert antall felt
+
+tolling_data_daily_tidy <-
+  tolling_data_daily |>
+  dplyr::filter(!(trp_id == "52" & date %in% c("2022-05-12", "2022-05-13", "2022-05-20"))) |>
+  dplyr::filter(!(trp_id == "54" & month == "2021-03-01")) |>
+  dplyr::filter(!(trp_id == "54" & month == "2021-04-01")) |>
+  dplyr::filter(!(trp_id == "54" & date %in% c("2021-08-13", "2021-08-14", "2021-08-15"))) |>
+  dplyr::filter(!(trp_id == "54" & month == "2022-01-01")) |>
+  dplyr::filter(!(trp_id == "55" & date %in% c("2021-08-13", "2021-08-14", "2021-08-15"))) |>
+  dplyr::filter(!(trp_id == "56" & month == "2021-04-01")) |>
+  dplyr::filter(!(trp_id == "63")) |>
+  dplyr::filter(!(trp_id == "72" & month == "2021-04-01")) |>
+  dplyr::filter(!(trp_id == "85" & date %in% c("2021-01-11", "2021-01-12", "2021-01-13"))) |>
+  dplyr::filter(!(trp_id == "86" & month == "2021-01-01")) |>
+  dplyr::filter(!(trp_id == "86" & month == "2021-03-01")) |>
+  dplyr::filter(!(trp_id == "86" & month == "2021-04-01"))
+
+tolling_data_daily_total <-
+  tolling_data_daily_tidy |>
   dplyr::group_by(
     trp_id,
-    month
-  ) %>%
+    date
+  ) |>
   dplyr::summarise(
     traffic = sum(traffic),
     .groups = "drop"
+  ) |>
+  dplyr::mutate(
+    day = lubridate::mday(date),
+    month = lubridate::floor_date(date, "month"),
+    year = lubridate::year(date),
+    class = "alle"
   )
 
-tolling_data_monthly_by_class <-
-  tolling_data_daily %>%
+tolling_data_daily_all <-
+  dplyr::bind_rows(
+    tolling_data_daily,
+    tolling_data_daily_total
+  ) |>
+  dplyr::arrange(
+    trp_id,
+    date,
+    class
+  )
+
+readr::write_rds(
+  tolling_data_daily_all,
+  #file = "bomdata_trondheim/tolling_data_daily_2019-2021.rds"
+  file = "bomdata_trondheim/tolling_data_daily_2022-2024.rds"
+)
+
+
+# Read all daily ----
+tolling_data_daily_all_years_files <-
+  list.files(
+    "H:/Programmering/R/byindeks/bomdata_trondheim",
+    pattern = "tolling_data_daily.*rds",
+    all.files = TRUE,
+    no.. = TRUE,
+    full.names = TRUE
+  )
+
+tolling_data_daily_all_years <-
+  do.call(
+    bind_rows,
+    lapply(
+      tolling_data_daily_all_years_files,
+      readr::read_rds
+    )
+  )
+
+
+# tolling_data_monthly_by_class_excluded <-
+#   tolling_data_monthly_by_class %>%
+#   dplyr::select(-traffic_ratio, -traffic) %>%
+#   dplyr::rename(traffic = traffic_by_class) %>%
+#   #dplyr::filter(!(felt == "TUNGA" & aar_maaned == "2018-07-01")) %>%
+#   #dplyr::filter(!(felt == "TUNGA" & aar_maaned == "2018-08-01"))
+#   dplyr::filter(!(trp_id == "54" & month == "2021-03-01")) %>%
+#   dplyr::filter(!(trp_id == "54" & month == "2021-08-01")) %>%
+#   dplyr::filter(!(trp_id == "54" & month == "2022-01-01")) %>%
+#   dplyr::filter(!(trp_id == "56" & month == "2021-04-01")) %>%
+#   dplyr::filter(!(trp_id == "85" & month == "2021-01-01")) %>%
+#   dplyr::filter(!(trp_id == "85" & month == "2021-03-01")) %>%
+#   dplyr::filter(!(trp_id == "85" & month == "2021-04-01")) %>%
+#   dplyr::filter(!(trp_id == "86" & month == "2021-01-01")) %>%
+#   dplyr::filter(!(trp_id == "86" & month == "2021-03-01")) %>%
+#   dplyr::filter(!(trp_id == "86" & month == "2021-04-01"))
+#
+# tolling_data_monthly_excluded_total <-
+#   tolling_data_monthly_by_class_excluded %>%
+#   dplyr::group_by(
+#     trp_id,
+#     month
+#   ) %>%
+#   dplyr::summarise(
+#     traffic = sum(traffic),
+#     .groups = "drop"
+#   ) %>%
+#   dplyr::mutate(class = "all")
+#
+# tolling_data_monthly_by_all_classes <-
+#   dplyr::bind_rows(
+#     tolling_data_monthly_excluded_total,
+#     tolling_data_monthly_by_class_excluded
+#   ) %>%
+#   dplyr::mutate(
+#     year = lubridate::year(month),
+#     month = lubridate::month(month)
+#   )
+
+
+
+
+# MDT ----
+toll_mdt_class <-
+  tolling_data_daily_all_years |>
   dplyr::group_by(
     trp_id,
     month,
     class
   ) %>%
   dplyr::summarise(
-    traffic_by_class = sum(traffic),
+    traffic = sum(traffic),
+    n_days = n(),
     .groups = "drop"
-  ) %>%
-  dplyr::left_join(
-    tolling_data_monthly,
-    by = c(
-      "trp_id",
-      "month"
-      )
-  ) %>%
+  ) |>
   dplyr::mutate(
-    traffic_ratio =
-      round(
-        100 * traffic_by_class / traffic,
-        digits = 2)
+    mdt = base::round(traffic / n_days)
   )
 
 readr::write_rds(
-  tolling_data_monthly_by_class,
-  file = "data_index_raw/trd_toll_data_2019_monthly.rds",
+  toll_mdt_class,
+  file = "data_indexpoints_tidy/trd_toll_mdt.rds",
 )
 
-tolling_data_monthly_by_class <-
+toll_mdt_class <-
   readr::read_rds(
-    file = "data_index_raw/trd_toll_data_2019_monthly.rds",
+    file = "data_indexpoints_tidy/trd_toll_mdt.rds",
   )
-
-
-# Exclusions ----
-
-# Tungasletta høy andel ukjente juli og aug 2018, ukjentandel er over 30 %!
-# 54 2021-08
-# 85 and 86: 2021-01, 2021-03--2021-04 (high ratio of unknowns intermittently)
-# TODO:
-# Keep Nord for Sluppen bru or Bjørndalen when Oslovegen is closed?
-
-tolling_data_monthly_by_class_excluded <-
-  tolling_data_monthly_by_class %>%
-  dplyr::select(-traffic_ratio, -traffic) %>%
-  dplyr::rename(traffic = traffic_by_class) %>%
-  #dplyr::filter(!(felt == "TUNGA" & aar_maaned == "2018-07-01")) %>%
-  #dplyr::filter(!(felt == "TUNGA" & aar_maaned == "2018-08-01"))
-  dplyr::filter(!(trp_id == "54" & month == "2021-03-01")) %>%
-  dplyr::filter(!(trp_id == "54" & month == "2021-08-01")) %>%
-  dplyr::filter(!(trp_id == "54" & month == "2022-01-01")) %>%
-  dplyr::filter(!(trp_id == "85" & month == "2021-01-01")) %>%
-  dplyr::filter(!(trp_id == "85" & month == "2021-03-01")) %>%
-  dplyr::filter(!(trp_id == "85" & month == "2021-04-01")) %>%
-  dplyr::filter(!(trp_id == "86" & month == "2021-01-01")) %>%
-  dplyr::filter(!(trp_id == "86" & month == "2021-03-01")) %>%
-  dplyr::filter(!(trp_id == "86" & month == "2021-04-01"))
-
-tolling_data_monthly_excluded_total <-
-  tolling_data_monthly_by_class_excluded %>%
-  dplyr::group_by(
-    trp_id,
-    month
-  ) %>%
-  dplyr::summarise(
-    traffic = sum(traffic),
-    .groups = "drop"
-  ) %>%
-  dplyr::mutate(class = "all")
-
-tolling_data_monthly_by_all_classes <-
-  dplyr::bind_rows(
-    tolling_data_monthly_excluded_total,
-    tolling_data_monthly_by_class_excluded
-  ) %>%
-  dplyr::mutate(
-    year = lubridate::year(month),
-    month = lubridate::month(month)
-  )
-
-
-# felt_og_stasjon <-
-#   all_data_monthly_by_all_classes %>%
-#   dplyr::distinct_at(vars(stasjon, felt)) %>%
-#   dplyr::left_join(bomfeltkoder)
-#
-# write.csv2(
-#   felt_og_stasjon,
-#   file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_felt_og_stasjon.csv",
-#   row.names = F
-#   )
 
 
 # TRP index ----
-calculate_monthly_index_for_tolling_stations <-
-  function(monthly_class_data, baseyear) {
+# calculate_monthly_index_for_tolling_stations <-
+#   function(monthly_class_data, baseyear) {
+#
+#     basedata <-
+#       monthly_class_data %>%
+#       dplyr::filter(year == baseyear)
+#
+#     calcdata <- monthly_class_data %>%
+#       dplyr::filter(year == baseyear + 1)
+#
+#     indexdata <-
+#       dplyr::inner_join(
+#         basedata,
+#         calcdata,
+#         by = c("month", "trp_id", "class"),
+#         suffix = c("_base", "_calc"),
+#       ) %>%
+#       dplyr::group_by(
+#         trp_id,
+#         class,
+#         month
+#       ) %>%
+#       dplyr::summarise(
+#         monthly_volume_base = sum(traffic_base),
+#         monthly_volume_calc = sum(traffic_calc),
+#         .groups = "drop"
+#       ) %>%
+#       dplyr::mutate(
+#         index_p =
+#           (monthly_volume_calc / monthly_volume_base - 1) * 100 %>%
+#           round(digits = 2),
+#         month_as_date =
+#           lubridate::ymd(
+#             paste(baseyear + 1, month, "1", sep = "-")
+#           )
+#       )
+#   }
+
+
+#daily_class_data <- tolling_data_daily_all
+#baseyear <- 2020
+
+calculate_monthly_index_for_tolling_stations_from_daily_traffic <-
+  function(daily_class_data, baseyear) {
 
     basedata <-
-      monthly_class_data %>%
-      dplyr::filter(year == baseyear)
+      daily_class_data %>%
+      dplyr::filter(year == baseyear) |>
+      dplyr::mutate(
+        month_number = lubridate::month(date)
+      )
 
-    calcdata <- monthly_class_data %>%
-      dplyr::filter(year == baseyear + 1)
+    calcdata <-
+      daily_class_data %>%
+      dplyr::filter(year == baseyear + 1) |>
+      dplyr::mutate(
+        month_number = lubridate::month(date)
+      )
 
     indexdata <-
       dplyr::inner_join(
         basedata,
         calcdata,
-        by = c("month", "trp_id", "class"),
+        by = c("day", "month_number", "trp_id", "class"),
         suffix = c("_base", "_calc"),
-      ) %>%
+      ) |>
       dplyr::group_by(
         trp_id,
         class,
-        month
-      ) %>%
+        month_calc
+      ) |>
       dplyr::summarise(
         monthly_volume_base = sum(traffic_base),
         monthly_volume_calc = sum(traffic_calc),
@@ -553,13 +792,9 @@ calculate_monthly_index_for_tolling_stations <-
       dplyr::mutate(
         index_p =
           (monthly_volume_calc / monthly_volume_base - 1) * 100 %>%
-          round(digits = 2),
-        month_as_date =
-          lubridate::ymd(
-            paste(baseyear + 1, month, "1", sep = "-")
-          )
+          round(digits = 2)
       )
-}
+  }
 
 # bomindeks_2017 <- all_data_monthly_by_all_classes %>%
 #   dplyr:: select(-stasjon, -aar_maaned) %>%
@@ -577,16 +812,16 @@ calculate_monthly_index_for_tolling_stations <-
 #   calculate_monthly_index_for_tolling_stations(2018)
 
 tolling_station_index_2020 <-
-  tolling_data_monthly_by_all_classes %>%
-  calculate_monthly_index_for_tolling_stations(2019)
+  tolling_data_daily_all_years %>%
+  calculate_monthly_index_for_tolling_stations_from_daily_traffic(2019)
 
 tolling_station_index_2021 <-
-  tolling_data_monthly_by_all_classes %>%
-  calculate_monthly_index_for_tolling_stations(2020)
+  tolling_data_daily_all_years %>%
+  calculate_monthly_index_for_tolling_stations_from_daily_traffic(2020)
 
 tolling_station_index_2022 <-
-  tolling_data_monthly_by_all_classes %>%
-  calculate_monthly_index_for_tolling_stations(2021)
+  tolling_data_daily_all_years %>%
+  calculate_monthly_index_for_tolling_stations_from_daily_traffic(2021)
 
 tolling_station_indices <-
   dplyr::bind_rows(
@@ -598,39 +833,45 @@ tolling_station_indices <-
     tolling_station_index_2022
   )
 
-write.csv2(
+# write.csv2(
+#   tolling_station_indices,
+#   file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.csv",
+#   row.names = F
+#   )
+#
+# tolling_station_indices <-
+#   read.csv2(
+#     "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.csv"
+#   )
+
+readr::write_rds(
   tolling_station_indices,
-  file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.csv",
-  row.names = F
-  )
+  file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
+)
 
 tolling_station_indices <-
-  read.csv2(
-    "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.csv"
+  readr::read_rds(
+    file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
   )
-
 # TODO: Dekningsgrad for antall måneder
 
+## Yearly ----
 # Not all toll stations have value in latest month
 tolling_station_indices_latest_month_per_year <-
   tolling_station_indices %>%
-  dplyr::mutate(year = year(month_as_date)) %>%
+  dplyr::mutate(year = year(month_calc)) %>%
   dplyr::group_by(
     year
   ) %>%
   dplyr::summarise(
-    month = max(month),
+    month = max(month_calc),
     .groups = "drop"
   )
-
-# As of June 2022, data for April 2021 is missing. Treat them as present:
-tolling_station_indices_latest_month_per_year$month[c(3)] <- 4
 
 tolling_station_indices_yearly <-
   tolling_station_indices %>%
   dplyr::mutate(
-    year = year(month_as_date),
-    trp_id = as.character(trp_id)
+    year = year(month_calc)
   ) %>%
   dplyr::group_by(
     trp_id,
@@ -649,7 +890,7 @@ tolling_station_indices_yearly <-
     by = "year"
   )
 
-saveRDS(
+readr::write_rds(
   tolling_station_indices_yearly,
   file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_aarsindekser.rds"
 )
@@ -662,23 +903,23 @@ saveRDS(
 
 # Plott for å se etter avvik: bomdata_trondheim.Rmd
 
-city_monthly_toll_indices <-
-  tolling_station_indices %>%
-  dplyr::group_by(
-    trp_id,
-    month_as_date,
-    class
-  ) %>%
-  dplyr::summarise(
-    base_volume = sum(monthly_volume_base),
-    calc_volume = sum(monthly_volume_calc),
-    index_p = (calc_volume / base_volume - 1) * 100,
-    .groups = "drop"
-  ) #%>%
+# city_monthly_toll_indices <-
+#   tolling_station_indices %>%
+#   dplyr::group_by(
+#     trp_id,
+#     month_as_date,
+#     class
+#   ) %>%
+#   dplyr::summarise(
+#     base_volume = sum(monthly_volume_base),
+#     calc_volume = sum(monthly_volume_calc),
+#     index_p = (calc_volume / base_volume - 1) * 100,
+#     .groups = "drop"
+#   ) #%>%
   #dplyr::left_join(felt_og_stasjon)
 
-write.csv2(
-  city_monthly_toll_indices,
-  file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_bymaanedsindekser.csv",
-  row.names = F
-)
+# write.csv2(
+#   city_monthly_toll_indices,
+#   file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_bymaanedsindekser.csv",
+#   row.names = F
+# )

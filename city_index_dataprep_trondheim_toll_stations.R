@@ -3,7 +3,7 @@
 
 # City index meta data ----
 ## Declare latest month ----
-index_month <- 4
+index_month <- 11
 city_number <- 960
 
 ## City name ----

@@ -10,6 +10,8 @@ source("rmd_setup.R")
 # Traffic Data API calls to get points metadata and aadt
 source("get_from_trafficdata_api.R")
 source("split_road_system_reference.R")
+source("get_from_nvdb_api.R")
+
 library(DT)
 library(htmltools)
 ```
@@ -26,16 +28,16 @@ library(htmltools)
 # Kristiansand og omegn 957   10 Snorre (Million)
 # Nedre Glomma 953            10 Trond
 # Nord-Jæren 952              10 Snorre
-# Oslo 959                    9 Trond
+# Oslo 959                    10 Trond
 # Tromsø 961                  10 Snorre
 # Trondheim 960, uoffisiell   10 Snorre (mangler mye bomdata i april 2021)
 
 
 # Choose
 index_year <- 2022
-index_month <- 9 # latest published
-city_number <- 959
-
+index_month <- 10 # latest published
+city_number <- 960
+# End choose
 
 reference_year <- 
   dplyr::case_when(
@@ -79,6 +81,51 @@ pointindex <-
     index_month
   )
 
+# TRD toll station index
+tolling_station_indices_prepared <-
+  readr::read_rds(
+    file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
+  ) |> 
+  dplyr::mutate(
+    year = lubridate::year(month_calc),
+    month = lubridate::month(month_calc),
+    class = 
+      dplyr::case_when(
+        class == "alle" ~ "p_total",
+        class == "lette" ~ "short",
+        class == "tunge" ~ "long"
+      )
+  ) |> 
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    class,
+    index = index_p
+  ) |> 
+  dplyr::filter(
+    year == index_year
+  ) |> 
+  tidyr::pivot_wider(
+    id_cols = ,
+    names_from = class,
+    names_prefix = "index_",
+    values_from = index
+  )
+
+trd_toll_stations_meta <-
+  readr::read_rds(
+    file = "bomdata_trondheim/trd_toll_stations.rds"
+  ) |> 
+  split_road_system_reference() |> 
+  dplyr::select(
+    trp_id, 
+    name, 
+    road_category_and_number,
+    lat, lon,
+    road_link_position
+  )
+
 # former_pointindices <-
 #   purrr::map_dfr(
 #     previous_index_years,
@@ -90,25 +137,31 @@ pointindices <- pointindex[[2]]
 city_name <- city_index$area_name[1]
 
 # Point metadata from Traffic Data API
-points <- get_points() %>%
+points <- 
+  get_points() %>%
   dplyr::distinct(trp_id, .keep_all = T) %>%
   dplyr::select(trp_id, name, road_reference, county_name,
                 municipality_name, lat, lon, road_link_position) %>% 
   dplyr::mutate(name = stringr::str_to_title(name, locale = "no"))
 
-city_trps_meta <- points %>% 
+city_trps_meta <- 
+  points %>% 
   dplyr::filter(trp_id %in% city_trps) %>% 
   split_road_system_reference() %>% 
   dplyr::select(
     trp_id, 
     name, 
-    road_reference, 
+    #road_reference, 
     road_category_and_number,
     #section_number, subsection_number, meter,
     #intersection_part_number, intersection_meter,
-    county_name, 
-    municipality_name, 
-    lat, lon
+    #county_name, 
+    #municipality_name, 
+    lat, lon,
+    road_link_position
+  ) |> 
+  dplyr::bind_rows(
+    trd_toll_stations_meta
   )
 
 # TRP device types
@@ -143,7 +196,7 @@ city_trps_meta <- points %>%
 
 ## AADT ----
 adt <- 
-  get_aadt_by_length_for_trp_list(city_trps_meta$trp_id)
+  get_aadt_by_length_for_trp_list(city_trps)
 
 adt_filtered <- 
   adt %>%
@@ -155,6 +208,54 @@ adt_filtered <-
   #dplyr::filter(year >= 2019) %>%
   dplyr::filter(year == max(year)) %>%
   dplyr::select(trp_id, adt = aadt_total)
+
+this_citys_trps_all_adt <-
+  city_trps_meta %>%
+  dplyr::left_join(
+    adt_filtered,
+    by = "trp_id"
+  )
+
+missing_adt <-
+  this_citys_trps_all_adt %>%
+  dplyr::filter(is.na(adt))
+
+fetch_adts <-
+  purrr::map_dfr(
+    missing_adt$road_link_position,
+    ~ get_historic_aadt_by_roadlinkposition(
+      roadlinkposition = .
+    )
+  ) |> 
+  dplyr::group_by(
+    road_link_position
+  ) |> 
+  dplyr::slice_max(
+    year,
+    with_ties = FALSE
+  ) |> 
+  dplyr::mutate(
+    adt = round(aadt_total * (1 - heavy_percentage / 100), digits = -1)
+  ) |> 
+  dplyr::select(
+    road_link_position,
+    adt
+  )
+
+missing_adt_fixed <-
+  missing_adt |> 
+  dplyr::select(-adt) |> 
+  dplyr::left_join(
+    fetch_adts,
+    by = "road_link_position"
+  )
+
+
+# Finally all aadt
+this_citys_trps_all_adt_final <-
+  this_citys_trps_all_adt %>%
+  dplyr::filter(!is.na(adt)) %>%
+  dplyr::bind_rows(missing_adt_fixed)
 
 # New month's pointindices
 point_index_new <- 
@@ -191,7 +292,8 @@ city_index_prepared <-
   ) %>% 
   dplyr::filter(road_category == "Europa-, riks- og fylkesveg")
 
-pointindex_prepared <- pointindices %>% 
+pointindex_prepared <- 
+  pointindices %>% 
   dplyr::filter(period == "month",
                 is_excluded == FALSE,
                 is_manually_excluded == FALSE) %>% 
@@ -199,7 +301,8 @@ pointindex_prepared <- pointindices %>%
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
 
-point_index_new_prepared <- point_index_new %>% 
+point_index_new_prepared <- 
+  point_index_new %>% 
   dplyr::filter(day_type == "ALL",
                 period == "month",
                 month == index_month + 1) %>% 
@@ -247,6 +350,7 @@ pointindex_prepared_all <-
     #point_index_new_prepared_3,
     #point_index_new_prepared_4#,
     #point_index_new_prepared_5
+    tolling_station_indices_prepared
   ) %>% 
   dplyr::left_join(city_trps_meta) %>% 
   dplyr::left_join(adt_filtered) %>% 
@@ -264,7 +368,8 @@ pointindex_prepared_all <-
       ),
     diff_total_short = round(index_short - index_total_p, digits = 1))
      
-city_trps_new_pointindex <- city_trps_meta %>% 
+city_trps_new_pointindex <- 
+  city_trps_meta %>% 
   dplyr::left_join(
     point_index_new_prepared,
     by = "trp_id"
@@ -320,60 +425,71 @@ city_trps_new_pointindex <- city_trps_meta %>%
 #   dplyr::left_join(point_index_new_prepared_5)
 
 # Widening for table view
-pointindex_prepared_all_wide_total_index <- pointindex_prepared_all %>% 
+pointindex_prepared_all_wide_total_index <- 
+  pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, adt, month, index_total_p) %>% 
   tidyr::pivot_wider(names_from = month, values_from = index_total_p,
                      names_prefix = "value_") %>% 
   dplyr::mutate(value_type = "index_total_p")
 
-pointindex_prepared_all_wide_coverage <- pointindex_prepared_all %>% 
+pointindex_prepared_all_wide_coverage <- 
+  pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, adt, month, index_total_coverage) %>% 
   tidyr::pivot_wider(names_from = month, values_from = index_total_coverage,
                      names_prefix = "value_") %>% 
   dplyr::mutate(value_type = "index_total_coverage")
 
-pointindex_prepared_all_wide_length_coverage <- pointindex_prepared_all %>% 
+pointindex_prepared_all_wide_length_coverage <- 
+  pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, adt, month, length_coverage) %>% 
   tidyr::pivot_wider(names_from = month, values_from = length_coverage,
                      names_prefix = "value_") %>% 
   dplyr::mutate(value_type = "length_coverage")
 
-pointindex_prepared_all_wide_short <- pointindex_prepared_all %>% 
+pointindex_prepared_all_wide_short <- 
+  pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, adt, month, index_short) %>% 
   tidyr::pivot_wider(names_from = month, values_from = index_short,
                      names_prefix = "value_") %>% 
   dplyr::mutate(value_type = "index_short")
 
-pointindex_prepared_all_wide_long <- pointindex_prepared_all %>% 
+pointindex_prepared_all_wide_long <- 
+  pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, adt, month, index_long) %>% 
   tidyr::pivot_wider(names_from = month, values_from = index_long,
                      names_prefix = "value_") %>% 
   dplyr::mutate(value_type = "index_long")
 
-pointindex_prepared_all_wide_check <- pointindex_prepared_all %>% 
+pointindex_prepared_all_wide_check <- 
+  pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, adt, month, total_short_long_check) %>% 
   tidyr::pivot_wider(names_from = month, values_from = total_short_long_check,
                      names_prefix = "value_") %>% 
   dplyr::mutate(value_type = "total_short_long_check")
 
-pointindex_prepared_all_wide_diff <- pointindex_prepared_all %>% 
+pointindex_prepared_all_wide_diff <- 
+  pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, adt, month, diff_total_short) %>% 
   tidyr::pivot_wider(names_from = month, values_from = diff_total_short,
                      names_prefix = "value_") %>% 
   dplyr::mutate(value_type = "diff_total_short")
 
-pointindex_wide <- dplyr::bind_rows(
-  pointindex_prepared_all_wide_total_index,
-  pointindex_prepared_all_wide_coverage,
-  pointindex_prepared_all_wide_length_coverage,
-  pointindex_prepared_all_wide_short,
-  pointindex_prepared_all_wide_long,
-  pointindex_prepared_all_wide_check,
-  pointindex_prepared_all_wide_diff
+pointindex_wide <- 
+  dplyr::bind_rows(
+    pointindex_prepared_all_wide_total_index,
+    pointindex_prepared_all_wide_coverage,
+    pointindex_prepared_all_wide_length_coverage,
+    pointindex_prepared_all_wide_short,
+    pointindex_prepared_all_wide_long,
+    pointindex_prepared_all_wide_check,
+    pointindex_prepared_all_wide_diff
   ) %>% 
   split_road_system_reference() %>% 
-  dplyr::select(name, road = road_category_and_number,
-                adt:value_type)
+  dplyr::select(
+    name, 
+    road = road_category_and_number,
+    adt:value_type
+  )
   #dplyr::arrange(road_reference)
 
 # Longing :) for plot
@@ -537,12 +653,6 @@ pointindex_wide %>%
       lengthMenu = c(21, 42, 70),
       autoWidth = TRUE))
 
-
-
-# TRD
-# Ekskl 2021! SIC!
-# Bomstasjon N for Sluppen bru 5-8
-# Bom Bjørndalen 5-8
 
 ```
 
