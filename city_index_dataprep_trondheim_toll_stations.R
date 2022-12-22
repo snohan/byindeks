@@ -135,6 +135,17 @@ this_citys_trps_all_adt_final <-
   dplyr::bind_rows(missing_adt)
 
 
+city_trp
+readr::write_rds(
+  this_citys_trps_all_adt_final,
+  file = paste0(
+    "index_trp_metadata/trp_",
+    city_number,
+    ".rds"
+  )
+)
+
+
 # Index results per year ----
 # Note: Tolling station csv file includes data from 2017,
 # but here we only want index from 2020 onwards

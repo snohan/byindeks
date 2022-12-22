@@ -706,7 +706,8 @@ get_historic_aadt_by_roadlinkposition <- function(roadlinkposition) {
     dplyr::select(-versjon_id) %>%
     dplyr::mutate(
       aadt_total = as.numeric(aadt_total),
-      heavy_percentage = as.numeric(heavy_percentage)
+      heavy_percentage = as.numeric(heavy_percentage),
+      year = as.numeric(year)
     ) %>%
     dplyr::distinct() %>%
     dplyr::arrange(year) |>

@@ -1,17 +1,21 @@
-# Preparation of data for reporting
-# Gathering info on all points and indexes and writing them to csv
+# Preparation of data for checking and reporting
+# Gathering info on TRPs and indexes and writing to RDS files
+
+# Report visuals:
+# City TRP metadata and AADT
+# City MDT index
+# City TRP index spread
+# City chained index
+
+# Check visuals:
+# City TRP index
+# City index
+
 
 # Setup ----
-# Packages are to be loaded through sourcing rmd_setup.R in the Rmd report file.
 source("rmd_setup.R")
 source("get_from_trafficdata_api.R")
-
-# If necessary, get all TRPs from TRP API
-# TRPs without commissions are not i TD-API!
-#source("get_from_trp_api.R")
-
-# NVDB API calls to get tolling stations or supply missing AADTs
-#source("get_from_nvdb_api.R")
+source("get_from_nvdb_api.R")
 
 # Functions
 # source TAKLER IKKE Ø som brukes i kolonneoverskrift i csv-ene! Må åpne fila og kjøre alt derfra.
@@ -20,7 +24,6 @@ source("indexpoints_tidying_functions.R")
 library(viridis)
 options(warn=-1)
 svv_background_color <- "#F5F5F5"
-
 
 
 # Points ----
