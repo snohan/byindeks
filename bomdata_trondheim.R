@@ -1,10 +1,12 @@
+{
 source("rmd_setup.R")
 source("get_from_trafficdata_api.R")
 source("get_from_nvdb_api.R")
+}
 
 library(readxl)
 
-# Tidying data from tolling stations
+# Tolling station info ----
 
 # The 20 to use
 tolling_station_ids <-
@@ -25,8 +27,6 @@ tolling_station_ids <-
 # 63 felt 5 er KD3
 # Antar: 63 felt 6 er KD4
 
-
-# Tolling station info ----
 kommunenr <- "5001"
 kommunenavn <-
   hent_kommune_v3(kommunenr) |>
@@ -285,7 +285,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "november"
+month_string <- "december"
 year_number <- 2022
 
 apar_data_for_month <-
@@ -340,8 +340,8 @@ readr::write_rds(
 apar_files <-
   list.files(
     "H:/Programmering/R/byindeks/bomdata_trondheim/raw_apar_2021-5_",
-    pattern = "2021.*",
-    #pattern = "2022.*|2023.*|2024.*",
+    #pattern = "2021.*",
+    pattern = "2022.*|2023.*|2024.*",
     all.files = TRUE,
     no.. = TRUE,
     full.names = TRUE
@@ -363,7 +363,7 @@ apar_data_hourly <-
 
 tolling_data_daily_lane <-
   dplyr::bind_rows(
-    data_2019_2021_hourly,
+    #data_2019_2021_hourly,
     apar_data_hourly
   ) %>%
   dplyr::filter(
@@ -384,10 +384,10 @@ tolling_data_daily_lane <-
     day = lubridate::mday(date),
     month = lubridate::floor_date(date, "month"),
     year = lubridate::year(date)
-  ) |>
-  dplyr::bind_rows(
-    april_2021_daily
-  )
+  ) #|>
+  #dplyr::bind_rows(
+  #  april_2021_daily
+  #)
 
 tolling_data_daily <-
   tolling_data_daily_lane |>
@@ -426,7 +426,7 @@ tolling_data_daily <-
 tolling_data_daily_lane %>%
   dplyr::filter(
     trp_id == "86",
-    year %in% c(2021)
+    year %in% c(2022)
   ) %>%
   ggplot(aes(day, traffic, color = lane, linetype = class)) +
   geom_line(linewidth = 1) +
@@ -501,8 +501,8 @@ tolling_data_daily_all <-
 
 readr::write_rds(
   tolling_data_daily_all,
-  file = "bomdata_trondheim/tolling_data_daily_2019-2021.rds"
-  #file = "bomdata_trondheim/tolling_data_daily_2022-2024.rds"
+  #file = "bomdata_trondheim/tolling_data_daily_2019-2021.rds"
+  file = "bomdata_trondheim/tolling_data_daily_2022-2024.rds"
 )
 
 

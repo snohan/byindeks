@@ -11,6 +11,7 @@
 # City TRP index
 # City index
 
+# TODO: this script as foundation for both check and report
 
 # Setup ----
 source("rmd_setup.R")
