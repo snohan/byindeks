@@ -77,8 +77,8 @@ decimal_point <- function(number) {
 # Flextable defaults
 flextable::set_flextable_defaults(
   font.size = 9,
-  #font.family = "Lucida Sans Unicode",
-  font.family = "LTF Etica Light",
+  font.family = "Lucida Sans Unicode",
+  #font.family = "LTF Etica Light",
   padding.bottom = .3,
   padding.top = .5,
   decimal.mark = ",",

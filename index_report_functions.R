@@ -6,10 +6,12 @@ create_point_table <- function(all_point_info_df, caption_text) {
     select(name, road_reference, adt, year) %>%
     flextable() %>%
     colformat_int(j = "year", big.mark = "") %>%
-    set_header_labels(name = "Navn",
-                      road_reference = "Vegreferanse",
-                      adt = "ÅDT",
-                      year = "År") %>%
+    set_header_labels(
+      name = "Navn",
+      road_reference = "Vegreferanse",
+      adt = "ÅDT",
+      year = "År"
+    ) %>%
     align(i = 1, j = 4, align = "center", part = "header") %>%
     bold(part = "header") %>%
     bg(bg = "#ED9300", part = "header") %>%
@@ -17,10 +19,14 @@ create_point_table <- function(all_point_info_df, caption_text) {
     hline_top(part = "header", border = borderline) %>%
     hline_bottom(part = "all", border = borderline) %>%
     autofit() %>%
-    height_all(height = .2) %>%
-    set_caption(caption_text,
-                autonum = table_numbers,
-                style = "Tabelltekst")
+    padding(
+      j = 1,
+      padding.left = 20
+    ) |>
+    height_all(height = .2) #%>%
+    #set_caption(caption_text,
+    #            autonum = table_numbers,
+    #            style = "Tabelltekst")
 }
 
 create_point_adt_map <- function(all_point_info_df) {
@@ -110,9 +116,10 @@ create_point_adt_map_with_labels <- function(all_point_info_df) {
 }
 
 create_point_adt_map_trondheim <- function(all_point_info_df) {
+
   palett_stasjonstype <-
     colorFactor(palette = c("#db3b99", "#444f55"),
-                domain = c("Bom", "Trafikkregistrering"))
+                domain = c("Bomstasjon", "Trafikkregistrering"))
 
   palett_adt <-
     colorNumeric(palette = "Greens",
@@ -145,7 +152,7 @@ create_point_adt_map_trondheim <- function(all_point_info_df) {
     addLegend("bottomright",
               pal = palett_adt,
               values = ~adt,
-              title = "ADT",
+              title = "ÅDT",
               opacity = 0.7,
               labFormat = labelFormat(big.mark = " "))
 
@@ -455,10 +462,10 @@ create_city_index_table_sd <- function(city_info) {
     hline_top(part = "header", border = borderline) %>%
     hline_bottom(part = "all", border = borderline) %>%
     autofit() %>%
-    height_all(height = .2) %>%
-    set_caption("Estimert endring i trafikkmengde for området.",
-                autonum = table_numbers,
-                style = "Tabelltekst")
+    height_all(height = .2) #%>%
+    #set_caption("Estimert endring i trafikkmengde for området.",
+    #            autonum = table_numbers,
+    #            style = "Tabelltekst")
 
   return(city_table)
 }
@@ -598,7 +605,8 @@ create_municipality_road_length_table <- function(road_lengths) {
 
 create_city_road_length_table <- function(road_lengths) {
 
-  road_lengths_table <- road_lengths %>%
+  road_lengths_table <-
+    road_lengths %>%
     select(road_category, road_category_name, length_km) %>%
     group_by(road_category, road_category_name) %>%
     summarise(length_km = sum(length_km)) %>%
@@ -606,8 +614,10 @@ create_city_road_length_table <- function(road_lengths) {
     select(-road_category) %>%
     select(road_category_name, length_km) %>%
     flextable() %>%
-    set_header_labels(road_category_name = "Vegkategori",
-                      length_km = "Lengde \n (km)") %>%
+    set_header_labels(
+      road_category_name = "Vegkategori",
+      length_km = "Lengde \n (km)"
+    ) %>%
     bold(part = "header") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%
@@ -615,10 +625,10 @@ create_city_road_length_table <- function(road_lengths) {
     hline_bottom(part = "all", border = borderline) %>%
     #align(j = 1, align = "center") %>%
     autofit() %>%
-    height_all(height = .2) %>%
-    set_caption("Samlet veglengde.",
-                autonum = table_numbers,
-                style = "Tabelltekst")
+    height_all(height = .2) #%>%
+    #set_caption("Samlet veglengde.",
+    #            autonum = table_numbers,
+    #            style = "Tabelltekst")
 
   return(road_lengths_table)
 }

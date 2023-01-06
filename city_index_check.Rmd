@@ -30,7 +30,7 @@ library(htmltools)
 # Nord-Jæren 952              10 Snorre
 # Oslo 959                    10 Trond
 # Tromsø 961                  10 Snorre
-# Trondheim 960, uoffisiell   11 Snorre
+# Trondheim 960               12 Snorre
 
 
 # Choose
@@ -682,34 +682,34 @@ pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 ## Punktsjekk
 
 ```{r point_plot, message=FALSE, fig.width=12}
-point_number <- 1
-trp_id_here <- city_trps_meta$trp_id[point_number]
-
-trp_name <- city_trps_meta %>% 
-  dplyr::filter(trp_id == trp_id_here) %>% 
-  dplyr::select(name, road_category_and_number) %>% 
-  stringr::str_glue_data("{name}, {road_category_and_number}")
-
-pointindex_long_2 %>% 
-  dplyr::filter(trp_id == trp_id_here) %>% 
-  ggplot2::ggplot(aes(x = month_object, y = index, color = length_range)) +
-  ggplot2::geom_line() +
-  ggplot2::geom_point(aes(alpha = coverage), size = 4) +
-  theme_light() +
-  theme(axis.text.x = element_text(angle = 90),
-        panel.grid.minor.x = element_blank(),
-        legend.position = "bottom") +
-  scale_x_date(breaks = scales::breaks_width("months"),
-               labels = scales::label_date("%b")) +
-  scale_color_manual(values = c("alle" = "#008ec2",
-                                "lette" = "#ed9300",
-                                "tunge" = "#444f55"),
-                     name = "Kjøretøyklasse") +
-  scale_alpha(name = "Dekningsgrad") +
-  labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
-       caption = "Data: Statens vegvesen") +
-  ggtitle(trp_name,
-          subtitle = "Trafikkmengde i år sammenlignet med i fjor")
+# point_number <- 1
+# trp_id_here <- city_trps_meta$trp_id[point_number]
+# 
+# trp_name <- city_trps_meta %>% 
+#   dplyr::filter(trp_id == trp_id_here) %>% 
+#   dplyr::select(name, road_category_and_number) %>% 
+#   stringr::str_glue_data("{name}, {road_category_and_number}")
+# 
+# pointindex_long_2 %>% 
+#   dplyr::filter(trp_id == trp_id_here) %>% 
+#   ggplot2::ggplot(aes(x = month_object, y = index, color = length_range)) +
+#   ggplot2::geom_line() +
+#   ggplot2::geom_point(aes(alpha = coverage), size = 4) +
+#   theme_light() +
+#   theme(axis.text.x = element_text(angle = 90),
+#         panel.grid.minor.x = element_blank(),
+#         legend.position = "bottom") +
+#   scale_x_date(breaks = scales::breaks_width("months"),
+#                labels = scales::label_date("%b")) +
+#   scale_color_manual(values = c("alle" = "#008ec2",
+#                                 "lette" = "#ed9300",
+#                                 "tunge" = "#444f55"),
+#                      name = "Kjøretøyklasse") +
+#   scale_alpha(name = "Dekningsgrad") +
+#   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
+#        caption = "Data: Statens vegvesen") +
+#   ggtitle(trp_name,
+#           subtitle = "Trafikkmengde i år sammenlignet med i fjor")
 
 # Notes
 ```

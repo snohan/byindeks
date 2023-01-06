@@ -4,7 +4,6 @@
 # Report visuals:
 # City TRP metadata and AADT
 # City MDT index
-# City TRP index spread
 # City chained index
 
 # Check visuals:
@@ -14,17 +13,18 @@
 # TODO: this script as foundation for both check and report
 
 # Setup ----
+{
 source("rmd_setup.R")
 source("get_from_trafficdata_api.R")
 source("get_from_nvdb_api.R")
-
-# Functions
-# source TAKLER IKKE Ø som brukes i kolonneoverskrift i csv-ene! Må åpne fila og kjøre alt derfra.
-source("indexpoints_tidying_functions.R")
-
 library(viridis)
 options(warn=-1)
 svv_background_color <- "#F5F5F5"
+}
+
+# source TAKLER IKKE Ø som brukes i kolonneoverskrift i csv-ene! Må åpne fila og kjøre alt derfra.
+source("indexpoints_tidying_functions.R")
+
 
 
 # Points ----
