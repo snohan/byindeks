@@ -3,14 +3,14 @@
 create_point_table <- function(all_point_info_df, caption_text) {
 
   all_point_info_df %>%
-    select(name, road_reference, adt, year) %>%
+    select(name, road_reference, adt, year_aadt) %>%
     flextable() %>%
-    colformat_int(j = "year", big.mark = "") %>%
+    colformat_int(j = "year_aadt", big.mark = "") %>%
     set_header_labels(
       name = "Navn",
       road_reference = "Vegreferanse",
       adt = "ÅDT",
-      year = "År"
+      year_aadt = "År"
     ) %>%
     align(i = 1, j = 4, align = "center", part = "header") %>%
     bold(part = "header") %>%
@@ -425,6 +425,18 @@ create_city_index_table <- function(city_info) {
 
 create_city_index_table_sd <- function(city_info) {
 
+  n_years <-
+    city_info$year |>
+    base::unique() |>
+    base::length()
+
+  line_after_single_years <-
+    officer::fp_border(
+      color = "#dadada",
+      style = "solid",
+      width = 1
+    )
+
   city_table <-
     city_info %>%
     dplyr::select(
@@ -449,18 +461,19 @@ create_city_index_table_sd <- function(city_info) {
       standard_error = "Standardfeil \n (%)"
     ) %>%
     align(
-      j = c("index_p", "standard_deviation", "standard_error"),
-      align = "center", part = "header"
+      j = c("n_trp", "index_p", "standard_deviation", "standard_error"),
+      align = "center", part = "all"
     ) %>%
-    padding(
-      j = c("index_p", "standard_deviation", "standard_error"),
-      padding.right = 25, part = "body"
-    ) %>%
+    #padding(
+    #  j = c("index_p", "standard_deviation", "standard_error"),
+    #  padding.right = 25, part = "body"
+    #) %>%
     bold(part = "header") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%
     hline_top(part = "header", border = borderline) %>%
     hline_bottom(part = "all", border = borderline) %>%
+    hline(i = n_years, border = line_after_single_years, part = "body") |>
     autofit() %>%
     height_all(height = .2) #%>%
     #set_caption("Estimert endring i trafikkmengde for området.",

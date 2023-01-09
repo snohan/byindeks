@@ -1,30 +1,40 @@
 # Preparation of data for checking and reporting
 # Gathering info on TRPs and indexes and writing to RDS files
 
+# IN
+# TRP metadata (Traffic data API)  ?? check.Rmd
+# City index for all years (Traffic data API)
+# City index for all years (local CSVs for older data)
+# TRP index for all years (Traffic data API)
+# TRP index for all years (local CSVs for older data)
+# AADT (Traffic data API, NVDB)   ?? check.Rmd
+# MDT (Traffic data API)
+
+# OUT
+# TRP metadata, AADT, index, chained index
+# Chained city index
+# City 36 month index based on MDT
+
+
 # Report visuals:
-# City TRP metadata and AADT
-# City MDT index
-# City chained index
+# TRP metadata and AADT table
+# TRP map
+# City 36 month index based on MDT table and plot
+# City chained index table and plot
 
-# Check visuals:
-# City TRP index
-# City index
-
-# TODO: this script as foundation for both check and report
 
 # Setup ----
 {
-source("rmd_setup.R")
-source("get_from_trafficdata_api.R")
-source("get_from_nvdb_api.R")
-library(viridis)
-options(warn=-1)
-svv_background_color <- "#F5F5F5"
+  source("rmd_setup.R")
+  source("get_from_trafficdata_api.R")
+  source("get_from_nvdb_api.R")
+  library(viridis)
+  options(warn=-1)
+  svv_background_color <- "#F5F5F5"
 }
 
 # source TAKLER IKKE Ø som brukes i kolonneoverskrift i csv-ene! Må åpne fila og kjøre alt derfra.
 source("indexpoints_tidying_functions.R")
-
 
 
 # Points ----
@@ -100,7 +110,7 @@ points <- get_points() %>%
 
 # Choose
 index_month <- 8 # the one to be published now
-city_number <- 959
+city_number <- 960
 
 reference_year <-
   dplyr::case_when(
@@ -705,46 +715,46 @@ write.csv2(
 
 
 # City index monthly ----
-city_monthly <-
-  dplyr::bind_rows(
-    monthly_city_index(city_index_2017),
-    monthly_city_index(city_index_2018),
-    monthly_city_index(city_index_2019),
-    monthly_city_index(city_index_2020),
-    monthly_city_index(city_index_2021),
-    monthly_city_index(city_index_2022)
-  ) %>%
-  dplyr::select(
-    area_name,
-    year,
-    month,
-    period,
-    month_object,
-    month_name,
-    index_p,
-    standard_deviation,
-    confidence_width,
-    base_volume,
-    calc_volume
-  ) %>%
-  dplyr::left_join(
-    n_points_per_month,
-    by = c("year", "month")
-  ) %>%
-  dplyr::mutate(
-    standard_error = round(standard_deviation / sqrt(n_points), digits = 1)
-  )
-
-write.csv2(
-  city_monthly,
-  file =
-    paste0(
-      "data_indexpoints_tidy/byindeks_maanedlig_",
-      city_number,
-      ".csv"
-    ),
-  row.names = F
-)
+# city_monthly <-
+#   dplyr::bind_rows(
+#     monthly_city_index(city_index_2017),
+#     monthly_city_index(city_index_2018),
+#     monthly_city_index(city_index_2019),
+#     monthly_city_index(city_index_2020),
+#     monthly_city_index(city_index_2021),
+#     monthly_city_index(city_index_2022)
+#   ) %>%
+#   dplyr::select(
+#     area_name,
+#     year,
+#     month,
+#     period,
+#     month_object,
+#     month_name,
+#     index_p,
+#     standard_deviation,
+#     confidence_width,
+#     base_volume,
+#     calc_volume
+#   ) %>%
+#   dplyr::left_join(
+#     n_points_per_month,
+#     by = c("year", "month")
+#   ) %>%
+#   dplyr::mutate(
+#     standard_error = round(standard_deviation / sqrt(n_points), digits = 1)
+#   )
+#
+# write.csv2(
+#   city_monthly,
+#   file =
+#     paste0(
+#       "data_indexpoints_tidy/byindeks_maanedlig_",
+#       city_number,
+#       ".csv"
+#     ),
+#   row.names = F
+# )
 
 
 # City index three year rolling ----
@@ -771,7 +781,7 @@ write.csv2(
 ## Get MDTs ----
 present_year <-
   lubridate::today() |>
-  lubridate::year()
+  lubridate::year() - 1
 
 years_from_reference_to_today <-
   base::seq(reference_year, present_year)
@@ -783,69 +793,91 @@ mdt <-
 )
 
 # How many MDTs in reference year from NorTraf?
-n_nortraf_mdt_reference_year <-
-  mdt |>
+# n_nortraf_mdt_reference_year <-
+#   mdt |>
+#   dplyr::filter(
+#     length_range == "[..,5.6)",
+#     year == reference_year
+#   ) |>
+#   dplyr::mutate(
+#     is_nortraf = dplyr::if_else(is.na(coverage), 1, 0)
+#   ) |>
+#   dplyr::group_by(
+#     trp_id
+#   ) |>
+#   dplyr::summarise(
+#     n_months_nortraf = sum(is_nortraf)
+#   )
+#
+# n_valid_mdt_reference_year <-
+#   mdt_validated |>
+#   dplyr::filter(
+#     year == reference_year
+#   ) |>
+#   dplyr::mutate(
+#     valid_quality = coverage >= 50 & length_quality >= 99
+#   ) |>
+#   dplyr::filter(
+#     valid_quality == TRUE
+#   ) |>
+#   dplyr::group_by(
+#     trp_id
+#   ) |>
+#   dplyr::summarise(
+#     n_months_good_quality = n()
+#   )
+#
+# this_citys_trp_nortraf_reference_year <-
+#   points |>
+#   dplyr::filter(trp_id %in% city_trps) |>
+#   split_road_system_reference() |>
+#   dplyr::select(
+#     trp_id,
+#     name,
+#     road_category_and_number
+#   ) |>
+#   dplyr::left_join(
+#     n_valid_mdt_reference_year,
+#     by = "trp_id"
+#   ) |>
+#   dplyr::left_join(
+#     n_nortraf_mdt_reference_year,
+#     by = "trp_id"
+#   ) |>
+#   dplyr::filter(
+#     n_months_good_quality >= 10,
+#     n_months_nortraf > 4
+#   )
+
+# write.csv2(
+#   this_citys_trp_nortraf_reference_year,
+#   file = "nortraf_buskerudbyen.csv",
+#   row.names = F,
+#   fileEncoding = "latin1"
+# )
+
+# TRD
+toll_mdt_class <-
+  readr::read_rds(
+    file = "data_indexpoints_tidy/trd_toll_mdt.rds",
+  ) |>
   dplyr::filter(
-    length_range == "[..,5.6)",
-    year == reference_year
+    class == "lette"
+  ) |>
+  dplyr::rename(
+    year_month = month
   ) |>
   dplyr::mutate(
-    is_nortraf = dplyr::if_else(is.na(coverage), 1, 0)
+    year = lubridate::year(year_month),
+    month = lubridate::month(year_month),
+    coverage = 100,
+    length_quality = 100
   ) |>
-  dplyr::group_by(
-    trp_id
-  ) |>
-  dplyr::summarise(
-    n_months_nortraf = sum(is_nortraf)
-  )
-
-n_valid_mdt_reference_year <-
-  mdt_validated |>
-  dplyr::filter(
-    year == reference_year
-  ) |>
-  dplyr::mutate(
-    valid_quality = coverage >= 50 & length_quality >= 99
-  ) |>
-  dplyr::filter(
-    valid_quality == TRUE
-  ) |>
-  dplyr::group_by(
-    trp_id
-  ) |>
-  dplyr::summarise(
-    n_months_good_quality = n()
-  )
-
-this_citys_trp_nortraf_reference_year <-
-  points |>
-  dplyr::filter(trp_id %in% city_trps) |>
-  split_road_system_reference() |>
   dplyr::select(
-    trp_id,
-    name,
-    road_category_and_number
-  ) |>
-  dplyr::left_join(
-    n_valid_mdt_reference_year,
-    by = "trp_id"
-  ) |>
-  dplyr::left_join(
-    n_nortraf_mdt_reference_year,
-    by = "trp_id"
-  ) |>
-  dplyr::filter(
-    n_months_good_quality >= 10,
-    n_months_nortraf > 4
+    -class,
+    -n_days,
+    -traffic
   )
-
-write.csv2(
-  this_citys_trp_nortraf_reference_year,
-  file = "nortraf_buskerudbyen.csv",
-  row.names = F,
-  fileEncoding = "latin1"
-)
-
 
 mdt_filtered <-
   mdt |>
@@ -881,17 +913,20 @@ mdt_filtered <-
       )
     )
   ) |>
-  tibble::as_tibble()
+  tibble::as_tibble() |>
+  # TRD
+  dplyr::bind_rows(toll_mdt_class)
 
-readr::write_rds(
-  mdt_filtered,
-  file =
-    paste0(
-      "data_indexpoints_tidy/mdt_",
-      city_number,
-      ".rds"
-    )
-)
+
+mdt_filtered |>
+  readr::write_rds(
+    file =
+      paste0(
+        "data_indexpoints_tidy/mdt_",
+        city_number,
+        ".rds"
+      )
+  )
 
 mdt_filtered <-
   readr::read_rds(
@@ -906,7 +941,7 @@ mdt_filtered <-
 ## Check MDT validity
 mdt_filtered |>
   dplyr::filter(
-    trp_id %in% city_trps[10:12]
+    trp_id %in% city_trps[1:3]
   ) |>
   dplyr::select(
     trp_id,
@@ -960,6 +995,8 @@ mdt_filtered |>
     valid_quality = coverage >= 50 & length_quality >= 99
   ) |>
   create_mdt_barplot()
+
+# TODO: how to check that the same exclusions are used on PI as MDT?
 
 # Exclude trp-months
 source("exclude_trp_mdts.R")

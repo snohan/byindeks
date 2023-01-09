@@ -723,8 +723,12 @@ pointindex_wide %>%
       pageLength = 21,
       lengthMenu = c(21, 42, 70),
       autoWidth = TRUE))
+```
+
+
+```{r exclusion_notes}
+#
 
 
 ```
-
 

@@ -1,7 +1,21 @@
+# IN
+# Hourly traffic per class per lane per tolling station (APAR)
+# Tolling station metadata (NVDB)
+
+# OUT
+# Tolling station metadata tidied
+# Tolling station MDT
+# Tolling station index by month
+# Tolling station index by year
+
+# NEXT
+# city_index_check.Rmd
+# city_index_dataprep_trondheim_toll_stations.R
+
 {
-source("rmd_setup.R")
-source("get_from_trafficdata_api.R")
-source("get_from_nvdb_api.R")
+  source("rmd_setup.R")
+  source("get_from_trafficdata_api.R")
+  source("get_from_nvdb_api.R")
 }
 
 library(readxl)
