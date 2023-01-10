@@ -5,14 +5,18 @@ create_point_table <- function(all_point_info_df, caption_text) {
   all_point_info_df %>%
     select(name, road_reference, adt, year_aadt) %>%
     flextable() %>%
-    colformat_int(j = "year_aadt", big.mark = "") %>%
+    colformat_double(
+      j = "year_aadt",
+      big.mark = "",
+      digits = 0
+    ) %>%
     set_header_labels(
       name = "Navn",
       road_reference = "Vegreferanse",
       adt = "ÅDT",
       year_aadt = "År"
     ) %>%
-    align(i = 1, j = 4, align = "center", part = "header") %>%
+    align(i = 1, j = c(3, 4), align = "center", part = "header") %>%
     bold(part = "header") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%
@@ -21,9 +25,10 @@ create_point_table <- function(all_point_info_df, caption_text) {
     autofit() %>%
     padding(
       j = 1,
-      padding.left = 20
+      padding.left = 20,
+      part = "all"
     ) |>
-    height_all(height = .2) #%>%
+    height_all(height = .1) #%>%
     #set_caption(caption_text,
     #            autonum = table_numbers,
     #            style = "Tabelltekst")
@@ -125,7 +130,8 @@ create_point_adt_map_trondheim <- function(all_point_info_df) {
     colorNumeric(palette = "Greens",
                  domain = NULL)
 
-  point_adt_map <- all_point_info_df %>%
+  point_adt_map <-
+    all_point_info_df %>%
     leaflet(width = "100%",
             height = 700,
             options = leafletOptions(crs = nvdb_crs,
@@ -461,7 +467,7 @@ create_city_index_table_sd <- function(city_info) {
       standard_error = "Standardfeil \n (%)"
     ) %>%
     align(
-      j = c("n_trp", "index_p", "standard_deviation", "standard_error"),
+      j = c("period", "n_trp", "index_p", "standard_deviation", "standard_error"),
       align = "center", part = "all"
     ) %>%
     #padding(

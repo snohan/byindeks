@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
   message = FALSE,
   error = FALSE,
   cache = FALSE,
-  dpi = 72,
+  dpi = 150,
   dev = "ragg_png",
   tab.topcaption = TRUE
   )

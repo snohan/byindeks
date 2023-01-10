@@ -941,7 +941,7 @@ mdt_filtered <-
 ## Check MDT validity
 mdt_filtered |>
   dplyr::filter(
-    trp_id %in% city_trps[1:3]
+    trp_id %in% city_trps[22:24]
   ) |>
   dplyr::select(
     trp_id,
@@ -996,7 +996,20 @@ mdt_filtered |>
   ) |>
   create_mdt_barplot()
 
-# TODO: how to check that the same exclusions are used on PI as MDT?
+# Check that the same exclusions are used on PI as MDT
+# TRD toll station MDTs already have the same exclusions
+
+mdt_and_pi <-
+  dplyr::left_join(
+    mdt_filtered,
+    pointindices_longformat_by_month,
+    by = c("trp_id", "year", "month")
+  ) |>
+  dplyr::left_join(
+    trp_names,
+    by = "trp_id"
+  )
+
 
 # Exclude trp-months
 source("exclude_trp_mdts.R")

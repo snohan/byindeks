@@ -319,7 +319,11 @@ Punktet Meådalen på Ev 14 mellom Stjørdal og Meråker er utelatt fra kartvisn
 ```{r}
 #| label: fig-map_trp
 #| fig-cap: "Trafikkregistreringspunkt og årsdøgntrafikk."
-#| fig-dpi: 300
+#| fig-width: 7
+
+knitr::opts_chunk$set(
+  dpi = 100
+  )
 
 # all_point_info %>%
 #   dplyr::rename(
@@ -473,7 +477,12 @@ Nedenfor vises en graf over byindeksene for hver periode, sammen med alle punkti
 #| label: fig-plot_city_point_index
 #| fig-cap: "Estimert endring i trafikkmengde for lette kjøretøy per år."
 
+knitr::opts_chunk$set(
+  dpi = 300
+  )
+
 set.seed(123)
+
 city_info_each_one_year <- 
   city_info %>%
   dplyr::mutate(year_diff = year - year_base) %>% 
@@ -532,6 +541,28 @@ ggplot() +
 
 ```
 
+.
+
+{{< pagebreak >}}
+
+# Spesielle trafikkforhold
+Trafikkregistreringspunktene som benyttes i byindeksen dekker kun en andel av det aktuelle vegnettet. Derfor kan det oppstå omfordeling av trafikk i vegnettet som bare delvis fanges opp i datagrunnlaget. Et typisk eksempel er en veg som stenges i en lengre periode i forbindelse med vegarbeid, og som fører til at all trafikken som normalt kjører der må benytte andre veger i området. Da har vi to ulike scenarioer:
+
+1. Den totale trafikkmengden i området er fortsatt den samme, siden omkringliggende vegnett har kapasitet til å føre den omdirigerte trafikken, samt at omkjøringen ikke tar så mye lengre tid at turetterspørselen går ned.
+2. Den totale trafikkmengden i området går ned som følge av manglende kapasitet i omkringliggende vegnett, eventuelt at omkjøringsruter blir for lange, og med det tidkrevende, som gjør turetterspørselen lavere.
+
+Formålet med en byindeks er å estimere en generell trend i trafikkutviklingen over tid. Byindeksen skal derfor ikke få et endringsbidrag fra stengingen i scenario 1, mens den skal få det i scenario 2. Med full informasjon om trafikken på alle deler av vegnettet, ville byindeksen uten videre ha fanget opp dette. Men siden byindekspunktene bare har data fra deler av vegnettet, må det tas hensyn til det i utvalget av punkter som bidrar til indeksen til enhver tid.
+
+Er det et byindekspunkt på en stengt veg, er det ikke alltid tilfelle at all den omfordelte trafikken fanges opp i andre byindekspunkt. Dette er avhengig av vegnettets struktur omkring den stengte vegen og fordeling av byindekspunktene der. Nedgangen i punktet på stengt veg veies derfor ikke alltid opp av tilsvarende økning i andre punkter, og det er derfor punkt på stengt veg i noen tilfeller tas ut av datagrunnlaget. Da må eventuelle andre punkt som får økning som følge av stengingen også tas ut.
+
+Trafikkregistreringspunkter må derfor ses i sammenheng med langvarige hendelser på vegnettet som medfører omkjøringsruter.
+
+Ved innføring eller fjerning av bomring, tilføring eller fjerning av bomstasjoner, samt endring av bomtakster, vil trafikken påvirkes. Trafikkregistreringspunkter som påvirkes av dette blir ikke tatt ut av datagrunnlaget så lenge de fanger opp trafikkfordelingen på veger som både får økt og redusert trafikk som følge av dette.
 
 
+## Trafikale følger av tiltak mot koronaviruspandemien
+I store deler av perioden fra mars 2020 til mars 2022 ble trafikken i stor grad påvirket av tiltak mot spredningen av det nye koronaviruset. Trafikken varierte i takt med de til enhver tid gjeldende tiltak. Enkelte tiltak førte til nedgang i trafikken, som utstrakt bruk av hjemmekontor og færre arrangementer der folk kunne møtes fysisk. Oppfordringen om å unngå å benytte kollektivtrafikk dersom mulig, kunne nok isolert sett øke personbiltrafikken noe, men totalt sett førte tiltakene til mindre biltrafikk.
+
+
+{{< include city_report_files/_traffic.Rmd >}}
 

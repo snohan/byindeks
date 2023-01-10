@@ -166,6 +166,12 @@ this_citys_trps_all_adt_final <-
     by = "trp_id"
   )
 
+trp_names <-
+  this_citys_trps_all_adt_final |>
+  dplyr::select(
+    trp_id,
+    name
+  )
 
 # Index results per year ----
 # Note: Tolling station csv file includes data from 2017,
