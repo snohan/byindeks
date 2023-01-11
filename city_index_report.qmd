@@ -13,7 +13,7 @@ format:
         \addtokomafont{section}{\sectionfont}
         \addtokomafont{subsection}{\subsectionfont}
         \addtokomafont{subsubsection}{\subsubsectionfont}
-        \usepackage[font=small,labelfont={small}]{caption}
+        \usepackage[font=small,textfont=it,labelsep=period]{caption}
 crossref: 
   tbl-title: "Tabell"
   lot-title: "Tabeller"
@@ -39,7 +39,7 @@ source("rmd_setup.R")
 # Nedre Glomma           953 (2016) 08
 # Tromsø                 961 (2016) 08
 
-# Trondheim              960 (2019) 04
+# Trondheim              960 (2019) 12
 
 # Choose city number:
 city_number <- 960
@@ -47,9 +47,17 @@ city_number <- 960
 city_number_county_name <- 
   tibble::tibble(
     city_no = c(8952, 1952, 955, 957, 953, 952, 959, 960, 961),
-    county_name = c("Vestland", "Viken", "Vestfold og Telemark", "Agder",
-                    "Viken", "Rogaland", "Oslo kommune, Viken", "Trøndelag",
-                    "Troms og Finnmark")
+    county_name = 
+      c("Vestland", 
+        "Viken", 
+        "Vestfold og Telemark", 
+        "Agder",
+        "Viken", 
+        "Rogaland", 
+        "Oslo kommune, Viken", 
+        "Trøndelag",
+        "Troms og Finnmark"
+      )
   )
 
 county_name <- 
@@ -129,7 +137,6 @@ city_info <-
   ) |> 
   # Trondheim:
   dplyr::filter(length_range == "lette")
-# TODO: implement lenght range index
 
 latest_month <- 
   city_info |> 
@@ -163,20 +170,47 @@ latest_month <-
 #   ) %>%
 #   # Trondheim:
 #   dplyr::filter(length_range == "lette")
-# 
-# latest_month <- 
-#   city_monthly %>% 
-#   dplyr::slice_max(year) %>% 
-#   dplyr::slice_max(month) %>% 
-#   dplyr::select(month_name) %>% 
-#   as.character() %>% 
-#   stringr::str_to_lower()
 
-# city_36_month <-
-#   readr::read_rds(
-#     paste0("data_indexpoints_tidy/mdt_36_", city_number, ".rds")
-#   )
-# 
+city_36_month <-
+  readr::read_rds(
+    paste0("data_indexpoints_tidy/mdt_36_", city_number, ".rds")
+  )
+
+latest_36_index <-
+  city_36_month |> 
+  dplyr::slice_max(month_object) |> 
+  dplyr::select(
+    index_p,
+    standard_error_p
+  ) |> 
+  dplyr::mutate(
+    ci_lower = round(index_p - 1.96 * standard_error_p, 1),
+    ci_upper = round(index_p + 1.96 * standard_error_p, 1)
+  )
+
+latest_36_index_adjective <-
+  dplyr::if_else(
+    latest_36_index$index_p > 0,
+    "større",
+    "mindre"
+  )
+
+latest_36_change_sentence <-
+  paste(
+    "blitt",
+    round(abs(latest_36_index$index_p), digits = 1),
+    "%",
+    latest_36_index_adjective
+  )
+ 
+latest_36_sentence <-
+  dplyr::if_else(
+    round(latest_36_index$index_p, 1) == 0,
+    "uendret",
+    latest_36_change_sentence
+  )
+
+
 # city_trp_mdt <-
 #   readr::read_rds(
 #     paste0("data_indexpoints_tidy/city_trps_mdt_", city_number, ".rds")
@@ -192,6 +226,17 @@ city_info_all_years <-
   dplyr::filter(year_from_to == from_base_year_to_last_year)
   
 index_all_years <- round(city_info_all_years$index_p, digits = 1)
+chained_index_ci_lower <-
+  round(
+    city_info_all_years$index_p - 1.96 * city_info_all_years$standard_error,
+    digits = 1
+  )
+
+chained_index_ci_upper <-
+  round(
+    city_info_all_years$index_p + 1.96 * city_info_all_years$standard_error,
+    digits = 1
+  )
 
 # Linking to child files
 intro_file <- paste0("city_report_files/intro_", city_number, ".Rmd")
@@ -231,8 +276,11 @@ traffic_file <- paste0("city_report_files/trafikkforhold_", city_number, ".Rmd")
 # Slutt Kristiansand
 ```
 
+{{< pagebreak >}}
+
 \listoftables
 
+\listoffigures
 
 {{< pagebreak >}}
 
@@ -247,7 +295,8 @@ Veglengder fordelt på vegkategori for gjeldende område er oppsummert i tabelle
 ```{r}
 #| label: tbl-road_length_sum
 #| tbl-cap: "Veglengder."
-road_lengths %>% create_city_road_length_table()
+road_lengths |> 
+  create_city_road_length_table()
 
 # Kristiansand
 #road_lengths %>% create_municipality_road_length_table()
@@ -259,14 +308,14 @@ road_lengths %>% create_city_road_length_table()
 
 ## Byindekspunktene
 
-De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeksen er listet opp i følgende tabell. Årsdøgntrafikk (ÅDT) er oppgitt for lette biler (målt til kortere enn 5,6 m).
+De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeksen er listet opp nedenfor. Årsdøgntrafikk (ÅDT) er oppgitt for lette biler (målt til kortere enn 5,6 m).
 
 ```{r}
 #| label: tbl-trp-1
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 1."
 
 all_point_info |> 
-  dplyr::slice(1:20) |> 
+  dplyr::slice(1:22) |> 
   dplyr::rename(
     #adt = aadt_lette
     # Trondheim:
@@ -283,7 +332,7 @@ all_point_info |>
 #| label: tbl-trp-2
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2."
 all_point_info |> 
-  dplyr::slice(21:40) |> 
+  dplyr::slice(23:45) |> 
   dplyr::rename(
     #adt = aadt_lette
     # Trondheim:
@@ -300,7 +349,7 @@ all_point_info |>
 #| label: tbl-trp-3
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 3."
 all_point_info |> 
-  dplyr::slice(41:50) |> 
+  dplyr::slice(46:51) |> 
   dplyr::rename(
     #adt = aadt_lette
     # Trondheim:
@@ -313,8 +362,7 @@ all_point_info |>
 
 {{< pagebreak >}}
 
-Kartet nedenfor viser plasseringen av trafikkregistreringspunktene. 
-Punktet Meådalen på Ev 14 mellom Stjørdal og Meråker er utelatt fra kartvisningen.
+Kartet nedenfor viser plasseringen av trafikkregistreringspunktene. Punktet Meådalen på Ev 14 mellom Stjørdal og Meråker er utelatt fra kartvisningen.
 
 ```{r}
 #| label: fig-map_trp
@@ -356,21 +404,26 @@ Trafikkmengden som registreres på et trafikkregistreringspunkt representerer en
 
 En ulempe med denne nye metodikken er at utvalget av trafikkregistreringspunkter begrenses til de som hadde gode nok data i referanseåret.
 
-En treårs glidende indeks er tilgjengelig fra og med det er gått tre år fra referanseåret. 
+En treårs glidende indeks er tilgjengelig fra og med det er gått tre år etter referanseåret. 
 
-Resultatene så langt er gitt i tabellen nedenfor.
+Resultatene så langt er gitt nedenfor.
 
 ```{r city_table_36}
-#create_city_mdt_36_index_table(city_36_month)
+#| label: tbl-trp_36
+#| tbl-cap: "Tre års glidende indeks."
+
+create_city_mdt_36_index_table(city_36_month)
 ```
 
-```{r city_plot_36, fig.width=6, fig.height=7, fig.cap="Estimert endring i trafikkmengde i glidende treårsperioder."}
+```{r}
+#| label: fig-plot_city_36
+#| fig-cap: "Tidsserie med tre års glidende indeks."
 
-# visualize_city_36_mdt_index(
-#   city_36_month,
-#   caption_credit,
-#   "Estimert endring i trafikkmengde siste 3 år for lette kjøretøy"
-# )
+visualize_city_36_mdt_index(
+  city_36_month,
+  caption_credit,
+  "Estimert endring i trafikkmengde siste 3 år for lette kjøretøy"
+)
 ```
 
 <!-- Kristiansand --
@@ -396,7 +449,25 @@ Tilsvarende for gamle Kristiansand kommune.
 <br>
 <!-- Kristiansand -->
 
+::: {.callout-warning icon=false}
+
+## Resultat
+
+Sammenlignet med referanseåret er trafikkmengden de siste tre årene i gjennomsnitt 
+`r stringr::str_replace(as.character(latest_36_sentence), "\\.", ",")`. 
+Tas måleusikkerheten i betraktning, ligger endringen i trafikkmengden mellom 
+`r stringr::str_replace(as.character(latest_36_index$ci_lower), "\\.", ",")` % og 
+`r stringr::str_replace(as.character(latest_36_index$ci_upper), "\\.", ",")` %.  
+:::
+
+\vspace{5mm}
+
+Intervallet oppgitt ovenfor er et konfidensintervall på 95 %, som vil si at den sanne endringen i trafikkmengde vil ligge innenfor et slikt intervall 95 % av gangene en tilsvarende måling blir gjort. Usikkerheten er i stor grad avhengig av hvor mange trafikkregistreringspunkter som inngår i beregningene, men også større trafikale omfordelinger vil bidra.
+
+
 {{< include city_report_files/_mdt_info.Rmd >}}
+
+{{< pagebreak >}}
 
 ## Endring per år
 Endring i trafikkmengde er også beregnet for hele kalenderår. Tabellen nedenfor viser byindeksen for hvert år, samt for hele perioden.
@@ -423,10 +494,12 @@ Indekstallene som gjelder for lengre perioder enn to påfølgende år er beregne
 ```
 <!-- Kristiansand -->
 
-
-**Byindeksen estimerer endringen i trafikkmengden for lette kjøretøy fra 
+Byindeksen estimerer endringen i trafikkmengden for lette kjøretøy fra 
 `r base_year` til `r latest_month` `r last_year` til å være 
-`r stringr::str_replace(as.character(index_all_years), "\\.", ",")` %.**
+`r stringr::str_replace(as.character(index_all_years), "\\.", ",")` %. 
+Et 95 % konfidensintervall går fra 
+`r stringr::str_replace(as.character(chained_index_ci_lower), "\\.", ",")` % til 
+`r stringr::str_replace(as.character(chained_index_ci_upper), "\\.", ",")` %.
 
 
 <!--
@@ -534,16 +607,7 @@ ggplot() +
           subtitle = "Byindeksen (store prikker) og punktene (små prikker)")
 ```
 
-```{r}
-#| label: fig-plot_city_index
-#| fig-cap: "Estimert endring i trafikkmengde for lette kjøretøy fra referanseår beregnet som kjedet indeks."
-
-
-```
-
-.
-
-{{< pagebreak >}}
+\clearpage
 
 # Spesielle trafikkforhold
 Trafikkregistreringspunktene som benyttes i byindeksen dekker kun en andel av det aktuelle vegnettet. Derfor kan det oppstå omfordeling av trafikk i vegnettet som bare delvis fanges opp i datagrunnlaget. Et typisk eksempel er en veg som stenges i en lengre periode i forbindelse med vegarbeid, og som fører til at all trafikken som normalt kjører der må benytte andre veger i området. Da har vi to ulike scenarioer:
@@ -561,7 +625,7 @@ Ved innføring eller fjerning av bomring, tilføring eller fjerning av bomstasjo
 
 
 ## Trafikale følger av tiltak mot koronaviruspandemien
-I store deler av perioden fra mars 2020 til mars 2022 ble trafikken i stor grad påvirket av tiltak mot spredningen av det nye koronaviruset. Trafikken varierte i takt med de til enhver tid gjeldende tiltak. Enkelte tiltak førte til nedgang i trafikken, som utstrakt bruk av hjemmekontor og færre arrangementer der folk kunne møtes fysisk. Oppfordringen om å unngå å benytte kollektivtrafikk dersom mulig, kunne nok isolert sett øke personbiltrafikken noe, men totalt sett førte tiltakene til mindre biltrafikk.
+I store deler av perioden fra mars 2020 til mars 2022 ble trafikken i varierende grad påvirket av tiltak mot spredningen av det nye koronaviruset. Trafikken varierte i takt med de til enhver tid gjeldende tiltak. Enkelte tiltak førte til nedgang i trafikken, som utstrakt bruk av hjemmekontor og færre arrangementer der folk kunne møtes fysisk. Oppfordringen om å unngå å benytte kollektivtrafikk dersom mulig, kunne nok isolert sett øke personbiltrafikken noe, men totalt sett førte tiltakene til mindre biltrafikk.
 
 
 {{< include city_report_files/_traffic.Rmd >}}

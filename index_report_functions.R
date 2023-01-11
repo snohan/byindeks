@@ -17,6 +17,7 @@ create_point_table <- function(all_point_info_df, caption_text) {
       year_aadt = "År"
     ) %>%
     align(i = 1, j = c(3, 4), align = "center", part = "header") %>%
+    align(j = c(4), align = "center", part = "body") %>%
     bold(part = "header") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%
@@ -558,22 +559,22 @@ create_city_mdt_36_index_table <- function(city_36_month) {
     ) %>%
     set_header_labels(
       index_period = "Sammenligningsperiode",
-      index_p = "Endring i \ntrafikkmengde (%)",
-      n_trp = "Antall \npunkt",
-      sd_sample_p = "Standardavvik \n(prosentpoeng)",
-      standard_error_p = "Standardfeil \n(prosentpoeng)"
+      index_p = "Endring i\ntrafikkmengde\n(%)",
+      n_trp = "Antall\npunkt",
+      sd_sample_p = "Standardavvik\n(prosentpoeng)",
+      standard_error_p = "Standardfeil\n(prosentpoeng)"
     ) %>%
     bold(part = "header") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%
     hline_top(part = "header", border = borderline) %>%
     hline_bottom(part = "all", border = borderline) %>%
-    align(j = 2, align = "left") %>%
+    align(align = "center", part = "all") |>
     autofit() %>%
-    height_all(height = .2) %>%
-    set_caption("Estimert endring i trafikkmengde i treårsperioder.",
-                autonum = table_numbers,
-                style = "Tabelltekst")
+    height_all(height = .2) #%>%
+    #set_caption("Estimert endring i trafikkmengde i treårsperioder.",
+    #            autonum = table_numbers,
+    #            style = "Tabelltekst")
 
   return(city_table)
 }

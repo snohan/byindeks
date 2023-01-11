@@ -274,6 +274,11 @@ readr::write_rds(
   file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".rds")
 )
 
+this_citys_trp_index_refyear <-
+  readr::read_rds(
+    file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".rds")
+  )
+
 
 # City index ----
 # Must calculate based on all pointindices

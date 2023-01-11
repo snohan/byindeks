@@ -28,13 +28,15 @@
   source("rmd_setup.R")
   source("get_from_trafficdata_api.R")
   source("get_from_nvdb_api.R")
+  source("indexpoints_tidying_functions.R")
   library(viridis)
   options(warn=-1)
   svv_background_color <- "#F5F5F5"
 }
 
 # source TAKLER IKKE Ø som brukes i kolonneoverskrift i csv-ene! Må åpne fila og kjøre alt derfra.
-source("indexpoints_tidying_functions.R")
+# Løst?
+
 
 
 # Points ----
@@ -55,7 +57,8 @@ trp_id_msnr <-
 #  read_csv2("data_points_raw/points_unestablished.csv")
 
 ## All points from Traffic Data API ----
-points <- get_points() %>%
+points <-
+  get_points() %>%
   dplyr::distinct(trp_id, .keep_all = T) %>%
   dplyr::select(
     trp_id,
@@ -109,7 +112,7 @@ points <- get_points() %>%
 # Trondheim stop
 
 # Choose
-index_month <- 8 # the one to be published now
+index_month <- 12 # the one to be published now
 city_number <- 960
 
 reference_year <-
@@ -941,7 +944,7 @@ mdt_filtered <-
 ## Check MDT validity
 mdt_filtered |>
   dplyr::filter(
-    trp_id %in% city_trps[22:24]
+    trp_id %in% city_trps[31:33]
   ) |>
   dplyr::select(
     trp_id,
@@ -999,6 +1002,30 @@ mdt_filtered |>
 # Check that the same exclusions are used on PI as MDT
 # TRD toll station MDTs already have the same exclusions
 
+pointindices_longformat_by_month <-
+  dplyr::bind_rows(
+    pointindex_20_all[[2]],
+    pointindex_21_all[[2]],
+    pointindex_22_all[[2]]
+  ) %>%
+  dplyr::filter(
+    day_type == "ALL",
+    is_excluded == FALSE,
+    is_manually_excluded == FALSE,
+    length_excluded == FALSE,
+    length_range == "lette"
+  ) |>
+  dplyr::group_by(year) %>%
+  dplyr::filter(
+    period == "month"
+  ) %>%
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    index
+  )
+
 mdt_and_pi <-
   dplyr::left_join(
     mdt_filtered,
@@ -1017,53 +1044,52 @@ source("exclude_trp_mdts.R")
 
 ## TRP MDT table ----
 # To show MDTs in a table in the report
-mdt_each_year <-
-  purrr::map_dfr(
-    years_from_reference_to_today,
-    ~ filter_mdt(mdt_filtered, .x)
-  ) |>
-  dplyr::select(
-    -n_months
-  ) |>
-  tidyr::pivot_wider(
-    names_from = year,
-    names_prefix = "mdt_",
-    values_from = mean_mdt
-  )
-
-city_trps_mdt <-
-  points %>%
-  dplyr::filter(trp_id %in% city_trps) %>%
-  split_road_system_reference() %>%
-  dplyr::select(
-    trp_id,
-    name,
-    road_category_and_number
-  ) %>%
-  dplyr::left_join(
-    mdt_each_year,
-    by = "trp_id"
-  ) |>
-  dplyr::mutate(
-    dplyr::across(
-      tidyselect::starts_with("mdt_"),
-      ~ round(
-        .x,
-        digits = -1
-        )
-    )
-  )
-
-readr::write_rds(
-  city_trps_mdt,
-  file =
-    paste0(
-      "data_indexpoints_tidy/city_trps_mdt_",
-      city_number,
-      ".rds"
-    )
-)
-
+# mdt_each_year <-
+#   purrr::map_dfr(
+#     years_from_reference_to_today,
+#     ~ filter_mdt(mdt_filtered, .x)
+#   ) |>
+#   dplyr::select(
+#     -n_months
+#   ) |>
+#   tidyr::pivot_wider(
+#     names_from = year,
+#     names_prefix = "mdt_",
+#     values_from = mean_mdt
+#   )
+#
+# city_trps_mdt <-
+#   points %>%
+#   dplyr::filter(trp_id %in% city_trps) %>%
+#   split_road_system_reference() %>%
+#   dplyr::select(
+#     trp_id,
+#     name,
+#     road_category_and_number
+#   ) %>%
+#   dplyr::left_join(
+#     mdt_each_year,
+#     by = "trp_id"
+#   ) |>
+#   dplyr::mutate(
+#     dplyr::across(
+#       tidyselect::starts_with("mdt_"),
+#       ~ round(
+#         .x,
+#         digits = -1
+#         )
+#     )
+#   )
+#
+# readr::write_rds(
+#   city_trps_mdt,
+#   file =
+#     paste0(
+#       "data_indexpoints_tidy/city_trps_mdt_",
+#       city_number,
+#       ".rds"
+#     )
+# )
 
 
 ## All possible 36 month window indices ----
