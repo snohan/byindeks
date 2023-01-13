@@ -69,7 +69,12 @@ pointindices_longformat_year_to_date <-
 # TRPs ----
 # Note: "points" is made in city_index_dataprep.R
 # Choosing most recent version of city trps
-city_trps <- pointindex_22_all[[1]]
+city_trps <-
+  pointindex_22_all[[1]]
+
+# Removing Tungasletta Ystgaard (is removed from VTI, but is still in API response TODO: figure out why!)
+city_trps <-
+  city_trps[! city_trps %in% c("84826V42881")]
 
 this_citys_trps <-
   points %>%
@@ -114,57 +119,8 @@ trd_station_type <-
   )
 
 # AADT ----
-# adt_trp_id <-
-#   this_citys_trps_all %>%
-#   dplyr::filter(station_type == "Trafikkregistrering")
-#
-# adt_trp <-
-#   get_aadt_for_trp_list(adt_trp_id$trp_id)
+# Fetch AADT in city_index_check.Rmd
 
-#adt_trp_filtered <-
-#  adt_trp %>%
-  #dplyr::filter(length_range == "[..,5.6)") %>%
-  #dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
-  #dplyr::filter(length_quality > 90) %>%
-#  dplyr::filter(coverage > 50) %>%
-#  dplyr::group_by(trp_id) %>%
-  #dplyr::filter(year >= 2019) %>%
-#  dplyr::filter(year == max(year)) %>%
-#  dplyr::select(trp_id, adt, year)
-
-# this_citys_trps_all_adt <-
-#   this_citys_trps_all %>%
-#   dplyr::left_join(
-#     adt_trp_filtered,
-#     by = "trp_id"
-#   )
-#
-# missing_adt <-
-#   this_citys_trps_all_adt %>%
-#   dplyr::filter(is.na(adt)) %>%
-#   dplyr::mutate(
-#     adt = mapply(getAadtByRoadlinkposition, road_link_position),
-#     year = 2021
-#   )
-
-# Finally all aadt
-# this_citys_trps_all_adt_final <-
-#   this_citys_trps_all_adt %>%
-#   dplyr::filter(!is.na(adt)) %>%
-#   dplyr::bind_rows(missing_adt)
-
-this_citys_trps_all_adt_final <-
-  readr::read_rds(
-    file = paste0(
-      "index_trp_metadata/trp_",
-      city_number,
-      ".rds"
-    )
-  ) |>
-  dplyr::left_join(
-    trd_station_type,
-    by = "trp_id"
-  )
 
 trp_names <-
   this_citys_trps_all_adt_final |>
@@ -274,10 +230,10 @@ readr::write_rds(
   file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".rds")
 )
 
-this_citys_trp_index_refyear <-
-  readr::read_rds(
-    file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".rds")
-  )
+# this_citys_trp_index_refyear <-
+#   readr::read_rds(
+#     file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".rds")
+#   )
 
 
 # City index ----

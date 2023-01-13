@@ -1,6 +1,6 @@
 #
 
-create_point_table <- function(all_point_info_df, caption_text) {
+create_point_table <- function(all_point_info_df) {
 
   all_point_info_df %>%
     select(name, road_reference, adt, year_aadt) %>%
@@ -29,10 +29,40 @@ create_point_table <- function(all_point_info_df, caption_text) {
       padding.left = 20,
       part = "all"
     ) |>
-    height_all(height = .1) #%>%
-    #set_caption(caption_text,
-    #            autonum = table_numbers,
-    #            style = "Tabelltekst")
+    height_all(height = .1)
+}
+
+create_point_table_trd <- function(all_point_info_df) {
+
+  all_point_info_df %>%
+    select(name, station_type_short, road_reference, adt, year_aadt) %>%
+    flextable() %>%
+    colformat_double(
+      j = "year_aadt",
+      big.mark = "",
+      digits = 0
+    ) %>%
+    set_header_labels(
+      name = "Navn",
+      station_type_short = "Type",
+      road_reference = "Vegreferanse",
+      adt = "ÅDT",
+      year_aadt = "År"
+    ) %>%
+    align(i = 1, j = c(4, 5), align = "center", part = "header") %>%
+    align(j = c(5), align = "center", part = "body") %>%
+    bold(part = "header") %>%
+    bg(bg = "#ED9300", part = "header") %>%
+    border_remove() %>%
+    hline_top(part = "header", border = borderline) %>%
+    hline_bottom(part = "all", border = borderline) %>%
+    autofit() %>%
+    padding(
+      j = 1,
+      padding.left = 20,
+      part = "all"
+    ) |>
+    height_all(height = .1)
 }
 
 create_point_adt_map <- function(all_point_info_df) {

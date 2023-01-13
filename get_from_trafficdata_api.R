@@ -1100,7 +1100,7 @@ get_trp_mdt_by_direction <- function(trp_id, mdt_year) {
 #mdt_test_2 <- get_trp_mdt_by_lane("91582V930281", "2020")
 
 #trp_id <- "66220V72824"
-#trp_id <- "08132V1984223"
+trp_id <- "41078V805609"
 #trp_adt <- getTrpAadt_byLength(trp_id)
 
 get_aadt_by_length_for_trp <- function(trp_id) {
@@ -1213,6 +1213,164 @@ get_aadt_by_length_for_trp <- function(trp_id) {
 
   return(trp_aadt)
 }
+
+
+#trp_id <- "28891V121760"
+
+get_periodic_aadt_by_length <- function(trp_id) {
+
+  # Get all AADTs for a trp
+  query_aadt <- paste0(
+    "query trp_adt {
+    trafficData(trafficRegistrationPointId: \"", trp_id,"\") {
+      trafficRegistrationPoint {
+      id
+    }
+    volume {
+      average {
+        daily {
+          byYear (dayType: ALL) {
+            year
+            total {
+              validLengthVolume {
+                average
+              }
+              coverage {
+                percentage
+              }
+              volume {
+                average
+                standardDeviation
+              }
+            }
+            byLengthRange {
+              lengthRange{
+                representation
+              }
+              total {
+                volume {
+                  average
+                  standardDeviation
+                }
+              }
+            }
+            calculationMethod {
+              methodName
+              ... on FactorCurveCalculationMethod {
+                factorCurve
+                numberOfDaysWithAtLeastOneHour {
+                  total
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+")
+
+  myqueries <- Query$new()
+  myqueries$query("aadts", query_aadt)
+
+  trp_aadt <-
+    cli$exec(myqueries$queries$aadts) %>%
+    jsonlite::fromJSON(
+      simplifyDataFrame = T,
+      flatten = T
+    )
+
+  if (
+    purrr::is_empty(trp_aadt$data$trafficData$volume$average$daily$byYear)
+  ){
+    trp_aadt <- tibble::tibble()
+  }else{
+    trp_aadt <-
+      trp_aadt |>
+      base::as.data.frame() |>
+      tibble::as_tibble()
+  }
+
+  return(trp_aadt)
+}
+
+
+get_periodic_aadt_by_length_for_trp_list <- function(trp_list) {
+
+  number_of_points <- length(trp_list)
+  #trp_data <- data.frame()
+  trp_data <- tibble::tibble()
+  trp_count <- 1
+
+  while (trp_count <= number_of_points) {
+    trp_data <-
+      bind_rows(
+        trp_data,
+        get_periodic_aadt_by_length(trp_list[trp_count])
+      )
+
+    trp_count <- trp_count + 1
+  }
+
+  trp_aadt <-
+    trp_data |>
+    dplyr::select(
+      trp_id = data.trafficData.id,
+      year = data.trafficData.volume.average.daily.byYear.year,
+      by_length = data.trafficData.volume.average.daily.byYear.byLengthRange,
+      coverage = data.trafficData.volume.average.daily.byYear.total.coverage.percentage,
+      days = data.trafficData.volume.average.daily.byYear.calculationMethod.numberOfDaysWithAtLeastOneHour.total,
+      aadt_total = data.trafficData.volume.average.daily.byYear.total.volume.average,
+      method = data.trafficData.volume.average.daily.byYear.calculationMethod.methodName,
+      factor_curve = data.trafficData.volume.average.daily.byYear.calculationMethod.factorCurve
+    ) |>
+    dplyr::mutate(
+      length_of_list = lengths(by_length)
+    )
+
+  trp_aadt_no_length <-
+    trp_aadt |>
+    dplyr::filter(
+      length_of_list == 0
+    ) |>
+    dplyr::select(
+      -by_length
+    )
+
+  trp_aadt_length <-
+    trp_aadt |>
+    dplyr::filter(
+      length_of_list != 0
+    ) |>
+    tidyr::unnest(
+      cols = c(by_length),
+      keep_empty = TRUE,
+      names_sep = "."
+    )
+
+  trp_aadt_all <-
+    dplyr::bind_rows(
+      trp_aadt_length,
+      trp_aadt_no_length
+    ) |>
+    dplyr::select(
+      -length_of_list
+    )
+
+  return(trp_aadt_all)
+}
+
+# test_list <-
+#   c(
+#     "39215V320588", # kontinuerlig
+#     "79404V1175648", # radar med lengde
+#     "41078V805609" # radar uten lengde
+#   )
+#
+# test_aadt <-
+#   get_periodic_aadt_by_length_for_trp_list(test_list)
+
 
 
 #trp_id <- "01316V804837"

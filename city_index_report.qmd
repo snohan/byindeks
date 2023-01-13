@@ -312,18 +312,16 @@ De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeks
 
 ```{r}
 #| label: tbl-trp-1
-#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 1."
+#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 1. B er bomstasjon, T er trafikkregistreringspunkt."
 
 all_point_info |> 
-  dplyr::slice(1:22) |> 
+  dplyr::slice(1:20) |> 
   dplyr::rename(
     #adt = aadt_lette
     # Trondheim:
     adt = adt
   ) %>%
-  create_point_table(
-  ""
-  )
+  create_point_table_trd()
 ```
 
 {{< pagebreak >}}
@@ -332,15 +330,13 @@ all_point_info |>
 #| label: tbl-trp-2
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2."
 all_point_info |> 
-  dplyr::slice(23:45) |> 
+  dplyr::slice(21:40) |> 
   dplyr::rename(
     #adt = aadt_lette
     # Trondheim:
     adt = adt
   ) %>%
-  create_point_table(
-  ""
-  )
+  create_point_table_trd()
 ```
 
 {{< pagebreak >}}
@@ -349,15 +345,13 @@ all_point_info |>
 #| label: tbl-trp-3
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 3."
 all_point_info |> 
-  dplyr::slice(46:51) |> 
+  dplyr::slice(41:50) |> 
   dplyr::rename(
     #adt = aadt_lette
     # Trondheim:
     adt = adt
   ) %>%
-  create_point_table(
-  ""
-  )
+  create_point_table_trd()
 ```
 
 {{< pagebreak >}}
@@ -394,7 +388,7 @@ Nullvekstmålet skal måles ved at trafikkutviklingen vurderes på et treårs gl
 
 ## Endring i glidende treårsperiode
 
-Tidligere ble en glidende indeks over tre år beregnet ved å multiplisere de siste tre årsindeksene. For å få en månedlig oppdatering ble det benyttet de siste tre indeksene for "siste 12 måneder". Med denne metodikken ble det ikke sammenlignet med referanseåret. Denne beregningsmetodikken fungerer greit når trafikkutviklingen følger en jevn trend over mange år. Men som følge av pandemien ble trafikknivået generelt en del lavere enn normalt og det ble et tydelig trendbrudd mot det som har vært en jevn trafikkvekst i flere tiår. Når pandemien var over steg trafikknivået relativt raskt tilbake til omtrent det nivået som var før. En slik treårs glidende indeks vil dermed i en overgangsperiode ensidig ta opp i seg økningen fra det lave trafikknivået under pandemien og vil framstå som om trafikken generelt har økt kraftig. Metodikken mangler dermed et sammenligningsgrunnlag som representerer et normalt trafikknivå. Dette er uheldig, og det er derfor bestemt at metodikken skal endres til en beregning som alltid sammenligner med referanseåret, som da må kunne anses som et normalår.
+Tidligere ble en glidende indeks over tre år beregnet ved å multiplisere de siste tre årsindeksene. For å få en månedlig oppdatering ble det benyttet de siste tre indeksene for "siste 12 måneder". Med denne metodikken ble det ikke sammenlignet med referanseåret. Denne beregningsmetodikken fungerer greit når trafikkutviklingen følger en jevn trend over mange år. Men som følge av pandemien ble trafikknivået generelt en del lavere enn normalt og det ble et tydelig trendbrudd mot det som har vært en jevn trafikkvekst i flere tiår. Når pandemien var over steg trafikknivået relativt raskt tilbake til omtrent det nivået som var før. En slik treårs glidende indeks vil dermed i en overgangsperiode ensidig ta opp i seg økningen fra det lave trafikknivået under pandemien og vil framstå som om trafikken generelt har økt kraftig. Metodikken mangler dermed et sammenligningsgrunnlag som representerer et normalt trafikknivå. Dette er uheldig, og det er derfor bestemt at metodikken alltid skal sammenligne med referanseåret, som da må kunne anses som et normalår.
 
 Den nye beregningsmetoden tar derfor et gjennomsnitt av trafikknivået de siste tre årene og sammenligner dette med trafikknivået i referanseåret. For hvert av trafikkregistreringspunktene som inngår i byindeksen benyttes gjennomsnittlig døgntrafikk. For at denne treårs glidende indeksen skal kunne oppdateres månedlig, benyttes gjennomsnittlig døgntrafikk per måned, kjent som månedsdøgntrafikk (MDT). 
 
@@ -451,7 +445,7 @@ Tilsvarende for gamle Kristiansand kommune.
 
 ::: {.callout-warning icon=false}
 
-## Resultat
+## Resultat nullvekstmål
 
 Sammenlignet med referanseåret er trafikkmengden de siste tre årene i gjennomsnitt 
 `r stringr::str_replace(as.character(latest_36_sentence), "\\.", ",")`. 
