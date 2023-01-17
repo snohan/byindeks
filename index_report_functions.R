@@ -6,10 +6,14 @@ create_point_table <- function(all_point_info_df) {
     select(name, road_reference, adt, year_aadt) %>%
     flextable() %>%
     colformat_double(
-      j = "year_aadt",
-      big.mark = "",
-      digits = 0
+     j = "year_aadt",
+     big.mark = "",
+     digits = 0
     ) %>%
+    # colformat_int(
+    #   j = "year_aadt",
+    #   big.mark = ""
+    # ) %>%
     set_header_labels(
       name = "Navn",
       road_reference = "Vegreferanse",
@@ -37,10 +41,9 @@ create_point_table_trd <- function(all_point_info_df) {
   all_point_info_df %>%
     select(name, station_type_short, road_reference, adt, year_aadt) %>%
     flextable() %>%
-    colformat_double(
+    colformat_int(
       j = "year_aadt",
-      big.mark = "",
-      digits = 0
+      big.mark = ""
     ) %>%
     set_header_labels(
       name = "Navn",
@@ -601,7 +604,7 @@ create_city_mdt_36_index_table <- function(city_36_month) {
     hline_bottom(part = "all", border = borderline) %>%
     align(align = "center", part = "all") |>
     autofit() %>%
-    height_all(height = .2) #%>%
+    height_all(height = .1) #%>%
     #set_caption("Estimert endring i trafikkmengde i treårsperioder.",
     #            autonum = table_numbers,
     #            style = "Tabelltekst")

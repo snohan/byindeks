@@ -57,33 +57,33 @@ trp_id_msnr <-
 #  read_csv2("data_points_raw/points_unestablished.csv")
 
 ## All points from Traffic Data API ----
-points <-
-  get_points() %>%
-  dplyr::distinct(trp_id, .keep_all = T) %>%
-  dplyr::select(
-    trp_id,
-    name,
-    road_reference,
-    county_name,
-    municipality_name,
-    lat, lon, road_link_position
-  ) %>%
-  split_road_system_reference() %>%
-  dplyr::mutate(
-    name = stringr::str_to_title(name, locale = "no")
-  ) %>%
-  dplyr::select(
-    trp_id,
-    name,
-    road_reference,
-    road_category,
-    road_number,
-    road_category_and_number,
-    section_number, subsection_number, meter,
-    intersection_part_number, intersection_meter,
-    county_name, municipality_name,
-    lat, lon, road_link_position
-    )
+# points <-
+#   get_points() %>%
+#   dplyr::distinct(trp_id, .keep_all = T) %>%
+#   dplyr::select(
+#     trp_id,
+#     name,
+#     road_reference,
+#     county_name,
+#     municipality_name,
+#     lat, lon, road_link_position
+#   ) %>%
+#   split_road_system_reference() %>%
+#   dplyr::mutate(
+#     name = stringr::str_to_title(name, locale = "no")
+#   ) %>%
+#   dplyr::select(
+#     trp_id,
+#     name,
+#     road_reference,
+#     road_category,
+#     road_number,
+#     road_category_and_number,
+#     section_number, subsection_number, meter,
+#     intersection_part_number, intersection_meter,
+#     county_name, municipality_name,
+#     lat, lon, road_link_position
+#     )
 
 # All points from TRP API (if needed):
 #points_trp <- get_points_from_trpapi_httr() %>%
@@ -113,7 +113,7 @@ points <-
 
 # Choose
 index_month <- 12 # the one to be published now
-city_number <- 960
+city_number <- 8952
 
 reference_year <-
   dplyr::case_when(
@@ -311,7 +311,7 @@ trp_index_monthly <-
   dplyr::bind_rows(
   # Pointindex from API here
     #pointindex_18_all[[2]],
-    #pointindex_19_all[[2]],
+    pointindex_19_all[[2]],
     pointindex_20_all[[2]],
     pointindex_21_all[[2]],
     pointindex_22_all[[2]]
@@ -332,8 +332,8 @@ trp_index_monthly <-
   dplyr::bind_rows(
     # Pointindex from old csv files here:
     #pointindex_17_monthly,
-    pointindex_18_monthly,
-    pointindex_19_monthly
+    #pointindex_18_monthly,
+    #pointindex_19_monthly
   )
 
 
@@ -385,77 +385,57 @@ trp_index_monthly_wide <-
 
 
 ## AADT ----
-adt <- get_aadt_by_length_for_trp_list(city_trps)
+#adt <- get_aadt_by_length_for_trp_list(city_trps)
 
-adt_filtered <-
-  adt %>%
-  dplyr::filter(
-    length_range %in% c("[..,5.6)", "[5.6,..)")
-    ) %>%
-  dplyr::mutate(
-    length_quality = round(aadt_valid_length / aadt_total * 100)
-  ) %>%
-  #dplyr::filter(
-  #  length_quality > 90
-  #) %>%
-  dplyr::filter(
-    coverage > 50
-  ) %>%
-  dplyr::mutate(
-    length_range =
-      dplyr::case_when(
-        length_range == "[..,5.6)" ~ "lette",
-        length_range == "[5.6,..)" ~ "tunge",
-        TRUE ~ length_range
-      )
-  ) %>%
-  dplyr::select(
-    trp_id,
-    year,
-    length_range,
-    aadt_length_range,
-    coverage,
-    aadt_total,
-    sd_total,
-    length_quality
-  ) %>%
-  tidyr::pivot_wider(
-    names_from = "length_range",
-    names_prefix = "aadt_",
-    values_from = "aadt_length_range"
-  ) %>%
-  dplyr::group_by(trp_id) %>%
-  dplyr::filter(year == max(year)) %>%
-  dplyr::select(
-    trp_id,
-    year,
-    coverage,
-    length_quality,
-    aadt_total,
-    aadt_lette,
-    aadt_tunge
-  )
+# adt_filtered <-
+#   adt %>%
+#   dplyr::filter(
+#     length_range %in% c("[..,5.6)", "[5.6,..)")
+#     ) %>%
+#   dplyr::mutate(
+#     length_quality = round(aadt_valid_length / aadt_total * 100)
+#   ) %>%
+#   #dplyr::filter(
+#   #  length_quality > 90
+#   #) %>%
+#   dplyr::filter(
+#     coverage > 50
+#   ) %>%
+#   dplyr::mutate(
+#     length_range =
+#       dplyr::case_when(
+#         length_range == "[..,5.6)" ~ "lette",
+#         length_range == "[5.6,..)" ~ "tunge",
+#         TRUE ~ length_range
+#       )
+#   ) %>%
+#   dplyr::select(
+#     trp_id,
+#     year,
+#     length_range,
+#     aadt_length_range,
+#     coverage,
+#     aadt_total,
+#     sd_total,
+#     length_quality
+#   ) %>%
+#   tidyr::pivot_wider(
+#     names_from = "length_range",
+#     names_prefix = "aadt_",
+#     values_from = "aadt_length_range"
+#   ) %>%
+#   dplyr::group_by(trp_id) %>%
+#   dplyr::filter(year == max(year)) %>%
+#   dplyr::select(
+#     trp_id,
+#     year,
+#     coverage,
+#     length_quality,
+#     aadt_total,
+#     aadt_lette,
+#     aadt_tunge
+#   )
 
-### Bergen ----
-adt_manual <- data.frame(
-  trp_id = c("04939V804763", "58509V804762"),
-  adt = c(100, 1700),
-  year = c(2020, 2020)
-)
-
-### Nord-Jæren ----
-adt_manual <- data.frame(
-  #trp_id = c("68351V319882"),
-  #adt = c(31500),
-  #year = c(2017)
-)
-
-### Buskerudbyen ----
-adt_manual <- data.frame(
-  # trp_id = c("26634V181322", "06687V181318", "63545V180918"),
-  # adt = c(2200, 26500, 6000),
-  # year = c(2019, 2019, 2018)
-)
 
 ### Oslo ----
 # this_citys_trp_index_prel <- points %>%
@@ -486,50 +466,33 @@ adt_manual <- data.frame(
 #   split_road_system_reference()
 # Oslo end, skip to refyear
 
-### Grenland ----
-adt_manual <- data.frame(
-  trp_id = c("26489V521174"),
-  adt = c(9600),
-  year = c(2018)
-)
-
-### Tromsø ----
-adt_manual <- data.frame()
-
-### Kristiansand ----
-adt_manual <- data.frame(
-  trp_id = c("33412V121301"),
-  aadt_lette = c(40000),
-  year = c(2017)
-)
-
-### Nedre Glomma ----
-adt_manual <- data.frame()
-
-### All ----
-adt_all <-
-  bind_rows(
-    adt_filtered,
-    adt_manual
+this_citys_trps_all_adt_final <-
+  readr::read_rds(
+    file = paste0(
+      "index_trp_metadata/trp_",
+      city_number,
+      ".rds"
+    )
   )
 
 ## Final table ----
 this_citys_trp_index <-
-  points %>%
-  dplyr::filter(trp_id %in% city_trps) %>%
-  split_road_system_reference() %>%
-  dplyr::select(
-    trp_id,
-    name,
-    road_reference,
-    road_category_and_number,
-    county_name, municipality_name,
-    lat, lon, road_link_position
-  ) %>%
+  # points %>%
+  # dplyr::filter(trp_id %in% city_trps) %>%
+  # split_road_system_reference() %>%
+  # dplyr::select(
+  #   trp_id,
+  #   name,
+  #   road_reference,
+  #   road_category_and_number,
+  #   county_name, municipality_name,
+  #   lat, lon, road_link_position
+  # ) %>%
+  this_citys_trps_all_adt_final |>
   dplyr::left_join(trp_id_msnr) %>%
-  dplyr::left_join(adt_all) %>%
-  dplyr::left_join(pointindex_17) %>%
-  dplyr::left_join(pointindex_18) %>%
+  #dplyr::left_join(adt_all) %>%
+  #dplyr::left_join(pointindex_17) %>%
+  #dplyr::left_join(pointindex_18) %>%
   dplyr::left_join(pointindex_19) %>%
   dplyr::left_join(pointindex_20) %>%
   dplyr::left_join(pointindex_21) %>%
@@ -565,12 +528,17 @@ this_citys_trp_index_refyear <-
 # TODO: include coverage
 # TODO: 3 year rolling index, but not now - only for the city
 
-write.csv2(
+readr::write_rds(
   this_citys_trp_index_refyear,
-  file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".csv"),
-  row.names = F
+  file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".rds")
 )
 
+trp_names <-
+  this_citys_trps_all_adt_final |>
+  dplyr::select(
+    trp_id,
+    name
+  )
 
 # City index ----
 city_year_to_date_17 <-
@@ -709,10 +677,9 @@ city_index_all <-
     area_name = city_name
   )
 
-write.csv2(
+readr::write_rds(
   city_index_all,
-  file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".csv"),
-  row.names = F
+  file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")
 )
 
 
@@ -916,9 +883,9 @@ mdt_filtered <-
       )
     )
   ) |>
-  tibble::as_tibble() |>
+  tibble::as_tibble() #|>
   # TRD
-  dplyr::bind_rows(toll_mdt_class)
+  #dplyr::bind_rows(toll_mdt_class)
 
 
 mdt_filtered |>
@@ -931,20 +898,20 @@ mdt_filtered |>
       )
   )
 
-mdt_filtered <-
-  readr::read_rds(
-    paste0(
-      "data_indexpoints_tidy/mdt_",
-      city_number,
-      ".rds"
-    )
-  )
+# mdt_filtered <-
+#   readr::read_rds(
+#     paste0(
+#       "data_indexpoints_tidy/mdt_",
+#       city_number,
+#       ".rds"
+#     )
+#   )
 
 
 ## Check MDT validity
 mdt_filtered |>
   dplyr::filter(
-    trp_id %in% city_trps[31:33]
+    trp_id %in% city_trps[79:83]
   ) |>
   dplyr::select(
     trp_id,
@@ -1002,34 +969,35 @@ mdt_filtered |>
 # Check that the same exclusions are used on PI as MDT
 # TRD toll station MDTs already have the same exclusions
 
-pointindices_longformat_by_month <-
-  dplyr::bind_rows(
-    pointindex_20_all[[2]],
-    pointindex_21_all[[2]],
-    pointindex_22_all[[2]]
-  ) %>%
-  dplyr::filter(
-    day_type == "ALL",
-    is_excluded == FALSE,
-    is_manually_excluded == FALSE,
-    length_excluded == FALSE,
-    length_range == "lette"
-  ) |>
-  dplyr::group_by(year) %>%
-  dplyr::filter(
-    period == "month"
-  ) %>%
-  dplyr::select(
-    trp_id,
-    year,
-    month,
-    index
-  )
+# pointindices_longformat_by_month <-
+#   dplyr::bind_rows(
+#     pointindex_20_all[[2]],
+#     pointindex_21_all[[2]],
+#     pointindex_22_all[[2]]
+#   ) %>%
+#   dplyr::filter(
+#     day_type == "ALL",
+#     is_excluded == FALSE,
+#     is_manually_excluded == FALSE,
+#     length_excluded == FALSE,
+#     length_range == "lette"
+#   ) |>
+#   dplyr::group_by(year) %>%
+#   dplyr::filter(
+#     period == "month"
+#   ) %>%
+#   dplyr::select(
+#     trp_id,
+#     year,
+#     month,
+#     index
+#   )
 
 mdt_and_pi <-
   dplyr::left_join(
     mdt_filtered,
-    pointindices_longformat_by_month,
+    trp_index_monthly,
+    #pointindices_longformat_by_month,
     by = c("trp_id", "year", "month")
   ) |>
   dplyr::left_join(
@@ -1156,18 +1124,12 @@ point_index_e18 <-
   dplyr::filter(month == max(month))
 
 trps_e18_index <-
-  points %>%
-  dplyr::filter(trp_id %in% trps_e18) %>%
-  split_road_system_reference() %>%
-  dplyr::select(
-    trp_id,
-    name,
-    road_reference,
-    road_category_and_number,
-    county_name, municipality_name,
-    lat, lon, road_link_position
-  ) %>%
-  dplyr::left_join(point_index_e18)
+  points |>
+  dplyr::filter(trp_id %in% trps_e18) |>
+  dplyr::left_join(
+    point_index_e18,
+    by = "trp_id"
+  )
 
 write.csv2(
   trps_e18_index,

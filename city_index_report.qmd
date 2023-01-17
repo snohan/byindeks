@@ -29,20 +29,20 @@ source("rmd_setup.R")
 ```{r get_data, include = FALSE}
 # City numbers
 
-# Bergen                8952 (2018) 08
-# Nord-Jæren             952 (2017) 08
+# Bergen                8952 (2018) 12
+# Nord-Jæren             952 (2017) 12
 # Oslo                   959 (2018) 08
 
-# Buskerudbyen          1952 (2016) 08
-# Grenland               955 (2016) 08
-# Kristiansand og omegn  957 (2016) 08
+# Buskerudbyen          1952 (2016) 12
+# Grenland               955 (2016) 12
+# Kristiansand og omegn  957 (2016) 12
 # Nedre Glomma           953 (2016) 08
-# Tromsø                 961 (2016) 08
+# Tromsø                 961 (2016) 12
 
 # Trondheim              960 (2019) 12
 
 # Choose city number:
-city_number <- 960
+city_number <- 8952
 
 city_number_county_name <- 
   tibble::tibble(
@@ -134,9 +134,9 @@ city_info <-
     #month_object = lubridate::make_date(year = year, month = month),
     month_name_short = lubridate::month(month, label = TRUE),
     period = paste0("jan-", month_name_short)
-  ) |> 
+  ) #|> 
   # Trondheim:
-  dplyr::filter(length_range == "lette")
+  #dplyr::filter(length_range == "lette")
 
 latest_month <- 
   city_info |> 
@@ -249,26 +249,20 @@ traffic_file <- paste0("city_report_files/trafikkforhold_", city_number, ".Rmd")
 # slått sammen med Songdalen og Søgne
 # 
 # city_info_kommune <-
-#   read.csv2("data_indexpoints_tidy/byindeks_956.csv") %>%
+#   readr::read_rds(
+#     paste0("data_indexpoints_tidy/byindeks_956.rds")
+#   ) |>  
 #   dplyr::mutate(
-#     month_object = lubridate::make_date(year = year, month = month),
-#     month_name_short = lubridate::month(month_object, label = TRUE),
+#     #month_object = lubridate::make_date(year = year, month = month),
+#     month_name_short = lubridate::month(month, label = TRUE),
 #     period = paste0("jan-", month_name_short)
-#   )
-# 
-# city_monthly_kommune <-
-#   read.csv2("data_indexpoints_tidy/byindeks_maanedlig_956.csv") %>%
-#   dplyr::mutate(
-#     # setting all years to same is a trick to get the plot facet correct
-#     month_object = lubridate::make_date(year = 2000, month = month),
-#     month_name_short = lubridate::month(month_object, label = TRUE)
 #   )
 # 
 # city_36_month_kommune <-
 #   readr::read_rds(
 #     paste0("data_indexpoints_tidy/mdt_36_956.rds")
 #   )
-# 
+
 # city_trp_mdt_kommune <-
 #   readr::read_rds(
 #     paste0("data_indexpoints_tidy/city_trps_mdt_956.rds")
@@ -312,16 +306,19 @@ De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeks
 
 ```{r}
 #| label: tbl-trp-1
-#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 1. B er bomstasjon, T er trafikkregistreringspunkt."
+#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 1."
+
+#  B er bomstasjon, T er trafikkregistreringspunkt.
 
 all_point_info |> 
   dplyr::slice(1:20) |> 
-  dplyr::rename(
+  #dplyr::rename(
     #adt = aadt_lette
     # Trondheim:
-    adt = adt
-  ) %>%
-  create_point_table_trd()
+   # adt = adt
+  #) %>%
+  #create_point_table_trd()
+  create_point_table()
 ```
 
 {{< pagebreak >}}
@@ -329,14 +326,12 @@ all_point_info |>
 ```{r}
 #| label: tbl-trp-2
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2."
-all_point_info |> 
-  dplyr::slice(21:40) |> 
-  dplyr::rename(
-    #adt = aadt_lette
-    # Trondheim:
-    adt = adt
-  ) %>%
-  create_point_table_trd()
+
+all_point_info |>
+  dplyr::slice(21:40) |>
+    #create_point_table_trd()
+    create_point_table()
+
 ```
 
 {{< pagebreak >}}
@@ -344,39 +339,63 @@ all_point_info |>
 ```{r}
 #| label: tbl-trp-3
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 3."
+
 all_point_info |> 
-  dplyr::slice(41:50) |> 
-  dplyr::rename(
+  dplyr::slice(41:60) |> 
+#  dplyr::rename(
     #adt = aadt_lette
     # Trondheim:
-    adt = adt
-  ) %>%
-  create_point_table_trd()
+    #adt = adt
+  #) %>%
+  #create_point_table_trd()
+  create_point_table()
+
 ```
 
 {{< pagebreak >}}
 
-Kartet nedenfor viser plasseringen av trafikkregistreringspunktene. Punktet Meådalen på Ev 14 mellom Stjørdal og Meråker er utelatt fra kartvisningen.
+```{r}
+#| label: tbl-trp-4
+#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 4."
+
+all_point_info |> 
+  dplyr::slice(61:83) |> 
+#  dplyr::rename(
+    #adt = aadt_lette
+    # Trondheim:
+    #adt = adt
+  #) %>%
+  #create_point_table_trd()
+  create_point_table()
+
+```
+
+{{< pagebreak >}}
+
+
+Kartet nedenfor viser plasseringen av trafikkregistreringspunktene. 
 
 ```{r}
 #| label: fig-map_trp
 #| fig-cap: "Trafikkregistreringspunkt og årsdøgntrafikk."
 #| fig-width: 7
 
+# Punktet Meådalen på Ev 14 mellom Stjørdal og Meråker er utelatt fra kartvisningen.
+
 knitr::opts_chunk$set(
   dpi = 100
   )
 
-# all_point_info %>%
-#   dplyr::rename(
-#     adt = aadt_lette
-#   ) %>%
-#   create_point_adt_map()
+all_point_info |> 
+  #dplyr::rename(
+  #  adt = aadt_lette
+  #) %>%
+  create_point_adt_map()
 
 # Trondheim
-all_point_info %>%
-  dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
-  create_point_adt_map_trondheim()
+# all_point_info %>%
+#   dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
+#   create_point_adt_map_trondheim()
 ```
 
 {{< pagebreak >}}
@@ -402,12 +421,26 @@ En treårs glidende indeks er tilgjengelig fra og med det er gått tre år etter
 
 Resultatene så langt er gitt nedenfor.
 
-```{r city_table_36}
-#| label: tbl-trp_36
+```{r}
+#| label: tbl-trp_36_1
 #| tbl-cap: "Tre års glidende indeks."
 
-create_city_mdt_36_index_table(city_36_month)
+city_36_month |> 
+  dplyr::slice(1:13) |> 
+  create_city_mdt_36_index_table()
 ```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-trp_36-2
+#| tbl-cap: "Tre års glidende indeks, del 2."
+
+# city_36_month |> 
+#   dplyr::slice(14:25) |> 
+#   create_city_mdt_36_index_table()
+```
+
 
 ```{r}
 #| label: fig-plot_city_36
@@ -418,29 +451,46 @@ visualize_city_36_mdt_index(
   caption_credit,
   "Estimert endring i trafikkmengde siste 3 år for lette kjøretøy"
 )
+
+# {{< include city_report_files/_mdt_info.Rmd >}}
 ```
 
 <!-- Kristiansand --
+{{< pagebreak >}}
+
 Tilsvarende for gamle Kristiansand kommune.
 
-<br>
+```{r}
+#| label: tbl-trp_36_kommune-1
+#| tbl-cap: "Tre års glidende indeks for gamle Kristiansand kommune, del 1."
 
-```{r city_table_36_kommune}
-#create_city_mdt_36_index_table(city_36_month_kommune)
+#city_36_month_kommune |> 
+#  dplyr::slice(1:13) |> 
+#  create_city_mdt_36_index_table()
 ```
 
-<br>
+{{< pagebreak >}}
 
-```{r city_plot_36_kommune, fig.width=6, fig.height=7, fig.cap="Estimert endring i trafikkmengde i glidende treårsperioder."}
+```{r}
+#| label: tbl-trp_36_kommune-2
+#| tbl-cap: "Tre års glidende indeks  for gamle Kristiansand kommune, del 2."
 
-# visualize_city_36_mdt_index(
-#   city_36_month_kommune,
-#   caption_credit,
-#   "Estimert endring i trafikkmengde siste 3 år for lette kjøretøy"
-# )
+#city_36_month |> 
+#  dplyr::slice(14:37) |> 
+#  create_city_mdt_36_index_table()
 ```
 
-<br>
+```{r}
+#| label: fig-plot_city_36_kommune
+#| fig-cap: "Tidsserie med tre års glidende indeks for gamle Kristiansand kommune."
+
+#visualize_city_36_mdt_index(
+#  city_36_month_kommune,
+#  caption_credit,
+#  "Estimert endring i trafikkmengde siste 3 år for lette kjøretøy"
+#)
+```
+
 <!-- Kristiansand -->
 
 ::: {.callout-warning icon=false}
@@ -458,8 +508,6 @@ Tas måleusikkerheten i betraktning, ligger endringen i trafikkmengden mellom
 
 Intervallet oppgitt ovenfor er et konfidensintervall på 95 %, som vil si at den sanne endringen i trafikkmengde vil ligge innenfor et slikt intervall 95 % av gangene en tilsvarende måling blir gjort. Usikkerheten er i stor grad avhengig av hvor mange trafikkregistreringspunkter som inngår i beregningene, men også større trafikale omfordelinger vil bidra.
 
-
-{{< include city_report_files/_mdt_info.Rmd >}}
 
 {{< pagebreak >}}
 
@@ -479,12 +527,11 @@ create_city_index_table_sd(city_info)
 Indekstallene som gjelder for lengre perioder enn to påfølgende år er beregnet som en kjedet indeks av indeksene for alle mellomliggende påfølgende års indekser. En kjedet indeks er en multiplikasjon av indekser på desimalform hvor en indeks på 1 tilsvarer ingen endring. Dersom en kjedet indeks beregnes før året er omme, benyttes indeksverdien som om den gjaldt for hele året.
 
 <!-- Kristiansand --
-<br>
-```{r city_table_kommune}
-# create_city_index_table_sd(city_info_kommune) %>%
-# set_caption("Estimert endring i trafikkmengde i gamle Kristiansand kommune.",
-#             autonum = table_numbers,
-#             style = "Tabelltekst")
+```{r}
+#| label: tbl-city_index_kommune
+#| tbl-cap: "Estimert endring i trafikkmengde i gamle Kristiansand kommune."
+
+#create_city_index_table_sd(city_info_kommune)
 ```
 <!-- Kristiansand -->
 
@@ -499,14 +546,14 @@ Et 95 % konfidensintervall går fra
 <!--
 For Buskerudbyen --
 
-
-<br>
-
 ### Trafikken på Ev 18
 Til sammenligning viser tabellen nedenfor endringen i trafikkmengden for lette biler på Ev 18 i samme periode.
 
 <br>
-```{r e18_buskerudbyen}
+```{r}
+#| label: tbl-e18_buskerudbyen
+#| tbl-cap: "Endring i trafikkmengde på Ev 18."
+
 # read.csv2("data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv") %>%
 #     select(name, road_reference, year, index_short) %>%
 #     flextable() %>%
@@ -528,10 +575,7 @@ Til sammenligning viser tabellen nedenfor endringen i trafikkmengden for lette b
 #     autofit() %>%
 #     height_all(height = .2) %>%
 #     padding(padding.top = .3,
-#             padding.bottom = .3) %>%
-#     set_caption("Endring i trafikkmengde på Ev 18.",
-#                 autonum = table_numbers,
-#                 style = "Tabelltekst")
+#             padding.bottom = .3)
 ```
 
 !-- Stopp buskerudbyen her -->

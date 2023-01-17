@@ -23,11 +23,11 @@ library(htmltools)
 
 # City numbers
 # Bergen 8952                 10 Trond
-# Buskerudbyen 1952           10 Snorre
-# Grenland 955                10 Snorre
-# Kristiansand og omegn 957   10 Snorre
+# Buskerudbyen 1952           12 Snorre
+# Grenland 955                12 Snorre
+# Kristiansand og omegn 957   12 Snorre
 # Nedre Glomma 953            10 Trond
-# Nord-Jæren 952              10 Snorre
+# Nord-Jæren 952              12 Snorre
 # Oslo 959                    10 Trond
 # Tromsø 961                  10 Snorre
 # Trondheim 960               12 Snorre
@@ -36,7 +36,7 @@ library(htmltools)
 # Choose
 index_year <- 2022
 index_month <- 10 # latest published
-city_number <- 8952
+city_number <- 961
 # End choose
 
 reference_year <- 
@@ -160,32 +160,21 @@ city_name <- city_index$area_name[1]
 points <- 
   get_points() %>%
   dplyr::distinct(trp_id, .keep_all = T) %>%
-  dplyr::select(
-    trp_id, 
-    name, 
-    road_reference, 
-    county_name,
-    municipality_name, 
-    lat, lon, road_link_position
-  ) #%>% 
-  #dplyr::mutate(name = stringr::str_to_title(name, locale = "no"))
-
-city_trps_meta <- 
-  points %>% 
-  dplyr::filter(trp_id %in% city_trps) %>% 
   split_road_system_reference() %>% 
   dplyr::select(
     trp_id, 
     name, 
     road_reference, 
     road_category_and_number,
-    #section_number, subsection_number, meter,
-    #intersection_part_number, intersection_meter,
-    #county_name, 
+    #county_name,
     #municipality_name, 
-    lat, lon,
-    road_link_position
-  ) #|> 
+    lat, lon, road_link_position
+  ) %>% 
+  dplyr::mutate(name = stringr::str_to_title(name, locale = "no"))
+
+city_trps_meta <- 
+  points %>% 
+  dplyr::filter(trp_id %in% city_trps) #|> 
   # TRD
   #dplyr::bind_rows(
   #  trd_toll_stations_meta
@@ -220,7 +209,9 @@ city_trps_meta <-
 #     file = "byindekspunkter_med_emu3_brg.csv",
 #     row.names = FALSE
 #   )
+```
 
+```{r aadt, include=FALSE}
 ## AADT ----
 adt <- 
   get_aadt_by_length_for_trp_list(city_trps)
@@ -282,7 +273,7 @@ missing_adt_fixed <-
 this_citys_trps_all_adt_final <-
   this_citys_trps_all_adt %>%
   dplyr::filter(!is.na(adt)) %>%
-  dplyr::bind_rows(missing_adt_fixed) |> 
+  #dplyr::bind_rows(missing_adt_fixed) |> 
   dplyr::rename(
     year_aadt = year
   ) #|>
@@ -782,6 +773,8 @@ pointindex_wide %>%
 # Nesttuntunnelen 11,12
 # Alle disse pga ny Ev 39 Svegatjørn - Rådal åpnet 31. oktober 2022. Må holdes utenfor tom okt 23.
 # Torget 10
+
+
 
 ```
 
