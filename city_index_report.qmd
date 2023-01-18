@@ -17,8 +17,10 @@ format:
 crossref: 
   tbl-title: "Tabell"
   lot-title: "Tabeller"
+  tbl-prefix: ""
   fig-title: "Figur"
   lof-title: "Figurer"
+  fig-prefix: ""
   title-delim: "."
 ---
 
@@ -36,13 +38,13 @@ source("rmd_setup.R")
 # Buskerudbyen          1952 (2016) 12
 # Grenland               955 (2016) 12
 # Kristiansand og omegn  957 (2016) 12
-# Nedre Glomma           953 (2016) 08
+# Nedre Glomma           953 (2016) 12
 # Tromsø                 961 (2016) 12
 
 # Trondheim              960 (2019) 12
 
 # Choose city number:
-city_number <- 8952
+city_number <- 953
 
 city_number_county_name <- 
   tibble::tibble(
@@ -268,6 +270,13 @@ traffic_file <- paste0("city_report_files/trafikkforhold_", city_number, ".Rmd")
 #     paste0("data_indexpoints_tidy/city_trps_mdt_956.rds")
 #   )
 # Slutt Kristiansand
+
+# TODO:
+# Eget avsnitt om datakvalitet
+#   MC
+#   Lengde versus vekt og klasse
+#   Kø
+# Eget avsnitt om næringstransport og gjennomgangstrafikk
 ```
 
 {{< pagebreak >}}
@@ -284,7 +293,7 @@ traffic_file <- paste0("city_report_files/trafikkforhold_", city_number, ".Rmd")
 {{< include city_report_files/_intro.Rmd >}}
 
 
-Veglengder fordelt på vegkategori for gjeldende område er oppsummert i tabellen nedenfor.
+Veglengder fordelt på vegkategori for gjeldende område er oppsummert i tabell @tbl-road_length_sum.
 
 ```{r}
 #| label: tbl-road_length_sum
@@ -321,59 +330,60 @@ all_point_info |>
   create_point_table()
 ```
 
-{{< pagebreak >}}
+
 
 ```{r}
 #| label: tbl-trp-2
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2."
 
-all_point_info |>
-  dplyr::slice(21:40) |>
+#all_point_info |>
+#  dplyr::slice(21:40) |>
     #create_point_table_trd()
-    create_point_table()
+    #create_point_table()
 
+# {{< pagebreak >}}
 ```
 
-{{< pagebreak >}}
+
 
 ```{r}
 #| label: tbl-trp-3
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 3."
 
-all_point_info |> 
-  dplyr::slice(41:60) |> 
+#all_point_info |> 
+  #dplyr::slice(41:60) |> 
 #  dplyr::rename(
     #adt = aadt_lette
     # Trondheim:
     #adt = adt
   #) %>%
   #create_point_table_trd()
-  create_point_table()
+  #create_point_table()
 
+# {{< pagebreak >}}
 ```
 
-{{< pagebreak >}}
+
 
 ```{r}
 #| label: tbl-trp-4
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 4."
 
-all_point_info |> 
-  dplyr::slice(61:83) |> 
+#all_point_info |> 
+  #dplyr::slice(61:83) |> 
 #  dplyr::rename(
     #adt = aadt_lette
     # Trondheim:
     #adt = adt
   #) %>%
   #create_point_table_trd()
-  create_point_table()
+  #create_point_table()
 
+# {{< pagebreak >}}
 ```
 
-{{< pagebreak >}}
 
-
-Kartet nedenfor viser plasseringen av trafikkregistreringspunktene. 
+Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene. 
 
 ```{r}
 #| label: fig-map_trp
@@ -436,9 +446,9 @@ city_36_month |>
 #| label: tbl-trp_36-2
 #| tbl-cap: "Tre års glidende indeks, del 2."
 
-# city_36_month |> 
-#   dplyr::slice(14:25) |> 
-#   create_city_mdt_36_index_table()
+city_36_month |>
+  dplyr::slice(14:37) |>
+  create_city_mdt_36_index_table()
 ```
 
 
@@ -512,24 +522,26 @@ Intervallet oppgitt ovenfor er et konfidensintervall på 95 %, som vil si at den
 {{< pagebreak >}}
 
 ## Endring per år
-Endring i trafikkmengde er også beregnet for hele kalenderår. Tabellen nedenfor viser byindeksen for hvert år, samt for hele perioden.
+Endring i trafikkmengde er også beregnet for hele kalenderår. I stedet for et tre års glidende gjennomsnitt tar denne beregningen utgangspunkt i indeksen mellom to påfølgende år. Indekstall som gjelder for lengre perioder enn to påfølgende år er beregnet som en kjedet indeks av indeksene for alle mellomliggende påfølgende års indekser. En kjedet indeks er en multiplikasjon av indekser på desimalform hvor en indeks på 1 tilsvarer ingen endring.
+
+Tabell @tbl-city_index viser den årlige endringen, samt kjedet indeks for hele perioden.
 
 
 ```{r}
 #| label: tbl-city_index
-#| tbl-cap: "Estimert endring i trafikkmengde for området."
+#| tbl-cap: "Estimert endring i trafikkmengde per år."
 
 # TODO: line plot of chained index
 
 create_city_index_table_sd(city_info)
 ```
 
-Indekstallene som gjelder for lengre perioder enn to påfølgende år er beregnet som en kjedet indeks av indeksene for alle mellomliggende påfølgende års indekser. En kjedet indeks er en multiplikasjon av indekser på desimalform hvor en indeks på 1 tilsvarer ingen endring. Dersom en kjedet indeks beregnes før året er omme, benyttes indeksverdien som om den gjaldt for hele året.
+
 
 <!-- Kristiansand --
 ```{r}
 #| label: tbl-city_index_kommune
-#| tbl-cap: "Estimert endring i trafikkmengde i gamle Kristiansand kommune."
+#| tbl-cap: "Estimert endring i trafikkmengde per år, gamle Kristiansand kommune."
 
 #create_city_index_table_sd(city_info_kommune)
 ```
@@ -581,7 +593,7 @@ Til sammenligning viser tabellen nedenfor endringen i trafikkmengden for lette b
 !-- Stopp buskerudbyen her -->
 
 
-Nedenfor vises en graf over byindeksene for hver periode, sammen med alle punktindeksene.
+Figur @fig-plot_city_point_index viser den årlige spredningen i punktindeksene sammenlignet med byindeksen samme år.
 
 
 ```{r}

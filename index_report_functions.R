@@ -5,15 +5,15 @@ create_point_table <- function(all_point_info_df) {
   all_point_info_df %>%
     select(name, road_reference, adt, year_aadt) %>%
     flextable() %>%
-    colformat_double(
-     j = "year_aadt",
-     big.mark = "",
-     digits = 0
-    ) %>%
-    # colformat_int(
-    #   j = "year_aadt",
-    #   big.mark = ""
+    # colformat_double(
+    #  j = "year_aadt",
+    #  big.mark = "",
+    #  digits = 0
     # ) %>%
+    colformat_int(
+      j = "year_aadt",
+      big.mark = ""
+    ) %>%
     set_header_labels(
       name = "Navn",
       road_reference = "Vegreferanse",

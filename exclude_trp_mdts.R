@@ -43,6 +43,7 @@ mdt_validated <-
       "70046V180859", # Kongsberg kro
       "26634V181322", # Krekling
       "98723V971842", # Veumveien
+      "05882V3188133" , # Simo (nye)
       "66206V805614", # Røykenes
       "56658V804775", # Vallaheiane
       "02940V805615", # Nesttuntunnelen
@@ -204,6 +205,16 @@ mdt_validated <-
           lubridate::make_date(2021, 10, 01),
           by = "month")
     )
+  ) |>
+  dplyr::filter(
+    # Kråkerøy bru
+    !(trp_id == "08132V1984223" &
+        year_month %in% base::seq.Date(
+          lubridate::make_date(2021, 8, 01),
+          lubridate::make_date(2021, 10, 01),
+          by = "month")
+    )
   )
+
 
 

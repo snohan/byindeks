@@ -34,12 +34,7 @@
   svv_background_color <- "#F5F5F5"
 }
 
-# source TAKLER IKKE Ø som brukes i kolonneoverskrift i csv-ene! Må åpne fila og kjøre alt derfra.
-# Løst?
-
-
-
-# Points ----
+# TRPs ----
 
 ## Connection to old data ----
 # Points used in each city:
@@ -52,9 +47,6 @@ trp_id_msnr <-
   dplyr::select(trp_id, msnr = legacyNortrafMpn) %>%
   dplyr::distinct()
 
-# Shouldn't be necessary:
-#cities_points_unestablished <-
-#  read_csv2("data_points_raw/points_unestablished.csv")
 
 ## All points from Traffic Data API ----
 # points <-
@@ -96,7 +88,7 @@ trp_id_msnr <-
 
 
 
-# City numbers ----
+# City IDs ----
 # Bergen 8952
 # Buskerudbyen 1952
 # Grenland 955
@@ -113,7 +105,7 @@ trp_id_msnr <-
 
 # Choose
 index_month <- 12 # the one to be published now
-city_number <- 8952
+city_number <- 959
 
 reference_year <-
   dplyr::case_when(
@@ -137,10 +129,8 @@ reference_year <-
     ) ~ 2019
   )
 
-# Pointindices ----
-# TODO: TRPs might differ from year to year!
 
-# Fetch city indexes
+# Fetch city indexes ----
 # Note: not all cities use 2017
 # Note: just needed for city_name for Trondheim
 city_index_2017 <- get_published_index_for_months(city_number, 2017, 12)
@@ -150,6 +140,9 @@ city_index_2020 <- get_published_index_for_months(city_number, 2020, 12)
 city_index_2021 <- get_published_index_for_months(city_number, 2021, 12)
 city_index_2022 <- get_published_index_for_months(city_number, 2022, index_month)
 
+
+# Pointindices ----
+# TODO: TRPs might differ from year to year!
 ## Old results on csv ----
 # Still need to specify csv-files for years before 2020 to get the pointindex as they are not in API
 # Note: not all cities use 2017
@@ -311,7 +304,7 @@ trp_index_monthly <-
   dplyr::bind_rows(
   # Pointindex from API here
     #pointindex_18_all[[2]],
-    pointindex_19_all[[2]],
+    #pointindex_19_all[[2]],
     pointindex_20_all[[2]],
     pointindex_21_all[[2]],
     pointindex_22_all[[2]]
@@ -333,7 +326,7 @@ trp_index_monthly <-
     # Pointindex from old csv files here:
     #pointindex_17_monthly,
     #pointindex_18_monthly,
-    #pointindex_19_monthly
+    pointindex_19_monthly
   )
 
 
@@ -436,36 +429,6 @@ trp_index_monthly_wide <-
 #     aadt_tunge
 #   )
 
-
-### Oslo ----
-# this_citys_trp_index_prel <- points %>%
-#   dplyr::filter(trp_id %in% city_trps) %>%
-#   split_road_system_reference() %>%
-#   dplyr::select(trp_id, name, road_reference,
-#                 road_category_and_number,
-#                 county_name, municipality_name,
-#                 lat, lon, road_link_position) %>%
-#   dplyr::left_join(trp_id_msnr) %>%
-#   left_join(adt_filtered) %>%
-#   #left_join(pointindex_18) %>%
-#   left_join(pointindex_19) %>%
-#   left_join(pointindex_20) %>%
-#   left_join(pointindex_21)
-#
-# missing_adt <- this_citys_trp_index_prel %>%
-#   dplyr::filter(is.na(adt)) %>%
-#   dplyr::mutate(adt = mapply(getAadtByRoadlinkposition, road_link_position))
-#
-# missing_adt_small_cars <- missing_adt %>%
-#   dplyr::mutate(adt = round(0.9 * adt, digits = -2),
-#                 year = 2019)
-#
-# this_citys_trp_index <- this_citys_trp_index_prel %>%
-#   dplyr::filter(!is.na(adt)) %>%
-#   dplyr::bind_rows(missing_adt_small_cars) %>%
-#   split_road_system_reference()
-# Oslo end, skip to refyear
-
 this_citys_trps_all_adt_final <-
   readr::read_rds(
     file = paste0(
@@ -477,20 +440,8 @@ this_citys_trps_all_adt_final <-
 
 ## Final table ----
 this_citys_trp_index <-
-  # points %>%
-  # dplyr::filter(trp_id %in% city_trps) %>%
-  # split_road_system_reference() %>%
-  # dplyr::select(
-  #   trp_id,
-  #   name,
-  #   road_reference,
-  #   road_category_and_number,
-  #   county_name, municipality_name,
-  #   lat, lon, road_link_position
-  # ) %>%
   this_citys_trps_all_adt_final |>
   dplyr::left_join(trp_id_msnr) %>%
-  #dplyr::left_join(adt_all) %>%
   #dplyr::left_join(pointindex_17) %>%
   #dplyr::left_join(pointindex_18) %>%
   dplyr::left_join(pointindex_19) %>%
@@ -911,7 +862,7 @@ mdt_filtered |>
 ## Check MDT validity
 mdt_filtered |>
   dplyr::filter(
-    trp_id %in% city_trps[79:83]
+    trp_id %in% city_trps[7:9]
   ) |>
   dplyr::select(
     trp_id,

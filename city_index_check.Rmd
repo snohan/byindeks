@@ -22,21 +22,21 @@ library(htmltools)
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 8952                 10 Trond
+# Bergen 8952                 12 Trond
 # Buskerudbyen 1952           12 Snorre
 # Grenland 955                12 Snorre
 # Kristiansand og omegn 957   12 Snorre
-# Nedre Glomma 953            10 Trond
+# Nedre Glomma 953            12 Trond
 # Nord-Jæren 952              12 Snorre
 # Oslo 959                    10 Trond
-# Tromsø 961                  10 Snorre
+# Tromsø 961                  12 Snorre
 # Trondheim 960               12 Snorre
 
 
 # Choose
 index_year <- 2022
-index_month <- 10 # latest published
-city_number <- 961
+latest_published_month <- 10
+city_number <- 959
 # End choose
 
 reference_year <- 
@@ -71,14 +71,14 @@ city_index <-
   get_published_index_for_months(
     city_number, 
     index_year, 
-    index_month
+    latest_published_month
   )
 
 pointindex <- 
   get_published_pointindex_for_months(
     city_number, 
     index_year, 
-    index_month
+    latest_published_month
   )
 
 # TRD toll station index
@@ -118,13 +118,13 @@ pointindex <-
 # tolling_station_indices_prepared_old <-
 #   tolling_station_indices_prepared |> 
 #   dplyr::filter(
-#     month < index_month + 1
+#     month < latest_published_month + 1
 #   )
 # 
 # tolling_station_indices_prepared_new <-
 #   tolling_station_indices_prepared |> 
 #   dplyr::filter(
-#     month == index_month + 1
+#     month == latest_published_month + 1
 #   )
 
 # trd_toll_stations_meta <-
@@ -141,6 +141,7 @@ pointindex <-
 #     road_link_position
 #   )
 
+# All API PI (not old ones on CSV)
 # former_pointindices <-
 #   purrr::map_dfr(
 #     previous_index_years,
@@ -179,36 +180,6 @@ city_trps_meta <-
   #dplyr::bind_rows(
   #  trd_toll_stations_meta
   #)
-
-# TRP device types
-# trp_devices <- 
-#   readRDS("H:/Programmering/R/trafikkdata/trs_trp/trp_device_types.rds")
-# 
-# city_trp_devices <-
-#   city_trps_meta %>% 
-#   dplyr::left_join(
-#     trp_devices,
-#     by = "trp_id"
-#   ) %>% 
-#   dplyr::filter(
-#     device_type == "EMU",
-#     is.na(valid_to) | valid_to > "2020-01-01T00:00:00"
-#   ) %>% 
-#   dplyr::select(
-#     trp_id,
-#     name,
-#     road_category_and_number,
-#     municipality_name,
-#     trs_id,
-#     device_type
-#   ) %>% 
-#   dplyr::distinct()
-# 
-# city_trp_devices %>%
-#   write.csv2(
-#     file = "byindekspunkter_med_emu3_brg.csv",
-#     row.names = FALSE
-#   )
 ```
 
 ```{r aadt, include=FALSE}
@@ -223,7 +194,6 @@ adt_filtered <-
   #dplyr::filter(length_quality > 90) %>%
   dplyr::filter(coverage > 50) %>%
   dplyr::group_by(trp_id) %>%
-  #dplyr::filter(year >= 2019) %>%
   dplyr::filter(year == max(year)) %>%
   dplyr::select(trp_id, adt = aadt_total, year)
 
@@ -238,36 +208,36 @@ missing_adt <-
   this_citys_trps_all_adt %>%
   dplyr::filter(is.na(adt))
 
-fetch_adts <-
-  purrr::map_dfr(
-    missing_adt$road_link_position,
-    ~ get_historic_aadt_by_roadlinkposition(
-      roadlinkposition = .
-    )
-  ) |> 
-  dplyr::group_by(
-    road_link_position
-  ) |> 
-  dplyr::slice_max(
-    year,
-    with_ties = FALSE
-  ) |> 
-  dplyr::mutate(
-    adt = round(aadt_total * (1 - heavy_percentage / 100), digits = -1)
-  ) |> 
-  dplyr::select(
-    road_link_position,
-    adt,
-    year
-  )
-
-missing_adt_fixed <-
-  missing_adt |> 
-  dplyr::select(-adt, -year) |> 
-  dplyr::left_join(
-    fetch_adts,
-    by = "road_link_position"
-  )
+# fetch_adts <-
+#   purrr::map_dfr(
+#     missing_adt$road_link_position,
+#     ~ get_historic_aadt_by_roadlinkposition(
+#       roadlinkposition = .
+#     )
+#   ) |> 
+#   dplyr::group_by(
+#     road_link_position
+#   ) |> 
+#   dplyr::slice_max(
+#     year,
+#     with_ties = FALSE
+#   ) |> 
+#   dplyr::mutate(
+#     adt = round(aadt_total * (1 - heavy_percentage / 100), digits = -1)
+#   ) |> 
+#   dplyr::select(
+#     road_link_position,
+#     adt,
+#     year
+#   )
+# 
+# missing_adt_fixed <-
+#   missing_adt |> 
+#   dplyr::select(-adt, -year) |> 
+#   dplyr::left_join(
+#     fetch_adts,
+#     by = "road_link_position"
+#   )
 
 # Finally all aadt
 this_citys_trps_all_adt_final <-
@@ -355,7 +325,7 @@ point_index_new_prepared <-
   point_index_new %>% 
   dplyr::filter(day_type == "ALL",
                 period == "month",
-                month == index_month + 1) %>% 
+                month == latest_published_month + 1) %>% 
   dplyr::select(
     trp_id, 
     year, 
@@ -376,7 +346,7 @@ point_index_new_prepared_2 <-
   point_index_new %>%
   dplyr::filter(day_type == "ALL",
                 period == "month",
-                month == index_month + 2) %>%
+                month == latest_published_month + 2) %>%
   dplyr::select(
     trp_id, 
     year, 
@@ -392,7 +362,7 @@ point_index_new_prepared_2 <-
 # point_index_new_prepared_3 <- point_index_new %>%
 #   dplyr::filter(day_type == "ALL",
 #                 period == "month",
-#                 month == index_month + 3) %>%
+#                 month == latest_published_month + 3) %>%
 #   dplyr::select(trp_id, year, month, index_total_p,
 #                 index_total_coverage, length_excluded, length_coverage,
 #                 index_short, index_long)
@@ -400,7 +370,7 @@ point_index_new_prepared_2 <-
 # point_index_new_prepared_4 <- point_index_new %>%
 #   dplyr::filter(day_type == "ALL",
 #                 period == "month",
-#                 month == index_month + 4) %>%
+#                 month == latest_published_month + 4) %>%
 #   dplyr::select(trp_id, year, month, index_total_p,
 #                 index_total_coverage, length_excluded, length_coverage,
 #                 index_short, index_long)
@@ -408,7 +378,7 @@ point_index_new_prepared_2 <-
 # point_index_new_prepared_5 <- point_index_new %>%
 #   dplyr::filter(day_type == "ALL",
 #                 period == "month",
-#                 month == index_month + 5) %>%
+#                 month == latest_published_month + 5) %>%
 #   dplyr::select(trp_id, year, month, index_total_p,
 #                 index_total_coverage, length_excluded, length_coverage,
 #                 index_short, index_long)
@@ -706,7 +676,7 @@ city_trps_new_pointindex_2 %>%
 pointindex_plot <- pointindex_prepared_all %>% 
   ggplot2::ggplot(aes(x = month, y = index_total_p, color = name)) +
   geom_line() +
-  scale_x_discrete(breaks = seq(1, index_month + 1, 1)) +
+  scale_x_discrete(breaks = seq(1, latest_published_month + 1, 1)) +
   theme_minimal() +
   theme(legend.position = "bottom")
 
@@ -763,16 +733,7 @@ pointindex_wide %>%
 
 
 ```{r exclusion_notes}
-# BRG
-# Nordvik 11,12
-# Røykenes 11,12
-# Fana v kirkevoll 11,12
-# Vallaheiane 11,12
-# Troldhaugtunnelen - Lagunen 11,12
-# Lagunen - Troldhaugtunnelen 11,12
-# Nesttuntunnelen 11,12
-# Alle disse pga ny Ev 39 Svegatjørn - Rådal åpnet 31. oktober 2022. Må holdes utenfor tom okt 23.
-# Torget 10
+
 
 
 
