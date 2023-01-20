@@ -433,15 +433,16 @@ filter_mdt <- function(mdt_df, year_dbl) {
 
 
 
-# mdt_df <- mdt_filtered
+# mdt_df <- mdt_validated
 # window_length <- 36
 # base_year <- reference_year
 # last_year_month <- "2021-12-01"
 
 calculate_rolling_indices_by_mdt <-
-  function(base_year, last_year_month, window_length, mdt_df) {
+  function(base_year, last_year_month, window_length, mdt_df, by_area = TRUE) {
 
     # Window length is a number of months, preferably a multiple of 12
+    # by_area: boolean to get TRP or area values
 
     last_year_month <-
       lubridate::as_date(last_year_month)
@@ -483,7 +484,7 @@ calculate_rolling_indices_by_mdt <-
       ) |>
       dplyr::filter(
         n_months >= 31
-        # I.e. up to 6 months may be missing (they can be consecutive)
+        # I.e. up to 5 months may be missing (they can be consecutive)
         # This presumes window length of 36!
       )
 
@@ -499,8 +500,12 @@ calculate_rolling_indices_by_mdt <-
         #weigted_mean = sum(w * trp_index_i), # same as index_i :)
         index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
         sd_component = w * (trp_index_i - index_i)^2
-      ) |>
+      ) %>%
+      # If TRP index is wanted, skip this summarise
+      # NB! Native pipe does not support curly brace RHS, but magrittr does
+      {if(by_area)
       dplyr::summarise(
+        .,
         index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
         index_p = (index_i - 1) * 100,
         n_trp = n(),
@@ -508,7 +513,8 @@ calculate_rolling_indices_by_mdt <-
         sd_sample_p = 100 * sqrt(sum(sd_component) * (1/(1 - 1/n_eff))),
         standard_error_p = sd_sample_p / sqrt(n_eff),
         .groups = "drop"
-      ) |>
+      )
+        else .} |>
       dplyr::mutate(
         index_period =
           paste0(

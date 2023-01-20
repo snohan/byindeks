@@ -33,18 +33,18 @@ source("rmd_setup.R")
 
 # Bergen                8952 (2018) 12
 # Nord-Jæren             952 (2017) 12
-# Oslo                   959 (2018) 08
+# Oslo                   959 (2018) 12
 
-# Buskerudbyen          1952 (2016) 12
-# Grenland               955 (2016) 12
-# Kristiansand og omegn  957 (2016) 12
+# Buskerudbyen          1952 (2016) 12 må oppdateres
+# Grenland               955 (2016) 12 må oppdateres
+# Kristiansand og omegn  957 (2016) 12 må oppdateres
 # Nedre Glomma           953 (2016) 12
 # Tromsø                 961 (2016) 12
 
 # Trondheim              960 (2019) 12
 
 # Choose city number:
-city_number <- 953
+city_number <- 955
 
 city_number_county_name <- 
   tibble::tibble(
@@ -320,7 +320,7 @@ De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeks
 #  B er bomstasjon, T er trafikkregistreringspunkt.
 
 all_point_info |> 
-  dplyr::slice(1:20) |> 
+  dplyr::slice(1:22) |> 
   #dplyr::rename(
     #adt = aadt_lette
     # Trondheim:
@@ -336,51 +336,52 @@ all_point_info |>
 #| label: tbl-trp-2
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2."
 
-#all_point_info |>
-#  dplyr::slice(21:40) |>
-    #create_point_table_trd()
-    #create_point_table()
+all_point_info |>
+  dplyr::slice(23:46) |>
+  #create_point_table_trd()
+  create_point_table()
 
-# {{< pagebreak >}}
+# 
 ```
 
-
+{{< pagebreak >}}
 
 ```{r}
 #| label: tbl-trp-3
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 3."
 
-#all_point_info |> 
-  #dplyr::slice(41:60) |> 
+all_point_info |> 
+  dplyr::slice(47:70) |> 
 #  dplyr::rename(
     #adt = aadt_lette
     # Trondheim:
     #adt = adt
   #) %>%
   #create_point_table_trd()
-  #create_point_table()
+  create_point_table()
 
-# {{< pagebreak >}}
+# 
 ```
 
-
+{{< pagebreak >}}
 
 ```{r}
 #| label: tbl-trp-4
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 4."
 
-#all_point_info |> 
-  #dplyr::slice(61:83) |> 
+all_point_info |> 
+  dplyr::slice(71:90) |> 
 #  dplyr::rename(
     #adt = aadt_lette
     # Trondheim:
     #adt = adt
   #) %>%
   #create_point_table_trd()
-  #create_point_table()
+  create_point_table()
 
-# {{< pagebreak >}}
+# 
 ```
+
 
 
 Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene. 
@@ -411,12 +412,10 @@ all_point_info |>
 {{< pagebreak >}}
 
 # Endring i trafikkmengde
-
-Nullvekstmålet skal måles ved at trafikkutviklingen vurderes på et treårs glidende snitt, jf. brev fra Samferdselsdepartementet til de fire største byområdene datert 11.12.2019. Måloppnåelsen gjelder avtaleperioden sett under ett, som betyr at det er trafikknivået i referanseåret det skal sammenlignes med. Det skal være netto nullvekst i perioden.
+Nullvekstmålet skal måles ved at trafikkutviklingen vurderes på et treårs glidende snitt, jf. brev fra Samferdselsdepartementet til de fire største byområdene datert 11.12.2019. Måloppnåelsen gjelder avtaleperioden sett under ett, som betyr at det er trafikknivået i referanseåret `r base_year` det skal sammenlignes med. Det skal være netto nullvekst i perioden.
 
 
 ## Endring i glidende treårsperiode
-
 Tidligere ble en glidende indeks over tre år beregnet ved å multiplisere de siste tre årsindeksene. For å få en månedlig oppdatering ble det benyttet de siste tre indeksene for "siste 12 måneder". Med denne metodikken ble det ikke sammenlignet med referanseåret. Denne beregningsmetodikken fungerer greit når trafikkutviklingen følger en jevn trend over mange år. Men som følge av pandemien ble trafikknivået generelt en del lavere enn normalt og det ble et tydelig trendbrudd mot det som har vært en jevn trafikkvekst i flere tiår. Når pandemien var over steg trafikknivået relativt raskt tilbake til omtrent det nivået som var før. En slik treårs glidende indeks vil dermed i en overgangsperiode ensidig ta opp i seg økningen fra det lave trafikknivået under pandemien og vil framstå som om trafikken generelt har økt kraftig. Metodikken mangler dermed et sammenligningsgrunnlag som representerer et normalt trafikknivå. Dette er uheldig, og det er derfor bestemt at metodikken alltid skal sammenligne med referanseåret, som da må kunne anses som et normalår.
 
 Den nye beregningsmetoden tar derfor et gjennomsnitt av trafikknivået de siste tre årene og sammenligner dette med trafikknivået i referanseåret. For hvert av trafikkregistreringspunktene som inngår i byindeksen benyttes gjennomsnittlig døgntrafikk. For at denne treårs glidende indeksen skal kunne oppdateres månedlig, benyttes gjennomsnittlig døgntrafikk per måned, kjent som månedsdøgntrafikk (MDT). 
@@ -446,9 +445,9 @@ city_36_month |>
 #| label: tbl-trp_36-2
 #| tbl-cap: "Tre års glidende indeks, del 2."
 
-city_36_month |>
-  dplyr::slice(14:37) |>
-  create_city_mdt_36_index_table()
+#city_36_month |>
+#  dplyr::slice(14:37) |>
+#  create_city_mdt_36_index_table()
 ```
 
 
@@ -512,6 +511,8 @@ Sammenlignet med referanseåret er trafikkmengden de siste tre årene i gjennoms
 Tas måleusikkerheten i betraktning, ligger endringen i trafikkmengden mellom 
 `r stringr::str_replace(as.character(latest_36_index$ci_lower), "\\.", ",")` % og 
 `r stringr::str_replace(as.character(latest_36_index$ci_upper), "\\.", ",")` %.  
+
+Så lenge pandemiperioden fra mars 2020 til februar 2022 inngår i treårsperioden, vil denne indeksen vise en verdi som er preget av det generelt lavere trafikknivået som var i disse årene.
 :::
 
 \vspace{5mm}

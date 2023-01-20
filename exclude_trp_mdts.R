@@ -22,6 +22,16 @@ mdt_validated <-
           by = "month")
     )
   ) |>
+  # Oslo
+  dplyr::filter(
+    # Helsfyr
+    !(trp_id == "33808V625649" &
+        year_month %in% base::seq.Date(
+          lubridate::make_date(2020, 06, 01),
+          lubridate::make_date(2021, 06, 01),
+          by = "month")
+    )
+  ) |>
   # Bergen
   dplyr::filter(
     # Nordvik
@@ -39,11 +49,13 @@ mdt_validated <-
       "18788V1811746", # Mogreina pårampe
       "63515V1811747", # Mogreina avrampe
       "42754V444240", # Slattum
+      "27857V444273", # Nessetveien (stengt Nordbytunnel 2018)
+      "52685V444218", # Nordbytunnelen
       "35376V181262", # Veungsdalen
       "70046V180859", # Kongsberg kro
       "26634V181322", # Krekling
       "98723V971842", # Veumveien
-      "05882V3188133" , # Simo (nye)
+      "05882V3188133", # Simo (nye)
       "66206V805614", # Røykenes
       "56658V804775", # Vallaheiane
       "02940V805615", # Nesttuntunnelen
@@ -212,6 +224,15 @@ mdt_validated <-
         year_month %in% base::seq.Date(
           lubridate::make_date(2021, 8, 01),
           lubridate::make_date(2021, 10, 01),
+          by = "month")
+    )
+  )  |>
+  dplyr::filter(
+    # Hvitsten
+    !(trp_id == "71595V971806" &
+        year_month %in% base::seq.Date(
+          lubridate::make_date(2022, 8, 01),
+          lubridate::make_date(2022, 9, 01),
           by = "month")
     )
   )
