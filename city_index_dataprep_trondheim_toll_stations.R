@@ -12,18 +12,7 @@
 ## Declare latest month ----
 index_month <- 12
 city_number <- 960
-
-## City name ----
-# Need just most recent city index from API, to get its offical name
-# city_index_from_api <-
-#   get_published_index_for_months(
-#     city_number,
-#     2022,
-#     index_month
-#   )
-
 city_name <- "Trondheim"
-  #city_index_from_api$area_name[1]
 
 
 # TRP index for each year ----
@@ -83,7 +72,7 @@ this_citys_trps <-
     trp_id,
     name,
     road_reference,
-    municipality_name,
+    #municipality_name,
     lat, lon, road_link_position
   ) %>%
   dplyr::mutate(station_type = "Trafikkregistrering")
@@ -334,74 +323,133 @@ readr::write_rds(
 # Use city_index_dataprep.R
 
 # City index monthly ----
-# tollpointindex_monthly <-
-#   read.csv2(
-#     "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_bymaanedsindekser.csv"
-#   ) %>%
-#   dplyr::rename(
-#     index = index_p
-#   ) %>%
-#   dplyr::mutate(trp_id = as.character(trp_id)) %>%
-#   dplyr::select(
-#     trp_id,
-#     length_range = class,
-#     base_volume,
-#     calc_volume,
-#     index,
-#     month_as_date
-#   ) %>%
-#   dplyr::mutate(
-#     month_object = lubridate::ymd(month_as_date)
-#   ) %>%
-#   dplyr::select(
-#     trp_id,
-#     length_range,
-#     base_volume,
-#     calc_volume,
-#     index,
-#     month_object
-#   )
-#
-# pointindex_monthly <-
-#   dplyr::bind_rows(
-#     pointindex_20_all[[2]],
-#     pointindex_21_all[[2]],
-#     pointindex_22_all[[2]]
-#   ) %>%
-#   dplyr::filter(
-#     day_type == "ALL",
-#     is_excluded == FALSE,
-#     is_manually_excluded == FALSE,
-#     length_excluded == FALSE,
-#     period == "month"
-#   ) %>%
-#   #dplyr::select(trp_id, length_range, base_volume, calc_volume, index, year, month) %>%
-#   dplyr::mutate(
-#     month_object = lubridate::make_date(year = year, month = month)
-#   ) %>%
-#   dplyr::select(
-#     trp_id,
-#     length_range,
-#     base_volume,
-#     calc_volume,
-#     index,
-#     month_object
-#   )
+tollpointindex_monthly <-
+  read.csv2(
+    "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_bymaanedsindekser.csv"
+  ) %>%
+  dplyr::rename(
+    index = index_p
+  ) %>%
+  dplyr::mutate(trp_id = as.character(trp_id)) %>%
+  dplyr::select(
+    trp_id,
+    length_range = class,
+    base_volume,
+    calc_volume,
+    index,
+    month_as_date
+  ) %>%
+  dplyr::mutate(
+    month_object = lubridate::ymd(month_as_date)
+  ) %>%
+  dplyr::select(
+    trp_id,
+    length_range,
+    base_volume,
+    calc_volume,
+    index,
+    month_object
+  )
 
-# pointindex_trp_toll_monthly <-
-#   tollpointindex_monthly %>%
-#   dplyr::filter(length_range != "unknown") %>%
-#   dplyr::mutate(
-#     index = round(index, digits = 1),
-#     length_range =
-#       dplyr::case_when(
-#         length_range == "all" ~ "alle",
-#         length_range == "light" ~ "lette",
-#         length_range == "heavy" ~ "tunge"
-#       )
-#   ) %>%
-#   dplyr::bind_rows(pointindex_monthly)
-#
+pointindex_monthly <-
+  dplyr::bind_rows(
+    pointindex_20_all[[2]],
+    pointindex_21_all[[2]],
+    pointindex_22_all[[2]]
+  ) %>%
+  dplyr::filter(
+    day_type == "ALL",
+    is_excluded == FALSE,
+    is_manually_excluded == FALSE,
+    length_excluded == FALSE,
+    period == "month"
+  ) %>%
+  #dplyr::select(trp_id, length_range, base_volume, calc_volume, index, year, month) %>%
+  dplyr::mutate(
+    month_object = lubridate::make_date(year = year, month = month)
+  ) %>%
+  dplyr::select(
+    trp_id,
+    length_range,
+    base_volume,
+    calc_volume,
+    index,
+    month_object
+  )
+
+trp_index_monthly <-
+  tollpointindex_monthly %>%
+  dplyr::filter(length_range != "unknown") %>%
+  dplyr::mutate(
+    index = round(index, digits = 1),
+    length_range =
+      dplyr::case_when(
+        length_range == "all" ~ "alle",
+        length_range == "light" ~ "lette",
+        length_range == "heavy" ~ "tunge"
+      )
+  ) %>%
+  dplyr::bind_rows(pointindex_monthly) |>
+  dplyr::filter(
+    length_range == "lette"
+  ) |>
+  dplyr::mutate(
+    year = lubridate::year(month_object),
+    month = lubridate::month(month_object)
+  )
+
+n_points_per_month <-
+  trp_index_monthly %>%
+  dplyr::group_by(
+    year,
+    month
+  ) %>%
+  dplyr::summarise(n_trp = n())
+
+trp_index_monthly_wide <-
+  trp_index_monthly |>
+  tidyr::complete(
+    trp_id,
+    year,
+    month
+  ) |>
+  dplyr::mutate(
+    month_label = lubridate::make_date(
+      year = 2000,
+      month = month,
+      day = 1
+    ) |>
+      lubridate::month(label = TRUE)
+  ) |>
+  dplyr::select(
+    trp_id,
+    year,
+    month_label,
+    index
+  ) |>
+  tidyr::pivot_wider(
+    names_from = "month_label",
+    values_from = "index"
+  ) |>
+  dplyr::left_join(
+    city_trps_meta,
+    by = "trp_id"
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    road_category_and_number,
+    year,
+    jan:des
+  ) |>
+  dplyr::arrange(
+    name,
+    trp_id,
+    year
+  )
+
+
+
 # city_index_monthly <-
 #   pointindex_trp_toll_monthly %>%
 #   dplyr::mutate(year = lubridate::year(month_object)) %>%

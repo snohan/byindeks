@@ -31,16 +31,14 @@ source("rmd_setup.R")
 ```{r get_data, include = FALSE}
 # City numbers
 
-# Bergen                8952 (2018) 12
-# Nord-Jæren             952 (2017) 12
-# Oslo                   959 (2018) 12
-
-# Buskerudbyen          1952 (2016) 12 må oppdateres
-# Grenland               955 (2016) 12 må oppdateres
-# Kristiansand og omegn  957 (2016) 12 må oppdateres
+# Buskerudbyen          1952 (2016) 12 
+# Grenland               955 (2016) 12 
+# Kristiansand og omegn  957 (2016) 12 
 # Nedre Glomma           953 (2016) 12
 # Tromsø                 961 (2016) 12
-
+# Nord-Jæren             952 (2017) 12
+# Bergen                8952 (2018) 12
+# Oslo                   959 (2018) 12
 # Trondheim              960 (2019) 12
 
 # Choose city number:

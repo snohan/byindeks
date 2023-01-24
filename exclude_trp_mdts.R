@@ -200,6 +200,14 @@ mdt_validated <-
     )
   ) |>
   dplyr::filter(
+    # Skjelsvik
+    !(trp_id == "32825V521440" &
+        year_month %in% c(
+          lubridate::make_date(2022, 11, 01)
+          )
+    )
+  ) |>
+  dplyr::filter(
     # Menstadbrua
     !(trp_id == "79492V521118" &
         year_month %in% base::seq.Date(

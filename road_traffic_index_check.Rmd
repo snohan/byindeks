@@ -91,19 +91,19 @@ counties <- get_counties()
 ```{r filter_for_county, include=FALSE}
 # Look at details in one county at a time
 
-# 30 Viken                  10 Trond
-#  3 Oslo                   10 Trond
+# 30 Viken                  12 Trond
+#  3 Oslo                   12 Trond
 # 34 Innlandet              10 Snorre
-# 38 Vestfold og Telemark   10 Trond
-# 42 Agder                  10 Snorre
-# 11 Rogaland               10 Snorre
-# 46 Vestland               10 Trond
+# 38 Vestfold og Telemark   12 Trond
+# 42 Agder                  12 Snorre
+# 11 Rogaland               12 Snorre
+# 46 Vestland               12 Trond
 # 15 Møre og Romsdal        12 Snorre
 # 50 Trøndelag              12 Snorre
 # 18 Nordland               12 Snorre
 # 54 Troms og Finnmark      12 Snorre
 
-county_number_chosen <- 11
+county_number_chosen <- 34
 
 trps_meta <- 
   points %>% 
@@ -773,14 +773,25 @@ pointindex_wide %>%
       pageLength = 21,
       lengthMenu = c(21, 42, 63),
       autoWidth = TRUE))
-
-# Ekskluder:
-# Hageland 11
-# Jernbanetunnelen 11
-
 ```
 
 
+```{r notes}
+# Ekskluder:
+# Hageland 11
+# Jernbanetunnelen 11
+# Karmsundgata 6-11
+# Fana v Kirkevoll 11
+# Skjoldskiftet nord 11
+# Røykenes 11
+# Nordvik 11
+# Palmafossen 11
+# Skjelsvik 11
+# Ringsaker grense 11
+# Gjemsølund bru 11
+# Kurusand 11
+
+```
 
 
 

@@ -111,7 +111,7 @@ trp_id_msnr <-
 
 # Choose
 index_month <- 12 # the one to be published now
-city_number <- 959
+city_number <- 1952
 
 reference_year <-
   dplyr::case_when(
@@ -140,8 +140,8 @@ reference_year <-
 # Note: not all cities use 2017
 # Note: just needed for city_name for Trondheim
 {
-  #city_index_2017 <- get_published_index_for_months(city_number, 2017, 12)
-  #city_index_2018 <- get_published_index_for_months(city_number, 2018, 12)
+  city_index_2017 <- get_published_index_for_months(city_number, 2017, 12)
+  city_index_2018 <- get_published_index_for_months(city_number, 2018, 12)
   city_index_2019 <- get_published_index_for_months(city_number, 2019, 12)
   city_index_2020 <- get_published_index_for_months(city_number, 2020, 12)
   city_index_2021 <- get_published_index_for_months(city_number, 2021, 12)
@@ -314,7 +314,7 @@ trp_index_monthly <-
   dplyr::bind_rows(
   # Pointindex from API here
     #pointindex_18_all[[2]],
-    pointindex_19_all[[2]],
+    #pointindex_19_all[[2]],
     pointindex_20_all[[2]],
     pointindex_21_all[[2]],
     pointindex_22_all[[2]]
@@ -334,9 +334,9 @@ trp_index_monthly <-
   ) %>%
   dplyr::bind_rows(
     # Pointindex from old csv files here:
-    #pointindex_17_monthly,
-    #pointindex_18_monthly,
-    #pointindex_19_monthly
+    pointindex_17_monthly,
+    pointindex_18_monthly,
+    pointindex_19_monthly
   )
 
 n_points_per_month <-
@@ -452,8 +452,8 @@ this_citys_trps_all_adt_final <-
 this_citys_trp_index <-
   this_citys_trps_all_adt_final |>
   dplyr::left_join(trp_id_msnr) %>%
-  #dplyr::left_join(pointindex_17) %>%
-  #dplyr::left_join(pointindex_18) %>%
+  dplyr::left_join(pointindex_17) %>%
+  dplyr::left_join(pointindex_18) %>%
   dplyr::left_join(pointindex_19) %>%
   dplyr::left_join(pointindex_20) %>%
   dplyr::left_join(pointindex_21) %>%
@@ -1120,17 +1120,10 @@ all_36_month_trp_indices <-
 
 # Check contribution from TRPs each possible 36 month index
 trp_mdt_plot <-
-  all_36_month_indices |>
-  dplyr::left_join(
-    trp_names,
-    by = "trp_id"
-  ) |>
-  dplyr::mutate(
-    trp_index_p = (trp_index_i - 1) * 100
-  ) |>
+  all_36_month_trp_indices |>
   ggplot2::ggplot(
     aes(
-      x = month_object,
+      x = last_month_in_index,
       y = name,
       fill = trp_index_p
     )

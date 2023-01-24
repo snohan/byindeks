@@ -1,437 +1,82 @@
 ---
-#title: Vegtrafikkindeksen
-output: 
-  officedown::rdocx_document:
-    reference_docx: svv_template.docx
+format: 
+  pdf:
     toc: true
-    toc_depth: 2
-    fig_caption: true
-    fig_width: 7
-    tables:
-      style: Table
-      layout: autofit
-      width: 1.0
-      caption:
-        style: Tabelltekst
-        pre: 'Tabell '
-        sep: '. '
-      conditional:
-        first_row: true
-        first_column: false
-        last_row: false
-        last_column: false
-        no_hband: false
-        no_vband: true
-    plots:
-      style: Normal
-      align: center
-      caption:
-        style: Figurtekst
-        pre: 'Figur '
-        sep: '. '
-    lists:
-      ol.style: null
-      ul.style: null
+    number-sections: true
+    toc-title: Innhold
+    mainfont: "Lucida Sans Unicode"
+    include-in-header:
+      text: |
+        \newfontfamily\sectionfont[Color=ed9300]{Lucida Sans Unicode}
+        \newfontfamily\subsectionfont[Color=444f55]{Lucida Sans Unicode}
+        \newfontfamily\subsubsectionfont[Color=ed9300]{Lucida Sans Unicode}
+        \addtokomafont{section}{\sectionfont}
+        \addtokomafont{subsection}{\subsectionfont}
+        \addtokomafont{subsubsection}{\subsubsectionfont}
+        \usepackage[font=small,textfont=it,labelsep=period]{caption}
+crossref: 
+  tbl-title: "Tabell"
+  lot-title: "Tabeller"
+  tbl-prefix: ""
+  fig-title: "Figur"
+  lof-title: "Figurer"
+  fig-prefix: ""
+  title-delim: "."
 ---
 
-```{r setup, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
-# Packages are loaded through sourcing rmd_setup.R
-source("rmd_setup.R")
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
 
-# Traffic Data API calls to get points metadata and aadt
+source("rmd_setup.R")
 source("get_from_trafficdata_api.R")
 ```
 
-```{r get_data, include=FALSE}
-counties <- 
-  get_counties() %>% 
+```{r}
+#| label: get_data
+
+counties <-
+  get_counties() %>%
   dplyr::select(
-    county_name, 
+    county_name,
     country_part_name
   )
 
-points <- 
-  get_points() %>%
-  dplyr::distinct(trp_id, .keep_all = T) %>%
-  dplyr::select(
-    trp_id, 
-    name, 
-    road_reference, 
-    county_name, 
-    county_geono,
-    municipality_name
-  ) %>% 
-  dplyr::mutate(
-    name = stringr::str_to_title(name, locale = "no")
-  ) %>%
-  split_road_system_reference() %>% 
-  dplyr::select(
-    trp_id,
-    road_category,
-    county_name
-  ) %>%
-  # For finding manually excluded trps:
-  # dplyr::select(
-  #   trp_id, 
-  #   name, 
-  #   road_category, 
-  #   road_reference, 
-  #   county_name
-  # ) %>% 
-  dplyr::mutate(
-    road_category = dplyr::case_when(
-      road_category == "F" ~ "Fylkesveg",
-      road_category == "E" ~ "Europa- og riksveg",
-      road_category == "R" ~ "Europa- og riksveg"
-    )
-  ) %>% 
-  dplyr::left_join(
-    counties, 
-    by = "county_name"
+country_parts <- get_country_parts()
+
+index_this_year_prepared <-
+  readr::read_rds(
+    file = "road_traffic_index_files/index_this_year_prepared.rds"
   )
 
-this_year <- 2022
-latest_month_number <- 9
-
-# Fetching published index from Traffic Data API
-index_this_year <- 
-  get_published_road_traffic_index_for_months(
-    962, 
-    this_year, 
-    latest_month_number
+index_this_year_prepared_wide <-
+  readr::read_rds(
+    file = "road_traffic_index_files/index_this_year_prepared_wide.rds"
   )
 
-# index_2017 <- get_published_road_traffic_index_for_months(962, 2017, 12)
-# index_2018 <- get_published_road_traffic_index_for_months(962, 2018, 12)
-# index_2019 <- get_published_road_traffic_index_for_months(962, 2019, 12)
-# index_2020 <- get_published_road_traffic_index_for_months(962, 2020, 12)
-# index_2021 <- get_published_road_traffic_index_for_months(962, 2021, 12)
-# index_2022 <- get_published_road_traffic_index_for_months(962, 2022, 4)
-# 
-# index_2017_2022 <- 
-#   dplyr::bind_rows(
-#     index_2017,
-#     index_2018,
-#     index_2019,
-#     index_2020,
-#     index_2021,
-#     index_2022
-#   )
-# 
-# write.csv2(
-#   index_2017_2022, 
-#   file = "spesialuttak/vegtrafikkindeks_2017_2022.csv",
-#   row.names = F
-#   )
-# 
-# library(writexl)
-# writexl::write_xlsx(
-#   index_2017_2022,
-#   path = "spesialuttak/vegtrafikkindeks_2017_2022.xlsx"
-# )
-
-#Fetching all months pointindices to find all manually excluded (NILU)
-# pointindex_all_months_this_year <-
-#   get_published_pointindex_for_months_paginated(
-#     962,
-#     2021,
-#     12
-#   )
-# 
-# manually_excluded_trps <-
-#   pointindex_all_months_this_year[[2]] %>%
-#   dplyr::filter(
-#     is_manually_excluded == TRUE,
-#     period == "month",
-#     day_type == "ALL"
-#   ) %>%
-#   dplyr::left_join(
-#     points,
-#     by = "trp_id"
-#   ) %>%
-#   dplyr::select(
-#     trp_id,
-#     name,
-#     county_name,
-#     road_reference,
-#     month
-#   )
-# 
-# write.csv2(
-#   manually_excluded_trps,
-#   file = "manuelt_ekskluderte_punkter_2021.csv",
-#   row.names = F,
-#   fileEncoding = "latin1"
-# )
-
-# Fetching pointindices for last month's year_to_date 
-# in order to calculate the standard error
-pointindex_this_year <- 
-  get_published_pointindex_paginated(
-    962, 
-    this_year, 
-    latest_month_number
+index_this_year_prepared_wide_country <-
+  readr::read_rds(
+    file = "road_traffic_index_files/index_this_year_prepared_wide_country.rds"
   )
-
-pointindices <- pointindex_this_year[[2]]
-
-pointindices_all <- 
-  pointindices %>% 
-  dplyr::filter(
-    is_excluded == FALSE,
-    is_manually_excluded == FALSE,
-    period == "year_to_date",
-    !is.na(index_total_p)
-  ) %>% 
-  dplyr::select(
-    trp_id, 
-    year, 
-    month, 
-    period, 
-    day_type, 
-    index_p = index_total_p
-  ) %>% 
-  dplyr::mutate(
-    length_range = "alle"
-  ) 
-
-pointindices_light_n_heavy <- 
-  pointindices %>% 
-  dplyr::filter(
-    is_excluded == FALSE,
-    is_manually_excluded == FALSE,
-    length_excluded == FALSE,
-    period == "year_to_date"
-  ) %>% 
-  dplyr::select(
-    trp_id, 
-    year, 
-    month, 
-    period, 
-    day_type, 
-    index_short, 
-    index_long
-    ) %>% 
-  tidyr::pivot_longer(
-    cols = c("index_short", "index_long"), 
-    names_to = "length_range",
-    values_to = "index_p"
-  ) %>% 
-  dplyr::mutate(
-    length_range = 
-      dplyr::case_when(
-        length_range == "index_short" ~ "lette",
-        length_range == "index_long" ~ "tunge"
-      )
-  )
-
-pointindices_year_to_date <- 
-  dplyr::bind_rows(
-    pointindices_all,
-    pointindices_light_n_heavy
-  ) %>% 
-  dplyr::mutate(
-    day_type = 
-      dplyr::case_when(
-        day_type == "ALL" ~ "alle",
-        day_type == "WEEKDAY" ~ "yrkedøgn",
-        day_type == "WEEKEND" ~ "helgedøgn"
-      )
-  ) %>%
-  dplyr::left_join(points) 
-
-# TODO: Include urban and non-urban index
-#index_2020_urban <- get_published_index_for_months(1952, 2020, 7)
-#index_2020_non_urban <- get_published_index_for_months(955, 2020, 7)
-
-# index_2020 <- dplyr::bind_rows(index_2020_all,
-#                                index_2020_urban,
-#                                index_2020_non_urban)
 ```
 
-```{r prepare_data, include = FALSE}
-# Need to find number of points for each aggregated index variant
-# County, r, f
-# County, rf
-# Country_part, r, f
-# Country_part, rf
-# Country, r, f
-# Country, rf
 
-number_of_pointindices_county_r_f <- 
-  pointindices_year_to_date %>% 
-  dplyr::group_by(
-    year, 
-    month, 
-    period, 
-    day_type, 
-    length_range, 
-    road_category, 
-    county_name
-  ) %>% 
-  dplyr::summarise(no_points = n()) %>% 
-  dplyr::mutate(area_type = "COUNTY") %>% 
-  dplyr::rename(area_name = county_name) %>% 
-  dplyr::ungroup()
 
-number_of_pointindices_county_rf <- 
-  pointindices_year_to_date %>% 
-  dplyr::group_by(
-    year, 
-    month, 
-    period, 
-    day_type, 
-    length_range,  
-    county_name
-  ) %>% 
-  dplyr::summarise(no_points = n()) %>% 
-  dplyr::mutate(
-    area_type = "COUNTY",
-    road_category = "Europa-, riks- og fylkesveg"
-  ) %>% 
-  dplyr::rename(area_name = county_name) %>% 
-  dplyr::ungroup()
+```{r}
+#| label: extract_data_for_text
 
-number_of_pointindices_county_part_r_f <- 
-  pointindices_year_to_date %>% 
-  dplyr::group_by(
-    year, 
-    month, 
-    period, 
-    day_type, 
-    length_range, 
-    road_category, 
-    country_part_name
-  ) %>% 
-  dplyr::summarise(no_points = n()) %>% 
-  dplyr::mutate(area_type = "COUNTRY_PART") %>% 
-  dplyr::rename(area_name = country_part_name) %>% 
-  dplyr::ungroup()
+this_year <- 2022
+latest_month_number <- 12
 
-number_of_pointindices_county_part_rf <- 
-  pointindices_year_to_date %>% 
-  dplyr::group_by(
-    year, 
-    month, 
-    period, 
-    day_type, 
-    length_range, 
-    country_part_name
-  ) %>% 
-  dplyr::summarise(no_points = n()) %>% 
-  dplyr::mutate(
-    area_type = "COUNTRY_PART",
-    road_category = "Europa-, riks- og fylkesveg"
-  ) %>% 
-  dplyr::rename(area_name = country_part_name) %>% 
-  dplyr::ungroup()
-
-number_of_pointindices_country_r_f <- 
-  pointindices_year_to_date %>% 
-  dplyr::group_by(
-    year, 
-    month, 
-    period, 
-    day_type, 
-    length_range, 
-    road_category
-  ) %>% 
-  dplyr::summarise(no_points = n()) %>% 
-  dplyr::mutate(
-    area_type = "COUNTRY",
-    area_name = "Norge"
-  ) %>%
-  dplyr::ungroup()
-
-number_of_pointindices_country_rf <- 
-  pointindices_year_to_date %>% 
-  dplyr::group_by(
-    year, 
-    month, 
-    period, 
-    day_type, 
-    length_range
-  ) %>% 
-  dplyr::summarise(no_points = n()) %>% 
-  dplyr::mutate(
-    area_type = "COUNTRY",
-    road_category = "Europa-, riks- og fylkesveg",
-    area_name = "Norge") %>%
-  dplyr::ungroup()
-
-number_of_point_indices <- dplyr::bind_rows(
-  number_of_pointindices_county_r_f,
-  number_of_pointindices_county_rf,
-  number_of_pointindices_county_part_r_f,
-  number_of_pointindices_county_part_rf,
-  number_of_pointindices_country_r_f,
-  number_of_pointindices_country_rf
-)
-
-index_this_year_prepared <- 
-  index_this_year %>% 
-  dplyr::mutate(
-    length_range = 
-      dplyr::case_when(
-        length_range == "[..,..)" ~ "alle",
-        length_range == "[..,5.6)" ~ "lette",
-        length_range == "[5.6,..)" ~ "tunge"
-      ),
-    day_type = 
-      dplyr::case_when(
-        day_type == "ALL" ~ "alle",
-        day_type == "WEEKDAY" ~ "yrkedøgn",
-        day_type == "WEEKEND" ~ "helgedøgn"
-      )
-  ) %>% 
-  dplyr::mutate(
-    road_category = dplyr::case_when(
-      road_category == "FYLKESVEG" ~ "Fylkesveg",
-      road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
-      road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG" ~ "Europa-, riks- og fylkesveg")
-  ) %>% 
-  dplyr::mutate(
-    month_object = lubridate::make_date(year = year, month = month),
-    month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)
-  ) %>% 
-  dplyr::left_join(
-    number_of_point_indices,
-    by = c(
-      "area_name", 
-      "area_type", 
-      "year", 
-      "month", 
-      "period",
-      "road_category", 
-      "length_range", 
-      "day_type"
-      )
-  ) %>% 
-  dplyr::mutate(
-    road_category = 
-      factor(
-        road_category,
-        levels = 
-          c(
-            "Fylkesveg",
-            "Europa- og riksveg",
-            "Europa-, riks- og fylkesveg"
-            ),
-        ordered = TRUE
-        ),
-    standard_error = 
-      round(standard_deviation / sqrt(no_points), digits = 1),
-    standard_deviation = round(standard_deviation, digits = 1)
-  )
-
-latest_month_name <- 
+latest_month_name <-
   max(
     index_this_year_prepared$month_name
-  ) %>% 
+  ) %>%
   as.character()
 
-index_this_month <- 
-  index_this_year_prepared %>% 
+index_this_month <-
+  index_this_year_prepared %>%
   dplyr::filter(
     area_type == "COUNTRY",
     period == "month",
@@ -441,13 +86,13 @@ index_this_month <-
     month == latest_month_number
   )
 
-less_or_more_month <- 
+less_or_more_month <-
   dplyr::if_else(
     index_this_month$index_p < 0, "mindre", "meir"
   )
 
-index_so_far_this_year_all <- 
-  index_this_year_prepared %>% 
+index_so_far_this_year_all <-
+  index_this_year_prepared %>%
   dplyr::filter(
     area_type == "COUNTRY",
     period == "year_to_date",
@@ -455,23 +100,23 @@ index_so_far_this_year_all <-
     road_category == "Europa-, riks- og fylkesveg",
     day_type == "alle",
     month == latest_month_number
-  ) %>% 
-  dplyr::select(index_p) %>% 
+  ) %>%
+  dplyr::select(index_p) %>%
   round(digits = 1)
 
-less_or_more_so_far <- 
+less_or_more_so_far <-
   dplyr::if_else(
     index_so_far_this_year_all$index_p < 0, "mindre", "meir"
   )
 
-index_so_far_this_year_all_character <- 
-  index_so_far_this_year_all %>% 
-  abs() %>% 
-  as.character() %>% 
+index_so_far_this_year_all_character <-
+  index_so_far_this_year_all %>%
+  abs() %>%
+  as.character() %>%
   decimal_comma()
 
-index_so_far_this_year_light <- 
-  index_this_year_prepared %>% 
+index_so_far_this_year_light <-
+  index_this_year_prepared %>%
   dplyr::filter(
     area_type == "COUNTRY",
     period == "year_to_date",
@@ -479,14 +124,14 @@ index_so_far_this_year_light <-
     road_category == "Europa-, riks- og fylkesveg",
     day_type == "alle",
     month == latest_month_number
-  ) %>% 
-  dplyr::select(index_p) %>% 
-  round(digits = 1) %>% 
-  as.character() %>% 
+  ) %>%
+  dplyr::select(index_p) %>%
+  round(digits = 1) %>%
+  as.character() %>%
   decimal_comma()
 
-index_so_far_this_year_heavy <- 
-  index_this_year_prepared %>% 
+index_so_far_this_year_heavy <-
+  index_this_year_prepared %>%
   dplyr::filter(
     area_type == "COUNTRY",
     period == "year_to_date",
@@ -494,14 +139,14 @@ index_so_far_this_year_heavy <-
     road_category == "Europa-, riks- og fylkesveg",
     day_type == "alle",
     month == latest_month_number
-  ) %>% 
-  dplyr::select(index_p) %>% 
-  round(digits = 1) %>% 
-  as.character() %>% 
+  ) %>%
+  dplyr::select(index_p) %>%
+  round(digits = 1) %>%
+  as.character() %>%
   decimal_comma()
 
-index_so_far_this_year_r <- 
-  index_this_year_prepared %>% 
+index_so_far_this_year_r <-
+  index_this_year_prepared %>%
   dplyr::filter(
     area_type == "COUNTRY",
     period == "year_to_date",
@@ -509,14 +154,14 @@ index_so_far_this_year_r <-
     road_category == "Europa- og riksveg",
     day_type == "alle",
     month == latest_month_number
-  ) %>% 
-  dplyr::select(index_p) %>% 
-  round(digits = 1) %>% 
-  as.character() %>% 
+  ) %>%
+  dplyr::select(index_p) %>%
+  round(digits = 1) %>%
+  as.character() %>%
   decimal_comma()
 
-index_so_far_this_year_f <- 
-  index_this_year_prepared %>% 
+index_so_far_this_year_f <-
+  index_this_year_prepared %>%
   dplyr::filter(
     area_type == "COUNTRY",
     period == "year_to_date",
@@ -524,93 +169,95 @@ index_so_far_this_year_f <-
     road_category == "Fylkesveg",
     day_type == "alle",
     month == latest_month_number
-  ) %>% 
-  dplyr::select(index_p) %>% 
-  round(digits = 1) %>% 
-  as.character() %>% 
+  ) %>%
+  dplyr::select(index_p) %>%
+  round(digits = 1) %>%
+  as.character() %>%
   decimal_comma()
 
-country_parts <- get_country_parts()
+table_caption_country_road <-
+  paste0(
+        "Endring i trafikkmengde i heile Noreg i januar-", 
+        latest_month_name,
+        ", frå ",
+        this_year - 1,
+        " til ",
+        this_year, 
+        ", per vegkategori."
+  )
 
-index_this_year_prepared_wide <- 
-  index_this_year_prepared %>% 
-  dplyr::filter(
-    area_type == "COUNTY",
-    period == "month",
-    length_range == "alle",
-    road_category == "Europa-, riks- og fylkesveg",
-    day_type == "alle"
-  ) %>% 
-  dplyr::mutate(
-    month_name_short = 
-      lubridate::month(month_object, label = TRUE, abbr = TRUE),
-    index_p = round(index_p, digits = 1),
-    area_name = factor(area_name, levels = counties$county_name)
-  ) %>% 
-  dplyr::select(
-    area_name, 
-    index_p, 
-    month_name_short
-  ) %>% 
-  tidyr::pivot_wider(
-    names_from = month_name_short, 
-    values_from = index_p
-  ) %>% 
-  dplyr::arrange(area_name)
+table_caption_country_day <-
+  paste0(
+        "Endring i trafikkmengde i heile Noreg i januar-", 
+        latest_month_name,
+        ", frå ",
+        this_year - 1,
+        " til ",
+        this_year, 
+        ", per døgntype."
+  )
 
-index_this_year_prepared_wide_country <- 
-  index_this_year_prepared %>% 
-  dplyr::filter(
-    area_type == "COUNTRY",
-    period == "month",
-    length_range == "alle",
-    road_category == "Europa-, riks- og fylkesveg"#,
-    #day_type == "alle"
-  ) %>% 
-  dplyr::mutate(
-    month_name_short = 
-      lubridate::month(month_object, label = TRUE, abbr = TRUE),
-    index_p = round(index_p, digits = 1),
-    area_name = "Noreg"
-  ) %>% 
-  dplyr::select(
-    area_name, 
-    day_type, 
-    index_p, 
-    month_name_short
-  ) %>% 
-  tidyr::pivot_wider(
-    names_from = month_name_short, 
-    values_from = index_p
-  ) 
+table_caption_country_month <-
+  paste0(
+    "Endring i trafikkmengde i Noreg for kvar månad frå ",
+    this_year - 1,
+    " til ",
+    this_year,
+    "."
+  )
+
+table_caption_country_part <-
+  paste0(
+    "Endring i trafikkmengde i landsdelane i januar-", 
+    latest_month_name, 
+    ", frå ",
+    this_year - 1,
+    " til ",
+    this_year,
+    "."
+  )
+
+table_caption_county <-
+  paste0(
+    "Endring i trafikkmengde i fylka i januar-", 
+    latest_month_name, 
+    ", frå ",
+    this_year - 1,
+    " til ",
+    this_year,
+    "."
+  )
+
+table_caption_county_monthly <-
+  paste0(
+    "Endring i trafikkmengde i fylka frå ",
+    this_year - 1,
+    " til ",
+    this_year,
+    "."
+  )
 ```
 
-<br>
+{{< pagebreak >}}
 
-**Tabelliste**
-```{r list_of_tables}
-officer::block_toc(style = "Tabelltekst")
-```
+\listoftables
 
-<br>
+\listoffigures
 
-**Figurliste**
-```{r list_of_figures}
-officer::block_toc(style = "Figurtekst")
-```
+{{< pagebreak >}}
+
 
 # Vegtrafikkindeksen
-
 Vegtrafikkindeksen er i `r this_year` rekna ut frå om lag 800 utvalde trafikkregistreringspunkt som er eigd av Statens vegvesen og fylkeskommunane. Trafikken vert registrert kontinuerleg kvar time heile året, og for kvart trafikkregistreringspunkt vert trafikken samanlikna time for time, dato mot dato i kalendermånadene. Utvalet gir truleg eit godt bilete av utviklinga i trafikkarbeidet. Tala er gitt som endring i prosent i forhold til same tidsperiode året før. 
 
-Ver merksam på at ulike forhold kan gi store utslag i tala per månad frå år til år. Slike hendingar kan vera helgedagar utan fast dato, til dømes påske og pinse. Veret er også ein faktor som kan gi utslag på månadstala. Koronapandemien og smitteverntiltaka påverka sterkt utviklinga i trafikken i 2020 og 2021. 
+Ver merksam på at ulike forhold kan gi store utslag i tala per månad frå år til år. Slike hendingar kan vera helgedagar utan fast dato, til dømes påske og pinse. Veret er også ein faktor som kan gi utslag på månadstala. Koronapandemien og smitteverntiltaka påverka sterkt utviklinga i trafikken i perioden frå mars 2020 til mars 2022.
+
 Alle data er henta frå [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/trafikkdata/). Timetrafikk med minst 99 % dekningsgrad inngår i berekningsgrunnlaget.
 
 Nokre trafikkregistreringspunkt er periodevis utelatne på grunn av feil på utstyr eller at dei ligg på vegar som er påverka av vegarbeid o.l.
 
 
 ## Definisjonar
-
 Alle dagar er delt inn i helge- og yrkedøgn:
 
 * **Helgedøgn**: Laurdag og søndag kl. 00:00-23:59, alle offentlege fridagar og jule- og nyårskvelden.
@@ -628,10 +275,9 @@ Indekstala er oppgitt i lag med mål på spreiinga i datagrunnlaget:
 
 
 # Trafikkutviklinga i Noreg
-
 Kort summert har trafikkutviklinga vore som følgjer i perioden januar - `r latest_month_name`, `r this_year`:
 
-Det var `r index_so_far_this_year_all_character` % *`r less_or_more_so_far`* trafikk så langt i `r this_year` enn i same periode i `r this_year - 1`. 
+Det var `r index_so_far_this_year_all_character` % *`r less_or_more_so_far`* trafikk i `r this_year` enn i same periode i `r this_year - 1`. 
 
 Utviklinga for lette og tunge køyretøy er berekna til `r index_so_far_this_year_light` % og `r index_so_far_this_year_heavy` %.
 
@@ -640,16 +286,15 @@ Trafikkauken for ulike vegkategoriar:
 * Riksvegar i alt (Ev + Rv): `r index_so_far_this_year_r` %.
 * Fylkesvegar: `r index_so_far_this_year_f` %.
 
-<br>
-
-
 ## Trafikkutviklinga hittil i år
 
 Tabellen nedanfor viser trafikkutviklinga for heile Noreg til og med `r latest_month_name` `r this_year`.
 
-<br>
 
-```{r so_far_this_year_table_road_category}
+```{r}
+#| label: so_far_this_year_table_road_category
+#| tbl-cap: !expr table_caption_country_road
+
 index_this_year_prepared %>%
   dplyr::filter(
     period == "year_to_date",
@@ -699,25 +344,14 @@ index_this_year_prepared %>%
   padding(
     padding.top = .3,
     padding.bottom = .3
-  ) %>%
-  set_caption(
-    paste0(
-      "Endring i trafikkmengde i heile Noreg i januar-", 
-      latest_month_name,
-      ", frå ",
-      this_year - 1,
-      " til ",
-      this_year, 
-      ", per vegkategori."
-    ),
-    autonum = table_numbers,
-    style = "Tabelltekst"
   )
 ```
 
-`r officer::fpar("", officer::run_pagebreak())`
 
-```{r so_far_this_year_table_day_type}
+```{r}
+#| label: so_far_this_year_table_day_type
+#| tbl-cap: !expr table_caption_country_day
+
 index_this_year_prepared %>%
   dplyr::filter(
     period == "year_to_date",
@@ -763,31 +397,17 @@ index_this_year_prepared %>%
   padding(
     padding.top = .3,
     padding.bottom = .3
-  ) %>%
-  set_caption(
-    paste0(
-      "Endring i trafikkmengde i heile Noreg i januar-", 
-      latest_month_name,
-      ", frå ",
-      this_year - 1,
-      " til ",
-      this_year, 
-      ", per døgntype."
-    ),
-    autonum = table_numbers,
-    style = "Tabelltekst"
   )
 ```
 
-`r officer::fpar("", officer::run_pagebreak())`
 
 ## Trafikkutviklinga for kvar månad
-
 Trafikkutviklinga i Noreg for kvar månad, har vore som vist i tabellen nedanfor.
 
-<br>
+```{r}
+#| label: country_monthly_table
+#| tbl-cap: !expr table_caption_country_month
 
-```{r country_monthly_table}
 number_of_columns <- ncol(index_this_year_prepared_wide_country)
 
 index_this_year_prepared_wide_country %>%
@@ -809,27 +429,18 @@ index_this_year_prepared_wide_country %>%
   width(j = 1, width = 1.9) %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption(
-    paste0(
-      "Endring i trafikkmengde i Noreg for kvar månad frå ",
-      this_year - 1,
-      " til ",
-      this_year,
-      "."
-    ), 
-    autonum = table_numbers,
-    style = "Tabelltekst"
-  )
+          padding.bottom = .3)
 ```
 
-<br>
 
 Figurane på dei neste sidene viser utviklinga for kvar månad gjennom året, fordelt på høvesvis vegkategori og døgntype.
 
-<br>
+```{r}
+#| label: road_category_plot
+#| fig-cap: "Månadleg trafikkutvikling i Noreg per vegkategori."
+#| fig-width: 6.5
+#| fig-height: 7
 
-```{r road_category_plot, fig.width=6.5, fig.height=7, fig.cap="Månadleg trafikkutvikling i Noreg per vegkategori."}
 index_this_year_prepared %>%
   dplyr::filter(
     period == "month",
@@ -866,9 +477,13 @@ index_this_year_prepared %>%
   theme(legend.position = "bottom")
 ```
 
-<br>
 
-```{r day_type_plot_monthly, fig.width=6.5, fig.height=7, fig.cap="Månadleg trafikkutvikling i Noreg per døgntype."}
+```{r}
+#| label: day_type_plot_monthly
+#| fig-cap: "Månadleg trafikkutvikling i Noreg per døgntype."
+#| fig-width: 6.5
+#| fig-height: 7
+
 index_this_year_prepared %>%
   dplyr::filter(
     period == "month",
@@ -903,9 +518,7 @@ index_this_year_prepared %>%
 ```
 
 
-
 # Trafikkutviklinga i landsdelane
-
 Landsdelane er inndelt etter fylka, jamfør Statistisk sentralbyrå:
 
 * **Oslo og Viken**: Oslo, Viken
@@ -917,12 +530,14 @@ Landsdelane er inndelt etter fylka, jamfør Statistisk sentralbyrå:
 
 
 ## Trafikkutviklinga hittil i år
-
 Tabellen nedanfor viser trafikkutviklinga i landsdelane til og med `r latest_month_name` `r this_year`.
 
-<br>
 
-```{r so_far_this_year_table_road_category_country_part}
+
+```{r}
+#| label: so_far_this_year_table_road_category_country_part
+#| tbl-cap: !expr table_caption_country_part
+
 index_this_year_prepared %>%
   dplyr::filter(
     period == "year_to_date",
@@ -976,29 +591,20 @@ index_this_year_prepared %>%
   width(j = 1, width = 2) %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption(
-    paste0(
-      "Endring i trafikkmengde i landsdelane i januar-", 
-      latest_month_name, 
-      ", frå ",
-      this_year - 1,
-      " til ",
-      this_year,
-      "."
-    ),
-    autonum = table_numbers,
-    style = "Tabelltekst"
-  )
+          padding.bottom = .3)
 ```
 
-`r officer::fpar("", officer::run_pagebreak())`
 
 ## Trafikkutviklinga for kvar månad
 
-<br>
 
-```{r country_part_plot_monthly, fig.width=6.5, fig.height=5, fig.cap="Månadleg trafikkutvikling i landsdelane."}
+
+```{r}
+#| label: country_part_plot_monthly
+#| fig-cap: "Månadleg trafikkutvikling i landsdelane."
+#| fig-width: 6.5
+#| fig-height: 5
+
 index_this_year_prepared %>%
   dplyr::filter(
     period == "month",
@@ -1039,16 +645,16 @@ index_this_year_prepared %>%
   theme(legend.position = "bottom")
 ```
 
-
-
 # Trafikkutviklinga i fylka
 
 ## Trafikkutviklinga hittil i år
 Tabellen nedanfor viser trafikkutviklinga i fylka til og med `r latest_month_name` `r this_year`.
 
-<br>
 
-```{r so_far_this_year_table_road_category_county}
+```{r}
+#| label: so_far_this_year_table_road_category_county
+#| tbl-cap: !expr table_caption_county
+
 index_this_year_prepared %>%
   dplyr::filter(
     period == "year_to_date",
@@ -1094,25 +700,16 @@ index_this_year_prepared %>%
   width(j = 1, width = 1.9) %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption(
-    paste0(
-      "Endring i trafikkmengde i fylka i januar-", 
-      latest_month_name, 
-      ", frå ",
-      this_year - 1,
-      " til ",
-      this_year,
-      "."
-    ),
-    autonum = table_numbers,
-    style = "Tabelltekst"
-  )
+          padding.bottom = .3)
 ```
+
 
 ## Trafikkutviklinga for kvar månad
 
-```{r county_monthly_table}
+```{r}
+#| label: county_monthly_table
+#| tbl-cap: !expr table_caption_county_monthly
+
 number_of_columns_2 <- ncol(index_this_year_prepared_wide)
 
 index_this_year_prepared_wide %>%
@@ -1131,23 +728,13 @@ index_this_year_prepared_wide %>%
   width(j = 1, width = 1.9) %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption(
-    paste0(
-      "Endring i trafikkmengde i fylka frå ",
-      this_year - 1,
-      " til ",
-      this_year,
-      "."),
-    autonum = table_numbers,
-    style = "Tabelltekst")
+          padding.bottom = .3)
 ```
 
 
 # Historisk trafikkutvikling i Noreg
 Vegtrafikkindeksen er berekna kvart år sidan 1995, og tabellane nedan viser kumulativ trafikkutvikling for heile perioden. Tala er her berekna ved å setje basisåret til 100, og den prosentvise utviklinga vil ein då finne ved å trekkje frå 100.
 
-<br>
 
 ```{r historic}
 historic <- 
@@ -1233,7 +820,10 @@ historic_h_combinations <-
   calculate_all_index_chain_combinations(historic_h)
 ```
 
-```{r historic_all_table_1}
+```{r}
+#| label: historic_all_table_1
+#| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 1995 til 2022."
+
 historic_all_combinations %>% 
   dplyr::select(1:11) %>% 
   flextable::flextable() %>%
@@ -1250,17 +840,15 @@ historic_all_combinations %>%
   height_all(height = .2) %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption(
-    "Kumulativ trafikkutvikling i Noreg frå 1995 til 2021.",
-    autonum = table_numbers,
-    style = "Tabelltekst"
-  )
+          padding.bottom = .3)
 ```
 
-`r officer::fpar("", officer::run_pagebreak())`
+{{< pagebreak >}}
 
-```{r historic_all_table_2}
+```{r}
+#| label: historic_all_table_2
+#| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 2005 til 2022."
+
 historic_all_combinations %>% 
   dplyr::slice(-(1:10)) %>% 
   dplyr::select(1, 12:21) %>% 
@@ -1278,20 +866,17 @@ historic_all_combinations %>%
   height_all(height = .2) %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption(
-    "Kumulativ trafikkutvikling i Noreg frå 2005 til 2021.",
-    autonum = table_numbers,
-    style = "Tabelltekst"
-  )
+          padding.bottom = .3)
 ```
 
-<br>
 
-```{r historic_all_table_3}
+```{r}
+#| label: historic_all_table_3
+#| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 2015 til 2022."
+
 historic_all_combinations %>% 
   dplyr::slice(-(1:20)) %>% 
-  dplyr::select(1, 22:27) %>% 
+  dplyr::select(1, 22:28) %>% 
   flextable::flextable() %>%
   colformat_double(j = 2:6, digits = 1) %>%
   set_header_labels(year = "År") %>%
@@ -1306,17 +891,14 @@ historic_all_combinations %>%
   height_all(height = .2) %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption(
-    "Kumulativ trafikkutvikling i Noreg frå 2015 til 2021.",
-    autonum = table_numbers,
-    style = "Tabelltekst"
-  )
+          padding.bottom = .3)
 ```
 
-<br>
 
-```{r historic_f_table}
+```{r}
+#| label: historic_f_table
+#| tbl-cap: "Kumulativ trafikkutvikling på fylkesvegar i Noreg frå 2015 til 2022."
+
 historic_f_all_combinations %>% 
   flextable::flextable() %>%
   colformat_double(j = 2:6, digits = 1) %>%
@@ -1332,18 +914,14 @@ historic_f_all_combinations %>%
   height_all(height = .2) %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption(
-    "Kumulativ trafikkutvikling på fylkesvegar i Noreg frå 2015 til 2021.",
-    autonum = table_numbers,
-    style = "Tabelltekst"
-  )
+          padding.bottom = .3)
 ```
 
 
-<br>
+```{r}
+#| label: historic_er_table
+#| tbl-cap: "Kumulativ trafikkutvikling på Europa- og riksvegar i Noreg frå 2015 til 2022."
 
-```{r historic_er_table}
 historic_er_all_combinations %>% 
   flextable::flextable() %>%
   colformat_double(j = 2:6, digits = 1) %>%
@@ -1359,18 +937,14 @@ historic_er_all_combinations %>%
   height_all(height = .2) %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption(
-    "Kumulativ trafikkutvikling på Europa- og riksvegar i Noreg frå 2015 til 2021.",
-    autonum = table_numbers,
-    style = "Tabelltekst"
-  )
+          padding.bottom = .3)
 ```
 
 
-<br>
+```{r}
+#| label: historic_l_table_1
+#| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 1998 til 2022."
 
-```{r historic_l_table_1}
 historic_l_combinations %>% 
   dplyr::select(1:11) %>% 
   flextable::flextable() %>%
@@ -1387,17 +961,14 @@ historic_l_combinations %>%
   height_all(height = .2) %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption(
-    "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 1998 til 2021.",
-    autonum = table_numbers,
-    style = "Tabelltekst"
-  )
+          padding.bottom = .3)
 ```
 
-<br>
 
-```{r historic_l_table_2}
+```{r}
+#| label: historic_l_table_2
+#| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2008 til 2022."
+
 historic_l_combinations %>% 
   dplyr::slice(-(1:10)) %>% 
   dplyr::select(1, 12:21) %>% 
@@ -1415,20 +986,17 @@ historic_l_combinations %>%
   height_all(height = .2) %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption(
-    "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2008 til 2021.",
-    autonum = table_numbers,
-    style = "Tabelltekst"
-  )
+          padding.bottom = .3)
 ```
 
-<br>
 
-```{r historic_l_table_3}
+```{r}
+#| label: historic_l_table_3
+#| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2018 til 2022."
+
 historic_l_combinations %>% 
   dplyr::slice(-(1:20)) %>% 
-  dplyr::select(1, 22:24) %>% 
+  dplyr::select(1, 22:25) %>% 
   flextable::flextable() %>%
   colformat_double(j = 2:3, digits = 1) %>%
   set_header_labels(year = "År") %>%
@@ -1443,17 +1011,14 @@ historic_l_combinations %>%
   height_all(height = .2) %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption(
-    "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2018 til 2021.",
-    autonum = table_numbers,
-    style = "Tabelltekst"
-  )
+          padding.bottom = .3)
 ```
 
-<br>
 
-```{r historic_h_table_1}
+```{r}
+#| label: historic_h_table_1
+#| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 1998 til 2022."
+
 historic_h_combinations %>% 
   dplyr::select(1:11) %>% 
   flextable::flextable() %>%
@@ -1470,17 +1035,14 @@ historic_h_combinations %>%
   height_all(height = .2) %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption(
-    "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 1998 til 2021.",
-    autonum = table_numbers,
-    style = "Tabelltekst"
-  )
+          padding.bottom = .3)
 ```
 
-<br>
 
-```{r historic_h_table_2}
+```{r}
+#| label: historic_h_table_2
+#| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2008 til 2022."
+
 historic_h_combinations %>% 
   dplyr::slice(-(1:10)) %>% 
   dplyr::select(1, 12:21) %>% 
@@ -1498,17 +1060,14 @@ historic_h_combinations %>%
   height_all(height = .2) %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption(
-    "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2008 til 2021.",
-    autonum = table_numbers,
-    style = "Tabelltekst"
-  )
+          padding.bottom = .3)
 ```
 
-<br>
 
-```{r historic_h_table_3}
+```{r}
+#| label: historic_h_table_3
+#| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2018 til 2022."
+
 historic_h_combinations %>% 
   dplyr::slice(-(1:20)) %>% 
   dplyr::select(1, 22:24) %>% 
@@ -1526,22 +1085,8 @@ historic_h_combinations %>%
   height_all(height = .2) %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
-          padding.bottom = .3) %>%
-  set_caption(
-    "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2018 til 2021.",
-    autonum = table_numbers,
-    style = "Tabelltekst"
-  )
+          padding.bottom = .3)
 ```
-
-
-
-
-
-
-
-
-
 
 
 
