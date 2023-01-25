@@ -3,7 +3,7 @@ format:
   pdf:
     toc: true
     number-sections: true
-    toc-title: Innhold
+    toc-title: Innhald
     mainfont: "Lucida Sans Unicode"
     include-in-header:
       text: |
@@ -16,10 +16,10 @@ format:
         \usepackage[font=small,textfont=it,labelsep=period]{caption}
 crossref: 
   tbl-title: "Tabell"
-  lot-title: "Tabeller"
+  lot-title: "Tabellar"
   tbl-prefix: ""
   fig-title: "Figur"
-  lof-title: "Figurer"
+  lof-title: "Figurar"
   fig-prefix: ""
   title-delim: "."
 ---
@@ -60,8 +60,6 @@ index_this_year_prepared_wide_country <-
     file = "road_traffic_index_files/index_this_year_prepared_wide_country.rds"
   )
 ```
-
-
 
 ```{r}
 #| label: extract_data_for_text
@@ -260,24 +258,26 @@ Nokre trafikkregistreringspunkt er periodevis utelatne på grunn av feil på uts
 ## Definisjonar
 Alle dagar er delt inn i helge- og yrkedøgn:
 
-* **Helgedøgn**: Laurdag og søndag kl. 00:00-23:59, alle offentlege fridagar og jule- og nyårskvelden.
-* **Yrkedøgn**: Alle døgn minus helgedøgn.
+* Helgedøgn: Laurdag og søndag kl. 00:00-23:59, alle offentlege fridagar og jule- og nyårskvelden.
+* Yrkedøgn: Alle døgn minus helgedøgn.
 
 Alle køyretøy sin lengde vert målt og er i datagrunnlaget delt inn i lengdekategoriar tilsvarande skiljet mellom lette og tunge køyretøy på 3,5 tonn:
 
-* **Lette køyretøy**: Lengde < 5,6 meter
-* **Tunge køyretøy**: Lengde ≥ 5,6 meter
+* Lette køyretøy: Lengde < 5,6 meter
+* Tunge køyretøy: Lengde ≥ 5,6 meter
 
 Indekstala er oppgitt i lag med mål på spreiinga i datagrunnlaget:
 
-* **Standardavvik**: Angir spreiinga i trafikkendringa ved trafikkregistreringspunkta.
-* **Standardfeil**: Standardfeil for indekstalet seier noko om kor presist det er. Er berekna ved å dele standardavviket på antal punkt for det aktuelle utvalet.
+* Standardavvik: Angir spreiinga i trafikkendringa ved trafikkregistreringspunkta.
+* Standardfeil: Standardfeil for indekstalet seier noko om kor presist det er. Er berekna ved å dele standardavviket på antal punkt for det aktuelle utvalet.
+
+{{< pagebreak >}}
 
 
 # Trafikkutviklinga i Noreg
 Kort summert har trafikkutviklinga vore som følgjer i perioden januar - `r latest_month_name`, `r this_year`:
 
-Det var `r index_so_far_this_year_all_character` % *`r less_or_more_so_far`* trafikk i `r this_year` enn i same periode i `r this_year - 1`. 
+Det var `r index_so_far_this_year_all_character` % *`r less_or_more_so_far`* trafikk i `r this_year` enn i `r this_year - 1`. 
 
 Utviklinga for lette og tunge køyretøy er berekna til `r index_so_far_this_year_light` % og `r index_so_far_this_year_heavy` %.
 
@@ -286,14 +286,15 @@ Trafikkauken for ulike vegkategoriar:
 * Riksvegar i alt (Ev + Rv): `r index_so_far_this_year_r` %.
 * Fylkesvegar: `r index_so_far_this_year_f` %.
 
+
 ## Trafikkutviklinga hittil i år
-
-Tabellen nedanfor viser trafikkutviklinga for heile Noreg til og med `r latest_month_name` `r this_year`.
-
+Tabell @tbl-so_far_this_year_table_road_category og @tbl-so_far_this_year_table_day_type nedanfor viser trafikkutviklinga for heile Noreg til og med `r latest_month_name` `r this_year`.
 
 ```{r}
-#| label: so_far_this_year_table_road_category
+#| label: tbl-so_far_this_year_table_road_category
 #| tbl-cap: !expr table_caption_country_road
+
+# same periode i
 
 index_this_year_prepared %>%
   dplyr::filter(
@@ -322,15 +323,15 @@ index_this_year_prepared %>%
   set_header_labels(
     area_name_here = "Område", 
     road_category = "Vegkategori", 
-    length_range = "Køyretøy- \n klasse",
-    index_p = "Endring i \n trafikkmengde \n (%)",
-    standard_error = "Standardfeil \n (%)",
-    standard_deviation = "Standardavvik \n (%)",
-    no_points = "Antal \n punkt"
+    length_range = "Køyretøy-\nklasse",
+    index_p = "Endring i\ntrafikk-\nmengde\n(%)",
+    standard_error = "Standard-\nfeil\n(%)",
+    standard_deviation = "Standard-\navvik\n(%)",
+    no_points = "Antal\npunkt"
   ) %>%
   align(j = 4:7, align = "center", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
+  #fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
@@ -349,7 +350,7 @@ index_this_year_prepared %>%
 
 
 ```{r}
-#| label: so_far_this_year_table_day_type
+#| label: tbl-so_far_this_year_table_day_type
 #| tbl-cap: !expr table_caption_country_day
 
 index_this_year_prepared %>%
@@ -376,15 +377,14 @@ index_this_year_prepared %>%
   set_header_labels(
     area_name_here = "Område", 
     day_type = "Døgntype", 
-    length_range = "Køyretøy- \n klasse",
-    index_p = "Endring i \n trafikkmengde \n (%)",
-    standard_error = "Standardfeil \n (%)",
-    standard_deviation = "Standardavvik \n (%)",
-    no_points = "Antal \n punkt"
+    length_range = "Køyretøy-\nklasse",
+    index_p = "Endring i\ntrafikk-\nmengde\n(%)",
+    standard_error = "Standard-\nfeil\n(%)",
+    standard_deviation = "Standard-\navvik\n(%)",
+    no_points = "Antal\npunkt"
   ) %>%
   align(j = 4:7, align = "center", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
@@ -402,10 +402,10 @@ index_this_year_prepared %>%
 
 
 ## Trafikkutviklinga for kvar månad
-Trafikkutviklinga i Noreg for kvar månad, har vore som vist i tabellen nedanfor.
+Trafikkutviklinga i Noreg for kvar månad, har vore som vist i tabell @tbl-country_monthly_table nedanfor.
 
 ```{r}
-#| label: country_monthly_table
+#| label: tbl-country_monthly_table
 #| tbl-cap: !expr table_caption_country_month
 
 number_of_columns <- ncol(index_this_year_prepared_wide_country)
@@ -419,24 +419,27 @@ index_this_year_prepared_wide_country %>%
   ) %>%
   align(j = 3:number_of_columns, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
   height_all(height = .2) %>%
-  width(j = 1, width = 1.9) %>%
+  width(j = 1, width = 0.7) %>%
+  width(j = 2, width = 0.8) %>%
+  width(j = 3:number_of_columns, width = 0.4) %>%
   fix_border_issues() %>%
-  padding(padding.top = .3,
-          padding.bottom = .3)
+  padding(
+    padding.top = .3,
+    padding.bottom = .3
+  )
 ```
 
 
-Figurane på dei neste sidene viser utviklinga for kvar månad gjennom året, fordelt på høvesvis vegkategori og døgntype.
+Figur @fig-road_category_plot og @fig-day_type_plot_monthly på dei neste sidene viser utviklinga for kvar månad gjennom året, fordelt på høvesvis vegkategori og døgntype.
 
 ```{r}
-#| label: road_category_plot
+#| label: fig-road_category_plot
 #| fig-cap: "Månadleg trafikkutvikling i Noreg per vegkategori."
 #| fig-width: 6.5
 #| fig-height: 7
@@ -479,7 +482,7 @@ index_this_year_prepared %>%
 
 
 ```{r}
-#| label: day_type_plot_monthly
+#| label: fig-day_type_plot_monthly
 #| fig-cap: "Månadleg trafikkutvikling i Noreg per døgntype."
 #| fig-width: 6.5
 #| fig-height: 7
@@ -521,21 +524,19 @@ index_this_year_prepared %>%
 # Trafikkutviklinga i landsdelane
 Landsdelane er inndelt etter fylka, jamfør Statistisk sentralbyrå:
 
-* **Oslo og Viken**: Oslo, Viken
-* **Innlandet**: Innlandet
-* **Agder og Sør-Østlandet**: Vestfold og Telemark, Agder
-* **Vestlandet**: Rogaland, Vestland, Møre og Romsdal
-* **Trøndelag**: Trøndelag
-* **Nord-Norge**: Nordland, Troms og Finnmark
+* Oslo og Viken: Oslo, Viken
+* Innlandet: Innlandet
+* Agder og Sør-Østlandet: Vestfold og Telemark, Agder
+* Vestlandet: Rogaland, Vestland, Møre og Romsdal
+* Trøndelag: Trøndelag
+* Nord-Norge: Nordland, Troms og Finnmark
 
 
 ## Trafikkutviklinga hittil i år
-Tabellen nedanfor viser trafikkutviklinga i landsdelane til og med `r latest_month_name` `r this_year`.
-
-
+Tabell @tbl-so_far_this_year_table_road_category_country_part nedanfor viser trafikkutviklinga i landsdelane til og med `r latest_month_name` `r this_year`.
 
 ```{r}
-#| label: so_far_this_year_table_road_category_country_part
+#| label: tbl-so_far_this_year_table_road_category_country_part
 #| tbl-cap: !expr table_caption_country_part
 
 index_this_year_prepared %>%
@@ -571,15 +572,14 @@ index_this_year_prepared %>%
   colformat_int(j = 6) %>% 
   set_header_labels(
     area_name = "Landsdel", 
-    length_range = "Køyretøy- \n klasse",
-    index_p = "Endring i \n trafikkmengde \n (%)",
-    standard_error = "Standardfeil \n (%)",
-    standard_deviation = "Standardavvik \n (%)",
-    no_points = "Antal \n punkt"
+    length_range = "Køyretøy-\nklasse",
+    index_p = "Endring i\ntrafikk-\nmengde\n(%)",
+    standard_error = "Standard-\nfeil\n(%)",
+    standard_deviation = "Standard-\navvik\n(%)",
+    no_points = "Antal\npunkt"
   ) %>%
   align(j = 3:6, align = "center", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
@@ -591,16 +591,16 @@ index_this_year_prepared %>%
   width(j = 1, width = 2) %>%
   fix_border_issues() %>%
   padding(padding.top = .3,
-          padding.bottom = .3)
+          padding.bottom = .2)
 ```
 
 
 ## Trafikkutviklinga for kvar månad
-
+Figur @fig-country_part_plot_monthly viser trafikkutviklinga per månad i landsdelane.
 
 
 ```{r}
-#| label: country_part_plot_monthly
+#| label: fig-country_part_plot_monthly
 #| fig-cap: "Månadleg trafikkutvikling i landsdelane."
 #| fig-width: 6.5
 #| fig-height: 5
@@ -645,15 +645,17 @@ index_this_year_prepared %>%
   theme(legend.position = "bottom")
 ```
 
+
 # Trafikkutviklinga i fylka
 
-## Trafikkutviklinga hittil i år
-Tabellen nedanfor viser trafikkutviklinga i fylka til og med `r latest_month_name` `r this_year`.
 
+## Trafikkutviklinga hittil i år
+Tabell @tbl-so_far_this_year_table_road_category_county nedanfor viser trafikkutviklinga i fylka til og med `r latest_month_name` `r this_year`.
 
 ```{r}
-#| label: so_far_this_year_table_road_category_county
+#| label: tbl-so_far_this_year_table_road_category_county
 #| tbl-cap: !expr table_caption_county
+#| ft.arraystretch: 0.9
 
 index_this_year_prepared %>%
   dplyr::filter(
@@ -680,15 +682,14 @@ index_this_year_prepared %>%
   colformat_int(j = 6) %>% 
   set_header_labels(
     area_name = "Fylke", 
-    length_range = "Køyretøy- \n klasse",
-    index_p = "Endring i \n trafikkmengde \n (%)",
-    standard_error = "Standardfeil \n (%)",
-    standard_deviation = "Standardavvik \n (%)",
-    no_points = "Antal \n punkt"
+    length_range = "Køyretøy-\nklasse",
+    index_p = "Endring i\ntrafikk-\nmengde\n(%)",
+    standard_error = "Standard-\nfeil\n(%)",
+    standard_deviation = "Standard-\navvik\n(%)",
+    no_points = "Antal\npunkt"
   ) %>%
   align(j = 3:6, align = "center", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
@@ -696,18 +697,22 @@ index_this_year_prepared %>%
   hline_bottom(part = "all", border = borderline) %>%
   hline(i = c(11, 22), part = "body",
         border = fp_border(color = "#dadada", width = 1)) %>% 
-  height_all(height = .2) %>%
-  width(j = 1, width = 1.9) %>%
+  width(j = 1, width = 1.7) %>%
   fix_border_issues() %>%
-  padding(padding.top = .3,
-          padding.bottom = .3)
+  padding(
+    padding.top = .05,
+    padding.bottom = .05
+  )
 ```
+
+{{< pagebreak >}}
 
 
 ## Trafikkutviklinga for kvar månad
+Tabell @tbl-county_monthly_table viser trafikkutviklinga kvar månad i fylka.
 
 ```{r}
-#| label: county_monthly_table
+#| label: tbl-county_monthly_table
 #| tbl-cap: !expr table_caption_county_monthly
 
 number_of_columns_2 <- ncol(index_this_year_prepared_wide)
@@ -718,18 +723,23 @@ index_this_year_prepared_wide %>%
   set_header_labels(area_name = "Fylke") %>%
   align(j = 2:number_of_columns_2, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
+  fontsize(size = 8, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
   height_all(height = .2) %>%
-  width(j = 1, width = 1.9) %>%
+  width(j = 1, width = 1.5) %>%
+  width(j = 2:number_of_columns_2, width = 0.4) %>%
   fix_border_issues() %>%
-  padding(padding.top = .3,
-          padding.bottom = .3)
+  padding(
+    padding.top = .3,
+    padding.bottom = .3
+  )
 ```
+
+{{< pagebreak >}}
 
 
 # Historisk trafikkutvikling i Noreg
@@ -821,8 +831,9 @@ historic_h_combinations <-
 ```
 
 ```{r}
-#| label: historic_all_table_1
+#| label: tbl-historic_all_table_1
 #| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 1995 til 2022."
+#| ft.arraystretch: 0.9
 
 historic_all_combinations %>% 
   dplyr::select(1:11) %>% 
@@ -831,16 +842,17 @@ historic_all_combinations %>%
   set_header_labels(year = "År") %>%
   align(j = 2:11, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  height_all(height = .2) %>%
+  width(width = 0.5) |> 
   fix_border_issues() %>%
-  padding(padding.top = .3,
-          padding.bottom = .3)
+  padding(
+    padding.top = .05,
+    padding.bottom = .05
+  )
 ```
 
 {{< pagebreak >}}
@@ -857,16 +869,17 @@ historic_all_combinations %>%
   set_header_labels(year = "År") %>%
   align(j = 2:11, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  height_all(height = .2) %>%
+  width(width = 0.5) |> 
   fix_border_issues() %>%
-  padding(padding.top = .3,
-          padding.bottom = .3)
+  padding(
+    padding.top = .05,
+    padding.bottom = .05
+  )
 ```
 
 
@@ -882,16 +895,18 @@ historic_all_combinations %>%
   set_header_labels(year = "År") %>%
   align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
+  #fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  height_all(height = .2) %>%
+  width(width = 0.5) |> 
   fix_border_issues() %>%
-  padding(padding.top = .3,
-          padding.bottom = .3)
+  padding(
+    padding.top = .05,
+    padding.bottom = .05
+  )
 ```
 
 
@@ -905,16 +920,18 @@ historic_f_all_combinations %>%
   set_header_labels(year = "År") %>%
   align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
+  #fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  height_all(height = .2) %>%
+  width(width = 0.5) |> 
   fix_border_issues() %>%
-  padding(padding.top = .3,
-          padding.bottom = .3)
+  padding(
+    padding.top = .05,
+    padding.bottom = .05
+  )
 ```
 
 
@@ -928,16 +945,18 @@ historic_er_all_combinations %>%
   set_header_labels(year = "År") %>%
   align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
+  #fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  height_all(height = .2) %>%
+  width(width = 0.5) |> 
   fix_border_issues() %>%
-  padding(padding.top = .3,
-          padding.bottom = .3)
+  padding(
+    padding.top = .05,
+    padding.bottom = .05
+  )
 ```
 
 
@@ -952,16 +971,18 @@ historic_l_combinations %>%
   set_header_labels(year = "År") %>%
   align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
+  #fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  height_all(height = .2) %>%
+  width(width = 0.5) |> 
   fix_border_issues() %>%
-  padding(padding.top = .3,
-          padding.bottom = .3)
+  padding(
+    padding.top = .05,
+    padding.bottom = .05
+  )
 ```
 
 
@@ -977,16 +998,18 @@ historic_l_combinations %>%
   set_header_labels(year = "År") %>%
   align(j = 2:11, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
+  #fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  height_all(height = .2) %>%
+  width(width = 0.5) |> 
   fix_border_issues() %>%
-  padding(padding.top = .3,
-          padding.bottom = .3)
+  padding(
+    padding.top = .05,
+    padding.bottom = .05
+  )
 ```
 
 
@@ -1002,16 +1025,18 @@ historic_l_combinations %>%
   set_header_labels(year = "År") %>%
   align(j = 2:3, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
+  #fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  height_all(height = .2) %>%
+  width(width = 0.5) |> 
   fix_border_issues() %>%
-  padding(padding.top = .3,
-          padding.bottom = .3)
+  padding(
+    padding.top = .05,
+    padding.bottom = .05
+  )
 ```
 
 
@@ -1026,16 +1051,18 @@ historic_h_combinations %>%
   set_header_labels(year = "År") %>%
   align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
+  #fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  height_all(height = .2) %>%
+  width(width = 0.5) |> 
   fix_border_issues() %>%
-  padding(padding.top = .3,
-          padding.bottom = .3)
+  padding(
+    padding.top = .05,
+    padding.bottom = .05
+  )
 ```
 
 
@@ -1051,16 +1078,18 @@ historic_h_combinations %>%
   set_header_labels(year = "År") %>%
   align(j = 2:11, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
+  #fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  height_all(height = .2) %>%
+  width(width = 0.5) |> 
   fix_border_issues() %>%
-  padding(padding.top = .3,
-          padding.bottom = .3)
+  padding(
+    padding.top = .05,
+    padding.bottom = .05
+  )
 ```
 
 
@@ -1076,16 +1105,18 @@ historic_h_combinations %>%
   set_header_labels(year = "År") %>%
   align(j = 2:3, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
+  #fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  height_all(height = .2) %>%
+  width(width = 0.5) |> 
   fix_border_issues() %>%
-  padding(padding.top = .3,
-          padding.bottom = .3)
+  padding(
+    padding.top = .05,
+    padding.bottom = .05
+  )
 ```
 
 

@@ -12,6 +12,26 @@ source("get_from_trafficdata_api.R")
 source("split_road_system_reference.R")
 library(DT)
 library(htmltools)
+
+# Point metadata from Traffic Data API
+points <- get_points() %>%
+  dplyr::distinct(trp_id, .keep_all = T) %>%
+  dplyr::select(
+    trp_id, 
+    name, 
+    road_reference, 
+    county_name,
+    municipality_name,
+    #registration_frequency,
+    #traffic_type,
+    lat, lon, 
+    road_link_position
+  ) %>%
+  dplyr::mutate(
+    name = stringr::str_to_title(name, locale = "no")
+  )
+
+#writexl::write_xlsx(points, path = "trp.xlsx")
 ```
 
 
@@ -20,17 +40,17 @@ library(htmltools)
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 5952         2019 - 2022-10
-# Førde 9952          2018 - 2022-10
-# Grenland 4953       2018 - 2022-10
-# Nedre Glomma 5953   2019 - 2022-10
+# Bergen 5952         2019 - 2022-12
+# Førde 9952          2018 - 2022-12
+# Grenland 4953       2018 - 2022-12
+# Nedre Glomma 5953   2019 - 2022-12
 # Nord-Jæren 6952     2020 - 2022-10
 # Osloområdet 6953    2018 - 2022-10
 # Tromsø 11952        2021 - 2022-10
 
 # Choose
 index_year <- 2022
-index_month <- 9 # latest published
+index_month <- 10 # latest published
 city_number <- 11952
 
 # Fetch
@@ -51,22 +71,6 @@ pointindex <-
 city_trps <- pointindex[[1]]
 pointindices <- pointindex[[2]]
 city_name <- city_index$area_name[1]
-
-# Point metadata from Traffic Data API
-points <- get_points() %>%
-  dplyr::distinct(trp_id, .keep_all = T) %>%
-  dplyr::select(
-    trp_id, 
-    name, 
-    road_reference, 
-    county_name,
-    municipality_name, 
-    lat, lon, 
-    road_link_position
-  ) %>%
-  dplyr::mutate(
-    name = stringr::str_to_title(name, locale = "no")
-  )
 
 city_trps_meta <- 
   points %>% 
@@ -165,12 +169,12 @@ point_index_new_prepared <-
     index_total_coverage
   )
 
-# point_index_new_prepared_2 <- point_index_new %>%
-#   dplyr::filter(day_type == "ALL",
-#                 period == "month",
-#                 month == index_month + 2) %>%
-#   dplyr::select(trp_id, year, month, index_total_p,
-#                 index_total_coverage)
+point_index_new_prepared_2 <- point_index_new %>%
+  dplyr::filter(day_type == "ALL",
+                period == "month",
+                month == index_month + 2) %>%
+  dplyr::select(trp_id, year, month, index_total_p,
+                index_total_coverage)
 # 
 # point_index_new_prepared_3 <- point_index_new %>%
 #   dplyr::filter(day_type == "ALL",
@@ -193,7 +197,7 @@ pointindex_prepared_all <-
   dplyr::bind_rows(
     pointindex_prepared,
     point_index_new_prepared,
-    # point_index_new_prepared_2,
+    point_index_new_prepared_2,
     # point_index_new_prepared_3,
     # point_index_new_prepared_4
   ) %>% 
@@ -220,19 +224,19 @@ city_trps_new_pointindex <-
             index_total_coverage, " %"),
     label_text = lapply(label_text, htmltools::HTML))
 
-# city_trps_new_pointindex_2 <- 
-#   city_trps_meta %>% 
-#   dplyr::left_join(
-#     point_index_new_prepared_2,
-#     by = "trp_id"
-#   ) %>% 
-#   dplyr::mutate(
-#     label_text = 
-#       paste(name, ", ",
-#             road_category_and_number, "<br/>",
-#             index_total_p, " %", "<br/>",
-#             index_total_coverage, " %"),
-#     label_text = lapply(label_text, htmltools::HTML))
+city_trps_new_pointindex_2 <-
+  city_trps_meta %>%
+  dplyr::left_join(
+    point_index_new_prepared_2,
+    by = "trp_id"
+  ) %>%
+  dplyr::mutate(
+    label_text =
+      paste(name, ", ",
+            road_category_and_number, "<br/>",
+            index_total_p, " %", "<br/>",
+            index_total_coverage, " %"),
+    label_text = lapply(label_text, htmltools::HTML))
 # 
 # city_trps_new_pointindex_3 <- 
 #   city_trps_meta %>% 
@@ -350,7 +354,7 @@ city_index_prepared %>%
 
 
 
-## Punktindeksene for den nye måneden
+## November
 
 ```{r map_trp_index, message=FALSE}
 city_trps_new_pointindex %>% 
@@ -363,11 +367,12 @@ city_trps_new_pointindex %>%
   create_pointindex_map()
 ```
 
+## Desember
 
 ```{r map_trp_index_2, message=FALSE}
-# city_trps_new_pointindex_2 %>% 
-#   dplyr::rename(index = index_total_p) %>% 
-#   create_pointindex_map()
+city_trps_new_pointindex_2 %>%
+  dplyr::rename(index = index_total_p) %>%
+  create_pointindex_map()
 ```
 
 ```{r map_trp_index_3, message=FALSE}
@@ -436,9 +441,11 @@ pointindex_wide %>%
       pageLength = 20,
       lengthMenu = c(20, 40, 80),
       autoWidth = TRUE))
+```
 
+
+```{r exclu}
 # Ekskluderinger:
 
 ```
-
 

@@ -76,22 +76,22 @@ decimal_point <- function(number) {
 
 # Flextable defaults
 flextable::set_flextable_defaults(
-  font.size = 9,
+  font.size = 8,
   font.family = "Lucida Sans Unicode",
   #font.family = "LTF Etica Light",
-  padding.bottom = .3,
-  padding.top = .5,
+  padding.bottom = .2,
+  padding.top = .4,
   decimal.mark = ",",
   big.mark = " ",
   na_str = ""
 )
 
 # Numbering tables
-table_numbers <- officer::run_autonum(
-  seq_id = "table",
-  pre_label = "Tabell ",
-  post_label = ". ",
-  bkm = NULL,
-  bkm_all = FALSE,
-  prop = NULL
-)
+# table_numbers <- officer::run_autonum(
+#   seq_id = "table",
+#   pre_label = "Tabell ",
+#   post_label = ". ",
+#   bkm = NULL,
+#   bkm_all = FALSE,
+#   prop = NULL
+# )
