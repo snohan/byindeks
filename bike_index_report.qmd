@@ -1,0 +1,217 @@
+---
+format: 
+  pdf:
+    toc: true
+    number-sections: true
+    toc-title: Innhold
+    mainfont: "Lucida Sans Unicode"
+    include-in-header:
+      text: |
+        \newfontfamily\sectionfont[Color=ed9300]{Lucida Sans Unicode}
+        \newfontfamily\subsectionfont[Color=444f55]{Lucida Sans Unicode}
+        \newfontfamily\subsubsectionfont[Color=ed9300]{Lucida Sans Unicode}
+        \addtokomafont{section}{\sectionfont}
+        \addtokomafont{subsection}{\subsectionfont}
+        \addtokomafont{subsubsection}{\subsubsectionfont}
+        \usepackage[font=small,textfont=it,labelsep=period]{caption}
+crossref: 
+  tbl-title: "Tabell"
+  lot-title: "Tabeller"
+  tbl-prefix: ""
+  fig-title: "Figur"
+  lof-title: "Figurer"
+  fig-prefix: ""
+  title-delim: "."
+---
+
+```{r setup, include = FALSE, echo = FALSE}
+source("rmd_setup.R")
+
+index_all_years <-
+  readr::read_rds(
+    file = "data_indexpoints_tidy/all_bike_indices.rds"
+  )
+
+city_and_color <-
+  c(
+    "Bergen" = "#008ec2",
+    "Førde" = "#ffd520",
+    "Nord-Jæren" = "#ed9300",
+    "Grenland" = "#444f55",
+    "Nedre Glomma" = "#58b02c",
+    "Osloområdet" = "#ed1c2e",
+    "Tromsø" = "#dadada"
+  )
+
+index_year_to_date <-
+  index_all_years %>% 
+    dplyr::filter(period == "year_to_date") %>% 
+    dplyr::group_by(area_name, year) %>% 
+    dplyr::slice_max(month_object) %>% 
+    dplyr::arrange(area_name, year) %>% 
+    select(
+      area_name, 
+      #month_name, 
+      year, 
+      index_p, 
+      standard_deviation
+    )
+  
+n_indices_per_city <-
+  index_year_to_date |> 
+  dplyr::group_by(
+    area_name
+  ) |> 
+  dplyr::summarise(
+    n_years = n(),
+    .groups = "drop"
+  ) |> 
+  dplyr::mutate(
+    cumsum = cumsum(n_years)
+  ) |> 
+  dplyr::slice(1:6)
+```
+
+\listoftables
+
+\listoffigures
+
+{{< pagebreak >}}
+
+
+# Sykkelindekser
+
+Sykkelindeksene er en type vegtrafikkindeks for sykkeltrafikk. De estimerer endringen i antall syklende i prosent fra et år til det neste.
+
+En sykkelindeks beregnes for de byområdene som har et tilstrekkelig antall sykkelregistreringspunkter med god datakvalitet. Det vil gi et representativt utvalg for å kunne beregne trafikkutviklingen. Det gjøres en sammenligning av timetrafikken, dato mot dato i kalendermånedene.
+
+Alle data er hentet fra [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/trafikkdata/). Timetrafikk med minst 95 % dekningsgrad inngår i beregningsgrunnlaget.
+
+Vi tar forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er tidvis utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
+
+Været vil i perioder kunne påvirke trafikkmengden. For eksempel vil det ved dårlig føre, som ved stort snøfall eller underkjølt regn, bli redusert framkommelighet og dette fører til mindre trafikk enn normalt.
+
+
+## Per år
+Sykkelindeksene har ulike startår, og tabell @tbl-year viser hvilke år det er beregnet sykkelindeks for de ulike områdene.
+
+```{r year_to_date}
+#| label: tbl-year
+#| tbl-cap: "Estimert endring i sykkeltrafikk sammenlignet med foregående år."
+#| ft.arraystretch: 0.9
+
+index_year_to_date |> 
+  flextable() %>%
+  colformat_int(j = 2, big.mark = "") %>%
+  colformat_double(j = 3:4, digits = 1) %>%
+  set_header_labels(
+    area_name = "Byområde", 
+    #month_name = "Måned\n(til og med)", 
+    year = "År",
+    index_p = "Endring i\ntrafikk-\nmengde\n(%)",
+    standard_deviation = "Standardavvik\n(%)"
+  ) %>%
+  align(i = 1, j = 2:4, align = "center", part = "header") %>%
+  align(j = 2, align = "center", part = "body") %>%
+  bold(part = "header") %>%
+  #fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  hline(
+    i = n_indices_per_city$cumsum, 
+    part = "body",
+    border = fp_border(color = "#dadada", width = 1)
+  ) %>% 
+  width(j = 1, width = 1) |> 
+  height_all(height = .2) %>%
+  padding(padding.top = .3,
+          padding.bottom = .3)
+```
+
+Standardavvikene er her relativt store, noe som gjenspeiler at sykkeltrafikken varierer mye mellom de ulike trafikkregistreringspunktene i hvert område.
+
+Figur @fig-year viser årlig utvikling per område.
+
+```{r}
+#| label: fig-year
+#| fig-width: 6.5
+#| fig-height: 6
+#| fig-cap: "Estimert årlig endring i sykkeltrafikk."
+
+index_all_years %>% 
+  dplyr::filter(period == "year_to_date") %>% 
+  dplyr::group_by(area_name, year) %>% 
+  dplyr::slice_max(month_object) %>% 
+  ggplot2::ggplot(aes(x = year, y = index_p, color = area_name)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_point() +
+  theme_light() +
+  theme(
+    axis.title.y = element_text(
+      margin = margin(t = 0, r = 15, b = 0, l = 0)),
+    panel.grid.minor.x = element_blank(),
+    plot.caption =
+      element_text(
+        face = "italic",
+        size = 8,
+        lineheight = 1.5,
+        vjust = 0
+      )
+  ) +
+  scale_color_manual(
+    values = city_and_color,
+    name = ""
+  ) +
+  labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
+       caption = "Data: Statens vegvesen, fylkeskommunene og kommunene") +
+  ggtitle("Estimert endring i sykkeltrafikk i utvalgte byområder",
+          subtitle = "Antall syklende sammenlignet med foregående år") +
+  theme(legend.position = "bottom")
+```
+
+
+## Per måned
+I figur @fig-month vises månedlig utvikling per område. Tall for en måned er sammenlignet med den samme måneden året før.
+
+```{r}
+#| label: fig-month
+#| fig-width: 6.5
+#| fig-height: 6
+#| fig-cap: "Estimert månedlig endring i sykkeltrafikk."
+
+index_all_years %>% 
+  dplyr::filter(period == "month") %>% 
+  ggplot2::ggplot(aes(x = month_object_2000, y = index_p, color = area_name)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_point() +
+  facet_grid(rows = vars(year)) +
+  theme_light() +
+  theme(
+    axis.text.x = element_text(angle = 90, vjust = 0.5),
+    axis.title.y = element_text(
+      margin = margin(t = 0, r = 15, b = 0, l = 0)),
+    panel.grid.minor.x = element_blank(),
+    plot.caption =
+      element_text(
+        face = "italic",
+        size = 8,
+        lineheight = 1.5,
+        vjust = 0
+      )
+  ) +
+  scale_x_date(breaks = scales::breaks_width("months"),
+               labels = scales::label_date("%b")) +
+  scale_color_manual(values = city_and_color,
+                     name = "") +
+  labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
+       caption = "Data: Statens vegvesen, fylkeskommunene og kommunene") +
+  ggtitle("Estimert endring i sykkeltrafikk i utvalgte byområder",
+          subtitle = "Antall syklende sammenlignet med samme måned foregående år") +
+  theme(legend.position = "bottom")
+```
+
+
+

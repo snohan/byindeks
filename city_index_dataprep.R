@@ -95,15 +95,15 @@ trp_id_msnr <-
 
 
 # City IDs ----
-# Bergen 8952
-# Buskerudbyen 1952
-# Grenland 955
-# Kristiansand og omegn 957 kommune 956
-# Nedre Glomma 953
-# Nord-Jæren 952
-# Oslo 959
-# Trondheim 960
-# Tromsø 961
+# Bergen 8952 r
+# Buskerudbyen 1952 r
+# Grenland 955 r
+# Kristiansand og omegn 957 kommune 956 r
+# Nedre Glomma 953 r
+# Nord-Jæren 952 r
+# Oslo 959 r
+# Trondheim 960 r
+# Tromsø 961 r
 
 ## Trondheim has its own script, all inclusive ----
 #source("city_index_dataprep_trondheim_toll_stations")
@@ -111,7 +111,7 @@ trp_id_msnr <-
 
 # Choose
 index_month <- 12 # the one to be published now
-city_number <- 1952
+city_number <- 957
 
 reference_year <-
   dplyr::case_when(
@@ -140,8 +140,8 @@ reference_year <-
 # Note: not all cities use 2017
 # Note: just needed for city_name for Trondheim
 {
-  city_index_2017 <- get_published_index_for_months(city_number, 2017, 12)
-  city_index_2018 <- get_published_index_for_months(city_number, 2018, 12)
+  #city_index_2017 <- get_published_index_for_months(city_number, 2017, 12)
+  #city_index_2018 <- get_published_index_for_months(city_number, 2018, 12)
   city_index_2019 <- get_published_index_for_months(city_number, 2019, 12)
   city_index_2020 <- get_published_index_for_months(city_number, 2020, 12)
   city_index_2021 <- get_published_index_for_months(city_number, 2021, 12)

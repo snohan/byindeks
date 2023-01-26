@@ -36,13 +36,13 @@ source("rmd_setup.R")
 # Kristiansand og omegn  957 (2016) 12 
 # Nedre Glomma           953 (2016) 12
 # Tromsø                 961 (2016) 12
-# Nord-Jæren             952 (2017) 12
-# Bergen                8952 (2018) 12
-# Oslo                   959 (2018) 12
+# Nord-Jæren             952 (2017) 12r
+# Bergen                8952 (2018) 12r
+# Oslo                   959 (2018) 12r
 # Trondheim              960 (2019) 12
 
 # Choose city number:
-city_number <- 955
+city_number <- 960
 
 city_number_county_name <- 
   tibble::tibble(
@@ -81,6 +81,9 @@ road_lengths <-
 all_point_info <- 
   readr::read_rds(
     file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".rds")
+  ) |> 
+  dplyr::mutate(
+    year_aadt = as.character(year_aadt)
   )
 
 all_point_info_long <- 
@@ -134,9 +137,9 @@ city_info <-
     #month_object = lubridate::make_date(year = year, month = month),
     month_name_short = lubridate::month(month, label = TRUE),
     period = paste0("jan-", month_name_short)
-  ) #|> 
+  ) |> 
   # Trondheim:
-  #dplyr::filter(length_range == "lette")
+  dplyr::filter(length_range == "lette")
 
 latest_month <- 
   city_info |> 
@@ -198,11 +201,12 @@ latest_36_index_adjective <-
 latest_36_change_sentence <-
   paste(
     "blitt",
-    round(abs(latest_36_index$index_p), digits = 1),
+    sprintf("%.1f", abs(latest_36_index$index_p)),
     "%",
     latest_36_index_adjective
-  )
- 
+  ) |> 
+  stringr::str_replace("\\.", ",")
+
 latest_36_sentence <-
   dplyr::if_else(
     round(latest_36_index$index_p, 1) == 0,
@@ -210,6 +214,12 @@ latest_36_sentence <-
     latest_36_change_sentence
   )
 
+tbl_cap_all_36 <-
+  paste0(
+    "Tre års glidende indeks. Antall punkt som oppgis er hvor mange av de ",
+    nrow(all_point_info),
+    " byindekspunktene som har bidratt med data i det aktuelle tidsintervallet."
+  )
 
 # city_trp_mdt <-
 #   readr::read_rds(
@@ -268,13 +278,6 @@ traffic_file <- paste0("city_report_files/trafikkforhold_", city_number, ".Rmd")
 #     paste0("data_indexpoints_tidy/city_trps_mdt_956.rds")
 #   )
 # Slutt Kristiansand
-
-# TODO:
-# Eget avsnitt om datakvalitet
-#   MC
-#   Lengde versus vekt og klasse
-#   Kø
-# Eget avsnitt om næringstransport og gjennomgangstrafikk
 ```
 
 {{< pagebreak >}}
@@ -296,6 +299,8 @@ Veglengder fordelt på vegkategori for gjeldende område er oppsummert i tabell 
 ```{r}
 #| label: tbl-road_length_sum
 #| tbl-cap: "Veglengder."
+#| ft.arraystretch: 0.9
+
 road_lengths |> 
   create_city_road_length_table()
 
@@ -309,108 +314,76 @@ road_lengths |>
 
 ## Byindekspunktene
 
-De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeksen er listet opp nedenfor. Årsdøgntrafikk (ÅDT) er oppgitt for lette biler (målt til kortere enn 5,6 m).
+De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeksen er listet opp nedenfor. Årsdøgntrafikk (ÅDT) er oppgitt for lette kjøretøy (målt til kortere enn 5,6 m).
 
 ```{r}
 #| label: tbl-trp-1
-#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 1."
+#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 1. B er bomstasjon, T er trafikkregistreringspunkt."
+#| ft.arraystretch: 0.9
 
-#  B er bomstasjon, T er trafikkregistreringspunkt.
+# B er bomstasjon, T er trafikkregistreringspunkt.
 
 all_point_info |> 
-  dplyr::slice(1:22) |> 
-  #dplyr::rename(
-    #adt = aadt_lette
-    # Trondheim:
-   # adt = adt
-  #) %>%
-  #create_point_table_trd()
-  create_point_table()
+  dplyr::slice(1:36) |> 
+  create_point_table_trd()
+  #create_point_table()
 ```
 
 
 
 ```{r}
 #| label: tbl-trp-2
-#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2."
+#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2. B er bomstasjon, T er trafikkregistreringspunkt."
+#| ft.arraystretch: 0.9
 
 all_point_info |>
-  dplyr::slice(23:46) |>
-  #create_point_table_trd()
-  create_point_table()
-
+  dplyr::slice(37:75) |>
+  create_point_table_trd()
+#  create_point_table()
 # 
 ```
 
-{{< pagebreak >}}
 
 ```{r}
 #| label: tbl-trp-3
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 3."
+#| ft.arraystretch: 0.9
 
-all_point_info |> 
-  dplyr::slice(47:70) |> 
-#  dplyr::rename(
-    #adt = aadt_lette
-    # Trondheim:
-    #adt = adt
-  #) %>%
-  #create_point_table_trd()
-  create_point_table()
+#all_point_info |> 
+#  dplyr::slice(76:100) |> 
+#  create_point_table()
 
-# 
-```
-
-{{< pagebreak >}}
-
-```{r}
-#| label: tbl-trp-4
-#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 4."
-
-all_point_info |> 
-  dplyr::slice(71:90) |> 
-#  dplyr::rename(
-    #adt = aadt_lette
-    # Trondheim:
-    #adt = adt
-  #) %>%
-  #create_point_table_trd()
-  create_point_table()
-
-# 
+# {{< pagebreak >}}
 ```
 
 
-
-Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene. 
+Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene. Punktet Meådalen på Ev 14 mellom Stjørdal og Meråker er utelatt fra kartvisningen.
 
 ```{r}
 #| label: fig-map_trp
 #| fig-cap: "Trafikkregistreringspunkt og årsdøgntrafikk."
 #| fig-width: 7
 
+# TRD
 # Punktet Meådalen på Ev 14 mellom Stjørdal og Meråker er utelatt fra kartvisningen.
 
 knitr::opts_chunk$set(
   dpi = 100
   )
 
-all_point_info |> 
-  #dplyr::rename(
-  #  adt = aadt_lette
-  #) %>%
-  create_point_adt_map()
+#all_point_info |> 
+#  create_point_adt_map()
 
 # Trondheim
-# all_point_info %>%
-#   dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
-#   create_point_adt_map_trondheim()
+all_point_info %>%
+  dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
+  create_point_adt_map_trondheim()
 ```
 
 {{< pagebreak >}}
 
 # Endring i trafikkmengde
-Nullvekstmålet skal måles ved at trafikkutviklingen vurderes på et treårs glidende snitt, jf. brev fra Samferdselsdepartementet til de fire største byområdene datert 11.12.2019. Måloppnåelsen gjelder avtaleperioden sett under ett, som betyr at det er trafikknivået i referanseåret `r base_year` det skal sammenlignes med. Det skal være netto nullvekst i perioden.
+Nullvekstmålet skal måles ved at trafikkutviklingen vurderes på et treårs glidende gjennomsnitt, jf. brev fra Samferdselsdepartementet til de fire største byområdene datert 11.12.2019. Måloppnåelsen gjelder avtaleperioden sett under ett, som betyr at det er trafikknivået i referanseåret `r base_year` det skal sammenlignes med. Det skal være netto nullvekst i perioden.
 
 
 ## Endring i glidende treårsperiode
@@ -426,27 +399,23 @@ En ulempe med denne nye metodikken er at utvalget av trafikkregistreringspunkter
 
 En treårs glidende indeks er tilgjengelig fra og med det er gått tre år etter referanseåret. 
 
-Resultatene så langt er gitt nedenfor.
+Resultatene for hele kalenderår er gitt i tabell @tbl-trp_36. En tidsserie med månedsvis utvikling er vist i figur @fig-plot_city_36.
 
 ```{r}
-#| label: tbl-trp_36_1
-#| tbl-cap: "Tre års glidende indeks."
+#| label: tbl-trp_36
+#| tbl-cap: !expr tbl_cap_all_36
 
 city_36_month |> 
-  dplyr::slice(1:13) |> 
+  dplyr::mutate(
+    month_n = lubridate::month(month_object)
+  ) |> 
+  dplyr::filter(
+    month_n == 12
+  ) |> 
   create_city_mdt_36_index_table()
 ```
 
 {{< pagebreak >}}
-
-```{r}
-#| label: tbl-trp_36-2
-#| tbl-cap: "Tre års glidende indeks, del 2."
-
-#city_36_month |>
-#  dplyr::slice(14:37) |>
-#  create_city_mdt_36_index_table()
-```
 
 
 ```{r}
@@ -456,10 +425,12 @@ city_36_month |>
 visualize_city_36_mdt_index(
   city_36_month,
   caption_credit,
-  "Estimert endring i trafikkmengde siste 3 år for lette kjøretøy"
+  "Estimert endring i trafikkmengde siste 3 år",
+  paste0(
+    "Sammenlignet med ",
+    base_year
+  )
 )
-
-# {{< include city_report_files/_mdt_info.Rmd >}}
 ```
 
 <!-- Kristiansand --
@@ -500,22 +471,23 @@ Tilsvarende for gamle Kristiansand kommune.
 
 <!-- Kristiansand -->
 
+\vspace{7mm}
+
 ::: {.callout-warning icon=false}
 
 ## Resultat nullvekstmål
 
-Sammenlignet med referanseåret er trafikkmengden de siste tre årene i gjennomsnitt 
-`r stringr::str_replace(as.character(latest_36_sentence), "\\.", ",")`. 
-Tas måleusikkerheten i betraktning, ligger endringen i trafikkmengden mellom 
-`r stringr::str_replace(as.character(latest_36_index$ci_lower), "\\.", ",")` % og 
-`r stringr::str_replace(as.character(latest_36_index$ci_upper), "\\.", ",")` %.  
+Sammenlignet med referanseåret er trafikkmengden de siste tre årene i gjennomsnitt `r latest_36_sentence`. 
 
-Så lenge pandemiperioden fra mars 2020 til februar 2022 inngår i treårsperioden, vil denne indeksen vise en verdi som er preget av det generelt lavere trafikknivået som var i disse årene.
 :::
 
 \vspace{5mm}
 
-Intervallet oppgitt ovenfor er et konfidensintervall på 95 %, som vil si at den sanne endringen i trafikkmengde vil ligge innenfor et slikt intervall 95 % av gangene en tilsvarende måling blir gjort. Usikkerheten er i stor grad avhengig av hvor mange trafikkregistreringspunkter som inngår i beregningene, men også større trafikale omfordelinger vil bidra.
+Så lenge pandemiperioden fra mars 2020 til februar 2022 inngår i treårsperioden, vil denne indeksen vise en verdi som er preget av det generelt lavere trafikknivået som var i disse årene.
+
+Tas måleusikkerheten i betraktning, ligger endringen i trafikkmengden mellom 
+`r stringr::str_replace(sprintf("%.1f", latest_36_index$ci_lower), "\\.", ",")` % og 
+`r stringr::str_replace(sprintf("%.1f", latest_36_index$ci_upper), "\\.", ",")` %. Dette intervallet er et konfidensintervall på 95 %, som vil si at den sanne endringen i trafikkmengde vil ligge innenfor et slikt intervall 95 % av gangene en tilsvarende måling blir gjort. Usikkerheten er i stor grad avhengig av hvor mange trafikkregistreringspunkter som inngår i beregningene, men også større trafikale omfordelinger vil bidra.
 
 
 {{< pagebreak >}}
@@ -548,17 +520,17 @@ create_city_index_table_sd(city_info)
 
 Byindeksen estimerer endringen i trafikkmengden for lette kjøretøy fra 
 `r base_year` til `r latest_month` `r last_year` til å være 
-`r stringr::str_replace(as.character(index_all_years), "\\.", ",")` %. 
+`r stringr::str_replace(sprintf("%.1f", index_all_years), "\\.", ",")` %. 
 Et 95 % konfidensintervall går fra 
-`r stringr::str_replace(as.character(chained_index_ci_lower), "\\.", ",")` % til 
-`r stringr::str_replace(as.character(chained_index_ci_upper), "\\.", ",")` %.
+`r stringr::str_replace(sprintf("%.1f", chained_index_ci_lower), "\\.", ",")` % til 
+`r stringr::str_replace(sprintf("%.1f", chained_index_ci_upper), "\\.", ",")` %.
 
 
 <!--
 For Buskerudbyen --
 
 ### Trafikken på Ev 18
-Til sammenligning viser tabellen nedenfor endringen i trafikkmengden for lette biler på Ev 18 i samme periode.
+Til sammenligning viser tabellen nedenfor endringen i trafikkmengden for lette kjøretøy på Ev 18 i samme periode.
 
 <br>
 ```{r}

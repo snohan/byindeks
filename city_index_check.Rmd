@@ -23,21 +23,21 @@ library(htmltools)
 
 # City numbers
 # Refy City Cnum  Chkd Resp
-# 2016 Busk 1952  r12 Snorre
-# 2016 Gren  955  r12 Snorre
-# 2016 Kris  957   12 Snorre
-# 2016 NGlo  953  r12 Trond
-# 2016 Trom  961   12 Snorre
-# 2017 NJær  952   12 Snorre
-# 2018 Oslo  959  r12 Trond
-# 2018 Berg 8952  r12 Trond
-# 2019 Tron  960   12 Snorre
+# 2016 Busk 1952   r12 Snorre
+# 2016 Gren  955   r12 Snorre
+# 2016 Kris  957   r12 Snorre
+# 2016 NGlo  953   r12 Trond
+# 2016 Trom  961   r12 Snorre
+# 2017 NJær  952   r12 Snorre
+# 2018 Oslo  959   r12 Trond
+# 2018 Berg 8952   r12 Trond
+# 2019 Tron  960   r12 Snorre
 
 
 # Choose
 index_year <- 2022
 latest_published_month <- 11
-city_number <- 960
+city_number <- 8952
 # End choose
 
 reference_year <- 
@@ -82,65 +82,67 @@ pointindex <-
     latest_published_month
   )
 
+# TRD start
 # TRD toll station index
-tolling_station_indices_prepared <-
-  readr::read_rds(
-    file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
-  ) |>
-  dplyr::mutate(
-    year = lubridate::year(month_calc),
-    month = lubridate::month(month_calc),
-    class =
-      dplyr::case_when(
-        class == "alle" ~ "total_p",
-        class == "lette" ~ "short",
-        class == "tunge" ~ "long"
-      ),
-    index_p = round(index_p, digits = 1)
-  ) |>
-  dplyr::select(
-    trp_id,
-    year,
-    month,
-    class,
-    index = index_p
-  ) |>
-  dplyr::filter(
-    year == index_year
-  ) |>
-  tidyr::pivot_wider(
-    id_cols = ,
-    names_from = class,
-    names_prefix = "index_",
-    values_from = index
-  )
+# tolling_station_indices_prepared <-
+#   readr::read_rds(
+#     file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
+#   ) |>
+#   dplyr::mutate(
+#     year = lubridate::year(month_calc),
+#     month = lubridate::month(month_calc),
+#     class =
+#       dplyr::case_when(
+#         class == "alle" ~ "total_p",
+#         class == "lette" ~ "short",
+#         class == "tunge" ~ "long"
+#       ),
+#     index_p = round(index_p, digits = 1)
+#   ) |>
+#   dplyr::select(
+#     trp_id,
+#     year,
+#     month,
+#     class,
+#     index = index_p
+#   ) |>
+#   dplyr::filter(
+#     year == index_year
+#   ) |>
+#   tidyr::pivot_wider(
+#     id_cols = ,
+#     names_from = class,
+#     names_prefix = "index_",
+#     values_from = index
+#   )
 
 # For map
-tolling_station_indices_prepared_old <-
-  tolling_station_indices_prepared |>
-  dplyr::filter(
-    month < latest_published_month + 1
-  )
-
-tolling_station_indices_prepared_new <-
-  tolling_station_indices_prepared |>
-  dplyr::filter(
-    month == latest_published_month + 1
-  )
-
-trd_toll_stations_meta <-
-  readr::read_rds(
-    file = "bomdata_trondheim/trd_toll_stations.rds"
-  ) |>
-  split_road_system_reference() |>
-  dplyr::select(
-    trp_id,
-    name,
-    road_reference,
-    road_category_and_number,
-    lat, lon,
-    road_link_position
-  )
+# tolling_station_indices_prepared_old <-
+#   tolling_station_indices_prepared |>
+#   dplyr::filter(
+#     month < latest_published_month + 1
+#   )
+# 
+# tolling_station_indices_prepared_new <-
+#   tolling_station_indices_prepared |>
+#   dplyr::filter(
+#     month == latest_published_month + 1
+#   )
+# 
+# trd_toll_stations_meta <-
+#   readr::read_rds(
+#     file = "bomdata_trondheim/trd_toll_stations.rds"
+#   ) |>
+#   split_road_system_reference() |>
+#   dplyr::select(
+#     trp_id,
+#     name,
+#     road_reference,
+#     road_category_and_number,
+#     lat, lon,
+#     road_link_position
+#   )
+# TRD stop
 
 # All API PI (not old ones on CSV)
 # former_pointindices <-
@@ -176,11 +178,11 @@ points <-
 
 city_trps_meta <- 
   points %>% 
-  dplyr::filter(trp_id %in% city_trps) |> 
+  dplyr::filter(trp_id %in% city_trps) #|> 
   # TRD
-  dplyr::bind_rows(
-    trd_toll_stations_meta
-  )
+  # dplyr::bind_rows(
+  #   trd_toll_stations_meta
+  # )
 ```
 
 ```{r aadt, include=FALSE}
@@ -247,15 +249,15 @@ this_citys_trps_all_adt_final <-
   dplyr::bind_rows(missing_adt_fixed) |> 
   dplyr::rename(
     year_aadt = year
-  ) |>
+  ) #|>
   # TRD (city_index_dataprep_trondheim_toll_stations.R)
-  dplyr::left_join(
-    trd_station_type,
-    by = "trp_id"
-  ) |>
-  dplyr::mutate(
-    station_type_short = stringr::str_sub(station_type, 1, 1)
-  )
+  # dplyr::left_join(
+  #   trd_station_type,
+  #   by = "trp_id"
+  # ) |>
+  # dplyr::mutate(
+  #   station_type_short = stringr::str_sub(station_type, 1, 1)
+  # )
 
 readr::write_rds(
   this_citys_trps_all_adt_final,

@@ -3,17 +3,13 @@
 create_point_table <- function(all_point_info_df) {
 
   all_point_info_df %>%
-    select(name, road_reference, adt, year_aadt) %>%
-    flextable() %>%
-    # colformat_double(
-    #  j = "year_aadt",
-    #  big.mark = "",
-    #  digits = 0
-    # ) %>%
-    colformat_int(
-      j = "year_aadt",
-      big.mark = ""
+    select(
+      name,
+      road_reference,
+      adt,
+      year_aadt
     ) %>%
+    flextable() %>%
     set_header_labels(
       name = "Navn",
       road_reference = "Vegreferanse",
@@ -39,12 +35,14 @@ create_point_table <- function(all_point_info_df) {
 create_point_table_trd <- function(all_point_info_df) {
 
   all_point_info_df %>%
-    select(name, station_type_short, road_reference, adt, year_aadt) %>%
-    flextable() %>%
-    colformat_int(
-      j = "year_aadt",
-      big.mark = ""
+    select(
+      name,
+      station_type_short,
+      road_reference,
+      adt,
+      year_aadt
     ) %>%
+    flextable() %>%
     set_header_labels(
       name = "Navn",
       station_type_short = "Type",
@@ -813,7 +811,7 @@ calculate_all_index_chain_combinations <- function(df_index_i) {
 
 
 visualize_city_36_mdt_index <-
-  function(city_36_month_df, caption_text, title_text) {
+  function(city_36_month_df, caption_text, title_text, sub_text) {
 
     city_36_month_df %>%
     ggplot2::ggplot(aes(x = month_object, y = index_p)) +
@@ -852,7 +850,8 @@ visualize_city_36_mdt_index <-
       x = NULL, y = "Endring i trafikkmengde (%)",
       caption = caption_text) +
     ggtitle(
-      title_text
+      title_text,
+      subtitle = sub_text
     )
 }
 
