@@ -646,10 +646,7 @@ create_municipality_road_length_table <- function(road_lengths) {
     fix_border_issues() %>%
     valign(j = 1, valign = "top") %>%
     autofit() %>%
-    height_all(height = .2) %>%
-    set_caption("Samlet veglengde per kommune.",
-                autonum = table_numbers,
-                style = "Tabelltekst")
+    height_all(height = .2)
 
   return(road_lengths_table)
 }
@@ -676,10 +673,7 @@ create_city_road_length_table <- function(road_lengths) {
     hline_bottom(part = "all", border = borderline) %>%
     #align(j = 1, align = "center") %>%
     autofit() %>%
-    height_all(height = .2) #%>%
-    #set_caption("Samlet veglengde.",
-    #            autonum = table_numbers,
-    #            style = "Tabelltekst")
+    height_all(height = .2)
 
   return(road_lengths_table)
 }

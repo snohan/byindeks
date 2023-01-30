@@ -111,7 +111,7 @@ trp_id_msnr <-
 
 # Choose
 index_month <- 12 # the one to be published now
-city_number <- 957
+city_number <- 953
 
 reference_year <-
   dplyr::case_when(
@@ -140,8 +140,8 @@ reference_year <-
 # Note: not all cities use 2017
 # Note: just needed for city_name for Trondheim
 {
-  #city_index_2017 <- get_published_index_for_months(city_number, 2017, 12)
-  #city_index_2018 <- get_published_index_for_months(city_number, 2018, 12)
+  city_index_2017 <- get_published_index_for_months(city_number, 2017, 12)
+  city_index_2018 <- get_published_index_for_months(city_number, 2018, 12)
   city_index_2019 <- get_published_index_for_months(city_number, 2019, 12)
   city_index_2020 <- get_published_index_for_months(city_number, 2020, 12)
   city_index_2021 <- get_published_index_for_months(city_number, 2021, 12)

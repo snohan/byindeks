@@ -31,18 +31,18 @@ source("rmd_setup.R")
 ```{r get_data, include = FALSE}
 # City numbers
 
-# Buskerudbyen          1952 (2016) 12 
-# Grenland               955 (2016) 12 
+# Buskerudbyen          1952 (2016) 12r 
+# Grenland               955 (2016) 12r 
 # Kristiansand og omegn  957 (2016) 12 
-# Nedre Glomma           953 (2016) 12
-# Tromsø                 961 (2016) 12
+# Nedre Glomma           953 (2016) 12r
+# Tromsø                 961 (2016) 12r
 # Nord-Jæren             952 (2017) 12r
 # Bergen                8952 (2018) 12r
 # Oslo                   959 (2018) 12r
-# Trondheim              960 (2019) 12
+# Trondheim              960 (2019) 12r
 
 # Choose city number:
-city_number <- 960
+city_number <- 953
 
 city_number_county_name <- 
   tibble::tibble(
@@ -137,9 +137,9 @@ city_info <-
     #month_object = lubridate::make_date(year = year, month = month),
     month_name_short = lubridate::month(month, label = TRUE),
     period = paste0("jan-", month_name_short)
-  ) |> 
+  ) #|> 
   # Trondheim:
-  dplyr::filter(length_range == "lette")
+  #dplyr::filter(length_range == "lette")
 
 latest_month <- 
   city_info |> 
@@ -261,7 +261,7 @@ traffic_file <- paste0("city_report_files/trafikkforhold_", city_number, ".Rmd")
 # city_info_kommune <-
 #   readr::read_rds(
 #     paste0("data_indexpoints_tidy/byindeks_956.rds")
-#   ) |>  
+#   ) |>
 #   dplyr::mutate(
 #     #month_object = lubridate::make_date(year = year, month = month),
 #     month_name_short = lubridate::month(month, label = TRUE),
@@ -272,7 +272,7 @@ traffic_file <- paste0("city_report_files/trafikkforhold_", city_number, ".Rmd")
 #   readr::read_rds(
 #     paste0("data_indexpoints_tidy/mdt_36_956.rds")
 #   )
-
+# 
 # city_trp_mdt_kommune <-
 #   readr::read_rds(
 #     paste0("data_indexpoints_tidy/city_trps_mdt_956.rds")
@@ -301,8 +301,7 @@ Veglengder fordelt på vegkategori for gjeldende område er oppsummert i tabell 
 #| tbl-cap: "Veglengder."
 #| ft.arraystretch: 0.9
 
-road_lengths |> 
-  create_city_road_length_table()
+road_lengths |> create_city_road_length_table()
 
 # Kristiansand
 #road_lengths %>% create_municipality_road_length_table()
@@ -318,15 +317,15 @@ De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeks
 
 ```{r}
 #| label: tbl-trp-1
-#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 1. B er bomstasjon, T er trafikkregistreringspunkt."
+#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen."
 #| ft.arraystretch: 0.9
 
 # B er bomstasjon, T er trafikkregistreringspunkt.
 
 all_point_info |> 
   dplyr::slice(1:36) |> 
-  create_point_table_trd()
-  #create_point_table()
+  #create_point_table_trd()
+  create_point_table()
 ```
 
 
@@ -336,9 +335,9 @@ all_point_info |>
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2. B er bomstasjon, T er trafikkregistreringspunkt."
 #| ft.arraystretch: 0.9
 
-all_point_info |>
-  dplyr::slice(37:75) |>
-  create_point_table_trd()
+#all_point_info |>
+#  dplyr::slice(37:75) |>
+#  create_point_table_trd()
 #  create_point_table()
 # 
 ```
@@ -357,7 +356,7 @@ all_point_info |>
 ```
 
 
-Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene. Punktet Meådalen på Ev 14 mellom Stjørdal og Meråker er utelatt fra kartvisningen.
+Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene.
 
 ```{r}
 #| label: fig-map_trp
@@ -371,13 +370,13 @@ knitr::opts_chunk$set(
   dpi = 100
   )
 
-#all_point_info |> 
-#  create_point_adt_map()
+all_point_info |> 
+  create_point_adt_map()
 
 # Trondheim
-all_point_info %>%
-  dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
-  create_point_adt_map_trondheim()
+#all_point_info %>%
+#  dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
+#  create_point_adt_map_trondheim()
 ```
 
 {{< pagebreak >}}
@@ -440,33 +439,34 @@ Tilsvarende for gamle Kristiansand kommune.
 
 ```{r}
 #| label: tbl-trp_36_kommune-1
-#| tbl-cap: "Tre års glidende indeks for gamle Kristiansand kommune, del 1."
+#| tbl-cap: "Tre års glidende indeks for gamle Kristiansand kommune."
 
-#city_36_month_kommune |> 
-#  dplyr::slice(1:13) |> 
+# city_36_month_kommune |>
+#  dplyr::mutate(
+#     month_n = lubridate::month(month_object)
+#   ) |> 
+#   dplyr::filter(
+#     month_n == 12
+#   ) |> 
 #  create_city_mdt_36_index_table()
+
+# {{< pagebreak >}}
 ```
 
-{{< pagebreak >}}
-
-```{r}
-#| label: tbl-trp_36_kommune-2
-#| tbl-cap: "Tre års glidende indeks  for gamle Kristiansand kommune, del 2."
-
-#city_36_month |> 
-#  dplyr::slice(14:37) |> 
-#  create_city_mdt_36_index_table()
-```
 
 ```{r}
 #| label: fig-plot_city_36_kommune
 #| fig-cap: "Tidsserie med tre års glidende indeks for gamle Kristiansand kommune."
 
-#visualize_city_36_mdt_index(
+# visualize_city_36_mdt_index(
 #  city_36_month_kommune,
 #  caption_credit,
-#  "Estimert endring i trafikkmengde siste 3 år for lette kjøretøy"
-#)
+#  "Estimert endring i trafikkmengde siste 3 år",
+#   paste0(
+#     "Sammenlignet med ",
+#     base_year
+#   )
+# )
 ```
 
 <!-- Kristiansand -->
@@ -509,7 +509,7 @@ create_city_index_table_sd(city_info)
 
 
 
-<!-- Kristiansand --
+<!-- Kristiansand -->
 ```{r}
 #| label: tbl-city_index_kommune
 #| tbl-cap: "Estimert endring i trafikkmengde per år, gamle Kristiansand kommune."
@@ -530,9 +530,8 @@ Et 95 % konfidensintervall går fra
 For Buskerudbyen --
 
 ### Trafikken på Ev 18
-Til sammenligning viser tabellen nedenfor endringen i trafikkmengden for lette kjøretøy på Ev 18 i samme periode.
+Til sammenligning viser tabell @tbl-e18_buskerudbyen endringen i trafikkmengde for lette kjøretøy på Ev 18 i samme periode.
 
-<br>
 ```{r}
 #| label: tbl-e18_buskerudbyen
 #| tbl-cap: "Endring i trafikkmengde på Ev 18."
@@ -546,10 +545,10 @@ Til sammenligning viser tabellen nedenfor endringen i trafikkmengden for lette k
 #                       road_reference = "Vegreferanse",
 #      #                 adt = "ÅDT",
 #                       year = "År",
-#                       index_short = "Endring i \n trafikkmengde (%)") %>%
-#     #align(i = 1, j = 4, align = "center", part = "header") %>%
+#                       index_short = "Endring i\ntrafikkmengde\n(%)") %>%
+#     align(j = c(3, 4), align = "center", part = "all") %>%
 #     bold(part = "header") %>%
-#     fontsize(size = 9, part = "all") %>%
+#     #fontsize(size = 9, part = "all") %>%
 #     font(fontname = "Lucida Sans Unicode", part = "all") %>%
 #     bg(bg = "#ED9300", part = "header") %>%
 #     border_remove() %>%
