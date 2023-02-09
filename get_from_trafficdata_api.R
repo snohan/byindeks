@@ -616,8 +616,8 @@ getTrpAadt <- function(trp_id) {
   return(trp_aadt)
 }
 
-#trp_id <- "66220V72824"
-#day_type <- "ALL"
+trp_id <- "16184V249637"
+day_type <- "ALL"
 get_trp_aadt_with_coverage <- function(trp_id, day_type = "ALL") {
   # Get all AADTs for a trp
   query_aadt <- paste0(
@@ -667,6 +667,7 @@ get_trp_aadt_with_coverage <- function(trp_id, day_type = "ALL") {
   if(is_empty(trp_aadt$data$trafficData$volume$average$daily$byYear) |
      is.null(trp_aadt$data$trafficData$volume$average$daily$byYear$total.volume.average) |
      is.null(trp_aadt$data$trafficData$volume$average$daily$byYear$total.coverage.percentage)
+     # TODO: this last condition removes old data - need not be - look at query for directional AADT
      # prevents query from failing when just old data are available
      #ncol(trp_aadt$data$trafficData$volume$average$daily$byYear) < 5
      ){
@@ -684,10 +685,12 @@ get_trp_aadt_with_coverage <- function(trp_id, day_type = "ALL") {
         valid_length_volume = data.trafficData.volume.average.daily.byYear.total.validLengthVolume.average,
         valid_speed_volume = data.trafficData.volume.average.daily.byYear.total.validSpeedVolume.average,
         adt = data.trafficData.volume.average.daily.byYear.total.volume.average,
-        standard_deviation = data.trafficData.volume.average.daily.byYear.total.volume.standardDeviation) %>%
-      dplyr::mutate(trp_id = as.character(trp_id),
-                    standard_error = round(standard_deviation / sqrt(n_days) *
-                                             sqrt((n_days_of_year - n_days) / (n_days_of_year - 1)), digits = 2))
+        standard_deviation = data.trafficData.volume.average.daily.byYear.total.volume.standardDeviation
+      ) %>%
+      dplyr::mutate(
+        trp_id = as.character(trp_id),
+        standard_error =
+          round(standard_deviation / sqrt(n_days) * sqrt((n_days_of_year - n_days) / (n_days_of_year - 1)), digits = 2))
   }
 
   return(trp_aadt)
@@ -1586,7 +1589,7 @@ get_aadt_by_direction_for_trp_list <- function(trp_list) {
   }
 
   trp_adt <- data_points %>%
-    dplyr::mutate(adt = round(adt, digits = -1))
+    dplyr::mutate(adt = round(adt, digits = 0))
 
   return(trp_adt)
 }
