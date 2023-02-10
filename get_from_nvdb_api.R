@@ -826,9 +826,17 @@ get_aadt_by_road <- function(roadcat_number) {
 }
 
 #test <- get_aadt_by_county("3")
-#area_number <- 3403
-get_aadt_by_area <- function(area_number) {
+area_number <- 3424
 
+today_date = lubridate::today() |> as.character()
+
+segmentation = "false"
+date = today_date
+roads = "E,R,F"
+
+get_aadt_by_area <- function(area_number, segmentation = "false", date = today_date, roads = "E,R,F") {
+
+  # Area numbers
   # County numbers
   # 3  Oslo
   # 30 Viken
@@ -844,6 +852,15 @@ get_aadt_by_area <- function(area_number) {
 
   # Municipality numbers are four digits
 
+  # Segmentation
+  # "true" or "false"
+
+  # Date
+  # "2022-12-31"
+
+  # Road categories
+  # "E,R,F"
+
   area_number <- as.character(area_number)
 
   api_query_root <-
@@ -851,7 +868,13 @@ get_aadt_by_area <- function(area_number) {
       nvdb_url_v3,
       sti_vegobjekter,
       "/540",
-      "?segmentering=false&inkluder=egenskaper,lokasjon"
+      "?segmentering=",
+      segmentation,
+      "&tidspunkt=",
+      date,
+      "&vegsystemreferanse=",
+      roads,
+      "&inkluder=egenskaper,lokasjon"
     )
 
   base::ifelse(
@@ -961,7 +984,11 @@ get_aadt_by_area <- function(area_number) {
 
   location <-
     respons_objekter %>%
-    dplyr::select(id, geometry = lokasjon.geometri.wkt) %>%
+    dplyr::select(
+      id,
+      length = lokasjon.lengde,
+      geometry = lokasjon.geometri.wkt
+    ) %>%
     dplyr::rename(nvdb_objekt_id = id) %>%
     tibble::as_tibble() %>%
     sf::st_as_sf(wkt = "geometry",

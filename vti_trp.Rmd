@@ -7,152 +7,17 @@ Trafikkregistreringspunkter som skal benyttes i Vegtrafikkindeksen.
 
 ```{r setup, message=FALSE, warning=FALSE, results='hide'}
 source("H:/Programmering/R/byindeks/rmd_setup.R")
-source("H:/Programmering/R/byindeks/split_road_system_reference.R")
-source("H:/Programmering/R/byindeks/get_from_trafficdata_api.R")
 
 library(DT)
 library(htmltools)
 #library(htmlwidgets)
-library(readxl)
 ```
 
-```{r get_trp, results='hide', message=FALSE}
-trp_for_vti <- get_points()
-
-trp_latest_data <- get_trps_latest_data()
-
-trp_for_vti_tidy <- trp_for_vti %>% 
-  dplyr::select(
-    trp_id, 
-    name, 
-    traffic_type, 
-    registration_frequency,
-    county_geono, 
-    county_name, 
-    municipality_name,
-    road_reference,
-    road_link_position, 
-    lat, lon, 
-    valid_from = validFrom,
-    operational_status
-  ) %>% 
-  dplyr::group_by(trp_id) %>%
-  dplyr::slice(which.min(valid_from)) %>% 
-  dplyr::ungroup() %>% 
-  dplyr::filter(
-    traffic_type == "VEHICLE",
-    registration_frequency == "CONTINUOUS",
-    operational_status == "OPERATIONAL"
-  ) %>% 
-  split_road_system_reference() %>% 
-  dplyr::left_join(
-    trp_latest_data,
-    by = "trp_id"
-  ) %>% 
-  dplyr::mutate(
-    latest_day = lubridate::floor_date(latest_data_by_hour)
-  ) %>% 
-  dplyr::filter(
-    road_category != "K",
-    valid_from < "2021-01-01",
-    latest_day > "2022-02-01"
-  ) %>% 
-  dplyr::mutate(
-    road_category = 
-      dplyr::case_when(
-        road_category == "E" ~ "R",
-        road_category == "R" ~ "R",
-        road_category == "F" ~ "F"
-      ),
-    name = stringr::str_to_title(name, locale = "no")
-  ) %>% 
-  dplyr::select(
-    trp_id, 
-    name, 
-    county_geono, 
-    county_name, 
-    municipality_name, 
-    road_category,
-    road_category_and_number, 
-    road_reference, 
-    road_link_position, 
-    lat, lon, 
-    latest_day
-  )
-
-# AADT coverage and length_quality previous year
-#trp_aadts <- trp_for_vti_tidy$trp_id %>% 
-#  get_aadt_for_trp_list() 
-
-#saveRDS(trp_aadts, file = "trp_aadt.rds")
-
-trp_aadts <- readRDS("trp_aadt.rds")
-
-
-# Exclude trps with low index coverage last year
-# CAUTION: Problem could lie in year before last year...
-# pointindex <- get_published_pointindex_paginated(962, 2020, 12)
-# 
-# pointindices <- pointindex[[2]] %>% 
-#   dplyr::filter(day_type == "ALL",
-#                 period == "year_to_date") %>% 
-#   dplyr::select(trp_id, index_total_coverage)
-
-trp_for_vti_aadt <- 
-  trp_for_vti_tidy %>% 
-  dplyr::left_join(trp_aadts) %>% 
-  dplyr::filter(year == 2021) %>% 
-  #dplyr::left_join(pointindices) %>% 
-  dplyr::mutate(
-    valid_length_percent = round(valid_length_volume / adt * 100, digits = 1)#,
-    #index_ok = dplyr::case_when(is.na(index_total_coverage) ~ TRUE,
-    #                                        index_total_coverage > 90 ~ TRUE,
-    #                                        TRUE ~ FALSE)
-  ) %>% 
-  dplyr::filter(
-    !is.na(adt),
-    coverage > 95,
-    #adt >= 200,
-    valid_length_percent > 99#,
-    #index_ok == TRUE
-  ) %>%
-  dplyr::mutate(
-    trp_label = paste(name, road_category_and_number, adt, sep = "<br/>"),
-    trp_label = lapply(trp_label, htmltools::HTML)
-  )
-
-# Write a file to manually update if the trp is chosen
-# trp_for_vti_aadt %>%
-#   dplyr::select(
-#     trp_id, 
-#     name, 
-#     county_geono, 
-#     county_name, 
-#     municipality_name,
-#     road_category, 
-#     road_reference, 
-#     adt
-#   ) %>%
-#   dplyr::mutate(chosen = NA) %>%
-#   write.csv2(
-#     file = "trp_for_vti_2022.csv", 
-#     row.names = F
-#   )
-
-# Read back in the result of chosen trps
-not_chosen <- 
-  readxl::read_xlsx("trp_for_vti_2022.xlsx") %>% 
-  dplyr::filter(chosen == FALSE)
-
-trp_for_vti_aadt <- 
-  trp_for_vti_aadt %>% 
-  dplyr::filter(
-    !(trp_id %in% not_chosen$trp_id)
-  )
+```{r get_data, results='hide', message=FALSE}
+trp_for_vti_aadt <- readr::read_rds("vti_trp_candidates.rds")
+link_candidates <- readr::read_rds("vti_link_candidates.rds")
 ```
 
-
-# Punktene
 
 ```{r table}
 # trp_for_vti_aadt %>% 
@@ -187,36 +52,54 @@ trp_for_vti_aadt <-
 ```
 
 
-# Antall punkt per fylke of vegkategori
 
 ```{r table_summary}
-# # TODO: add road lengths
-# trp_for_vti_aadt %>% 
-#   dplyr::group_by(county_geono, county_name, road_category) %>% 
-#   dplyr::summarise(n_trp = n()) %>%
-#   dplyr::arrange(county_geono) %>% 
-#   dplyr::ungroup() %>% 
-#   dplyr::select(-county_geono) %>% 
-#   tidyr::pivot_wider(names_from = road_category, values_from = n_trp) %>% 
-#   dplyr::rename(Fylke = county_name,
-#                 Fylkesveg = 'F',
-#                 Riksveg = R) %>% 
-#   DT::datatable(
-#     rownames = FALSE,
-#     filter = "none",
-#     options = list(
-#       dom = "t",
-#       pageLength = 25,
-#       autoWidth = TRUE))
+# TODO: add road lengths
+trp_for_vti_aadt |> 
+  dplyr::group_by(county_geono, county_name, road_category) %>%
+  dplyr::summarise(
+    n_trp = n(),
+    .groups = "drop"
+  ) %>%
+  dplyr::arrange(county_geono) %>%
+  dplyr::left_join(
+    measured_traffic_work,
+    by = c("county_geono", "road_category")
+  ) |> 
+  dplyr::select(-county_geono) %>%
+  #tidyr::pivot_wider(names_from = road_category, values_from = c(n_trp, measured_percentage_of_traffic_work)) %>%
+  dplyr::rename(
+    Fylke = county_name,
+    #Fylkesveg = 'F',
+    #Riksveg = R
+    Vegkategori = road_category,
+    Antall_TRP = n_trp,
+    Prosent_trafikkarbeid = measured_percentage_of_traffic_work
+  ) %>%
+  DT::datatable(
+    rownames = FALSE,
+    filter = "none",
+    options = list(
+      dom = "t",
+      pageLength = 25,
+      autoWidth = TRUE))
 ```
 
 
-# Kart
 
 ```{r map, message=FALSE, fig.height=9}
 palett_adt <-
- colorNumeric(palette = "Greens",
-              domain = NULL)
+ leaflet::colorNumeric(
+   palette = "Greens",
+   domain = NULL
+  )
+
+link_color_keep <-
+  leaflet::colorFactor(
+    palette = c("#ed1c2e", "#0000ff"),
+    domain = c(TRUE, FALSE),
+    levels = c(TRUE, FALSE)
+  )
 
 # TODO: county polygons (nice to have)
 
@@ -226,12 +109,30 @@ trp_for_vti_aadt_R <- trp_for_vti_aadt %>%
 trp_for_vti_aadt_F <- trp_for_vti_aadt %>% 
   dplyr::filter(road_category == "F")
 
+trp_id_in_county <- 
+  trp_for_vti_aadt |> 
+  dplyr::filter(
+    county_geono %in% c(7)
+  )
+
+links_in_county <-
+  link_candidates |> 
+  dplyr::filter(
+    trp_id %in% trp_id_in_county$trp_id
+  )
+
 trp_for_vti_aadt %>% 
-  leaflet(width = "100%",
-          options = leafletOptions(crs = nvdb_crs,
-                                   zoomControl = TRUE)) %>%
-  addTiles(urlTemplate = nvdb_map_url,
-           attribution = nvdb_map_attribution) %>%
+  leaflet(
+    width = "100%",
+    options = leafletOptions(
+      crs = nvdb_crs,
+      zoomControl = TRUE
+    )
+  ) %>%
+  addTiles(
+    urlTemplate = nvdb_map_url,
+    attribution = nvdb_map_attribution
+  ) %>%
   addCircleMarkers(
     data = trp_for_vti_aadt_R,
     group = "R",
@@ -258,12 +159,33 @@ trp_for_vti_aadt %>%
     fillOpacity = 0.8,
     label = ~trp_label
   ) %>%
-  addLegend("bottomright",
-            pal = palett_adt,
-            values = ~adt,
-            title = "ÅDT",
-            opacity = 0.7,
-            labFormat = labelFormat(big.mark = " ")) %>% 
+  addPolylines(
+    data = links_in_county,
+    opacity = 0.8,
+    #fill = T,
+    color = ~link_color_keep(to_keep),
+    highlightOptions = highlightOptions(
+      bringToFront = TRUE,
+      sendToBack = FALSE,
+      color = "#000000",
+      opacity = 0.6
+      )
+    ) %>%
+  addLegend(
+    "bottomright",
+    pal = palett_adt,
+    values = ~adt,
+    title = "ÅDT",
+    opacity = 0.7,
+    labFormat = labelFormat(big.mark = " ")
+  ) %>% 
+  addLegend(
+    "bottomright",
+    pal = link_color_keep,
+    values = ~links_in_county$to_keep,
+    title = "I fjor",
+    opacity = 0.7
+  ) %>% 
   addLayersControl(
     overlayGroups = c("F", "R"),
     options = layersControlOptions(collapsed = FALSE)

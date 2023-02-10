@@ -36,8 +36,8 @@ library(htmltools)
 
 # Choose
 index_year <- 2022
-latest_published_month <- 11
-city_number <- 8952
+latest_published_month <- 12
+city_number <- 960
 # End choose
 
 reference_year <- 
@@ -274,6 +274,49 @@ point_index_new <-
     city_trps, 
     index_year
   )
+
+# pi_2019 <-
+#   get_pointindices_for_trp_list(
+#     city_trps, 
+#     index_year - 3
+#   )
+# 
+# pi_trd <-
+#   dplyr::bind_rows(
+#     point_index_new,
+#     pi_2021,
+#     pi_2020,
+#     pi_2019
+#   ) |> 
+#   dplyr::filter(
+#     period == "year_to_date",
+#     month == 12
+#   ) |> 
+#   dplyr::left_join(
+#     city_trps_meta,
+#     by = "trp_id"
+#   ) |> 
+#   dplyr::select(
+#     trp_id,
+#     name,
+#     road_reference,
+#     year,
+#     month,
+#     day_type,
+#     index_total_p,
+#     index_total_coverage,
+#     length_excluded,
+#     length_coverage,
+#     index_short,
+#     index_long
+#   )
+# 
+# library(writexl)
+# 
+# writexl::write_xlsx(
+#   pi_trd,
+#   path = "punktindeks_trd.xlsx"
+# )
 ```
 
 

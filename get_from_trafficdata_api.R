@@ -616,9 +616,11 @@ getTrpAadt <- function(trp_id) {
   return(trp_aadt)
 }
 
-trp_id <- "16184V249637"
-day_type <- "ALL"
+#trp_id <- "16184V249637"
+#day_type <- "ALL"
 get_trp_aadt_with_coverage <- function(trp_id, day_type = "ALL") {
+
+  print(trp_id)
   # Get all AADTs for a trp
   query_aadt <- paste0(
     "query trp_adt{
@@ -666,10 +668,11 @@ get_trp_aadt_with_coverage <- function(trp_id, day_type = "ALL") {
 
   if(is_empty(trp_aadt$data$trafficData$volume$average$daily$byYear) |
      is.null(trp_aadt$data$trafficData$volume$average$daily$byYear$total.volume.average) |
-     is.null(trp_aadt$data$trafficData$volume$average$daily$byYear$total.coverage.percentage)
+     is.null(trp_aadt$data$trafficData$volume$average$daily$byYear$total.coverage.percentage) |
      # TODO: this last condition removes old data - need not be - look at query for directional AADT
      # prevents query from failing when just old data are available
      #ncol(trp_aadt$data$trafficData$volume$average$daily$byYear) < 5
+     is.null(trp_aadt$data$trafficData$volume$average$daily$byYear$total.validLengthVolume.average)
      ){
     trp_aadt <- data.frame()
   }else{
@@ -1555,14 +1558,20 @@ getAdtForpoints <- function(trp_list) {
 
 #trp_list <- border_trps$trp_id
 get_aadt_for_trp_list <- function(trp_list, day_type = "ALL") {
+
   number_of_points <- length(trp_list)
   data_points <- data.frame()
   trp_count <- 1
 
   while (trp_count <= number_of_points) {
-    data_points <- bind_rows(data_points,
-                             get_trp_aadt_with_coverage(trp_list[trp_count],
-                                                        day_type))
+
+    print(trp_count)
+
+    data_points <-
+      dplyr::bind_rows(
+        data_points,
+        get_trp_aadt_with_coverage(trp_list[trp_count], day_type))
+
     trp_count <- trp_count + 1
   }
 
@@ -1596,6 +1605,7 @@ get_aadt_by_direction_for_trp_list <- function(trp_list) {
 
 
 get_mdt_for_trp_list <- function(trp_list, mdt_year) {
+
   number_of_points <- length(trp_list)
   data_points <- data.frame()
   trp_count <- 1
@@ -1615,6 +1625,7 @@ get_mdt_for_trp_list <- function(trp_list, mdt_year) {
 }
 
 get_mdt_by_lane_for_trp_list <- function(trp_list, mdt_year) {
+
   number_of_points <- length(trp_list)
   data_points <- data.frame()
   trp_count <- 1
