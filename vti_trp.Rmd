@@ -112,7 +112,7 @@ trp_for_vti_aadt_F <- trp_for_vti_aadt %>%
 trp_id_in_county <- 
   trp_for_vti_aadt |> 
   dplyr::filter(
-    county_geono %in% c(7)
+    county_geono %in% c(3)
   )
 
 links_in_county <-
