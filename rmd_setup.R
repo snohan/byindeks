@@ -14,7 +14,7 @@ library(lubridate)
 library(clock)
 library(RColorBrewer)
 #library(webshot)
-#library(officer)
+library(officer) # fp_border color in flextable
 #library(officedown)
 library(scales)
 

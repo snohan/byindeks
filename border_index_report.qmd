@@ -1,0 +1,525 @@
+---
+format: 
+  pdf:
+    toc: true
+    number-sections: true
+    toc-title: Innhold
+    mainfont: "Lucida Sans Unicode"
+    include-in-header:
+      text: |
+        \newfontfamily\sectionfont[Color=ed9300]{Lucida Sans Unicode}
+        \newfontfamily\subsectionfont[Color=444f55]{Lucida Sans Unicode}
+        \newfontfamily\subsubsectionfont[Color=ed9300]{Lucida Sans Unicode}
+        \addtokomafont{section}{\sectionfont}
+        \addtokomafont{subsection}{\subsectionfont}
+        \addtokomafont{subsubsection}{\subsubsectionfont}
+        \usepackage[font=small,textfont=it,labelsep=period]{caption}
+        \let\oldsection\section
+        \renewcommand\section{\clearpage\oldsection}
+crossref: 
+  tbl-title: "Tabell"
+  lot-title: "Tabeller"
+  tbl-prefix: ""
+  fig-title: "Figur"
+  lof-title: "Figurer"
+  fig-prefix: ""
+  title-delim: "."
+---
+
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
+
+source("rmd_setup.R")
+source("get_from_trafficdata_api.R")
+
+# Get prepared data
+border_crossings_adt <-
+  readr::read_rds(
+    file = "border_index_data/border_crossings_adt.rds"
+  )
+
+index_for_table <-
+  readr::read_rds(
+    file = "border_index_data/index_for_table.rds"
+  )
+
+index_all_years <-
+  readr::read_rds(
+    file = "border_index_data/index_all_years.rds"
+  )
+
+# Functions
+create_monthly_index_lineplot <- function(index_df) {
+  
+  index_df |> 
+    dplyr::filter(period == "month") |> 
+    ggplot2::ggplot(
+      aes(
+        x = month_object, 
+        y = index_p, 
+        color = length_range
+      )
+    ) +
+    ggplot2::geom_line() +
+    ggplot2::geom_point() +
+    ggplot2::facet_grid(rows = vars(year)) +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(angle = 90),
+      axis.title.y = 
+        element_text(
+          margin = margin(t = 0, r = 15, b = 0, l = 0)
+        ),
+      axis.title.x = 
+        element_text(
+            margin = margin(t = 15, r = 0, b = 0, l = 0)),
+            panel.grid.minor.x = element_blank()
+    ) +
+    scale_x_date(
+      breaks = scales::breaks_width("months"),
+      labels = scales::label_date("%b")
+    ) +
+    scale_color_manual(
+      values = c("alle" = "#008ec2",
+                 "lette" = "#ed9300",
+                 "tunge" = "#444f55"),
+       name = "Kjøretøyklasse"
+    ) +
+    labs(
+      x = NULL, y = "Endring i trafikkmengde (%) \n",
+      caption = "Data: Statens vegvesen og fylkeskommunene"
+    ) +
+    ggtitle(
+      "Estimert endring i trafikkmengde ved riksgrensen",
+      subtitle = "Trafikkmengde per måned sammenlignet med foregående år"
+    ) +
+    theme(legend.position = "bottom")
+}
+
+create_monthly_index_table <- function(index_df) {
+  
+  last_month <- max(index_df$month)
+  this_year <- max(index_df$year)
+  
+  index_df |>
+    dplyr::arrange(
+      length_range, 
+      month
+    ) |> 
+    dplyr::select(
+      month_name, 
+      year, 
+      length_range, 
+      index_p, 
+      standard_error, 
+      standard_deviation, 
+      no_points
+    ) |>
+    flextable() |>
+    colformat_int(j = 2, big.mark = "") |>
+    colformat_double(j = 4:6, digits = 1) |>
+    set_header_labels(
+      month_name = "Måned", year = "År", 
+      length_range = "Kjøretøy-\nklasse",
+      index_p = "Endring i\ntrafikk-\nmengde\n(%)",
+      standard_error = "Standard-\nfeil\n(%)",
+      standard_deviation = "Standard-\navvik\n(%)",
+      no_points = "Antall\npunkt"
+    ) |>
+    align(j = c(2, 3, 7), align = "center", part = "all") |>
+    align(j = 4:6, align = "center", part = "header") |>
+    bold(part = "header") |>
+    bg(bg = "#ED9300", part = "header") |>
+    border_remove() |>
+    hline_top(part = "header", border = borderline) |>
+    hline_bottom(part = "all", border = borderline) |>
+    hline(
+      i = c(last_month, 2 * last_month), 
+      part = "body",
+      border = fp_border(color = "#dadada", width = 1)
+    ) |> 
+    height_all(height = .2) |>
+    width(j = 3, width = .8) |> 
+    fix_border_issues()
+}
+
+table_historic_index <- function(index_df) {
+
+  index_df |> 
+    flextable::flextable() |>
+    colformat_double(j = 2:5, digits = 1) |>
+    set_header_labels(year = "År") |>
+    align(j = 2:5, align = "right", part = "all") |>
+    bold(part = "header") |>
+    fontsize(size = 9, part = "all") |>
+    font(fontname = "Lucida Sans Unicode", part = "all") |>
+    bg(bg = "#ED9300", part = "header") |>
+    border_remove() |>
+    hline_top(part = "header", border = borderline) |>
+    hline_bottom(part = "all", border = borderline) |>
+    height_all(height = .2) |>
+    fix_border_issues() |>
+    padding(padding.top = .3,
+            padding.bottom = .3)
+}
+```
+
+
+\listoftables
+
+\listoffigures
+
+{{< pagebreak >}}
+
+
+# Riksgrenseindeks for vegtrafikk
+Riksgrenseindeksen er en vegtrafikkindeks for vegene som krysser riksgrensen langs hele Norge. Den estimerer endringen i trafikkmengde i prosent fra et år til det neste.
+
+Statens vegvesen har i dag trafikkregistreringspunkt ved 32 av de 51 riksgrenseovergangene på Europa-, riks- og fylkesvegnettet fra Svinesund i sør til Storskog i nordøst. Trafikken er ikke registrert i selve grenseovergangen, men litt inn på norsk side. Det er ingen store kryss mellom registreringspunktene og riksgrensen, slik at de fleste kjøretøy som blir registrert antas normalt å krysse riksgrensen, selv om enkelte kjøretøy kan stoppe og eventuelt snu på norsk side.
+
+Datagrunnlaget for beregningene hentes fra disse trafikkregistreringspunktene. Det gir et representativt utvalg til å estimere trafikkutviklingen for alle riksgrenseovergangene. I beregningen gjøres en sammenligning av timetrafikken, dato mot dato i kalendermånedene.
+
+Alle data er hentet fra [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/trafikkdata/). Timetrafikk med minst 95 % dekningsgrad inngår i beregningsgrunnlaget.
+
+Det tas forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er tidvis utelatt på grunn av feil på utstyr eller at de ligger på veger som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
+
+Været vil i perioder kunne påvirke trafikkmengden. For eksempel vil det ved dårlig føre, som ved stort snøfall eller underkjølt regn, bli redusert framkommelighet og dette fører til mindre trafikk enn normalt. Spesielt gjelder dette en del av grenseovergangene som ligger i fjellstrøk. Enkelte grenseoverganger er vinterstid periodevis stengt på grunn av værforholdene.
+
+
+# Trafikkregistreringspunkt ved riksgrenseovergangene
+Trafikkregistreringspunktene ligger spredt langs hele Fastlands-Norges riksgrense. Informasjon om trafikkmengde og plassering er gjengitt i tabell og kart nedenfor.
+
+Alle kjøretøy som passerer trafikkregistreringspunktene blir registrert og får målt sin lengde. Kjøretøyregistreringene blir delt inn i lengdeklasser. Skillet mellom lette og tunge kjøretøy er basert på målt lengde kortere eller lengre enn 5,6 m. Der årsdøgntrafikk (ÅDT) for lette og tunge er utelatt fra tabellen, er datagrunnlaget for dårlig til at tall kan presenteres. Summen av lette og tunge kan avvike noe fra totalen på grunn av avrunding.
+
+Fra og med 2016 er datagrunnlaget godt nok til å beregne endringen i antall kjøretøy som passerer riksgrensen fra år til år. Et vektet gjennomsnitt av endring i trafikkmengden i de ulike grenseovergangene, gir et estimat på endringen for hele riksgrensetrafikken samlet.
+
+\vspace{5mm}
+
+```{r}
+#| label: point_table
+#| tbl-cap: "Grenseoverganger og årsdøgntrafikk."
+#| ft.arraystretch: 0.9
+
+border_crossings_adt |>
+  dplyr::select(
+    road_category_and_number, 
+    street_name, 
+    #county_name, 
+    municipality_name,
+    border_country, 
+    adt, aadt_short, aadt_long, year
+    #name
+  ) |>
+  flextable() |>
+  #colformat_int(j = 6:8) |>
+  colformat_double(
+    j = 5:7, 
+    big.mark = "", 
+    digits = 0
+  ) |>
+  colformat_double(
+    j = 8, 
+    big.mark = "", 
+    digits = 0
+  ) |>
+  set_header_labels(
+    road_category_and_number = "Veg-\nnummer",
+    street_name = "Vegnavn",
+    municipality_name = "Kommune",
+    border_country = "Grense til",
+    adt = "ÅDT\nalle",
+    aadt_short = "ÅDT\nlette",
+    aadt_long = "ÅDT\ntunge",
+    year = "År"
+    #name = "Trafikk-\nregistreringspunkt"
+  ) |>
+  align(
+    i = 1, j = 5:7, 
+    align = "center", 
+    part = "header"
+  ) |>
+  align(
+    j = 8, 
+    align = "center", 
+    part = "all"
+  ) |>
+  bold(part = "header") |>
+  bg(bg = "#ED9300", part = "header") |>
+  border_remove() |>
+  hline_top(part = "header", border = borderline) |>
+  hline_bottom(part = "all", border = borderline) |>
+  fontsize(size = 7, part = "all") |> 
+  autofit() |>
+  height_all(height = .2)
+```
+
+
+Kartet i figur @fig-map_trp_index viser plasseringen av trafikkregistreringspunktene. Grenseovergangene med mest trafikk er Ev 6 og Fv 118 ved Svinesund, Ev 18 ved Ørje og Rv 2 ved Magnor.
+
+```{r}
+#| label: fig-map_trp_index
+#| dpi: 100
+#| fig-width: 6
+#| fig-height: 7
+#| fig-cap: "Trafikkregistreringspunktene plassering og årsdøgntrafikk."
+
+border_crossings_adt |>
+ dplyr::filter(!is.na(lat)) |>
+ create_point_adt_map()
+```
+
+
+# Endring i trafikk per måned
+I figurene og tabellene nedenfor vises endringen i trafikk per måned, sammenlignet mellom to påfølgende år.
+
+\vspace{5mm}
+
+```{r}
+#| label: fig-lineplot_historic_1
+#| fig-width: 6
+#| fig-height: 6.2
+#| fig-cap: "Riksgrenseindeks per måned mellom to påfølgende år i perioden 2017-2019."
+#| fig-pos: "!h"
+
+index_all_years |> 
+  dplyr::filter(
+    year %in% c(2017, 2018, 2019)
+  ) |> 
+  create_monthly_index_lineplot()
+```
+
+I figur @fig-lineplot_historic_1 er det tydelig at de største endringene skyldes påskens vekslende plassering i kalenderen mellom mars og april i påfølgende år.
+
+```{r}
+#| label: fig-lineplot_historic_2
+#| fig-width: 6
+#| fig-height: 6.2
+#| fig-cap: "Riksgrenseindeks per måned mellom to påfølgende år i perioden 2019-2023."
+#| fig-pos: "!h"
+
+index_all_years |> 
+  dplyr::filter(
+    year %in% c(2020, 2021, 2022, 2023)
+  ) |> 
+  create_monthly_index_lineplot()
+```
+
+
+NB! Skalaen på y-aksen er veldig ulik i de to figurene. Dette skyldes de ekstreme endringene som inntraff på grunn av koronarestriksjoner. Fra mars 2020 gikk grensetrafikken betydelig ned som følge av tiltak mot spredningen av det nye koronaviruset. 6. oktober 2021 ble grenseovergangene gjenåpnet. Smitteverntiltak ble deretter gjeninnført i desember 2021 og varte til februar 2022.
+
+Tabell @tbl-monthly_index_table_2020, @tbl-monthly_index_table_2021, @tbl-monthly_index_table_2022 og @tbl-monthly_index_table_2023 viser tallgrunnlaget for figur @fig-lineplot_historic_2. Indekstallene er en estimert samlet endring i trafikkmengde per måned, sammenlignet med samme måned året før. Usikkerheten i estimatet er synliggjort med standardfeil og standardavvik. Standardfeilen sier noe om hvor nære indeksen (som er et estimat) er den faktiske endringen i trafikken, mens standardavviket sier noe om hvor ulik trafikkendringen var på de ulike trafikkregistreringspunktene.
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-monthly_index_table_2020
+#| tbl-cap: "Riksgrenseindeks per måned 2020."
+#| ft.arraystretch: 0.9
+
+index_for_table |> 
+  dplyr::filter(
+    period == "month",
+    year == 2020
+  ) |> 
+  create_monthly_index_table()
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-monthly_index_table_2021
+#| tbl-cap: "Riksgrenseindeks per måned 2021."
+#| ft.arraystretch: 0.9
+
+index_for_table |> 
+  dplyr::filter(
+    period == "month",
+    year == 2021
+  ) |> 
+  create_monthly_index_table()
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-monthly_index_table_2022
+#| tbl-cap: "Riksgrenseindeks per måned 2022."
+#| ft.arraystretch: 0.9
+
+index_for_table |> 
+  dplyr::filter(
+    period == "month",
+    year == 2022
+  ) |> 
+  create_monthly_index_table()
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-monthly_index_table_2023
+#| tbl-cap: "Riksgrenseindeks per måned 2023."
+#| ft.arraystretch: 0.9
+
+index_for_table |> 
+  dplyr::filter(
+    period == "month",
+    year == 2023
+  ) |> 
+  create_monthly_index_table()
+```
+
+# Endring i trafikk per år
+2016 er sammenligningsåret for indeksen i 2017, og de påfølgende årsindeksene er alltid sammenlignet med året før. I tabellen nedenfor er årsindeksene gjengitt.
+
+\vspace{5mm}
+
+```{r}
+#| label: tbl-yearly_index_table
+#| tbl-cap: "Riksgrenseindeks per år."
+#| ft.arraystretch: 0.9
+
+n_complete_years <-
+  index_for_table |> 
+  dplyr::filter(
+    period == "year_to_date",
+    month == 12,
+    length_range == "alle"
+  ) |> 
+  base::nrow()
+  
+index_for_table |> 
+  dplyr::filter(
+    period == "year_to_date",
+    month == 12
+  ) |>
+    dplyr::arrange(
+      length_range, 
+      year
+    ) |> 
+    dplyr::select(
+      year, 
+      length_range, 
+      index_p, 
+      standard_error, 
+      standard_deviation, 
+      no_points
+    ) |>
+    flextable() |>
+    colformat_int(j = 1, big.mark = "") |>
+    colformat_double(j = 3:5, digits = 1) |>
+    set_header_labels(
+      year = "År", 
+      length_range = "Kjøretøy-\nklasse",
+      index_p = "Endring i\ntrafikk-\nmengde\n(%)",
+      standard_error = "Standard-\nfeil\n(%)",
+      standard_deviation = "Standard-\navvik\n(%)",
+      no_points = "Antall\npunkt"
+    ) |>
+    align(j = 3:5, align = "right", part = "body") |>
+    align(j = 3:5, align = "center", part = "header") |>
+    align(j = c(1, 2, 6), align = "center", part = "all") |>
+    bold(part = "header") |>
+    bg(bg = "#ED9300", part = "header") |>
+    border_remove() |>
+    hline_top(part = "header", border = borderline) |>
+    hline_bottom(part = "all", border = borderline) |>
+    hline(
+      i = c(n_complete_years, 2 * n_complete_years), 
+      part = "body",
+      border = fp_border(color = "#dadada", width = 1)
+    ) |> 
+    height_all(height = .2) |>
+    width(j = 2, width = .8) |> 
+    fix_border_issues()
+```
+
+
+# Kumulativ trafikkutvikling siden 2016
+Riksgrenseindeksen er beregnet siden 2016, og tabellene nedenfor viser kumulativ trafikkutvikling for hele perioden. Tallene er her beregnet ved å sette basisåret 2016 til 100, og den prosentvise utviklingen til et senere år vil en da finne ved å trekke fra 100.
+
+\vspace{5mm}
+
+```{r}
+#| label: historic_per_year
+
+historic <- 
+  index_all_years |> 
+  dplyr::filter(
+     day_type == "ALL",
+     road_category == "Europa-, riks- og fylkesveg",
+     period == "year_to_date",
+     month == 12
+  ) |> 
+  dplyr::select(
+    year,
+    length_range,
+    index_i
+  )
+
+historic_all <- 
+  historic |> 
+  dplyr::filter(
+    length_range == "alle"
+  ) |> 
+  dplyr::mutate(
+    cum_index_i = round(cumprod(index_i) * 100, digits = 1)
+  ) |> 
+  dplyr::select(year, index_i)
+
+historic_all_combinations <- calculate_all_index_chain_combinations(historic_all)
+
+historic_light <- historic |> 
+  dplyr::filter(
+    length_range == "lette"
+  ) |> 
+  dplyr::mutate(
+    cum_index_i = round(cumprod(index_i) * 100, digits = 1)
+  ) |> 
+  dplyr::select(year, index_i)
+
+historic_light_combinations <- calculate_all_index_chain_combinations(historic_light)
+
+historic_heavy <- historic |> 
+  dplyr::filter(
+    length_range == "tunge"
+  ) |> 
+  dplyr::mutate(
+    cum_index_i = round(cumprod(index_i) * 100, digits = 1)
+  ) |> 
+  dplyr::select(year, index_i)
+
+historic_heavy_combinations <- calculate_all_index_chain_combinations(historic_heavy)
+```
+
+
+```{r}
+#| label: tbl-historic_all_table
+#| tbl-cap: "Kumulativ trafikkutvikling fra 2016 til 2022."
+#| ft.arraystretch: 0.9
+
+historic_all_combinations |> 
+  table_historic_index()
+```
+
+```{r}
+#| label: tbl-historic_light_table
+#| tbl-cap: "Kumulativ trafikkutvikling for lette kjøretøy fra 2016 til 2022."
+#| ft.arraystretch: 0.9
+
+historic_light_combinations |> 
+  table_historic_index()
+```
+
+```{r}
+#| label: tbl-historic_heavy_table
+#| tbl-cap: "Kumulativ trafikkutvikling for tunge kjøretøy fra 2016 til 2022."
+#| ft.arraystretch: 0.9
+
+historic_heavy_combinations |> 
+  table_historic_index()
+```
+
+

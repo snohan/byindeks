@@ -1106,7 +1106,7 @@ get_trp_mdt_by_direction <- function(trp_id, mdt_year) {
 #mdt_test_2 <- get_trp_mdt_by_lane("91582V930281", "2020")
 
 #trp_id <- "66220V72824"
-trp_id <- "41078V805609"
+#trp_id <- "41078V805609"
 #trp_adt <- getTrpAadt_byLength(trp_id)
 
 get_aadt_by_length_for_trp <- function(trp_id) {
@@ -1692,7 +1692,7 @@ get_aadt_by_length_for_trp_list <- function(trp_list) {
     trp_count <- trp_count + 1
   }
 
-  number_of_digits = -1
+  number_of_digits = 0
 
   trp_adt <-
     data_points %>%
