@@ -1,4 +1,5 @@
 #
+borderline <- officer::fp_border(color = "black", style = "solid", width = 1)
 
 create_point_table <- function(all_point_info_df) {
 
@@ -352,7 +353,7 @@ create_pointindex_map <- function(all_point_info_df) {
   return(pointindex_map)
 }
 
-borderline <- officer::fp_border(color = "black", style = "solid", width = 1)
+
 
 
 map_links_with_trp <- function(link_df) {

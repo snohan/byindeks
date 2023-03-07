@@ -856,7 +856,7 @@ get_trs_commissions <- function() {
           }
         }
         commissions {
-          source
+          sourceSystem
           validFrom
           validTo
         }
@@ -884,7 +884,7 @@ response_parsed <- get_via_httr(api_query) %>%
                 trs_road_reference = data.trafficRegistrationStations.location.roadReference.shortForm,
                 county_name = data.trafficRegistrationStations.location.municipality.county.name,
                 municipality_name = data.trafficRegistrationStations.location.municipality.name,
-                system_name = source,
+                system_name = sourceSystem,
                 commission_from = validFrom,
                 commission_to = validTo,
                 trp_id = id,

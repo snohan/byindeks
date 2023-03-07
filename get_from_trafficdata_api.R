@@ -297,7 +297,7 @@ get_trp_data_time_span <- function() {
   return(points)
 }
 
-
+#trp_id <- "45979V1175826"
 get_trp_labels <- function(trp_id) {
 
   query_points <-
@@ -321,17 +321,25 @@ get_trp_labels <- function(trp_id) {
   myqueries <- Query$new()
   myqueries$query("points", query_points)
 
-  labels <-
+  response <-
     cli$exec(myqueries$queries$points) %>%
     jsonlite::fromJSON(
       simplifyDataFrame = T,
       flatten = T
-    ) %>%
+    )
+
+  if (base::length(response$data$trafficRegistrationPoints) == 0) {
+    labels <- tibble::tibble()
+  }
+  else {
+  labels <-
+    response %>%
     as.data.frame() %>%
     tidyr::unnest(
       data.trafficRegistrationPoints.manualLabels,
       keep_empty = FALSE
     )
+  }
 
   return(labels)
 }
@@ -344,6 +352,8 @@ get_labels_for_trp_list <- function(trp_list) {
   trp_count <- 1
 
   while (trp_count <= number_of_points) {
+
+    base::print(trp_list[trp_count])
 
     data_points <-
       dplyr::bind_rows(
@@ -378,7 +388,7 @@ get_labels_for_trp_list <- function(trp_list) {
       dplyr::mutate(
         dplyr::across(
           .cols = c(label_start, label_end),
-          .fns = ~ floor_date(with_tz(ymd_hms(.x)), unit = "day")
+          .fns = ~ floor_date(with_tz(ymd_hms(.x)), unit = "hour")
         ),
         date_interval = lubridate::interval(label_start, label_end)
       ) %>%
