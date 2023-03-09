@@ -39,10 +39,10 @@ source("rmd_setup.R")
 # Nord-Jæren             952 (2017) 12r
 # Bergen                8952 (2018) 12r
 # Oslo                   959 (2018) 12r
-# Trondheim              960 (2019) 12r
+# Trondheim              960 (2019) 02
 
 # Choose city number:
-city_number <- 953
+city_number <- 960
 
 city_number_county_name <- 
   tibble::tibble(
@@ -108,16 +108,19 @@ all_point_info_long <-
         period == "index_20" ~ "2019-2020",
         period == "index_21" ~ "2020-2021",
         period == "index_22" ~ "2021-2022",
+        period == "index_23" ~ "2022-2023",
         # Trondheim TODO: harmonize!
         period == "index_2020" ~ "2019-2020",
         period == "index_2021" ~ "2020-2021",
-        period == "index_2022" ~ "2021-2022"
+        period == "index_2022" ~ "2021-2022",
+        period == "index_2023" ~ "2022-2023"
       ),
     year = 
       factor(
         year, 
         levels = 
           c(
+            "2022-2023",
             "2021-2022",
             "2020-2021",
             "2019-2020",
@@ -137,9 +140,9 @@ city_info <-
     #month_object = lubridate::make_date(year = year, month = month),
     month_name_short = lubridate::month(month, label = TRUE),
     period = paste0("jan-", month_name_short)
-  ) #|> 
+  ) |> 
   # Trondheim:
-  #dplyr::filter(length_range == "lette")
+  dplyr::filter(length_range == "lette")
 
 latest_month <- 
   city_info |> 
@@ -324,8 +327,8 @@ De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeks
 
 all_point_info |> 
   dplyr::slice(1:36) |> 
-  #create_point_table_trd()
-  create_point_table()
+  create_point_table_trd()
+  #create_point_table()
 ```
 
 
@@ -335,9 +338,9 @@ all_point_info |>
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2. B er bomstasjon, T er trafikkregistreringspunkt."
 #| ft.arraystretch: 0.9
 
-#all_point_info |>
-#  dplyr::slice(37:75) |>
-#  create_point_table_trd()
+all_point_info |>
+  dplyr::slice(37:75) |>
+  create_point_table_trd()
 #  create_point_table()
 # 
 ```
@@ -370,13 +373,13 @@ knitr::opts_chunk$set(
   dpi = 100
   )
 
-all_point_info |> 
-  create_point_adt_map()
+#all_point_info |> 
+#  create_point_adt_map()
 
 # Trondheim
-#all_point_info %>%
-#  dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
-#  create_point_adt_map_trondheim()
+all_point_info %>%
+  dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
+  create_point_adt_map_trondheim()
 ```
 
 {{< pagebreak >}}

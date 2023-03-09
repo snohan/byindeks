@@ -110,8 +110,8 @@ trp_id_msnr <-
 # Trondheim stop
 
 # Choose
-index_month <- 12 # the one to be published now
-city_number <- 953
+index_month <- 2 # the one to be published now
+city_number <- 960
 
 reference_year <-
   dplyr::case_when(
@@ -712,7 +712,7 @@ readr::write_rds(
 ## Get MDTs ----
 present_year <-
   lubridate::today() |>
-  lubridate::year() - 1
+  lubridate::year() #- 1
 
 years_from_reference_to_today <-
   base::seq(reference_year, present_year)
@@ -844,9 +844,9 @@ mdt_filtered <-
       )
     )
   ) |>
-  tibble::as_tibble() #|>
+  tibble::as_tibble() |>
   # TRD
-  #dplyr::bind_rows(toll_mdt_class)
+  dplyr::bind_rows(toll_mdt_class)
 
 
 mdt_filtered |>
@@ -880,7 +880,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[61:63]
+    trp_id %in% trp_mdt_ok_refyear[25:27]
   ) |>
   dplyr::select(
     trp_id,
@@ -1084,6 +1084,23 @@ readr::write_rds(
       city_number,
       ".rds"
     )
+)
+
+# all_36_month_indices <-
+# readr::read_rds(
+#   file =
+#     paste0(
+#       "data_indexpoints_tidy/mdt_36_",
+#       #"data_indexpoints_tidy/trp_mdt_36_",
+#       city_number,
+#       ".rds"
+#     )
+# )
+
+write.csv2(
+  all_36_month_indices,
+  file = paste0("data_indexpoints_tidy/mdt_36_", city_number, ".csv"),
+  row.names = F
 )
 
 all_36_month_trp_indices <-

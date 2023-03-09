@@ -566,7 +566,7 @@ create_mdt_barplot <- function(trp_mdt_long_format) {
     geom_text(
       aes(
         x = month, #month_object,
-        label = if_else(mdt == 0, "NA", NULL)
+        label = if_else(mdt == 0, "NA", "")#NULL)
       ),
       position = position_dodge(0.8),
       vjust = 1

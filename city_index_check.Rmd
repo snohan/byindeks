@@ -35,8 +35,8 @@ library(htmltools)
 
 
 # Choose
-index_year <- 2022
-latest_published_month <- 12
+index_year <- 2023
+latest_published_month <- 1
 city_number <- 960
 # End choose
 
@@ -84,64 +84,64 @@ pointindex <-
 
 # TRD start
 # TRD toll station index
-# tolling_station_indices_prepared <-
-#   readr::read_rds(
-#     file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
-#   ) |>
-#   dplyr::mutate(
-#     year = lubridate::year(month_calc),
-#     month = lubridate::month(month_calc),
-#     class =
-#       dplyr::case_when(
-#         class == "alle" ~ "total_p",
-#         class == "lette" ~ "short",
-#         class == "tunge" ~ "long"
-#       ),
-#     index_p = round(index_p, digits = 1)
-#   ) |>
-#   dplyr::select(
-#     trp_id,
-#     year,
-#     month,
-#     class,
-#     index = index_p
-#   ) |>
-#   dplyr::filter(
-#     year == index_year
-#   ) |>
-#   tidyr::pivot_wider(
-#     id_cols = ,
-#     names_from = class,
-#     names_prefix = "index_",
-#     values_from = index
-#   )
+tolling_station_indices_prepared <-
+  readr::read_rds(
+    file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
+  ) |>
+  dplyr::mutate(
+    year = lubridate::year(month_calc),
+    month = lubridate::month(month_calc),
+    class =
+      dplyr::case_when(
+        class == "alle" ~ "total_p",
+        class == "lette" ~ "short",
+        class == "tunge" ~ "long"
+      ),
+    index_p = round(index_p, digits = 1)
+  ) |>
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    class,
+    index = index_p
+  ) |>
+  dplyr::filter(
+    year == index_year
+  ) |>
+  tidyr::pivot_wider(
+    id_cols = ,
+    names_from = class,
+    names_prefix = "index_",
+    values_from = index
+  )
 
 # For map
-# tolling_station_indices_prepared_old <-
-#   tolling_station_indices_prepared |>
-#   dplyr::filter(
-#     month < latest_published_month + 1
-#   )
-# 
-# tolling_station_indices_prepared_new <-
-#   tolling_station_indices_prepared |>
-#   dplyr::filter(
-#     month == latest_published_month + 1
-#   )
-# 
-# trd_toll_stations_meta <-
-#   readr::read_rds(
-#     file = "bomdata_trondheim/trd_toll_stations.rds"
-#   ) |>
-#   split_road_system_reference() |>
-#   dplyr::select(
-#     trp_id,
-#     name,
-#     road_reference,
-#     road_category_and_number,
-#     lat, lon,
-#     road_link_position
-#   )
+tolling_station_indices_prepared_old <-
+  tolling_station_indices_prepared |>
+  dplyr::filter(
+    month < latest_published_month + 1
+  )
+
+tolling_station_indices_prepared_new <-
+  tolling_station_indices_prepared |>
+  dplyr::filter(
+    month == latest_published_month + 1
+  )
+
+trd_toll_stations_meta <-
+  readr::read_rds(
+    file = "bomdata_trondheim/trd_toll_stations.rds"
+  ) |>
+  split_road_system_reference() |>
+  dplyr::select(
+    trp_id,
+    name,
+    road_reference,
+    road_category_and_number,
+    lat, lon,
+    road_link_position
+  )
 # TRD stop
 
 # All API PI (not old ones on CSV)
@@ -178,11 +178,11 @@ points <-
 
 city_trps_meta <- 
   points %>% 
-  dplyr::filter(trp_id %in% city_trps) #|> 
+  dplyr::filter(trp_id %in% city_trps) |> 
   # TRD
-  # dplyr::bind_rows(
-  #   trd_toll_stations_meta
-  # )
+  dplyr::bind_rows(
+    trd_toll_stations_meta
+  )
 ```
 
 ```{r aadt, include=FALSE}
@@ -249,15 +249,15 @@ this_citys_trps_all_adt_final <-
   dplyr::bind_rows(missing_adt_fixed) |> 
   dplyr::rename(
     year_aadt = year
-  ) #|>
+  ) |>
   # TRD (city_index_dataprep_trondheim_toll_stations.R)
-  # dplyr::left_join(
-  #   trd_station_type,
-  #   by = "trp_id"
-  # ) |>
-  # dplyr::mutate(
-  #   station_type_short = stringr::str_sub(station_type, 1, 1)
-  # )
+  dplyr::left_join(
+    trd_station_type,
+    by = "trp_id"
+  ) |>
+  dplyr::mutate(
+    station_type_short = stringr::str_sub(station_type, 1, 1)
+  )
 
 readr::write_rds(
   this_citys_trps_all_adt_final,
@@ -388,22 +388,22 @@ point_index_new_prepared <-
    tolling_station_indices_prepared_new
   )
 
-point_index_new_prepared_2 <- 
-  point_index_new %>%
-  dplyr::filter(day_type == "ALL",
-                period == "month",
-                month == latest_published_month + 2) %>%
-  dplyr::select(
-    trp_id, 
-    year, 
-    month, 
-    index_total_p,
-    index_total_coverage, 
-    length_excluded, 
-    length_coverage,
-    index_short, 
-    index_long
-  )
+# point_index_new_prepared_2 <- 
+#   point_index_new %>%
+#   dplyr::filter(day_type == "ALL",
+#                 period == "month",
+#                 month == latest_published_month + 2) %>%
+#   dplyr::select(
+#     trp_id, 
+#     year, 
+#     month, 
+#     index_total_p,
+#     index_total_coverage, 
+#     length_excluded, 
+#     length_coverage,
+#     index_short, 
+#     index_long
+#   )
 # 
 # point_index_new_prepared_3 <- point_index_new %>%
 #   dplyr::filter(day_type == "ALL",
@@ -655,8 +655,8 @@ pointindex_long_2 <-
 ## Byindeks per måned så langt for `r city_name`
 
 ```{r city_index, message=FALSE, fig.width=12}
-month_start = lubridate::make_date(year = 2022, month = 1)
-month_end = lubridate::make_date(year = 2022, month = 12)
+month_start = lubridate::make_date(year = 2023, month = 1)
+month_end = lubridate::make_date(year = 2023, month = 12)
 
 full_year_x_axis <- c(month_start, month_end)
 
@@ -683,7 +683,7 @@ city_index_prepared %>%
 
 
 
-## Desember
+## Februar
 
 ```{r map_trp_index, message=FALSE}
 city_trps_new_pointindex %>% 

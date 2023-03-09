@@ -64,8 +64,8 @@ index_this_year_prepared_wide_country <-
 ```{r}
 #| label: extract_data_for_text
 
-this_year <- 2022
-latest_month_number <- 12
+this_year <- 2023
+latest_month_number <- 02
 
 latest_month_name <-
   max(
@@ -277,7 +277,7 @@ Indekstala er oppgitt i lag med mål på spreiinga i datagrunnlaget:
 # Trafikkutviklinga i Noreg
 Kort summert har trafikkutviklinga vore som følgjer i perioden januar - `r latest_month_name`, `r this_year`:
 
-Det var `r index_so_far_this_year_all_character` % *`r less_or_more_so_far`* trafikk i `r this_year` enn i `r this_year - 1`. 
+Det var `r index_so_far_this_year_all_character` % *`r less_or_more_so_far`* trafikk i `r this_year` enn i same periode i `r this_year - 1`. 
 
 Utviklinga for lette og tunge køyretøy er berekna til `r index_so_far_this_year_light` % og `r index_so_far_this_year_heavy` %.
 
@@ -293,8 +293,7 @@ Tabell @tbl-so_far_this_year_table_road_category og @tbl-so_far_this_year_table_
 ```{r}
 #| label: tbl-so_far_this_year_table_road_category
 #| tbl-cap: !expr table_caption_country_road
-
-# same periode i
+#| ft.arraystretch: 0.9
 
 index_this_year_prepared %>%
   dplyr::filter(
@@ -348,10 +347,12 @@ index_this_year_prepared %>%
   )
 ```
 
+{{< pagebreak >}}
 
 ```{r}
 #| label: tbl-so_far_this_year_table_day_type
 #| tbl-cap: !expr table_caption_country_day
+#| ft.arraystretch: 0.9
 
 index_this_year_prepared %>%
   dplyr::filter(
@@ -407,10 +408,12 @@ Trafikkutviklinga i Noreg for kvar månad, har vore som vist i tabell @tbl-count
 ```{r}
 #| label: tbl-country_monthly_table
 #| tbl-cap: !expr table_caption_country_month
+#| ft.arraystretch: 0.9
 
 number_of_columns <- ncol(index_this_year_prepared_wide_country)
 
 index_this_year_prepared_wide_country %>%
+  dplyr::arrange(day_type) |> 
   flextable::flextable() %>%
   colformat_double(j = 3:number_of_columns, digits = 1) %>%
   set_header_labels(
@@ -520,6 +523,7 @@ index_this_year_prepared %>%
   theme(legend.position = "bottom")
 ```
 
+{{< pagebreak >}}
 
 # Trafikkutviklinga i landsdelane
 Landsdelane er inndelt etter fylka, jamfør Statistisk sentralbyrå:
@@ -538,6 +542,7 @@ Tabell @tbl-so_far_this_year_table_road_category_country_part nedanfor viser tra
 ```{r}
 #| label: tbl-so_far_this_year_table_road_category_country_part
 #| tbl-cap: !expr table_caption_country_part
+#| ft.arraystretch: 0.9
 
 index_this_year_prepared %>%
   dplyr::filter(
@@ -645,6 +650,7 @@ index_this_year_prepared %>%
   theme(legend.position = "bottom")
 ```
 
+{{< pagebreak >}}
 
 # Trafikkutviklinga i fylka
 
@@ -714,6 +720,7 @@ Tabell @tbl-county_monthly_table viser trafikkutviklinga kvar månad i fylka.
 ```{r}
 #| label: tbl-county_monthly_table
 #| tbl-cap: !expr table_caption_county_monthly
+#| ft.arraystretch: 0.9
 
 number_of_columns_2 <- ncol(index_this_year_prepared_wide)
 
@@ -860,6 +867,7 @@ historic_all_combinations %>%
 ```{r}
 #| label: historic_all_table_2
 #| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 2005 til 2022."
+#| ft.arraystretch: 0.9
 
 historic_all_combinations %>% 
   dplyr::slice(-(1:10)) %>% 
@@ -886,6 +894,7 @@ historic_all_combinations %>%
 ```{r}
 #| label: historic_all_table_3
 #| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 2015 til 2022."
+#| ft.arraystretch: 0.9
 
 historic_all_combinations %>% 
   dplyr::slice(-(1:20)) %>% 
@@ -909,10 +918,12 @@ historic_all_combinations %>%
   )
 ```
 
+{{< pagebreak >}}
 
 ```{r}
 #| label: historic_f_table
 #| tbl-cap: "Kumulativ trafikkutvikling på fylkesvegar i Noreg frå 2015 til 2022."
+#| ft.arraystretch: 0.9
 
 historic_f_all_combinations %>% 
   flextable::flextable() %>%
@@ -938,6 +949,7 @@ historic_f_all_combinations %>%
 ```{r}
 #| label: historic_er_table
 #| tbl-cap: "Kumulativ trafikkutvikling på Europa- og riksvegar i Noreg frå 2015 til 2022."
+#| ft.arraystretch: 0.9
 
 historic_er_all_combinations %>% 
   flextable::flextable() %>%
@@ -959,10 +971,12 @@ historic_er_all_combinations %>%
   )
 ```
 
+{{< pagebreak >}}
 
 ```{r}
 #| label: historic_l_table_1
 #| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 1998 til 2022."
+#| ft.arraystretch: 0.9
 
 historic_l_combinations %>% 
   dplyr::select(1:11) %>% 
@@ -971,7 +985,6 @@ historic_l_combinations %>%
   set_header_labels(year = "År") %>%
   align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  #fontsize(size = 9, part = "all") %>%
   font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
@@ -989,6 +1002,7 @@ historic_l_combinations %>%
 ```{r}
 #| label: historic_l_table_2
 #| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2008 til 2022."
+#| ft.arraystretch: 0.9
 
 historic_l_combinations %>% 
   dplyr::slice(-(1:10)) %>% 
@@ -1016,6 +1030,7 @@ historic_l_combinations %>%
 ```{r}
 #| label: historic_l_table_3
 #| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2018 til 2022."
+#| ft.arraystretch: 0.9
 
 historic_l_combinations %>% 
   dplyr::slice(-(1:20)) %>% 
@@ -1043,6 +1058,7 @@ historic_l_combinations %>%
 ```{r}
 #| label: historic_h_table_1
 #| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 1998 til 2022."
+#| ft.arraystretch: 0.9
 
 historic_h_combinations %>% 
   dplyr::select(1:11) %>% 
@@ -1065,10 +1081,12 @@ historic_h_combinations %>%
   )
 ```
 
+{{< pagebreak >}}
 
 ```{r}
 #| label: historic_h_table_2
 #| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2008 til 2022."
+#| ft.arraystretch: 0.9
 
 historic_h_combinations %>% 
   dplyr::slice(-(1:10)) %>% 
@@ -1096,6 +1114,7 @@ historic_h_combinations %>%
 ```{r}
 #| label: historic_h_table_3
 #| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2018 til 2022."
+#| ft.arraystretch: 0.9
 
 historic_h_combinations %>% 
   dplyr::slice(-(1:20)) %>% 

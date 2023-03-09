@@ -10,7 +10,7 @@
 
 # City index meta data ----
 ## Declare latest month ----
-index_month <- 12
+index_month <- 2
 city_number <- 960
 city_name <- "Trondheim"
 
@@ -21,14 +21,17 @@ pointindex_20_all <-
 pointindex_21_all <-
   get_published_pointindex_for_months_trondheim(city_number, 2021, 12)
 pointindex_22_all <-
-  get_published_pointindex_for_months_trondheim(city_number, 2022, index_month)
+  get_published_pointindex_for_months_trondheim(city_number, 2022, 12)
+pointindex_23_all <-
+  get_published_pointindex_for_months_trondheim(city_number, 2023, index_month)
 
 
 pointindices_longformat_year_to_date <-
   dplyr::bind_rows(
     pointindex_20_all[[2]],
     pointindex_21_all[[2]],
-    pointindex_22_all[[2]]
+    pointindex_22_all[[2]],
+    pointindex_23_all[[2]]
   ) %>%
   dplyr::filter(
     day_type == "ALL",
@@ -59,7 +62,7 @@ pointindices_longformat_year_to_date <-
 # Note: "points" is made in city_index_dataprep.R
 # Choosing most recent version of city trps
 city_trps <-
-  pointindex_22_all[[1]]
+  pointindex_23_all[[1]]
 
 # Removing Tungasletta Ystgaard (is removed from VTI, but is still in API response TODO: figure out why!)
 city_trps <-
@@ -219,10 +222,10 @@ readr::write_rds(
   file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".rds")
 )
 
-# this_citys_trp_index_refyear <-
-#   readr::read_rds(
-#     file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".rds")
-#   )
+this_citys_trp_index_refyear <-
+  readr::read_rds(
+    file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".rds")
+  )
 
 
 # City index ----
@@ -246,7 +249,8 @@ city_index <-
       dplyr::case_when(
         year == 2020 ~ "2019-2020",
         year == 2021 ~ "2020-2021",
-        year == 2022 ~ "2021-2022"
+        year == 2022 ~ "2021-2022",
+        year == 2023 ~ "2022-2023"
       )
   )
 
@@ -324,20 +328,20 @@ readr::write_rds(
 
 # City index monthly ----
 tollpointindex_monthly <-
-  read.csv2(
-    "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_bymaanedsindekser.csv"
-  ) %>%
-  dplyr::rename(
-    index = index_p
-  ) %>%
-  dplyr::mutate(trp_id = as.character(trp_id)) %>%
+  readr::read_rds(
+    file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
+  ) |>
+  #read.csv2(
+  #  "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_bymaanedsindekser.csv"
+  #) %>%
+  #dplyr::mutate(trp_id = as.character(trp_id)) %>%
   dplyr::select(
     trp_id,
     length_range = class,
-    base_volume,
-    calc_volume,
-    index,
-    month_as_date
+    base_volume = monthly_volume_base,
+    calc_volume = monthly_volume_calc,
+    index = index_p,
+    month_as_date = month_calc
   ) %>%
   dplyr::mutate(
     month_object = lubridate::ymd(month_as_date)
@@ -355,7 +359,8 @@ pointindex_monthly <-
   dplyr::bind_rows(
     pointindex_20_all[[2]],
     pointindex_21_all[[2]],
-    pointindex_22_all[[2]]
+    pointindex_22_all[[2]],
+    pointindex_23_all[[2]]
   ) %>%
   dplyr::filter(
     day_type == "ALL",
@@ -381,13 +386,13 @@ trp_index_monthly <-
   tollpointindex_monthly %>%
   dplyr::filter(length_range != "unknown") %>%
   dplyr::mutate(
-    index = round(index, digits = 1),
-    length_range =
-      dplyr::case_when(
-        length_range == "all" ~ "alle",
-        length_range == "light" ~ "lette",
-        length_range == "heavy" ~ "tunge"
-      )
+    index = round(index, digits = 2),
+    # length_range =
+    #   dplyr::case_when(
+    #     length_range == "all" ~ "alle",
+    #     length_range == "light" ~ "lette",
+    #     length_range == "heavy" ~ "tunge"
+    #   )
   ) %>%
   dplyr::bind_rows(pointindex_monthly) |>
   dplyr::filter(
@@ -449,68 +454,69 @@ trp_index_monthly_wide <-
   )
 
 
-
-# city_index_monthly <-
-#   pointindex_trp_toll_monthly %>%
-#   dplyr::mutate(year = lubridate::year(month_object)) %>%
-#   dplyr::filter(year >= 2020) %>%
-#   dplyr::mutate(index = round(index, digits = 1)) %>%
-#   dplyr::group_by(
-#     month_object,
-#     length_range
-#   ) %>%
-#   dplyr::summarise(
-#     base_volume_all = sum(base_volume),
-#     calc_volume_all = sum(calc_volume),
-#     index_p = (calc_volume_all / base_volume_all - 1 ) * 100,
-#     n_points = n()
-#   ) %>%
-#   dplyr::mutate(
-#     area_name = "Trondheim",
-#     year = lubridate::year(month_object),
-#     month = lubridate::month(month_object),
-#     period = "month",
-#     month_name =
-#       lubridate::month(month_object, label = TRUE, abbr = FALSE) %>%
-#       stringr::str_to_title()
-#   )
+city_index_monthly <-
+  trp_index_monthly |>
+  #pointindex_trp_toll_monthly %>%
+  dplyr::mutate(year = lubridate::year(month_object)) %>%
+  dplyr::filter(year >= 2020) %>%
+  dplyr::mutate(index = round(index, digits = 1)) %>%
+  dplyr::group_by(
+    month_object,
+    length_range
+  ) %>%
+  dplyr::summarise(
+    base_volume_all = sum(base_volume),
+    calc_volume_all = sum(calc_volume),
+    index_p = (calc_volume_all / base_volume_all - 1 ) * 100,
+    n_points = n()
+  ) %>%
+  dplyr::mutate(
+    area_name = "Trondheim",
+    year = lubridate::year(month_object),
+    month = lubridate::month(month_object),
+    period = "month",
+    month_name =
+      lubridate::month(month_object, label = TRUE, abbr = FALSE) %>%
+      stringr::str_to_title()
+  )
 
 # sd and se
 # To get sd, must start with pointindices and join monthly city index
 
-# pointindex_trp_toll_monthly_sd <-
-#   pointindex_trp_toll_monthly %>%
-#   dplyr::filter(!is.na(index)) %>%
-#   dplyr::left_join(city_index_monthly) %>%
-#   dplyr::filter(!is.na(base_volume_all)) %>%
-#   dplyr::mutate(
-#     diff = (base_volume / base_volume_all) * (index - index_p)^2,
-#     weight = (base_volume / base_volume_all)^2
-#   ) %>%
-#   dplyr::group_by(
-#     month_object,
-#     length_range
-#   ) %>%
-#   dplyr::summarise(
-#     standard_deviation = sqrt((1 / (1 - sum(weight) )) * sum(diff) )
-#   )
-#
-# city_index_monthly_sd <-
-#   city_index_monthly %>%
-#   dplyr::left_join(pointindex_trp_toll_monthly_sd) %>%
-#   dplyr::mutate(
-#     standard_error = round(standard_deviation / sqrt(n_points), digits = 1)
-#   ) %>%
-#   dplyr::select(
-#     -base_volume_all,
-#     -calc_volume_all
-#   )
-#
-# write.csv2(
-#   city_index_monthly_sd,
-#   file = paste0("data_indexpoints_tidy/byindeks_maanedlig_", city_number, ".csv"),
-#   row.names = F
-# )
+pointindex_trp_toll_monthly_sd <-
+  trp_index_monthly |>
+  #pointindex_trp_toll_monthly %>%
+  dplyr::filter(!is.na(index)) %>%
+  dplyr::left_join(city_index_monthly) %>%
+  dplyr::filter(!is.na(base_volume_all)) %>%
+  dplyr::mutate(
+    diff = (base_volume / base_volume_all) * (index - index_p)^2,
+    weight = (base_volume / base_volume_all)^2
+  ) %>%
+  dplyr::group_by(
+    month_object,
+    length_range
+  ) %>%
+  dplyr::summarise(
+    standard_deviation = sqrt((1 / (1 - sum(weight) )) * sum(diff) )
+  )
+
+city_index_monthly_sd <-
+  city_index_monthly %>%
+  dplyr::left_join(pointindex_trp_toll_monthly_sd) %>%
+  dplyr::mutate(
+    standard_error = round(standard_deviation / sqrt(n_points), digits = 1)
+  ) %>%
+  dplyr::select(
+    -base_volume_all,
+    -calc_volume_all
+  )
+
+write.csv2(
+  city_index_monthly_sd,
+  file = paste0("data_indexpoints_tidy/byindeks_maanedlig_", city_number, ".csv"),
+  row.names = F
+)
 
 # Check:
 # pi_wide <-

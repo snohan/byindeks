@@ -299,8 +299,8 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "december"
-year_number <- 2022
+month_string <- "february"
+year_number <- 2023
 
 apar_data_for_month <-
   purrr::map_dfr(
@@ -440,7 +440,7 @@ tolling_data_daily <-
 tolling_data_daily_lane %>%
   dplyr::filter(
     trp_id == "86",
-    year %in% c(2022)
+    year %in% c(2023)
   ) %>%
   ggplot(aes(day, traffic, color = lane, linetype = class)) +
   geom_line(linewidth = 1) +
@@ -464,6 +464,7 @@ tolling_data_daily_lane %>%
 tolling_data_daily_tidy <-
   tolling_data_daily |>
   dplyr::filter(!(trp_id == "52" & date %in% c("2022-05-12", "2022-05-13", "2022-05-20"))) |>
+  dplyr::filter(!(trp_id == "52" & date %in% c("2023-01-18", "2023-01-19"))) |>
   dplyr::filter(!(trp_id == "54" & month == "2021-03-01")) |>
   dplyr::filter(!(trp_id == "54" & month == "2021-04-01")) |>
   dplyr::filter(!(trp_id == "54" & month == "2021-05-01")) |>
@@ -676,6 +677,10 @@ tolling_station_index_2022 <-
   tolling_data_daily_all_years %>%
   calculate_monthly_index_for_tolling_stations_from_daily_traffic(2021)
 
+tolling_station_index_2023 <-
+  tolling_data_daily_all_years %>%
+  calculate_monthly_index_for_tolling_stations_from_daily_traffic(2022)
+
 tolling_station_indices <-
   dplyr::bind_rows(
     #bomindeks_2017,
@@ -683,7 +688,8 @@ tolling_station_indices <-
     #bomindeks_2019,
     tolling_station_index_2020,
     tolling_station_index_2021,
-    tolling_station_index_2022
+    tolling_station_index_2022,
+    tolling_station_index_2023
   )
 
 readr::write_rds(
