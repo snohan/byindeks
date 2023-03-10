@@ -1162,7 +1162,8 @@ excel_data <-
     punktindeks_maned = trp_index_monthly_wide,
     punktindeks_ar = this_citys_trp_index_refyear,
     punkt_mdt = mdt_and_pi,
-    punkt_mdt_indeks = all_36_month_trp_indices
+    punkt_mdt_indeks = all_36_month_trp_indices,
+    byindeks_hittil = city_index_so_far_all
   ) |>
   writexl::write_xlsx(
     path = paste0(

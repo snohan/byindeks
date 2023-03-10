@@ -254,11 +254,9 @@ calculate_two_year_index <- function(city_index_df) {
       year = year_end,
       month = last_month,
       #year_from_to = paste0(year_start, "-", year_end),
-      # Using Goodman's unbiased estimate (cannot use exact formula as we are
-      # sampling)
-      # But it can be negative if indexes are close to zero, large variance and
-      # small n's.
-      # Resolved by using exact formula
+      # Using Goodman's unbiased estimate (cannot use exact formula as we are sampling)
+      # But it can be negative if indexes are close to zero, large variance and small n's.
+      # Resolved by using exact formula.
       # Must be something about the assumptions that are wrong?
       variance =
         two_years$index_p[1]^2 * two_years$variance[2] / two_years$n_trp[2] +

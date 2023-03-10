@@ -570,6 +570,7 @@ toll_mdt_class <-
 
 
 # TRP index ----
+## Monthly ----
 # calculate_monthly_index_for_tolling_stations <-
 #   function(monthly_class_data, baseyear) {
 #
@@ -650,21 +651,6 @@ calculate_monthly_index_for_tolling_stations_from_daily_traffic <-
       )
   }
 
-# bomindeks_2017 <- all_data_monthly_by_all_classes %>%
-#   dplyr:: select(-stasjon, -aar_maaned) %>%
-#   #dplyr::filter(klasse == "Liten_bil") %>%
-#   calculate_monthly_index_for_tolling_stations(2016)
-#
-# bomindeks_2018 <- all_data_monthly_by_all_classes %>%
-#   dplyr:: select(-stasjon, -aar_maaned) %>%
-#   #dplyr::filter(klasse == "Liten_bil") %>%
-#   calculate_monthly_index_for_tolling_stations(2017)
-#
-# bomindeks_2019 <- all_data_monthly_by_all_classes %>%
-#   dplyr:: select(-stasjon, -aar_maaned) %>%
-#   #dplyr::filter(klasse == "Liten_bil") %>%
-#   calculate_monthly_index_for_tolling_stations(2018)
-
 tolling_station_index_2020 <-
   tolling_data_daily_all_years %>%
   calculate_monthly_index_for_tolling_stations_from_daily_traffic(2019)
@@ -683,9 +669,6 @@ tolling_station_index_2023 <-
 
 tolling_station_indices <-
   dplyr::bind_rows(
-    #bomindeks_2017,
-    #bomindeks_2018,
-    #bomindeks_2019,
     tolling_station_index_2020,
     tolling_station_index_2021,
     tolling_station_index_2022,
@@ -702,6 +685,7 @@ tolling_station_indices <-
     file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
   )
 # TODO: Dekningsgrad for antall måneder
+
 
 ## Yearly ----
 # Not all toll stations have value in latest month
