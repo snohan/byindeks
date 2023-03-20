@@ -36,6 +36,7 @@
   source("indexpoints_tidying_functions.R")
   library(viridis)
   library(writexl)
+  library(readxl)
   options(warn=-1)
   svv_background_color <- "#F5F5F5"
 }
@@ -145,7 +146,8 @@ reference_year <-
   city_index_2019 <- get_published_index_for_months(city_number, 2019, 12)
   city_index_2020 <- get_published_index_for_months(city_number, 2020, 12)
   city_index_2021 <- get_published_index_for_months(city_number, 2021, 12)
-  city_index_2022 <- get_published_index_for_months(city_number, 2022, index_month)
+  city_index_2022 <- get_published_index_for_months(city_number, 2022, 12)
+  city_index_2023 <- get_published_index_for_months(city_number, 2023, index_month)
 }
 
 
@@ -234,19 +236,17 @@ pointindex_19 <-
 # Bergen end
 
 {
-  pointindex_20_all <-
-    get_published_pointindex_for_months(city_number, 2020, 12)
-  pointindex_21_all <-
-    get_published_pointindex_for_months(city_number, 2021, 12)
-  pointindex_22_all <-
-    get_published_pointindex_for_months(city_number, 2022, index_month)
+  pointindex_20_all <- get_published_pointindex_for_months(city_number, 2020, 12)
+  pointindex_21_all <- get_published_pointindex_for_months(city_number, 2021, 12)
+  pointindex_22_all <- get_published_pointindex_for_months(city_number, 2022, 12)
+  pointindex_23_all <- get_published_pointindex_for_months(city_number, 2023, index_month)
 }
 
 city_trps <-
-  pointindex_22_all[[1]] |>
+  pointindex_23_all[[1]] |>
   base::sort()
 
-city_name <- city_index_2022$area_name[1]
+city_name <- city_index_2023$area_name[1]
 
 pointindex_20 <-
   pointindex_20_all[[2]] %>%
@@ -265,7 +265,7 @@ pointindex_21 <-
                 is_manually_excluded == FALSE,
                 length_excluded == FALSE,
                 period == "year_to_date",
-                month == index_month) %>%
+                month == 12) %>%
   dplyr::select(trp_id, index_21 = index_short)
 
 pointindex_22 <-
@@ -275,8 +275,18 @@ pointindex_22 <-
                 is_manually_excluded == FALSE,
                 length_excluded == FALSE,
                 period == "year_to_date",
-                month == index_month) %>%
+                month == 12) %>%
   dplyr::select(trp_id, index_22 = index_short)
+
+pointindex_23 <-
+  pointindex_23_all[[2]] %>%
+  dplyr::filter(day_type == "ALL",
+                is_excluded == FALSE,
+                is_manually_excluded == FALSE,
+                length_excluded == FALSE,
+                period == "year_to_date",
+                month == index_month) %>%
+  dplyr::select(trp_id, index_23 = index_short)
 
 
 n_17 <-
@@ -309,6 +319,11 @@ n_22 <-
   dplyr::filter(!is.na(index_22)) %>%
   nrow()
 
+n_23 <-
+  pointindex_23  %>%
+  dplyr::filter(!is.na(index_23)) %>%
+  nrow()
+
 # Number of points per month for SE in monthly city index
 trp_index_monthly <-
   dplyr::bind_rows(
@@ -317,7 +332,8 @@ trp_index_monthly <-
     #pointindex_19_all[[2]],
     pointindex_20_all[[2]],
     pointindex_21_all[[2]],
-    pointindex_22_all[[2]]
+    pointindex_22_all[[2]],
+    pointindex_23_all[[2]]
   ) %>%
   dplyr::filter(
     day_type == "ALL",
@@ -339,13 +355,13 @@ trp_index_monthly <-
     pointindex_19_monthly
   )
 
-n_points_per_month <-
-  trp_index_monthly %>%
-  dplyr::group_by(
-    year,
-    month
-  ) %>%
-  dplyr::summarise(n_trp = n())
+# n_points_per_month <-
+#   trp_index_monthly %>%
+#   dplyr::group_by(
+#     year,
+#     month
+#   ) %>%
+#   dplyr::summarise(n_trp = n())
 
 trp_index_monthly_wide <-
   trp_index_monthly |>
@@ -388,7 +404,7 @@ trp_index_monthly_wide <-
 
 
 ## AADT ----
-#adt <- get_aadt_by_length_for_trp_list(city_trps)
+# Fetch AADT in city_index_check.Rmd
 
 # adt_filtered <-
 #   adt %>%
@@ -457,9 +473,11 @@ this_citys_trp_index <-
   dplyr::left_join(pointindex_19) %>%
   dplyr::left_join(pointindex_20) %>%
   dplyr::left_join(pointindex_21) %>%
-  dplyr::left_join(pointindex_22)
+  dplyr::left_join(pointindex_22) |>
+  dplyr::left_join(pointindex_23)
 
-# Chained pointindex from reference year
+## Chained pointindex from reference year ----
+# TODO: drop this
 trp_index_from_refyear <-
   this_citys_trp_index %>%
   dplyr::select(
@@ -502,73 +520,80 @@ trp_names <-
   )
 
 # City index ----
-city_year_to_date_17 <-
-  city_index_2017 %>%
-  dplyr::filter(
-    month == 12,
-    road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
-    length_range == "[..,5.6)",
-    period == "year_to_date"
-  )
-
-city_year_to_date_18 <-
-  city_index_2018 %>%
-  dplyr::filter(
-    month == 12,
-    road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
-    length_range == "[..,5.6)",
-    #length_range == "[5.6,..)",
-    period == "year_to_date"
-  )
-
-city_year_to_date_19 <-
-  city_index_2019 %>%
-  dplyr::filter(
-    month == 12,
-    road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
-    length_range == "[..,5.6)",
-    #length_range == "[5.6,..)",
-    period == "year_to_date"
-  )
-
-city_year_to_date_20 <-
-  city_index_2020 %>%
-  dplyr::filter(
-    month == 12,
-    road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
-    length_range == "[..,5.6)",
-    #length_range == "[5.6,..)",
-    period == "year_to_date"
-  )
-
-city_year_to_date_21 <-
-  city_index_2021 %>%
-  dplyr::filter(
-    month == 12,
-    road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
-    length_range == "[..,5.6)",
-    #length_range == "[5.6,..)",
-    period == "year_to_date"
-  )
-
-city_year_to_date_22 <-
-  city_index_2022 %>%
-  dplyr::filter(
-    month == index_month,
-    road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
-    length_range == "[..,5.6)",
-  #  length_range == "[5.6,..)",
-    period == "year_to_date"
-  )
+# city_year_to_date_17 <-
+#   city_index_2017 %>%
+#   dplyr::filter(
+#     month == 12,
+#     road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+#     length_range == "[..,5.6)",
+#     period == "year_to_date"
+#   )
+#
+# city_year_to_date_18 <-
+#   city_index_2018 %>%
+#   dplyr::filter(
+#     month == 12,
+#     road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+#     length_range == "[..,5.6)",
+#     #length_range == "[5.6,..)",
+#     period == "year_to_date"
+#   )
+#
+# city_year_to_date_19 <-
+#   city_index_2019 %>%
+#   dplyr::filter(
+#     month == 12,
+#     road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+#     length_range == "[..,5.6)",
+#     #length_range == "[5.6,..)",
+#     period == "year_to_date"
+#   )
+#
+# city_year_to_date_20 <-
+#   city_index_2020 %>%
+#   dplyr::filter(
+#     month == 12,
+#     road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+#     length_range == "[..,5.6)",
+#     #length_range == "[5.6,..)",
+#     period == "year_to_date"
+#   )
+#
+# city_year_to_date_21 <-
+#   city_index_2021 %>%
+#   dplyr::filter(
+#     month == 12,
+#     road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+#     length_range == "[..,5.6)",
+#     #length_range == "[5.6,..)",
+#     period == "year_to_date"
+#   )
+#
+# city_year_to_date_22 <-
+#   city_index_2022 %>%
+#   dplyr::filter(
+#     month == index_month,
+#     road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+#     length_range == "[..,5.6)",
+#   #  length_range == "[5.6,..)",
+#     period == "year_to_date"
+#   )
 
 city_index <-
   dplyr::bind_rows(
-    city_year_to_date_17,
-    city_year_to_date_18,
-    city_year_to_date_19,
-    city_year_to_date_20,
-    city_year_to_date_21,
-    city_year_to_date_22
+    filter_city_index(city_index_2017, 12, "year_to_date"),
+    filter_city_index(city_index_2018, 12, "year_to_date"),
+    filter_city_index(city_index_2019, 12, "year_to_date"),
+    filter_city_index(city_index_2020, 12, "year_to_date"),
+    filter_city_index(city_index_2021, 12, "year_to_date"),
+    filter_city_index(city_index_2022, 12, "year_to_date"),
+    filter_city_index(city_index_2023, index_month, "year_to_date")
+    # city_year_to_date_17,
+    # city_year_to_date_18,
+    # city_year_to_date_19,
+    # city_year_to_date_20,
+    # city_year_to_date_21,
+    # city_year_to_date_22
   ) %>%
   dplyr::mutate(
     year_base = year - 1,
@@ -580,8 +605,10 @@ city_index <-
       n_19,
       n_20,
       n_21,
-      n_22
+      n_22,
+      n_23
     ),
+    # TODO: calculate correct SE in system and expose it in API
    standard_error =
      base::round(standard_deviation / sqrt(n_trp), digits = 1)
   ) %>%
@@ -628,11 +655,13 @@ years_1_6 <-
 # Skipping intermediate years, adding just from first to last?
 city_index_all <-
   city_index %>%
-  dplyr::bind_rows(years_1_2) %>%
-  dplyr::bind_rows(years_1_3) %>%
-  dplyr::bind_rows(years_1_4) %>%
-  dplyr::bind_rows(years_1_5) %>%
-  dplyr::bind_rows(years_1_6) %>%
+  dplyr::bind_rows(
+    years_1_2,
+    years_1_3,
+    years_1_4,
+    years_1_5,
+    years_1_6
+  ) %>%
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
     area_name = city_name
@@ -871,6 +900,7 @@ mdt_filtered <-
 
 ## Check MDT validity
 # Exclude trp-months
+# TODO: recreate filtering from Excel file
 source("exclude_trp_mdts.R")
 
 trp_mdt_ok_refyear <-

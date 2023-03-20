@@ -228,7 +228,7 @@ mdt_validated <-
   ) |>
   dplyr::filter(
     # Kråkerøy bru
-    !(trp_id == "08132V1984223" &
+    !(trp_id == "82913V971429" &
         year_month %in% base::seq.Date(
           lubridate::make_date(2021, 8, 01),
           lubridate::make_date(2021, 10, 01),

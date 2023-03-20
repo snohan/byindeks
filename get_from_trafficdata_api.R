@@ -2049,7 +2049,8 @@ getHourlytraffic <- function(trpID, from, to) {
     myqueries <- Query$new()
     myqueries$query("hourlyTraffic", build_query())
 
-    trafficData <- cli$exec(myqueries$queries$hourlyTraffic) %>%
+    trafficData <-
+      cli$exec(myqueries$queries$hourlyTraffic) %>%
       fromJSON(simplifyDataFrame = T, flatten = T)
 
     if(length(trafficData$data$trafficData$volume$byHour$edges) == 0)
@@ -2060,6 +2061,7 @@ getHourlytraffic <- function(trpID, from, to) {
     cursor <-
       trafficData$data.trafficData.volume.byHour.pageInfo.endCursor[1] %>%
       as.character()
+
     hasNextPage <-
       trafficData$data.trafficData.volume.byHour.pageInfo.hasNextPage[1]
 
@@ -2762,61 +2764,76 @@ get_published_pointindex_trondheim <- function(index_id, indexyear, indexmonth) 
   # 1. monthIndicesByDayType
   # 2. yearToDateIndicesByDayType
 
-  unnested_data <- trp_data$data %>%
+  unnested_data <-
+    trp_data$data %>%
     as.data.frame() %>%
     tidyr::unnest(cols = c(
       publishedAreaTrafficVolumeIndex.containsPointTrafficVolumeIndices.edges))
 
   indexpoints <- unnested_data$node.pointTrafficVolumeIndex.trafficRegistrationPoint.id
 
-  monthly_data <- unnested_data %>%
+  monthly_data <-
+    unnested_data %>%
     tidyr::unnest(cols = c(node.pointTrafficVolumeIndex.volumeIndicesMonth)) %>%
     dplyr::select(-node.pointTrafficVolumeIndex.volumeIndicesYearToDate) %>%
     tidyr::unnest(cols = c(lengthRangesTrafficVolumeIndex.indexNumbers))
 
   # Need to have class in long form
-  monthly_data_all <- monthly_data %>%
-    dplyr::select(area_name = publishedAreaTrafficVolumeIndex.name,
-                  trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
-                  year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
-                  month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
-                  day_type = dayType,
-                  is_excluded = isExcluded,
-                  is_manually_excluded = node.isManuallyExcluded,
-                  #length_range = totalTrafficVolumeIndex.indexNumber.lengthRange.representation,
-                  index = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
-                  calc_volume = totalTrafficVolumeIndex.indexNumber.index.calculationVolume,
-                  base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
-                  coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
-                  length_excluded = lengthRangesTrafficVolumeIndex.isExcluded
+  monthly_data_all <-
+    monthly_data %>%
+    dplyr::select(
+      area_name = publishedAreaTrafficVolumeIndex.name,
+      trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
+      year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
+      month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
+      day_type = dayType,
+      is_excluded = isExcluded,
+      is_manually_excluded = node.isManuallyExcluded,
+      #length_range = totalTrafficVolumeIndex.indexNumber.lengthRange.representation,
+      index = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
+      calc_volume = totalTrafficVolumeIndex.indexNumber.index.calculationVolume,
+      base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
+      coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
+      length_excluded = lengthRangesTrafficVolumeIndex.isExcluded
     ) %>%
     dplyr::mutate(length_range = "alle") %>%
     dplyr::relocate(length_range, .before = index) %>%
     dplyr::filter(day_type == "ALL") %>%
     dplyr::distinct(trp_id, .keep_all = T)
 
-  monthly_data_short_long <- monthly_data %>%
-    dplyr::select(area_name = publishedAreaTrafficVolumeIndex.name,
-                  trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
-                  year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
-                  month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
-                  day_type = dayType,
-                  is_excluded = isExcluded,
-                  is_manually_excluded = node.isManuallyExcluded,
-                  length_range = lengthRange.representation,
-                  index = index.percentageChange,
-                  calc_volume = index.calculationVolume,
-                  base_volume = index.baseVolume,
-                  coverage = lengthRangesTrafficVolumeIndex.indexCoverage.hours.percentage,
-                  length_excluded = lengthRangesTrafficVolumeIndex.isExcluded
+  monthly_data_short_long <-
+    monthly_data %>%
+    dplyr::select(
+      area_name = publishedAreaTrafficVolumeIndex.name,
+      trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
+      year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
+      month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
+      day_type = dayType,
+      is_excluded = isExcluded,
+      is_manually_excluded = node.isManuallyExcluded,
+      length_range = lengthRange.representation,
+      index = index.percentageChange,
+      calc_volume = index.calculationVolume,
+      base_volume = index.baseVolume,
+      coverage = lengthRangesTrafficVolumeIndex.indexCoverage.hours.percentage,
+      length_excluded = lengthRangesTrafficVolumeIndex.isExcluded
     ) %>%
     dplyr::filter(day_type == "ALL") %>%
     dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
-    dplyr::mutate(length_range = if_else(length_range == "[..,5.6)",
-                                         "lette", "tunge"))
+    dplyr::mutate(
+      length_range =
+        dplyr::if_else(
+          length_range == "[..,5.6)",
+          "lette",
+          "tunge"
+        )
+    )
 
-  monthly_data_long <- dplyr::bind_rows(monthly_data_all,
-                                        monthly_data_short_long) %>%
+  monthly_data_long <-
+    dplyr::bind_rows(
+      monthly_data_all,
+      monthly_data_short_long
+    ) %>%
     dplyr::mutate(period = "month")
 
   year_to_date_data <- unnested_data %>%
@@ -2825,53 +2842,63 @@ get_published_pointindex_trondheim <- function(index_id, indexyear, indexmonth) 
     tidyr::unnest(cols = c(lengthRangesTrafficVolumeIndex.indexNumbers))
 
   # Need to have class in long form
-  year_to_date_data_all <- year_to_date_data %>%
-    dplyr::select(area_name = publishedAreaTrafficVolumeIndex.name,
-                  trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
-                  year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
-                  month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
-                  day_type = dayType,
-                  is_excluded = isExcluded,
-                  is_manually_excluded = node.isManuallyExcluded,
-                  #length_range = totalTrafficVolumeIndex.indexNumber.lengthRange.representation,
-                  index = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
-                  calc_volume = totalTrafficVolumeIndex.indexNumber.index.calculationVolume,
-                  base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
-                  coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
-                  length_excluded = lengthRangesTrafficVolumeIndex.isExcluded
+  year_to_date_data_all <-
+    year_to_date_data %>%
+    dplyr::select(
+      area_name = publishedAreaTrafficVolumeIndex.name,
+      trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
+      year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
+      month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
+      day_type = dayType,
+      is_excluded = isExcluded,
+      is_manually_excluded = node.isManuallyExcluded,
+      #length_range = totalTrafficVolumeIndex.indexNumber.lengthRange.representation,
+      index = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
+      calc_volume = totalTrafficVolumeIndex.indexNumber.index.calculationVolume,
+      base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
+      coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
+      length_excluded = lengthRangesTrafficVolumeIndex.isExcluded
     ) %>%
     dplyr::mutate(length_range = "alle") %>%
     dplyr::relocate(length_range, .before = index) %>%
     dplyr::filter(day_type == "ALL") %>%
     dplyr::distinct(trp_id, .keep_all = T)
 
-  year_to_date_data_short_long <- year_to_date_data %>%
-    dplyr::select(area_name = publishedAreaTrafficVolumeIndex.name,
-                  trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
-                  year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
-                  month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
-                  day_type = dayType,
-                  is_excluded = isExcluded,
-                  is_manually_excluded = node.isManuallyExcluded,
-                  length_range = lengthRange.representation,
-                  index = index.percentageChange,
-                  calc_volume = index.calculationVolume,
-                  base_volume = index.baseVolume,
-                  coverage = lengthRangesTrafficVolumeIndex.indexCoverage.hours.percentage,
-                  length_excluded = lengthRangesTrafficVolumeIndex.isExcluded
+  year_to_date_data_short_long <-
+    year_to_date_data %>%
+    dplyr::select(
+      area_name = publishedAreaTrafficVolumeIndex.name,
+      trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
+      year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
+      month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
+      day_type = dayType,
+      is_excluded = isExcluded,
+      is_manually_excluded = node.isManuallyExcluded,
+      length_range = lengthRange.representation,
+      index = index.percentageChange,
+      calc_volume = index.calculationVolume,
+      base_volume = index.baseVolume,
+      coverage = lengthRangesTrafficVolumeIndex.indexCoverage.hours.percentage,
+      length_excluded = lengthRangesTrafficVolumeIndex.isExcluded
     ) %>%
     dplyr::filter(day_type == "ALL") %>%
     dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
     dplyr::mutate(length_range = if_else(length_range == "[..,5.6)",
                                          "lette", "tunge"))
 
-  year_to_date_data_long <- dplyr::bind_rows(year_to_date_data_all,
-                                             year_to_date_data_short_long) %>%
+  year_to_date_data_long <-
+    dplyr::bind_rows(
+      year_to_date_data_all,
+      year_to_date_data_short_long
+    ) %>%
     dplyr::mutate(period = "year_to_date")
 
 
-  published_index <- bind_rows(monthly_data_long,
-                               year_to_date_data_long)
+  published_index <-
+    dplyr::bind_rows(
+      monthly_data_long,
+      year_to_date_data_long
+    )
 
   published_points <- list(indexpoints, published_index)
 

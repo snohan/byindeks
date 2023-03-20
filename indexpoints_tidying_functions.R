@@ -237,7 +237,8 @@ calculate_two_year_index <- function(city_index_df) {
     dplyr::select(
       index_p,
       index_i,
-      variance,
+      #variance,
+      standard_error,
       n_trp
     ) %>%
     dplyr::slice(1:2)
@@ -253,35 +254,24 @@ calculate_two_year_index <- function(city_index_df) {
       year_base = year_start,
       year = year_end,
       month = last_month,
-      #year_from_to = paste0(year_start, "-", year_end),
-      # Using Goodman's unbiased estimate (cannot use exact formula as we are sampling)
-      # But it can be negative if indexes are close to zero, large variance and small n's.
-      # Resolved by using exact formula.
-      # Must be something about the assumptions that are wrong?
-      variance =
-        two_years$index_p[1]^2 * two_years$variance[2] / two_years$n_trp[2] +
-        two_years$index_p[2]^2 * two_years$variance[1] / two_years$n_trp[1] +
-        two_years$variance[1] * two_years$variance[2] /
-        (two_years$n_trp[1] * two_years$n_trp[2]),
+      standard_error =
+        100 * sqrt(
+          two_years$index_i[1]^2 * 1e-4 * two_years$standard_error[2]^2 +
+            two_years$index_i[2]^2 * 1e-4 * two_years$standard_error[1]^2 +
+            1e-4 * two_years$standard_error[1]^2 * 1e-4 * two_years$standard_error[2]^2
+        ),
       # TODO: find the correct number of TRPs that have contributed
       # over the two years - their index must exist in both years?
       # Not exactly, because all TRPs contribute.
       n_trp = max(two_years$n_trp)
     ) %>%
-    as_tibble() %>%
-    dplyr::mutate(
-      standard_deviation = sqrt(variance),
-      standard_error =
-        round(standard_deviation / sqrt(n_trp), digits = 1)
-    ) %>%
-    select(
+    tibble::as_tibble() %>%
+    dplyr::select(
       year_base,
       year,
       month,
       index_p,
       index_i,
-      standard_deviation,
-      variance,
       n_trp,
       standard_error
     )
@@ -623,3 +613,37 @@ create_mdt_barplot <- function(trp_mdt_long_format) {
 }
 
 
+calculate_area_index <- function(trp_index_df) {
+
+  trp_index_df |>
+    dplyr::mutate(
+      weight = (base_volume / sum(base_volume))
+    ) |>
+    dplyr::summarise(
+      city_base_volume = sum(base_volume),
+      city_calc_volume = sum(calc_volume),
+      index_p = (city_calc_volume / city_base_volume - 1 ) * 100,
+      n_trp = n(),
+      standard_deviation = sqrt((1 / (1 - sum(weight^2) )) * sum(weight * (index - index_p)^2) ),
+      standard_error = sqrt(sum(weight^2) * standard_deviation^2),
+      .groups = "drop"
+    )|>
+    dplyr::select(
+      -city_base_volume,
+      -city_calc_volume
+    )
+}
+
+
+filter_city_index <- function(city_index_df, last_month, period_type) {
+
+  city_index_df |>
+    dplyr::filter(
+      month == last_month,
+      road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+      length_range == "[..,5.6)",
+      #length_range == "[5.6,..)",
+      period == period_type
+    )
+
+}

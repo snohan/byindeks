@@ -46,16 +46,14 @@ toll_index_yearly <-
     index = index_p,
     length_range = class
   ) |>
-  dplyr::filter(length_range != "unknown") |>
+  dplyr::filter(length_range != "unknown")
 
 toll_index_monthly <-
   readr::read_rds(
     file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
   ) |>
-  dplyr::filter(length_range != "unknown") |>
   dplyr::mutate(
-    month_object = lubridate::ymd(month_calc),
-    index = round(index, digits = 2)
+    month_object = lubridate::ymd(month_calc)
   ) |>
   dplyr::select(
     trp_id,
@@ -64,9 +62,10 @@ toll_index_monthly <-
     calc_volume = monthly_volume_calc,
     index = index_p,
     month_object
-  )
+  ) |>
+  dplyr::filter(length_range != "unknown")
 
-
+#
 # TRPs ----
 # Choosing most recent version of city trps
 city_trps <- trp_index_23[[1]]
@@ -126,7 +125,7 @@ trp_names <-
 
 
 # TRP index yearly ----
-trp_index_yearly <-
+trp_toll_index_yearly <-
   trp_index_all |>
   dplyr::filter(
     day_type == "ALL",
@@ -134,11 +133,13 @@ trp_index_yearly <-
     is_manually_excluded == FALSE,
     length_excluded == FALSE
   ) |>
+  # Need latest value per year
   dplyr::group_by(year) |>
   dplyr::filter(
     period == "year_to_date",
     month == max(month)
   ) |>
+  dplyr::ungroup() |>
   dplyr::select(
     trp_id,
     year,
@@ -151,16 +152,14 @@ trp_index_yearly <-
   dplyr::mutate(
     month = lubridate::make_date(year = year, month = month)
   ) |>
-  dplyr::ungroup()
-
-trp_toll_index_yearly <-
-  toll_index_yearly |>
-  dplyr::mutate(
-    index = round(index, digits = 1)
-  ) |>
   dplyr::bind_rows(
-    trp_index_yearly
+    toll_index_yearly
   )
+
+ # |>
+ #  dplyr::mutate(
+ #    index = round(index, digits = 1)
+ #  )
 
 
 # TODO: All three classes in report
@@ -228,66 +227,41 @@ readr::write_rds(
 # City index yearly----
 city_index_yearly <-
   trp_toll_index_yearly |>
+  dplyr::filter(!is.na(index)) |>
   dplyr::group_by(
     length_range,
     year,
     month
   ) |>
-  dplyr::summarise(
-    city_base_volume = sum(base_volume),
-    city_calc_volume = sum(calc_volume),
-    index_p = (city_calc_volume / city_base_volume - 1 ) * 100,
-    n_trp = n(),
-    .groups = "drop"
-  ) |>
-  dplyr::mutate(
-    year_from_to =
-      dplyr::case_when(
-        year == 2020 ~ "2019-2020",
-        year == 2021 ~ "2020-2021",
-        year == 2022 ~ "2021-2022",
-        year == 2023 ~ "2022-2023"
-      )
-  )
-
-
-## SD and SE ----
-trp_toll_index_yearly_sd <-
-  trp_toll_index_yearly |>
-  dplyr::filter(!is.na(index)) |>
-  dplyr::left_join(city_index) |>
-  dplyr::mutate(
-    diff = (base_volume / city_base_volume) * (index - index_p)^2,
-    weight = (base_volume / city_base_volume)^2
-  ) |>
-  dplyr::group_by(length_range) |>
-  dplyr::summarise(
-    standard_deviation = sqrt((1 / (1 - sum(weight) )) * sum(diff) )
-  ) |>
-  dplyr::ungroup()
-
-city_index_yearly_sd <-
-  city_index_yearly |>
-  dplyr::left_join(
-    trp_toll_index_yearly_sd
-  ) |>
+  calculate_area_index() |>
   dplyr::mutate(
     year_base = year - 1,
-    variance = standard_deviation^2,
-    standard_error = round(standard_deviation / sqrt(n_trp), digits = 1)
-  ) |>
-  dplyr::select(
-    -city_base_volume,
-    -city_calc_volume
-  ) |>
-  dplyr::mutate(
+    year_from_to = paste0(year - 1, "-", year),
     index_i = index_converter(index_p)
   )
 
+
+# Toy example of the weigths compared to n in calculation of standard error
+# toy <-
+#   tibble::tibble(
+#     weights = c(0.001, 0.001, 0.997, 0.001)
+#     #weights = c(0.25, 0.25, 0.25, 0.25)
+#   ) |>
+#   dplyr::mutate(
+#     sum_of_weights = sum(weights),
+#     sqrt_of_sum_of_squared_weights = sqrt(sum(weights^2)),
+#     one_through_sqrt_of_n = 1 / sqrt(length(weights))
+#   )
+# Conclusion: The minimum value of sqrt(sum(weights^2)) is when all weights are equal and then it is the same
+# as one_through_sqrt_of_n.
+# Its maximum value is when one of the weights outweigh all others and its value gets close to 1.
+
+
 city_index_yearly_light <-
-  city_index_yearly_sd |>
+  city_index_yearly |>
   dplyr::ungroup() |>
-  dplyr::filter(length_range == "lette")
+  dplyr::filter(length_range == "lette") |>
+  dplyr::select(-standard_deviation)
 
 
 ## Chaining ----
@@ -303,13 +277,20 @@ years_1_3 <-
   ) |>
   calculate_two_year_index()
 
+years_1_4 <-
+  dplyr::bind_rows(
+    years_1_3,
+    dplyr::slice(city_index_yearly_light, 4)
+  ) |>
+  calculate_two_year_index()
+
 # Skipping intermediate years, adding just from first to last
 city_index_yearly_all <-
-  city_index_yearly_sd |>
+  city_index_yearly_light |>
   dplyr::bind_rows(
     years_1_2,
     years_1_3,
-    #years_1_4
+    years_1_4
   ) |>
   dplyr::mutate(
     length_range = "lette",
@@ -362,13 +343,13 @@ trp_toll_index_monthly <-
     month = lubridate::month(month_object)
   )
 
-n_points_per_month <-
-  trp_toll_index_monthly |>
-  dplyr::group_by(
-    year,
-    month
-  ) |>
-  dplyr::summarise(n_trp = n())
+# n_points_per_month <-
+#   trp_toll_index_monthly |>
+#   dplyr::group_by(
+#     year,
+#     month
+#   ) |>
+#   dplyr::summarise(n_trp = n())
 
 
 # Sidetrack: for making Excel file in city_index_dataprep.R
@@ -419,18 +400,15 @@ trp_index_monthly_wide <-
 city_index_monthly <-
   trp_toll_index_monthly |>
   dplyr::mutate(year = lubridate::year(month_object)) |>
-  dplyr::filter(year >= 2020) |>
-  dplyr::mutate(index = round(index, digits = 1)) |>
+  dplyr::filter(
+    !is.na(index),
+    year >= 2020
+  ) |>
   dplyr::group_by(
     month_object,
     length_range
   ) |>
-  dplyr::summarise(
-    city_base_volume = sum(base_volume),
-    city_calc_volume = sum(calc_volume),
-    index_p = (city_calc_volume / city_base_volume - 1 ) * 100,
-    n_points = n()
-  ) |>
+  calculate_area_index() |>
   dplyr::mutate(
     area_name = "Trondheim",
     year = lubridate::year(month_object),
@@ -441,39 +419,8 @@ city_index_monthly <-
       stringr::str_to_title()
   )
 
-
-## SD and SE ----
-# To get sd, must start with pointindices and join monthly city index
-pointindex_trp_toll_monthly_sd <-
-  trp_toll_index_monthly |>
-  #dplyr::filter(!is.na(index)) |>
-  dplyr::left_join(city_index_monthly) |>
-  #dplyr::filter(!is.na(base_volume_all)) |>
-  dplyr::mutate(
-    diff = (base_volume / city_base_volume) * (index - index_p)^2,
-    weight = (base_volume / city_base_volume)^2
-  ) |>
-  dplyr::group_by(
-    month_object,
-    length_range
-  ) |>
-  dplyr::summarise(
-    standard_deviation = sqrt((1 / (1 - sum(weight) )) * sum(diff) )
-  )
-
-city_index_monthly_sd <-
-  city_index_monthly |>
-  dplyr::left_join(pointindex_trp_toll_monthly_sd) |>
-  dplyr::mutate(
-    standard_error = round(standard_deviation / sqrt(n_points), digits = 1)
-  ) |>
-  dplyr::select(
-    -city_base_volume,
-    -city_calc_volume
-  )
-
 write.csv2(
-  city_index_monthly_sd,
+  city_index_monthly,
   file = paste0("data_indexpoints_tidy/byindeks_maanedlig_", city_number, ".csv"),
   row.names = F
 )
@@ -537,9 +484,9 @@ trp_toll_index_so_far <-
     length_range
   ) |>
   dplyr::summarise(
-    trp_base_volume = sum(base_volume),
-    trp_calc_volume = sum(calc_volume),
-    trp_index_p = (trp_calc_volume / trp_base_volume - 1 ) * 100,
+    base_volume = sum(base_volume),
+    calc_volume = sum(calc_volume),
+    index = (sum(calc_volume) / sum(base_volume) - 1 ) * 100,
     trp_month_object = max(month_object),
     .groups = "drop"
   )
@@ -550,50 +497,27 @@ city_index_so_far <-
     year,
     length_range
   ) |>
+  dplyr::mutate(
+    weight = (base_volume / sum(base_volume))
+  ) |>
   dplyr::summarise(
-    city_base_volume = sum(trp_base_volume),
-    city_calc_volume = sum(trp_calc_volume),
-    city_index_p = (city_calc_volume / city_base_volume - 1 ) * 100,
+    city_base_volume = sum(base_volume),
+    city_calc_volume = sum(calc_volume),
+    index_p = (city_calc_volume / city_base_volume - 1 ) * 100,
     n_trp = n(),
+    standard_deviation = sqrt((1 / (1 - sum(weight^2) )) * sum(weight * (index - index_p)^2) ),
+    standard_error = sqrt(sum(weight^2) * standard_deviation^2),
     city_month_object = max(trp_month_object),
     .groups = "drop"
-  )
-
-
-## SD and SE ----
-# To get sd, must start with pointindices and join monthly city index
-trp_index_so_far_sd <-
-  trp_toll_index_so_far |>
-  dplyr::filter(!is.na(trp_index_p)) |>
-  dplyr::left_join(
-    city_index_so_far,
-    by = dplyr::join_by(year, length_range)
-  ) |>
-  dplyr::mutate(
-    diff = (trp_base_volume / city_base_volume) * (trp_index_p - city_index_p)^2,
-    weight = (trp_base_volume / city_base_volume)^2
-  ) |>
-  dplyr::group_by(
-    city_month_object,
-    length_range
-  ) |>
-  dplyr::summarise(
-    variance = (1 / (1 - sum(weight) )) * sum(diff),
-    standard_deviation = sqrt(variance),
-    .groups = "drop"
-  )
-
-city_index_so_far_sd <-
-  city_index_so_far |>
-  dplyr::left_join(
-    trp_index_so_far_sd,
-    by = dplyr::join_by(length_range, city_month_object)
+  )|>
+  dplyr::select(
+    -city_base_volume,
+    -city_calc_volume
   ) |>
   dplyr::mutate(
     year_base = year - 1,
     month = lubridate::month(city_month_object),
-    index_i = index_converter(city_index_p),
-    standard_error = round(standard_deviation / sqrt(n_trp), digits = 1)
+    index_i = index_converter(index_p)
   ) |>
   dplyr::select(
     year_base,
@@ -601,37 +525,36 @@ city_index_so_far_sd <-
     month,
     length_range,
     #month_object = city_month_object,
-    variance,
-    standard_deviation,
     n_trp,
+    standard_deviation,
     standard_error,
     index_i,
-    index_p = city_index_p
+    index_p
   )
 
 
 ## Chaining ----
 so_far_years_1_2 <-
-  city_index_so_far_sd |>
+  city_index_so_far |>
   calculate_two_year_index()
 
 so_far_years_1_3 <-
   dplyr::bind_rows(
     so_far_years_1_2,
-    dplyr::slice(city_index_so_far_sd, 3)
+    dplyr::slice(city_index_so_far, 3)
   ) |>
   calculate_two_year_index()
 
 so_far_years_1_4 <-
   dplyr::bind_rows(
     so_far_years_1_3,
-    dplyr::slice(city_index_so_far_sd, 4)
+    dplyr::slice(city_index_so_far, 4)
   ) |>
   calculate_two_year_index()
 
 # Skipping intermediate years, adding just from first to last
 city_index_so_far_all <-
-  city_index_so_far_sd |>
+  city_index_so_far |>
   dplyr::bind_rows(
     so_far_years_1_2,
     so_far_years_1_3,
