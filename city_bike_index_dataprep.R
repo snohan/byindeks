@@ -1,5 +1,5 @@
 # Preparation of data for reporting
-# Gathering info on all points and indexes and writing them to RDS
+# Gathering info on all trp and indexes and writing them to RDS
 
 # Setup ----
 source("rmd_setup.R")
@@ -27,7 +27,7 @@ svv_background_color <- "#F5F5F5"
 
 
 # TRP info ----
-points <-
+trp <-
   get_points() %>%
   dplyr::distinct(trp_id, .keep_all = T) %>%
   dplyr::select(
@@ -64,17 +64,19 @@ points <-
 # Nord-Jæren 6952
 # Oslo 6953
 # Tromsø 11952
+# Vestfold 12952
 
 # Choose
-index_month <- 9 # the one to be published now
-city_number <- 6953
+index_month <- 12 # the one to be published now
+city_number <- 12952
 
 reference_year <-
   dplyr::case_when(
     city_number %in% c(
       9952,
       4953,
-      6953
+      6953,
+      12952
     ) ~ 2017,
     city_number %in% c(
       5952,
@@ -230,7 +232,7 @@ adt_filtered <-
     names_prefix = "aadt_"
   ) |>
   dplyr::left_join(
-    points,
+    trp,
     by = "trp_id"
   ) |>
   dplyr::select(
@@ -251,7 +253,7 @@ readr::write_rds(
     )
 )
 
-points |>
+trp |>
   dplyr::filter(
     trp_id %in% city_trps
   ) |>
@@ -267,6 +269,100 @@ points |>
         ".rds"
       )
   )
+
+
+# All chain combinations ----
+city_index_complete_years <-
+  city_index |>
+  dplyr::filter(
+    period == "year_to_date",
+    month == 12
+  ) |>
+  dplyr::arrange(
+    year
+  )
+
+city_index_chain_combinations <-
+  city_index_complete_years |>
+  dplyr::select(
+    year,
+    index_i
+  ) |>
+  calculate_all_index_chain_combinations()
+
+
+# TRP index chains ----
+trp_index_complete_years <-
+  trp_index |>
+  dplyr::filter(
+    period == "year_to_date",
+    month == 12,
+    is_excluded == FALSE,
+    is_manually_excluded == FALSE,
+    index_total_coverage >= 50
+  ) |>
+  dplyr::mutate(
+    index_i = 1 + index_total_p / 100
+  ) |>
+  dplyr::select(
+    trp_id,
+    year,
+    index_i
+  ) |>
+  dplyr::arrange(
+    year
+  )
+
+
+calculate_chain_since_first_year <- function(df) {
+
+  df |>
+  calculate_all_index_chain_combinations() |>
+    dplyr::select(
+      1,
+      chain = 3
+    )
+
+}
+
+
+trp_chains <-
+  trp_index_complete_years |>
+  dplyr::group_by(trp_id) |>
+  dplyr::group_modify(
+    .f = ~ calculate_chain_since_first_year(.x),
+    .keep = TRUE
+  ) |>
+  tidyr::pivot_wider(
+    names_from = year,
+    values_from = chain
+  ) |>
+  dplyr::select(
+    trp_id,
+    base::sort(tidyselect::peek_vars())
+  )
+
+trp_adt_index_chains <-
+  trp |>
+  dplyr::filter(
+    trp_id %in% city_trps
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    road_category_and_number,
+    municipality_name
+  ) |>
+  dplyr::left_join(
+    adt_latest,
+    by = "trp_id"
+  ) |>
+  dplyr::left_join(
+    trp_chains,
+    by = "trp_id"
+  )
+
+
 
 
 # City index ----
