@@ -363,6 +363,13 @@ trp_adt_index_chains <-
   )
 
 
+base::list(
+  omrade = city_index_chain_combinations,
+  punkt = trp_adt_index_chains
+) |>
+  writexl::write_xlsx(
+    path = "sykkelindeks_vestfold.xlsx"
+  )
 
 
 # City index ----
