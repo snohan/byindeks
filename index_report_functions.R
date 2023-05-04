@@ -483,12 +483,13 @@ create_city_index_table_sd <- function(city_info) {
       period,
       n_trp,
       index_p,
-      standard_deviation,
+      #standard_deviation,
       standard_error
     ) %>%
     flextable::flextable() %>%
     colformat_double(
-      j = c("index_p", "standard_deviation", "standard_error"),
+      j = c("index_p", #"standard_deviation",
+            "standard_error"),
       digits = 1
     ) %>%
     set_header_labels(
@@ -496,11 +497,12 @@ create_city_index_table_sd <- function(city_info) {
       period = "",
       n_trp = "Antall punkt",
       index_p = "Endring i \n trafikkmengde \n (%)",
-      standard_deviation = "Standardavvik \n (%)",
+      #standard_deviation = "Standardavvik \n (%)",
       standard_error = "Standardfeil \n (%)"
     ) %>%
     align(
-      j = c("period", "n_trp", "index_p", "standard_deviation", "standard_error"),
+      j = c("period", "n_trp", "index_p", #"standard_deviation",
+            "standard_error"),
       align = "center", part = "all"
     ) %>%
     #padding(
@@ -514,10 +516,7 @@ create_city_index_table_sd <- function(city_info) {
     hline_bottom(part = "all", border = borderline) %>%
     hline(i = n_years, border = line_after_single_years, part = "body") |>
     autofit() %>%
-    height_all(height = .2) #%>%
-    #set_caption("Estimert endring i trafikkmengde for området.",
-    #            autonum = table_numbers,
-    #            style = "Tabelltekst")
+    height_all(height = .2)
 
   return(city_table)
 }
@@ -603,10 +602,7 @@ create_city_mdt_36_index_table <- function(city_36_month) {
     hline_bottom(part = "all", border = borderline) %>%
     align(align = "center", part = "all") |>
     autofit() %>%
-    height_all(height = .1) #%>%
-    #set_caption("Estimert endring i trafikkmengde i treårsperioder.",
-    #            autonum = table_numbers,
-    #            style = "Tabelltekst")
+    height_all(height = .1)
 
   return(city_table)
 }

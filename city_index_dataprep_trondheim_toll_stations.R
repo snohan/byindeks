@@ -10,7 +10,7 @@
 #
 
 # Set manual variables ----
-index_month <- 2
+index_month <- 3
 city_number <- 960
 city_name <- "Trondheim"
 
@@ -75,7 +75,7 @@ city_trps <- trp_index_23[[1]]
 #  city_trps[! city_trps %in% c("84826V42881")]
 
 this_citys_trps <-
-  # Note: "points" is made in city_index_dataprep.R
+  # Note: "points" is made in city_index_check.R
   points |>
   dplyr::filter(trp_id %in% city_trps) |>
   dplyr::select(
@@ -115,6 +115,11 @@ trd_station_type <-
 
 # AADT ----
 # Fetch AADT in city_index_check.Rmd
+
+this_citys_trps_all_adt_final <-
+  readr::read_rds(
+      "index_trp_metadata/trp_960.rds"
+  )
 
 trp_names <-
   this_citys_trps_all_adt_final |>
@@ -299,7 +304,7 @@ city_index_yearly_all <-
   )
 
 readr::write_rds(
-  city_index_all,
+  city_index_yearly_all,
   file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")
 )
 

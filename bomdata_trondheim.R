@@ -299,7 +299,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "february"
+month_string <- "march"
 year_number <- 2023
 
 apar_data_for_month <-
@@ -563,10 +563,10 @@ readr::write_rds(
   file = "data_indexpoints_tidy/trd_toll_mdt.rds",
 )
 
-toll_mdt_class <-
-  readr::read_rds(
-    file = "data_indexpoints_tidy/trd_toll_mdt.rds",
-  )
+# toll_mdt_class <-
+#   readr::read_rds(
+#     file = "data_indexpoints_tidy/trd_toll_mdt.rds",
+#   )
 
 
 # TRP index ----
@@ -680,10 +680,10 @@ readr::write_rds(
   file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
 )
 
-tolling_station_indices <-
-  readr::read_rds(
-    file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
-  )
+# tolling_station_indices <-
+#   readr::read_rds(
+#     file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
+#   )
 # TODO: Dekningsgrad for antall måneder
 
 

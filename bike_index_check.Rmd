@@ -40,18 +40,19 @@ points <- get_points() %>%
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 5952         2019 - 2022-12
-# Førde 9952          2018 - 2022-12
-# Grenland 4953       2018 - 2022-12
-# Nedre Glomma 5953   2019 - 2022-12
-# Nord-Jæren 6952     2020 - 2022-10
-# Osloområdet 6953    2018 - 2022-10
-# Tromsø 11952        2021 - 2022-10
+# Bergen 5952         2019 - 2023-04
+# Førde 9952          2018 - 2023-04
+# Grenland 4953       2018 - 2023-04
+# Nedre Glomma 5953   2019 - 2023-04
+# Nord-Jæren 6952     2020 - 2023-04
+# Osloområdet 6953    2018 - 2023-04
+# Tromsø 11952        2021 - 2023-04
+# Vestfold 12952      2017 - 2023-04
 
 # Choose
-index_year <- 2022
-index_month <- 10 # latest published
-city_number <- 11952
+index_year <- 2023
+index_month <- 3 # latest published
+city_number <- 5952
 
 # Fetch
 city_index <- 
@@ -169,12 +170,12 @@ point_index_new_prepared <-
     index_total_coverage
   )
 
-point_index_new_prepared_2 <- point_index_new %>%
-  dplyr::filter(day_type == "ALL",
-                period == "month",
-                month == index_month + 2) %>%
-  dplyr::select(trp_id, year, month, index_total_p,
-                index_total_coverage)
+# point_index_new_prepared_2 <- point_index_new %>%
+#   dplyr::filter(day_type == "ALL",
+#                 period == "month",
+#                 month == index_month + 2) %>%
+#   dplyr::select(trp_id, year, month, index_total_p,
+#                 index_total_coverage)
 # 
 # point_index_new_prepared_3 <- point_index_new %>%
 #   dplyr::filter(day_type == "ALL",
@@ -197,7 +198,7 @@ pointindex_prepared_all <-
   dplyr::bind_rows(
     pointindex_prepared,
     point_index_new_prepared,
-    point_index_new_prepared_2,
+    #point_index_new_prepared_2,
     # point_index_new_prepared_3,
     # point_index_new_prepared_4
   ) %>% 
@@ -224,19 +225,19 @@ city_trps_new_pointindex <-
             index_total_coverage, " %"),
     label_text = lapply(label_text, htmltools::HTML))
 
-city_trps_new_pointindex_2 <-
-  city_trps_meta %>%
-  dplyr::left_join(
-    point_index_new_prepared_2,
-    by = "trp_id"
-  ) %>%
-  dplyr::mutate(
-    label_text =
-      paste(name, ", ",
-            road_category_and_number, "<br/>",
-            index_total_p, " %", "<br/>",
-            index_total_coverage, " %"),
-    label_text = lapply(label_text, htmltools::HTML))
+# city_trps_new_pointindex_2 <-
+#   city_trps_meta %>%
+#   dplyr::left_join(
+#     point_index_new_prepared_2,
+#     by = "trp_id"
+#   ) %>%
+#   dplyr::mutate(
+#     label_text =
+#       paste(name, ", ",
+#             road_category_and_number, "<br/>",
+#             index_total_p, " %", "<br/>",
+#             index_total_coverage, " %"),
+#     label_text = lapply(label_text, htmltools::HTML))
 # 
 # city_trps_new_pointindex_3 <- 
 #   city_trps_meta %>% 
@@ -326,8 +327,8 @@ pointindex_long <-
 ## Indeks per måned så langt for `r city_name`
 
 ```{r city_index, message=FALSE, fig.width=12}
-month_start = lubridate::make_date(year = 2022, month = 1)
-month_end = lubridate::make_date(year = 2022, month = 12)
+month_start = lubridate::make_date(year = 2023, month = 1)
+month_end = lubridate::make_date(year = 2023, month = 12)
 
 full_year_x_axis <- c(month_start, month_end)
 
@@ -354,7 +355,7 @@ city_index_prepared %>%
 
 
 
-## November
+## April
 
 ```{r map_trp_index, message=FALSE}
 city_trps_new_pointindex %>% 
@@ -367,12 +368,12 @@ city_trps_new_pointindex %>%
   create_pointindex_map()
 ```
 
-## Desember
+<!-- ## Desember -->
 
 ```{r map_trp_index_2, message=FALSE}
-city_trps_new_pointindex_2 %>%
-  dplyr::rename(index = index_total_p) %>%
-  create_pointindex_map()
+# city_trps_new_pointindex_2 %>%
+#   dplyr::rename(index = index_total_p) %>%
+#   create_pointindex_map()
 ```
 
 ```{r map_trp_index_3, message=FALSE}

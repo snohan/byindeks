@@ -36,13 +36,13 @@ source("rmd_setup.R")
 # Kristiansand og omegn  957 (2016) 12 
 # Nedre Glomma           953 (2016) 12r
 # Tromsø                 961 (2016) 12r
-# Nord-Jæren             952 (2017) 12r
+# Nord-Jæren             952 (2017) 04
 # Bergen                8952 (2018) 12r
 # Oslo                   959 (2018) 12r
 # Trondheim              960 (2019) 02
 
 # Choose city number:
-city_number <- 960
+city_number <- 952
 
 city_number_county_name <- 
   tibble::tibble(
@@ -80,69 +80,72 @@ road_lengths <-
   
 all_point_info <- 
   readr::read_rds(
-    file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".rds")
+    #file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".rds")
+    file = paste0(
+      "index_trp_metadata/trp_",
+      city_number,
+      ".rds"
+    )
   ) |> 
   dplyr::mutate(
     year_aadt = as.character(year_aadt)
   )
 
-all_point_info_long <- 
-  all_point_info %>%
-  dplyr::select(-index) %>% 
-  dplyr::select(
-    name, 
-    road_category_and_number, 
-    starts_with("index")
-  ) %>%
-  tidyr::pivot_longer(
-    starts_with("index"),
-    names_to = "period",
-    values_to = "index_value"
-  ) %>%
-  dplyr::mutate(
-    year = 
-      case_when(
-        period == "index_17" ~ "2016-2017",
-        period == "index_18" ~ "2017-2018",
-        period == "index_19" ~ "2018-2019",
-        period == "index_20" ~ "2019-2020",
-        period == "index_21" ~ "2020-2021",
-        period == "index_22" ~ "2021-2022",
-        period == "index_23" ~ "2022-2023",
-        # Trondheim TODO: harmonize!
-        period == "index_2020" ~ "2019-2020",
-        period == "index_2021" ~ "2020-2021",
-        period == "index_2022" ~ "2021-2022",
-        period == "index_2023" ~ "2022-2023"
-      ),
-    year = 
-      factor(
-        year, 
-        levels = 
-          c(
-            "2022-2023",
-            "2021-2022",
-            "2020-2021",
-            "2019-2020",
-            "2018-2019",
-            "2017-2018",
-            "2016-2017"
-          ),
-        ordered = TRUE
-      )
-  )
+# all_point_info_long <- 
+#   all_point_info %>%
+#   dplyr::select(-index) %>% 
+#   dplyr::select(
+#     name, 
+#     road_category_and_number, 
+#     starts_with("index")
+#   ) %>%
+#   tidyr::pivot_longer(
+#     starts_with("index"),
+#     names_to = "period",
+#     values_to = "index_value"
+#   ) %>%
+#   dplyr::mutate(
+#     year = 
+#       case_when(
+#         period == "index_17" ~ "2016-2017",
+#         period == "index_18" ~ "2017-2018",
+#         period == "index_19" ~ "2018-2019",
+#         period == "index_20" ~ "2019-2020",
+#         period == "index_21" ~ "2020-2021",
+#         period == "index_22" ~ "2021-2022",
+#         period == "index_23" ~ "2022-2023",
+#         # Trondheim TODO: harmonize!
+#         period == "index_2020" ~ "2019-2020",
+#         period == "index_2021" ~ "2020-2021",
+#         period == "index_2022" ~ "2021-2022",
+#         period == "index_2023" ~ "2022-2023"
+#       ),
+#     year = 
+#       factor(
+#         year, 
+#         levels = 
+#           c(
+#             "2022-2023",
+#             "2021-2022",
+#             "2020-2021",
+#             "2019-2020",
+#             "2018-2019",
+#             "2017-2018",
+#             "2016-2017"
+#           ),
+#         ordered = TRUE
+#       )
+#   )
 
 city_info <-
   readr::read_rds(
     paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")
-  ) |>  
-  dplyr::mutate(
-    #month_object = lubridate::make_date(year = year, month = month),
-    month_name_short = lubridate::month(month, label = TRUE),
-    period = paste0("jan-", month_name_short)
-  ) |> 
+  ) #|>  
+  #dplyr::mutate(
+    #month_object = lubridate::make_date(year = year, month = month)
+  #) #|> 
   # Trondheim:
-  dplyr::filter(length_range == "lette")
+  #dplyr::filter(length_range == "lette")
 
 latest_month <- 
   city_info |> 
@@ -187,11 +190,9 @@ latest_36_index <-
   dplyr::slice_max(month_object) |> 
   dplyr::select(
     index_p,
-    standard_error_p
-  ) |> 
-  dplyr::mutate(
-    ci_lower = round(index_p - 1.96 * standard_error_p, 1),
-    ci_upper = round(index_p + 1.96 * standard_error_p, 1)
+    standard_error_p,
+    ci_lower,
+    ci_upper
   )
 
 latest_36_index_adjective <-
@@ -219,7 +220,7 @@ latest_36_sentence <-
 
 tbl_cap_all_36 <-
   paste0(
-    "Tre års glidende indeks. Antall punkt som oppgis er hvor mange av de ",
+    "Antall punkt som oppgis er hvor mange av de ",
     nrow(all_point_info),
     " byindekspunktene som har bidratt med data i det aktuelle tidsintervallet."
   )
@@ -232,6 +233,16 @@ tbl_cap_all_36 <-
 base_year <- min(city_info$year_base)
 last_year <- max(city_info$year)
 
+
+latest_complete_year <- 
+  city_info |> 
+  dplyr::filter(
+    index_type == "chained",
+    month == 12
+  ) |> 
+  dplyr::slice_max(year)
+
+
 from_base_year_to_last_year <- paste0(base_year, "-", last_year)
 
 city_info_all_years <- 
@@ -239,6 +250,7 @@ city_info_all_years <-
   dplyr::filter(year_from_to == from_base_year_to_last_year)
   
 index_all_years <- round(city_info_all_years$index_p, digits = 1)
+
 chained_index_ci_lower <-
   round(
     city_info_all_years$index_p - 1.96 * city_info_all_years$standard_error,
@@ -253,7 +265,6 @@ chained_index_ci_upper <-
 
 # Linking to child files
 intro_file <- paste0("city_report_files/intro_", city_number, ".Rmd")
-mdt_info_file <- paste0("city_report_files/mdt_", city_number, ".Rmd")
 traffic_file <- paste0("city_report_files/trafikkforhold_", city_number, ".Rmd")
 
 
@@ -327,20 +338,22 @@ De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeks
 
 all_point_info |> 
   dplyr::slice(1:36) |> 
-  create_point_table_trd()
-  #create_point_table()
+  #create_point_table_trd()
+  create_point_table()
 ```
 
 
 
 ```{r}
 #| label: tbl-trp-2
-#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2. B er bomstasjon, T er trafikkregistreringspunkt."
+#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2."
 #| ft.arraystretch: 0.9
 
-all_point_info |>
-  dplyr::slice(37:75) |>
-  create_point_table_trd()
+# B er bomstasjon, T er trafikkregistreringspunkt.
+
+#all_point_info |>
+#  dplyr::slice(37:75) |>
+  #create_point_table_trd()
 #  create_point_table()
 # 
 ```
@@ -373,13 +386,13 @@ knitr::opts_chunk$set(
   dpi = 100
   )
 
-#all_point_info |> 
-#  create_point_adt_map()
+all_point_info |> 
+  create_point_adt_map()
 
 # Trondheim
-all_point_info %>%
-  dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
-  create_point_adt_map_trondheim()
+# all_point_info %>%
+#   dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
+#   create_point_adt_map_trondheim()
 ```
 
 {{< pagebreak >}}
@@ -405,16 +418,27 @@ Resultatene for hele kalenderår er gitt i tabell @tbl-trp_36. En tidsserie med 
 
 ```{r}
 #| label: tbl-trp_36
-#| tbl-cap: !expr tbl_cap_all_36
+#| tbl-cap: "Tre års glidende indeks."
 
 city_36_month |> 
-  dplyr::mutate(
-    month_n = lubridate::month(month_object)
+  dplyr::slice_max(
+    month_n,
+    by = year
   ) |> 
-  dplyr::filter(
-    month_n == 12
+  create_city_mdt_36_index_table() |> 
+  flextable::footnote(
+    i = 1,
+    j = 2,
+    value = flextable::as_paragraph(
+      c(tbl_cap_all_36)
+    ),
+    ref_symbols = c("a"),
+    part = "header"
   ) |> 
-  create_city_mdt_36_index_table()
+  flextable::fontsize(
+    size = 8,
+    part = "footer"
+  )
 ```
 
 {{< pagebreak >}}
@@ -506,8 +530,13 @@ Tabell @tbl-city_index viser den årlige endringen, samt kjedet indeks for hele 
 #| tbl-cap: "Estimert endring i trafikkmengde per år."
 
 # TODO: line plot of chained index
+# TODO: split into two versions: one for whole years, one for so far this year (only relevant in intermediate reports)
 
-create_city_index_table_sd(city_info)
+city_info |> 
+  dplyr::filter(
+    !(index_type == "chained" & month != 12)
+  ) |> 
+  create_city_index_table_sd()
 ```
 
 
@@ -522,11 +551,20 @@ create_city_index_table_sd(city_info)
 <!-- Kristiansand -->
 
 Byindeksen estimerer endringen i trafikkmengden for lette kjøretøy fra 
-`r base_year` til `r latest_month` `r last_year` til å være 
-`r stringr::str_replace(sprintf("%.1f", index_all_years), "\\.", ",")` %. 
+`r latest_complete_year$year_base` til `r latest_complete_year$year` til å være 
+`r stringr::str_replace(sprintf("%.1f", latest_complete_year$index_p), "\\.", ",")` %. 
 Et 95 % konfidensintervall går fra 
-`r stringr::str_replace(sprintf("%.1f", chained_index_ci_lower), "\\.", ",")` % til 
-`r stringr::str_replace(sprintf("%.1f", chained_index_ci_upper), "\\.", ",")` %.
+`r stringr::str_replace(sprintf("%.1f", latest_complete_year$ci_lower), "\\.", ",")` % til 
+`r stringr::str_replace(sprintf("%.1f", latest_complete_year$ci_upper), "\\.", ",")` %.
+
+
+
+<!-- Byindeksen estimerer endringen i trafikkmengden for lette kjøretøy fra  -->
+<!-- `r base_year` til `r latest_month` `r last_year` til å være  -->
+<!-- `r stringr::str_replace(sprintf("%.1f", index_all_years), "\\.", ",")` %.  -->
+<!-- Et 95 % konfidensintervall går fra  -->
+<!-- `r stringr::str_replace(sprintf("%.1f", chained_index_ci_lower), "\\.", ",")` % til  -->
+<!-- `r stringr::str_replace(sprintf("%.1f", chained_index_ci_upper), "\\.", ",")` %. -->
 
 
 <!--
@@ -566,68 +604,67 @@ Til sammenligning viser tabell @tbl-e18_buskerudbyen endringen i trafikkmengde f
 !-- Stopp buskerudbyen her -->
 
 
-Figur @fig-plot_city_point_index viser den årlige spredningen i punktindeksene sammenlignet med byindeksen samme år.
-
 
 ```{r}
 #| label: fig-plot_city_point_index
 #| fig-cap: "Estimert endring i trafikkmengde for lette kjøretøy per år."
 
-knitr::opts_chunk$set(
-  dpi = 300
-  )
-
-set.seed(123)
-
-city_info_each_one_year <- 
-  city_info %>%
-  dplyr::mutate(year_diff = year - year_base) %>% 
-  dplyr::filter(year_diff == 1)
-
-ggplot() +
-  geom_jitter(
-    data = all_point_info_long,
-    aes(year, index_value),
-    color = "#ED9300", size = 2, alpha = 0.25, width = 0.1
-  ) +
-  geom_hline(yintercept = 0, alpha = 0.3) +
-  geom_segment(
-    data = city_info_each_one_year,
-    aes(
-      x = year_from_to, 
-      xend = year_from_to,
-      y = 0, 
-      yend = index_p
-    ),
-    color = "#ED9300", 
-    linewidth = 0.6, 
-    alpha = 0.9
-  ) +
-  geom_point(
-    data = city_info_each_one_year,
-    aes(year_from_to, index_p),
-    color = "#444F55", 
-    size = 5, 
-    alpha = 0.9
-  ) +
-  coord_flip() +
-  theme_minimal() +
-  theme(
-    axis.title.x = element_text(
-      margin = margin(t = 15, r = 0, b = 0, l = 0)),
-    axis.text.y = element_text(vjust = 0.5),
-    plot.caption = 
-      element_text(
-        face = "italic", 
-        size = 8, 
-        lineheight = 1.5,
-        vjust = 0
-      )
-  ) +
-  labs(x = NULL, y = "Endring i trafikkmengde (%)",
-       caption = caption_credit) +
-  ggtitle("Estimert endring i trafikkmengde for lette kjøretøy",
-          subtitle = "Byindeksen (store prikker) og punktene (små prikker)")
+# Figur @fig-plot_city_point_index viser den årlige spredningen i punktindeksene sammenlignet med byindeksen samme år.
+# knitr::opts_chunk$set(
+#   dpi = 300
+#   )
+# 
+# set.seed(123)
+# 
+# city_info_each_one_year <- 
+#   city_info %>%
+#   dplyr::mutate(year_diff = year - year_base) %>% 
+#   dplyr::filter(year_diff == 1)
+# 
+# ggplot() +
+#   geom_jitter(
+#     data = all_point_info_long,
+#     aes(year, index_value),
+#     color = "#ED9300", size = 2, alpha = 0.25, width = 0.1
+#   ) +
+#   geom_hline(yintercept = 0, alpha = 0.3) +
+#   geom_segment(
+#     data = city_info_each_one_year,
+#     aes(
+#       x = year_from_to, 
+#       xend = year_from_to,
+#       y = 0, 
+#       yend = index_p
+#     ),
+#     color = "#ED9300", 
+#     linewidth = 0.6, 
+#     alpha = 0.9
+#   ) +
+#   geom_point(
+#     data = city_info_each_one_year,
+#     aes(year_from_to, index_p),
+#     color = "#444F55", 
+#     size = 5, 
+#     alpha = 0.9
+#   ) +
+#   coord_flip() +
+#   theme_minimal() +
+#   theme(
+#     axis.title.x = element_text(
+#       margin = margin(t = 15, r = 0, b = 0, l = 0)),
+#     axis.text.y = element_text(vjust = 0.5),
+#     plot.caption = 
+#       element_text(
+#         face = "italic", 
+#         size = 8, 
+#         lineheight = 1.5,
+#         vjust = 0
+#       )
+#   ) +
+#   labs(x = NULL, y = "Endring i trafikkmengde (%)",
+#        caption = caption_credit) +
+#   ggtitle("Estimert endring i trafikkmengde for lette kjøretøy",
+#           subtitle = "Byindeksen (store prikker) og punktene (små prikker)")
 ```
 
 \clearpage

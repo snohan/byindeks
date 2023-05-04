@@ -353,6 +353,7 @@ get_labels_for_trp_list <- function(trp_list) {
 
   while (trp_count <= number_of_points) {
 
+    base::print(trp_count)
     base::print(trp_list[trp_count])
 
     data_points <-
@@ -2495,8 +2496,11 @@ get_published_index_for_months <- function(index_id, index_year, last_month) {
   i <- 1
 
   while (i < last_month + 1) {
-    index_table <- dplyr::bind_rows(index_table,
-                                    get_published_index(index_id, index_year, i))
+    index_table <-
+      dplyr::bind_rows(
+        index_table,
+        get_published_index(index_id, index_year, i)
+      )
     i = i + 1
   }
 

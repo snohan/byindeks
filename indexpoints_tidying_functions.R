@@ -40,7 +40,8 @@ read_pointindex_CSV <- function(filename) {
     dplyr::filter(
       døgn == "Alle",
       lengdeklasse == "< 5,6m",
-      periode == "Hittil i år") %>%
+      periode == "Hittil i år"
+    ) %>%
     dplyr::mutate(
       trs = as.numeric(msnr),
       trafikkmengde.basisaar =
@@ -48,6 +49,7 @@ read_pointindex_CSV <- function(filename) {
       trafikkmengde.indeksaar =
         as.numeric(as.character(trafikkmengde.indeksår))
     ) |>
+    # Why sum and recalculate index?
     dplyr::group_by(trs) %>%
     dplyr::summarise(
       trafikkmengde_basisaar = sum(trafikkmengde.basisaar),
@@ -60,7 +62,7 @@ read_pointindex_CSV <- function(filename) {
         )
     ) |>
     dplyr::rename(msnr = trs) %>%
-    dplyr::select(msnr, index)
+    dplyr::select(msnr, index, base_volume = trafikkmengde_basisaar)
 
 }
 
@@ -80,7 +82,7 @@ read_old_pointindex_csv_monthly <- function(filename, given_year) {
   ) |>
     dplyr::mutate(
       trs = as.numeric(msnr),
-      year = given_year,
+      #year = given_year,
       month = dplyr::case_when(
         periode == "Januar" ~ 1,
         periode == "Februar" ~ 2,
@@ -98,7 +100,8 @@ read_old_pointindex_csv_monthly <- function(filename, given_year) {
      index = decimal_point(indeks) |>
        as.numeric()
     ) |>
-    dplyr::select(trs, year, month, index) |>
+    dplyr::select(trs, #year,
+                  month, index) |>
     dplyr::rename(msnr = trs)
 
 }

@@ -1,4 +1,4 @@
-# TODO: recreate filtering from Excel file
+# Filtering from Excel file
 
 mdt_manual_exclusions <-
   readxl::read_excel(
@@ -27,6 +27,9 @@ mdt_manual_exclusions_meta <-
   dplyr::arrange(
     county_name,
     name
+  ) |>
+  dplyr::filter(
+    trp_id != "dummy"
   )
 
 writexl::write_xlsx(
@@ -43,14 +46,36 @@ all_timers <-
   )
 
 # Exclude TRP from year
+# Make all months to exclude explicit
 year_fromers <-
   mdt_manual_exclusions |>
   dplyr::filter(
     !(is.na(from_year)) &
     is.na(to_year)
+  ) |>
+  dplyr::mutate(
+    from_date = lubridate::make_date(from_year, from_month, 1)
+  ) |>
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    year_month = list(
+      dates = base::seq.Date(
+        from_date,
+        last_year_month,
+        by = "month")
+    )
+  ) |>
+  dplyr::select(
+    trp_id,
+    year_month
+  ) |>
+  tidyr::unnest(
+    year_month
   )
 
+
 # Exclude TRP month sequence
+# Make all months to exclude explicit
 month_sequencers <-
   mdt_manual_exclusions |>
   dplyr::filter(
@@ -59,6 +84,22 @@ month_sequencers <-
   dplyr::mutate(
     from_date = lubridate::make_date(from_year, from_month, 1),
     to_date = lubridate::make_date(to_year, to_month, 1)
+  ) |>
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    year_month = list(
+      dates = base::seq.Date(
+        from_date,
+        to_date,
+        by = "month")
+    )
+  ) |>
+  dplyr::select(
+    trp_id,
+    year_month
+  ) |>
+  tidyr::unnest(
+    year_month
   )
 
 #
@@ -67,13 +108,14 @@ mdt_validated <-
   dplyr::filter(
     !(trp_id %in% all_timers$trp_id)
   ) |>
-  # year_fromers
-  # anti join?
-  dplyr::filter(
-
+  dplyr::anti_join(
+    year_fromers,
+    by = c("trp_id", "year_month")
+  ) |>
+  dplyr::anti_join(
+    month_sequencers,
+    by = c("trp_id", "year_month")
   )
-# month sequencers
-# anti join?
 
 
 
