@@ -277,6 +277,9 @@ calculate_two_year_index <- function(city_index_df) {
       index_i,
       n_trp,
       standard_error
+    ) |>
+    dplyr::mutate(
+      index_type = "chained"
     )
 }
 

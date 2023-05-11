@@ -10,7 +10,7 @@
 #
 
 # Set manual variables ----
-index_month <- 3
+index_month <- 4
 city_number <- 960
 city_name <- "Trondheim"
 
@@ -242,7 +242,8 @@ city_index_yearly <-
   dplyr::mutate(
     year_base = year - 1,
     year_from_to = paste0(year - 1, "-", year),
-    index_i = index_converter(index_p)
+    index_i = index_converter(index_p),
+    month = lubridate::month(month)
   )
 
 
@@ -273,25 +274,37 @@ city_index_yearly_light <-
 # TODO: per length_range
 years_1_2 <-
   city_index_yearly_light |>
-  calculate_two_year_index()
+  calculate_two_year_index() |>
+  dplyr::mutate(
+    index_type = "chained"
+  )
 
 years_1_3 <-
   dplyr::bind_rows(
     years_1_2,
     dplyr::slice(city_index_yearly_light, 3)
   ) |>
-  calculate_two_year_index()
+  calculate_two_year_index() |>
+  dplyr::mutate(
+    index_type = "chained"
+  )
 
 years_1_4 <-
   dplyr::bind_rows(
     years_1_3,
     dplyr::slice(city_index_yearly_light, 4)
   ) |>
-  calculate_two_year_index()
+  calculate_two_year_index() |>
+  dplyr::mutate(
+    index_type = "chained"
+  )
 
 # Skipping intermediate years, adding just from first to last
 city_index_yearly_all <-
   city_index_yearly_light |>
+  dplyr::mutate(
+    index_type = "direct"
+  ) |>
   dplyr::bind_rows(
     years_1_2,
     years_1_3,
@@ -300,7 +313,11 @@ city_index_yearly_all <-
   dplyr::mutate(
     length_range = "lette",
     year_from_to = paste0(year_base, "-", year),
-    area_name = city_name
+    area_name = city_name,
+    month_name_short = lubridate::month(month, label = TRUE),
+    period = paste0("jan-", month_name_short),
+    ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error, 1),
+    ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error, 1)
   )
 
 readr::write_rds(

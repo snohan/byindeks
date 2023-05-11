@@ -300,7 +300,7 @@ create_pointindex_map <- function(all_point_info_df) {
     round(max(all_point_info_df$index, na.rm = T), digits = 0) + 1
 
   # If even the max value is negative
-  if(positive_value < 0) positive_value <- 1
+  if(positive_value <= 0) positive_value <- 1
 
   rc1 <-
     colorRampPalette(colors = c("red", "white"), space = "Lab")(negative_value)

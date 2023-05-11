@@ -32,17 +32,17 @@ source("rmd_setup.R")
 # City numbers
 
 # Buskerudbyen          1952 (2016) 12r 
-# Grenland               955 (2016) 12r 
-# Kristiansand og omegn  957 (2016) 12 
-# Nedre Glomma           953 (2016) 12r
-# Tromsø                 961 (2016) 12r
+# Grenland               955 (2016) 04
+# Kristiansand og omegn  957 (2016) 04 
+# Nedre Glomma           953 (2016) 04
+# Tromsø                 961 (2016) 04
 # Nord-Jæren             952 (2017) 04
-# Bergen                8952 (2018) 12r
-# Oslo                   959 (2018) 12r
-# Trondheim              960 (2019) 02
+# Bergen                8952 (2018) 04
+# Oslo                   959 (2018) 04
+# Trondheim              960 (2019) 04
 
 # Choose city number:
-city_number <- 952
+city_number <- 1952
 
 city_number_county_name <- 
   tibble::tibble(
@@ -143,7 +143,7 @@ city_info <-
   ) #|>  
   #dplyr::mutate(
     #month_object = lubridate::make_date(year = year, month = month)
-  #) #|> 
+  #) |> 
   # Trondheim:
   #dplyr::filter(length_range == "lette")
 
@@ -352,10 +352,9 @@ all_point_info |>
 # B er bomstasjon, T er trafikkregistreringspunkt.
 
 #all_point_info |>
-#  dplyr::slice(37:75) |>
+  #dplyr::slice(37:75) |>
   #create_point_table_trd()
-#  create_point_table()
-# 
+  #create_point_table()
 ```
 
 
@@ -372,7 +371,7 @@ all_point_info |>
 ```
 
 
-Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene.
+Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene. 
 
 ```{r}
 #| label: fig-map_trp
@@ -390,9 +389,9 @@ all_point_info |>
   create_point_adt_map()
 
 # Trondheim
-# all_point_info %>%
-#   dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
-#   create_point_adt_map_trondheim()
+#all_point_info %>%
+#  dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
+#  create_point_adt_map_trondheim()
 ```
 
 {{< pagebreak >}}
@@ -471,15 +470,14 @@ Tilsvarende for gamle Kristiansand kommune.
 # city_36_month_kommune |>
 #  dplyr::mutate(
 #     month_n = lubridate::month(month_object)
-#   ) |> 
+#   ) |>
 #   dplyr::filter(
 #     month_n == 12
-#   ) |> 
+#   ) |>
 #  create_city_mdt_36_index_table()
 
 # {{< pagebreak >}}
 ```
-
 
 ```{r}
 #| label: fig-plot_city_36_kommune
@@ -546,7 +544,11 @@ city_info |>
 #| label: tbl-city_index_kommune
 #| tbl-cap: "Estimert endring i trafikkmengde per år, gamle Kristiansand kommune."
 
-#create_city_index_table_sd(city_info_kommune)
+# city_info_kommune |> 
+#   dplyr::filter(
+#     !(index_type == "chained" & month != 12)
+#   ) |> 
+#   create_city_index_table_sd()
 ```
 <!-- Kristiansand -->
 
@@ -568,7 +570,7 @@ Et 95 % konfidensintervall går fra
 
 
 <!--
-For Buskerudbyen --
+For Buskerudbyen -->
 
 ### Trafikken på Ev 18
 Til sammenligning viser tabell @tbl-e18_buskerudbyen endringen i trafikkmengde for lette kjøretøy på Ev 18 i samme periode.
@@ -577,31 +579,31 @@ Til sammenligning viser tabell @tbl-e18_buskerudbyen endringen i trafikkmengde f
 #| label: tbl-e18_buskerudbyen
 #| tbl-cap: "Endring i trafikkmengde på Ev 18."
 
-# read.csv2("data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv") %>%
-#     select(name, road_reference, year, index_short) %>%
-#     flextable() %>%
-#     colformat_int(j = "year", big.mark = "") %>%
-#     colformat_double(j = "index_short", digits = 1) %>%
-#     set_header_labels(name = "Navn",
-#                       road_reference = "Vegreferanse",
-#      #                 adt = "ÅDT",
-#                       year = "År",
-#                       index_short = "Endring i\ntrafikkmengde\n(%)") %>%
-#     align(j = c(3, 4), align = "center", part = "all") %>%
-#     bold(part = "header") %>%
-#     #fontsize(size = 9, part = "all") %>%
-#     font(fontname = "Lucida Sans Unicode", part = "all") %>%
-#     bg(bg = "#ED9300", part = "header") %>%
-#     border_remove() %>%
-#     hline_top(part = "header", border = borderline) %>%
-#     hline_bottom(part = "all", border = borderline) %>%
-#     autofit() %>%
-#     height_all(height = .2) %>%
-#     padding(padding.top = .3,
-#             padding.bottom = .3)
+read.csv2("data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv") %>%
+    select(name, road_reference, year, index_short) %>%
+    flextable() %>%
+    colformat_int(j = "year", big.mark = "") %>%
+    colformat_double(j = "index_short", digits = 1) %>%
+    set_header_labels(name = "Navn",
+                      road_reference = "Vegreferanse",
+     #                 adt = "ÅDT",
+                      year = "År",
+                      index_short = "Endring i\ntrafikkmengde\n(%)") %>%
+    align(j = c(3, 4), align = "center", part = "all") %>%
+    bold(part = "header") %>%
+    #fontsize(size = 9, part = "all") %>%
+    font(fontname = "Lucida Sans Unicode", part = "all") %>%
+    bg(bg = "#ED9300", part = "header") %>%
+    border_remove() %>%
+    hline_top(part = "header", border = borderline) %>%
+    hline_bottom(part = "all", border = borderline) %>%
+    autofit() %>%
+    height_all(height = .2) %>%
+    padding(padding.top = .3,
+            padding.bottom = .3)
 ```
 
-!-- Stopp buskerudbyen her -->
+<!-- Stopp buskerudbyen her -->
 
 
 

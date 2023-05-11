@@ -299,7 +299,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "march"
+month_string <- "april"
 year_number <- 2023
 
 apar_data_for_month <-
@@ -434,9 +434,7 @@ tolling_data_daily <-
 
 
 # Check ----
-## Plot ----
 # Plot to see if data are ok
-# Check by lane
 tolling_data_daily_lane %>%
   dplyr::filter(
     trp_id == "86",
@@ -464,7 +462,8 @@ tolling_data_daily_lane %>%
 tolling_data_daily_tidy <-
   tolling_data_daily |>
   dplyr::filter(!(trp_id == "52" & date %in% c("2022-05-12", "2022-05-13", "2022-05-20"))) |>
-  dplyr::filter(!(trp_id == "52" & date %in% c("2023-01-18", "2023-01-19"))) |>
+  dplyr::filter(!(trp_id == "52" & date %in% c("2023-01-18", "2023-01-19",
+                                               "2023-04-24", "2023-04-25", "2023-04-26"))) |>
   dplyr::filter(!(trp_id == "54" & month == "2021-03-01")) |>
   dplyr::filter(!(trp_id == "54" & month == "2021-04-01")) |>
   dplyr::filter(!(trp_id == "54" & month == "2021-05-01")) |>
@@ -479,6 +478,7 @@ tolling_data_daily_tidy <-
   dplyr::filter(!(trp_id == "55" &
                     date %in% seq.Date(as.Date("2021-08-01"), as.Date("2021-08-15"), 1))) |>
   dplyr::filter(!(trp_id == "56" & month == "2021-04-01")) |>
+  dplyr::filter(!(trp_id == "62" & date %in% c("2023-04-12", "2023-04-13"))) |>
   dplyr::filter(!(trp_id == "63")) |>
   dplyr::filter(!(trp_id == "72" & month == "2021-04-01")) |>
   dplyr::filter(!(trp_id == "85" & date %in% c("2021-01-11", "2021-01-12", "2021-01-13"))) |>

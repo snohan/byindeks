@@ -55,7 +55,7 @@ trp_id_msnr <-
 
 # Choose
 index_month <- 4 # the one to be published now
-city_number <- 952
+city_number <- 1952
 
 reference_year <-
   dplyr::case_when(
@@ -101,6 +101,7 @@ index_years_pre_2020 <-
   base::seq.int(reference_year + 1, 2019, 1)
 
 index_years_from_2020 <-
+  #base::seq.int(2019, present_year, 1) #BRG
   base::seq.int(2020, present_year, 1)
 
 index_months_from_2020 <-
@@ -108,7 +109,6 @@ index_months_from_2020 <-
     base::rep(12, base::length(index_years_from_2020) - 1),
     index_month
   )
-
 
 index_years <-
   base::seq.int(reference_year + 1, present_year, 1)
@@ -121,8 +121,6 @@ index_months <-
 
 
 # Fetch city indexes ----
-# Note: just needed for city_name for Trondheim ???
-
 city_indexes <-
   purrr::map2(
     index_years,
@@ -133,7 +131,7 @@ city_indexes <-
 
 # TODO: TRPs might differ from year to year!
 city_trps <-
-  get_published_pointindex_for_months(city_number, index_year, index_month)[[1]] |>
+  get_published_pointindex_for_months(city_number, max(index_years), index_month)[[1]] |>
   base::sort()
 
 city_name <- city_indexes$area_name[nrow(city_indexes)]
@@ -143,8 +141,6 @@ city_name <- city_indexes$area_name[nrow(city_indexes)]
 
 
 # TRP index ----
-
-
 ## So far by December ----
 # Still need to specify csv-files for years before 2020 to get the pointindex as they are not in API
 trp_index_so_far_by_dec_pre_2020 <-
@@ -202,6 +198,7 @@ trp_index_year_to_date_dec <-
     trp_index_so_far_by_dec_pre_2020,
     trp_index_so_far_by_dec_from_2020
   ) |>
+  dplyr::filter(!is.na(base_volume)) |>
   dplyr::group_by(
     year
   ) |>
@@ -254,6 +251,7 @@ trp_index_year_to_date_by_index_month <-
     #trp_index_so_far_by_index_month_pre_2020,
     trp_index_so_far_by_index_month_from_2020
   ) |>
+  dplyr::filter(!is.na(base_volume)) |>
   dplyr::group_by(
     year
   ) |>
@@ -422,7 +420,8 @@ city_index_full_years <-
     year_base = year - 1,
     index_i = index_converter(index_p),
     variance = standard_deviation^2,
-    standard_error = base::round(sqrt(sum_of_squared_weights) * standard_deviation, digits = 1)
+    #standard_error = base::round(sqrt(sum_of_squared_weights) * standard_deviation, digits = 1)
+    standard_error = sqrt(sum_of_squared_weights) * standard_deviation
   ) %>%
   dplyr::select(
     year_base,
@@ -448,38 +447,27 @@ city_index_full_years <-
 #}
 
 years_1_2 <-
-  calculate_two_year_index(city_index_full_years) |>
-  dplyr::mutate(
-    index_type = "chained"
-  )
+  calculate_two_year_index(city_index_full_years)
 
 years_1_3 <-
   bind_rows(years_1_2, slice(city_index_full_years, 3)) %>%
-  calculate_two_year_index() |>
-  dplyr::mutate(
-    index_type = "chained"
-  )
+  calculate_two_year_index()
 
 years_1_4 <-
   bind_rows(years_1_3, slice(city_index_full_years, 4)) %>%
-   calculate_two_year_index() |>
-  dplyr::mutate(
-    index_type = "chained"
-  )
+   calculate_two_year_index()
 
 years_1_5 <-
   bind_rows(years_1_4, slice(city_index_full_years, 5)) %>%
-  calculate_two_year_index() |>
-  dplyr::mutate(
-    index_type = "chained"
-  )
+  calculate_two_year_index()
 
 years_1_6 <-
   bind_rows(years_1_5, slice(city_index_full_years, 6)) %>%
-  calculate_two_year_index() |>
-  dplyr::mutate(
-    index_type = "chained"
-  )
+  calculate_two_year_index()
+
+years_1_7 <-
+  bind_rows(years_1_6, slice(city_index_full_years, 7)) %>%
+  calculate_two_year_index()
 
 # Skipping intermediate years, adding just from first to last?
 city_index_all <-
@@ -492,7 +480,8 @@ city_index_all <-
     years_1_3,
     years_1_4,
     years_1_5,
-    years_1_6
+    years_1_6,
+    years_1_7
   ) %>%
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -671,6 +660,7 @@ toll_mdt_class <-
     -n_days,
     -traffic
   )
+# TRD stop
 
 mdt_filtered <-
   mdt |>
@@ -721,14 +711,14 @@ mdt_filtered |>
       )
   )
 
-mdt_filtered <-
-  readr::read_rds(
-    paste0(
-      "data_indexpoints_tidy/mdt_",
-      city_number,
-      ".rds"
-    )
-  )
+# mdt_filtered <-
+#   readr::read_rds(
+#     paste0(
+#       "data_indexpoints_tidy/mdt_",
+#       city_number,
+#       ".rds"
+#     )
+#   )
 
 
 ## Check MDT validity
@@ -740,14 +730,14 @@ source("exclude_trp_mdts_list.R")
 trp_mdt_ok_refyear <-
   mdt_validated |>
   dplyr::filter(
-    trp_id %in% city_trps # avoid toll stations appearing here
+    trp_id %in% city_trps # avoid toll stations appearing here as they've already been checked
   ) |>
   filter_mdt(reference_year) |>
   purrr::pluck(1)
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[16:17]
+    trp_id %in% trp_mdt_ok_refyear[21:22]
   ) |>
   dplyr::select(
     trp_id,
@@ -833,9 +823,9 @@ mdt_and_pi <-
   dplyr::left_join(
     mdt_validated,
     trp_index_monthly,
+    by = c("trp_id", "year", "month"),
     #dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
-    by = c("trp_id", "year", "month")
-    #by = c("trp_id", "year_month" = "month_object")
+    #by = c("trp_id", "year_month" = "month_object") # TRD
   ) |>
   dplyr::left_join(
     trp_names,
@@ -857,7 +847,6 @@ mdt_and_pi <-
     year,
     month
   )
-
 
 
 
