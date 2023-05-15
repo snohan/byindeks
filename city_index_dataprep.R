@@ -360,7 +360,8 @@ trp_names <-
   this_citys_trps_all_adt_final |>
   dplyr::select(
     trp_id,
-    name
+    name,
+    municipality_name
   )
 
 
@@ -972,6 +973,7 @@ all_36_month_trp_indices <-
   dplyr::select(
     trp_id,
     name,
+    municipality_name,
     reference_year = year,
     last_month_in_index = month_object,
     index_period,

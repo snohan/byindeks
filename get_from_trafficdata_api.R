@@ -7,8 +7,8 @@ library(ghql)
 library(lubridate)
 library(magrittr)
 
-cli <- GraphqlClient$new(
-  url = "https://www.vegvesen.no/trafikkdata/api/?query="#,
+cli <- ghql::GraphqlClient$new(
+  url = "https://www.vegvesen.no/trafikkdata/api/?query="
   #headers = list(
   #  'content-type' = 'application/json')
 )
@@ -199,56 +199,166 @@ get_points <- function() {
   myqueries <- Query$new()
   myqueries$query("points", query_points)
 
-  points <- cli$exec(myqueries$queries$points) %>%
+  points <-
+    cli$exec(myqueries$queries$points) %>%
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
     as.data.frame() %>%
     tidyr::unnest(cols = c(data.trafficRegistrationPoints.commissions)) %>%
-    dplyr::rename(trp_id =
-                    data.trafficRegistrationPoints.id,
-                  name =
-                    data.trafficRegistrationPoints.name,
-                  traffic_type =
-                    data.trafficRegistrationPoints.trafficRegistrationType,
-                  registration_frequency = data.trafficRegistrationPoints.registrationFrequency,
-                  county_name = data.trafficRegistrationPoints.location.county.name,
-                  county_no = data.trafficRegistrationPoints.location.county.number,
-                  county_geono = data.trafficRegistrationPoints.location.county.geographicNumber,
-                  #country_part_name =
-                  #  data.trafficRegistrationPoints.location.county.countryPart.name,
-                  municipality_name = data.trafficRegistrationPoints.location.municipality.name,
-                  municipality_no = data.trafficRegistrationPoints.location.municipality.number,
-                  lat =
-                    data.trafficRegistrationPoints.location.coordinates.latLon.lat,
-                  lon =
-                    data.trafficRegistrationPoints.location.coordinates.latLon.lon,
-                  road_reference =
-                    data.trafficRegistrationPoints.location.roadReference.shortForm,
-                  road_network_position =
-                    data.trafficRegistrationPoints.location.roadLinkSequence.relativePosition,
-                  road_network_link =
-                    data.trafficRegistrationPoints.location.roadLinkSequence.roadLinkSequenceId,
-                  operational_status =
-                    data.trafficRegistrationPoints.operationalStatus
-                  ) %>%
-    dplyr::select(trp_id, name, traffic_type, registration_frequency,
-                  road_reference, county_geono, county_name,
-                  county_no, municipality_name, municipality_no, lanes, lat, lon,
-                  road_network_position, road_network_link, validFrom, validTo,
-                  operational_status
-                  ) %>%
-    dplyr::mutate(lane_numbers = purrr::map(lanes, ~ purrr::pluck(., 1)),
-                  direction_with = purrr::map(lane_numbers, ~ length(is_odd(.)) > 0),
-                  direction_against = purrr::map(lane_numbers, ~ length(is_even(.)) > 0),
-                  number_of_directions = dplyr::if_else(direction_with == TRUE, 1, 0) +
-                    dplyr::if_else(direction_against == TRUE, 1, 0),
-                  road_link_position = paste0(road_network_position, "@",
-                                              road_network_link),
-                  validFrom =
-                    floor_date(with_tz(ymd_hms(validFrom)), unit = "day"),
-                  validTo = floor_date(with_tz(ymd_hms(validTo)), unit = "day")
-                  )
+    dplyr::rename(
+      trp_id = data.trafficRegistrationPoints.id,
+      name =
+        data.trafficRegistrationPoints.name,
+      traffic_type =
+        data.trafficRegistrationPoints.trafficRegistrationType,
+      registration_frequency = data.trafficRegistrationPoints.registrationFrequency,
+      county_name = data.trafficRegistrationPoints.location.county.name,
+      county_no = data.trafficRegistrationPoints.location.county.number,
+      county_geono = data.trafficRegistrationPoints.location.county.geographicNumber,
+      #country_part_name =
+      #  data.trafficRegistrationPoints.location.county.countryPart.name,
+      municipality_name = data.trafficRegistrationPoints.location.municipality.name,
+      municipality_no = data.trafficRegistrationPoints.location.municipality.number,
+      lat =
+        data.trafficRegistrationPoints.location.coordinates.latLon.lat,
+      lon =
+        data.trafficRegistrationPoints.location.coordinates.latLon.lon,
+      road_reference =
+        data.trafficRegistrationPoints.location.roadReference.shortForm,
+      road_network_position =
+        data.trafficRegistrationPoints.location.roadLinkSequence.relativePosition,
+      road_network_link =
+        data.trafficRegistrationPoints.location.roadLinkSequence.roadLinkSequenceId,
+      operational_status =
+        data.trafficRegistrationPoints.operationalStatus
+      ) %>%
+    dplyr::select(
+      trp_id, name, traffic_type, registration_frequency,
+      road_reference, county_geono, county_name,
+      county_no, municipality_name, municipality_no, lanes, lat, lon,
+      road_network_position, road_network_link, validFrom, validTo,
+      operational_status
+      ) %>%
+    dplyr::mutate(
+      lane_numbers = purrr::map(lanes, ~ purrr::pluck(., 1)),
+      direction_with = purrr::map(lane_numbers, ~ length(is_odd(.)) > 0),
+      direction_against = purrr::map(lane_numbers, ~ length(is_even(.)) > 0),
+      number_of_directions = dplyr::if_else(direction_with == TRUE, 1, 0) +
+        dplyr::if_else(direction_against == TRUE, 1, 0),
+      road_link_position = paste0(road_network_position, "@",
+                                  road_network_link),
+      validFrom =
+        floor_date(with_tz(ymd_hms(validFrom)), unit = "day"),
+      validTo = floor_date(with_tz(ymd_hms(validTo)), unit = "day")
+      )
 
   return(points)
+}
+
+get_trp_metadata_by_list <- function(trp_list) {
+  # Get chosen traffic registration points
+
+  query <-
+    paste0(
+      "query trps {
+        trafficRegistrationPoints (trafficRegistrationPointIds: [",
+      trp_list,
+      "]) {
+      id
+      name
+      trafficRegistrationType
+      registrationFrequency
+      location {
+        coordinates {
+          latLon {
+            lat
+            lon
+          }
+        }
+        county {
+          name
+          number
+          geographicNumber
+        }
+        municipality {
+          name
+          number
+        }
+        roadReference {
+            shortForm
+        }
+        roadLinkSequence {
+          relativePosition
+          roadLinkSequenceId
+        }
+      }
+      commissions {
+        validFrom
+        validTo
+        lanes {
+          laneNumber
+        }
+      }
+      operationalStatus
+    }
+  }"
+    )
+
+  myqueries <- Query$new()
+  myqueries$query("trps", query)
+
+  response <-
+    cli$exec(myqueries$queries$trps) %>%
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
+    as.data.frame() %>%
+    tidyr::unnest(cols = c(data.trafficRegistrationPoints.commissions)) %>%
+    dplyr::rename(
+      trp_id = data.trafficRegistrationPoints.id,
+      name =
+        data.trafficRegistrationPoints.name,
+      traffic_type =
+        data.trafficRegistrationPoints.trafficRegistrationType,
+      registration_frequency = data.trafficRegistrationPoints.registrationFrequency,
+      county_name = data.trafficRegistrationPoints.location.county.name,
+      county_no = data.trafficRegistrationPoints.location.county.number,
+      county_geono = data.trafficRegistrationPoints.location.county.geographicNumber,
+      #country_part_name =
+      #  data.trafficRegistrationPoints.location.county.countryPart.name,
+      municipality_name = data.trafficRegistrationPoints.location.municipality.name,
+      municipality_no = data.trafficRegistrationPoints.location.municipality.number,
+      lat =
+        data.trafficRegistrationPoints.location.coordinates.latLon.lat,
+      lon =
+        data.trafficRegistrationPoints.location.coordinates.latLon.lon,
+      road_reference =
+        data.trafficRegistrationPoints.location.roadReference.shortForm,
+      road_network_position =
+        data.trafficRegistrationPoints.location.roadLinkSequence.relativePosition,
+      road_network_link =
+        data.trafficRegistrationPoints.location.roadLinkSequence.roadLinkSequenceId,
+      operational_status =
+        data.trafficRegistrationPoints.operationalStatus
+    ) %>%
+    dplyr::select(
+      trp_id, name, traffic_type, registration_frequency,
+      road_reference, county_geono, county_name,
+      county_no, municipality_name, municipality_no, lanes, lat, lon,
+      road_network_position, road_network_link, validFrom, validTo,
+      operational_status
+    ) %>%
+    dplyr::mutate(
+      lane_numbers = purrr::map(lanes, ~ purrr::pluck(., 1)),
+      direction_with = purrr::map(lane_numbers, ~ length(is_odd(.)) > 0),
+      direction_against = purrr::map(lane_numbers, ~ length(is_even(.)) > 0),
+      number_of_directions = dplyr::if_else(direction_with == TRUE, 1, 0) +
+        dplyr::if_else(direction_against == TRUE, 1, 0),
+      road_link_position = paste0(road_network_position, "@",
+                                  road_network_link),
+      validFrom =
+        floor_date(with_tz(ymd_hms(validFrom)), unit = "day"),
+      validTo = floor_date(with_tz(ymd_hms(validTo)), unit = "day")
+    )
+
+  return(response)
 }
 
 get_trp_data_time_span <- function() {
@@ -502,26 +612,24 @@ get_trps_with_direction <- function() {
   api_response <- cli$exec(myqueries$queries$api_data) %>%
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
     as.data.frame() %>%
-    dplyr::select(trp_id =
-                    data.trafficRegistrationPoints.id,
-                  metering_direction_changed =
-                    data.trafficRegistrationPoints.meteringDirectionChanged,
-                  #from = data.trafficRegistrationPoints.direction.from,
-                  #to = data.trafficRegistrationPoints.direction.to,
-                  from_according_to_metering =
-                    data.trafficRegistrationPoints.direction.fromAccordingToMetering,
-                  to_according_to_metering =
-                    data.trafficRegistrationPoints.direction.toAccordingToMetering) %>%
-    dplyr::mutate(from_according_to_metering =
-                    stringr::str_to_title(from_according_to_metering, locale = "no"),
-                  to_according_to_metering =
-                    stringr::str_to_title(to_according_to_metering, locale = "no"),
-                  odd =
-                    paste0("Fra ", from_according_to_metering,
-                           " til ", to_according_to_metering),
-                  even =
-                    paste0("Fra ", to_according_to_metering,
-                           " til ", from_according_to_metering)) %>%
+    dplyr::select(
+      trp_id = data.trafficRegistrationPoints.id,
+      metering_direction_changed = data.trafficRegistrationPoints.meteringDirectionChanged,
+      #from = data.trafficRegistrationPoints.direction.from,
+      #to = data.trafficRegistrationPoints.direction.to,
+      from_according_to_metering = data.trafficRegistrationPoints.direction.fromAccordingToMetering,
+      to_according_to_metering = data.trafficRegistrationPoints.direction.toAccordingToMetering
+    ) %>%
+    dplyr::mutate(
+      from_according_to_metering = stringr::str_to_title(from_according_to_metering, locale = "no"),
+      to_according_to_metering = stringr::str_to_title(to_according_to_metering, locale = "no"),
+      odd =
+        paste0("Fra ", from_according_to_metering,
+               " til ", to_according_to_metering),
+      even =
+        paste0("Fra ", to_according_to_metering,
+               " til ", from_according_to_metering)
+    ) %>%
     tidyr::pivot_longer(cols = c("odd", "even"),
                         names_to = "lane_parity_api",
                         values_to = "direction") %>%
@@ -3479,6 +3587,7 @@ get_published_road_traffic_index_for_months <- function(index_id, index_year, la
 #day_type = "ALL"
 
 get_trp_average_hour_of_day_traffic <- function(trp_id, the_year, day_type) {
+
   # Get all AADTs for a trp
   api_query <- paste0(
     "query hour_traffic {
@@ -3566,9 +3675,10 @@ get_trp_average_hour_of_day_traffic_for_all_day_types_for_trp_list <- function(t
   trp_count <- 1
 
   while (trp_count <= number_of_points) {
-    data_points <- bind_rows(data_points,
-                             get_trp_average_hour_of_day_traffic_for_all_day_types(trp_list[trp_count],
-                                                                                   the_year))
+    data_points <-
+      bind_rows(
+        data_points,
+        get_trp_average_hour_of_day_traffic_for_all_day_types(trp_list[trp_count], the_year))
     trp_count <- trp_count + 1
   }
 
@@ -3700,4 +3810,178 @@ get_trp_average_day_of_week_traffic_by_month_for_a_year_for_trp_list <- function
   }
 
   return(data_points)
+}
+
+# year = 2022
+# week_no = 2
+# day_type = "WEEKDAY"
+# trp_id = "17681V704560"
+
+get_hour_of_day_week_direction_total <- function(year, week_no, day_type, trp_id) {
+
+  # day_type: "WEEKDAY", "WEEKEND", "ALL
+  input_variables <-
+    list(
+      "year" = year,
+      "week" =  week_no,
+      "dayType" = day_type,
+      "trpId" = trp_id
+    )
+
+  query <-
+    "query hour_of_day ($year: Year!, $week: Int!, $dayType: DayType!, $trpId: String!) {
+  trafficData(trafficRegistrationPointId: $trpId) {
+    trafficRegistrationPoint {
+      id
+    }
+    volume {
+      average {
+        hourOfDay {
+          byWeek(year: $year, week: $week, dayType: $dayType) {
+            yearWeek {
+              year
+              week
+            }
+            dayType
+            byDirection {
+              heading
+              total {
+                startOfHour
+                volume {
+                  average
+                }
+                validLengthVolume {
+                  average
+                }
+                validSpeedVolume {
+                  average
+                }
+                coverage {
+                  percentage
+                  included {
+                    numerator
+                    denominator
+                  }
+                }
+              }
+              }
+            }
+          }
+        }
+      }
+    }
+  }"
+
+  my_query <- ghql::Query$new()$query(name = "my_query", query)
+
+  response <- cli$exec(my_query$my_query, input_variables) |>
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) |>
+    as.data.frame() |>
+    tibble::as_tibble() |>
+    tidyr::unnest(cols = data.trafficData.volume.average.hourOfDay.byWeek.byDirection.total) |>
+    dplyr::mutate(
+      length_range = "all"
+    ) |>
+    dplyr::select(
+      trp_id = data.trafficData.id,
+      heading = data.trafficData.volume.average.hourOfDay.byWeek.byDirection.heading,
+      length_range,
+      year = data.trafficData.volume.average.hourOfDay.byWeek.yearWeek.year,
+      week = data.trafficData.volume.average.hourOfDay.byWeek.yearWeek.week,
+      hour = startOfHour,
+      day_type = data.trafficData.volume.average.hourOfDay.byWeek.dayType,
+      volume = volume.average,
+      volume_with_length = validLengthVolume.average,
+      coverage = coverage.percentage,
+      n_days = coverage.included.numerator
+    )
+
+  return(response)
+}
+
+
+get_hour_of_day_week_direction_length <- function(year, week_no, day_type, trp_id) {
+
+  # day_type: "WEEKDAY", "WEEKEND", "ALL
+  input_variables <-
+    list(
+      "year" = year,
+      "week" =  week_no,
+      "dayType" = day_type,
+      "trpId" = trp_id
+    )
+
+  query <-
+    "query hour_of_day ($year: Year!, $week: Int!, $dayType: DayType!, $trpId: String!) {
+  trafficData(trafficRegistrationPointId: $trpId) {
+    trafficRegistrationPoint {
+      id
+    }
+    volume {
+      average {
+        hourOfDay {
+          byWeek(year: $year, week: $week, dayType: $dayType) {
+            yearWeek {
+              year
+              week
+            }
+            dayType
+            byDirection {
+              heading
+              byLengthRange {
+                lengthRange {
+                  representation
+                }
+                total {
+                startOfHour
+                volume {
+                  average
+                }
+                validLengthVolume {
+                  average
+                }
+                validSpeedVolume {
+                  average
+                }
+                coverage {
+                  percentage
+                   included {
+                    numerator
+                    denominator
+                  }
+                }
+              }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}"
+
+  my_query <- ghql::Query$new()$query(name = "my_query", query)
+
+  response <- cli$exec(my_query$my_query, input_variables) |>
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) |>
+    as.data.frame() |>
+    tibble::as_tibble() |>
+    tidyr::unnest(cols = data.trafficData.volume.average.hourOfDay.byWeek.byDirection.byLengthRange) |>
+    tidyr::unnest(cols = total) |>
+    dplyr::select(
+      trp_id = data.trafficData.id,
+      heading = data.trafficData.volume.average.hourOfDay.byWeek.byDirection.heading,
+      length_range = lengthRange.representation,
+      year = data.trafficData.volume.average.hourOfDay.byWeek.yearWeek.year,
+      week = data.trafficData.volume.average.hourOfDay.byWeek.yearWeek.week,
+      hour = startOfHour,
+      day_type = data.trafficData.volume.average.hourOfDay.byWeek.dayType,
+      volume = volume.average,
+      volume_with_length = validLengthVolume.average,
+      coverage = coverage.percentage,
+      n_days = coverage.included.numerator
+    )
+
+  return(response)
+
 }
