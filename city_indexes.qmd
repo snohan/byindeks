@@ -1,0 +1,390 @@
+---
+title: "Byindekser"
+format: 
+  html:
+    css: svv.css
+    number-sections: true
+    toc: true
+    toc-location: left
+    toc-title: "Innhold"
+    df-print: paged
+    self-contained: true
+crossref:
+  fig-title: Figur
+  tbl-title: Tabell
+  title-delim: .
+  fig-prefix: figur
+  tbl-prefix: tabell
+editor: source
+knitr: 
+  opts_chunk: 
+    echo: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+base::Sys.setlocale(locale = "nb.utf8")
+library(tidyverse)
+library(flextable)
+library(officer)
+
+source("H:/Programmering/R/byindeks/indexpoints_tidying_functions.R")
+
+flextable::set_flextable_defaults(
+  font.size = 8,
+  font.family = "Lucida Sans Unicode",
+  padding.bottom = .2,
+  padding.top = .4,
+  decimal.mark = ",",
+  big.mark = " ",
+  na_str = ""
+)
+
+borderline <- officer::fp_border(color = "black", style = "solid", width = 1)
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  error = FALSE,
+  cache = FALSE,
+  dpi = 150,
+  dev = "ragg_png",
+  tab.topcaption = TRUE
+)
+```
+
+```{r}
+#| label: get
+
+city_info <-
+  bind_rows(
+    readr::read_rds("data_indexpoints_tidy/byindeks_959.rds"),
+    readr::read_rds("data_indexpoints_tidy/byindeks_8952.rds"),
+    readr::read_rds("data_indexpoints_tidy/byindeks_952.rds"),
+    readr::read_rds("data_indexpoints_tidy/byindeks_960.rds")
+  )
+  
+```
+
+
+Dette er en enkel samlerapport for alle byindeksene. For mer detaljer, se egen rapport for hvert byområde på [www.vegvesen.no/fag/trafikk/trafikkdata/indekser/byindeks](https://www.vegvesen.no/fag/trafikk/trafikkdata/indekser/byindeks).
+
+Byindeksen er en vegtrafikkindeks for vegene i et definert byområde. Den estimerer endringen i trafikkmengde i prosent fra et år til det neste.
+
+Datagrunnlaget for beregningene hentes fra trafikkregistreringspunkter i Statens vegvesens trafikkdatasystem. De utvalgte punktene utgjør et representativt utvalg trafikklenker for beregning av trafikkutviklingen. Metodikken går i korte trekk ut på å sammenligne timetrafikk, dato mot dato i kalendermånedene. Det må eksistere et minimum av godkjente timer for sammenligning.
+
+Alle data er hentet fra [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/trafikkdata/). Timetrafikk med minst 95 % dekningsgrad inngår i beregningsgrunnlaget.
+
+Det må tas forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er tidvis utelatt på grunn av feil på utstyr eller at de ligger på veger som er påvirket av vegarbeid o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
+
+
+# Trafikkutviklingen siden 2019
+Kumulativ endring i trafikkmengde fra referanseår er vist i @tbl-from_2019 nedenfor.
+
+```{r}
+#| label: from_2019
+
+city_index_direct <-
+  city_info |> 
+  dplyr::filter(
+    index_type == "direct",
+    year_base >= 2019,
+    month == 12
+  ) |> 
+  dplyr::select(
+    area_name,
+    year_base,
+    year,
+    month,
+    index_p,
+    index_i,
+    standard_error,
+    n_trp
+  )
+
+osl <-
+  city_index_direct |> 
+  dplyr::filter(
+    area_name == "Osloområdet"
+  )
+
+osl_19_21 <-
+  calculate_two_year_index(osl)
+
+osl_19_22 <-
+  dplyr::bind_rows(
+    osl_19_21,
+    dplyr::slice(osl, 3)
+  ) |> 
+  calculate_two_year_index()
+
+osl_chained <-
+  osl |> 
+  dplyr::filter(
+    year == 2020
+  ) |> 
+  dplyr::bind_rows(
+    osl_19_21,
+    osl_19_22
+  ) |> 
+  dplyr::mutate(
+    area_name = "Osloområdet"
+  )
+
+brg <-
+  city_index_direct |> 
+  dplyr::filter(
+    area_name == "Bergensområdet"
+  )
+
+brg_19_21 <-
+  calculate_two_year_index(brg)
+
+brg_19_22 <-
+  dplyr::bind_rows(
+    brg_19_21,
+    dplyr::slice(brg, 3)
+  ) |> 
+  calculate_two_year_index()
+
+brg_chained <-
+  brg |> 
+  dplyr::filter(
+    year == 2020
+  ) |> 
+  dplyr::bind_rows(
+    brg_19_21,
+    brg_19_22
+  ) |> 
+  dplyr::mutate(
+    area_name = "Bergensområdet"
+  )
+
+
+nrj <-
+  city_index_direct |> 
+  dplyr::filter(
+    area_name == "Nord-Jæren"
+  )
+
+nrj_19_21 <-
+  calculate_two_year_index(nrj)
+
+nrj_19_22 <-
+  dplyr::bind_rows(
+    nrj_19_21,
+    dplyr::slice(nrj, 3)
+  ) |> 
+  calculate_two_year_index()
+
+nrj_chained <-
+  nrj |> 
+  dplyr::filter(
+    year == 2020
+  ) |> 
+  dplyr::bind_rows(
+    nrj_19_21,
+    nrj_19_22
+  ) |> 
+  dplyr::mutate(
+    area_name = "Nord-Jæren"
+  )
+
+
+trd <-
+  city_index_direct |> 
+  dplyr::filter(
+    area_name == "Trondheim"
+  )
+
+trd_19_21 <-
+  calculate_two_year_index(trd)
+
+trd_19_22 <-
+  dplyr::bind_rows(
+    trd_19_21,
+    dplyr::slice(trd, 3)
+  ) |> 
+  calculate_two_year_index()
+
+trd_chained <-
+  trd |> 
+  dplyr::filter(
+    year == 2020
+  ) |> 
+  dplyr::bind_rows(
+    trd_19_21,
+    trd_19_22
+  ) |> 
+  dplyr::mutate(
+    area_name = "Trondheim"
+  )
+
+index_19_22 <-
+  dplyr::bind_rows(
+    osl_chained,
+    brg_chained,
+    nrj_chained,
+    trd_chained
+  ) |> 
+  dplyr::mutate(
+    year_from_to = paste0(year_base, "-", year),
+    ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error, 1),
+    ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error, 1)
+  )
+```
+
+
+```{r}
+#| label: tbl-from_2019
+#| tbl-cap: "Trafikkutviklingen siden 2019."
+#| ft.arraystretch: 0.9
+
+index_19_22 |> 
+  dplyr::select(
+    area_name,
+    year_from_to,
+    index_p,
+    ci_lower,
+    ci_upper
+  ) |> 
+  flextable() |> 
+  colformat_double(j = 3:5, digits = 1) |> 
+  set_header_labels(
+    area_name = "Byområde", 
+    year_from_to = "Sammenligningsår",
+    index_p = "Index (%)",
+    ci_lower = "KI nedre",
+    ci_upper = "KI øvre"
+  ) %>% 
+  #align(i = 1, j = 3:8, align = "right", part = "header") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  height_all(height = .2) %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) |> 
+  flextable::footnote(
+    i = 1,
+    j = 4:5,
+    value = flextable::as_paragraph(
+      c("Konfidensintervall på 95 %-nivå.")
+    ),
+    ref_symbols = c("a"),
+    part = "header"
+  ) |> 
+  flextable::fontsize(
+    size = 8,
+    part = "footer"
+  )
+```
+
+```{r}
+#| label: fig-from_2019
+#| fig-cap: "Utvikling i trafikkmengde fra 2019 for lette kjøretøy."
+
+start_year_values <-
+  tibble::tibble(
+    area_name = index_19_22$area_name |> unique(),
+    year = 2019,
+    index_100 = 100
+  )
+
+index_19_22 |> 
+  dplyr::mutate(
+    index_100 = index_i * 100
+  ) |> 
+  dplyr::select(
+    area_name,
+    year,
+    index_100
+  ) |> 
+  dplyr::bind_rows(
+    start_year_values
+  ) |> 
+  ggplot2::ggplot(aes(x = year, y = index_100, color = area_name)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_point() +
+  theme_bw() +
+  theme(
+    panel.grid.minor.x = element_blank(),
+    axis.title.y = element_text(
+      margin = margin(t = 0, r = 15, b = 0, l = 0)),
+    axis.title.x = element_text(
+      margin = margin(t = 15, r = 0, b = 0, l = 0))
+  ) +
+  scale_color_manual(values = c("Trondheim" = "#ed9300",
+                                "Osloområdet" = "#008ec2",
+                                "Bergensområdet" = "#444f55",
+                                "Nord-Jæren" = "#58b02c"),
+                     name = "") +
+  labs(x = NULL, y = "Indeks for trafikkmengde",
+       caption = "Data: Statens vegvesen, fylkeskommunene, kommunene") +
+  ggtitle("Estimert endring i trafikkmengde (lette kjøretøy)",
+          subtitle = "Trafikkmengden i 2019 er satt til 100")
+```
+
+
+# Trafikkutviklingen så langt i år
+```{r}
+#| label: tbl-so_far
+#| tbl-cap: "Estimert endring i trafikkmengde hittil i år."
+#| ft.arraystretch: 0.9
+
+city_info |> 
+  dplyr::filter(
+    year == 2023,
+    year_base == 2022,
+    month == 4
+  ) |> 
+  dplyr::select(
+    area_name,
+    year_from_to,
+    period,
+    index_p,
+    ci_lower,
+    ci_upper
+  ) |> 
+  flextable() |> 
+  colformat_double(j = 4:6, digits = 1) |> 
+  set_header_labels(
+    area_name = "Byområde", 
+    year_from_to = "Sammenligningsår",
+    period = "Periode",
+    index_p = "Index (%)",
+    ci_lower = "KI nedre",
+    ci_upper = "KI øvre"
+  ) %>% 
+  #align(i = 1, j = 3:8, align = "right", part = "header") %>%
+  bold(part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  bg(bg = "#ED9300", part = "header") %>%
+  border_remove() %>%
+  hline_top(part = "header", border = borderline) %>%
+  hline_bottom(part = "all", border = borderline) %>%
+  height_all(height = .2) %>%
+  padding(padding.top = .3,
+          padding.bottom = .3) |> 
+  flextable::footnote(
+    i = 1,
+    j = 5:6,
+    value = flextable::as_paragraph(
+      c("Konfidensintervall på 95 %-nivå.")
+    ),
+    ref_symbols = c("a"),
+    part = "header"
+  ) |> 
+  flextable::fontsize(
+    size = 8,
+    part = "footer"
+  )
+```
+
