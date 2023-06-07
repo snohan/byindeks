@@ -821,6 +821,7 @@ get_trp_aadt_with_coverage <- function(trp_id, day_type = "ALL") {
 #trp_id <-"43623V704583"
 get_trp_aadt_by_direction <- function(trp_id) {
 
+  print(trp_id)
   my_query <- paste0(
     "query aadt {
     trafficData(trafficRegistrationPointId: \"", trp_id,"\"){
@@ -1707,6 +1708,9 @@ get_aadt_by_direction_for_trp_list <- function(trp_list) {
   trp_count <- 1
 
   while (trp_count <= number_of_points) {
+
+    print(trp_count)
+
     data_points <-
       bind_rows(
         data_points,
@@ -2201,6 +2205,7 @@ getHourlytraffic <- function(trpID, from, to) {
 # test_bind <- bind_rows(test1, test2)
 
 get_daily_traffic <- function(trp_id, from, to) {
+
   # Default values
   hasNextPage <- TRUE
   cursor <- ""
@@ -2318,6 +2323,7 @@ get_dt_for_trp_list <- function(trp_list, from, to) {
 
 
 get_dt_by_length_for_trp <- function(trp_id, from, to) {
+
   # Default values
   hasNextPage <- TRUE
   cursor <- ""
@@ -2391,7 +2397,7 @@ get_dt_by_length_for_trp <- function(trp_id, from, to) {
     hasNextPage <-
       trafficData$data.trafficData.volume.byDay.pageInfo.hasNextPage[1]
 
-    # Skip pasring page if no volume numbers
+    # Skip parsing page if no volume numbers
     if(length(trafficData$data.trafficData.volume.byDay.edges.node.total.volumeNumbers.volume) == 0) {
       trafficData <- data.frame()
     }else{
@@ -2414,7 +2420,7 @@ get_dt_by_length_for_trp <- function(trp_id, from, to) {
           )
     }
 
-    dailyTraffic <- bind_rows(dailyTraffic, trafficData)
+    dailyTraffic <- dplyr::bind_rows(dailyTraffic, trafficData)
   }
 
   colunm_names <- c("point_id", "from", "total_volume", "coverage",
@@ -2428,7 +2434,8 @@ get_dt_by_length_for_trp <- function(trp_id, from, to) {
   }
 
   # To avoid error when joining, cast column type
-  dailyTraffic <- dailyTraffic %>%
+  dailyTraffic <-
+    dailyTraffic %>%
     dplyr::filter(!is.na(total_volume)) %>%
     dplyr::mutate(point_id = as.character(point_id),
                   #from = with_tz(ymd_hms(from), "CET"),
@@ -2445,6 +2452,7 @@ get_dt_by_length_for_trp <- function(trp_id, from, to) {
 
 
 get_dt_by_length_for_trp_list <- function(trp_list, from, to) {
+
   number_of_points <- length(trp_list)
   data_points <- data.frame()
   trp_count <- 1
@@ -2459,6 +2467,133 @@ get_dt_by_length_for_trp_list <- function(trp_list, from, to) {
   }
 
   return(data_points)
+}
+
+# trp_id <- "17681V704560"
+# from_day <- "2019-01-01"
+# to_day <- "2019-01-02"
+
+get_dt_by_direction <- function(trp_id, from_day, to_day) {
+
+  daily_traffic <- tibble::tibble()
+  # from and to: date as string, e.g. "2023-01-01"
+  from <- paste0(from_day, "T00:00:00.000Z")
+  to <- paste0(to_day, "T00:00:00.000Z")
+  cursor <- ""
+  hasNextPage <- TRUE
+
+  query <-
+    "query get_dt_by_direction ($trpId: String!, $from: ZonedDateTime!, $to: ZonedDateTime!, $afterEndCursor: String!) {
+  trafficData (trafficRegistrationPointId: $trpId) {
+    trafficRegistrationPoint {
+      id
+    }
+    volume {
+      byDay (from: $from, to: $to, after: $afterEndCursor) {
+        edges {
+          node {
+            from
+            byDirection {
+              heading
+              total {
+                volumeNumbers {
+                  volume
+                }
+                coverage {
+                  percentage
+                }
+              }
+            }
+          }
+        }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+      }
+    }
+  }
+}"
+
+  while(hasNextPage == TRUE){
+
+    input_variables <-
+      list(
+        "trpId" = trp_id,
+        "from" = from,
+        "to" =  to,
+        "afterEndCursor" = cursor
+      )
+
+    my_query <- ghql::Query$new()$query(name = "my_query", query)
+
+    response <-
+      cli$exec(my_query$my_query, input_variables) |>
+      jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
+
+    if(length(response$data$trafficData$volume$byDay$edges) == 0)
+      break;
+
+    response_tibble <-
+      response |>
+      as.data.frame() |>
+      tibble::as_tibble()
+
+    cursor <-
+      response_tibble$data.trafficData.volume.byDay.pageInfo.endCursor[1] %>%
+      as.character()
+
+    hasNextPage <-
+      response_tibble$data.trafficData.volume.byDay.pageInfo.hasNextPage[1]
+
+    response_tidy <-
+      response_tibble |>
+      dplyr::select(
+          -data.trafficData.volume.byDay.pageInfo.hasNextPage,
+          -data.trafficData.volume.byDay.pageInfo.endCursor
+        ) |>
+      tidyr::unnest(cols = data.trafficData.volume.byDay.edges.node.byDirection) |>
+      dplyr::select(
+        trp_id = data.trafficData.id,
+        day = data.trafficData.volume.byDay.edges.node.from,
+        heading,
+        volume = total.volumeNumbers.volume,
+        coverage = total.coverage.percentage
+      ) |>
+      dplyr::mutate(
+        day = lubridate::ymd_hms(day) |>  lubridate::with_tz() |> lubridate::as_date()
+      )
+
+    daily_traffic <-
+      dplyr::bind_rows(daily_traffic, response_tidy)
+  }
+
+  # colunm_names <- c("trp_id", "day", "heading", "volume", "coverage")
+  #
+  # if(nrow(response_tidy) == 0) {
+  #   daily_traffic <-
+  #     stats::setNames(
+  #       data.frame(
+  #         matrix(ncol = 5, nrow = 0)
+  #       ),
+  #     colunm_names)
+  # }else{
+  #   #colnames(dailyTraffic) <- colunm_names
+  # }
+
+  # To avoid error when joining, cast column type
+  # daily_traffic <-
+  #   daily_traffic |>
+  #   dplyr::filter(!is.na(volume)) |>
+  #   dplyr::mutate(
+  #     trp_id = as.character(trp_id),
+  #     day = clock::date_parse(day),
+  #     heading = as.character(heading),
+  #     volume = as.integer(volume),
+  #     coverage = as.numeric(coverage)
+  #   )
+
+  return(daily_traffic)
 }
 
 
@@ -3348,6 +3483,7 @@ get_published_pointindex_bike <- function(index_id, indexyear, indexmonth) {
           }
           index {
             percentageChange
+            baseVolume
           }
         }
         indexCoverage {
@@ -3386,6 +3522,7 @@ get_published_pointindex_bike <- function(index_id, indexyear, indexmonth) {
                   is_excluded = isExcluded,
                   is_manually_excluded = node.isManuallyExcluded,
                   index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
+                  base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
                   index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage
     ) %>%
     dplyr::filter(day_type == "ALL") %>%
@@ -3402,6 +3539,7 @@ get_published_pointindex_bike <- function(index_id, indexyear, indexmonth) {
                   is_excluded = isExcluded,
                   is_manually_excluded = node.isManuallyExcluded,
                   index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
+                  base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
                   index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage
     ) %>%
     dplyr::filter(day_type == "ALL") %>%
@@ -3421,12 +3559,17 @@ get_published_bikepointindex_for_months <- function(index_id, index_year, last_m
   i <- 1
 
   # Saving only one version of indexpoints
-  indexpoints <- get_published_pointindex_bike(index_id, index_year, last_month)[[1]]
+  indexpoints <-
+    get_published_pointindex_bike(index_id, index_year, last_month)[[1]]
 
   while (i < last_month + 1) {
 
-    published_pointindex <- dplyr::bind_rows(published_pointindex,
-                                             get_published_pointindex_bike(index_id, index_year, i)[[2]])
+    published_pointindex <-
+      dplyr::bind_rows(
+        published_pointindex,
+        get_published_pointindex_bike(index_id, index_year, i)[[2]]
+      )
+
     i = i + 1
   }
 

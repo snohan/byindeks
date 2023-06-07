@@ -729,24 +729,28 @@ calculate_all_index_chain_combinations <- function(df_index_i) {
   year_count <- 1
 
   first_index_year <- min(df_index_i$year)
-  resulting_df <- df_index_i %>%
+  resulting_df <-
+    df_index_i %>%
     dplyr::select(year) %>%
     tibble::add_row(year = first_index_year - 1) %>%
     dplyr::arrange(year)
 
   while (year_count <= number_of_rows) {
 
-    df_index_i_iteration <- df_index_i %>%
+    df_index_i_iteration <-
+      df_index_i %>%
       dplyr::slice(year_count:number_of_rows)
 
     first_year <- min(df_index_i_iteration$year)
     base_year <- as.character(first_year - 1)
 
-    df_index_i_iteration_with_base_year <- df_index_i_iteration %>%
+    df_index_i_iteration_with_base_year <-
+      df_index_i_iteration %>%
       tibble::add_row(year = first_year - 1, index_i = 1) %>%
       dplyr::arrange(year)
 
-    next_column <- df_index_i_iteration_with_base_year %>%
+    next_column <-
+      df_index_i_iteration_with_base_year %>%
       dplyr::mutate({{base_year}} := round(cumprod(index_i) * 100, digits = 1)) %>%
       dplyr::select(-index_i)
 

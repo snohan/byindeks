@@ -238,7 +238,7 @@ calculate_two_year_index <- function(city_index_df) {
   two_years <-
     city_index_df |>
     dplyr::select(
-      index_p,
+      #index_p,
       index_i,
       #variance,
       standard_error,
@@ -280,6 +280,54 @@ calculate_two_year_index <- function(city_index_df) {
     ) |>
     dplyr::mutate(
       index_type = "chained"
+    )
+}
+
+
+calculate_any_two_year_index <- function(index_row_1, index_row_2) {
+
+  two_years <-
+    dplyr::bind_rows(
+      index_row_1,
+      index_row_2
+    )
+
+  year_start <- index_row_1$year_base
+  year_end <- index_row_2$year
+  last_month <- index_row_1$month
+  #area_name <- index_row_1$area_name
+
+  two_years_to_one <-
+    list(
+      #index_p = 100 * (prod(two_years$index_i) - 1),
+      index_i = prod(two_years$index_i),
+      year_base = year_start,
+      year = year_end,
+      month = last_month,
+      standard_error =
+        100 * sqrt(
+          two_years$index_i[1]^2 * 1e-4 * two_years$standard_error[2]^2 +
+            two_years$index_i[2]^2 * 1e-4 * two_years$standard_error[1]^2 +
+            1e-4 * two_years$standard_error[1]^2 * 1e-4 * two_years$standard_error[2]^2
+        ),
+      # TODO: find the correct number of TRPs that have contributed
+      # over the two years - their index must exist in both years?
+      # Not exactly, because all TRPs contribute.
+      n_trp = max(two_years$n_trp)
+    ) %>%
+    tibble::as_tibble() %>%
+    dplyr::select(
+      year_base,
+      year,
+      month,
+      #index_p,
+      index_i,
+      n_trp,
+      standard_error
+    ) |>
+    dplyr::mutate(
+      index_type = "chained",
+      #area_name = area_name
     )
 }
 
@@ -653,3 +701,43 @@ filter_city_index <- function(city_index_df, last_month, period_type) {
     )
 
 }
+
+
+cum_se <- function(i1, i2, se1, se2) {
+
+  cum_se =
+    100 * sqrt(
+      i1^2 * 1e-4 * se2^2 + i2^2 * 1e-4 * se1^2 + 1e-4 * se1^2 * 1e-4 * se2^2
+    )
+}
+
+
+calculate_index_chain <- function(direct) {
+
+  chained <-
+    dplyr::bind_rows(
+      calculate_any_two_year_index(
+        direct[1,],
+        direct[2,]
+      )
+    )
+
+  n_chained_to_calculate <- base::nrow(direct) - 2
+
+  for (i in 1:n_chained_to_calculate) {
+
+    chained <-
+      chained |>
+      dplyr::bind_rows(
+        calculate_any_two_year_index(
+          chained[i,],
+          direct[i+2,]
+        )
+      )
+  }
+
+  return(chained)
+
+}
+
+

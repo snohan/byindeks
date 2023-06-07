@@ -52,7 +52,7 @@ points <-
 # Choose
 index_year <- 2023
 latest_published_month <- 3
-city_number <- 1952
+city_number <- 953
 # End choose
 
 reference_year <- 
@@ -206,6 +206,45 @@ this_citys_trps_all_adt <-
     by = "trp_id"
   )
 
+
+# Special
+# adt_light_years <-
+#   adt |> 
+#   tibble::as_tibble() |> 
+#   dplyr::filter(
+#     length_range == "[..,5.6)",
+#     year >= 2017
+#   ) |> 
+#   dplyr::select(
+#     trp_id,
+#     year,
+#     aadt = aadt_length_range
+#     #aadt_valid_length,
+#     #coverage
+#   ) |> 
+#   tidyr::pivot_wider(
+#     names_from = year,
+#     values_from = aadt
+#   ) |> 
+#   dplyr::left_join(
+#     city_trps_meta,
+#     by = "trp_id"
+#   ) |> 
+#   dplyr::select(
+#     name,
+#     road_reference,
+#     road_category_and_number,
+#     municipality_name,
+#     "2017":"2022"
+#   ) |> 
+#   dplyr::arrange(
+#     road_reference
+#   )
+# 
+# writexl::write_xlsx(
+#   adt_light_years,
+#   "spesialuttak/nedre_glomma_adt.xlsx"
+# )
 
 # adt_filtered <-
 #   adt %>%

@@ -1,97 +1,212 @@
+# Source ----
 source("rmd_setup.R")
 source("get_from_trafficdata_api.R")
+source("index_report_functions.R")
 
 
-# Fetching published index from Traffic Data API
-index_2018_grl <- get_published_index_for_months(4953, 2018, 12)
-index_2018_osl <- get_published_index_for_months(6953, 2018, 12)
-index_2018_frd <- get_published_index_for_months(9952, 2018, 12)
+# Index codes and years ----
+last_complete_year <- 2022
+last_complete_month_this_year <- 5
 
-index_2019_ngl <- get_published_index_for_months(5953, 2019, 12)
-index_2019_grl <- get_published_index_for_months(4953, 2019, 12)
-index_2019_brg <- get_published_index_for_months(5952, 2019, 12)
-index_2019_osl <- get_published_index_for_months(6953, 2019, 12)
-index_2019_frd <- get_published_index_for_months(9952, 2019, 12)
+index_codes_and_reference_years <-
+  tibble::tibble(
+    index_code =
+      c(
+      4953,  # Grenland
+      6953,  # Oslo
+      9952,  # Førde
+      12952, # Vestfold
+      5953,  # Nedre Glomma
+      5952,  # Bergen
+      6952,  # Nord-Jæren
+      11952  # Tromsø
+    ),
+    reference_year =
+      c(
+        2017,
+        2017,
+        2017,
+        2017,
+        2018,
+        2018,
+        2019,
+        2021
+      )
+  ) |>
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    index_years = list(c((reference_year + 1):last_complete_year))
+  ) |>
+  dplyr::ungroup()
 
-index_2020_ngl <- get_published_index_for_months(5953, 2020, 12)
-index_2020_grl <- get_published_index_for_months(4953, 2020, 12)
-index_2020_brg <- get_published_index_for_months(5952, 2020, 12)
-index_2020_osl <- get_published_index_for_months(6953, 2020, 12)
-index_2020_njr <- get_published_index_for_months(6952, 2020, 12)
-index_2020_frd <- get_published_index_for_months(9952, 2020, 12)
+index_codes_and_index_years <-
+  index_codes_and_reference_years |>
+  dplyr::select(
+    index_code,
+    index_years
+  ) |>
+  tidyr::unnest(index_years)
 
-index_2021_ngl <- get_published_index_for_months(5953, 2021, 12)
-index_2021_grl <- get_published_index_for_months(4953, 2021, 12)
-index_2021_brg <- get_published_index_for_months(5952, 2021, 12)
-index_2021_osl <- get_published_index_for_months(6953, 2021, 12)
-index_2021_njr <- get_published_index_for_months(6952, 2021, 12)
-index_2021_frd <- get_published_index_for_months(9952, 2021, 12)
 
-index_2022_ngl <- get_published_index_for_months(5953, 2022, 12)
-index_2022_grl <- get_published_index_for_months(4953, 2022, 12)
-index_2022_brg <- get_published_index_for_months(5952, 2022, 12)
-index_2022_osl <- get_published_index_for_months(6953, 2022, 12)
-index_2022_njr <- get_published_index_for_months(6952, 2022, 12)
-index_2022_frd <- get_published_index_for_months(9952, 2022, 12)
-index_2022_trm <- get_published_index_for_months(11952, 2022, 12)
+# City index ----
+bike_indexes_complete <-
+  purrr::map2(
+    index_codes_and_index_years$index_code,
+    index_codes_and_index_years$index_years,
+    ~ get_published_index_for_months(.x, .y, 12)
+  ) |>
+  purrr::list_rbind()
 
-index_all_years <- dplyr::bind_rows(
-  index_2018_grl,
-  index_2018_osl,
-  index_2018_frd,
-  #
-  index_2019_ngl,
-  index_2019_grl,
-  index_2019_brg,
-  index_2019_osl,
-  index_2019_frd,
-  #
-  index_2020_ngl,
-  index_2020_grl,
-  index_2020_brg,
-  index_2020_osl,
-  index_2020_njr,
-  index_2020_frd,
-  #
-  index_2021_ngl,
-  index_2021_grl,
-  index_2021_brg,
-  index_2021_osl,
-  index_2021_njr,
-  index_2021_frd,
-  #
-  index_2022_ngl,
-  index_2022_grl,
-  index_2022_brg,
-  index_2022_osl,
-  index_2022_njr,
-  index_2022_frd,
-  index_2022_trm
-) %>%
+bike_indexes_so_far_this_year <-
+  purrr::map(
+    index_codes_and_reference_years$index_code,
+    ~ get_published_index_for_months(., last_complete_year + 1, last_complete_month_this_year)
+  ) |>
+  purrr::list_rbind()
+
+bike_indexes <-
+  dplyr::bind_rows(
+    bike_indexes_complete,
+    bike_indexes_so_far_this_year
+  ) |>
   dplyr::filter(
     length_range == "[..,..)",
     road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG"
-  ) %>%
+  ) |>
   dplyr::select(
+    #index_code = publishedAreaTrafficVolumeIndex.id,
     area_name,
     year,
     month,
     period,
     index_p,
-    standard_deviation,
-    coverage = volumeIndexCoverage.hours.percentage
-  ) %>%
+    index_i,
+    base_volume,
+    standard_deviation
+  ) |>
   dplyr::mutate(
     month_object = lubridate::make_date(year = year, month = month),
     month_object_2000 = lubridate::make_date(year = 2000, month = month),
-    month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE),
+    month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)
+  )
+
+
+# TRP index ----
+# Need n TRP and base volume for weighting
+bike_trp_indexes_complete <-
+  purrr::map2(
+    index_codes_and_index_years$index_code,
+    index_codes_and_index_years$index_years,
+    ~ get_published_bikepointindex_for_months(.x, .y, 12)[[2]]
+  ) |>
+  purrr::list_rbind()
+
+bike_trp_indexes_so_far_this_year <-
+  purrr::map(
+    index_codes_and_reference_years$index_code,
+    ~ get_published_bikepointindex_for_months(., last_complete_year + 1, last_complete_month_this_year)[[2]]
+  ) |>
+  purrr::list_rbind()
+
+bike_trp_indexes <-
+  dplyr::bind_rows(
+    bike_trp_indexes_complete,
+    bike_trp_indexes_so_far_this_year
+  ) |>
+  dplyr::filter(
+    is_excluded == FALSE,
+    is_manually_excluded == FALSE
+  ) |>
+  dplyr::group_by(
+    area_name,
+    year,
+    month,
+    period
+  ) |>
+  dplyr::mutate(
+    sum_base_volume = sum(base_volume),
+    squared_weight = (base_volume / sum_base_volume)^2
+  ) |>
+  dplyr::summarise(
+    n_trp = n(),
+    sum_of_squared_weights = sum(squared_weight),
+    .groups = "drop"
+  )
+
+# City and n TRP ----
+bike_indexes_all <-
+  dplyr::left_join(
+    bike_indexes,
+    bike_trp_indexes,
+    by = dplyr::join_by(area_name, year, month, period)
+  ) |>
+  dplyr::mutate(
     area_name = dplyr::case_when(
       area_name == "Oslo" ~ "Osloområdet",
       TRUE ~ area_name
-    )
+    ),
+    standard_error = sqrt(sum_of_squared_weights) * standard_deviation,
+    ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error, 1),
+    ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error, 1)
+  ) |>
+  dplyr::select(
+    -standard_deviation,
+    -sum_of_squared_weights
+  ) |>
+  dplyr::arrange(
+    area_name,
+    year,
+    month,
+    period
   )
 
+
+
+# Chained index ----
+## Complete years ----
+bike_index_complete_years <-
+  bike_indexes_all |>
+  dplyr::filter(
+    period == "year_to_date",
+    month == 12
+  ) |>
+  dplyr::select(
+    area_name,
+    year,
+    month,
+    index_i,
+    n_trp,
+    standard_error
+  ) |>
+  dplyr::mutate(
+    year_base = year - 1,
+    index_type = "direct"
+  )
+
+test_2 <-
+  bike_index_complete_years |>
+  dplyr::group_by(area_name) |>
+  # dplyr::filter(
+  #   area_name == "Bergen"
+  # ) |>
+  calculate_index_chain()
+
+test_3 <-
+  bike_index_complete_years |>
+  tidyr::nest(.by = area_name) |>
+  dplyr::mutate(
+    chained_dfs = purrr::map(data, ~ calculate_index_chain(.x))
+  )
+
+
+test_4 <- test_3$data[[1]]  |>
+  calculate_index_chain()
+
+## So far this year ----
+
+
+# Write ----
 readr::write_rds(
-  index_all_years,
-  file = "data_indexpoints_tidy/all_bike_indices.rds"
+  bike_indexes_all,
+  file = "data_indexpoints_tidy/bike_indexes_all.rds"
 )

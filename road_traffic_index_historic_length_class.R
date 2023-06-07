@@ -5,7 +5,7 @@ source("split_road_system_reference.R")
 # Fetching published index from Traffic Data API
 #index_2017 <- get_published_road_traffic_index_for_months(962, 2017, 12)
 
-# Fetching from file
+# Fetching from file ----
 historic_length_indices <-
   read.csv2(
     "road_traffic_index_length_historic.csv"

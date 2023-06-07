@@ -40,19 +40,19 @@ points <- get_points() %>%
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 5952         2019 - 2023-04
-# Førde 9952          2018 - 2023-04
-# Grenland 4953       2018 - 2023-04
-# Nedre Glomma 5953   2019 - 2023-04
-# Nord-Jæren 6952     2020 - 2023-04
-# Osloområdet 6953    2018 - 2023-04
-# Tromsø 11952        2021 - 2023-04
-# Vestfold 12952      2017 - 2023-04
+# Bergen 5952         2019 - 2023-05
+# Førde 9952          2018 - 2023-05
+# Grenland 4953       2018 - 2023-05
+# Nedre Glomma 5953   2019 - 2023-05
+# Nord-Jæren 6952     2020 - 2023-05
+# Osloområdet 6953    2018 - 2023-05
+# Tromsø 11952        2021 - 2023-05
+# Vestfold 12952      2017 - 2023-05
 
 # Choose
 index_year <- 2023
-index_month <- 3 # latest published
-city_number <- 5952
+index_month <- 4 # latest published
+city_number <- 12952
 
 # Fetch
 city_index <- 
