@@ -14,6 +14,8 @@ format:
         \addtokomafont{subsection}{\subsectionfont}
         \addtokomafont{subsubsection}{\subsubsectionfont}
         \usepackage[font=small,textfont=it,labelsep=period]{caption}
+        \let\oldsection\section
+        \renewcommand\section{\clearpage\oldsection}
 crossref: 
   tbl-title: "Tabell"
   lot-title: "Tabeller"
@@ -58,10 +60,8 @@ reference_year_as_zero <-
   dplyr::mutate(
     index_p = 0,
     ci_lower = 0,
-    ci_upper = 0,
-    #month = list(tibble::tibble(month = c(last_published_month_number, 12)))
-  ) #|> 
-  #tidyr::unnest(month)
+    ci_upper = 0
+  )
 
 index_for_plotting <-
   index_all_years |> 
@@ -80,22 +80,6 @@ index_for_plotting <-
     area_name,
     months,
     year
-  )
-
-
-
-
-
-
-city_and_color <-
-  c(
-    "Bergen" = "#008ec2",
-    "Førde" = "#ffd520",
-    "Nord-Jæren" = "#ed9300",
-    "Grenland" = "#444f55",
-    "Nedre Glomma" = "#58b02c",
-    "Osloområdet" = "#ed1c2e",
-    "Tromsø" = "#dadada"
   )
 ```
 
@@ -118,8 +102,14 @@ Det tas forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter 
 Været vil i perioder kunne påvirke trafikkmengden. For eksempel vil det ved dårlig føre, som ved stort snøfall eller underkjølt regn, bli redusert framkommelighet og dette fører til mindre trafikk enn normalt.
 
 
-## Antall sykkelregistreringspunkter
-I tabellene i denne rapporten angis antall sykkelregistreringspunkter for det året som hadde færrest punkt blant årene som inngår i indekskjeden. Det er dette antallet som er bestemmende for bredden på indeksens konfidensintervall, og indekskjeden er sånn sett preget av det "svakeste" leddet i kjeden.
+## Om antall sykkelregistreringspunkt
+I tabellene i denne rapporten angis antall sykkelregistreringspunkt. Antaller gjelder for det året som hadde færrest punkt blant årene som inngår i indekskjeden. Det er dette antallet som er bestemmende for bredden på indeksens konfidensintervall, og indekskjeden er sånn sett preget av det "svakeste" leddet i kjeden.
+
+
+## Om konfidensintervall
+I denne rapporten angis konfidensintervall i tabeller og figurer. Konfidensintervallet er på 95 % nivå, hvilket betyr at dersom sykkelregistreringene ble gjort på et annet tilfeldig utvalg av samme antall steder ville indeksen falle innenfor intervallet i tilnærmet 95 av 100 tilfeller. 
+
+I mange tilfeller er konfidensintervallet relativt stort for sykkelindeksene. Det skyldes blant annet at mengden sykkeltrafikk på punktene er relativt lav, med typisk årsdøgntrafikk i størrelseorden noen hundre, som gjør at den prosentvise endringen fra år til år kan bli stor. I tillegg vil ulikt vær og føre i perioder kunne føre til relativt store endringer i antall syklende fra år til år, f.eks. om april er kald og våt ett år for så å være varm og tørr året etter. Dersom endringen i antall syklende er veldig ulik mellom punkt i samme by i samme periode, bidrar også dette til større usikkerhet i indeksen.
 
 
 # Bergen
@@ -141,44 +131,7 @@ table_index_chains("Bergen")
 #| fig-cap: "Estimert endring i sykkeltrafikk i Bergen."
 
 index_for_plotting |> 
-   dplyr::filter(
-      area_name == "Bergen"
-    ) |>
-  ggplot2::ggplot(aes(x = year, y = index_p)) +
-  ggplot2::geom_line() +
-  ggplot2::geom_point() +
-  facet_grid(rows = vars(months))
-  theme_light()
-
-# index_all_years %>% 
-#   dplyr::filter(period == "year_to_date") %>% 
-#   dplyr::group_by(area_name, year) %>% 
-#   dplyr::slice_max(month_object) %>% 
-#   ggplot2::ggplot(aes(x = year, y = index_p, color = area_name)) +
-#   ggplot2::geom_line() +
-#   ggplot2::geom_point() +
-#   theme_light() +
-#   theme(
-#     axis.title.y = element_text(
-#       margin = margin(t = 0, r = 15, b = 0, l = 0)),
-#     panel.grid.minor.x = element_blank(),
-#     plot.caption =
-#       element_text(
-#         face = "italic",
-#         size = 8,
-#         lineheight = 1.5,
-#         vjust = 0
-#       )
-#   ) +
-#   scale_color_manual(
-#     values = city_and_color,
-#     name = ""
-#   ) +
-#   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
-#        caption = "Data: Statens vegvesen, fylkeskommunene og kommunene") +
-#   ggtitle("Estimert endring i sykkeltrafikk i utvalgte byområder",
-#           subtitle = "Antall syklende sammenlignet med foregående år") +
-#   theme(legend.position = "bottom")
+  plot_index_chain("Bergen")
 ```
 
 
@@ -193,43 +146,145 @@ table_index_chains("Førde")
 ```
 
 
-
 ```{r}
-#| label: fig-month
+#| label: fig-frd
 #| fig-width: 6.5
 #| fig-height: 6
-#| fig-cap: "Estimert månedlig endring i sykkeltrafikk."
+#| fig-cap: "Estimert endring i sykkeltrafikk i Førde."
 
-# index_all_years %>% 
-#   dplyr::filter(period == "month") %>% 
-#   ggplot2::ggplot(aes(x = month_object_2000, y = index_p, color = area_name)) +
-#   ggplot2::geom_line() +
-#   ggplot2::geom_point() +
-#   facet_grid(rows = vars(year)) +
-#   theme_light() +
-#   theme(
-#     axis.text.x = element_text(angle = 90, vjust = 0.5),
-#     axis.title.y = element_text(
-#       margin = margin(t = 0, r = 15, b = 0, l = 0)),
-#     panel.grid.minor.x = element_blank(),
-#     plot.caption =
-#       element_text(
-#         face = "italic",
-#         size = 8,
-#         lineheight = 1.5,
-#         vjust = 0
-#       )
-#   ) +
-#   scale_x_date(breaks = scales::breaks_width("months"),
-#                labels = scales::label_date("%b")) +
-#   scale_color_manual(values = city_and_color,
-#                      name = "") +
-#   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
-#        caption = "Data: Statens vegvesen, fylkeskommunene og kommunene") +
-#   ggtitle("Estimert endring i sykkeltrafikk i utvalgte byområder",
-#           subtitle = "Antall syklende sammenlignet med samme måned foregående år") +
-#   theme(legend.position = "bottom")
+index_for_plotting |> 
+  plot_index_chain("Førde")
+```
+
+
+# Grenland
+
+```{r}
+#| label: tbl-grl
+#| tbl-cap: "Estimert endring i sykkeltrafikk i Grenland."
+#| ft.arraystretch: 0.9
+
+table_index_chains("Grenland")
+```
+
+
+```{r}
+#| label: fig-grl
+#| fig-width: 6.5
+#| fig-height: 6
+#| fig-cap: "Estimert endring i sykkeltrafikk i Grenland."
+
+index_for_plotting |> 
+  plot_index_chain("Grenland")
+```
+
+
+# Nedre Glomma
+
+```{r}
+#| label: tbl-ngl
+#| tbl-cap: "Estimert endring i sykkeltrafikk i Nedre Glomma."
+#| ft.arraystretch: 0.9
+
+table_index_chains("Nedre Glomma")
+```
+
+
+```{r}
+#| label: fig-ngl
+#| fig-width: 6.5
+#| fig-height: 6
+#| fig-cap: "Estimert endring i sykkeltrafikk i Nedre Glomma."
+
+index_for_plotting |> 
+  plot_index_chain("Nedre Glomma")
 ```
 
 
 
+# Nord-Jæren
+
+```{r}
+#| label: tbl-njr
+#| tbl-cap: "Estimert endring i sykkeltrafikk i Nord-Jæren."
+#| ft.arraystretch: 0.9
+
+table_index_chains("Nord-Jæren")
+```
+
+
+```{r}
+#| label: fig-njr
+#| fig-width: 6.5
+#| fig-height: 6
+#| fig-cap: "Estimert endring i sykkeltrafikk i Nord-Jæren."
+
+index_for_plotting |> 
+  plot_index_chain("Nord-Jæren")
+```
+
+
+# Osloområdet
+
+```{r}
+#| label: tbl-osl
+#| tbl-cap: "Estimert endring i sykkeltrafikk i Osloområdet."
+#| ft.arraystretch: 0.9
+
+table_index_chains("Osloområdet")
+```
+
+
+```{r}
+#| label: fig-osl
+#| fig-width: 6.5
+#| fig-height: 6
+#| fig-cap: "Estimert endring i sykkeltrafikk i Osloområdet."
+
+index_for_plotting |> 
+  plot_index_chain("Osloområdet")
+```
+
+
+# Tromsø
+
+```{r}
+#| label: tbl-trm
+#| tbl-cap: "Estimert endring i sykkeltrafikk i Tromsø."
+#| ft.arraystretch: 0.9
+
+table_index_chains("Tromsø")
+```
+
+
+```{r}
+#| label: fig-trm
+#| fig-width: 6.5
+#| fig-height: 6
+#| fig-cap: "Estimert endring i sykkeltrafikk i Tromsø."
+
+index_for_plotting |> 
+  plot_index_chain("Tromsø")
+```
+
+
+# Vestfold
+
+```{r}
+#| label: tbl-ves
+#| tbl-cap: "Estimert endring i sykkeltrafikk i Vestfold."
+#| ft.arraystretch: 0.9
+
+table_index_chains("Vestfold")
+```
+
+
+```{r}
+#| label: fig-ves
+#| fig-width: 6.5
+#| fig-height: 6
+#| fig-cap: "Estimert endring i sykkeltrafikk i Vestfold."
+
+index_for_plotting |> 
+  plot_index_chain("Vestfold")
+```

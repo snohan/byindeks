@@ -903,3 +903,57 @@ table_index_chains <- function(chosen_name) {
     autofit()
 
 }
+
+
+plot_index_chain <- function(plot_df, chosen_name) {
+
+  plot_df |>
+    dplyr::filter(
+      area_name == chosen_name
+    ) |>
+    ggplot2::ggplot(aes(x = year, y = index_p)) +
+    ggplot2::geom_line(color = "#ed9300") +
+    ggplot2::geom_point() +
+    ggplot2::geom_hline(
+      yintercept = 0,
+      color = "#58b02c",
+      size = 0.8,
+      alpha = 0.3
+    ) +
+    ggplot2::geom_ribbon(
+      aes(
+        ymin = ci_lower,
+        ymax = ci_upper
+      ),
+      linetype = 2,
+      alpha = 0.1,
+      fill = "#444f55"
+    ) +
+    facet_grid(rows = vars(months)) +
+    theme_light() +
+    theme(
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      panel.grid.minor = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        ),
+      strip.text.y = element_text(angle = 90),
+      strip.background = element_rect(fill = "#ed9300"),
+    ) +
+    ggplot2::scale_x_continuous(breaks = scales::breaks_width(1)) +
+    labs(
+      x = NULL,
+      y = "Endring i trafikkmengde (%)",
+      caption = "Data: Statens vegvesen, fylkeskommunene og kommunene"
+    ) +
+    ggtitle(
+      "Estimert endring i sykkeltrafikk",
+      subtitle = "Antall syklende sammenlignet med referanseår"
+    )
+
+}
