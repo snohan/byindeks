@@ -850,3 +850,56 @@ visualize_city_36_mdt_index <-
     )
 }
 
+
+table_index_chains <- function(chosen_name) {
+
+  n_index_all_years <-
+    index_all_years |>
+    dplyr::filter(
+      area_name == chosen_name,
+      month == 12
+    ) |>
+    nrow()
+
+  index_all_years |>
+    dplyr::filter(
+      area_name == chosen_name
+    ) |>
+    dplyr::select(
+      area_name,
+      years,
+      months,
+      n_trp,
+      index_p,
+      ci_lower,
+      ci_upper
+    ) |>
+    flextable() |>
+    colformat_double(j = 5, digits = 1) |>
+    set_header_labels(
+      area_name = "Byområde",
+      years = "År",
+      months = "Måneder",
+      n_trp = "Antall\npunkt",
+      index_p = "Endring i\ntrafikk-\nmengde\n(%)",
+      ci_lower = "Konfidensintervall (prosentpoeng)",
+      ci_upper = ""
+    ) |>
+    merge_at(i = 1, j = 6:7, part = "header") |>
+    align(i = 1, j = 6, align = "center", part = "header") |>
+    align(j = 2:4, align = "center", part = "all") |>
+    align(j = 5, align = "center", part = "header") |>
+    bold(part = "header") |>
+    font(fontname = "Lucida Sans Unicode", part = "all")  |>
+    bg(bg = "#ED9300", part = "header") |>
+    border_remove() |>
+    hline_top(part = "header", border = borderline) |>
+    hline_bottom(part = "all", border = borderline) |>
+    hline(
+      i = n_index_all_years,
+      part = "body",
+      border = fp_border(color = "#dadada", width = 1)
+    ) |>
+    autofit()
+
+}

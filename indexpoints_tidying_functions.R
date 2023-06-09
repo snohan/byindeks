@@ -310,10 +310,11 @@ calculate_any_two_year_index <- function(index_row_1, index_row_2) {
             two_years$index_i[2]^2 * 1e-4 * two_years$standard_error[1]^2 +
             1e-4 * two_years$standard_error[1]^2 * 1e-4 * two_years$standard_error[2]^2
         ),
-      # TODO: find the correct number of TRPs that have contributed
+      # Find the correct number of TRPs that have contributed
       # over the two years - their index must exist in both years?
       # Not exactly, because all TRPs contribute.
-      n_trp = max(two_years$n_trp)
+      # The chain is no stronger than its weakest link.
+      n_trp = min(two_years$n_trp)
     ) %>%
     tibble::as_tibble() %>%
     dplyr::select(

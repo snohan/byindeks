@@ -21,6 +21,16 @@ index_codes_and_reference_years <-
       6952,  # Nord-Jæren
       11952  # Tromsø
     ),
+    area_name = c(
+      "Grenland",
+      "Osloområdet",
+      "Førde",
+      "Vestfold",
+      "Nedre Glomma",
+      "Bergen",
+      "Nord-Jæren",
+      "Tromsø"
+    ),
     reference_year =
       c(
         2017,
@@ -133,6 +143,7 @@ bike_trp_indexes <-
     .groups = "drop"
   )
 
+
 # City and n TRP ----
 bike_indexes_all <-
   dplyr::left_join(
@@ -161,7 +172,6 @@ bike_indexes_all <-
   )
 
 
-
 # Chained index ----
 ## Complete years ----
 bike_index_complete_years <-
@@ -183,30 +193,134 @@ bike_index_complete_years <-
     index_type = "direct"
   )
 
-test_2 <-
-  bike_index_complete_years |>
-  dplyr::group_by(area_name) |>
-  # dplyr::filter(
-  #   area_name == "Bergen"
-  # ) |>
-  calculate_index_chain()
-
-test_3 <-
+bike_index_complete_years_chained <-
   bike_index_complete_years |>
   tidyr::nest(.by = area_name) |>
   dplyr::mutate(
     chained_dfs = purrr::map(data, ~ calculate_index_chain(.x))
   )
 
+bike_index_complete_years_chained_long <-
+  dplyr::bind_rows(
+    bike_index_complete_years_chained |>
+      dplyr::select(
+        area_name, data
+      ) |>
+      tidyr::unnest(data),
+    bike_index_complete_years_chained |>
+      dplyr::select(
+        area_name, chained_dfs
+      ) |>
+      tidyr::unnest(chained_dfs)
+  ) |>
+  dplyr::filter(
+    !is.na(index_i)
+  ) |>
+  dplyr::left_join(
+    index_codes_and_reference_years,
+    by = dplyr::join_by(area_name)
+  ) |>
+  dplyr::select(
+    area_name,
+    reference_year,
+    year_base,
+    year,
+    month,
+    n_trp,
+    index_i,
+    standard_error,
+    index_type
+  ) |>
+  dplyr::arrange(
+    area_name,
+    year_base,
+    year
+  ) |>
+  dplyr::mutate(
+    compared_to_ref_year = reference_year == year_base
+  )
 
-test_4 <- test_3$data[[1]]  |>
-  calculate_index_chain()
 
 ## So far this year ----
+bike_index_so_far <-
+  bike_indexes_all |>
+  dplyr::filter(
+    period == "year_to_date",
+    month == 5
+  ) |>
+  dplyr::select(
+    area_name,
+    year,
+    month,
+    index_i,
+    n_trp,
+    standard_error
+  ) |>
+  dplyr::mutate(
+    year_base = year - 1,
+    index_type = "direct"
+  )
 
+bike_index_so_far_chained <-
+  bike_index_so_far |>
+  tidyr::nest(.by = area_name) |>
+  dplyr::mutate(
+    chained_dfs = purrr::map(data, ~ calculate_index_chain(.x))
+  )
+
+bike_index_so_far_chained_long <-
+  dplyr::bind_rows(
+    bike_index_so_far_chained |>
+      dplyr::select(
+        area_name, data
+      ) |>
+      tidyr::unnest(data),
+    bike_index_so_far_chained |>
+      dplyr::select(
+        area_name, chained_dfs
+      ) |>
+      tidyr::unnest(chained_dfs)
+  ) |>
+  dplyr::filter(
+    !is.na(index_i)
+  ) |>
+  dplyr::left_join(
+    index_codes_and_reference_years,
+    by = dplyr::join_by(area_name)
+  ) |>
+  dplyr::select(
+    area_name,
+    reference_year,
+    year_base,
+    year,
+    month,
+    n_trp,
+    index_i,
+    standard_error,
+    index_type
+  ) |>
+  dplyr::arrange(
+    area_name,
+    year_base,
+    year
+  ) |>
+  dplyr::mutate(
+    compared_to_ref_year = reference_year == year_base
+  )
 
 # Write ----
+bike_index_all_long <-
+  dplyr::bind_rows(
+    bike_index_complete_years_chained_long,
+    bike_index_so_far_chained_long
+  ) |>
+  dplyr::mutate(
+    index_p = 100 * (index_i - 1),
+    ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error, 1),
+    ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error, 1)
+  )
+
 readr::write_rds(
-  bike_indexes_all,
-  file = "data_indexpoints_tidy/bike_indexes_all.rds"
+  bike_index_all_long,
+  file = "data_indexpoints_tidy/bike_index_all_long.rds"
 )
