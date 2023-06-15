@@ -16,9 +16,9 @@ library(htmltools)
 
 
 ```{r get_data, include=FALSE}
-index_year <- 2022
+index_year <- 2023
 # Last published month
-index_month <- 10
+index_month <- 3
 
 index_id <- 962
 
@@ -91,19 +91,19 @@ counties <- get_counties()
 ```{r filter_for_county, include=FALSE}
 # Look at details in one county at a time
 
-# 30 Viken                  12 Trond
-#  3 Oslo                   12 Trond
-# 34 Innlandet              10 Snorre
-# 38 Vestfold og Telemark   12 Trond
-# 42 Agder                  12 Snorre
-# 11 Rogaland               12 Snorre
-# 46 Vestland               12 Trond
-# 15 Møre og Romsdal        12 Snorre
-# 50 Trøndelag              12 Snorre
-# 18 Nordland               12 Snorre
-# 54 Troms og Finnmark      12 Snorre
+# 30 Viken                  05 Trond
+#  3 Oslo                   05 Trond
+# 34 Innlandet              05 Snorre
+# 38 Vestfold og Telemark   05 Trond
+# 42 Agder                  05 Snorre
+# 11 Rogaland               05 Snorre
+# 46 Vestland               05 Trond
+# 15 Møre og Romsdal        05 Snorre
+# 50 Trøndelag              05 Snorre
+# 18 Nordland               05 Snorre
+# 54 Troms og Finnmark      05 Snorre
 
-county_number_chosen <- 34
+county_number_chosen <- 54
 
 trps_meta <- 
   points %>% 
@@ -651,7 +651,7 @@ pointindex_long_2 <-
 
 ## Punktindeksene for de nye månedene
 
-### November
+### April
 
 ```{r map_trp_index, message=FALSE}
 trps_new_pointindex_1 %>% 
@@ -660,7 +660,7 @@ trps_new_pointindex_1 %>%
 ```
 
 
-### Desember
+### Mai
 
 ```{r map_trp_index_2, message=FALSE}
 trps_new_pointindex_2 %>%
@@ -778,6 +778,7 @@ pointindex_wide %>%
 
 ```{r notes}
 # Ekskluder:
+
 
 
 ```

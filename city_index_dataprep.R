@@ -55,7 +55,7 @@ trp_id_msnr <-
 
 # Choose
 index_month <- 4 # the one to be published now
-city_number <- 1952
+city_number <- 960
 
 reference_year <-
   dplyr::case_when(
@@ -640,7 +640,7 @@ mdt <-
 # )
 
 # TRD
-toll_mdt_class <-
+toll_mdt_light <-
   readr::read_rds(
     file = "data_indexpoints_tidy/trd_toll_mdt.rds",
   ) |>
@@ -697,9 +697,9 @@ mdt_filtered <-
       )
     )
   ) |>
-  tibble::as_tibble() #|>
+  tibble::as_tibble() |>
   # TRD
-  #dplyr::bind_rows(toll_mdt_class)
+  dplyr::bind_rows(toll_mdt_light)
 
 
 mdt_filtered |>
@@ -724,7 +724,6 @@ mdt_filtered |>
 
 ## Check MDT validity
 # Exclude trp-months
-# TODO: Test that filtering from Excel file is the same:
 #source("exclude_trp_mdts.R")
 source("exclude_trp_mdts_list.R")
 
@@ -738,7 +737,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[21:22]
+    trp_id %in% trp_mdt_ok_refyear[16:18]
   ) |>
   dplyr::select(
     trp_id,
@@ -823,10 +822,10 @@ mdt_validated |>
 mdt_and_pi <-
   dplyr::left_join(
     mdt_validated,
-    trp_index_monthly,
-    by = c("trp_id", "year", "month"),
-    #dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
-    #by = c("trp_id", "year_month" = "month_object") # TRD
+    #trp_index_monthly,
+    #by = c("trp_id", "year", "month"),
+    dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
+    by = c("trp_id", "year_month" = "month_object") # TRD
   ) |>
   dplyr::left_join(
     trp_names,
@@ -973,7 +972,7 @@ all_36_month_trp_indices <-
   dplyr::select(
     trp_id,
     name,
-    municipality_name,
+    #municipality_name,
     reference_year = year,
     last_month_in_index = month_object,
     index_period,
@@ -1018,8 +1017,8 @@ list(
   #punktindeks_ar = this_citys_trp_index_refyear,
   punkt_mdt = mdt_and_pi,
   punkt_mdt_indeks = all_36_month_trp_indices,
-  by_mdt = all_36_month_indices
-  #byindeks_hittil = city_index_so_far_all
+  by_mdt = all_36_month_indices,
+  byindeks_hittil = city_index_so_far_all
 ) |>
 writexl::write_xlsx(
   path = paste0(

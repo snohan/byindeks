@@ -217,6 +217,7 @@ data_2019_2021_hourly <-
     file = "bomdata_trondheim/data_2019_2021_hourly.rds"
   )
 
+
 ## 2021-04 ----
 # Datasettet for april 2021 skal etter sigende mangle fritakspasseringer.
 # Men etter en titt på dataene så virker det ikke som om dette er et problem.
@@ -299,7 +300,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "april"
+month_string <- "may"
 year_number <- 2023
 
 apar_data_for_month <-
@@ -406,9 +407,9 @@ tolling_data_daily_lane <-
 tolling_data_daily <-
   tolling_data_daily_lane |>
   # Removing unknowns since they are not vehicles (presumably)
-  dplyr::filter(
-    class != "ukjent"
-  ) |>
+  #dplyr::filter(
+  #  class != "ukjent"
+  #) |>
   dplyr::group_by(
     trp_id,
     date,
@@ -417,15 +418,16 @@ tolling_data_daily <-
   dplyr::summarise(
     traffic = sum(traffic),
     .groups = "drop"
-  ) %>%
-  tidyr::complete(
-    trp_id,
-    tidyr::nesting(
-      date,
-      class
-    ),
-    fill = list(traffic = 0)
   ) |>
+  # Creating zeros to match corresponding non-zero hours ONLY NEEDED FOR HOURLY TRAFFIC
+  # tidyr::complete(
+  #   trp_id,
+  #   tidyr::nesting(
+  #     date,
+  #     class
+  #   ),
+  #   fill = list(traffic = 0)
+  # ) |>
   dplyr::mutate(
     day = lubridate::mday(date),
     month = lubridate::floor_date(date, "month"),
@@ -435,18 +437,37 @@ tolling_data_daily <-
 
 # Check ----
 # Plot to see if data are ok
-tolling_data_daily_lane %>%
-  dplyr::filter(
-    trp_id == "86",
-    year %in% c(2023)
-  ) %>%
-  ggplot(aes(day, traffic, color = lane, linetype = class)) +
-  geom_line(linewidth = 1) +
-  facet_grid(
-    rows = vars(month)
-  ) +
-  theme_minimal()
+kommune_bomer <-
+  readr::read_rds(
+    file = "bomdata_trondheim/trd_toll_stations.rds"
+  )
 
+plot_toll_station_data_per_lane <- function(toll_id_chosen, year_chosen) {
+
+    toll_station_name <-
+      kommune_bomer |>
+      dplyr::filter(
+        trp_id == toll_id_chosen
+      ) |>
+      dplyr::select(name) |>
+      purrr::pluck(1)
+
+    tolling_data_daily_lane %>%
+    dplyr::filter(
+      trp_id == toll_id_chosen,
+      year %in% c(year_chosen)
+    ) %>%
+    ggplot(aes(day, traffic, color = lane, linetype = class)) +
+    geom_line(linewidth = 1) +
+    facet_grid(
+      rows = vars(month)
+    ) +
+    theme_minimal() +
+    ggplot2::ggtitle(toll_station_name)
+
+}
+
+plot_toll_station_data_per_lane("54", 2023)
 
 ## Exclusions ----
 # Exclusions may be monthly or daily
@@ -461,16 +482,16 @@ tolling_data_daily_lane %>%
 
 tolling_data_daily_tidy <-
   tolling_data_daily |>
-  dplyr::filter(!(trp_id == "52" & date %in% c("2022-05-12", "2022-05-13", "2022-05-20"))) |>
-  dplyr::filter(!(trp_id == "52" & date %in% c("2023-01-18", "2023-01-19",
-                                               "2023-04-24", "2023-04-25", "2023-04-26"))) |>
+  dplyr::filter(!(trp_id == "52" & date %in% ymd(c("2022-05-12", "2022-05-13", "2022-05-20")))) |>
+  dplyr::filter(!(trp_id == "52" & date %in% ymd(c("2023-01-18", "2023-01-19",
+                                             "2023-04-24", "2023-04-25", "2023-04-26")))) |>
   dplyr::filter(!(trp_id == "54" & month == "2021-03-01")) |>
   dplyr::filter(!(trp_id == "54" & month == "2021-04-01")) |>
   dplyr::filter(!(trp_id == "54" & month == "2021-05-01")) |>
   dplyr::filter(!(trp_id == "54" & month == "2021-06-01")) |>
   dplyr::filter(!(trp_id == "54" & month == "2021-07-01")) |>
   dplyr::filter(!(trp_id == "54" &
-                    date %in% seq.Date(as.Date("2021-08-01"), as.Date("2021-08-15"), 1))) |>
+                   date %in% seq.Date(as.Date("2021-08-01"), as.Date("2021-08-15"), 1))) |>
   dplyr::filter(!(trp_id == "54" & year == 2022)) |>
   dplyr::filter(!(trp_id == "55" & month == "2021-05-01")) |>
   dplyr::filter(!(trp_id == "55" & month == "2021-06-01")) |>
@@ -478,10 +499,10 @@ tolling_data_daily_tidy <-
   dplyr::filter(!(trp_id == "55" &
                     date %in% seq.Date(as.Date("2021-08-01"), as.Date("2021-08-15"), 1))) |>
   dplyr::filter(!(trp_id == "56" & month == "2021-04-01")) |>
-  dplyr::filter(!(trp_id == "62" & date %in% c("2023-04-12", "2023-04-13"))) |>
+  dplyr::filter(!(trp_id == "62" & date %in% ymd(c("2023-04-12", "2023-04-13")))) |>
   dplyr::filter(!(trp_id == "63")) |>
   dplyr::filter(!(trp_id == "72" & month == "2021-04-01")) |>
-  dplyr::filter(!(trp_id == "85" & date %in% c("2021-01-11", "2021-01-12", "2021-01-13"))) |>
+  dplyr::filter(!(trp_id == "85" & date %in% ymd(c("2021-01-11", "2021-01-12", "2021-01-13")))) |>
   dplyr::filter(!(trp_id == "86" & month == "2021-01-01")) |>
   dplyr::filter(!(trp_id == "86" & month == "2021-03-01")) |>
   dplyr::filter(!(trp_id == "86" & month == "2021-04-01"))
@@ -540,6 +561,18 @@ tolling_data_daily_all_years <-
     )
   )
 
+
+# Test
+# test <-
+#   tolling_data_daily_all_years |>
+#   dplyr::filter(
+#     trp_id == "52",
+#     class == "lette"
+#   ) |>
+#   dplyr::summarise(
+#     month_traffic = sum(traffic),
+#     .by = c(year, month)
+#   )
 
 # MDT ----
 toll_mdt_class <-

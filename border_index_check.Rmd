@@ -18,9 +18,9 @@ library(htmltools)
 
 ```{r get_data, include=FALSE}
 # Choose
-index_year <- 2022
+index_year <- 2023
 # Last published month
-index_month <- 11
+index_month <- 4
 index_id <- 2952
 
 # Fetch
@@ -268,7 +268,7 @@ border_index_prepared %>%
   labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
        caption = "Data: Statens vegvesen") +
   ggtitle("Estimert endring i trafikkmengde",
-          subtitle = "Trafikkmengde i 2021 sammenlignet med 2020")
+          subtitle = "Trafikkmengde i år sammenlignet med i fjor")
 ```
 
 
@@ -345,5 +345,5 @@ pointindex_wide %>%
       autoWidth = TRUE))
 
 # Ekskluder
-# Berby 5
+
 ```
