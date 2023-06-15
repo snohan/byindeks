@@ -2,10 +2,10 @@
 {
   source("rmd_setup.R")
   source("get_from_nvdb_api.R")
-  library(lubridate)
 }
 
 
+# Get AADT-links ----
 # 3  Oslo
 # 30 Viken
 # 34 Innlandet
@@ -52,6 +52,8 @@ readr::write_rds(
   file = "aadt_link_raw_2021.rds"
 )
 
+
+# Calculate traffic work ----
 traffic_work <-
   aadt_link_raw |>
   sf::st_drop_geometry() |>
@@ -82,8 +84,80 @@ readr::write_rds(
   file = "traffic_work_2021.rds"
 )
 
+
+# For weighting in VTI ----
 jsonlite::write_json(
   traffic_work,
   path = "trafikkarbeid_2021.json",
   prettify = TRUE
 )
+
+
+# Traffic work per use class ----
+# Will use road reference as a very simplified geometry, as full geometry is too heavy computationally.
+aadt_link_raw <-
+  readr::read_rds(
+    file = "aadt_link_raw_2021.rds"
+  ) |>
+  dplyr::select(
+    nvdb_objekt_id,
+    aadt_total,
+    heavy_percentage,
+    road_reference_section = shortform
+  ) |>
+  sf::st_drop_geometry()
+
+
+# Read CSV fetched from vegkart.no
+# Roadnet selection: not walking and cycling, not roundabouts, just ERF
+# Date: 2022-12-31
+bk10_50_normal <-
+  readr::read_csv2(
+    "spesialuttak/bk10_50_normal.csv",
+    col_select =
+      c(
+        `VEGOBJEKT-ID`,
+        #GEOMETRI,
+        LOK.VEGSYSTEMREFERANSE
+      )
+  ) |>
+  dplyr::rename(
+    id = `VEGOBJEKT-ID`,
+    #geometry = GEOMETRI,
+    road_reference_section = LOK.VEGSYSTEMREFERANSE
+  ) #|>
+  # sf::st_as_sf(
+  #   wkt = "geometry",
+  #   crs = 5973
+  # ) |>
+  # sf::st_zm(drop = T, what = "ZM") |>
+  # sf::st_transform("+proj=longlat +datum=WGS84")
+
+# test <-
+#   sf::st_combine(bk10_50_normal$geometry) |>
+#   sf::st_union()
+
+# TODO: split road ref sectio
+# TODO: union data sets per use class
+# TODO: merge geometry to simplify calculations
+
+
+## Test ----
+# En trafikkmengdelenke ved Jonsvatnet som overlapper kun i krysset med en bk10_50-lenke
+# 1015060830
+
+# En trafikkmengdelenke ved Jonsvatnet som ikke overlapper med en bk10_50-lenke
+# 1015060829
+
+# En trafikkmengdelenke ved Jonsvatnet som helt overlapper med en bk10_50-lenke
+# 1015060781
+
+aadt_link_test <-
+  aadt_link_raw |>
+  dplyr::filter(
+    nvdb_objekt_id %in% c("1015060830", "1015060829", "1015060781")
+  ) |>
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    bk10_50 = sf::st_intersects(geometry, test)
+  )
