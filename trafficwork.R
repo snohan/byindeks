@@ -2,6 +2,7 @@
 {
   source("rmd_setup.R")
   source("get_from_nvdb_api.R")
+  library(stringi)
 }
 
 
@@ -105,27 +106,128 @@ aadt_link_raw <-
     heavy_percentage,
     road_reference_section = shortform
   ) |>
-  sf::st_drop_geometry()
+  sf::st_drop_geometry() |>
+  split_road_system_reference_section() |>
+  dplyr::arrange(
+    road_system,
+    meter_start,
+    meter_end
+  )
 
 
 # Read CSV fetched from vegkart.no
 # Roadnet selection: not walking and cycling, not roundabouts, just ERF
 # Date: 2022-12-31
-bk10_50_normal <-
+
+read_use_class_file <- function(file_name) {
+
   readr::read_csv2(
-    "spesialuttak/bk10_50_normal.csv",
+    file_name,
     col_select =
       c(
         `VEGOBJEKT-ID`,
-        #GEOMETRI,
         LOK.VEGSYSTEMREFERANSE
       )
   ) |>
   dplyr::rename(
     id = `VEGOBJEKT-ID`,
-    #geometry = GEOMETRI,
     road_reference_section = LOK.VEGSYSTEMREFERANSE
-  ) #|>
+  ) |>
+  dplyr::filter(
+    !is.na(road_reference_section)
+  )
+}
+
+bk10_50_files <-
+  base::list.files(
+    "spesialuttak",
+    pattern = "^bk10_50.+",
+    full.names = TRUE
+  )
+
+bk10_50 <-
+  purrr::map(bk10_50_files, ~ read_use_class_file(.x)) |>
+  purrr::list_rbind()
+
+bk10_50_tidy <-
+  bk10_50 |>
+  dplyr::select(
+    road_reference_section
+  ) |>
+  dplyr::distinct() |>
+  split_road_system_reference_section() |>
+  dplyr::filter(
+    !is.na(road_system)
+  ) |>
+  dplyr::mutate(
+    use_class = "bk10_50"
+  )
+
+
+bk10_60_files <-
+  base::list.files(
+    "spesialuttak",
+    pattern = "^bk10_60.+",
+    full.names = TRUE
+  )
+
+bk10_60 <-
+  purrr::map(bk10_60_files, ~ read_use_class_file(.x)) |>
+  purrr::list_rbind()
+
+bk10_60_tidy <-
+  bk10_60 |>
+  dplyr::select(
+    road_reference_section
+  ) |>
+  dplyr::distinct() |>
+  split_road_system_reference_section() |>
+  dplyr::filter(
+    !is.na(road_system)
+  ) |>
+  dplyr::select(
+    -road_reference_section
+  ) |>
+  dplyr::arrange(
+    road_system,
+    meter_start
+  )
+
+bk10_60_reduced <-
+  bk10_60_tidy |>
+  tidyr::pivot_longer(
+    cols = c(meter_start, meter_end),
+    names_to = "extreme",
+    values_to = "meter"
+  ) |>
+  dplyr::mutate(
+    same_road_system = road_system == dplyr::lag(road_system, default = "TRUE"),
+    same_meter_lag = meter == dplyr::lag(meter) & same_road_system,
+    same_meter_lead = meter == dplyr::lead(meter) & same_road_system
+  ) |>
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    connecting = base::any(same_meter_lag, same_meter_lead)
+  ) |>
+  dplyr::ungroup() |>
+  dplyr::filter(
+    connecting == FALSE
+  ) |>
+  dplyr::select(
+    road_system,
+    extreme,
+    meter
+  ) |>
+  tidyr::pivot_wider(
+    names_from = "extreme",
+    values_from = "meter",
+    values_fn = list
+  ) |>
+  tidyr::unnest(cols = everything()) |>
+  dplyr::mutate(
+    use_class = "bk10_60"
+  )
+
   # sf::st_as_sf(
   #   wkt = "geometry",
   #   crs = 5973
@@ -137,9 +239,21 @@ bk10_50_normal <-
 #   sf::st_combine(bk10_50_normal$geometry) |>
 #   sf::st_union()
 
-# TODO: split road ref sectio
-# TODO: union data sets per use class
-# TODO: merge geometry to simplify calculations
+# TODO: conditional joins, one for meter_start and one for meter_end
+# TODO: avoid getting overlap in just intersections: add one meter to start of traffic link, subtract one from end?
+
+aadt_link_bk <-
+  aadt_link_raw |>
+  dplyr::left_join(
+    bk10_60_reduced,
+    by = dplyr::join_by(
+      road_system == road_system,
+      meter_start >= meter_start,
+      meter_end <= meter_end
+    )
+  )
+
+# OBS! aadt_links do not explicitly list all road system reference sections they cover!!! ?
 
 
 ## Test ----

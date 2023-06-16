@@ -58,3 +58,42 @@ split_road_system_reference <- function(df) {
       intersection_meter
     )
 }
+
+
+split_road_system_reference_section <- function(df) {
+
+  # df must have column "road_reference_section"
+
+  df_with_split_road_system_reference_section <-
+    df |>
+    dplyr::mutate(
+      reverse_road_reference = stringi::stri_reverse(road_reference_section)
+    ) |>
+    tidyr::separate(
+      col = reverse_road_reference,
+      into = c("meter_section", "road_system"),
+      sep = "m[[:blank:]]",
+      extra = "merge",
+      remove = TRUE,
+      fill = "right"
+    ) |>
+    dplyr::mutate(
+      road_system = stringi::stri_reverse(road_system),
+      meter_section = stringi::stri_reverse(meter_section)
+    ) |>
+    tidyr::separate(
+      col = meter_section,
+      into = c("meter_start", "meter_end"),
+      sep = "-"
+    ) |>
+    dplyr::mutate(
+      meter_start = as.numeric(meter_start),
+      meter_end = as.numeric(meter_end)
+    ) |>
+    dplyr::relocate(
+      meter_start,
+      meter_end,
+      .after = road_system
+    )
+
+}
