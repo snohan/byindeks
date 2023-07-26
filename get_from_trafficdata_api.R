@@ -254,15 +254,18 @@ get_points <- function() {
   return(points)
 }
 
+#trp_list <- trp_chosen
 get_trp_metadata_by_list <- function(trp_list) {
   # Get chosen traffic registration points
 
+  input_variables <-
+    list(
+      "trpIds" = trp_list
+    )
+
   query <-
-    paste0(
-      "query trps {
-        trafficRegistrationPoints (trafficRegistrationPointIds: [",
-      trp_list,
-      "]) {
+    "query trps ($trpIds: [String!]!) {
+        trafficRegistrationPoints (trafficRegistrationPointIds: $trpIds) {
       id
       name
       trafficRegistrationType
@@ -299,15 +302,18 @@ get_trp_metadata_by_list <- function(trp_list) {
         }
       }
       operationalStatus
+      direction {
+          from
+          fromAccordingToMetering
+          to
+          toAccordingToMetering
+        }
     }
   }"
-    )
 
-  myqueries <- Query$new()
-  myqueries$query("trps", query)
+  my_query <- ghql::Query$new()$query(name = "my_query", query)
 
-  response <-
-    cli$exec(myqueries$queries$trps) %>%
+  response <- cli$exec(my_query$my_query, input_variables) %>%
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
     as.data.frame() %>%
     tidyr::unnest(cols = c(data.trafficRegistrationPoints.commissions)) %>%
@@ -336,10 +342,12 @@ get_trp_metadata_by_list <- function(trp_list) {
       road_network_link =
         data.trafficRegistrationPoints.location.roadLinkSequence.roadLinkSequenceId,
       operational_status =
-        data.trafficRegistrationPoints.operationalStatus
+        data.trafficRegistrationPoints.operationalStatus,
+      from = data.trafficRegistrationPoints.direction.fromAccordingToMetering,
+      to = data.trafficRegistrationPoints.direction.toAccordingToMetering
     ) %>%
     dplyr::select(
-      trp_id, name, traffic_type, registration_frequency,
+      trp_id, name, from, to, traffic_type, registration_frequency,
       road_reference, county_geono, county_name,
       county_no, municipality_name, municipality_no, lanes, lat, lon,
       road_network_position, road_network_link, validFrom, validTo,
@@ -360,6 +368,7 @@ get_trp_metadata_by_list <- function(trp_list) {
 
   return(response)
 }
+
 
 get_trp_data_time_span <- function() {
 
@@ -2104,6 +2113,125 @@ get_pointindices_for_trp_list <- function(trp_list, index_year) {
 
 
 # Hourly and daily traffic ####
+
+#trp_id <- "80998V1125915"
+#from <- "2022-01-01T00:00:00.000+01:00"
+#to <- "2022-02-01T00:00:00.000+01:00"
+get_hourly_traffic_by_length_lane <- function(trp_id, from, to) {
+
+  # ZonedDateTime:
+  # A datetime with timezone, e.g. "2017-01-24T00:00:00.000+01:00"
+
+  # Response is paginated
+  # Default values
+  hasNextPage <- TRUE
+  end_cursor <- ""
+  hourly_traffic <- data.frame()
+
+  query <-
+    "query hourly_traffic ($trpId: String!, $from: ZonedDateTime!, $to: ZonedDateTime!, $endCursor: String!) {
+       trafficData (trafficRegistrationPointId: $trpId) {
+         trafficRegistrationPoint {
+           id
+         }
+        volume {
+          byHour (from: $from, to: $to, after: $endCursor) {
+            edges {
+              node {
+                from
+                byLane {
+                  lane {
+                    laneNumberAccordingToMetering
+                  }
+                  byLengthRange {
+                    lengthRange {
+                      representation
+                    }
+                    total {
+                      volumeNumbers {
+                        volume
+                        validLength {
+                          percentage
+                        }
+                      }
+                      coverage {
+                        percentage
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+          }
+        }
+      }
+    }"
+
+  my_query <- ghql::Query$new()$query(name = "my_query", query)
+
+  while(hasNextPage == TRUE){
+
+    input_variables <-
+      list(
+        "trpId" = trp_id,
+        "from" = from,
+        "to" = to,
+        "endCursor" = end_cursor
+      )
+
+    response <-
+      cli$exec(my_query$my_query, input_variables) |>
+      jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
+
+    if(length(response$data$trafficData$volume$byHour$edges) == 0)
+      break;
+
+    end_cursor <- response$data$trafficData$volume$byHour$pageInfo$endCursor
+
+    hasNextPage <- response$data$trafficData$volume$byHour$pageInfo$hasNextPage
+
+    response_data <-
+      response |>
+      base::as.data.frame() |>
+      tibble::as_tibble() |>
+      dplyr::select(
+        -tidyselect::ends_with("hasNextPage"),
+        -tidyselect::ends_with("endCursor")
+      ) |>
+      tidyr::unnest(cols = data.trafficData.volume.byHour.edges.node.byLane) |>
+      # If some hours have no data
+      dplyr::rowwise() |>
+      dplyr::mutate(
+        data_length = list(length(purrr::pluck(byLengthRange, 1)))
+      ) |>
+      dplyr::ungroup() |>
+      tidyr::unnest(cols = data_length) |>
+      dplyr::filter(
+        data_length != 0
+      ) |>
+      tidyr::unnest(cols = byLengthRange) |>
+      dplyr::select(
+        trp_id = data.trafficData.id,
+        from = data.trafficData.volume.byHour.edges.node.from,
+        length_range = lengthRange.representation,
+        traffic = total.volumeNumbers.volume,
+        valid_length_precentage = total.volumeNumbers.validLength.percentage,
+        coverage = total.coverage.percentage,
+        lane = lane.laneNumberAccordingToMetering
+      ) |>
+      dplyr::mutate(from = lubridate::with_tz(lubridate::ymd_hms(from), "CET"))
+
+    hourly_traffic <- dplyr::bind_rows(hourly_traffic, response_data)
+  }
+
+ return(hourly_traffic)
+
+}
+
 
 getHourlytraffic <- function(trpID, from, to) {
   # Default values
@@ -4128,3 +4256,6 @@ get_hour_of_day_week_direction_length <- function(year, week_no, day_type, trp_i
   return(response)
 
 }
+
+
+
