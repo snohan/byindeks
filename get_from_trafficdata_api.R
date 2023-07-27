@@ -2114,9 +2114,9 @@ get_pointindices_for_trp_list <- function(trp_list, index_year) {
 
 # Hourly and daily traffic ####
 
-#trp_id <- "80998V1125915"
-#from <- "2022-01-01T00:00:00.000+01:00"
-#to <- "2022-02-01T00:00:00.000+01:00"
+#trp_id <- "92719V1125906"
+#from <- "2019-01-01T00:00:00.000+01:00"
+#to <- "2019-02-01T00:00:00.000+01:00"
 get_hourly_traffic_by_length_lane <- function(trp_id, from, to) {
 
   # ZonedDateTime:
@@ -2213,22 +2213,25 @@ get_hourly_traffic_by_length_lane <- function(trp_id, from, to) {
       dplyr::filter(
         data_length != 0
       ) |>
-      tidyr::unnest(cols = byLengthRange) |>
-      dplyr::select(
-        trp_id = data.trafficData.id,
-        from = data.trafficData.volume.byHour.edges.node.from,
-        length_range = lengthRange.representation,
-        traffic = total.volumeNumbers.volume,
-        valid_length_precentage = total.volumeNumbers.validLength.percentage,
-        coverage = total.coverage.percentage,
-        lane = lane.laneNumberAccordingToMetering
-      ) |>
-      dplyr::mutate(from = lubridate::with_tz(lubridate::ymd_hms(from), "CET"))
+      tidyr::unnest(cols = byLengthRange)
 
     hourly_traffic <- dplyr::bind_rows(hourly_traffic, response_data)
   }
 
- return(hourly_traffic)
+  hourly_traffic_tidy <-
+    hourly_traffic |>
+    dplyr::select(
+      trp_id = data.trafficData.id,
+      from = data.trafficData.volume.byHour.edges.node.from,
+      length_range = lengthRange.representation,
+      traffic = total.volumeNumbers.volume,
+      valid_length_percentage = total.volumeNumbers.validLength.percentage,
+      coverage = total.coverage.percentage,
+      lane = lane.laneNumberAccordingToMetering
+    ) |>
+    dplyr::mutate(from = lubridate::with_tz(lubridate::ymd_hms(from), "CET"))
+
+ return(hourly_traffic_tidy)
 
 }
 

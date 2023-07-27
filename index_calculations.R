@@ -2,6 +2,7 @@
 {
   source("rmd_setup.R")
   source("get_from_trafficdata_api.R")
+  library(tictoc)
 }
 
 
@@ -61,21 +62,183 @@ trp_trs_coverage <-
   ) |>
   dplyr::filter(
     n_years == 2
+  ) |>
+  dplyr::arrange(
+    road_reference
   )
 
 
 ## Hourly data ----
-trp_1 <- "80998V1125915"
+calculate_hourly_index_traffic <- function(traffic_by_length_lane) {
 
-data_1 <- get_hourly_traffic_by_length_lane(trp_1, "2019-01-01T00:00:00.00+01:00", "2020-01-01T00:00:00.000+01:00")
+  # IN: hourly traffic by length and lane
+  # OUT: hourly traffic when all lanes present
 
-data_2 <- get_hourly_traffic_by_length_lane(trp_1, "2022-01-01T00:00:00.00+01:00", "2023-01-01T00:00:00.000+01:00")
+  data_tidy <-
+    traffic_by_length_lane |>
+    tibble::as_tibble() |>
+    dplyr::filter(
+      length_range == "[..,5.6)",
+      valid_length_percentage > 99,
+      coverage > 95
+    )
+
+  lanes_each_month <-
+    data_tidy |>
+    dplyr::mutate(
+      month = lubridate::month(from)
+    ) |>
+    dplyr::select(
+      lane,
+      month
+    ) |>
+    dplyr::distinct() |>
+    dplyr::summarise(
+      lanes_month = base::paste(lane, collapse = "#"),
+      .by = month
+    )
+
+  hourly_traffic <-
+    data_tidy |>
+    dplyr::select(
+      from,
+      traffic,
+      lane
+    ) |>
+    dplyr::summarise(
+      lanes_hour = base::paste(lane, collapse = "#"),
+      traffic = sum(traffic),
+      .by = from
+    ) |>
+    dplyr::mutate(
+      month = lubridate::month(from)
+    ) |>
+    dplyr::left_join(
+      lanes_each_month,
+      by = join_by(month)
+    ) |>
+    dplyr::filter(
+      lanes_hour == lanes_month,
+    ) |>
+    dplyr::mutate(
+      day = lubridate::day(from),
+      hour = lubridate::hour(from)
+    ) |>
+    dplyr::select(
+      month,
+      day,
+      hour,
+      lanes_hour,
+      traffic
+    ) |>
+    # Adding the two hours when DST is set back in October
+    dplyr::summarise(
+      traffic = sum(traffic),
+      .by = c(tidyselect::everything(), -traffic)
+    )
+
+  return(hourly_traffic)
+}
 
 
 ## TRP index ----
+#trp_id <- "92719V1125906"
+#base_year <- 2019
+#calc_year <- 2022
+
+calculate_trp_index <- function(trp_id, base_year, calc_year) {
+
+  data_base_year <-
+    get_hourly_traffic_by_length_lane(
+      trp_id,
+      paste0(as.character(base_year), "-01-01T00:00:00.000+01:00"),
+      paste0(as.character(base_year + 1), "-01-01T00:00:00.000+01:00")
+    ) |>
+    calculate_hourly_index_traffic()
+
+  data_calc_year <-
+    get_hourly_traffic_by_length_lane(
+      trp_id,
+      paste0(as.character(calc_year), "-01-01T00:00:00.000+01:00"),
+      paste0(as.character(calc_year + 1), "-01-01T00:00:00.000+01:00")
+    ) |>
+    calculate_hourly_index_traffic()
+
+  trp_index_data <-
+    dplyr::inner_join(
+      data_base_year,
+      data_calc_year,
+      by = join_by(month, day, hour, lanes_hour),
+      suffix = c("_base", "_calc")
+    ) |>
+    dplyr::summarise(
+      traffic_base = sum(traffic_base),
+      traffic_calc = sum(traffic_calc),
+      n_hours = n(),
+      .by = c(month, day)
+    ) |>
+    dplyr::filter(
+      n_hours >= 16
+    ) |>
+    dplyr::summarise(
+      traffic_base = sum(traffic_base),
+      traffic_calc = sum(traffic_calc),
+      n_days = n(),
+      .by = c(month)
+    ) |>
+    dplyr::filter(
+      n_days >= 16
+    ) |>
+    dplyr::mutate(
+      trp_id = trp_id,
+      years = paste0(as.character(base_year), "-", as.character(calc_year))
+    )
+
+  readr::write_rds(
+    trp_index_data,
+    file = paste0("trp_index/", trp_id, "_", base_year, "_", calc_year, ".rds")
+  )
+
+  return(trp_index_data)
+
+}
+
+tictoc::tic()
+trp_index_data <-
+  calculate_trp_index(
+    trp_trs_coverage$trp_id[15],
+    2019,
+    2022
+  )
+tictoc::toc()
 
 
 ## City index ----
+all_trp_index_data <-
+  base::list.files(path = "trp_index", full.names = TRUE) |>
+  purrr::map(~ readr::read_rds(.x)) |>
+  purrr::list_rbind() |>
+  dplyr::summarise(
+    traffic_base = sum(traffic_base),
+    traffic_calc = sum(traffic_calc),
+    n_months = n(),
+    .by = c(trp_id)
+  ) |>
+  dplyr::filter(
+    n_months >= 6
+  ) |>
+  dplyr::mutate(
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1)
+  )
 
-
+city_index_tromso <-
+  all_trp_index_data |>
+  dplyr::summarise(
+    traffic_base = sum(traffic_base),
+    traffic_calc = sum(traffic_calc),
+    n_trp = n()
+  ) |>
+  dplyr::mutate(
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1)
+  )
 
