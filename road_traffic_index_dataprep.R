@@ -27,19 +27,19 @@ points <-
     name = stringr::str_to_title(name, locale = "no")
   ) %>%
   split_road_system_reference() %>%
-  dplyr::select(
-    trp_id,
-    road_category,
-    county_name
-  ) %>%
-  # For finding manually excluded trps:
   # dplyr::select(
   #   trp_id,
-  #   name,
   #   road_category,
-  #   road_reference,
   #   county_name
   # ) %>%
+  # For finding manually excluded trps:
+  dplyr::select(
+    trp_id,
+    name,
+    road_category,
+    road_reference,
+    county_name
+  ) %>%
   dplyr::mutate(
     road_category = dplyr::case_when(
       road_category == "F" ~ "Fylkesveg",
@@ -53,8 +53,8 @@ points <-
   )
 
 ## Choose month ----
-this_year <- 2023
-latest_month_number <- 5
+this_year <- 2022
+latest_month_number <- 12
 
 index_this_year <-
   get_published_road_traffic_index_for_months(
@@ -77,6 +77,36 @@ pointindex_this_year <-
 # Prepare ----
 pointindices <- pointindex_this_year[[2]]
 
+# Sidetrack: Manually excluded
+# pointindices_manually_excluded <-
+#   pointindices %>%
+#   dplyr::filter(
+#     #is_excluded == FALSE,
+#     is_manually_excluded == TRUE,
+#     period == "year_to_date",
+#     day_type == "ALL",
+#     !is.na(index_total_p)
+#   ) %>%
+#   dplyr::select(
+#     trp_id,
+#     year,
+#     month,
+#     period,
+#     day_type,
+#     index_p = index_total_p
+#   ) |>
+#   dplyr::left_join(
+#     points,
+#     by = join_by(trp_id)
+#   )
+#
+# writexl::write_xlsx(
+# #readr::write_csv2(
+#   pointindices_manually_excluded,
+#   "manuelt_ekskluderte_punkter_2022.xlsx"
+# )
+
+# Back on track
 pointindices_all <-
   pointindices %>%
   dplyr::filter(
