@@ -3,6 +3,7 @@
   source("rmd_setup.R")
   source("get_from_trafficdata_api.R")
   library(tictoc)
+  library(writexl)
 }
 
 
@@ -230,6 +231,28 @@ all_trp_index_data <-
   dplyr::mutate(
     index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1)
   )
+
+trp_index_meta_data <-
+  all_trp_index_data |>
+  dplyr::left_join(
+    trp,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    road_reference,
+    index_p
+  ) |>
+  dplyr::distinct() |>
+  dplyr::arrange(
+    name
+  )
+
+writexl::write_xlsx(
+  trp_index_meta_data,
+  "spesialuttak/trp_index_tromso.xlsx"
+)
 
 city_index_tromso <-
   all_trp_index_data |>

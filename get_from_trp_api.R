@@ -176,6 +176,79 @@ get_points_from_trp_api <- function() {
   return(points_trp)
 }
 
+get_trp_direction_reference <- function() {
+
+  query <-
+    "query all_trp_dir {
+      trafficRegistrationPoints {
+        id
+        name
+        operationalStatus
+        registrationFrequency
+        trpType
+        location {
+          municipality {
+            county {
+              id
+            }
+          }
+          roadLink {
+            id
+            position
+          }
+          roadReference {
+            isMeteringDirectionSameAsRoadLink
+            roadCategory {
+              id
+            }
+            shortForm
+          }
+        }
+        directionReference {
+          meteringDirectionWithRoadLink
+          referenceTime
+        }
+        meteringDirectionChanged
+        trpDirection {
+          directionAccordingToMetering {
+            from
+            to
+          }
+          directionAccordingToRoadLink {
+            from
+            to
+          }
+        }
+      }
+    }"
+
+  response <-
+    get_via_httr(query) |>
+    dplyr::select(
+      trp_id = data.trafficRegistrationPoints.id,
+      trp_name = data.trafficRegistrationPoints.name,
+      county_id = data.trafficRegistrationPoints.location.municipality.county.id,
+      road_category = data.trafficRegistrationPoints.location.roadReference.roadCategory.id,
+      road_reference = data.trafficRegistrationPoints.location.roadReference.shortForm,
+      registration_frequency = data.trafficRegistrationPoints.registrationFrequency,
+      operational_status = data.trafficRegistrationPoints.operationalStatus,
+      trp_type = data.trafficRegistrationPoints.trpType,
+      road_link_id = data.trafficRegistrationPoints.location.roadLink.id,
+      road_link_position = data.trafficRegistrationPoints.location.roadLink.position,
+      reference_time_then = data.trafficRegistrationPoints.directionReference.referenceTime,
+      same_direction_of_metering_and_link_then = data.trafficRegistrationPoints.directionReference.meteringDirectionWithRoadLink,
+      metering_direction_changed = data.trafficRegistrationPoints.meteringDirectionChanged,
+      same_direction_of_metering_and_link_now = data.trafficRegistrationPoints.location.roadReference.isMeteringDirectionSameAsRoadLink,
+      from_according_to_metering = data.trafficRegistrationPoints.trpDirection.directionAccordingToMetering.from,
+      to_according_to_metering = data.trafficRegistrationPoints.trpDirection.directionAccordingToMetering.to,
+      #from_according_to_link = data.trafficRegistrationPoints.trpDirection.directionAccordingToRoadLink.from,
+      #to_according_to_link = data.trafficRegistrationPoints.trpDirection.directionAccordingToRoadLink.to
+    )
+
+  return(response)
+
+}
+
 
 get_trps_with_commission <- function() {
 
