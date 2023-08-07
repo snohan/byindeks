@@ -40,18 +40,18 @@ points <- get_points() %>%
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 5952         2019 - 2023-05
-# Førde 9952          2018 - 2023-05
-# Grenland 4953       2018 - 2023-05
-# Nedre Glomma 5953   2019 - 2023-05
-# Nord-Jæren 6952     2020 - 2023-05
-# Osloområdet 6953    2018 - 2023-05
-# Tromsø 11952        2021 - 2023-05
-# Vestfold 12952      2017 - 2023-05
+# Bergen 5952         2019 - 2023-07
+# Førde 9952          2018 - 2023-07
+# Grenland 4953       2018 - 2023-07
+# Nedre Glomma 5953   2019 - 2023-07
+# Nord-Jæren 6952     2020 - 2023-07
+# Osloområdet 6953    2018 - 2023-07
+# Tromsø 11952        2021 - 2023-07
+# Vestfold 12952      2017 - 2023-07
 
 # Choose
 index_year <- 2023
-index_month <- 4 # latest published
+index_month <- 5 # latest published
 city_number <- 12952
 
 # Fetch
@@ -170,12 +170,12 @@ point_index_new_prepared <-
     index_total_coverage
   )
 
-# point_index_new_prepared_2 <- point_index_new %>%
-#   dplyr::filter(day_type == "ALL",
-#                 period == "month",
-#                 month == index_month + 2) %>%
-#   dplyr::select(trp_id, year, month, index_total_p,
-#                 index_total_coverage)
+point_index_new_prepared_2 <- point_index_new %>%
+  dplyr::filter(day_type == "ALL",
+                period == "month",
+                month == index_month + 2) %>%
+  dplyr::select(trp_id, year, month, index_total_p,
+                index_total_coverage)
 # 
 # point_index_new_prepared_3 <- point_index_new %>%
 #   dplyr::filter(day_type == "ALL",
@@ -198,7 +198,7 @@ pointindex_prepared_all <-
   dplyr::bind_rows(
     pointindex_prepared,
     point_index_new_prepared,
-    #point_index_new_prepared_2,
+    point_index_new_prepared_2,
     # point_index_new_prepared_3,
     # point_index_new_prepared_4
   ) %>% 
@@ -225,19 +225,19 @@ city_trps_new_pointindex <-
             index_total_coverage, " %"),
     label_text = lapply(label_text, htmltools::HTML))
 
-# city_trps_new_pointindex_2 <-
-#   city_trps_meta %>%
-#   dplyr::left_join(
-#     point_index_new_prepared_2,
-#     by = "trp_id"
-#   ) %>%
-#   dplyr::mutate(
-#     label_text =
-#       paste(name, ", ",
-#             road_category_and_number, "<br/>",
-#             index_total_p, " %", "<br/>",
-#             index_total_coverage, " %"),
-#     label_text = lapply(label_text, htmltools::HTML))
+city_trps_new_pointindex_2 <-
+  city_trps_meta %>%
+  dplyr::left_join(
+    point_index_new_prepared_2,
+    by = "trp_id"
+  ) %>%
+  dplyr::mutate(
+    label_text =
+      paste(name, ", ",
+            road_category_and_number, "<br/>",
+            index_total_p, " %", "<br/>",
+            index_total_coverage, " %"),
+    label_text = lapply(label_text, htmltools::HTML))
 # 
 # city_trps_new_pointindex_3 <- 
 #   city_trps_meta %>% 
@@ -355,7 +355,7 @@ city_index_prepared %>%
 
 
 
-## April
+## Juni
 
 ```{r map_trp_index, message=FALSE}
 city_trps_new_pointindex %>% 
@@ -368,12 +368,18 @@ city_trps_new_pointindex %>%
   create_pointindex_map()
 ```
 
-<!-- ## Desember -->
+
+## Juli
 
 ```{r map_trp_index_2, message=FALSE}
-# city_trps_new_pointindex_2 %>%
-#   dplyr::rename(index = index_total_p) %>%
-#   create_pointindex_map()
+city_trps_new_pointindex_2 %>% 
+  dplyr::rename(
+    index = index_total_p
+  ) %>% 
+  dplyr::filter(
+    !is.na(index)
+  ) %>% 
+  create_pointindex_map()
 ```
 
 ```{r map_trp_index_3, message=FALSE}

@@ -2,11 +2,12 @@
 source("rmd_setup.R")
 source("get_from_trafficdata_api.R")
 source("index_report_functions.R")
+source("indexpoints_tidying_functions.R")
 
 
 # Index codes and years ----
 last_complete_year <- 2022
-last_complete_month_this_year <- 5
+last_complete_month_this_year <- 7
 
 index_codes_and_reference_years <-
   tibble::tibble(
@@ -246,7 +247,7 @@ bike_index_so_far <-
   bike_indexes_all |>
   dplyr::filter(
     period == "year_to_date",
-    month == 5
+    month == last_complete_month_this_year
   ) |>
   dplyr::select(
     area_name,
