@@ -38,20 +38,20 @@ points <-
 
 # City numbers
 # Refy City Cnum  Chkd Resp
-# 2016 Busk 1952   05 Snorre
-# 2016 Gren  955   05 Snorre
-# 2016 Kris  957   05 Snorre
-# 2016 NGlo  953   05 Trond
-# 2016 Trom  961   05 Snorre
-# 2017 NJær  952   05 Snorre
-# 2018 Oslo  959   05 Trond
-# 2018 Berg 8952   05 Trond
-# 2019 Tron  960   05 Snorre
+# 2016 Busk 1952   07 Snorre
+# 2016 Gren  955   07 Snorre
+# 2016 Kris  957   07 Snorre
+# 2016 NGlo  953   07 Trond
+# 2016 Trom  961   07 Snorre
+# 2017 NJær  952   07 Snorre
+# 2018 Oslo  959   07 Trond
+# 2018 Berg 8952   07 Trond
+# 2019 Tron  960   07 Snorre
 
 
 # Choose
 index_year <- 2023
-latest_published_month <- 4
+latest_published_month <- 5
 city_number <- 960
 # End choose
 
@@ -98,7 +98,7 @@ pointindex <-
   )
 
 # TRD start
-#TRD toll station index
+# TRD toll station index
 tolling_station_indices_prepared <-
   readr::read_rds(
     file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
@@ -142,6 +142,12 @@ tolling_station_indices_prepared_new <-
   tolling_station_indices_prepared |>
   dplyr::filter(
     month == latest_published_month + 1
+  )
+
+tolling_station_indices_prepared_new_2 <-
+  tolling_station_indices_prepared |>
+  dplyr::filter(
+    month == latest_published_month + 2
   )
 
 trd_toll_stations_meta <-
@@ -301,36 +307,46 @@ missing_adt <-
   this_citys_trps_all_adt %>%
   dplyr::filter(is.na(adt))
 
-fetch_adts <-
-  purrr::map_dfr(
-    missing_adt$road_link_position,
-    ~ get_historic_aadt_by_roadlinkposition(
-      roadlinkposition = .
-    )
-  ) |>
-  dplyr::group_by(
-    road_link_position
-  ) |>
-  dplyr::slice_max(
-    year,
-    with_ties = FALSE
-  ) |>
-  dplyr::mutate(
-    adt = round(aadt_total * (1 - heavy_percentage / 100), digits = -1)
-  ) |>
-  dplyr::select(
-    road_link_position,
-    adt,
-    year
-  )
 
-missing_adt_fixed <-
-  missing_adt |>
-  dplyr::select(-adt, -year) |>
-  dplyr::left_join(
-    fetch_adts,
-    by = "road_link_position"
-  )
+if(nrow(missing_adt) == 0) {
+  
+  missing_adt_fixed <- data.frame()
+  
+}else {
+
+  fetch_adts <-
+    purrr::map_dfr(
+      missing_adt$road_link_position,
+      ~ get_historic_aadt_by_roadlinkposition(
+        roadlinkposition = .
+      )
+    ) |>
+    dplyr::group_by(
+      road_link_position
+    ) |>
+    dplyr::slice_max(
+      year,
+      with_ties = FALSE
+    ) |>
+    dplyr::mutate(
+      adt = round(aadt_total * (1 - heavy_percentage / 100), digits = -1)
+    ) |>
+    dplyr::select(
+      road_link_position,
+      adt,
+      year
+    )
+  
+  missing_adt_fixed <-
+    missing_adt |>
+    dplyr::select(-adt, -year) |>
+    dplyr::left_join(
+      fetch_adts,
+      by = "road_link_position"
+    )
+}
+
+
 
 # Finally all aadt
 this_citys_trps_all_adt_final <-
@@ -349,7 +365,7 @@ this_citys_trps_all_adt_final <-
    by = "trp_id"
   ) |>
   dplyr::mutate(
-   station_type_short = stringr::str_sub(station_type, 1, 1)
+  station_type_short = stringr::str_sub(station_type, 1, 1)
   )
 
 readr::write_rds(
@@ -482,22 +498,26 @@ point_index_new_prepared <-
    tolling_station_indices_prepared_new
   )
 
-# point_index_new_prepared_2 <- 
-#   point_index_new %>%
-#   dplyr::filter(day_type == "ALL",
-#                 period == "month",
-#                 month == latest_published_month + 2) %>%
-#   dplyr::select(
-#     trp_id, 
-#     year, 
-#     month, 
-#     index_total_p,
-#     index_total_coverage, 
-#     length_excluded, 
-#     length_coverage,
-#     index_short, 
-#     index_long
-#   )
+point_index_new_prepared_2 <-
+  point_index_new %>%
+  dplyr::filter(day_type == "ALL",
+                period == "month",
+                month == latest_published_month + 2) %>%
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    index_total_p,
+    index_total_coverage,
+    length_excluded,
+    length_coverage,
+    index_short,
+    index_long
+  )|> 
+  # TRD
+  dplyr::bind_rows(
+   tolling_station_indices_prepared_new_2
+  )
 # 
 # point_index_new_prepared_3 <- point_index_new %>%
 #   dplyr::filter(day_type == "ALL",
@@ -527,7 +547,7 @@ pointindex_prepared_all <-
   dplyr::bind_rows(
     pointindex_prepared,
     point_index_new_prepared,
-    #point_index_new_prepared_2,
+    point_index_new_prepared_2,
     #point_index_new_prepared_3,
     #point_index_new_prepared_4#,
     #point_index_new_prepared_5
@@ -569,19 +589,19 @@ city_trps_new_pointindex <-
     label_text = lapply(label_text, htmltools::HTML))
 
 
-# city_trps_new_pointindex_2 <- 
-#   city_trps_meta %>%
-#   dplyr::left_join(
-#     point_index_new_prepared_2,
-#     by = "trp_id"
-#   ) %>%
-#   dplyr::mutate(
-#     label_text =
-#       paste(name, ", ",
-#             road_category_and_number, "<br/>",
-#             index_total_p, " %", "<br/>",
-#             index_total_coverage, " %"),
-#     label_text = lapply(label_text, htmltools::HTML))
+city_trps_new_pointindex_2 <-
+  city_trps_meta %>%
+  dplyr::left_join(
+    point_index_new_prepared_2,
+    by = "trp_id"
+  ) %>%
+  dplyr::mutate(
+    label_text =
+      paste(name, ", ",
+            road_category_and_number, "<br/>",
+            index_total_p, " %", "<br/>",
+            index_total_coverage, " %"),
+    label_text = lapply(label_text, htmltools::HTML))
 # 
 # city_trps_new_pointindex_3 <- city_trps_meta %>%
 #   dplyr::left_join(
@@ -777,7 +797,7 @@ city_index_prepared %>%
 
 
 
-## April
+## Juni
 
 ```{r map_trp_index, message=FALSE}
 city_trps_new_pointindex %>% 
@@ -786,10 +806,12 @@ city_trps_new_pointindex %>%
 ```
 
 
+## Juli
+
 ```{r map_trp_index_2, message=FALSE}
-# city_trps_new_pointindex_2 %>%
-#   dplyr::rename(index = index_total_p) %>%
-#   create_pointindex_map()
+city_trps_new_pointindex_2 %>%
+  dplyr::rename(index = index_total_p) %>%
+  create_pointindex_map()
 ```
 
 ```{r map_trp_index_3, message=FALSE}

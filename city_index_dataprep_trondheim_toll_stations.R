@@ -10,7 +10,7 @@
 #
 
 # Set manual variables ----
-index_month <- 5
+index_month <- 7
 city_number <- 960
 city_name <- "Trondheim"
 

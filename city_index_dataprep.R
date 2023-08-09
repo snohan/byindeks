@@ -54,7 +54,7 @@ trp_id_msnr <-
 # Trondheim stop
 
 # Choose
-index_month <- 4 # the one to be published now
+index_month <- 7 # the one to be published now
 city_number <- 960
 
 reference_year <-
@@ -195,7 +195,7 @@ trp_index_so_far_by_dec_from_2020 <-
 
 trp_index_year_to_date_dec <-
   dplyr::bind_rows(
-    trp_index_so_far_by_dec_pre_2020,
+    #trp_index_so_far_by_dec_pre_2020,
     trp_index_so_far_by_dec_from_2020
   ) |>
   dplyr::filter(!is.na(base_volume)) |>
@@ -301,7 +301,7 @@ trp_index_monthly_from_2020 <-
 
 trp_index_monthly <-
   dplyr::bind_rows(
-    trp_index_monthly_pre_2020,
+    #trp_index_monthly_pre_2020,
     trp_index_monthly_from_2020
   )
 
@@ -480,9 +480,9 @@ city_index_all <-
     years_1_2,
     years_1_3,
     years_1_4,
-    years_1_5,
-    years_1_6,
-    years_1_7
+    #years_1_5,
+    #years_1_6,
+    #years_1_7
   ) %>%
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
