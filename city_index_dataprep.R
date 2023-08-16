@@ -308,6 +308,7 @@ trp_index_monthly <-
 # Solely for Excel
 trp_index_monthly_wide <-
   trp_index_monthly |>
+  #trp_toll_index_monthly |>
   tidyr::complete(
     trp_id,
     year,
@@ -900,44 +901,76 @@ mdt_and_pi <-
 # )
 
 
-## All possible 36 month window indices ----
-first_possible_year_month <-
-  lubridate::as_date(
-    paste0(
-      reference_year + 3,
-      "-12-01"
-    )
-  )
+## All possible window indices ----
+# first_possible_year_month <-
+#   lubridate::as_date(
+#     paste0(
+#       reference_year + 3,
+#       "-12-01"
+#     )
+#   )
+#
+# year_months_possible <-
+#   base::seq.Date(
+#     from = first_possible_year_month,
+#     to = last_year_month,
+#     by = "month"
+#   )
+#
+# all_36_month_indices <-
+#   purrr::map_dfr(
+#     year_months_possible,
+#     ~ calculate_rolling_indices_by_mdt(reference_year, .x, 36, mdt_validated)
+#   ) |>
+#   dplyr::mutate(
+#     month_n = lubridate::month(month_object),
+#     year = lubridate::year(month_object),
+#     ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error_p, 1),
+#     ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error_p, 1)
+#   )
 
-year_months_possible <-
-  base::seq.Date(
-    from = first_possible_year_month,
-    to = last_year_month,
-    by = "month"
-  )
+# readr::write_rds(
+#   all_36_month_indices,
+#   file =
+#     paste0(
+#       "data_indexpoints_tidy/mdt_36_",
+#       #"data_indexpoints_tidy/trp_mdt_36_",
+#       city_number,
+#       ".rds"
+#     )
+# )
+
+all_12_month_indices <-
+  calculate_rolling_indices(12)
+
+all_24_month_indices <-
+  calculate_rolling_indices(24)
 
 all_36_month_indices <-
-  purrr::map_dfr(
-    year_months_possible,
-    ~ calculate_rolling_indices_by_mdt(reference_year, .x, 36, mdt_validated)
-  ) |>
-  dplyr::mutate(
-    month_n = lubridate::month(month_object),
-    year = lubridate::year(month_object),
-    ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error_p, 1),
-    ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error_p, 1)
+  calculate_rolling_indices(36)
+
+list(
+  all_12_month_indices,
+  all_24_month_indices,
+  all_36_month_indices
+) |>
+  readr::write_rds(
+    file =
+      paste0(
+        "data_indexpoints_tidy/rolling_indices_",
+        city_number,
+        ".rds"
+      )
   )
 
-readr::write_rds(
-  all_36_month_indices,
-  file =
-    paste0(
-      "data_indexpoints_tidy/mdt_36_",
-      #"data_indexpoints_tidy/trp_mdt_36_",
-      city_number,
-      ".rds"
-    )
-)
+# test <- readr::read_rds(
+#   file =
+#     paste0(
+#       "data_indexpoints_tidy/rolling_indices_",
+#       city_number,
+#       ".rds"
+#     )
+# )
 
 # all_36_month_indices <-
 # readr::read_rds(
@@ -1013,11 +1046,14 @@ trp_mdt_plot |>
 # TRP data to Excel ----
 # For those interested in the details
 list(
-  punktindeks_maned = trp_index_monthly_wide,
+  #punktindeks_maned = trp_index_monthly_wide,
   #punktindeks_ar = this_citys_trp_index_refyear,
   punkt_mdt = mdt_and_pi,
   punkt_mdt_indeks = all_36_month_trp_indices,
   by_mdt = all_36_month_indices,
+  byindeks_aarlig = city_index_yearly_all,
+  byindeks_maanedlig = city_index_monthly,
+  # TRD
   byindeks_hittil = city_index_so_far_all
 ) |>
 writexl::write_xlsx(

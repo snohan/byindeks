@@ -484,8 +484,21 @@ filter_mdt <- function(mdt_df, year_dbl) {
 calculate_rolling_indices_by_mdt <-
   function(base_year, last_year_month, window_length, mdt_df, by_area = TRUE) {
 
-    # Window length is a number of months, preferably a multiple of 12
+    # Window length is a number of months, a multiple of 12
     # by_area: boolean to get TRP or area values
+
+    least_number_of_month_enums <-
+      dplyr::case_when(
+        window_length == 36 ~ 2,
+        TRUE ~ 0
+      )
+
+    least_number_of_months <-
+      dplyr::case_when(
+        window_length == 36 ~ 31,
+        window_length == 24 ~ 20,
+        window_length == 12 ~ 9
+      )
 
     last_year_month <-
       lubridate::as_date(last_year_month)
@@ -514,8 +527,7 @@ calculate_rolling_indices_by_mdt <-
         .groups = "drop_last"
       ) |>
       dplyr::filter(
-        n_months >= 2
-        # This presumes window length of 36!
+        n_months >= least_number_of_month_enums
       ) |>
       dplyr::group_by(
         trp_id
@@ -526,9 +538,7 @@ calculate_rolling_indices_by_mdt <-
         .groups = "drop"
       ) |>
       dplyr::filter(
-        n_months >= 31
-        # I.e. up to 5 months may be missing (they can be consecutive)
-        # This presumes window length of 36!
+        n_months >= least_number_of_months
       )
 
     index_df <-
@@ -577,11 +587,48 @@ calculate_rolling_indices_by_mdt <-
             ")"
           ),
         month_object = last_year_month
+      ) |>
+      dplyr::mutate(
+        month_n = lubridate::month(month_object),
+        year = lubridate::year(month_object),
+        ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error_p, 1),
+        ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error_p, 1)
       )
 
     return(index_df)
 
   }
+
+
+calculate_rolling_indices <- function(window_length) {
+
+  base::stopifnot(window_length %% 12 == 0)
+
+  n_years <- window_length / 12
+
+  first_possible_year_month <-
+    lubridate::as_date(
+      paste0(
+        reference_year + n_years,
+        "-12-01"
+      )
+    )
+
+  year_months_possible <-
+    base::seq.Date(
+      from = first_possible_year_month,
+      to = last_year_month,
+      by = "month"
+    )
+
+  purrr::map_dfr(
+    year_months_possible,
+    ~ calculate_rolling_indices_by_mdt(reference_year, .x, window_length, mdt_validated)
+  )
+
+}
+
+
 
 #trp_mdt_long_format <- test
 create_mdt_barplot <- function(trp_mdt_long_format) {

@@ -325,6 +325,12 @@ readr::write_rds(
   file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")
 )
 
+# Read back in
+# city_index_yearly_all <-
+#   readr::read_rds(
+#     file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")
+#   )
+
 # For Miljøpakken (kanskje ikke det de vil ha likevel?)
 # write.csv2(
 #   city_index_all,
@@ -446,6 +452,15 @@ write.csv2(
   file = paste0("data_indexpoints_tidy/byindeks_maanedlig_", city_number, ".csv"),
   row.names = F
 )
+
+readr::write_rds(
+  city_index_monthly,
+  file = paste0("data_indexpoints_tidy/byindeks_maanedlig_", city_number, ".rds")
+)
+
+# Read back in
+
+
 
 # Check:
 # pi_wide <-
