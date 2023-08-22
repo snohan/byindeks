@@ -31,7 +31,7 @@ source("rmd_setup.R")
 ```{r get_data, include = FALSE}
 # City numbers
 
-# Buskerudbyen          1952 (2016) 12r 
+# Buskerudbyen          1952 (2016) 04 
 # Grenland               955 (2016) 04
 # Kristiansand og omegn  957 (2016) 04 
 # Nedre Glomma           953 (2016) 04
@@ -39,10 +39,10 @@ source("rmd_setup.R")
 # Nord-Jæren             952 (2017) 04
 # Bergen                8952 (2018) 04
 # Oslo                   959 (2018) 04
-# Trondheim              960 (2019) 04
+# Trondheim              960 (2019) 07
 
 # Choose city number:
-city_number <- 1952
+city_number <- 960
 
 city_number_county_name <- 
   tibble::tibble(
@@ -80,7 +80,6 @@ road_lengths <-
   
 all_point_info <- 
   readr::read_rds(
-    #file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".rds")
     file = paste0(
       "index_trp_metadata/trp_",
       city_number,
@@ -91,61 +90,15 @@ all_point_info <-
     year_aadt = as.character(year_aadt)
   )
 
-# all_point_info_long <- 
-#   all_point_info %>%
-#   dplyr::select(-index) %>% 
-#   dplyr::select(
-#     name, 
-#     road_category_and_number, 
-#     starts_with("index")
-#   ) %>%
-#   tidyr::pivot_longer(
-#     starts_with("index"),
-#     names_to = "period",
-#     values_to = "index_value"
-#   ) %>%
-#   dplyr::mutate(
-#     year = 
-#       case_when(
-#         period == "index_17" ~ "2016-2017",
-#         period == "index_18" ~ "2017-2018",
-#         period == "index_19" ~ "2018-2019",
-#         period == "index_20" ~ "2019-2020",
-#         period == "index_21" ~ "2020-2021",
-#         period == "index_22" ~ "2021-2022",
-#         period == "index_23" ~ "2022-2023",
-#         # Trondheim TODO: harmonize!
-#         period == "index_2020" ~ "2019-2020",
-#         period == "index_2021" ~ "2020-2021",
-#         period == "index_2022" ~ "2021-2022",
-#         period == "index_2023" ~ "2022-2023"
-#       ),
-#     year = 
-#       factor(
-#         year, 
-#         levels = 
-#           c(
-#             "2022-2023",
-#             "2021-2022",
-#             "2020-2021",
-#             "2019-2020",
-#             "2018-2019",
-#             "2017-2018",
-#             "2016-2017"
-#           ),
-#         ordered = TRUE
-#       )
-#   )
-
 city_info <-
   readr::read_rds(
     paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")
-  ) #|>  
+  ) |>  
   #dplyr::mutate(
     #month_object = lubridate::make_date(year = year, month = month)
   #) |> 
   # Trondheim:
-  #dplyr::filter(length_range == "lette")
+  dplyr::filter(length_range == "lette")
 
 latest_month <- 
   city_info |> 
@@ -163,27 +116,17 @@ latest_month <-
   ) |> 
   purrr::pluck(1)
 
+rolling_indices <-
+  readr::read_rds(
+    paste0("data_indexpoints_tidy/rolling_indices_", city_number, ".rds")
+  )
 
-# city_monthly <- 
-#   read.csv2(
-#     paste0(
-#       "data_indexpoints_tidy/byindeks_maanedlig_", 
-#       city_number, 
-#       ".csv"
-#     )
-#   ) %>% 
-#   dplyr::mutate(
-#     # setting all years to same is a trick to get the plot facet correct
-#     month_object = lubridate::make_date(year = 2000, month = month),
-#     month_name_short = lubridate::month(month_object, label = TRUE)
-#   ) %>%
-#   # Trondheim:
-#   dplyr::filter(length_range == "lette")
+rolling_indices_long <-
+  rolling_indices |> 
+  dplyr::bind_rows()
 
 city_36_month <-
-  readr::read_rds(
-    paste0("data_indexpoints_tidy/mdt_36_", city_number, ".rds")
-  )
+  rolling_indices[[3]]
 
 latest_36_index <-
   city_36_month |> 
@@ -225,14 +168,9 @@ tbl_cap_all_36 <-
     " byindekspunktene som har bidratt med data i det aktuelle tidsintervallet."
   )
 
-# city_trp_mdt <-
-#   readr::read_rds(
-#     paste0("data_indexpoints_tidy/city_trps_mdt_", city_number, ".rds")
-#   )
 
 base_year <- min(city_info$year_base)
 last_year <- max(city_info$year)
-
 
 latest_complete_year <- 
   city_info |> 
@@ -242,26 +180,25 @@ latest_complete_year <-
   ) |> 
   dplyr::slice_max(year)
 
-
-from_base_year_to_last_year <- paste0(base_year, "-", last_year)
-
-city_info_all_years <- 
-  city_info %>% 
-  dplyr::filter(year_from_to == from_base_year_to_last_year)
-  
-index_all_years <- round(city_info_all_years$index_p, digits = 1)
-
-chained_index_ci_lower <-
-  round(
-    city_info_all_years$index_p - 1.96 * city_info_all_years$standard_error,
-    digits = 1
-  )
-
-chained_index_ci_upper <-
-  round(
-    city_info_all_years$index_p + 1.96 * city_info_all_years$standard_error,
-    digits = 1
-  )
+# from_base_year_to_last_year <- paste0(base_year, "-", last_year)
+# 
+# city_info_all_years <- 
+#   city_info %>% 
+#   dplyr::filter(year_from_to == from_base_year_to_last_year)
+#   
+# index_all_years <- round(city_info_all_years$index_p, digits = 1)
+# 
+# chained_index_ci_lower <-
+#   round(
+#     city_info_all_years$index_p - 1.96 * city_info_all_years$standard_error,
+#     digits = 1
+#   )
+# 
+# chained_index_ci_upper <-
+#   round(
+#     city_info_all_years$index_p + 1.96 * city_info_all_years$standard_error,
+#     digits = 1
+#   )
 
 # Linking to child files
 intro_file <- paste0("city_report_files/intro_", city_number, ".Rmd")
@@ -331,29 +268,29 @@ De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeks
 
 ```{r}
 #| label: tbl-trp-1
-#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen."
+#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen. B er bomstasjon, T er trafikkregistreringspunkt."
 #| ft.arraystretch: 0.9
 
 # B er bomstasjon, T er trafikkregistreringspunkt.
 
 all_point_info |> 
   dplyr::slice(1:36) |> 
-  #create_point_table_trd()
-  create_point_table()
+  create_point_table_trd()
+  #create_point_table()
 ```
 
 
 
 ```{r}
 #| label: tbl-trp-2
-#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2."
+#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2. B er bomstasjon, T er trafikkregistreringspunkt."
 #| ft.arraystretch: 0.9
 
 # B er bomstasjon, T er trafikkregistreringspunkt.
 
-#all_point_info |>
-  #dplyr::slice(37:75) |>
-  #create_point_table_trd()
+all_point_info |>
+  dplyr::slice(37:75) |>
+  create_point_table_trd()
   #create_point_table()
 ```
 
@@ -375,7 +312,7 @@ Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene.
 
 ```{r}
 #| label: fig-map_trp
-#| fig-cap: "Trafikkregistreringspunkt og årsdøgntrafikk."
+#| fig-cap: "Trafikkregistreringspunkt og årsdøgntrafikk. Punktet Meådalen på Ev 14 mellom Stjørdal og Meråker er utelatt fra kartvisningen."
 #| fig-width: 7
 
 # TRD
@@ -385,13 +322,13 @@ knitr::opts_chunk$set(
   dpi = 100
   )
 
-all_point_info |> 
-  create_point_adt_map()
+# all_point_info |> 
+#   create_point_adt_map()
 
 # Trondheim
-#all_point_info %>%
-#  dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
-#  create_point_adt_map_trondheim()
+all_point_info %>%
+ dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
+ create_point_adt_map_trondheim()
 ```
 
 {{< pagebreak >}}
@@ -447,6 +384,7 @@ city_36_month |>
 #| label: fig-plot_city_36
 #| fig-cap: "Tidsserie med tre års glidende indeks."
 
+# TODO: add CI as shaded area
 visualize_city_36_mdt_index(
   city_36_month,
   caption_credit,
@@ -517,6 +455,25 @@ Tas måleusikkerheten i betraktning, ligger endringen i trafikkmengden mellom
 
 {{< pagebreak >}}
 
+## Endring i ett- og toårsperiode
+Tre års glidende indeks glatter ut trender som er av kortere varighet, men som kan være synlige dersom den glidende indeksperioden beregnes for kortere spenn. Eksempelvis kan en økende trend i trafikken som har oppstått det siste året bli lite synlig i den tre års glidende indeksen dersom de to første årene var stabile. For å kunne si noe om hvilken utvikling den tre års glidende indeksen kan få framovr i tid, er det nyttig å se tilsvarende glidende indekser for perioder på ett og to år. Dette vises i figur @fig-rolling_indices.
+
+```{r}
+#| label: fig-rolling_indices
+#| fig-cap: "Tidsserier med ett, to og tre års glidende indeks."
+
+visualize_rolling_indices(
+  rolling_indices_long,
+  caption_credit,
+  "Estimert endring i trafikkmengde siste 1,2 og 3 år",
+  paste0(
+    "Sammenlignet med ",
+    base_year
+  )
+)
+```
+
+
 ## Endring per år
 Endring i trafikkmengde er også beregnet for hele kalenderår. I stedet for et tre års glidende gjennomsnitt tar denne beregningen utgangspunkt i indeksen mellom to påfølgende år. Indekstall som gjelder for lengre perioder enn to påfølgende år er beregnet som en kjedet indeks av indeksene for alle mellomliggende påfølgende års indekser. En kjedet indeks er en multiplikasjon av indekser på desimalform hvor en indeks på 1 tilsvarer ingen endring.
 
@@ -570,7 +527,7 @@ Et 95 % konfidensintervall går fra
 
 
 <!--
-For Buskerudbyen -->
+For Buskerudbyen --
 
 ### Trafikken på Ev 18
 Til sammenligning viser tabell @tbl-e18_buskerudbyen endringen i trafikkmengde for lette kjøretøy på Ev 18 i samme periode.
@@ -579,28 +536,28 @@ Til sammenligning viser tabell @tbl-e18_buskerudbyen endringen i trafikkmengde f
 #| label: tbl-e18_buskerudbyen
 #| tbl-cap: "Endring i trafikkmengde på Ev 18."
 
-read.csv2("data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv") %>%
-    select(name, road_reference, year, index_short) %>%
-    flextable() %>%
-    colformat_int(j = "year", big.mark = "") %>%
-    colformat_double(j = "index_short", digits = 1) %>%
-    set_header_labels(name = "Navn",
-                      road_reference = "Vegreferanse",
-     #                 adt = "ÅDT",
-                      year = "År",
-                      index_short = "Endring i\ntrafikkmengde\n(%)") %>%
-    align(j = c(3, 4), align = "center", part = "all") %>%
-    bold(part = "header") %>%
-    #fontsize(size = 9, part = "all") %>%
-    font(fontname = "Lucida Sans Unicode", part = "all") %>%
-    bg(bg = "#ED9300", part = "header") %>%
-    border_remove() %>%
-    hline_top(part = "header", border = borderline) %>%
-    hline_bottom(part = "all", border = borderline) %>%
-    autofit() %>%
-    height_all(height = .2) %>%
-    padding(padding.top = .3,
-            padding.bottom = .3)
+# read.csv2("data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv") %>%
+#     select(name, road_reference, year, index_short) %>%
+#     flextable() %>%
+#     colformat_int(j = "year", big.mark = "") %>%
+#     colformat_double(j = "index_short", digits = 1) %>%
+#     set_header_labels(name = "Navn",
+#                       road_reference = "Vegreferanse",
+#      #                 adt = "ÅDT",
+#                       year = "År",
+#                       index_short = "Endring i\ntrafikkmengde\n(%)") %>%
+#     align(j = c(3, 4), align = "center", part = "all") %>%
+#     bold(part = "header") %>%
+#     #fontsize(size = 9, part = "all") %>%
+#     font(fontname = "Lucida Sans Unicode", part = "all") %>%
+#     bg(bg = "#ED9300", part = "header") %>%
+#     border_remove() %>%
+#     hline_top(part = "header", border = borderline) %>%
+#     hline_bottom(part = "all", border = borderline) %>%
+#     autofit() %>%
+#     height_all(height = .2) %>%
+#     padding(padding.top = .3,
+#             padding.bottom = .3)
 ```
 
 <!-- Stopp buskerudbyen her -->

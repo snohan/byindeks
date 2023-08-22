@@ -851,6 +851,59 @@ visualize_city_36_mdt_index <-
 }
 
 
+visualize_rolling_indices <-
+  function(rolling_indices_df, caption_text, title_text, sub_text) {
+
+    rolling_indices_df %>%
+      ggplot2::ggplot(aes(x = month_object, y = index_p, color = window)) +
+      ggplot2::geom_hline(
+        yintercept = 0,
+        color = "#58b02c",
+        size = 0.8,
+        alpha = 0.3
+      ) +
+      ggplot2::geom_line() +
+      ggplot2::geom_point() +
+      scale_color_manual(
+        values = c(
+          "12_months" = "#008ec2",
+          "24_months" = "#ed9300",
+          "36_months" = "#444f55"
+        ),
+        name = "Periodelengde") +
+      theme_light() +
+      theme(
+        axis.text.x = element_text(angle = 90, vjust = 0.5),
+        axis.title.y = element_text(
+          margin = margin(t = 0, r = 15, b = 0, l = 0)),
+        axis.title.x = element_text(
+          margin = margin(t = 15, r = 0, b = 0, l = 0)),
+        panel.grid.minor.x = element_blank(),
+        plot.caption =
+          element_text(
+            face = "italic",
+            size = 8,
+            lineheight = 1.5,
+            vjust = 0
+          )
+      ) +
+      scale_x_date(
+        labels = scales::label_date("%b %Y")
+      ) +
+      ylim(
+        -max(abs(rolling_indices_df$index_p)),
+        max(abs(rolling_indices_df$index_p))
+      ) +
+      labs(
+        x = NULL, y = "Endring i trafikkmengde (%)",
+        caption = caption_text) +
+      ggtitle(
+        title_text,
+        subtitle = sub_text
+      )
+  }
+
+
 table_index_chains <- function(chosen_name) {
 
   n_index_all_years <-

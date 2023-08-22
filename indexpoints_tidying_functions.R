@@ -592,7 +592,8 @@ calculate_rolling_indices_by_mdt <-
         month_n = lubridate::month(month_object),
         year = lubridate::year(month_object),
         ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error_p, 1),
-        ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error_p, 1)
+        ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error_p, 1),
+        window = paste0(window_length, "_months")
       )
 
     return(index_df)
