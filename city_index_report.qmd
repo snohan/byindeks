@@ -268,30 +268,58 @@ De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeks
 
 ```{r}
 #| label: tbl-trp-1
-#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen. B er bomstasjon, T er trafikkregistreringspunkt."
+#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen."
 #| ft.arraystretch: 0.9
 
 # B er bomstasjon, T er trafikkregistreringspunkt.
 
 all_point_info |> 
   dplyr::slice(1:36) |> 
-  create_point_table_trd()
   #create_point_table()
+  # TRD:
+  create_point_table_trd() |> 
+  flextable::footnote(
+    i = 1,
+    j = 2,
+    value = flextable::as_paragraph(
+      c("B er bomstasjon, T er trafikkregistreringspunkt.")
+    ),
+    ref_symbols = c("a"),
+    part = "header"
+  ) |> 
+  flextable::fontsize(
+    size = 8,
+    part = "footer"
+  )
 ```
 
 
 
 ```{r}
 #| label: tbl-trp-2
-#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2. B er bomstasjon, T er trafikkregistreringspunkt."
+#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2."
 #| ft.arraystretch: 0.9
 
 # B er bomstasjon, T er trafikkregistreringspunkt.
 
 all_point_info |>
   dplyr::slice(37:75) |>
-  create_point_table_trd()
   #create_point_table()
+  # TRD:
+  create_point_table_trd() |> 
+  flextable::footnote(
+    i = 1,
+    j = 2,
+    value = flextable::as_paragraph(
+      c("B er bomstasjon, T er trafikkregistreringspunkt.")
+    ),
+    ref_symbols = c("a"),
+    part = "header"
+  ) |> 
+  flextable::fontsize(
+    size = 8,
+    part = "footer"
+  )
 ```
 
 
@@ -313,6 +341,7 @@ Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene.
 ```{r}
 #| label: fig-map_trp
 #| fig-cap: "Trafikkregistreringspunkt og årsdøgntrafikk. Punktet Meådalen på Ev 14 mellom Stjørdal og Meråker er utelatt fra kartvisningen."
+#| fig-scap: "Trafikkregistreringspunkt og årsdøgntrafikk."
 #| fig-width: 7
 
 # TRD
@@ -382,9 +411,9 @@ city_36_month |>
 
 ```{r}
 #| label: fig-plot_city_36
-#| fig-cap: "Tidsserie med tre års glidende indeks."
+#| fig-cap: "Tidsserie med tre års glidende indeks. Skravert område angir usikkerheten i beregningene i form av et 95 % konfidensintervall."
+#| fig-scap: "Tidsserie med tre års glidende indeks." 
 
-# TODO: add CI as shaded area
 visualize_city_36_mdt_index(
   city_36_month,
   caption_credit,
@@ -446,7 +475,7 @@ Sammenlignet med referanseåret er trafikkmengden de siste tre årene i gjennoms
 
 \vspace{5mm}
 
-Så lenge pandemiperioden fra mars 2020 til februar 2022 inngår i treårsperioden, vil denne indeksen vise en verdi som er preget av det generelt lavere trafikknivået som var i disse årene.
+Så lenge pandemiperioden fra mars 2020 til februar 2022 inngår i treårsperioden, vil denne indeksen vise en verdi som er preget av det generelt lavere trafikknivået som var i disse årene. Verdien for tre års glidende indeks per mars 2023 er den første i denne tidsserien som ikke omfatter alle pandemimånedene.
 
 Tas måleusikkerheten i betraktning, ligger endringen i trafikkmengden mellom 
 `r stringr::str_replace(sprintf("%.1f", latest_36_index$ci_lower), "\\.", ",")` % og 
@@ -456,22 +485,25 @@ Tas måleusikkerheten i betraktning, ligger endringen i trafikkmengden mellom
 {{< pagebreak >}}
 
 ## Endring i ett- og toårsperiode
-Tre års glidende indeks glatter ut trender som er av kortere varighet, men som kan være synlige dersom den glidende indeksperioden beregnes for kortere spenn. Eksempelvis kan en økende trend i trafikken som har oppstått det siste året bli lite synlig i den tre års glidende indeksen dersom de to første årene var stabile. For å kunne si noe om hvilken utvikling den tre års glidende indeksen kan få framovr i tid, er det nyttig å se tilsvarende glidende indekser for perioder på ett og to år. Dette vises i figur @fig-rolling_indices.
+Tre års glidende indeks glatter ut trender som er av kortere varighet, men som kan være synlige dersom den glidende indeksen beregnes for kortere perioder. Eksempelvis kan en økende trend i trafikken som har oppstått det siste året bli lite synlig i den tre års glidende indeksen dersom de to første årene var stabile eller hadde nedgang. For å kunne si noe om hvilken utvikling den tre års glidende indeksen kan få framovr i tid, er det nyttig å se tilsvarende glidende indekser for perioder på ett og to år. Dette vises i figur @fig-rolling_indices.
 
 ```{r}
 #| label: fig-rolling_indices
 #| fig-cap: "Tidsserier med ett, to og tre års glidende indeks."
+#| fig-dpi: 300
 
 visualize_rolling_indices(
   rolling_indices_long,
   caption_credit,
-  "Estimert endring i trafikkmengde siste 1,2 og 3 år",
+  "Estimert gjennomsnittlig endring siste 1, 2 og 3 år",
   paste0(
     "Sammenlignet med ",
     base_year
   )
 )
 ```
+
+Koronapandemien medførte lokale og nasjonale tiltak i perioden mellom mars 2020 og februar 2022. Disse tiltakene førte i varierende grad til en nedgang i trafikkmengden. Verdien for glidende gjennomsnitt for siste 1 år er fra og med februar 2023 ikke påvirket av slike tiltak, og vil derfor vise det normale nivået som trafikkmengden ligger på. Dersom trafikkmengden i årene framover blir liggende på samme nivå som i dag, vil det glidende gjennomsnittet for både 2 og 3 år sammenfalle med det som gjennomsnittet for 1 år ligger på i dag.
 
 
 ## Endring per år
@@ -516,14 +548,6 @@ Et 95 % konfidensintervall går fra
 `r stringr::str_replace(sprintf("%.1f", latest_complete_year$ci_lower), "\\.", ",")` % til 
 `r stringr::str_replace(sprintf("%.1f", latest_complete_year$ci_upper), "\\.", ",")` %.
 
-
-
-<!-- Byindeksen estimerer endringen i trafikkmengden for lette kjøretøy fra  -->
-<!-- `r base_year` til `r latest_month` `r last_year` til å være  -->
-<!-- `r stringr::str_replace(sprintf("%.1f", index_all_years), "\\.", ",")` %.  -->
-<!-- Et 95 % konfidensintervall går fra  -->
-<!-- `r stringr::str_replace(sprintf("%.1f", chained_index_ci_lower), "\\.", ",")` % til  -->
-<!-- `r stringr::str_replace(sprintf("%.1f", chained_index_ci_upper), "\\.", ",")` %. -->
 
 
 <!--

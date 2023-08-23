@@ -818,9 +818,18 @@ visualize_city_36_mdt_index <-
     ) +
     ggplot2::geom_line() +
     ggplot2::geom_point() +
+    ggplot2::geom_ribbon(
+      aes(
+        ymin = ci_lower,
+        ymax = ci_upper
+      ),
+      linetype = 2,
+      alpha = 0.1,
+      fill = "#444f55"
+    ) +
     theme_light() +
     theme(
-      axis.text.x = element_text(angle = 90, vjust = 0.5),
+      axis.text.x = element_text(vjust = 0.5),
       axis.title.y = element_text(
         margin = margin(t = 0, r = 15, b = 0, l = 0)),
       axis.title.x = element_text(
@@ -838,8 +847,8 @@ visualize_city_36_mdt_index <-
       labels = scales::label_date("%b %Y")
     ) +
     ylim(
-      -max(abs(city_36_month_df$index_p)),
-      max(abs(city_36_month_df$index_p))
+      -max(abs(city_36_month_df$ci_lower)),
+      max(abs(city_36_month_df$ci_upper))
     ) +
     labs(
       x = NULL, y = "Endring i trafikkmengde (%)",
@@ -870,10 +879,20 @@ visualize_rolling_indices <-
           "24_months" = "#ed9300",
           "36_months" = "#444f55"
         ),
-        name = "Periodelengde") +
+        breaks = c(
+          "12_months",
+          "24_months",
+          "36_months"
+        ),
+        labels = c(
+          "Siste 1 år",
+          "Siste 2 år",
+          "Siste 3 år"
+        ),
+        name = "Gjennomsnittsperiode") +
       theme_light() +
       theme(
-        axis.text.x = element_text(angle = 90, vjust = 0.5),
+        axis.text.x = element_text(vjust = 0.5),
         axis.title.y = element_text(
           margin = margin(t = 0, r = 15, b = 0, l = 0)),
         axis.title.x = element_text(
@@ -885,7 +904,8 @@ visualize_rolling_indices <-
             size = 8,
             lineheight = 1.5,
             vjust = 0
-          )
+          ),
+        legend.position = "bottom"
       ) +
       scale_x_date(
         labels = scales::label_date("%b %Y")
