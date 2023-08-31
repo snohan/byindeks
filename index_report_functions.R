@@ -816,8 +816,8 @@ visualize_city_36_mdt_index <-
       size = 0.8,
       alpha = 0.3
     ) +
-    ggplot2::geom_line() +
-    ggplot2::geom_point() +
+    ggplot2::geom_line(color = "#ED9300") +
+    ggplot2::geom_point(color = "#ED9300") +
     ggplot2::geom_ribbon(
       aes(
         ymin = ci_lower,
@@ -864,7 +864,7 @@ visualize_rolling_indices <-
   function(rolling_indices_df, caption_text, title_text, sub_text) {
 
     rolling_indices_df %>%
-      ggplot2::ggplot(aes(x = month_object, y = index_p, color = window)) +
+      ggplot2::ggplot(aes(x = month_object, y = index_p, color = window, linetype = window)) +
       ggplot2::geom_hline(
         yintercept = 0,
         color = "#58b02c",
@@ -876,8 +876,8 @@ visualize_rolling_indices <-
       scale_color_manual(
         values = c(
           "12_months" = "#008ec2",
-          "24_months" = "#ed9300",
-          "36_months" = "#444f55"
+          "24_months" = "#444f55",
+          "36_months" = "#ed9300"
         ),
         breaks = c(
           "12_months",
@@ -889,7 +889,18 @@ visualize_rolling_indices <-
           "Siste 2 år",
           "Siste 3 år"
         ),
-        name = "Gjennomsnittsperiode") +
+        name = "Gjennomsnittsperiode"
+      ) +
+      scale_linetype_manual(
+        values = c(
+          "12_months" = "dotted",
+          "24_months" = "dotted",
+          "36_months" = "solid"
+        ),
+        breaks = NULL,
+        labels = NULL,
+        name = ""
+      ) +
       theme_light() +
       theme(
         axis.text.x = element_text(vjust = 0.5),

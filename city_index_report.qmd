@@ -417,7 +417,7 @@ city_36_month |>
 visualize_city_36_mdt_index(
   city_36_month,
   caption_credit,
-  "Estimert endring i trafikkmengde siste 3 år",
+  "Estimert endring i trafikkmengde siste glidende 3 år",
   paste0(
     "Sammenlignet med ",
     base_year
@@ -485,7 +485,7 @@ Tas måleusikkerheten i betraktning, ligger endringen i trafikkmengden mellom
 {{< pagebreak >}}
 
 ## Endring i ett- og toårsperiode
-Tre års glidende indeks glatter ut trender som er av kortere varighet, men som kan være synlige dersom den glidende indeksen beregnes for kortere perioder. Eksempelvis kan en økende trend i trafikken som har oppstått det siste året bli lite synlig i den tre års glidende indeksen dersom de to første årene var stabile eller hadde nedgang. For å kunne si noe om hvilken utvikling den tre års glidende indeksen kan få framovr i tid, er det nyttig å se tilsvarende glidende indekser for perioder på ett og to år. Dette vises i figur @fig-rolling_indices.
+Tre års glidende indeks glatter ut trender som er av kortere varighet, men som kan være synlige dersom den glidende indeksen beregnes for kortere perioder. Eksempelvis kan en økende trend i trafikken som har oppstått det siste året bli lite synlig i den tre års glidende indeksen dersom de to første årene var stabile eller hadde nedgang. For å kunne si noe om hvilken utvikling den tre års glidende indeksen kan få framover i tid, er det nyttig å se tilsvarende glidende indekser for perioder på ett og to år. Dette vises i figur @fig-rolling_indices.
 
 ```{r}
 #| label: fig-rolling_indices
@@ -495,7 +495,7 @@ Tre års glidende indeks glatter ut trender som er av kortere varighet, men som 
 visualize_rolling_indices(
   rolling_indices_long,
   caption_credit,
-  "Estimert gjennomsnittlig endring siste 1, 2 og 3 år",
+  "Estimert gjennomsnittlig endring siste glidende 1, 2 og 3 år",
   paste0(
     "Sammenlignet med ",
     base_year
