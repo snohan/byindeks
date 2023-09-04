@@ -54,8 +54,8 @@ trp_id_msnr <-
 # Trondheim stop
 
 # Choose
-index_month <- 7 # the one to be published now
-city_number <- 960
+index_month <- 8 # the one to be published now
+city_number <- 1952
 
 reference_year <-
   dplyr::case_when(
@@ -195,7 +195,7 @@ trp_index_so_far_by_dec_from_2020 <-
 
 trp_index_year_to_date_dec <-
   dplyr::bind_rows(
-    #trp_index_so_far_by_dec_pre_2020,
+    trp_index_so_far_by_dec_pre_2020,
     trp_index_so_far_by_dec_from_2020
   ) |>
   dplyr::filter(!is.na(base_volume)) |>
@@ -301,7 +301,7 @@ trp_index_monthly_from_2020 <-
 
 trp_index_monthly <-
   dplyr::bind_rows(
-    #trp_index_monthly_pre_2020,
+    trp_index_monthly_pre_2020,
     trp_index_monthly_from_2020
   )
 
@@ -347,7 +347,7 @@ trp_index_monthly_wide <-
   )
 
 
-# TRP names ----
+## TRP names ----
 this_citys_trps_all_adt_final <-
   readr::read_rds(
     file = paste0(
@@ -366,7 +366,7 @@ trp_names <-
   )
 
 
-## Chained pointindex from reference year ----
+## Chained pointindex from reference year
 # TODO: drop this
 # trp_index_from_refyear <-
 #   this_citys_trp_index %>%
@@ -472,17 +472,18 @@ years_1_7 <-
   calculate_two_year_index()
 
 # Skipping intermediate years, adding just from first to last?
-city_index_all <-
+city_index_yearly_all <-
   city_index_full_years |>
   dplyr::mutate(
     index_type = "direct"
   ) |>
   dplyr::bind_rows(
+    # Include only for full years
     years_1_2,
     years_1_3,
     years_1_4,
-    #years_1_5,
-    #years_1_6,
+    years_1_5,
+    years_1_6,
     #years_1_7
   ) %>%
   dplyr::mutate(
@@ -500,12 +501,12 @@ city_index_all <-
   )
 
 readr::write_rds(
-  city_index_all,
+  city_index_yearly_all,
   file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")
 )
 
 
-# City index monthly ----
+# City index monthly
 # city_monthly <-
 #   dplyr::bind_rows(
 #     monthly_city_index(city_index_2017),
@@ -548,7 +549,7 @@ readr::write_rds(
 # )
 
 
-# City index three year rolling ----
+# City index three year rolling
 # No use in calculating this before 37 months are available
 # The first 36 month index is equal to the first three whole year index!
 # TODO: 36 month rolling index with sd and ci
@@ -698,9 +699,9 @@ mdt_filtered <-
       )
     )
   ) |>
-  tibble::as_tibble() |>
+  tibble::as_tibble() #|>
   # TRD
-  dplyr::bind_rows(toll_mdt_light)
+  #dplyr::bind_rows(toll_mdt_light)
 
 
 mdt_filtered |>
@@ -739,7 +740,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[16:18]
+    trp_id %in% trp_mdt_ok_refyear[21:22]
   ) |>
   dplyr::select(
     trp_id,
@@ -824,10 +825,10 @@ mdt_validated |>
 mdt_and_pi <-
   dplyr::left_join(
     mdt_validated,
-    #trp_index_monthly,
-    #by = c("trp_id", "year", "month"),
-    dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
-    by = c("trp_id", "year_month" = "month_object") # TRD
+    trp_index_monthly,
+    by = c("trp_id", "year", "month"),
+    #dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
+    #by = c("trp_id", "year_month" = "month_object") # TRD
   ) |>
   dplyr::left_join(
     trp_names,
@@ -984,17 +985,18 @@ list(
 #     )
 # )
 
-write.csv2(
-  all_36_month_indices,
-  file = paste0("data_indexpoints_tidy/mdt_36_", city_number, ".csv"),
-  row.names = F
-)
+# write.csv2(
+#   all_36_month_indices,
+#   file = paste0("data_indexpoints_tidy/mdt_36_", city_number, ".csv"),
+#   row.names = F
+# )
 
 all_36_month_trp_indices <-
-  purrr::map_dfr(
-    year_months_possible,
-    ~ calculate_rolling_indices_by_mdt(reference_year, .x, 36, mdt_validated, FALSE)
-  ) |>
+  calculate_rolling_indices(36, FALSE) |>
+  # purrr::map_dfr(
+  #   year_months_possible,
+  #   ~ calculate_rolling_indices_by_mdt(reference_year, .x, 36, mdt_validated, FALSE)
+  # ) |>
   dplyr::left_join(
     trp_names,
     by = "trp_id"
@@ -1007,7 +1009,7 @@ all_36_month_trp_indices <-
     trp_id,
     name,
     #municipality_name,
-    reference_year = year,
+    #reference_year = year,
     last_month_in_index = month_object,
     index_period,
     n_months_reference_year = n_months.x,
@@ -1047,19 +1049,20 @@ trp_mdt_plot |>
 # TRP data to Excel ----
 # For those interested in the details
 list(
-  #punktindeks_maned = trp_index_monthly_wide,
-  #punktindeks_ar = this_citys_trp_index_refyear,
-  punkt_mdt = mdt_and_pi,
-  punkt_mdt_indeks = all_36_month_trp_indices,
-  by_mdt = all_36_month_indices,
+  punkt_adt = this_citys_trps_all_adt_final,
+  punktindeks_maned = trp_index_monthly_wide,
+  #punktindeks_ar = this_citys_trp_index_refyear, # drop
   byindeks_aarlig = city_index_yearly_all,
-  byindeks_maanedlig = city_index_monthly,
-  # TRD
-  byindeks_hittil = city_index_so_far_all
+  #byindeks_maanedlig = city_index_monthly,
+  punkt_mdt = mdt_and_pi,
+  punkt_3_aar_glid_indeks = all_36_month_trp_indices,
+  by_3_aar_glid_indeks = all_36_month_indices
+  # TRD, BRG
+  #byindeks_hittil = city_index_so_far_all
 ) |>
 writexl::write_xlsx(
   path = paste0(
-    "data_indexpoints_tidy/trp_data_",
+    "data_indexpoints_tidy/tallmateriale_",
     city_number,
     ".xlsx"
   )
@@ -1076,7 +1079,8 @@ point_index_e18 <-
     get_pointindices_for_trp_list(trps_e18, 2019),
     get_pointindices_for_trp_list(trps_e18, 2020),
     get_pointindices_for_trp_list(trps_e18, 2021),
-    get_pointindices_for_trp_list(trps_e18, 2022)
+    get_pointindices_for_trp_list(trps_e18, 2022),
+    get_pointindices_for_trp_list(trps_e18, 2023)
   ) %>%
   dplyr::filter(
     day_type == "ALL",

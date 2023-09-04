@@ -557,16 +557,20 @@ calculate_rolling_indices_by_mdt <-
       # If TRP index is wanted, skip this summarise
       # NB! Native pipe does not support curly brace RHS, but magrittr does
       {if(by_area)
-      dplyr::summarise(
-        .,
-        index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
-        index_p = (index_i - 1) * 100,
-        n_trp = n(),
-        n_eff = 1 / sum(w^2),
-        sd_sample_p = 100 * sqrt(sum(sd_component) * (1/(1 - 1/n_eff))),
-        standard_error_p = sd_sample_p / sqrt(n_eff),
-        .groups = "drop"
-      )
+        dplyr::summarise(
+          .,
+          index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
+          index_p = (index_i - 1) * 100,
+          n_trp = n(),
+          n_eff = 1 / sum(w^2),
+          sd_sample_p = 100 * sqrt(sum(sd_component) * (1/(1 - 1/n_eff))),
+          standard_error_p = sd_sample_p / sqrt(n_eff),
+          .groups = "drop"
+        ) |>
+        dplyr::mutate(
+          ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error_p, 1),
+          ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error_p, 1)
+        )
         else .} |>
       dplyr::mutate(
         index_period =
@@ -591,8 +595,6 @@ calculate_rolling_indices_by_mdt <-
       dplyr::mutate(
         month_n = lubridate::month(month_object),
         year = lubridate::year(month_object),
-        ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error_p, 1),
-        ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error_p, 1),
         window = paste0(window_length, "_months")
       )
 
@@ -601,7 +603,7 @@ calculate_rolling_indices_by_mdt <-
   }
 
 
-calculate_rolling_indices <- function(window_length) {
+calculate_rolling_indices <- function(window_length, by_area = TRUE) {
 
   base::stopifnot(window_length %% 12 == 0)
 
@@ -624,7 +626,7 @@ calculate_rolling_indices <- function(window_length) {
 
   purrr::map_dfr(
     year_months_possible,
-    ~ calculate_rolling_indices_by_mdt(reference_year, .x, window_length, mdt_validated)
+    ~ calculate_rolling_indices_by_mdt(reference_year, .x, window_length, mdt_validated, by_area)
   )
 
 }
