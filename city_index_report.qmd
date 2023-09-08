@@ -32,17 +32,17 @@ source("rmd_setup.R")
 # City numbers
 
 # Buskerudbyen          1952 (2016) 08 
-# Grenland               955 (2016) 04
-# Kristiansand og omegn  957 (2016) 04 
-# Nedre Glomma           953 (2016) 04
-# Tromsø                 961 (2016) 04
+# Grenland               955 (2016) 08
+# Kristiansand og omegn  957 (2016) 08
+# Nedre Glomma           953 (2016) 08
+# Tromsø                 961 (2016) 08
 # Nord-Jæren             952 (2017) 08
-# Bergen                8952 (2018) 04
-# Oslo                   959 (2018) 04
-# Trondheim              960 (2019) 07
+# Bergen                8952 (2018) 08
+# Oslo                   959 (2018) 08
+# Trondheim              960 (2019) 08
 
 # Choose city number:
-city_number <- 1952
+city_number <- 960
 
 city_number_county_name <- 
   tibble::tibble(
@@ -93,12 +93,12 @@ all_point_info <-
 city_info <-
   readr::read_rds(
     paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")
-  ) #|>  
+  ) |>  
   #dplyr::mutate(
     #month_object = lubridate::make_date(year = year, month = month)
   #) |> 
   # Trondheim:
-  #dplyr::filter(length_range == "lette")
+  dplyr::filter(length_range == "lette")
 
 latest_month <- 
   city_info |> 
@@ -219,10 +219,24 @@ traffic_file <- paste0("city_report_files/trafikkforhold_", city_number, ".Rmd")
 #     period = paste0("jan-", month_name_short)
 #   )
 # 
-# city_36_month_kommune <-
-#   readr::read_rds(
-#     paste0("data_indexpoints_tidy/mdt_36_956.rds")
+# tbl_cap_all_36_kommune <-
+#   paste0(
+#     "Antall punkt som oppgis er hvor mange av de ",
+#     "22",
+#     " byindekspunktene som har bidratt med data i det aktuelle tidsintervallet."
 #   )
+#
+# rolling_indices_kommune <-
+#   readr::read_rds(
+#     paste0("data_indexpoints_tidy/rolling_indices_956.rds")
+#   )
+# 
+# rolling_indices_long_kommune <-
+#   rolling_indices_kommune |> 
+#   dplyr::bind_rows()
+# 
+# city_36_month_kommune <-
+#   rolling_indices_kommune[[3]]
 # 
 # city_trp_mdt_kommune <-
 #   readr::read_rds(
@@ -275,22 +289,22 @@ De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeks
 
 all_point_info |> 
   dplyr::slice(1:36) |> 
-  create_point_table()
+  #create_point_table()
   # TRD:
-  #create_point_table_trd() |> 
-  # flextable::footnote(
-  #   i = 1,
-  #   j = 2,
-  #   value = flextable::as_paragraph(
-  #     c("B er bomstasjon, T er trafikkregistreringspunkt.")
-  #   ),
-  #   ref_symbols = c("a"),
-  #   part = "header"
-  # ) |> 
-  # flextable::fontsize(
-  #   size = 8,
-  #   part = "footer"
-  # )
+  create_point_table_trd() |>
+  flextable::footnote(
+    i = 1,
+    j = 2,
+    value = flextable::as_paragraph(
+      c("B er bomstasjon, T er trafikkregistreringspunkt.")
+    ),
+    ref_symbols = c("a"),
+    part = "header"
+  ) |>
+  flextable::fontsize(
+    size = 8,
+    part = "footer"
+  )
 ```
 
 
@@ -302,24 +316,24 @@ all_point_info |>
 
 # B er bomstasjon, T er trafikkregistreringspunkt.
 
-# all_point_info |>
-#   dplyr::slice(37:75) |>
-#   #create_point_table()
+all_point_info |>
+  dplyr::slice(37:75) |>
+  #create_point_table()
 #   # TRD:
-#   create_point_table_trd() |> 
-#   flextable::footnote(
-#     i = 1,
-#     j = 2,
-#     value = flextable::as_paragraph(
-#       c("B er bomstasjon, T er trafikkregistreringspunkt.")
-#     ),
-#     ref_symbols = c("a"),
-#     part = "header"
-#   ) |> 
-#   flextable::fontsize(
-#     size = 8,
-#     part = "footer"
-#   )
+  create_point_table_trd() |>
+  flextable::footnote(
+    i = 1,
+    j = 2,
+    value = flextable::as_paragraph(
+      c("B er bomstasjon, T er trafikkregistreringspunkt.")
+    ),
+    ref_symbols = c("a"),
+    part = "header"
+  ) |>
+  flextable::fontsize(
+    size = 8,
+    part = "footer"
+  )
 ```
 
 
@@ -328,8 +342,8 @@ all_point_info |>
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 3."
 #| ft.arraystretch: 0.9
 
-#all_point_info |> 
-#  dplyr::slice(76:100) |> 
+# all_point_info |>
+#  dplyr::slice(76:100) |>
 #  create_point_table()
 
 # {{< pagebreak >}}
@@ -340,7 +354,7 @@ Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene.
 
 ```{r}
 #| label: fig-map_trp
-#| fig-cap: "Trafikkregistreringspunkt og årsdøgntrafikk."
+#| fig-cap: "Trafikkregistreringspunkt og årsdøgntrafikk. Punktet Meådalen på Ev 14 mellom Stjørdal og Meråker er utelatt fra kartvisningen."
 #| fig-scap: "Trafikkregistreringspunkt og årsdøgntrafikk."
 #| fig-width: 7
 
@@ -351,13 +365,13 @@ knitr::opts_chunk$set(
   dpi = 100
   )
 
-all_point_info |>
-  create_point_adt_map()
+# all_point_info |>
+#   create_point_adt_map()
 
 # Trondheim
-# all_point_info %>%
-#  dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
-#  create_point_adt_map_trondheim()
+all_point_info %>%
+ dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
+ create_point_adt_map_trondheim()
 ```
 
 {{< pagebreak >}}
@@ -434,31 +448,44 @@ Tilsvarende for gamle Kristiansand kommune.
 #| label: tbl-trp_36_kommune-1
 #| tbl-cap: "Tre års glidende indeks for gamle Kristiansand kommune."
 
-# city_36_month_kommune |>
-#  dplyr::mutate(
-#     month_n = lubridate::month(month_object)
-#   ) |>
-#   dplyr::filter(
-#     month_n == 12
-#   ) |>
-#  create_city_mdt_36_index_table()
+# city_36_month_kommune |> 
+#   dplyr::slice_max(
+#     month_n,
+#     by = year
+#   ) |> 
+#   create_city_mdt_36_index_table() |> 
+#   flextable::footnote(
+#     i = 1,
+#     j = 2,
+#     value = flextable::as_paragraph(
+#       c(tbl_cap_all_36_kommune)
+#     ),
+#     ref_symbols = c("a"),
+#     part = "header"
+#   ) |> 
+#   flextable::fontsize(
+#     size = 8,
+#     part = "footer"
+#   )
 
 # {{< pagebreak >}}
 ```
+
+{{< pagebreak >}}
 
 ```{r}
 #| label: fig-plot_city_36_kommune
 #| fig-cap: "Tidsserie med tre års glidende indeks for gamle Kristiansand kommune."
 
-# visualize_city_36_mdt_index(
-#  city_36_month_kommune,
-#  caption_credit,
-#  "Estimert endring i trafikkmengde siste 3 år",
-#   paste0(
-#     "Sammenlignet med ",
-#     base_year
-#   )
-# )
+#visualize_city_36_mdt_index(
+# city_36_month_kommune,
+# caption_credit,
+# "Estimert endring i trafikkmengde siste 3 år",
+#  paste0(
+#    "Sammenlignet med ",
+#    base_year
+#  )
+#)
 ```
 
 <!-- Kristiansand -->
@@ -528,15 +555,15 @@ city_info |>
 
 
 
-<!-- Kristiansand -->
+<!-- Kristiansand --
 ```{r}
 #| label: tbl-city_index_kommune
 #| tbl-cap: "Estimert endring i trafikkmengde per år, gamle Kristiansand kommune."
 
-# city_info_kommune |> 
+# city_info_kommune |>
 #   dplyr::filter(
 #     !(index_type == "chained" & month != 12)
-#   ) |> 
+#   ) |>
 #   create_city_index_table_sd()
 ```
 <!-- Kristiansand -->
@@ -551,7 +578,7 @@ Et 95 % konfidensintervall går fra
 
 
 <!--
-For Buskerudbyen -->
+For Buskerudbyen --
 
 ### Trafikken på Ev 18
 Til sammenligning viser tabell @tbl-e18_buskerudbyen endringen i trafikkmengde for lette kjøretøy på Ev 18 i samme periode.
@@ -560,28 +587,28 @@ Til sammenligning viser tabell @tbl-e18_buskerudbyen endringen i trafikkmengde f
 #| label: tbl-e18_buskerudbyen
 #| tbl-cap: "Endring i trafikkmengde på Ev 18."
 
-read.csv2("data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv") %>%
-    select(name, road_reference, year, index_short) %>%
-    flextable() %>%
-    colformat_int(j = "year", big.mark = "") %>%
-    colformat_double(j = "index_short", digits = 1) %>%
-    set_header_labels(name = "Navn",
-                      road_reference = "Vegreferanse",
-     #                 adt = "ÅDT",
-                      year = "År",
-                      index_short = "Endring i\ntrafikkmengde\n(%)") %>%
-    align(j = c(3, 4), align = "center", part = "all") %>%
-    bold(part = "header") %>%
-    #fontsize(size = 9, part = "all") %>%
-    font(fontname = "Lucida Sans Unicode", part = "all") %>%
-    bg(bg = "#ED9300", part = "header") %>%
-    border_remove() %>%
-    hline_top(part = "header", border = borderline) %>%
-    hline_bottom(part = "all", border = borderline) %>%
-    autofit() %>%
-    height_all(height = .2) %>%
-    padding(padding.top = .3,
-            padding.bottom = .3)
+# read.csv2("data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv") %>%
+#     select(name, road_reference, year, index_short) %>%
+#     flextable() %>%
+#     colformat_int(j = "year", big.mark = "") %>%
+#     colformat_double(j = "index_short", digits = 1) %>%
+#     set_header_labels(name = "Navn",
+#                       road_reference = "Vegreferanse",
+#      #                 adt = "ÅDT",
+#                       year = "År",
+#                       index_short = "Endring i\ntrafikkmengde\n(%)") %>%
+#     align(j = c(3, 4), align = "center", part = "all") %>%
+#     bold(part = "header") %>%
+#     #fontsize(size = 9, part = "all") %>%
+#     font(fontname = "Lucida Sans Unicode", part = "all") %>%
+#     bg(bg = "#ED9300", part = "header") %>%
+#     border_remove() %>%
+#     hline_top(part = "header", border = borderline) %>%
+#     hline_bottom(part = "all", border = borderline) %>%
+#     autofit() %>%
+#     height_all(height = .2) %>%
+#     padding(padding.top = .3,
+#             padding.bottom = .3)
 ```
 
 <!-- Stopp buskerudbyen her -->

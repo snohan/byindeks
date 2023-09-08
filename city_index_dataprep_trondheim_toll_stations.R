@@ -10,7 +10,7 @@
 #
 
 # Set manual variables ----
-index_month <- 7
+index_month <- 8
 city_number <- 960
 city_name <- "Trondheim"
 
@@ -447,11 +447,11 @@ city_index_monthly <-
       stringr::str_to_title()
   )
 
-write.csv2(
-  city_index_monthly,
-  file = paste0("data_indexpoints_tidy/byindeks_maanedlig_", city_number, ".csv"),
-  row.names = F
-)
+# write.csv2(
+#   city_index_monthly,
+#   file = paste0("data_indexpoints_tidy/byindeks_maanedlig_", city_number, ".csv"),
+#   row.names = F
+# )
 
 readr::write_rds(
   city_index_monthly,
@@ -615,11 +615,11 @@ readr::write_rds(
 
 # Husk å lage fil for Miljøpakken
 # TODO: include in Excel file for all cities
-write.csv2(
-  city_index_so_far_all,
-  file = paste0("data_indexpoints_tidy/city_index_so_far_", city_number, ".csv"),
-  row.names = F
-)
+# write.csv2(
+#   city_index_so_far_all,
+#   file = paste0("data_indexpoints_tidy/city_index_so_far_", city_number, ".csv"),
+#   row.names = F
+# )
 
 
 # MDT ----
