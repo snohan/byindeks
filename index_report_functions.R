@@ -70,17 +70,27 @@ create_point_table_trd <- function(all_point_info_df) {
 create_point_adt_map <- function(all_point_info_df) {
 
   palett_adt <-
-    colorNumeric(palette = "Greens",
-                 domain = NULL)
+    leaflet::colorNumeric(
+      palette = "Greens",
+      domain = NULL
+    )
 
-  point_adt_map <- all_point_info_df %>%
-    leaflet(width = "100%",
-            height = 700,
-            options = leafletOptions(crs = nvdb_crs,
-                                     zoomControl = F)) %>%
-    addTiles(urlTemplate = nvdb_map_url,
-             attribution = nvdb_map_attribution) %>%
-    addCircleMarkers(
+  point_adt_map <-
+    all_point_info_df |>
+    leaflet::leaflet(
+      #width = "100%",
+      #height = 700,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F
+        )
+    ) |>
+    leaflet::addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) |>
+    leaflet::addCircleMarkers(
       lng = ~lon,
       lat = ~lat,
       radius = 6,
@@ -91,14 +101,16 @@ create_point_adt_map <- function(all_point_info_df) {
       fill = T,
       fillColor = ~palett_adt(adt),
       fillOpacity = 0.8
-    ) %>%
-    addLegend(#"bottomleft",
-              "bottomright",
-              pal = palett_adt,
-              values = ~adt,
-              title = "\u00c5DT",
-              opacity = 0.7,
-              labFormat = labelFormat(big.mark = " "))
+    ) |>
+    leaflet::addLegend(
+      #"bottomleft",
+      "bottomright",
+      pal = palett_adt,
+      values = ~adt,
+      title = "\u00c5DT",
+      opacity = 0.6,
+      labFormat = leaflet::labelFormat(big.mark = " ")
+    )
 
   return(point_adt_map)
 }

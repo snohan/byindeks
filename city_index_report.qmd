@@ -42,7 +42,7 @@ source("rmd_setup.R")
 # Trondheim              960 (2019) 08
 
 # Choose city number:
-city_number <- 960
+city_number <- 1952
 
 city_number_county_name <- 
   tibble::tibble(
@@ -93,12 +93,12 @@ all_point_info <-
 city_info <-
   readr::read_rds(
     paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")
-  ) |>  
+  ) #|>  
   #dplyr::mutate(
     #month_object = lubridate::make_date(year = year, month = month)
   #) |> 
   # Trondheim:
-  dplyr::filter(length_range == "lette")
+  #dplyr::filter(length_range == "lette")
 
 latest_month <- 
   city_info |> 
@@ -203,6 +203,8 @@ latest_complete_year <-
 # Linking to child files
 intro_file <- paste0("city_report_files/intro_", city_number, ".Rmd")
 traffic_file <- paste0("city_report_files/trafikkforhold_", city_number, ".Rmd")
+# Buskerudbyen
+map_zoomed <- paste0("city_report_files/map_zoomed_", city_number, ".Rmd")
 
 
 # Start Kristiansand
@@ -285,26 +287,24 @@ De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeks
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen."
 #| ft.arraystretch: 0.9
 
-# B er bomstasjon, T er trafikkregistreringspunkt.
-
 all_point_info |> 
   dplyr::slice(1:36) |> 
-  #create_point_table()
+  create_point_table()
   # TRD:
-  create_point_table_trd() |>
-  flextable::footnote(
-    i = 1,
-    j = 2,
-    value = flextable::as_paragraph(
-      c("B er bomstasjon, T er trafikkregistreringspunkt.")
-    ),
-    ref_symbols = c("a"),
-    part = "header"
-  ) |>
-  flextable::fontsize(
-    size = 8,
-    part = "footer"
-  )
+  # create_point_table_trd() |>
+  # flextable::footnote(
+  #   i = 1,
+  #   j = 2,
+  #   value = flextable::as_paragraph(
+  #     c("B er bomstasjon, T er trafikkregistreringspunkt.")
+  #   ),
+  #   ref_symbols = c("a"),
+  #   part = "header"
+  # ) |>
+  # flextable::fontsize(
+  #   size = 8,
+  #   part = "footer"
+  # )
 ```
 
 
@@ -314,26 +314,24 @@ all_point_info |>
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2."
 #| ft.arraystretch: 0.9
 
-# B er bomstasjon, T er trafikkregistreringspunkt.
-
-all_point_info |>
-  dplyr::slice(37:75) |>
+#all_point_info |>
+#  dplyr::slice(37:75) |>
   #create_point_table()
 #   # TRD:
-  create_point_table_trd() |>
-  flextable::footnote(
-    i = 1,
-    j = 2,
-    value = flextable::as_paragraph(
-      c("B er bomstasjon, T er trafikkregistreringspunkt.")
-    ),
-    ref_symbols = c("a"),
-    part = "header"
-  ) |>
-  flextable::fontsize(
-    size = 8,
-    part = "footer"
-  )
+  # create_point_table_trd() |>
+  # flextable::footnote(
+  #   i = 1,
+  #   j = 2,
+  #   value = flextable::as_paragraph(
+  #     c("B er bomstasjon, T er trafikkregistreringspunkt.")
+  #   ),
+  #   ref_symbols = c("a"),
+  #   part = "header"
+  # ) |>
+  # flextable::fontsize(
+  #   size = 8,
+  #   part = "footer"
+  # )
 ```
 
 
@@ -349,32 +347,38 @@ all_point_info |>
 # {{< pagebreak >}}
 ```
 
+{{< pagebreak >}}
 
-Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene. 
+Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene i avtaleområdet. 
 
 ```{r}
 #| label: fig-map_trp
-#| fig-cap: "Trafikkregistreringspunkt og årsdøgntrafikk. Punktet Meådalen på Ev 14 mellom Stjørdal og Meråker er utelatt fra kartvisningen."
-#| fig-scap: "Trafikkregistreringspunkt og årsdøgntrafikk."
-#| fig-width: 7
+#| fig-cap: "Kart som viser trafikkregistreringspunkt og årsdøgntrafikk."
+#| fig-scap: "Kart som viser trafikkregistreringspunkt og årsdøgntrafikk."
+
+# fig-width: 7
 
 # TRD
-# Punktet Meådalen på Ev 14 mellom Stjørdal og Meråker er utelatt fra kartvisningen.
+# Punktet Meådalen på E14 mellom Stjørdal og Meråker er utelatt fra kartvisningen.
 
-knitr::opts_chunk$set(
-  dpi = 100
-  )
+# knitr::opts_chunk$set(
+#   dpi = 300
+#   )
 
-# all_point_info |>
-#   create_point_adt_map()
+all_point_info |>
+  create_point_adt_map()
 
 # Trondheim
-all_point_info %>%
- dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
- create_point_adt_map_trondheim()
+# all_point_info %>%
+#  dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
+#  create_point_adt_map_trondheim()
 ```
 
+
+<!-- Buskerudbyen -->
+{{< include city_report_files/_map_zoomed.Rmd >}}
 {{< pagebreak >}}
+
 
 # Endring i trafikkmengde
 Nullvekstmålet skal måles ved at trafikkutviklingen vurderes på et treårs glidende gjennomsnitt, jf. brev fra Samferdselsdepartementet til de fire største byområdene datert 11.12.2019. Måloppnåelsen gjelder avtaleperioden sett under ett, som betyr at det er trafikknivået i referanseåret `r base_year` det skal sammenlignes med. Det skal være netto nullvekst i perioden.
@@ -534,9 +538,9 @@ Koronapandemien medførte lokale og nasjonale tiltak i perioden mellom mars 2020
 
 
 ## Endring per år
-Endring i trafikkmengde er også beregnet for hele kalenderår. I stedet for et tre års glidende gjennomsnitt tar denne beregningen utgangspunkt i indeksen mellom to påfølgende år. Indekstall som gjelder for lengre perioder enn to påfølgende år er beregnet som en kjedet indeks av indeksene for alle mellomliggende påfølgende års indekser. En kjedet indeks er en multiplikasjon av indekser på desimalform hvor en indeks på 1 tilsvarer ingen endring.
+Endring i trafikkmengde er også beregnet for hele kalenderår. I stedet for et tre års glidende gjennomsnitt tar denne beregningen utgangspunkt i indeksen mellom to påfølgende år. Indekstall som gjelder for lengre perioder enn to påfølgende år er beregnet som en kjedet indeks av de mellomliggende års indekser. En kjedet indeks er en multiplikasjon av indekser på desimalform hvor en indeks på 1 tilsvarer ingen endring.
 
-Tabell @tbl-city_index viser den årlige endringen, samt kjedet indeks for hele perioden.
+Tabell @tbl-city_index viser den årlige endringen, samt prosentvis endring for ulike perioder.
 
 
 ```{r}
