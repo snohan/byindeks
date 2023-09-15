@@ -33,7 +33,7 @@ crossref:
 
 source("rmd_setup.R")
 
-last_published_month_number <- 7
+last_published_month_number <- 8
 
 index_all_years <-
   readr::read_rds(
@@ -176,6 +176,28 @@ table_index_chains("Grenland")
 
 index_for_plotting |> 
   plot_index_chain("Grenland")
+```
+
+
+# Kristiansand
+
+```{r}
+#| label: tbl-krs
+#| tbl-cap: "Estimert endring i sykkeltrafikk i Kristiansand"
+#| ft.arraystretch: 0.9
+
+table_index_chains("Kristiansand")
+```
+
+
+```{r}
+#| label: fig-krs
+#| fig-width: 6.5
+#| fig-height: 6
+#| fig-cap: "Estimert endring i sykkeltrafikk i Kristiansand"
+
+index_for_plotting |> 
+  plot_index_chain("Kristiansand")
 ```
 
 

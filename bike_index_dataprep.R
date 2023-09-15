@@ -7,7 +7,7 @@ source("indexpoints_tidying_functions.R")
 
 # Index codes and years ----
 last_complete_year <- 2022
-last_complete_month_this_year <- 7
+last_complete_month_this_year <- 8
 
 index_codes_and_reference_years <-
   tibble::tibble(
@@ -20,7 +20,8 @@ index_codes_and_reference_years <-
       5953,  # Nedre Glomma
       5952,  # Bergen
       6952,  # Nord-Jæren
-      11952  # Tromsø
+      11952, # Tromsø
+      14952  # Kristiansand
     ),
     area_name = c(
       "Grenland",
@@ -30,7 +31,8 @@ index_codes_and_reference_years <-
       "Nedre Glomma",
       "Bergen",
       "Nord-Jæren",
-      "Tromsø"
+      "Tromsø",
+      "Kristiansand"
     ),
     reference_year =
       c(
@@ -41,7 +43,8 @@ index_codes_and_reference_years <-
         2018,
         2018,
         2019,
-        2021
+        2021,
+        2018
       )
   ) |>
   dplyr::rowwise() |>

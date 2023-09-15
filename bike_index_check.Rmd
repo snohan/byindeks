@@ -43,6 +43,7 @@ points <- get_points() %>%
 # Bergen 5952         2019 - 2023-08
 # Førde 9952          2018 - 2023-08
 # Grenland 4953       2018 - 2023-08
+# Kristiansand 14952  2018 - 2023-08
 # Nedre Glomma 5953   2019 - 2023-08
 # Nord-Jæren 6952     2020 - 2023-08
 # Osloområdet 6953    2018 - 2023-08
@@ -53,7 +54,7 @@ points <- get_points() %>%
 # Choose
 index_year <- 2023
 index_month <- 7 # latest published
-city_number <- 12952
+city_number <- 14952
 
 # Fetch
 city_index <- 
@@ -328,8 +329,8 @@ pointindex_long <-
 ## Indeks per måned så langt for `r city_name`
 
 ```{r city_index, message=FALSE, fig.width=12}
-month_start = lubridate::make_date(year = 2023, month = 1)
-month_end = lubridate::make_date(year = 2023, month = 12)
+month_start = lubridate::make_date(year = index_year, month = 1)
+month_end = lubridate::make_date(year = index_year, month = 12)
 
 full_year_x_axis <- c(month_start, month_end)
 
@@ -356,16 +357,17 @@ city_index_prepared %>%
 
 
 
-## August
+## Desember
 
-```{r map_trp_index, message=FALSE}
-city_trps_new_pointindex %>% 
+```{r map_trp_index}
+# , message=FALSE
+city_trps_new_pointindex %>%
   dplyr::rename(
     index = index_total_p
-  ) %>% 
+  ) %>%
   dplyr::filter(
     !is.na(index)
-  ) %>% 
+  ) %>%
   create_pointindex_map()
 ```
 

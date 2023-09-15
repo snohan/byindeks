@@ -328,7 +328,8 @@ create_pointindex_map <- function(all_point_info_df) {
     colorNumeric(palette = rampcols,
                  domain = NULL)
 
-  pointindex_map <- all_point_info_df %>%
+  pointindex_map <-
+    all_point_info_df %>%
     leaflet(
       width = "100%",
       height = 700,
