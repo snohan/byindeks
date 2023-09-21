@@ -20,3 +20,7 @@ caption {
 table {
   margin-top: 2px;
 }
+
+.cell {
+  font-size: 8pt;
+}
