@@ -4,72 +4,11 @@
   source("get_from_trafficdata_api.R")
   library(tictoc)
   library(writexl)
+  library(sf)
 }
 
 
-# Tromsø 2019-2022 ----
-## TRP ----
-trp <- get_points()
-
-trp_data_time_span <- get_trp_data_time_span()
-
-trp_trs <-
-  trp |>
-  dplyr::filter(
-    municipality_name == "Tromsø",
-    traffic_type == "VEHICLE",
-    registration_frequency == "CONTINUOUS"
-  ) |>
-  dplyr::select(
-    trp_id, name, road_reference
-  ) |>
-  dplyr::distinct() |>
-  dplyr::left_join(
-    trp_data_time_span,
-    by = join_by(trp_id)
-  ) |>
-  dplyr::filter(
-    first_data_with_quality_metrics < "2019-02-01",
-    latest_daily_traffic > "2022-12-01"
-  )
-
-
-## AADT to check coverage ----
-aadt <- get_aadt_for_trp_list(trp_trs$trp_id)
-
-aadt_tidy <-
-  aadt |>
-  dplyr::filter(
-    year %in% c(2019, 2022)
-  ) |>
-  dplyr::select(
-    trp_id, year, coverage
-  )
-
-
-## TRP ok ----
-trp_trs_coverage <-
-  trp_trs |>
-  dplyr::left_join(
-    aadt_tidy,
-    by = join_by(trp_id)
-  ) |>
-  dplyr::filter(
-    coverage > 50
-  ) |>
-  dplyr::summarise(
-    n_years = n(),
-    .by = c(trp_id, name, road_reference)
-  ) |>
-  dplyr::filter(
-    n_years == 2
-  ) |>
-  dplyr::arrange(
-    road_reference
-  )
-
-
-## Hourly data ----
+# Functions ----
 calculate_hourly_index_traffic <- function(traffic_by_length_lane) {
 
   # IN: hourly traffic by length and lane
@@ -142,11 +81,6 @@ calculate_hourly_index_traffic <- function(traffic_by_length_lane) {
 }
 
 
-## TRP index ----
-#trp_id <- "92719V1125906"
-#base_year <- 2019
-#calc_year <- 2022
-
 calculate_trp_index <- function(trp_id, base_year, calc_year) {
 
   data_base_year <-
@@ -201,8 +135,83 @@ calculate_trp_index <- function(trp_id, base_year, calc_year) {
   )
 
   return(trp_index_data)
-
 }
+
+
+# TRP ----
+trp <- get_points()
+trp_data_time_span <- get_trp_data_time_span()
+
+
+# Links ----
+links <- sf::st_read("traffic-links-2022.geojson")
+links_reduced <-
+  links |>
+  dplyr::select(
+    nvdb_id = nvdbId,
+    trp_id = primaryTrpId
+  )
+remove(links)
+
+
+# Tromsø 2019-2022 ----
+trp_trs <-
+  trp |>
+  dplyr::filter(
+    municipality_name == "Tromsø",
+    traffic_type == "VEHICLE",
+    registration_frequency == "CONTINUOUS"
+  ) |>
+  dplyr::select(
+    trp_id, name, road_reference
+  ) |>
+  dplyr::distinct() |>
+  dplyr::left_join(
+    trp_data_time_span,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::filter(
+    first_data_with_quality_metrics < "2019-02-01",
+    latest_daily_traffic > "2022-12-01"
+  )
+
+
+## AADT to check coverage ----
+aadt <- get_aadt_for_trp_list(trp_trs$trp_id)
+
+aadt_tidy <-
+  aadt |>
+  dplyr::filter(
+    year %in% c(2019, 2022)
+  ) |>
+  dplyr::select(
+    trp_id, year, coverage
+  )
+
+
+## TRP ok ----
+trp_trs_coverage <-
+  trp_trs |>
+  dplyr::left_join(
+    aadt_tidy,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::filter(
+    coverage > 50
+  ) |>
+  dplyr::summarise(
+    n_years = n(),
+    .by = c(trp_id, name, road_reference)
+  ) |>
+  dplyr::filter(
+    n_years == 2
+  ) |>
+  dplyr::arrange(
+    road_reference
+  )
+
+
+## TRP index ----
 
 tictoc::tic()
 trp_index_data <-
@@ -229,8 +238,12 @@ all_trp_index_data <-
     n_months >= 6
   ) |>
   dplyr::mutate(
-    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1)
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1),
+    weight = traffic_base / sum(traffic_base),
+    city_index = (sum(traffic_calc) / sum(traffic_base) - 1 ) * 100,
+    deviation = weight * (index_p - city_index)^2
   )
+
 
 trp_index_meta_data <-
   all_trp_index_data |>
@@ -259,9 +272,69 @@ city_index_tromso <-
   dplyr::summarise(
     traffic_base = sum(traffic_base),
     traffic_calc = sum(traffic_calc),
-    n_trp = n()
+    n_trp = n(),
+    sum_squared_weight = sum(weight^2),
+    n_eff = 1 / sum_squared_weight,
+    variance_p = (1 / (1 - sum_squared_weight)) * sum(deviation)
   ) |>
   dplyr::mutate(
-    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1)
+    period = "2019-2022",
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1),
+    standard_error = sqrt(sum_squared_weight * variance_p),
+    ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error, 1),
+    ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error, 1)
+  ) |>
+  dplyr::select(
+    period,
+    index_p,
+    ci_lower,
+    ci_upper,
+    n_trp,
+    n_eff,
+    variance_p,
+    sum_squared_weight,
+    standard_error
   )
+
+readr::write_rds(
+  city_index_tromso,
+  "data_indexpoints_tidy/city_index_tromso_2019_2022.rds"
+)
+
+
+# Nord-Jæren 2017 vs. 2019 ----
+# Will reference year 2019 be better than 2017?
+## Which TRPs were good in 2019 ----
+trp_njaeren <-
+  trp |>
+  dplyr::filter(
+    municipality_name %in% c("Randaberg", "Stavanger", "Sola", "Sandnes"),
+    traffic_type == "VEHICLE",
+    registration_frequency == "CONTINUOUS"
+  ) |>
+  dplyr::select(
+    trp_id, name, road_reference
+  ) |>
+  dplyr::distinct() |>
+  dplyr::left_join(
+    trp_data_time_span,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::filter(
+    first_data_with_quality_metrics < "2019-02-01",
+    latest_daily_traffic > "2019-12-01"
+  )
+
+## AADT to check coverage ----
+aadt <- get_aadt_for_trp_list(trp_njaeren$trp_id)
+
+aadt_tidy <-
+  aadt |>
+  dplyr::filter(
+    year %in% c(2019)
+  ) |>
+  dplyr::select(
+    trp_id, year, coverage
+  )
+
 
