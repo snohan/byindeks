@@ -55,7 +55,7 @@ trp_id_msnr <-
 
 # Choose
 index_month <- 8 # the one to be published now
-city_number <- 8952
+city_number <- 952
 
 reference_year <-
   dplyr::case_when(
@@ -491,8 +491,10 @@ city_index_yearly_all <-
     area_name = city_name,
     month_name_short = lubridate::month(month, label = TRUE),
     period = paste0("jan-", month_name_short),
-    ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error, 1),
-    ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error, 1)
+    ci_lower = round(index_p - 1.96 * standard_error, 1),
+    ci_upper = round(index_p + 1.96 * standard_error, 1)
+    #ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error, 1),
+    #ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error, 1)
   ) |>
   dplyr::select(
     -standard_deviation,
@@ -706,9 +708,9 @@ mdt_filtered <-
       )
     )
   ) |>
-  tibble::as_tibble() |>
+  tibble::as_tibble() #|>
   # TRD
-  dplyr::bind_rows(toll_mdt_light)
+  #dplyr::bind_rows(toll_mdt_light)
 
 
 mdt_filtered |>
@@ -747,7 +749,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[16:18]
+    trp_id %in% trp_mdt_ok_refyear[31:33]
   ) |>
   dplyr::select(
     trp_id,
@@ -1109,3 +1111,53 @@ write.csv2(
   file = "data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv",
   row.names = F
 )
+
+
+# Combining a direct index with sliding indexes ----
+chain_link_index_i <- city_index_njaeren_2017_2019$index_i
+chain_link_se_p <- city_index_njaeren_2017_2019$standard_error
+
+all_36_month_indices_combined <-
+  all_36_month_indices |>
+  dplyr::select(
+    index_period,
+    month_object,
+    month_n,
+    year,
+    window,
+    index_i,
+    standard_error_p
+  ) |>
+  dplyr::mutate(
+    chained_index_i = index_i * chain_link_index_i,
+    index_p = (chained_index_i - 1) * 100,
+    standard_error =
+      100 * sqrt(
+        index_i^2 * 1e-4 * chain_link_se_p^2 +
+          chain_link_index_i^2 * 1e-4 * standard_error_p^2 +
+          1e-4 * chain_link_se_p^2 * 1e-4 * standard_error_p^2
+      ),
+    ci_lower = round(index_p - 1.96 * standard_error, 1),
+    ci_upper = round(index_p + 1.96 * standard_error, 1)
+    #ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error, 1),
+    #ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error, 1)
+  )
+
+
+
+# Is the product of two normal variables still normal when means are close to 1 and with small deviation?
+# Seems so
+# library(extraDistr)
+# n1 = extraDistr::rlst(1e4, 10, 1, .025)
+# n2 = extraDistr::rlst(1e4, 10, 1, .025)
+# #n1 <- rnorm(10000,1,.005)
+# #n2 <- rnorm(10000,1,.005)
+# n  <- n1*n2
+# d  <- density(n)
+# plot(d,lwd=2)
+# x  <- par('usr')
+# dn <- dnorm(d$x,mean=mean(n),sd=sd(n))
+# x  <- seq(x[1],x[2],length.out=length(dn))
+# lines(x, dn ,col=2, lwd=2)
+# legend('topright', legend=c('Estimated density', 'Normal
+#     distribution'), lwd=2, lty=c(1,1),col=c(1,2))

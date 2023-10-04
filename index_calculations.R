@@ -80,8 +80,12 @@ calculate_hourly_index_traffic <- function(traffic_by_length_lane) {
   return(hourly_traffic)
 }
 
+# trp_id <- trp_2017[16]
+# calc_year <- 2019
+# base_year <- 2017
 
-calculate_trp_index <- function(trp_id, base_year, calc_year) {
+
+calculate_trp_index <- function(subfolder_name, trp_id, base_year, calc_year) {
 
   data_base_year <-
     get_hourly_traffic_by_length_lane(
@@ -131,7 +135,7 @@ calculate_trp_index <- function(trp_id, base_year, calc_year) {
 
   readr::write_rds(
     trp_index_data,
-    file = paste0("trp_index/", trp_id, "_", base_year, "_", calc_year, ".rds")
+    file = paste0("trp_index/", subfolder_name, "/", trp_id, "_", base_year, "_", calc_year, ".rds")
   )
 
   return(trp_index_data)
@@ -139,7 +143,17 @@ calculate_trp_index <- function(trp_id, base_year, calc_year) {
 
 
 # TRP ----
-trp <- get_points()
+trp <-
+  get_points() |>
+  dplyr::filter(
+    traffic_type == "VEHICLE",
+    registration_frequency == "CONTINUOUS"
+  ) |>
+  dplyr::select(
+    trp_id, name, road_reference, municipality_name
+  ) |>
+  dplyr::distinct()
+
 trp_data_time_span <- get_trp_data_time_span()
 
 
@@ -158,14 +172,11 @@ remove(links)
 trp_trs <-
   trp |>
   dplyr::filter(
-    municipality_name == "Tromsø",
-    traffic_type == "VEHICLE",
-    registration_frequency == "CONTINUOUS"
+    municipality_name == "Tromsø"
   ) |>
   dplyr::select(
     trp_id, name, road_reference
   ) |>
-  dplyr::distinct() |>
   dplyr::left_join(
     trp_data_time_span,
     by = join_by(trp_id)
@@ -216,6 +227,7 @@ trp_trs_coverage <-
 tictoc::tic()
 trp_index_data <-
   calculate_trp_index(
+    "tromso",
     trp_trs_coverage$trp_id[15],
     2019,
     2022
@@ -225,7 +237,7 @@ tictoc::toc()
 
 ## City index ----
 all_trp_index_data <-
-  base::list.files(path = "trp_index", full.names = TRUE) |>
+  base::list.files(path = "trp_index/tromso", full.names = TRUE) |>
   purrr::map(~ readr::read_rds(.x)) |>
   purrr::list_rbind() |>
   dplyr::summarise(
@@ -308,14 +320,8 @@ readr::write_rds(
 trp_njaeren <-
   trp |>
   dplyr::filter(
-    municipality_name %in% c("Randaberg", "Stavanger", "Sola", "Sandnes"),
-    traffic_type == "VEHICLE",
-    registration_frequency == "CONTINUOUS"
+    municipality_name %in% c("Randaberg", "Stavanger", "Sola", "Sandnes")
   ) |>
-  dplyr::select(
-    trp_id, name, road_reference
-  ) |>
-  dplyr::distinct() |>
   dplyr::left_join(
     trp_data_time_span,
     by = join_by(trp_id)
@@ -324,6 +330,7 @@ trp_njaeren <-
     first_data_with_quality_metrics < "2019-02-01",
     latest_daily_traffic > "2019-12-01"
   )
+
 
 ## AADT to check coverage ----
 aadt <- get_aadt_for_trp_list(trp_njaeren$trp_id)
@@ -337,4 +344,176 @@ aadt_tidy <-
     trp_id, year, coverage
   )
 
+
+
+
+
+## 2017-2019 ----
+# A direct index with the original 24 TRPs
+# Does this direct index have lower uncertainty than the chained?
+trp_2017 <- get_published_pointindex_for_months(952, 2020, 1)[[1]]
+
+{
+  tictoc::tic()
+  trp_index_data <-
+    calculate_trp_index(
+      "njaeren",
+      trp_2017[19],
+      2017,
+      2019
+    )
+  tictoc::toc()
+}
+
+# Utelatt:
+# Åsedalen pga ny arm til E39 til Hoveveien
+# Hillevågtunnelen pga NorTraf-data tom juli 2017
+# Kannik: lite data i 2019
+
+all_trp_index_data <-
+  base::list.files(path = "trp_index/njaeren", full.names = TRUE) |>
+  purrr::map(~ readr::read_rds(.x)) |>
+  purrr::list_rbind() |>
+  dplyr::filter(
+    !(trp_id == "99781V2303021" & month == 4)
+  ) |>
+  dplyr::summarise(
+    traffic_base = sum(traffic_base),
+    traffic_calc = sum(traffic_calc),
+    n_months = n(),
+    .by = c(trp_id)
+  ) |>
+  dplyr::filter(
+    n_months >= 6
+  ) |>
+  dplyr::mutate(
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(2),
+    weight = traffic_base / sum(traffic_base),
+    city_index = (sum(traffic_calc) / sum(traffic_base) - 1 ) * 100,
+    deviation = weight * (index_p - city_index)^2,
+    index_i = traffic_calc / traffic_base,
+    city_index_i = sum(traffic_calc) / sum(traffic_base),
+    deviation_i = weight * (index_i - city_index_i)^2
+  )
+
+trp_index_meta_data <-
+  all_trp_index_data |>
+  dplyr::left_join(
+    trp,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    road_reference,
+    index_p
+  ) |>
+  dplyr::distinct() |>
+  dplyr::arrange(
+    name
+  )
+
+
+city_index_njaeren_2017_2019 <-
+  all_trp_index_data |>
+  dplyr::summarise(
+    traffic_base = sum(traffic_base),
+    traffic_calc = sum(traffic_calc),
+    n_trp = n(),
+    sum_squared_weight = sum(weight^2),
+    n_eff = 1 / sum_squared_weight,
+    variance_p = (1 / (1 - sum_squared_weight)) * sum(deviation),
+    variance_i = (1 / (1 - sum_squared_weight)) * sum(deviation_i)
+  ) |>
+  dplyr::mutate(
+    period = "2017-2019",
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1),
+    index_i = traffic_calc / traffic_base,
+    standard_error = sqrt(sum_squared_weight * variance_p),
+    standard_error_i = sqrt(sum_squared_weight * variance_i),
+    ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error, 1),
+    ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error, 1)
+  ) |>
+  dplyr::select(
+    period,
+    index_i,
+    index_p,
+    ci_lower,
+    ci_upper,
+    n_trp,
+    n_eff,
+    variance_p,
+    variance_i,
+    sum_squared_weight,
+    standard_error,
+    standard_error_i
+  )
+
+# Resultat
+# Direkte indeks: -3,5 (standarfeil 3,1)
+# Opprinnelig kjedet indeks: -4,6 (standarfeil 2,1)
+# Forskjellen kommer nok av at Hillevågtunnelen ikke er med i den direkte pga NorTraf-data.
+# Den hadde cirka -10.
+# I den opprinnelige kjedete indeksen var Eikeberget ikke med 18-19.
+# Den skulle ha gitt et lite positivt bidrag.
+
+
+## 2019-2023 ----
+# Three year sliding window
+# Fetching the TRPs agreed on in the proposal to extend number of TRPs
+reference_year <- 2019
+trp_2019 <- get_published_pointindex_for_months(10952, 2021, 1)[[1]]
+
+trp_2019_df <-
+  tibble::as_tibble_col(
+    trp_2019,
+    column_name = "trp_id"
+  )
+
+# Some of these TRPs were not yet operational in 2019
+trp_njaeren_used <-
+  trp_njaeren |>
+  dplyr::right_join(
+    trp_2019_df,
+    by = "trp_id"
+  ) |>
+  dplyr::filter(
+    #trp_id %in% trp_2019
+    is.na(name)
+  ) |>
+  dplyr::select(
+    trp_id
+  ) |>
+  dplyr::left_join(
+    trp,
+    by = "trp_id"
+  )
+
+# Choosing agreed upon TRPs that were good in 2019
+trp_2019_chosen <-
+  trp_njaeren |>
+  dplyr::filter(
+    trp_id %in% trp_2019
+  )
+
+
+### Get MDTs ----
+mdt <-
+  purrr::map_dfr(
+    c(2019, 2020, 2021, 2022, 2023),
+    ~ get_mdt_by_length_for_trp_list(trp_2019_chosen$trp_id, .x)
+  )
+
+trp_mdt_ok_refyear <-
+  mdt_validated |>
+  # dplyr::filter(
+  #   trp_id %in% city_trps # avoid toll stations appearing here as they've already been checked
+  # ) |>
+  filter_mdt(reference_year) |>
+  purrr::pluck(1)
+
+
+
+## 2017-2023 ----
+# Combined index and uncertainty
 

@@ -568,8 +568,8 @@ calculate_rolling_indices_by_mdt <-
           .groups = "drop"
         ) |>
         dplyr::mutate(
-          ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error_p, 1),
-          ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error_p, 1)
+          ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
+          ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error_p, 1)
         )
         else .} |>
       dplyr::mutate(
