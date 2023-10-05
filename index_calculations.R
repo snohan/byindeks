@@ -345,9 +345,6 @@ aadt_tidy <-
   )
 
 
-
-
-
 ## 2017-2019 ----
 # A direct index with the original 24 TRPs
 # Does this direct index have lower uncertainty than the chained?
