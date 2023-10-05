@@ -53,8 +53,8 @@ points <-
   )
 
 ## Choose month ----
-this_year <- 2022
-latest_month_number <- 12
+this_year <- 2023
+latest_month_number <- 8
 
 index_this_year <-
   get_published_road_traffic_index_for_months(
@@ -315,6 +315,16 @@ index_this_year_prepared <-
       road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG" ~ "Europa-, riks- og fylkesveg")
   ) %>%
   dplyr::mutate(
+    area_name = dplyr::case_when(
+      area_name == "OSLO_OG_VIKEN" ~ "Oslo og Viken",
+      area_name == "INNLANDET" ~ "Innlandet",
+      area_name == "AGDER_OG_SOROSTLANDET" ~ "Agder og Sør-Østlandet",
+      area_name == "VESTLANDET" ~ "Vestlandet",
+      area_name == "TRONDELAG" ~ "Trøndelag",
+      area_name == "NORD_NORGE" ~ "Nord-Norge",
+      TRUE ~ area_name)
+  ) |>
+  dplyr::mutate(
     month_object = lubridate::make_date(year = year, month = month),
     month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)
   ) %>%
@@ -343,6 +353,7 @@ index_this_year_prepared <-
           ),
         ordered = TRUE
       ),
+
     standard_error =
       round(standard_deviation / sqrt(no_points), digits = 1),
     standard_deviation = round(standard_deviation, digits = 1)
