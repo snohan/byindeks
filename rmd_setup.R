@@ -21,6 +21,8 @@ library(scales)
 source("H:/Programmering/R/byindeks/index_report_functions.R")
 source("H:/Programmering/R/byindeks/split_road_system_reference.R")
 
+svv_background_color <- "#F5F5F5"
+
 # knitr options ####
 knitr::opts_chunk$set(
   echo = FALSE,
