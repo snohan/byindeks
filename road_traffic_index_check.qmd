@@ -297,49 +297,49 @@ pointindex_prepared_all_wide_total_index <-
   pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, adt, month, index_total_p) %>% 
   tidyr::pivot_wider(names_from = month, values_from = index_total_p,
-                     names_prefix = "m_") %>% 
+                     names_prefix = "m") %>% 
   dplyr::mutate(value_type = "index_total_p")
 
 pointindex_prepared_all_wide_coverage <- 
   pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, adt, month, index_total_coverage) %>% 
   tidyr::pivot_wider(names_from = month, values_from = index_total_coverage,
-                     names_prefix = "m_") %>% 
+                     names_prefix = "m") %>% 
   dplyr::mutate(value_type = "index_total_coverage")
 
 pointindex_prepared_all_wide_length_coverage <- 
   pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, adt, month, length_coverage) %>% 
   tidyr::pivot_wider(names_from = month, values_from = length_coverage,
-                     names_prefix = "m_") %>% 
+                     names_prefix = "m") %>% 
   dplyr::mutate(value_type = "length_coverage")
 
 pointindex_prepared_all_wide_short <- 
   pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, adt, month, index_short) %>% 
   tidyr::pivot_wider(names_from = month, values_from = index_short,
-                     names_prefix = "m_") %>% 
+                     names_prefix = "m") %>% 
   dplyr::mutate(value_type = "index_short")
 
 pointindex_prepared_all_wide_long <- 
   pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, adt, month, index_long) %>% 
   tidyr::pivot_wider(names_from = month, values_from = index_long,
-                     names_prefix = "m_") %>% 
+                     names_prefix = "m") %>% 
   dplyr::mutate(value_type = "index_long")
 
 pointindex_prepared_all_wide_check <- 
   pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, adt, month, total_short_long_check) %>% 
   tidyr::pivot_wider(names_from = month, values_from = total_short_long_check,
-                     names_prefix = "m_") %>% 
+                     names_prefix = "m") %>% 
   dplyr::mutate(value_type = "total_short_long_check")
 
 pointindex_prepared_all_wide_diff <- 
   pointindex_prepared_all %>% 
   dplyr::select(name, road_reference, adt, month, diff_total_short) %>% 
   tidyr::pivot_wider(names_from = month, values_from = diff_total_short,
-                     names_prefix = "m_") %>% 
+                     names_prefix = "m") %>% 
   dplyr::mutate(value_type = "diff_total_short")
 
 pointindex_wide <- 

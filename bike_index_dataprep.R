@@ -7,7 +7,7 @@ source("indexpoints_tidying_functions.R")
 
 # Index codes and years ----
 last_complete_year <- 2022
-last_complete_month_this_year <- 8
+last_complete_month_this_year <- 9
 
 index_codes_and_reference_years <-
   tibble::tibble(
@@ -129,7 +129,7 @@ bike_trp_indexes <-
   ) |>
   dplyr::filter(
     is_excluded == FALSE,
-    is_manually_excluded == FALSE
+    !(is_manually_excluded == TRUE & period == "month") # avoid year_to_date values wrongly removed
   ) |>
   dplyr::group_by(
     area_name,
@@ -312,6 +312,59 @@ bike_index_so_far_chained_long <-
     compared_to_ref_year = reference_year == year_base
   )
 
+
+## Distinct n TRPs over the years ----
+trp_ids_per_index_period <-
+  dplyr::bind_rows(
+    bike_trp_indexes_complete,
+    bike_trp_indexes_so_far_this_year
+  ) |>
+  dplyr::filter(
+    period == "year_to_date",
+    is_excluded == FALSE
+  ) |>
+  dplyr::select(
+    area_name,
+    trp_id,
+    year,
+    month
+  ) |>
+  dplyr::group_by(
+    area_name,
+    month
+  )
+
+index_years <- c(min(trp_ids_per_index_period$year):max(trp_ids_per_index_period$year))
+n_trp_indexes_per_chain_period <- tibble::tibble()
+
+for (i in index_years) {
+
+  trp_ids_i <-
+    trp_ids_per_index_period |>
+    dplyr::filter(
+      year <= i
+    ) |>
+    dplyr::select(
+      -year
+    ) |>
+    dplyr::distinct() |>
+    dplyr::summarise(
+      n_unique_trp_chain = n(),
+      .groups = "drop"
+    ) |>
+    dplyr::mutate(
+      year = i
+    )
+
+  n_trp_indexes_per_chain_period <-
+    dplyr::bind_rows(
+      n_trp_indexes_per_chain_period,
+      trp_ids_i
+    )
+
+}
+
+
 # Write ----
 bike_index_all_long <-
   dplyr::bind_rows(
@@ -320,8 +373,21 @@ bike_index_all_long <-
   ) |>
   dplyr::mutate(
     index_p = 100 * (index_i - 1),
-    ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error, 1),
-    ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error, 1)
+    #ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error, 1),
+    #ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error, 1),
+    ci_lower = round(index_p - 1.96 * standard_error, 1),
+    ci_upper = round(index_p + 1.96 * standard_error, 1)
+  ) |>
+  dplyr::left_join(
+    n_trp_indexes_per_chain_period,
+    by = join_by(area_name, year, month)
+  ) |>
+  dplyr::mutate(
+    n_unique_trp =
+      dplyr::case_when(
+        index_type == "direct" ~ n_trp,
+        index_type == "chained" ~ n_unique_trp_chain
+      )
   )
 
 readr::write_rds(

@@ -966,7 +966,7 @@ table_index_chains <- function(chosen_name) {
       area_name,
       years,
       months,
-      n_trp,
+      n_unique_trp,
       index_p,
       ci_lower,
       ci_upper
@@ -977,7 +977,7 @@ table_index_chains <- function(chosen_name) {
       area_name = "Byområde",
       years = "År",
       months = "Måneder",
-      n_trp = "Antall\npunkt",
+      n_unique_trp = "Antall\npunkt",
       index_p = "Endring i\ntrafikk-\nmengde\n(%)",
       ci_lower = "Konfidensintervall (prosentpoeng)",
       ci_upper = ""

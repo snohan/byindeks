@@ -33,7 +33,7 @@ crossref:
 
 source("rmd_setup.R")
 
-last_published_month_number <- 8
+last_published_month_number <- 9
 
 index_all_years <-
   readr::read_rds(
@@ -103,7 +103,7 @@ Været vil i perioder kunne påvirke trafikkmengden. For eksempel vil det ved d�
 
 
 ## Om antall sykkelregistreringspunkt
-I tabellene i denne rapporten angis antall sykkelregistreringspunkt. Antaller gjelder for det året som hadde færrest punkt blant årene som inngår i indekskjeden. Det er dette antallet som er bestemmende for bredden på indeksens konfidensintervall, og indekskjeden er sånn sett preget av det "svakeste" leddet i kjeden.
+I tabellene i denne rapporten angis antall sykkelregistreringspunkt. For hver tidsperiode angis det antall unike punkt som har bidratt med data.
 
 
 ## Om konfidensintervall
