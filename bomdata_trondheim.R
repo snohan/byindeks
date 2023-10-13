@@ -300,7 +300,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "august"
+month_string <- "september"
 year_number <- 2023
 
 apar_data_for_month <-
@@ -476,10 +476,14 @@ plot_toll_station_data_per_lane("86", 2023)
 # Tungasletta høy andel ukjente juli og aug 2018, ukjentandel er over 30 %!
 # 54 2021-08
 # 85 and 86: 2021-01, 2021-03--2021-04 (high ratio of unknowns intermittently)
-# Keep Nord for Sluppen bru (55) and not Bjørndalen (54) when Oslovegen is closed?
+# Keep Nord for Sluppen bru (55) and not Bjørndalen (54) when Oslovegen is closed.
 # - Bjørndalen is out of service.
+
 # 56 siste halvdel av 2022: ombygging av veg (kulverter) med innsnevring har nok ført til flytting
 # av bomstasjoner og mulig redusert antall felt
+
+# 55 flyttet fra Nord for Sluppen bru til Oslovegen nord for Nydalsbrua med oppstart medio august 2023
+# Skal derfor behandles som nytt punkt etter det. Men ligger nå på samme lenke som TRP Oslovegen.
 
 tolling_data_daily_tidy <-
   tolling_data_daily |>

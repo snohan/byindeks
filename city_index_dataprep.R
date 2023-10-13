@@ -54,8 +54,8 @@ trp_id_msnr <-
 # Trondheim stop
 
 # Choose
-index_month <- 8 # the one to be published now
-city_number <- 952
+index_month <- 9 # the one to be published now
+city_number <- 960
 
 reference_year <-
   dplyr::case_when(
@@ -708,9 +708,9 @@ mdt_filtered <-
       )
     )
   ) |>
-  tibble::as_tibble() #|>
-  # TRD
-  #dplyr::bind_rows(toll_mdt_light)
+  tibble::as_tibble() |>
+  #TRD
+  dplyr::bind_rows(toll_mdt_light)
 
 
 mdt_filtered |>
@@ -749,7 +749,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[31:33]
+    trp_id %in% trp_mdt_ok_refyear[16:18]
   ) |>
   dplyr::select(
     trp_id,
@@ -1059,7 +1059,7 @@ trp_mdt_plot |>
 # For those interested in the details
 list(
   punkt_adt = this_citys_trps_all_adt_final,
-  punktindeks_maned = trp_index_monthly_wide,
+  #punktindeks_maned = trp_index_monthly_wide,
   #punktindeks_ar = this_citys_trp_index_refyear, # drop
   byindeks_aarlig = city_index_yearly_all,
   #byindeks_maanedlig = city_index_monthly,

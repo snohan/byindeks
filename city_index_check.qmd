@@ -1,9 +1,35 @@
 ---
 title: "Sjekk av byindeks"
-output: html_notebook
+format: 
+  html:
+    css: svv.css
+    number-sections: true
+    toc: true
+    toc-location: left
+    toc-title: "Innhold"
+    toc-expand: true
+    df-print: paged
+    self-contained: true
+crossref:
+  fig-title: Figur
+  tbl-title: Tabell
+  title-delim: .
+  fig-prefix: figur
+  tbl-prefix: tabell
+editor: source
+knitr: 
+  opts_chunk: 
+    echo: false
 ---
 
-```{r setup, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
+
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
+#| warning: false
+#| message: false
+  
 # Packages are loaded through sourcing rmd_setup.R
 source("rmd_setup.R")
 
@@ -15,43 +41,33 @@ source("get_from_nvdb_api.R")
 library(DT)
 library(htmltools)
 
-# Point metadata from Traffic Data API
-points <- 
-  get_points() %>%
-  dplyr::distinct(trp_id, .keep_all = T) %>%
-  split_road_system_reference() %>% 
-  dplyr::select(
-    trp_id, 
-    name, 
-    road_reference, 
-    road_category_and_number,
-    county_name,
-    municipality_name, 
-    lat, lon, road_link_position
-  ) %>% 
-  dplyr::mutate(name = stringr::str_to_title(name, locale = "no"))
+# NB! run once per session
+#source("city_index_check_dataprep.R")
+points <- readr::read_rds("trps_for_city_index.rds")
 ```
 
 
-```{r get_data, include=FALSE}
+```{r}
+#| label: get_data
+
 # Look at details in one city at a time
 
 # City numbers
 # Refy City Cnum  Chkd Resp
-# 2016 Busk 1952   08 Snorre
-# 2016 Gren  955   08 Snorre
-# 2016 Kris  957   08 Snorre
-# 2016 NGlo  953   08 Trond
-# 2016 Trom  961   08 Snorre
-# 2017 NJær  952   08 Snorre
-# 2018 Oslo  959   08 Trond
-# 2018 Berg 8952   08 Trond
+# 2016 Busk 1952   09 Snorre
+# 2016 Gren  955   09 Snorre
+# 2016 Kris  957   09 Snorre
+# 2016 NGlo  953   09 Trond
+# 2016 Trom  961   09 Snorre
+# 2017 NJær  952   09 Snorre
+# 2018 Oslo  959   09 Trond
+# 2018 Berg 8952   09 Trond
 # 2019 Tron  960   08 Snorre
 
 
 # Choose
 index_year <- 2023
-latest_published_month <- 7
+latest_published_month <- 8
 city_number <- 960
 # End choose
 
@@ -83,6 +99,7 @@ previous_index_years <-
   )
 
 # Fetch
+# For TRD this is the unofficial
 city_index <- 
   get_published_index_for_months(
     city_number, 
@@ -96,75 +113,89 @@ pointindex <-
     index_year, 
     latest_published_month
   )
+```
 
-# TRD start
+
+```{r}
+#| label: trondheim
+
+# NB! There are other parts of the code that is specific to TRD
 # TRD toll station index
-tolling_station_indices_prepared <-
-  readr::read_rds(
-    file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
-  ) |>
-  dplyr::mutate(
-    year = lubridate::year(month_calc),
-    month = lubridate::month(month_calc),
-    class =
-      dplyr::case_when(
-        class == "alle" ~ "total_p",
-        class == "lette" ~ "short",
-        class == "tunge" ~ "long"
-      ),
-    index_p = round(index_p, digits = 1)
-  ) |>
-  dplyr::select(
-    trp_id,
-    year,
-    month,
-    class,
-    index = index_p
-  ) |>
-  dplyr::filter(
-    year == index_year
-  ) |>
-  tidyr::pivot_wider(
-    id_cols = ,
-    names_from = class,
-    names_prefix = "index_",
-    values_from = index
-  )
 
-# # For map
-tolling_station_indices_prepared_old <-
-  tolling_station_indices_prepared |>
-  dplyr::filter(
-    month < latest_published_month + 1
-  )
+if(city_number == 960){
+  
+  tolling_station_indices_prepared <-
+    readr::read_rds(
+      file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
+    ) |>
+    dplyr::mutate(
+      year = lubridate::year(month_calc),
+      month = lubridate::month(month_calc),
+      class =
+        dplyr::case_when(
+          class == "alle" ~ "total_p",
+          class == "lette" ~ "short",
+          class == "tunge" ~ "long"
+        ),
+      index_p = round(index_p, digits = 1)
+    ) |>
+    dplyr::select(
+      trp_id,
+      year,
+      month,
+      class,
+      index = index_p
+    ) |>
+    dplyr::filter(
+      year == index_year
+    ) |>
+    tidyr::pivot_wider(
+      id_cols = ,
+      names_from = class,
+      names_prefix = "index_",
+      values_from = index
+    )
+  
+  # For map
+  tolling_station_indices_prepared_old <-
+    tolling_station_indices_prepared |>
+    dplyr::filter(
+      month < latest_published_month + 1
+    )
+  
+  tolling_station_indices_prepared_new <-
+    tolling_station_indices_prepared |>
+    dplyr::filter(
+      month == latest_published_month + 1
+    )
+  
+  # tolling_station_indices_prepared_new_2 <-
+  #   tolling_station_indices_prepared |>
+  #   dplyr::filter(
+  #     month == latest_published_month + 2
+  #   )
+  
+  trd_toll_stations_meta <-
+    readr::read_rds(
+      file = "bomdata_trondheim/trd_toll_stations.rds"
+    ) |>
+    split_road_system_reference() |>
+    dplyr::select(
+      trp_id,
+      name,
+      road_reference,
+      road_category_and_number,
+      municipality_name,
+      lat, lon,
+      road_link_position
+    )
+  # TRD stop
+}
+```
 
-tolling_station_indices_prepared_new <-
-  tolling_station_indices_prepared |>
-  dplyr::filter(
-    month == latest_published_month + 1
-  )
 
-tolling_station_indices_prepared_new_2 <-
-  tolling_station_indices_prepared |>
-  dplyr::filter(
-    month == latest_published_month + 2
-  )
-
-trd_toll_stations_meta <-
-  readr::read_rds(
-    file = "bomdata_trondheim/trd_toll_stations.rds"
-  ) |>
-  split_road_system_reference() |>
-  dplyr::select(
-    trp_id,
-    name,
-    road_reference,
-    road_category_and_number,
-    municipality_name,
-    lat, lon,
-    road_link_position
-  )
-# TRD stop
+```{r}
+#| label: city_trps
 
 # All API PI (not old ones on CSV)
 # former_pointindices <-
@@ -182,18 +213,37 @@ city_trps <- pointindex[[1]]
 pointindices <- pointindex[[2]]
 city_name <- city_index$area_name[1]
 
-city_trps_meta <- 
+# city_trps_meta <- 
+#   points %>% 
+#   dplyr::filter(trp_id %in% city_trps) |> 
+#   # TRD
+#   dplyr::bind_rows(
+#     trd_toll_stations_meta
+#   )
+
+if(city_number == 960){
+  
+  city_trps_meta <- 
+    points %>% 
+    dplyr::filter(trp_id %in% city_trps) |> 
+    # TRD
+    dplyr::bind_rows(
+      trd_toll_stations_meta
+    )
+  
+}else{
+  
+  city_trps_meta <- 
   points %>% 
-  dplyr::filter(trp_id %in% city_trps) |> 
-  # TRD
-  dplyr::bind_rows(
-    trd_toll_stations_meta
-  )
+  dplyr::filter(trp_id %in% city_trps)
+  
+}
 ```
 
 
-```{r aadt, include=FALSE}
-## AADT ----
+```{r}
+#| label: aadt
+
 adt <- 
   get_aadt_by_length_for_trp_list(city_trps)
 
@@ -347,7 +397,6 @@ if(nrow(missing_adt) == 0) {
 }
 
 
-
 # Finally all aadt
 this_citys_trps_all_adt_final <-
   this_citys_trps_all_adt %>%
@@ -358,15 +407,27 @@ this_citys_trps_all_adt_final <-
   ) |> 
   dplyr::rename(
     year_aadt = year
-  ) |>
-  # TRD (city_index_dataprep_trondheim_toll_stations.R)
-  dplyr::left_join(
-   trd_station_type,
-   by = "trp_id"
-  ) |>
-  dplyr::mutate(
-  station_type_short = stringr::str_sub(station_type, 1, 1)
-  )
+  ) 
+
+if(city_number == 960){
+
+  trd_station_type <-
+    readr::read_rds(
+      "trd_station_type.rds"
+    )
+  
+  this_citys_trps_all_adt_final <-
+    this_citys_trps_all_adt_final |> 
+    # TRD (city_index_dataprep_trondheim_toll_stations.R)
+    dplyr::left_join(
+     trd_station_type,
+     by = "trp_id"
+    ) |>
+    dplyr::mutate(
+    station_type_short = stringr::str_sub(station_type, 1, 1)
+    )
+
+}
 
 readr::write_rds(
   this_citys_trps_all_adt_final,
@@ -379,7 +440,9 @@ readr::write_rds(
 ```
 
 
-```{r data_prep, message=FALSE}
+```{r}
+#| label: data_prep
+
 # New month's pointindices
 point_index_new <- 
   get_pointindices_for_trp_list(
@@ -471,11 +534,18 @@ pointindex_prepared <-
     length_coverage,
     index_short, 
     index_long
-  ) |> 
-  # TRD
-  dplyr::bind_rows(
-   tolling_station_indices_prepared_old
-  )
+  ) 
+
+if(city_number == 960){
+  
+  pointindex_prepared <- 
+    pointindex_prepared |> 
+    # TRD
+    dplyr::bind_rows(
+     tolling_station_indices_prepared_old
+    )
+  
+}
 
 point_index_new_prepared <- 
   point_index_new %>% 
@@ -494,11 +564,18 @@ point_index_new_prepared <-
     length_coverage,
     index_short, 
     index_long
-  ) |> 
-  # TRD
-  dplyr::bind_rows(
-   tolling_station_indices_prepared_new
   )
+
+if(city_number == 960){
+  
+  point_index_new_prepared <- 
+    point_index_new_prepared |> 
+    # TRD
+    dplyr::bind_rows(
+     tolling_station_indices_prepared_new
+    )
+  
+}
 
 # point_index_new_prepared_2 <-
 #   point_index_new %>%
@@ -647,7 +724,7 @@ pointindex_prepared_all_wide_total_index <-
   tidyr::pivot_wider(
     names_from = month, 
     values_from = index_total_p,
-    names_prefix = "value_"
+    names_prefix = "m"
   ) %>% 
   dplyr::mutate(value_type = "index_total_p")
 
@@ -655,42 +732,42 @@ pointindex_prepared_all_wide_coverage <-
   pointindex_prepared_all %>% 
   dplyr::select(name, road_category_and_number, adt, month, index_total_coverage) %>% 
   tidyr::pivot_wider(names_from = month, values_from = index_total_coverage,
-                     names_prefix = "value_") %>% 
+                     names_prefix = "m") %>% 
   dplyr::mutate(value_type = "index_total_coverage")
 
 pointindex_prepared_all_wide_length_coverage <- 
   pointindex_prepared_all %>% 
   dplyr::select(name, road_category_and_number, adt, month, length_coverage) %>% 
   tidyr::pivot_wider(names_from = month, values_from = length_coverage,
-                     names_prefix = "value_") %>% 
+                     names_prefix = "m") %>% 
   dplyr::mutate(value_type = "length_coverage")
 
 pointindex_prepared_all_wide_short <- 
   pointindex_prepared_all %>% 
   dplyr::select(name, road_category_and_number, adt, month, index_short) %>% 
   tidyr::pivot_wider(names_from = month, values_from = index_short,
-                     names_prefix = "value_") %>% 
+                     names_prefix = "m") %>% 
   dplyr::mutate(value_type = "index_short")
 
 pointindex_prepared_all_wide_long <- 
   pointindex_prepared_all %>% 
   dplyr::select(name, road_category_and_number, adt, month, index_long) %>% 
   tidyr::pivot_wider(names_from = month, values_from = index_long,
-                     names_prefix = "value_") %>% 
+                     names_prefix = "m") %>% 
   dplyr::mutate(value_type = "index_long")
 
 pointindex_prepared_all_wide_check <- 
   pointindex_prepared_all %>% 
   dplyr::select(name, road_category_and_number, adt, month, total_short_long_check) %>% 
   tidyr::pivot_wider(names_from = month, values_from = total_short_long_check,
-                     names_prefix = "value_") %>% 
+                     names_prefix = "m") %>% 
   dplyr::mutate(value_type = "total_short_long_check")
 
 pointindex_prepared_all_wide_diff <- 
   pointindex_prepared_all %>% 
   dplyr::select(name, road_category_and_number, adt, month, diff_total_short) %>% 
   tidyr::pivot_wider(names_from = month, values_from = diff_total_short,
-                     names_prefix = "value_") %>% 
+                     names_prefix = "m") %>% 
   dplyr::mutate(value_type = "diff_total_short")
 
 pointindex_wide <- 
@@ -767,10 +844,11 @@ pointindex_long_2 <-
 ```
 
 
-
 ## Byindeks per måned så langt for `r city_name`
 
-```{r city_index, message=FALSE, fig.width=12}
+```{r}
+#| label: city_index
+
 month_start = lubridate::make_date(year = 2023, month = 1)
 month_end = lubridate::make_date(year = 2023, month = 12)
 
@@ -781,78 +859,78 @@ city_index_prepared %>%
   ggplot2::geom_line() +
   ggplot2::geom_point(size = 4) +
   theme_light() +
-  theme(axis.text.x = element_text(angle = 90),
-        panel.grid.minor.x = element_blank(),
-        legend.position = "bottom") +
-  scale_x_date(breaks = scales::breaks_width("months"),
-               labels = scales::label_date("%b"),
-               limits = full_year_x_axis) +
-  scale_color_manual(values = c("alle" = "#008ec2",
-                                "lette" = "#ed9300",
-                                "tunge" = "#444f55"),
-                     name = "Kjøretøyklasse") +
-  labs(x = NULL, y = "Endring i trafikkmengde (%) \n",
-       caption = "Data: Statens vegvesen og fylkeskommunene") +
-  ggtitle("Estimert endring i trafikkmengde",
-          subtitle = "Trafikkmengde i år sammenlignet med i fjor")
+  theme(
+    axis.text.x = element_text(angle = 90),
+    panel.grid.minor.x = element_blank(),
+    legend.position = "bottom",
+    legend.key = element_blank(),
+    legend.background = element_rect(fill = svv_background_color),
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  ) +
+  scale_x_date(
+    breaks = scales::breaks_width("months"),
+    labels = scales::label_date("%b"),
+    limits = full_year_x_axis
+  ) +
+  scale_color_manual(
+    values = c("alle" = "#008ec2",
+               "lette" = "#ed9300",
+               "tunge" = "#444f55"),
+     name = "Kjøretøyklasse"
+  ) +
+  labs(
+    x = NULL, 
+    y = "Endring i trafikkmengde (%) \n",
+    caption = "Data: Statens vegvesen og fylkeskommunene"
+  ) +
+  ggtitle(
+    "Estimert endring i trafikkmengde",
+    subtitle = "Trafikkmengde i år sammenlignet med i fjor"
+  )
 ```
 
 
+## September
 
-## August
+```{r}
+#| label: map_trp_index
 
-```{r map_trp_index, message=FALSE}
 city_trps_new_pointindex %>% 
   dplyr::rename(index = index_total_p) %>% 
   create_pointindex_map()
 ```
 
 
-
-
-```{r map_trp_index_2, message=FALSE}
-# city_trps_new_pointindex_2 %>%
-#   dplyr::rename(index = index_total_p) %>%
-#   create_pointindex_map()
-```
-
-```{r map_trp_index_3, message=FALSE}
-# city_trps_new_pointindex_3 %>%
-#   dplyr::rename(index = index_total_p) %>%
-#   create_pointindex_map()
-```
-
-```{r map_trp_index_4, message=FALSE}
-# city_trps_new_pointindex_4 %>%
-#   dplyr::rename(index = index_total_p) %>%
-#   create_pointindex_map()
-```
-
-```{r map_trp_index_5, message=FALSE}
-# city_trps_new_pointindex_5 %>% 
-#   dplyr::rename(index = index_total_p) %>% 
-#   create_pointindex_map()
-```
-
 ## Kurver per punkt for totaltrafikk
 
-```{r pointindex_sparkline, fig.height=12, fig.width=10}
+```{r}
+#| label: pointindex_sparkline
+
 pointindex_plot <- 
-  pointindex_prepared_all %>% 
+  pointindex_prepared_all |> 
   ggplot2::ggplot(aes(x = month, y = index_total_p, color = name)) +
   geom_line() +
   scale_x_discrete(breaks = seq(1, latest_published_month + 1, 1)) +
   theme_minimal() +
-  theme(legend.position = "bottom")
+    theme(
+    legend.position = "bottom",
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  )
 
-pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
+pointindex_plot |> 
+  plotly::ggplotly(
+    #width = 900, height = 700
+  )
 ```
 
 
 
-## Punktsjekk
+```{r}
+#| label: point_plot
+#| fig-width: 12
 
-```{r point_plot, message=FALSE, fig.width=12}
 # point_number <- 1
 # trp_id_here <- city_trps_meta$trp_id[point_number]
 # 
@@ -881,23 +959,28 @@ pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 #        caption = "Data: Statens vegvesen") +
 #   ggtitle(trp_name,
 #           subtitle = "Trafikkmengde i år sammenlignet med i fjor")
-
-# Notes
 ```
 
-```{r table_trp_consistency}
-pointindex_wide %>%
+
+## Månedlig tidsserie
+
+```{r}
+#| label: table_trp_consistency
+#| tbl-cap: "Så langt i år."
+
+pointindex_wide |> 
   DT::datatable(
     filter = "top",
+    rownames = FALSE,
     options = list(
-      dom = "Blfrtip",
-      pageLength = 21,
-      lengthMenu = c(21, 42, 70),
+      dom = "ftip",
+      pageLength = 14,
+      #lengthMenu = c(14, 28),
       autoWidth = TRUE))
 ```
 
 
-```{r exclusion_notes}
+```{r notes}
+# Ekskluderinger:
 
 ```
-

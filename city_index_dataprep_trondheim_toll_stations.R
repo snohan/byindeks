@@ -7,10 +7,12 @@
 # Toll station index monthly
 
 # OUT
-#
+# City index
+# Excel file
 
+source("indexpoints_tidying_functions.R")
 # Set manual variables ----
-index_month <- 8
+index_month <- 9
 city_number <- 960
 city_name <- "Trondheim"
 
@@ -112,6 +114,10 @@ trd_station_type <-
     station_type
   )
 
+trd_station_type |>
+  readr::write_rds(
+    "trd_station_type.rds"
+  )
 
 # AADT ----
 # Fetch AADT in city_index_check.Rmd
@@ -316,8 +322,10 @@ city_index_yearly_all <-
     area_name = city_name,
     month_name_short = lubridate::month(month, label = TRUE),
     period = paste0("jan-", month_name_short),
-    ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error, 1),
-    ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error, 1)
+    #ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error, 1),
+    #ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error, 1),
+    ci_lower = round(index_p - 1.96 * standard_error, 1),
+    ci_upper = round(index_p + 1.96 * standard_error, 1)
   )
 
 readr::write_rds(
