@@ -40,9 +40,14 @@ library(htmltools)
 
 index_year <- 2023
 # Last published month
-index_month <- 7
+index_month <- 8
 
 index_id <- 962
+
+new_month_name <-
+  lubridate::as_date(paste(index_year, index_month + 1, "01", sep = "-")) |> 
+  lubridate::month(label = TRUE, abbr = FALSE) |> 
+  stringr::str_to_title()
 
 # run once per session
 #source("road_traffic_index_check_dataprep.R")
@@ -54,7 +59,6 @@ counties <- readr::read_rds("counties.rds")
   
 road_traffic_trps <- pointindex[[1]]
 pointindices <- pointindex[[2]]
-
 ```
 
 
@@ -63,19 +67,19 @@ pointindices <- pointindex[[2]]
 
 # Look at details in one county at a time
 
-# 30 Viken                  08 Trond
-#  3 Oslo                   08 Trond
-# 34 Innlandet              07 Snorre
-# 38 Vestfold og Telemark   08 Trond
-# 42 Agder                  08 Snorre
-# 11 Rogaland               08 Snorre
-# 46 Vestland               08 Trond
-# 15 Møre og Romsdal        08 Snorre
-# 50 Trøndelag              08 Snorre
-# 18 Nordland               08 Snorre
-# 54 Troms og Finnmark      08 Snorre
+# 30 Viken                  09 Trond
+#  3 Oslo                   09 Trond
+# 34 Innlandet              09 Snorre
+# 38 Vestfold og Telemark   09 Trond
+# 42 Agder                  09 Snorre
+# 11 Rogaland               09 Snorre
+# 46 Vestland               09 Trond
+# 15 Møre og Romsdal        09 Snorre
+# 50 Trøndelag              09 Snorre
+# 18 Nordland               09 Snorre
+# 54 Troms og Finnmark      09 Snorre
 
-county_number_chosen <- 34
+county_number_chosen <- 54
 
 trps_meta <- 
   points %>% 
@@ -423,7 +427,7 @@ pointindex_long_2 <-
 
 # Vegtrafikkindeks for `r county_name_chosen_here`
 
-## August
+## `r new_month_name`
 
 ```{r}
 #| label: map_trp_index
@@ -439,8 +443,6 @@ trps_new_pointindex_1 %>%
 
 ```{r}
 #| label: pointindex_sparkline
-#| fig-height: 14
-#| fig-width: 10
 
 pointindex_plot <- 
   pointindex_prepared_all %>%
@@ -448,9 +450,13 @@ pointindex_plot <-
   geom_line() +
   scale_x_discrete(breaks = seq(1, index_month + 1, 1)) +
   theme_minimal() +
-  theme(legend.position = "bottom")
+  theme(
+    legend.position = "bottom",
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  )
 
-pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
+pointindex_plot %>% plotly::ggplotly()
 ```
 
 
@@ -458,8 +464,6 @@ pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 
 ```{r}
 #| label: pointindex_sparkline_light
-#| fig-height: 12
-#| fig-width: 12
 
 pointindex_plot <- 
   pointindex_prepared_all %>%
@@ -467,9 +471,12 @@ pointindex_plot <-
   geom_line() +
   scale_x_discrete(breaks = seq(1, index_month + 1, 1)) +
   theme_minimal() +
-  theme(legend.position = "bottom")
+  theme(legend.position = "bottom",
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  )
 
-pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
+pointindex_plot %>% plotly::ggplotly()
 ```
 
 
@@ -484,9 +491,12 @@ pointindex_plot <-
   geom_line() +
   scale_x_discrete(breaks = seq(1, index_month + 1, 1)) +
   theme_minimal() +
-  theme(legend.position = "bottom")
+  theme(legend.position = "bottom",
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  )
 
-pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
+pointindex_plot %>% plotly::ggplotly()
 ```
 
 
@@ -499,6 +509,7 @@ pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
 pointindex_wide |> 
   DT::datatable(
     filter = "top",
+    rownames = FALSE,
     options = list(
       dom = "Blfrtip",
       pageLength = 21,

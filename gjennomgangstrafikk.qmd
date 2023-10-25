@@ -1,0 +1,126 @@
+---
+title: "Gjennomgangstrafikk"
+format: 
+  html:
+    css: svv.css
+    number-sections: true
+    toc: true
+    toc-location: left
+    toc-title: "Innhold"
+    toc-expand: true
+    df-print: paged
+    self-contained: true
+crossref:
+  fig-title: Figur
+  tbl-title: Tabell
+  title-delim: .
+  fig-prefix: figur
+  tbl-prefix: tabell
+editor: source
+knitr: 
+  opts_chunk: 
+    echo: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
+#| warning: false
+#| message: false
+  
+# Packages are loaded through sourcing rmd_setup.R
+source("rmd_setup.R")
+library(DT)
+library(htmltools)
+
+trp_and_through_traffic_qmd <- readr::read_rds("trp_and_through_traffic.rds")
+city_index_adjusted_qmd <- readr::read_rds("city_index_adjusted.rds")
+```
+
+# TRP
+
+```{r}
+#| label: map
+
+trp_and_through_traffic_qmd |>
+    leaflet(
+      width = "100%",
+      height = 700,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F)
+    ) |>
+    addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) |>
+    addCircleMarkers(
+      radius = 6,
+      stroke = T,
+      weight = 2,
+      #color = ~palette_category(city_index),
+      opacity = 0.8,
+      fill = F,
+      #fillColor = ~palette_category(city_index),
+      fillOpacity = 0.8,
+      #label = ~label_text,
+    ) 
+
+```
+
+
+
+# Punktindeks
+
+```{r}
+#| label: table_trp
+#| tbl-cap: "Trafikkregistreringspunkt"
+
+# Captions not working for DT::datatable or gt-tables before Quarto 1.4
+
+trp_and_through_traffic_qmd |> 
+  dplyr::select(
+    name,
+    road_reference,
+    route,
+    #length_base_volume_short,
+    #length_calc_volume_short,
+    index = index_short,
+    index_adjusted = index_short_adjusted
+  ) |> 
+  DT::datatable(
+    rownames = FALSE,
+    options = list(
+      dom = "tp",
+      pageLength = 15
+    )
+  )
+
+```
+
+# Byindeks
+
+
+```{r}
+#| label: table_city_index
+#| tbl-cap: "Byindeks."
+
+city_index_adjusted_qmd |>
+  dplyr::mutate(
+    dplyr::across(
+      c(index_p, standard_deviation, standard_error),
+      ~ round(.x, 1)
+    )
+  ) |> 
+  DT::datatable(
+    rownames = FALSE,
+    options = list(
+      dom = "t",
+      pageLength = 15
+    )
+  )
+
+```
+

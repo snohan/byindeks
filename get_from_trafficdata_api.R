@@ -2730,8 +2730,8 @@ get_dt_by_direction <- function(trp_id, from_day, to_day) {
 
 # Published indices ####
 # index_id <- 953
-# indexyear <- 2020
-# indexmonth <- 10
+# indexyear <- 2023
+# indexmonth <- 9
 
 get_published_index <- function(index_id, indexyear, indexmonth) {
   # Get published index for a given area, year and month
@@ -2883,7 +2883,6 @@ get_published_index_for_months <- function(index_id, index_year, last_month) {
 
 
 
-
 get_published_pointindex <- function(index_id, indexyear, indexmonth) {
   # Get published index for a given area, year and month
   # Response is paginated if more than 100 points!
@@ -2975,71 +2974,101 @@ get_published_pointindex <- function(index_id, indexyear, indexmonth) {
   # 1. monthIndicesByDayType
   # 2. yearToDateIndicesByDayType
 
-  unnested_data <- trp_data$data %>%
+  unnested_data <-
+    trp_data$data %>%
     as.data.frame() %>%
     tidyr::unnest(cols = c(
       publishedAreaTrafficVolumeIndex.containsPointTrafficVolumeIndices.edges))
 
   indexpoints <- unnested_data$node.pointTrafficVolumeIndex.trafficRegistrationPoint.id
 
-   monthly_data <- unnested_data %>%
+   monthly_data <-
+    unnested_data %>%
     tidyr::unnest(cols = c(node.pointTrafficVolumeIndex.volumeIndicesMonth)) %>%
     dplyr::select(-node.pointTrafficVolumeIndex.volumeIndicesYearToDate) %>%
     tidyr::unnest(cols = c(lengthRangesTrafficVolumeIndex.indexNumbers)) %>%
-    dplyr::select(area_name = publishedAreaTrafficVolumeIndex.name,
-                  trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
-                  year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
-                  month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
-                  day_type = dayType,
-                  is_excluded = isExcluded,
-                  is_manually_excluded = node.isManuallyExcluded,
-                  index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
-                  calc_volume = totalTrafficVolumeIndex.indexNumber.index.calculationVolume,
-                  base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
-                  index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
-                  length_excluded = lengthRangesTrafficVolumeIndex.isExcluded,
-                  length_range = lengthRange.representation,
-                  length_index = index.percentageChange,
-                  length_coverage = lengthRangesTrafficVolumeIndex.indexCoverage.hours.percentage
-                  ) %>%
+    dplyr::select(
+      area_name = publishedAreaTrafficVolumeIndex.name,
+      trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
+      year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
+      month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
+      day_type = dayType,
+      is_excluded = isExcluded,
+      is_manually_excluded = node.isManuallyExcluded,
+      index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
+      calc_volume = totalTrafficVolumeIndex.indexNumber.index.calculationVolume,
+      base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
+      index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
+      length_excluded = lengthRangesTrafficVolumeIndex.isExcluded,
+      length_range = lengthRange.representation,
+      length_index = index.percentageChange,
+      length_calc_volume = index.calculationVolume,
+      length_base_volume = index.baseVolume,
+      length_coverage = lengthRangesTrafficVolumeIndex.indexCoverage.hours.percentage
+      ) %>%
     dplyr::filter(day_type == "ALL") %>%
     dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
-    dplyr::mutate(length_range = if_else(length_range == "[..,5.6)",
-                                         "short", "long")) %>%
-    tidyr::pivot_wider(names_from = length_range, names_prefix = "index_",
-                       values_from = length_index) %>%
-    dplyr::mutate(period = "month")
+    dplyr::mutate(
+      length_range =
+        dplyr::if_else(
+          length_range == "[..,5.6)",
+          "short", "long")
+    ) %>%
+    tidyr::pivot_wider(
+      names_from = length_range,
+      #names_prefix = "index_",
+      #values_from = length_index
+      values_from = c(length_index, length_calc_volume, length_base_volume)
+    ) %>%
+    dplyr::mutate(period = "month") |>
+     dplyr::rename(index_short = length_index_short)
 
-    year_to_date_data <- unnested_data %>%
+    year_to_date_data <-
+      unnested_data %>%
       tidyr::unnest(cols = c(node.pointTrafficVolumeIndex.volumeIndicesYearToDate)) %>%
       dplyr::select(- node.pointTrafficVolumeIndex.volumeIndicesMonth) %>%
       tidyr::unnest(cols = c(lengthRangesTrafficVolumeIndex.indexNumbers)) %>%
-      dplyr::select(area_name = publishedAreaTrafficVolumeIndex.name,
-                    trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
-                    year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
-                    month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
-                    day_type = dayType,
-                    is_excluded = isExcluded,
-                    is_manually_excluded = node.isManuallyExcluded,
-                    index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
-                    calc_volume = totalTrafficVolumeIndex.indexNumber.index.calculationVolume,
-                    base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
-                    index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
-                    length_excluded = lengthRangesTrafficVolumeIndex.isExcluded,
-                    length_range = lengthRange.representation,
-                    length_index = index.percentageChange,
-                    length_coverage = lengthRangesTrafficVolumeIndex.indexCoverage.hours.percentage
+      dplyr::select(
+        area_name = publishedAreaTrafficVolumeIndex.name,
+        trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
+        year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
+        month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
+        day_type = dayType,
+        is_excluded = isExcluded,
+        is_manually_excluded = node.isManuallyExcluded,
+        index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
+        calc_volume = totalTrafficVolumeIndex.indexNumber.index.calculationVolume,
+        base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
+        index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage,
+        length_excluded = lengthRangesTrafficVolumeIndex.isExcluded,
+        length_range = lengthRange.representation,
+        length_index = index.percentageChange,
+        length_calc_volume = index.calculationVolume,
+        length_base_volume = index.baseVolume,
+        length_coverage = lengthRangesTrafficVolumeIndex.indexCoverage.hours.percentage
       ) %>%
       dplyr::filter(day_type == "ALL") %>%
       dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
-      dplyr::mutate(length_range = if_else(length_range == "[..,5.6)",
-                                           "short", "long")) %>%
-      tidyr::pivot_wider(names_from = length_range, names_prefix = "index_",
-                         values_from = length_index) %>%
-      dplyr::mutate(period = "year_to_date")
+      dplyr::mutate(
+        length_range =
+          dplyr::if_else(
+            length_range == "[..,5.6)",
+            "short", "long")
+      ) %>%
+      tidyr::pivot_wider(
+        names_from = length_range,
+        #names_prefix = "index_",
+        #values_from = length_index
+        values_from = c(length_index, length_calc_volume, length_base_volume)
+      ) %>%
+      dplyr::mutate(period = "year_to_date") |>
+      dplyr::rename(index_short = length_index_short)
 
-  published_index <- bind_rows(monthly_data,
-                               year_to_date_data)
+  published_index <-
+    dplyr::bind_rows(
+      monthly_data,
+      year_to_date_data
+    )
 
   published_points <- list(indexpoints, published_index)
 
