@@ -38,3 +38,4 @@ apar_u_pw.R
 apar.R
 *.json
 *.geojson
+!data_indexpoints_tidy/*.xlsx
