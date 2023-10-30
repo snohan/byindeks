@@ -158,6 +158,7 @@ trp_toll_index_yearly <-
     length_range,
     base_volume,
     calc_volume,
+    coverage,
     index
   ) |>
   dplyr::mutate(
@@ -172,6 +173,19 @@ trp_toll_index_yearly <-
  #    index = round(index, digits = 1)
  #  )
 
+
+# Sidetrack
+# For through traffic
+trp_toll_index_yearly_through_traffic <-
+  trp_toll_index_yearly |>
+  dplyr::filter(length_range == "lette")
+
+readr::write_rds(
+  trp_toll_index_yearly_through_traffic,
+  file = "data_indexpoints_tidy/trp_index_960.rds"
+)
+
+# End of sidetrack
 
 # TODO: All three classes in report
 trp_toll_index_yearly_short <-

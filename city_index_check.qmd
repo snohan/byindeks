@@ -665,7 +665,8 @@ city_trps_new_pointindex <-
             road_category_and_number, "<br/>",
             index_total_p, " %", "<br/>",
             index_total_coverage, " %"),
-    label_text = lapply(label_text, htmltools::HTML))
+    label_text = lapply(label_text, htmltools::HTML)
+  )
 
 
 # city_trps_new_pointindex_2 <-

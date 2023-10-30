@@ -657,6 +657,10 @@ readr::write_rds(
 #   }
 
 
+# daily_class_data <- tolling_data_daily_all_years
+# baseyear <- 2021
+# calcyear <- 2022
+
 calculate_monthly_index_for_tolling_stations_from_daily_traffic <-
   function(daily_class_data, baseyear) {
 
@@ -689,12 +693,17 @@ calculate_monthly_index_for_tolling_stations_from_daily_traffic <-
       dplyr::summarise(
         monthly_volume_base = sum(traffic_base),
         monthly_volume_calc = sum(traffic_calc),
+        n_days = n(),
         .groups = "drop"
       ) %>%
       dplyr::mutate(
         index_p =
           (monthly_volume_calc / monthly_volume_base - 1) * 100 %>%
-          round(digits = 2)
+          round(digits = 2),
+        n_days_of_month = lubridate::days_in_month(month_calc),
+        # TODO: should count no Feb as 29?
+        coverage = (n_days / n_days_of_month) * 100
+        # NB! Not correct for HMV as some stations have days without any HMVs
       )
   }
 
@@ -737,33 +746,37 @@ readr::write_rds(
 ## Yearly ----
 # Not all toll stations have value in latest month
 tolling_station_indices_latest_month_per_year <-
-  tolling_station_indices %>%
-  dplyr::mutate(year = year(month_calc)) %>%
+  tolling_station_indices |>
+  dplyr::mutate(year = year(month_calc)) |>
   dplyr::group_by(
     year
-  ) %>%
+  ) |>
   dplyr::summarise(
     month = max(month_calc),
     .groups = "drop"
   )
 
 tolling_station_indices_yearly <-
-  tolling_station_indices %>%
+  tolling_station_indices |>
   dplyr::mutate(
     year = year(month_calc)
-  ) %>%
+  ) |>
   dplyr::group_by(
     trp_id,
     year,
     class
-  ) %>%
+  ) |>
   dplyr::summarise(
     #month = max(month), # latest month per year
     base_volume = sum(monthly_volume_base),
     calc_volume = sum(monthly_volume_calc),
     index_p = (calc_volume / base_volume - 1) * 100,
+    n_days = sum(n_days),
     .groups = "drop"
-  ) %>%
+  ) |>
+  dplyr::mutate(
+    coverage = (n_days / 365) * 100
+  ) |>
   dplyr::left_join(
     tolling_station_indices_latest_month_per_year,
     by = "year"
