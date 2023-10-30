@@ -22,6 +22,7 @@ knitr:
     echo: false
 ---
 
+
 ```{r}
 #| label: setup
 #| include: false
@@ -45,6 +46,7 @@ trd_trp_and_through_traffic_qmd <- readr::read_rds("through_traffic/trd_trp_and_
 city_index_adjusted_trd <- readr::read_rds("through_traffic/city_index_adjusted_trd.rds")
 ```
 
+
 # Bakgrunn
 Gjennomgangstrafikk skal ikke være med i målingen av indikatorer for overholdelse av nullvekstmålet.
 
@@ -53,6 +55,7 @@ Mengden av gjennomgangstrafikk er estimert basert på data fra TomTom.
 Aktuelle gjennomkjøringsruter er skissert i @fig-routes.
 
 ![Gjennomkjøringsruter.](through_traffic/through_routes.png){#fig-routes}
+
 
 ```{r}
 #| label: tbl-through_traffic_aadts
@@ -75,7 +78,6 @@ through_traffic |>
   )
 
 ```
-
 
 
 # Nedre Glomma
@@ -207,7 +209,6 @@ trd_trp_and_through_traffic_qmd |>
 ```
 
 
-
 ## Punktindeks
 
 ```{r}
@@ -267,5 +268,6 @@ city_index_adjusted_trd |>
   )
 
 ```
+
 
 # Glidende indeks

@@ -657,7 +657,6 @@ toll_mdt_light <-
   dplyr::mutate(
     year = lubridate::year(year_month),
     month = lubridate::month(year_month),
-    coverage = 100,
     length_quality = 100
   ) |>
   dplyr::select(
@@ -681,13 +680,13 @@ mdt_filtered <-
   ) |>
   dplyr::mutate(
     mdt_valid_length = dplyr::case_when(
-      is.na(coverage) ~ mdt_total, # If NorTraf, assume high quality
-      TRUE ~ mdt_valid_length
+     is.na(total_coverage) ~ mdt_total, # If NorTraf, assume high quality
+     TRUE ~ mdt_valid_length
     ),
-    length_quality = round(mdt_valid_length / mdt_total * 100),
+    length_quality = mdt_valid_length / mdt_total * 100,
     coverage = dplyr::case_when(
-      is.na(coverage) ~ 100, # If NorTraf, assume high quality
-      TRUE ~ coverage
+      is.na(total_coverage) ~ 100, # If NorTraf, assume high quality
+      TRUE ~ total_coverage * length_quality / 100
     )
   ) |>
   dplyr::select(
@@ -724,14 +723,14 @@ mdt_filtered |>
   )
 
 # Read back in
-# mdt_filtered <-
-#   readr::read_rds(
-#     paste0(
-#       "data_indexpoints_tidy/mdt_",
-#       city_number,
-#       ".rds"
-#     )
-#   )
+mdt_filtered <-
+  readr::read_rds(
+    paste0(
+      "data_indexpoints_tidy/mdt_",
+      city_number,
+      ".rds"
+    )
+  )
 
 
 ## Check MDT validity

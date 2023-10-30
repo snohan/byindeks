@@ -451,7 +451,7 @@ filter_mdt <- function(mdt_df, year_dbl) {
     dplyr::filter(
       year == year_dbl,
       coverage >= 50,
-      length_quality >= 99
+      length_quality >= 98.5
     ) |>
     dplyr::select(
       trp_id,
@@ -489,7 +489,7 @@ calculate_rolling_indices_by_mdt <-
 
     least_number_of_month_enums <-
       dplyr::case_when(
-        window_length == 36 ~ 2,
+        window_length == 36 ~ 12,
         TRUE ~ 0
       )
 
@@ -515,7 +515,7 @@ calculate_rolling_indices_by_mdt <-
       ) |>
       dplyr::filter(
         coverage >= 50,
-        length_quality >= 99
+        length_quality >= 98.5
       ) |>
       dplyr::group_by(
         trp_id,

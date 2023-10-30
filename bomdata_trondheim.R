@@ -602,7 +602,11 @@ toll_mdt_class <-
     .groups = "drop"
   ) |>
   dplyr::mutate(
-    mdt = base::round(traffic / n_days)
+    mdt = base::round(traffic / n_days),
+    n_days_of_month = lubridate::days_in_month(month),
+    # TODO: should count no Feb as 29?
+    coverage = (n_days / n_days_of_month) * 100
+    # NB! Not correct for HMV as some stations have days without any HMVs
   )
 
 readr::write_rds(

@@ -1553,6 +1553,9 @@ get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
                   average
                   standardDeviation
                 }
+                coverage {
+                  percentage
+                }
               }
             }
           }
@@ -1630,16 +1633,18 @@ get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
       # if all old data, create empty columns (they are missing from API response)
       dplyr::mutate(
         mdt_valid_length = NA,
-        coverage = NA,
+        total_coverage = NA,
         sd_total = NA
+        #length_coverage = NA
       )
   }else{
     trp_mdt <-
       trp_mdt %>%
       dplyr::rename(
         mdt_valid_length = data.trafficData.volume.average.daily.byMonth.total.validLengthVolume.average,
-        coverage = data.trafficData.volume.average.daily.byMonth.total.coverage.percentage,
+        total_coverage = data.trafficData.volume.average.daily.byMonth.total.coverage.percentage,
         sd_total = data.trafficData.volume.average.daily.byMonth.total.volume.standardDeviation
+        #length_coverage = data.trafficData.volume.average.daily.byMonth.byLengthRange.total.coverage.percentage
       )
   }
 
@@ -1657,9 +1662,10 @@ get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
         mdt_length_range,
         sd_length_range,
         mdt_valid_length,
-        coverage,
+        total_coverage,
         mdt_total,
         sd_total
+        #length_coverage
       )
   }
 
@@ -1861,7 +1867,8 @@ get_mdt_by_length_for_trp_list <- function(trp_list, mdt_year) {
     trp_count <- trp_count + 1
   }
 
-  number_of_digits = -1
+  number_of_digits = 0 #-1
+  # Should not round here as these are just to calculate sliding index
 
   trp_mdt <-
     data_points %>%

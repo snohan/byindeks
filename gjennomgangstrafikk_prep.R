@@ -213,6 +213,7 @@ readr::write_rds(
 
 
 # Trondheim ----
+## Yearly index ----
 trp_trd <-
   readr::read_rds(
     #"data_indexpoints_tidy/indekspunkt_960.rds"
@@ -367,3 +368,21 @@ readr::write_rds(
   city_index_adjusted_trd,
   file = "through_traffic/city_index_adjusted_trd.rds"
 )
+
+
+## Rolling index ----
+mdt_filtered <-
+  readr::read_rds(
+    paste0(
+      "data_indexpoints_tidy/mdt_",
+      960,
+      ".rds"
+    )
+  )
+
+source("exclude_trp_mdts_list.R")
+
+# TODO: Subtract through traffic by month by TRP in mdt_validated
+
+all_36_month_indices <-
+  calculate_rolling_indices(36)
