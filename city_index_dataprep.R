@@ -55,7 +55,7 @@ trp_id_msnr <-
 
 # Choose
 index_month <- 10 # the one to be published now
-city_number <- 1952
+city_number <- 955
 
 reference_year <-
   dplyr::case_when(
@@ -203,7 +203,7 @@ if(city_number == 8952){
 }else{
   trp_index_year_to_date_dec_bind <-
     dplyr::bind_rows(
-      trp_index_so_far_by_dec_pre_2020, # Not for BRG
+      trp_index_so_far_by_dec_pre_2020,
       trp_index_so_far_by_dec_from_2020
     )
 }
@@ -570,25 +570,6 @@ readr::write_rds(
 # )
 
 
-# City index three year rolling
-# No use in calculating this before 37 months are available
-# The first 36 month index is equal to the first three whole year index!
-# TODO: 36 month rolling index with sd and ci
-
-# all_possible_36_month_indexes <-
-#   calculate_all_possible_36_month_indexes(city_monthly)
-#
-# readr::write_rds(
-#   all_possible_36_month_indexes,
-#   file =
-#     paste0(
-#       "data_indexpoints_tidy/byindeks_36_maaneder_",
-#       city_number,
-#       ".rds"
-#     )
-# )
-
-
 # 36 month window using MDTs ----
 
 ## Get MDTs ----
@@ -825,7 +806,7 @@ mdt_validated |>
   ) |>
   create_mdt_barplot()
 
-# Check that the same exclusions are used on PI as MDT
+# Check that the "same" exclusions are used on PI as MDT
 # TRD toll station MDTs already have the same exclusions
 
 # pointindices_longformat_by_month <-
@@ -956,38 +937,8 @@ list(
       )
   )
 
-# test <- readr::read_rds(
-#   file =
-#     paste0(
-#       "data_indexpoints_tidy/rolling_indices_",
-#       city_number,
-#       ".rds"
-#     )
-# )
-
-# all_36_month_indices <-
-# readr::read_rds(
-#   file =
-#     paste0(
-#       "data_indexpoints_tidy/mdt_36_",
-#       #"data_indexpoints_tidy/trp_mdt_36_",
-#       city_number,
-#       ".rds"
-#     )
-# )
-
-# write.csv2(
-#   all_36_month_indices,
-#   file = paste0("data_indexpoints_tidy/mdt_36_", city_number, ".csv"),
-#   row.names = F
-# )
-
 all_36_month_trp_indices <-
   calculate_rolling_indices(36, FALSE) |>
-  # purrr::map_dfr(
-  #   year_months_possible,
-  #   ~ calculate_rolling_indices_by_mdt(reference_year, .x, 36, mdt_validated, FALSE)
-  # ) |>
   dplyr::left_join(
     trp_names,
     by = "trp_id"
