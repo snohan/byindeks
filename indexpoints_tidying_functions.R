@@ -479,7 +479,7 @@ filter_mdt <- function(mdt_df, year_dbl) {
 # mdt_df <- mdt_validated
 # window_length <- 36
 # base_year <- reference_year
-# last_year_month <- "2021-12-01"
+# last_year_month <- "2020-12-01"
 
 calculate_rolling_indices_by_mdt <-
   function(base_year, last_year_month, window_length, mdt_df, by_area = TRUE) {
@@ -489,7 +489,7 @@ calculate_rolling_indices_by_mdt <-
 
     least_number_of_month_enums <-
       dplyr::case_when(
-        window_length == 36 ~ 12,
+        window_length == 36 ~ 2,
         TRUE ~ 0
       )
 

@@ -59,16 +59,16 @@ points <- readr::read_rds("trps_for_city_index.rds")
 # 2016 Kris  957   09 Snorre
 # 2016 NGlo  953   09 Trond
 # 2016 Trom  961   09 Snorre
-# 2017 NJær  952   09 Snorre
+# 2017 NJær  952   10 Snorre
 # 2018 Oslo  959   09 Trond
 # 2018 Berg 8952   09 Trond
-# 2019 Tron  960   08 Snorre
+# 2019 Tron  960   09 Snorre
 
 
 # Choose
 index_year <- 2023
-latest_published_month <- 8
-city_number <- 960
+latest_published_month <- 9
+city_number <- 952
 # End choose
 
 reference_year <- 
@@ -113,6 +113,8 @@ pointindex <-
     index_year, 
     latest_published_month
   )
+
+traffic_file <- paste0("city_report_files/trafikkforhold_", city_number, ".Rmd")
 ```
 
 
@@ -533,7 +535,7 @@ pointindex_prepared <-
     length_excluded, 
     length_coverage,
     index_short, 
-    index_long
+    index_long = length_index_long
   ) 
 
 if(city_number == 960){
@@ -979,6 +981,10 @@ pointindex_wide |>
       #lengthMenu = c(14, 28),
       autoWidth = TRUE))
 ```
+
+
+## Spesielle trafikkforhold
+{{< include city_report_files/_traffic.Rmd >}}
 
 
 ```{r notes}

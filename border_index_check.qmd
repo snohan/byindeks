@@ -47,7 +47,7 @@ library(htmltools)
 # Choose
 index_year <- 2023
 # Last published month
-index_month <- 8
+index_month <- 9
 index_id <- 2952
 
 # Fetch
@@ -112,13 +112,17 @@ border_index_prepared <-
     month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)
   )
 
-pointindex_prepared <- pointindices %>%
+pointindex_prepared <- 
+  pointindices %>%
   dplyr::filter(period == "month",
                 is_excluded == FALSE,
                 is_manually_excluded == FALSE) %>%
-  dplyr::select(trp_id, year, month, index_total_p,
-                index_total_coverage, length_excluded, length_coverage,
-                index_short, index_long)
+  dplyr::select(
+    trp_id, year, month, index_total_p,
+    index_total_coverage, length_excluded, length_coverage,
+    index_short, 
+    index_long = length_index_long
+  )
 
 point_index_new_prepared <- point_index_new %>%
   dplyr::filter(day_type == "ALL",

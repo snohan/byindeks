@@ -205,16 +205,17 @@ get_trp_direction_reference <- function() {
           }
         }
         directionReference {
-          meteringDirectionWithRoadLink
-          referenceTime
+          withCurrentRoadLink
+          from
+          to
         }
         meteringDirectionChanged
         trpDirection {
-          directionAccordingToMetering {
+          directionAccordingToCurrentMetering {
             from
             to
           }
-          directionAccordingToRoadLink {
+          directionAccordingToCurrentRoadLink {
             from
             to
           }
@@ -235,14 +236,15 @@ get_trp_direction_reference <- function() {
       trp_type = data.trafficRegistrationPoints.trpType,
       road_link_id = data.trafficRegistrationPoints.location.roadLink.id,
       road_link_position = data.trafficRegistrationPoints.location.roadLink.position,
-      reference_time_then = data.trafficRegistrationPoints.directionReference.referenceTime,
-      same_direction_of_metering_and_link_then = data.trafficRegistrationPoints.directionReference.meteringDirectionWithRoadLink,
+      direction_with_current_link = data.trafficRegistrationPoints.directionReference.withCurrentRoadLink,
+      reference_direction_from = data.trafficRegistrationPoints.directionReference.from,
+      reference_direction_to = data.trafficRegistrationPoints.directionReference.to,
       metering_direction_changed = data.trafficRegistrationPoints.meteringDirectionChanged,
       same_direction_of_metering_and_link_now = data.trafficRegistrationPoints.location.roadReference.isMeteringDirectionSameAsRoadLink,
-      from_according_to_metering = data.trafficRegistrationPoints.trpDirection.directionAccordingToMetering.from,
-      to_according_to_metering = data.trafficRegistrationPoints.trpDirection.directionAccordingToMetering.to,
-      #from_according_to_link = data.trafficRegistrationPoints.trpDirection.directionAccordingToRoadLink.from,
-      #to_according_to_link = data.trafficRegistrationPoints.trpDirection.directionAccordingToRoadLink.to
+      from_according_to_metering = data.trafficRegistrationPoints.trpDirection.directionAccordingToCurrentMetering.from,
+      to_according_to_metering = data.trafficRegistrationPoints.trpDirection.directionAccordingToCurrentMetering.to,
+      from_according_to_link = data.trafficRegistrationPoints.trpDirection.directionAccordingToCurrentRoadLink.from,
+      to_according_to_link = data.trafficRegistrationPoints.trpDirection.directionAccordingToCurrentRoadLink.to
     )
 
   return(response)

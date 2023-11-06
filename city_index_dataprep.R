@@ -54,8 +54,8 @@ trp_id_msnr <-
 # Trondheim stop
 
 # Choose
-index_month <- 9 # the one to be published now
-city_number <- 960
+index_month <- 10 # the one to be published now
+city_number <- 952
 
 reference_year <-
   dplyr::case_when(
@@ -100,9 +100,11 @@ last_year_month <-
 index_years_pre_2020 <-
   base::seq.int(reference_year + 1, 2019, 1)
 
-index_years_from_2020 <-
-  base::seq.int(2019, present_year, 1) #BRG
-  #base::seq.int(2020, present_year, 1)
+if(city_number == 8952){
+  index_years_from_2020 <- base::seq.int(2019, present_year, 1) #BRG
+}else{
+  index_years_from_2020 <- base::seq.int(2020, present_year, 1)
+}
 
 index_months_from_2020 <-
   c(
@@ -193,11 +195,21 @@ trp_index_so_far_by_dec_from_2020 <-
     index = index_short
   )
 
+if(city_number == 8952){
+  trp_index_year_to_date_dec_bind <-
+    dplyr::bind_rows(
+      trp_index_so_far_by_dec_from_2020
+    )
+}else{
+  trp_index_year_to_date_dec_bind <-
+    dplyr::bind_rows(
+      trp_index_so_far_by_dec_pre_2020, # Not for BRG
+      trp_index_so_far_by_dec_from_2020
+    )
+}
+
 trp_index_year_to_date_dec <-
-  dplyr::bind_rows(
-    #trp_index_so_far_by_dec_pre_2020, # Not for BRG
-    trp_index_so_far_by_dec_from_2020
-  ) |>
+  trp_index_year_to_date_dec_bind |>
   dplyr::filter(!is.na(base_volume)) |>
   dplyr::group_by(
     year
@@ -299,11 +311,18 @@ trp_index_monthly_from_2020 <-
     index = index_short
   )
 
-trp_index_monthly <-
-  dplyr::bind_rows(
-    #trp_index_monthly_pre_2020, # Not BRG
-    trp_index_monthly_from_2020
-  )
+if(city_number == 8952){
+  trp_index_monthly <-
+    dplyr::bind_rows(
+      trp_index_monthly_from_2020
+    )
+}else{
+  trp_index_monthly <-
+    dplyr::bind_rows(
+      trp_index_monthly_pre_2020,
+      trp_index_monthly_from_2020
+    )
+}
 
 # Solely for Excel
 trp_index_monthly_wide <-
@@ -482,7 +501,7 @@ city_index_yearly_all <-
     years_1_2,
     years_1_3,
     years_1_4,
-    #years_1_5,
+    years_1_5,
     #years_1_6,
     #years_1_7
   ) %>%
@@ -577,7 +596,7 @@ mdt <-
   purrr::map_dfr(
     years_from_reference_to_today,
     ~ get_mdt_by_length_for_trp_list(city_trps, .x)
-)
+  )
 
 # How many MDTs in reference year from NorTraf?
 # n_nortraf_mdt_reference_year <-
@@ -707,10 +726,13 @@ mdt_filtered <-
       )
     )
   ) |>
-  tibble::as_tibble() |>
-  #TRD
-  dplyr::bind_rows(toll_mdt_light)
+  tibble::as_tibble()
 
+if(city_number == 960){
+  mdt_filtered <-
+    mdt_filtered |>
+    dplyr::bind_rows(toll_mdt_light)
+}
 
 mdt_filtered |>
   readr::write_rds(
@@ -748,7 +770,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[16:18]
+    trp_id %in% trp_mdt_ok_refyear[16:17]
   ) |>
   dplyr::select(
     trp_id,
@@ -799,7 +821,7 @@ mdt_validated |>
     road_category_and_number_and_point_name
   ) |>
   dplyr::mutate(
-    valid_quality = coverage >= 50 & length_quality >= 99
+    valid_quality = coverage >= 50 & length_quality >= 98.5
   ) |>
   create_mdt_barplot()
 
@@ -833,10 +855,10 @@ mdt_validated |>
 mdt_and_pi <-
   dplyr::left_join(
     mdt_validated,
-    #trp_index_monthly,
-    #by = c("trp_id", "year", "month"),
-    dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
-    by = c("trp_id", "year_month" = "month_object") # TRD
+    trp_index_monthly,
+    by = c("trp_id", "year", "month"),
+    #dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
+    #by = c("trp_id", "year_month" = "month_object") # TRD
   ) |>
   dplyr::left_join(
     trp_names,
@@ -858,7 +880,6 @@ mdt_and_pi <-
     year,
     month
   )
-
 
 
 ## TRP MDT table ----
@@ -1065,8 +1086,10 @@ list(
   punkt_mdt = mdt_and_pi,
   punkt_3_aar_glid_indeks = all_36_month_trp_indices,
   by_3_aar_glid_indeks = all_36_month_indices,
+  by_2_aar_glid_indeks = all_24_month_indices,
+  by_1_aar_glid_indeks = all_12_month_indices
   # TRD, BRG
-  byindeks_hittil = city_index_so_far_all
+  #byindeks_hittil = city_index_so_far_all
 ) |>
 writexl::write_xlsx(
   path = paste0(
