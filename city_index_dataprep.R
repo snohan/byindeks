@@ -55,7 +55,7 @@ trp_id_msnr <-
 
 # Choose
 index_month <- 10 # the one to be published now
-city_number <- 961
+city_number <- 1952
 
 reference_year <-
   dplyr::case_when(
@@ -770,7 +770,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[6]
+    trp_id %in% trp_mdt_ok_refyear[21:22]
   ) |>
   dplyr::select(
     trp_id,
@@ -933,44 +933,6 @@ mdt_and_pi <-
 
 
 ## All possible window indices ----
-# first_possible_year_month <-
-#   lubridate::as_date(
-#     paste0(
-#       reference_year + 3,
-#       "-12-01"
-#     )
-#   )
-#
-# year_months_possible <-
-#   base::seq.Date(
-#     from = first_possible_year_month,
-#     to = last_year_month,
-#     by = "month"
-#   )
-#
-# all_36_month_indices <-
-#   purrr::map_dfr(
-#     year_months_possible,
-#     ~ calculate_rolling_indices_by_mdt(reference_year, .x, 36, mdt_validated)
-#   ) |>
-#   dplyr::mutate(
-#     month_n = lubridate::month(month_object),
-#     year = lubridate::year(month_object),
-#     ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error_p, 1),
-#     ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error_p, 1)
-#   )
-
-# readr::write_rds(
-#   all_36_month_indices,
-#   file =
-#     paste0(
-#       "data_indexpoints_tidy/mdt_36_",
-#       #"data_indexpoints_tidy/trp_mdt_36_",
-#       city_number,
-#       ".rds"
-#     )
-# )
-
 all_12_month_indices <-
   calculate_rolling_indices(12)
 

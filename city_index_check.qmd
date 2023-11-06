@@ -54,7 +54,7 @@ points <- readr::read_rds("trps_for_city_index.rds")
 
 # City numbers
 # Refy City Cnum  Chkd Resp
-# 2016 Busk 1952   09 Snorre
+# 2016 Busk 1952   10 Snorre
 # 2016 Gren  955   09 Snorre
 # 2016 Kris  957   09 Snorre
 # 2016 NGlo  953   09 Trond
@@ -68,7 +68,7 @@ points <- readr::read_rds("trps_for_city_index.rds")
 # Choose
 index_year <- 2023
 latest_published_month <- 9
-city_number <- 961
+city_number <- 1952
 # End choose
 
 reference_year <- 
