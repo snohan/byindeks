@@ -55,7 +55,7 @@ trp_id_msnr <-
 
 # Choose
 index_month <- 10 # the one to be published now
-city_number <- 952
+city_number <- 961
 
 reference_year <-
   dplyr::case_when(
@@ -502,7 +502,7 @@ city_index_yearly_all <-
     years_1_3,
     years_1_4,
     years_1_5,
-    #years_1_6,
+    years_1_6,
     #years_1_7
   ) %>%
   dplyr::mutate(
@@ -745,14 +745,14 @@ mdt_filtered |>
   )
 
 # Read back in
-mdt_filtered <-
-  readr::read_rds(
-    paste0(
-      "data_indexpoints_tidy/mdt_",
-      city_number,
-      ".rds"
-    )
-  )
+# mdt_filtered <-
+#   readr::read_rds(
+#     paste0(
+#       "data_indexpoints_tidy/mdt_",
+#       city_number,
+#       ".rds"
+#     )
+#   )
 
 
 ## Check MDT validity
@@ -770,7 +770,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[16:17]
+    trp_id %in% trp_mdt_ok_refyear[6]
   ) |>
   dplyr::select(
     trp_id,
@@ -1135,7 +1135,7 @@ write.csv2(
 )
 
 
-# Combining a direct index with sliding indexes ----
+# Combining a direct index with rolling indexes ----
 chain_start_year_from_to <- "2017-2019"
 
 city_index_njaeren_2017_2019_official <-
