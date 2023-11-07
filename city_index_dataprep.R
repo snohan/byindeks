@@ -55,7 +55,7 @@ trp_id_msnr <-
 
 # Choose
 index_month <- 10 # the one to be published now
-city_number <- 955
+city_number <- 956
 
 reference_year <-
   dplyr::case_when(
@@ -751,7 +751,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[21:22]
+    trp_id %in% trp_mdt_ok_refyear[28:29]
   ) |>
   dplyr::select(
     trp_id,
