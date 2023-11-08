@@ -55,7 +55,7 @@ trp_id_msnr <-
 
 # Choose
 index_month <- 10 # the one to be published now
-city_number <- 953
+city_number <- 8952
 
 reference_year <-
   dplyr::case_when(
@@ -501,8 +501,8 @@ city_index_yearly_all <-
     years_1_2,
     years_1_3,
     years_1_4,
-    years_1_5,
-    years_1_6,
+    #years_1_5,
+    #years_1_6,
     #years_1_7
   ) %>%
   dplyr::mutate(
@@ -644,27 +644,29 @@ mdt <-
 # )
 
 # TRD
-toll_mdt_light <-
-  readr::read_rds(
-    file = "data_indexpoints_tidy/trd_toll_mdt.rds",
-  ) |>
-  dplyr::filter(
-    class == "lette"
-  ) |>
-  dplyr::rename(
-    year_month = month
-  ) |>
-  dplyr::mutate(
-    year = lubridate::year(year_month),
-    month = lubridate::month(year_month),
-    length_quality = 100
-  ) |>
-  dplyr::select(
-    -class,
-    -n_days,
-    -traffic
-  )
-# TRD stop
+if(city_number == 960) {
+  toll_mdt_light <-
+    readr::read_rds(
+      file = "data_indexpoints_tidy/trd_toll_mdt.rds",
+    ) |>
+    dplyr::filter(
+      class == "lette"
+    ) |>
+    dplyr::rename(
+      year_month = month
+    ) |>
+    dplyr::mutate(
+      year = lubridate::year(year_month),
+      month = lubridate::month(year_month),
+      length_quality = 100
+    ) |>
+    dplyr::select(
+      -class,
+      -n_days,
+      -traffic
+    )
+  # TRD stop
+}
 
 # mdt_test <-
 #   mdt |>
@@ -751,7 +753,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[9:10]
+    trp_id %in% trp_mdt_ok_refyear[67:68]
   ) |>
   dplyr::select(
     trp_id,
@@ -1001,8 +1003,8 @@ list(
   by_3_aar_glid_indeks = all_36_month_indices,
   by_2_aar_glid_indeks = all_24_month_indices,
   by_1_aar_glid_indeks = all_12_month_indices
-  # TRD, BRG
-  #byindeks_hittil = city_index_so_far_all
+  # TRD
+  #,byindeks_hittil = city_index_so_far_all
 ) |>
 writexl::write_xlsx(
   path = paste0(
