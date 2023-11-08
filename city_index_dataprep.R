@@ -55,7 +55,7 @@ trp_id_msnr <-
 
 # Choose
 index_month <- 10 # the one to be published now
-city_number <- 959
+city_number <- 960
 
 reference_year <-
   dplyr::case_when(
@@ -753,7 +753,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[60:61]
+    trp_id %in% trp_mdt_ok_refyear[16:18]
   ) |>
   dplyr::select(
     trp_id,
@@ -838,10 +838,10 @@ mdt_validated |>
 mdt_and_pi <-
   dplyr::left_join(
     mdt_validated,
-    trp_index_monthly,
-    by = c("trp_id", "year", "month"),
-    #dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
-    #by = c("trp_id", "year_month" = "month_object") # TRD
+    #trp_index_monthly,
+    #by = c("trp_id", "year", "month"),
+    dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
+    by = c("trp_id", "year_month" = "month_object") # TRD
   ) |>
   dplyr::left_join(
     trp_names,
@@ -1004,7 +1004,7 @@ list(
   by_2_aar_glid_indeks = all_24_month_indices,
   by_1_aar_glid_indeks = all_12_month_indices
   # TRD
-  #,byindeks_hittil = city_index_so_far_all
+  ,byindeks_hittil = city_index_so_far_all
 ) |>
 writexl::write_xlsx(
   path = paste0(

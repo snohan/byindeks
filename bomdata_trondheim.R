@@ -300,7 +300,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "september"
+month_string <- "october"
 year_number <- 2023
 
 apar_data_for_month <-
@@ -505,7 +505,7 @@ tolling_data_daily_tidy <-
                     date %in% seq.Date(as.Date("2021-08-01"), as.Date("2021-08-15"), 1))) |>
   dplyr::filter(!(trp_id == "55" & date %in% ymd(c("2023-06-26")))) |>
   dplyr::filter(!(trp_id == "55" &
-                    month %in% seq.Date(as.Date("2023-07-01"), as.Date("2023-12-01"), by = "month"))) |>
+                    month %in% seq.Date(as.Date("2023-07-01"), as.Date("2024-12-01"), by = "month"))) |>
   dplyr::filter(!(trp_id == "56" & month == "2021-04-01")) |>
   dplyr::filter(!(trp_id == "59" &
                     date %in% seq.Date(as.Date("2023-07-27"), as.Date("2023-07-28"), 1))) |>

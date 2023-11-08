@@ -12,7 +12,7 @@
 
 source("indexpoints_tidying_functions.R")
 # Set manual variables ----
-index_month <- 9
+index_month <- 10
 city_number <- 960
 city_name <- "Trondheim"
 
@@ -328,7 +328,7 @@ city_index_yearly_all <-
   dplyr::bind_rows(
     years_1_2,
     years_1_3,
-    years_1_4
+    #years_1_4
   ) |>
   dplyr::mutate(
     length_range = "lette",
