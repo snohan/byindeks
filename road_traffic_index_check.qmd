@@ -22,6 +22,15 @@ knitr:
     echo: false
 ---
 
+```{r notes}
+# Ekskluder:
+# 
+
+# Reberegn:
+# 
+
+```
+
 ```{r}
 #| label: setup
 #| include: false
@@ -40,7 +49,7 @@ library(htmltools)
 
 index_year <- 2023
 # Last published month
-index_month <- 8
+index_month <- 9
 
 index_id <- 962
 
@@ -67,17 +76,17 @@ pointindices <- pointindex[[2]]
 
 # Look at details in one county at a time
 
-# 30 Viken                  09 Trond
-#  3 Oslo                   09 Trond
-# 34 Innlandet              09 Snorre
-# 38 Vestfold og Telemark   09 Trond
-# 42 Agder                  09 Snorre
-# 11 Rogaland               09 Snorre
-# 46 Vestland               09 Trond
-# 15 Møre og Romsdal        09 Snorre
-# 50 Trøndelag              09 Snorre
-# 18 Nordland               09 Snorre
-# 54 Troms og Finnmark      09 Snorre
+# 30 Viken                  10 Trond
+#  3 Oslo                   10 Trond
+# 34 Innlandet              10 Snorre
+# 38 Vestfold og Telemark   10 Trond
+# 42 Agder                  10 Snorre
+# 11 Rogaland               10 Snorre
+# 46 Vestland               10 Trond
+# 15 Møre og Romsdal        10 Snorre
+# 50 Trøndelag              10 Snorre
+# 18 Nordland               10 Snorre
+# 54 Troms og Finnmark      10 Snorre
 
 county_number_chosen <- 54
 
@@ -516,13 +525,4 @@ pointindex_wide |>
       lengthMenu = c(21, 42, 63),
       autoWidth = TRUE)
   )
-```
-
-
-```{r notes}
-# Ekskluder:
-# Alfarvegen 6,7
-
-# Reberegn:
-# Skjåholmen 3
 ```
