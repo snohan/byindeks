@@ -48,40 +48,19 @@ trp_id_msnr <-
 # Oslo 959
 # Trondheim 960
 # Tromsø 961
+# Tromsø 2022 16952
 
 ## Trondheim has its own script, all inclusive except for MDT 36 index
 #source("city_index_dataprep_trondheim_toll_stations")
 # Trondheim stop
 
 # Choose
+present_year <- 2023
 index_month <- 10 # the one to be published now
-city_number <- 960
+city_number <- 16952
+# End choose
 
-reference_year <-
-  dplyr::case_when(
-    city_number %in% c(
-      953,
-      955,
-      956,
-      957,
-      961,
-      1952
-    ) ~ 2016,
-    city_number %in% c(
-      952
-    ) ~ 2017,
-    city_number %in% c(
-      959,
-      8952
-    ) ~ 2018,
-    city_number %in% c(
-      960
-    ) ~ 2019
-  )
-
-present_year <-
-  lubridate::today() |>
-  lubridate::year() #- 1
+source("city_reference_year.R")
 
 years_from_reference_to_today <-
   base::seq(reference_year, present_year)
@@ -96,14 +75,20 @@ last_year_month <-
     )
   )
 
-#! Remember that Bergen has TRP index in API also for 2019!
-index_years_pre_2020 <-
-  base::seq.int(reference_year + 1, 2019, 1)
+if(city_number != 16952){
+  index_years_pre_2020 <- base::seq.int(reference_year + 1, 2019, 1)
+}else{
+  index_years_pre_2020 <- NULL
+}
 
 if(city_number == 8952){
-  index_years_from_2020 <- base::seq.int(2019, present_year, 1) #BRG
+  index_years_from_2020 <- base::seq.int(2019, present_year, 1)
 }else{
   index_years_from_2020 <- base::seq.int(2020, present_year, 1)
+}
+
+if(city_number == 16952){
+  index_years_from_2020 <- base::seq.int(2023, present_year, 1)
 }
 
 index_months_from_2020 <-
@@ -145,26 +130,28 @@ city_name <- city_indexes$area_name[nrow(city_indexes)]
 # TRP index ----
 ## So far by December ----
 # Still need to specify csv-files for years before 2020 to get the pointindex as they are not in API
-trp_index_so_far_by_dec_pre_2020 <-
-  purrr::map(
-    index_years_pre_2020,
-    ~ read_pointindex_CSV(
-      paste0("data_index_raw/pointindex_", city_number, "_", .x, ".csv")
-    ) |>
-      dplyr::rename(
-        index = 2
+if(!(city_number %in% c(8952, 16952))){
+  trp_index_so_far_by_dec_pre_2020 <-
+    purrr::map(
+      index_years_pre_2020,
+      ~ read_pointindex_CSV(
+        paste0("data_index_raw/pointindex_", city_number, "_", .x, ".csv")
       ) |>
-      dplyr::mutate(
-        year = .x,
-        month = 12
-      )
-  ) |>
-  purrr::list_rbind() |>
-  dplyr::left_join(
-    trp_id_msnr,
-    by = "msnr"
-  ) |>
-  dplyr::select(-msnr)
+        dplyr::rename(
+          index = 2
+        ) |>
+        dplyr::mutate(
+          year = .x,
+          month = 12
+        )
+    ) |>
+    purrr::list_rbind() |>
+    dplyr::left_join(
+      trp_id_msnr,
+      by = "msnr"
+    ) |>
+    dplyr::select(-msnr)
+}
 
 trp_index_from_2020 <-
   purrr::map2(
@@ -195,7 +182,7 @@ trp_index_so_far_by_dec_from_2020 <-
     index = index_short
   )
 
-if(city_number == 8952){
+if(city_number %in% c(8952, 16952)){
   trp_index_year_to_date_dec_bind <-
     dplyr::bind_rows(
       trp_index_so_far_by_dec_from_2020
@@ -279,21 +266,23 @@ trp_index_year_to_date_by_index_month <-
 
 ## Monthly ----
 # For Excel report
-trp_index_monthly_pre_2020 <-
-  purrr::map_dfr(
-    index_years_pre_2020,
-    ~ read_old_pointindex_csv_monthly(
-      paste0("data_index_raw/pointindex_", city_number, "_", .x, ".csv")
+if(!(city_number %in% c(8952, 16952))){
+  trp_index_monthly_pre_2020 <-
+    purrr::map_dfr(
+      index_years_pre_2020,
+      ~ read_old_pointindex_csv_monthly(
+        paste0("data_index_raw/pointindex_", city_number, "_", .x, ".csv")
+      ) |>
+      dplyr::mutate(
+        year = .x
+      )
     ) |>
-    dplyr::mutate(
-      year = .x
-    )
-  ) |>
-  dplyr::left_join(
-    trp_id_msnr,
-    by = "msnr"
-  ) |>
-  dplyr::select(-msnr)
+    dplyr::left_join(
+      trp_id_msnr,
+      by = "msnr"
+    ) |>
+    dplyr::select(-msnr)
+}
 
 trp_index_monthly_from_2020 <-
   trp_index_from_2020 |>
@@ -311,7 +300,7 @@ trp_index_monthly_from_2020 <-
     index = index_short
   )
 
-if(city_number == 8952){
+if(city_number %in% c(8952, 116952)){
   trp_index_monthly <-
     dplyr::bind_rows(
       trp_index_monthly_from_2020
@@ -1051,6 +1040,7 @@ write.csv2(
 
 
 # Combining a direct index with rolling indexes ----
+## Nord-Jæren test ----
 chain_start_year_from_to <- "2017-2019"
 
 city_index_njaeren_2017_2019_official <-
@@ -1117,6 +1107,10 @@ readr::write_rds(
 )
 
 
+## Tromsø ----
+
+
+## Theory ----
 # Is the product of two normal variables still normal when means are close to 1 and with small deviation?
 # Seems so
 # library(extraDistr)

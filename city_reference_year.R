@@ -1,0 +1,23 @@
+reference_year <-
+  dplyr::case_when(
+    city_number %in% c(
+      953,
+      955,
+      957,
+      961,
+      1952
+    ) ~ 2016,
+    city_number %in% c(
+      952
+    ) ~ 2017,
+    city_number %in% c(
+      959,
+      8952
+    ) ~ 2018,
+    city_number %in% c(
+      960
+    ) ~ 2019,
+    city_number %in% c(
+      16952
+    ) ~ 2022
+  )
