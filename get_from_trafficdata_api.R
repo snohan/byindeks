@@ -8,7 +8,8 @@ library(lubridate)
 library(magrittr)
 
 cli <- ghql::GraphqlClient$new(
-  url = "https://www.vegvesen.no/trafikkdata/api/?query="
+  url = "https://trafikkdata-api.atlas.vegvesen.no/?query="
+  #url = "https://www.vegvesen.no/trafikkdata/api/?query="
   #headers = list(
   #  'content-type' = 'application/json')
 )
