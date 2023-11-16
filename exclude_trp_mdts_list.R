@@ -38,6 +38,13 @@ writexl::write_xlsx(
 )
 
 
+# Filter for city
+mdt_manual_exclusions <-
+  mdt_manual_exclusions |>
+  dplyr::filter(
+    is.na(index_id) | index_id == city_number
+  )
+
 # Exclude TRP all time
 all_timers <-
   mdt_manual_exclusions |>
