@@ -450,7 +450,7 @@ filter_mdt <- function(mdt_df, year_dbl) {
   mdt_df |>
     dplyr::filter(
       year == year_dbl,
-      coverage >= 50,
+      coverage >= 50, # this is length_coverage!
       length_quality >= 98.5
     ) |>
     dplyr::select(

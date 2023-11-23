@@ -300,7 +300,7 @@ trp_index_monthly_from_2020 <-
     index = index_short
   )
 
-if(city_number %in% c(8952, 116952)){
+if(city_number %in% c(8952, 16952)){
   trp_index_monthly <-
     dplyr::bind_rows(
       trp_index_monthly_from_2020
@@ -346,7 +346,8 @@ trp_index_monthly_wide <-
     name,
     road_category_and_number,
     year,
-    jan:des
+    #jan:des
+    jan:okt
   ) |>
   dplyr::arrange(
     name,
@@ -485,15 +486,15 @@ city_index_yearly_all <-
   dplyr::mutate(
     index_type = "direct"
   ) |>
-  dplyr::bind_rows(
+  #dplyr::bind_rows(
     # Include only for full years
-    years_1_2,
-    years_1_3,
-    years_1_4,
+    #years_1_2,
+    #years_1_3,
+    #years_1_4,
     #years_1_5,
     #years_1_6,
     #years_1_7
-  ) %>%
+  #) %>%
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
     area_name = city_name,
@@ -727,11 +728,13 @@ mdt_filtered |>
 #   )
 
 
-## Check MDT validity
+## Check MDT validity ----
 # Exclude trp-months
 #source("exclude_trp_mdts.R")
 source("exclude_trp_mdts_list.R")
 
+
+## Check MDT ----
 trp_mdt_ok_refyear <-
   mdt_validated |>
   dplyr::filter(
@@ -740,9 +743,17 @@ trp_mdt_ok_refyear <-
   filter_mdt(reference_year) |>
   purrr::pluck(1)
 
+# TODO: define sections
+# TODO: look at sectional TRPs concurrently
+# TODO: draw curve connecting sectional TRPs
+
+# TODO: correlate exclusions of TRP index and MDT
+# TODO: show TRP contributions to rolling indices
+# TODO: Shiny app for checking MDT
+
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[16:18]
+    trp_id %in% trp_mdt_ok_refyear[1:3]
   ) |>
   dplyr::select(
     trp_id,
@@ -797,6 +808,8 @@ mdt_validated |>
   ) |>
   create_mdt_barplot()
 
+
+## Compare exclusions of MDT and index ----
 # Check that the "same" exclusions are used on PI as MDT
 # TRD toll station MDTs already have the same exclusions
 
@@ -827,10 +840,10 @@ mdt_validated |>
 mdt_and_pi <-
   dplyr::left_join(
     mdt_validated,
-    #trp_index_monthly,
-    #by = c("trp_id", "year", "month"),
-    dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
-    by = c("trp_id", "year_month" = "month_object") # TRD
+    trp_index_monthly,
+    by = c("trp_id", "year", "month"),
+    #dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
+    #by = c("trp_id", "year_month" = "month_object") # TRD
   ) |>
   dplyr::left_join(
     trp_names,
@@ -851,6 +864,46 @@ mdt_and_pi <-
     trp_id,
     year,
     month
+  )
+
+
+mdt_and_pi_check <-
+  mdt_and_pi |>
+  dplyr::select(
+    name,
+    year,
+    month,
+    mdt,
+    index
+  ) |>
+  tidyr::complete(
+    name,
+    year,
+    month
+  ) |>
+  dplyr::mutate(
+    month_label = lubridate::make_date(
+      year = 2000,
+      month = month,
+      day = 1
+    ) |>
+      lubridate::month(label = TRUE),
+    valid_value =
+      dplyr::case_when(
+        is.na(mdt) & is.na(index) ~ "",
+        is.na(mdt) & !is.na(index) ~ "index",
+        !is.na(mdt) & is.na(index) ~ "mdt",
+        !is.na(mdt) & !is.na(index) ~ "BOTH",
+      )
+  ) |>
+  dplyr::select(
+    -month,
+    -mdt,
+    -index
+  ) |>
+  tidyr::pivot_wider(
+    names_from = "month_label",
+    values_from = "valid_value"
   )
 
 
@@ -1108,6 +1161,103 @@ readr::write_rds(
 
 
 ## Tromsø ----
+chain_start_year_from_to <- "2019-2022"
+
+city_index_tromso_2019_2022 <-
+  readr::read_rds(
+    "data_indexpoints_tidy/city_index_tromso_2019_2022.rds"
+  ) |>
+  dplyr::mutate(
+    index_i = index_converter(index_p),
+    period_build = "direct",
+    months = "jan-des"
+  )
+
+chain_link_se_p <- city_index_tromso_2019_2022$standard_error
+
+### Yearly index ----
+city_index_chained <-
+  city_index_yearly_all |>
+  dplyr::select(
+    index_period = year_from_to,
+    year,
+    month_n = month,
+    n_trp,
+    index_i,
+    standard_error_p = standard_error
+  ) |>
+  dplyr::mutate(
+    index_period =
+      paste0(
+        stringr::str_sub(chain_start_year_from_to, 1, 4),
+        stringr::str_sub(index_period, 5, -1)
+      ),
+    chained_index_i = index_i * city_index_tromso_2019_2022$index_i,
+    index_p = (chained_index_i - 1) * 100,
+    standard_error =
+      100 * sqrt(
+        index_i^2 * 1e-4 * chain_link_se_p^2 +
+          city_index_tromso_2019_2022$index_i^2 * 1e-4 * standard_error_p^2 +
+          1e-4 * chain_link_se_p^2 * 1e-4 * standard_error_p^2
+      ),
+    ci_lower = round(index_p - 1.96 * standard_error, 1),
+    ci_upper = round(index_p + 1.96 * standard_error, 1),
+    period_build = "chained",
+    period = "jan-des"
+  ) |>
+  dplyr::select(
+    index_period,
+    period_build,
+    period,
+    index_i = chained_index_i,
+    index_p,
+    standard_error,
+    ci_lower,
+    ci_upper
+  )
+
+city_index_final <-
+  dplyr::bind_rows(
+    city_index_tromso_2019_2022 |>
+      dplyr::select(
+        index_period = period,
+        period = months,
+        n_trp,
+        period_build,
+        index_i,
+        index_p,
+        standard_error,
+        ci_lower,
+        ci_upper
+      ),
+    city_index_yearly_all |>
+      dplyr::select(
+        index_period = year_from_to,
+        period_build = index_type,
+        period,
+        n_trp,
+        index_i,
+        index_p,
+        standard_error,
+        ci_lower,
+        ci_upper
+      ),
+    city_index_chained
+  ) |>
+  dplyr::mutate(
+    area_name = city_name
+  )
+
+readr::write_rds(
+  city_index_final,
+  file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")
+)
+
+
+### Rolling index ----
+
+
+
 
 
 ## Theory ----
