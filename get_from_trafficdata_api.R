@@ -2126,9 +2126,9 @@ get_pointindices_for_trp_list <- function(trp_list, index_year) {
 #from <- "2019-01-01T00:00:00.000+01:00"
 #to <- "2019-02-01T00:00:00.000+01:00"
 
-# trp_id <- "30868V1109333"
-# from <- "2021-01-01T10:00:00.000+01:00"
-# to <- "2022-01-01T10:00:00.000+01:00"
+trp_id <- "30868V1109333"
+from <- "2023-05-30T08:00:00.000+02:00"
+to <- "2023-05-30T09:00:00.000+02:00"
 
 get_hourly_traffic_by_length_lane <- function(trp_id, from, to) {
 
@@ -2161,6 +2161,9 @@ get_hourly_traffic_by_length_lane <- function(trp_id, from, to) {
                       validLength {
                         percentage
                       }
+										}
+                    coverage {
+                      percentage
                     }
                   }
                   byLengthRange {
@@ -2170,9 +2173,6 @@ get_hourly_traffic_by_length_lane <- function(trp_id, from, to) {
                     total {
                       volumeNumbers {
                         volume
-                        validLength {
-                          percentage
-                        }
                       }
                       coverage {
                         percentage
@@ -2246,15 +2246,140 @@ get_hourly_traffic_by_length_lane <- function(trp_id, from, to) {
     dplyr::select(
       trp_id = data.trafficData.id,
       from = data.trafficData.volume.byHour.edges.node.from,
+      total_coverage = total.coverage.percentage,
+      length_quality = total.volumeNumbers.validLength.percentage,
+      length_coverage = byLengthRange_length_total.coverage.percentage,
       length_range = byLengthRange_length_lengthRange.representation,
       traffic = byLengthRange_length_total.volumeNumbers.volume,
-      valid_length_percentage = total.volumeNumbers.validLength.percentage,
-      coverage = byLengthRange_length_total.coverage.percentage,
       lane = lane.laneNumberAccordingToMetering
     ) |>
     dplyr::mutate(from = lubridate::with_tz(lubridate::ymd_hms(from), "CET"))
 
  return(hourly_traffic_tidy)
+
+}
+
+
+get_hourly_traffic_by_length <- function(trp_id, from, to) {
+
+  # ZonedDateTime:
+  # A datetime with timezone, e.g. "2017-01-24T00:00:00.000+01:00"
+
+  # Response is paginated
+  # Default values
+  hasNextPage <- TRUE
+  end_cursor <- ""
+  hourly_traffic <- data.frame()
+
+  query <-
+    "query hourly_traffic ($trpId: String!, $from: ZonedDateTime!, $to: ZonedDateTime!, $endCursor: String!) {
+       trafficData (trafficRegistrationPointId: $trpId) {
+         trafficRegistrationPoint {
+           id
+         }
+        volume {
+          byHour (from: $from, to: $to, after: $endCursor) {
+            edges {
+              node {
+                from
+                total {
+									volumeNumbers {
+                    validLength {
+                      percentage
+                    }
+									}
+                  coverage {
+                    percentage
+                  }
+                }
+                byLengthRange {
+                  lengthRange {
+                    representation
+                  }
+                  total {
+                    volumeNumbers {
+                      volume
+                    }
+                    coverage {
+                      percentage
+                    }
+                  }
+                }
+              }
+            }
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+          }
+        }
+      }
+    }"
+
+  my_query <- ghql::Query$new()$query(name = "my_query", query)
+
+  while(hasNextPage == TRUE){
+
+    input_variables <-
+      list(
+        "trpId" = trp_id,
+        "from" = from,
+        "to" = to,
+        "endCursor" = end_cursor
+      )
+
+    response <-
+      cli$exec(my_query$my_query, input_variables) |>
+      jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
+
+    if(length(response$data$trafficData$volume$byHour$edges) == 0)
+      break;
+
+    end_cursor <- response$data$trafficData$volume$byHour$pageInfo$endCursor
+
+    hasNextPage <- response$data$trafficData$volume$byHour$pageInfo$hasNextPage
+
+    response_data <-
+      response |>
+      base::as.data.frame() |>
+      tibble::as_tibble() |>
+      dplyr::select(
+        -tidyselect::ends_with("hasNextPage"),
+        -tidyselect::ends_with("endCursor")
+      ) |>
+      tidyr::unnest(cols = data.trafficData.volume.byHour.edges.node.byLengthRange) #|>
+      # If some hours have no data
+      # dplyr::rowwise() |>
+      # dplyr::mutate(
+      #   data_length = list(length(purrr::pluck(byLengthRange, 1)))
+      # ) |>
+      # dplyr::ungroup() |>
+      # tidyr::unnest(cols = data_length) |>
+      # dplyr::filter(
+      #   data_length != 0
+      # ) |>
+      # tidyr::unnest(
+      #   cols = byLengthRange,
+      #   names_sep = "_length_"
+      # )
+
+    hourly_traffic <- dplyr::bind_rows(hourly_traffic, response_data)
+  }
+
+  hourly_traffic_tidy <-
+    hourly_traffic |>
+    dplyr::select(
+      trp_id = data.trafficData.id,
+      from = data.trafficData.volume.byHour.edges.node.from,
+      total_coverage = data.trafficData.volume.byHour.edges.node.total.coverage.percentage,
+      length_quality = data.trafficData.volume.byHour.edges.node.total.volumeNumbers.validLength.percentage,
+      length_coverage = total.coverage.percentage,
+      length_range = lengthRange.representation,
+      traffic = total.volumeNumbers.volume
+    ) |>
+    dplyr::mutate(from = lubridate::with_tz(lubridate::ymd_hms(from), "CET"))
+
+  return(hourly_traffic_tidy)
 
 }
 
@@ -2567,18 +2692,18 @@ get_dt_by_length_for_trp <- function(trp_id, from, to) {
           point_id = data.trafficData.id,
           from = data.trafficData.volume.byDay.edges.node.from,
           total_volume = data.trafficData.volume.byDay.edges.node.total.volumeNumbers.volume,
-          coverage = data.trafficData.volume.byDay.edges.node.total.coverage.percentage,
+          total_coverage = data.trafficData.volume.byDay.edges.node.total.coverage.percentage,
           length_range = lengthRange.representation,
           length_range_volume = total.volumeNumbers.volume,
-          valid_length = data.trafficData.volume.byDay.edges.node.total.volumeNumbers.validLength.percentage
+          length_quality = data.trafficData.volume.byDay.edges.node.total.volumeNumbers.validLength.percentage
           )
     }
 
     dailyTraffic <- dplyr::bind_rows(dailyTraffic, trafficData)
   }
 
-  colunm_names <- c("point_id", "from", "total_volume", "coverage",
-                    "length_range", "length_range_volume", "valid_length")
+  colunm_names <- c("point_id", "from", "total_volume", "total_coverage",
+                    "length_range", "length_range_volume", "length_quality")
 
   if(nrow(dailyTraffic) == 0) {
     dailyTraffic <- setNames(data.frame(matrix(ncol = 7, nrow = 0)),
@@ -2589,17 +2714,18 @@ get_dt_by_length_for_trp <- function(trp_id, from, to) {
 
   # To avoid error when joining, cast column type
   dailyTraffic <-
-    dailyTraffic %>%
-    dplyr::filter(!is.na(total_volume)) %>%
-    dplyr::mutate(point_id = as.character(point_id),
-                  #from = with_tz(ymd_hms(from), "CET"),
-                  from = clock::date_parse(from),
-                  total_volume = as.integer(total_volume),
-                  coverage = as.numeric(coverage),
-                  length_range = as.character(length_range),
-                  length_range_volume = as.integer(length_range_volume),
-                  valid_length = as.numeric(valid_length)
-                  )
+    dailyTraffic |>
+    dplyr::filter(!is.na(total_volume)) |>
+    dplyr::mutate(
+      point_id = as.character(point_id),
+      #from = with_tz(ymd_hms(from), "CET"),
+      from = clock::date_parse(from),
+      total_volume = as.integer(total_volume),
+      total_coverage = as.numeric(total_coverage),
+      length_range = as.character(length_range),
+      length_range_volume = as.integer(length_range_volume),
+      length_quality = as.numeric(length_quality)
+    )
 
   return(dailyTraffic)
 }

@@ -9,57 +9,60 @@
 
 
 # Functions ----
-calculate_hourly_index_traffic <- function(traffic_by_length_lane) {
+calculate_hourly_index_traffic <- function(traffic_by_length) {
 
   # IN: hourly traffic by length and lane
   # OUT: hourly traffic when all lanes present
 
   data_tidy <-
-    traffic_by_length_lane |>
+    traffic_by_length |>
     tibble::as_tibble() |>
     dplyr::filter(
       length_range == "[..,5.6)",
-      valid_length_percentage > 99,
-      coverage > 95
+      #length_quality > 94.5, # TODO: remove this filter
+      # can't remove single hours based on this. lenght diff is based on daily values in order to avoid
+      # nightly hours with little traffic be filtered too often
+      # same reasoning behind filtering by total coverage and not length coverage here
+      total_coverage >= 99
     )
 
-  lanes_each_month <-
-    data_tidy |>
-    dplyr::mutate(
-      month = lubridate::month(from)
-    ) |>
-    dplyr::select(
-      lane,
-      month
-    ) |>
-    dplyr::distinct() |>
-    dplyr::summarise(
-      lanes_month = base::paste(lane, collapse = "#"),
-      .by = month
-    )
+  # lanes_each_month <-
+  #   data_tidy |>
+  #   dplyr::mutate(
+  #     month = lubridate::month(from)
+  #   ) |>
+  #   dplyr::select(
+  #     lane,
+  #     month
+  #   ) |>
+  #   dplyr::distinct() |>
+  #   dplyr::summarise(
+  #     lanes_month = base::paste(lane, collapse = "#"),
+  #     .by = month
+  #   )
 
   hourly_traffic <-
     data_tidy |>
     dplyr::select(
       from,
       traffic,
-      lane
+      #lane
     ) |>
-    dplyr::summarise(
-      lanes_hour = base::paste(lane, collapse = "#"),
-      traffic = sum(traffic),
-      .by = from
-    ) |>
+    #dplyr::summarise(
+    #  lanes_hour = base::paste(lane, collapse = "#"),
+    #  traffic = sum(traffic),
+    #  .by = from
+    #) |>
     dplyr::mutate(
       month = lubridate::month(from)
     ) |>
-    dplyr::left_join(
-      lanes_each_month,
-      by = join_by(month)
-    ) |>
-    dplyr::filter(
-      lanes_hour == lanes_month,
-    ) |>
+    #dplyr::left_join(
+    #  lanes_each_month,
+    #  by = join_by(month)
+    #) |>
+    #dplyr::filter(
+    #  lanes_hour == lanes_month,
+    #) |>
     dplyr::mutate(
       day = lubridate::day(from),
       hour = lubridate::hour(from)
@@ -68,7 +71,7 @@ calculate_hourly_index_traffic <- function(traffic_by_length_lane) {
       month,
       day,
       hour,
-      lanes_hour,
+      #lanes_hour,
       traffic
     ) |>
     # Adding the two hours when DST is set back in October
@@ -81,33 +84,75 @@ calculate_hourly_index_traffic <- function(traffic_by_length_lane) {
 }
 
 # trp_id <- trp_2017[16]
-# calc_year <- 2019
-# base_year <- 2017
+# trp_id <- "30868V1109333"
+# calc_year <- 2023
+# base_year <- 2022
 
 
 calculate_trp_index <- function(subfolder_name, trp_id, base_year, calc_year) {
 
   data_base_year <-
-    get_hourly_traffic_by_length_lane(
+    get_hourly_traffic_by_length(
       trp_id,
       paste0(as.character(base_year), "-01-01T00:00:00.000+01:00"),
       paste0(as.character(base_year + 1), "-01-01T00:00:00.000+01:00")
     ) |>
     calculate_hourly_index_traffic()
 
+  dt_base_year <-
+    get_dt_by_length_for_trp(
+      trp_id,
+      paste0(as.character(base_year), "-01-01T00:00:00.000+01:00"),
+      paste0(as.character(base_year + 1), "-01-01T00:00:00.000+01:00")
+    ) |>
+    dplyr::select(
+      from,
+      length_quality_base = length_quality
+      # yes, must use length_quality and not length_coverage,
+      # e.g. if just 16 hours for a day, length_quality might be high, but length_coverage will be low
+    ) |>
+    dplyr::distinct() |>
+    dplyr::mutate(
+      month = lubridate::month(from),
+      day = lubridate::mday(from)
+    ) |>
+    dplyr::select(
+      -from
+    )
+
   data_calc_year <-
-    get_hourly_traffic_by_length_lane(
+    get_hourly_traffic_by_length(
       trp_id,
       paste0(as.character(calc_year), "-01-01T00:00:00.000+01:00"),
       paste0(as.character(calc_year + 1), "-01-01T00:00:00.000+01:00")
     ) |>
     calculate_hourly_index_traffic()
 
+  dt_calc_year <-
+    get_dt_by_length_for_trp(
+      trp_id,
+      paste0(as.character(calc_year), "-01-01T00:00:00.000+01:00"),
+      paste0(as.character(calc_year + 1), "-01-01T00:00:00.000+01:00")
+    ) |>
+    dplyr::select(
+      from,
+      length_quality_calc = length_quality
+    ) |>
+    dplyr::distinct() |>
+    dplyr::mutate(
+      month = lubridate::month(from),
+      day = lubridate::mday(from)
+    ) |>
+    dplyr::select(
+      -from
+    )
+
   trp_index_data <-
     dplyr::inner_join(
       data_base_year,
       data_calc_year,
-      by = join_by(month, day, hour, lanes_hour),
+      by = join_by(month, day, hour),
+      #by = join_by(month, day, hour, lanes_hour),
       suffix = c("_base", "_calc")
     ) |>
     dplyr::summarise(
@@ -116,8 +161,22 @@ calculate_trp_index <- function(subfolder_name, trp_id, base_year, calc_year) {
       n_hours = n(),
       .by = c(month, day)
     ) |>
+    # remove days with less than 95 % length quality
+    dplyr::left_join(
+      dt_base_year,
+      by = join_by(month, day)
+    ) |>
+    dplyr::left_join(
+      dt_calc_year,
+      by = join_by(month, day)
+    ) |>
+    dplyr::mutate(
+      ok_length =
+        length_quality_calc >= 94.5 & length_quality_base >= 94.5
+    ) |>
     dplyr::filter(
-      n_hours >= 16
+      n_hours >= 16,
+      ok_length == TRUE
     ) |>
     dplyr::summarise(
       traffic_base = sum(traffic_base),
@@ -229,8 +288,8 @@ trp_index_data <-
   calculate_trp_index(
     "tromso",
     trp_trs_coverage$trp_id[15],
-    2019,
-    2022
+    2022,
+    2023
   )
 tictoc::toc()
 
@@ -514,3 +573,71 @@ trp_mdt_ok_refyear <-
 ## 2017-2023 ----
 # Combined index and uncertainty
 
+
+# Test Dramsvegen ----
+dramsvegen_data_base_year <-
+  get_hourly_traffic_by_length(
+    "30868V1109333",
+    paste0(as.character(2022), "-01-01T00:00:00.000+01:00"),
+    paste0(as.character(2022 + 1), "-01-01T00:00:00.000+01:00")
+  ) |>
+  dplyr::filter(
+    length_range == "[..,5.6)"
+  )
+
+dramsvegen_dt_base_year <-
+  get_dt_by_length_for_trp(
+    "30868V1109333",
+    paste0(as.character(2022), "-01-01T00:00:00.000+01:00"),
+    paste0(as.character(2022 + 1), "-01-01T00:00:00.000+01:00")
+  ) |>
+  dplyr::filter(
+    length_range == "[..,5.6)"
+  )
+
+
+dramsvegen_data_calc_year <-
+  get_hourly_traffic_by_length(
+    "30868V1109333",
+    paste0(as.character(2023), "-01-01T00:00:00.000+01:00"),
+    paste0(as.character(2023 + 1), "-01-01T00:00:00.000+01:00")
+  ) |>
+  dplyr::filter(
+    length_range == "[..,5.6)"
+  )
+
+dramsvegen_dt_calc_year <-
+  get_dt_by_length_for_trp(
+    "30868V1109333",
+    paste0(as.character(2023), "-01-01T00:00:00.000+01:00"),
+    paste0(as.character(2023 + 1), "-01-01T00:00:00.000+01:00")
+  ) |>
+  dplyr::filter(
+    length_range == "[..,5.6)"
+  )
+
+
+
+diff_length <-
+  dramsvegen_data_base_year |>
+  dplyr::filter(
+
+  )
+
+tictoc::tic()
+trp_index_data <-
+  calculate_trp_index(
+    "test",
+    "30868V1109333",
+    2022,
+    2023
+  )
+tictoc::toc()
+
+dramsvegen <-
+  readr::read_rds(
+    file = paste0("trp_index/test/30868V1109333_2022_2023.rds")
+  ) |>
+  dplyr::mutate(
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1)
+  )
