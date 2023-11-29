@@ -1,8 +1,7 @@
-library(tidyverse)
+source("rmd_setup.R")
 
 # Traffic Data API calls to get points metadata and aadt
 source("get_from_trafficdata_api.R")
-source("split_road_system_reference.R")
 
 
 # Through traffic ----
@@ -12,6 +11,61 @@ through_traffic <-
 trp_and_route <-
   readr::read_csv2("through_traffic/trp_and_route.csv")
 
+through_traffic_mdt_nedre_glomma <-
+  readxl::read_excel(
+    "through_traffic/mdt_gjennomgangstrafikk.xlsx",
+    sheet = 1,
+    skip = 1
+  ) |>
+  dplyr::mutate(
+    area = "nedre_glomma"
+  ) |>
+  dplyr::select(
+    area,
+    year,
+    month,
+    rv110_n,
+    e6_n,
+    rv22_rv110_internal
+  ) |>
+  tidyr::pivot_longer(
+    cols = c("rv110_n", "e6_n", "rv22_rv110_internal"),
+    names_to = "route",
+    values_to = "mdt_lmv"
+  )
+
+through_traffic_mdt_trondheim <-
+  readxl::read_excel(
+    "through_traffic/mdt_gjennomgangstrafikk.xlsx",
+    sheet = 2,
+    skip = 1
+  ) |>
+  dplyr::mutate(
+    area = "trondheim"
+  ) |>
+  dplyr::select(
+    area,
+    year,
+    month,
+    e14_e,
+    e6_internal,
+    e39_v
+  ) |>
+  tidyr::pivot_longer(
+    cols = c("e14_e", "e6_internal", "e39_v"),
+    names_to = "route",
+    values_to = "mdt_lmv"
+  )
+
+through_traffic_mdt <-
+  dplyr::bind_rows(
+    through_traffic_mdt_nedre_glomma,
+    through_traffic_mdt_trondheim
+  )
+
+# Ser korrelasjon juni-sept på rutene E6 S - E14 og E6 N - E14.
+# Rart at E6 N - E39 er høyere enn E6 S - E39,
+# eller er det fordi mange som kommer sørfra egentlig kommer sør for Berkåk og kjører Orkdalen i stedet?
 
 # Nedre Glomma ----
 city_index <-
@@ -213,6 +267,23 @@ readr::write_rds(
 
 
 # Trondheim ----
+city_number <- 960
+present_year <- 2023
+index_month <- 10
+
+source("city_reference_year.R")
+
+last_year_month <-
+  lubridate::as_date(
+    paste0(
+      present_year,
+      "-",
+      index_month,
+      "-01"
+    )
+  )
+
+
 ## Yearly index ----
 trp_trd <-
   readr::read_rds(
@@ -371,6 +442,8 @@ readr::write_rds(
 
 
 ## Rolling index ----
+source("indexpoints_tidying_functions.R")
+
 mdt_filtered <-
   readr::read_rds(
     paste0(
@@ -383,6 +456,59 @@ mdt_filtered <-
 source("exclude_trp_mdts_list.R")
 
 # TODO: Subtract through traffic by month by TRP in mdt_validated
+mdt_validated_without_through_traffic <-
+  mdt_validated |>
+  dplyr::left_join(
+    trp_and_route,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::left_join(
+    through_traffic_mdt,
+    by = join_by(area, route, year, month)
+  ) |>
+  dplyr::mutate(
+    mdt_original = mdt,
+    mdt_adjusted =
+      dplyr::case_when(
+        is.na(mdt_lmv) ~ mdt,
+        TRUE ~ mdt - mdt_lmv
+      )
+  ) |>
+  dplyr::select(-mdt) |>
+  dplyr::rename(mdt = mdt_adjusted)
 
-all_36_month_indices <-
-  calculate_rolling_indices(36)
+
+mdt_validated <- mdt_validated_without_through_traffic
+
+all_36_month_indices_adjusted <-
+  calculate_rolling_indices(36) |>
+  dplyr::mutate(
+    through_traffic = FALSE
+  )
+
+# Rolling index with through traffic
+rolling_indices <-
+  readr::read_rds(
+    paste0("data_indexpoints_tidy/rolling_indices_", city_number, ".rds")
+  )
+
+city_36_month <-
+  rolling_indices[[3]] |>
+  dplyr::mutate(
+    through_traffic = TRUE
+  )
+
+
+# Put together
+dplyr::bind_rows(
+  all_36_month_indices_adjusted,
+  city_36_month
+) |>
+readr::write_rds(
+  file =
+    paste0(
+      "data_indexpoints_tidy/rolling_indices_adjusted",
+      city_number,
+      ".rds"
+    )
+)

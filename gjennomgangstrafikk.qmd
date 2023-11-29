@@ -238,7 +238,7 @@ trd_trp_and_through_traffic_qmd |>
 ```
 
 
-## Byindeks
+## Årlig byindeks
 Sammenligning av original byindeks med byindeks filtrert for gjennomgangstrafikk.
 
 ```{r}
@@ -270,4 +270,70 @@ city_index_adjusted_trd |>
 ```
 
 
-# Glidende indeks
+## Glidende indeks
+```{r}
+#| label: fig-rolling_trd
+#| fig-cap: "Glidende indeks for Trondheimsområdet."
+
+title_text <- "Estimert endring i trafikkmengde siste glidende 3 år"
+sub_text  <- "Sammenlignet med 2019"
+
+readr::read_rds("data_indexpoints_tidy/rolling_indices_adjusted960.rds") |> 
+    ggplot2::ggplot(aes(x = month_object, y = index_p, color = through_traffic)) +
+    ggplot2::geom_hline(
+      yintercept = 0,
+      color = "#58b02c",
+      size = 0.8,
+      alpha = 0.3
+    ) +
+    ggplot2::geom_line(
+      #color = "#ED9300"
+    ) +
+    ggplot2::geom_point(
+      #color = "#ED9300"
+    ) +
+    # ggplot2::geom_ribbon(
+    #   aes(
+    #     ymin = ci_lower,
+    #     ymax = ci_upper
+    #   ),
+    #   linetype = 2,
+    #   alpha = 0.1,
+    #   fill = "#444f55"
+    # ) +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        ),
+      legend.position = "bottom",
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.background = element_rect(fill = svv_background_color)
+    ) +
+    scale_x_date(
+      labels = scales::label_date("%b %Y")
+    ) +
+    # ylim(
+    #   -max(abs(city_36_month_df$ci_lower)),
+    #   max(abs(city_36_month_df$ci_upper))
+    # ) +
+    labs(
+      x = NULL, y = "Endring i trafikkmengde (%)",
+      caption = "Data: Statens vegvesen.") +
+    ggtitle(
+      title_text,
+      subtitle = sub_text
+    )
+```
+

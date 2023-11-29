@@ -17,9 +17,13 @@ calculate_hourly_index_traffic <- function(traffic_by_length) {
   data_tidy <-
     traffic_by_length |>
     tibble::as_tibble() |>
+    dplyr::mutate(
+      length_quality = round(length_quality),
+      total_coverage = round(total_coverage)
+    ) |>
     dplyr::filter(
       length_range == "[..,5.6)",
-      #length_quality > 94.5, # TODO: remove this filter
+      length_quality >= 95, # TODO: remove this filter
       # can't remove single hours based on this. lenght diff is based on daily values in order to avoid
       # nightly hours with little traffic be filtered too often
       # same reasoning behind filtering by total coverage and not length coverage here
@@ -91,7 +95,7 @@ calculate_hourly_index_traffic <- function(traffic_by_length) {
 
 calculate_trp_index <- function(subfolder_name, trp_id, base_year, calc_year) {
 
-  data_base_year <-
+  ht_base_year <-
     get_hourly_traffic_by_length(
       trp_id,
       paste0(as.character(base_year), "-01-01T00:00:00.000+01:00"),
@@ -114,13 +118,14 @@ calculate_trp_index <- function(subfolder_name, trp_id, base_year, calc_year) {
     dplyr::distinct() |>
     dplyr::mutate(
       month = lubridate::month(from),
-      day = lubridate::mday(from)
+      day = lubridate::mday(from),
+      length_quality_base = round(length_quality_base)
     ) |>
     dplyr::select(
       -from
     )
 
-  data_calc_year <-
+  ht_calc_year <-
     get_hourly_traffic_by_length(
       trp_id,
       paste0(as.character(calc_year), "-01-01T00:00:00.000+01:00"),
@@ -141,7 +146,8 @@ calculate_trp_index <- function(subfolder_name, trp_id, base_year, calc_year) {
     dplyr::distinct() |>
     dplyr::mutate(
       month = lubridate::month(from),
-      day = lubridate::mday(from)
+      day = lubridate::mday(from),
+      length_quality_calc = round(length_quality_calc)
     ) |>
     dplyr::select(
       -from
@@ -149,8 +155,8 @@ calculate_trp_index <- function(subfolder_name, trp_id, base_year, calc_year) {
 
   trp_index_data <-
     dplyr::inner_join(
-      data_base_year,
-      data_calc_year,
+      ht_base_year,
+      ht_calc_year,
       by = join_by(month, day, hour),
       #by = join_by(month, day, hour, lanes_hour),
       suffix = c("_base", "_calc")
@@ -172,7 +178,7 @@ calculate_trp_index <- function(subfolder_name, trp_id, base_year, calc_year) {
     ) |>
     dplyr::mutate(
       ok_length =
-        length_quality_calc >= 94.5 & length_quality_base >= 94.5
+        length_quality_calc >= 95 & length_quality_base >= 95
     ) |>
     dplyr::filter(
       n_hours >= 16,
@@ -575,15 +581,13 @@ trp_mdt_ok_refyear <-
 
 
 # Test Dramsvegen ----
-dramsvegen_data_base_year <-
+dramsvegen_ht_base_year <-
   get_hourly_traffic_by_length(
     "30868V1109333",
-    paste0(as.character(2022), "-01-01T00:00:00.000+01:00"),
-    paste0(as.character(2022 + 1), "-01-01T00:00:00.000+01:00")
+    paste0(as.character(2022), "-05-01T00:00:00.000+02:00"),
+    paste0(as.character(2022), "-06-01T00:00:00.000+02:00")
   ) |>
-  dplyr::filter(
-    length_range == "[..,5.6)"
-  )
+  calculate_hourly_index_traffic()
 
 dramsvegen_dt_base_year <-
   get_dt_by_length_for_trp(
@@ -596,15 +600,13 @@ dramsvegen_dt_base_year <-
   )
 
 
-dramsvegen_data_calc_year <-
+dramsvegen_ht_calc_year <-
   get_hourly_traffic_by_length(
     "30868V1109333",
-    paste0(as.character(2023), "-01-01T00:00:00.000+01:00"),
-    paste0(as.character(2023 + 1), "-01-01T00:00:00.000+01:00")
+    paste0(as.character(2023), "-05-01T00:00:00.000+02:00"),
+    paste0(as.character(2023), "-06-01T00:00:00.000+02:00")
   ) |>
-  dplyr::filter(
-    length_range == "[..,5.6)"
-  )
+  calculate_hourly_index_traffic()
 
 dramsvegen_dt_calc_year <-
   get_dt_by_length_for_trp(
@@ -617,12 +619,14 @@ dramsvegen_dt_calc_year <-
   )
 
 
-
-diff_length <-
-  dramsvegen_data_base_year |>
-  dplyr::filter(
-
+dramsvegen_index_data <-
+  dplyr::inner_join(
+    dramsvegen_ht_base_year,
+    dramsvegen_ht_calc_year,
+    by = join_by(month, day, hour),
+    suffix = c("_base", "_calc")
   )
+
 
 tictoc::tic()
 trp_index_data <-

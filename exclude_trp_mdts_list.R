@@ -7,6 +7,8 @@ mdt_manual_exclusions <-
 
 
 # Add metainfo and write Excel for sharing
+points <- readr::read_rds("trps_for_city_index.rds")
+
 mdt_manual_exclusions_meta <-
   mdt_manual_exclusions |>
   dplyr::left_join(

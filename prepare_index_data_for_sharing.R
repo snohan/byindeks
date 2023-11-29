@@ -48,15 +48,28 @@ all_rolling_indices <-
   dplyr::relocate(area_name)
 
 
-aftenbladet <-
+# aftenbladet <-
+#   all_rolling_indices |>
+#   dplyr::select(-city_number) |>
+#   dplyr::filter(
+#     window == "12_months",
+#     month_object <= "2023-08-01"
+#   )
+#
+# writexl::write_xlsx(
+#   aftenbladet,
+#   path = "spesialuttak/aftenbladet.xlsx"
+# )
+
+opa <-
   all_rolling_indices |>
   dplyr::select(-city_number) |>
   dplyr::filter(
-    window == "12_months",
-    month_object <= "2023-08-01"
+    window == "36_months",
+    month_object <= "2023-10-01"
   )
 
 writexl::write_xlsx(
-  aftenbladet,
-  path = "spesialuttak/aftenbladet.xlsx"
+  opa,
+  path = "spesialuttak/bva_byindekser.xlsx"
 )
