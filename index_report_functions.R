@@ -1054,3 +1054,81 @@ plot_index_chain <- function(plot_df, chosen_name) {
     )
 
 }
+
+
+visualize_rolling_index_comparison <- function(rolling_index_df) {
+
+  title_text <- "Estimert endring i trafikkmengde siste glidende 3 år"
+  sub_text  <-
+    paste0(
+      "Sammenlignet med ",
+      stringr::str_sub(rolling_index_df$index_period[1], 1, 4)
+    )
+
+  rolling_index_df |>
+    ggplot2::ggplot(aes(x = month_object, y = index_p, color = through_traffic)) +
+    ggplot2::geom_hline(
+      yintercept = 0,
+      color = "#58b02c",
+      linewidth = 0.8,
+      alpha = 0.3
+    ) +
+    ggplot2::geom_line() +
+    ggplot2::geom_point() +
+    ggplot2::geom_ribbon(
+      aes(
+        ymin = ci_lower,
+        ymax = ci_upper
+      ),
+      linetype = 2,
+      alpha = 0.1,
+      fill = "#444f55"
+    ) +
+    scale_color_manual(
+      values = c(
+        "TRUE" = "#008ec2",
+        "FALSE" = "#ed9300"
+      ),
+      breaks = c(
+        "TRUE",
+        "FALSE"
+      ),
+      labels = c(
+        "Ja",
+        "Nei"
+      ),
+      name = "Med gjennomgangstrafikk"
+    ) +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        ),
+      legend.position = "bottom",
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.background = element_rect(fill = svv_background_color),
+      legend.key = element_rect(fill = svv_background_color)
+    ) +
+    scale_x_date(
+      labels = scales::label_date("%b %Y")
+    ) +
+    labs(
+      x = NULL, y = "Endring i trafikkmengde (%)",
+      caption = "Data: Statens vegvesen."
+    ) +
+    ggtitle(
+      title_text,
+      subtitle = sub_text
+    )
+}

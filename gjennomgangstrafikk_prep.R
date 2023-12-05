@@ -1,4 +1,5 @@
 source("rmd_setup.R")
+source("indexpoints_tidying_functions.R")
 
 # Traffic Data API calls to get points metadata and aadt
 source("get_from_trafficdata_api.R")
@@ -67,7 +68,28 @@ through_traffic_mdt <-
 # Rart at E6 N - E39 er høyere enn E6 S - E39,
 # eller er det fordi mange som kommer sørfra egentlig kommer sør for Berkåk og kjører Orkdalen i stedet?
 
+
 # Nedre Glomma ----
+city_number <- 953
+present_year <- 2023
+index_month <- 10
+
+#source("city_reference_year.R")
+# Through traffic MDT available only from 2019
+# Need to calculate rolling index from 2019 just for the purpose of comparing with and without through traffic
+reference_year <- 2019
+
+last_year_month <-
+  lubridate::as_date(
+    paste0(
+      present_year,
+      "-",
+      index_month,
+      "-01"
+    )
+  )
+
+## Yearly inex ----
 city_index <-
   get_published_index_for_months(
     953,
@@ -266,6 +288,72 @@ readr::write_rds(
 )
 
 
+## Rolling index ----
+mdt_filtered <-
+  readr::read_rds(
+    paste0(
+      "data_indexpoints_tidy/mdt_",
+      city_number,
+      ".rds"
+    )
+  )
+
+source("exclude_trp_mdts_list.R")
+
+
+# Rolling index with through traffic
+all_36_month_indices <-
+  calculate_rolling_indices(36) |>
+  dplyr::mutate(
+    through_traffic = TRUE
+  )
+
+# Subtract through traffic by month by TRP in mdt_validated
+mdt_validated_without_through_traffic <-
+  mdt_validated |>
+  dplyr::left_join(
+    trp_and_route,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::left_join(
+    through_traffic_mdt,
+    by = join_by(area, route, year, month)
+  ) |>
+  dplyr::mutate(
+    mdt_original = mdt,
+    mdt_adjusted =
+      dplyr::case_when(
+        is.na(mdt_lmv) ~ mdt,
+        TRUE ~ mdt - mdt_lmv
+      )
+  ) |>
+  dplyr::select(-mdt) |>
+  dplyr::rename(mdt = mdt_adjusted)
+
+
+mdt_validated <- mdt_validated_without_through_traffic
+
+all_36_month_indices_adjusted <-
+  calculate_rolling_indices(36) |>
+  dplyr::mutate(
+    through_traffic = FALSE
+  )
+
+# Put together
+dplyr::bind_rows(
+  all_36_month_indices_adjusted,
+  all_36_month_indices
+) |>
+  readr::write_rds(
+    file =
+      paste0(
+        "data_indexpoints_tidy/rolling_indices_adjusted_",
+        city_number,
+        ".rds"
+      )
+  )
+
+
 # Trondheim ----
 city_number <- 960
 present_year <- 2023
@@ -442,20 +530,18 @@ readr::write_rds(
 
 
 ## Rolling index ----
-source("indexpoints_tidying_functions.R")
-
 mdt_filtered <-
   readr::read_rds(
     paste0(
       "data_indexpoints_tidy/mdt_",
-      960,
+      city_number,
       ".rds"
     )
   )
 
 source("exclude_trp_mdts_list.R")
 
-# TODO: Subtract through traffic by month by TRP in mdt_validated
+# Subtract through traffic by month by TRP in mdt_validated
 mdt_validated_without_through_traffic <-
   mdt_validated |>
   dplyr::left_join(
@@ -498,7 +584,6 @@ city_36_month <-
     through_traffic = TRUE
   )
 
-
 # Put together
 dplyr::bind_rows(
   all_36_month_indices_adjusted,
@@ -507,7 +592,7 @@ dplyr::bind_rows(
 readr::write_rds(
   file =
     paste0(
-      "data_indexpoints_tidy/rolling_indices_adjusted",
+      "data_indexpoints_tidy/rolling_indices_adjusted_",
       city_number,
       ".rds"
     )

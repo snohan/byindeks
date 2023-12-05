@@ -56,6 +56,7 @@ Aktuelle gjennomkjøringsruter er skissert i @fig-routes.
 
 ![Gjennomkjøringsruter.](through_traffic/through_routes.png){#fig-routes}
 
+Tabellen nedenfor gjengir størrelsen på gjennomgangstrafikken i form av ÅDT.
 
 ```{r}
 #| label: tbl-through_traffic_aadts
@@ -84,6 +85,7 @@ through_traffic |>
 
 
 ## Trafikkregistreringspunkt
+Plasseringen til trafikkregistreringspunktene som inngår i beregning av byindeks er vist i @fig-map_ngl.
 
 ```{r}
 #| label: fig-map_ngl
@@ -142,7 +144,7 @@ trp_and_through_traffic_qmd |>
 ```
 
 
-## Byindeks
+## Årlig byindeks
 Sammenligning av original byindeks med byindeks filtrert for gjennomgangstrafikk.
 
 ```{r}
@@ -174,10 +176,24 @@ city_index_adjusted_qmd |>
 ```
 
 
+## Glidende byindeks
+Fra TomTom-data er det beregnet estimerte verdier for gjennomgangstrafikk per måned. Den glidende byindeksen er så beregnet i to varianter: med og uten gjennomgangstrafikk. I @fig-rolling_ngl nedenfor er resultatene sammenlignet. Det grå båndene som omgir linjene angir konfidensintervallene. Siden båndene overlapper med linjene er ikke verdiene til de to variantene signifikant forskjellig.
+
+```{r}
+#| label: fig-rolling_ngl
+#| fig-cap: "Glidende indeks for Nedre Glomma beregnet med og uten gjennomgangstrafikk."
+
+readr::read_rds("data_indexpoints_tidy/rolling_indices_adjusted_953.rds") |>
+  visualize_rolling_index_comparison()
+
+```
+
+
 # Trondheimsområdet
 
 
 ## Trafikkregistreringspunkt
+Plasseringen til trafikkregistreringspunktene som inngår i beregning av byindeks er vist i @fig-map_trd.
 
 ```{r}
 #| label: fig-map_trd
@@ -270,28 +286,24 @@ city_index_adjusted_trd |>
 ```
 
 
-## Glidende indeks
+## Glidende byindeks
+Fra TomTom-data er det beregnet estimerte verdier for gjennomgangstrafikk per måned. Den glidende byindeksen er så beregnet i to varianter: med og uten gjennomgangstrafikk. I @fig-rolling_trd nedenfor er resultatene sammenlignet. Det grå båndene som omgir linjene angir konfidensintervallene. Siden båndene overlapper med linjene er ikke verdiene til de to variantene signifikant forskjellig.
+
 ```{r}
 #| label: fig-rolling_trd
-#| fig-cap: "Glidende indeks for Trondheimsområdet."
+#| fig-cap: "Glidende indeks for Trondheimsområdet beregnet med og uten gjennomgangstrafikk."
 
-title_text <- "Estimert endring i trafikkmengde siste glidende 3 år"
-sub_text  <- "Sammenlignet med 2019"
-
-readr::read_rds("data_indexpoints_tidy/rolling_indices_adjusted960.rds") |> 
-    ggplot2::ggplot(aes(x = month_object, y = index_p, color = through_traffic)) +
-    ggplot2::geom_hline(
-      yintercept = 0,
-      color = "#58b02c",
-      size = 0.8,
-      alpha = 0.3
-    ) +
-    ggplot2::geom_line(
-      #color = "#ED9300"
-    ) +
-    ggplot2::geom_point(
-      #color = "#ED9300"
-    ) +
+readr::read_rds("data_indexpoints_tidy/rolling_indices_adjusted_960.rds") |>
+  visualize_rolling_index_comparison()
+    # ggplot2::ggplot(aes(x = month_object, y = index_p, color = through_traffic)) +
+    # ggplot2::geom_hline(
+    #   yintercept = 0,
+    #   color = "#58b02c",
+    #   linewidth = 0.8,
+    #   alpha = 0.3
+    # ) +
+    # ggplot2::geom_line() +
+    # ggplot2::geom_point() +
     # ggplot2::geom_ribbon(
     #   aes(
     #     ymin = ci_lower,
@@ -301,39 +313,52 @@ readr::read_rds("data_indexpoints_tidy/rolling_indices_adjusted960.rds") |>
     #   alpha = 0.1,
     #   fill = "#444f55"
     # ) +
-    theme_light() +
-    theme(
-      axis.text.x = element_text(vjust = 0.5),
-      axis.title.y = element_text(
-        margin = margin(t = 0, r = 15, b = 0, l = 0)),
-      axis.title.x = element_text(
-        margin = margin(t = 15, r = 0, b = 0, l = 0)),
-      panel.grid.minor.x = element_blank(),
-      plot.caption =
-        element_text(
-          face = "italic",
-          size = 8,
-          lineheight = 1.5,
-          vjust = 0
-        ),
-      legend.position = "bottom",
-      plot.background = element_rect(fill = svv_background_color),
-      panel.background = element_rect(fill = svv_background_color),
-      legend.background = element_rect(fill = svv_background_color)
-    ) +
-    scale_x_date(
-      labels = scales::label_date("%b %Y")
-    ) +
-    # ylim(
-    #   -max(abs(city_36_month_df$ci_lower)),
-    #   max(abs(city_36_month_df$ci_upper))
+    # scale_color_manual(
+    #     values = c(
+    #       "TRUE" = "#008ec2",
+    #       "FALSE" = "#ed9300"
+    #     ),
+    #     breaks = c(
+    #       "TRUE",
+    #       "FALSE"
+    #     ),
+    #     labels = c(
+    #       "Ja",
+    #       "Nei"
+    #     ),
+    #     name = "Med gjennomgangstrafikk"
+    #   ) +
+    # theme_light() +
+    # theme(
+    #   axis.text.x = element_text(vjust = 0.5),
+    #   axis.title.y = element_text(
+    #     margin = margin(t = 0, r = 15, b = 0, l = 0)),
+    #   axis.title.x = element_text(
+    #     margin = margin(t = 15, r = 0, b = 0, l = 0)),
+    #   panel.grid.minor.x = element_blank(),
+    #   plot.caption =
+    #     element_text(
+    #       face = "italic",
+    #       size = 8,
+    #       lineheight = 1.5,
+    #       vjust = 0
+    #     ),
+    #   legend.position = "bottom",
+    #   plot.background = element_rect(fill = svv_background_color),
+    #   panel.background = element_rect(fill = svv_background_color),
+    #   legend.background = element_rect(fill = svv_background_color),
+    #   legend.key = element_rect(fill = svv_background_color)
     # ) +
-    labs(
-      x = NULL, y = "Endring i trafikkmengde (%)",
-      caption = "Data: Statens vegvesen.") +
-    ggtitle(
-      title_text,
-      subtitle = sub_text
-    )
+    # scale_x_date(
+    #   labels = scales::label_date("%b %Y")
+    # ) +
+    # labs(
+    #   x = NULL, y = "Endring i trafikkmengde (%)",
+    #   caption = "Data: Statens vegvesen."
+    # ) +
+    # ggtitle(
+    #   title_text,
+    #   subtitle = sub_text
+    # )
 ```
 

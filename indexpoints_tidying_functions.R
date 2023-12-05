@@ -475,17 +475,140 @@ filter_mdt <- function(mdt_df, year_dbl) {
 }
 
 
+# calculate_rolling_indices_by_mdt_deprecated <-
+#   function(base_year, last_year_month, window_length, mdt_df, by_area = TRUE) {
+#
+#     # Window length is a number of months, a multiple of 12
+#     # by_area: boolean to get TRP or area values
+#
+#     least_number_of_month_enums <-
+#       dplyr::case_when(
+#         window_length == 36 ~ 2,
+#         TRUE ~ 0
+#       )
+#
+#     least_number_of_months <-
+#       dplyr::case_when(
+#         window_length == 36 ~ 31,
+#         window_length == 24 ~ 20,
+#         window_length == 12 ~ 9
+#       )
+#
+#     last_year_month <-
+#       lubridate::as_date(last_year_month)
+#
+#     mean_mdt_in_window <-
+#       mdt_df |>
+#       dplyr::filter(
+#         year_month %in%
+#           base::seq.Date(
+#             from = last_year_month - base::months(window_length - 1),
+#             to = last_year_month,
+#             by = "month"
+#           )
+#       ) |>
+#       dplyr::filter(
+#         coverage >= 50,
+#         length_quality >= 98.5
+#       ) |>
+#       dplyr::group_by(
+#         trp_id,
+#         month
+#       ) |>
+#       dplyr::summarise(
+#         n_months = n(),
+#         mean_mdt = base::mean(mdt),
+#         .groups = "drop_last"
+#       ) |>
+#       dplyr::filter(
+#         n_months >= least_number_of_month_enums
+#       ) |>
+#       dplyr::group_by(
+#         trp_id
+#       ) |>
+#       dplyr::summarise(
+#         n_months = sum(n_months),
+#         mean_mdt = base::mean(mean_mdt),
+#         .groups = "drop"
+#       ) |>
+#       dplyr::filter(
+#         n_months >= least_number_of_months
+#       )
+#
+#     index_df <-
+#       dplyr::inner_join(
+#         filter_mdt(mdt_df, base_year),
+#         mean_mdt_in_window,
+#         by = "trp_id"
+#       ) |>
+#       dplyr::mutate(
+#         w = mean_mdt.x / sum(mean_mdt.x),
+#         trp_index_i = mean_mdt.y / mean_mdt.x,
+#         #weigted_mean = sum(w * trp_index_i), # same as index_i :)
+#         index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
+#         sd_component = w * (trp_index_i - index_i)^2
+#       ) %>%
+#       # If TRP index is wanted, skip this summarise
+#       # NB! Native pipe does not support curly brace RHS, but magrittr does
+#       {if(by_area)
+#         dplyr::summarise(
+#           .,
+#           index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
+#           index_p = (index_i - 1) * 100,
+#           n_trp = n(),
+#           n_eff = 1 / sum(w^2),
+#           sd_sample_p = 100 * sqrt(sum(sd_component) * (1/(1 - 1/n_eff))),
+#           standard_error_p = sd_sample_p / sqrt(n_eff),
+#           .groups = "drop"
+#         ) |>
+#         dplyr::mutate(
+#           ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
+#           ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error_p, 1)
+#         )
+#         else .} |>
+#       dplyr::mutate(
+#         index_period =
+#           paste0(
+#             base_year,
+#             " - (",
+#             (last_year_month - base::months(window_length - 1)) |>
+#               lubridate::month(label = TRUE),
+#             " ",
+#             (last_year_month - base::months(window_length - 1)) |>
+#               lubridate::year(),
+#             " - ",
+#             last_year_month |>
+#               lubridate::month(label = TRUE),
+#             " ",
+#             last_year_month |>
+#               lubridate::year(),
+#             ")"
+#           ),
+#         month_object = last_year_month
+#       ) |>
+#       dplyr::mutate(
+#         month_n = lubridate::month(month_object),
+#         year = lubridate::year(month_object),
+#         window = paste0(window_length, "_months")
+#       )
+#
+#     return(index_df)
+#
+#   }
 
 # mdt_df <- mdt_validated
 # window_length <- 36
 # base_year <- reference_year
-# last_year_month <- "2020-12-01"
+# last_year_month <- "2023-11-01"
 
 calculate_rolling_indices_by_mdt <-
-  function(base_year, last_year_month, window_length, mdt_df, by_area = TRUE) {
+  function(base_year, last_year_month, window_length, mdt_df, grouping) {
 
     # Window length is a number of months, a multiple of 12
-    # by_area: boolean to get TRP or area values
+    # Grouping must be either:
+    # by_area
+    # by_sub_area
+    # by_trp
 
     least_number_of_month_enums <-
       dplyr::case_when(
@@ -553,12 +676,12 @@ calculate_rolling_indices_by_mdt <-
         #weigted_mean = sum(w * trp_index_i), # same as index_i :)
         index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
         sd_component = w * (trp_index_i - index_i)^2
-      ) %>%
-      # If TRP index is wanted, skip this summarise
-      # NB! Native pipe does not support curly brace RHS, but magrittr does
-      {if(by_area)
+      )
+
+    if(grouping == "by_area") {
+      index_df_grouped <-
+        index_df |>
         dplyr::summarise(
-          .,
           index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
           index_p = (index_i - 1) * 100,
           n_trp = n(),
@@ -571,7 +694,37 @@ calculate_rolling_indices_by_mdt <-
           ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
           ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error_p, 1)
         )
-        else .} |>
+    }
+
+    if(grouping == "by_sub_area") {
+      index_df_grouped <-
+        index_df |>
+        dplyr::left_join(
+          sub_areas,
+          by = join_by(trp_id)
+        ) |>
+        dplyr::summarise(
+          index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
+          index_p = (index_i - 1) * 100,
+          n_trp = n(),
+          n_eff = 1 / sum(w^2),
+          sd_sample_p = 100 * sqrt(sum(sd_component) * (1/(1 - 1/n_eff))),
+          standard_error_p = sd_sample_p / sqrt(n_eff),
+          .by = sub_area
+        ) |>
+        dplyr::mutate(
+          ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
+          ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error_p, 1)
+        )
+    }
+
+    if(grouping == "by_trp") {
+      index_df_grouped <-
+        index_df
+    }
+
+    index_df_final <-
+      index_df_grouped |>
       dplyr::mutate(
         index_period =
           paste0(
@@ -598,12 +751,12 @@ calculate_rolling_indices_by_mdt <-
         window = paste0(window_length, "_months")
       )
 
-    return(index_df)
+    return(index_df_final)
 
   }
 
 
-calculate_rolling_indices <- function(window_length, by_area = TRUE) {
+calculate_rolling_indices <- function(window_length, grouping = "by_area") {
 
   base::stopifnot(window_length %% 12 == 0)
 
@@ -626,7 +779,7 @@ calculate_rolling_indices <- function(window_length, by_area = TRUE) {
 
   purrr::map_dfr(
     year_months_possible,
-    ~ calculate_rolling_indices_by_mdt(reference_year, .x, window_length, mdt_validated, by_area)
+    ~ calculate_rolling_indices_by_mdt(reference_year, .x, window_length, mdt_validated, grouping)
   )
 
 }

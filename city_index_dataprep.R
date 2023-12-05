@@ -56,8 +56,8 @@ trp_id_msnr <-
 
 # Choose
 present_year <- 2023
-index_month <- 10 # the one to be published now
-city_number <- 16952
+index_month <- 11 # the one to be published now
+city_number <- 1952
 # End choose
 
 source("city_reference_year.R")
@@ -346,8 +346,8 @@ trp_index_monthly_wide <-
     name,
     road_category_and_number,
     year,
-    #jan:des
-    jan:okt
+    jan:des
+    #jan:okt
   ) |>
   dplyr::arrange(
     name,
@@ -372,6 +372,13 @@ trp_names <-
     trp_id,
     name,
     municipality_name
+  )
+
+sub_areas <-
+  trp_names |>
+  dplyr::select(
+    trp_id,
+    sub_area = municipality_name
   )
 
 
@@ -486,15 +493,15 @@ city_index_yearly_all <-
   dplyr::mutate(
     index_type = "direct"
   ) |>
-  #dplyr::bind_rows(
+  dplyr::bind_rows(
     # Include only for full years
-    #years_1_2,
-    #years_1_3,
-    #years_1_4,
-    #years_1_5,
-    #years_1_6,
+    years_1_2,
+    years_1_3,
+    years_1_4,
+    years_1_5,
+    years_1_6,
     #years_1_7
-  #) %>%
+  ) %>%
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
     area_name = city_name,
@@ -681,13 +688,18 @@ mdt_filtered <-
       TRUE ~ total_coverage * length_quality / 100
     )
   ) |>
+  dplyr::left_join(
+    trp_names,
+    by = join_by(trp_id)
+  ) |>
   dplyr::select(
     trp_id,
     year,
     month,
     mdt = mdt_length_range,
     coverage,
-    length_quality
+    length_quality,
+    sub_area = municipality_name
   ) |>
   dplyr::mutate(
     year_month = lubridate::as_date(
@@ -745,7 +757,7 @@ trp_mdt_ok_refyear <-
 
 # TODO: define sections
 # TODO: look at sectional TRPs concurrently
-# TODO: draw curve connecting sectional TRPs
+# TODO: in map, draw curve connecting sectional TRPs
 
 # TODO: correlate exclusions of TRP index and MDT
 # TODO: show TRP contributions to rolling indices
@@ -753,7 +765,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[1:3]
+    trp_id %in% trp_mdt_ok_refyear[21:22]
   ) |>
   dplyr::select(
     trp_id,
@@ -838,8 +850,12 @@ mdt_validated |>
 #   )
 
 mdt_and_pi <-
+  mdt_validated |>
+  dplyr::filter(
+    coverage >= 50,
+    length_quality >= 98.5
+  ) |>
   dplyr::left_join(
-    mdt_validated,
     trp_index_monthly,
     by = c("trp_id", "year", "month"),
     #dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
@@ -967,6 +983,7 @@ all_24_month_indices <-
 all_36_month_indices <-
   calculate_rolling_indices(36)
 
+
 list(
   all_12_month_indices,
   all_24_month_indices,
@@ -982,7 +999,7 @@ list(
   )
 
 all_36_month_trp_indices <-
-  calculate_rolling_indices(36, FALSE) |>
+  calculate_rolling_indices(36, "by_trp") |>
   dplyr::left_join(
     trp_names,
     by = "trp_id"
@@ -1010,6 +1027,20 @@ all_36_month_trp_indices <-
     name,
     trp_id
   )
+
+# Sub area
+sub_area_36_month_trp_indices <-
+  calculate_rolling_indices(36, "by_sub_area")
+
+writexl::write_xlsx(
+  sub_area_36_month_trp_indices,
+  path = paste0(
+    "data_indexpoints_tidy/sub_area_rolling_indices_",
+    city_number,
+    ".xlsx"
+  )
+)
+
 
 # Check contribution from TRPs each possible 36 month index
 trp_mdt_plot <-
@@ -1046,7 +1077,7 @@ list(
   by_2_aar_glid_indeks = all_24_month_indices,
   by_1_aar_glid_indeks = all_12_month_indices
   # TRD
-  ,byindeks_hittil = city_index_so_far_all
+  #,byindeks_hittil = city_index_so_far_all
 ) |>
 writexl::write_xlsx(
   path = paste0(
