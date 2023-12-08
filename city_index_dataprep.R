@@ -57,7 +57,7 @@ trp_id_msnr <-
 # Choose
 present_year <- 2023
 index_month <- 11 # the one to be published now
-city_number <- 1952
+city_number <- 955
 # End choose
 
 source("city_reference_year.R")
