@@ -61,15 +61,15 @@ points <- readr::read_rds("trps_for_city_index.rds")
 # 2016 Trom   961   10 Snorre
 # 2022 Trom 16952   10 Snorre
 # 2017 NJær   952   10 Snorre
-# 2018 Oslo   959   10 Trond
-# 2018 Berg  8952   10 Trond
+# 2018 Oslo   959   11 Trond
+# 2018 Berg  8952   11 Trond
 # 2019 Tron   960   10 Snorre
 
 
 # Choose
 index_year <- 2023
 latest_published_month <- 10
-city_number <- 957
+city_number <- 959
 # End choose
 
 new_month_name <- 
