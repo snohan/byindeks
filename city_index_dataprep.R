@@ -57,9 +57,10 @@ trp_id_msnr <-
 # Choose
 present_year <- 2023
 index_month <- 11 # the one to be published now
-city_number <- 8952
+city_number <- 959
 # End choose
 
+{
 source("city_reference_year.R")
 
 years_from_reference_to_today <-
@@ -105,9 +106,10 @@ index_months <-
     base::rep(12, base::length(index_years) - 1),
     index_month
   )
-
+}
 
 # Fetch city indexes ----
+{
 city_indexes <-
   purrr::map2(
     index_years,
@@ -122,7 +124,7 @@ city_trps <-
   base::sort()
 
 city_name <- city_indexes$area_name[nrow(city_indexes)]
-
+}
 
 # TODO: fetch for so far this year by index month
 
@@ -765,7 +767,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[67:68]
+    trp_id %in% trp_mdt_ok_refyear[60:61]
   ) |>
   dplyr::select(
     trp_id,
