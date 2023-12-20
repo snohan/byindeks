@@ -55,9 +55,11 @@ trp_id_msnr <-
 # Trondheim stop
 
 # Choose
+{
 present_year <- 2023
 index_month <- 11 # the one to be published now
-city_number <- 959
+city_number <- 952
+}
 # End choose
 
 {
@@ -500,7 +502,7 @@ city_index_yearly_all <-
     years_1_2,
     years_1_3,
     years_1_4,
-    #years_1_5,
+    years_1_5,
     #years_1_6,
     #years_1_7
   ) %>%
@@ -767,7 +769,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[60:61]
+    trp_id %in% trp_mdt_ok_refyear[16:17]
   ) |>
   dplyr::select(
     trp_id,
