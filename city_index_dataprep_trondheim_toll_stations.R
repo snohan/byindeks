@@ -12,13 +12,14 @@
 
 source("indexpoints_tidying_functions.R")
 # Set manual variables ----
-index_month <- 10
+index_month <- 11
 city_number <- 960
 city_name <- "Trondheim"
 
 
 # Get data ----
 ## TD API ----
+{
 trp_index_20 <- get_published_pointindex_for_months_trondheim(city_number, 2020, 12)
 trp_index_21 <- get_published_pointindex_for_months_trondheim(city_number, 2021, 12)
 trp_index_22 <- get_published_pointindex_for_months_trondheim(city_number, 2022, 12)
@@ -31,10 +32,11 @@ trp_index_all <-
     trp_index_22[[2]],
     trp_index_23[[2]]
   )
-
+}
 
 ## Prepared toll data ----
 # Made in bomdata_trondheim.R
+{
 toll_meta_data <-
   readr::read_rds(
     file = "bomdata_trondheim/trd_toll_stations.rds"
@@ -66,6 +68,7 @@ toll_index_monthly <-
     month_object
   ) |>
   dplyr::filter(length_range != "unknown")
+}
 
 #
 # TRPs ----

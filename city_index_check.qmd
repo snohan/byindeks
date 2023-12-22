@@ -63,13 +63,17 @@ points <- readr::read_rds("trps_for_city_index.rds")
 # 2017 NJær   952   11 Snorre
 # 2018 Oslo   959   11 Trond
 # 2018 Berg  8952   11 Trond
-# 2019 Tron   960   10 Snorre
+# 2019 Tron   960   11 Snorre
+
+
+# TODO: look at normalized MDT visualized on links
+# TODO: use graph centrality measures to evaluate changes in links and routings
 
 
 # Choose
 index_year <- 2023
 latest_published_month <- 10
-city_number <- 953
+city_number <- 960
 # End choose
 
 new_month_name <- 

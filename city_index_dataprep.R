@@ -54,14 +54,15 @@ trp_id_msnr <-
 #source("city_index_dataprep_trondheim_toll_stations")
 # Trondheim stop
 
-# Choose
+## Choose publish month ----
 {
 present_year <- 2023
 index_month <- 11 # the one to be published now
-city_number <- 952
+city_number <- 960
 }
 # End choose
 
+## Set time references ----
 {
 source("city_reference_year.R")
 
@@ -78,7 +79,7 @@ last_year_month <-
     )
   )
 
-if(city_number != 16952){
+if(!(city_number %in% c(960, 16952))){
   index_years_pre_2020 <- base::seq.int(reference_year + 1, 2019, 1)
 }else{
   index_years_pre_2020 <- NULL
@@ -503,7 +504,7 @@ city_index_yearly_all <-
     years_1_3,
     years_1_4,
     years_1_5,
-    #years_1_6,
+    years_1_6,
     #years_1_7
   ) %>%
   dplyr::mutate(
@@ -571,7 +572,7 @@ readr::write_rds(
 # )
 
 
-# 36 month window using MDTs ----
+# Rolling index ----
 
 ## Get MDTs ----
 mdt <-
@@ -703,7 +704,7 @@ mdt_filtered <-
     mdt = mdt_length_range,
     coverage,
     length_quality,
-    sub_area = municipality_name
+    #sub_area = municipality_name
   ) |>
   dplyr::mutate(
     year_month = lubridate::as_date(
@@ -769,7 +770,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[16:17]
+    trp_id %in% trp_mdt_ok_refyear[16:18]
   ) |>
   dplyr::select(
     trp_id,
@@ -825,6 +826,110 @@ mdt_validated |>
   create_mdt_barplot()
 
 
+## Seeing all TRPs MDTs simultaneously ----
+mean_mdt_ref_year_per_trp <-
+  mdt_validated |>
+  filter_mdt(reference_year) |>
+  dplyr::select(
+    trp_id,
+    mean_mdt_ref_year = mean_mdt
+  )
+
+mean_mdt_ref_year_all_trp <-
+  mdt_validated |>
+  dplyr::filter(
+    trp_id %in% mean_mdt_ref_year_per_trp$trp_id,
+    year == reference_year,
+    coverage >= 50, # this is length_coverage!
+    length_quality >= 98.5
+  ) |>
+  dplyr::select(
+    trp_id,
+    month,
+    mdt
+  ) |>
+  # Need to have a value in every month for all TRPs
+  tidyr::complete(
+    trp_id,
+    month
+  ) |>
+  dplyr::left_join(
+    mean_mdt_ref_year_per_trp,
+    by = dplyr::join_by(trp_id)
+  ) |>
+  # Using the TRPs own mean if it is missing a month
+  dplyr::mutate(
+    mdt_ref_year =
+      dplyr::case_when(
+        !is.na(mdt) ~ mdt,
+        TRUE ~ mean_mdt_ref_year
+      )
+  ) |>
+  dplyr::group_by(month) |>
+  dplyr::mutate(
+    mean_mdt_month_area = mean(mdt_ref_year)
+  ) |>
+  dplyr::ungroup() |>
+  dplyr::select(-mdt, -mean_mdt_ref_year)
+
+
+mdts_last_36_months <-
+  mdt_validated |>
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    year_month,
+    mdt
+  ) |>
+  dplyr::filter(
+    trp_id %in% mean_mdt_ref_year_per_trp$trp_id,
+    year_month > last_year_month - months(36)
+  ) |>
+  dplyr::left_join(
+    mean_mdt_ref_year_all_trp,
+    by = dplyr::join_by(trp_id, month)
+  ) |>
+  dplyr::arrange(
+    year_month,
+    trp_id
+  ) |>
+  dplyr::mutate(
+    mdt_relative = mdt / mdt_ref_year,
+    mdt_abs_diff = mdt - mdt_ref_year,
+    #mdt_relative_log = log(mdt / mdt_ref_year) |> abs() |> exp(),
+    mdt_abs_diff_normalized = mdt_abs_diff / mean_mdt_month_area
+    # This normalized diff should be comparable on sections, but other trends may complicate the picture.
+  ) |>
+  dplyr::left_join(
+    trp_names,
+    by = dplyr::join_by(trp_id)
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    year_month,
+    mdt_abs_diff,
+    mdt_abs_diff_normalized
+  )
+
+
+plot_mdt_comparisons <-
+  mdts_last_36_months |>
+  ggplot2::ggplot(aes(x = year_month, y = mdt_abs_diff, color = name)) +
+  geom_line() +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  )
+
+plot_mdt_comparisons |>
+  plotly::ggplotly(
+    #width = 900, height = 700
+  )
+
 ## Compare exclusions of MDT and index ----
 # Check that the "same" exclusions are used on PI as MDT
 # TRD toll station MDTs already have the same exclusions
@@ -860,10 +965,10 @@ mdt_and_pi <-
     length_quality >= 98.5
   ) |>
   dplyr::left_join(
-    trp_index_monthly,
-    by = c("trp_id", "year", "month"),
-    #dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
-    #by = c("trp_id", "year_month" = "month_object") # TRD
+    #trp_index_monthly,
+    #by = c("trp_id", "year", "month"),
+    dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
+    by = c("trp_id", "year_month" = "month_object") # TRD
   ) |>
   dplyr::left_join(
     trp_names,
@@ -1081,7 +1186,7 @@ list(
   by_2_aar_glid_indeks = all_24_month_indices,
   by_1_aar_glid_indeks = all_12_month_indices
   # TRD
-  #,byindeks_hittil = city_index_so_far_all
+  ,byindeks_hittil = city_index_so_far_all
 ) |>
 writexl::write_xlsx(
   path = paste0(
