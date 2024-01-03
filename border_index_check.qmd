@@ -47,7 +47,7 @@ library(htmltools)
 # Choose
 index_year <- 2023
 # Last published month
-index_month <- 9
+index_month <- 10
 index_id <- 2952
 
 # Fetch
@@ -353,7 +353,7 @@ pointindex_plot <-
     panel.background = element_rect(fill = svv_background_color)
   )
 
-pointindex_plot %>% plotly::ggplotly(width = 900, height = 700)
+pointindex_plot %>% plotly::ggplotly()
 ```
 
 

@@ -24,7 +24,7 @@ knitr:
 
 ```{r notes}
 # Ekskluder:
-# 
+
 
 # Reberegn:
 # 
@@ -49,7 +49,7 @@ library(htmltools)
 
 index_year <- 2023
 # Last published month
-index_month <- 9
+index_month <- 10
 
 index_id <- 962
 
@@ -76,19 +76,19 @@ pointindices <- pointindex[[2]]
 
 # Look at details in one county at a time
 
-# 30 Viken                  10 Trond
-#  3 Oslo                   10 Trond
-# 34 Innlandet              10 Snorre
-# 38 Vestfold og Telemark   10 Trond
-# 42 Agder                  10 Snorre
-# 11 Rogaland               10 Snorre
-# 46 Vestland               10 Trond
-# 15 Møre og Romsdal        10 Snorre
-# 50 Trøndelag              10 Snorre
-# 18 Nordland               10 Snorre
-# 54 Troms og Finnmark      10 Snorre
+# 30 Viken                  11 Trond
+#  3 Oslo                   11 Trond
+# 34 Innlandet              11 Snorre
+# 38 Vestfold og Telemark   11 Trond
+# 42 Agder                  11 Snorre
+# 11 Rogaland               11 Snorre
+# 46 Vestland               11 Trond
+# 15 Møre og Romsdal        11 Snorre
+# 50 Trøndelag              11 Snorre
+# 18 Nordland               11 Snorre
+# 54 Troms og Finnmark      11 Snorre
 
-county_number_chosen <- 54
+county_number_chosen <- 30
 
 trps_meta <- 
   points %>% 
