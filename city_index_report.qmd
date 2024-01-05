@@ -37,7 +37,7 @@ source("rmd_setup.R")
 # Nedre Glomma           953 (2016) 08
 # Tromsø                 961 (2016) 08
 # Tromsø 2022          16952 (2022) 
-# Nord-Jæren             952 (2017) 08
+# Nord-Jæren             952 (2017) 12
 # Bergen                8952 (2018) 08
 # Oslo                   959 (2018) 08
 # Trondheim              960 (2019) 08
@@ -204,9 +204,11 @@ latest_complete_year <-
 # Linking to child files
 intro_file <- paste0("city_report_files/intro_", city_number, ".Rmd")
 traffic_file <- paste0("city_report_files/trafikkforhold_", city_number, ".Rmd")
-# Buskerudbyen
-map_zoomed <- paste0("city_report_files/map_zoomed_", city_number, ".Rmd")
 
+# Buskerudbyen
+if(city_number == 1952) {
+  map_zoomed <- paste0("city_report_files/map_zoomed_", city_number, ".Rmd")
+}
 
 # Start Kristiansand
 # Egen variant for KRS kommune, dvs. gamle kommunen før den ble 
@@ -373,11 +375,14 @@ all_point_info |>
 # all_point_info %>%
 #  dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
 #  create_point_adt_map_trondheim()
+
+# {{< include city_report_files/_map_zoomed.Rmd >}}
 ```
 
 
-<!-- Buskerudbyen -->
-{{< include city_report_files/_map_zoomed.Rmd >}}
+<!-- Buskerudbyen zoomed map here -->
+
+
 {{< pagebreak >}}
 
 

@@ -57,8 +57,8 @@ trp_id_msnr <-
 ## Choose publish month ----
 {
 present_year <- 2023
-index_month <- 11 # the one to be published now
-city_number <- 961
+index_month <- 12 # the one to be published now
+city_number <- 952
 }
 # End choose
 
@@ -770,7 +770,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[10:11]
+    trp_id %in% trp_mdt_ok_refyear[16:17]
   ) |>
   dplyr::select(
     trp_id,
@@ -926,9 +926,7 @@ plot_mdt_comparisons <-
   )
 
 plot_mdt_comparisons |>
-  plotly::ggplotly(
-    #width = 900, height = 700
-  )
+  plotly::ggplotly()
 
 ## Compare exclusions of MDT and index ----
 # Check that the "same" exclusions are used on PI as MDT
