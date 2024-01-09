@@ -36,18 +36,20 @@ source("rmd_setup.R")
 # Kristiansand og omegn  957 (2016) 08
 # Nedre Glomma           953 (2016) 08
 # Tromsø                 961 (2016) 08
-# Tromsø 2022          16952 (2022) 
+# Tromsø 2022          16952 (2022) 12
 # Nord-Jæren             952 (2017) 12
 # Bergen                8952 (2018) 08
 # Oslo                   959 (2018) 08
 # Trondheim              960 (2019) 08
 
 # Choose city number:
-city_number <- 952
+city_number <- 16952
 
+
+## Meta info
 city_number_county_name <- 
   tibble::tibble(
-    city_no = c(8952, 1952, 955, 957, 953, 952, 959, 960, 961),
+    city_no = c(8952, 1952, 955, 957, 953, 952, 959, 960, 961, 16952),
     county_name = 
       c("Vestland", 
         "Viken", 
@@ -57,6 +59,7 @@ city_number_county_name <-
         "Rogaland", 
         "Oslo kommune, Viken", 
         "Trøndelag",
+        "Troms og Finnmark",
         "Troms og Finnmark"
       )
   )
@@ -91,6 +94,8 @@ all_point_info <-
     year_aadt = as.character(year_aadt)
   )
 
+
+## Yearly index
 city_info <-
   readr::read_rds(
     paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")
@@ -116,59 +121,6 @@ latest_month <-
       )
   ) |> 
   purrr::pluck(1)
-
-rolling_indices <-
-  readr::read_rds(
-    paste0("data_indexpoints_tidy/rolling_indices_", city_number, ".rds")
-  )
-
-rolling_indices_long <-
-  rolling_indices |> 
-  dplyr::bind_rows()
-
-city_36_month <-
-  rolling_indices[[3]]
-
-latest_36_index <-
-  city_36_month |> 
-  dplyr::slice_max(month_object) |> 
-  dplyr::select(
-    index_p,
-    standard_error_p,
-    ci_lower,
-    ci_upper
-  )
-
-latest_36_index_adjective <-
-  dplyr::if_else(
-    latest_36_index$index_p > 0,
-    "større",
-    "mindre"
-  )
-
-latest_36_change_sentence <-
-  paste(
-    "blitt",
-    sprintf("%.1f", abs(latest_36_index$index_p)),
-    "%",
-    latest_36_index_adjective
-  ) |> 
-  stringr::str_replace("\\.", ",")
-
-latest_36_sentence <-
-  dplyr::if_else(
-    round(latest_36_index$index_p, 1) == 0,
-    "uendret",
-    latest_36_change_sentence
-  )
-
-tbl_cap_all_36 <-
-  paste0(
-    "Antall punkt som oppgis er hvor mange av de ",
-    nrow(all_point_info),
-    " byindekspunktene som har bidratt med data i det aktuelle tidsintervallet."
-  )
-
 
 base_year <- min(city_info$year_base)
 last_year <- max(city_info$year)
@@ -201,9 +153,91 @@ latest_complete_year <-
 #     digits = 1
 #   )
 
-# Linking to child files
+
+## Rolling index
+rolling_indices <-
+  readr::read_rds(
+    paste0("data_indexpoints_tidy/rolling_indices_", city_number, ".rds")
+  )
+
+rolling_indices_long <-
+  rolling_indices |> 
+  dplyr::bind_rows()
+
+
+any_36 <-
+  rolling_indices_long |> 
+  dplyr::filter(
+    window == "36_months"
+  ) |> 
+  base::nrow() > 0
+
+if(any_36) {
+  city_36_month <-
+    rolling_indices[[3]]
+  
+  latest_36_index <-
+    city_36_month |> 
+    dplyr::slice_max(month_object) |> 
+    dplyr::select(
+      index_p,
+      standard_error_p,
+      ci_lower,
+      ci_upper
+    )
+  
+  latest_36_index_adjective <-
+    dplyr::if_else(
+      latest_36_index$index_p > 0,
+      "større",
+      "mindre"
+    )
+  
+  latest_36_change_sentence <-
+    paste(
+      "blitt",
+      sprintf("%.1f", abs(latest_36_index$index_p)),
+      "%",
+      latest_36_index_adjective
+    ) |> 
+    stringr::str_replace("\\.", ",")
+  
+  latest_36_sentence <-
+    dplyr::if_else(
+      round(latest_36_index$index_p, 1) == 0,
+      "uendret",
+      latest_36_change_sentence
+    )
+  
+  tbl_cap_all_36 <-
+    paste0(
+      "Antall punkt som oppgis er hvor mange av de ",
+      nrow(all_point_info),
+      " byindekspunktene som har bidratt med data i det aktuelle tidsintervallet."
+    )
+}
+
+## Linking to child files
 intro_file <- paste0("city_report_files/intro_", city_number, ".Rmd")
 traffic_file <- paste0("city_report_files/trafikkforhold_", city_number, ".Rmd")
+
+if(city_number %in% c(16952)) {
+  pandemic_rolling_index_file <- "city_report_files/pandemic_rolling_index_empty.Rmd"
+}else{
+  pandemic_rolling_index_file <- "city_report_files/pandemic_rolling_index_text.Rmd"
+}
+
+if(city_number %in% c(16952)) {
+  pandemic_traffic_file <- "city_report_files/pandemic_rolling_index_empty.Rmd"
+}else{
+  pandemic_traffic_file <- "city_report_files/pandemic_traffic_text.Rmd"
+}
+
+if(any_36) {
+  rolling_36_file <- "city_report_files/rolling_36.Rmd"
+}else{
+  rolling_36_file <- ""
+}
 
 # Buskerudbyen
 if(city_number == 1952) {
@@ -391,135 +425,17 @@ Nullvekstmålet skal måles ved at trafikkutviklingen vurderes på et treårs gl
 
 
 ## Endring i glidende treårsperiode
-Tidligere ble en glidende indeks over tre år beregnet ved å multiplisere de siste tre årsindeksene. For å få en månedlig oppdatering ble det benyttet de siste tre indeksene for "siste 12 måneder". Med denne metodikken ble det ikke sammenlignet med referanseåret. Denne beregningsmetodikken fungerer greit når trafikkutviklingen følger en jevn trend over mange år. Men som følge av pandemien ble trafikknivået generelt en del lavere enn normalt og det ble et tydelig trendbrudd mot det som har vært en jevn trafikkvekst i flere tiår. Når pandemien var over steg trafikknivået relativt raskt tilbake til omtrent det nivået som var før. En slik treårs glidende indeks vil dermed i en overgangsperiode ensidig ta opp i seg økningen fra det lave trafikknivået under pandemien og vil framstå som om trafikken generelt har økt kraftig. Metodikken mangler dermed et sammenligningsgrunnlag som representerer et normalt trafikknivå. Dette er uheldig, og det er derfor bestemt at metodikken alltid skal sammenligne med referanseåret, som da må kunne anses som et normalår.
-
-Den nye beregningsmetoden tar derfor et gjennomsnitt av trafikknivået de siste tre årene og sammenligner dette med trafikknivået i referanseåret. For hvert av trafikkregistreringspunktene som inngår i byindeksen benyttes gjennomsnittlig døgntrafikk. For at denne treårs glidende indeksen skal kunne oppdateres månedlig, benyttes gjennomsnittlig døgntrafikk per måned, kjent som månedsdøgntrafikk (MDT). 
+Tre års glidende indeks blir beregnet ved å ta et gjennomsnitt av trafikknivået de siste tre årene for så å sammenligne dette med trafikknivået i referanseåret. For hvert av trafikkregistreringspunktene som inngår i byindeksen benyttes gjennomsnittlig døgntrafikk. For at denne treårs glidende indeksen skal kunne oppdateres månedlig, benyttes gjennomsnittlig døgntrafikk per måned, kjent som månedsdøgntrafikk (MDT).
 
 Det er i perioder bortfall av data som skyldes nedetid på registreringsutstyr eller ensidig påvirkning av større trafikkomlegginger. Et krav om at alle 36 måneder i treårsperioden skal ha data for et trafikkregistreringspunkt, er så strengt at få punkter oppfyller det. For å sikre at flere punkter bidrar med data til beregningen, er det derfor satt krav om at hvert punkt har minst 10 måneder i enhver 12-månedersperiode, samt minst 2 av hver kalendermåned i treårsperioden.
 
 Trafikkmengden som registreres på et trafikkregistreringspunkt representerer en vegstrekning i byområdet. Denne vegstrekningen er avgrenset av kryss i hver ende, og har langs hele sin lengde det samme antall passerende kjøretøy i løpet av et døgn. En slik vegstrekning kalles en trafikklenke. Vegnettet i et byområde består av et antall trafikklenker som alle har ulik trafikkmengde. For at en byindeks skal kunne sammenligne trafikken over tid, må de samme trafikkregistreringspunktene inngå i både treårsperioden og referanseåret.
 
-En ulempe med denne nye metodikken er at utvalget av trafikkregistreringspunkter begrenses til de som hadde gode nok data i referanseåret.
+En ulempe med denne metodikken er at utvalget av trafikkregistreringspunkter begrenses til de som hadde gode nok data i referanseåret.
 
 En treårs glidende indeks er tilgjengelig fra og med det er gått tre år etter referanseåret. 
 
-Resultatene for hele kalenderår er gitt i tabell @tbl-trp_36. En tidsserie med månedsvis utvikling er vist i figur @fig-plot_city_36.
-
-```{r}
-#| label: tbl-trp_36
-#| tbl-cap: "Tre års glidende indeks."
-
-city_36_month |> 
-  dplyr::slice_max(
-    month_n,
-    by = year
-  ) |> 
-  create_city_mdt_36_index_table() |> 
-  flextable::footnote(
-    i = 1,
-    j = 2,
-    value = flextable::as_paragraph(
-      c(tbl_cap_all_36)
-    ),
-    ref_symbols = c("a"),
-    part = "header"
-  ) |> 
-  flextable::fontsize(
-    size = 8,
-    part = "footer"
-  )
-```
-
-{{< pagebreak >}}
-
-
-```{r}
-#| label: fig-plot_city_36
-#| fig-cap: "Tidsserie med tre års glidende indeks. Skravert område angir usikkerheten i beregningene i form av et 95 % konfidensintervall."
-#| fig-scap: "Tidsserie med tre års glidende indeks." 
-
-visualize_city_36_mdt_index(
-  city_36_month,
-  caption_credit,
-  "Estimert endring i trafikkmengde siste glidende 3 år",
-  paste0(
-    "Sammenlignet med ",
-    base_year
-  )
-)
-```
-
-<!-- Kristiansand --
-{{< pagebreak >}}
-
-Tilsvarende for gamle Kristiansand kommune.
-
-```{r}
-#| label: tbl-trp_36_kommune-1
-#| tbl-cap: "Tre års glidende indeks for gamle Kristiansand kommune."
-
-# city_36_month_kommune |> 
-#   dplyr::slice_max(
-#     month_n,
-#     by = year
-#   ) |> 
-#   create_city_mdt_36_index_table() |> 
-#   flextable::footnote(
-#     i = 1,
-#     j = 2,
-#     value = flextable::as_paragraph(
-#       c(tbl_cap_all_36_kommune)
-#     ),
-#     ref_symbols = c("a"),
-#     part = "header"
-#   ) |> 
-#   flextable::fontsize(
-#     size = 8,
-#     part = "footer"
-#   )
-
-# {{< pagebreak >}}
-```
-
-{{< pagebreak >}}
-
-```{r}
-#| label: fig-plot_city_36_kommune
-#| fig-cap: "Tidsserie med tre års glidende indeks for gamle Kristiansand kommune."
-
-#visualize_city_36_mdt_index(
-# city_36_month_kommune,
-# caption_credit,
-# "Estimert endring i trafikkmengde siste 3 år",
-#  paste0(
-#    "Sammenlignet med ",
-#    base_year
-#  )
-#)
-```
-
-<!-- Kristiansand -->
-
-\vspace{7mm}
-
-::: {.callout-warning icon=false}
-
-## Resultat nullvekstmål
-
-Sammenlignet med referanseåret er trafikkmengden de siste tre årene i gjennomsnitt `r latest_36_sentence`. 
-
-:::
-
-\vspace{5mm}
-
-Så lenge pandemiperioden fra mars 2020 til februar 2022 inngår i treårsperioden, vil denne indeksen vise en verdi som er preget av det generelt lavere trafikknivået som var i disse årene. Verdien for tre års glidende indeks per mars 2023 er den første i denne tidsserien som ikke omfatter alle pandemimånedene.
-
-Tas måleusikkerheten i betraktning, ligger endringen i trafikkmengden mellom 
-`r stringr::str_replace(sprintf("%.1f", latest_36_index$ci_lower), "\\.", ",")` % og 
-`r stringr::str_replace(sprintf("%.1f", latest_36_index$ci_upper), "\\.", ",")` %. Dette intervallet er et konfidensintervall på 95 %, som vil si at den sanne endringen i trafikkmengde vil ligge innenfor et slikt intervall 95 % av gangene en tilsvarende måling blir gjort. Usikkerheten er i stor grad avhengig av hvor mange trafikkregistreringspunkter som inngår i beregningene, men også større trafikale omfordelinger vil bidra.
-
-
-{{< pagebreak >}}
+{{< include city_report_files/_rolling_36.Rmd >}}
 
 ## Endring i ett- og toårsperiode
 Tre års glidende indeks glatter ut trender som er av kortere varighet, men som kan være synlige dersom den glidende indeksen beregnes for kortere perioder. Eksempelvis kan en økende trend i trafikken som har oppstått det siste året bli lite synlig i den tre års glidende indeksen dersom de to første årene var stabile eller hadde nedgang. For å kunne si noe om hvilken utvikling den tre års glidende indeksen kan få framover i tid, er det nyttig å se tilsvarende glidende indekser for perioder på ett og to år. Dette vises i figur @fig-rolling_indices.
@@ -540,8 +456,9 @@ visualize_rolling_indices(
 )
 ```
 
-Koronapandemien medførte lokale og nasjonale tiltak i perioden mellom mars 2020 og februar 2022. Disse tiltakene førte i varierende grad til en nedgang i trafikkmengden. Verdien for glidende gjennomsnitt for siste 1 år er fra og med februar 2023 ikke påvirket av slike tiltak, og vil derfor vise det normale nivået som trafikkmengden ligger på. Dersom trafikkmengden i årene framover blir liggende på samme nivå som i dag, vil det glidende gjennomsnittet for både 2 og 3 år sammenfalle med det som gjennomsnittet for 1 år ligger på i dag.
+Dersom trafikkmengden i årene framover blir liggende på samme nivå som i dag, vil det glidende gjennomsnittet for både 2 og 3 år sammenfalle med det som gjennomsnittet for 1 år ligger på i dag.
 
+{{< pagebreak >}}
 
 ## Endring per år
 Endring i trafikkmengde er også beregnet for hele kalenderår. I stedet for et tre års glidende gjennomsnitt tar denne beregningen utgangspunkt i indeksen mellom to påfølgende år. Indekstall som gjelder for lengre perioder enn to påfølgende år er beregnet som en kjedet indeks av de mellomliggende års indekser. En kjedet indeks er en multiplikasjon av indekser på desimalform hvor en indeks på 1 tilsvarer ingen endring.
@@ -704,9 +621,7 @@ Trafikkregistreringspunkter må derfor ses i sammenheng med langvarige hendelser
 Ved innføring eller fjerning av bomring, tilføring eller fjerning av bomstasjoner, samt endring av bomtakster, vil trafikken påvirkes. Trafikkregistreringspunkter som påvirkes av dette blir ikke tatt ut av datagrunnlaget så lenge de fanger opp trafikkfordelingen på veger som både får økt og redusert trafikk som følge av dette.
 
 
-## Trafikale følger av tiltak mot koronaviruspandemien
-I store deler av perioden fra mars 2020 til mars 2022 ble trafikken i varierende grad påvirket av tiltak mot spredningen av det nye koronaviruset. Trafikken varierte i takt med de til enhver tid gjeldende tiltak. Enkelte tiltak førte til nedgang i trafikken, som utstrakt bruk av hjemmekontor og færre arrangementer der folk kunne møtes fysisk. Oppfordringen om å unngå å benytte kollektivtrafikk dersom mulig, kunne nok isolert sett øke personbiltrafikken noe, men totalt sett førte tiltakene til mindre biltrafikk.
-
+{{< include city_report_files/_pandemic_traffic.Rmd >}}
 
 {{< include city_report_files/_traffic.Rmd >}}
 

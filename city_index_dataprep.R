@@ -58,7 +58,7 @@ trp_id_msnr <-
 {
 present_year <- 2023
 index_month <- 12 # the one to be published now
-city_number <- 952
+city_number <- 16952
 }
 # End choose
 
@@ -127,6 +127,10 @@ city_trps <-
   base::sort()
 
 city_name <- city_indexes$area_name[nrow(city_indexes)]
+
+if(city_number == 16952) {
+  city_name <- "Tromsø"
+}
 }
 
 # TODO: fetch for so far this year by index month
@@ -500,11 +504,11 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    years_1_2,
-    years_1_3,
-    years_1_4,
-    years_1_5,
-    years_1_6,
+    # years_1_2,
+    # years_1_3,
+    # years_1_4,
+    # years_1_5,
+    # years_1_6,
     #years_1_7
   ) %>%
   dplyr::mutate(
@@ -735,14 +739,14 @@ mdt_filtered |>
   )
 
 # Read back in
-# mdt_filtered <-
-#   readr::read_rds(
-#     paste0(
-#       "data_indexpoints_tidy/mdt_",
-#       city_number,
-#       ".rds"
-#     )
-#   )
+mdt_filtered <-
+  readr::read_rds(
+    paste0(
+      "data_indexpoints_tidy/mdt_",
+      city_number,
+      ".rds"
+    )
+  )
 
 
 ## Check MDT validity ----
@@ -770,7 +774,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[16:17]
+    trp_id %in% trp_mdt_ok_refyear[22:23]
   ) |>
   dplyr::select(
     trp_id,
@@ -865,11 +869,10 @@ mean_mdt_ref_year_all_trp <-
         TRUE ~ mean_mdt_ref_year
       )
   ) |>
-  dplyr::group_by(month) |>
   dplyr::mutate(
-    mean_mdt_month_area = mean(mdt_ref_year)
+    mean_mdt_month_area = mean(mdt_ref_year),
+    .by = month
   ) |>
-  dplyr::ungroup() |>
   dplyr::select(-mdt, -mean_mdt_ref_year)
 
 
@@ -880,9 +883,13 @@ mdts_last_36_months <-
     year,
     month,
     year_month,
-    mdt
+    mdt,
+    coverage,
+    length_quality
   ) |>
   dplyr::filter(
+    coverage >= 50, # this is length_coverage!
+    length_quality >= 98.5,
     trp_id %in% mean_mdt_ref_year_per_trp$trp_id,
     year_month > last_year_month - months(36)
   ) |>
@@ -1092,9 +1099,9 @@ all_36_month_indices <-
 
 
 list(
-  all_12_month_indices,
-  all_24_month_indices,
-  all_36_month_indices
+  all_12_month_indices#,
+  #all_24_month_indices,
+  #all_36_month_indices
 ) |>
   readr::write_rds(
     file =
@@ -1308,7 +1315,10 @@ city_index_tromso_2019_2022 <-
   dplyr::mutate(
     index_i = index_converter(index_p),
     period_build = "direct",
-    months = "jan-des"
+    months = "jan-des",
+    year_base = 2019,
+    year = 2022,
+    month = 12
   )
 
 chain_link_se_p <- city_index_tromso_2019_2022$standard_error
@@ -1318,14 +1328,16 @@ city_index_chained <-
   city_index_yearly_all |>
   dplyr::select(
     index_period = year_from_to,
+    year_base,
     year,
-    month_n = month,
+    month,
     n_trp,
     index_i,
     standard_error_p = standard_error
   ) |>
   dplyr::mutate(
-    index_period =
+    year_base = stringr::str_sub(chain_start_year_from_to, 1, 4) |> as.numeric(),
+    year_from_to =
       paste0(
         stringr::str_sub(chain_start_year_from_to, 1, 4),
         stringr::str_sub(index_period, 5, -1)
@@ -1340,12 +1352,15 @@ city_index_chained <-
       ),
     ci_lower = round(index_p - 1.96 * standard_error, 1),
     ci_upper = round(index_p + 1.96 * standard_error, 1),
-    period_build = "chained",
+    index_type = "chained",
     period = "jan-des"
   ) |>
   dplyr::select(
-    index_period,
-    period_build,
+    year_base,
+    year,
+    month,
+    year_from_to,
+    index_type,
     period,
     index_i = chained_index_i,
     index_p,
@@ -1358,10 +1373,13 @@ city_index_final <-
   dplyr::bind_rows(
     city_index_tromso_2019_2022 |>
       dplyr::select(
-        index_period = period,
+        year_base,
+        year,
+        month,
+        year_from_to = period,
+        index_type = period_build,
         period = months,
         n_trp,
-        period_build,
         index_i,
         index_p,
         standard_error,
@@ -1370,8 +1388,11 @@ city_index_final <-
       ),
     city_index_yearly_all |>
       dplyr::select(
-        index_period = year_from_to,
-        period_build = index_type,
+        year_base,
+        year,
+        month,
+        year_from_to,
+        index_type,
         period,
         n_trp,
         index_i,
@@ -1393,8 +1414,51 @@ readr::write_rds(
 
 
 ### Rolling index ----
+all_rolling_indexes <-
+  readr::read_rds(
+    file =
+      paste0(
+        "data_indexpoints_tidy/rolling_indices_",
+        city_number,
+        ".rds"
+      )
+  ) |>
+  purrr::list_rbind()
 
+all_rolling_indexes_chained <-
+  all_rolling_indexes |>
+  dplyr::mutate(
+    index_period =
+      paste0(
+        stringr::str_sub(chain_start_year_from_to, 1, 4),
+        stringr::str_sub(index_period, 5, -1)
+      ),
+    chained_index_i = index_i * city_index_tromso_2019_2022$index_i,
+    index_p = (chained_index_i - 1) * 100,
+    standard_error =
+      100 * sqrt(
+        index_i^2 * 1e-4 * chain_link_se_p^2 +
+          city_index_tromso_2019_2022$index_i^2 * 1e-4 * standard_error_p^2 +
+          1e-4 * chain_link_se_p^2 * 1e-4 * standard_error_p^2
+      ),
+    ci_lower = round(index_p - 1.96 * standard_error, 1),
+    ci_upper = round(index_p + 1.96 * standard_error, 1),
+    index_type = "chained",
+    period = "jan-des"
+  ) |>
+  dplyr::rename(
+    index_i = chained_index_i
+  )
 
+all_rolling_indexes_chained |>
+  readr::write_rds(
+    file =
+      paste0(
+        "data_indexpoints_tidy/rolling_indices_",
+        city_number,
+        ".rds"
+      )
+  )
 
 
 

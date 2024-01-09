@@ -1235,7 +1235,7 @@ get_trp_mdt_by_direction <- function(trp_id, mdt_year) {
 #mdt_test <- get_trp_mdt_with_coverage("91582V930281", "2020")
 #mdt_test_2 <- get_trp_mdt_by_lane("91582V930281", "2020")
 
-#trp_id <- "66220V72824"
+#trp_id <- "05899V1109722"
 #trp_id <- "41078V805609"
 #trp_adt <- getTrpAadt_byLength(trp_id)
 
@@ -1294,15 +1294,19 @@ get_aadt_by_length_for_trp <- function(trp_id) {
       flatten = T
     )
 
+  #trp_aadt_length <-
+  #  length(trp_aadt$data$trafficData$volume$average$daily$byYear$byLengthRange)
+
   trp_aadt_length <-
-    length(trp_aadt$data$trafficData$volume$average$daily$byYear$byLengthRange)
+    purrr::list_rbind(trp_aadt$data$trafficData$volume$average$daily$byYear$byLengthRange)
 
   if(
     is_empty(
       trp_aadt$data$trafficData$volume$average$daily$byYear
     ) |
     is_empty(
-      trp_aadt$data$trafficData$volume$average$daily$byYear$byLengthRange[[trp_aadt_length]]
+      #trp_aadt$data$trafficData$volume$average$daily$byYear$byLengthRange[[trp_aadt_length]]
+      trp_aadt_length$total.volume.average
     )
      ){
     # if no total aadt
