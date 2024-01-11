@@ -33,7 +33,7 @@ crossref:
 
 source("rmd_setup.R")
 
-last_published_month_number <- 9
+last_published_month_number <- 12
 
 index_all_years <-
   readr::read_rds(

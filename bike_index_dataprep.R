@@ -7,14 +7,14 @@ source("indexpoints_tidying_functions.R")
 
 # Index codes and years ----
 last_complete_year <- 2022
-last_complete_month_this_year <- 9
+last_complete_month_this_year <- 12
 
 index_codes_and_reference_years <-
   tibble::tibble(
     index_code =
       c(
       4953,  # Grenland
-      6953,  # Oslo
+      17952, # Oslo
       9952,  # Førde
       12952, # Vestfold
       5953,  # Nedre Glomma
@@ -37,7 +37,7 @@ index_codes_and_reference_years <-
     reference_year =
       c(
         2017,
-        2017,
+        2018,
         2017,
         2017,
         2018,
@@ -371,6 +371,8 @@ bike_index_all_long <-
     bike_index_complete_years_chained_long,
     bike_index_so_far_chained_long
   ) |>
+  # When this year is also complete, remove duplicates
+  dplyr::distinct() |>
   dplyr::mutate(
     index_p = 100 * (index_i - 1),
     #ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error, 1),

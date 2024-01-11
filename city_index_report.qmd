@@ -39,11 +39,11 @@ source("rmd_setup.R")
 # Tromsø 2022          16952 (2022) 12
 # Nord-Jæren             952 (2017) 12
 # Bergen                8952 (2018) 08
-# Oslo                   959 (2018) 08
+# Oslo                   959 (2018) 12
 # Trondheim              960 (2019) 08
 
 # Choose city number:
-city_number <- 16952
+city_number <- 959
 
 
 ## Meta info
@@ -351,9 +351,11 @@ all_point_info |>
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2."
 #| ft.arraystretch: 0.9
 
-#all_point_info |>
-#  dplyr::slice(37:75) |>
-  #create_point_table()
+if(nrow(all_point_info) > 36) {
+  all_point_info |>
+    dplyr::slice(37:75) |>
+    create_point_table()
+}
 #   # TRD:
   # create_point_table_trd() |>
   # flextable::footnote(
@@ -377,9 +379,11 @@ all_point_info |>
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 3."
 #| ft.arraystretch: 0.9
 
-# all_point_info |>
-#  dplyr::slice(76:100) |>
-#  create_point_table()
+if(nrow(all_point_info) > 75) {
+  all_point_info |>
+    dplyr::slice(76:100) |>
+    create_point_table()
+}
 
 # {{< pagebreak >}}
 ```

@@ -58,7 +58,7 @@ trp_id_msnr <-
 {
 present_year <- 2023
 index_month <- 12 # the one to be published now
-city_number <- 16952
+city_number <- 959
 }
 # End choose
 
@@ -121,16 +121,16 @@ city_indexes <-
   ) |>
   purrr::list_rbind()
 
-# TODO: TRPs might differ from year to year!
-city_trps <-
-  get_published_pointindex_for_months(city_number, max(index_years), index_month)[[1]] |>
-  base::sort()
+  # TODO: TRPs might differ from year to year!
+  city_trps <-
+    get_published_pointindex_for_months(city_number, max(index_years), index_month)[[1]] |>
+    base::sort()
 
-city_name <- city_indexes$area_name[nrow(city_indexes)]
+  city_name <- city_indexes$area_name[nrow(city_indexes)]
 
-if(city_number == 16952) {
-  city_name <- "Tromsø"
-}
+  if(city_number == 16952) {
+    city_name <- "Tromsø"
+  }
 }
 
 # TODO: fetch for so far this year by index month
@@ -504,10 +504,10 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    # years_1_2,
-    # years_1_3,
-    # years_1_4,
-    # years_1_5,
+    years_1_2,
+    years_1_3,
+    years_1_4,
+    years_1_5,
     # years_1_6,
     #years_1_7
   ) %>%
@@ -739,14 +739,14 @@ mdt_filtered |>
   )
 
 # Read back in
-mdt_filtered <-
-  readr::read_rds(
-    paste0(
-      "data_indexpoints_tidy/mdt_",
-      city_number,
-      ".rds"
-    )
-  )
+# mdt_filtered <-
+#   readr::read_rds(
+#     paste0(
+#       "data_indexpoints_tidy/mdt_",
+#       city_number,
+#       ".rds"
+#     )
+#   )
 
 
 ## Check MDT validity ----
@@ -774,7 +774,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[22:23]
+    trp_id %in% trp_mdt_ok_refyear[60:61]
   ) |>
   dplyr::select(
     trp_id,
@@ -1099,9 +1099,9 @@ all_36_month_indices <-
 
 
 list(
-  all_12_month_indices#,
-  #all_24_month_indices,
-  #all_36_month_indices
+  all_12_month_indices,
+  all_24_month_indices,
+  all_36_month_indices
 ) |>
   readr::write_rds(
     file =
@@ -1181,7 +1181,7 @@ trp_mdt_plot |>
 # For those interested in the details
 list(
   punkt_adt = this_citys_trps_all_adt_final,
-  #punktindeks_maned = trp_index_monthly_wide,
+  punktindeks_maned = trp_index_monthly_wide,
   #punktindeks_ar = this_citys_trp_index_refyear, # drop
   byindeks_aarlig = city_index_yearly_all,
   #byindeks_maanedlig = city_index_monthly,
