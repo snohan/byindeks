@@ -1,5 +1,5 @@
 ---
-title: "Gjennomgangstrafikk"
+title: "Gjennomgangstrafikk i byindeks"
 format: 
   html:
     css: svv.css
@@ -10,6 +10,8 @@ format:
     toc-expand: true
     df-print: paged
     self-contained: true
+    link-external-icon: true
+    link-external-newwindow: true
 crossref:
   fig-title: Figur
   tbl-title: Tabell
@@ -48,19 +50,36 @@ city_index_adjusted_trd <- readr::read_rds("through_traffic/city_index_adjusted_
 
 
 # Bakgrunn
-Gjennomgangstrafikk skal ikke være med i målingen av indikatorer for overholdelse av nullvekstmålet.
+Målet for byområdene er at klimagassutslipp, kø, luftforurensning og støy skal reduseres gjennom effektiv arealbruk og ved at veksten i persontransporten tas med kollektivtransport, sykling og gange. Dette kalles nullvekstmålet. Se [informasjon om byvekstavtaler på Statens vegvesens nettsider](https://www.vegvesen.no/fag/fokusomrader/nasjonal-transportplan/byvekstavtaler/).
 
-Mengden av gjennomgangstrafikk er estimert basert på data fra TomTom.
+Trafikkutviklingen for persontransport med bil, målt med trafikktellinger (byindeks), er hovedindikatoren for vurderingen av måloppnåelsen i avtalene.
 
-Aktuelle gjennomkjøringsruter er skissert i @fig-routes.
+Byindeks beregnes med datagrunnlag fra utvalgte trafikkregistreringspunkter i et byområde. 
 
-![Gjennomkjøringsruter.](through_traffic/through_routes.png){#fig-routes}
 
-Tabellen nedenfor gjengir størrelsen på gjennomgangstrafikken i form av ÅDT.
+## Gjennomgangstrafikk
+Gjennomgangstrafikk skal ikke inngå i målingen av om nullvekstmålet oppnås. Datagrunnlaget for byindeksen, som består av trafikkregistreringer i punkt, har ingen informasjon om hvilke kjøretøy som kun kjører gjennom området. For å kunne filtrere vekk gjennomgangstrafikk må det suppleres med data om trafikk på utvlagte kjøreruter.
+
+I dette notatet beskrives en metode for å estimatere trafikk på aktuelle gjennomkjøringsruter i byområdene.
+
+
+# Estimert gjennomgangstrafikk
+Mengden gjennomgangstrafikk er estimert basert på data fra TomTom. For hvert byområde er de aktuelle gjennomkjøringsrutene definert, og antall kjøretøy som har fulgt disse rutene er hentet ut fra TomToms database.
+
+Det er ikke alle kjøretøy som leverer sine kjøredata til TomTom, og andelen kjøretøy vil variere over tid og rom. For å finne ut hvilken andel av trafikken som er representert i TomToms data, er TomTom-data sammenlignet med trafikkmengden som er registrert i kontinuerlige trafikkregistreringspunkt. Hver gjennomkjøringsrute får så en estimert verdi for gjennomsnittlig antall gjennomkjørende kjøretøy per dag, også kalt månedsdøgntrafikk for gjennomgangstrafikk.
+
+Nullvekstmålet, byindeksen og estimert gjennomgangstrafikk begrenser seg til lette kjøretøy.
+
+I dette notatet er det presentert beregninger av byindeks med og uten gjennomgangstrafikk for noen byområder. 
+Aktuelle gjennomkjøringsruter for byområdene Nedre Glomma og Trondheim er skissert i @fig-routes.
+
+![Gjennomkjøringsruter i Nedre Glomma og Trondheim.](through_traffic/through_routes.png){#fig-routes}
+
+Tabellen nedenfor gjengir estimert gjennomgangstrafikk i form av ÅDT på de aktuelle gjennomkjøringsrutene.
 
 ```{r}
 #| label: tbl-through_traffic_aadts
-#| tbl-cap: "ÅDT for lette kjøretøy for gjennomgangstrafikk."
+#| tbl-cap: "Estimert ÅDT for gjennomgangstrafikk."
 
 through_traffic |> 
   dplyr::arrange(
@@ -72,16 +91,20 @@ through_traffic |>
   ) |> 
   DT::datatable(
     rownames = FALSE,
+    colnames = c(
+      "Byområde" = 1,
+      "Rute" = 2
+    ),
     options = list(
       dom = "tp",
       pageLength = 15
     )
   )
-
 ```
 
 
 # Nedre Glomma
+For byområdet Nedre Glomma er det definert fem ulike gjennomkjøringsruter, se @fig-routes.
 
 
 ## Trafikkregistreringspunkt
@@ -116,13 +139,12 @@ trp_and_through_traffic_qmd |>
 ```
 
 
-## Punktindeks
+## Årlig byindeks
+Årlig indeks beregnes med årlige punktindekser. I @tbl-table_trp vises punktindeksene for 2022 med verdier med og uten gjennomgangstrafikk.
 
 ```{r}
 #| label: tbl-table_trp
-#| tbl-cap: "Trafikkregistreringspunkt"
-
-# Captions not working for DT::datatable or gt-tables before Quarto 1.4
+#| tbl-cap: "Indeks for 2022 i trafikkregistreringspunkt med og uten gjennomgangstrafikk."
 
 trp_and_through_traffic_qmd |> 
   dplyr::select(
@@ -136,6 +158,13 @@ trp_and_through_traffic_qmd |>
   ) |> 
   DT::datatable(
     rownames = FALSE,
+    colnames = c(
+      "Registreringspunkt",
+      "Veg",
+      "Rute",
+      "Indeks",
+      "Justert indeks"
+    ),
     options = list(
       dom = "tp",
       pageLength = 15
@@ -144,12 +173,11 @@ trp_and_through_traffic_qmd |>
 ```
 
 
-## Årlig byindeks
-Sammenligning av original byindeks med byindeks filtrert for gjennomgangstrafikk.
+Sammenligning av original byindeks med byindeks filtrert for gjennomgangstrafikk er vist i @tbl-table_city_index.
 
 ```{r}
-#| label: table_city_index
-#| tbl-cap: "Byindeks."
+#| label: tbl-table_city_index
+#| tbl-cap: "Årlig byindeks 2022 Nedre glomma."
 
 city_index_adjusted_qmd |>
   dplyr::mutate(
@@ -167,13 +195,21 @@ city_index_adjusted_qmd |>
   ) |> 
   DT::datatable(
     rownames = FALSE,
+    colnames = c(
+      "År",
+      "Justert",
+      "Indeks (%)",
+      "Konf.int. nedre",
+      "Konf.int. øvre"
+    ),
     options = list(
       dom = "t",
       pageLength = 15
     )
   )
-
 ```
+
+Siden konfidensintervallene overlapper er ikke verdiene til de to indeksvariantene signifikant forskjellig.
 
 
 ## Glidende byindeks
@@ -190,6 +226,7 @@ readr::read_rds("data_indexpoints_tidy/rolling_indices_adjusted_953.rds") |>
 
 
 # Trondheimsområdet
+For Trondheimsområdet er det definert seks ulike gjennomkjøringsruter, se @fig-routes.
 
 
 ## Trafikkregistreringspunkt
@@ -221,17 +258,15 @@ trd_trp_and_through_traffic_qmd |>
       fillOpacity = 0.8,
       label = ~label_text
     ) 
-
 ```
 
 
-## Punktindeks
+## Årlig byindeks
+Årlig indeks beregnes med årlige punktindekser. I @tbl-table_trp_trd vises punktindeksene for 2022 med verdier med og uten gjennomgangstrafikk.
 
 ```{r}
 #| label: tbl-table_trp_trd
-#| tbl-cap: "Trafikkregistreringspunkt."
-
-# Captions not working for DT::datatable or gt-tables before Quarto 1.4
+#| tbl-cap: "Indeks for 2022 i trafikkregistreringspunkt med og uten gjennomgangstrafikk."
 
 trd_trp_and_through_traffic_qmd |> 
   dplyr::select(
@@ -245,21 +280,25 @@ trd_trp_and_through_traffic_qmd |>
   ) |> 
   DT::datatable(
     rownames = FALSE,
+    colnames = c(
+      "Registreringspunkt",
+      "Veg",
+      "Rute",
+      "Indeks",
+      "Justert indeks"
+    ),
     options = list(
       dom = "tp",
       pageLength = 15
     )
   )
-
 ```
 
-
-## Årlig byindeks
 Sammenligning av original byindeks med byindeks filtrert for gjennomgangstrafikk.
 
 ```{r}
 #| label: tbl-city_index_trd
-#| tbl-cap: "Byindeks."
+#| tbl-cap: "Årlig byindeks 2022 Trondheimsområdet."
 
 city_index_adjusted_trd |>
   dplyr::mutate(
@@ -277,13 +316,21 @@ city_index_adjusted_trd |>
   ) |> 
   DT::datatable(
     rownames = FALSE,
+    colnames = c(
+      "År",
+      "Justert",
+      "Indeks (%)",
+      "Konf.int. nedre",
+      "Konf.int. øvre"
+    ),
     options = list(
       dom = "t",
       pageLength = 15
     )
   )
-
 ```
+
+Siden konfidensintervallene overlapper er ikke verdiene til de to indeksvariantene signifikant forskjellig.
 
 
 ## Glidende byindeks
