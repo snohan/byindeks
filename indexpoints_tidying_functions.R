@@ -857,7 +857,7 @@ create_mdt_barplot <- function(trp_mdt_long_format) {
     ) +
     scale_x_continuous(
       #labels = as.character(month),
-      breaks = seq(1, 12)
+      breaks = seq(1, 12, 1)
     ) +
     labs(
       x = NULL,

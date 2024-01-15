@@ -54,16 +54,16 @@ points <- readr::read_rds("trps_for_city_index.rds")
 
 # City numbers
 # Refy City  Cnum  Chkd Resp
-# 2016 Busk  1952   11 Snorre
+# 2016 Busk  1952   12 Snorre
 # 2016 Gren   955   11 Snorre
-# 2016 Kris   957   11 Snorre
-# 2016 NGlo   953   11 Trond
+# 2016 Kris   957   12 Snorre
+# 2016 NGlo   953   12 Trond
 # 2016 Trom   961   12 Snorre
 # 2022 Trom 16952   12 Snorre
 # 2017 NJær   952   12 Snorre
 # 2018 Oslo   959   12 Trond
-# 2018 Berg  8952   11 Trond
-# 2019 Tron   960   11 Snorre
+# 2018 Berg  8952   12 Trond
+# 2019 Tron   960   12 Snorre
 
 
 # TODO: look at normalized MDT visualized on links
@@ -73,7 +73,7 @@ points <- readr::read_rds("trps_for_city_index.rds")
 # Choose
 index_year <- 2023
 latest_published_month <- 11
-city_number <- 959
+city_number <- 1952
 # End choose
 
 new_month_name <- 
@@ -241,12 +241,55 @@ if(city_number == 960){
 ```{r}
 #| label: aadt
 
-adt <- 
-  get_aadt_by_length_for_trp_list(city_trps)
+adt <- get_aadt_by_length_for_trp_list(city_trps)
+
+adt_reference_year <- 
+  if(city_number == 16952) {
+    2019
+  }else{
+    reference_year
+  }
+
+adt_ref_year <- 
+  adt |> 
+  dplyr::filter(
+    length_range == "[..,5.6)",
+    coverage > 50,
+    year == adt_reference_year
+  ) |> 
+  dplyr::select(trp_id, adt_ref = aadt_length_range) |> 
+  dplyr::mutate(
+    adt_ref = round(adt_ref, -1)
+  )
+
+if(city_number == 960){
+  adt_ref_year_toll <-
+    readr::read_rds(
+      file = "data_indexpoints_tidy/trd_toll_aadt.rds"
+    ) |> 
+    dplyr::filter(
+      year == 2019,
+      class == "lette"
+    ) |> 
+    dplyr::select(trp_id, adt_ref = aadt) |> 
+    dplyr::mutate(
+      adt_ref = round(adt_ref, -1)
+    )
+}
+
+adt_ref_year_all <-
+  if(city_number == 960) {
+    dplyr::bind_rows(
+      adt_ref_year,
+      adt_ref_year_toll
+    )
+  }else{
+    adt_ref_year
+  }
 
 adt_filtered <- 
-  adt %>%
-  dplyr::filter(length_range == "[..,5.6)") %>%
+  adt |> 
+  dplyr::filter(length_range == "[..,5.6)") |> 
   #dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
   #dplyr::filter(length_quality > 90) %>%
   dplyr::filter(coverage > 50) %>%
@@ -260,6 +303,7 @@ this_citys_trps_all_adt <-
     adt_filtered,
     by = "trp_id"
   )
+
 
 
 # Special
@@ -404,7 +448,11 @@ this_citys_trps_all_adt_final <-
   ) |> 
   dplyr::rename(
     year_aadt = year
-  ) 
+  ) |> 
+  dplyr::left_join(
+    adt_ref_year_all,
+    by = join_by(trp_id)
+  )
 
 if(city_number == 960){
 

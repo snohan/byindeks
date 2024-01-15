@@ -102,9 +102,15 @@ city_info <-
   ) #|>  
   #dplyr::mutate(
     #month_object = lubridate::make_date(year = year, month = month)
-  #) |> 
-  # Trondheim:
-  #dplyr::filter(length_range == "lette")
+  #)
+
+if(city_number == 960) {
+  
+  city_info <-
+    city_info |> 
+    dplyr::filter(length_range == "lette")
+  
+}
 
 latest_month <- 
   city_info |> 
@@ -244,44 +250,45 @@ if(city_number == 1952) {
   map_zoomed <- paste0("city_report_files/map_zoomed_", city_number, ".Rmd")
 }
 
-# Start Kristiansand
-# Egen variant for KRS kommune, dvs. gamle kommunen før den ble 
-# slått sammen med Songdalen og Søgne
-# 
-# city_info_kommune <-
-#   readr::read_rds(
-#     paste0("data_indexpoints_tidy/byindeks_956.rds")
-#   ) |>
-#   dplyr::mutate(
-#     #month_object = lubridate::make_date(year = year, month = month),
-#     month_name_short = lubridate::month(month, label = TRUE),
-#     period = paste0("jan-", month_name_short)
-#   )
-# 
-# tbl_cap_all_36_kommune <-
-#   paste0(
-#     "Antall punkt som oppgis er hvor mange av de ",
-#     "22",
-#     " byindekspunktene som har bidratt med data i det aktuelle tidsintervallet."
-#   )
-#
-# rolling_indices_kommune <-
-#   readr::read_rds(
-#     paste0("data_indexpoints_tidy/rolling_indices_956.rds")
-#   )
-# 
-# rolling_indices_long_kommune <-
-#   rolling_indices_kommune |> 
-#   dplyr::bind_rows()
-# 
-# city_36_month_kommune <-
-#   rolling_indices_kommune[[3]]
-# 
-# city_trp_mdt_kommune <-
-#   readr::read_rds(
-#     paste0("data_indexpoints_tidy/city_trps_mdt_956.rds")
-#   )
-# Slutt Kristiansand
+# Kristiansand
+# Egen variant for Kristiansand kommune, dvs. gamle kommunen før den ble slått sammen med Songdalen og Søgne
+if(city_number == 957) {
+  
+  city_info_kommune <-
+    readr::read_rds(
+      paste0("data_indexpoints_tidy/byindeks_956.rds")
+    ) |>
+    dplyr::mutate(
+      #month_object = lubridate::make_date(year = year, month = month),
+      month_name_short = lubridate::month(month, label = TRUE),
+      period = paste0("jan-", month_name_short)
+    )
+  
+  tbl_cap_all_36_kommune <-
+    paste0(
+      "Antall punkt som oppgis er hvor mange av de ",
+      "22",
+      " byindekspunktene som har bidratt med data i det aktuelle tidsintervallet."
+    )
+  
+  rolling_indices_kommune <-
+    readr::read_rds(
+      paste0("data_indexpoints_tidy/rolling_indices_956.rds")
+    )
+  
+  rolling_indices_long_kommune <-
+    rolling_indices_kommune |>
+    dplyr::bind_rows()
+  
+  city_36_month_kommune <-
+    rolling_indices_kommune[[3]]
+  
+  city_trp_mdt_kommune <-
+    readr::read_rds(
+      paste0("data_indexpoints_tidy/city_trps_mdt_956.rds")
+    )
+  
+}
 ```
 
 {{< pagebreak >}}
@@ -294,7 +301,15 @@ if(city_number == 1952) {
 
 {{< include city_report_files/_purpose.Rmd >}}
 
+
 ## Områdeavgrensing og vegnett
+
+
+## Er det denne
+
+# Eller denne
+
+
 {{< include city_report_files/_intro.Rmd >}}
 
 
@@ -305,10 +320,11 @@ Veglengder fordelt på vegkategori for gjeldende område er oppsummert i tabell 
 #| tbl-cap: "Veglengder."
 #| ft.arraystretch: 0.9
 
-road_lengths |> create_city_road_length_table()
-
-# Kristiansand
-#road_lengths %>% create_municipality_road_length_table()
+if(city_number == 957) {
+  road_lengths |> create_municipality_road_length_table()  
+}else{
+  road_lengths |> create_city_road_length_table()  
+}
 ```
 
 {{< include city_report_files/_roadnet.Rmd >}}
@@ -324,24 +340,28 @@ De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeks
 #| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen."
 #| ft.arraystretch: 0.9
 
-all_point_info |> 
-  dplyr::slice(1:36) |> 
-  create_point_table()
-  # TRD:
-  # create_point_table_trd() |>
-  # flextable::footnote(
-  #   i = 1,
-  #   j = 2,
-  #   value = flextable::as_paragraph(
-  #     c("B er bomstasjon, T er trafikkregistreringspunkt.")
-  #   ),
-  #   ref_symbols = c("a"),
-  #   part = "header"
-  # ) |>
-  # flextable::fontsize(
-  #   size = 8,
-  #   part = "footer"
-  # )
+if(city_number == 960) {
+  all_point_info |> 
+    dplyr::slice(1:36) |> 
+    create_point_table_trd() |>
+    flextable::footnote(
+      i = 1,
+      j = 2,
+      value = flextable::as_paragraph(
+        c("B er bomstasjon, T er trafikkregistreringspunkt.")
+      ),
+      ref_symbols = c("a"),
+      part = "header"
+    ) |>
+    flextable::fontsize(
+      size = 8,
+      part = "footer"
+    )
+}else{
+  all_point_info |> 
+    dplyr::slice(1:36) |> 
+    create_point_table()  
+}
 ```
 
 
@@ -352,25 +372,31 @@ all_point_info |>
 #| ft.arraystretch: 0.9
 
 if(nrow(all_point_info) > 36) {
-  all_point_info |>
-    dplyr::slice(37:75) |>
-    create_point_table()
+  
+  if(city_number == 960) {
+    all_point_info |>
+      dplyr::slice(37:75) |>
+      create_point_table_trd() |>
+      flextable::footnote(
+        i = 1,
+        j = 2,
+        value = flextable::as_paragraph(
+          c("B er bomstasjon, T er trafikkregistreringspunkt.")
+        ),
+        ref_symbols = c("a"),
+        part = "header"
+      ) |>
+      flextable::fontsize(
+        size = 8,
+        part = "footer"
+      )
+  }else{
+    all_point_info |>
+      dplyr::slice(37:75) |>
+      create_point_table()
+  }
+  
 }
-#   # TRD:
-  # create_point_table_trd() |>
-  # flextable::footnote(
-  #   i = 1,
-  #   j = 2,
-  #   value = flextable::as_paragraph(
-  #     c("B er bomstasjon, T er trafikkregistreringspunkt.")
-  #   ),
-  #   ref_symbols = c("a"),
-  #   part = "header"
-  # ) |>
-  # flextable::fontsize(
-  #   size = 8,
-  #   part = "footer"
-  # )
 ```
 
 
@@ -406,13 +432,15 @@ Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene i
 #   dpi = 300
 #   )
 
-all_point_info |>
-  create_point_adt_map()
+if(city_number == 960) {
+  all_point_info |> 
+   dplyr::filter(trp_id != "18672V578623") |> # avoid map being too zoomed out
+   create_point_adt_map_trondheim()
+}else{
+  all_point_info |>
+    create_point_adt_map()  
+}
 
-# Trondheim
-# all_point_info %>%
-#  dplyr::filter(trp_id != "18672V578623") %>% # avoid map being too zoomed out
-#  create_point_adt_map_trondheim()
 
 # {{< include city_report_files/_map_zoomed.Rmd >}}
 ```
@@ -486,20 +514,22 @@ city_info |>
 
 
 
-<!-- Kristiansand --
+
 ```{r}
 #| label: tbl-city_index_kommune
 #| tbl-cap: "Estimert endring i trafikkmengde per år, gamle Kristiansand kommune."
 
-# city_info_kommune |>
-#   dplyr::filter(
-#     !(index_type == "chained" & month != 12)
-#   ) |>
-#   create_city_index_table_sd()
+if(city_number == 960) {
+ city_info_kommune |>
+  dplyr::filter(
+    !(index_type == "chained" & month != 12)
+  ) |>
+  create_city_index_table_sd() 
+}
 ```
-<!-- Kristiansand -->
 
-Byindeksen estimerer endringen i trafikkmengden for lette kjøretøy fra 
+
+Sammenkjedingen av de årlige indeksene estimerer endringen i trafikkmengden for lette kjøretøy fra 
 `r latest_complete_year$year_base` til `r latest_complete_year$year` til å være 
 `r stringr::str_replace(sprintf("%.1f", latest_complete_year$index_p), "\\.", ",")` %. 
 Et 95 % konfidensintervall går fra 

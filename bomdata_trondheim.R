@@ -300,7 +300,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "november" # English
+month_string <- "december" # English
 year_number <- 2023
 
 apar_data_for_month <-
@@ -619,6 +619,31 @@ readr::write_rds(
 #     file = "data_indexpoints_tidy/trd_toll_mdt.rds",
 #   )
 
+
+# AADT ----
+toll_aadt_class <-
+  tolling_data_daily_all_years |>
+  dplyr::group_by(
+    trp_id,
+    year,
+    class
+  ) %>%
+  dplyr::summarise(
+    traffic = sum(traffic),
+    n_days = n(),
+    .groups = "drop"
+  ) |>
+  dplyr::mutate(
+    aadt = base::round(traffic / n_days),
+    n_days_of_year = dplyr::if_else(lubridate::leap_year(year), 366, 365),
+    coverage = (n_days / n_days_of_year) * 100
+    # NB! Not correct for HMV as some stations have days without any HMVs
+  )
+
+readr::write_rds(
+  toll_aadt_class,
+  file = "data_indexpoints_tidy/trd_toll_aadt.rds",
+)
 
 # TRP index ----
 ## Monthly ----
