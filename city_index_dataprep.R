@@ -58,7 +58,7 @@ trp_id_msnr <-
 {
 present_year <- 2023
 index_month <- 12 # the one to be published now
-city_number <- 8952
+city_number <- 956
 }
 # End choose
 
@@ -508,8 +508,8 @@ city_index_yearly_all <-
     years_1_3,
     years_1_4,
     years_1_5,
-    # years_1_6,
-    #years_1_7
+    years_1_6,
+    years_1_7
   ) %>%
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -774,7 +774,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[16:18]
+    trp_id %in% trp_mdt_ok_refyear[28:29]
   ) |>
   dplyr::select(
     trp_id,
