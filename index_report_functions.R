@@ -7,6 +7,7 @@ create_point_table <- function(all_point_info_df) {
     select(
       name,
       road_reference,
+      adt_ref,
       adt,
       year_aadt
     ) %>%
@@ -14,11 +15,12 @@ create_point_table <- function(all_point_info_df) {
     set_header_labels(
       name = "Navn",
       road_reference = "Vegreferanse",
-      adt = "ÅDT",
-      year_aadt = "År"
+      adt_ref = "ÅDT\nreferanseår",
+      adt = "ÅDT\nnyeste år",
+      year_aadt = "År\n(nyeste)"
     ) %>%
-    align(i = 1, j = c(3, 4), align = "center", part = "header") %>%
-    align(j = c(4), align = "center", part = "body") %>%
+    align(i = 1, j = c(3, 4, 5), align = "center", part = "header") %>%
+    align(j = c(5), align = "center", part = "body") %>%
     bold(part = "header") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%
@@ -365,8 +367,6 @@ create_pointindex_map <- function(all_point_info_df) {
 
   return(pointindex_map)
 }
-
-
 
 
 map_links_with_trp <- function(link_df) {

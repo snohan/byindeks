@@ -31,7 +31,7 @@ source("rmd_setup.R")
 ```{r get_data, include = FALSE}
 # City numbers
 
-# Buskerudbyen          1952 (2016) 08 
+# Buskerudbyen          1952 (2016) 12
 # Grenland               955 (2016) 12
 # Kristiansand og omegn  957 (2016) 12
 # Nedre Glomma           953 (2016) 12
@@ -43,7 +43,7 @@ source("rmd_setup.R")
 # Trondheim              960 (2019) 12
 
 # Choose city number:
-city_number <- 955
+city_number <- 16952
 
 ## Meta info
 city_number_county_name <- 
@@ -247,6 +247,10 @@ if(any_36) {
 # Buskerudbyen
 if(city_number == 1952) {
   map_zoomed <- paste0("city_report_files/map_zoomed_", city_number, ".Rmd")
+  buskerudbyen_e18 <- "city_report_files/buskerudbyen_e18.Rmd"
+}else{
+  map_zoomed <- ""
+  buskerudbyen_e18 <- ""
 }
 
 # Kristiansand
@@ -325,11 +329,11 @@ if(city_number == 957) {
 
 ## Byindekspunktene
 
-De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeksen er listet opp nedenfor. Årsdøgntrafikk (ÅDT) er oppgitt for lette kjøretøy (målt til kortere enn 5,6 m).
+De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeksen er listet opp nedenfor. Årsdøgntrafikk (ÅDT) er oppgitt for lette kjøretøy (målt til kortere enn 5,6 m). NB! I beregning av ÅDT-verdiene er det ikke tatt hensyn til eventuelle strukturelle endringer i vegnettet på samme måte som dette kan føre til eksluderinger i indeksberegningene. Endring i summert ÅDT for flere punkt kan derfor ikke ukritisk benyttes som mål på endring i trafikkmengde for området.
 
 ```{r}
 #| label: tbl-trp-1
-#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen."
+#| tbl-cap: "Trafikkregistreringspunkt som inngår i byindeksen."
 #| ft.arraystretch: 0.9
 
 if(city_number == 960) {
@@ -360,7 +364,7 @@ if(city_number == 960) {
 
 ```{r}
 #| label: tbl-trp-2
-#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 2."
+#| tbl-cap: "Trafikkregistreringspunkt som inngår i byindeksen, del 2."
 #| ft.arraystretch: 0.9
 
 if(nrow(all_point_info) > 36) {
@@ -394,7 +398,7 @@ if(nrow(all_point_info) > 36) {
 
 ```{r}
 #| label: tbl-trp-3
-#| tbl-cap: "Trafikkregistreringspunktene som inngår i byindeksen, del 3."
+#| tbl-cap: "Trafikkregistreringspunkt som inngår i byindeksen, del 3."
 #| ft.arraystretch: 0.9
 
 if(nrow(all_point_info) > 75) {
@@ -427,13 +431,10 @@ if(city_number == 960) {
   all_point_info |>
     create_point_adt_map()  
 }
-
-# {{< include city_report_files/_map_zoomed.Rmd >}}
 ```
 
-
 <!-- Buskerudbyen zoomed map here -->
-
+{{< include city_report_files/_map_zoomed.Rmd >}}
 
 {{< pagebreak >}}
 
@@ -484,7 +485,9 @@ Dersom trafikkmengden i årene framover blir liggende på samme nivå som i dag,
 {{< pagebreak >}}
 
 ## Endring per år
-Endring i trafikkmengde er også beregnet for hele kalenderår. I stedet for et tre års glidende gjennomsnitt tar denne beregningen utgangspunkt i indeksen mellom to påfølgende år. Indekstall som gjelder for lengre perioder enn to påfølgende år er beregnet som en kjedet indeks av de mellomliggende års indekser. En kjedet indeks er en multiplikasjon av indekser på desimalform hvor en indeks på 1 tilsvarer ingen endring.
+Endring i trafikkmengde er også beregnet for hele kalenderår. I stedet for et tre års glidende gjennomsnitt tar denne beregningen utgangspunkt i indeksen mellom to påfølgende år. For hvert trafikkregistreringspunkt sammenlignes registrert trafikk dato for dato og time for time mellom to påfølgende år.
+
+Indekstall som gjelder for lengre perioder enn to påfølgende år er beregnet som en kjedet indeks av de mellomliggende års indekser. En kjedet indeks er en multiplikasjon av indekser på desimalform hvor en indeks på 1 tilsvarer ingen endring.
 
 Tabell @tbl-city_index viser den årlige endringen, samt prosentvis endring for ulike perioder.
 
@@ -529,41 +532,8 @@ Et 95 % konfidensintervall går fra
 
 
 
-<!--
-For Buskerudbyen --
-
-### Trafikken på Ev 18
-Til sammenligning viser tabell @tbl-e18_buskerudbyen endringen i trafikkmengde for lette kjøretøy på Ev 18 i samme periode.
-
-```{r}
-#| label: tbl-e18_buskerudbyen
-#| tbl-cap: "Endring i trafikkmengde på Ev 18."
-
-# read.csv2("data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv") %>%
-#     select(name, road_reference, year, index_short) %>%
-#     flextable() %>%
-#     colformat_int(j = "year", big.mark = "") %>%
-#     colformat_double(j = "index_short", digits = 1) %>%
-#     set_header_labels(name = "Navn",
-#                       road_reference = "Vegreferanse",
-#      #                 adt = "ÅDT",
-#                       year = "År",
-#                       index_short = "Endring i\ntrafikkmengde\n(%)") %>%
-#     align(j = c(3, 4), align = "center", part = "all") %>%
-#     bold(part = "header") %>%
-#     #fontsize(size = 9, part = "all") %>%
-#     font(fontname = "Lucida Sans Unicode", part = "all") %>%
-#     bg(bg = "#ED9300", part = "header") %>%
-#     border_remove() %>%
-#     hline_top(part = "header", border = borderline) %>%
-#     hline_bottom(part = "all", border = borderline) %>%
-#     autofit() %>%
-#     height_all(height = .2) %>%
-#     padding(padding.top = .3,
-#             padding.bottom = .3)
-```
-
-<!-- Stopp buskerudbyen her -->
+<!-- For Buskerudbyen -->
+{{< include city_report_files/_buskerudbyen_e18.Rmd >}}
 
 
 

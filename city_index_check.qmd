@@ -73,7 +73,7 @@ points <- readr::read_rds("trps_for_city_index.rds")
 # Choose
 index_year <- 2023
 latest_published_month <- 11
-city_number <- 956
+city_number <- 16952
 # End choose
 
 new_month_name <- 
@@ -254,7 +254,7 @@ adt_ref_year <-
   adt |> 
   dplyr::filter(
     length_range == "[..,5.6)",
-    coverage > 50,
+    #coverage > 50, # many from NorTraf
     year == adt_reference_year
   ) |> 
   dplyr::select(trp_id, adt_ref = aadt_length_range) |> 
