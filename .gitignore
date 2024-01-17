@@ -39,3 +39,4 @@ apar.R
 *.json
 *.geojson
 !data_indexpoints_tidy/*.xlsx
+!tinytex_install_bat_script.txt

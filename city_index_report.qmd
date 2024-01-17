@@ -32,19 +32,18 @@ source("rmd_setup.R")
 # City numbers
 
 # Buskerudbyen          1952 (2016) 08 
-# Grenland               955 (2016) 08
-# Kristiansand og omegn  957 (2016) 08
-# Nedre Glomma           953 (2016) 08
+# Grenland               955 (2016) 12
+# Kristiansand og omegn  957 (2016) 12
+# Nedre Glomma           953 (2016) 12
 # Tromsø                 961 (2016) 08
 # Tromsø 2022          16952 (2022) 12
 # Nord-Jæren             952 (2017) 12
-# Bergen                8952 (2018) 08
+# Bergen                8952 (2018) 12
 # Oslo                   959 (2018) 12
-# Trondheim              960 (2019) 08
+# Trondheim              960 (2019) 12
 
 # Choose city number:
-city_number <- 959
-
+city_number <- 955
 
 ## Meta info
 city_number_county_name <- 
@@ -283,10 +282,10 @@ if(city_number == 957) {
   city_36_month_kommune <-
     rolling_indices_kommune[[3]]
   
-  city_trp_mdt_kommune <-
-    readr::read_rds(
-      paste0("data_indexpoints_tidy/city_trps_mdt_956.rds")
-    )
+  # city_trp_mdt_kommune <-
+  #   readr::read_rds(
+  #     paste0("data_indexpoints_tidy/city_trps_mdt_956.rds")
+  #   )
   
 }
 ```
@@ -303,13 +302,6 @@ if(city_number == 957) {
 
 
 ## Områdeavgrensing og vegnett
-
-
-## Er det denne
-
-# Eller denne
-
-
 {{< include city_report_files/_intro.Rmd >}}
 
 
@@ -422,15 +414,10 @@ Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene i
 #| label: fig-map_trp
 #| fig-cap: "Kart som viser trafikkregistreringspunkt og årsdøgntrafikk."
 #| fig-scap: "Kart som viser trafikkregistreringspunkt og årsdøgntrafikk."
-
-# fig-width: 7
+#| fig-width: 7
 
 # TRD
 # Punktet Meådalen på E14 mellom Stjørdal og Meråker er utelatt fra kartvisningen.
-
-# knitr::opts_chunk$set(
-#   dpi = 300
-#   )
 
 if(city_number == 960) {
   all_point_info |> 
@@ -440,7 +427,6 @@ if(city_number == 960) {
   all_point_info |>
     create_point_adt_map()  
 }
-
 
 # {{< include city_report_files/_map_zoomed.Rmd >}}
 ```
@@ -468,6 +454,11 @@ En ulempe med denne metodikken er at utvalget av trafikkregistreringspunkter beg
 En treårs glidende indeks er tilgjengelig fra og med det er gått tre år etter referanseåret. 
 
 {{< include city_report_files/_rolling_36.Rmd >}}
+
+{{< include city_report_files/_pandemic_remark_rolling_index.Rmd >}}
+
+
+{{< pagebreak >}}
 
 ## Endring i ett- og toårsperiode
 Tre års glidende indeks glatter ut trender som er av kortere varighet, men som kan være synlige dersom den glidende indeksen beregnes for kortere perioder. Eksempelvis kan en økende trend i trafikken som har oppstått det siste året bli lite synlig i den tre års glidende indeksen dersom de to første årene var stabile eller hadde nedgang. For å kunne si noe om hvilken utvikling den tre års glidende indeksen kan få framover i tid, er det nyttig å se tilsvarende glidende indekser for perioder på ett og to år. Dette vises i figur @fig-rolling_indices.
@@ -519,7 +510,7 @@ city_info |>
 #| label: tbl-city_index_kommune
 #| tbl-cap: "Estimert endring i trafikkmengde per år, gamle Kristiansand kommune."
 
-if(city_number == 960) {
+if(city_number == 957) {
  city_info_kommune |>
   dplyr::filter(
     !(index_type == "chained" & month != 12)

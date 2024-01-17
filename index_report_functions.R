@@ -826,11 +826,9 @@ visualize_city_36_mdt_index <-
     ggplot2::geom_hline(
       yintercept = 0,
       color = "#58b02c",
-      size = 0.8,
+      linewidth = 0.8,
       alpha = 0.3
     ) +
-    ggplot2::geom_line(color = "#ED9300") +
-    ggplot2::geom_point(color = "#ED9300") +
     ggplot2::geom_ribbon(
       aes(
         ymin = ci_lower,
@@ -840,6 +838,8 @@ visualize_city_36_mdt_index <-
       alpha = 0.1,
       fill = "#444f55"
     ) +
+    ggplot2::geom_line(color = "#ED9300") +
+    ggplot2::geom_point(color = "#ED9300") +
     theme_light() +
     theme(
       axis.text.x = element_text(vjust = 0.5),

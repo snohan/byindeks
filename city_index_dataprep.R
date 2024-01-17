@@ -58,7 +58,7 @@ trp_id_msnr <-
 {
 present_year <- 2023
 index_month <- 12 # the one to be published now
-city_number <- 956
+city_number <- 1952
 }
 # End choose
 
@@ -322,7 +322,7 @@ if(city_number %in% c(8952, 16952)){
     )
 }
 
-# Solely for Excel
+# Solely for Excel ----
 trp_index_monthly_wide <-
   trp_index_monthly |>
   #trp_toll_index_monthly |>
@@ -774,7 +774,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[28:29]
+    trp_id %in% trp_mdt_ok_refyear[21:22]
   ) |>
   dplyr::select(
     trp_id,
@@ -831,6 +831,7 @@ mdt_validated |>
 
 
 ## Seeing all TRPs MDTs simultaneously ----
+{
 mean_mdt_ref_year_per_trp <-
   mdt_validated |>
   filter_mdt(reference_year) |>
@@ -934,6 +935,8 @@ plot_mdt_comparisons <-
 
 plot_mdt_comparisons |>
   plotly::ggplotly()
+}
+
 
 ## Compare exclusions of MDT and index ----
 # Check that the "same" exclusions are used on PI as MDT
