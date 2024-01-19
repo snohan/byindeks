@@ -58,7 +58,7 @@ Byindeks beregnes med datagrunnlag fra utvalgte trafikkregistreringspunkter i et
 
 
 ## Gjennomgangstrafikk
-Gjennomgangstrafikk skal ikke inngå i målingen av om nullvekstmålet oppnås. Datagrunnlaget for byindeksen, som består av trafikkregistreringer i punkt, har ingen informasjon om hvilke kjøretøy som kun kjører gjennom området. For å kunne filtrere vekk gjennomgangstrafikk må det suppleres med data om trafikk på utvlagte kjøreruter.
+Gjennomgangstrafikk skal ikke inngå i målingen av om nullvekstmålet oppnås. Datagrunnlaget for byindeksen, som består av trafikkregistreringer i punkt, har ingen informasjon om hvilke kjøretøy som kun kjører gjennom området uten å stoppe. For å kunne filtrere vekk gjennomgangstrafikk må det suppleres med data om trafikk på utvalgte kjøreruter.
 
 I dette notatet beskrives en metode for å estimatere trafikk på aktuelle gjennomkjøringsruter i byområdene.
 
@@ -101,6 +101,11 @@ through_traffic |>
     )
   )
 ```
+
+## Justering av byindeks
+Med verdier for gjennomgangstrafikk i form av ÅDT eller MDT, kan byindeksens datagrunnlag filtreres. Trafikkregistreringspunkt som ligger på gjennomkjøringsruter får da trukket fra estimert gjennomgangstrafikk. For tre års glidende indeks, som er basert på MDT, er dette en enkel prosedyre.
+
+Alle indekser beregnes med et tilhørende konfidensintervall. Hva som er usikkerheten i estimert MDT for gjennomgangstrafikk og hvordan denne eventuelt påvirker konfidensintervallet er ikke vurdert.
 
 
 # Nedre Glomma

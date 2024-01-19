@@ -616,6 +616,78 @@ get_tolling_stations <- function(kommunenr) {
 }
 
 
+get_all_tolling_stations <- function() {
+
+  api_query_45 <-
+    paste0(
+      nvdb_url_v3,
+      sti_vegobjekter,
+      "/45",
+      "?inkluder=egenskaper,lokasjon"
+    )
+
+  api_query <-
+    paste0(
+      api_query_45,
+      "&srid=wgs84"
+    )
+
+  uthenta <- call_and_parse_nvdb_api(api_query)
+
+  bom <-
+    uthenta$objekter %>%
+    dplyr::select(id, egenskaper) %>%
+    dplyr::rename(id1 = id) %>%
+    tidyr::unnest(cols = c(egenskaper)) %>%
+    dplyr::filter(id %in% c(1078, 9595, 11883, 9414)) %>%
+    dplyr::select(id1, navn, verdi) %>%
+    dplyr::rename(id = id1) %>%
+    tidyr::pivot_wider(names_from = navn, values_from = verdi) %>%
+    dplyr::rename(
+      directions = 2,
+      operator_id = 3,
+      toll_station_name = 4,
+      toll_station_id = 5
+    )
+
+  vegreferanser <- uthenta$objekter %>%
+    dplyr::select(id, lokasjon.vegsystemreferanser) %>%
+    tidyr::unnest(cols = c(lokasjon.vegsystemreferanser)) %>%
+    dplyr::select(id, kortform) %>%
+    dplyr::rename(road_reference = kortform)
+
+  koordinater <- uthenta$objekter %>%
+    dplyr::select(id, lokasjon.geometri.wkt) %>%
+    dplyr::mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 9, -2)) %>%
+    tidyr::separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
+                    convert = T) %>%
+    dplyr::select(id, lat, lon)
+
+  veglenkeposisjoner <- uthenta$objekter %>%
+    dplyr::select(id, lokasjon.stedfestinger) %>%
+    tidyr::unnest(cols = c(lokasjon.stedfestinger)) %>%
+    dplyr::select(id, kortform) %>%
+    dplyr::rename(road_link_position = kortform)
+
+  # Setter sammen
+  bomer <-
+    bom |>
+    dplyr::left_join(vegreferanser, by = "id") %>%
+    dplyr::left_join(koordinater, by = "id") %>%
+    dplyr::left_join(veglenkeposisjoner, by = "id") %>%
+    dplyr::select(
+      nvdb_id = id,
+      operator_id,
+      toll_station_id,
+      toll_station_name,
+      road_reference,
+      road_link_position, lat, lon,
+      directions
+    )
+
+  return(bomer)
+}
+
 # Årsdøgntrafikk ----
 #roadref <- "fv76s1d1m18400"
 getAadtByRoadReference <- function(roadref) {

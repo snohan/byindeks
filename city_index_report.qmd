@@ -36,14 +36,14 @@ source("rmd_setup.R")
 # Kristiansand og omegn  957 (2016) 12
 # Nedre Glomma           953 (2016) 12
 # Tromsø                 961 (2016) 08
-# Tromsø 2022          16952 (2022) 12
+# Tromsø 2022          16952 (2022) 12-ref_year_aadt
 # Nord-Jæren             952 (2017) 12
 # Bergen                8952 (2018) 12
-# Oslo                   959 (2018) 12
+# Oslo                   959 (2018) 12-ref_year_aadt
 # Trondheim              960 (2019) 12
 
 # Choose city number:
-city_number <- 16952
+city_number <- 959
 
 ## Meta info
 city_number_county_name <- 
@@ -338,7 +338,7 @@ De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeks
 
 if(city_number == 960) {
   all_point_info |> 
-    dplyr::slice(1:36) |> 
+    dplyr::slice(1:30) |> 
     create_point_table_trd() |>
     flextable::footnote(
       i = 1,
@@ -355,7 +355,7 @@ if(city_number == 960) {
     )
 }else{
   all_point_info |> 
-    dplyr::slice(1:36) |> 
+    dplyr::slice(1:30) |> 
     create_point_table()  
 }
 ```
@@ -367,11 +367,11 @@ if(city_number == 960) {
 #| tbl-cap: "Trafikkregistreringspunkt som inngår i byindeksen, del 2."
 #| ft.arraystretch: 0.9
 
-if(nrow(all_point_info) > 36) {
+if(nrow(all_point_info) > 30) {
   
   if(city_number == 960) {
     all_point_info |>
-      dplyr::slice(37:75) |>
+      dplyr::slice(31:70) |>
       create_point_table_trd() |>
       flextable::footnote(
         i = 1,
@@ -388,7 +388,7 @@ if(nrow(all_point_info) > 36) {
       )
   }else{
     all_point_info |>
-      dplyr::slice(37:75) |>
+      dplyr::slice(31:70) |>
       create_point_table()
   }
   
@@ -401,9 +401,9 @@ if(nrow(all_point_info) > 36) {
 #| tbl-cap: "Trafikkregistreringspunkt som inngår i byindeksen, del 3."
 #| ft.arraystretch: 0.9
 
-if(nrow(all_point_info) > 75) {
+if(nrow(all_point_info) > 70) {
   all_point_info |>
-    dplyr::slice(76:100) |>
+    dplyr::slice(71:100) |>
     create_point_table()
 }
 
