@@ -8,6 +8,19 @@ counties <-
   dplyr::select(
     county_name,
     country_part_name
+  ) |>
+  # December report 2023 must use 2023 counties
+  dplyr::mutate(
+    counties_2023 = dplyr::case_when(
+      county_name %in% c("Østfold", "Akershus", "Buskerud") ~ "Viken",
+      county_name %in% c("Vestfold", "Telemark") ~ "Vestfold og Telemark",
+      county_name %in% c("Troms", "Finnmark") ~ "Troms og Finnmark",
+      TRUE ~ county_name
+    )
+  ) |>
+  dplyr::rename(
+    county_name = counties_2023,
+    county_name_new = county_name
   )
 
 country_parts <- get_country_parts()
@@ -38,7 +51,7 @@ points <-
     name,
     road_category,
     road_reference,
-    county_name
+    county_name_latest = county_name # 2023
   ) %>%
   dplyr::mutate(
     road_category = dplyr::case_when(
@@ -49,12 +62,13 @@ points <-
   ) %>%
   dplyr::left_join(
     counties,
-    by = "county_name"
+    #by = "county_name"
+    by = join_by("county_name_latest" == "county_name_new") # dec 2023
   )
 
 ## Choose month ----
 this_year <- 2023
-latest_month_number <- 10
+latest_month_number <- 12
 
 index_this_year <-
   get_published_road_traffic_index_for_months(
@@ -353,7 +367,6 @@ index_this_year_prepared <-
           ),
         ordered = TRUE
       ),
-
     standard_error =
       round(standard_deviation / sqrt(no_points), digits = 1),
     standard_deviation = round(standard_deviation, digits = 1)
@@ -373,7 +386,7 @@ index_this_year_prepared_wide <-
     month_name_short =
       lubridate::month(month_object, label = TRUE, abbr = TRUE),
     index_p = round(index_p, digits = 1),
-    area_name = factor(area_name, levels = counties$county_name)
+    area_name = factor(area_name, levels = unique(counties$county_name))
   ) %>%
   dplyr::select(
     area_name,

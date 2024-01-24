@@ -34,7 +34,7 @@ source("rmd_setup.R")
 # Buskerudbyen          1952 (2016) 12
 # Grenland               955 (2016) 12
 # Kristiansand og omegn  957 (2016) 12
-# Nedre Glomma           953 (2016) 12
+# Nedre Glomma           953 (2016) 12-ref_year_aadt
 # Tromsø                 961 (2016) 08
 # Tromsø 2022          16952 (2022) 12-ref_year_aadt
 # Nord-Jæren             952 (2017) 12
@@ -43,7 +43,7 @@ source("rmd_setup.R")
 # Trondheim              960 (2019) 12
 
 # Choose city number:
-city_number <- 959
+city_number <- 953
 
 ## Meta info
 city_number_county_name <- 
