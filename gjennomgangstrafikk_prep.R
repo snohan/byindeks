@@ -1,9 +1,10 @@
+{
 source("rmd_setup.R")
 source("indexpoints_tidying_functions.R")
 
 # Traffic Data API calls to get points metadata and aadt
 source("get_from_trafficdata_api.R")
-
+}
 
 # Through traffic ----
 through_traffic <-
@@ -353,6 +354,121 @@ dplyr::bind_rows(
       )
   )
 
+## Through ratio ----
+trp_ngl <-
+  readr::read_rds(
+    file = paste0(
+      "index_trp_metadata/trp_",
+      953,
+      ".rds"
+    )
+  ) |>
+  dplyr::mutate(
+    year_aadt = as.character(year_aadt)
+  )
+
+trp_mdt_through_ngl <-
+  mdt_validated_without_through_traffic |>
+  dplyr::filter(
+    !is.na(mdt_lmv),
+    # Remove Sandesund sør for comparison
+    trp_id != "98963V1719019"
+  ) |>
+  dplyr::summarise(
+    aadt_through = mean(mdt_lmv) |> round(-1),
+    aadt_total = mean(mdt_original) |> round(-1),
+    aadt_local = aadt_total - aadt_through,
+    through_ratio = (aadt_through / aadt_total) |> round(2),
+    n_monhts = n(),
+    .by = c(trp_id, year)
+  ) |>
+  dplyr::filter(
+    year == 2022
+  ) |>
+  dplyr::left_join(
+    trp_ngl,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::select(
+    name,
+    road_category_and_number,
+    aadt_through,
+    aadt_local,
+    through_ratio
+  )
+
+ngl_through <-
+  mdt_validated_without_through_traffic |>
+  dplyr::filter(
+    !is.na(mdt_lmv),
+    # Remove Sandesund sør for comparison
+    trp_id != "98963V1719019",
+    year == 2022
+  ) |>
+  dplyr::summarise(
+    aadt_through = sum(mdt_lmv),
+    aadt_total = sum(mdt_original),
+    #aadt_through = mean(mdt_lmv) |> round(-1),
+    #aadt_total = mean(mdt_original) |> round(-1),
+    aadt_local = aadt_total - aadt_through,
+    through_ratio = (aadt_through / aadt_total) |> round(3),
+    n_monhts = n(),
+    .by = c(year)
+  )
+
+# Dec 22 example
+trp_dec_22_ngl <-
+  readxl::read_excel(
+    path = paste0(
+      "data_indexpoints_tidy/tallmateriale_",
+      953,
+      ".xlsx"
+    ),
+    sheet = "punkt_3_aar_glid_indeks"
+  ) |>
+  dplyr::filter(
+    last_month_in_index == lubridate::as_date("2022-12-01")
+  )
+
+trp_mdt_through_22_ngl <-
+  mdt_validated_without_through_traffic |>
+  dplyr::filter(
+    trp_id %in% trp_dec_22_ngl$trp_id,
+    # Remove Sandesund sør for comparison
+    trp_id != "98963V1719019"
+  ) |>
+  dplyr::summarise(
+    aadt_through = mean(mdt_lmv) |> round(-1),
+    aadt_total = mean(mdt_original) |> round(-1),
+    aadt_local = aadt_total - aadt_through,
+    through_ratio = (aadt_through / aadt_total) |> round(2),
+    n_monhts = n(),
+    .by = c(trp_id, year)
+  ) |>
+  dplyr::filter(
+    year == 2022
+  ) |>
+  dplyr::left_join(
+    trp_ngl,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::select(
+    name,
+    road_category_and_number,
+    aadt_through,
+    aadt_local,
+    aadt_total,
+    through_ratio
+  ) |>
+  dplyr::summarise(
+    aadt_through = 3 * sum(aadt_through, na.rm = TRUE),
+    aadt_total = sum(aadt_total),
+    through_ratio = (aadt_through / aadt_total) |> round(3),
+    n_trp = n()
+  )
+
+100*((1/1.028)*(1+0.028*2)-1)
+
 
 # Trondheim ----
 city_number <- 960
@@ -597,3 +713,113 @@ readr::write_rds(
       ".rds"
     )
 )
+
+
+## Through ratio ----
+trp_trd <-
+  readr::read_rds(
+    file = paste0(
+      "index_trp_metadata/trp_",
+      960,
+      ".rds"
+    )
+  ) |>
+  dplyr::mutate(
+    year_aadt = as.character(year_aadt)
+  )
+
+trp_mdt_through <-
+  mdt_validated_without_through_traffic |>
+  dplyr::filter(
+    !is.na(mdt_lmv)
+  ) |>
+  dplyr::summarise(
+    aadt_through = mean(mdt_lmv) |> round(-1),
+    aadt_total = mean(mdt_original) |> round(-1),
+    aadt_local = aadt_total - aadt_through,
+    through_ratio = (aadt_through / aadt_total) |> round(2),
+    n_monhts = n(),
+    .by = c(trp_id, year)
+  ) |>
+  dplyr::filter(
+    year == 2022
+  ) |>
+  dplyr::left_join(
+    trp_trd,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::select(
+    name,
+    road_category_and_number,
+    aadt_through,
+    aadt_local,
+    through_ratio
+  )
+
+trd_through <-
+  mdt_validated_without_through_traffic |>
+  dplyr::filter(
+    !is.na(mdt_lmv),
+    year == 2022
+  ) |>
+  dplyr::summarise(
+    aadt_through = sum(mdt_lmv),
+    aadt_total = sum(mdt_original),
+    #aadt_through = mean(mdt_lmv) |> round(-1),
+    #aadt_total = mean(mdt_original) |> round(-1),
+    aadt_local = aadt_total - aadt_through,
+    through_ratio = (aadt_through / aadt_total) |> round(3),
+    n_monhts = n(),
+    .by = c(year)
+  )
+
+# Dec 22 example
+trp_dec_22 <-
+  readxl::read_excel(
+    path = paste0(
+      "data_indexpoints_tidy/tallmateriale_",
+      960,
+      ".xlsx"
+    ),
+    sheet = "punkt_3_aar_glid_indeks"
+  ) |>
+  dplyr::filter(
+    last_month_in_index == lubridate::as_date("2022-12-01")
+  )
+
+trp_mdt_through_22 <-
+  mdt_validated_without_through_traffic |>
+  dplyr::filter(
+    trp_id %in% trp_dec_22$trp_id
+  ) |>
+  dplyr::summarise(
+    aadt_through = mean(mdt_lmv) |> round(-1),
+    aadt_total = mean(mdt_original) |> round(-1),
+    aadt_local = aadt_total - aadt_through,
+    through_ratio = (aadt_through / aadt_total) |> round(2),
+    n_monhts = n(),
+    .by = c(trp_id, year)
+  ) |>
+  dplyr::filter(
+    year == 2022
+  ) |>
+  dplyr::left_join(
+    trp_trd,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::select(
+    name,
+    road_category_and_number,
+    aadt_through,
+    aadt_local,
+    aadt_total,
+    through_ratio
+  ) |>
+  dplyr::summarise(
+    aadt_through = 3 * sum(aadt_through, na.rm = TRUE),
+    aadt_total = sum(aadt_total),
+    through_ratio = (aadt_through / aadt_total) |> round(3),
+    n_trp = n()
+  )
+
+100*((1/1.005)*(1+0.0055)-1)
