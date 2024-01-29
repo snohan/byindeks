@@ -948,6 +948,52 @@ visualize_rolling_indices <-
   }
 
 
+table_bike_trps_with_sdt <- function(chosen_area_name) {
+
+  bike_trp_info |>
+    dplyr::filter(
+      area_name == chosen_area_name
+    ) |>
+    dplyr::mutate(
+      name = stringr::str_trunc(name, 30, "right")
+    ) |>
+    dplyr::select(
+      name,
+      road_category_and_number,
+      municipality_name,
+      year,
+      WINTER,
+      SPRING,
+      SUMMER,
+      FALL
+    ) |>
+    dplyr::arrange(
+      road_category_and_number
+    ) |>
+    flextable() |>
+    colformat_double(j = 4, big.mark = "", digits = 0) |>
+    set_header_labels(
+      name = "Registreringspunkt",
+      road_category_and_number = "Veg",
+      municipality_name = "Kommune",
+      year = "År",
+      WINTER = "Vinter",
+      SPRING = "Vår",
+      SUMMER = "Sommer",
+      FALL = "Høst"
+    ) |>
+    align(j = 4, align = "center", part = "all") |>
+    bold(part = "header") |>
+    font(fontname = "Lucida Sans Unicode", part = "all")  |>
+    bg(bg = "#ED9300", part = "header") |>
+    border_remove() |>
+    hline_top(part = "header", border = borderline) |>
+    hline_bottom(part = "all", border = borderline) |>
+    autofit()
+}
+
+
+
 table_index_chains <- function(chosen_name) {
 
   n_index_all_years <-

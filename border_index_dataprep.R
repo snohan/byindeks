@@ -6,7 +6,7 @@ source("get_from_nvdb_api.R")
 
 
 # Get TRP and crossings metainfo ----
-latest_published_month <- 8
+latest_published_month <- 12
 
 counties <-
   get_counties() |>

@@ -1,9 +1,10 @@
 # Source ----
+{
 source("rmd_setup.R")
 source("get_from_trafficdata_api.R")
 source("index_report_functions.R")
 source("indexpoints_tidying_functions.R")
-
+}
 
 # Index codes and years ----
 last_complete_year <- 2022
@@ -395,4 +396,116 @@ bike_index_all_long <-
 readr::write_rds(
   bike_index_all_long,
   file = "data_indexpoints_tidy/bike_index_all_long.rds"
+)
+
+
+# TRP ----
+#source("city_index_check_dataprep.R")
+points <- readr::read_rds("trps_for_city_index.rds")
+
+bike_trps <-
+  bike_trp_indexes_so_far_this_year |>
+  dplyr::select(
+    area_name,
+    trp_id
+  ) |>
+  dplyr::distinct() |>
+  dplyr::left_join(
+    points,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::mutate(
+    name = stringr::str_remove(name, " Sykkeltellepunkt"),
+    name = stringr::str_remove(name, " Sykkelsøyle"),
+    name = stringr::str_remove(name, "sykkel "),
+    name = stringr::str_remove(name, " Sykkel"),
+    name = stringr::str_remove(name, "-Sykkel"),
+    name = stringr::str_remove(name, "\\(Sykkel\\)"),
+    name = stringr::str_remove(name, " Ny"),
+  )
+
+
+# bike_aadt <-
+#   get_aadt_for_trp_list(bike_trps$trp_id) |>
+#   dplyr::filter(
+#     coverage >= 50
+#   ) |>
+#   dplyr::slice_max(
+#     year,
+#     by = trp_id,
+#     with_ties = FALSE
+#   ) |>
+#   dplyr::select(
+#     trp_id,
+#     year,
+#     coverage,
+#     adt,
+#     standard_deviation,
+#     standard_error
+#   )
+#
+# bike_trp_aadt <-
+#   bike_trps |>
+#   dplyr::left_join(
+#     bike_aadt,
+#     by = join_by(trp_id)
+#   )
+
+
+bike_sdt <-
+  dplyr::bind_rows(
+    get_sdt_for_trp_list(bike_trps$trp_id, 2020),
+    get_sdt_for_trp_list(bike_trps$trp_id, 2021),
+    get_sdt_for_trp_list(bike_trps$trp_id, 2022),
+    get_sdt_for_trp_list(bike_trps$trp_id, 2023)
+  )
+
+
+bike_sdt_wide <-
+  bike_sdt |>
+  dplyr::filter(
+    coverage >= 50
+  ) |>
+  dplyr::select(
+    trp_id,
+    year,
+    season,
+    sdt
+  ) |>
+  tidyr::pivot_wider(
+    names_from = "season",
+    values_from = "sdt"
+  ) |>
+  dplyr::arrange(
+    trp_id,
+    year
+  ) |>
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    seasons_na = sum(is.na(dplyr::c_across(WINTER:FALL)))
+  ) |>
+  dplyr::ungroup() |>
+  dplyr::filter(
+    seasons_na == 0
+  ) |>
+  dplyr::slice_max(
+    year,
+    by = trp_id,
+    with_ties = FALSE
+  ) |>
+  dplyr::select(
+    -seasons_na
+  )
+
+
+bike_trp_sdt <-
+  bike_trps |>
+  dplyr::left_join(
+    bike_sdt_wide,
+    by = join_by(trp_id)
+  )
+
+readr::write_rds(
+  bike_trp_sdt,
+  file = "data_indexpoints_tidy/bike_trp_sdt.rds"
 )

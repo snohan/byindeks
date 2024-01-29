@@ -81,6 +81,8 @@ index_for_plotting <-
     months,
     year
   )
+
+bike_trp_info <- readr::read_rds(file = "data_indexpoints_tidy/bike_trp_sdt.rds")
 ```
 
 \listoftables
@@ -112,7 +114,34 @@ I denne rapporten angis konfidensintervall i tabeller og figurer. Konfidensinter
 I mange tilfeller er konfidensintervallet relativt stort for sykkelindeksene. Det skyldes blant annet at mengden sykkeltrafikk på punktene er relativt lav, med typisk årsdøgntrafikk i størrelseorden noen hundre, som gjør at den prosentvise endringen fra år til år kan bli stor. I tillegg vil ulikt vær og føre i perioder kunne føre til relativt store endringer i antall syklende fra år til år, f.eks. om april er kald og våt ett år for så å være varm og tørr året etter. Dersom endringen i antall syklende er veldig ulik mellom punkt i samme by i samme periode, bidrar også dette til større usikkerhet i indeksen.
 
 
+## Om sesongdøgntrafikk
+I denne rapporten er det for hvert byområde inkludert en tabell over de aktuelle trafikkregistreringspunktene som inngår i sykkelindeksen. Tabellene oppgir sesongdøgntrafikk, som er gjennomsnittlig antall syklende per dag. Sesongene er delt inn slik:
+
+- vinter: desember, januar, februar
+- vår: mars, april, mai
+- sommer: juni, juli, august
+- høst: september, oktober, november
+
+
 # Bergen
+```{r}
+#| label: fig-map_brg
+#| tbl-cap: "Registeringspunkter for sykkeltrafikk i Bergen."
+#| ft.arraystretch: 0.9
+
+
+```
+
+
+```{r}
+#| label: tbl-trp_brg
+#| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Bergen."
+#| ft.arraystretch: 0.9
+
+table_bike_trps_with_sdt("Bergen")
+```
+
+
 
 ```{r}
 #| label: tbl-brg
@@ -136,6 +165,14 @@ index_for_plotting |>
 
 
 # Førde
+```{r}
+#| label: tbl-trp_frd
+#| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Førde."
+#| ft.arraystretch: 0.9
+
+table_bike_trps_with_sdt("Førde")
+```
+
 
 ```{r}
 #| label: tbl-frd
@@ -158,6 +195,14 @@ index_for_plotting |>
 
 
 # Grenland
+```{r}
+#| label: tbl-trp_grl
+#| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Grenland."
+#| ft.arraystretch: 0.9
+
+table_bike_trps_with_sdt("Grenland")
+```
+
 
 ```{r}
 #| label: tbl-grl
@@ -180,6 +225,14 @@ index_for_plotting |>
 
 
 # Kristiansand
+```{r}
+#| label: tbl-trp_krs
+#| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Kristiansand."
+#| ft.arraystretch: 0.9
+
+table_bike_trps_with_sdt("Kristiansand")
+```
+
 
 ```{r}
 #| label: tbl-krs
@@ -202,6 +255,14 @@ index_for_plotting |>
 
 
 # Nedre Glomma
+```{r}
+#| label: tbl-trp_ngl
+#| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Nedre Glomma."
+#| ft.arraystretch: 0.9
+
+table_bike_trps_with_sdt("Nedre Glomma")
+```
+
 
 ```{r}
 #| label: tbl-ngl
@@ -223,8 +284,15 @@ index_for_plotting |>
 ```
 
 
-
 # Nord-Jæren
+```{r}
+#| label: tbl-trp_njr
+#| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Nord-Jæren."
+#| ft.arraystretch: 0.9
+
+table_bike_trps_with_sdt("Nord-Jæren")
+```
+
 
 ```{r}
 #| label: tbl-njr
@@ -247,6 +315,14 @@ index_for_plotting |>
 
 
 # Osloområdet
+```{r}
+#| label: tbl-trp_osl
+#| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Osloområdet."
+#| ft.arraystretch: 0.9
+
+table_bike_trps_with_sdt("Osloområdet")
+```
+
 
 ```{r}
 #| label: tbl-osl
@@ -269,6 +345,14 @@ index_for_plotting |>
 
 
 # Tromsø
+```{r}
+#| label: tbl-trp_trm
+#| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Tromsø."
+#| ft.arraystretch: 0.9
+
+table_bike_trps_with_sdt("Tromsø")
+```
+
 
 ```{r}
 #| label: tbl-trm
@@ -291,6 +375,14 @@ index_for_plotting |>
 
 
 # Vestfold
+```{r}
+#| label: tbl-trp_ves
+#| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Vestfold."
+#| ft.arraystretch: 0.9
+
+table_bike_trps_with_sdt("Vestfold")
+```
+
 
 ```{r}
 #| label: tbl-ves

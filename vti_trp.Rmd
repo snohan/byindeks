@@ -103,10 +103,12 @@ link_color_keep <-
 
 # TODO: county polygons (nice to have)
 
-trp_for_vti_aadt_R <- trp_for_vti_aadt %>% 
+trp_for_vti_aadt_R <- 
+  trp_for_vti_aadt %>% 
   dplyr::filter(road_category == "R")
 
-trp_for_vti_aadt_F <- trp_for_vti_aadt %>% 
+trp_for_vti_aadt_F <- 
+  trp_for_vti_aadt %>% 
   dplyr::filter(road_category == "F")
 
 trp_id_in_county <- 

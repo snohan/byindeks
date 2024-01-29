@@ -497,7 +497,7 @@ historic_heavy_combinations <- calculate_all_index_chain_combinations(historic_h
 
 ```{r}
 #| label: tbl-historic_all_table
-#| tbl-cap: "Kumulativ trafikkutvikling fra 2016 til 2022."
+#| tbl-cap: "Kumulativ trafikkutvikling fra 2016 til 2023."
 #| ft.arraystretch: 0.9
 
 historic_all_combinations |> 
@@ -506,7 +506,7 @@ historic_all_combinations |>
 
 ```{r}
 #| label: tbl-historic_light_table
-#| tbl-cap: "Kumulativ trafikkutvikling for lette kjøretøy fra 2016 til 2022."
+#| tbl-cap: "Kumulativ trafikkutvikling for lette kjøretøy fra 2016 til 2023."
 #| ft.arraystretch: 0.9
 
 historic_light_combinations |> 
@@ -515,7 +515,7 @@ historic_light_combinations |>
 
 ```{r}
 #| label: tbl-historic_heavy_table
-#| tbl-cap: "Kumulativ trafikkutvikling for tunge kjøretøy fra 2016 til 2022."
+#| tbl-cap: "Kumulativ trafikkutvikling for tunge kjøretøy fra 2016 til 2023."
 #| ft.arraystretch: 0.9
 
 historic_heavy_combinations |> 
