@@ -93,13 +93,13 @@ bike_trp_info <- readr::read_rds(file = "data_indexpoints_tidy/bike_trp_sdt.rds"
 
 
 # Om sykkelindekser
-Sykkelindeksene er en type vegtrafikkindeks for sykkeltrafikk. De estimerer endringen i antall syklende i prosent fra et år til det neste. Endringen over flere år beregnes ved hjelp av en sammekjeding av disse indeksene.
+Sykkelindeksene er en type vegtrafikkindeks for sykkeltrafikk. De estimerer endringen i antall syklende i prosent fra et år til det neste. Endringen over flere år beregnes ved hjelp av en sammenkjeding av disse indeksene.
 
-En sykkelindeks beregnes for de byområdene som har et tilstrekkelig antall sykkelregistreringspunkter med god datakvalitet. Det vil gi et representativt utvalg for å kunne beregne trafikkutviklingen. Det gjøres en sammenligning av timetrafikken, dato mot dato i kalendermånedene.
+En sykkelindeks beregnes for de byområdene som har et tilstrekkelig antall sykkelregistreringspunkt med god datakvalitet. Det vil gi et representativt utvalg for å kunne beregne trafikkutviklingen. Det gjøres en sammenligning av timetrafikken, dato mot dato i kalendermånedene.
 
 Alle data er hentet fra [www.vegvesen.no/trafikkdata/](https://www.vegvesen.no/trafikkdata/). Timetrafikk med minst 95 % dekningsgrad inngår i beregningsgrunnlaget.
 
-Det tas forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkter er tidvis utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid eller omskilting o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
+Det tas forbehold om feil i datagrunnlaget. Enkelte trafikkregistreringspunkt er tidvis utelatt på grunn av feil på utstyr eller at de ligger på veier som er påvirket av vegarbeid eller omskilting o.l. Datagrunnlaget inkluderer likevel mange nok punkter til å få fram en generell trend i trafikkutviklingen.
 
 Været vil i perioder kunne påvirke trafikkmengden. For eksempel vil det ved dårlig føre, som ved stort snøfall eller underkjølt regn, bli redusert framkommelighet og dette fører til mindre trafikk enn normalt.
 

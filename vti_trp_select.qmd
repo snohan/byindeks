@@ -47,7 +47,7 @@ county_table <- readr::read_rds("new_vti/county_table.rds")
 country_table <- readr::read_rds("new_vti/country_table.rds")
 
 # Choose one county to look at:
-county_chosen <- c(8, 9, 10) # geonumber 1:15 
+county_chosen <- c(1:15) # geonumber 1:15 
 # Do not leave Oslo (3) alone
 
 trp_for_vti_chosen_here <-

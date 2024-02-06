@@ -117,7 +117,7 @@ pointindices <- pointindex_this_year[[2]]
 # writexl::write_xlsx(
 # #readr::write_csv2(
 #   pointindices_manually_excluded,
-#   "manuelt_ekskluderte_punkter_2022.xlsx"
+#   "manuelt_ekskluderte_punkter_2023.xlsx"
 # )
 
 # Back on track
