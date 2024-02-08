@@ -1,0 +1,173 @@
+---
+title: "Vurdering av byindekspunkter"
+format: 
+  html:
+    css: svv.css
+    number-sections: true
+    toc: true
+    toc-location: left
+    toc-title: "Innhold"
+    toc-expand: true
+    df-print: paged
+    self-contained: true
+crossref:
+  fig-title: Figur
+  tbl-title: Tabell
+  title-delim: .
+  fig-prefix: figur
+  tbl-prefix: tabell
+editor: source
+knitr: 
+  opts_chunk: 
+    echo: false
+---
+
+
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
+#| warning: false
+#| message: false
+  
+# Packages are loaded through sourcing rmd_setup.R
+source("rmd_setup.R")
+library(DT)
+library(htmltools)
+```
+
+
+```{r}
+#| label: data
+
+# TRPs
+# For map and table
+
+
+# Links
+# For map
+
+
+# City area stats
+# Ratio of measured traffic work, 
+# number of links
+
+
+```
+
+
+I byområdet `r city_name` er det nå `r nrow(trps_filtered)` trafikkregistreringspunkter, hvorav `r length(city_trps)` er med i dagens byindeks. Det foreslås her i inkludere ytterligere `r n_to_include`, slik at antall punkter i byindeksen blir `r length(city_trps) + n_to_include`.
+
+I kartet nedenfor er punkter som _ikke_ er med i byindeksen merket med rosa sirkel.
+
+```{r map, message=FALSE}
+trps_filtered_adt %>% 
+  create_point_adt_map_review()
+```
+
+
+# Kart
+```{r}
+#| label: fig-map
+
+trp_for_vti_chosen_here |> 
+  leaflet(
+    width = "100%",
+    options = leafletOptions(
+      crs = nvdb_crs,
+      zoomControl = TRUE
+    )
+  ) |> 
+  addTiles(
+    urlTemplate = nvdb_map_url,
+    attribution = nvdb_map_attribution
+  ) |> 
+  addCircleMarkers(
+    data = trp_for_vti_aadt_R,
+    group = "R",
+    radius = 6,
+    stroke = T,
+    weight = 2,
+    color = "#58b02c",
+    opacity = 0.8,
+    fill = T,
+    fillColor = ~palett_adt(adt),
+    fillOpacity = 0.8,
+    label = ~trp_label
+  ) |> 
+  addCircleMarkers(
+    data = trp_for_vti_aadt_F,
+    group = "F",
+    radius = 6,
+    stroke = T,
+    weight = 2,
+    color = "#008ec2",
+    opacity = 0.8,
+    fill = T,
+    fillColor = ~palett_adt(adt),
+    fillOpacity = 0.8,
+    label = ~trp_label
+  ) |> 
+  addPolylines(
+    data = links_in_county,
+    opacity = 0.8,
+    #fill = T,
+    color = ~link_color_keep(to_keep),
+    highlightOptions = highlightOptions(
+      bringToFront = TRUE,
+      sendToBack = FALSE,
+      color = "#000000",
+      opacity = 0.6
+      )
+    ) |> 
+  addLegend(
+    "bottomright",
+    pal = palett_adt,
+    values = ~adt,
+    title = "ÅDT",
+    opacity = 0.7,
+    labFormat = labelFormat(big.mark = " ")
+  ) |> 
+  addLegend(
+    "bottomright",
+    pal = link_color_keep,
+    values = ~links_in_county$to_keep,
+    title = "I fjor",
+    opacity = 0.7
+  ) |> 
+  addLayersControl(
+    overlayGroups = c("F", "R"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+```
+
+
+```{r table}
+trps_filtered_classified %>%
+  dplyr::select(#trp_id, 
+                name, operational_status, road_reference,
+                #road_category_and_number,
+                #section_number, subsection_number, meter,
+                #intersection_part_number, intersection_meter,
+                #municipality_name, lat, lon, 
+                #included,
+                #first_data, 
+                first_data_with_quality_metrics,
+                status
+                #latest_daily_traffic
+                ) %>% 
+  DT::datatable(
+    filter = "top",
+    colnames = c("Navn" = "name",
+                 "Status" = "operational_status",
+                 "Vegreferanse" = "road_reference",
+                 "Oppstart" = "first_data_with_quality_metrics",
+                 "I byindeks" = "status"),
+    options = list(
+      dom = "Blfrtip",
+      pageLength = 25,
+      #lengthMenu = c(21, 42, 70),
+      autoWidth = TRUE)) %>% 
+  DT::formatDate("Oppstart",
+                 method = "toLocaleDateString")
+```
