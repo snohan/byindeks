@@ -1,5 +1,5 @@
 ---
-title: "Vurdering av byindekspunkter"
+title: "Byindekspunkter"
 format: 
   html:
     css: svv.css
@@ -34,44 +34,69 @@ knitr:
 source("rmd_setup.R")
 library(DT)
 library(htmltools)
+
+palett_adt <-
+ leaflet::colorNumeric(
+   palette = "Greens",
+   domain = NULL
+  )
+
+link_color_new_and_old <-
+  leaflet::colorFactor(
+    palette = c("#ed1c2e", "#0000ff"),
+    domain = c("Ny", "Opprinnelig"),
+    levels = c("Ny", "Opprinnelig")
+  )
 ```
 
 
 ```{r}
 #| label: data
 
+trps_and_links <- readr::read_rds("chosen_links_nj_2023.rds")
+
 # TRPs
 # For map and table
+trp_info <-
+  trps_and_links |> 
+  sf::st_drop_geometry()
 
+n_trp_original <-
+  trp_info |> 
+  dplyr::filter(
+    status == "Opprinnelig"
+  ) |> 
+  nrow()
 
 # Links
-# For map
-
-
-# City area stats
-# Ratio of measured traffic work, 
-# number of links
-
-
+links_info <-
+  trps_and_links |> 
+  dplyr::select(
+    -lat,
+    -lon
+  )
 ```
 
+Dette notatet fokuserer på muligheten for å ta inn flere trafikkregistreringspunkt i byindeks for Nord-Jæren enn de 24 som ble tatt med fra referanseåret 2017. Her er det sett på 2023 som sammenføyningsår, det vil si at endringen i trafikkmengde blir beregnet med de opprinnelige punktene fra 2017 til 2023, og deretter blir trafikkutviklingen fra og med 2023 beregnet med et utvidet sett punkter.
 
-I byområdet `r city_name` er det nå `r nrow(trps_filtered)` trafikkregistreringspunkter, hvorav `r length(city_trps)` er med i dagens byindeks. Det foreslås her i inkludere ytterligere `r n_to_include`, slik at antall punkter i byindeksen blir `r length(city_trps) + n_to_include`.
+Grunner til å utvide antall punkt:
 
-I kartet nedenfor er punkter som _ikke_ er med i byindeksen merket med rosa sirkel.
+1. Det er allerede etablert mange nye punkt i årene etter referanseår. De fleste av disse er relevante å ta med, uten ekstra investeringskonstnad.
+2. Nytt vegsystem på E39 og Rv 13 ble åpnet i 2019 og 2020, som permanent endret trafikkflyten på vegnettet i Stavanger sentrum. 
 
-```{r map, message=FALSE}
-trps_filtered_adt %>% 
-  create_point_adt_map_review()
-```
+I årene 2021 og 2022 var trafikken i større eller mindre grad påvirket av pandemien. Derfor egner ikke disse årene seg så godt som sammenføyningsår.
+
+Av de 24 opprinnelige punktene er det `r n_trp_original` som har gode nok data i både referanseår og 2023. I tillegg må det tas hensyn til grunn nummer 2 nevnt ovenfor. Det er X av Y punkt som ikke er sammenlignbare mellom 2017 og 2023 på grunn av dette. I andre periode, fra 2023 og framover, kan `r nrow(trp_info)` være med.
+
+I kartet nedenfor er trafikkregistreringspunkt merket med sirkel. Trafikklenken som et punkt ligger på er merket med et strekningsobjekt, og denne viser hvilken del av vegnettet som punktet registrerer trafikken på.
 
 
 # Kart
 ```{r}
 #| label: fig-map
 
-trp_for_vti_chosen_here |> 
-  leaflet(
+leaflet(
+    trp_info,
     width = "100%",
     options = leafletOptions(
       crs = nvdb_crs,
@@ -83,8 +108,7 @@ trp_for_vti_chosen_here |>
     attribution = nvdb_map_attribution
   ) |> 
   addCircleMarkers(
-    data = trp_for_vti_aadt_R,
-    group = "R",
+    data = trp_info,
     radius = 6,
     stroke = T,
     weight = 2,
@@ -95,79 +119,54 @@ trp_for_vti_chosen_here |>
     fillOpacity = 0.8,
     label = ~trp_label
   ) |> 
-  addCircleMarkers(
-    data = trp_for_vti_aadt_F,
-    group = "F",
-    radius = 6,
-    stroke = T,
-    weight = 2,
-    color = "#008ec2",
-    opacity = 0.8,
-    fill = T,
-    fillColor = ~palett_adt(adt),
-    fillOpacity = 0.8,
-    label = ~trp_label
-  ) |> 
   addPolylines(
-    data = links_in_county,
+    data = links_info,
     opacity = 0.8,
-    #fill = T,
-    color = ~link_color_keep(to_keep),
+    color = ~link_color_new_and_old(status),
     highlightOptions = highlightOptions(
       bringToFront = TRUE,
       sendToBack = FALSE,
       color = "#000000",
       opacity = 0.6
       )
-    ) |> 
+  ) |> 
   addLegend(
     "bottomright",
     pal = palett_adt,
-    values = ~adt,
+    values = ~trp_info$adt,
     title = "ÅDT",
     opacity = 0.7,
     labFormat = labelFormat(big.mark = " ")
-  ) |> 
+  ) |>
   addLegend(
     "bottomright",
-    pal = link_color_keep,
-    values = ~links_in_county$to_keep,
-    title = "I fjor",
+    pal = link_color_new_and_old,
+    values = ~links_info$status,
+    title = "Opprinnelig med",
     opacity = 0.7
-  ) |> 
-  addLayersControl(
-    overlayGroups = c("F", "R"),
-    options = layersControlOptions(collapsed = FALSE)
   )
 ```
 
 
+# Tabell
 ```{r table}
-trps_filtered_classified %>%
-  dplyr::select(#trp_id, 
-                name, operational_status, road_reference,
-                #road_category_and_number,
-                #section_number, subsection_number, meter,
-                #intersection_part_number, intersection_meter,
-                #municipality_name, lat, lon, 
-                #included,
-                #first_data, 
-                first_data_with_quality_metrics,
-                status
-                #latest_daily_traffic
-                ) %>% 
+trp_info |> 
+  dplyr::select(
+    #trp_id, 
+    name, road_reference,
+    #road_category_and_number,
+    municipality_name, 
+    status
+  ) |> 
   DT::datatable(
     filter = "top",
     colnames = c("Navn" = "name",
-                 "Status" = "operational_status",
                  "Vegreferanse" = "road_reference",
-                 "Oppstart" = "first_data_with_quality_metrics",
-                 "I byindeks" = "status"),
+                 "Kommune" = "municipality_name",
+                 "Opprinnelig" = "status"),
     options = list(
       dom = "Blfrtip",
       pageLength = 25,
       #lengthMenu = c(21, 42, 70),
-      autoWidth = TRUE)) %>% 
-  DT::formatDate("Oppstart",
-                 method = "toLocaleDateString")
+      autoWidth = TRUE))
 ```

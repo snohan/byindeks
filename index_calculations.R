@@ -219,18 +219,18 @@ trp <-
   ) |>
   dplyr::distinct()
 
-trp_data_time_span <- get_trp_data_time_span()
+trp_time_span <- get_trp_data_time_span()
 
 
 # Links ----
-links <- sf::st_read("traffic-links-2022.geojson")
-links_reduced <-
-  links |>
-  dplyr::select(
-    nvdb_id = nvdbId,
-    trp_id = primaryTrpId
-  )
-remove(links)
+# links <- sf::st_read("traffic-links-2022.geojson")
+# links_reduced <-
+#   links |>
+#   dplyr::select(
+#     nvdb_id = nvdbId,
+#     trp_id = primaryTrpId
+#   )
+# remove(links)
 
 
 # Tromsø 2019-2022 ----
@@ -243,7 +243,7 @@ trp_trs <-
     trp_id, name, road_reference
   ) |>
   dplyr::left_join(
-    trp_data_time_span,
+    trp_time_span,
     by = join_by(trp_id)
   ) |>
   dplyr::filter(
@@ -379,6 +379,73 @@ readr::write_rds(
 )
 
 
+# Test Dramsvegen ----
+dramsvegen_ht_base_year <-
+  get_hourly_traffic_by_length(
+    "30868V1109333",
+    paste0(as.character(2022), "-05-01T00:00:00.000+02:00"),
+    paste0(as.character(2022), "-06-01T00:00:00.000+02:00")
+  ) |>
+  calculate_hourly_index_traffic()
+
+dramsvegen_dt_base_year <-
+  get_dt_by_length_for_trp(
+    "30868V1109333",
+    paste0(as.character(2022), "-01-01T00:00:00.000+01:00"),
+    paste0(as.character(2022 + 1), "-01-01T00:00:00.000+01:00")
+  ) |>
+  dplyr::filter(
+    length_range == "[..,5.6)"
+  )
+
+
+dramsvegen_ht_calc_year <-
+  get_hourly_traffic_by_length(
+    "30868V1109333",
+    paste0(as.character(2023), "-05-01T00:00:00.000+02:00"),
+    paste0(as.character(2023), "-06-01T00:00:00.000+02:00")
+  ) |>
+  calculate_hourly_index_traffic()
+
+dramsvegen_dt_calc_year <-
+  get_dt_by_length_for_trp(
+    "30868V1109333",
+    paste0(as.character(2023), "-01-01T00:00:00.000+01:00"),
+    paste0(as.character(2023 + 1), "-01-01T00:00:00.000+01:00")
+  ) |>
+  dplyr::filter(
+    length_range == "[..,5.6)"
+  )
+
+
+dramsvegen_index_data <-
+  dplyr::inner_join(
+    dramsvegen_ht_base_year,
+    dramsvegen_ht_calc_year,
+    by = join_by(month, day, hour),
+    suffix = c("_base", "_calc")
+  )
+
+
+tictoc::tic()
+trp_index_data <-
+  calculate_trp_index(
+    "test",
+    "30868V1109333",
+    2022,
+    2023
+  )
+tictoc::toc()
+
+dramsvegen <-
+  readr::read_rds(
+    file = paste0("trp_index/test/30868V1109333_2022_2023.rds")
+  ) |>
+  dplyr::mutate(
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1)
+  )
+
+
 # Nord-Jæren 2017 vs. 2019 ----
 # Will reference year 2019 be better than 2017?
 ## Which TRPs were good in 2019 ----
@@ -388,7 +455,7 @@ trp_njaeren <-
     municipality_name %in% c("Randaberg", "Stavanger", "Sola", "Sandnes")
   ) |>
   dplyr::left_join(
-    trp_data_time_span,
+    trp_time_span,
     by = join_by(trp_id)
   ) |>
   dplyr::filter(
@@ -580,68 +647,126 @@ trp_mdt_ok_refyear <-
 # Combined index and uncertainty
 
 
-# Test Dramsvegen ----
-dramsvegen_ht_base_year <-
-  get_hourly_traffic_by_length(
-    "30868V1109333",
-    paste0(as.character(2022), "-05-01T00:00:00.000+02:00"),
-    paste0(as.character(2022), "-06-01T00:00:00.000+02:00")
-  ) |>
-  calculate_hourly_index_traffic()
+# Nord-Jæren 2017-2023 ----
+## 2017-2023 ----
+# Chosen TRPs good enough in 2023
 
-dramsvegen_dt_base_year <-
-  get_dt_by_length_for_trp(
-    "30868V1109333",
-    paste0(as.character(2022), "-01-01T00:00:00.000+01:00"),
-    paste0(as.character(2022 + 1), "-01-01T00:00:00.000+01:00")
-  ) |>
-  dplyr::filter(
-    length_range == "[..,5.6)"
-  )
-
-
-dramsvegen_ht_calc_year <-
-  get_hourly_traffic_by_length(
-    "30868V1109333",
-    paste0(as.character(2023), "-05-01T00:00:00.000+02:00"),
-    paste0(as.character(2023), "-06-01T00:00:00.000+02:00")
-  ) |>
-  calculate_hourly_index_traffic()
-
-dramsvegen_dt_calc_year <-
-  get_dt_by_length_for_trp(
-    "30868V1109333",
-    paste0(as.character(2023), "-01-01T00:00:00.000+01:00"),
-    paste0(as.character(2023 + 1), "-01-01T00:00:00.000+01:00")
-  ) |>
-  dplyr::filter(
-    length_range == "[..,5.6)"
-  )
-
-
-dramsvegen_index_data <-
-  dplyr::inner_join(
-    dramsvegen_ht_base_year,
-    dramsvegen_ht_calc_year,
-    by = join_by(month, day, hour),
-    suffix = c("_base", "_calc")
-  )
-
-
-tictoc::tic()
-trp_index_data <-
-  calculate_trp_index(
-    "test",
-    "30868V1109333",
-    2022,
-    2023
-  )
-tictoc::toc()
-
-dramsvegen <-
+nj_2023_chosen<-
   readr::read_rds(
-    file = paste0("trp_index/test/30868V1109333_2022_2023.rds")
+    "chosen_links_nj_2023.rds"
+  )
+
+
+# A direct index with the original 24 TRPs
+# Does this direct index have lower uncertainty than the chained?
+trp_2017 <- get_published_pointindex_for_months(952, 2020, 1)[[1]]
+
+trps_not_eligible_2023_due_to_new_roads <-
+  c(
+    "17949V320695",
+    "10795V320297",
+    "68351V319882",
+    "57279V320244"
+  )
+
+trp_2017_eligible <-
+  trp_2017[!(trp_2017 %in% trps_not_eligible_2023_due_to_new_roads)]
+
+trp_2017_2023 <-
+  trp_2017_eligible[trp_2017_eligible %in% nj_2023_chosen$trp_id]
+
+{
+  tictoc::tic()
+  trp_index_data <-
+    calculate_trp_index(
+      "njaeren_2023",
+      trp_2017_2023[2],
+      2017,
+      2023
+    )
+  tictoc::toc()
+}
+
+# Utelatt:
+# Åsedalen pga ny arm til E39 til Hoveveien
+# Hillevågtunnelen pga NorTraf-data tom juli 2017
+
+
+all_trp_index_data <-
+  base::list.files(path = "trp_index/njaeren_2023", full.names = TRUE) |>
+  purrr::map(~ readr::read_rds(.x)) |>
+  purrr::list_rbind() |>
+  # dplyr::filter(
+  #   !(trp_id == "99781V2303021" & month == 4)
+  # ) |>
+  dplyr::summarise(
+    traffic_base = sum(traffic_base),
+    traffic_calc = sum(traffic_calc),
+    n_months = n(),
+    .by = c(trp_id)
+  ) |>
+  dplyr::filter(
+    n_months >= 6
   ) |>
   dplyr::mutate(
-    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1)
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(2),
+    weight = traffic_base / sum(traffic_base),
+    city_index = (sum(traffic_calc) / sum(traffic_base) - 1 ) * 100,
+    deviation = weight * (index_p - city_index)^2,
+    index_i = traffic_calc / traffic_base,
+    city_index_i = sum(traffic_calc) / sum(traffic_base),
+    deviation_i = weight * (index_i - city_index_i)^2
+  )
+
+trp_index_meta_data <-
+  all_trp_index_data |>
+  dplyr::left_join(
+    trp,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    road_reference,
+    index_p
+  ) |>
+  dplyr::distinct() |>
+  dplyr::arrange(
+    name
+  )
+
+
+city_index_njaeren_2017_2023 <-
+  all_trp_index_data |>
+  dplyr::summarise(
+    traffic_base = sum(traffic_base),
+    traffic_calc = sum(traffic_calc),
+    n_trp = n(),
+    sum_squared_weight = sum(weight^2),
+    n_eff = 1 / sum_squared_weight,
+    variance_p = (1 / (1 - sum_squared_weight)) * sum(deviation),
+    variance_i = (1 / (1 - sum_squared_weight)) * sum(deviation_i)
+  ) |>
+  dplyr::mutate(
+    period = "2017-2023",
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1),
+    index_i = traffic_calc / traffic_base,
+    standard_error = sqrt(sum_squared_weight * variance_p),
+    standard_error_i = sqrt(sum_squared_weight * variance_i),
+    ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error, 1),
+    ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error, 1)
+  ) |>
+  dplyr::select(
+    period,
+    index_i,
+    index_p,
+    ci_lower,
+    ci_upper,
+    n_trp,
+    n_eff,
+    variance_p,
+    variance_i,
+    sum_squared_weight,
+    standard_error,
+    standard_error_i
   )

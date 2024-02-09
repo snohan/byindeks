@@ -75,6 +75,67 @@ trps_filtered <-
   )
 
 
+## AADT ----
+trp_aadts <-
+  trps_filtered$trp_id |>
+  get_aadt_for_trp_list() |>
+  dplyr::filter(
+    year == 2023
+  ) |>
+  dplyr::mutate(
+    valid_length_percent = round(valid_length_volume / adt * 100, digits = 1)
+  ) |>
+  dplyr::mutate(
+    good_enough = dplyr::case_when(
+      (coverage > 95 & valid_length_percent > 99) ~ TRUE,
+      TRUE ~ FALSE
+    )
+  ) |>
+  dplyr::select(
+    trp_id,
+    adt,
+    good_enough
+  )
+
+
+## TRP tidy ----
+trps_unsuited <- c(
+  # For mange TRP med samme trafikk
+  "03108V320583",
+  "81631V1727485",
+  "07051V2725969",
+  "92879V2726065",
+  # Stengte veger 2023
+  "83652V319725" # Strandgata nord
+)
+
+
+trp_aadt_tidy <-
+  trps_filtered |>
+  dplyr::left_join(
+    trp_aadts,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::filter(
+    operational_status == "operational",
+    good_enough == TRUE,
+    # øyene nord for Randabergs fastland skal ikke med
+    lat < 59.05,
+    # områder langt øst skal ikke være med
+    lon < 5.82,
+    !(trp_id %in% trps_unsuited)
+  ) |>
+  dplyr::mutate(
+    status = dplyr::case_when(
+      included == TRUE ~ "Opprinnelig",
+      included == FALSE ~ "Ny"
+    ),
+    trp_label = paste(name, road_category_and_number, adt, sep = "<br/>"),
+    trp_label = lapply(trp_label, htmltools::HTML)
+  )
+
+
+
 # Traffic links ----
 # Geojson from ADM
 links <-
@@ -102,7 +163,17 @@ links <-
     -municipality_ids
   ) |>
   # Remove duplicates (links crossing municipality borders inside city)
-  dplyr::distinct()
+  dplyr::distinct() |>
+  # manually update trp_id on links missing correct info
+  dplyr::mutate(
+    trp_id = dplyr::case_when(
+      id == "1018316790" ~ "61929V2422166",
+      id == "1018204697" ~ "96553V2725986",
+      id == "1018200234" ~ "65096V2726170",
+      id == "1018200253" ~ "94180V2726102",
+      TRUE ~ trp_id
+    )
+  )
 
 
 ## Traffic work ----
@@ -139,77 +210,76 @@ traffic_work <-
     n_links = n()
   )
 
+traffic_work_measured <-
+  links |>
+  sf::st_drop_geometry() |>
+  dplyr::select(
+    id,
+    length,
+    trp_id,
+    trafficVolumes
+  ) |>
+  # Some may be missing, often ferry links as per feb 24
+  dplyr::filter(
+    !(is.na(trafficVolumes)),
+    trp_id %in% trp_aadt_tidy$trp_id
+  ) |>
+  dplyr::mutate(
+    volumes = purrr::map(trafficVolumes, ~ jsonlite::fromJSON(.x))
+  ) |>
+  tidyr::unnest(
+    volumes
+  ) |>
+  dplyr::filter(
+    trafficVolumeType == "GUESSTIMATED"
+  ) |>
+  dplyr::select(
+    id,
+    length,
+    trp_id,
+    traffic_work = trafficWorkValue
+  ) |>
+  dplyr::summarise(
+    traffic_work_mill_km = sum(traffic_work) / 1e9,
+    n_links = n()
+  )
+
+traffic_work_measured$traffic_work_mill_km / traffic_work$traffic_work_mill_km
 
 
+## Chosen links ----
+links_with_chosen_trp <-
+  links |>
+  dplyr::inner_join(
+    trp_aadt_tidy,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::select(
+    id,
+    trp_id,
+    name,
+    length,
+    road_reference,
+    road_category_and_number,
+    municipality_name,
+    lat, lon,
+    included,
+    adt,
+    status,
+    trp_label
+  )
+
+# missing_trps <-
+#   trp_aadt_tidy |>
+#   dplyr::filter(
+#     !(trp_id %in% links_with_chosen_trp$trp_id)
+#   )
 
 
-
-# point out unsuited trps
-trps_unsuited <- c(
-  "74885V319528",
-  "07793V319942",
-  "50233V320584",
-  "22478V1814807",
-  "68684V319527",
-  "40190V319527",
-  "55439V320125",
-  "45995V320592",
-  "03108V320583",
-  "45342V320223",
-  "10028V320295",
-  "93189V320582",
-  "55507V319881",
-  "71535V319524",
-  "03819V320689",
-  "74137V319919",
-  "12478V320582",
-  "84064V320581",
-  "71798V319583",
-  "13433V319582",
-  "35382V1727514",
-  "50741V1727509",
-  "10569V2580836",
-  "74012V320634",
-  "95626V320634",
-  "13715V2721330",
-  "63247V3131641",
-  "58400V2721295",
-  "33926V2721315",
-  "91556V2721320",
-  "20586V2721334",
-  "41451V320581",
-  "00462V320124",
-  "13000V2783697",
-  "94180V2726102",
-  "65096V2726170",
-  "06011V2726196"
+readr::write_rds(
+  links_with_chosen_trp,
+  "chosen_links_nj_2023.rds"
 )
 
-trps_filtered_classified <-
-  trps_filtered %>%
-  dplyr::mutate(unsuited = trp_id %in% trps_unsuited,
-                status = dplyr::case_when(
-                  included == TRUE ~ "Er med",
-                  included == FALSE & unsuited == FALSE ~ "Tas med",
-                  included == FALSE & unsuited == TRUE ~ "Utelates",
-                ))
 
-n_to_include <-  trps_filtered_classified %>%
-  dplyr::filter(status == "Tas med") %>%
-  nrow()
 
-## AADT ----
-adt <- get_aadt_for_trp_list(trps_filtered$trp_id)
-
-adt_filtered <- adt %>%
-  #dplyr::filter(length_range == "[..,5.6)") %>%
-  #dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
-  #dplyr::filter(length_quality > 90) %>%
-  #dplyr::filter(coverage > 50) %>%
-  dplyr::group_by(trp_id) %>%
-  #dplyr::filter(year >= 2019) %>%
-  dplyr::filter(year == 2020) %>%
-  dplyr::select(trp_id, adt)
-
-trps_filtered_adt <- trps_filtered_classified %>%
-  dplyr::left_join(adt_filtered, by = "trp_id")
