@@ -14,7 +14,7 @@ source("indexpoints_tidying_functions.R")
 
 # Set manual variables ----
 {
-index_month <- 12 # to be published now
+index_month <- 1 # to be published now
 city_number <- 960
 city_name <- "Trondheim"
 }
@@ -25,14 +25,16 @@ city_name <- "Trondheim"
 trp_index_20 <- get_published_pointindex_for_months_trondheim(city_number, 2020, 12)
 trp_index_21 <- get_published_pointindex_for_months_trondheim(city_number, 2021, 12)
 trp_index_22 <- get_published_pointindex_for_months_trondheim(city_number, 2022, 12)
-trp_index_23 <- get_published_pointindex_for_months_trondheim(city_number, 2023, index_month)
+trp_index_23 <- get_published_pointindex_for_months_trondheim(city_number, 2023, 12)
+trp_index_24 <- get_published_pointindex_for_months_trondheim(city_number, 2024, index_month)
 
 trp_index_all <-
   dplyr::bind_rows(
     trp_index_20[[2]],
     trp_index_21[[2]],
     trp_index_22[[2]],
-    trp_index_23[[2]]
+    trp_index_23[[2]],
+    trp_index_24[[2]]
   )
 }
 
@@ -75,7 +77,7 @@ toll_index_monthly <-
 #
 # TRPs ----
 # Choosing most recent version of city trps
-city_trps <- trp_index_23[[1]]
+city_trps <- trp_index_24[[1]]
 
 # Removing Tungasletta Ystgaard (is removed from VTI, but is still in present in API before 2023)
 #city_trps <-
@@ -181,14 +183,14 @@ trp_toll_index_yearly <-
 
 # Sidetrack
 # For through traffic
-trp_toll_index_yearly_through_traffic <-
-  trp_toll_index_yearly |>
-  dplyr::filter(length_range == "lette")
-
-readr::write_rds(
-  trp_toll_index_yearly_through_traffic,
-  file = "data_indexpoints_tidy/trp_index_960.rds"
-)
+# trp_toll_index_yearly_through_traffic <-
+#   trp_toll_index_yearly |>
+#   dplyr::filter(length_range == "lette")
+#
+# readr::write_rds(
+#   trp_toll_index_yearly_through_traffic,
+#   file = "data_indexpoints_tidy/trp_index_960.rds"
+# )
 
 # End of sidetrack
 
@@ -324,6 +326,16 @@ years_1_4 <-
     index_type = "chained"
   )
 
+years_1_5 <-
+  dplyr::bind_rows(
+    years_1_4,
+    dplyr::slice(city_index_yearly_light, 5)
+  ) |>
+  calculate_two_year_index() |>
+  dplyr::mutate(
+    index_type = "chained"
+  )
+
 # Skipping intermediate years, adding just from first to last
 city_index_yearly_all <-
   city_index_yearly_light |>
@@ -333,7 +345,8 @@ city_index_yearly_all <-
   dplyr::bind_rows(
     years_1_2,
     years_1_3,
-    years_1_4
+    years_1_4,
+    years_1_5
   ) |>
   dplyr::mutate(
     length_range = "lette",
@@ -616,13 +629,21 @@ so_far_years_1_4 <-
   ) |>
   calculate_two_year_index()
 
+so_far_years_1_5 <-
+  dplyr::bind_rows(
+    so_far_years_1_4,
+    dplyr::slice(city_index_so_far, 5)
+  ) |>
+  calculate_two_year_index()
+
 # Skipping intermediate years, adding just from first to last
 city_index_so_far_all <-
   city_index_so_far |>
   dplyr::bind_rows(
     so_far_years_1_2,
     so_far_years_1_3,
-    so_far_years_1_4
+    so_far_years_1_4,
+    so_far_years_1_5
   ) |>
   dplyr::mutate(
     length_range = "lette",

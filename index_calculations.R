@@ -663,10 +663,12 @@ trp_2017 <- get_published_pointindex_for_months(952, 2020, 1)[[1]]
 
 trps_not_eligible_2023_due_to_new_roads <-
   c(
-    "17949V320695",
-    "10795V320297",
-    "68351V319882",
-    "57279V320244"
+    "17949V320695", # Bybrua sør
+    "10795V320297", # Randabergveien
+    "68351V319882", # Kannik
+    "57279V320244", # Storhaugtunnelen
+    "43296V319721", # Åsedalen: ny arm mellom E39 og Hoveveien
+    "54577V319746"  # Hillevågtunnelen: NorTraf i 2017
   )
 
 trp_2017_eligible <-
@@ -680,17 +682,12 @@ trp_2017_2023 <-
   trp_index_data <-
     calculate_trp_index(
       "njaeren_2023",
-      trp_2017_2023[2],
+      trp_2017_2023[14],
       2017,
       2023
     )
   tictoc::toc()
 }
-
-# Utelatt:
-# Åsedalen pga ny arm til E39 til Hoveveien
-# Hillevågtunnelen pga NorTraf-data tom juli 2017
-
 
 all_trp_index_data <-
   base::list.files(path = "trp_index/njaeren_2023", full.names = TRUE) |>
@@ -732,9 +729,8 @@ trp_index_meta_data <-
   ) |>
   dplyr::distinct() |>
   dplyr::arrange(
-    name
+    trp_id
   )
-
 
 city_index_njaeren_2017_2023 <-
   all_trp_index_data |>

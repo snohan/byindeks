@@ -72,26 +72,33 @@ points <- readr::read_rds("trps_for_city_index.rds")
 
 # Choose
 index_year <- 2023
-latest_published_month <- 11
-city_number <- 953
+latest_published_month <- 12
+city_number <- 960
 # End choose
 
+new_month_year <-
+  dplyr::if_else(
+    latest_published_month == 12,
+    index_year + 1,
+    index_year
+  )
+
 new_month_name <- 
-  lubridate::as_date(paste0(index_year, "-", latest_published_month + 1, "-01")) |> 
+  lubridate::as_date(paste0("2000-", (latest_published_month + 1) %% 12, "-01")) |> 
   lubridate::month(label = TRUE, abbr = FALSE) |> 
   stringr::str_to_title()
 
 source("city_reference_year.R")
 
-previous_index_years <- 
-  if(index_year - reference_year == 1) {
-    NULL
-  }else{
-  base::seq(
-    reference_year + 1,
-    index_year - 1
-  )
-  }
+# previous_index_years <- 
+#   if(index_year - reference_year == 1) {
+#     NULL
+#   }else{
+#   base::seq(
+#     reference_year + 1,
+#     index_year - 1
+#   )
+#   }
 
 # Fetch
 # For TRD this is the unofficial
@@ -144,7 +151,7 @@ if(city_number == 960){
       index = index_p
     ) |>
     dplyr::filter(
-      year == index_year
+      year == new_month_year
     ) |>
     tidyr::pivot_wider(
       id_cols = ,
@@ -157,13 +164,15 @@ if(city_number == 960){
   tolling_station_indices_prepared_old <-
     tolling_station_indices_prepared |>
     dplyr::filter(
-      month < latest_published_month + 1
+      month < (latest_published_month + 1) %% 12
+      #latest_published_month + 1
     )
   
   tolling_station_indices_prepared_new <-
     tolling_station_indices_prepared |>
     dplyr::filter(
-      month == latest_published_month + 1
+      month == (latest_published_month + 1) %% 12
+      #latest_published_month + 1
     )
   
   # tolling_station_indices_prepared_new_2 <-
@@ -231,8 +240,8 @@ if(city_number == 960){
 }else{
   
   city_trps_meta <- 
-  points %>% 
-  dplyr::filter(trp_id %in% city_trps)
+    points %>% 
+    dplyr::filter(trp_id %in% city_trps)
   
 }
 ```
@@ -494,7 +503,7 @@ readr::write_rds(
 point_index_new <- 
   get_pointindices_for_trp_list(
     city_trps, 
-    index_year
+    new_month_year
   )
 
 # pi_2019 <-
@@ -568,9 +577,11 @@ city_index_prepared <-
 
 pointindex_prepared <- 
   pointindices %>% 
-  dplyr::filter(period == "month",
-                is_excluded == FALSE,
-                is_manually_excluded == FALSE) %>% 
+  dplyr::filter(
+    period == "month",
+    is_excluded == FALSE,
+    is_manually_excluded == FALSE
+  ) %>% 
   dplyr::select(
     trp_id, 
     year, 
@@ -599,7 +610,7 @@ point_index_new_prepared <-
   dplyr::filter(
     day_type == "ALL",
     period == "month",
-    month == latest_published_month + 1
+    month == (latest_published_month + 1) %% 12
   ) %>% 
   dplyr::select(
     trp_id, 
@@ -678,6 +689,9 @@ pointindex_prepared_all <-
     #point_index_new_prepared_4#,
     #point_index_new_prepared_5
   ) %>% 
+  dplyr::filter(
+    year == new_month_year
+  ) |> 
   #dplyr::left_join(city_trps_meta) %>% 
   #dplyr::left_join(adt_filtered) %>% 
   dplyr::left_join(

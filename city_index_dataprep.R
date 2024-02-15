@@ -56,9 +56,9 @@ trp_id_msnr <-
 
 ## Choose publish month ----
 {
-present_year <- 2023
-index_month <- 12 # the one to be published now
-city_number <- 953
+present_year <- 2024
+index_month <- 1 # the one to be published now
+city_number <- 960
 }
 # End choose
 
@@ -739,14 +739,14 @@ mdt_filtered |>
   )
 
 # Read back in
-mdt_filtered <-
-  readr::read_rds(
-    paste0(
-      "data_indexpoints_tidy/mdt_",
-      city_number,
-      ".rds"
-    )
-  )
+# mdt_filtered <-
+#   readr::read_rds(
+#     paste0(
+#       "data_indexpoints_tidy/mdt_",
+#       city_number,
+#       ".rds"
+#     )
+#   )
 
 
 ## Check MDT validity ----
@@ -774,7 +774,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[21:22]
+    trp_id %in% trp_mdt_ok_refyear[16:18]
   ) |>
   dplyr::select(
     trp_id,
@@ -973,10 +973,10 @@ mdt_and_pi <-
     length_quality >= 98.5
   ) |>
   dplyr::left_join(
-    trp_index_monthly,
-    by = c("trp_id", "year", "month"),
-    #dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
-    #by = c("trp_id", "year_month" = "month_object") # TRD
+    #trp_index_monthly,
+    #by = c("trp_id", "year", "month"),
+    dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
+    by = c("trp_id", "year_month" = "month_object") # TRD
   ) |>
   dplyr::left_join(
     trp_names,
@@ -1194,7 +1194,7 @@ list(
   by_2_aar_glid_indeks = all_24_month_indices,
   by_1_aar_glid_indeks = all_12_month_indices
   # TRD
-  #,byindeks_hittil = city_index_so_far_all
+  ,byindeks_hittil = city_index_so_far_all
 ) |>
 writexl::write_xlsx(
   path = paste0(
