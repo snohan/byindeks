@@ -2,6 +2,7 @@
 {
   source("rmd_setup.R")
   source("get_from_trafficdata_api.R")
+  source("indexpoints_tidying_functions.R")
   library(tictoc)
   library(writexl)
   library(sf)
@@ -446,66 +447,70 @@ dramsvegen <-
   )
 
 
-# Nord-Jæren 2017 vs. 2019 ----
-# Will reference year 2019 be better than 2017?
-## Which TRPs were good in 2019 ----
-trp_njaeren <-
-  trp |>
-  dplyr::filter(
-    municipality_name %in% c("Randaberg", "Stavanger", "Sola", "Sandnes")
+# Nord-Jæren 2017-2019 direct ----
+trps_aadt_in_period_tidy <-
+  readr::read_rds("nj_trp_aadt.rds") |>
+  dplyr::select(
+    trp_id,
+    year,
+    good_enough
   ) |>
-  dplyr::left_join(
-    trp_time_span,
+  dplyr::filter(
+    good_enough == TRUE
+  )
+
+trps_good_enough_both_years <-
+  dplyr::inner_join(
+    trps_aadt_in_period_tidy |>
+      dplyr::filter(
+        year == 2017
+      ),
+    trps_aadt_in_period_tidy |>
+      dplyr::filter(
+        year == 2019
+      ),
     by = join_by(trp_id)
   ) |>
-  dplyr::filter(
-    first_data_with_quality_metrics < "2019-02-01",
-    latest_daily_traffic > "2019-12-01"
+  dplyr::left_join(
+    trps_filtered,
+    by = join_by(trp_id)
   )
 
-
-## AADT to check coverage ----
-aadt <- get_aadt_for_trp_list(trp_njaeren$trp_id)
-
-aadt_tidy <-
-  aadt |>
-  dplyr::filter(
-    year %in% c(2019)
-  ) |>
-  dplyr::select(
-    trp_id, year, coverage
+trps_not_eligible_2019_due_to_new_roads <-
+  c(
+    "43296V319721", # Åsedalen: ny arm mellom E39 og Hoveveien
+    "54577V319746" # Hillevågstunnelen
   )
 
+# I tillegg kan Auglend være med (Nortraf jan-feb 2017)
 
-## 2017-2019 ----
-# A direct index with the original 24 TRPs
-# Does this direct index have lower uncertainty than the chained?
-trp_2017 <- get_published_pointindex_for_months(952, 2020, 1)[[1]]
+trp_2017_2019 <-
+  trps_good_enough_both_years |>
+  dplyr::filter(
+    !(trp_id %in% trps_not_eligible_2019_due_to_new_roads)
+  )
 
 {
   tictoc::tic()
   trp_index_data <-
     calculate_trp_index(
-      "njaeren",
-      trp_2017[19],
+      "njaeren_2017_2019",
+      trp_2017_2019$trp_id[18],
       2017,
       2019
     )
   tictoc::toc()
 }
 
-# Utelatt:
-# Åsedalen pga ny arm til E39 til Hoveveien
-# Hillevågtunnelen pga NorTraf-data tom juli 2017
-# Kannik: lite data i 2019
-
 all_trp_index_data <-
-  base::list.files(path = "trp_index/njaeren", full.names = TRUE) |>
+  base::list.files(path = "trp_index/njaeren_2017_2019", full.names = TRUE) |>
   purrr::map(~ readr::read_rds(.x)) |>
   purrr::list_rbind() |>
-  dplyr::filter(
-    !(trp_id == "99781V2303021" & month == 4)
-  ) |>
+  # In 2017 and 2019, Easter was entirely in April.
+  # dplyr::filter(
+  #   !(trp_id == "99781V2303021" & month == 4),
+  #   !(trp_id == "36178V320198" & month == 4)
+  # ) |>
   dplyr::summarise(
     traffic_base = sum(traffic_base),
     traffic_calc = sum(traffic_calc),
@@ -542,7 +547,6 @@ trp_index_meta_data <-
     name
   )
 
-
 city_index_njaeren_2017_2019 <-
   all_trp_index_data |>
   dplyr::summarise(
@@ -578,7 +582,12 @@ city_index_njaeren_2017_2019 <-
     standard_error_i
   )
 
-# Resultat
+readr::write_rds(
+  city_index_njaeren_2017_2019,
+  "trp_index/city_index_njaeren_2017_2019.rds"
+)
+
+# Resultat begrenset til 24 opprinnelige punkt
 # Direkte indeks: -3,5 (standarfeil 3,1)
 # Opprinnelig kjedet indeks: -4,6 (standarfeil 2,1)
 # Forskjellen kommer nok av at Hillevågtunnelen ikke er med i den direkte pga NorTraf-data.
@@ -587,79 +596,471 @@ city_index_njaeren_2017_2019 <-
 # Den skulle ha gitt et lite positivt bidrag.
 
 
-## 2019-2023 ----
-# Three year sliding window
-# Fetching the TRPs agreed on in the proposal to extend number of TRPs
-reference_year <- 2019
-trp_2019 <- get_published_pointindex_for_months(10952, 2021, 1)[[1]]
-
-trp_2019_df <-
-  tibble::as_tibble_col(
-    trp_2019,
-    column_name = "trp_id"
-  )
-
-# Some of these TRPs were not yet operational in 2019
-trp_njaeren_used <-
-  trp_njaeren |>
-  dplyr::right_join(
-    trp_2019_df,
-    by = "trp_id"
+# Nord-Jæren 2019-2023 ----
+trps_aadt_in_period_tidy <-
+  readr::read_rds("nj_trp_aadt.rds") |>
+  dplyr::select(
+    trp_id,
+    year,
+    good_enough
   ) |>
   dplyr::filter(
-    #trp_id %in% trp_2019
-    is.na(name)
-  ) |>
-  dplyr::select(
-    trp_id
+    good_enough == TRUE
+  )
+
+trps_good_enough_both_years <-
+  dplyr::inner_join(
+    trps_aadt_in_period_tidy |>
+      dplyr::filter(
+        year == 2019
+      ),
+    trps_aadt_in_period_tidy |>
+      dplyr::filter(
+        year == 2023
+      ),
+    by = join_by(trp_id)
   ) |>
   dplyr::left_join(
-    trp,
-    by = "trp_id"
+    trps_filtered,
+    by = join_by(trp_id)
   )
 
-# Choosing agreed upon TRPs that were good in 2019
-trp_2019_chosen <-
-  trp_njaeren |>
+trps_not_eligible_2019_2023_due_to_new_roads <-
+  c(
+    "17949V320695", # Bybrua sør
+    "10795V320297", # Randabergveien
+    "58562V320296", # Tanke Svilandsgate
+    "08952V320223", # Bjergsted
+    "68351V319882", # Kannik
+    "57279V320244", # Storhaugtunnelen
+    "54577V319746", # Hillevågstunnelen
+    "55507V319881", # Madlaveien Mosvatnet
+    "71535V319524", # Lassa
+    "83652V319725", # Strandgata nord
+    "92102V319885", # Bergelandstunnelen
+    "50749V319525", # Byhaugtunnelen sør
+    "86207V319742", # Lagårdsveien
+    "32842V319521"  # Mosheim
+  )
+
+trp_2019_2023 <-
+  trps_good_enough_both_years |>
   dplyr::filter(
-    trp_id %in% trp_2019
+    !(trp_id %in% trps_not_eligible_2019_2023_due_to_new_roads)
+  )
+
+trp_names <-
+  trp_2019_2023 |>
+  dplyr::select(
+    trp_id,
+    name,
+    municipality_name
   )
 
 
-### Get MDTs ----
+## 2019-2023 sliding ----
+reference_year <- 2019
+
 mdt <-
   purrr::map_dfr(
     c(2019, 2020, 2021, 2022, 2023),
-    ~ get_mdt_by_length_for_trp_list(trp_2019_chosen$trp_id, .x)
+    ~ get_mdt_by_length_for_trp_list(trp_2019_2023$trp_id, .x)
   )
+
+mdt_filtered <-
+  mdt |>
+  dplyr::filter(
+    length_range == "[..,5.6)"
+  ) |>
+  dplyr::mutate(
+    mdt_valid_length = dplyr::case_when(
+      is.na(total_coverage) ~ mdt_total, # If NorTraf, assume high quality
+      TRUE ~ mdt_valid_length
+    ),
+    length_quality = mdt_valid_length / mdt_total * 100,
+    coverage = dplyr::case_when(
+      is.na(total_coverage) ~ 100, # If NorTraf, assume high quality
+      TRUE ~ total_coverage * length_quality / 100
+    )
+  ) |>
+  dplyr::left_join(
+    trp_names,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    mdt = mdt_length_range,
+    coverage,
+    length_quality,
+    #sub_area = municipality_name
+  ) |>
+  dplyr::mutate(
+    year_month = lubridate::as_date(
+      paste0(
+        year,
+        "-",
+        month,
+        "-01"
+      )
+    )
+  ) |>
+  tibble::as_tibble()
+
+last_year_month <- lubridate::as_date("2023-12-01")
+
+source("exclude_trp_mdts_list.R")
 
 trp_mdt_ok_refyear <-
   mdt_validated |>
-  # dplyr::filter(
-  #   trp_id %in% city_trps # avoid toll stations appearing here as they've already been checked
-  # ) |>
   filter_mdt(reference_year) |>
   purrr::pluck(1)
 
+source("mdt_check.R")
+
+plot_mdt_comparisons |>
+  plotly::ggplotly()
+
+## All possible window indices
+all_12_month_indices <-
+  calculate_rolling_indices(12)
+
+all_24_month_indices <-
+  calculate_rolling_indices(24)
+
+all_36_month_indices <-
+  calculate_rolling_indices(36)
+
+list(
+  all_12_month_indices,
+  all_24_month_indices,
+  all_36_month_indices
+) |>
+  readr::write_rds("trp_index/njaeren_rolling_indices_2019_2023.rds")
 
 
-## 2017-2023 ----
-# Combined index and uncertainty
+## 2019-2023 direct ----
+{
+  tictoc::tic()
+  trp_index_data <-
+    calculate_trp_index(
+      "njaeren_2019_2023",
+      trp_2019_2023$trp_id[48],
+      2019,
+      2023
+    )
+  tictoc::toc()
+}
 
-
-# Nord-Jæren 2017-2023 ----
-## 2017-2023 ----
-# Chosen TRPs good enough in 2023
-
-nj_2023_chosen<-
-  readr::read_rds(
-    "chosen_links_nj_2023.rds"
+all_trp_index_data <-
+  base::list.files(path = "trp_index/njaeren_2019_2023", full.names = TRUE) |>
+  purrr::map(~ readr::read_rds(.x)) |>
+  purrr::list_rbind() |>
+  # Easter in April both years.
+  #dplyr::filter(
+    #!(trp_id == "36178V320198" & month == 4)
+  #) |>
+  dplyr::summarise(
+    traffic_base = sum(traffic_base),
+    traffic_calc = sum(traffic_calc),
+    n_months = n(),
+    .by = c(trp_id)
+  ) |>
+  dplyr::filter(
+    n_months >= 6
+  ) |>
+  dplyr::mutate(
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(2),
+    weight = traffic_base / sum(traffic_base),
+    city_index = (sum(traffic_calc) / sum(traffic_base) - 1 ) * 100,
+    deviation = weight * (index_p - city_index)^2,
+    index_i = traffic_calc / traffic_base,
+    city_index_i = sum(traffic_calc) / sum(traffic_base),
+    deviation_i = weight * (index_i - city_index_i)^2
   )
 
+trp_index_meta_data <-
+  all_trp_index_data |>
+  dplyr::left_join(
+    trp,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    road_reference,
+    index_p
+  ) |>
+  dplyr::distinct() |>
+  dplyr::arrange(
+    index_p
+  )
 
-# A direct index with the original 24 TRPs
-# Does this direct index have lower uncertainty than the chained?
-trp_2017 <- get_published_pointindex_for_months(952, 2020, 1)[[1]]
+city_index_njaeren_2019_2023 <-
+  all_trp_index_data |>
+  dplyr::summarise(
+    traffic_base = sum(traffic_base),
+    traffic_calc = sum(traffic_calc),
+    n_trp = n(),
+    sum_squared_weight = sum(weight^2),
+    n_eff = 1 / sum_squared_weight,
+    variance_p = (1 / (1 - sum_squared_weight)) * sum(deviation),
+    variance_i = (1 / (1 - sum_squared_weight)) * sum(deviation_i)
+  ) |>
+  dplyr::mutate(
+    period = "2019-2023",
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1),
+    index_i = traffic_calc / traffic_base,
+    standard_error = sqrt(sum_squared_weight * variance_p),
+    standard_error_i = sqrt(sum_squared_weight * variance_i),
+    ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error, 1),
+    ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error, 1)
+  ) |>
+  dplyr::select(
+    period,
+    index_i,
+    index_p,
+    ci_lower,
+    ci_upper,
+    n_trp,
+    n_eff,
+    variance_p,
+    variance_i,
+    sum_squared_weight,
+    standard_error,
+    standard_error_i
+  )
+
+readr::write_rds(
+  city_index_njaeren_2019_2023,
+  "trp_index/city_index_njaeren_2019_2023.rds"
+)
+
+
+# Nord-Jæren 2017-2023 chained ----
+## 2017-2023 chain with sliding ----
+chain_start_year_from_to <- "2017-2019"
+
+index_2017_2019 <-
+  readr::read_rds("trp_index/city_index_njaeren_2017_2019.rds") |>
+  dplyr::mutate(
+    index_type = "direct",
+    months = "jan-des",
+    year_base = 2017,
+    year = 2019,
+    month = 12
+  )
+
+chain_link_se_p <- index_2017_2019$standard_error
+chain_link_index_i <- index_2017_2019$index_i
+
+sliding_index_2019_2023 <-
+  readr::read_rds("trp_index/njaeren_rolling_indices_2019_2023.rds") |>
+  dplyr::bind_rows() |>
+  dplyr::filter(
+    month_object == "2023-12-01"
+  )
+
+index_jaeren_2017_2019_2023_direct_sliding_chained <-
+  sliding_index_2019_2023 |>
+  dplyr::select(
+    index_period,
+    month_object,
+    month_n,
+    year,
+    window,
+    n_trp,
+    index_i,
+    standard_error_p
+  ) |>
+  dplyr::mutate(
+    index_period =
+      paste0(
+        stringr::str_sub(chain_start_year_from_to, 1, 4),
+        stringr::str_sub(index_period, 5, -1)
+      ),
+    chained_index_i = index_i * chain_link_index_i,
+    index_p = (chained_index_i - 1) * 100,
+    standard_error =
+      100 * sqrt(
+        index_i^2 * 1e-4 * chain_link_se_p^2 +
+          chain_link_index_i^2 * 1e-4 * standard_error_p^2 +
+          1e-4 * chain_link_se_p^2 * 1e-4 * standard_error_p^2
+      ),
+    ci_lower = round(index_p - 1.96 * standard_error, 1),
+    ci_upper = round(index_p + 1.96 * standard_error, 1)
+  ) |>
+  dplyr::select(
+    index_period,
+    #month_object,
+    month = month_n,
+    year,
+    index_type = window,
+    n_trp,
+    index_i = chained_index_i,
+    index_p,
+    standard_error,
+    ci_lower,
+    ci_upper
+  )
+
+index_jaeren_2017_2019_2023_direct_sliding_all <-
+  dplyr::bind_rows(
+    index_2017_2019 |>
+      dplyr::select(
+        #year_base,
+        year,
+        month,
+        index_period = period,
+        index_type,
+        n_trp,
+        index_i,
+        index_p,
+        standard_error,
+        ci_lower,
+        ci_upper
+      ) |>
+      dplyr::mutate(
+        alternative = "A2_12_months"
+      ),
+    index_2017_2019 |>
+      dplyr::select(
+        #year_base,
+        year,
+        month,
+        index_period = period,
+        index_type,
+        n_trp,
+        index_i,
+        index_p,
+        standard_error,
+        ci_lower,
+        ci_upper
+      ) |>
+      dplyr::mutate(
+        alternative = "A2_24_months"
+      ),
+    index_2017_2019 |>
+      dplyr::select(
+        #year_base,
+        year,
+        month,
+        index_period = period,
+        index_type,
+        n_trp,
+        index_i,
+        index_p,
+        standard_error,
+        ci_lower,
+        ci_upper
+      ) |>
+      dplyr::mutate(
+        alternative = "A2_36_months"
+      ),
+    sliding_index_2019_2023 |>
+      dplyr::select(
+        year,
+        month = month_n,
+        index_period = index_period,
+        index_type = window,
+        n_trp,
+        index_i,
+        index_p,
+        standard_error = standard_error_p,
+        ci_lower,
+        ci_upper
+      ) |>
+      dplyr::mutate(
+        alternative = paste0("A2_", index_type)
+      ),
+    index_jaeren_2017_2019_2023_direct_sliding_chained |>
+      dplyr::mutate(
+        alternative = paste0("A2_", index_type)
+      )
+  )
+
+readr::write_rds(
+  index_jaeren_2017_2019_2023_direct_sliding_all,
+  "trp_index/index_jaeren_2017_2019_2023_direct_sliding_all.rds"
+)
+
+
+## 2017-2023 chain with directs ----
+index_jaeren_2017_2019_2023_direct <-
+  dplyr::bind_rows(
+    readr::read_rds("trp_index/city_index_njaeren_2017_2019.rds"),
+    readr::read_rds("trp_index/city_index_njaeren_2019_2023.rds")
+  ) |>
+  dplyr::mutate(
+    year_base = stringr::str_sub(period, 1, 4),
+    year = stringr::str_sub(period, 6, 9),
+    month = 12
+  )
+
+chained_17_23 <-
+  calculate_two_year_index(index_jaeren_2017_2019_2023_direct) |>
+  dplyr::mutate(
+    ci_lower = round(index_p - 1.96 * standard_error, 1),
+    ci_upper = round(index_p + 1.96 * standard_error, 1)
+  )
+
+index_jaeren_2017_2019_2023_direct_all <-
+  index_jaeren_2017_2019_2023_direct |>
+  dplyr::mutate(
+    index_type = "direct"
+  ) |>
+  dplyr::bind_rows(
+    chained_17_23
+  ) |>
+  dplyr::mutate(
+    year_from_to = paste0(year_base, "-", year),
+    month_name_short = lubridate::month(month, label = TRUE),
+    period = paste0("jan-", month_name_short)
+  ) |>
+  dplyr::select(
+    -sum_squared_weight,
+    -variance_i,
+    -variance_p,
+    -n_eff,
+    -standard_error_i
+  )
+
+readr::write_rds(
+  index_jaeren_2017_2019_2023_direct_all,
+  "trp_index/city_index_njaeren_2017_2019_2023_direct.rds"
+)
+
+# Nord-Jæren 2017-2023 direct ----
+# Chosen TRPs good enough in 2023
+
+trps_aadt_in_period_tidy <-
+  readr::read_rds("nj_trp_aadt.rds") |>
+  dplyr::select(
+    trp_id,
+    year,
+    good_enough
+  ) |>
+  dplyr::filter(
+    good_enough == TRUE
+  )
+
+trps_good_enough_both_years <-
+  dplyr::inner_join(
+    trps_aadt_in_period_tidy |>
+      dplyr::filter(
+        year == 2017
+      ),
+    trps_aadt_in_period_tidy |>
+      dplyr::filter(
+        year == 2023
+      ),
+    by = join_by(trp_id)
+  ) |>
+  dplyr::left_join(
+    trps_filtered,
+    by = join_by(trp_id)
+  )
 
 trps_not_eligible_2023_due_to_new_roads <-
   c(
@@ -668,21 +1069,28 @@ trps_not_eligible_2023_due_to_new_roads <-
     "68351V319882", # Kannik
     "57279V320244", # Storhaugtunnelen
     "43296V319721", # Åsedalen: ny arm mellom E39 og Hoveveien
-    "54577V319746"  # Hillevågtunnelen: NorTraf i 2017
+    "54577V319746", # Hillevågstunnelen
+    "55507V319881", # Madlaveien Mosvatnet
+    "71535V319524", # Lassa
+    "83652V319725", # Strandgata nord
+    "92102V319885", # Bergelandstunnelen
+    "50749V319525"  # Byhaugtunnelen sør
   )
 
-trp_2017_eligible <-
-  trp_2017[!(trp_2017 %in% trps_not_eligible_2023_due_to_new_roads)]
+# I tillegg kan Auglend være med (Nortraf jan-feb 2017)
 
 trp_2017_2023 <-
-  trp_2017_eligible[trp_2017_eligible %in% nj_2023_chosen$trp_id]
+  trps_good_enough_both_years |>
+  dplyr::filter(
+    !(trp_id %in% trps_not_eligible_2023_due_to_new_roads)
+  )
 
 {
   tictoc::tic()
   trp_index_data <-
     calculate_trp_index(
-      "njaeren_2023",
-      trp_2017_2023[14],
+      "trp_index/njaeren_2017_2023",
+      trp_2017_2023$trp_id[20],
       2017,
       2023
     )
@@ -690,12 +1098,12 @@ trp_2017_2023 <-
 }
 
 all_trp_index_data <-
-  base::list.files(path = "trp_index/njaeren_2023", full.names = TRUE) |>
+  base::list.files(path = "trp_index/njaeren_2017_2023", full.names = TRUE) |>
   purrr::map(~ readr::read_rds(.x)) |>
   purrr::list_rbind() |>
-  # dplyr::filter(
-  #   !(trp_id == "99781V2303021" & month == 4)
-  # ) |>
+  dplyr::filter(
+   !(trp_id == "36178V320198" & month == 4)
+  ) |>
   dplyr::summarise(
     traffic_base = sum(traffic_base),
     traffic_calc = sum(traffic_calc),
@@ -766,3 +1174,8 @@ city_index_njaeren_2017_2023 <-
     standard_error,
     standard_error_i
   )
+
+readr::write_rds(
+  city_index_njaeren_2017_2023,
+  "trp_index/city_index_njaeren_2017_2023.rds"
+)

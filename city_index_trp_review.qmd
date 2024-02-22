@@ -1,5 +1,5 @@
 ---
-title: "Byindekspunkter"
+title: "Byindeks Nord-Jæren"
 format: 
   html:
     css: svv.css
@@ -44,8 +44,8 @@ palett_adt <-
 link_color_new_and_old <-
   leaflet::colorFactor(
     palette = c("#ed1c2e", "#0000ff"),
-    domain = c("Ny", "Opprinnelig"),
-    levels = c("Ny", "Opprinnelig")
+    domain = c("Mulig", "Opprinnelig"),
+    levels = c("Mulig", "Opprinnelig")
   )
 ```
 
@@ -56,6 +56,8 @@ link_color_new_and_old <-
 trps_and_links <- readr::read_rds("chosen_links_nj_2023.rds")
 
 # TRPs
+n_trp <- readr::read_rds("nj_n_trp.rds")
+
 # For map and table
 trp_info <-
   trps_and_links |> 
@@ -75,25 +77,72 @@ links_info <-
     -lat,
     -lon
   )
+
+# Index results
+index_results <- readr::read_rds("index_alternatives_nj_2023.rds")
 ```
 
-Dette notatet fokuserer på muligheten for å ta inn flere trafikkregistreringspunkt i byindeks for Nord-Jæren enn de 24 som ble tatt med fra referanseåret 2017. Her er det sett på 2023 som sammenføyningsår, det vil si at endringen i trafikkmengde blir beregnet med de opprinnelige punktene fra 2017 til 2023, og deretter blir trafikkutviklingen fra og med 2023 beregnet med et utvidet sett punkter.
-
-Grunner til å utvide antall punkt:
-
-1. Det er allerede etablert mange nye punkt i årene etter referanseår. De fleste av disse er relevante å ta med, uten ekstra investeringskonstnad.
-2. Nytt vegsystem på E39 og Rv 13 ble åpnet i 2019 og 2020, som permanent endret trafikkflyten på vegnettet i Stavanger sentrum. 
-
-I årene 2021 og 2022 var trafikken i større eller mindre grad påvirket av pandemien. Derfor egner ikke disse årene seg så godt som sammenføyningsår.
-
-Av de 24 opprinnelige punktene er det `r n_trp_original` som har gode nok data i både referanseår og 2023. I tillegg må det tas hensyn til grunn nummer 2 nevnt ovenfor. Det er X av Y punkt som ikke er sammenlignbare mellom 2017 og 2023 på grunn av dette. I andre periode, fra 2023 og framover, kan `r nrow(trp_info)` være med.
-
-I kartet nedenfor er trafikkregistreringspunkt merket med sirkel. Trafikklenken som et punkt ligger på er merket med et strekningsobjekt, og denne viser hvilken del av vegnettet som punktet registrerer trafikken på.
+# Bakgrunn
+Dette notatet fokuserer på muligheten for å ta inn flere trafikkregistreringspunkt i byindeks for Nord-Jæren enn de 24 som ble tatt med fra referanseåret 2017. Etter at nye veger er åpnet, er det flere av de opprinnelige punktene som ikke er direkte sammenlignbare med referanseåret. Dermed blir byindeksen beregnet på et lite utvalg punkter som ikke er representative nok for trafikken i hele byområdet. Det er allerede etablert mange nye punkt i årene etter referanseår, og de fleste av disse er relevante å ta med i byindeksberegningen.
 
 
-# Kart
+# Antall punkt
+Antall punkt som er tilgjengelige og som utgjør et representativt utvalg varierer gjennom perioden. I @fig-n_trp vises antall punkt med gode data per år.
+
+```{r}
+#| label: fig-n_trp
+#| fig-cap: "Antall punkt med gode data per år."
+
+  n_trp |> 
+    ggplot2::ggplot(aes(x = factor(year), y = n_trp)) +
+    ggplot2::geom_col(fill = "#ED9300") +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      panel.grid.major.x = element_blank(),
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.background = element_rect(fill = svv_background_color),
+      legend.key = element_rect(fill = svv_background_color)
+    ) +
+    scale_y_continuous(n.breaks = 10, limits = c(0, 90)) +
+    labs(x = NULL, y = "Antall punkt") +
+    ggtitle("Antall punkt per år")
+```
+
+
+## Anvendelige punkt
+Å inkludere flere punkt bidrar til lavere usikkerhet i byindeksen, men det er flere grunner til at det antallet punkt som er oppgitt i @fig-n_trp ikke kan benyttes fullt ut til en gitt indeksberegning. Grunner til at enkelte punkter ikke kan inkluderes, er:
+
+- Overrepresentasjon lokalt. Punkter som ligger veldig nære hverandre uten at det er stor utskiftning av trafikk i kryss mellom.
+- Ensidig påvirkning av større trafikkomlegginger.
+- Teknisk feil på registrering.
+
+Følgende vegnettsendringer påvirker hvilke punkt som kan benyttes:
+
+- Ny kobling mellom E39 og fv. 4490 Hoveveien i oktober 2018. Dette endret trafikken på fv. 44 i Åsedalen.
+- Nytt vegsystem på E39 og Rv 13 ble åpnet i desember 2019 og april 2020, som permanent endret trafikkflyten på vegnettet i Stavanger sentrum.
+- Byhaugtunnelen var stengt grunnet vedlikeholdsarbeid mellom november 2020 og desember 2022. Dette medførte endret trafikkflyt i Stavanger sentrum.
+
+I tillegg er det noen metodespesifikke grunner til at enkelte punkt ikke blir med i beregningene:
+
+- Hvilke to år som sammenlignes (er det gode data og sammenlignbare data i begge år)
+- Gode nok data i hele treårsperioden og sammenligningsår
+
+Tre års glidende indeks setter høyere krav til sammenhengende god tidsserie på punktene.
+
+
+## Kart
+I kartet nedenfor er trafikkregistreringspunkt merket med sirkel. Trafikklenken som et punkt ligger på er merket med linje, og denne viser hvilken del av vegnettet som punktet registrerer trafikken på.
+
 ```{r}
 #| label: fig-map
+#| fig-cap: "Opprinnelige og mulige punkt i 2023."
 
 leaflet(
     trp_info,
@@ -142,31 +191,306 @@ leaflet(
     "bottomright",
     pal = link_color_new_and_old,
     values = ~links_info$status,
-    title = "Opprinnelig med",
+    title = "",
     opacity = 0.7
   )
 ```
 
 
-# Tabell
-```{r table}
-trp_info |> 
+## Tabell med punkter
+```{r}
+#| label: tbl-trps
+#| tbl-cap: "Aktuelle punkter."
+
+trp_info |>
   dplyr::select(
-    #trp_id, 
+    #trp_id,
     name, road_reference,
     #road_category_and_number,
-    municipality_name, 
+    municipality_name,
     status
-  ) |> 
+  ) |>
   DT::datatable(
     filter = "top",
-    colnames = c("Navn" = "name",
-                 "Vegreferanse" = "road_reference",
-                 "Kommune" = "municipality_name",
-                 "Opprinnelig" = "status"),
+    colnames = c(
+      "Navn" = "name",
+      "Vegreferanse" = "road_reference",
+      "Kommune" = "municipality_name",
+      "Opprinnelig" = "status"
+    ),
     options = list(
       dom = "Blfrtip",
-      pageLength = 25,
+      pageLength = 10,
       #lengthMenu = c(21, 42, 70),
       autoWidth = TRUE))
 ```
+
+
+
+# Alternative metoder for beregning
+For å utnytte tilgjengelige trafikkregistreringspunkter best mulig, kan byindeksen beregnes periodevis. I det følgende er noen alternativer skissert.
+
+
+## Om kjedet indeks
+I flere av alternativene nevnt ovenfor er det foreslått å benytte kjedet indeks. En ulempe med kjeding er at usikkerheten akkumuleres for hvert ledd. Derfor er det ønskelig å holde antall ledd så lavt som mulig, samtidig som flest mulig punkt kan være med. Dette er den beste strategien for å kunne utnytte flest mulig punkt til en enhver tid.
+
+
+## A1: Glidende indeks 2017-
+Dette alternativet innebærer å beregne tre års glidende indeks direkte fra 2017. Det er dette som er den offisielle indeksen i skrivende stund. Det ble valgt ut 24 punkter i 2017.
+
+Fordelen med dette alternativet er at det er relativt enkelt å beregne og forklare. Gjennomsnittlig trafikkmengde for de siste tre årene er direkte sammenlignet med trafikkmengden i referanseåret.
+
+Ulempen er at over tid vil færre og færre punkt være direkte sammenlignbare med referanseåret. Dette er på grunn av strukturelle endringer i vegnettet.
+
+Antall punkt som er med i indeksberegningen er vist i @fig-n_trp_a1.
+
+```{r}
+#| label: fig-n_trp_a1
+#| fig-cap: "Antall punkt med i indeksberegning i alternativ 1."
+
+  index_results |> 
+    dplyr::filter(
+      alternative == "A1",
+      index_type == "36_months"
+    ) |> 
+    ggplot2::ggplot(aes(x = index_period, y = n_trp)) +
+    ggplot2::geom_col(fill = "#ED9300") +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 0),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      panel.grid.major.x = element_blank(),
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.background = element_rect(fill = svv_background_color),
+      legend.key = element_rect(fill = svv_background_color)
+    ) +
+    scale_y_continuous(n.breaks = 10, limits = c(0, 100)) +
+    labs(x = NULL, y = "Antall punkt") +
+    ggtitle("Antall punkt med i indeksberegning")
+```
+
+
+## A2: Glidende indeks 2017-2019-
+Dette alternativet innebærer å beregne tre års glidende indeks sammenlignet med 2019. Denne blir så kjedet sammen med en direkte indeks fra 2017 til 2019. Dette er metoden som er benyttet for Tromsø.
+
+Fordelen er at flere punkter kan være med i perioden 2017-2019 enn en indeks som går direkte fra 2017 til 2023. Utvalget av punkt begrenses ikke til de 24 som opprinnelig ble valgt i 2017.
+
+Ulempen er at dette er litt mer krevende og beregne og forklare.
+
+Antall punkt som er med i indeksberegningen er vist i @fig-n_trp_a2.
+
+```{r}
+#| label: fig-n_trp_a2
+#| fig-cap: "Antall punkt med i indeksberegning i alternativ 2."
+
+  index_results |> 
+    dplyr::filter(
+      alternative == "A2_36_months",
+      complete_period == TRUE
+    ) |> 
+    ggplot2::ggplot(aes(x = index_period, y = n_trp)) +
+    ggplot2::geom_col(fill = "#ED9300") +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 0),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      panel.grid.major.x = element_blank(),
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.background = element_rect(fill = svv_background_color),
+      legend.key = element_rect(fill = svv_background_color)
+    ) +
+    scale_y_continuous(n.breaks = 10, limits = c(0, 100)) +
+    labs(x = NULL, y = "Antall punkt") +
+    ggtitle("Antall punkt med i indeksberegning")
+```
+
+
+## A3: Glidende indeks 2017-2023-
+Dette alternativet innebærer å beregne tre års glidende indeks sammenlignet med 2023. Denne blir så kjedet sammen med en direkte indeks fra 2017 til 2023.
+
+Fordelen er at flere punkter kan være med i perioden fra 2023. Tre års glidende indeks vil ikke være tilgjengelig før utgangen av 2026.
+
+Antall punkt som er med i indeksberegningen er vist i @fig-n_trp_a3.
+
+```{r}
+#| label: fig-n_trp_a3
+#| fig-cap: "Antall punkt med i indeksberegning i alternativ 3."
+
+  index_results |> 
+    dplyr::filter(
+      alternative == "A3"
+    ) |> 
+    ggplot2::ggplot(aes(x = index_period, y = n_trp)) +
+    ggplot2::geom_col(fill = "#ED9300") +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 0),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      panel.grid.major.x = element_blank(),
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.background = element_rect(fill = svv_background_color),
+      legend.key = element_rect(fill = svv_background_color)
+    ) +
+    scale_y_continuous(n.breaks = 10, limits = c(0, 100)) +
+    labs(x = NULL, y = "Antall punkt") +
+    ggtitle("Antall punkt med i indeksberegning")
+```
+
+
+## A4: Glidende indeks 2017-2019-2023-
+Dette alternativet innebærer å beregne tre års glidende indeks sammenlignet med 2023. Denne blir så kjedet sammen med to direkte indekser; en for 2017-2019 og en for 2019-2023.
+
+Fordelen er at flere punkter kan være med i perioden 2017-2019 og fra 2023. Utvalget av punkt begrenses ikke til de 24 som opprinnelig ble valgt i 2017.
+
+Ulempen er at dette er litt mer krevende å beregne og forklare. Tre års glidende indeks vil ikke være tilgjengelig før utgangen av 2026.
+
+Antall punkt som er med i indeksberegningen er vist i @fig-n_trp_a4.
+
+```{r}
+#| label: fig-n_trp_a4
+#| fig-cap: "Antall punkt med i indeksberegning i alternativ 4."
+
+  index_results |> 
+    dplyr::filter(
+      alternative == "A4",
+      index_type == "direct"
+    ) |> 
+    ggplot2::ggplot(aes(x = index_period, y = n_trp)) +
+    ggplot2::geom_col(fill = "#ED9300") +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 0),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      panel.grid.major.x = element_blank(),
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.background = element_rect(fill = svv_background_color),
+      legend.key = element_rect(fill = svv_background_color)
+    ) +
+    scale_y_continuous(n.breaks = 10, limits = c(0, 100)) +
+    labs(x = NULL, y = "Antall punkt") +
+    ggtitle("Antall punkt med i indeksberegning")
+```
+
+
+
+## A5: Årlig kjedet indeks maks 24 punkt
+Dette alternativet innebærer at det _ikke_ beregnes tre års glidende indeks, men at det kun benyttes kjedet indeks. 
+
+Fordelen er at flere punkt kan være med siden de kan byttes ut fra år til år, gitt at utvalget hele tiden er representativt. Et valg er å holde seg til de 24 punktene som var definert i 2017. Et bedre alternativ er å utnytte så mange punkt som mulig for hvert år.
+
+Ulempen er at dette er litt mer krevende å beregne og forklare. Tre års glidende indeks vil ikke bli beregnet.
+
+Antall punkt som er med i indeksberegningen er vist i @fig-n_trp_a5.
+
+```{r}
+#| label: fig-n_trp_a5
+#| fig-cap: "Antall punkt med i indeksberegning i alternativ 5."
+
+  index_results |> 
+    dplyr::filter(
+      alternative == "A5",
+      index_type == "direct"
+    ) |> 
+    ggplot2::ggplot(aes(x = factor(index_period), y = n_trp)) +
+    ggplot2::geom_col(fill = "#ED9300") +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      panel.grid.major.x = element_blank(),
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.background = element_rect(fill = svv_background_color),
+      legend.key = element_rect(fill = svv_background_color)
+    ) +
+    scale_y_continuous(n.breaks = 10, limits = c(0, 100)) +
+    labs(x = NULL, y = "Antall punkt") +
+    ggtitle("Antall punkt med i indeksberegning")
+```
+
+
+## A6: Periodevis kjedet indeks maks punkt
+Dette alternativet innebærer at det _ikke_ beregnes tre års glidende indeks, men at det kun benyttes kjedet indeks.
+
+Fordelen er at flere punkt kan være med i delperiodene, og at periodeinndelingen kan settes ut fra optimal utnyttelse av tilgjengelig data uten at siste periode må være minst tre år. Dette alternativet får færre perioder enn årlig kjedet indeks, og dermed mindre grad av akkumulert usikkerhet. Utvalget av punkt begrenses ikke til de 24 som opprinnelig ble valgt i 2017.
+
+Ulempen er at dette er litt mer krevende å beregne og forklare. Tre års glidende indeks vil ikke bli beregnet.
+
+Ved utgangen av 2023 har dette alternativet samme beregning som alternativ 4.
+
+
+# Oppsummering
+De ulike alternativene er beregnet for perioden 2017-2023, og resultatene er sammenlignet i @tbl-summary.
+
+```{r}
+#| label: tbl-summary
+#| tbl-cap: "Sammenligning av resultater fra beregningsalternativene."
+
+index_results |>
+  dplyr::filter(
+    complete_period == TRUE
+  ) |> 
+  dplyr::arrange(
+    alternative
+  ) |> 
+  dplyr::select(
+    alternative,
+    index_period,
+    n_trp_string,
+    index_p,
+    ci_width
+  ) |>
+  dplyr::mutate(
+    index_p = round(index_p, 1),
+    ci_width = round(ci_width, 1)
+  ) |> 
+  DT::datatable(
+    filter = "top",
+    colnames = c(
+      "Metode" = "alternative",
+      "Periode" = "index_period",
+      "Antall punkt" = "n_trp_string",
+      "Indeks (%)" = "index_p",
+      "KI-bredde (%-poeng)" = "ci_width"
+    ),
+    options = list(
+      dom = "rt",
+      pageLength = 10,
+      autoWidth = TRUE
+    )
+  )
+```
+
+Ser vi på alternativene som sammenligner kun 2023 med 2017, altså ett års glidende snitt i alternativ 1 og 2, så er indeksen henholdsvis 3,8 %, 2,4 %, 2,8 %, 2,1 % og -0,6 %. Her er det litt forskjellige resultater som kan forklares med at det er ganske ulikt antall punkt som inngår. Det minst troverdige alternativet er A1 med sine 15 punkt. 
+
+Det mest oppsiktsvekkende her er forskjellen i indeks for alternativ 3 og 5, som begge har omtrent likt antall punkt. Det antas at alternativ 5, som er kjedet årlig indeks, har utfordringer med å vise riktige verdier på grunn av nedgangen under pandemiårene. Kanskje har ikke utvalget av punkt klart å fange opp like mye av oppgangen etter pandemien som nedgangen. Dette kunne vært løst ved å inkludere så mange punkt som mulig for hvert år, i stedet for å begrense det til de 24 som opprinnelig ble valgt.
+
+Alternativ 2 og 4 har størst datagrunnlag, og er derfor de mest troverdige. Disse to indeksverdiene er også ganske like med 2,4 % og 2,8 %.
+
+Ser vi på usikkerheten i form av bredden på konfidensintervallet, er alternativ 1 som peker seg negativt ut. Det forklares enkelt med at det er alternativet med færrest punkt. Men usikkerheten for de øvrige alternativene er nokså like, selv om antall punkt varierer en del. Dette skyldes at det er ganske stor forskjell i trafikkendring mellom punktene som inngår, og dette gir størst bidrag til usikkerheten.
+
+Under alternativ 1 og 2 ser vi at usikkerheten for tre ås glidende snitt er noe lavere. Dette skyldes nok at det benyttes et gjennomsnitt av trafikken siste tre år. Dette jevner ut noen av variasjonene på det enkelte punkt.
