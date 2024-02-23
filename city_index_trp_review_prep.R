@@ -373,7 +373,7 @@ rolling_indices_2017 <-
   ) |>
   dplyr::mutate(
     ci_width = ci_upper - ci_lower,
-    alternative = "A1",
+    alternative = paste0("A1_", window),
     complete_period =
       dplyr::case_when(
         month_object == "2023-12-01" ~ TRUE,
@@ -441,6 +441,35 @@ index_direct_sliding_2017_2019_2023 <-
   )
 
 
+n_trp_prospective <-
+  tibble::tibble(
+    index_period = c(
+      "2023-",
+      "2017-2023",
+      "2023-"
+    ),
+    n_trp = c(
+      79,
+      24,
+      79
+    ),
+    index_type = c(
+      "36_month",
+      "direct",
+      "36_month"
+    ),
+    alternative = c(
+      "A4",
+      "A3",
+      "A3"
+    ),
+    complete_period = c(
+      FALSE,
+      FALSE,
+      FALSE
+    )
+  )
+
 # Gather
 n_trp_per_chain_link <-
   dplyr::bind_rows(
@@ -449,6 +478,9 @@ n_trp_per_chain_link <-
     index_direct_2017_2023,
     index_direct_2017_2019_2023,
     index_direct_sliding_2017_2019_2023
+  ) |>
+  dplyr::bind_rows(
+    n_trp_prospective
   ) |>
   # Need to keep only those who have more than one link in the index chain
   dplyr::filter(
@@ -467,7 +499,10 @@ dplyr::bind_rows(
   index_direct_2017_2023,
   index_direct_2017_2019_2023,
   index_direct_sliding_2017_2019_2023
-) |>
+  ) |>
+  dplyr::bind_rows(
+    n_trp_prospective
+  ) |>
   dplyr::left_join(
     n_trp_per_chain_link,
     by = join_by(alternative)
