@@ -2130,9 +2130,9 @@ get_pointindices_for_trp_list <- function(trp_list, index_year) {
 #from <- "2019-01-01T00:00:00.000+01:00"
 #to <- "2019-02-01T00:00:00.000+01:00"
 
-trp_id <- "30868V1109333"
-from <- "2023-05-30T08:00:00.000+02:00"
-to <- "2023-05-30T09:00:00.000+02:00"
+# trp_id <- "30868V1109333"
+# from <- "2023-05-30T08:00:00.000+02:00"
+# to <- "2023-05-30T09:00:00.000+02:00"
 
 get_hourly_traffic_by_length_lane <- function(trp_id, from, to) {
 

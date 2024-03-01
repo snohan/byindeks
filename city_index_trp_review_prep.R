@@ -329,7 +329,7 @@ readr::write_rds(
 
 ## Index results ----
 # Columns:
-# Alternativ number
+# Alternative number
 # Period
 # Subperiod (T/F)
 # Index
