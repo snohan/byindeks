@@ -20,6 +20,7 @@ library(scales)
 
 source("H:/Programmering/R/byindeks/index_report_functions.R")
 source("H:/Programmering/R/byindeks/split_road_system_reference.R")
+source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
 
 svv_background_color <- "#F5F5F5"
 
@@ -34,38 +35,6 @@ knitr::opts_chunk$set(
   dev = "ragg_png",
   tab.topcaption = TRUE
   )
-
-# Map essentials ####
-nvdb_map_url <-
-  "https://nvdbcache.geodataonline.no/arcgis/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer/tile/{z}/{y}/{x}"
-
-nvdb_map_attribution <-
-  "NVDB, Geovekst, kommunene og Open Street Map contributors (utenfor Norge)"
-
-nvdb_crs <- leafletCRS(
-  crsClass = "L.Proj.CRS", code = "EPSG:25833",
-  proj4def = "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs",
-  resolutions = c(
-    21674.7100160867,
-    10837.35500804335,
-    5418.677504021675,
-    2709.3387520108377,
-    1354.6693760054188,
-    677.3346880027094,
-    338.6673440013547,
-    169.33367200067735,
-    84.66683600033868,
-    42.33341800016934,
-    21.16670900008467,
-    10.583354500042335,
-    5.291677250021167,
-    2.6458386250105836,
-    1.3229193125052918,
-    0.6614596562526459,
-    0.33072982812632296,
-    0.16536491406316148
-  ),
-  origin = c(-2500000.0, 9045984.0))
 
 # Functions
 decimal_comma <- function(number) {

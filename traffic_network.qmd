@@ -1,0 +1,182 @@
+---
+title: "Trafikknettverk"
+format: 
+  html:
+    page-layout: full
+    css: svv.css
+    number-sections: true
+    toc: false
+    df-print: paged
+    self-contained: true
+crossref:
+  fig-title: Figur
+  tbl-title: Tabell
+  title-delim: .
+  fig-prefix: figur
+  tbl-prefix: tabell
+editor: source
+knitr: 
+  opts_chunk: 
+    echo: false
+---
+
+
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
+#| warning: false
+#| message: false
+
+base::Sys.setlocale(locale = "nb.utf8")
+svv_background_color <- "#F5F5F5"
+
+library(tidyverse)
+library(sf)
+library(sfnetworks)
+library(igraph)
+library(tidygraph)
+#library(DT)
+library(htmltools)
+library(leaflet)
+library(RColorBrewer)
+#library(scales)
+
+source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
+```
+
+```{r}
+#| label: data
+
+traffic_network <-
+  readr::read_rds(
+    "trd_graf.rds"
+  )
+
+bc_numerics <-
+  traffic_network |> 
+  tidygraph::activate("edges") |> 
+  tibble::as_tibble() |>
+  sf::st_drop_geometry() |> 
+  dplyr::select(
+    #bc_travel_time, 
+    ln_bc,
+    delta_bc
+  )
+
+bc_scale <-
+ leaflet::colorNumeric(
+   palette = "Reds",
+   domain = bc_numerics$ln_bc
+  )
+
+bc_delta_scale <-
+ leaflet::colorNumeric(
+   palette = "RdYlGn",
+   domain = bc_numerics$delta_bc
+  )
+```
+
+# Om trafikknettverk
+Et trafikknettverk, som er satt sammen av trafikklenker og kryssnoder, utgjør et sammenhengende vegnett. Det er en trafikklenke per kjøreretning, slik at trafikknettverk er en rettet graf i matematisk forstand. Dette muliggjør teoretiske betraktninger om trafikkflyt.
+
+En sentralitetsparameter som kan benyttes til å kategorisere de viktigste vegene er "betweenness centrality" (BC). BC for en trafikklenke er antall ganger den opptrer i korteste veg mellom to kryssnoder i nettverket.
+
+En beregning av BC for et delområde vil vise feil verdier i de ytterste delene av nettverket, det vil si der veger egentlig fortsetter ut til andre områder. Gjøres en beregning av BC for hele Norge, vil trafikklenkene som ligger på veger som går inn i et naboland, få feil verdier nære riksgrensen.
+
+BC beregnes med reisetid som vekting, det vil si at trafikklenker med kortere reisetid vil foretrekkes i utvelgelsen av korteste veg mellom to kryssnoder.
+
+
+## Kjente feilkilder
+Hvor korrekt verdiene fra en beregning av sentralitetsparametre er avhenger av at nettverket er korrekt. Følgende feilklider er kjent:
+
+- Viktige kommunale veger mangler.
+- Svingerestriksjoner utover det som naturlig følger av grafstrukturen er ikke hensyntatt.
+- Reisetid er beregnet på en forenklet måte: lenkens lengde delt på lenkens laveste fartsgrense. Det er ikke tatt hensyn til at det er ulike fartsgrense langs en lenkelengde, eller at kurvatur eller andre forhold påvirker fartsvalg.
+- Enkelte feil i det digitale vegnettet gir enkelte trafikklenker med ugyldig struktur
+
+
+# Trondheimsområdet
+Trafikklenker for 2023 i de aktuelle kommunene er vist i @fig-map_bc.
+
+```{r}
+#| label: fig-map_bc
+#| fig-height: 8
+#| fig-cap: "Trafikklenker med flest veivalg. Randområdene får færre veivalg enn reelt."
+
+traffic_network |> 
+  tidygraph::activate("edges") |> 
+  tibble::as_tibble() |> 
+  leaflet(
+    width = "100%",
+    options = leafletOptions(
+      crs = nvdb_crs,
+      zoomControl = TRUE
+    )
+  ) |> 
+  addTiles(
+    urlTemplate = nvdb_map_url,
+    attribution = nvdb_map_attribution
+  ) |> 
+  addPolylines(
+    opacity = 0.8,
+    color = ~bc_scale(ln_bc),
+    highlightOptions = highlightOptions(
+      bringToFront = TRUE,
+      sendToBack = FALSE,
+      color = "#000000",
+      opacity = 0.8
+      ),
+    label = ~link_label
+  ) |> 
+  addLegend(
+    "bottomright",
+    pal = bc_scale,
+    values = ~ln_bc,
+    title = "ln BC",
+    opacity = 0.7,
+    labFormat = labelFormat(big.mark = " ")
+  )
+```
+
+
+```{r}
+#| label: fig-map_delta_bc
+#| fig-height: 8
+#| fig-cap: "Nydalsbrua stengt, og hvordan trafikkflyten endrer seg."
+
+traffic_network |> 
+  tidygraph::activate("edges") |> 
+  tibble::as_tibble() |> 
+  leaflet(
+    width = "100%",
+    options = leafletOptions(
+      crs = nvdb_crs,
+      zoomControl = TRUE
+    )
+  ) |> 
+  addTiles(
+    urlTemplate = nvdb_map_url,
+    attribution = nvdb_map_attribution
+  ) |> 
+  addPolylines(
+    opacity = 0.8,
+    color = ~bc_delta_scale(delta_bc),
+    highlightOptions = highlightOptions(
+      bringToFront = TRUE,
+      sendToBack = FALSE,
+      color = "#000000",
+      opacity = 0.6
+      ),
+    label = ~link_label
+  ) |> 
+  addLegend(
+    "bottomright",
+    pal = bc_delta_scale,
+    values = ~delta_bc,
+    title = "Delta BC",
+    opacity = 0.7,
+    labFormat = labelFormat(big.mark = " ")
+  )
+```
+
