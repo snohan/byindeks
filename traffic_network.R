@@ -149,18 +149,53 @@ cc$csize
 ## Smoothing out pseudo nodes? (I-kryss)
 
 
-# Edited graph
-edges_to_remove <-
+# Edited graph 1 ----
+edges_to_remove_1 <-
   c(
     "1018242714-WITH",
     "1018242714-AGAINST"
   )
 
+directed_links_1 <-
+  directed_links |>
+  dplyr::filter(
+    !(id %in% edges_to_remove_1)
+  )
+
+directed_graph_1 <-
+  sfnetworks::sfnetwork(
+    nodes = nodes,
+    edges = directed_links_1,
+    directed = TRUE,
+    node_key = "id",
+    edges_as_lines = TRUE,
+    # Will error if force = FALSE and more than one component
+    force = TRUE
+  ) |>
+  tidygraph::activate("edges") |>
+  dplyr::mutate(
+    bc_travel_time_1 =
+      tidygraph::centrality_edge_betweenness(
+        weights = travel_time_minutes,
+        directed = TRUE,
+        cutoff = NULL
+      )
+  )
+
+
+# Edited graph 2 ----
+edges_to_remove_2 <-
+  c(
+    "1018242714-WITH",
+    "1018242714-AGAINST",
+    "1018243119-WITH",
+    "1018243119-AGAINST"
+  )
 
 directed_links_2 <-
   directed_links |>
   dplyr::filter(
-    !(id %in% edges_to_remove)
+    !(id %in% edges_to_remove_2)
   )
 
 directed_graph_2 <-
@@ -184,8 +219,8 @@ directed_graph_2 <-
   )
 
 
-# Pull out BC
-bc_1 <-
+# Compare BC ----
+bc <-
   directed_graph |>
   tidygraph::activate("edges") |>
   tibble::as_tibble() |>
@@ -193,6 +228,16 @@ bc_1 <-
   dplyr::select(
     id,
     bc_travel_time
+  )
+
+bc_1 <-
+  directed_graph_1 |>
+  tidygraph::activate("edges") |>
+  tibble::as_tibble() |>
+  sf::st_drop_geometry() |>
+  dplyr::select(
+    id,
+    bc_travel_time_1
   )
 
 bc_2 <-
@@ -206,24 +251,29 @@ bc_2 <-
   )
 
 bc_delta <-
-  bc_1 |>
+  bc |>
+  dplyr::left_join(
+    bc_1,
+    by = dplyr::join_by(id)
+  ) |>
   dplyr::left_join(
     bc_2,
     by = dplyr::join_by(id)
   ) |>
   dplyr::mutate(
-    delta_bc = bc_travel_time_2 - bc_travel_time
+    delta_bc_1 = bc_travel_time_1 - bc_travel_time,
+    delta_bc_2 = bc_travel_time_2 - bc_travel_time
   ) |>
   dplyr::select(
-    id, delta_bc
+    id, delta_bc_1, delta_bc_2
   )
 
+# table
 bc_delta |>
   dplyr::filter(
-    delta_bc != 0
+    delta_bc_1 != 0
   ) |>
   nrow()
-
 
 directed_links_bc_delta <-
   directed_links |>
@@ -252,7 +302,7 @@ directed_graph_bc_delta <-
       ),
     ln_bc = log(bc_travel_time + 1),
     link_label =
-      paste(id, roadSystemReferences, bc_travel_time, delta_bc, sep = "<br/>") |>
+      paste(id, roadSystemReferences, bc_travel_time, delta_bc_1, delta_bc_2, sep = "<br/>") |>
       purrr::map(htmltools::HTML)
     #link_label = purrr::map(link_label, htmltools::HTML)
   )

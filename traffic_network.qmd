@@ -61,19 +61,26 @@ bc_numerics <-
   dplyr::select(
     #bc_travel_time, 
     ln_bc,
-    delta_bc
+    delta_bc_1,
+    delta_bc_2
   )
 
 bc_scale <-
  leaflet::colorNumeric(
-   palette = "Reds",
+   palette = "Greens",
    domain = bc_numerics$ln_bc
   )
 
-bc_delta_scale <-
+bc_delta_scale_1 <-
  leaflet::colorNumeric(
    palette = "RdYlGn",
-   domain = bc_numerics$delta_bc
+   domain = bc_numerics$delta_bc_1
+  )
+
+bc_delta_scale_2 <-
+ leaflet::colorNumeric(
+   palette = "RdYlGn",
+   domain = bc_numerics$delta_bc_2
   )
 ```
 
@@ -141,7 +148,7 @@ traffic_network |>
 
 
 ```{r}
-#| label: fig-map_delta_bc
+#| label: fig-map_delta_bc_1
 #| fig-height: 8
 #| fig-cap: "Nydalsbrua stengt, og hvordan trafikkflyten endrer seg."
 
@@ -161,7 +168,7 @@ traffic_network |>
   ) |> 
   addPolylines(
     opacity = 0.8,
-    color = ~bc_delta_scale(delta_bc),
+    color = ~bc_delta_scale_1(delta_bc_1),
     highlightOptions = highlightOptions(
       bringToFront = TRUE,
       sendToBack = FALSE,
@@ -172,11 +179,50 @@ traffic_network |>
   ) |> 
   addLegend(
     "bottomright",
-    pal = bc_delta_scale,
-    values = ~delta_bc,
+    pal = bc_delta_scale_1,
+    values = ~delta_bc_1,
     title = "Delta BC",
     opacity = 0.7,
     labFormat = labelFormat(big.mark = " ")
   )
 ```
 
+```{r}
+#| label: fig-map_delta_bc_2
+#| fig-height: 8
+#| fig-cap: "Nydalsbrua og Oslovegen nord stengt, og hvordan trafikkflyten endrer seg."
+
+traffic_network |> 
+  tidygraph::activate("edges") |> 
+  tibble::as_tibble() |> 
+  leaflet(
+    width = "100%",
+    options = leafletOptions(
+      crs = nvdb_crs,
+      zoomControl = TRUE
+    )
+  ) |> 
+  addTiles(
+    urlTemplate = nvdb_map_url,
+    attribution = nvdb_map_attribution
+  ) |> 
+  addPolylines(
+    opacity = 0.8,
+    color = ~bc_delta_scale_2(delta_bc_2),
+    highlightOptions = highlightOptions(
+      bringToFront = TRUE,
+      sendToBack = FALSE,
+      color = "#000000",
+      opacity = 0.6
+      ),
+    label = ~link_label
+  ) |> 
+  addLegend(
+    "bottomright",
+    pal = bc_delta_scale_2,
+    values = ~delta_bc_2,
+    title = "Delta BC",
+    opacity = 0.7,
+    labFormat = labelFormat(big.mark = " ")
+  )
+```
