@@ -41,20 +41,20 @@ counties <-
   dplyr::select(
     county_name,
     country_part_name
-  ) |>
+  ) 
   # December reprot 2023 must use 2023 counties
-  dplyr::mutate(
-    counties_2023 = dplyr::case_when(
-      county_name %in% c("Østfold", "Akershus", "Buskerud") ~ "Viken",
-      county_name %in% c("Vestfold", "Telemark") ~ "Vestfold og Telemark",
-      county_name %in% c("Troms", "Finnmark") ~ "Troms og Finnmark",
-      TRUE ~ county_name
-    )
-  ) |>
-  dplyr::rename(
-    county_name = counties_2023,
-    county_name_new = county_name
-  )
+  # dplyr::mutate(
+  #   counties_2023 = dplyr::case_when(
+  #     county_name %in% c("Østfold", "Akershus", "Buskerud") ~ "Viken",
+  #     county_name %in% c("Vestfold", "Telemark") ~ "Vestfold og Telemark",
+  #     county_name %in% c("Troms", "Finnmark") ~ "Troms og Finnmark",
+  #     TRUE ~ county_name
+  #   )
+  # ) |>
+  # dplyr::rename(
+  #   county_name = counties_2023,
+  #   county_name_new = county_name
+  # )
 
 country_parts <- get_country_parts()
 
@@ -77,8 +77,8 @@ index_this_year_prepared_wide_country <-
 ```{r}
 #| label: extract_data_for_text
 
-this_year <- 2023
-latest_month_number <- 12
+this_year <- 2024
+latest_month_number <- 2
 
 latest_month_name <-
   max(
@@ -714,7 +714,7 @@ index_this_year_prepared %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  hline(i = c(11, 22), part = "body",
+  hline(i = c(15, 30), part = "body",
         border = fp_border(color = "#dadada", width = 1)) %>% 
   width(j = 1, width = 1.7) %>%
   fix_border_issues() %>%

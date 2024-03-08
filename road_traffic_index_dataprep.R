@@ -1,6 +1,7 @@
-source("rmd_setup.R")
-source("get_from_trafficdata_api.R")
-
+{
+  source("rmd_setup.R")
+  source("get_from_trafficdata_api.R")
+}
 
 # Get data ----
 counties <-
@@ -8,20 +9,20 @@ counties <-
   dplyr::select(
     county_name,
     country_part_name
-  ) |>
-  # December report 2023 must use 2023 counties
-  dplyr::mutate(
-    counties_2023 = dplyr::case_when(
-      county_name %in% c("Østfold", "Akershus", "Buskerud") ~ "Viken",
-      county_name %in% c("Vestfold", "Telemark") ~ "Vestfold og Telemark",
-      county_name %in% c("Troms", "Finnmark") ~ "Troms og Finnmark",
-      TRUE ~ county_name
-    )
-  ) |>
-  dplyr::rename(
-    county_name = counties_2023,
-    county_name_new = county_name
   )
+  # December report 2023 must use 2023 counties
+  # dplyr::mutate(
+  #   counties_2023 = dplyr::case_when(
+  #     county_name %in% c("Østfold", "Akershus", "Buskerud") ~ "Viken",
+  #     county_name %in% c("Vestfold", "Telemark") ~ "Vestfold og Telemark",
+  #     county_name %in% c("Troms", "Finnmark") ~ "Troms og Finnmark",
+  #     TRUE ~ county_name
+  #   )
+  # ) |>
+  # dplyr::rename(
+  #   county_name = counties_2023,
+  #   county_name_new = county_name
+  # )
 
 country_parts <- get_country_parts()
 
@@ -51,7 +52,8 @@ points <-
     name,
     road_category,
     road_reference,
-    county_name_latest = county_name # 2023
+    county_name
+    #county_name_latest = county_name # 2023
   ) %>%
   dplyr::mutate(
     road_category = dplyr::case_when(
@@ -62,13 +64,13 @@ points <-
   ) %>%
   dplyr::left_join(
     counties,
-    #by = "county_name"
-    by = join_by("county_name_latest" == "county_name_new") # dec 2023
+    by = "county_name"
+    #by = join_by("county_name_latest" == "county_name_new") # dec 2023
   )
 
 ## Choose month ----
-this_year <- 2023
-latest_month_number <- 12
+this_year <- 2024
+latest_month_number <- 2
 
 index_this_year <-
   get_published_road_traffic_index_for_months(
