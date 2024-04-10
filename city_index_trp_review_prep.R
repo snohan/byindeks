@@ -517,3 +517,282 @@ dplyr::bind_rows(
 readr::write_rds(
   "index_alternatives_nj_2023.rds"
 )
+
+
+# Kristiansand 2023 ----
+# Eligible TRPs when 2023 is reference year
+
+municipality_names <-
+  c(
+    "Kristiansand",
+    "Vennesla",
+    "Iveland",
+    "Birkenes",
+    "Lillesand"
+  )
+
+municipality_numbers <-
+  municipalities |>
+  dplyr::filter(
+    municipality_name %in% municipality_names
+  )
+
+
+# TRPs used in the 2016-index chain
+trps_2016 <- get_published_pointindex_for_months(957, 2023, 1)[[1]]
+
+
+# Possible TRPs
+trps_filtered <-
+  points |>
+  dplyr::filter(
+    traffic_type == "VEHICLE",
+    registration_frequency == "CONTINUOUS",
+    operational_status != "RETIRED"
+  ) |>
+  dplyr::mutate(
+    operational_status = stringr::str_to_lower(operational_status, locale = "no")
+  ) |>
+  dplyr::filter(
+    municipality_name %in%
+      c(
+        "Kristiansand",
+        "Vennesla",
+        "Iveland",
+        "Birkenes",
+        "Lillesand"
+      )
+  ) |>
+  dplyr::mutate(included = trp_id %in% trps_2016) |>
+  split_road_system_reference() |>
+  dplyr::select(
+    trp_id,
+    name,
+    operational_status,
+    road_reference,
+    road_category_and_number,
+    municipality_name,
+    lat, lon,
+    included
+  )
+
+
+# AADT
+trp_aadts <-
+  trps_filtered$trp_id |>
+  get_aadt_for_trp_list()
+
+trps_aadt_2023 <-
+  trp_aadts |>
+  dplyr::filter(
+    year %in% c(2023)
+  ) |>
+  dplyr::mutate(
+    valid_length_percent = round(valid_length_volume / adt * 100, digits = 1),
+    # good enough coverage for index (50), sliding (84)
+    good_enough = dplyr::case_when(
+      (coverage > 50 & valid_length_percent > 98.5) ~ TRUE,
+      TRUE ~ FALSE
+    ),
+    reason = dplyr::case_when(
+      coverage <= 50 ~ "Lav dekningsgrad",
+      valid_length_percent <= 98.5 ~ "Dårlige lengdemålinger",
+      TRUE ~ ""
+    ),
+    adt = round(adt, -1)
+  ) |>
+  dplyr::select(
+    trp_id,
+    adt,
+    good_enough,
+    reason
+  )
+
+
+trps_2023 <-
+  trps_filtered |>
+  dplyr::left_join(
+    trps_aadt_2023,
+    by = dplyr::join_by(trp_id)
+    ) |>
+  dplyr::mutate(
+    status = dplyr::case_when(
+      included == TRUE ~ "Indeks 2016",
+      included == FALSE ~ "Mulig nytt"
+    ),
+    reason = dplyr::case_when(
+      trp_id %in%
+        c(
+          "58700V3366122", # Lohnelier
+          "09525V2399484", # Brennåsen ø
+          "26577V2399484", # Brennåsen v
+          "98936V121303", # Vesterbrua
+          "76952V121302", # Haumyrheia
+          "86748V121742", # Haumyrheia
+          "00000V1702751", # Timenes
+          "54653V1751052", # Løehei
+          "97410V1751020", # Songefjell
+          "07242V1751122", # Kvernås
+          "78032V121764", # Tveit kirke
+          "66163V21769", # Kvennhusbekken
+          "07306V22174" # Birkeland syd
+          )
+      ~ "Overrepresentasjon",
+      TRUE ~ reason
+    ),
+    final_status =
+      dplyr::case_when(
+      reason != "" ~ reason,
+      TRUE ~ status
+      ) |>
+      forcats::as_factor(),
+    trp_label = paste(name, road_category_and_number, adt, sep = "<br/>"),
+    trp_label = lapply(trp_label, htmltools::HTML)
+  )
+
+
+## Traffic links 2023 ----
+# Geojson from ADM
+links <-
+  sf::st_read("C:/Users/snohan/Desktop/traffic_links_2023_2024-04-09.geojson") |>
+  dplyr::rename(
+    municipality_ids = municipalityIds,
+    trp_id = primaryTrpId,
+  ) |>
+  dplyr::select(
+    id,
+    municipality_ids,
+    trp_id,
+    primaryTrpIds,
+    associatedTrpIds,
+    length,
+    trafficVolumes
+  ) |>
+  tidyr::unnest(
+    cols = municipality_ids
+  ) |>
+  dplyr::filter(
+    municipality_ids %in% municipality_numbers$municipality_number
+  ) |>
+  dplyr::select(
+    -municipality_ids
+  ) |>
+  # Remove duplicates (links crossing municipality borders inside city)
+  dplyr::distinct() |>
+  # manually update trp_id on links missing correct info
+  dplyr::mutate(
+    trp_id = dplyr::case_when(
+      id == "1018298064" ~ "27566V121337",
+      id == "1018298020" ~ "69803V121343",
+      id == "1018877462" ~ "28020V121748",
+      TRUE ~ trp_id
+    )
+  )
+
+
+### Traffic work ----
+traffic_work <-
+  links |>
+  sf::st_drop_geometry() |>
+  dplyr::select(
+    id,
+    length,
+    trp_id,
+    trafficVolumes
+  ) |>
+  # Some may be missing, often ferry links as per feb 24
+  dplyr::filter(
+    !(is.na(trafficVolumes))
+  ) |>
+  dplyr::mutate(
+    volumes = purrr::map(trafficVolumes, ~ jsonlite::fromJSON(.x))
+  ) |>
+  tidyr::unnest(
+    volumes
+  ) |>
+  dplyr::filter(
+    trafficVolumeType == "GUESSTIMATED"
+  ) |>
+  dplyr::select(
+    id,
+    length,
+    trp_id,
+    traffic_work = trafficWorkValue
+  ) |>
+  dplyr::summarise(
+    traffic_work_mill_km = sum(traffic_work) / 1e9,
+    n_links = n()
+  )
+
+traffic_work_measured <-
+  links |>
+  sf::st_drop_geometry() |>
+  dplyr::select(
+    id,
+    length,
+    trp_id,
+    trafficVolumes
+  ) |>
+  # Some may be missing, often ferry links as per feb 24
+  dplyr::filter(
+    !(is.na(trafficVolumes)),
+    trp_id %in% trps_2023$trp_id
+  ) |>
+  dplyr::mutate(
+    volumes = purrr::map(trafficVolumes, ~ jsonlite::fromJSON(.x))
+  ) |>
+  tidyr::unnest(
+    volumes
+  ) |>
+  dplyr::filter(
+    trafficVolumeType == "GUESSTIMATED"
+  ) |>
+  dplyr::select(
+    id,
+    length,
+    trp_id,
+    traffic_work = trafficWorkValue
+  ) |>
+  dplyr::summarise(
+    traffic_work_mill_km = sum(traffic_work) / 1e9,
+    n_links = n()
+  )
+
+traffic_work_measured$traffic_work_mill_km / traffic_work$traffic_work_mill_km
+
+
+### Chosen links ----
+links_with_chosen_trp <-
+  links |>
+  dplyr::right_join(
+    trps_2023,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::select(
+    id,
+    trp_id,
+    name,
+    length,
+    road_reference,
+    road_category_and_number,
+    municipality_name,
+    lat, lon,
+    included,
+    adt,
+    status,
+    final_status,
+    reason,
+    trp_label
+  )
+
+# missing_trps <-
+#   trps_2023 |>
+#   dplyr::filter(
+#     !(trp_id %in% links_with_chosen_trp$trp_id)
+#   )
+
+
+readr::write_rds(
+  links_with_chosen_trp,
+  "chosen_links_krs_2023.rds"
+)

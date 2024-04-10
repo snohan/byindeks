@@ -24,3 +24,7 @@ table {
 .cell {
   font-size: 9pt;
 }
+
+.info.legend.leaflet-control i {
+  float: left;
+}

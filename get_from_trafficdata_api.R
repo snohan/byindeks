@@ -822,7 +822,10 @@ get_trp_aadt_with_coverage <- function(trp_id, day_type = "ALL") {
       dplyr::mutate(
         trp_id = as.character(trp_id),
         standard_error =
-          round(standard_deviation / sqrt(n_days) * sqrt((n_days_of_year - n_days) / (n_days_of_year - 1)), digits = 2))
+          round(
+            standard_deviation / sqrt(n_days) * sqrt((n_days_of_year - n_days) / (n_days_of_year - 1)),
+            digits = 2)
+        )
   }
 
   return(trp_aadt)
@@ -1716,7 +1719,7 @@ get_aadt_for_trp_list <- function(trp_list, day_type = "ALL") {
   }
 
   trp_adt <- data_points %>%
-    dplyr::mutate(adt = round(adt, digits = -1))
+    dplyr::mutate(adt = round(adt, digits = 0))
 
   return(trp_adt)
 }
