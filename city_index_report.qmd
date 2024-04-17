@@ -37,13 +37,13 @@ source("rmd_setup.R")
 # Nedre Glomma           953 (2016) 12-ref_year_aadt
 # Tromsø                 961 (2016) 08
 # Tromsø 2022          16952 (2022) 12-ref_year_aadt
-# Nord-Jæren             952 (2017) 12
+# Nord-Jæren             952 (2017) 12-ref_year_aadt
 # Bergen                8952 (2018) 12
 # Oslo                   959 (2018) 12-ref_year_aadt
 # Trondheim              960 (2019) 12
 
 # Choose city number:
-city_number <- 953
+city_number <- 952
 
 ## Meta info
 city_number_county_name <- 
@@ -458,6 +458,11 @@ En treårs glidende indeks er tilgjengelig fra og med det er gått tre år etter
 
 {{< include city_report_files/_pandemic_remark_rolling_index.Rmd >}}
 
+<!-- Spesialtekst for Nord-Jæren start-->
+Tre års glidende indeks har ganske stor usikkerhet. Dette skyldes for det meste at indekspunktene har ganske ulik trafikkutvikling i perioden. Dette igjen kommer av at det har forekommet flere større og mindre vegnettsendringer og trafikkomlegginger i perioden, som har slått ulikt ut på punktene. Data som er inkludert i beregningene, skal ha balanse mellom økt og minket trafikk i de enkelte omleggingssituasjonene, men dette fører likevel til større variasjon mellom punktene.
+
+Et annet bidrag til usikkerheten er at det er få punkter med i beregningen. Flere punkter vil i seg selv dempe usikkerheten noe, men de vil sannsynligvis også dempe bidragene fra punktene som har størst endring.
+<!-- Spesialtekst for Nord-Jæren slutt-->
 
 {{< pagebreak >}}
 
