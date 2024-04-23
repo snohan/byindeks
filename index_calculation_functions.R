@@ -195,3 +195,95 @@ calculate_trp_index <- function(subfolder_name, trp_id, base_year, calc_year) {
 
   return(trp_index_data)
 }
+
+
+# Without quality metrics ----
+calculate_hourly_index_traffic_without_quality <- function(traffic_by_length) {
+
+  # IN: hourly traffic by length and lane
+  # OUT: hourly traffic when all lanes present
+
+  hourly_traffic <-
+    traffic_by_length |>
+    tibble::as_tibble() |>
+    dplyr::filter(length_range == "[..,5.6)") |>
+    dplyr::select(
+      from,
+      traffic
+    ) |>
+    dplyr::mutate(
+      month = lubridate::month(from),
+      day = lubridate::day(from),
+      hour = lubridate::hour(from)
+    ) |>
+    dplyr::select(
+      month,
+      day,
+      hour,
+      traffic
+    ) |>
+    # Adding the two hours when DST is set back in October
+    dplyr::summarise(
+      traffic = sum(traffic),
+      .by = c(tidyselect::everything(), -traffic)
+    )
+
+  return(hourly_traffic)
+}
+
+
+calculate_trp_index_without_quality <- function(subfolder_name, trp_id, base_year, calc_year) {
+
+  ht_base_year <-
+    get_hourly_traffic_by_length(
+      trp_id,
+      paste0(as.character(base_year), "-01-01T00:00:00.000+01:00"),
+      paste0(as.character(base_year + 1), "-01-01T00:00:00.000+01:00")
+    ) |>
+    calculate_hourly_index_traffic_without_quality()
+
+  ht_calc_year <-
+    get_hourly_traffic_by_length(
+      trp_id,
+      paste0(as.character(calc_year), "-01-01T00:00:00.000+01:00"),
+      paste0(as.character(calc_year + 1), "-01-01T00:00:00.000+01:00")
+    ) |>
+    calculate_hourly_index_traffic_without_quality()
+
+  trp_index_data <-
+    dplyr::inner_join(
+      ht_base_year,
+      ht_calc_year,
+      by = join_by(month, day, hour),
+      suffix = c("_base", "_calc")
+    ) |>
+    dplyr::summarise(
+      traffic_base = sum(traffic_base),
+      traffic_calc = sum(traffic_calc),
+      n_hours = n(),
+      .by = c(month, day)
+    ) |>
+    dplyr::filter(
+      n_hours >= 16
+    ) |>
+    dplyr::summarise(
+      traffic_base = sum(traffic_base),
+      traffic_calc = sum(traffic_calc),
+      n_days = n(),
+      .by = c(month)
+    ) |>
+    dplyr::filter(
+      n_days >= 16
+    ) |>
+    dplyr::mutate(
+      trp_id = trp_id,
+      years = paste0(as.character(base_year), "-", as.character(calc_year))
+    )
+
+  readr::write_rds(
+    trp_index_data,
+    file = paste0("trp_index/", subfolder_name, "/", trp_id, "_", base_year, "_", calc_year, ".rds")
+  )
+
+  return(trp_index_data)
+}

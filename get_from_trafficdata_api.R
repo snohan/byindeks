@@ -2266,6 +2266,10 @@ get_hourly_traffic_by_length_lane <- function(trp_id, from, to) {
 
 }
 
+# Test
+# trp_id <- "06970V72811"
+# from <- paste0(as.character(2014), "-01-01T00:00:00.000+01:00")
+# to <- paste0(as.character(2014 + 1), "-01-01T00:00:00.000+01:00")
 
 get_hourly_traffic_by_length <- function(trp_id, from, to) {
 
@@ -2373,18 +2377,46 @@ get_hourly_traffic_by_length <- function(trp_id, from, to) {
     hourly_traffic <- dplyr::bind_rows(hourly_traffic, response_data)
   }
 
-  hourly_traffic_tidy <-
-    hourly_traffic |>
-    dplyr::select(
-      trp_id = data.trafficData.id,
-      from = data.trafficData.volume.byHour.edges.node.from,
-      total_coverage = data.trafficData.volume.byHour.edges.node.total.coverage.percentage,
-      length_quality = data.trafficData.volume.byHour.edges.node.total.volumeNumbers.validLength.percentage,
-      length_coverage = total.coverage.percentage,
-      length_range = lengthRange.representation,
-      traffic = total.volumeNumbers.volume
-    ) |>
-    dplyr::mutate(from = lubridate::with_tz(lubridate::ymd_hms(from), "CET"))
+
+  if(
+    "data.trafficData.volume.byHour.edges.node.total.coverage.percentage" %in% colnames(hourly_traffic)
+  ){
+    hourly_traffic_tidy <-
+      hourly_traffic |>
+      dplyr::select(
+        trp_id = data.trafficData.id,
+        from = data.trafficData.volume.byHour.edges.node.from,
+        total_coverage = data.trafficData.volume.byHour.edges.node.total.coverage.percentage,
+        length_quality = data.trafficData.volume.byHour.edges.node.total.volumeNumbers.validLength.percentage,
+        length_coverage = total.coverage.percentage,
+        length_range = lengthRange.representation,
+        traffic = total.volumeNumbers.volume
+      ) |>
+      dplyr::mutate(from = lubridate::with_tz(lubridate::ymd_hms(from), "CET"))
+  }else{
+    hourly_traffic_tidy <-
+      hourly_traffic |>
+      dplyr::select(
+        trp_id = data.trafficData.id,
+        from = data.trafficData.volume.byHour.edges.node.from,
+        length_range = lengthRange.representation,
+        traffic = total.volumeNumbers.volume
+      ) |>
+      dplyr::mutate(from = lubridate::with_tz(lubridate::ymd_hms(from), "CET"))
+  }
+
+  # hourly_traffic_tidy <-
+  #   hourly_traffic |>
+  #   dplyr::select(
+  #     trp_id = data.trafficData.id,
+  #     from = data.trafficData.volume.byHour.edges.node.from,
+  #     total_coverage = data.trafficData.volume.byHour.edges.node.total.coverage.percentage,
+  #     length_quality = data.trafficData.volume.byHour.edges.node.total.volumeNumbers.validLength.percentage,
+  #     length_coverage = total.coverage.percentage,
+  #     length_range = lengthRange.representation,
+  #     traffic = total.volumeNumbers.volume
+  #   ) |>
+  #   dplyr::mutate(from = lubridate::with_tz(lubridate::ymd_hms(from), "CET"))
 
   return(hourly_traffic_tidy)
 

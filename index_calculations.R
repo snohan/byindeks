@@ -994,3 +994,458 @@ readr::write_rds(
   city_index_njaeren_2017_2023,
   "trp_index/city_index_njaeren_2017_2023.rds"
 )
+
+
+# TRD direct ----
+# Need
+# 1. 2014-2019 (no toll data, mostly NorTraf -> use DT?)
+# 2. 2019-2023
+
+## TRP ----
+trd_trp <- get_published_pointindex_for_months_trondheim(960, 2023, 12)[[1]]
+
+# As no toll station data is available from 2014, might add some TRPs at same place
+trd_trp_add <- c(
+  "32375V72155", # Væretunnelen
+  "36935V72359"  # Selsbakk
+)
+
+## 2014-2019 ----
+trd_trp_meta <-
+  trp |>
+  dplyr::filter(
+    trp_id %in% c(trd_trp, trd_trp_add)
+  ) |>
+  dplyr::select(
+    trp_id, name, road_reference
+  ) |>
+  dplyr::left_join(
+    trp_time_span,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::filter(
+    first_data < "2014-08-01"
+  ) |>
+  dplyr::arrange(
+    first_data
+  )
+
+{
+  tictoc::tic()
+  trp_index_data <-
+    calculate_trp_index_without_quality(
+      "trd_2014_2019",
+      trd_trp_meta$trp_id[4],
+      2014,
+      2019
+    )
+  tictoc::toc()
+}
+
+all_trp_index_data_14_19 <-
+  base::list.files(path = "trp_index/trd_2014_2019", full.names = TRUE) |>
+  purrr::map(~ readr::read_rds(.x)) |>
+  purrr::list_rbind() |>
+  dplyr::mutate(
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(2)
+  ) |>
+  dplyr::left_join(
+    trp,
+    by = join_by(trp_id)
+  ) |>
+  # Need to exclude som TRPs from before Strindheimtunnelen opened.
+  dplyr::filter(
+    !(trp_id == "81077V72158" & month < 7), # Havnegata
+    !(trp_id == "10236V72161" & month < 7), # Bakke kirke
+    !(trp_id == "88356V72157" & month < 7), # Jernbanebrua
+    !(trp_id == "21801V72158" & month < 7), # Brattørbrua
+    !(trp_id == "65625V41945") # Kong Øysteins veg
+  ) |>
+  dplyr::summarise(
+    traffic_base = sum(traffic_base),
+    traffic_calc = sum(traffic_calc),
+    n_months = n(),
+    .by = c(trp_id)
+  ) |>
+  dplyr::filter(
+    n_months >= 5
+  ) |>
+  dplyr::mutate(
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(2),
+    weight = traffic_base / sum(traffic_base),
+    city_index = (sum(traffic_calc) / sum(traffic_base) - 1 ) * 100,
+    deviation = weight * (index_p - city_index)^2,
+    index_i = traffic_calc / traffic_base,
+    city_index_i = sum(traffic_calc) / sum(traffic_base),
+    deviation_i = weight * (index_i - city_index_i)^2
+  )
+
+trp_index_meta_data <-
+  all_trp_index_data |>
+  dplyr::left_join(
+    trp,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    road_reference,
+    index_p
+  ) |>
+  dplyr::distinct() |>
+  dplyr::arrange(
+    trp_id
+  )
+
+city_index_trd_2014_2019 <-
+  all_trp_index_data_14_19 |>
+  dplyr::summarise(
+    traffic_base = sum(traffic_base),
+    traffic_calc = sum(traffic_calc),
+    n_trp = n(),
+    sum_squared_weight = sum(weight^2),
+    n_eff = 1 / sum_squared_weight,
+    variance_p = (1 / (1 - sum_squared_weight)) * sum(deviation),
+    variance_i = (1 / (1 - sum_squared_weight)) * sum(deviation_i)
+  ) |>
+  dplyr::mutate(
+    period = "2014-2019",
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1),
+    index_i = traffic_calc / traffic_base,
+    standard_error = sqrt(sum_squared_weight * variance_p),
+    standard_error_i = sqrt(sum_squared_weight * variance_i),
+    ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error, 1),
+    ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error, 1)
+  ) |>
+  dplyr::select(
+    period,
+    index_i,
+    index_p,
+    ci_lower,
+    ci_upper,
+    n_trp,
+    n_eff,
+    variance_p,
+    variance_i,
+    sum_squared_weight,
+    standard_error,
+    standard_error_i
+  )
+
+readr::write_rds(
+  city_index_trd_2014_2019,
+  "trp_index/city_index_trd_2014_2019.rds"
+)
+
+
+## 2014-2023 ----
+# Chaining
+# Choosing to use official 2019-2023 chained index
+trd_19_23 <-
+  readr::read_rds(
+    file = paste0("data_indexpoints_tidy/byindeks_960.rds")
+  ) |>
+  dplyr::filter(
+    year == 2023,
+    index_type == "chained"
+  )
+
+trd_2014_2019_2023 <-
+  dplyr::bind_rows(
+    city_index_trd_2014_2019 |>
+      dplyr::mutate(
+        year_base = stringr::str_sub(period, 1, 4) |> as.numeric(),
+        year = stringr::str_sub(period, 6, 9) |> as.numeric(),
+        month = 12
+      ),
+    trd_19_23
+  ) |>
+  calculate_two_year_index() |>
+  dplyr::mutate(
+    ci_lower = round(index_p - 1.96 * standard_error, 1),
+    ci_upper = round(index_p + 1.96 * standard_error, 1)
+  )
+
+
+## 2019-2023 direct special ----
+# Just nov and dec to avoid pandemic and Nydalsbrua work
+
+### Toll stations ----
+toll_direct <-
+  readr::read_rds(
+    file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser_direkte.rds",
+  ) |>
+  dplyr::filter(
+    class == "lette"
+  ) |>
+  dplyr::mutate(
+    years = paste0("2019-", lubridate::year(month_calc)),
+    month = lubridate::month(month_calc),
+    type = "Bom"
+  ) |>
+  dplyr::select(
+    trp_id,
+    years,
+    month,
+    traffic_base = monthly_volume_base,
+    traffic_calc = monthly_volume_calc,
+    n_days,
+    index_p,
+    type
+  )
+
+
+### TRPs ----
+trd_trp_meta_19_23 <-
+  trp |>
+  dplyr::filter(
+    trp_id %in% trd_trp
+  ) |>
+  dplyr::select(
+    trp_id, name, road_reference
+  ) |>
+  dplyr::left_join(
+    trp_time_span,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::filter(
+    first_data < "2019-01-01"
+  ) |>
+  dplyr::arrange(
+    trp_id
+  )
+
+{
+  tictoc::tic()
+  trp_index_data <-
+    calculate_trp_index(
+      "trd_2019_2023",
+      trd_trp_meta_19_23$trp_id[1], # ikke 14, 19, 20, 24, 26, 27
+      2019,
+      2023
+    )
+  tictoc::toc()
+}
+
+
+### Toll and TRP ----
+all_trp_index_data_19_23 <-
+  base::list.files(path = "trp_index/trd_2019_2023", full.names = TRUE) |>
+  purrr::map(~ readr::read_rds(.x)) |>
+  purrr::list_rbind() |>
+  dplyr::mutate(
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(2),
+    type = "TRP"
+  ) |>
+  dplyr::left_join(
+    trp,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::select(
+   trp_id,
+   name,
+   years,
+   month,
+   traffic_base,
+   traffic_calc,
+   n_days,
+   index_p,
+   type
+  ) |>
+  dplyr::bind_rows(
+    toll_direct |> dplyr::filter(years == "2019-2023")
+  ) |>
+  dplyr::filter(
+    month %in% c(11, 12)
+  #   !(trp_id == "81077V72158" & month < 7), # Havnegata
+  #   !(trp_id == "10236V72161" & month < 7), # Bakke kirke
+  #   !(trp_id == "88356V72157" & month < 7), # Jernbanebrua
+  #   !(trp_id == "21801V72158" & month < 7), # Brattørbrua
+  #   !(trp_id == "65625V41945") # Kong Øysteins veg
+  ) |>
+  # Stop to check data quality
+  dplyr::summarise(
+    traffic_base = sum(traffic_base),
+    traffic_calc = sum(traffic_calc),
+    n_months = n(),
+    .by = c(trp_id, type)
+  ) |>
+  dplyr::mutate(
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(2),
+    weight = traffic_base / sum(traffic_base),
+    city_index = (sum(traffic_calc) / sum(traffic_base) - 1 ) * 100,
+    deviation = weight * (index_p - city_index)^2,
+    index_i = traffic_calc / traffic_base,
+    city_index_i = sum(traffic_calc) / sum(traffic_base),
+    deviation_i = weight * (index_i - city_index_i)^2
+  )
+
+trp_index_meta_data_19_23 <-
+  all_trp_index_data_19_23 |>
+  dplyr::left_join(
+    trp,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    road_reference,
+    index_p
+  ) |>
+  dplyr::distinct() |>
+  dplyr::arrange(
+    trp_id
+  )
+
+
+### City index ----
+city_index_trd_2019_2023 <-
+  all_trp_index_data_19_23 |>
+  dplyr::summarise(
+    traffic_base = sum(traffic_base),
+    traffic_calc = sum(traffic_calc),
+    n_trp = n(),
+    sum_squared_weight = sum(weight^2),
+    n_eff = 1 / sum_squared_weight,
+    variance_p = (1 / (1 - sum_squared_weight)) * sum(deviation),
+    variance_i = (1 / (1 - sum_squared_weight)) * sum(deviation_i),
+    #.by = type
+  ) |>
+  dplyr::mutate(
+    period = "2019-2023",
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1),
+    index_i = traffic_calc / traffic_base,
+    standard_error = sqrt(sum_squared_weight * variance_p),
+    standard_error_i = sqrt(sum_squared_weight * variance_i),
+    ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error, 1),
+    ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error, 1)
+  ) |>
+  dplyr::select(
+    #type,
+    period,
+    index_i,
+    index_p,
+    ci_lower,
+    ci_upper,
+    n_trp,
+    n_eff,
+    variance_p,
+    variance_i,
+    sum_squared_weight,
+    standard_error,
+    standard_error_i
+  )
+
+readr::write_rds(
+  city_index_trd_2019_2023,
+  "trp_index/city_index_trd_2019_2023.rds"
+)
+
+
+## 2019-2024 direct special ----
+# Just Jan and Feb to avoid pandemic and Nydalsbrua work
+{
+  tictoc::tic()
+  trp_index_data <-
+    calculate_trp_index(
+      "trd_2019_2024",
+      trd_trp_meta_19_23$trp_id[13], # ikke 2, 5-8, 14, 18, 19, 20, 24, 26, 27
+      2019,
+      2024
+    )
+  tictoc::toc()
+}
+
+
+### Toll and TRP ----
+all_trp_index_data_19_24 <-
+  base::list.files(path = "trp_index/trd_2019_2024", full.names = TRUE) |>
+  purrr::map(~ readr::read_rds(.x)) |>
+  purrr::list_rbind() |>
+  dplyr::mutate(
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(2),
+    type = "TRP"
+  ) |>
+  dplyr::left_join(
+    trp,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    years,
+    month,
+    traffic_base,
+    traffic_calc,
+    n_days,
+    index_p,
+    type
+  ) |>
+  dplyr::bind_rows(
+    toll_direct |> dplyr::filter(years == "2019-2024")
+  ) |>
+  dplyr::filter(
+    month %in% c(1, 2)
+  ) |>
+  # Stop to check data quality
+  dplyr::summarise(
+    traffic_base = sum(traffic_base),
+    traffic_calc = sum(traffic_calc),
+    n_months = n(),
+    .by = c(trp_id, type)
+  ) |>
+  dplyr::mutate(
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(2),
+    weight = traffic_base / sum(traffic_base),
+    city_index = (sum(traffic_calc) / sum(traffic_base) - 1 ) * 100,
+    deviation = weight * (index_p - city_index)^2,
+    index_i = traffic_calc / traffic_base,
+    city_index_i = sum(traffic_calc) / sum(traffic_base),
+    deviation_i = weight * (index_i - city_index_i)^2
+  )
+
+
+### City index ----
+city_index_trd_2019_2024 <-
+  all_trp_index_data_19_24 |>
+  dplyr::summarise(
+    traffic_base = sum(traffic_base),
+    traffic_calc = sum(traffic_calc),
+    n_trp = n(),
+    sum_squared_weight = sum(weight^2),
+    n_eff = 1 / sum_squared_weight,
+    variance_p = (1 / (1 - sum_squared_weight)) * sum(deviation),
+    variance_i = (1 / (1 - sum_squared_weight)) * sum(deviation_i),
+    .by = type
+  ) |>
+  dplyr::mutate(
+    period = "2019-2024",
+    index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1),
+    index_i = traffic_calc / traffic_base,
+    standard_error = sqrt(sum_squared_weight * variance_p),
+    standard_error_i = sqrt(sum_squared_weight * variance_i),
+    ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error, 1),
+    ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error, 1)
+  ) |>
+  dplyr::select(
+    type,
+    period,
+    index_i,
+    index_p,
+    ci_lower,
+    ci_upper,
+    n_trp,
+    n_eff,
+    variance_p,
+    variance_i,
+    sum_squared_weight,
+    standard_error,
+    standard_error_i
+  )
+
+readr::write_rds(
+  city_index_trd_2019_2024,
+  "trp_index/city_index_trd_2019_2024.rds"
+)
+
+
