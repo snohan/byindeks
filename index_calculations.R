@@ -6,7 +6,7 @@
   source("index_calculation_functions.R")
   library(tictoc)
   library(writexl)
-  library(sf)
+  #library(sf)
 }
 
 

@@ -14,7 +14,7 @@ source("indexpoints_tidying_functions.R")
 
 # Set manual variables ----
 {
-index_month <- 1 # to be published now
+index_month <- 3 # to be published now
 city_number <- 960
 city_name <- "Trondheim"
 }
@@ -636,6 +636,13 @@ so_far_years_1_5 <-
   ) |>
   calculate_two_year_index()
 
+so_far_years_1_6 <-
+  dplyr::bind_rows(
+    so_far_years_1_5,
+    dplyr::slice(city_index_so_far, 6)
+  ) |>
+  calculate_two_year_index()
+
 # Skipping intermediate years, adding just from first to last
 city_index_so_far_all <-
   city_index_so_far |>
@@ -643,7 +650,8 @@ city_index_so_far_all <-
     so_far_years_1_2,
     so_far_years_1_3,
     so_far_years_1_4,
-    so_far_years_1_5
+    so_far_years_1_5,
+    so_far_years_1_6
   ) |>
   dplyr::mutate(
     length_range = "lette",

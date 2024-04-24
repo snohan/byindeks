@@ -296,12 +296,15 @@ tolling_station_ids_apar <-
     # Holtermannsvegen utenfor Siemens er to stasjoner, også 57.
     # Slår disse sammen nedenfor, og setter feltnummer etter dagens metrering
     "58", "59", "60", "61", "62", "64", "65", "66", "67",
-    "68", "69", "85", "86", "72"
+    "68", "69", "85", "86",
+    # From 01.11.2023, Ranheim changed ID from 72 (operator ID 100121) to 1 (operator ID 100149)
+    #"72"
+    "1"
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "march" # English
-year_number <- 2024
+month_string <- "november" # English
+year_number <- 2023
 
 apar_data_for_month <-
   purrr::map_dfr(
@@ -329,6 +332,7 @@ apar_data_for_month_tidy <-
       dplyr::case_when(
         trp_id == "51" & lane %in% c("3", "4") ~ "512",
         trp_id == "57" ~ "56",
+        trp_id == "1" ~ "72",
         TRUE ~ trp_id
       ),
     class =

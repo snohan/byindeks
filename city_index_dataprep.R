@@ -57,7 +57,7 @@ trp_id_msnr <-
 ## Choose publish month ----
 {
 present_year <- 2024
-index_month <- 1 # the one to be published now
+index_month <- 3 # the one to be published now
 city_number <- 960
 }
 # End choose

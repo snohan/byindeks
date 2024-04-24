@@ -63,7 +63,7 @@ points <- readr::read_rds("trps_for_city_index.rds")
 # 2017 NJær   952   12 Snorre
 # 2018 Oslo   959   12 Trond
 # 2018 Berg  8952   12 Trond
-# 2019 Tron   960   12 Snorre
+# 2019 Tron   960   03 Snorre
 
 
 # TODO: look at normalized MDT visualized on links
@@ -71,8 +71,8 @@ points <- readr::read_rds("trps_for_city_index.rds")
 
 
 # Choose
-index_year <- 2023
-latest_published_month <- 12
+index_year <- 2024
+latest_published_month <- 2
 city_number <- 960
 # End choose
 
@@ -911,8 +911,8 @@ pointindex_long_2 <-
 ```{r}
 #| label: city_index
 
-month_start = lubridate::make_date(year = 2023, month = 1)
-month_end = lubridate::make_date(year = 2023, month = 12)
+month_start = lubridate::make_date(year = 2024, month = 1)
+month_end = lubridate::make_date(year = 2024, month = 12)
 
 full_year_x_axis <- c(month_start, month_end)
 
