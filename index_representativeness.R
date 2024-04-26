@@ -1,5 +1,5 @@
 # Is the selection of city index points representative for the area?
-# Is the observed TRP indexes from the same distribution as the population of traffic links.
+# Is the observed TRP indexes coming from the same distribution as the population of traffic links?
 # Using RTM data as population.
 
 # Setup ----
