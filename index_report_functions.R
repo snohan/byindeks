@@ -985,13 +985,13 @@ table_bike_trps_with_sdt <- function(chosen_area_name) {
     align(j = 4, align = "center", part = "all") |>
     bold(part = "header") |>
     font(fontname = "Lucida Sans Unicode", part = "all")  |>
+    fontsize(size = 7, part = "all") |>
     bg(bg = "#ED9300", part = "header") |>
     border_remove() |>
     hline_top(part = "header", border = borderline) |>
     hline_bottom(part = "all", border = borderline) |>
     autofit()
 }
-
 
 
 table_index_chains <- function(chosen_name) {
@@ -1003,6 +1003,12 @@ table_index_chains <- function(chosen_name) {
       month == 12
     ) |>
     nrow()
+
+  base::ifelse(
+    n_index_all_years == 0,
+    n_index_all_years <- NA,
+    n_index_all_years
+  )
 
   index_all_years |>
     dplyr::filter(
@@ -1044,7 +1050,6 @@ table_index_chains <- function(chosen_name) {
       border = fp_border(color = "#dadada", width = 1)
     ) |>
     autofit()
-
 }
 
 

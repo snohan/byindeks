@@ -33,7 +33,7 @@ crossref:
 
 source("rmd_setup.R")
 
-last_published_month_number <- 12
+last_published_month_number <- 4
 
 index_all_years <-
   readr::read_rds(
@@ -203,6 +203,7 @@ index_for_plotting |>
 table_bike_trps_with_sdt("Grenland")
 ```
 
+{{< pagebreak >}}
 
 ```{r}
 #| label: tbl-grl
@@ -371,6 +372,34 @@ table_index_chains("Tromsø")
 
 index_for_plotting |> 
   plot_index_chain("Tromsø")
+```
+
+
+# Trondheim
+```{r}
+#| label: tbl-trp_trd
+#| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Trondheim."
+#| ft.arraystretch: 0.9
+
+table_bike_trps_with_sdt("Trondheim")
+```
+
+```{r}
+#| label: tbl-trd
+#| tbl-cap: "Estimert endring i sykkeltrafikk i Trondheim."
+#| ft.arraystretch: 0.9
+
+table_index_chains("Trondheim")
+```
+
+```{r}
+#| label: fig-trd
+#| fig-width: 6.5
+#| fig-height: 6
+#| fig-cap: "Estimert endring i sykkeltrafikk i Trondheim."
+
+index_for_plotting |> 
+  plot_index_chain("Trondheim")
 ```
 
 

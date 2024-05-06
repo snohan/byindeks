@@ -6,7 +6,7 @@ source("get_from_nvdb_api.R")
 
 
 # Get TRP and crossings metainfo ----
-latest_published_month <- 12
+latest_published_month <- 4
 
 counties <-
   get_counties() |>
@@ -219,21 +219,27 @@ border_crossings_adt <-
 
 
 # Get published index ----
+{
 index_2017 <- get_published_index_for_months(2952, 2017, 12)
 index_2018 <- get_published_index_for_months(2952, 2018, 12)
 index_2019 <- get_published_index_for_months(2952, 2019, 12)
 index_2020 <- get_published_index_for_months(2952, 2020, 12)
 index_2021 <- get_published_index_for_months(2952, 2021, 12)
 index_2022 <- get_published_index_for_months(2952, 2022, 12)
-index_2023 <- get_published_index_for_months(2952, 2023, latest_published_month)
+index_2023 <- get_published_index_for_months(2952, 2023, 12)
+index_2024 <- get_published_index_for_months(2952, 2024, latest_published_month)
+}
 
+{
 pointindex_2017 <- get_published_pointindex_for_months_paginated(2952, 2017, 12)
 pointindex_2018 <- get_published_pointindex_for_months_paginated(2952, 2018, 12)
 pointindex_2019 <- get_published_pointindex_for_months_paginated(2952, 2019, 12)
 pointindex_2020 <- get_published_pointindex_for_months_paginated(2952, 2020, 12)
 pointindex_2021 <- get_published_pointindex_for_months_paginated(2952, 2021, 12)
 pointindex_2022 <- get_published_pointindex_for_months_paginated(2952, 2022, 12)
-pointindex_2023 <- get_published_pointindex_for_months_paginated(2952, 2023, latest_published_month)
+pointindex_2023 <- get_published_pointindex_for_months_paginated(2952, 2023, 12)
+pointindex_2024 <- get_published_pointindex_for_months_paginated(2952, 2024, latest_published_month)
+}
 
 pointindices <-
   dplyr::bind_rows(
@@ -243,7 +249,8 @@ pointindices <-
     pointindex_2020[[2]],
     pointindex_2021[[2]],
     pointindex_2022[[2]],
-    pointindex_2023[[2]]
+    pointindex_2023[[2]],
+    pointindex_2024[[2]]
   )
 
 pointindices_all <-
@@ -343,7 +350,8 @@ index_for_table <-
     index_2020,
     index_2021,
     index_2022,
-    index_2023
+    index_2023,
+    index_2024
   ) |>
   dplyr::mutate(
     length_range =
@@ -400,7 +408,8 @@ index_all_years <-
     index_2020,
     index_2021,
     index_2022,
-    index_2023
+    index_2023,
+    index_2024
   ) |>
   dplyr::mutate(
     length_range =

@@ -45,9 +45,9 @@ library(htmltools)
 #| label: get_data
 
 # Choose
-index_year <- 2023
+index_year <- 2024
 # Last published month
-index_month <- 11
+index_month <- 3
 index_id <- 2952
 
 # Fetch

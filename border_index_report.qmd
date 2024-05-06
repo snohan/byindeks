@@ -153,7 +153,7 @@ table_historic_index <- function(index_df) {
     set_header_labels(year = "År") |>
     align(j = 2:5, align = "right", part = "all") |>
     bold(part = "header") |>
-    fontsize(size = 9, part = "all") |>
+    #fontsize(size = 9, part = "all") |>
     font(fontname = "Lucida Sans Unicode", part = "all") |>
     bg(bg = "#ED9300", part = "header") |>
     border_remove() |>
@@ -309,7 +309,21 @@ index_all_years |>
 
 NB! Skalaen på y-aksen er veldig ulik i de to figurene. Dette skyldes de ekstreme endringene som inntraff på grunn av koronarestriksjoner. Fra mars 2020 gikk grensetrafikken betydelig ned som følge av tiltak mot spredningen av det nye koronaviruset. 6. oktober 2021 ble grenseovergangene gjenåpnet. Smitteverntiltak ble deretter gjeninnført i desember 2021 og varte til februar 2022.
 
-Tabell @tbl-monthly_index_table_2020, @tbl-monthly_index_table_2021, @tbl-monthly_index_table_2022 og @tbl-monthly_index_table_2023 viser tallgrunnlaget for figur @fig-lineplot_historic_2. Indekstallene er en estimert samlet endring i trafikkmengde per måned, sammenlignet med samme måned året før. Usikkerheten i estimatet er synliggjort med standardfeil og standardavvik. Standardfeilen sier noe om hvor nære indeksen (som er et estimat) er den faktiske endringen i trafikken, mens standardavviket sier noe om hvor ulik trafikkendringen var på de ulike trafikkregistreringspunktene.
+```{r}
+#| label: fig-lineplot_historic_3
+#| fig-width: 6
+#| fig-height: 6.2
+#| fig-cap: "Riksgrenseindeks per måned mellom to påfølgende år i perioden 2024-."
+#| fig-pos: "!h"
+
+index_all_years |> 
+  dplyr::filter(
+    year %in% c(2024)
+  ) |> 
+  create_monthly_index_lineplot()
+```
+
+Tabell @tbl-monthly_index_table_2020, @tbl-monthly_index_table_2021, @tbl-monthly_index_table_2022 og @tbl-monthly_index_table_2023 viser tallgrunnlaget for figur @fig-lineplot_historic_2 og @fig-lineplot_historic_3. Indekstallene er en estimert samlet endring i trafikkmengde per måned, sammenlignet med samme måned året før. Usikkerheten i estimatet er synliggjort med standardfeil og standardavvik. Standardfeilen sier noe om hvor nære indeksen (som er et estimat) er den faktiske endringen i trafikken, mens standardavviket sier noe om hvor ulik trafikkendringen var på de ulike trafikkregistreringspunktene.
 
 {{< pagebreak >}}
 
@@ -370,6 +384,22 @@ index_for_table |>
   ) |> 
   create_monthly_index_table()
 ```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-monthly_index_table_2024
+#| tbl-cap: "Riksgrenseindeks per måned 2024."
+#| ft.arraystretch: 0.9
+
+index_for_table |> 
+  dplyr::filter(
+    period == "month",
+    year == 2024
+  ) |> 
+  create_monthly_index_table()
+```
+
 
 # Endring i trafikk per år
 2016 er sammenligningsåret for indeksen i 2017, og de påfølgende årsindeksene er alltid sammenlignet med året før. I tabellen nedenfor er årsindeksene gjengitt.

@@ -1081,7 +1081,7 @@ all_trp_index_data_14_19 <-
   )
 
 trp_index_meta_data <-
-  all_trp_index_data |>
+  all_trp_index_data_14_19 |>
   dplyr::left_join(
     trp,
     by = join_by(trp_id)
@@ -1136,6 +1136,8 @@ readr::write_rds(
   city_index_trd_2014_2019,
   "trp_index/city_index_trd_2014_2019.rds"
 )
+
+city_index_trd_2014_2019 <- readr::read_rds("trp_index/city_index_trd_2014_2019.rds")
 
 
 ## 2014-2023 ----

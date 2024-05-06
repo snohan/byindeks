@@ -7,8 +7,8 @@ source("indexpoints_tidying_functions.R")
 }
 
 # Index codes and years ----
-last_complete_year <- 2022
-last_complete_month_this_year <- 12
+last_complete_year <- 2023
+last_complete_month_this_year <- 4
 
 index_codes_and_reference_years <-
   tibble::tibble(
@@ -22,7 +22,8 @@ index_codes_and_reference_years <-
       5952,  # Bergen
       6952,  # Nord-Jæren
       11952, # Tromsø
-      14952  # Kristiansand
+      14952, # Kristiansand
+      13952  # Trondheim
     ),
     area_name = c(
       "Grenland",
@@ -33,7 +34,8 @@ index_codes_and_reference_years <-
       "Bergen",
       "Nord-Jæren",
       "Tromsø",
-      "Kristiansand"
+      "Kristiansand",
+      "Trondheim"
     ),
     reference_year =
       c(
@@ -45,12 +47,19 @@ index_codes_and_reference_years <-
         2018,
         2019,
         2021,
-        2018
+        2018,
+        2023
       )
   ) |>
   dplyr::rowwise() |>
   dplyr::mutate(
-    index_years = list(c((reference_year + 1):last_complete_year))
+    #index_years = list(c((reference_year + 1):last_complete_year))
+    index_years =
+      dplyr::if_else(
+        reference_year == last_complete_year,
+        list(NA_real_),
+        list(c((reference_year + 1):last_complete_year))
+      )
   ) |>
   dplyr::ungroup()
 
@@ -60,7 +69,8 @@ index_codes_and_index_years <-
     index_code,
     index_years
   ) |>
-  tidyr::unnest(index_years)
+  tidyr::unnest(index_years) |>
+  dplyr::filter(!is.na(index_years))
 
 
 # City index ----
@@ -457,7 +467,8 @@ bike_sdt <-
     get_sdt_for_trp_list(bike_trps$trp_id, 2020),
     get_sdt_for_trp_list(bike_trps$trp_id, 2021),
     get_sdt_for_trp_list(bike_trps$trp_id, 2022),
-    get_sdt_for_trp_list(bike_trps$trp_id, 2023)
+    get_sdt_for_trp_list(bike_trps$trp_id, 2023),
+    get_sdt_for_trp_list(bike_trps$trp_id, 2024)
   )
 
 
