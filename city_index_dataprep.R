@@ -57,7 +57,7 @@ trp_id_msnr <-
 ## Choose publish month ----
 {
 present_year <- 2024
-index_month <- 3 # the one to be published now
+index_month <- 4 # the one to be published now
 city_number <- 960
 }
 # End choose
@@ -323,46 +323,94 @@ if(city_number %in% c(8952, 16952)){
 }
 
 # Solely for Excel ----
-trp_index_monthly_wide <-
-  trp_index_monthly |>
-  #trp_toll_index_monthly |>
-  tidyr::complete(
-    trp_id,
-    year,
-    month
-  ) |>
-  dplyr::mutate(
-    month_label = lubridate::make_date(
-      year = 2000,
-      month = month,
-      day = 1
+if(city_number == 960){
+
+  trp_index_monthly_wide <-
+    trp_toll_index_monthly |>
+    tidyr::complete(
+      trp_id,
+      year,
+      month
     ) |>
-      lubridate::month(label = TRUE)
-  ) |>
-  dplyr::select(
-    -month
-  ) |>
-  tidyr::pivot_wider(
-    names_from = "month_label",
-    values_from = "index"
-  ) |>
-  dplyr::left_join(
-    points,
-    by = "trp_id"
-  ) |>
-  dplyr::select(
-    trp_id,
-    name,
-    road_category_and_number,
-    year,
-    jan:des
-    #jan:okt
-  ) |>
-  dplyr::arrange(
-    name,
-    trp_id,
-    year
-  )
+    dplyr::mutate(
+      month_label = lubridate::make_date(
+        year = 2000,
+        month = month,
+        day = 1
+      ) |>
+        lubridate::month(label = TRUE)
+    ) |>
+    dplyr::select(
+      trp_id,
+      year,
+      month_label,
+      index
+    ) |>
+    tidyr::pivot_wider(
+      names_from = "month_label",
+      values_from = "index"
+    ) |>
+    dplyr::left_join(
+      this_citys_trps_all,
+      by = "trp_id"
+    ) |>
+    dplyr::select(
+      trp_id,
+      name,
+      road_category_and_number,
+      year,
+      jan:des
+    ) |>
+    dplyr::arrange(
+      name,
+      trp_id,
+      year
+    )
+
+}else{
+
+  trp_index_monthly_wide <-
+    trp_index_monthly |>
+    tidyr::complete(
+      trp_id,
+      year,
+      month
+    ) |>
+    dplyr::mutate(
+      month_label = lubridate::make_date(
+        year = 2000,
+        month = month,
+        day = 1
+      ) |>
+        lubridate::month(label = TRUE)
+    ) |>
+    dplyr::select(
+      trp_id,
+      year,
+      month_label,
+      index
+    ) |>
+    tidyr::pivot_wider(
+      names_from = "month_label",
+      values_from = "index"
+    ) |>
+    dplyr::left_join(
+      this_citys_trps_all,
+      by = "trp_id"
+    ) |>
+    dplyr::select(
+      trp_id,
+      name,
+      road_category_and_number,
+      year,
+      jan:des
+    ) |>
+    dplyr::arrange(
+      name,
+      trp_id,
+      year
+    )
+}
 
 
 ## TRP names ----
@@ -828,7 +876,6 @@ mdt_validated |>
     valid_quality = coverage >= 50 & length_quality >= 98.5
   ) |>
   create_mdt_barplot()
-
 
 source("mdt_check.R")
 

@@ -1,4 +1,4 @@
-# IN
+# GETTING IN
 # Hourly traffic per class per lane per tolling station (APAR)
 # Tolling station metadata (NVDB)
 
@@ -303,8 +303,8 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "november" # English
-year_number <- 2023
+month_string <- "april" # English
+year_number <- 2024
 
 apar_data_for_month <-
   purrr::map_dfr(
@@ -471,7 +471,7 @@ plot_toll_station_data_per_lane <- function(toll_id_chosen, year_chosen) {
 
 }
 
-plot_toll_station_data_per_lane("58", 2024)
+plot_toll_station_data_per_lane("86", 2024)
 
 
 ## Exclusions ----

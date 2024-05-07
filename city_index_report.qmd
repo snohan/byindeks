@@ -40,10 +40,10 @@ source("rmd_setup.R")
 # Nord-Jæren             952 (2017) 12-ref_year_aadt
 # Bergen                8952 (2018) 12
 # Oslo                   959 (2018) 12-ref_year_aadt
-# Trondheim              960 (2019) 12
+# Trondheim              960 (2019) 04
 
 # Choose city number:
-city_number <- 952
+city_number <- 960
 
 ## Meta info
 city_number_county_name <- 
@@ -416,7 +416,7 @@ Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene i
 
 ```{r}
 #| label: fig-map_trp
-#| fig-cap: "Kart som viser trafikkregistreringspunkt og årsdøgntrafikk."
+#| fig-cap: "Kart som viser trafikkregistreringspunkt og årsdøgntrafikk. Punktet Meådalen på E14 mellom Stjørdal og Meråker er utelatt fra kartvisningen."
 #| fig-scap: "Kart som viser trafikkregistreringspunkt og årsdøgntrafikk."
 #| fig-width: 7
 
@@ -513,20 +513,20 @@ city_info |>
 
 
 
-
+<!-- --
 ```{r}
 #| label: tbl-city_index_kommune
 #| tbl-cap: "Estimert endring i trafikkmengde per år, gamle Kristiansand kommune."
 
-if(city_number == 957) {
- city_info_kommune |>
-  dplyr::filter(
-    !(index_type == "chained" & month != 12)
-  ) |>
-  create_city_index_table_sd() 
-}
+# if(city_number == 957) {
+#  city_info_kommune |>
+#   dplyr::filter(
+#     !(index_type == "chained" & month != 12)
+#   ) |>
+#   create_city_index_table_sd() 
+# }
 ```
-
+-->
 
 Sammenkjedingen av de årlige indeksene estimerer endringen i trafikkmengden for lette kjøretøy fra 
 `r latest_complete_year$year_base` til `r latest_complete_year$year` til å være 

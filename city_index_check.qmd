@@ -72,7 +72,7 @@ points <- readr::read_rds("trps_for_city_index.rds")
 
 # Choose
 index_year <- 2024
-latest_published_month <- 2
+latest_published_month <- 3
 city_number <- 960
 # End choose
 
