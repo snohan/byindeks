@@ -35,7 +35,7 @@ source("rmd_setup.R")
 # Grenland               955 (2016) 12
 # Kristiansand og omegn  957 (2016) 12
 # Nedre Glomma           953 (2016) 12-ref_year_aadt
-# Tromsø                 961 (2016) 08
+# Tromsø                 961 (2016) 12
 # Tromsø 2022          16952 (2022) 12-ref_year_aadt
 # Nord-Jæren             952 (2017) 12-ref_year_aadt
 # Bergen                8952 (2018) 12
@@ -416,7 +416,7 @@ Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene i
 
 ```{r}
 #| label: fig-map_trp
-#| fig-cap: "Kart som viser trafikkregistreringspunkt og årsdøgntrafikk. Punktet Meådalen på E14 mellom Stjørdal og Meråker er utelatt fra kartvisningen."
+#| fig-cap: "Kart som viser trafikkregistreringspunkt og årsdøgntrafikk."
 #| fig-scap: "Kart som viser trafikkregistreringspunkt og årsdøgntrafikk."
 #| fig-width: 7
 

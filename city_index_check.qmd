@@ -57,13 +57,13 @@ points <- readr::read_rds("trps_for_city_index.rds")
 # 2016 Busk  1952   12 Snorre
 # 2016 Gren   955   12 Snorre
 # 2016 Kris   957   12 Snorre
-# 2016 NGlo   953   12 Trond
+# 2016 NGlo 18952   04 Trond
 # 2016 Trom   961   12 Snorre
 # 2022 Trom 16952   12 Snorre
 # 2017 NJær   952   12 Snorre
 # 2018 Oslo   959   12 Trond
 # 2018 Berg  8952   12 Trond
-# 2019 Tron   960   03 Snorre
+# 2019 Tron   960   04 Snorre
 
 
 # TODO: look at normalized MDT visualized on links
@@ -73,7 +73,7 @@ points <- readr::read_rds("trps_for_city_index.rds")
 # Choose
 index_year <- 2024
 latest_published_month <- 3
-city_number <- 960
+city_number <- 18952
 # End choose
 
 new_month_year <-
@@ -213,8 +213,9 @@ if(city_number == 960){
 city_trps <- pointindex[[1]]
 
 # TRD: Removing Tungasletta Ystgaard
-#city_trps <-
-# city_trps[! city_trps %in% c("84826V42881")]
+# NGL: Removing periodic Hauge bru (originally included by mistake)
+city_trps <-
+ city_trps[! city_trps %in% c("84826V42881", "98352V971490")]
 
 pointindices <- pointindex[[2]]
 city_name <- city_index$area_name[1]

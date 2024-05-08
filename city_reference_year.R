@@ -20,5 +20,8 @@ reference_year <-
     ) ~ 2019,
     city_number %in% c(
       16952
-    ) ~ 2022
+    ) ~ 2022,
+    city_number %in% c(
+      18952
+    ) ~ 2023
   )

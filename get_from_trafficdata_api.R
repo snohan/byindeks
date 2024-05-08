@@ -1516,13 +1516,14 @@ get_periodic_aadt_by_length_for_trp_list <- function(trp_list) {
 
 
 
-#trp_id <- "01316V804837"
-#mdt_year <- 2022
+# trp_id <- "05882V3188133"
+# mdt_year <- 2023
 
 # test_all_nortraf <- get_mdt_by_length_for_trp("43623V704583", 2014)
 # test_mix_nortraf_new <- get_mdt_by_length_for_trp("43623V704583", 2015)
 # test_all_new <- get_mdt_by_length_for_trp("43623V704583", 2016)
 # test_none <- get_mdt_by_length_for_trp("01316V804837", 2022)
+# test_all_new <- get_mdt_by_length_for_trp("43623V704583", 2016)
 
 get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
 

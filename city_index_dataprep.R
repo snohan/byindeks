@@ -22,6 +22,7 @@
   library(viridis)
   library(writexl)
   library(readxl)
+  library(plotly)
   options(warn = -1)
   svv_background_color <- "#F5F5F5"
 }
@@ -43,7 +44,7 @@ trp_id_msnr <-
 # Buskerudbyen 1952
 # Grenland 955
 # Kristiansand og omegn 957 kommune 956
-# Nedre Glomma 953
+# Nedre Glomma 18952
 # Nord-Jæren 952
 # Oslo 959
 # Trondheim 960
@@ -58,9 +59,36 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 4 # the one to be published now
-city_number <- 960
+city_number <- 18952
 }
 # End choose
+
+
+## TRP names ----
+this_citys_trps_all_adt_final <-
+  readr::read_rds(
+    file = paste0(
+      "index_trp_metadata/trp_",
+      city_number,
+      ".rds"
+    )
+  )
+
+trp_names <-
+  this_citys_trps_all_adt_final |>
+  dplyr::select(
+    trp_id,
+    name,
+    municipality_name
+  )
+
+# sub_areas <-
+#   trp_names |>
+#   dplyr::select(
+#     trp_id,
+#     sub_area = municipality_name
+#   )
+
 
 ## Set time references ----
 {
@@ -79,7 +107,7 @@ last_year_month <-
     )
   )
 
-if(!(city_number %in% c(960, 16952))){
+if(!(city_number %in% c(960, 16952, 18952))){
   index_years_pre_2020 <- base::seq.int(reference_year + 1, 2019, 1)
 }else{
   index_years_pre_2020 <- NULL
@@ -93,6 +121,10 @@ if(city_number == 8952){
 
 if(city_number == 16952){
   index_years_from_2020 <- base::seq.int(2023, present_year, 1)
+}
+
+if(city_number == 18952){
+  index_years_from_2020 <- base::seq.int(2024, present_year, 1)
 }
 
 index_months_from_2020 <-
@@ -131,6 +163,10 @@ city_indexes <-
   if(city_number == 16952) {
     city_name <- "Tromsø"
   }
+
+  if(city_number == 18952) {
+    city_name <- "Nedre Glomma"
+  }
 }
 
 # TODO: fetch for so far this year by index month
@@ -139,7 +175,7 @@ city_indexes <-
 # TRP index ----
 ## So far by December ----
 # Still need to specify csv-files for years before 2020 to get the pointindex as they are not in API
-if(!(city_number %in% c(8952, 16952))){
+if(!(city_number %in% c(8952, 16952, 18952))){
   trp_index_so_far_by_dec_pre_2020 <-
     purrr::map(
       index_years_pre_2020,
@@ -191,7 +227,7 @@ trp_index_so_far_by_dec_from_2020 <-
     index = index_short
   )
 
-if(city_number %in% c(8952, 16952)){
+if(city_number %in% c(8952, 16952, 18952)){
   trp_index_year_to_date_dec_bind <-
     dplyr::bind_rows(
       trp_index_so_far_by_dec_from_2020
@@ -275,7 +311,7 @@ trp_index_year_to_date_by_index_month <-
 
 ## Monthly ----
 # For Excel report
-if(!(city_number %in% c(8952, 16952))){
+if(!(city_number %in% c(8952, 16952, 18952))){
   trp_index_monthly_pre_2020 <-
     purrr::map_dfr(
       index_years_pre_2020,
@@ -309,7 +345,7 @@ trp_index_monthly_from_2020 <-
     index = index_short
   )
 
-if(city_number %in% c(8952, 16952)){
+if(city_number %in% c(8952, 16952, 18952)){
   trp_index_monthly <-
     dplyr::bind_rows(
       trp_index_monthly_from_2020
@@ -395,7 +431,7 @@ if(city_number == 960){
       values_from = "index"
     ) |>
     dplyr::left_join(
-      this_citys_trps_all,
+      this_citys_trps_all_adt_final,
       by = "trp_id"
     ) |>
     dplyr::select(
@@ -403,7 +439,8 @@ if(city_number == 960){
       name,
       road_category_and_number,
       year,
-      jan:des
+      #jan:des
+      jan:apr
     ) |>
     dplyr::arrange(
       name,
@@ -411,32 +448,6 @@ if(city_number == 960){
       year
     )
 }
-
-
-## TRP names ----
-this_citys_trps_all_adt_final <-
-  readr::read_rds(
-    file = paste0(
-      "index_trp_metadata/trp_",
-      city_number,
-      ".rds"
-    )
-  )
-
-trp_names <-
-  this_citys_trps_all_adt_final |>
-  dplyr::select(
-    trp_id,
-    name,
-    municipality_name
-  )
-
-sub_areas <-
-  trp_names |>
-  dplyr::select(
-    trp_id,
-    sub_area = municipality_name
-  )
 
 
 ## Chained pointindex from reference year
@@ -552,12 +563,12 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    years_1_2,
-    years_1_3,
-    years_1_4,
-    years_1_5,
-    years_1_6,
-    years_1_7
+    # years_1_2,
+    # years_1_3,
+    # years_1_4,
+    # years_1_5,
+    # years_1_6,
+    # years_1_7
   ) %>%
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -796,6 +807,40 @@ mdt_filtered |>
 #     )
 #   )
 
+plotly::ggplotly(
+  mdt_filtered |>
+   dplyr::filter(
+     year == 2023
+   ) |>
+   ggplot(aes(year_month, length_quality, color = trp_id)) +
+   geom_line()
+)
+
+
+# Nedre Glomma, TRP med klart lavere lengdekvalitet sommerstid
+# trp_low_in_summer <-
+#   mdt_filtered |>
+#   dplyr::filter(
+#     year_month == "2023-07-01",
+#     length_quality < 99.5
+#   ) |>
+#   dplyr::left_join(
+#     trp_names,
+#     by = join_by(trp_id)
+#   )
+# # Alle 13 er EMU3
+#
+# trp_high_in_summer <-
+#   mdt_filtered |>
+#   dplyr::filter(
+#     year_month == "2023-07-01",
+#     length_quality > 99.94
+#   ) |>
+#   dplyr::left_join(
+#     trp_names,
+#     by = join_by(trp_id)
+#   )
+
 
 ## Check MDT validity ----
 # Exclude trp-months
@@ -812,6 +857,12 @@ trp_mdt_ok_refyear <-
   filter_mdt(reference_year) |>
   purrr::pluck(1)
 
+trp_not_ok <-
+  trp_names |>
+  dplyr::filter(
+    !(trp_id %in% trp_mdt_ok_refyear)
+  )
+
 # TODO: define sections
 # TODO: look at sectional TRPs concurrently
 # TODO: in map, draw curve connecting sectional TRPs
@@ -822,7 +873,7 @@ trp_mdt_ok_refyear <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[16:18]
+    trp_id %in% trp_mdt_ok_refyear[21:22]
   ) |>
   dplyr::select(
     trp_id,
@@ -917,10 +968,10 @@ mdt_and_pi <-
     length_quality >= 98.5
   ) |>
   dplyr::left_join(
-    #trp_index_monthly,
-    #by = c("trp_id", "year", "month"),
-    dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
-    by = c("trp_id", "year_month" = "month_object") # TRD
+    trp_index_monthly,
+    by = c("trp_id", "year", "month"),
+    #dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
+    #by = c("trp_id", "year_month" = "month_object") # TRD
   ) |>
   dplyr::left_join(
     trp_names,
