@@ -26,13 +26,15 @@ create_point_table <- function(all_point_info_df) {
     border_remove() %>%
     hline_top(part = "header", border = borderline) %>%
     hline_bottom(part = "all", border = borderline) %>%
-    autofit() %>%
-    padding(
-      j = 1,
-      padding.left = 20,
-      part = "all"
-    ) |>
-    height_all(height = .1)
+    width(j = 1, 2) |>
+    width(j = 2, 1.2)
+    #autofit() %>%
+    # padding(
+    #   j = 1,
+    #   padding.left = 20,
+    #   part = "all"
+    # ) |>
+    # height_all(height = .1)
 }
 
 create_point_table_trd <- function(all_point_info_df) {

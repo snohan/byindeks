@@ -4,12 +4,12 @@ format:
     toc: true
     number-sections: true
     toc-title: Innhold
-    mainfont: "Lucida Sans Unicode"
+    mainfont: "Arial"
     include-in-header:
       text: |
-        \newfontfamily\sectionfont[Color=ed9300]{Lucida Sans Unicode}
-        \newfontfamily\subsectionfont[Color=444f55]{Lucida Sans Unicode}
-        \newfontfamily\subsubsectionfont[Color=ed9300]{Lucida Sans Unicode}
+        \newfontfamily\sectionfont[Color=ed9300]{Arial}
+        \newfontfamily\subsectionfont[Color=444f55]{Arial}
+        \newfontfamily\subsubsectionfont[Color=ed9300]{Arial}
         \addtokomafont{section}{\sectionfont}
         \addtokomafont{subsection}{\subsectionfont}
         \addtokomafont{subsubsection}{\subsubsectionfont}
@@ -37,13 +37,13 @@ source("rmd_setup.R")
 # Nedre Glomma           953 (2016) 12-ref_year_aadt
 # Tromsø                 961 (2016) 12
 # Tromsø 2022          16952 (2022) 12-ref_year_aadt
-# Nord-Jæren             952 (2017) 12-ref_year_aadt
-# Bergen                8952 (2018) 12
+# Nord-Jæren             952 (2017) 04
+# Bergen                8952 (2018) 04
 # Oslo                   959 (2018) 12-ref_year_aadt
 # Trondheim              960 (2019) 04
 
 # Choose city number:
-city_number <- 960
+city_number <- 8952
 
 ## Meta info
 city_number_county_name <- 
@@ -334,11 +334,11 @@ De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeks
 ```{r}
 #| label: tbl-trp-1
 #| tbl-cap: "Trafikkregistreringspunkt som inngår i byindeksen."
-#| ft.arraystretch: 0.9
+#| ft.arraystretch: 1
 
 if(city_number == 960) {
   all_point_info |> 
-    dplyr::slice(1:30) |> 
+    #dplyr::slice(1:30) |> 
     create_point_table_trd() |>
     flextable::footnote(
       i = 1,
@@ -355,59 +355,9 @@ if(city_number == 960) {
     )
 }else{
   all_point_info |> 
-    dplyr::slice(1:30) |> 
+    #dplyr::slice(1:30) |> 
     create_point_table()  
 }
-```
-
-
-
-```{r}
-#| label: tbl-trp-2
-#| tbl-cap: "Trafikkregistreringspunkt som inngår i byindeksen, del 2."
-#| ft.arraystretch: 0.9
-
-if(nrow(all_point_info) > 30) {
-  
-  if(city_number == 960) {
-    all_point_info |>
-      dplyr::slice(31:70) |>
-      create_point_table_trd() |>
-      flextable::footnote(
-        i = 1,
-        j = 2,
-        value = flextable::as_paragraph(
-          c("B er bomstasjon, T er trafikkregistreringspunkt.")
-        ),
-        ref_symbols = c("a"),
-        part = "header"
-      ) |>
-      flextable::fontsize(
-        size = 8,
-        part = "footer"
-      )
-  }else{
-    all_point_info |>
-      dplyr::slice(31:70) |>
-      create_point_table()
-  }
-  
-}
-```
-
-
-```{r}
-#| label: tbl-trp-3
-#| tbl-cap: "Trafikkregistreringspunkt som inngår i byindeksen, del 3."
-#| ft.arraystretch: 0.9
-
-if(nrow(all_point_info) > 70) {
-  all_point_info |>
-    dplyr::slice(71:100) |>
-    create_point_table()
-}
-
-# {{< pagebreak >}}
 ```
 
 {{< pagebreak >}}
@@ -418,7 +368,8 @@ Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene i
 #| label: fig-map_trp
 #| fig-cap: "Kart som viser trafikkregistreringspunkt og årsdøgntrafikk."
 #| fig-scap: "Kart som viser trafikkregistreringspunkt og årsdøgntrafikk."
-#| fig-width: 7
+
+# fig-width: 7
 
 # TRD
 # Punktet Meådalen på E14 mellom Stjørdal og Meråker er utelatt fra kartvisningen.
@@ -500,6 +451,7 @@ Tabell @tbl-city_index viser den årlige endringen, samt prosentvis endring for 
 ```{r}
 #| label: tbl-city_index
 #| tbl-cap: "Estimert endring i trafikkmengde per år."
+#| ft.arraystretch: 0.9
 
 # TODO: line plot of chained index
 # TODO: split into two versions: one for whole years, one for so far this year (only relevant in intermediate reports)

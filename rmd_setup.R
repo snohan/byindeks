@@ -48,10 +48,11 @@ decimal_point <- function(number) {
 # Flextable defaults
 flextable::set_flextable_defaults(
   font.size = 8,
-  font.family = "Lucida Sans Unicode",
+  font.family = "Arial",
+  #font.family = "Lucida Sans Unicode",
   #font.family = "LTF Etica Light",
-  padding.bottom = .2,
-  padding.top = .4,
+  #padding.bottom = .2,
+  #padding.top = .4,
   decimal.mark = ",",
   big.mark = " ",
   na_str = ""
