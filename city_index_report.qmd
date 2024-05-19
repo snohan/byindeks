@@ -33,17 +33,18 @@ source("rmd_setup.R")
 
 # Buskerudbyen          1952 (2016) 12
 # Grenland               955 (2016) 12
-# Kristiansand og omegn  957 (2016) 12
-# Nedre Glomma           953 (2016) 12-ref_year_aadt
-# Tromsø                 961 (2016) 12
-# Tromsø 2022          16952 (2022) 12-ref_year_aadt
+# Kristiansand og omegn  957 (2016) 04
+# Nedre Glomma           953 (2016) 
+# Nedre Glomma 2023          (2023)
+# Tromsø                 961 (2016) 
+# Tromsø 2022          16952 (2022) 04
 # Nord-Jæren             952 (2017) 04
 # Bergen                8952 (2018) 04
-# Oslo                   959 (2018) 12-ref_year_aadt
+# Oslo                   959 (2018) 04
 # Trondheim              960 (2019) 04
 
 # Choose city number:
-city_number <- 8952
+city_number <- 957
 
 ## Meta info
 city_number_county_name <- 
@@ -409,7 +410,7 @@ En treårs glidende indeks er tilgjengelig fra og med det er gått tre år etter
 
 {{< include city_report_files/_pandemic_remark_rolling_index.Rmd >}}
 
-<!-- Spesialtekst for Nord-Jæren start-->
+<!-- Spesialtekst for Nord-Jæren start--
 Tre års glidende indeks har ganske stor usikkerhet. Dette skyldes for det meste at indekspunktene har ganske ulik trafikkutvikling i perioden. Dette igjen kommer av at det har forekommet flere større og mindre vegnettsendringer og trafikkomlegginger i perioden, som har slått ulikt ut på punktene. Data som er inkludert i beregningene, skal ha balanse mellom økt og minket trafikk i de enkelte omleggingssituasjonene, men dette fører likevel til større variasjon mellom punktene.
 
 Et annet bidrag til usikkerheten er at det er få punkter med i beregningen. Flere punkter vil i seg selv dempe usikkerheten noe, men de vil sannsynligvis også dempe bidragene fra punktene som har størst endring.
@@ -464,21 +465,22 @@ city_info |>
 ```
 
 
-
-<!-- --
+<!-- -->
+{{< pagebreak >}}
 ```{r}
 #| label: tbl-city_index_kommune
 #| tbl-cap: "Estimert endring i trafikkmengde per år, gamle Kristiansand kommune."
+#| ft.arraystretch: 0.9
 
-# if(city_number == 957) {
-#  city_info_kommune |>
-#   dplyr::filter(
-#     !(index_type == "chained" & month != 12)
-#   ) |>
-#   create_city_index_table_sd() 
-# }
+if(city_number == 957) {
+ city_info_kommune |>
+  dplyr::filter(
+    !(index_type == "chained" & month != 12)
+  ) |>
+  create_city_index_table_sd()
+}
 ```
--->
+<!-- -->
 
 Sammenkjedingen av de årlige indeksene estimerer endringen i trafikkmengden for lette kjøretøy fra 
 `r latest_complete_year$year_base` til `r latest_complete_year$year` til å være 

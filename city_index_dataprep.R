@@ -59,7 +59,7 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 4 # the one to be published now
-city_number <- 959
+city_number <- 956
 }
 # End choose
 
@@ -531,8 +531,8 @@ city_index_yearly_all <-
     years_1_3,
     years_1_4,
     years_1_5,
-    #years_1_6,
-    # years_1_7
+    years_1_6,
+    years_1_7
   ) %>%
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -697,7 +697,7 @@ trp_not_ok <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[60:61]
+    trp_id %in% trp_mdt_ok_refyear[28:29]
   ) |>
   dplyr::select(
     trp_id,
@@ -1192,6 +1192,7 @@ all_rolling_indexes_chained <-
     period = "jan-des"
   ) |>
   dplyr::rename(
+    index_i_org = index_i,
     index_i = chained_index_i
   )
 
