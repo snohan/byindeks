@@ -45,57 +45,6 @@ visualize_city_36_mdt_index(
 )
 ```
 
-<!-- Kristiansand --
-{{< pagebreak >}}
-
-Tilsvarende for gamle Kristiansand kommune.
-
-```{r}
-#| label: tbl-trp_36_kommune-1
-#| tbl-cap: "Tre års glidende indeks for gamle Kristiansand kommune."
-
-# city_36_month_kommune |> 
-#   dplyr::slice_max(
-#     month_n,
-#     by = year
-#   ) |> 
-#   create_city_mdt_36_index_table() |> 
-#   flextable::footnote(
-#     i = 1,
-#     j = 2,
-#     value = flextable::as_paragraph(
-#       c(tbl_cap_all_36_kommune)
-#     ),
-#     ref_symbols = c("a"),
-#     part = "header"
-#   ) |> 
-#   flextable::fontsize(
-#     size = 8,
-#     part = "footer"
-#   )
-
-# {{< pagebreak >}}
-```
-
-{{< pagebreak >}}
-
-```{r}
-#| label: fig-plot_city_36_kommune
-#| fig-cap: "Tidsserie med tre års glidende indeks for gamle Kristiansand kommune."
-
-#visualize_city_36_mdt_index(
-# city_36_month_kommune,
-# caption_credit,
-# "Estimert endring i trafikkmengde siste 3 år",
-#  paste0(
-#    "Sammenlignet med ",
-#    base_year
-#  )
-#)
-```
-
-<!-- Kristiansand -->
-
 \vspace{7mm}
 
 ::: {.callout-warning icon=false}

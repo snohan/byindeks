@@ -34,32 +34,33 @@ source("rmd_setup.R")
 
 # Buskerudbyen          1952 (2016) 12
 # Grenland               955 (2016) 12
-# Kristiansand og omegn  957 (2016) 04 gjennomgangstrafikk
-# Nedre Glomma 2023          (2023)
-# Tromsø 2022          16952 (2022) 04 gjennomgangstrafikk
-# Nord-Jæren             952 (2017) 04 gjennomgangstrafikk
-# Bergen                8952 (2018) 04 gjennomgangstrafikk
-# Oslo                   959 (2018) 04 gjennomgangstrafikk
-# Trondheim              960 (2019) 04 gjennomgangstrafikk
+# Kristiansand og omegn  957 (2016) 04
+# Nedre Glomma 2023    18952 (2023) 
+# Tromsø 2022          16952 (2022) 04
+# Nord-Jæren             952 (2017) 04
+# Bergen                8952 (2018) 04
+# Oslo                   959 (2018) 04
+# Trondheim              960 (2019) 04
 
 # Choose city number:
-city_number <- 957
+city_number <- 18952
 
 ## Meta info
 city_number_county_name <- 
   tibble::tibble(
-    city_no = c(8952, 1952, 955, 957, 953, 952, 959, 960, 961, 16952),
+    city_no = c(8952, 1952, 955, 957, 953, 18952, 952, 959, 960, 961, 16952),
     county_name = 
       c("Vestland", 
-        "Viken", 
-        "Vestfold og Telemark", 
+        "Buskerud", 
+        "Telemark", 
         "Agder",
-        "Viken", 
+        "Østfold",
+        "Østfold",
         "Rogaland", 
-        "Oslo kommune, Viken", 
+        "Oslo kommune, Akershus", 
         "Trøndelag",
-        "Troms og Finnmark",
-        "Troms og Finnmark"
+        "Troms",
+        "Troms"
       )
   )
 
@@ -98,10 +99,7 @@ all_point_info <-
 city_info <-
   readr::read_rds(
     paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")
-  ) #|>  
-  #dplyr::mutate(
-    #month_object = lubridate::make_date(year = year, month = month)
-  #)
+  ) 
 
 if(city_number == 960) {
   
@@ -160,7 +158,11 @@ latest_complete_year <-
 
 
 ## Rolling index
-rolling_indices <-
+any_rolling <- nrow(latest_complete_year) > 0
+  
+if(any_rolling) {
+
+  rolling_indices <-
   readr::read_rds(
     paste0("data_indexpoints_tidy/rolling_indices_", city_number, ".rds")
   )
@@ -176,6 +178,10 @@ any_36 <-
     window == "36_months"
   ) |> 
   base::nrow() > 0
+  
+}else{
+  any_36 <- FALSE
+}
 
 if(any_36) {
   city_36_month <-
@@ -226,13 +232,14 @@ if(any_36) {
 intro_file <- paste0("city_report_files/intro_", city_number, ".Rmd")
 traffic_file <- paste0("city_report_files/trafikkforhold_", city_number, ".Rmd")
 
-if(city_number %in% c(16952)) {
+# Does the index period encompass 2020-2022 pandemic?
+if(city_number %in% c(16952, 18952)) {
   pandemic_rolling_index_file <- "city_report_files/pandemic_rolling_index_empty.Rmd"
 }else{
   pandemic_rolling_index_file <- "city_report_files/pandemic_rolling_index_text.Rmd"
 }
 
-if(city_number %in% c(16952)) {
+if(city_number %in% c(16952, 18952)) {
   pandemic_traffic_file <- "city_report_files/pandemic_rolling_index_empty.Rmd"
 }else{
   pandemic_traffic_file <- "city_report_files/pandemic_traffic_text.Rmd"
@@ -243,6 +250,27 @@ if(any_36) {
 }else{
   rolling_36_file <- ""
 }
+
+if(any_rolling) {
+  rolling_12_24_file <- "city_report_files/rolling_12_24.Rmd"
+  yearly_change_text_file <- "city_report_files/yearly_change_text.Rmd"
+}else{
+  rolling_12_24_file <- ""
+  yearly_change_text_file <- ""
+}
+
+if(city_number == 952) {
+  nord_jaeren_remark_file <- "city_report_files/nord_jaeren_remark.Rmd"
+}else{
+  nord_jaeren_remark_file <- ""
+}
+
+if(city_number == 957) {
+  gamle_krs_kommune_file <- "city_report_files/gamle_krs_kommune.Rmd"
+}else{
+  gamle_krs_kommune_file <- ""
+}
+
 
 # Buskerudbyen
 if(city_number == 1952) {
@@ -285,12 +313,6 @@ if(city_number == 957) {
   
   city_36_month_kommune <-
     rolling_indices_kommune[[3]]
-  
-  # city_trp_mdt_kommune <-
-  #   readr::read_rds(
-  #     paste0("data_indexpoints_tidy/city_trps_mdt_956.rds")
-  #   )
-  
 }
 ```
 
@@ -409,36 +431,13 @@ En treårs glidende indeks er tilgjengelig fra og med det er gått tre år etter
 
 {{< include city_report_files/_pandemic_remark_rolling_index.Rmd >}}
 
-<!-- Spesialtekst for Nord-Jæren start--
-Tre års glidende indeks har ganske stor usikkerhet. Dette skyldes for det meste at indekspunktene har ganske ulik trafikkutvikling i perioden. Dette igjen kommer av at det har forekommet flere større og mindre vegnettsendringer og trafikkomlegginger i perioden, som har slått ulikt ut på punktene. Data som er inkludert i beregningene, skal ha balanse mellom økt og minket trafikk i de enkelte omleggingssituasjonene, men dette fører likevel til større variasjon mellom punktene.
-
-Et annet bidrag til usikkerheten er at det er få punkter med i beregningen. Flere punkter vil i seg selv dempe usikkerheten noe, men de vil sannsynligvis også dempe bidragene fra punktene som har størst endring.
-<!-- Spesialtekst for Nord-Jæren slutt-->
+<!-- Spesialtekst for Nord-Jæren -->
+{{< include city_report_files/_nord_jaeren_remark.Rmd >}}
 
 {{< pagebreak >}}
 
-## Endring i ett- og toårsperiode
-Tre års glidende indeks glatter ut trender som er av kortere varighet, men som kan være synlige dersom den glidende indeksen beregnes for kortere perioder. Eksempelvis kan en økende trend i trafikken som har oppstått det siste året bli lite synlig i den tre års glidende indeksen dersom de to første årene var stabile eller hadde nedgang. For å kunne si noe om hvilken utvikling den tre års glidende indeksen kan få framover i tid, er det nyttig å se tilsvarende glidende indekser for perioder på ett og to år. Dette vises i figur @fig-rolling_indices.
+{{< include city_report_files/_rolling_12_24.Rmd >}}
 
-```{r}
-#| label: fig-rolling_indices
-#| fig-cap: "Tidsserier med ett, to og tre års glidende indeks."
-#| fig-dpi: 300
-
-visualize_rolling_indices(
-  rolling_indices_long,
-  caption_credit,
-  "Estimert gjennomsnittlig endring siste glidende 1, 2 og 3 år",
-  paste0(
-    "Sammenlignet med ",
-    base_year
-  )
-)
-```
-
-Dersom trafikkmengden i årene framover blir liggende på samme nivå som i dag, vil det glidende gjennomsnittet for både 2 og 3 år sammenfalle med det som gjennomsnittet for 1 år ligger på i dag.
-
-{{< pagebreak >}}
 
 ## Endring per år
 Endring i trafikkmengde er også beregnet for hele kalenderår. I stedet for et tre års glidende gjennomsnitt tar denne beregningen utgangspunkt i indeksen mellom to påfølgende år. For hvert trafikkregistreringspunkt sammenlignes registrert trafikk dato for dato og time for time mellom to påfølgende år.
@@ -463,32 +462,10 @@ city_info |>
   create_city_index_table_sd()
 ```
 
+{{< include city_report_files/_yearly_change_text.Rmd >}}
 
-<!-- -->
-{{< pagebreak >}}
-```{r}
-#| label: tbl-city_index_kommune
-#| tbl-cap: "Estimert endring i trafikkmengde per år, gamle Kristiansand kommune."
-#| ft.arraystretch: 0.9
-
-if(city_number == 957) {
- city_info_kommune |>
-  dplyr::filter(
-    !(index_type == "chained" & month != 12)
-  ) |>
-  create_city_index_table_sd()
-}
-```
-<!-- -->
-
-Sammenkjedingen av de årlige indeksene estimerer endringen i trafikkmengden for lette kjøretøy fra 
-`r latest_complete_year$year_base` til `r latest_complete_year$year` til å være 
-`r stringr::str_replace(sprintf("%.1f", latest_complete_year$index_p), "\\.", ",")` %. 
-Et 95 % konfidensintervall går fra 
-`r stringr::str_replace(sprintf("%.1f", latest_complete_year$ci_lower), "\\.", ",")` % til 
-`r stringr::str_replace(sprintf("%.1f", latest_complete_year$ci_upper), "\\.", ",")` %.
-
-
+<!-- Gamle Kristiansand kommune -->
+{{< include city_report_files/_gamle_krs_kommune.Rmd >}}
 
 <!-- For Buskerudbyen -->
 {{< include city_report_files/_buskerudbyen_e18.Rmd >}}

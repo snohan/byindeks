@@ -1,0 +1,6 @@
+Sammenkjedingen av de årlige indeksene estimerer endringen i trafikkmengden for lette kjøretøy fra 
+`r latest_complete_year$year_base` til `r latest_complete_year$year` til å være 
+`r stringr::str_replace(sprintf("%.1f", latest_complete_year$index_p), "\\.", ",")` %. 
+Et 95 % konfidensintervall går fra 
+`r stringr::str_replace(sprintf("%.1f", latest_complete_year$ci_lower), "\\.", ",")` % til 
+`r stringr::str_replace(sprintf("%.1f", latest_complete_year$ci_upper), "\\.", ",")` %.
