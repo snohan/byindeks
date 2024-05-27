@@ -22,6 +22,7 @@ crossref:
   lof-title: "Figurer"
   fig-prefix: ""
   title-delim: "."
+  sec-prefix: "kapittel"
 ---
 
 ```{r setup, include = FALSE, echo = FALSE}
@@ -33,15 +34,13 @@ source("rmd_setup.R")
 
 # Buskerudbyen          1952 (2016) 12
 # Grenland               955 (2016) 12
-# Kristiansand og omegn  957 (2016) 04
-# Nedre Glomma           953 (2016) 
+# Kristiansand og omegn  957 (2016) 04 gjennomgangstrafikk
 # Nedre Glomma 2023          (2023)
-# Tromsø                 961 (2016) 
-# Tromsø 2022          16952 (2022) 04
-# Nord-Jæren             952 (2017) 04
-# Bergen                8952 (2018) 04
-# Oslo                   959 (2018) 04
-# Trondheim              960 (2019) 04
+# Tromsø 2022          16952 (2022) 04 gjennomgangstrafikk
+# Nord-Jæren             952 (2017) 04 gjennomgangstrafikk
+# Bergen                8952 (2018) 04 gjennomgangstrafikk
+# Oslo                   959 (2018) 04 gjennomgangstrafikk
+# Trondheim              960 (2019) 04 gjennomgangstrafikk
 
 # Choose city number:
 city_number <- 957
@@ -560,7 +559,7 @@ Et 95 % konfidensintervall går fra
 
 \clearpage
 
-# Spesielle trafikkforhold
+# Spesielle trafikkforhold {#sec-traffic}
 Trafikkregistreringspunktene som benyttes i byindeksen dekker kun en andel av det aktuelle vegnettet. Derfor kan det oppstå omfordeling av trafikk i vegnettet som bare delvis fanges opp i datagrunnlaget. Et typisk eksempel er en veg som stenges i en lengre periode i forbindelse med vegarbeid, og som fører til at all trafikken som normalt kjører der må benytte andre veger i området. Da har vi to ulike scenarioer:
 
 1. Den totale trafikkmengden i området er fortsatt den samme, siden omkringliggende vegnett har kapasitet til å føre den omdirigerte trafikken, samt at omkjøringen ikke tar så mye lengre tid at turetterspørselen går ned.
