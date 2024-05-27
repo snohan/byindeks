@@ -1,0 +1,114 @@
+Resultatene for hele kalenderår er gitt i tabell @tbl-trp_36. En tidsserie med månedsvis utvikling er vist i figur @fig-plot_city_36.
+
+```{r}
+#| label: tbl-trp_36
+#| tbl-cap: "Tre års glidende indeks."
+
+city_36_month |> 
+  dplyr::slice_max(
+    month_n,
+    by = year
+  ) |> 
+  create_city_mdt_36_index_table() |> 
+  flextable::footnote(
+    i = 1,
+    j = 2,
+    value = flextable::as_paragraph(
+      c(tbl_cap_all_36)
+    ),
+    ref_symbols = c("a"),
+    part = "header"
+  ) |> 
+  flextable::fontsize(
+    size = 8,
+    part = "footer"
+  )
+```
+
+{{< pagebreak >}}
+
+
+```{r}
+#| label: fig-plot_city_36
+#| fig-cap: "Tidsserie med tre års glidende indeks. Skravert område angir usikkerheten i beregningene i form av et 95 % konfidensintervall."
+#| fig-scap: "Tidsserie med tre års glidende indeks." 
+#| fig-dpi: 600
+
+visualize_city_36_mdt_index(
+  city_36_month,
+  caption_credit,
+  "Estimert endring i trafikkmengde siste glidende 3 år",
+  paste0(
+    "Sammenlignet med ",
+    base_year
+  )
+)
+```
+
+<!-- Kristiansand --
+{{< pagebreak >}}
+
+Tilsvarende for gamle Kristiansand kommune.
+
+```{r}
+#| label: tbl-trp_36_kommune-1
+#| tbl-cap: "Tre års glidende indeks for gamle Kristiansand kommune."
+
+# city_36_month_kommune |> 
+#   dplyr::slice_max(
+#     month_n,
+#     by = year
+#   ) |> 
+#   create_city_mdt_36_index_table() |> 
+#   flextable::footnote(
+#     i = 1,
+#     j = 2,
+#     value = flextable::as_paragraph(
+#       c(tbl_cap_all_36_kommune)
+#     ),
+#     ref_symbols = c("a"),
+#     part = "header"
+#   ) |> 
+#   flextable::fontsize(
+#     size = 8,
+#     part = "footer"
+#   )
+
+# {{< pagebreak >}}
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: fig-plot_city_36_kommune
+#| fig-cap: "Tidsserie med tre års glidende indeks for gamle Kristiansand kommune."
+
+#visualize_city_36_mdt_index(
+# city_36_month_kommune,
+# caption_credit,
+# "Estimert endring i trafikkmengde siste 3 år",
+#  paste0(
+#    "Sammenlignet med ",
+#    base_year
+#  )
+#)
+```
+
+<!-- Kristiansand -->
+
+\vspace{7mm}
+
+::: {.callout-warning icon=false}
+
+## Resultat nullvekstmål
+
+Sammenlignet med referanseåret er trafikkmengden de siste tre årene i gjennomsnitt `r latest_36_sentence`. 
+
+:::
+
+\vspace{5mm}
+
+Tas måleusikkerheten i betraktning, ligger endringen i trafikkmengden mellom 
+`r stringr::str_replace(sprintf("%.1f", latest_36_index$ci_lower), "\\.", ",")` % og 
+`r stringr::str_replace(sprintf("%.1f", latest_36_index$ci_upper), "\\.", ",")` %. Dette intervallet er et konfidensintervall på 95 %, som vil si at den sanne endringen i trafikkmengde vil ligge innenfor et slikt intervall 95 % av gangene en tilsvarende måling blir gjort. Usikkerheten er i stor grad avhengig av hvor mange trafikkregistreringspunkter som inngår i beregningene, men også større trafikale omfordelinger vil bidra.
+

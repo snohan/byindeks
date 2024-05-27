@@ -1,0 +1,12 @@
+Kartet i figur @fig-map_trp_zoomed viser plasseringen av trafikkregistreringspunktene i Drammen. 
+
+```{r}
+#| label: fig-map_trp_zoomed
+#| fig-cap: "Kart som viser trafikkregistreringspunkt og årsdøgntrafikk i Drammen."
+
+all_point_info |>
+  dplyr::filter(
+    municipality_name == "Drammen"
+  ) |> 
+  create_point_adt_map()
+```

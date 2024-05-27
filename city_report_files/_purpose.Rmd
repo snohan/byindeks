@@ -1,0 +1,29 @@
+# Formål og datagrunnlag
+
+Byvekstavtalene har mål om nullvekst i persontransport med bil: *I byområdene skal klimagassutslipp, kø, luftforurensning og støy reduseres gjennom effektiv arealbruk og ved at veksten i persontransporten tas med kollektivtransport, sykling og gange.* Trafikkutviklingen for persontransport med bil, målt med byindeks og reisevaneundersøkelser, ligger til grunn for vurderingen av måloppnåelsen i avtalene.
+
+
+## Metodikk og datagrunnlag
+Byindeksen beregner endring i trafikkmengde for byområdet. Metoden er basert på trafikkregistreringer fra faste punkter fordelt på riks- og fylkesveger, samt på enkelte kommunale veger, og er ment å gi et representativt bilde av trafikkutviklingen i avtaleområdet. Det tas hensyn til perioder hvor registreringsutstyret ikke har vært i drift, og perioder hvor trafikken i stor grad er påvirket av vegstenginger, omkjøringer og permanente strukturelle endringer i vegnettet (åpning av nye veger).
+
+Metodikken for beregning av byindeks er beskrevet nærmere i rapporten "Metodikk for beregning av byindeks", som er tilgjengelig på [vegvesen.no](https://www.vegvesen.no/fag/trafikk/trafikkdata/trafikkutvikling/).
+
+
+### Lette kjøretøy
+Datagrunnlaget for byindeksen består av kjøretøy klassifisert som “lette” kjøretøy. Trafikkregistreringsutstyret måler kjøretøylengde og lengder kortere enn 5,6 m tilsvarer i stor grad kjøretøy med tillatt totalvekt under 3,5 tonn. Det er noen unntak fra denne tilnærmingen, og det er hovedsaklig lette kjøretøy som er lengre enn 5,6 m (større varebiler, bobiler) og lette kjøretøy med henger. Der hvor det er en del slike kjøretøy vil trafikkregistreringsutstyret derfor systematisk overestimere andelen tunge kjøretøy. Endringen i mengden av trafikk med slike kjøretøy fanges dermed ikke opp av en indeks for lette kjøretøy.
+
+
+### Næringstransport og mobil tjenesteyting
+En del næringstransport foretas med kjøretøy som blir målt til kortere enn 5,6 m og vil dermed inngå i datagrunnlaget til byindeksen. Det er med andre ord ikke mulig å skille på lette kjøretøy som inngår i nullvekstmålet og lette kjøretøy som ikke inngår i målet. Trafikkarbeidet som innhentes ved hjelp av reisevaneundersøkelser, vil imidlertid kun gjelde reisene som er omfattet av nullvekstmålet (private personbilturer inkludert reiser til og fra møter). Dersom byindeksen gir en vekst i trafikken mens reisevanedataene gir nullvekst, kan det antas at vekst i byindeks skyldes trafikk med lette kjøretøy som ikke omfattes av nullvekstmålet.
+
+
+### Gjennomgangstrafikk
+I trafikkregistreringene er det ikke mulig å skille ut gjennomgangstrafikk fra lokal trafikk. Plasseringen til byindekspunktene kan ha mye å si for hvor mye gjennomgangstrafikk som blir med i datagrunnlaget. Statens vegvesen har nylig gjennomført en vurdering av gjennomgangstrafikkens størrelse i byområdene. Denne analysen er basert på satelittposisjonsdata og trafikkregistreringer, og har sammenlignet antall kjøreturer som i sin helhet går gjennom byområdet med turer som starter og/eller slutter innenfor området. Se @sec-through_traffic.
+
+
+### Motorsykler
+Motorsykler registreres og inngår i datagrunnlaget på lik linje med andre lette kjøretøy. Tidligere var ikke motorsykler en del av trafikkregistreringene, men dette ble gradvis innført (ulikt tidspunkt for hvert trafikkregistreringspunkt) i perioden 2015 - 2018.
+
+
+### Saktegående kø
+Med dagens trafikkregistreringsutstyr er det utfordrende å få god datakvalitet når trafikken er veldig saktegående og tidvis stillestående. Punkter med høy andel av denne typen trafikk bør ikke tas med i byindeksen. I slik trafikk vil lengdemålingene til en viss grad bli feil og underkjent. Dermed blir det mindre datagrunnlag for lette kjøretøy.

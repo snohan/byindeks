@@ -1,0 +1,14 @@
+## Gjennomgangstrafikk {#sec-through_traffic}
+En overordnet analyse gjennomført av Statens vegvesen viser at andelen gjennomgangstrafikk i byområdet er relativt liten, og det antas at den ikke har særlig innvirkning på byindeksen. For å kunne beregne byindeks uten at gjennomgangstrafikk er med i datagrunnlaget, må gjennomgangstrafikk estimeres på hvert enkelt rutevalg for alle kombinasjoner av veger inn og ut av området. For Osloområdet, som har stor geografisk utstrekning og mange alternative ruter, er dette en krevende og detaljert analyse. Vurderingen er derfor i stedet basert på gjennomgangtrafikkens totale andel av trafikkarbeidet i området. Andelen og endringen i gjennomgangstrafikk er vurdert til å gi ubetydelig bidrag til byindeksen.
+
+
+## Vålerengtunnelen stengt juni 2020 - juni 2021
+I perioden hvor deler av Vålerengtunnelen var stengt er punktet på E6 ved Helsfyr utelatt fra beregningene.
+
+
+## Nordbytunnelen stengt høsten 2018
+I perioden da Nordbytunnelen var delvis stengt høsten 2018 er punktene "Nessetveien" og "Nordbytunnelen" tatt ut av beregningene.
+
+
+## Anleggsarbeid på E18 ved Bygdøy og Sjølyst
+I perioden juli - oktober 2023 foregikk det anleggsarbeider på E18 ved Bygdøy og Sjølyst. Anbefalt omkjøring var Ring 3. I denne perioden er noen trafikkregistreringspunkter utelatt for at omfordelingen av trafikk skal være balansert i datagrunnlaget.
