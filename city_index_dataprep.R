@@ -59,7 +59,7 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 4 # the one to be published now
-city_number <- 956
+city_number <- 957
 }
 # End choose
 
@@ -659,7 +659,7 @@ mdt_filtered |>
 plotly::ggplotly(
   mdt_filtered |>
    dplyr::filter(
-     year == 2023
+     year == 2024
    ) |>
    ggplot(aes(year_month, length_quality, color = trp_id)) +
    geom_line()
@@ -697,7 +697,7 @@ trp_not_ok <-
 
 mdt_validated |>
   dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[28:29]
+    trp_id %in% trp_mdt_ok_refyear[1:3]
   ) |>
   dplyr::select(
     trp_id,
@@ -958,7 +958,8 @@ point_index_e18 <-
     get_pointindices_for_trp_list(trps_e18, 2020),
     get_pointindices_for_trp_list(trps_e18, 2021),
     get_pointindices_for_trp_list(trps_e18, 2022),
-    get_pointindices_for_trp_list(trps_e18, 2023)
+    get_pointindices_for_trp_list(trps_e18, 2023),
+    get_pointindices_for_trp_list(trps_e18, 2024)
   ) %>%
   dplyr::filter(
     day_type == "ALL",

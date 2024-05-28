@@ -3,7 +3,7 @@ Til sammenligning viser tabell @tbl-e18_buskerudbyen endringen i trafikkmengde f
 
 ```{r}
 #| label: tbl-e18_buskerudbyen
-#| tbl-cap: "Endring i trafikkmengde på Ev 18."
+#| tbl-cap: "Endring i trafikkmengde på E18."
 
 read.csv2("data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv") |> 
     select(name, road_reference, year, index_short) |>
