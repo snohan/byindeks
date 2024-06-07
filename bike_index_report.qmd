@@ -4,12 +4,12 @@ format:
     toc: true
     number-sections: true
     toc-title: Innhold
-    mainfont: "Lucida Sans Unicode"
+    mainfont: "Arial"
     include-in-header:
       text: |
-        \newfontfamily\sectionfont[Color=ed9300]{Lucida Sans Unicode}
-        \newfontfamily\subsectionfont[Color=444f55]{Lucida Sans Unicode}
-        \newfontfamily\subsubsectionfont[Color=ed9300]{Lucida Sans Unicode}
+        \newfontfamily\sectionfont[Color=ed9300]{Arial}
+        \newfontfamily\subsectionfont[Color=444f55]{Arial}
+        \newfontfamily\subsubsectionfont[Color=ed9300]{Arial}
         \addtokomafont{section}{\sectionfont}
         \addtokomafont{subsection}{\subsectionfont}
         \addtokomafont{subsubsection}{\subsubsectionfont}
@@ -33,7 +33,7 @@ crossref:
 
 source("rmd_setup.R")
 
-last_published_month_number <- 4
+last_published_month_number <- 5
 
 index_all_years <-
   readr::read_rds(

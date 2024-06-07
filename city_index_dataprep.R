@@ -59,7 +59,7 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 4 # the one to be published now
-city_number <- 8952
+city_number <- 18952
 }
 # End choose
 
@@ -204,7 +204,10 @@ trp_index_from_2020 <-
     index_months_from_2020,
     ~ get_published_pointindex_for_months(city_number, .x, .y)[[2]]
   ) |>
-  purrr::list_rbind()
+  purrr::list_rbind() |>
+  dplyr::filter(
+    trp_id != "98963V1719019" # Sandesund sør is wrongly included in API response
+  )
 
 trp_index_so_far_by_dec_from_2020 <-
   trp_index_from_2020 |>
@@ -527,12 +530,12 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    years_1_2,
-    years_1_3,
-    years_1_4,
-    years_1_5,
-    years_1_6,
-    years_1_7
+    # years_1_2,
+    # years_1_3,
+    # years_1_4,
+    # years_1_5,
+    # years_1_6,
+    # years_1_7
   ) %>%
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),

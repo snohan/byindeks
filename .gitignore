@@ -1,25 +1,43 @@
+# R specific
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
 Thumbs.db
 *cache/
+
+# File types
 *.docx
 *.pdf
 *.html
 *.nb.html
+*.txt
+*.xlsx
+*.csv
+*.png
+*.rds
+*.tex
+*.json
+*.geojson
+
+# Folders
 *tmp*
 archive
-trp_api_cookies.R
 bomdata_trondheim
-*.xlsx
 new_vti
-*.txt
 *images/
 *kurs/
-*kp/
 *sd/
 *data_index_raw/bike*
+*former_scripts/
+*spesialuttak/
+
+# Scripts
+trp_api_cookies.R
+apar_u_pw.R
+apar.R
+
+# Specific files
 trp_for_vti_2020.csv
 trp_id_vti_def.csv
 vti_trp_ekskluderte.csv
@@ -27,15 +45,7 @@ punkter_med_adt.csv
 sykkelindekser_aug_2020.csv
 trp_aadts.csv
 trp_for_vti_2021.csv
-*former_scripts/
-*spesialuttak/
-*.csv
-*.png
-*.rds
-*.tex
-apar_u_pw.R
-apar.R
-*.json
-*.geojson
+
+# Exceptions
 !data_indexpoints_tidy/*.xlsx
 !tinytex_install_bat_script.txt
