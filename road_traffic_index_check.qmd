@@ -24,22 +24,30 @@ knitr:
 
 ```{r notes}
 # Ekskluder:
-# Svolvær vest 5
-# Jernbaneveien 3
-# tuv 5
-# Skogen 3
-# Åndalsnes 5
-# førde vest 3
-# Berge sør 4
-# Risavika 3
-# Kanpphus sør 5
-# Vikeså skole 5
-# Bue 5
-# Saudasjøen 5
-# Borkedalen 3,4
-# Brennevinsbekken 5
-# Laudal 5
-# Tønnesland 5
+  # Svolvær vest 5
+  # Jernbaneveien 3
+  # tuv 5
+  # Skogen 3
+  # Åndalsnes 5
+  # førde vest 3
+  # Berge sør 4
+  # Risavika 3
+  # Kanpphus sør 5
+  # Vikeså skole 5
+  # Bue 5
+  # Saudasjøen 5
+  # Borkedalen 3,4
+  # Brennevinsbekken 5
+  # Laudal 5
+  # Tønnesland 5
+  # Kvikneskogen 4
+  # Nybergsund s ALT
+  # Rambekk 3
+  # Moelv n 3
+  # Lier ø 5
+  # Høgberget 3, 4
+  # HAgafoss ø 3
+  # Torsbekkdalen 3,4,5
 
 # Reberegn:
 
@@ -100,13 +108,13 @@ pointindices <- pointindex[[2]]
 
 # Look at details in one county at a time
 
-# 31 Østfold                12 Trond
-# 32 Akershus               12 Trond
-# 33 Buskerud               12 Trond
-#  3 Oslo                   12 Trond
-# 34 Innlandet              12 Snorre
-# 39 Vestfold               12 Trond
-# 40 Telemark               12 Trond
+# 31 Østfold                05 Trond
+# 32 Akershus               05 Trond
+# 33 Buskerud               05 Trond
+#  3 Oslo                   05 Trond
+# 34 Innlandet              05 Snorre
+# 39 Vestfold               05 Trond
+# 40 Telemark               05 Trond
 # 42 Agder                  05 Trond
 # 11 Rogaland               05 Trond
 # 46 Vestland               05 Trond
@@ -116,7 +124,7 @@ pointindices <- pointindex[[2]]
 # 55 Troms                  05 Trond
 # 56 Finnmark               05 Trond
 
-county_number_chosen <- 40
+county_number_chosen <- 31
 
 trps_meta <- 
   points %>% 

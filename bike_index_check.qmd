@@ -63,6 +63,7 @@ points <- readr::read_rds("trps.rds")
 # Trondheim 13952     2023 - 2024-5
 # Vestfold 12952      2017 - 2024-5
 
+
 # Choose
 index_year <- 2024
 index_month <- 4 # latest published

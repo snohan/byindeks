@@ -16,18 +16,21 @@
 # Data from RTM ----
 read_rtm_data <- function(file_path) {
 
-  readxl::read_excel(file_path) |>
+  readxl::read_excel(
+    file_path#,
+    #n_max = 500
+    ) |>
     dplyr::select(
       start = A,
       end = B,
       distance = DISTANCE,
       road_category_id = LINKTYPE,
-      road_ref = VEGREFERAN,
+      road_ref = VEGREFERANS,
       VS,
       VEGTYPE,
       aadt = CD_ADT,
       #CD_ADT2,
-      direction = NVDBRETNIN
+      direction = NVDBRETNING
       #TEST_ID,
       #TEST2
     ) |>
@@ -37,7 +40,7 @@ read_rtm_data <- function(file_path) {
       VS == "V",
       VEGTYPE != 19290 # roundabouts
     ) |>
-    # Adding directions
+    # Summing directions
     dplyr::rowwise() |>
     dplyr::mutate(
       id = list(stringr::str_sort(c(start, end))) |>
@@ -51,8 +54,8 @@ read_rtm_data <- function(file_path) {
 
 }
 
-rtm_trd_20 <- read_rtm_data("rtm/rtm_trondheim_2020.xlsx")
-rtm_trd_22 <- read_rtm_data("rtm/rtm_trondheim_2022.xlsx")
+rtm_trd_20 <- read_rtm_data("rtm/rtm_trondheim_2020_ny.xlsx")
+rtm_trd_22 <- read_rtm_data("rtm/rtm_trondheim_2022_ny.xlsx")
 
 rtm_20_22 <-
   dplyr::inner_join(
@@ -113,7 +116,7 @@ city_trp_index <-
 
 
 # Population ----
-# 1500 data samples should ensure normality assumptions to be safe
+# 1900 data samples should ensure normality assumptions to be safe
 fitdistrplus::descdist(rtm_20_22$index_p)
 fitdistrplus::plotdist(rtm_20_22$index_p, demp = TRUE)
 
@@ -167,6 +170,8 @@ base::sqrt(
   base::nrow(city_trp_index) * stats::var(city_trp_index$index) /
     stats::qchisq(c(0.975, 0.025), nrow(city_trp_index))
   )
+
+# TODO: log transformation? Box-Cox?
 
 
 # Look at RTM at position of TRP
