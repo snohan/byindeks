@@ -1,6 +1,6 @@
 # Seasonal index
 
-# Trying KRS, starting with all city indekxes from city_index_dataprep.R
+# Starting with all city indexes from city_index_dataprep.R
 
 city_indexes_tidy <-
   city_indexes |>
@@ -18,26 +18,26 @@ city_indexes_tidy <-
     calc_volume
   )
 
-year_to_date_from_api <-
-  city_indexes_tidy |>
-  dplyr::filter(
-    period == "year_to_date",
-    month == 12
-  )
-
-year_to_date_from_monthly <-
-  city_indexes_tidy |>
-  dplyr::filter(
-    period == "month",
-    year < 2024
-  ) |>
-  dplyr::summarise(
-    sum_base = sum(base_volume),
-    sum_calc = sum(calc_volume),
-    index_i = sum_calc / sum_base,
-    index_p = 100 * (index_i - 1),
-    .by = year
-  )
+# year_to_date_from_api <-
+#   city_indexes_tidy |>
+#   dplyr::filter(
+#     period == "year_to_date",
+#     month == 12
+#   )
+#
+# year_to_date_from_monthly <-
+#   city_indexes_tidy |>
+#   dplyr::filter(
+#     period == "month",
+#     year < 2024
+#   ) |>
+#   dplyr::summarise(
+#     sum_base = sum(base_volume),
+#     sum_calc = sum(calc_volume),
+#     index_i = sum_calc / sum_base,
+#     index_p = 100 * (index_i - 1),
+#     .by = year
+#   )
 
 # Yields same values when all months are included! :)
 
@@ -100,14 +100,14 @@ index_seasons <-
     )
   )
 
-readr::write_csv2(
-  index_seasons,
-  "spesialuttak/krs_summer_index.csv"
-)
+# readr::write_csv2(
+#   index_seasons,
+#   "spesialuttak/krs_summer_index.csv"
+# )
 
 
-# Take 2
-index_season_2 <-
+# Chaining
+chained_index_season <-
   city_indexes_tidy |>
   dplyr::filter(
     period == "month",
@@ -118,10 +118,12 @@ index_season_2 <-
   ) |>
   dplyr::summarise(
     index_i = sum(calc_volume) / sum(base_volume),
-    #index_p = 100 * (index_i - 1),
     .by = c(year, summer),
   ) |>
   dplyr::summarise(
-    index_i_2016_2023 = prod(index_i),
+    chained_index_i = prod(index_i),
     .by = c(summer)
+  ) |>
+  dplyr::mutate(
+    chained_index_p = 100 * (chained_index_i - 1),
   )

@@ -59,7 +59,7 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 4 # the one to be published now
-city_number <- 18952
+city_number <- 959
 }
 # End choose
 

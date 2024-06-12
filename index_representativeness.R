@@ -9,11 +9,12 @@
   library(readxl)
   library(fitdistrplus)
   library(gamlss)
+  library(moments)
   source("get_from_trafficdata_api.R")
 }
 
 
-# Data from RTM ----
+# Population: RTM links ----
 read_rtm_data <- function(file_path) {
 
   readxl::read_excel(
@@ -57,6 +58,8 @@ read_rtm_data <- function(file_path) {
 rtm_trd_20 <- read_rtm_data("rtm/rtm_trondheim_2020_ny.xlsx")
 rtm_trd_22 <- read_rtm_data("rtm/rtm_trondheim_2022_ny.xlsx")
 
+# Lenketype 30 er sonetilknytning og cd_tot angir antall turer.
+
 rtm_20_22 <-
   dplyr::inner_join(
     rtm_trd_20,
@@ -85,7 +88,7 @@ rtm_index <-
   )
 
 
-# City index ----
+# Sample: City TRP index ----
 # Need to find TRP index 2020-2022, so will use chaining
 city_trp_index <-
   readr::read_rds(
@@ -115,6 +118,17 @@ city_trp_index <-
   dplyr::mutate(index = round(100 * (index - 1), digits = 1))
 
 
+# Comparison ----
+# So we have a population and a sample. This may be seen as two samples.
+# We need to know if this sample can be considered to come from the population.
+# Thus we need to compare their distributions. Is there any assumptions in methods for comparing?
+# If they do not resemble any known distribution, they may well need a transformation.
+# https://book.stat420.org/transformations.html
+# https://www.r-bloggers.com/2020/01/a-guide-to-data-transformation/
+# http://fmwww.bc.edu/repec/bocode/t/transint.html
+
+# Yeo-Johnson Transformation?
+
 # Population ----
 # 1900 data samples should ensure normality assumptions to be safe
 fitdistrplus::descdist(rtm_20_22$index_p)
@@ -122,12 +136,22 @@ fitdistrplus::plotdist(rtm_20_22$index_p, demp = TRUE)
 
 fit_norm <- fitdistrplus::fitdist(rtm_20_22$index_p, "norm")
 plot(fit_norm)
-summary(fit_norm)
+#summary(fit_norm)
 # Looks OK
+moments::skewness(rtm_20_22$index_p)
+# 23, i.e. high positive/right skew
+# Should use transformation
+
+moments::kurtosis(rtm_20_22$index_p)
+# 620, i.e. very heavy tails (leptokurtic)
+# Should use transformation for right skew
+
+# Skedasticity?
+
 
 # Trying
-#fit_norm_2 <- gamlss::fitDist(rtm_20_22$index_p, trace = FALSE, try.gamlss = TRUE)
-#summary(fit_norm_2)
+# fit_norm_2 <- gamlss::fitDist(rtm_20_22$index_p, trace = FALSE, try.gamlss = TRUE)
+# summary(fit_norm_2)
 # Supposedly, too many data points lead this wrong.
 
 
@@ -153,6 +177,21 @@ stats::t.test(
   mu = rtm_index$mean_p
   )
 
+# Two sample Kolmogorov-Smirnov
+stats::ks.test(
+  city_trp_index$index,
+  rtm_20_22$index_p
+)
+
+stats::wilcox.test(
+  city_trp_index$index,
+  rtm_20_22$index_p
+)
+
+stats::qqplot(
+  city_trp_index$index,
+  rtm_20_22$index_p
+)
 
 ## Variance ----
 # F-test, but then distributions must be normal!
@@ -175,8 +214,8 @@ base::sqrt(
 
 
 # Look at RTM at position of TRP
-# Make a Quarto report on this. Important to mention assumptions and prerquisites as well as weaknesses.
-# Liste til May-Berit med byindekspunktene med UTM33-koordinater.
-# Lag en felles presentasjon med May-Berit og Jonas. Presenter i ett av arbeidsgruppemøtene for Trafikkdata by.
-# Lenketype 30 er sonetilknytning og cd_tot angir antall turer.
-# Finn andel av alle turer som fanges opp av minst ett punkt. Hva da med overrepresentasjon?
+
+# TODO: Make a Quarto report on this. Important to mention assumptions and prerquisites as well as weaknesses.
+# TODO: Lag en felles presentasjon med May-Berit og Jonas.
+# TODO: Presenter i ett av arbeidsgruppemøtene for Trafikkdata by.
+# TODO: Finn andel av alle turer som fanges opp av minst ett punkt. Hva da med overrepresentasjon?
