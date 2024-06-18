@@ -148,6 +148,32 @@ moments::kurtosis(rtm_20_22$index_p)
 
 # Skedasticity?
 
+# Plot ecdf
+both_samples <-
+  dplyr::bind_rows(
+    city_trp_index |>
+      dplyr::select(
+        id = trp_id,
+        index_p = index
+      ) |>
+      dplyr::mutate(
+        source = "city_index"
+      ),
+    rtm_20_22 |>
+      dplyr::select(
+        id,
+        index_p
+      ) |>
+      dplyr::mutate(
+        source = "rtm"
+      )
+  )
+
+ggplot2::ggplot(
+  both_samples,
+  aes(index_p, colour = source)
+) +
+  stat_ecdf()
 
 # Trying
 # fit_norm_2 <- gamlss::fitDist(rtm_20_22$index_p, trace = FALSE, try.gamlss = TRUE)

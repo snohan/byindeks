@@ -78,7 +78,7 @@ index_this_year_prepared_wide_country <-
 #| label: extract_data_for_text
 
 this_year <- 2024
-latest_month_number <- 2
+latest_month_number <- 5
 
 latest_month_name <-
   max(
@@ -344,7 +344,7 @@ index_this_year_prepared %>%
   align(j = 4:7, align = "center", part = "all") %>%
   bold(part = "header") %>%
   #fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -399,7 +399,7 @@ index_this_year_prepared %>%
   ) %>%
   align(j = 4:7, align = "center", part = "all") %>%
   bold(part = "header") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -435,7 +435,7 @@ index_this_year_prepared_wide_country %>%
   ) %>%
   align(j = 3:number_of_columns, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -541,12 +541,12 @@ index_this_year_prepared %>%
 # Trafikkutviklinga i landsdelane
 Landsdelane er inndelt etter fylka, jamfør Statistisk sentralbyrå:
 
-* Oslo og Viken: Oslo, Viken
+* Oslo og Viken: Oslo, Østfold, Akershus, Buskerud
 * Innlandet: Innlandet
-* Agder og Sør-Østlandet: Vestfold og Telemark, Agder
+* Agder og Sør-Østlandet: Vestfold, Telemark, Agder
 * Vestlandet: Rogaland, Vestland, Møre og Romsdal
 * Trøndelag: Trøndelag
-* Nord-Norge: Nordland, Troms og Finnmark
+* Nord-Norge: Nordland, Troms, Finnmark
 
 
 ## Trafikkutviklinga hittil i år
@@ -598,7 +598,7 @@ index_this_year_prepared %>%
   ) %>%
   align(j = 3:6, align = "center", part = "all") %>%
   bold(part = "header") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -612,6 +612,7 @@ index_this_year_prepared %>%
           padding.bottom = .2)
 ```
 
+{{< pagebreak >}}
 
 ## Trafikkutviklinga for kvar månad
 Figur @fig-country_part_plot_monthly viser trafikkutviklinga per månad i landsdelane.
@@ -709,7 +710,7 @@ index_this_year_prepared %>%
   ) %>%
   align(j = 3:6, align = "center", part = "all") %>%
   bold(part = "header") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -744,7 +745,7 @@ index_this_year_prepared_wide %>%
   align(j = 2:number_of_columns_2, align = "right", part = "all") %>%
   bold(part = "header") %>%
   fontsize(size = 8, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -862,7 +863,7 @@ historic_all_combinations %>%
   set_header_labels(year = "År") %>%
   align(j = 2:11, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -890,7 +891,7 @@ historic_all_combinations %>%
   set_header_labels(year = "År") %>%
   align(j = 2:11, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -918,7 +919,7 @@ historic_all_combinations %>%
   align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
   #fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -946,7 +947,7 @@ historic_f_all_combinations %>%
   align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
   #fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -974,7 +975,7 @@ historic_f_all_combinations %>%
   align(j = 2:flextable::ncol_keys(.), align = "right", part = "all") %>%
   bold(part = "header") %>%
   #fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -1001,7 +1002,7 @@ historic_er_all_combinations %>%
   align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
   #fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -1029,7 +1030,7 @@ historic_er_all_combinations %>%
   align(j = 2:flextable::ncol_keys(.), align = "right", part = "all") %>%
   bold(part = "header") %>%
   #fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -1055,7 +1056,7 @@ historic_l_combinations %>%
   set_header_labels(year = "År") %>%
   align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -1084,7 +1085,7 @@ historic_l_combinations %>%
   align(j = 2:11, align = "right", part = "all") %>%
   bold(part = "header") %>%
   #fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -1105,14 +1106,13 @@ historic_l_combinations %>%
 
 historic_l_combinations %>% 
   dplyr::slice(-(1:20)) %>% 
-  dplyr::select(1, 22:25) %>% 
+  dplyr::select(1, 22:26) %>% 
   flextable::flextable() %>%
-  colformat_double(j = 2:3, digits = 1) %>%
+  colformat_double(j = 2:6, digits = 1) %>%
   set_header_labels(year = "År") %>%
-  align(j = 2:3, align = "right", part = "all") %>%
+  align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  #fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -1140,7 +1140,7 @@ historic_h_combinations %>%
   align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
   #fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -1169,7 +1169,7 @@ historic_h_combinations %>%
   align(j = 2:11, align = "right", part = "all") %>%
   bold(part = "header") %>%
   #fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -1190,14 +1190,14 @@ historic_h_combinations %>%
 
 historic_h_combinations %>% 
   dplyr::slice(-(1:20)) %>% 
-  dplyr::select(1, 22:24) %>% 
+  dplyr::select(1, 22:26) %>% 
   flextable::flextable() %>%
-  colformat_double(j = 2:3, digits = 1) %>%
+  colformat_double(j = 2:6, digits = 1) %>%
   set_header_labels(year = "År") %>%
-  align(j = 2:3, align = "right", part = "all") %>%
+  align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
   #fontsize(size = 9, part = "all") %>%
-  font(fontname = "Lucida Sans Unicode", part = "all") %>%
+  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
