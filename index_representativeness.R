@@ -27,30 +27,72 @@ read_rtm_data <- function(file_path) {
       distance = DISTANCE,
       road_category_id = LINKTYPE,
       road_ref = VEGREFERANS,
+      from_meter = FROMMETER,
+      to_meter = TOMETER,
+      delstrekning = DELSTREKN,
       VS,
       VEGTYPE,
       aadt = CD_ADT,
-      #CD_ADT2,
       direction = NVDBRETNING
-      #TEST_ID,
-      #TEST2
     ) |>
     dplyr::filter(
       aadt > 0,
       road_category_id %in% c(1, 2, 3),
-      VS == "V",
-      VEGTYPE != 19290 # roundabouts
+      delstrekning < 100, # keep only roads for motor vehicles
+      VS == "V", # only existing roads
+      VEGTYPE != 19290 # no roundabouts
     ) |>
     # Summing directions
     dplyr::rowwise() |>
     dplyr::mutate(
       id = list(stringr::str_sort(c(start, end))) |>
-        purrr::map_chr(paste, collapse = "_")
+        purrr::map_chr(paste, collapse = "_"),
+      meters = list(stringr::str_sort(c(from_meter, to_meter), numeric = TRUE)) |>
+        purrr::map_chr(paste, collapse = "_"),
+      traffic_work = distance * aadt
     ) |>
     dplyr::ungroup() |>
     dplyr::summarise(
       aadt = sum(aadt),
-      .by = c(id, road_ref)
+      traffic_work = sum(traffic_work),
+      .by = c(id, meters, road_ref)
+    ) |>
+    tidyr::separate_wider_delim(
+      cols = id,
+      delim = "_",
+      names = c("from_id", "to_id"),
+      too_few = "align_start"
+    ) |>
+    tidyr::separate_wider_delim(
+      cols = meters,
+      delim = "_",
+      names = c("from_meter", "to_meter"),
+      too_few = "align_start"
+    ) |>
+    dplyr::mutate(
+      from_meter = base::as.numeric(from_meter),
+      to_meter = base::as.numeric(to_meter)
+    ) |>
+    dplyr::select(
+      from_id,
+      to_id,
+      road_ref,
+      from_meter,
+      to_meter,
+      aadt,
+      traffic_work
+    ) |>
+    dplyr::arrange(
+      road_ref,
+      from_meter
+    ) |>
+    dplyr::summarise(
+      from_id = dplyr::first(from_id),
+      to_id = dplyr::last(to_id),
+      traffic_work = sum(traffic_work),
+      from_meter = min(from_meter),
+      to_meter = max(to_meter),
+      .by = c(road_ref, aadt)
     )
 
 }
@@ -64,18 +106,12 @@ rtm_20_22 <-
   dplyr::inner_join(
     rtm_trd_20,
     rtm_trd_22,
-    by = dplyr::join_by(id, road_ref),
+    by = dplyr::join_by(from_id, to_id, road_ref, from_meter, to_meter),
     suffix = c("_20", "_22")
   ) |>
   dplyr::mutate(
     index_i = aadt_22 / aadt_20,
     index_p = 100 * (index_i - 1)
-  ) |>
-  # Some links have the exact same values, including road_ref
-  # Consider these as the same traffic link
-  dplyr::distinct(
-    dplyr::pick(-id),
-    .keep_all = TRUE
   )
 
 rtm_index <-
@@ -87,6 +123,39 @@ rtm_index <-
     sd_p = sd(index_p)
   )
 
+
+# Sample: TRP links ----
+city_trp <-
+  readr::read_rds(
+    file = paste0("data_indexpoints_tidy/indekspunkt_960.rds")
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    road_reference,
+    meter,
+    intersection_meter
+  ) |>
+  dplyr::mutate(
+    road_ref = stringr::str_replace(road_reference, "[:space:]m.*", ""),
+    meter_join =
+      dplyr::case_when(
+        is.na(intersection_meter) ~ meter,
+        TRUE ~ intersection_meter
+      )
+  )
+
+rtm_trp <-
+  dplyr::inner_join(
+    city_trp,
+    rtm_20_22,
+    by = dplyr::join_by(
+      road_ref == road_ref,
+      dplyr::between(meter_join, from_meter, to_meter)
+    )
+  )
+
+# TODO: sort out trouble caused by missing intersection info in RTM data
 
 # Sample: City TRP index ----
 # Need to find TRP index 2020-2022, so will use chaining
@@ -218,6 +287,12 @@ stats::qqplot(
   city_trp_index$index,
   rtm_20_22$index_p
 )
+
+# TODO: Wasserstein metric
+# transport::wasserstein
+# emdist::emd
+# TODO: Anderson-Darling
+# TODO: Cramer-von Mises
 
 ## Variance ----
 # F-test, but then distributions must be normal!
