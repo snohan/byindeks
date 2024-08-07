@@ -370,6 +370,81 @@ create_pointindex_map <- function(all_point_info_df) {
   return(pointindex_map)
 }
 
+map_pointindex_and_events <- function(this_df) {
+
+  # Create a red-green scale based on index values
+  negative_value <-
+    round(abs(min(this_df$index_total_p, na.rm = T)), digits = 0) + 1
+  positive_value <-
+    round(max(this_df$index_total_p, na.rm = T), digits = 0) + 1
+
+  # If even the max value is negative
+  if(positive_value <= 0) positive_value <- 1
+
+  rc1 <-
+    colorRampPalette(colors = c("red", "white"), space = "Lab")(negative_value)
+
+  ## Make vector of colors for values larger than 0 (180 colors)
+  rc2 <-
+    colorRampPalette(colors = c("white", "green"), space = "Lab")(positive_value)
+
+  ## Combine the two color palettes
+  rampcols <- c(rc1, rc2)
+
+  palett_index <-
+    leaflet::colorNumeric(
+      palette = rampcols,
+      domain = NULL
+    )
+
+  palett_event <-
+    leaflet::colorFactor(
+      palette = c("#db3b99", "#444f55"),
+      domain = c("Ja", "Nei")
+    )
+
+  this_map <-
+    this_df |>
+    leaflet(
+      width = "100%",
+      height = 700,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F
+        )
+    ) |>
+    addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) |>
+    addPolylines(
+      label = ~label_text,
+      stroke = T,
+      opacity = 1,
+      color = ~palett_event(!is.na(event_text)),
+      fill = T,
+      fillColor = ~palett_index(index_total_p),
+      fillOpacity = 0.8,
+      highlightOptions = highlightOptions(
+        bringToFront = TRUE,
+        sendToBack = FALSE,
+        color = "purple",
+        opacity = 0.6
+      )
+    ) |>
+    addLegend(
+      "bottomright",
+      pal = palett_index,
+      values = ~index_total_p,
+      title = "Indeks",
+      opacity = 0.7,
+        labFormat = labelFormat(big.mark = " ")
+    )
+
+  return(this_map)
+}
+
 
 map_links_with_trp <- function(link_df) {
 

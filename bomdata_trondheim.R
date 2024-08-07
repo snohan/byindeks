@@ -34,7 +34,10 @@ tolling_station_ids <-
     # Holtermannsvegen utenfor Siemens er to stasjoner, også 57.
     # Slår disse sammen nedenfor, og setter feltnummer etter dagens metrering
     "58", "59", "60", "61", "62", "64", "65", "66", "67",
-    "68", "69", "85", "86", "72"
+    "68", "69", "85", "86",
+    #"72"
+    # From 01.11.2023, Ranheim changed ID from 72 (operator ID 100121) to 1 (operator ID 100149)
+    "1"
     )
 
 # Moholt

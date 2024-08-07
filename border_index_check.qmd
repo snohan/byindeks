@@ -47,8 +47,13 @@ library(htmltools)
 # Choose
 index_year <- 2024
 # Last published month
-index_month <- 4
+index_month <- 6
 index_id <- 2952
+
+new_month_name <- 
+  lubridate::as_date(paste0(index_year, "-", index_month + 1, "-01")) |> 
+  lubridate::month(label = TRUE, abbr = FALSE) |> 
+  stringr::str_to_title()
 
 # Fetch
 border_index <- 
@@ -124,7 +129,8 @@ pointindex_prepared <-
     index_long = length_index_long
   )
 
-point_index_new_prepared <- point_index_new %>%
+point_index_new_prepared <- 
+  point_index_new %>%
   dplyr::filter(day_type == "ALL",
                 period == "month",
                 month == index_month + 1) %>%
@@ -152,7 +158,8 @@ pointindex_prepared_all <-
       ),
     diff_total_short = round(index_short - index_total_p, digits = 1))
      
-trps_new_pointindex <- trps_meta %>% 
+trps_new_pointindex <- 
+  trps_meta %>% 
   dplyr::inner_join(point_index_new_prepared, by = "trp_id") %>% 
   dplyr::mutate(
     label_text = 
@@ -323,7 +330,7 @@ border_index_prepared |>
 ```
 
 
-## September
+## `r new_month_name`
 
 ```{r}
 #| label: map_trp_index
@@ -390,6 +397,60 @@ pointindex_plot %>% plotly::ggplotly()
 #        caption = "Data: Statens vegvesen") +
 #   ggtitle(trp_name,
 #           subtitle = "Trafikkmengde i 2021 sammenlignet med 2020")
+```
+
+
+## Spredning i punktindekser
+
+```{r}
+#| label: boxplot
+#| fig-cap: "Punktindeksenes spredning."
+
+pointindex_prepared_all |> 
+  dplyr::filter(
+    month > index_month
+  ) |> 
+  dplyr::mutate(
+    month = factor(month)
+  ) |> 
+  ggplot(
+    aes(
+      month,
+      index_total_p
+    )
+  ) +
+  geom_boxplot() +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  )
+```
+
+```{r}
+#| label: histogram
+#| fig-cap: "Punktindeksenes fordeling."
+
+pointindex_prepared_all |> 
+  dplyr::filter(
+    month > index_month
+  ) |> 
+  dplyr::mutate(
+    month = factor(month)
+  ) |> 
+  ggplot(
+    aes(
+      index_total_p
+    )
+  ) +
+  geom_histogram() +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  )
 ```
 
 

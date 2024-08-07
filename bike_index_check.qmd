@@ -52,27 +52,32 @@ points <- readr::read_rds("trps.rds")
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 5952         2019 - 2024-5
-# Førde 9952          2018 - 2024-5
-# Grenland 4953       2018 - 2024-5
-# Kristiansand 14952  2018 - 2024-5
-# Nedre Glomma 5953   2019 - 2024-5
-# Nord-Jæren 6952     2020 - 2024-5
-# Osloområdet 17952   2018 - 2024-5
-# Tromsø 11952        2021 - 2024-5
-# Trondheim 13952     2023 - 2024-5
-# Vestfold 12952      2017 - 2024-5
+# Bergen 5952         2019 - 2024-7
+# Førde 9952          2018 - 2024-7
+# Grenland 4953       2018 - 2024-7
+# Kristiansand 14952  2018 - 2024-7
+# Nedre Glomma 5953   2019 - 2024-7
+# Nord-Jæren 6952     2020 - 2024-7
+# Osloområdet 17952   2018 - 2024-7
+# Tromsø 11952        2021 - 2024-7
+# Trondheim 13952     2023 - 2024-7
+# Vestfold 12952      2017 - 2024-7
 
 
 # Choose
 index_year <- 2024
-index_month <- 4 # latest published
-city_number <- 5952
+index_month <- 5 # latest published
+city_number <- 12952
 
 new_month_name <- 
   lubridate::as_date(paste0(index_year, "-", index_month + 1, "-01")) |> 
   lubridate::month(label = TRUE, abbr = FALSE) |> 
   stringr::str_to_title()
+
+# new_month_name_2 <- 
+#   lubridate::as_date(paste0(index_year, "-", index_month + 2, "-01")) |> 
+#   lubridate::month(label = TRUE, abbr = FALSE) |> 
+#   stringr::str_to_title()
 
 # Fetch
 city_index <- 
@@ -188,17 +193,26 @@ point_index_new_prepared <-
   dplyr::select(
     trp_id, 
     year, 
-    month, index_total_p,
+    month, 
+    index_total_p,
     index_total_coverage
   )
 
-# point_index_new_prepared_2 <- point_index_new %>%
-#   dplyr::filter(day_type == "ALL",
-#                 period == "month",
-#                 month == index_month + 2) %>%
-#   dplyr::select(trp_id, year, month, index_total_p,
-#                 index_total_coverage)
-#
+# point_index_new_prepared_2 <- 
+#   point_index_new %>%
+#   dplyr::filter(
+#     day_type == "ALL",
+#     period == "month",
+#     month == index_month + 2
+#   ) %>%
+#   dplyr::select(
+#     trp_id, 
+#     year, 
+#     month, 
+#     index_total_p,
+#     index_total_coverage
+#   )
+
 # point_index_new_prepared_3 <- point_index_new %>%
 #   dplyr::filter(day_type == "ALL",
 #                 period == "month",
@@ -260,7 +274,7 @@ city_trps_new_pointindex <-
 #             index_total_p, " %", "<br/>",
 #             index_total_coverage, " %"),
 #     label_text = lapply(label_text, htmltools::HTML))
-# 
+
 # city_trps_new_pointindex_3 <- 
 #   city_trps_meta %>% 
 #   dplyr::left_join(
@@ -406,16 +420,20 @@ city_trps_new_pointindex %>%
 ```
 
 
+
+
 ```{r}
 #| label: map_trp_index_2
 
-# city_trps_new_pointindex_2 %>% 
+# ## `r new_month_name_2`
+
+# city_trps_new_pointindex_2 %>%
 #   dplyr::rename(
 #     index = index_total_p
-#   ) %>% 
+#   ) %>%
 #   dplyr::filter(
 #     !is.na(index)
-#   ) %>% 
+#   ) %>%
 #   create_pointindex_map()
 ```
 
@@ -490,6 +508,63 @@ pointindex_plot %>% plotly::ggplotly(#width = 900, height = 700
 #           subtitle = "Trafikkmengde i år sammenlignet med i fjor")
 ```
 
+
+## Spredning i punktindekser
+
+```{r}
+#| label: boxplot
+#| fig-cap: "Punktindeksenes spredning."
+
+pointindex_prepared_all |> 
+  dplyr::filter(
+    month > index_month
+  ) |> 
+  dplyr::mutate(
+    month = factor(month)
+  ) |> 
+  ggplot(
+    aes(
+      month,
+      index_total_p
+    )
+  ) +
+  geom_boxplot() +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  )
+```
+
+```{r}
+#| label: histogram
+#| fig-cap: "Punktindeksenes fordeling."
+
+pointindex_prepared_all |> 
+  dplyr::filter(
+    month > index_month
+  ) |> 
+  dplyr::mutate(
+    month = factor(month)
+  ) |> 
+  ggplot(
+    aes(
+      index_total_p
+    )
+  ) +
+  geom_histogram() +
+  facet_grid(
+    month ~ .,
+    scales = "free"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  )
+```
 
 ## Månedlig tidsserie
 

@@ -551,6 +551,7 @@ hent_alle_kommuner_v3 <- function() {
 #   return(bomer)
 # }
 
+#kommunenr <- "5001"
 get_tolling_stations <- function(kommunenr) {
 
   # Laget for Trondheim
@@ -604,12 +605,13 @@ get_tolling_stations <- function(kommunenr) {
     dplyr::rename(road_link_position = kortform)
 
   # Setter sammen
-  bomer <- bom %>%
+  bomer <-
+    bom |>
     dplyr::left_join(vegreferanser, by = "id") %>%
     dplyr::left_join(koordinater, by = "id") %>%
     dplyr::left_join(veglenkeposisjoner, by = "id") %>%
-    dplyr::select(-id) %>%
-    dplyr::select(msnr, name, road_reference,
+    #dplyr::select(-id) %>%
+    dplyr::select(nvdb_id = id, msnr, name, road_reference,
                   road_link_position, lat, lon)
 
   return(bomer)
