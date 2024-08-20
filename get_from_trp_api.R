@@ -209,15 +209,18 @@ get_trp_direction_reference <- function() {
           from
           to
         }
-        meteringDirectionChanged
         trpDirection {
           directionAccordingToCurrentMetering {
             from
             to
           }
-          directionAccordingToCurrentRoadLink {
-            from
-            to
+        }
+        laneSensor {
+          trpLaneMapping {
+            trpLane {
+              internalLaneNumber
+              laneNumberAccordingToMetering
+            }
           }
         }
       }
@@ -225,6 +228,10 @@ get_trp_direction_reference <- function() {
 
   response <-
     get_via_httr(query) |>
+    tidyr::unnest(
+      data.trafficRegistrationPoints.laneSensor.trpLaneMapping,
+      keep_empty = TRUE
+    ) |>
     dplyr::select(
       trp_id = data.trafficRegistrationPoints.id,
       trp_name = data.trafficRegistrationPoints.name,
@@ -239,12 +246,11 @@ get_trp_direction_reference <- function() {
       direction_with_current_link = data.trafficRegistrationPoints.directionReference.withCurrentRoadLink,
       reference_direction_from = data.trafficRegistrationPoints.directionReference.from,
       reference_direction_to = data.trafficRegistrationPoints.directionReference.to,
-      metering_direction_changed = data.trafficRegistrationPoints.meteringDirectionChanged,
       same_direction_of_metering_and_link_now = data.trafficRegistrationPoints.location.roadReference.isMeteringDirectionSameAsRoadLink,
       from_according_to_metering = data.trafficRegistrationPoints.trpDirection.directionAccordingToCurrentMetering.from,
       to_according_to_metering = data.trafficRegistrationPoints.trpDirection.directionAccordingToCurrentMetering.to,
-      from_according_to_link = data.trafficRegistrationPoints.trpDirection.directionAccordingToCurrentRoadLink.from,
-      to_according_to_link = data.trafficRegistrationPoints.trpDirection.directionAccordingToCurrentRoadLink.to
+      lane_internal = trpLane.internalLaneNumber,
+      lane_according_to_current_metering = trpLane.laneNumberAccordingToMetering
     )
 
   return(response)
@@ -1029,6 +1035,59 @@ trs <- get_via_httr(api_query) %>%
                 road_category, road_reference, geo_no, county_name, municipality_name)
 
 return(trs)
+}
+
+
+get_trs_info_simple <- function() {
+
+  api_query <-
+    "query trs {
+    trafficRegistrationStations {
+      id
+      name
+      operationalStatus
+      trafficType
+      registrationFrequency
+      location {
+        roadReference {
+          shortForm
+        }
+        municipality {
+          name
+          county {
+            name
+          }
+        }
+      }
+    }
+}"
+
+  trs <-
+    get_via_httr(api_query) |>
+    dplyr::select(
+      trs_id = data.trafficRegistrationStations.id,
+      name = data.trafficRegistrationStations.name,
+      status = data.trafficRegistrationStations.operationalStatus,
+      registration_frequency = data.trafficRegistrationStations.registrationFrequency,
+      traffic_type = data.trafficRegistrationStations.trafficType,
+      road_reference = data.trafficRegistrationStations.location.roadReference.shortForm,
+      municipality_name = data.trafficRegistrationStations.location.municipality.name,
+      county_name = data.trafficRegistrationStations.location.municipality.county.name
+    ) |>
+    split_road_system_reference() |>
+    dplyr::select(
+      trs_id,
+      name,
+      status,
+      registration_frequency,
+      traffic_type,
+      road_category,
+      road_reference,
+      county_name,
+      municipality_name
+    )
+
+  return(trs)
 }
 
 

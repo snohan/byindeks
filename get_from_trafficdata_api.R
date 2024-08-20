@@ -1758,14 +1758,19 @@ get_mdt_for_trp_list <- function(trp_list, mdt_year) {
   trp_count <- 1
 
   while (trp_count <= number_of_points) {
-    data_points <- bind_rows(data_points,
-                             get_trp_mdt_with_coverage(
-                               trp_list[trp_count],
-                               mdt_year))
+    data_points <-
+      dplyr::bind_rows(
+        data_points,
+        get_trp_mdt_with_coverage(
+          trp_list[trp_count],
+          mdt_year
+        )
+      )
     trp_count <- trp_count + 1
   }
 
-  trp_mdt <- data_points %>%
+  trp_mdt <-
+    data_points |>
     dplyr::mutate(mdt = round(mdt, digits = -1))
 
   return(trp_mdt)
