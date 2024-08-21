@@ -78,7 +78,7 @@ index_this_year_prepared_wide_country <-
 #| label: extract_data_for_text
 
 this_year <- 2024
-latest_month_number <- 5
+latest_month_number <- 7
 
 latest_month_name <-
   max(
@@ -343,16 +343,17 @@ index_this_year_prepared %>%
   ) %>%
   align(j = 4:7, align = "center", part = "all") %>%
   bold(part = "header") %>%
-  #fontsize(size = 9, part = "all") %>%
-  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
-  hline(i = c(3, 6), part = "body",
-        border = fp_border(color = "#dadada", width = 1)) %>% 
+  hline(
+    i = c(3, 6), 
+    part = "body",
+    border = fp_border(color = "#dadada", width = 1)
+  ) %>% 
   height_all(height = .2) %>%
-  width(j = 2, width = 2.1) %>%
+  #width(j = 2, width = 2.1) %>%
   fix_border_issues() %>%
   padding(
     padding.top = .3,

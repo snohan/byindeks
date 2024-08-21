@@ -397,12 +397,6 @@ map_pointindex_and_events <- function(this_df) {
       domain = NULL
     )
 
-  palett_event <-
-    leaflet::colorFactor(
-      palette = c("#db3b99", "#444f55"),
-      domain = c("Ja", "Nei")
-    )
-
   this_map <-
     this_df |>
     leaflet(
@@ -422,10 +416,7 @@ map_pointindex_and_events <- function(this_df) {
       label = ~label_text,
       stroke = T,
       opacity = 1,
-      color = ~palett_event(!is.na(event_text)),
-      fill = T,
-      fillColor = ~palett_index(index_total_p),
-      fillOpacity = 0.8,
+      color = ~palett_index(index_total_p),
       highlightOptions = highlightOptions(
         bringToFront = TRUE,
         sendToBack = FALSE,

@@ -31,6 +31,18 @@ knitr:
 # Elstrømbrua 6,7
 # Moberg Lekven 7
 # Åndalsnes 6
+# Strindheimtunnelene 1-7
+# Byaenget 5-7
+# Strømnes mot Namsos 5-7
+# Åsmyra 5-7
+# Klinga 5-7
+# Høknes 5-7
+# Skage 5-7
+# bjerkvik v 6
+# Tuv 6,7
+# kvaløysletta n 6,7
+# Barta 5-7
+# forsoeksg 6
 
 
 # Reberegn:
@@ -52,6 +64,7 @@ source("rmd_setup.R")
 # Traffic Data API calls to get points metadata and aadt
 source("get_from_trafficdata_api.R")
 source("split_road_system_reference.R")
+source("road_events_functions.R")
 library(DT)
 library(htmltools)
 library(sf)
@@ -89,6 +102,15 @@ road_traffic_trps <- pointindex[[1]]
 pointindices <- pointindex[[2]]
 
 events <- readr::read_rds("events/events.rds")
+
+# Traffic links from Adm ----
+links <-
+  sf::st_read("C:/Users/snohan/Desktop/traffic_links_2023_2024-08-06.geojson") |>
+  dplyr::select(
+    id,
+    countyIds,
+    associatedTrpIds
+  )
 ```
 
 
@@ -109,11 +131,11 @@ events <- readr::read_rds("events/events.rds")
 # 46 Vestland               07 Trond
 # 15 Møre og Romsdal        07 Trond
 # 50 Trøndelag              07 Snorre
-# 18 Nordland               05 Trond
-# 55 Troms                  05 Trond
-# 56 Finnmark               05 Trond
+# 18 Nordland               07 Trond
+# 55 Troms                  07 Trond
+# 56 Finnmark               07 Trond
 
-county_number_chosen <- 50
+county_number_chosen <- 31
 
 trps_meta <- 
   points %>% 
@@ -155,51 +177,17 @@ county_name_chosen <- counties %>%
 
 county_name_chosen_here <- county_name_chosen$county_name[1]
 
-# New month's pointindices
+
+## New month's pointindices ----
 point_index_new <- 
   get_pointindices_for_trp_list(
     trps_meta$trp_id, 
     index_year
   )
 
-# Events this month ----
-month_start <-
-  paste0(
-      index_year - 1,
-      "-",
-      stringr::str_pad(index_month + 1, width = 2, pad = "0"),
-      "-01"
-    ) |> 
-      lubridate::ymd(tz = "CET")
-
-month_end <- month_start + base::months(1) - lubridate::days(1)
-this_month_interval_base <- lubridate::interval(month_start, month_end)
-# TODO: find events in calculation year when these are available
-
-events_overlaps <-
-  events |> 
-  dplyr::mutate(
-    this_month = 
-      lubridate::int_overlaps(
-        interval,
-        this_month_interval_base
-      )
-  ) |> 
-  dplyr::filter(
-    this_month 
-  )
-
 
 # Traffic links from Adm ----
-links <-
-  sf::st_read("C:/Users/snohan/Desktop/traffic_links_2023_2024-08-06.geojson") |>
-  dplyr::select(
-    id,
-    countyIds,
-    associatedTrpIds
-  )
-
-links_in_county <-
+link_ids_in_county <-
   links |> 
   sf::st_drop_geometry() |> 
   dplyr::select(
@@ -212,10 +200,10 @@ links_in_county <-
   ) |> 
   dplyr::distinct()
 
-links <-
+links_in_county <-
   links |> 
   dplyr::filter(
-    id %in% links_in_county$id
+    id %in% link_ids_in_county$id
   )
 
 links_with_trp <-
@@ -232,50 +220,6 @@ links_with_trp <-
   dplyr::distinct() |> 
   dplyr::rename(
     this_county_trp = associatedTrpIds
-  )
-
-# Join ----
-# Might be heavy, may be reduced to do this by county
-events_and_links <-
-  sf::st_join(
-    events_overlaps,
-    links |> 
-      dplyr::select(id),
-    join = "st_crosses",
-    largest = TRUE
-  )
-
-events_and_links_tidy <-
-  events_and_links |> 
-  sf::st_drop_geometry() |> 
-  dplyr::select(
-    description,
-    allVehicles,
-    passability,
-    isWinterClosed,
-    interval,
-    id
-  ) |> 
-  dplyr::filter(
-    !is.na(id)
-  ) |> 
-  dplyr::mutate(
-    event_info = 
-      paste0(
-        description,
-        " Alle: ", allVehicles,
-        ". Passerbarhet: ", passability,
-        ". Vinterstengt: ", isWinterClosed,
-        ". Tid: ", interval
-      )
-  ) |> 
-  dplyr::select(
-    id, 
-    event_info
-  ) |> 
-  dplyr::summarise(
-    event_text = paste(event_info, collapse = "<br/>"),
-    .by = id
   )
 ```
 
@@ -575,44 +519,8 @@ pointindex_long_2 <-
   )
 
 # Links
-links_with_events_and_pointindex <-
-  links |> 
-  dplyr::select(
-    -associatedTrpIds
-  ) |> 
-  dplyr::left_join(
-    links_with_trp,
-    by = dplyr::join_by(id)
-  ) |> 
-  dplyr::left_join(
-    point_index_new_prepared_1,
-    by = dplyr::join_by(this_county_trp == trp_id)
-  ) |> 
-  dplyr::left_join(
-    events_and_links_tidy,
-    by = dplyr::join_by(id)
-  ) |> 
-  dplyr::filter(
-    !is.na(index_total_p) | !is.na(event_text)
-  ) |> 
-  dplyr::left_join(
-    trps_meta,
-    by = dplyr::join_by(this_county_trp == trp_id)
-  ) |> 
-  dplyr::mutate(
-    label_text = 
-      paste(name, ", ",
-            road_category_and_number, "<br/>",
-            index_total_p, " %", "<br/>",
-            index_total_coverage, " %", "<br/>",
-            event_text),
-    label_text = lapply(label_text, htmltools::HTML)
-  ) |> 
-  dplyr::select(
-    label_text,
-    index_total_p,
-    event_text
-  )
+links_with_events_and_pointindex_1 <- join_events_and_trp_index_with_links(6, point_index_new_prepared_1)
+links_with_events_and_pointindex_2 <- join_events_and_trp_index_with_links(7, point_index_new_prepared_2)
 ```
 
 
@@ -624,30 +532,20 @@ links_with_events_and_pointindex <-
 #| label: map_linkindex_and_events
 #| message: false
 
-links_with_events_and_pointindex |> 
+links_with_events_and_pointindex_1 |> 
   map_pointindex_and_events()
 ```
 
-```{r}
-#| label: map_trp_index
-#| message: false
-
-trps_new_pointindex_1 %>% 
-  dplyr::rename(index = index_total_p) %>% 
-  create_pointindex_map()
-```
 
 ## `r new_month_name_2`
 
 ```{r}
-#| label: map_trp_index_2
+#| label: map_linkindex_and_events_2
 #| message: false
 
-trps_new_pointindex_2 %>% 
-  dplyr::rename(index = index_total_p) %>% 
-  create_pointindex_map()
+links_with_events_and_pointindex_2 |> 
+  map_pointindex_and_events()
 ```
-
 
 
 ```{r}
