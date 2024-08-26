@@ -58,8 +58,8 @@ trp_id_msnr <-
 ## Choose publish month ----
 {
 present_year <- 2024
-index_month <- 4 # the one to be published now
-city_number <- 959
+index_month <- 7 # the one to be published now
+city_number <- 952
 }
 # End choose
 
@@ -530,11 +530,11 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    # years_1_2,
-    # years_1_3,
-    # years_1_4,
-    # years_1_5,
-    # years_1_6,
+    years_1_2,
+    years_1_3,
+    years_1_4,
+    years_1_5,
+    years_1_6,
     # years_1_7
   ) %>%
   dplyr::mutate(
@@ -699,9 +699,7 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear[1:3]
-  ) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[16:17]) |>
   dplyr::select(
     trp_id,
     year,
@@ -720,25 +718,14 @@ mdt_validated |>
       length_quality = 0
     )
   ) |>
-  dplyr::mutate(
-    month_object =
-      lubridate::make_date(
-        year = 2000,
-        month = month,
-        day = 1
-      )
-  ) |>
+  dplyr::mutate(month_object = lubridate::make_date(year = 2000, month = month, day = 1)) |>
   dplyr::left_join(
     points,
     by = "trp_id"
   ) |>
   dplyr::mutate(
     road_category_and_number_and_point_name =
-      paste0(
-        road_category_and_number,
-        " ",
-        name
-      )
+      paste0(road_category_and_number, " ", name)
   ) |>
   dplyr::select(
     trp_id,
@@ -750,9 +737,7 @@ mdt_validated |>
     month_object,
     road_category_and_number_and_point_name
   ) |>
-  dplyr::mutate(
-    valid_quality = coverage >= 50 & length_quality >= 98.5
-  ) |>
+  dplyr::mutate(valid_quality = coverage >= 50 & length_quality >= 98.5) |>
   create_mdt_barplot()
 
 source("mdt_check.R")
@@ -1209,7 +1194,6 @@ all_rolling_indexes_chained |>
         ".rds"
       )
   )
-
 
 
 ## Theory ----

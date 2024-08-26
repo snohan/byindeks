@@ -251,10 +251,10 @@
 
 
 # Report ----
-```{r}
-#| label: tbl-trp-2
-#| tbl-cap: "Trafikkregistreringspunkt som inngår i byindeksen, del 2."
-#| ft.arraystretch: 0.9
+#```{r}
+##| label: tbl-trp-2
+##| tbl-cap: "Trafikkregistreringspunkt som inngår i byindeksen, del 2."
+##| ft.arraystretch: 0.9
 
 # if(nrow(all_point_info) > 30) {
 #
@@ -282,22 +282,22 @@
 #   }
 #
 # }
-```
+#```
 
 
-```{r}
-#| label: tbl-trp-3
-#| tbl-cap: "Trafikkregistreringspunkt som inngår i byindeksen, del 3."
-#| ft.arraystretch: 0.9
+#```{r}
+##| label: tbl-trp-3
+##| tbl-cap: "Trafikkregistreringspunkt som inngår i byindeksen, del 3."
+##| ft.arraystretch: 0.9
 
-if(nrow(all_point_info) > 70) {
-  all_point_info |>
-    dplyr::slice(71:100) |>
-    create_point_table()
-}
+# if(nrow(all_point_info) > 70) {
+#   all_point_info |>
+#     dplyr::slice(71:100) |>
+#     create_point_table()
+# }
 
 # {{< pagebreak >}}
-```
+#```
 
 
 # Sara Fjellvær ----

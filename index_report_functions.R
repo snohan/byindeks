@@ -319,11 +319,11 @@ create_pointindex_map <- function(all_point_info_df) {
   if(positive_value <= 0) positive_value <- 1
 
   rc1 <-
-    colorRampPalette(colors = c("red", "white"), space = "Lab")(negative_value)
+    colorRampPalette(colors = c("red", "green"), space = "Lab")(negative_value)
 
   ## Make vector of colors for values larger than 0 (180 colors)
   rc2 <-
-    colorRampPalette(colors = c("white", "green"), space = "Lab")(positive_value)
+    colorRampPalette(colors = c("green", "purple"), space = "Lab")(positive_value)
 
   ## Combine the two color palettes
   rampcols <- c(rc1, rc2)
@@ -382,11 +382,15 @@ map_pointindex_and_events <- function(this_df) {
   if(positive_value <= 0) positive_value <- 1
 
   rc1 <-
-    colorRampPalette(colors = c("red", "white"), space = "Lab")(negative_value)
+    colorRampPalette(
+      colors = c("red", "green"),
+      space = "Lab")(negative_value)
 
   ## Make vector of colors for values larger than 0 (180 colors)
   rc2 <-
-    colorRampPalette(colors = c("white", "green"), space = "Lab")(positive_value)
+    colorRampPalette(
+      colors = c("green", "purple"),
+      space = "Lab")(positive_value)
 
   ## Combine the two color palettes
   rampcols <- c(rc1, rc2)
@@ -420,7 +424,7 @@ map_pointindex_and_events <- function(this_df) {
       highlightOptions = highlightOptions(
         bringToFront = TRUE,
         sendToBack = FALSE,
-        color = "purple",
+        color = "#636363",
         opacity = 0.6
       )
     ) |>
