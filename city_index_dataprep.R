@@ -59,7 +59,7 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 7 # the one to be published now
-city_number <- 952
+city_number <- 959
 }
 # End choose
 
@@ -534,7 +534,7 @@ city_index_yearly_all <-
     years_1_3,
     years_1_4,
     years_1_5,
-    years_1_6,
+    #years_1_6,
     # years_1_7
   ) %>%
   dplyr::mutate(
@@ -659,6 +659,7 @@ mdt_filtered |>
 #     )
 #   )
 
+# Length quality
 plotly::ggplotly(
   mdt_filtered |>
    dplyr::filter(
@@ -699,7 +700,7 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[16:17]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[60:61]) |>
   dplyr::select(
     trp_id,
     year,
