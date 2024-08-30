@@ -78,17 +78,15 @@ join_events_and_trp_index_with_links <- function(index_month_chosen, point_index
     )
 
   links_with_events_and_pointindex <-
-    links |>
-    dplyr::select(
-      -associatedTrpIds
-    ) |>
+    links_in_county |>
+    dplyr::select(id) |>
     dplyr::left_join(
       links_with_trp,
       by = dplyr::join_by(id)
     ) |>
     dplyr::left_join(
       point_index_new_prepared_df,
-      by = dplyr::join_by(this_county_trp == trp_id)
+      by = dplyr::join_by(this_area_trp_id == trp_id)
     ) |>
     dplyr::left_join(
       events_and_links,
@@ -99,7 +97,7 @@ join_events_and_trp_index_with_links <- function(index_month_chosen, point_index
     ) |>
     dplyr::left_join(
       trps_meta,
-      by = dplyr::join_by(this_county_trp == trp_id)
+      by = dplyr::join_by(this_area_trp_id == trp_id)
     ) |>
     dplyr::mutate(
       label_text =
@@ -111,6 +109,8 @@ join_events_and_trp_index_with_links <- function(index_month_chosen, point_index
       label_text = lapply(label_text, htmltools::HTML)
     ) |>
     dplyr::select(
+      id,
+      this_area_trp_id,
       label_text,
       index_total_p,
       event_text

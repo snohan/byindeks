@@ -22,8 +22,25 @@ library(readxl)
 
 # Tolling station info ----
 
+tolling_station_ids_original <-
+  c(
+    "51",  # Dette er egentlig to ulike, hver med to felt
+    # Klett (1,2), Røddeveien (3,4)
+    # Endrer nedenfor Røddeveien til id 512 og felt 1 og 2
+    "512",
+    "52", "53", "54", "55",
+    "56", # "Kroppan bru", som egentlig ikke er på Kroppan bru, men
+    # Holtermannsvegen utenfor Siemens er to stasjoner, også 57.
+    # Slår disse sammen nedenfor, og setter feltnummer etter dagens metrering
+    "58", "59", "60", "61", "62", "64", "65", "66", "67",
+    "68", "69", "85", "86",
+    "72"
+    # From 01.11.2023, Ranheim changed ID from 72 (operator ID 100121) to 1 (operator ID 100149)
+    # this affects fetching data from NDVB API and APAR API.
+  )
+
 # The 20 to use
-tolling_station_ids <-
+tolling_station_ids_nvdb <-
   c(
     "51",  # Dette er egentlig to ulike, hver med to felt
     # Klett (1,2), Røddeveien (3,4)
@@ -63,7 +80,7 @@ kommune_bomer <-
   ) %>%
   dplyr::select(trp_id, everything()) %>%
   dplyr::filter(
-    trp_id %in% tolling_station_ids
+    trp_id %in% tolling_station_ids_nvdb
   ) %>%
   dplyr::mutate(
     name = stringr::str_replace(name, "\\,.+$", ""),
@@ -306,7 +323,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "april" # English
+month_string <- "july" # English
 year_number <- 2024
 
 apar_data_for_month <-
@@ -389,7 +406,7 @@ tolling_data_daily_lane <-
     apar_data_hourly
   ) %>%
   dplyr::filter(
-    trp_id %in% tolling_station_ids
+    trp_id %in% tolling_station_ids_original
   ) %>%
   dplyr::group_by(
     trp_id,

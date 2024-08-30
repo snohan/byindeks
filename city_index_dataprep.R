@@ -59,7 +59,7 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 7 # the one to be published now
-city_number <- 959
+city_number <- 956
 }
 # End choose
 
@@ -443,7 +443,7 @@ if(city_number == 960){
       road_category_and_number,
       year,
       jan:des
-      #jan:apr
+      #jan:jul
     ) |>
     dplyr::arrange(
       name,
@@ -534,8 +534,8 @@ city_index_yearly_all <-
     years_1_3,
     years_1_4,
     years_1_5,
-    #years_1_6,
-    # years_1_7
+    years_1_6,
+    years_1_7
   ) %>%
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -700,7 +700,7 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[60:61]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[28:29]) |>
   dplyr::select(
     trp_id,
     year,
@@ -877,17 +877,17 @@ all_36_month_trp_indices <-
   )
 
 # Sub area
-sub_area_36_month_trp_indices <-
-  calculate_rolling_indices(36, "by_sub_area")
-
-writexl::write_xlsx(
-  sub_area_36_month_trp_indices,
-  path = paste0(
-    "data_indexpoints_tidy/sub_area_rolling_indices_",
-    city_number,
-    ".xlsx"
-  )
-)
+# sub_area_36_month_trp_indices <-
+#   calculate_rolling_indices(36, "by_sub_area")
+#
+# writexl::write_xlsx(
+#   sub_area_36_month_trp_indices,
+#   path = paste0(
+#     "data_indexpoints_tidy/sub_area_rolling_indices_",
+#     city_number,
+#     ".xlsx"
+#   )
+# )
 
 
 # Check contribution from TRPs each possible 36 month index

@@ -55,14 +55,12 @@ links <-
   dplyr::select(
     id,
     countyIds,
-    associatedTrpIds
+    associatedTrpIds,
+    associatedTollStationIds
   )
 
+# TODO: add toll stations to links
 # notes
-# e18 mastemyr 5,6,7
-# holmenkollv 5-7
-# hval 5-7
-# mastemyrv 5-7
 ```
 
 
@@ -73,15 +71,15 @@ links <-
 
 # City numbers
 # Refy City  Cnum  Chkd Resp
-# 2016 Busk  1952   04 Snorre
-# 2016 Gren   955   04 Snorre
-# 2016 Kris   957   04 Snorre
-# 2016 NGlo 18952   04 Trond
+# 2016 Busk  1952   07 Snorre
+# 2016 Gren   955   07 Snorre
+# 2016 Kris   957   07 Snorre
+# 2016 NGlo 18952   07 Trond
 # 2022 Trom 16952   07 Snorre
 # 2017 NJær   952   07 Snorre
 # 2018 Oslo   959   07 Trond
 # 2018 Berg  8952   07 Trond
-# 2019 Tron   960   04 Snorre
+# 2019 Tron   960   07 Snorre
 
 
 # TODO: look at normalized MDT visualized on links
@@ -91,7 +89,7 @@ links <-
 # Choose
 index_year <- 2024
 latest_published_month <- 4
-city_number <- 959
+city_number <- 960
 # End choose
 
 new_month_year <-
@@ -156,6 +154,34 @@ traffic_file <- paste0("city_report_files/trafikkforhold_", city_number, ".Rmd")
 
 if(city_number == 960){
   
+  trd_toll_stations_meta <-
+    readr::read_rds(
+      file = "bomdata_trondheim/trd_toll_stations.rds"
+    ) |>
+    split_road_system_reference() |>
+    dplyr::select(
+      trp_id,
+      nvdb_id,
+      name,
+      road_reference,
+      road_category_and_number,
+      municipality_name,
+      lat, lon,
+      road_link_position
+    ) |> 
+    dplyr::mutate(
+      trp_id = dplyr::case_when(
+        trp_id == "1" ~ "72", # Ranheim
+        TRUE ~ trp_id
+      ),
+      nvdb_id = as.character(nvdb_id)
+    ) |> 
+    dplyr::rename(
+      autopass_id = trp_id,
+      trp_id = nvdb_id
+    )
+  
+  
   tolling_station_indices_prepared <-
     readr::read_rds(
       file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
@@ -172,7 +198,7 @@ if(city_number == 960){
       index_p = round(index_p, digits = 1)
     ) |>
     dplyr::select(
-      trp_id,
+      autopass_id = trp_id,
       year,
       month,
       class,
@@ -182,10 +208,22 @@ if(city_number == 960){
       year == new_month_year
     ) |>
     tidyr::pivot_wider(
-      id_cols = ,
       names_from = class,
       names_prefix = "index_",
       values_from = index
+    ) |> 
+    dplyr::left_join(
+      trd_toll_stations_meta |> 
+        dplyr::select(
+          autopass_id, trp_id
+        ),
+      by = join_by(autopass_id)
+    ) |> 
+    dplyr::select(
+      -autopass_id
+    ) |> 
+    dplyr::relocate(
+      trp_id
     )
   
   # For map
@@ -203,27 +241,17 @@ if(city_number == 960){
       #latest_published_month + 1
     )
   
-  # tolling_station_indices_prepared_new_2 <-
-  #   tolling_station_indices_prepared |>
-  #   dplyr::filter(
-  #     month == latest_published_month + 2
-  #   )
-  
-  trd_toll_stations_meta <-
-    readr::read_rds(
-      file = "bomdata_trondheim/trd_toll_stations.rds"
-    ) |>
-    split_road_system_reference() |>
-    dplyr::select(
-      trp_id,
-      name,
-      road_reference,
-      road_category_and_number,
-      municipality_name,
-      lat, lon,
-      road_link_position
+  tolling_station_indices_prepared_new_2 <-
+    tolling_station_indices_prepared |>
+    dplyr::filter(
+      month == (latest_published_month + 2) %% 12
     )
-  # TRD stop
+  
+  tolling_station_indices_prepared_new_3 <-
+    tolling_station_indices_prepared |>
+    dplyr::filter(
+      month == (latest_published_month + 3) %% 12
+    )
 }
 ```
 
@@ -520,7 +548,7 @@ if(city_number == 960){
      by = "trp_id"
     ) |>
     dplyr::mutate(
-    station_type_short = stringr::str_sub(station_type, 1, 1)
+      station_type_short = stringr::str_sub(station_type, 1, 1)
     )
 
 }
@@ -771,6 +799,8 @@ pointindex_prepared_all <-
   )
      
 # For map
+# TODO: add point features for point indexes on municipality roads
+# Important for TRD, OSL, TRS, KRS (next version)
 city_trps_new_pointindex <- 
   trps_meta %>% 
   dplyr::left_join(
@@ -785,7 +815,6 @@ city_trps_new_pointindex <-
             index_total_coverage, " %"),
     label_text = lapply(label_text, htmltools::HTML)
   )
-
 
 city_trps_new_pointindex_2 <-
   trps_meta %>%
@@ -968,8 +997,26 @@ links_in_county <- filter_traffic_links_by_county(city_county_numbers)
 links_with_trp <- filter_links_with_trp()
 
 links_with_events_and_pointindex_1 <- join_events_and_trp_index_with_links(5, point_index_new_prepared_1)
+leftover_trp_index_1 <-
+  city_trps_new_pointindex |> 
+  dplyr::filter(
+    !(trp_id %in% links_with_events_and_pointindex_1$this_area_trp_id)
+  )
+
 links_with_events_and_pointindex_2 <- join_events_and_trp_index_with_links(6, point_index_new_prepared_2)
+leftover_trp_index_2 <-
+  city_trps_new_pointindex |> 
+  dplyr::filter(
+    !(trp_id %in% links_with_events_and_pointindex_2$this_area_trp_id)
+  )
+
 links_with_events_and_pointindex_3 <- join_events_and_trp_index_with_links(7, point_index_new_prepared_3)
+leftover_trp_index_3 <-
+  city_trps_new_pointindex |> 
+  dplyr::filter(
+    !(trp_id %in% links_with_events_and_pointindex_3$this_area_trp_id)
+  )
+
 ```
 
 
@@ -1031,6 +1078,14 @@ links_with_events_and_pointindex_1 |>
 ```
 
 
+```{r}
+#| label: map_trp_index_1
+
+leftover_trp_index_1 |> 
+  dplyr::rename(index = index_total_p) |> 
+  create_pointindex_map()
+```
+
 ## `r new_month_name_2`
 
 ```{r}
@@ -1041,6 +1096,13 @@ links_with_events_and_pointindex_2 |>
   map_pointindex_and_events()
 ```
 
+```{r}
+#| label: map_trp_index_2
+
+leftover_trp_index_2 |> 
+  dplyr::rename(index = index_total_p) |> 
+  create_pointindex_map()
+```
 
 ## `r new_month_name_3`
 
@@ -1050,6 +1112,14 @@ links_with_events_and_pointindex_2 |>
 
 links_with_events_and_pointindex_3 |> 
   map_pointindex_and_events()
+```
+
+```{r}
+#| label: map_trp_index_3
+
+leftover_trp_index_3 |> 
+  dplyr::rename(index = index_total_p) |> 
+  create_pointindex_map()
 ```
 
 
