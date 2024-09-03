@@ -14,7 +14,7 @@ source("indexpoints_tidying_functions.R")
 
 # Set manual variables ----
 {
-index_month <- 4 # to be published now
+index_month <- 7 # to be published now
 city_number <- 960
 city_name <- "Trondheim"
 }
@@ -208,7 +208,6 @@ trp_toll_index_yearly <-
     toll_index_yearly
   )
 
- # |>
  #  dplyr::mutate(
  #    index = round(index, digits = 1)
  #  )
