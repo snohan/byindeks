@@ -306,24 +306,23 @@ map_trp_with_category <- function(all_point_info_df) {
   return(map)
 }
 
-
 create_pointindex_map <- function(all_point_info_df) {
 
   # Create a red-green scale based on index values
   negative_value <-
-    round(abs(min(all_point_info_df$index, na.rm = T)), digits = 0) + 1
+    round(abs(min(all_point_info_df$index, 0, na.rm = T)), digits = 0) + 1
   positive_value <-
-    round(max(all_point_info_df$index, na.rm = T), digits = 0) + 1
+    round(max(all_point_info_df$index, 0, na.rm = T), digits = 0) + 2
 
   # If even the max value is negative
-  if(positive_value <= 0) positive_value <- 1
+  if(positive_value <= 0){ positive_value <- 1}
 
   rc1 <-
-    colorRampPalette(colors = c("red", "green"), space = "Lab")(negative_value)
+    colorRampPalette(colors = c("lightgreen", "green"), space = "Lab")(negative_value)
 
   ## Make vector of colors for values larger than 0 (180 colors)
   rc2 <-
-    colorRampPalette(colors = c("green", "purple"), space = "Lab")(positive_value)
+    colorRampPalette(colors = c("green", "darkgreen"), space = "Lab")(positive_value)
 
   ## Combine the two color palettes
   rampcols <- c(rc1, rc2)
@@ -383,13 +382,13 @@ map_pointindex_and_events <- function(this_df) {
 
   rc1 <-
     colorRampPalette(
-      colors = c("red", "green"),
+      colors = c("lightgreen", "green"),
       space = "Lab")(negative_value)
 
   ## Make vector of colors for values larger than 0 (180 colors)
   rc2 <-
     colorRampPalette(
-      colors = c("green", "purple"),
+      colors = c("green", "darkgreen"),
       space = "Lab")(positive_value)
 
   ## Combine the two color palettes

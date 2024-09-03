@@ -59,7 +59,7 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 8 # the one to be published now
-city_number <- 16952
+city_number <- 1952
 }
 # End choose
 
@@ -530,13 +530,13 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    #years_1_2,
-    # years_1_3,
-    # years_1_4,
-    # years_1_5,
-    # years_1_6,
-    # years_1_7
-  ) %>%
+    years_1_2,
+    years_1_3,
+    years_1_4,
+    years_1_5,
+    years_1_6,
+    years_1_7
+  ) |>
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
     area_name = city_name,
@@ -700,7 +700,7 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[10:11]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[21:22]) |>
   dplyr::select(
     trp_id,
     year,
@@ -833,9 +833,9 @@ all_36_month_indices <-
   calculate_rolling_indices(36)
 
 list(
-  all_12_month_indices#,
-  #all_24_month_indices,
-  #all_36_month_indices
+  all_12_month_indices,
+  all_24_month_indices,
+  all_36_month_indices
 ) |>
   readr::write_rds(
     file =
@@ -909,31 +909,6 @@ trp_mdt_plot <-
 
 trp_mdt_plot |>
   plotly::ggplotly()
-
-
-# TRP data to Excel ----
-# For those interested in the details
-list(
-  punkt_adt = this_citys_trps_all_adt_final,
-  punktindeks_maned = trp_index_monthly_wide,
-  #punktindeks_ar = this_citys_trp_index_refyear, # drop
-  byindeks_aarlig = city_index_yearly_all,
-  #byindeks_maanedlig = city_index_monthly,
-  punkt_mdt = mdt_and_pi,
-  punkt_3_aar_glid_indeks = all_36_month_trp_indices,
-  by_3_aar_glid_indeks = all_36_month_indices,
-  by_2_aar_glid_indeks = all_24_month_indices,
-  by_1_aar_glid_indeks = all_12_month_indices
-  # TRD
-  #,byindeks_hittil = city_index_so_far_all
-) |>
-writexl::write_xlsx(
-  path = paste0(
-    "data_indexpoints_tidy/tallmateriale_",
-    city_number,
-    ".xlsx"
-  )
-)
 
 
 # E18 Buskerudbyen ----
@@ -1197,7 +1172,77 @@ all_rolling_indexes_chained |>
   )
 
 
-## Theory ----
+# TRP data to Excel ----
+# For those interested in the details
+
+if(city_number == 16952){
+
+  list(
+    punkt_adt = this_citys_trps_all_adt_final,
+    punktindeks_maned = trp_index_monthly_wide,
+    byindeks_aarlig = city_index_final,
+    punkt_mdt = mdt_and_pi,
+    #punkt_3_aar_glid_indeks = all_36_month_trp_indices,
+    by_glid_indeks = all_rolling_indexes_chained
+  ) |>
+    writexl::write_xlsx(
+      path = paste0(
+        "data_indexpoints_tidy/tallmateriale_",
+        city_number,
+        ".xlsx"
+      )
+    )
+}
+
+if(city_number == 960){
+
+  list(
+    punkt_adt = this_citys_trps_all_adt_final,
+    punktindeks_maned = trp_index_monthly_wide,
+    byindeks_aarlig = city_index_yearly_all,
+    punkt_mdt = mdt_and_pi,
+    punkt_3_aar_glid_indeks = all_36_month_trp_indices,
+    by_3_aar_glid_indeks = all_36_month_indices,
+    by_2_aar_glid_indeks = all_24_month_indices,
+    by_1_aar_glid_indeks = all_12_month_indices
+    # TRD
+    ,byindeks_hittil = city_index_so_far_all
+  ) |>
+    writexl::write_xlsx(
+      path = paste0(
+        "data_indexpoints_tidy/tallmateriale_",
+        city_number,
+        ".xlsx"
+      )
+    )
+}
+
+
+if(!(city_number %in% c(960, 16952))){
+
+  list(
+    punkt_adt = this_citys_trps_all_adt_final,
+    punktindeks_maned = trp_index_monthly_wide,
+    #punktindeks_ar = this_citys_trp_index_refyear, # drop
+    byindeks_aarlig = city_index_yearly_all,
+    #byindeks_maanedlig = city_index_monthly,
+    punkt_mdt = mdt_and_pi,
+    punkt_3_aar_glid_indeks = all_36_month_trp_indices,
+    by_3_aar_glid_indeks = all_36_month_indices,
+    by_2_aar_glid_indeks = all_24_month_indices,
+    by_1_aar_glid_indeks = all_12_month_indices
+  ) |>
+    writexl::write_xlsx(
+      path = paste0(
+        "data_indexpoints_tidy/tallmateriale_",
+        city_number,
+        ".xlsx"
+      )
+    )
+}
+
+
+# Theory ----
 # Is the product of two normal variables still normal when means are close to 1 and with small deviation?
 # Seems so
 # library(extraDistr)
