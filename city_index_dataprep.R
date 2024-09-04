@@ -59,7 +59,7 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 8 # the one to be published now
-city_number <- 1952
+city_number <- 18952
 }
 # End choose
 
@@ -443,7 +443,7 @@ if(city_number == 960){
       road_category_and_number,
       year,
       jan:des
-      #jan:jul
+      #jan:aug
     ) |>
     dplyr::arrange(
       name,
@@ -530,12 +530,12 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    years_1_2,
-    years_1_3,
-    years_1_4,
-    years_1_5,
-    years_1_6,
-    years_1_7
+    #years_1_2,
+    #years_1_3,
+    #years_1_4,
+    #years_1_5,
+    #years_1_6,
+    #years_1_7
   ) |>
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -650,14 +650,14 @@ mdt_filtered |>
   )
 
 # Read back in
-# mdt_filtered <-
-#   readr::read_rds(
-#     paste0(
-#       "data_indexpoints_tidy/mdt_",
-#       city_number,
-#       ".rds"
-#     )
-#   )
+mdt_filtered <-
+  readr::read_rds(
+    paste0(
+      "data_indexpoints_tidy/mdt_",
+      city_number,
+      ".rds"
+    )
+  )
 
 # Length quality
 plotly::ggplotly(
@@ -700,7 +700,7 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[21:22]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[60:61]) |>
   dplyr::select(
     trp_id,
     year,
@@ -1036,6 +1036,7 @@ chain_link_se_p <- city_index_tromso_2019_2022$standard_error
 ### Yearly index ----
 city_index_chained <-
   city_index_yearly_all |>
+  dplyr::filter(month == 12) |>
   dplyr::select(
     index_period = year_from_to,
     year_base,
@@ -1174,7 +1175,6 @@ all_rolling_indexes_chained |>
 
 # TRP data to Excel ----
 # For those interested in the details
-
 if(city_number == 16952){
 
   list(

@@ -496,31 +496,57 @@ get_labels_for_trp_list <- function(trp_list) {
   if (nrow(data_points) == 0) {
     labels = data.frame()
   } else {
-    labels <- data_points %>%
+    labels <-
+      data_points |>
       tidyr::unnest_wider(
         affectedLanes
-      ) %>%
+      ) |>
       dplyr::select(
         trp_id = data.trafficRegistrationPoints.id,
         label_start = validFrom,
         label_end = validTo,
         lane = lane.laneNumber
-      ) %>%
+      ) |>
       dplyr::mutate(
         dplyr::across(
           .cols = c(label_start, label_end),
           .fns = ~ floor_date(with_tz(ymd_hms(.x)), unit = "hour")
         ),
         date_interval = lubridate::interval(label_start, label_end)
-      ) %>%
+      ) |>
       tidyr::unnest_longer(
-        lane
+        lane,
+        keep_empty = TRUE
       )
   }
 
   return(labels)
 }
 
+# Test
+# mosvatn <- get_trp_labels("55507V319881")
+# mosvatn_unnested <-
+#   mosvatn |>
+#   tidyr::unnest_wider(
+#     affectedLanes
+#   ) |>
+#   dplyr::select(
+#     trp_id = data.trafficRegistrationPoints.id,
+#     label_start = validFrom,
+#     label_end = validTo,
+#     lane = lane.laneNumber
+#   ) |>
+#   dplyr::mutate(
+#     dplyr::across(
+#       .cols = c(label_start, label_end),
+#       .fns = ~ floor_date(with_tz(ymd_hms(.x)), unit = "hour")
+#     ),
+#     date_interval = lubridate::interval(label_start, label_end)
+#   ) |>
+#   tidyr::unnest_longer(
+#     lane,
+#     keep_empty = TRUE
+#   )
 
 get_points_with_direction <- function() {
   # Get all traffic registration points

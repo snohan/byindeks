@@ -33,17 +33,17 @@ source("rmd_setup.R")
 # City numbers
 
 # Buskerudbyen          1952 (2016) 08
-# Grenland               955 (2016) 04
-# Kristiansand og omegn  957 (2016) 04
-# Nedre Glomma 2023    18952 (2023) 04
+# Grenland               955 (2016) 08
+# Kristiansand og omegn  957 (2016) 08
+# Nedre Glomma 2023    18952 (2023) 08
 # Tromsø 2022          16952 (2022) 08
 # Nord-Jæren             952 (2017) 08
 # Bergen                8952 (2018) 04
-# Oslo                   959 (2018) 04
+# Oslo                   959 (2018) 08
 # Trondheim              960 (2019) 04
 
 # Choose city number:
-city_number <- 1952
+city_number <- 18952
 
 ## Meta info
 city_number_county_name <- 
