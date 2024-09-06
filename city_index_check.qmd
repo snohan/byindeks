@@ -61,13 +61,6 @@ links <-
 
 # TODO: add toll stations to links
 # notes
-# Oslo
-# Hval
-# Kong Håkon 5
-# Finnmarksgata
-# Østensjøveien
-# OK med tanke på E18
-# Ok med tanke på ring 1?
 ```
 
 
@@ -86,7 +79,7 @@ links <-
 # 2017 NJær   952   08 Snorre
 # 2018 Oslo   959   08 Trond
 # 2018 Berg  8952   08 Trond
-# 2019 Tron   960   07 Snorre
+# 2019 Tron   960   08 Snorre
 
 
 # TODO: look at normalized MDT visualized on links
@@ -96,7 +89,7 @@ links <-
 # Choose
 index_year <- 2024
 latest_published_month <- 7
-city_number <- 16952
+city_number <- 960
 # End choose
 
 new_month_year <-
@@ -329,7 +322,7 @@ city_county_numbers <-
 
 
 # Need not fetch AADT every time
-if(FALSE) {
+if(T) {
   
   adt <- get_aadt_by_length_for_trp_list(city_trps)
   

@@ -650,14 +650,14 @@ mdt_filtered |>
   )
 
 # Read back in
-mdt_filtered <-
-  readr::read_rds(
-    paste0(
-      "data_indexpoints_tidy/mdt_",
-      city_number,
-      ".rds"
-    )
-  )
+# mdt_filtered <-
+#   readr::read_rds(
+#     paste0(
+#       "data_indexpoints_tidy/mdt_",
+#       city_number,
+#       ".rds"
+#     )
+#   )
 
 # Length quality
 plotly::ggplotly(
@@ -700,7 +700,7 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[60:61]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[16:18]) |>
   dplyr::select(
     trp_id,
     year,
@@ -1175,6 +1175,25 @@ all_rolling_indexes_chained |>
 
 # TRP data to Excel ----
 # For those interested in the details
+if(city_number == 18952){
+
+  list(
+    punkt_adt = this_citys_trps_all_adt_final,
+    punktindeks_maned = trp_index_monthly_wide,
+    byindeks_aarlig = city_index_yearly_all#,
+    #punkt_mdt = mdt_and_pi,
+    #punkt_3_aar_glid_indeks = all_36_month_trp_indices,
+    #by_glid_indeks = all_rolling_indexes_chained
+  ) |>
+    writexl::write_xlsx(
+      path = paste0(
+        "data_indexpoints_tidy/tallmateriale_",
+        city_number,
+        ".xlsx"
+      )
+    )
+}
+
 if(city_number == 16952){
 
   list(
@@ -1218,7 +1237,7 @@ if(city_number == 960){
 }
 
 
-if(!(city_number %in% c(960, 16952))){
+if(!(city_number %in% c(960, 16952, 18952))){
 
   list(
     punkt_adt = this_citys_trps_all_adt_final,

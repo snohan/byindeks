@@ -323,7 +323,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "july" # English
+month_string <- "august" # English
 year_number <- 2024
 
 apar_data_for_month <-

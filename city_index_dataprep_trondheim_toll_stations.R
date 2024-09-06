@@ -14,7 +14,7 @@ source("indexpoints_tidying_functions.R")
 
 # Set manual variables ----
 {
-index_month <- 7 # to be published now
+index_month <- 8 # to be published now
 city_number <- 960
 city_name <- "Trondheim"
 }
@@ -148,7 +148,17 @@ this_citys_trps_all <-
 #
 
 trd_station_type <-
-  this_citys_trps_all |>
+  dplyr::bind_rows(
+    this_citys_trps,
+    toll_meta_data |>
+      dplyr::mutate(
+        nvdb_id = as.character(nvdb_id)
+      ) |>
+      dplyr::rename(
+        autopass_id = trp_id,
+        trp_id = nvdb_id
+      )
+  ) |>
   dplyr::select(
     trp_id,
     station_type
@@ -480,7 +490,7 @@ trp_index_monthly_wide <-
     values_from = "index"
   ) |>
   dplyr::left_join(
-    city_trps_meta,
+    this_citys_trps_all,
     by = "trp_id"
   ) |>
   dplyr::select(
