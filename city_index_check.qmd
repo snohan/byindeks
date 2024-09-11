@@ -89,7 +89,7 @@ links <-
 # Choose
 index_year <- 2024
 latest_published_month <- 7
-city_number <- 960
+city_number <- 1952
 # End choose
 
 new_month_year <-

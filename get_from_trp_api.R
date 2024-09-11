@@ -599,6 +599,57 @@ get_trp_for_adt <- function() {
 
 
 # TRS ####
+get_trs_trp_for_nvdb <- function() {
+
+  # For manually updating NVDB
+  api_query <-
+    "query trs_trp_nvdb {
+      trafficRegistrationStations (operationalStatuses: [OPERATIONAL, NON_OPERATIONAL]) {
+        id
+        name
+        trafficType
+        location {
+          ...location_info
+        }
+        operationalStatus
+        registrationFrequency
+        sensorModel {
+          type
+        }
+        trafficRegistrationPoints {
+          id
+          location {
+            ...location_info
+          }
+          operationalStatus
+          laneSensor {
+            trpLaneMapping {
+              trpLane {
+                laneNumberAccordingToRoadLink
+              }
+            }
+          }
+        }
+      }
+    }
+
+    fragment location_info on Location {
+    roadLink {
+      id
+      position
+    }
+    coordinates {
+      utm33 {
+        wkt
+      }
+    }
+  }"
+
+  response_parsed <-
+    get_via_httr(api_query)
+}
+
+
 get_trs_and_trp_id <- function() {
 
   # Many stations have no trps defined

@@ -9,7 +9,6 @@ library(magrittr)
 
 cli <- ghql::GraphqlClient$new(
   url = "https://trafikkdata-api.atlas.vegvesen.no/?query="
-  #url = "https://www.vegvesen.no/trafikkdata/api/?query="
   #headers = list(
   #  'content-type' = 'application/json')
 )
@@ -142,7 +141,8 @@ get_municipalities <- function() {
   myqueries <- Query$new()
   myqueries$query("response", query_api)
 
-  counties <- cli$exec(myqueries$queries$response) %>%
+  counties <-
+    cli$exec(myqueries$queries$response) %>%
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
     as.data.frame() %>%
     dplyr::rename(municipality_number = 1,
