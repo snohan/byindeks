@@ -59,7 +59,7 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 8 # the one to be published now
-city_number <- 18952
+city_number <- 959
 }
 # End choose
 
@@ -151,7 +151,9 @@ city_indexes <-
     index_months,
     ~ get_published_index_for_months(city_number, .x, .y)
   ) |>
-  purrr::list_rbind()
+  purrr::list_rbind() |>
+  dplyr::filter(day_type == "WEEKDAY")
+  # ALL, WEEKDAY or WEEKEND
 
   # TODO: TRPs might differ from year to year!
   city_trps <-
@@ -530,10 +532,10 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    #years_1_2,
-    #years_1_3,
-    #years_1_4,
-    #years_1_5,
+    years_1_2,
+    years_1_3,
+    years_1_4,
+    years_1_5,
     #years_1_6,
     #years_1_7
   ) |>
@@ -552,6 +554,11 @@ city_index_yearly_all <-
     -variance,
     -sum_of_squared_weights
   )
+
+# writexl::write_xlsx(
+#   city_index_yearly_all,
+#   "spesialuttak/yrkedager_oslo.xlsx"
+# )
 
 readr::write_rds(
   city_index_yearly_all,
@@ -650,14 +657,14 @@ mdt_filtered |>
   )
 
 # Read back in
-# mdt_filtered <-
-#   readr::read_rds(
-#     paste0(
-#       "data_indexpoints_tidy/mdt_",
-#       city_number,
-#       ".rds"
-#     )
-#   )
+mdt_filtered <-
+  readr::read_rds(
+    paste0(
+      "data_indexpoints_tidy/mdt_",
+      city_number,
+      ".rds"
+    )
+  )
 
 # Length quality
 plotly::ggplotly(

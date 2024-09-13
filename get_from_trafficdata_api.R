@@ -2954,8 +2954,12 @@ get_dt_by_direction <- function(trp_id, from_day, to_day) {
 # indexmonth <- 9
 
 get_published_index <- function(index_id, indexyear, indexmonth) {
+
   # Get published index for a given area, year and month
-  api_query <- paste0(
+  # Day type could be ALL, WEEKDAY or WEEKEND
+
+  api_query <-
+    paste0(
     "query published_index {
       publishedAreaTrafficVolumeIndex (
         id: ", index_id, ",
@@ -3048,10 +3052,11 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
       year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
       month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month
       ) %>%
-    dplyr::filter(day_type == "ALL") %>%
+    #dplyr::filter(day_type == this_day_type) %>%
     dplyr::mutate(period = "month")
 
-  year_to_date_data <- trp_data$data %>%
+  year_to_date_data <-
+    trp_data$data %>%
     as.data.frame() %>%
     tidyr::unnest(cols = c(publishedAreaTrafficVolumeIndex.aggregatedTrafficVolumeIndex)) %>%
     tidyr::unnest(cols = c(byRoadCategoryCombination)) %>%
@@ -3073,11 +3078,14 @@ get_published_index <- function(index_id, indexyear, indexmonth) {
       year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
       month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month
     ) %>%
-    dplyr::filter(day_type == "ALL") %>%
+    #dplyr::filter(day_type == this_day_type) %>%
     dplyr::mutate(period = "year_to_date")
 
-  published_index <- bind_rows(monthly_data,
-                               year_to_date_data)
+  published_index <-
+    dplyr::bind_rows(
+      monthly_data,
+      year_to_date_data
+    )
 
   return(published_index)
 }

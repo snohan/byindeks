@@ -43,7 +43,7 @@ source("rmd_setup.R")
 # Trondheim              960 (2019) 04
 
 # Choose city number:
-city_number <- 18952
+city_number <- 959
 
 ## Meta info
 city_number_county_name <- 

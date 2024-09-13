@@ -39,6 +39,7 @@ read_pointindex_CSV <- function(filename) {
     ) |>
     dplyr::filter(
       døgn == "Alle",
+      #døgn == "Yrkesdøgn",
       lengdeklasse == "< 5,6m",
       periode == "Hittil i år"
     ) %>%
