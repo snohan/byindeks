@@ -428,6 +428,39 @@ get_mobile_trps_with_commission <- function() {
   return(response_parsed)
 }
 
+get_mobile_trps <- function() {
+
+  api_query <-
+    "query trs_mobile {
+      trafficRegistrationPoints (trpType: MOBILE) {
+        id
+        name
+        trafficType
+        trpType
+        trpDirection {
+          directionAccordingToCurrentMetering {
+            from
+            to
+          }
+        }
+        location {
+          roadLink {
+            id
+            position
+          }
+          coordinates {
+            utm33 {
+              wkt
+            }
+          }
+        }
+      }
+    }"
+
+  response_parsed <- get_via_httr(api_query)
+}
+
+
 get_trp_for_vti <- function() {
 
   counties_numbers <- get_counties() %>%
@@ -615,13 +648,22 @@ get_trs_trp_for_nvdb <- function() {
         registrationFrequency
         sensorModel {
           type
+          dimensions
         }
         trafficRegistrationPoints {
           id
+          name
           location {
             ...location_info
           }
           operationalStatus
+          trpType
+          trpDirection {
+            directionAccordingToCurrentMetering {
+              from
+              to
+            }
+          }
           laneSensor {
             trpLaneMapping {
               trpLane {
@@ -645,8 +687,7 @@ get_trs_trp_for_nvdb <- function() {
     }
   }"
 
-  response_parsed <-
-    get_via_httr(api_query)
+  response_parsed <- get_via_httr(api_query)
 }
 
 

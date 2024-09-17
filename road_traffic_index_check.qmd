@@ -24,31 +24,12 @@ knitr:
 
 ```{r notes}
 # Ekskluder:
-# Torsbekkdalen 6,7
-# Bleikerveien 7
-# Liertoppen n 6,7
-# Avkj. Ringkollen 7
-# Elstrømbrua 6,7
-# Moberg Lekven 7
-# Åndalsnes 6
-# Strindheimtunnelene 1-7
-# Byaenget 5-7
-# Strømnes mot Namsos 5-7
-# Åsmyra 5-7
-# Klinga 5-7
-# Høknes 5-7
-# Skage 5-7
-# bjerkvik v 6
-# Tuv 6,7
-# kvaløysletta n 6,7
-# Barta 5-7
-# forsoeksg 6
-
+# Skadalen 1-8
+# Skjønhaug v 1-8
+# Granfosstunnelene 7-10
 
 # Reberegn:
-# Lismarka 6
-# Rokkerudmoen 5,6
-# Skulstad 6
+
 ```
 
 ```{r}
@@ -120,23 +101,23 @@ links <-
 
 # Look at details in one county at a time
 
-# 31 Østfold                07 Trond
-# 32 Akershus               07 Trond
-# 33 Buskerud               07 Trond
-#  3 Oslo                   07 Trond
-# 34 Innlandet              07 Snorre
-# 39 Vestfold               07 Trond
-# 40 Telemark               07 Trond
-# 42 Agder                  07 Trond
-# 11 Rogaland               07 Trond
-# 46 Vestland               07 Trond
-# 15 Møre og Romsdal        07 Trond
-# 50 Trøndelag              07 Snorre
-# 18 Nordland               07 Trond
-# 55 Troms                  07 Trond
-# 56 Finnmark               07 Trond
+# 31 Østfold                08 Trond
+# 32 Akershus               08 Trond
+# 33 Buskerud               08 Trond
+#  3 Oslo                   08 Trond
+# 34 Innlandet              08 Snorre
+# 39 Vestfold               08 Trond
+# 40 Telemark               08 Trond
+# 42 Agder                  08 Trond
+# 11 Rogaland               08 Trond
+# 46 Vestland               08 Trond
+# 15 Møre og Romsdal        08 Trond
+# 50 Trøndelag              08 Snorre
+# 18 Nordland               08 Trond
+# 55 Troms                  08 Trond
+# 56 Finnmark               08 Trond
 
-county_number_chosen <- 31
+county_number_chosen <- 56
 
 trps_meta <- 
   points %>% 
@@ -520,10 +501,10 @@ pointindex_long_2 <-
   )
 
 # Links
-links_in_county <- filter_traffic_links_by_county()
-links_with_trp <- filter_links_with_trp()
+links_in_county <- filter_traffic_links_by_county(county_number_chosen)
+links_with_trp <- filter_links_with_trp_no_toll()
 
-links_with_events_and_pointindex_1 <- join_events_and_trp_index_with_links(6, point_index_new_prepared_1)
+links_with_events_and_pointindex_1 <- join_events_and_trp_index_with_links(index_month, point_index_new_prepared_1)
 #links_with_events_and_pointindex_2 <- join_events_and_trp_index_with_links(7, point_index_new_prepared_2)
 ```
 

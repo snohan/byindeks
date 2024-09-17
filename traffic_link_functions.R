@@ -25,9 +25,36 @@ filter_traffic_links_by_county <- function(county_number) {
 }
 
 
+filter_links_with_trp_no_toll <- function() {
+
+  # Just TRP
+  links_with_trp <-
+    dplyr::bind_rows(
+      links |>
+        sf::st_drop_geometry() |>
+        dplyr::select(
+          id,
+          associatedTrpIds
+        ) |>
+        tidyr::unnest(
+          # Will duplicate links with more than one TRP
+          associatedTrpIds,
+          keep_empty = FALSE
+        ) |>
+        dplyr::rename(
+          this_area_trp_id = associatedTrpIds
+        )
+    ) |>
+    # Narrow down list (duplicates disappear)
+    dplyr::filter(
+      this_area_trp_id %in% trps_meta$trp_id
+    )
+}
+
+
 filter_links_with_trp <- function() {
 
-  # Both TRP and Toll staions
+  # Both TRP and Toll stations
   links_with_trp <-
     dplyr::bind_rows(
       links |>

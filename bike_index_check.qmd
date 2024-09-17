@@ -52,21 +52,21 @@ points <- readr::read_rds("trps.rds")
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 5952         2019 - 2024-7
-# Førde 9952          2018 - 2024-7
-# Grenland 4953       2018 - 2024-7
-# Kristiansand 14952  2018 - 2024-7
-# Nedre Glomma 5953   2019 - 2024-7
-# Nord-Jæren 6952     2020 - 2024-7
-# Osloområdet 17952   2018 - 2024-7
-# Tromsø 11952        2021 - 2024-7
-# Trondheim 13952     2023 - 2024-7
-# Vestfold 12952      2017 - 2024-7
+# Bergen 5952         2019 - 2024-8
+# Førde 9952          2018 - 2024-8
+# Grenland 4953       2018 - 2024-8
+# Kristiansand 14952  2018 - 2024-8
+# Nedre Glomma 5953   2019 - 2024-8
+# Nord-Jæren 6952     2020 - 2024-8
+# Osloområdet 17952   2018 - 2024-8
+# Tromsø 11952        2021 - 2024-8
+# Trondheim 13952     2023 - 2024-8
+# Vestfold 12952      2017 - 2024-8
 
 
 # Choose
 index_year <- 2024
-index_month <- 5 # latest published
+index_month <- 7 # latest published
 city_number <- 12952
 
 new_month_name <- 
@@ -165,7 +165,8 @@ city_index_prepared <-
   ) %>% 
   dplyr::filter(
     road_category == "Europa-, riks- og fylkesveg",
-    length_range == "alle"
+    length_range == "alle",
+    day_type == "ALL"
   )
 
 pointindex_prepared <- 

@@ -47,7 +47,7 @@ library(htmltools)
 # Choose
 index_year <- 2024
 # Last published month
-index_month <- 6
+index_month <- 7
 index_id <- 2952
 
 new_month_name <- 
@@ -92,7 +92,8 @@ point_index_new <- get_pointindices_for_trp_list(border_trps, index_year)
 border_index_prepared <- 
   border_index %>% 
   dplyr::filter(
-    period == "month"
+    period == "month",
+    day_type == "ALL"
   ) %>% 
   dplyr::mutate(
     length_range = 
