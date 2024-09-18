@@ -1182,10 +1182,87 @@ all_rolling_indexes_chained |>
 
 # TRP data to Excel ----
 # For those interested in the details
+
+# Add YDT
+ydt <- get_aadt_by_length_for_trp_list(this_citys_trps_all_adt_final$trp_id, "WEEKDAY")
+
+ydt_reference_year <-
+  if(city_number == 16952) {
+    2019
+  }else{
+    reference_year
+  }
+
+ydt_ref_year <-
+  ydt |>
+  dplyr::filter(
+    length_range %in% c("[..,5.6)", "[5.6,..)"),
+    year == ydt_reference_year
+  ) |>
+  dplyr::select(trp_id, length_range, ydt_ref = aadt_length_range) |>
+  dplyr::mutate(
+    ydt_ref = round(ydt_ref, -1),
+    length_range =
+      dplyr::case_when(
+        length_range == "[..,5.6)" ~ "light",
+        length_range == "[5.6,..)" ~ "heavy"
+      )
+  ) |>
+  tidyr::pivot_wider(
+    names_from = length_range,
+    names_prefix = "ydt_ref_",
+    values_from = ydt_ref
+  )
+
+ydt_filtered <-
+  ydt |>
+  dplyr::filter(
+    length_range %in% c("[..,5.6)", "[5.6,..)"),
+  ) |>
+  #dplyr::mutate(length_quality = aadt_valid_length / aadt_total * 100) %>%
+  #dplyr::filter(length_quality > 90) %>%
+  dplyr::filter(coverage > 50) |>
+  dplyr::group_by(trp_id) |>
+  dplyr::filter(year == max(year)) |>
+  # Assuming thhis to be the same year as for AADT
+  dplyr::select(trp_id, length_range, ydt = aadt_length_range) |>
+  dplyr::mutate(
+    ydt = round(ydt, -1),
+    length_range =
+      dplyr::case_when(
+        length_range == "[..,5.6)" ~ "light",
+        length_range == "[5.6,..)" ~ "heavy"
+      )
+  ) |>
+  tidyr::pivot_wider(
+    names_from = length_range,
+    names_prefix = "ydt_",
+    values_from = ydt
+  )
+
+trp_info_adt <-
+  this_citys_trps_all_adt_final |>
+  dplyr::left_join(
+    ydt_ref_year,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::left_join(
+    ydt_filtered,
+    by = join_by(trp_id)
+  )
+
+trp_info_adt |>
+writexl::write_xlsx(
+  path = paste0(
+    "spesialuttak/ydt_oslo.xlsx"
+  )
+)
+
+# Write
 if(city_number == 18952){
 
   list(
-    punkt_adt = this_citys_trps_all_adt_final,
+    punkt_adt = trp_info_adt,
     punktindeks_maned = trp_index_monthly_wide,
     byindeks_aarlig = city_index_yearly_all#,
     #punkt_mdt = mdt_and_pi,
@@ -1204,7 +1281,7 @@ if(city_number == 18952){
 if(city_number == 16952){
 
   list(
-    punkt_adt = this_citys_trps_all_adt_final,
+    punkt_adt = trp_info_adt,
     punktindeks_maned = trp_index_monthly_wide,
     byindeks_aarlig = city_index_final,
     punkt_mdt = mdt_and_pi,
@@ -1223,7 +1300,7 @@ if(city_number == 16952){
 if(city_number == 960){
 
   list(
-    punkt_adt = this_citys_trps_all_adt_final,
+    punkt_adt = trp_info_adt,
     punktindeks_maned = trp_index_monthly_wide,
     byindeks_aarlig = city_index_yearly_all,
     punkt_mdt = mdt_and_pi,
@@ -1247,7 +1324,7 @@ if(city_number == 960){
 if(!(city_number %in% c(960, 16952, 18952))){
 
   list(
-    punkt_adt = this_citys_trps_all_adt_final,
+    punkt_adt = trp_info_adt,
     punktindeks_maned = trp_index_monthly_wide,
     #punktindeks_ar = this_citys_trp_index_refyear, # drop
     byindeks_aarlig = city_index_yearly_all,

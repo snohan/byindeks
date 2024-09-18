@@ -314,7 +314,8 @@ get_trp_metadata_by_list <- function(trp_list) {
 
   my_query <- ghql::Query$new()$query(name = "my_query", query)
 
-  response <- cli$exec(my_query$my_query, input_variables) %>%
+  response <-
+    cli$exec(my_query$my_query, input_variables) %>%
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
     as.data.frame() %>%
     tidyr::unnest(cols = c(data.trafficRegistrationPoints.commissions)) %>%
@@ -1268,40 +1269,53 @@ get_trp_mdt_by_direction <- function(trp_id, mdt_year) {
 #trp_id <- "41078V805609"
 #trp_adt <- getTrpAadt_byLength(trp_id)
 
-get_aadt_by_length_for_trp <- function(trp_id) {
+# Test
+#trp_id <- "73168V705238"
+#test <- get_aadt_by_length_for_trp(trp_id, "WEEKDAY")
+
+get_aadt_by_length_for_trp <- function(trp_id, day_type = "ALL") {
 
   # Get all AADTs for a trp
-  query_aadt <- paste0(
-    "query trp_adt {
-    trafficData(trafficRegistrationPointId: \"", trp_id,"\") {
-      trafficRegistrationPoint {
-      id
-    }
-    volume {
-      average {
-        daily {
-          byYear {
-            year
-            total {
-              validLengthVolume {
-                average
-              }
-              coverage {
-                percentage
-              }
-              volume {
-                average
-                standardDeviation
-              }
-            }
-            byLengthRange {
-              lengthRange{
-                representation
-              }
+  # NB! GHQL does not accept snake_case SIC!
+  input_variables <-
+    list(
+      "trpId" = trp_id,
+      "dayType" = day_type
+    )
+
+  query <-
+    paste0(
+    "query trp_adt ($trpId: String!, $dayType: DayType!) {
+      trafficData(trafficRegistrationPointId: $trpId) {
+        trafficRegistrationPoint {
+        id
+      }
+      volume {
+        average {
+          daily {
+            byYear (dayType: $dayType) {
+              year
               total {
+                validLengthVolume {
+                  average
+                }
+                coverage {
+                  percentage
+                }
                 volume {
                   average
                   standardDeviation
+                }
+              }
+              byLengthRange {
+                lengthRange{
+                  representation
+                }
+                total {
+                  volume {
+                    average
+                    standardDeviation
+                  }
                 }
               }
             }
@@ -1310,21 +1324,24 @@ get_aadt_by_length_for_trp <- function(trp_id) {
       }
     }
   }
-}
-")
+  "
+  )
 
-  myqueries <- Query$new()
-  myqueries$query("aadts", query_aadt)
+  my_query <- ghql::Query$new()$query(name = "my_query", query)
 
   trp_aadt <-
-    cli$exec(myqueries$queries$aadts) %>%
-    jsonlite::fromJSON(
-      simplifyDataFrame = T,
-      flatten = T
-    )
+    cli$exec(my_query$my_query, input_variables) |>
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
 
-  #trp_aadt_length <-
-  #  length(trp_aadt$data$trafficData$volume$average$daily$byYear$byLengthRange)
+  # myqueries <- Query$new()
+  # myqueries$query("aadts", query_aadt)
+  #
+  # trp_aadt <-
+  #   cli$exec(myqueries$queries$aadts) |>
+  #   jsonlite::fromJSON(
+  #     simplifyDataFrame = T,
+  #     flatten = T
+  #   )
 
   trp_aadt_length <-
     purrr::list_rbind(trp_aadt$data$trafficData$volume$average$daily$byYear$byLengthRange)
@@ -1334,7 +1351,6 @@ get_aadt_by_length_for_trp <- function(trp_id) {
       trp_aadt$data$trafficData$volume$average$daily$byYear
     ) |
     is_empty(
-      #trp_aadt$data$trafficData$volume$average$daily$byYear$byLengthRange[[trp_aadt_length]]
       trp_aadt_length$total.volume.average
     )
      ){
@@ -1342,12 +1358,13 @@ get_aadt_by_length_for_trp <- function(trp_id) {
     # if no length range aadt
     trp_aadt <- data.frame()
   }else{
-    trp_aadt <- trp_aadt %>%
-      as.data.frame() %>%
+    trp_aadt <-
+      trp_aadt |>
+      as.data.frame() |>
       tidyr::unnest(
         cols = c(data.trafficData.volume.average.daily.byYear.byLengthRange),
         names_sep = "."
-      ) %>%
+      ) |>
       # rename only columns that will exist if solely old data
       dplyr::rename(
         trp_id = data.trafficData.id,
@@ -1357,14 +1374,14 @@ get_aadt_by_length_for_trp <- function(trp_id) {
         # include sd to test if all data are old in next step
         sd_length_range = data.trafficData.volume.average.daily.byYear.byLengthRange.total.volume.standardDeviation,
         aadt_total = data.trafficData.volume.average.daily.byYear.total.volume.average
-      ) %>%
+      ) |>
       dplyr::mutate(trp_id = as.character(trp_id))
   }
 
   if(all(is.na(trp_aadt$sd_length_range))
     ){
     trp_aadt <-
-      trp_aadt %>%
+      trp_aadt |>
       # if all old data, create empty columns (they are missing from API response)
       dplyr::mutate(
         aadt_valid_length = NA,
@@ -1372,7 +1389,7 @@ get_aadt_by_length_for_trp <- function(trp_id) {
       )
   }else{
     trp_aadt <-
-      trp_aadt %>%
+      trp_aadt |>
       dplyr::rename(
         aadt_valid_length = data.trafficData.volume.average.daily.byYear.total.validLengthVolume.average,
         coverage = data.trafficData.volume.average.daily.byYear.total.coverage.percentage,
@@ -1851,7 +1868,7 @@ get_mdt_by_direction_for_trp_list <- function(trp_list, mdt_year) {
 #test <- get_mdt_by_lane_for_trp_list(trp_list, "2020")
 #test_adt <- getAdtForpoints_by_length(test_list)
 
-get_aadt_by_length_for_trp_list <- function(trp_list) {
+get_aadt_by_length_for_trp_list <- function(trp_list, day_type = "ALL") {
 
   number_of_points <- length(trp_list)
   data_points <- data.frame()
@@ -1863,7 +1880,8 @@ get_aadt_by_length_for_trp_list <- function(trp_list) {
       bind_rows(
         data_points,
         get_aadt_by_length_for_trp(
-          trp_list[trp_count]
+          trp_list[trp_count],
+          day_type
         )
       )
 
@@ -1873,14 +1891,11 @@ get_aadt_by_length_for_trp_list <- function(trp_list) {
   number_of_digits = 0
 
   trp_adt <-
-    data_points %>%
+    data_points |>
     dplyr::mutate(
-      aadt_valid_length =
-        round(aadt_valid_length, digits = number_of_digits),
-      aadt_total =
-        round(aadt_total, digits = number_of_digits),
-      aadt_length_range =
-        round(aadt_length_range, digits = number_of_digits)
+      aadt_valid_length = round(aadt_valid_length, digits = number_of_digits),
+      aadt_total = round(aadt_total, digits = number_of_digits),
+      aadt_length_range = round(aadt_length_range, digits = number_of_digits)
     )
 
   return(trp_adt)
