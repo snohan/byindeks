@@ -328,3 +328,135 @@
 #   toll_station_dt_2019,
 #   "spesialuttak/bomdata_trd_2019.xlsx"
 # )
+
+
+# TRPs with EMU3 ----
+# Bergen 8952
+# Buskerudbyen 1952
+# Grenland 955
+# Kristiansand og omegn 957 kommune 956
+# Nedre Glomma 18952
+# Nord-Jæren 952
+# Oslo 959
+# Trondheim 960
+# Tromsø 961
+# Tromsø 2022 16952
+city_index_ids <-
+  c(
+    8952,
+    1952,
+    955,
+    957,
+    18952,
+    952,
+    959,
+    960,
+    16952
+  )
+
+city_trps <-
+  purrr::map(
+    city_index_ids,
+    ~ get_published_pointindex_for_months(.x, 2024, 1)[[2]]
+  ) |>
+  purrr::list_rbind() |>
+  dplyr::filter(
+    trp_id != "98963V1719019" # Sandesund sør is wrongly included in API response
+  )
+
+city_trps_tidy <-
+  city_trps |>
+  dplyr::select(
+    trp_id, area_name
+  ) |>
+  dplyr::distinct()
+
+
+# From TRP API
+source("get_from_trp_api.R")
+trs_devices <- get_trs_device()
+
+trs_device_latest <-
+  trs_devices |>
+  dplyr::slice_max(
+    order_by = valid_from,
+    by = trs_id
+  ) |>
+  dplyr::filter(
+    device_type == "EMU"
+  )
+
+trs_trp_id <- get_trs_and_trp_id()
+
+trp_meta_data <-
+  readr::read_rds("trps_for_city_index.rds") |>
+  dplyr::select(
+    trp_id,
+    trp_name = name,
+    trp_road_category_and_number = road_category_and_number,
+    municipality_name
+  )
+
+
+# Copied alarms from Adm, pasted to Excel and saved as CSV
+alarms <-
+  read.csv2(
+    "spesialuttak/alarmer.csv"
+  ) |>
+  dplyr::select(
+    trs_id,
+    alarm_type
+  ) |>
+  dplyr::distinct() |>
+  dplyr::mutate(
+    trs_id = as.character(trs_id)
+  )
+
+length(unique(alarms$trs_id))
+
+
+# Finally
+city_trs_with_emu3 <-
+  trs_trp_id |>
+  dplyr::select(
+    trs_id,
+    trs_name,
+    trp_id
+  ) |>
+  dplyr::filter(
+    trs_id %in% trs_device_latest$trs_id
+  ) |>
+  dplyr::inner_join(
+    city_trps_tidy,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::left_join(
+    trp_meta_data,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::relocate(area_name) |>
+  dplyr::arrange(
+    area_name, trs_id
+  ) |>
+  dplyr::left_join(
+    alarms,
+    by = join_by(trs_id)
+  )
+
+# With at least one alarm
+city_trs_with_emu3 |>
+  dplyr::filter(
+    !is.na(alarm_type)
+  ) |>
+  dplyr::select(
+    trs_id
+  ) |>
+  dplyr::distinct() |>
+  base::nrow()
+
+
+writexl::write_xlsx(
+  city_trs_with_emu3,
+  "spesialuttak/byindeks_trs_emu.xlsx"
+)
+

@@ -59,7 +59,7 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 8 # the one to be published now
-city_number <- 959
+city_number <- 953
 }
 # End choose
 
@@ -152,7 +152,7 @@ city_indexes <-
     ~ get_published_index_for_months(city_number, .x, .y)
   ) |>
   purrr::list_rbind() |>
-  dplyr::filter(day_type == "WEEKDAY")
+  dplyr::filter(day_type == "ALL")
   # ALL, WEEKDAY or WEEKEND
 
   # TODO: TRPs might differ from year to year!
@@ -536,8 +536,8 @@ city_index_yearly_all <-
     years_1_3,
     years_1_4,
     years_1_5,
-    #years_1_6,
-    #years_1_7
+    years_1_6,
+    years_1_7
   ) |>
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -657,14 +657,14 @@ mdt_filtered |>
   )
 
 # Read back in
-mdt_filtered <-
-  readr::read_rds(
-    paste0(
-      "data_indexpoints_tidy/mdt_",
-      city_number,
-      ".rds"
-    )
-  )
+# mdt_filtered <-
+#   readr::read_rds(
+#     paste0(
+#       "data_indexpoints_tidy/mdt_",
+#       city_number,
+#       ".rds"
+#     )
+#   )
 
 # Length quality
 plotly::ggplotly(
@@ -707,7 +707,7 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[16:18]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[9:10]) |>
   dplyr::select(
     trp_id,
     year,
@@ -1251,12 +1251,12 @@ trp_info_adt <-
     by = join_by(trp_id)
   )
 
-trp_info_adt |>
-writexl::write_xlsx(
-  path = paste0(
-    "spesialuttak/ydt_oslo.xlsx"
-  )
-)
+# trp_info_adt |>
+# writexl::write_xlsx(
+#   path = paste0(
+#     "spesialuttak/ydt_oslo.xlsx"
+#   )
+# )
 
 # Write
 if(city_number == 18952){

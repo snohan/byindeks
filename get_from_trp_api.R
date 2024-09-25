@@ -700,7 +700,7 @@ get_trs_and_trp_id <- function() {
         id
         name
         operationalStatus
-        stationType
+        registrationFrequency
         trafficType
         trafficRegistrationPoints {
           id
@@ -718,7 +718,7 @@ get_trs_and_trp_id <- function() {
       trs_id = data.trafficRegistrationStations.id,
       trs_name = data.trafficRegistrationStations.name,
       trs_status = data.trafficRegistrationStations.operationalStatus,
-      trs_type = data.trafficRegistrationStations.stationType,
+      trs_reg_freq = data.trafficRegistrationStations.registrationFrequency,
       trs_traffic_type = data.trafficRegistrationStations.trafficType,
       trp_id = id
     ) %>%
