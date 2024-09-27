@@ -59,7 +59,7 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 8 # the one to be published now
-city_number <- 953
+city_number <- 8952
 }
 # End choose
 
@@ -231,6 +231,16 @@ trp_index_so_far_by_dec_from_2020 <-
     base_volume,
     index = index_short
   )
+
+# Is the SD weighted from the API?
+# test <-
+#   trp_index_so_far_by_dec_from_2020 |>
+#   dplyr::summarise(
+#     n = n(),
+#     sd = sd(index),
+#     .by = year
+#   )
+# Yes, seems so.
 
 if(city_number %in% c(8952, 16952, 18952)){
   trp_index_year_to_date_dec_bind <-

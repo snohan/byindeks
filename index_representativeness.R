@@ -11,8 +11,16 @@
   library(moments)
   library(corrplot)
   library(car)
+  library(pwr)
   source("get_from_trafficdata_api.R")
 }
+
+# Steps ----
+# 1. Define the population
+# 2. Find relevant characteristics of the population and describe these
+# 3. Describe the sanpling process
+# 4. Compare sample characteristics with the population using measures of fit
+# 5. Decide on acceptance criteria for similarity
 
 
 # RTM links ----
@@ -325,6 +333,7 @@ stats::qqplot(
 # Jensen-Shannon Divergence
 # Population Stability Index
 
+
 ### Variance ----
 # F-test, but then distributions must be normal!
 stats::var.test(rtm_20_22$index_p, city_trp_index$index)
@@ -347,7 +356,7 @@ base::sqrt(
 
 # Look at RTM at position of TRP
 
-# TODO: Make a Quarto report on this. Important to mention assumptions and prerquisites as well as weaknesses.
+# TODO: Make a Quarto report on this. Important to mention assumptions and prerequisites as well as weaknesses.
 # TODO: Lag en felles presentasjon med May-Berit og Jonas.
 # TODO: Presenter i ett av arbeidsgruppemøtene for Trafikkdata by.
 # TODO: Finn andel av alle turer som fanges opp av minst ett punkt. Hva da med overrepresentasjon?
@@ -868,3 +877,60 @@ city_links_tidy_select <-
 ## Distance metrics ----
 # Comparing sample and population - do they look alike?
 
+
+
+# Power analysis ----
+# Say we want to detect wether traffic is changed, i.e. different from 0 % change.
+
+# What effect size do we need to detect?
+# Cohen's d is the difference between two means divided by a standard deviation for the data
+# If the difference is 1 %-point and the sd is about 5, then d is 0.2.
+# What is the empirical sd in terms of %-points?
+
+# Power: By what probability do we want to detect it? 0.9?
+# Significance level is 0.05.
+# We need to detect is change is unequal to zero, i.e. both positive and negative.
+# What is the smallest sample size that fullfills this?
+
+# What is the typical weighted sd under nromal circumstances?
+city_ids <- c(
+  "8952",
+  "1952",
+  "955",
+  "957",
+  "953",
+  "952",
+  "959"
+)
+
+city_indices <-
+  purrr::map(
+    city_ids,
+    ~ get_published_index(., 2022, 12)
+  ) |>
+  purrr::list_rbind()
+
+city_indices_tidy <-
+  city_indices |>
+  dplyr::filter(
+    road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+    length_range == "[..,5.6)",
+    day_type == "ALL",
+    period == "year_to_date"
+  )
+
+mean(city_indices_tidy$standard_deviation)
+median(city_indices_tidy$standard_deviation)
+# 4
+
+cohen_d <- 10 / 4
+
+# Choose wanted power and difference in mean
+pwr::pwr.t.test(
+  n = NULL,
+  d = cohen_d,
+  sig.level = 0.05,
+  power = 0.8,
+  type = "one.sample",
+  alternative = "two.sided"
+)
