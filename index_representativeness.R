@@ -440,15 +440,19 @@ all_links_tidy <-
   dplyr::mutate(
     city =
       dplyr::case_when(
-        municipalityIds %in% c(5001, 5028, 5029, 5059, 5031, 5035) ~ "Trondheim",
+        #municipalityIds %in% c(5001, 5028, 5029, 5059, 5031, 5035) ~ "Trondheim",
         municipalityIds %in% c(4601, 4626, 4627, 4631, 4624) ~ "Bergen",
         municipalityIds %in% c(1127, 1103, 1124, 1108) ~ "Nord-Jæren", # should Stavanger and Sandnes be limited?
-        municipalityIds %in% c(301, 3205, 3207, 3201, 3203, 3218, 3222, 3224, 3232) ~ "Oslo" # Which should be included?
+        municipalityIds %in% c(301, 3205, 3207, 3201) ~ "Oslo",
+        municipalityIds %in% c(3301, 3312, 3314, 3303) ~ "Buskerudbyen",
+        municipalityIds %in% c(4001, 4003, 4010, 4012) ~ "Grenland",
+        municipalityIds %in% c(4204, 4223, 4218, 4216, 4215) ~ "Kristiansand"
       )
   ) |>
   dplyr::select(
     -municipalityIds
   ) |>
+  # Remove duplicates (those crossing municipalities)
   dplyr::distinct() |>
   dplyr::filter(
     !is.na(city),
@@ -484,6 +488,7 @@ all_links_tidy <-
   )
 
 # Putting toll ids in same column as trp_id
+# Will duplicate those with both TRP and toll station
 all_links_tidy_2 <-
   dplyr::bind_rows(
     all_links_tidy |>
@@ -505,29 +510,54 @@ all_links_tidy_2 <-
       )
   )
 
+### City TRPs ----
+city_id <-
+  c(960, 952, 8952, 959, 1952, 955, 957)
+
+city_names <-
+  c("Trondheim", "Nord-Jæren", "Bergen", "Oslo", "Buskerudbyen", "Grenland", "Kristiansand")
+
+city_names_and_ids <-
+  tibble::tibble(
+    city_id,
+    city_names
+  )
+
+city_trp_info <-
+  purrr::map(
+    city_id,
+    ~ readr::read_rds(
+      file = paste0(
+        "index_trp_metadata/trp_",
+        .x,
+        ".rds"
+      )
+    ) |>
+      dplyr::mutate(
+        city_id = .x
+      )
+  ) |>
+  dplyr::bind_rows() |>
+  dplyr::select(
+    city_id,
+    p_id = trp_id,
+    name
+  ) |>
+  dplyr::filter(
+    # Removing toll station "Nord for Sluppen bru" which has been moved
+    !(p_id == "1017875672")
+  ) |>
+  dplyr::left_join(
+    city_names_and_ids,
+    by = join_by(city_id)
+  )
 
 # TODO: reduce area to true interest area (some municipalities stretch far inland to remote places, e.g. Sandnes)
 # TODO: links on municipality roads
-
-
-## Point index ----
 # TODO: new method for point (link) index, based on traffic work?
 
-# Choosing year index 2023
+## Yearly index 2023 ----
 # TRD
-# Need toll station nvdb id to join with links
-trd_toll_ids <-
-  readr::read_rds(
-    file = "bomdata_trondheim/trd_toll_stations.rds"
-  ) |>
-  dplyr::select(
-    trp_id,
-    p_id = nvdb_id
-  ) |>
-  dplyr::mutate(
-    p_id = as.character(p_id)
-  )
-
 trd_trp_index <-
   readr::read_rds(
     file = paste0("data_indexpoints_tidy/indekspunkt_", 960, ".rds")
@@ -536,24 +566,13 @@ trd_trp_index <-
     trp_id,
     index = index_2023
   ) |>
-  # Since Ranheim has change number form 72 to 1
-  dplyr::mutate(
-    trp_id = dplyr::case_when(
-      trp_id == "72" ~ "1",
-      TRUE ~ trp_id
-    ),
-    p_id = trp_id
-  ) |>
-  dplyr::rows_update(
-    trd_toll_ids,
-    by = "trp_id"
-  ) |>
   dplyr::filter(
     # Removing toll station "Nord for Sluppen bru" which has been moved
-    !(p_id == "1017875672")
+    !(trp_id == "1017875672")
   ) |>
   dplyr::select(
-    -trp_id
+    p_id = trp_id,
+    index
   )
 
 # Other cities
@@ -589,47 +608,8 @@ trp_index <-
     index < 15
   )
 
-## City TRPs ----
-city_ids <-
-  c(960, 952, 8952, 959)
 
-city_trp_info <-
-  purrr::map(
-    city_ids,
-    ~ readr::read_rds(
-      file = paste0(
-        "index_trp_metadata/trp_",
-        .x,
-        ".rds"
-      )
-    )
-  ) |>
-  dplyr::bind_rows() |>
-  dplyr::select(
-    trp_id,
-    name
-  ) |>
-  dplyr::mutate(
-    trp_id = dplyr::case_when(
-      trp_id == "72" ~ "1",
-      TRUE ~ trp_id
-    ),
-    p_id = trp_id
-  ) |>
-  dplyr::rows_update(
-    trd_toll_ids,
-    by = "trp_id"
-  ) |>
-  dplyr::filter(
-    # Removing toll station "Nord for Sluppen bru" which has been moved
-    !(p_id == "1017875672")
-  ) |>
-  dplyr::select(
-    -trp_id
-  )
-
-
-## Links and point index ----
+### Links and point index ----
 city_links <-
   all_links_tidy_2 |>
   dplyr::left_join(
@@ -677,7 +657,7 @@ city_links_tidy <-
 dups <- city_links_tidy[duplicated(city_links_tidy$id),]
 
 
-## Categorical variables ----
+### Categorical variables ----
 city_links_tidy |>
   purrr::keep(is.factor) |>
   names()
@@ -807,7 +787,7 @@ stats::oneway.test(
 # Should set up a prediction model in order to be able to really select the most important features?
 
 
-## Numeric variables ----
+### Numeric variables ----
 # Correlations among variables
 city_links_tidy |>
   purrr::keep(is.numeric) |>
@@ -873,6 +853,33 @@ city_links_tidy_select <-
     index
   )
 
+## Monthly indexes 2023 ----
+month_indexes <-
+  purrr::map(
+    c(1952, 955, 957, 952, 959, 8952),
+    ~ readxl::read_excel(
+      paste0("data_indexpoints_tidy/tallmateriale_", .x, ".xlsx"),
+      sheet = "punktindeks_maned"
+    )
+  ) |>
+  purrr::list_rbind() |>
+  dplyr::filter(
+    year == 2023
+  ) |>
+  dplyr::select(
+    trp_id,
+    year,
+    jan:des
+  ) |>
+  tidyr::pivot_longer(
+    cols = jan:des,
+    names_to = "month_name",
+    values_to = "index"
+  )
+
+
+
+
 
 ## Distance metrics ----
 # Comparing sample and population - do they look alike?
@@ -883,16 +890,16 @@ city_links_tidy_select <-
 # Say we want to detect wether traffic is changed, i.e. different from 0 % change.
 
 # What effect size do we need to detect?
-# Cohen's d is the difference between two means divided by a standard deviation for the data
+# Cohen's d is the difference between two means divided by a standard deviation for the data.
 # If the difference is 1 %-point and the sd is about 5, then d is 0.2.
 # What is the empirical sd in terms of %-points?
 
 # Power: By what probability do we want to detect it? 0.9?
 # Significance level is 0.05.
-# We need to detect is change is unequal to zero, i.e. both positive and negative.
+# We need to detect if change is unequal to zero, i.e. both positive and negative.
 # What is the smallest sample size that fullfills this?
 
-# What is the typical weighted sd under nromal circumstances?
+# What is the typical weighted sd under normal circumstances?
 city_ids <- c(
   "8952",
   "1952",
@@ -923,10 +930,11 @@ mean(city_indices_tidy$standard_deviation)
 median(city_indices_tidy$standard_deviation)
 # 4
 
-cohen_d <- 10 / 4
+cohen_d <- 2 / 4
 
 # Choose wanted power and difference in mean
-pwr::pwr.t.test(
+power_analysis <-
+  pwr::pwr.t.test(
   n = NULL,
   d = cohen_d,
   sig.level = 0.05,
@@ -934,3 +942,16 @@ pwr::pwr.t.test(
   type = "one.sample",
   alternative = "two.sided"
 )
+
+power_analysis
+plot(power_analysis)
+
+
+# Ratio of mean and variance ----
+# What distribution is traffic volume following?
+# Depends on
+# - time interval length
+# - time interval type (morning, day, night, weekday, weekend)
+# - lane type
+# - area type (urban or rural)
+
