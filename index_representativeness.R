@@ -382,6 +382,7 @@ all_links <-
     associatedTollStationIds,
     length,
     minLanes,
+    maxLanes,
     highestSpeedLimit,
     functionClasses,
     functionalRoadClasses,
@@ -425,6 +426,7 @@ all_links_tidy <-
     associatedTollStationIds,
     length,
     minLanes,
+    maxLanes,
     highestSpeedLimit,
     functional_class,
     function_class,
@@ -443,10 +445,15 @@ all_links_tidy <-
         #municipalityIds %in% c(5001, 5028, 5029, 5059, 5031, 5035) ~ "Trondheim",
         municipalityIds %in% c(4601, 4626, 4627, 4631, 4624) ~ "Bergen",
         municipalityIds %in% c(1127, 1103, 1124, 1108) ~ "Nord-Jæren", # should Stavanger and Sandnes be limited?
-        municipalityIds %in% c(301, 3205, 3207, 3201) ~ "Oslo",
+        municipalityIds %in% c(301, 3205, 3207, 3201, 3203, 3209, 3240, 3216, 3228, 3226, 3220) ~ "Oslo",
         municipalityIds %in% c(3301, 3312, 3314, 3303) ~ "Buskerudbyen",
         municipalityIds %in% c(4001, 4003, 4010, 4012) ~ "Grenland",
         municipalityIds %in% c(4204, 4223, 4218, 4216, 4215) ~ "Kristiansand"
+      ),
+    functional_class =
+      dplyr::case_when(
+        functional_class > 5 ~ 5,
+        TRUE ~ functional_class
       )
   ) |>
   dplyr::select(
@@ -509,6 +516,71 @@ all_links_tidy_2 <-
         !is.na(p_id)
       )
   )
+
+all_links_tidy_no_duplicates <-
+  all_links_tidy_2 |>
+  dplyr::select(
+    -p_id
+  ) |>
+  dplyr::distinct()
+
+
+
+# Look at how links are distributed
+link_stats <-
+  all_links_tidy_no_duplicates |>
+  dplyr::summarise(
+    n_links = n(),
+    traffic_work = sum(length * aadt) * 365 * 1e-12,
+    .by = c(city)
+  )
+
+all_links_tidy_no_duplicates |>
+  ggplot(aes(road_category)) +
+  geom_bar() +
+  facet_wrap(facets = "city")
+
+all_links_tidy_no_duplicates |>
+  ggplot(aes(functional_class)) +
+  geom_bar() +
+  facet_wrap(facets = "city")
+# Suggests that values over 5 should be mapped to 5.
+# Then maybe group 0_1, 2_3 and 4_5.
+# Oslo is unique - does this reflect the nature of the traffic? Doubtful.
+
+all_links_tidy_no_duplicates |>
+  ggplot(aes(function_class)) +
+  geom_bar() +
+  facet_wrap(facets = "city")
+# Again, Oslo is unique. Supposedly this does not reflect a true difference in the nature of the traffic network.
+# I.e. the classification of roads are not comparable.
+# Maybe group into A, B_C and D_E.
+
+all_links_tidy_no_duplicates |>
+  ggplot(aes(aadt)) +
+  geom_histogram() +
+  facet_wrap(facets = "city")
+
+
+
+all_links_tidy_no_duplicates |>
+  ggplot(aes(urbanRatio)) +
+  geom_bar() +
+  facet_wrap(facets = "city")
+# Oslo is significantly more urban.
+# Maybe reduce to two categories: urban_inter and rural.
+
+
+all_links_tidy_no_duplicates |>
+  ggplot(aes(numberOfInhabitants)) +
+  geom_histogram() +
+  facet_wrap(facets = "city")
+
+all_links_tidy_no_duplicates |>
+  ggplot(aes(aadt)) +
+  geom_histogram() +
+  facet_wrap(facets = c("function_class", "city"))
+
 
 ### City TRPs ----
 city_id <-
@@ -609,7 +681,7 @@ trp_index <-
   )
 
 
-### Links and point index ----
+### Links and point index
 city_links <-
   all_links_tidy_2 |>
   dplyr::left_join(
@@ -657,7 +729,7 @@ city_links_tidy <-
 dups <- city_links_tidy[duplicated(city_links_tidy$id),]
 
 
-### Categorical variables ----
+### Categorical variables
 city_links_tidy |>
   purrr::keep(is.factor) |>
   names()
@@ -787,7 +859,7 @@ stats::oneway.test(
 # Should set up a prediction model in order to be able to really select the most important features?
 
 
-### Numeric variables ----
+### Numeric variables
 # Correlations among variables
 city_links_tidy |>
   purrr::keep(is.numeric) |>
@@ -853,33 +925,182 @@ city_links_tidy_select <-
     index
   )
 
+
 ## Monthly indexes 2023 ----
-month_indexes <-
+month_trp_index <-
   purrr::map(
     c(1952, 955, 957, 952, 959, 8952),
-    ~ readxl::read_excel(
-      paste0("data_indexpoints_tidy/tallmateriale_", .x, ".xlsx"),
-      sheet = "punktindeks_maned"
-    )
+    ~ get_published_pointindex_for_months(.x, 2023, 12)[[2]]
   ) |>
   purrr::list_rbind() |>
   dplyr::filter(
-    year == 2023
+    day_type == "ALL",
+    is_excluded == FALSE,
+    is_manually_excluded == FALSE,
+    length_excluded == FALSE,
+    period == "month"
   ) |>
   dplyr::select(
+    area_name,
     trp_id,
     year,
-    jan:des
+    month,
+    period,
+    index_total_coverage,
+    length_coverage,
+    length_calc_volume_short,
+    length_base_volume_short,
+    index_short
   ) |>
-  tidyr::pivot_longer(
-    cols = jan:des,
-    names_to = "month_name",
-    values_to = "index"
+  dplyr::mutate(
+    F_lambda_half = 2 * (sqrt(length_calc_volume_short) - sqrt(length_base_volume_short))
   )
 
+### Check for normality
+unique_city_names <-
+  month_trp_index |>
+  dplyr::select(
+    area_name
+  ) |>
+  distinct()
+
+month_trp_index |>
+  # dplyr::filter(
+  #   area_name == unique_city_names$area_name[6]
+  # ) |>
+  ggplot(
+    aes(F_lambda_half)
+    #aes(index_short)
+  ) +
+  geom_histogram() +
+  facet_wrap(
+    facets = vars(month),
+    ncol = 3
+  )
+
+month_trp_index |>
+  # dplyr::filter(
+  #   area_name == unique_city_names$area_name[6]
+  # ) |>
+  ggplot(aes(sample = F_lambda_half)) +
+  stat_qq() +
+  stat_qq_line() +
+  facet_wrap(
+    facets = vars(month),
+    ncol = 3
+  )
+
+# Looks fairly normal, and fairly same for index_short and F.
+
+## Monthly index and links
+month_trp_index_links <-
+  month_trp_index |>
+  dplyr::left_join(
+    all_links_tidy_2,
+    by = join_by(trp_id == p_id)
+  ) |>
+  dplyr::select(
+    city,
+    #trp_id,
+    month,
+    #index_short,
+    F_lambda_half,
+    # Possible predictors, categorical
+    road_category,
+    urbanity = urbanRatio,
+    # minLanes,
+    # maxLanes,
+    # highestSpeedLimit,
+    functional_class,
+    function_class,
+    # Possible predictors, numerical
+    length,
+    aadt,
+    numberOfEstablishments,
+    numberOfEmployees,
+    numberOfInhabitants
+  ) |>
+  # Removing TRPs without match
+  dplyr::filter(
+    !is.na(road_category)
+  ) |>
+  dplyr::mutate(
+    #functional_class_max_lanes = paste(functional_class, maxLanes, sep = "_"),
+    #speed_min_lanes = paste(highestSpeedLimit, minLanes, sep = "_"),
+    #road_cat_urban = paste(road_category, urbanRatio, sep = "_"),
+    #function_class_min_lanes = paste(function_class, minLanes, sep = "_")
+    #speed_urban = paste(highestSpeedLimit, urbanRatio, sep = "_")
+    # min_lanes_groups =
+    #   dplyr::case_when(
+    #     minLanes %in% c(1, 2, 3) ~ "<4",
+    #     TRUE ~ ">=4"
+    #   ),
+    month = as.factor(month),
+    road_category =
+      dplyr::case_when(
+        road_category == "Europaveg" ~ "R",
+        road_category == "Riksveg" ~ "R",
+        road_category == "Fylkesveg" ~ "F"
+      ),
+    # speed_limit_grouped =
+    #   dplyr::case_when(
+    #     highestSpeedLimit %in% c(30, 40, 50) ~ "<=50",
+    #     highestSpeedLimit %in% c(60, 70, 80) ~ "<=80",
+    #     TRUE ~ ">80"
+    #   ),
+    urbanity =
+      dplyr::case_when(
+        urbanity %in% c("urban", "inter") ~ "urban",
+        TRUE ~ "rural"
+      ),
+    #traffic_work = length * aadt,
+    #interaction_term = paste(road_category, urbanity, sep = "_"),
+    length = log(length + 1),
+    aadt_group =
+      dplyr::case_when(
+        aadt < 5000 ~ "<5k",
+        aadt < 25000 ~ "<25k",
+        TRUE ~ ">25k"
+      ),
+    aadt = log(aadt + 1),
+    dplyr::across(
+      c(F_lambda_half, aadt, length, tidyselect::starts_with("number")),
+      ~ as.numeric(scale(.x))
+    )
+  )
+
+# Not suitable to use speed or lanes here, as cities differ in occurrence.
 
 
+# Categorical variables
+month_trp_index_links |>
+  ggplot(
+    aes(
+      x = aadt_group,
+      y = F_lambda_half
+    )
+  ) +
+  geom_boxplot() +
+  facet_wrap(facets = "city")
+# No obvious groupings!
+# Month is one, obviously.
 
+
+# Numerical variables
+month_trp_index_links |>
+  dplyr::select(
+    F_lambda_half, aadt, length, tidyselect::starts_with("number")
+  ) |>
+  stats::cor(
+    method = "spearman"
+  ) |>
+  corrplot::corrplot(
+    type = "lower"
+  )
+
+month_trp_index_links |>
+  ggplot(aes(F_lambda_half, aadt)) +
+  geom_point()
 
 ## Distance metrics ----
 # Comparing sample and population - do they look alike?
@@ -955,3 +1176,67 @@ plot(power_analysis)
 # - lane type
 # - area type (urban or rural)
 
+
+# Log ratio ----
+# An antisymmetric, additive and normed measure of change
+# Either ln (p) or 2 * (sqrt(v_2) - sqrt(v_1))
+
+point_index_tests <-
+  tibble::tibble(
+    base_volume = c(
+      100,
+      1000,
+      10000,
+      10200,
+      1200,
+      200,
+      2000,
+      2000,
+      2000,
+      20000,
+      20050,
+      20000,
+      1000000,
+      1000900,
+      1000000,
+      100
+    ),
+    calc_volume = c(
+      200,
+      1200,
+      10200,
+      10000,
+      1000,
+      100,
+      2000,
+      2050,
+      2100,
+      20050,
+      20250,
+      20250,
+      1000900,
+      1000000,
+      1010000,
+      101
+    )
+  ) |>
+  dplyr::mutate(
+    pi_i = calc_volume / base_volume,
+    pi_p = 100 * (calc_volume / base_volume - 1),
+    pi_i_ln = 100 * log(pi_i),
+    f_pi_i_lambda_half = (calc_volume - base_volume) / sqrt(base_volume),
+    F_pi_i_lambda_half = 2 * (sqrt(calc_volume) - sqrt(base_volume))
+  ) |>
+  dplyr::summarise(
+    pi_i = sum(calc_volume) / sum(base_volume),
+    total_F_pi_i_lambda_half = 2 * (sqrt(sum(calc_volume)) - sqrt(sum(base_volume))),
+    mean_F_pi_i_lambda_half = mean(F_pi_i_lambda_half)
+  )
+
+sum(point_index_tests$f_pi_i_lambda_half[10:11])
+sum(point_index_tests$F_pi_i_lambda_half[10:11])
+
+# I.e. F is additive, but f is not.
+# F has high values when comparing monthly traffic, but this will of course be smaller when we would compare monthly daily traffic.
+
+# F for the city doesn't say much. It would still be perilous to compare cities.
