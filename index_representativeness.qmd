@@ -1,0 +1,53 @@
+---
+title: "Representativitet i indeks"
+format: 
+  html:
+    css: svv.css
+    number-sections: true
+    toc: true
+    toc-location: left
+    toc-title: "Innhold"
+    toc-expand: true
+    df-print: paged
+    self-contained: true
+crossref:
+  fig-title: Figur
+  tbl-title: Tabell
+  title-delim: .
+  fig-prefix: figur
+  tbl-prefix: tabell
+editor: source
+knitr: 
+  opts_chunk: 
+    echo: false
+---
+
+
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
+#| warning: false
+#| message: false
+  
+base::Sys.setlocale(locale = "nb.utf8")
+svv_background_color <- "#F5F5F5"
+
+library(tidyverse)
+library(sf)
+library(sfnetworks)
+library(igraph)
+library(tidygraph)
+library(htmltools)
+library(leaflet)
+library(RColorBrewer)
+
+source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
+```
+
+```{r}
+#| label: data
+
+
+```
+

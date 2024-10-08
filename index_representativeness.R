@@ -12,6 +12,7 @@
   library(corrplot)
   library(car)
   library(pwr)
+  library(tidygraph)
   source("get_from_trafficdata_api.R")
 }
 
@@ -1240,3 +1241,196 @@ sum(point_index_tests$F_pi_i_lambda_half[10:11])
 # F has high values when comparing monthly traffic, but this will of course be smaller when we would compare monthly daily traffic.
 
 # F for the city doesn't say much. It would still be perilous to compare cities.
+
+
+# Prepare traffic graph for Quarto ----
+# Traffic links from Adm
+#layers <- sf::st_layers("C:/Users/snohan/Desktop/traffic_links_2023_2024-10-08.geojson")
+
+#names(links)
+
+links <-
+  sf::st_read(
+    "C:/Users/snohan/Desktop/traffic_links_2023_2024-10-08.geojson"
+    #query = "SELECT * FROM \"traffic_links_2023_2024-10-08\" LIMIT 1"
+  ) |>
+  dplyr::select(
+    id,
+    startTrafficNodeId,
+    endTrafficNodeId,
+    municipalityIds,
+    associatedTrpIds,
+    hasOnlyPublicTransportLanes,
+    blocked,
+    functionalRoadClasses,
+    length,
+    trafficVolumes
+  ) |>
+  dplyr::rename(
+    from = startTrafficNodeId,
+    to = endTrafficNodeId
+  ) |>
+  tidyr::unnest_longer(
+    functionalRoadClasses,
+    values_to = "functional_road_class"
+  ) |>
+  dplyr::slice_min(
+    functional_road_class,
+    by = id,
+    with_ties = FALSE
+  ) |>
+  dplyr::mutate(
+    functional_road_class =
+      dplyr::case_when(
+        functional_road_class > 5 ~ 5,
+        TRUE ~ functional_road_class
+      ),
+    functional_road_class = as.factor(functional_road_class)
+  ) |>
+  dplyr::filter(
+    hasOnlyPublicTransportLanes == FALSE,
+    blocked == FALSE
+  ) |>
+  dplyr::select(
+    -hasOnlyPublicTransportLanes,
+    -blocked
+  ) |>
+  sf::st_as_sf()
+
+traffic_volumes <-
+  links |>
+  sf::st_drop_geometry() |>
+  dplyr::select(
+    id,
+    trafficVolumes
+  ) |>
+  dplyr::filter(
+    !is.na(trafficVolumes)
+  ) |>
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    traffic_volumes =
+      list(jsonlite::fromJSON(trafficVolumes))
+  ) |>
+  tidyr::unnest(
+    traffic_volumes
+  ) |>
+  dplyr::select(
+    id,
+    trafficVolumeValue,
+    year,
+    coverage,
+    trafficWorkValue,
+    correctedStandardError,
+    trafficVolumeType,
+    sourceType,
+    registrationFrequency
+  )
+
+
+
+## Graph for selected cities ----
+## Nodes ----
+nodes <-
+  sf::st_read("C:/Users/snohan/Desktop/traffic-nodes-2023_2024-10-08.geojson") |>
+  sf::st_drop_geometry() |>
+  dplyr::select(
+    id,
+    #numberOfUndirectedLinks
+  )
+
+
+# NB! Need to remove duplicate links (crossing municipality boundaries)
+municipality_ids_nj <- c(1127, 1103, 1124, 1108)
+
+links_nj <-
+  links |>
+  tidyr::unnest_longer(
+    municipalityIds,
+    values_to = "municipality_id"
+  ) |>
+  dplyr::filter(
+    municipality_id %in% municipality_ids_nj
+  ) |>
+  dplyr::select(
+    -municipality_id,
+    -trafficVolumes
+  ) |>
+  dplyr::distinct()
+
+links_with_city_trp_nj <-
+  links_nj |>
+  sf::st_drop_geometry() |>
+  tidyr::unnest_longer(
+    associatedTrpIds
+  ) |>
+  dplyr::inner_join(
+    city_trp_info |>
+      dplyr::filter(
+        city_names == "Nord-Jæren"
+      ),
+    by = join_by(associatedTrpIds == p_id)
+  ) |>
+  dplyr::select(
+    id,
+    trp_id = associatedTrpIds
+  )
+
+links_nj_final <-
+  links_nj |>
+  dplyr::left_join(
+    links_with_city_trp_nj,
+    by = join_by(id)
+  ) |>
+  dplyr::select(
+    -associatedTrpIds
+  ) |>
+  sf::st_as_sf()
+
+links_nj_final |>
+  ggplot(aes(color = functional_road_class)) +
+  geom_sf()
+
+
+# Create graph
+nodes_nj <-
+  dplyr::bind_rows(
+    nodes |>
+      dplyr::filter(
+        id %in% links_nj_final$from
+      ),
+    nodes |>
+      dplyr::filter(
+        id %in% links_nj_final$to
+      )
+  ) |>
+  dplyr::distinct() |>
+  tibble::as_tibble() |>
+  tibble::rowid_to_column("id_int")
+
+links_nj_final_plain <-
+  links_nj_final |>
+  sf::st_drop_geometry() |>
+  dplyr::left_join(
+    nodes_nj,
+    by = join_by(from == id)
+  ) |>
+  dplyr::rename(
+    from_int = id_int
+  ) |>
+  dplyr::left_join(
+    nodes_nj,
+    by = join_by(to == id)
+  ) |>
+  dplyr::rename(
+    to_int = id_int
+  )
+
+
+graph <-
+  tidygraph::tbl_graph(
+    nodes = nodes,
+    node_key = id,
+    edges = links_nj_final_plain,
+    directed = FALSE
+  )
