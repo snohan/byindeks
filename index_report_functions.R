@@ -1064,7 +1064,6 @@ table_bike_trps_with_sdt <- function(chosen_area_name) {
     autofit()
 }
 
-
 table_index_chains <- function(chosen_name) {
 
   n_index_all_years <-
@@ -1075,13 +1074,14 @@ table_index_chains <- function(chosen_name) {
     ) |>
     nrow()
 
-  base::ifelse(
-    n_index_all_years == 0,
-    n_index_all_years <- NA,
-    n_index_all_years
-  )
+  # base::ifelse(
+  #   n_index_all_years == 0,
+  #   n_index_all_years <- NA,
+  #   n_index_all_years
+  # )
 
-  index_all_years |>
+  table_here <-
+    index_all_years |>
     dplyr::filter(
       area_name == chosen_name
     ) |>
@@ -1114,13 +1114,24 @@ table_index_chains <- function(chosen_name) {
     bg(bg = "#ED9300", part = "header") |>
     border_remove() |>
     hline_top(part = "header", border = borderline) |>
-    hline_bottom(part = "all", border = borderline) |>
-    hline(
-      i = n_index_all_years,
-      part = "body",
-      border = fp_border(color = "#dadada", width = 1)
-    ) |>
-    autofit()
+    hline_bottom(part = "all", border = borderline)
+
+    if(n_index_all_years > 0){
+      table_here <-
+        table_here |>
+        hline(
+          i = n_index_all_years,
+          part = "body",
+          border = fp_border(color = "#dadada", width = 1)
+        ) |>
+        autofit()
+    }else{
+      table_here <-
+        table_here |>
+        autofit()
+    }
+
+  return(table_here)
 }
 
 

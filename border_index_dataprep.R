@@ -1,12 +1,13 @@
 # Setup ----
+{
 source("rmd_setup.R")
 source("get_from_trafficdata_api.R")
 source("split_road_system_reference.R")
 source("get_from_nvdb_api.R")
-
+}
 
 # Get TRP and crossings metainfo ----
-latest_published_month <- 7
+latest_published_month <- 9
 
 counties <-
   get_counties() |>
@@ -374,7 +375,8 @@ index_for_table <-
     month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)
   ) |>
   dplyr::filter(
-    road_category == "Europa-, riks- og fylkesveg"
+    road_category == "Europa-, riks- og fylkesveg",
+    day_type == "ALL"
   ) |>
   dplyr::select(
     road_category,
@@ -430,7 +432,10 @@ index_all_years <-
     month_object = lubridate::make_date(year = 2000, month = month),
     month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)
   ) |>
-  dplyr::filter(road_category == "Europa-, riks- og fylkesveg")
+  dplyr::filter(
+    road_category == "Europa-, riks- og fylkesveg",
+    day_type == "ALL"
+  )
 
 
 # Write RDS ----

@@ -8,7 +8,7 @@ source("indexpoints_tidying_functions.R")
 
 # Index codes and years ----
 last_complete_year <- 2023
-last_complete_month_this_year <- 7
+last_complete_month_this_year <- 9
 
 index_codes_and_reference_years <-
   tibble::tibble(
@@ -96,7 +96,8 @@ bike_indexes <-
   ) |>
   dplyr::filter(
     length_range == "[..,..)",
-    road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG"
+    road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+    day_type == "ALL"
   ) |>
   dplyr::select(
     #index_code = publishedAreaTrafficVolumeIndex.id,
