@@ -302,7 +302,7 @@ trp_2017_2019 <-
       2019
     )
   tictoc::toc()
-}
+  }
 
 all_trp_index_data <-
   base::list.files(path = "trp_index/njaeren_2017_2019", full.names = TRUE) |>
@@ -561,7 +561,7 @@ all_trp_index_data <-
   purrr::list_rbind() |>
   # Easter in April both years.
   #dplyr::filter(
-    #!(trp_id == "36178V320198" & month == 4)
+  #!(trp_id == "36178V320198" & month == 4)
   #) |>
   dplyr::summarise(
     traffic_base = sum(traffic_base),
@@ -910,14 +910,14 @@ trp_2017_2023 <-
       2023
     )
   tictoc::toc()
-}
+  }
 
 all_trp_index_data <-
   base::list.files(path = "trp_index/njaeren_2017_2023", full.names = TRUE) |>
   purrr::map(~ readr::read_rds(.x)) |>
   purrr::list_rbind() |>
   dplyr::filter(
-   !(trp_id == "36178V320198" & month == 4)
+    !(trp_id == "36178V320198" & month == 4)
   ) |>
   dplyr::summarise(
     traffic_base = sum(traffic_base),
@@ -1040,7 +1040,7 @@ trd_trp_meta <-
       2019
     )
   tictoc::toc()
-}
+  }
 
 all_trp_index_data_14_19 <-
   base::list.files(path = "trp_index/trd_2014_2019", full.names = TRUE) |>
@@ -1227,7 +1227,7 @@ trd_trp_meta_19_23 <-
       2023
     )
   tictoc::toc()
-}
+  }
 
 
 ### Toll and TRP ----
@@ -1244,26 +1244,26 @@ all_trp_index_data_19_23 <-
     by = join_by(trp_id)
   ) |>
   dplyr::select(
-   trp_id,
-   name,
-   years,
-   month,
-   traffic_base,
-   traffic_calc,
-   n_days,
-   index_p,
-   type
+    trp_id,
+    name,
+    years,
+    month,
+    traffic_base,
+    traffic_calc,
+    n_days,
+    index_p,
+    type
   ) |>
   dplyr::bind_rows(
     toll_direct |> dplyr::filter(years == "2019-2023")
   ) |>
   dplyr::filter(
     month %in% c(11, 12)
-  #   !(trp_id == "81077V72158" & month < 7), # Havnegata
-  #   !(trp_id == "10236V72161" & month < 7), # Bakke kirke
-  #   !(trp_id == "88356V72157" & month < 7), # Jernbanebrua
-  #   !(trp_id == "21801V72158" & month < 7), # Brattørbrua
-  #   !(trp_id == "65625V41945") # Kong Øysteins veg
+    #   !(trp_id == "81077V72158" & month < 7), # Havnegata
+    #   !(trp_id == "10236V72161" & month < 7), # Bakke kirke
+    #   !(trp_id == "88356V72157" & month < 7), # Jernbanebrua
+    #   !(trp_id == "21801V72158" & month < 7), # Brattørbrua
+    #   !(trp_id == "65625V41945") # Kong Øysteins veg
   ) |>
   # Stop to check data quality
   dplyr::summarise(
@@ -1449,5 +1449,4 @@ readr::write_rds(
   city_index_trd_2019_2024,
   "trp_index/city_index_trd_2019_2024.rds"
 )
-
 
