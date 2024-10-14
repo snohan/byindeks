@@ -89,8 +89,8 @@ links <-
 
 # Choose
 index_year <- 2024
-latest_published_month <- 7
-city_number <- 953
+latest_published_month <- 8
+city_number <- 959
 # End choose
 
 new_month_year <-
@@ -324,7 +324,7 @@ city_county_numbers <-
 
 
 # Need not fetch AADT every time
-if(T) {
+if(F) {
   
   adt <- get_aadt_by_length_for_trp_list(city_trps)
   
@@ -1047,7 +1047,7 @@ month_end = lubridate::make_date(year = 2024, month = 12)
 
 full_year_x_axis <- c(month_start, month_end)
 
-city_index_prepared %>% 
+city_index_prepared |> 
   ggplot2::ggplot(aes(x = month_object, y = index_p, color = length_range)) +
   ggplot2::geom_line() +
   ggplot2::geom_point(size = 4) +
@@ -1060,6 +1060,10 @@ city_index_prepared %>%
     legend.background = element_rect(fill = svv_background_color),
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color)
+  ) +
+  facet_wrap(
+    ~ day_type,
+    ncol = 1
   ) +
   scale_x_date(
     breaks = scales::breaks_width("months"),

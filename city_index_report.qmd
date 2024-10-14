@@ -38,9 +38,9 @@ source("rmd_setup.R")
 # Nedre Glomma 2023    18952 (2023) 08
 # Tromsø 2022          16952 (2022) 08
 # Nord-Jæren             952 (2017) 08
-# Bergen                8952 (2018) 04
-# Oslo                   959 (2018) 08
-# Trondheim              960 (2019) 04
+# Bergen                8952 (2018) 08
+# Oslo                   959 (2018) 09
+# Trondheim              960 (2019) 08
 
 # Choose city number:
 city_number <- 959

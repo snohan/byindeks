@@ -13,6 +13,8 @@
   library(car)
   library(pwr)
   library(tidygraph)
+  library(ggraph)
+  library(paletteer)
   source("get_from_trafficdata_api.R")
 }
 
@@ -1245,39 +1247,31 @@ sum(point_index_tests$F_pi_i_lambda_half[10:11])
 
 # Prepare traffic graph for Quarto ----
 # Traffic links from Adm
-#layers <- sf::st_layers("C:/Users/snohan/Desktop/traffic_links_2023_2024-10-08.geojson")
 
+#layers <- sf::st_layers("C:/Users/snohan/Desktop/traffic_links_2023_2024-10-08.geojson")
 #names(links)
 
 links <-
   sf::st_read(
-    "C:/Users/snohan/Desktop/traffic_links_2023_2024-10-08.geojson"
-    #query = "SELECT * FROM \"traffic_links_2023_2024-10-08\" LIMIT 1"
+    "C:/Users/snohan/Desktop/traffic_links_2023_2024-10-11.geojson",
+    as_tibble = TRUE
+    #query = "SELECT * FROM \"traffic_links_2023_2024-10-11\" LIMIT 150"
   ) |>
   dplyr::select(
-    id,
+    link_id = id,
     startTrafficNodeId,
     endTrafficNodeId,
     municipalityIds,
     associatedTrpIds,
     hasOnlyPublicTransportLanes,
-    blocked,
-    functionalRoadClasses,
+    functionalRoadClass,
     length,
     trafficVolumes
   ) |>
   dplyr::rename(
     from = startTrafficNodeId,
-    to = endTrafficNodeId
-  ) |>
-  tidyr::unnest_longer(
-    functionalRoadClasses,
-    values_to = "functional_road_class"
-  ) |>
-  dplyr::slice_min(
-    functional_road_class,
-    by = id,
-    with_ties = FALSE
+    to = endTrafficNodeId,
+    functional_road_class = functionalRoadClass
   ) |>
   dplyr::mutate(
     functional_road_class =
@@ -1288,12 +1282,16 @@ links <-
     functional_road_class = as.factor(functional_road_class)
   ) |>
   dplyr::filter(
-    hasOnlyPublicTransportLanes == FALSE,
-    blocked == FALSE
+    hasOnlyPublicTransportLanes == FALSE
   ) |>
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    trp_id = stringr::str_extract_all(associatedTrpIds, "(?<=\")[:alnum:]+(?=\")")
+  ) |>
+  dplyr::ungroup() |>
   dplyr::select(
     -hasOnlyPublicTransportLanes,
-    -blocked
+    -associatedTrpIds
   ) |>
   sf::st_as_sf()
 
@@ -1309,14 +1307,17 @@ traffic_volumes <-
   ) |>
   dplyr::rowwise() |>
   dplyr::mutate(
-    traffic_volumes =
-      list(jsonlite::fromJSON(trafficVolumes))
+    traffic_volumes = list(jsonlite::fromJSON(trafficVolumes))
+  ) |>
+  # Need to remove empty lists before unnesting.
+  dplyr::filter(
+    purrr::map_int(list(traffic_volumes), ~length(.)) > 0
   ) |>
   tidyr::unnest(
     traffic_volumes
   ) |>
   dplyr::select(
-    id,
+    link_id,
     trafficVolumeValue,
     year,
     coverage,
@@ -1328,16 +1329,16 @@ traffic_volumes <-
   )
 
 
-
 ## Graph for selected cities ----
 ## Nodes ----
 nodes <-
-  sf::st_read("C:/Users/snohan/Desktop/traffic-nodes-2023_2024-10-08.geojson") |>
+  sf::st_read("C:/Users/snohan/Desktop/traffic-nodes-2023_2024-10-11.geojson") |>
   sf::st_drop_geometry() |>
   dplyr::select(
     id,
     #numberOfUndirectedLinks
-  )
+  ) |>
+  tibble::as_tibble()
 
 
 # NB! Need to remove duplicate links (crossing municipality boundaries)
@@ -1356,34 +1357,38 @@ links_nj <-
     -municipality_id,
     -trafficVolumes
   ) |>
-  dplyr::distinct()
+  dplyr::distinct() |>
+  # Removing one disconnected link
+  dplyr::filter(
+    !(link_id == "0.13812205@320420-1.0@320728")
+  )
 
 links_with_city_trp_nj <-
   links_nj |>
   sf::st_drop_geometry() |>
   tidyr::unnest_longer(
-    associatedTrpIds
+    trp_id
   ) |>
   dplyr::inner_join(
     city_trp_info |>
       dplyr::filter(
         city_names == "Nord-Jæren"
       ),
-    by = join_by(associatedTrpIds == p_id)
+    by = join_by(trp_id == p_id)
   ) |>
   dplyr::select(
-    id,
-    trp_id = associatedTrpIds
+    link_id,
+    city_trp_id = trp_id
   )
 
 links_nj_final <-
   links_nj |>
   dplyr::left_join(
     links_with_city_trp_nj,
-    by = join_by(id)
+    by = join_by(link_id)
   ) |>
   dplyr::select(
-    -associatedTrpIds
+    -trp_id
   ) |>
   sf::st_as_sf()
 
@@ -1406,31 +1411,168 @@ nodes_nj <-
   ) |>
   dplyr::distinct() |>
   tibble::as_tibble() |>
-  tibble::rowid_to_column("id_int")
+  tibble::rowid_to_column("id_int") |>
+  dplyr::select(
+    id = id_int,
+    id_original = id
+  )
 
 links_nj_final_plain <-
   links_nj_final |>
   sf::st_drop_geometry() |>
   dplyr::left_join(
     nodes_nj,
-    by = join_by(from == id)
+    by = join_by(from == id_original)
   ) |>
   dplyr::rename(
-    from_int = id_int
+    from_int = id
   ) |>
   dplyr::left_join(
     nodes_nj,
-    by = join_by(to == id)
+    by = join_by(to == id_original)
   ) |>
   dplyr::rename(
-    to_int = id_int
+    to_int = id
+  ) |>
+  dplyr::select(
+    -from,
+    -to
+  ) |>
+  dplyr::rename(
+    from = from_int,
+    to = to_int
+  ) |>
+  dplyr::mutate(
+    edge_id = paste0(from, "_", to)
+  ) |>
+  dplyr::arrange(
+    from
+  ) |>
+  dplyr::mutate(
+    city_trp =
+      dplyr::case_when(
+        is.na(city_trp_id) ~ 0.5,
+        TRUE ~ 1
+      )
+  ) |>
+  dplyr::select(
+    -city_trp_id
   )
-
 
 graph <-
   tidygraph::tbl_graph(
-    nodes = nodes,
-    node_key = id,
+    nodes = nodes_nj,
+    node_key = "id",
     edges = links_nj_final_plain,
+    directed = FALSE
+  )
+
+# Verify that graph contains one single component
+components <- igraph::components(graph)
+components$csize
+
+# If more than one, keeping the largest
+graph_tidy <- igraph::largest_component(graph)
+
+# NB! Node ids are being reset 1:n
+igraph::E(graph_tidy)
+igraph::edge_attr(graph_tidy)
+edges <- igraph::as_edgelist(graph_tidy)
+
+# Or, if more than one
+# biggest_component_id <- which.max(components$csize)
+#
+# nodes_in_biggest_component <-
+#   nodes_nj |>
+#   dplyr::mutate(
+#     component_membership = components$membership
+#   ) |>
+#   dplyr::filter(
+#     component_membership == biggest_component_id
+#   )
+#
+# graph_tidy <- igraph::induced_subgraph(graph, nodes_in_biggest_component$id)
+#igraph::isomorphic(test, graph_tidy)
+
+
+# Plot
+ggraph(graph, layout = 'auto') +
+  geom_edge_link(
+    aes(
+      edge_colour = functional_road_class,
+      edge_width = city_trp
+    )
+  ) +
+  geom_node_point()
+  #paletteer::scale_color_paletteer_d("LaCroixColoR::PeachPear")
+
+igraph::diameter(graph)
+
+# Making a line graph, i.e. links will be nodes and vice versa.
+# This in order to do analysis on links spread and closeness
+line_graph <-
+  igraph::make_line_graph(graph) |>
+  tidygraph::as_tbl_graph()
+
+ggraph(line_graph, layout = 'auto') +
+  geom_edge_link() +
+  geom_node_point()
+
+
+# TODO: join edge attributes from original graph to the nodes in line graph
+igraph::diameter(line_graph)
+igraph::E(line_graph)
+igraph::vertex_attr(line_graph)
+
+# Try to bulid a line graph
+links_nj_stripped <-
+  links_nj_final_plain |>
+  dplyr::select(
+    link_id, from, to
+  ) |>
+  tidyr::pivot_longer(
+    cols = c(from, to),
+    names_to = "new_link_id",
+    values_to = "connection_id"
+  ) |>
+  dplyr::select(
+    -new_link_id
+  )
+
+# New links must be generated for all
+new_links <-
+  links_nj_stripped |>
+  dplyr::left_join(
+    links_nj_stripped,
+    by = join_by(connection_id),
+    relationship = "many-to-many"
+  ) |>
+  # Must remove self loops
+  dplyr::filter(
+    !(link_id.x == link_id.y)
+  ) |>
+# Must remove duplicates
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    sorted_id = list(c(link_id.x, link_id.y)) |> purrr::map(sort)
+  ) |>
+  dplyr::mutate(
+    new_from = purrr::pluck(sorted_id, 1, 1),
+    new_to = purrr::pluck(sorted_id, 2, 1)
+  ) |>
+  dplyr::ungroup() |>
+  dplyr::select(
+    connection_id,
+    new_from,
+    new_to
+  ) |>
+  dplyr::distinct()
+
+# Rest ids and build graph
+new_line_graph <-
+  tidygraph::tbl_graph(
+    nodes = nodes_nj,
+    node_key = "id",
+    edges = new_links,
     directed = FALSE
   )

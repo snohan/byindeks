@@ -58,8 +58,8 @@ trp_id_msnr <-
 ## Choose publish month ----
 {
 present_year <- 2024
-index_month <- 8 # the one to be published now
-city_number <- 8952
+index_month <- 9 # the one to be published now
+city_number <- 959
 }
 # End choose
 
@@ -546,8 +546,8 @@ city_index_yearly_all <-
     years_1_3,
     years_1_4,
     years_1_5,
-    years_1_6,
-    years_1_7
+    #years_1_6,
+    #years_1_7
   ) |>
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -717,7 +717,7 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[9:10]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[60:61]) |>
   dplyr::select(
     trp_id,
     year,
