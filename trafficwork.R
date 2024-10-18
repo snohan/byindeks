@@ -1,8 +1,10 @@
 # Setup ----
 {
   source("rmd_setup.R")
+  source("get_from_trafficdata_api.R")
   source("get_from_nvdb_api.R")
   library(stringi)
+  library(writexl)
 }
 
 
@@ -19,43 +21,71 @@
 # 18 Nordland
 # 54 Troms og Finnmark
 
-last_day_of_year <- "2022-12-31"
+# 2024-
+# 3  Oslo
+# 31 Østfold
+# 32 Akershus
+# 33 Buskerud
+# 34 Innlandet
+# 39 Vestfold
+# 40 Telemark
+# 42 Agder
+# 11 Rogaland
+# 46 Vestland
+# 15 Møre og Romsdal
+# 50 Trøndelag
+# 18 Nordland
+# 55 Troms
+# 56 Finnmark
+
+# Counties
+fylker <- get_counties()
+
+last_day_of_year <- "2023-12-31"
 
 t_03 <- get_aadt_by_area(3, "true", last_day_of_year)
-t_30 <- get_aadt_by_area(30, "true", last_day_of_year)
+t_31 <- get_aadt_by_area(31, "true", last_day_of_year)
+t_32 <- get_aadt_by_area(32, "true", last_day_of_year)
+t_33 <- get_aadt_by_area(33, "true", last_day_of_year)
 t_34 <- get_aadt_by_area(34, "true", last_day_of_year)
-t_38 <- get_aadt_by_area(38, "true", last_day_of_year)
+t_39 <- get_aadt_by_area(39, "true", last_day_of_year)
+t_40 <- get_aadt_by_area(40, "true", last_day_of_year)
 t_42 <- get_aadt_by_area(42, "true", last_day_of_year)
 t_11 <- get_aadt_by_area(11, "true", last_day_of_year)
 t_46 <- get_aadt_by_area(46, "true", last_day_of_year)
 t_15 <- get_aadt_by_area(15, "true", last_day_of_year)
 t_50 <- get_aadt_by_area(50, "true", last_day_of_year)
 t_18 <- get_aadt_by_area(18, "true", last_day_of_year)
-t_54 <- get_aadt_by_area(54, "true", last_day_of_year)
+t_55 <- get_aadt_by_area(55, "true", last_day_of_year)
+t_56 <- get_aadt_by_area(56, "true", last_day_of_year)
 
 aadt_link_raw <-
   dplyr::bind_rows(
     t_03,
-    t_30,
+    t_31,
+    t_32,
+    t_33,
     t_34,
-    t_38,
+    t_39,
+    t_40,
     t_42,
     t_11,
     t_46,
     t_15,
     t_50,
     t_18,
-    t_54
+    t_55,
+    t_56
   )
 
 readr::write_rds(
   aadt_link_raw,
-  file = "aadt_link_raw_2021.rds"
+  file = "aadt_link_raw_2023.rds"
 )
 
 aadt_link_raw <-
   readr::read_rds(
-    file = "aadt_link_raw_2021.rds"
+    file = "aadt_link_raw_2023.rds"
   )
 
 
@@ -66,8 +96,8 @@ traffic_work <-
   dplyr::mutate(
     road_category =
       dplyr::case_when(
-        road_category == "E" ~ "E+R",
-        road_category == "R" ~ "E+R",
+        road_category == "E" ~ "ER",
+        road_category == "R" ~ "ER",
         TRUE ~ road_category
       )
   ) |>
@@ -87,14 +117,49 @@ traffic_work <-
 
 readr::write_rds(
   traffic_work,
-  file = "traffic_work_2021.rds"
+  file = "traffic_work_2023.rds"
+)
+
+# Excel
+traffic_work_tidy <-
+  traffic_work |>
+  tidyr::pivot_wider(
+    names_from = "Vegkategori",
+    names_prefix = "trafikkarbeid_",
+    values_from = "trafikkarbeid"
+  ) |>
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    trafikkarbeid_ERF = sum(trafikkarbeid_ER, trafikkarbeid_F, na.rm = T)
+  ) |>
+  dplyr::ungroup() |>
+  dplyr::mutate(
+    prosentandel_ERF_landet = round(trafikkarbeid_ERF / sum(trafikkarbeid_ERF) * 100, 1),
+    #Fylkenr = purrr::map_int(Fylkenr)
+  ) |>
+  tidyr::unnest(Fylkenr) |>
+  dplyr::left_join(
+    fylker,
+    by = join_by(Fylkenr == county_number)
+  ) |>
+  dplyr::select(
+    Fylke = county_name,
+    trafikkarbeid_ER,
+    trafikkarbeid_F,
+    trafikkarbeid_ERF,
+    prosentandel_ERF_landet
+  )
+
+writexl::write_xlsx(
+  traffic_work_tidy,
+  "spesialuttak/trafikkarbeid_2023.xlsx"
 )
 
 
 # For weighting in VTI ----
 jsonlite::write_json(
   traffic_work,
-  path = "trafikkarbeid_2021.json",
+  path = "trafikkarbeid_2023.json",
   prettify = TRUE
 )
 
