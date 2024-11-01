@@ -21,7 +21,7 @@
 # Steps ----
 # 1. Define the population
 # 2. Find relevant characteristics of the population and describe these
-# 3. Describe the sanpling process
+# 3. Describe the sampling process
 # 4. Compare sample characteristics with the population using measures of fit
 # 5. Decide on acceptance criteria for similarity
 
@@ -121,6 +121,112 @@ read_rtm_data <- function(file_path) {
 
 }
 
+read_rtm_data_purpose <- function(file_path) {
+
+  readxl::read_excel(file_path) |>
+    dplyr::select(
+      start = A,
+      end = B,
+      distance = DISTANCE,
+      road_category_id = LINKTYPE,
+      road_ref = VEGREFERANS,
+      from_meter = FROMMETER,
+      to_meter = TOMETER,
+      delstrekning = DELSTREKN,
+      VS,
+      VEGTYPE,
+      direction = NVDBRETNING,
+      #starts_with("CD_")
+      ndt = CD_ADT, # Car driver AADT per direction (normalvirkedøgn)
+      ndt_apbasert = CD_APBASERT,
+      ndt_arbeid = CD_ARBEID,
+      ndt_flyplass = CD_FLYPLASS,
+      ndt_fritid = CD_FRITID,
+      ndt_hentlev = CD_HENTLEV,
+      ndt_ntm6 = CD_NTM6,
+      ndt_privat = CD_PRIVAT,
+      ndt_skole = CD_SKOLE,
+      ndt_sverige = CD_SVERIGE,
+      ndt_tjeneste = CD_TJENESTE
+      # TODO: calculate work for each intention
+    ) |>
+    dplyr::filter(
+      ndt > 0,
+      road_category_id %in% c(1, 2, 3),
+      delstrekning < 100, # keep only roads for motor vehicles
+      #VS %in% c("V"), # only existing roads
+      VEGTYPE != 19290 # no roundabouts
+    ) |>
+    # Summing directions
+    dplyr::rowwise() |>
+    dplyr::mutate(
+      id = list(stringr::str_sort(c(start, end))) |>
+        purrr::map_chr(paste, collapse = "_"),
+      meters = list(stringr::str_sort(c(from_meter, to_meter), numeric = TRUE)) |>
+        purrr::map_chr(paste, collapse = "_"),
+      ndt_privat = ndt_privat + ndt_apbasert + ndt_flyplass + ndt_fritid + ndt_hentlev + ndt_skole + ndt_sverige + ndt_ntm6,
+      # Including ntm6 here, which is data from national model. It includes some work related trips.
+      ndt_arbeid = ndt_arbeid + ndt_tjeneste,
+      ndt_total = ndt_privat + ndt_arbeid,
+      traffic_work_total = distance * ndt_total,
+      traffic_work_privat = distance * ndt_privat,
+      traffic_work_arbeid = distance * ndt_arbeid
+    ) |>
+    dplyr::ungroup() |>
+    dplyr::summarise(
+      #ndt_privat = sum(ndt_privat),
+      #ndt_arbeid = sum(ndt_arbeid),
+      ndt_total = sum(ndt_total),
+      traffic_work_privat = sum(traffic_work_privat),
+      traffic_work_arbeid = sum(traffic_work_arbeid),
+      traffic_work_total = sum(traffic_work_total),
+      .by = c(id, meters, road_ref)
+    ) |>
+    tidyr::separate_wider_delim(
+      cols = id,
+      delim = "_",
+      names = c("from_id", "to_id"),
+      too_few = "align_start"
+    ) |>
+    tidyr::separate_wider_delim(
+      cols = meters,
+      delim = "_",
+      names = c("from_meter", "to_meter"),
+      too_few = "align_start"
+    ) |>
+    dplyr::mutate(
+      from_meter = base::as.numeric(from_meter),
+      to_meter = base::as.numeric(to_meter)
+    ) |>
+    dplyr::select(
+      from_id,
+      to_id,
+      road_ref,
+      from_meter,
+      to_meter,
+      ndt_total,
+      starts_with("traffic_work")
+    ) |>
+    dplyr::arrange(
+      road_ref,
+      from_meter
+    ) |>
+    dplyr::summarise(
+      from_id = dplyr::first(from_id),
+      to_id = dplyr::last(to_id),
+      traffic_work_privat = sum(traffic_work_privat) / sum(traffic_work_total),
+      #traffic_work_arbeid = sum(traffic_work_arbeid) / sum(traffic_work_total),
+      traffic_work_total = sum(traffic_work_total),
+      from_meter = min(from_meter),
+      to_meter = max(to_meter),
+      .by = c(road_ref, ndt_total)
+    ) |>
+    dplyr::mutate(
+      ndt_total = round(ndt_total)
+    )
+
+}
+
 # column_names <-
 #   readxl::read_excel(
 #     "rtm/rtm_trondheim_2020_ny.xlsx",
@@ -132,8 +238,8 @@ read_rtm_data <- function(file_path) {
 
 rtm_trd_20 <- read_rtm_data("rtm/rtm_trondheim_2020_ny.xlsx")
 rtm_trd_22 <- read_rtm_data("rtm/rtm_trondheim_2022_ny.xlsx")
-
 # Lenketype 30 er sonetilknytning og cd_tot angir antall turer.
+
 
 rtm_20_22 <-
   dplyr::inner_join(
@@ -365,6 +471,75 @@ base::sqrt(
 # TODO: Finn andel av alle turer som fanges opp av minst ett punkt. Hva da med overrepresentasjon?
 
 
+# RTM travel purpose ----
+rtm_trd_20_purpose <- read_rtm_data_purpose("rtm/rtm_trondheim_2020_ny.xlsx")
+rtm_trd_22_purpose <- read_rtm_data_purpose("rtm/rtm_trondheim_2022_ny.xlsx")
+
+rtm_20_22_purpose <-
+  dplyr::inner_join(
+    rtm_trd_20_purpose,
+    rtm_trd_22_purpose,
+    by = dplyr::join_by(from_id, to_id, road_ref, from_meter, to_meter),
+    suffix = c("_20", "_22")
+  ) |>
+  dplyr::mutate(
+    F_metric = 2 * (sqrt(traffic_work_total_22) - sqrt(traffic_work_total_20)),
+    index_i = traffic_work_total_22 / traffic_work_total_20,
+    index_p = 100 * (index_i - 1)
+  ) |>
+  dplyr::select(
+    from_id, to_id, road_ref, from_meter, to_meter,
+    starts_with("ndt"),
+    starts_with("traffic_work"),
+    everything()
+  ) |>
+  dplyr::filter(
+    ndt_total_20 > 99,
+    ndt_total_22 > 99,
+    index_i > 0.85,
+    index_i < 1.75
+  ) |>
+  dplyr::mutate(
+    index_i_total = sum(traffic_work_total_22) / sum(traffic_work_total_20),
+    private_ratio = traffic_work_privat_22 / traffic_work_privat_20
+  )
+
+summary(rtm_20_22_purpose$index_p)
+sd(rtm_20_22_purpose$index_p)
+# TODO: weighted SD
+
+# See the distributions
+rtm_20_22_purpose |>
+  ggplot() +
+  geom_boxplot(aes(index_i))
+# Many outliers
+
+rtm_20_22_purpose |>
+  ggplot() +
+  geom_histogram(aes(index_i))
+
+
+rtm_20_22_purpose |>
+  ggplot() +
+  geom_boxplot(aes(traffic_work_privat_20))
+
+rtm_20_22_purpose |>
+  ggplot() +
+  geom_histogram(aes(traffic_work_privat_20))
+# Looks normal with heavy tails
+
+rtm_20_22_purpose |>
+  ggplot() +
+  geom_boxplot(aes(private_ratio))
+
+rtm_20_22_purpose |>
+  ggplot() +
+  geom_histogram(aes(private_ratio))
+
+
+
+
+
 # Traffic links ----
 # 1. Look for prediction variables when the point/link index is the target variable.
 # 2. Compare sample links (those with index value, or theoretically those with TRP) with link population per prediction variable.
@@ -434,6 +609,7 @@ all_links_tidy <-
     functional_class,
     function_class,
     aadt = trafficVolumeValue,
+    traffic_work_km = trafficWorkValue,
     urbanRatio,
     numberOfEstablishments,
     numberOfEmployees,
@@ -484,7 +660,11 @@ all_links_tidy <-
     minLanes = factor(minLanes),
     highestSpeedLimit = factor(highestSpeedLimit),
     functional_class = factor(functional_class),
-    function_class = factor(function_class)
+    function_class = factor(function_class),
+    traffic_work_Mkm = traffic_work_km * 1e-6,
+    log_traffic_work_Mkm = log(traffic_work_Mkm + 1),
+    log_log_traffic_work_Mkm = log(log_traffic_work_Mkm + 1),
+    sqrt_traffic_work_Mkm = sqrt(traffic_work_Mkm + 0.5)
   ) |>
   # Making urban ratio a factor
   dplyr::mutate(
@@ -534,7 +714,7 @@ link_stats <-
   all_links_tidy_no_duplicates |>
   dplyr::summarise(
     n_links = n(),
-    traffic_work = sum(length * aadt) * 365 * 1e-12,
+    sum_traffic_work = sum(traffic_work_Mkm),
     .by = c(city)
   )
 
@@ -559,13 +739,39 @@ all_links_tidy_no_duplicates |>
 # I.e. the classification of roads are not comparable.
 # Maybe group into A, B_C and D_E.
 
+
+## AADT and traffic work
 all_links_tidy_no_duplicates |>
   ggplot(aes(aadt)) +
   geom_histogram() +
   facet_wrap(facets = "city")
 
+all_links_tidy_no_duplicates |>
+  ggplot(aes(log_traffic_work_Mkm)) +
+  geom_histogram() +
+  facet_wrap(facets = "city")
+
+all_links_tidy_no_duplicates |>
+  ggplot(aes(log_traffic_work_Mkm)) +
+  geom_boxplot() +
+  facet_wrap(facets = "city")
+
+all_links_tidy_no_duplicates |>
+  ggplot(aes(sqrt_traffic_work_Mkm)) +
+  geom_histogram() +
+  facet_wrap(facets = "city")
+
+all_links_tidy_no_duplicates |>
+  ggplot(aes(log_log_traffic_work_Mkm)) +
+  geom_histogram() +
+  facet_wrap(facets = "city")
+
+# Poisson? Negative binomial?
+
+all_links_tidy_no_duplicates$traffic_work_Mkm |> base::summary()
 
 
+## Categorical
 all_links_tidy_no_duplicates |>
   ggplot(aes(urbanRatio)) +
   geom_bar() +

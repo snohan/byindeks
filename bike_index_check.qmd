@@ -52,22 +52,22 @@ points <- readr::read_rds("trps.rds")
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 5952         2019 - 2024-9
-# Førde 9952          2018 - 2024-9
-# Grenland 4953       2018 - 2024-9
-# Kristiansand 14952  2018 - 2024-9
-# Nedre Glomma 5953   2019 - 2024-9
-# Nord-Jæren 6952     2020 - 2024-9
-# Osloområdet 17952   2018 - 2024-9
-# Tromsø 11952        2021 - 2024-9
-# Trondheim 13952     2023 - 2024-9
-# Vestfold 12952      2017 - 2024-9
+# Bergen 5952         2019 - 2024-10
+# Førde 9952          2018 - 2024-10
+# Grenland 4953       2018 - 2024-10
+# Kristiansand 14952  2018 - 2024-10
+# Nedre Glomma 5953   2019 - 2024-10
+# Nord-Jæren 6952     2020 - 2024-10
+# Osloområdet 17952   2018 - 2024-10
+# Tromsø 11952        2021 - 2024-10
+# Trondheim 13952     2023 - 2024-10
+# Vestfold 12952      2017 - 2024-10
 
 
 # Choose
 index_year <- 2024
-index_month <- 8 # latest published
-city_number <- 5952
+index_month <- 9 # latest published
+city_number <- 12952
 
 new_month_name <- 
   lubridate::as_date(paste0(index_year, "-", index_month + 1, "-01")) |> 

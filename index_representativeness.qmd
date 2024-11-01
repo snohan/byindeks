@@ -1,5 +1,6 @@
 ---
 title: "Representativitet i indeks"
+subtitle: "Teori og regneeksempler"
 format: 
   html:
     css: svv.css
@@ -34,8 +35,8 @@ base::Sys.setlocale(locale = "nb.utf8")
 svv_background_color <- "#F5F5F5"
 
 library(tidyverse)
-library(sf)
-library(sfnetworks)
+#library(sf)
+#library(sfnetworks)
 library(igraph)
 library(tidygraph)
 library(htmltools)
@@ -50,4 +51,107 @@ source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
 
 
 ```
+
+
+# Innledning
+Dette notatet tar for seg temaet representativitet i trafikkindeks, hvor det spesielt er byindeksen som er i fokus. Med representativitet menes i hvilken grad trafikkregistreringer på et utvalg trafikklenker kan sies å representere vegnettet som helhet for et gitt geografisk område. For å vurdere dette tas det utgangspunkt i statistisk teori og hva som er tilgjengelig av mulige forklaringsvariabler på trafikklenkene.
+
+En forklaringsvariabel forklarer størrelsen og variasjonen til en virkningsvariabel. Det kan eksistere mer enn en forklaringsvariabel til en gitt virkning. Andre variable som kunne tenkes å forklare en virkning, men som viser seg ikke å være det, kalles kontrollvariabler. I en forklaringsmodell kan det være nyttig å beskrive aktuelle kontrollvariabler. Med representativitet menes at de viktigste forklaringsvariablene er godt dekket i et utvalg som skal brukes til å gjøre generaliseringer for en populasjon.
+
+Virkningsvariabelen er i denne sammenhengen selve byindeksen. Den er beregnet som et vektet gjennomsnitt av indeksen for hver av trafikklenkene i utvalget, og det er trafikkarbeid som danner vektene. En trafikklenkes indeks kalles en punktindeks.
+
+
+# Trafikkarbeid for populasjonen
+Hvert år estimeres årsdøgntrafikk (ÅDT) for hver trafikklenke. Dette kan benyttes som et mål på populasjonens størrelse, der hver trafikklenkes trafikkarbeid er individene. Siden byindeksen er et mål på endring i trafikkarbeid, som er vektet med lenkenes trafikkarbeid, kan utvalgsusikkerheten dempes med en korreksjonsfaktor for endelig populasjonsstørrelse.
+
+
+## Fordeling av punktindeks 
+Fordelingen av hele populasjonens punktindekser er ukjent. Data fra RTM, som har beregnet trafikkmengden på alle strekninger i området for to år, kan benyttes til å beregne punktindeksen mellom disse to årene. Da har vi en populasjon av punktindekser som vi kan sammenligne med det utvalget av trafikklenker vi har punkter på. 
+
+Her er det to alternative datakilder for utvalget: 
+
+1. Endring i trafikk basert på registrert trafikk 
+2. Endring i trafikk basert på RTM-data 
+
+Hvis vi benytter registrert trafikk som grunnlag for trafikklenkeindekser kan det være noe avvik mellom den trafikken som modelleres i RTM og det som faktisk måles i punktene. Faktiske registreringer påvirkes i ulik grad av kortvarige vegstenginger og andre ytre lokale forhold. For at det skal være mulig å sammenligne utvalg og populasjon, må RTM klare å fange opp slike forhold i tilstrekkelig grad. Men det er ikke dette formålet RTM er laget for. Den er mer rettet mot å beskrive normale trafikkforhold. Det er derfor ikke korrekt å sammenligne et utvalg med faktiske punktindekser med en populasjonsfordeling basert på RTM-data.
+
+Dersom vi benytter RTM-data som grunnlag for punktindeksene vil sammenligningen basere seg på samme datagrunnlag. 
+
+Ulempen med denne tilnærmingen er at resultater fra en RTM som dekker det aktuelle geografiske området må være tilgjengelig i to sammenlignbare perioder. En vurdering av representativitet må gjøres for hver indeksberegning, og dermed blir det ikke praktisk gjennomførbart å benytte RTM-data til dette. 
+
+Det er likevel interessant å se på et eksempel med RTM-data og vurdere om et gitt utvalg er representativt. I denne analysen kan utvalgets gjennomsnitt sammenlignes med populasjonens gjennomsnitt og ved å bruke vanlige statistiske metoder kan disse vurderes å gi samsvarende resultat.
+
+INSERT RTM ANALYSIS HERE
+
+
+## Fordeling av trafikkarbeid
+
+
+
+# Tilgjengelige forklaringsvariabler
+Utgangspunktet for indeksmetodikken er å se på vegnettet som en populasjon som det gjøres et utvalg fra. Individene i populasjonen er trafikklenker, som er vegstrekninger fra kryss til kryss som har homogen trafikkmengde på en tidsoppløsning som er minst et døgn. Trafikklenkene er beriket med flere variabler hentet fra NVDB:
+
+- vegkategori
+- fylke
+- kommune
+- lengde
+- trafikkmengde
+- minste og største antall kjørefelt
+- laveste og høyeste fartsgrense
+- funksjonsklasse
+- funksjonell vegklasse
+
+I tillegg er det hentet inn datasett fra SSB i form av polygoner med informasjon om:
+
+- tettsteder
+- antall næringsvirksomheter
+- antall ansatte
+- antall innbyggere
+
+Verdiene for disse størrelsene er tilknyttet de trafikklenkene som overlapper med polygonene.
+
+De regionale transportmodellene (RTM) har egenskaper på sine trafikklenker som kan være aktuelle variabler i indekssammenheng:
+
+- fordeling av reiselengder
+- fordeling av reisehensikt
+- andel turer
+
+Her er det kun relevant å se på reiser utført av bilfører. Verdiene finnes i hver enkelt delområdemodell (DOM), og det er ikke et felles sted å hente disse variablene fra, noe som gjør de mindre tilgjengelig.
+
+
+## Korrelasjonsanalyse
+
+
+
+## Forklaringsvariabler fra transportmodell
+Se på eksempel med fordeling av reisehensikt på alle lenker. Varierer det så mye at det kan benyttes som en forklaringsvariabel.
+
+
+
+## Stratifisert trafikkarbeid
+Alle tilgjengelige variabler viser liten korrelasjon med punktindeksen. Uansett vil trafikkarbeid ha innvirkning på byindeksen siden det utgjør vektingen. Det er derfor viktig at utvalget dekker fordelingen av trafikkarbeid.
+
+Pass på at strata ikke er for små - unngå å ha noen uten observasjoner.
+
+
+# Fordeling av punkt i vegnettet
+Ved å se på vegnettet som en sammenhengende grafstruktur, kan det beregnes grafparametre som beskriver dekningen av trafikklenker.
+
+
+
+
+## Gjennomsnittlig avstand til utvalgte lenker
+Et relevant mål er den gjennomsnittlige korteste avstanden fra trafikklenkene som ikke er med i utvalget til de som er utvalgt. Dette sier noe om hvor spredt punktene ligger. Det er ikke noe naturlig grenseverdi for dette, men det kan sammenlignes over tid.
+
+For å beregne dette er det nødvendig å linjetransformere grafen slik at trafikklenker blir representert som noder.
+
+Gjennomsnittlig korteste veg fra ikke-valgte noder. 
+
+Dette tar opp i seg dekningen av hele vegnettet. Har ingen implisitt antagelse om romlig korrelasjon. Men verdien vil være vanskelig å tolke og sette en grense for for hva som er bra nok (men det er kanskje en bra ting). Det beste resultatet gitt $n$ punkt kan formuleres som et optimeringsproblem, som vi kan sammenligne med. Men hva forteller det oss? Litt kunstig å sette et fast antall punkt. Se på hvor mye bedre det kan bli dersom antallet øker, og verre om det minker. Kan være et mål på hvor godt spredt de utvalgte punktene er. Interessant å se denne verdien som en tidsserie parallelt med indeksen. 
+
+Kan brukes til å simulere utvalg, og peke ut den beste posisjonen til punkt $n+1$. Kan vi vekte avstanden med trafikkarbeid?
+
+
+## Andel utvalgte trafikklenker inkludert nærmeste nabolenker
+Dette impliserer at det er en romlig korrelasjon mellom nabolenker, men den er ikke påviselig.
 

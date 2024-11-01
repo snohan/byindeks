@@ -71,15 +71,15 @@ links <-
 
 # City numbers
 # Refy City  Cnum  Chkd Resp
-# 2016 Busk  1952   08 Snorre
-# 2016 Gren   955   08 Snorre
+# 2016 Busk  1952   10 Snorre
+# 2016 Gren   955   10 Snorre
 # 2016 Kris   957   08 Snorre
-# 2016 NGlo   953   08 Trond
-# 2023 NGlo 18952   08 Trond
+# 2016 NGlo   953   10 Trond *
+# 2023 NGlo 18952   10 Trond *
 # 2022 Trom 16952   08 Snorre
 # 2017 NJær   952   08 Snorre
-# 2018 Oslo   959   08 Trond
-# 2018 Berg  8952   08 Trond
+# 2018 Oslo   959   10 Trond *
+# 2018 Berg  8952   10 Trond *
 # 2019 Tron   960   08 Snorre
 
 
@@ -90,7 +90,7 @@ links <-
 # Choose
 index_year <- 2024
 latest_published_month <- 8
-city_number <- 959
+city_number <- 955
 # End choose
 
 new_month_year <-
@@ -105,11 +105,11 @@ new_month_name <-
   lubridate::month(label = TRUE, abbr = FALSE) |> 
   stringr::str_to_title()
 
-# new_month_name_2 <-
-#   lubridate::as_date(paste0("2000-", (latest_published_month + 2) %% 12, "-01")) |>
-#   lubridate::month(label = TRUE, abbr = FALSE) |>
-#   stringr::str_to_title()
-# 
+new_month_name_2 <-
+  lubridate::as_date(paste0("2000-", (latest_published_month + 2) %% 12, "-01")) |>
+  lubridate::month(label = TRUE, abbr = FALSE) |>
+  stringr::str_to_title()
+
 # new_month_name_3 <-
 #   lubridate::as_date(paste0("2000-", (latest_published_month + 3) %% 12, "-01")) |>
 #   lubridate::month(label = TRUE, abbr = FALSE) |>
@@ -242,12 +242,12 @@ if(city_number == 960){
       #latest_published_month + 1
     )
   
-  # tolling_station_indices_prepared_new_2 <-
-  #   tolling_station_indices_prepared |>
-  #   dplyr::filter(
-  #     month == (latest_published_month + 2) %% 12
-  #   )
-  # 
+  tolling_station_indices_prepared_new_2 <-
+    tolling_station_indices_prepared |>
+    dplyr::filter(
+      month == (latest_published_month + 2) %% 12
+    )
+
   # tolling_station_indices_prepared_new_3 <-
   #   tolling_station_indices_prepared |>
   #   dplyr::filter(
@@ -722,36 +722,36 @@ if(city_number == 960){
   
 }
 
-# point_index_new_prepared_2 <-
-#   point_index_new %>%
-#   dplyr::filter(
-#     day_type == "ALL",
-#     period == "month",
-#     month == latest_published_month + 2
-#   ) %>%
-#   dplyr::select(
-#     trp_id,
-#     year,
-#     month,
-#     index_total_p,
-#     index_total_coverage,
-#     length_excluded,
-#     length_coverage,
-#     index_short,
-#     index_long
-#   )
-# 
-# if(city_number == 960){
-#   
-#   point_index_new_prepared_2 <- 
-#     point_index_new_prepared_2 |> 
-#     # TRD
-#     dplyr::bind_rows(
-#      tolling_station_indices_prepared_new_2
-#     )
-#   
-# }
-# 
+point_index_new_prepared_2 <-
+  point_index_new %>%
+  dplyr::filter(
+    day_type == "ALL",
+    period == "month",
+    month == latest_published_month + 2
+  ) %>%
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    index_total_p,
+    index_total_coverage,
+    length_excluded,
+    length_coverage,
+    index_short,
+    index_long
+  )
+
+if(city_number == 960){
+
+  point_index_new_prepared_2 <-
+    point_index_new_prepared_2 |>
+    # TRD
+    dplyr::bind_rows(
+     tolling_station_indices_prepared_new_2
+    )
+
+}
+
 # point_index_new_prepared_3 <-
 #   point_index_new %>%
 #   dplyr::filter(
@@ -786,7 +786,7 @@ pointindex_prepared_all <-
   dplyr::bind_rows(
     pointindex_prepared,
     point_index_new_prepared_1,
-    #point_index_new_prepared_2,
+    point_index_new_prepared_2,
     #point_index_new_prepared_3,
     #point_index_new_prepared_4#,
     #point_index_new_prepared_5
@@ -833,20 +833,20 @@ city_trps_new_pointindex <-
     label_text = lapply(label_text, htmltools::HTML)
   )
 
-# city_trps_new_pointindex_2 <-
-#   trps_meta %>%
-#   dplyr::left_join(
-#     point_index_new_prepared_2,
-#     by = "trp_id"
-#   ) %>%
-#   dplyr::mutate(
-#     label_text =
-#       paste(name, ", ",
-#             road_category_and_number, "<br/>",
-#             index_total_p, " %", "<br/>",
-#             index_total_coverage, " %"),
-#     label_text = lapply(label_text, htmltools::HTML))
-# 
+city_trps_new_pointindex_2 <-
+  trps_meta %>%
+  dplyr::left_join(
+    point_index_new_prepared_2,
+    by = "trp_id"
+  ) %>%
+  dplyr::mutate(
+    label_text =
+      paste(name, ", ",
+            road_category_and_number, "<br/>",
+            index_total_p, " %", "<br/>",
+            index_total_coverage, " %"),
+    label_text = lapply(label_text, htmltools::HTML))
+
 # city_trps_new_pointindex_3 <- 
 #   trps_meta %>%
 #   dplyr::left_join(
@@ -1020,13 +1020,13 @@ leftover_trp_index_1 <-
     !(trp_id %in% links_with_events_and_pointindex_1$this_area_trp_id)
   )
 
-# links_with_events_and_pointindex_2 <- join_events_and_trp_index_with_links(6, point_index_new_prepared_2)
-# leftover_trp_index_2 <-
-#   city_trps_new_pointindex |> 
-#   dplyr::filter(
-#     !(trp_id %in% links_with_events_and_pointindex_2$this_area_trp_id)
-#   )
-# 
+links_with_events_and_pointindex_2 <- join_events_and_trp_index_with_links(6, point_index_new_prepared_2)
+leftover_trp_index_2 <-
+  city_trps_new_pointindex |>
+  dplyr::filter(
+    !(trp_id %in% links_with_events_and_pointindex_2$this_area_trp_id)
+  )
+
 # links_with_events_and_pointindex_3 <- join_events_and_trp_index_with_links(7, point_index_new_prepared_3)
 # leftover_trp_index_3 <-
 #   city_trps_new_pointindex |> 
@@ -1111,22 +1111,22 @@ if(nrow(leftover_trp_index_1) != 0){
 ```
 
 
+## `r new_month_name_2`
 
 ```{r}
 #| label: map_linkindex_and_events_2
 #| message: false
 
-## `r new_month_name_2`
-# links_with_events_and_pointindex_2 |> 
-#   map_pointindex_and_events()
+links_with_events_and_pointindex_2 |> 
+  map_pointindex_and_events()
 ```
 
 ```{r}
 #| label: map_trp_index_2
 
-# leftover_trp_index_2 |> 
-#   dplyr::rename(index = index_total_p) |> 
-#   create_pointindex_map()
+leftover_trp_index_2 |>
+  dplyr::rename(index = index_total_p) |>
+  create_pointindex_map()
 ```
 
 
@@ -1293,4 +1293,33 @@ pointindex_wide |>
 ```{r notes}
 # Ekskluderinger:
 
+# BRG
+# Storeklubben, Rampe Askøybrua-Kleppestø 10
+# Storeklubben, Strusshamn-Kleppestø-Askøybrua 10
+# Gyldenpris - Puddefjordsbroen 10
+# Laksevåg - Puddefjordsbroen 10
+# TODO: length quality 10
+# TODO: MDTs and Excel file
+
+# NGL
+# St. Hansfjellet 10
+# TODO: length quality 10
+# TODO: MDTs and Excel file
+
+# OSL
+# Kong Håkon 5.s gate Nordgående 10
+# Kong Håkon 5.s gate sørgående 10
+# Maridalsveien 10
+# Finnmarksgata 10
+# Gjelleråsen 10
+# Holmenkollveien 10
+# Kirkeveien Høvik 10
+# Ljabrudiagonalen 10
+# Blåkollen 10? 
+# Sørkedalsveien 10
+# Østensjøveien V/Østensjø Skole 10
+# TODO: length quality 10
+# TODO: MDTs and Excel file
+
+# 
 ```
