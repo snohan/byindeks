@@ -59,7 +59,7 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 10 # the one to be published now
-city_number <- 956
+city_number <- 952
 }
 # End choose
 
@@ -547,7 +547,7 @@ city_index_yearly_all <-
     years_1_4,
     years_1_5,
     years_1_6,
-    years_1_7
+    # years_1_7
   ) |>
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -717,7 +717,7 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[28:29]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[16:18]) |>
   dplyr::select(
     trp_id,
     year,
@@ -773,10 +773,10 @@ mdt_and_pi <-
     length_quality >= 98.5
   ) |>
   dplyr::left_join(
-    trp_index_monthly,
-    by = c("trp_id", "year", "month"),
-    #dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
-    #by = c("trp_id", "year_month" = "month_object") # TRD
+    #trp_index_monthly,
+    #by = c("trp_id", "year", "month"),
+    dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
+    by = c("trp_id", "year_month" = "month_object") # TRD
   ) |>
   dplyr::left_join(
     trp_names,
@@ -1193,7 +1193,9 @@ all_rolling_indexes_chained |>
 # TRP data to Excel ----
 # For those interested in the details
 
-# Add YDT
+## Add YDT ----
+# Not for TRD!
+{
 ydt <- get_aadt_by_length_for_trp_list(this_citys_trps_all_adt_final$trp_id, "WEEKDAY")
 
 ydt_reference_year <-
@@ -1261,6 +1263,7 @@ trp_info_adt <-
     by = join_by(trp_id)
   )
 
+}
 # trp_info_adt |>
 # writexl::write_xlsx(
 #   path = paste0(
@@ -1310,7 +1313,7 @@ if(city_number == 16952){
 if(city_number == 960){
 
   list(
-    punkt_adt = trp_info_adt,
+    punkt_adt = this_citys_trps_all_adt_final_index,
     punktindeks_maned = trp_index_monthly_wide,
     byindeks_aarlig = city_index_yearly_all,
     punkt_mdt = mdt_and_pi,
