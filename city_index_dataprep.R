@@ -59,7 +59,7 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 10 # the one to be published now
-city_number <- 952
+city_number <- 959
 }
 # End choose
 
@@ -455,7 +455,7 @@ if(city_number == 960){
       road_category_and_number,
       year,
       jan:des
-      #jan:aug
+      #jan:okt
     ) |>
     dplyr::arrange(
       name,
@@ -554,6 +554,7 @@ city_index_yearly_all <-
     area_name = city_name,
     month_name_short = lubridate::month(month, label = TRUE),
     period = paste0("jan-", month_name_short),
+    index_p = round(index_p, 1),
     ci_lower = round(index_p - 1.96 * standard_error, 1),
     ci_upper = round(index_p + 1.96 * standard_error, 1)
     #ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error, 1),
@@ -717,7 +718,7 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[16:18]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[60:61]) |>
   dplyr::select(
     trp_id,
     year,
@@ -773,10 +774,10 @@ mdt_and_pi <-
     length_quality >= 98.5
   ) |>
   dplyr::left_join(
-    #trp_index_monthly,
-    #by = c("trp_id", "year", "month"),
-    dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
-    by = c("trp_id", "year_month" = "month_object") # TRD
+    trp_index_monthly,
+    by = c("trp_id", "year", "month"),
+    #dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
+    #by = c("trp_id", "year_month" = "month_object") # TRD
   ) |>
   dplyr::left_join(
     trp_names,
