@@ -24,9 +24,6 @@ knitr:
 
 ```{r notes}
 # Ekskluder:
-# Skadalen 1-8
-# Skjønhaug v 1-8
-# Granfosstunnelene 7-10
 
 # Reberegn:
 
@@ -53,7 +50,7 @@ library(sf)
 
 index_year <- 2024
 # Last published month
-index_month <- 7
+index_month <- 8
 
 index_id <- 962
 
@@ -62,10 +59,10 @@ new_month_name <-
   lubridate::month(label = TRUE, abbr = FALSE) |> 
   stringr::str_to_title()
 
-# new_month_name_2 <-
-#   lubridate::as_date(paste(index_year, index_month + 2, "01", sep = "-")) |> 
-#   lubridate::month(label = TRUE, abbr = FALSE) |> 
-#   stringr::str_to_title()
+new_month_name_2 <-
+  lubridate::as_date(paste(index_year, index_month + 2, "01", sep = "-")) |>
+  lubridate::month(label = TRUE, abbr = FALSE) |>
+  stringr::str_to_title()
 
 # new_month_name_3 <-
 #   lubridate::as_date(paste(index_year, index_month + 3, "01", sep = "-")) |> 
@@ -101,21 +98,21 @@ links <-
 
 # Look at details in one county at a time
 
-# 31 Østfold                08 Trond
-# 32 Akershus               08 Trond
-# 33 Buskerud               08 Trond
-#  3 Oslo                   08 Trond
-# 34 Innlandet              08 Snorre
-# 39 Vestfold               08 Trond
-# 40 Telemark               08 Trond
-# 42 Agder                  08 Trond
-# 11 Rogaland               08 Trond
-# 46 Vestland               08 Trond
-# 15 Møre og Romsdal        08 Trond
-# 50 Trøndelag              08 Snorre
-# 18 Nordland               08 Trond
-# 55 Troms                  08 Trond
-# 56 Finnmark               08 Trond
+# 31 Østfold                10 Trond
+# 32 Akershus               10 Trond
+# 33 Buskerud               10 Trond
+#  3 Oslo                   10 Trond
+# 34 Innlandet              10 Snorre
+# 39 Vestfold               10 Trond
+# 40 Telemark               10 Trond
+# 42 Agder                  10 Trond
+# 11 Rogaland               10 Trond
+# 46 Vestland               10 Trond
+# 15 Møre og Romsdal        10 Trond
+# 50 Trøndelag              10 Snorre
+# 18 Nordland               10 Trond
+# 55 Troms                  10 Trond
+# 56 Finnmark               10 Trond
 
 county_number_chosen <- 56
 
@@ -257,14 +254,14 @@ point_index_new_prepared_1 <-
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
 
-# point_index_new_prepared_2 <-
-#   point_index_new %>%
-#   dplyr::filter(day_type == "ALL",
-#                 period == "month",
-#                 month == index_month + 2) %>%
-#   dplyr::select(trp_id, year, month, index_total_p,
-#                 index_total_coverage, length_excluded, length_coverage,
-#                 index_short, index_long)
+point_index_new_prepared_2 <-
+  point_index_new %>%
+  dplyr::filter(day_type == "ALL",
+                period == "month",
+                month == index_month + 2) %>%
+  dplyr::select(trp_id, year, month, index_total_p,
+                index_total_coverage, length_excluded, length_coverage,
+                index_short, index_long)
 
 # point_index_new_prepared_3 <-
 #   point_index_new %>%
@@ -289,7 +286,7 @@ pointindex_prepared_all <-
   dplyr::bind_rows(
     pointindex_prepared,
     point_index_new_prepared_1,
-    #point_index_new_prepared_2,
+    point_index_new_prepared_2,
     #point_index_new_prepared_3,
     #point_index_new_prepared_4
     ) %>% 
@@ -332,20 +329,20 @@ trps_new_pointindex_1 <-
             index_total_coverage, " %"),
     label_text = lapply(label_text, htmltools::HTML))
 
-# trps_new_pointindex_2 <-
-#   trps_meta %>%
-#   dplyr::inner_join(
-#     point_index_new_prepared_2,
-#     by = "trp_id"
-#   ) %>%
-#   dplyr::mutate(
-#     label_text =
-#       paste(name, ", ",
-#             road_category_and_number, "<br/>",
-#             index_total_p, " %", "<br/>",
-#             index_total_coverage, " %"),
-#     label_text = lapply(label_text, htmltools::HTML)
-#   )
+trps_new_pointindex_2 <-
+  trps_meta %>%
+  dplyr::inner_join(
+    point_index_new_prepared_2,
+    by = "trp_id"
+  ) %>%
+  dplyr::mutate(
+    label_text =
+      paste(name, ", ",
+            road_category_and_number, "<br/>",
+            index_total_p, " %", "<br/>",
+            index_total_coverage, " %"),
+    label_text = lapply(label_text, htmltools::HTML)
+  )
 
 # trps_new_pointindex_3 <-
 #   trps_meta %>%
@@ -504,8 +501,8 @@ pointindex_long_2 <-
 links_in_county <- filter_traffic_links_by_county(county_number_chosen)
 links_with_trp <- filter_links_with_trp_no_toll()
 
-links_with_events_and_pointindex_1 <- join_events_and_trp_index_with_links(index_month, point_index_new_prepared_1)
-#links_with_events_and_pointindex_2 <- join_events_and_trp_index_with_links(7, point_index_new_prepared_2)
+links_with_events_and_pointindex_1 <- join_events_and_trp_index_with_links(index_month + 1, point_index_new_prepared_1)
+links_with_events_and_pointindex_2 <- join_events_and_trp_index_with_links(index_month + 2, point_index_new_prepared_2)
 ```
 
 
@@ -522,16 +519,16 @@ links_with_events_and_pointindex_1 |>
 ```
 
 
-
+## `r new_month_name_2`
 
 ```{r}
 #| label: map_linkindex_and_events_2
 #| message: false
 
-## `r new_month_name_2`
 
-#links_with_events_and_pointindex_2 |> 
-#  map_pointindex_and_events()
+
+links_with_events_and_pointindex_2 |> 
+  map_pointindex_and_events()
 ```
 
 

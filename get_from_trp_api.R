@@ -185,6 +185,7 @@ get_trp_direction_reference <- function() {
         name
         operationalStatus
         registrationFrequency
+        trafficType
         trpType
         location {
           municipality {
@@ -235,6 +236,7 @@ get_trp_direction_reference <- function() {
     dplyr::select(
       trp_id = data.trafficRegistrationPoints.id,
       trp_name = data.trafficRegistrationPoints.name,
+      traffic_type = data.trafficRegistrationPoints.trafficType,
       county_id = data.trafficRegistrationPoints.location.municipality.county.id,
       road_category = data.trafficRegistrationPoints.location.roadReference.roadCategory.id,
       road_reference = data.trafficRegistrationPoints.location.roadReference.shortForm,
