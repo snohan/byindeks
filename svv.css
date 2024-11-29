@@ -1,6 +1,6 @@
 body {
   background-color: #F5F5F5;
-  font-family: LFT Etica;
+  font-family: Arial;
   font-size: 12pt;
 }
 
@@ -14,7 +14,7 @@ caption {
   color: black;
   padding-bottom: .1em;
   padding-top: .8em;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 table {

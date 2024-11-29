@@ -18,12 +18,159 @@
   source("get_from_trafficdata_api.R")
 }
 
-# Steps ----
+# Is it Poisson? ----
+data <- c(
+  rep(0, 7),
+  rep(1, 18),
+  rep(2, 24),
+  rep(3, 24),
+  rep(4, 20),
+  rep(5, 8),
+  rep(6, 7),
+  rep(7, 1),
+  rep(8, 2)
+  )
+
+# Look at histogram
+data_tibble <-
+  tibble::tibble(
+    data
+  )
+
+ggplot(data_tibble, aes(data)) +
+  geom_histogram()
+
+# Compare mean and variance
+## Should be equal, approximately
+mean(data)
+var(data)
+
+# Test of fit
+## Table of observed frequencies
+obs_freq <- table(data)
+## Expected frequencies based on Poisson distribution
+lambda <- mean(data)
+exp_freq <- dpois(as.numeric(names(obs_freq)), lambda) * length(data)
+
+## Chi-squared test
+chisq_test <- chisq.test(obs_freq, p = exp_freq, rescale.p = TRUE)
+print(chisq_test)
+## It is Poisson of p-value larger than 0.05.
+
+# Generating QQ plot
+qqplot(qpois(ppoints(length(data)), lambda), data,
+       main = "QQ Plot for Poisson Distribution",
+       xlab = "Theoretical Quantiles",
+       ylab = "Sample Quantiles")
+abline(0, 1, col = "red")
+## If the points lie approximately along the reference line, the data likely follows a Poisson distribution.
+
+# Overdispersion Check
+## Overdispersion occurs when the variance is greater than the mean,
+## indicating that the data might not follow a Poisson distribution.
+## A dispersion test can be performed using the AER package.
+library(AER)
+AER::dispersiontest(glm(data ~ 1, family = poisson))
+
+# But then, is it also normal?
+# Poisson can be approximated by normal when lambda is larger than 4 (about), and the continuity correction is applied.
+
+
+# RTM data ----
+# Steps for describing representativeness
 # 1. Define the population
 # 2. Find relevant characteristics of the population and describe these
 # 3. Describe the sampling process
 # 4. Compare sample characteristics with the population using measures of fit
 # 5. Decide on acceptance criteria for similarity
+
+
+test <-
+  readxl::read_excel("rtm/rtm_trondheim_2022_ny.xlsx") |>
+  dplyr::select(
+    start = A,
+    end = B,
+    distance = DISTANCE,
+    road_category_id = LINKTYPE,
+    road_ref = VEGREFERANS,
+    from_meter = FROMMETER,
+    to_meter = TOMETER,
+    delstrekning = DELSTREKN,
+    VS,
+    VEGTYPE,
+    direction = NVDBRETNING,
+    aadt = CD_ADT, # Car driver AADT per direction
+    ydt_apbasert = CD_APBASERT,
+    ydt_arbeid = CD_ARBEID,
+    ydt_flyplass = CD_FLYPLASS,
+    ydt_fritid = CD_FRITID,
+    ydt_hentlev = CD_HENTLEV,
+    ydt_ntm6 = CD_NTM6,
+    ydt_privat = CD_PRIVAT,
+    ydt_skole = CD_SKOLE,
+    ydt_sverige = CD_SVERIGE,
+    ydt_tjeneste = CD_TJENESTE
+    # TODO: calculate work for each intention
+  ) |>
+  # Some "supersections" seem like duplicates and are disclosed by large deviation between distance and diff in meter values.
+  # Also some obviously wrong values in distance, Removing both of these.
+  dplyr::mutate(
+    diff_meters = abs(to_meter - from_meter) * 1e-3,
+    ratio_distance_and_diff_meters = distance / diff_meters,
+    F_pi_i_lambda_half = 2 * (sqrt(distance) - sqrt(diff_meters)) |> abs() |> round(1)
+  ) |>
+  dplyr::filter(
+    aadt > 0,
+    F_pi_i_lambda_half == 0,
+    road_category_id %in% c(1, 2, 3),
+    delstrekning < 100, # keep only roads for motor vehicles
+    VS == "V", # only existing roads
+    VEGTYPE != 19290 # no roundabouts
+  ) |>
+  # Summing directions
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    id = list(stringr::str_sort(c(start, end))) |>
+      purrr::map_chr(paste, collapse = "_"),
+    meters = list(stringr::str_sort(c(from_meter, to_meter), numeric = TRUE)) |>
+      purrr::map_chr(paste, collapse = "_"),
+    traffic_work = distance * aadt # * 365
+  ) |>
+  dplyr::ungroup() |>
+  dplyr::summarise(
+    aadt = sum(aadt),
+    traffic_work = sum(traffic_work),
+    .by = c(id, meters, road_ref)
+  ) |>
+  tidyr::separate_wider_delim(
+    cols = id,
+    delim = "_",
+    names = c("from_id", "to_id"),
+    too_few = "align_start"
+  ) |>
+  tidyr::separate_wider_delim(
+    cols = meters,
+    delim = "_",
+    names = c("from_meter", "to_meter"),
+    too_few = "align_start"
+  ) |>
+  dplyr::mutate(
+    from_meter = base::as.numeric(from_meter),
+    to_meter = base::as.numeric(to_meter)
+  ) |>
+  dplyr::select(
+    from_id,
+    to_id,
+    road_ref,
+    from_meter,
+    to_meter,
+    aadt,
+    traffic_work
+  ) |>
+  dplyr::arrange(
+    road_ref,
+    from_meter
+  )
 
 
 # RTM links ----
@@ -59,8 +206,16 @@ read_rtm_data <- function(file_path) {
       ydt_tjeneste = CD_TJENESTE
       # TODO: calculate work for each intention
     ) |>
+    # Some "supersections" seem like duplicates and are disclosed by large deviation between distance and diff in meter values.
+    # Also some obviously wrong values in distance, Removing both of these.
+    dplyr::mutate(
+      diff_meters = abs(to_meter - from_meter) * 1e-3,
+      ratio_distance_and_diff_meters = distance / diff_meters,
+      F_pi_i_lambda_half = 2 * (sqrt(distance) - sqrt(diff_meters)) |> abs() |> round(1)
+    ) |>
     dplyr::filter(
       aadt > 0,
+      F_pi_i_lambda_half == 0,
       road_category_id %in% c(1, 2, 3),
       delstrekning < 100, # keep only roads for motor vehicles
       VS == "V", # only existing roads
@@ -73,7 +228,7 @@ read_rtm_data <- function(file_path) {
         purrr::map_chr(paste, collapse = "_"),
       meters = list(stringr::str_sort(c(from_meter, to_meter), numeric = TRUE)) |>
         purrr::map_chr(paste, collapse = "_"),
-      traffic_work = distance * aadt
+      traffic_work = distance * aadt # * 365
     ) |>
     dplyr::ungroup() |>
     dplyr::summarise(
@@ -117,6 +272,14 @@ read_rtm_data <- function(file_path) {
       from_meter = min(from_meter),
       to_meter = max(to_meter),
       .by = c(road_ref, aadt)
+    ) |>
+    dplyr::mutate(
+      id = paste0(from_id, "_", to_id)
+    ) |>
+    dplyr::relocate(id) |>
+    dplyr::select(
+      -from_id,
+      -to_id
     )
 
 }
@@ -240,26 +403,23 @@ rtm_trd_20 <- read_rtm_data("rtm/rtm_trondheim_2020_ny.xlsx")
 rtm_trd_22 <- read_rtm_data("rtm/rtm_trondheim_2022_ny.xlsx")
 # Lenketype 30 er sonetilknytning og cd_tot angir antall turer.
 
-
+# Point index
 rtm_20_22 <-
   dplyr::inner_join(
     rtm_trd_20,
     rtm_trd_22,
-    by = dplyr::join_by(from_id, to_id, road_ref, from_meter, to_meter),
+    by = dplyr::join_by(id, road_ref, from_meter, to_meter),
     suffix = c("_20", "_22")
   ) |>
   dplyr::mutate(
     index_i = aadt_22 / aadt_20,
-    index_p = 100 * (index_i - 1)
-  )
-
-rtm_index <-
-  rtm_20_22 |>
-  dplyr::summarise(
-    area_index_i = sum(aadt_22) / sum(aadt_20),
-    area_index_p = 100 * (area_index_i - 1),
-    mean_p = mean(index_p),
-    sd_p = sd(index_p)
+    index_p = 100 * (index_i - 1),
+    weight = traffic_work_20 / sum(traffic_work_20),
+    city_index = (sum(traffic_work_22) / sum(traffic_work_20) - 1 ) * 100,
+    deviation = weight * (index_p - city_index)^2
+  ) |>
+  dplyr::filter(
+    !is.na(road_ref)
   )
 
 
@@ -292,9 +452,129 @@ rtm_trp <-
       road_ref == road_ref,
       dplyr::between(meter_join, from_meter, to_meter)
     )
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    road_reference,
+    id,
+    from_meter, to_meter
+  ) |>
+  # sort out multiple matches caused by missing intersection info in RTM data
+  dplyr::filter(
+    !(trp_id == "920506370" & id != "284593_284622"),
+    !(trp_id == "20570V72811" & id != "284786_284862"),
+    !(trp_id == "94210V2411536" & id != "284790_424280"),
+    !(trp_id == "264832263" & id != "284919_344828"),
+    !(trp_id == "40649V2411511" & id != "284902_284903"),
+    !(trp_id == "44210V2411509" & id != "284791_284898"),
+    !(trp_id == "75341V41863" & id != "286342_286350"),
+    !(trp_id == "18672V578623" & id != "354556_352564")
   )
 
-# TODO: sort out trouble caused by missing intersection info in RTM data
+# Municipality roads are not included
+city_trp_unmatched <-
+  city_trp |>
+  dplyr::filter(
+    !(trp_id %in% rtm_trp$trp_id)
+  )
+# Also Brattørbrua without match because RTM has this road set as GS (which is wrong)
+
+rtm_20_22_trp <-
+  rtm_20_22 |>
+  dplyr::mutate(
+    city_trp = id %in% rtm_trp$id
+  )
+
+readr::write_rds(
+  rtm_20_22_trp,
+  "representativity/rtm_20_22_trondheim.rds"
+)
+
+
+## Population and sample index ----
+pop_tw <- sum(rtm_20_22$traffic_work_20)
+
+rtm_pop_index <-
+  rtm_20_22_trp |>
+  dplyr::summarise(
+    area_index_i = sum(aadt_22) / sum(aadt_20),
+    area_index_p = (100 * (area_index_i - 1)) |> round(1),
+    tw_area_index_i = sum(traffic_work_22) / sum(traffic_work_20),
+    tw_area_index_p = (100 * (tw_area_index_i - 1)) |> round(2),
+    n_trp = n(),
+    sum_tw = sum(traffic_work_20),
+    sum_weights = sum(weight),
+    sum_squared_weight = sum(weight^2),
+    n_eff = 1 / sum_squared_weight,
+    weighted_variance_p = (1 / (1 - sum_squared_weight)) * sum(deviation),
+    weighted_sd_p = sqrt(weighted_variance_p),
+    unweighted_mean_p = mean(index_p),
+    unweighted_sd_p = sd(index_p)
+  ) |>
+  dplyr::mutate(
+    # Not including the finite population correction here effectively says the this is a sample from an infinitely large population.
+    standard_error_without_fpc = sqrt(sum_squared_weight * weighted_variance_p),
+    standard_error_with_fpc = sqrt(sum_squared_weight * weighted_variance_p) * sqrt((pop_tw - sum_tw) / (pop_tw - 1)),
+    ci_lower = round(tw_area_index_p + stats::qt(0.025, n_trp - 1) * standard_error_without_fpc, 1),
+    ci_upper = round(tw_area_index_p - stats::qt(0.025, n_trp - 1) * standard_error_without_fpc, 1),
+    ci_lower_fpc = round(tw_area_index_p + stats::qt(0.025, n_trp - 1) * standard_error_with_fpc, 1),
+    ci_upper_fpc = round(tw_area_index_p - stats::qt(0.025, n_trp - 1) * standard_error_with_fpc, 1)
+  )
+
+
+# For area index by sample, need to recalculate the weights
+rtm_20_22_trp_sam <-
+  rtm_20_22_trp |>
+  dplyr::filter(
+    city_trp == TRUE
+  ) |>
+  dplyr::mutate(
+    weight = traffic_work_20 / sum(traffic_work_20),
+    city_index = (sum(traffic_work_22) / sum(traffic_work_20) - 1 ) * 100,
+    deviation = weight * (index_p - city_index)^2
+  )
+
+rtm_sam_index <-
+  rtm_20_22_trp_sam |>
+  dplyr::summarise(
+    area_index_i = sum(aadt_22) / sum(aadt_20),
+    area_index_p = (100 * (area_index_i - 1)) |> round(1),
+    tw_area_index_i = sum(traffic_work_22) / sum(traffic_work_20),
+    tw_area_index_p = (100 * (tw_area_index_i - 1)) |> round(2),
+    n_trp = n(),
+    sum_tw = sum(traffic_work_20),
+    sum_weights = sum(weight),
+    sum_squared_weight = sum(weight^2),
+    n_eff = 1 / sum_squared_weight,
+    weighted_variance_p = (1 / (1 - sum_squared_weight)) * sum(deviation),
+    weighted_sd_p = sqrt(weighted_variance_p),
+    unweighted_mean_p = mean(index_p),
+    unweighted_sd_p = sd(index_p)
+  ) |>
+  dplyr::mutate(
+    # Not including the finite population correction here effectively says the this is a sample from an infinitely large population.
+    standard_error_without_fpc = sqrt(sum_squared_weight * weighted_variance_p),
+    standard_error_with_fpc = sqrt(sum_squared_weight * weighted_variance_p) * sqrt((pop_tw - sum_tw) / (pop_tw - 1)),
+    ci_lower = round(tw_area_index_p + stats::qt(0.025, n_trp - 1) * standard_error_without_fpc, 1),
+    ci_upper = round(tw_area_index_p - stats::qt(0.025, n_trp - 1) * standard_error_without_fpc, 1),
+    ci_lower_fpc = round(tw_area_index_p + stats::qt(0.025, n_trp - 1) * standard_error_with_fpc, 1),
+    ci_upper_fpc = round(tw_area_index_p - stats::qt(0.025, n_trp - 1) * standard_error_with_fpc, 1)
+  )
+
+rtm_index <-
+  dplyr::bind_rows(
+    rtm_pop_index,
+    rtm_sam_index
+  )
+
+readr::write_rds(
+  rtm_index,
+  "representativity/rtm_20_22_trondheim_index.rds"
+)
+
+# TODO: HTML-doc insert: compare results when calculating area index with weights as AADT and TW.
+# TODO: HTML-doc insert: make a case for the weighted sd and fpc
 
 ## Sample: City TRP index ----
 # Need to find TRP index 2020-2022, so will use chaining
@@ -326,6 +606,10 @@ city_trp_index <-
   dplyr::mutate(index = round(100 * (index - 1), digits = 1))
 
 
+# TODO: simulate samples of different sizes, does it stabilize the index result as sample size increases?
+
+
+
 ## Comparison ----
 # So we have a population and a sample. This may be seen as two samples.
 # We need to know if this sample can be considered to come from the population.
@@ -336,6 +620,7 @@ city_trp_index <-
 # http://fmwww.bc.edu/repec/bocode/t/transint.html
 
 # Yeo-Johnson Transformation?
+
 
 ## Population ----
 # 1900 data samples should ensure normality assumptions to be safe

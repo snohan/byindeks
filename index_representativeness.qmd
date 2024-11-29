@@ -1,6 +1,5 @@
 ---
-title: "Representativitet i indeks"
-subtitle: "Teori og regneeksempler"
+title: "Representativitet i byindeks, appendikser"
 format: 
   html:
     css: svv.css
@@ -35,60 +34,475 @@ base::Sys.setlocale(locale = "nb.utf8")
 svv_background_color <- "#F5F5F5"
 
 library(tidyverse)
+library(patchwork)
+library(flextable)
 #library(sf)
 #library(sfnetworks)
 library(igraph)
 library(tidygraph)
 library(htmltools)
-library(leaflet)
+#library(leaflet)
 library(RColorBrewer)
 
-source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
+#source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
+
+flextable::set_flextable_defaults(
+  #font.size = 8,
+  #padding.bottom = .2,
+  #padding.top = .4,
+  decimal.mark = ",",
+  big.mark = " ",
+  na_str = ""
+)
 ```
 
 ```{r}
 #| label: data
 
-
+rtm_trd <- readr::read_rds("representativity/rtm_20_22_trondheim.rds")
+rtm_trd_index <- readr::read_rds("representativity/rtm_20_22_trondheim_index.rds")
 ```
 
 
 # Innledning
-Dette notatet tar for seg temaet representativitet i trafikkindeks, hvor det spesielt er byindeksen som er i fokus. Med representativitet menes i hvilken grad trafikkregistreringer på et utvalg trafikklenker kan sies å representere vegnettet som helhet for et gitt geografisk område. For å vurdere dette tas det utgangspunkt i statistisk teori og hva som er tilgjengelig av mulige forklaringsvariabler på trafikklenkene.
+Dette dokumentet er et supplement til notatet "Representativitet i byindeks" og inneholder detaljer om de utforskende dataanalysene som ligger til grunn for vurderingene som er beskrevet i hovednotatet.
 
-En forklaringsvariabel forklarer størrelsen og variasjonen til en virkningsvariabel. Det kan eksistere mer enn en forklaringsvariabel til en gitt virkning. Andre variable som kunne tenkes å forklare en virkning, men som viser seg ikke å være det, kalles kontrollvariabler. I en forklaringsmodell kan det være nyttig å beskrive aktuelle kontrollvariabler. Med representativitet menes at de viktigste forklaringsvariablene er godt dekket i et utvalg som skal brukes til å gjøre generaliseringer for en populasjon.
-
-Virkningsvariabelen er i denne sammenhengen selve byindeksen. Den er beregnet som et vektet gjennomsnitt av indeksen for hver av trafikklenkene i utvalget, og det er trafikkarbeid som danner vektene. En trafikklenkes indeks kalles en punktindeks.
+Arbeidet med representativitet er gjort før det er gjort en nærmere analyse på selve beregningsmetoden til byindeksen. Representativitet og beregningsmetode henger tett sammen, men det antas her at metodikken for beregning av byindeks er som et vektet gjennomsnitt av trafikklenkenes endring i trafikkarbeid, der trafikkarbeidet er vektene.
 
 
-# Trafikkarbeid for populasjonen
-Hvert år estimeres årsdøgntrafikk (ÅDT) for hver trafikklenke. Dette kan benyttes som et mål på populasjonens størrelse, der hver trafikklenkes trafikkarbeid er individene. Siden byindeksen er et mål på endring i trafikkarbeid, som er vektet med lenkenes trafikkarbeid, kan utvalgsusikkerheten dempes med en korreksjonsfaktor for endelig populasjonsstørrelse.
+# Trafikkarbeid for hele populasjonen
+Byindeksen estimerer endring i trafikkarbeid for et byområde basert på trafikkregistreringer på et utvalg veger. Dersom trafikkmengden var kjent på hele vegnettet kunne byindeksen vært beregnet med liten usikkerhet. Et betydelig bidrag til usikkerheten vil nå komme fra det faktum at beregningen gjøres på et utvalg fra en populasjon. Med en kjent populasjon kunne et utvalg bli vurdert opp mot populasjonens verdier og det ville være mulig å si noe om representativiteten til utvalget.
+
+Populasjonen består av trafikkarbeidet på alle trafikklenker i byområdet. Det er to mulige kilder til en tallfesting av trafikkarbeidet på hver trafikklenke, som omtalt videre i dette kapittelet.
 
 
-## Fordeling av punktindeks 
-Fordelingen av hele populasjonens punktindekser er ukjent. Data fra RTM, som har beregnet trafikkmengden på alle strekninger i området for to år, kan benyttes til å beregne punktindeksen mellom disse to årene. Da har vi en populasjon av punktindekser som vi kan sammenligne med det utvalget av trafikklenker vi har punkter på. 
+## Sammenligning av to årganger med ÅDT-belagt vegnett
+Hvert år estimeres årsdøgntrafikk (ÅDT) for hver trafikklenke. Dette kan benyttes som et mål på populasjonens størrelse. Fram til nå har ÅDT-beleggingen vært utført manuelt med stor grad av skjønn. På lenker med trafikkregistreringer er det den registrerte verdien som har vært utgangspunkt for ÅDT-verdien, men på alle andre lenker er det rimelig å anta at et ulikt skjønn er utvist mellom personer og over tid. Dette gjør det vanskelig å trekke noe sikkert ut fra en sammenligning mellom to årganger. Det kan være at en slik sammenligning egentlig sammenligner endret skjønn over tid mer enn den generelle endringen i trafikk.
 
-Her er det to alternative datakilder for utvalget: 
+Sammenligning av ÅDT-belagt vegnett blir mer aktuelt når ÅDT-estimatene er generert fra en statistisk modell. Men likevel vil usikkerheten på lenker uten registrering være såpass stor at den samlede usikkerheten i en sammenligning mellom to utgaver av populasjonen blir for stor. Indeksen må fortsatt baseres på faktiske registreringer som har liten usikkerhet.
+
+
+## Sammenligning av ÅDT fra ulike transportmodellkjøringer
+En transportmodell genererer turer mellom delområder og fordeler disse ut på vegnettet. Resultatet er et estimat på trafikkmengde og trafikkarbeid på alle trafikklenker i området. Data fra regionale transportmodeller (RTM), som har beregnet trafikkmengden på alle strekninger i området for to år, kan benyttes til å beregne punktindeksen mellom disse to årene. Da har vi en populasjon av punktindekser som vi kan trekke ulike utvalg fra for deretter å gjøre sammenligninger med.
+
+Det er to alternative datakilder for utvalget: 
 
 1. Endring i trafikk basert på registrert trafikk 
 2. Endring i trafikk basert på RTM-data 
 
-Hvis vi benytter registrert trafikk som grunnlag for trafikklenkeindekser kan det være noe avvik mellom den trafikken som modelleres i RTM og det som faktisk måles i punktene. Faktiske registreringer påvirkes i ulik grad av kortvarige vegstenginger og andre ytre lokale forhold. For at det skal være mulig å sammenligne utvalg og populasjon, må RTM klare å fange opp slike forhold i tilstrekkelig grad. Men det er ikke dette formålet RTM er laget for. Den er mer rettet mot å beskrive normale trafikkforhold. Det er derfor ikke korrekt å sammenligne et utvalg med faktiske punktindekser med en populasjonsfordeling basert på RTM-data.
+Hvis vi benytter registrert trafikk som grunnlag for trafikklenkeindekser kan det være noe avvik mellom den trafikken som modelleres i RTM og det som faktisk måles i punktene. Faktiske registreringer påvirkes i ulik grad av kortvarige vegstenginger og andre ytre lokale forhold. For at det skal være mulig å sammenligne utvalg og populasjon, må RTM klare å fange opp slike forhold i tilstrekkelig grad. Men det er ikke dette formålet RTM er laget for. Den er mer rettet mot å beskrive normale trafikkforhold. Det er derfor ikke korrekt å sammenligne et utvalg med faktiske punktindekser med en populasjonsfordeling basert på RTM-data. Dersom vi benytter RTM-data som grunnlag for punktindeksene vil sammenligningen basere seg på samme datagrunnlag. 
 
-Dersom vi benytter RTM-data som grunnlag for punktindeksene vil sammenligningen basere seg på samme datagrunnlag. 
-
-Ulempen med denne tilnærmingen er at resultater fra en RTM som dekker det aktuelle geografiske området må være tilgjengelig i to sammenlignbare perioder. En vurdering av representativitet må gjøres for hver indeksberegning, og dermed blir det ikke praktisk gjennomførbart å benytte RTM-data til dette. 
-
-Det er likevel interessant å se på et eksempel med RTM-data og vurdere om et gitt utvalg er representativt. I denne analysen kan utvalgets gjennomsnitt sammenlignes med populasjonens gjennomsnitt og ved å bruke vanlige statistiske metoder kan disse vurderes å gi samsvarende resultat.
-
-INSERT RTM ANALYSIS HERE
+Ulempen med denne tilnærmingen er at resultater fra en RTM som dekker det aktuelle geografiske området må være tilgjengelig i to sammenlignbare perioder. En vurdering av representativitet må gjøres for hver månedlige indeksberegning, og dermed blir det ikke praktisk gjennomførbart å benytte RTM-data til dette. Det er likevel interessant å se på et eksempel med RTM-data og vurdere om et gitt utvalg er representativt. I denne analysen kan utvalgets gjennomsnitt sammenlignes med populasjonens gjennomsnitt, og ved å bruke vanlige statistiske metoder kan det vurderes om disse gir samsvarende resultat.
 
 
-## Fordeling av trafikkarbeid
+### Sammenligning av utvalg og populasjon
+I dette kapittelet er det benyttet resultater fra RTM for Trondheimsområdet for både 2020 og 2022. For hver trafikklenke er det beregnet gjennomsnittlig døgntrafikk for normalvirkedøgn for lette kjøretøy. Dette gir også trafikkarbeidet per trafikklenke. Ved å sette sammen de to årene er punktindeksene utregnet for alle lenkene. Det er også kjent hvilke trafikklenker som har et byindekspunkt, og dermed kan vi sammenligne verdier mellom dette utvalget og populasjonen. Trondheim har 50 byindekspunkt, men i denne analysen er det ikke med trafikklenker på kommunale veger. Det er 43 punkter med i utvalget i denne sammenligningen, og populasjonen består av 1 861 lenker.
+
+
+#### Punktindekser
+Sammenligning av fordelingene til punktindeksen er vist i @fig-rtm_pi, hvor punktindeksene er vektet med sitt trafikkarbeid. Fra figuren ser vi at begge fordelingene har en klar topp rundt 0, men at utvalget lett kan få større påvirkning fra ekstreme verdier i enkeltpunkt. Det at enkelte verdier er så ekstreme kan få fordelingen rundt null til å se likere ut enn i virkeligheten.
+
+```{r}
+#| label: fig-rtm_pi
+#| fig-cap: "Sammenligning av punktindeksenes fordeling. Legg merke til at skalaen på *y*-aksen er ulik."
+#| message: false
+#| warning: false
+
+plot_pop_pi <-
+  rtm_trd |> 
+  dplyr::filter(
+    index_p < 300,
+    index_p > -300
+  ) |> 
+  ggplot(aes(index_p)) +
+  geom_histogram(aes(weight = weight)) +
+  xlim(-305, 305) +
+  theme_light() +
+  theme(
+    axis.ticks.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  ) +
+  labs(
+    x = "Indeks (%)", 
+    y = NULL
+  ) +
+  ggtitle(
+    "Alle punktindekser i hele området"
+  )
+
+plot_sam_pi <-
+  rtm_trd |> 
+  dplyr::filter(
+    index_p < 300,
+    index_p > -300,
+    city_trp == TRUE
+  ) |> 
+  ggplot(aes(index_p)) +
+  geom_histogram(aes(weight = weight)) +
+  xlim(-305, 305) +
+  theme_light() +
+  theme(
+    axis.ticks.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  ) +
+  labs(
+    x = "Indeks (%)", 
+    y = NULL
+  ) +
+  ggtitle(
+    "Byindekspunktene"
+  )
+
+plot_pop_pi / plot_sam_pi + 
+  patchwork::plot_annotation(
+    title = "Histogram over punktindekser",
+    subtitle = "Data for 2020-2022, regional transportmodell for Trondheimsområdet",
+    theme = theme(plot.background = element_rect(fill = svv_background_color))
+  ) +
+  patchwork::plot_layout(axes = "collect")
+```
+
+Hvis vi begrenser indeksverdiene til intervallet (-30, 30) ser vi i @fig-rtm_pi_2 at fordelingene er litt mer forskjellig, og at utvalget har en større andel verdier på den positive siden.
+
+```{r}
+#| label: fig-rtm_pi_2
+#| fig-cap: "Sammenligning av punktindeksenes fordeling. Legg merke til at skalaen på *y*-aksen er ulik."
+#| message: false
+#| warning: false
+
+plot_pop_pi_2 <-
+  rtm_trd |> 
+  dplyr::filter(
+    index_p < 30,
+    index_p > -30
+  ) |> 
+  ggplot(aes(index_p)) +
+  geom_histogram(aes(weight = weight)) +
+  xlim(-35, 35) +
+  theme_light() +
+  theme(
+    axis.ticks.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  ) +
+  labs(
+    x = "Indeks (%)", 
+    y = NULL
+  ) +
+  ggtitle(
+    "Alle punktindekser i hele området"
+  )
+
+plot_sam_pi_2 <-
+  rtm_trd |> 
+  dplyr::filter(
+    index_p < 30,
+    index_p > -30,
+    city_trp == TRUE
+  ) |> 
+  ggplot(aes(index_p)) +
+  geom_histogram(aes(weight = weight)) +
+  xlim(-35, 35) +
+  theme_light() +
+  theme(
+    axis.ticks.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  ) +
+  labs(
+    x = "Indeks (%)", 
+    y = NULL
+  ) +
+  ggtitle(
+    "Byindekspunktene"
+  )
+
+plot_pop_pi_2 / plot_sam_pi_2 + 
+  patchwork::plot_annotation(
+    title = "Histogram over punktindekser",
+    subtitle = "Data for 2020-2022, regional transportmodell for Trondheimsområdet",
+    theme = theme(plot.background = element_rect(fill = svv_background_color))
+  ) +
+  patchwork::plot_layout(axes = "collect")
+```
+
+
+#### Trafikkarbeid
+Fordeling av trafikkarbeid på lenkene er vist i @fig-rtm_tw. Her ser vi tydelig at utvalget er noe forskjøvet mot høyere verdier enn populasjonen.
+
+```{r}
+#| label: fig-rtm_tw
+#| fig-cap: "Sammenligning av trafikkarbeidets fordeling. Legg merke til at skalaen på *y*-aksen er ulik. Fordi trafikkarbeidstallene varierer over en stor skala er verdiene her log-transformert for å lette den visuelle sammenligningen." 
+#| message: false
+#| warning: false
+
+rtm_trd_log_tw <-
+  rtm_trd |> 
+  dplyr::filter(
+    traffic_work_22 > 0
+  ) |>
+  dplyr::mutate(
+    log_traffic_work_22 = log(traffic_work_22)
+  )
+  
+x_min <- min(rtm_trd_log_tw$log_traffic_work_22) |> floor() - 1
+x_max <- max(rtm_trd_log_tw$log_traffic_work_22) |> ceiling() + 1
+
+plot_pop_tw <-
+  rtm_trd_log_tw |> 
+  ggplot(aes(log_traffic_work_22)) +
+  geom_histogram() +
+  xlim(x_min, x_max) +
+  theme_light() +
+  theme(
+    axis.ticks.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  ) +
+  labs(
+    x = "Trafikkarbeid (log kjøretøykm per dag)", 
+    y = NULL
+  ) +
+  ggtitle(
+    "Alle trafikklenker i området"
+  )
+
+plot_sam_tw <-
+  rtm_trd_log_tw |> 
+  dplyr::filter(
+    city_trp == TRUE
+  ) |> 
+  ggplot(aes(log_traffic_work_22)) +
+  geom_histogram() +
+  xlim(x_min, x_max) +
+  theme_light() +
+  theme(
+    axis.ticks.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  ) +
+  labs(
+    x = "Trafikkarbeid (log kjøretøykm per dag)", 
+    y = NULL
+  ) +
+  ggtitle(
+    "Trafikklenkene med byindekspunkt"
+  )
+
+plot_pop_tw / plot_sam_tw + 
+  patchwork::plot_annotation(
+    title = "Histogram over trafikkarbeid",
+    subtitle = "Data for 2020-2022, regional transportmodell for Trondheimsområdet",
+    theme = theme(plot.background = element_rect(fill = svv_background_color))
+  ) +
+  patchwork::plot_layout(axes = "collect")
+
+```
+
+
+#### Vegkategori
+En mulig indikator på om utvalget er tilfeldig er om det fordeler seg jevnt på vegkategori. I @fig-rtm_road_cat ser vi at utvalget er overrepresentert på riksveg, både når vi teller opp antall lenker og ser på fordelingen av trafikkarbeid.
+
+```{r}
+#| label: fig-rtm_road_cat
+#| fig-cap: "Sammenligning av fordeling av vegkategori i populasjon og utvalg." 
+#| message: false
+#| warning: false
+
+rtm_trd_road_cat <-
+  rtm_trd |> 
+  dplyr::filter(
+    traffic_work_22 > 0
+  ) |>
+  dplyr::mutate(
+    road_category = stringr::str_sub(road_ref, 1, 1) |> factor(levels = c("E", "R", "F"))
+  ) 
+
+rtm_trd_pop_road_cat <-
+  rtm_trd_road_cat |> 
+  dplyr::summarise(
+    count = n(),
+    tw = sum(traffic_work_20),
+    .by = c(road_category)
+  ) |> 
+  dplyr::mutate(
+    total_count = sum(count),
+    total_tw = sum(tw),
+    percentage_road_cat = count / total_count,
+    percentage_tw = tw / total_tw,
+    selection = "alle"
+  )
+
+rtm_trd_sam_road_cat <-
+  rtm_trd_road_cat |> 
+  dplyr::filter(city_trp == TRUE) |> 
+  dplyr::summarise(
+    count = n(),
+    tw = sum(traffic_work_20),
+    .by = c(road_category)
+  ) |> 
+  dplyr::mutate(
+    total_count = sum(count),
+    total_tw = sum(tw),
+    percentage_road_cat = count / total_count,
+    percentage_tw = tw / total_tw,
+    selection = "byindeks"
+  )
+  
+rtm_trd_road_cat_count <-
+  dplyr::bind_rows(
+    rtm_trd_pop_road_cat,
+    rtm_trd_sam_road_cat
+  ) |> 
+  ggplot(aes(road_category, percentage_road_cat, group = selection, fill = selection)) +
+  geom_col(position = "dodge2") +
+  theme_light() +
+  theme(
+    axis.ticks.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color),
+    legend.position = "bottom"
+  ) +
+  scale_fill_manual(
+    values = c(
+          "alle" = "#008ec2",
+          "byindeks" = "#ed9300"
+        ),
+        labels = c(
+          "Alle",
+          "Indekspunkt"
+        ),
+        name = "Utvalg"
+  ) +
+  labs(
+    x = "Vegkategori", 
+    y = NULL
+  ) +
+  ggtitle(
+    "Antall lenker"
+  )
+
+rtm_trd_road_cat_tw <-
+  dplyr::bind_rows(
+    rtm_trd_pop_road_cat,
+    rtm_trd_sam_road_cat
+  ) |> 
+  ggplot(aes(road_category, percentage_tw, group = selection, fill = selection)) +
+  geom_col(position = "dodge2") +
+  theme_light() +
+  theme(
+    axis.ticks.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color),
+    legend.position = "bottom"
+  ) +
+  scale_fill_manual(
+    values = c(
+          "alle" = "#008ec2",
+          "byindeks" = "#ed9300"
+        ),
+        labels = c(
+          "Alle",
+          "Indekspunkt"
+        ),
+        name = "Utvalg"
+  ) +
+  labs(
+    x = "Vegkategori", 
+    y = NULL
+  ) +
+  ggtitle(
+    "Trafikkarbeid"
+  )
+
+rtm_trd_road_cat_count / rtm_trd_road_cat_tw + 
+  patchwork::plot_annotation(
+    title = "Fordeling av vegkategori",
+    subtitle = "Data for 2020-2022, regional transportmodell for Trondheimsområdet",
+    theme = theme(plot.background = element_rect(fill = svv_background_color))
+  ) +
+  patchwork::plot_layout(axes = "collect")
+```
+
+
+# Representativitet og indeksmetode
+Representativitet er nært knyttet til beregningsmetoden for selve byindeksen og dens usikkerhet. I dette kapittelet ses det nærmere på noen aspekter ved indeksen som er aktuelle i den sammenheng. I @tbl-rtm_index vises verdiene for utvalg og populasjon. I vektet indeks er det trafikkarbeidet til hver lenke som er vektene. Utvalgets konfidensintervall blir veldig stort i dette eksempelet fordi det er noen av punktindeksene som har ganske høy verdi.
+
+Siden byindeksen er et mål på endring i trafikkarbeid, og populasjonens trafikkarbeid er kjent, kan utvalgsusikkerheten dempes med en korreksjonsfaktor for endelig populasjonsstørrelse.
+
+```{r}
+#| label: tbl-rtm_index
+#| tbl-cap:  "Sammenligning av vektet og uvektet indeks. Konfidensintervallene (KI) gjelder for vektet indeks, og de korrigerte er justert med en faktor som tar hensyn til at populasjonen er av endelig størrelse."
+
+rtm_trd_index |> 
+  dplyr::select(
+    n_trp,
+    area_index_p,
+    tw_area_index_p,,
+    weighted_sd_p,
+    ci_lower,
+    ci_upper,
+    ci_lower_fpc,
+    ci_upper_fpc
+  ) |> 
+  flextable::flextable() |>
+  colformat_double(j = 2:5, digits = 1) |>
+  set_header_labels(
+    n_trp = "Antall lenker",
+    area_index_p = "Uvektet indeks (%)",
+    tw_area_index_p = "Vektet indeks (%)",
+    weighted_sd_p = "Standardavvik",
+    ci_lower = "KI nedre",
+    ci_upper = "KI øvre",
+    ci_lower_fpc = "KI nedre korrigert",
+    ci_upper_fpc = "KI øvre korrigert"
+  ) |>
+  align(j = 4, align = "center", part = "all") |>
+  bold(part = "header") |>
+  bg(bg = "#ED9300", part = "header")
+```
+
+
+## Tilfeldig utvalg
+Utvalget er ikke tilfeldig trukket ut, men er en kombinasjon av et beleilighetsutvalg og ekspertutvalg. Indeksverdiene i @tbl-rtm_index er ikke veldig forskjellige, og standardavvikene er veldig like. Dette er en indikasjon på at utvalget representerer populasjonen ganske godt.
+
+Hvis vi foretar en helt tilfeldig uttrekning av 43 lenker fra populasjonen, hvordan vil det ligne på utvalget som byindekspunktene utgjør?
+
+Simulerer n utvalg, med tilbakelegging, av 43 lenker. Sammenligner gjennomsnittlig indeks for disse med byindekspunktenes utvalg.
 
 
 
-# Tilgjengelige forklaringsvariabler
+# Stratifisering
+
+## Tilgjengelige forklaringsvariabler
 Utgangspunktet for indeksmetodikken er å se på vegnettet som en populasjon som det gjøres et utvalg fra. Individene i populasjonen er trafikklenker, som er vegstrekninger fra kryss til kryss som har homogen trafikkmengde på en tidsoppløsning som er minst et døgn. Trafikklenkene er beriket med flere variabler hentet fra NVDB:
 
 - vegkategori
@@ -120,12 +534,20 @@ Her er det kun relevant å se på reiser utført av bilfører. Verdiene finnes i
 
 
 ## Korrelasjonsanalyse
+For kategoriske forklaringsvariabler brukes ANOVA (bruke colino-pakken?), mens for numeriske ser vi på Pearsons korrelasjonskoeffisient (antar normalfordeling).
 
+Statistisk test på likhet mellom gjennomsnitt gir en indikasjon. Også median, varians og kvartilbredde kan sammenlignes.
+
+Byindeksen er beregnet som et vektet gjennomsnitt av indeksen for hver av trafikklenkene i utvalget, og det er trafikkarbeid som danner vektene. En trafikklenkes indeks kalles gjerne en punktindeks, da trafikkregistreringene foregår i et gitt passeringspunkt i vegbanen.
 
 
 ## Forklaringsvariabler fra transportmodell
 Se på eksempel med fordeling av reisehensikt på alle lenker. Varierer det så mye at det kan benyttes som en forklaringsvariabel.
 
+## Sensitivitetsanalyse
+Hvordan påvirker stratifiseringen indeksverdiene? 
+
+## Behov for minste antall punkt.
 
 
 ## Stratifisert trafikkarbeid
@@ -133,14 +555,19 @@ Alle tilgjengelige variabler viser liten korrelasjon med punktindeksen. Uansett 
 
 Pass på at strata ikke er for små - unngå å ha noen uten observasjoner.
 
+Se innvirkingen av økende antall strata på trafikkarbeid - nærmer det seg individuell vekting?
 
-# Fordeling av punkt i vegnettet
+
+# Mål på representativitet (hvis aktuelt)
+Føyningsmål fra for eksempel Kolmogorov-Smirnov-testen gir ett tall som er den største avstanden mellom to fordelinger. Et avstandsmål som summerer opp "hele" avviket mellom to fordelinger er å foretrekke. Avvik (deviance). 
+
+
+
+## Fordeling av punkt i vegnettet
 Ved å se på vegnettet som en sammenhengende grafstruktur, kan det beregnes grafparametre som beskriver dekningen av trafikklenker.
 
 
-
-
-## Gjennomsnittlig avstand til utvalgte lenker
+### Gjennomsnittlig avstand til utvalgte lenker
 Et relevant mål er den gjennomsnittlige korteste avstanden fra trafikklenkene som ikke er med i utvalget til de som er utvalgt. Dette sier noe om hvor spredt punktene ligger. Det er ikke noe naturlig grenseverdi for dette, men det kan sammenlignes over tid.
 
 For å beregne dette er det nødvendig å linjetransformere grafen slik at trafikklenker blir representert som noder.
@@ -152,6 +579,6 @@ Dette tar opp i seg dekningen av hele vegnettet. Har ingen implisitt antagelse o
 Kan brukes til å simulere utvalg, og peke ut den beste posisjonen til punkt $n+1$. Kan vi vekte avstanden med trafikkarbeid?
 
 
-## Andel utvalgte trafikklenker inkludert nærmeste nabolenker
+### Andel utvalgte trafikklenker inkludert nærmeste nabolenker
 Dette impliserer at det er en romlig korrelasjon mellom nabolenker, men den er ikke påviselig.
 
