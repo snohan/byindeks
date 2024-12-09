@@ -36,6 +36,7 @@ svv_background_color <- "#F5F5F5"
 library(tidyverse)
 library(patchwork)
 library(flextable)
+library(vcd)
 #library(sf)
 #library(sfnetworks)
 library(igraph)
@@ -369,11 +370,14 @@ rtm_trd_sam_road_cat <-
     selection = "byindeks"
   )
   
-rtm_trd_road_cat_count <-
+rtm_trd_road_cat_stats <-
   dplyr::bind_rows(
     rtm_trd_pop_road_cat,
     rtm_trd_sam_road_cat
-  ) |> 
+  ) 
+
+rtm_trd_road_cat_count_plot <-
+  rtm_trd_road_cat_stats |> 
   ggplot(aes(road_category, percentage_road_cat, group = selection, fill = selection)) +
   geom_col(position = "dodge2") +
   theme_light() +
@@ -406,11 +410,8 @@ rtm_trd_road_cat_count <-
     "Antall lenker"
   )
 
-rtm_trd_road_cat_tw <-
-  dplyr::bind_rows(
-    rtm_trd_pop_road_cat,
-    rtm_trd_sam_road_cat
-  ) |> 
+rtm_trd_road_cat_tw_plot <-
+  rtm_trd_road_cat_stats |> 
   ggplot(aes(road_category, percentage_tw, group = selection, fill = selection)) +
   geom_col(position = "dodge2") +
   theme_light() +
@@ -443,13 +444,48 @@ rtm_trd_road_cat_tw <-
     "Trafikkarbeid"
   )
 
-rtm_trd_road_cat_count / rtm_trd_road_cat_tw + 
+rtm_trd_road_cat_count_plot / rtm_trd_road_cat_tw_plot + 
   patchwork::plot_annotation(
     title = "Fordeling av vegkategori",
     subtitle = "Data for 2020-2022, regional transportmodell for Trondheimsområdet",
     theme = theme(plot.background = element_rect(fill = svv_background_color))
   ) +
   patchwork::plot_layout(axes = "collect")
+```
+
+For å finne ut om utvalget kan sies å være trukket tilfeldig fra populasjonen, kan vi bruke Fishers eksakte test for uavhengighet.
+
+
+
+```{r}
+#| label: rtm_road_cat_chisq
+
+# chi_test <- stats::chisq.test(rtm_trd_sam_road_cat$count, p = rtm_trd_pop_road_cat$percentage_road_cat)
+# chi_test
+# chi_test$expected
+# A category with too low expected value (less than five) -> must use Fisher's exact test. 
+# There are more exact tests, but they are generally limited to 2x2 tables.
+
+# Must have a contingency table
+rtm_trd_road_cat_stats_contingency <-
+  rtm_trd_road_cat_stats |> 
+  tidyr::pivot_wider(
+    id_cols = selection,
+    names_from = road_category,
+    values_from = count
+  ) |> 
+  tibble::column_to_rownames(var = "selection")
+
+
+# TODO: look at Exact Test of Goodness-of-Fit
+# Null: sample and population have no association, or does not have same distribution  
+fisher_test <- stats::fisher.test(rtm_trd_road_cat_stats_contingency)
+
+mosaicplot(rtm_trd_road_cat_stats_contingency)
+
+vcd::mosaic(
+  rtm_trd_road_cat_stats_contingency
+  )
 ```
 
 

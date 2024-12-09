@@ -58,8 +58,8 @@ trp_id_msnr <-
 ## Choose publish month ----
 {
 present_year <- 2024
-index_month <- 10 # the one to be published now
-city_number <- 959
+index_month <- 11 # the one to be published now
+city_number <- 960
 }
 # End choose
 
@@ -542,11 +542,11 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    years_1_2,
-    years_1_3,
-    years_1_4,
-    years_1_5,
-    years_1_6,
+    # years_1_2,
+    # years_1_3,
+    # years_1_4,
+    # years_1_5,
+    # years_1_6,
     # years_1_7
   ) |>
   dplyr::mutate(
@@ -718,7 +718,7 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[60:61]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[28:30]) |>
   dplyr::select(
     trp_id,
     year,
@@ -774,10 +774,10 @@ mdt_and_pi <-
     length_quality >= 98.5
   ) |>
   dplyr::left_join(
-    trp_index_monthly,
-    by = c("trp_id", "year", "month"),
-    #dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
-    #by = c("trp_id", "year_month" = "month_object") # TRD
+    #trp_index_monthly,
+    #by = c("trp_id", "year", "month"),
+    dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
+    by = c("trp_id", "year_month" = "month_object") # TRD
   ) |>
   dplyr::left_join(
     trp_names,
@@ -849,6 +849,13 @@ all_24_month_indices <-
 
 all_36_month_indices <-
   calculate_rolling_indices(36)
+
+all_rolling_indices <-
+  dplyr::bind_rows(
+    all_12_month_indices,
+    all_24_month_indices,
+    all_36_month_indices
+  )
 
 list(
   all_12_month_indices,
@@ -1164,20 +1171,26 @@ all_rolling_indexes_chained <-
       ),
     chained_index_i = index_i * city_index_tromso_2019_2022$index_i,
     index_p = (chained_index_i - 1) * 100,
-    standard_error =
+    standard_error_p =
       100 * sqrt(
         index_i^2 * 1e-4 * chain_link_se_p^2 +
           city_index_tromso_2019_2022$index_i^2 * 1e-4 * standard_error_p^2 +
           1e-4 * chain_link_se_p^2 * 1e-4 * standard_error_p^2
       ),
-    ci_lower = round(index_p - 1.96 * standard_error, 1),
-    ci_upper = round(index_p + 1.96 * standard_error, 1),
-    index_type = "chained",
-    period = "jan-des"
+    ci_lower = round(index_p - 1.96 * standard_error_p, 1),
+    ci_upper = round(index_p + 1.96 * standard_error_p, 1)#,
+    #index_type = "chained",
+    #period = "jan-des"
   ) |>
   dplyr::rename(
     index_i_org = index_i,
     index_i = chained_index_i
+  ) |>
+  dplyr::select(
+    -index_i_org
+  ) |>
+  dplyr::relocate(
+    index_i
   )
 
 all_rolling_indexes_chained |>
@@ -1319,9 +1332,10 @@ if(city_number == 960){
     byindeks_aarlig = city_index_yearly_all,
     punkt_mdt = mdt_and_pi,
     punkt_3_aar_glid_indeks = all_36_month_trp_indices,
-    by_3_aar_glid_indeks = all_36_month_indices,
-    by_2_aar_glid_indeks = all_24_month_indices,
-    by_1_aar_glid_indeks = all_12_month_indices
+    by_glid_indeks = all_rolling_indices
+    #by_3_aar_glid_indeks = all_36_month_indices,
+    #by_2_aar_glid_indeks = all_24_month_indices,
+    #by_1_aar_glid_indeks = all_12_month_indices
     # TRD
     ,byindeks_hittil = city_index_so_far_all
   ) |>

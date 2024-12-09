@@ -40,10 +40,10 @@ source("rmd_setup.R")
 # Nord-Jæren             952 (2017) 08
 # Bergen                8952 (2018) 08
 # Oslo                   959 (2018) 09
-# Trondheim              960 (2019) 08
+# Trondheim              960 (2019) 11
 
 # Choose city number:
-city_number <- 959
+city_number <- 960
 
 ## Meta info
 city_number_county_name <- 

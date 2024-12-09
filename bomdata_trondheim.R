@@ -323,7 +323,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "october" # English
+month_string <- "november" # English
 year_number <- 2024
 
 apar_data_for_month <-
@@ -492,7 +492,7 @@ plot_toll_station_data_per_lane <- function(toll_id_chosen, year_chosen) {
 }
 
 # Ranheim is 72
-plot_toll_station_data_per_lane("53", 2024)
+plot_toll_station_data_per_lane("86", 2024)
 
 
 ## Exclusions ----
@@ -523,6 +523,9 @@ tolling_data_daily_tidy <-
   dplyr::filter(!(trp_id == "54" &
                    date %in% seq.Date(as.Date("2021-08-01"), as.Date("2021-08-15"), 1))) |>
   dplyr::filter(!(trp_id == "54" & year == 2022)) |>
+  dplyr::filter(!(trp_id == "54" & month == "2024-10-01")) |>
+  dplyr::filter(!(trp_id == "54" & month == "2024-11-01")) |>
+  dplyr::filter(!(trp_id == "54" & month == "2024-12-01")) |>
   dplyr::filter(!(trp_id == "55" & month == "2021-05-01")) |>
   dplyr::filter(!(trp_id == "55" & month == "2021-06-01")) |>
   dplyr::filter(!(trp_id == "55" & month == "2021-07-01")) |>
