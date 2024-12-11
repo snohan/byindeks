@@ -59,7 +59,7 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 11 # the one to be published now
-city_number <- 959
+city_number <- 956
 }
 # End choose
 
@@ -455,7 +455,7 @@ if(city_number == 960){
       road_category_and_number,
       year,
       jan:des
-      #jan:okt
+      #jan:nov
     ) |>
     dplyr::arrange(
       name,
@@ -546,8 +546,8 @@ city_index_yearly_all <-
     years_1_3,
     years_1_4,
     years_1_5,
-    #years_1_6,
-    #years_1_7
+    years_1_6,
+    years_1_7
   ) |>
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -718,7 +718,7 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[60:61]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[19:20]) |>
   dplyr::select(
     trp_id,
     year,
@@ -767,38 +767,72 @@ plot_mdt_comparisons |>
 ## Compare exclusions of MDT and index ----
 # Check that the "same" exclusions are used on PI as MDT
 # TRD toll station MDTs already have the same exclusions
-mdt_and_pi <-
-  mdt_validated |>
-  dplyr::filter(
-    coverage >= 50,
-    length_quality >= 98.5
-  ) |>
-  dplyr::left_join(
-    #trp_index_monthly,
-    #by = c("trp_id", "year", "month"),
-    dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
-    by = c("trp_id", "year_month" = "month_object") # TRD
-  ) |>
-  dplyr::left_join(
-    trp_names,
-    by = "trp_id"
-  ) |>
-  dplyr::select(
-    trp_id,
-    name,
-    year,
-    month,
-    mdt_coverage = coverage,
-    length_quality,
-    mdt,
-    index
-  ) |>
-  dplyr::arrange(
-    name,
-    trp_id,
-    year,
-    month
-  )
+if(city_number == 960){
+
+  mdt_and_pi <-
+    mdt_validated |>
+    dplyr::filter(
+      coverage >= 50,
+      length_quality >= 98.5
+    ) |>
+    dplyr::left_join(
+      dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
+      by = c("trp_id", "year_month" = "month_object") # TRD
+    ) |>
+    dplyr::left_join(
+      trp_names,
+      by = "trp_id"
+    ) |>
+    dplyr::select(
+      trp_id,
+      name,
+      year,
+      month,
+      mdt_coverage = coverage,
+      length_quality,
+      mdt,
+      index
+    ) |>
+    dplyr::arrange(
+      name,
+      trp_id,
+      year,
+      month
+    )
+}else{
+
+  mdt_and_pi <-
+    mdt_validated |>
+    dplyr::filter(
+      coverage >= 50,
+      length_quality >= 98.5
+    ) |>
+    dplyr::left_join(
+      trp_index_monthly,
+      by = c("trp_id", "year", "month")
+    ) |>
+    dplyr::left_join(
+      trp_names,
+      by = "trp_id"
+    ) |>
+    dplyr::select(
+      trp_id,
+      name,
+      year,
+      month,
+      mdt_coverage = coverage,
+      length_quality,
+      mdt,
+      index
+    ) |>
+    dplyr::arrange(
+      name,
+      trp_id,
+      year,
+      month
+    )
+
+}
 
 mdt_and_pi_check <-
   mdt_and_pi |>
