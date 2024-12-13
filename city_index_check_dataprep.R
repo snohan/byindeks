@@ -9,7 +9,9 @@ dplyr::select(
   road_category_and_number,
   county_name,
   municipality_name,
-  lat, lon, road_link_position
+  lat, lon, road_link_position#,
+  #traffic_type,
+  #registration_frequency
 ) |>
 dplyr::mutate(name = stringr::str_to_title(name, locale = "no")) |>
 readr::write_rds(

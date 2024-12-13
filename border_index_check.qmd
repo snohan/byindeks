@@ -47,7 +47,7 @@ library(htmltools)
 # Choose
 index_year <- 2024
 # Last published month
-index_month <- 9
+index_month <- 10
 index_id <- 2952
 
 new_month_name <- 

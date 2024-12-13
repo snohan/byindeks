@@ -875,7 +875,7 @@ all_links_tidy <-
   ) |>
   tidyr::unnest(
     trafficVolumes
-  )|>
+  ) |>
   dplyr::filter(
     year == 2023,
     trafficVolumeResolution == "ADT",
