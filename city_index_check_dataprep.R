@@ -13,7 +13,7 @@ dplyr::select(
   #traffic_type,
   #registration_frequency
 ) |>
-dplyr::mutate(name = stringr::str_to_title(name, locale = "no")) |>
+#dplyr::mutate(name = stringr::str_to_title(name, locale = "no")) |>
 readr::write_rds(
   "trps_for_city_index.rds"
 )

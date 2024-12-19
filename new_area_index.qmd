@@ -1,0 +1,524 @@
+---
+title: "Vurdering av mulighet for byindeks i byområder som er kandidater til ny tilskuddsordning"
+format: 
+  html:
+    css: svv.css
+    number-sections: true
+    toc: true
+    toc-location: left
+    toc-title: "Innhold"
+    toc-expand: true
+    df-print: paged
+    self-contained: true
+crossref:
+  fig-title: Figur
+  tbl-title: Tabell
+  title-delim: .
+  fig-prefix: figur
+  tbl-prefix: tabell
+editor: source
+knitr: 
+  opts_chunk: 
+    echo: false
+---
+
+
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
+#| warning: false
+#| message: false
+  
+base::Sys.setlocale(locale = "nb.utf8")
+svv_background_color <- "#F5F5F5"
+
+library(tidyverse)
+#library(patchwork)
+library(flextable)
+#library(gt)
+library(sf)
+#library(sfnetworks)
+#library(igraph)
+#library(tidygraph)
+#library(htmltools)
+library(leaflet)
+
+source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
+
+flextable::set_flextable_defaults(
+  #font.size = 8,
+  #padding.bottom = .2,
+  #padding.top = .4,
+  decimal.mark = ",",
+  big.mark = " ",
+  na_str = ""
+)
+
+
+visualize_function_class_distribution <- function(link_population) {
+
+  function_class_pop <-
+    link_population |> 
+    sf::st_drop_geometry() |>
+    dplyr::summarise(
+      count = n(),
+      tw = sum(traffic_work_km),
+      .by = c(function_class)
+    ) |> 
+    dplyr::mutate(
+      total_count = sum(count),
+      total_tw = sum(tw),
+      percentage_count = count / total_count,
+      percentage_tw = tw / total_tw,
+      selection = "populasjon"
+    )
+  
+  function_class_sam <-
+    link_population |> 
+    sf::st_drop_geometry() |>
+    dplyr::filter(!is.na(point_id)) |> 
+    dplyr::summarise(
+      count = n(),
+      tw = sum(traffic_work_km),
+      .by = c(function_class)
+    ) |> 
+    dplyr::mutate(
+      total_count = sum(count),
+      total_tw = sum(tw),
+      percentage_count = count / total_count,
+      percentage_tw = tw / total_tw,
+      selection = "utvalg"
+    )
+    
+  function_class_stats <-
+    dplyr::bind_rows(
+      function_class_pop,
+      function_class_sam
+    ) 
+  
+  function_class_tw_plot <-
+    function_class_stats |> 
+    ggplot(aes(function_class, percentage_tw, group = selection, fill = selection)) +
+    geom_col(position = "dodge2") +
+    theme_light() +
+    theme(
+      axis.ticks.x = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.y = element_blank(),
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.background = element_rect(fill = svv_background_color),
+      legend.position = "bottom"
+    ) +
+    scale_fill_manual(
+      values = c(
+            "populasjon" = "#008ec2",
+            "utvalg" = "#ed9300"
+          ),
+          labels = c(
+            "Alle trafikklenker (populasjon)",
+            "Trafikklenker med trafikkregistrering"
+          ),
+          name = "Utvalg"
+    ) +
+    labs(
+      x = "Funksjonsklasse", 
+      y = NULL
+    ) +
+    ggtitle(
+      "Trafikkarbeid fordelt på funksjonsklasse",
+      "Data for 2023"
+    )
+  
+  return(function_class_tw_plot)
+}
+
+map_links_with_function_class <- function(link_df) {
+
+  links_with_trp <-
+    link_df |> 
+    dplyr::filter(
+      !is.na(point_id)
+    )
+  
+  links_without_trp <-
+    link_df |> 
+    dplyr::filter(
+      is.na(point_id)
+    )
+  
+  palette_function_class <-
+    colorFactor(
+      palette = c("#158925", "#077197", "#b63434", "#687277"),
+      domain = c("A", "B", "C", "D")
+    )
+  
+  map <-
+    #link_df |>
+    links_without_trp |> 
+    leaflet(
+      width = "100%",
+      height = 700,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F)
+    ) |>
+    addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) |>
+    addPolylines(
+      #data = links_without_trp,
+      #label = ~label_text,
+      opacity = 0.4,
+      color = ~ palette_function_class(function_class),
+      highlightOptions = highlightOptions(
+        bringToFront = TRUE,
+        sendToBack = FALSE,
+        color = "purple",
+        opacity = 0.6
+      )
+    ) |>
+    addPolylines(
+      data = links_with_trp,
+      #label = ~label_text,
+      opacity = 0.9,
+      color = ~ palette_function_class(function_class),
+      highlightOptions = highlightOptions(
+        bringToFront = TRUE,
+        sendToBack = FALSE,
+        color = "purple",
+        opacity = 0.6
+      )
+    ) |>
+    addLegend(
+      "bottomright",
+      pal = palette_function_class,
+      values = ~ function_class,
+      title = "Funksjonsklasse",
+      opacity = 0.7
+    )
+
+  return(map)
+}
+
+
+table_trps <- function(trp_df) {
+  
+  trp_df |> 
+    sf::st_drop_geometry() |>
+    dplyr::filter(!is.na(point_id)) |> 
+    dplyr::select(
+      name,
+      road_reference,
+      aadt_lmv,
+      function_class
+    ) |> 
+    dplyr::mutate(
+      ordered_road_reference = 
+        base::factor(
+          road_reference, 
+          levels = stringr::str_sort(unique(road_reference), numeric = TRUE),
+          ordered = TRUE
+        )
+    ) |> 
+    dplyr::arrange(
+      ordered_road_reference
+    ) |> 
+    dplyr::select(
+      -ordered_road_reference
+    ) |> 
+    DT::datatable(
+      filter = "none",
+      rownames = FALSE,
+      colnames = c(
+        "Navn på punkt" = "name",
+        "Vegreferanse" = "road_reference",
+        "ÅDT lette kjøretøy" = "aadt_lmv",
+        "Funksjonsklasse" = "function_class"
+      ),
+      options = list(
+        searching = FALSE,
+        pageLength = 20,
+        lengthChange = FALSE,
+        autoWidth = TRUE,
+        columnDefs = list(list(className = 'dt-left', targets = c(0, 1)))
+      )
+    )
+}
+
+
+table_link_statistics <- function(link_df) {
+  
+  dplyr::bind_rows(
+  link_df |> 
+    sf::st_drop_geometry() |>
+    dplyr::summarise(
+      number_of_links = n(),
+      traffic_work_mill_km = sum(traffic_work_km) / 1e6
+    ) |> 
+    dplyr::mutate(
+      selection = "population"
+    ),
+  link_df |> 
+    sf::st_drop_geometry() |>
+    dplyr::filter(!is.na(point_id)) |> 
+    dplyr::summarise(
+      number_of_links = n(),
+      traffic_work_mill_km = sum(traffic_work_km) / 1e6
+    ) |> 
+    dplyr::mutate(
+      selection = "sample"
+    )
+  ) |> 
+  tidyr::pivot_longer(
+    cols = c(number_of_links, traffic_work_mill_km),
+    names_to = "quantity"
+  ) |> 
+  tidyr::pivot_wider(
+    names_from = selection,
+    values_from = value
+  ) |> 
+  dplyr::mutate(
+    percentage = 100 * (sample / population),
+    quantity =
+      dplyr::case_when(
+        quantity == "number_of_links" ~ "Antall trafikklenker",
+        quantity == "traffic_work_mill_km" ~ "Trafikkarbeid (mill. km)"
+      )
+  ) |> 
+  flextable::flextable() |>
+  colformat_double(j = 2:4, digits = 0) |>
+  set_header_labels(
+    quantity = "Størrelse",
+    population = "Populasjon",
+    sample = "Utvalg",
+    percentage = "Prosentandel (%)"
+  ) |>
+  bold(part = "header") |>
+  bg(bg = "#ED9300", part = "header")
+}
+```
+
+```{r}
+#| label: data
+
+links_bdo_2023 <- readr::read_rds("new_area_index/links_bdo_2023.rds")
+links_aal_2023 <- readr::read_rds("new_area_index/links_aal_2023.rds")
+```
+
+
+# Bakgrunn
+Statens vegvesen har fått i oppdrag fra Samferdselsdepartementet å forvalte en fireårig, søknadsbasert tilskuddsordning til aktuelle byområder. Formålet med ordningen er å legge til rette for en klima- og miljøvennlig byutvikling og god framkommelighet ved å styrke satsingen på kollektivtransport, sykling og gange i mindre byområder som ikke har byvekstavtaler. Nullvekstmålet for persontransport med bil er det overordnede målet. En forutsetning for ordningen er at det avtales et felles opplegg for måling av nullvekstmålet. Opplegget for måloppnåelse skal i utgangspunktet kunne effektueres for 2025, ettersom det skal rapporteres til departementet på måloppnåelse for 2025. 
+
+I dette notatet vurderes det om en byindeks kan beregnes med dagens tilgjengelighet på trafikkdata i de aktuelle byområdene. Det foreslås hvilke trafikkregistreringspunkter, eventuelt supplert med bomstasjoner, som kan benyttes i beregningen. Det vurderes også hva som kan være potensielle referanseår, hvor 2023 og 2024 er aktuelle.
+
+
+# Om byindeks og representativitet
+For å følge med på trafikkutviklingen i et byområde, kan det beregnes en byindeks. Byindeksen benytter registrert trafikk på et utvalg steder i området og sammenligner størrelsen på denne mellom et referanseår og et beregningsår. Utstrekningen på det geografiske området som er relevant for byindeksen må være kjent, og vegnettet må være inndelt i trafikklenker. En trafikklenke er en vegstrekning mellom to kryss som langs hele sin lengde har samme trafikkmengde over et døgn. Byindeksen baserer seg på utvalgsmetodikk der alle trafikklenkene i området utgjør populasjonen, mens de trafikklenkene som har trafikkregistrering utgjør utvalget.
+
+
+## Trafikkarbeid
+For å måle endring i persontransport med bil, beregnes det trafikkarbeidet som denne trafikken utfører. Trafikkarbeidet for en trafikklenke måles i antall kjørte kilometer, og kan beregnes som produktet av trafikklenkens årsdøgntrafikk (ÅDT) og dens lengde i kilometer, ganget opp med 365 dager.
+
+
+## Representativitet
+For at en byindeks skal kunne beregnes for et område, må utvalget være representativt for hele populasjonen. For å vurdere dette benyttes en inndeling av vegnettet i funksjonsklasse. Vegens funksjonsklasse angir hvilken funksjon den har eller er prioritert for. En veg med stor andel lange reiser (fjerntrafikk) må ha høy funksjonsklasse, mens en veg med hovedsakelig lokal trafikk gjerne kan ha mye trafikk, men vil ha lav funksjonsklasse. Det finnes følgende funksjonsklasser:
+
+- A - Nasjonale hovedveger
+  Den høyeste funksjonsklassen. Alle Europa- og riksveger har funksjonsklasse A.
+- B - Regionale hovedveger
+  Veger med regional funksjon, overordnet/regional betydning. Sammen med funksjonsklasse A utgjør disse et overordnet transportnett.
+- C - Lokale hovedveger
+  Veger med viktig lokal, men også en viss regional, funksjon hvor hovedfunksjonen er viktige forbindelsesveger mellom funksjonsklasse A og B og forbindelse til kommunesentra.
+- D - Lokale samleveger
+  Veger som binder sammen bygder og grender eller gir hovedadkomst til bygd eller grend. Disse vegene har også en samlefunksjon for trafikk til eller fra veger i funksjonsklasse B og C.
+- E - Lokale adkomstveger
+  Veger som kan være samleveier, men som mest domineres av adkomst til boliger og virksomheter langs disse veiene.
+
+Trafikklenker med funksjonsklasse E vurderes som lite relevant i en byindeks, og er derfor utelatt.
+
+Det kan være aktuelt å ta med enkelte viktige kommunale veger som ligger sentralt til i et område. Da kommunale veger ikke har angitt funksjonsklasse, må disse tildeles en verdi for at de skal kunne tas med i vurderingen av representativteten. De vil typisk kunne få funksjonsklasse D.
+
+
+## Endringer i vegnettet
+Byindeksmetoden baserer seg på måling av den generelle endringen i trafikk for å estimere en trend over tid. Trafikken sammenlignes mellom to tidsperioder som i hvert av punktene der trafikken registreres må være normaltrafikk, ikke trafikk som er unormalt høy eller lav som følge av stengte eller nyåpnede veger i nærheten. Dersom vegnettet endres ved at enkelte veger stenges eller at nye veger åpnes, vil trafikkstrømmene lokalt bli veldig påvirket av dette og datagrunnlaget vil på enkelte steder ikke kunne sies å representere en generell trend. Derfor vil byindeksmetoden fungere dårligere ved større vegnettsendringer. I noen tilfeller vil punktene fange opp både veger med redusert og økt trafikk på en balansert måte, men dette vil føre til økt spredning i datagrunnlaget og følgelig større usikkerhet i indeksestimatet.
+
+
+# Bodø
+Det relevante vegnettet for dette byområdet består av alle Europa-, riks- og fylkesveger i Bodø kommune, som vist i @fig-map_bdo.
+
+```{r}
+#| label: fig-map_bdo
+#| message: false
+#| fig-cap: "Trafikklenker og funksjonsklasse. Mørk farge indikerer lenker med trafikkregistrering."
+
+map_links_with_function_class(links_bdo_2023)
+```
+
+</br>
+
+En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen er angitt i @tbl-trp_bdo.
+
+```{r}
+#| label: tbl-trp_bdo
+#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks."
+
+table_trps(links_bdo_2023)
+```
+
+</br>
+
+En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_bdo.
+
+```{r}
+#| label: tbl-trp_count_bdo
+#| tbl-cap:  "Statistikk for trafikklenker i Bodø."
+
+
+dplyr::bind_rows(
+  links_bdo_2023 |> 
+    sf::st_drop_geometry() |>
+    dplyr::summarise(
+      number_of_links = n(),
+      traffic_work_mill_km = sum(traffic_work_km) / 1e6
+    ) |> 
+    dplyr::mutate(
+      selection = "population"
+    ),
+  links_bdo_2023 |> 
+    sf::st_drop_geometry() |>
+    dplyr::filter(!is.na(point_id)) |> 
+    dplyr::summarise(
+      number_of_links = n(),
+      traffic_work_mill_km = sum(traffic_work_km) / 1e6
+    ) |> 
+    dplyr::mutate(
+      selection = "sample"
+    )
+  ) |> 
+  tidyr::pivot_longer(
+    cols = c(number_of_links, traffic_work_mill_km),
+    names_to = "quantity"
+  ) |> 
+  tidyr::pivot_wider(
+    names_from = selection,
+    values_from = value
+  ) |> 
+  dplyr::mutate(
+    percentage = 100 * (sample / population),
+    quantity =
+      dplyr::case_when(
+        quantity == "number_of_links" ~ "Antall trafikklenker",
+        quantity == "traffic_work_mill_km" ~ "Trafikkarbeid (mill. km)"
+      )
+  ) |> 
+  flextable::flextable() |>
+  colformat_double(j = 2:4, digits = 0) |>
+  set_header_labels(
+    quantity = "Størrelse",
+    population = "Populasjon",
+    sample = "Utvalg",
+    percentage = "Prosentandel (%)"
+  ) |>
+  bold(part = "header") |>
+  bg(bg = "#ED9300", part = "header")
+```
+
+Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_bdo.
+
+
+```{r}
+#| label: fig-function_class_bdo
+#| fig-cap: "Fordeling av funksjonsklasse i populasjon og utvalg." 
+#| message: false
+#| warning: false
+
+visualize_function_class_distribution(links_bdo_2023)
+```
+
+I @fig-function_class_bdo ser vi at utvalget grovt sett ligner en del på populasjonen. Det er likevel noe overrepresentasjon i funksjonsklasse A, og noe underrepresentasjon i funksjonsklasse B.
+
+
+```{r}
+#| label: fig-function_class_bdo_adjusted
+#| fig-cap: "Fordeling av funksjonsvegklasse i populasjon og utvalg." 
+#| message: false
+#| warning: false
+
+# links_bdo_2023 |> 
+#   dplyr::mutate(
+#     point_id = 
+#       dplyr::case_when(
+#         point_id == "18346V886007" ~ NA_character_,
+#         point_id == "26549V2669516" ~ NA_character_,
+#         TRUE ~ point_id
+#       )
+#   ) |> 
+# visualize_function_class_distribution()
+```
+
+
+## Endringer i vegnettet
+Byindeksen kan få problemer med representativiteten dersom det forekommer større endringer i vegnettet av lang varighet. I Bodø skal det bygges ny lufthavn og en forlengelse av dagens rv. 80 er planlagt åpnet i 2027. Dette vil antakelig påvirke trafikken i dagens rv. 80 Olav V gate så mye at tre av byindekspunktene som ligger der ikke blir sammenlignbare før og etter den nye vegen åpner.
+
+
+# Ålesund
+Det relevante vegnettet for dette byområdet består av Europa-, riks- og fylkesveger i sentrale deler av Ålesund kommune, som vist i @fig-map_aal.
+
+```{r}
+#| label: fig-map_aal
+#| message: false
+#| fig-cap: "Trafikklenker og funksjonsklasse. Mørk farge indikerer lenker med trafikkregistrering."
+
+map_links_with_function_class(links_aal_2023)
+```
+
+</br>
+
+En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen er angitt i @tbl-trp_aal.
+
+```{r}
+#| label: tbl-trp_aal
+#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks."
+
+table_trps(links_aal_2023)
+```
+
+</br>
+
+En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_aal.
+
+```{r}
+#| label: tbl-trp_count_aal
+#| tbl-cap:  "Statistikk for trafikklenker i Ålesund."
+
+
+table_link_statistics(links_aal_2023)
+```
+
+Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_aal.
+
+
+```{r}
+#| label: fig-function_class_aal
+#| fig-cap: "Fordeling av funksjonsklasse i populasjon og utvalg." 
+#| message: false
+#| warning: false
+
+visualize_function_class_distribution(links_aal_2023)
+```
+
+I @fig-function_class_aal ser vi at utvalget ligner på populasjonen.
+
+
+## Endringer i vegnettet
+Ny E39 mellom Breivika og Vegsundet kan påvirke en del av trafikkregistreringspunktene, men prosjektet er i planfase så det er ikke sikkert det får innvirkning i den aktuelle perioden.
+
+Ny firefelts E136 på strekningen Breivika - Lerstad vil bety en del for trafikkflyten i området. Dette prosjektet er i byggefase nå og skal være ferdig høsten 2027.
+
+
+# Haugesund
