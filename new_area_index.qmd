@@ -173,7 +173,8 @@ map_links_with_function_class <- function(link_df) {
     addPolylines(
       #data = links_without_trp,
       #label = ~label_text,
-      opacity = 0.4,
+      opacity = 1,
+      weight = 4,
       color = ~ palette_function_class(function_class),
       highlightOptions = highlightOptions(
         bringToFront = TRUE,
@@ -185,7 +186,8 @@ map_links_with_function_class <- function(link_df) {
     addPolylines(
       data = links_with_trp,
       #label = ~label_text,
-      opacity = 0.9,
+      opacity = 1,
+      weight = 8,
       color = ~ palette_function_class(function_class),
       highlightOptions = highlightOptions(
         bringToFront = TRUE,
@@ -205,6 +207,7 @@ map_links_with_function_class <- function(link_df) {
   return(map)
 }
 
+map_caption <- "Trafikklenker og funksjonsklasse. Brede linjer indikerer lenker med trafikkregistrering."
 
 table_trps <- function(trp_df) {
   
@@ -308,6 +311,9 @@ table_link_statistics <- function(link_df) {
 
 links_bdo_2023 <- readr::read_rds("new_area_index/links_bdo_2023.rds")
 links_aal_2023 <- readr::read_rds("new_area_index/links_aal_2023.rds")
+links_hau_2023 <- readr::read_rds("new_area_index/links_hau_2023.rds")
+links_arg_2023 <- readr::read_rds("new_area_index/links_arg_2023.rds")
+links_vfl_2023 <- readr::read_rds("new_area_index/links_vfl_2023.rds")
 ```
 
 
@@ -354,7 +360,7 @@ Det relevante vegnettet for dette byområdet består av alle Europa-, riks- og f
 ```{r}
 #| label: fig-map_bdo
 #| message: false
-#| fig-cap: "Trafikklenker og funksjonsklasse. Mørk farge indikerer lenker med trafikkregistrering."
+#| fig-cap: !expr map_caption
 
 map_links_with_function_class(links_bdo_2023)
 ```
@@ -463,7 +469,15 @@ I @fig-function_class_bdo ser vi at utvalget grovt sett ligner en del på popula
 
 
 ## Endringer i vegnettet
-Byindeksen kan få problemer med representativiteten dersom det forekommer større endringer i vegnettet av lang varighet. I Bodø skal det bygges ny lufthavn og en forlengelse av dagens rv. 80 er planlagt åpnet i 2027. Dette vil antakelig påvirke trafikken i dagens rv. 80 Olav V gate så mye at tre av byindekspunktene som ligger der ikke blir sammenlignbare før og etter den nye vegen åpner.
+I Bodø skal det bygges ny lufthavn og en forlengelse av dagens rv. 80 er planlagt åpnet i 2027. Dette vil antakelig påvirke trafikken i dagens rv. 80 Olav V gate så mye at tre av byindekspunktene som ligger der ikke blir sammenlignbare før og etter den nye vegen åpner.
+
+
+## Konklusjon
+En oppsummering av vurderingen for Bodøområdet:
+
+- En byindeks kan fint beregnes med eksisterende trafikkregistreringspunkt
+- Det er ikke behov for å benytte data fra bomstasjoner
+- Det er vegprosjekter som kan påvirke byindeksens representativitet, men sannsynligvis ikke i for stort omfang
 
 
 # Ålesund
@@ -472,7 +486,7 @@ Det relevante vegnettet for dette byområdet består av Europa-, riks- og fylkes
 ```{r}
 #| label: fig-map_aal
 #| message: false
-#| fig-cap: "Trafikklenker og funksjonsklasse. Mørk farge indikerer lenker med trafikkregistrering."
+#| fig-cap: !expr map_caption
 
 map_links_with_function_class(links_aal_2023)
 ```
@@ -521,4 +535,236 @@ Ny E39 mellom Breivika og Vegsundet kan påvirke en del av trafikkregistreringsp
 Ny firefelts E136 på strekningen Breivika - Lerstad vil bety en del for trafikkflyten i området. Dette prosjektet er i byggefase nå og skal være ferdig høsten 2027.
 
 
+## Konklusjon
+En oppsummering av vurderingen for Ålesundområdet:
+
+- En byindeks kan fint beregnes med eksisterende trafikkregistreringspunkt
+- Det er ikke behov for å benytte data fra bomstasjoner
+- Det er vegprosjekter som kan påvirke byindeksens representativitet, men sannsynligvis ikke i for stort omfang
+- Både 2023 og 2024 er aktuelle som referanseår
+
+
 # Haugesund
+Det aktuelle området består her av hele Haugesund kommune, samt fastlandsdelen av Karmøy kommune.
+
+```{r}
+#| label: fig-map_hau
+#| message: false
+#| fig-cap: !expr map_caption
+
+map_links_with_function_class(links_hau_2023)
+```
+
+</br>
+
+En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen er angitt i @tbl-trp_hau.
+
+```{r}
+#| label: tbl-trp_hau
+#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks."
+
+table_trps(links_hau_2023)
+```
+
+</br>
+
+```{r}
+#| label: tbl-trp_count_hau
+#| tbl-cap:  "Statistikk for trafikklenker i Haugesund."
+
+
+table_link_statistics(links_hau_2023)
+```
+
+Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_hau.
+
+
+```{r}
+#| label: fig-function_class_hau
+#| fig-cap: "Fordeling av funksjonsklasse i populasjon og utvalg." 
+#| message: false
+#| warning: false
+
+visualize_function_class_distribution(links_hau_2023)
+```
+
+I @fig-function_class_hau ser vi at utvalget ikke ligner helt på populasjonen. Det er overrepresentasjon på funksjonsklassen A og B, mens det er underrepresentasjon på C og D. Ved å redusere antall punkt på A og B, vil dette jevne seg ut litt, men når det ikke er flere enn 16 punkt i utvalget så det er ønskelig å beholde så mange som mulig.
+
+Det er seks bomstasjoner rundt Haugesund sentrum, men alle disse registrerer trafikk i bare en av kjøreretningene, og er derfor ikke mulig å benytte i en byindeks.
+
+I Karmøytunnelen er det tre trafikkregistreringspunkt. Trafikk som kommer inn fra Håviksiden og Mjåsundsiden og som skal nordover forbi Hellevik vil passere punktet som ligger i den nordre tunnelarmen. Da er det ikke behov for punktene i Håvik- og Mjåsundarmene. Tas disse to punktene ut av utvalget, vil ikke funksjonsklasse B lenger være overrepresentert.
+
+Trafikkregistreringspunktet på E134 ved Raglamyr på avkjøringen til Brakahaug har relativt lite trafikk og fanger kun opp en del av trafikken til et bergenset boligområde, og vil ikke inngå i utvalget av punkter i byindeksen.
+
+Fordelingen av trafikkarbeid i et justert utvalg vises i @fig-function_class_hau_adjusted. Det er nå en mer lik fordeling mellom populasjon og utvalg, men spesielt er funksjonsklasse A overrepresentert. Alle punkter i funksjonsklasse A ligger på E134, og her kan det være et lite innslag av gjennomgangstrafikk. Punktene ved Rossabø og Raglamyr vil ha relativt høy andel lokaltrafikk. De to ytterpunktene ved Toskatjørn og Norheim (Karmsund bru) har høy andel trafikk fra omlandet som skal til Haugesund. Ved å fjerne disse to fra utvalget, blir funksjonsklasse A veldig underrepresentert. Siden det totalt er relativt få punkter i utvalget, er det best om disse beholdes. 
+
+```{r}
+#| label: fig-function_class_hau_adjusted
+#| fig-cap: "Fordeling av funksjonsvegklasse i populasjon og justert utvalg." 
+#| message: false
+#| warning: false
+
+links_hau_2023 |>
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        point_id == "30193V2370595" ~ NA_character_, # Karmøytunnelen Mjåsund
+        point_id == "77208V2370670" ~ NA_character_, # Karmøytunnelen Håvik
+        point_id == "57430V319659" ~ NA_character_, # Raglamyr Brakahaug
+        #point_id == "57053V319651" ~ NA_character_, # Toskatjørn
+        #point_id == "88119V319814" ~ NA_character_, # Norheim (Karmsund)
+        TRUE ~ point_id
+      )
+  ) |>
+visualize_function_class_distribution()
+```
+
+</br>
+
+Med 13 punkt i utvalget, utgjør dette fortsatt en relativt stor andel av populasjonen, som vist i @tbl-trp_count_hau_adjusted.
+
+```{r}
+#| label: tbl-trp_count_hau_adjusted
+#| tbl-cap:  "Statistikk for trafikklenker i Haugesund, justert utvalg."
+
+links_hau_2023 |>
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        point_id == "30193V2370595" ~ NA_character_, # Karmøytunnelen Mjåsund
+        point_id == "77208V2370670" ~ NA_character_, # Karmøytunnelen Håvik
+        point_id == "57430V319659" ~ NA_character_, # Raglamyr Brakahaug
+        #point_id == "57053V319651" ~ NA_character_, # Toskatjørn
+        #point_id == "88119V319814" ~ NA_character_, # Norheim (Karmsund)
+        TRUE ~ point_id
+      )
+  ) |>
+  table_link_statistics()
+```
+
+## Endringer i vegnettet
+Det er ingen vegprosjekter i området som kan påvirke byindeksen i den aktuelle perioden.
+
+
+## Konklusjon
+En oppsummering av vurderingen for Haugesundområdet:
+
+- En byindeks kan fint beregnes med eksisterende trafikkregistreringspunkt
+- Det er ikke aktuelt å benytte data fra bomstasjoner
+- Det er per januar 2024 ingen opplysinger om vegprosjekter som kan påvirke byindeksens representativitet i løpet av den aktuelle perioden
+- Både 2023 og 2024 er aktuelle som referanseår
+
+
+# Arendal/Grimstad
+Det relevante vegnettet i dette området består av kommunene Arendal og Grimstad. E18 har høy andel gjennomgangstrafikk, så denne vil ikke være med i populasjonen. Ramper til og fra E18 kunne ha vært med siden de per definisjon har kun lokaltrafikk, men siden det ikke finnes trafikkregistreringer på disse, er disse også utelatt fra denne analysen.
+
+
+```{r}
+#| label: fig-map_arg
+#| message: false
+#| fig-cap: !expr map_caption
+
+map_links_with_function_class(links_arg_2023)
+```
+
+</br>
+
+En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen er angitt i @tbl-trp_arg.
+
+```{r}
+#| label: tbl-trp_arg
+#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks."
+
+table_trps(links_arg_2023)
+```
+
+</br>
+
+```{r}
+#| label: tbl-trp_count_arg
+#| tbl-cap:  "Statistikk for trafikklenker i Arendal og Grimstad."
+
+
+table_link_statistics(links_arg_2023)
+```
+
+
+Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_arg.
+
+
+```{r}
+#| label: fig-function_class_arg
+#| fig-cap: "Fordeling av funksjonsklasse i populasjon og utvalg." 
+#| message: false
+#| warning: false
+
+visualize_function_class_distribution(links_arg_2023)
+```
+
+
+## Konklusjon
+En oppsummering av vurderingen for Arendal/Grimstad-området:
+
+- En byindeks kan fint beregnes med eksisterende trafikkregistreringspunkt
+- Det er ikke aktuelt å benytte data fra bomstasjoner
+- Det er per januar 2025 ingen opplysinger om vegprosjekter som kan påvirke byindeksen i løpet av den aktuelle perioden
+- Både 2023 og 2024 er aktuelle som referanseår
+
+
+# Vestfoldbyen
+Det relevante vegnettet i Vestfoldbyen består av kommunene Tønsberg, Sandefjord og Larvik. E18 har høy andel gjennomgangstrafikk, så denne vil ikke være med i populasjonen. Ramper til og fra E18 kunne ha vært med siden de per definisjon har kun lokaltrafikk, men siden det ikke finnes trafikkregistreringer på disse, er disse også utelatt fra denne analysen.
+
+
+```{r}
+#| label: fig-map_vfl
+#| message: false
+#| fig-cap: !expr map_caption
+
+map_links_with_function_class(links_vfl_2023)
+```
+
+</br>
+
+En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen er angitt i @tbl-trp_vfl.
+
+```{r}
+#| label: tbl-trp_vfl
+#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks."
+
+table_trps(links_vfl_2023)
+```
+
+</br>
+
+```{r}
+#| label: tbl-trp_count_vfl
+#| tbl-cap:  "Statistikk for trafikklenker i Vestfoldbyen."
+
+
+table_link_statistics(links_vfl_2023)
+```
+
+
+Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_vfl.
+
+
+```{r}
+#| label: fig-function_class_vfl
+#| fig-cap: "Fordeling av funksjonsklasse i populasjon og utvalg." 
+#| message: false
+#| warning: false
+
+visualize_function_class_distribution(links_vfl_2023)
+```
+
+
+## Konklusjon
+En oppsummering av vurderingen for Vestfoldbyen:
+
+- En byindeks kan fint beregnes med eksisterende trafikkregistreringspunkt
+- Det er ikke aktuelt å benytte data fra bomstasjoner
+- Det kan være noen mindre vegprosjekter i området, men som neppe vil påvirke byindeksens representativitet i løpet av den aktuelle perioden
+- Både 2023 og 2024 er aktuelle som referanseår
+
+
+# Oppsummering

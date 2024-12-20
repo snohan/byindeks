@@ -87,11 +87,15 @@ get_link_population <- function(area_municipality_ids) {
 }
 
 
-# Area ----
+# Cities ----
 # Use municipalities first, then reduce area as needed "by hand"
 # Bodø 1804
 # Ålesund 1508
-municipality_ids <- c(1508)
+# Haugesund c(1106, 1149)
+# Arendal/Grimstad c(4203, 4202)
+# Vestfoldbyen c(3905, 3907, 3909)
+
+municipality_ids <- c(3905, 3907, 3909)
 
 # Must reduce Ålesund area
 aalesund_polygon <-
@@ -114,9 +118,41 @@ aalesund_polygon <-
   dplyr::summarise(geometry = sf::st_combine(geometry)) |>
   sf::st_cast("POLYGON")
 
+# Must reduce Haugesund are (just the mainland part of Karmøy)
+haugesund_polygon <-
+  tibble::tibble(
+    lon = c(
+      5.4023042,
+      5.4225312,
+      5.3385784,
+      5.3236261,
+      5.2969286,
+      5.2926611,
+      5.2236771,
+      5.1980626
+    ),
+    lat = c(
+      59.5391317,
+      59.2708638,
+      59.2651765,
+      59.3304398,
+      59.3666045,
+      59.3846508,
+      59.4258514,
+      59.5270527
+    )
+  ) |>
+  tibble::rowid_to_column("id") |>
+  sf::st_as_sf(coords = c("lon", "lat"), crs = 4326) |>
+  dplyr::summarise(geometry = sf::st_combine(geometry)) |>
+  sf::st_cast("POLYGON")
 
+# For both Arendal/Grimstad and Vestfoldbyen, E18 has high percentage through traffic, so it will not be part of population.
+
+
+# Check polygon on map
 #aalesund_polygon
-link_population_raw_3 |>
+haugesund_polygon |>
   leaflet(
     width = "100%",
     height = 700,
@@ -132,6 +168,7 @@ link_population_raw_3 |>
   addPolylines(
     opacity = 0.4
   )
+
 
 link_population_raw <-
   get_link_population(municipality_ids) |>
@@ -158,6 +195,22 @@ if(municipality_ids == 1508) {
   link_population_raw <-
     link_population_raw |>
     sf::st_filter(aalesund_polygon, .predicate = st_intersects)
+
+}
+
+if(1106 %in% municipality_ids) {
+
+  link_population_raw <-
+    link_population_raw |>
+    sf::st_filter(haugesund_polygon, .predicate = st_intersects)
+
+}
+
+if(4203 | 3905 %in% municipality_ids) {
+
+  link_population_raw <-
+    link_population_raw |>
+    dplyr::filter(!stringr::str_detect(roadSystemReferences, "EV18"))
 
 }
 
@@ -335,15 +388,12 @@ population_tidy <-
 readr::write_rds(
   population_tidy,
   #"new_area_index/links_bdo_2023.rds"
-  "new_area_index/links_aal_2023.rds"
+  #"new_area_index/links_aal_2023.rds"
+  #"new_area_index/links_hau_2023.rds"
+  #"new_area_index/links_arg_2023.rds"
+  "new_area_index/links_vfl_2023.rds"
 )
 
 ## Toll stations
-# All toll stations in Bodø is on or very close to links with TRP, while three are on K-roads. Thus no toll stations will be used for city index.
 # TODO: toll station meta data
 
-
-
-
-## Graph metrics ----
-# ?
