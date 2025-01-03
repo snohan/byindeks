@@ -605,6 +605,73 @@ create_city_index_table_sd <- function(city_info) {
   return(city_table)
 }
 
+create_city_index_table_ci <- function(city_info) {
+
+  n_years <-
+    city_info$year |>
+    base::unique() |>
+    base::length()
+
+  line_after_single_years <-
+    officer::fp_border(
+      color = "#dadada",
+      style = "solid",
+      width = 1
+    )
+
+  city_table <-
+    city_info |>
+    dplyr::select(
+      year_from_to,
+      period,
+      n_trp,
+      index_p,
+      ci_lower,
+      ci_upper
+    ) |>
+    dplyr::mutate(
+      period_text = paste0(year_from_to, " ", period),
+      ci_lower_text = as.character(ci_lower) |> stringr::str_replace("\\.", ","),
+      ci_upper_text = as.character(ci_upper) |> stringr::str_replace("\\.", ","),
+      ci = paste0("(", ci_lower_text, ", ", ci_upper_text, ")")
+    ) |>
+    dplyr::select(
+      period_text,
+      n_trp,
+      index_p,
+      ci
+    ) |>
+    flextable::flextable() |>
+    colformat_double(
+      j = c("index_p"),
+      digits = 1
+    ) |>
+    set_header_labels(
+      period_text = "Periode",
+      n_trp = "Antall\npunkt",
+      index_p = "Byindeks\n(endring i\ntrafikkmengde)\n(%)",
+      ci = "Konfidens-\nintervall\n(%-poeng)"
+    ) |>
+    align(
+      #j = c("n_trp", "ci"),
+      align = "center", part = "all"
+    ) |>
+    # align(
+    #   j = c("index_p"),
+    #   align = "left", part = "header"
+    # ) |>
+    bold(part = "header") |>
+    bg(bg = "#ED9300", part = "header") |>
+    border_remove() |>
+    hline_top(part = "header", border = borderline) |>
+    hline_bottom(part = "all", border = borderline) |>
+    hline(i = n_years, border = line_after_single_years, part = "body") |>
+    autofit() |>
+    height_all(height = .2)
+
+  return(city_table)
+}
+
 create_monthly_city_index_table <- function(city_monthly) {
 
   monthly_table <- city_monthly %>%
@@ -674,7 +741,7 @@ create_city_mdt_36_index_table <- function(city_36_month) {
     ) %>%
     set_header_labels(
       index_period = "Sammenligningsperiode",
-      index_p = "Endring i\ntrafikkmengde\n(%)",
+      index_p = "Byindeks\n(endring i\ntrafikkmengde\n(%)",
       n_trp = "Antall\npunkt",
       sd_sample_p = "Standardavvik\n(prosentpoeng)",
       standard_error_p = "Standardfeil\n(prosentpoeng)"
@@ -686,6 +753,51 @@ create_city_mdt_36_index_table <- function(city_36_month) {
     hline_bottom(part = "all", border = borderline) %>%
     align(align = "center", part = "all") |>
     autofit() %>%
+    height_all(height = .1)
+
+  return(city_table)
+}
+
+create_city_mdt_36_index_table_ci <- function(city_36_month) {
+
+  city_table <-
+    city_36_month |>
+    dplyr::select(
+      index_period,
+      n_trp,
+      index_p,
+      ci_lower,
+      ci_upper
+    ) |>
+    dplyr::mutate(
+      ci_lower_text = as.character(ci_lower) |> stringr::str_replace("\\.", ","),
+      ci_upper_text = as.character(ci_upper) |> stringr::str_replace("\\.", ","),
+      ci = paste0("(", ci_lower_text, ", ", ci_upper_text, ")")
+    ) |>
+    dplyr::select(
+      index_period,
+      n_trp,
+      index_p,
+      ci
+    ) |>
+    flextable::flextable() |>
+    colformat_double(
+      j = c("index_p"),
+      digits = 1
+    ) |>
+    set_header_labels(
+      index_period = "Sammenligningsperiode",
+      index_p = "Byindeks\n(endring i\ntrafikkmengde)\n(%)",
+      n_trp = "Antall\npunkt",
+      ci = "Konfidens-\nintervall\n(%-poeng)"
+    ) |>
+    bold(part = "header") |>
+    bg(bg = "#ED9300", part = "header") |>
+    border_remove() |>
+    hline_top(part = "header", border = borderline) |>
+    hline_bottom(part = "all", border = borderline) |>
+    align(align = "center", part = "all") |>
+    autofit() |>
     height_all(height = .1)
 
   return(city_table)

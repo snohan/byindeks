@@ -9,7 +9,7 @@ city_36_month |>
     month_n,
     by = year
   ) |> 
-  create_city_mdt_36_index_table() |> 
+  create_city_mdt_36_index_table_ci() |> 
   flextable::footnote(
     i = 1,
     j = 2,

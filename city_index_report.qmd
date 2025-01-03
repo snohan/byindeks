@@ -36,14 +36,14 @@ source("rmd_setup.R")
 # Grenland               955 (2016) 08
 # Kristiansand og omegn  957 (2016) 08
 # Nedre Glomma 2023    18952 (2023) 08
-# Tromsø 2022          16952 (2022) 08
-# Nord-Jæren             952 (2017) 08
+# Tromsø 2022          16952 (2022) 12
+# Nord-Jæren             952 (2017) 12
 # Bergen                8952 (2018) 08
 # Oslo                   959 (2018) 09
 # Trondheim              960 (2019) 11
 
 # Choose city number:
-city_number <- 960
+city_number <- 952
 
 ## Meta info
 city_number_county_name <- 
@@ -134,7 +134,8 @@ latest_complete_year <-
     index_type == "chained",
     month == 12
   ) |> 
-  dplyr::slice_max(year)
+  dplyr::slice_max(year) |> 
+  dplyr::slice_min(year_base)
 
 # from_base_year_to_last_year <- paste0(base_year, "-", last_year)
 # 
@@ -459,7 +460,7 @@ city_info |>
   dplyr::filter(
     !(index_type == "chained" & month != 12)
   ) |>
-  create_city_index_table_sd()
+  create_city_index_table_ci()
 ```
 
 {{< include city_report_files/_yearly_change_text.Rmd >}}

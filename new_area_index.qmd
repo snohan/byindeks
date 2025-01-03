@@ -314,6 +314,7 @@ links_aal_2023 <- readr::read_rds("new_area_index/links_aal_2023.rds")
 links_hau_2023 <- readr::read_rds("new_area_index/links_hau_2023.rds")
 links_arg_2023 <- readr::read_rds("new_area_index/links_arg_2023.rds")
 links_vfl_2023 <- readr::read_rds("new_area_index/links_vfl_2023.rds")
+links_tbg_2023 <- readr::read_rds("new_area_index/links_tbg_2023.rds")
 ```
 
 
@@ -322,36 +323,40 @@ Statens vegvesen har fått i oppdrag fra Samferdselsdepartementet å forvalte en
 
 I dette notatet vurderes det om en byindeks kan beregnes med dagens tilgjengelighet på trafikkdata i de aktuelle byområdene. Det foreslås hvilke trafikkregistreringspunkter, eventuelt supplert med bomstasjoner, som kan benyttes i beregningen. Det vurderes også hva som kan være potensielle referanseår, hvor 2023 og 2024 er aktuelle.
 
+Notatet er sist oppdatert 2. januar 2025. Kontaktperson er Snorre Hansen, Statens vegvesen (Transport og samfunn, Transportutvikling, Veg- og transportteknologi).
+
 
 # Om byindeks og representativitet
-For å følge med på trafikkutviklingen i et byområde, kan det beregnes en byindeks. Byindeksen benytter registrert trafikk på et utvalg steder i området og sammenligner størrelsen på denne mellom et referanseår og et beregningsår. Utstrekningen på det geografiske området som er relevant for byindeksen må være kjent, og vegnettet må være inndelt i trafikklenker. En trafikklenke er en vegstrekning mellom to kryss som langs hele sin lengde har samme trafikkmengde over et døgn. Byindeksen baserer seg på utvalgsmetodikk der alle trafikklenkene i området utgjør populasjonen, mens de trafikklenkene som har trafikkregistrering utgjør utvalget.
+For å følge med på trafikkutviklingen i et byområde kan det beregnes en byindeks. Byindeksen benytter registrert trafikk på et utvalg steder i området og sammenligner størrelsen på denne mellom et referanseår og et beregningsår. Avgrensingen til det geografiske området som er relevant for byindeksen må være kjent, og vegnettet må være inndelt i trafikklenker. En trafikklenke er en vegstrekning mellom to kryss som langs hele sin lengde har samme trafikkmengde sett over et døgn. Byindeksen baserer seg på utvalgsmetodikk der alle trafikklenkene i området utgjør populasjonen, mens de trafikklenkene som har en trafikkregistrering utgjør utvalget.
 
 
 ## Trafikkarbeid
-For å måle endring i persontransport med bil, beregnes det trafikkarbeidet som denne trafikken utfører. Trafikkarbeidet for en trafikklenke måles i antall kjørte kilometer, og kan beregnes som produktet av trafikklenkens årsdøgntrafikk (ÅDT) og dens lengde i kilometer, ganget opp med 365 dager.
+For å måle endring i persontransport med bil, beregnes det trafikkarbeidet som denne trafikken utfører. Trafikkarbeidet på en trafikklenke måles i antall kjørte kilometer gjennom et år, og det kan beregnes som produktet av dens lengde i kilometer, trafikklenkens årsdøgntrafikk (ÅDT for lette kjøretøy) og 365 dager.
 
 
 ## Representativitet
 For at en byindeks skal kunne beregnes for et område, må utvalget være representativt for hele populasjonen. For å vurdere dette benyttes en inndeling av vegnettet i funksjonsklasse. Vegens funksjonsklasse angir hvilken funksjon den har eller er prioritert for. En veg med stor andel lange reiser (fjerntrafikk) må ha høy funksjonsklasse, mens en veg med hovedsakelig lokal trafikk gjerne kan ha mye trafikk, men vil ha lav funksjonsklasse. Det finnes følgende funksjonsklasser:
 
-- A - Nasjonale hovedveger
+- A - Nasjonale hovedveger </br>
   Den høyeste funksjonsklassen. Alle Europa- og riksveger har funksjonsklasse A.
-- B - Regionale hovedveger
+- B - Regionale hovedveger </br>
   Veger med regional funksjon, overordnet/regional betydning. Sammen med funksjonsklasse A utgjør disse et overordnet transportnett.
-- C - Lokale hovedveger
+- C - Lokale hovedveger </br>
   Veger med viktig lokal, men også en viss regional, funksjon hvor hovedfunksjonen er viktige forbindelsesveger mellom funksjonsklasse A og B og forbindelse til kommunesentra.
-- D - Lokale samleveger
+- D - Lokale samleveger </br>
   Veger som binder sammen bygder og grender eller gir hovedadkomst til bygd eller grend. Disse vegene har også en samlefunksjon for trafikk til eller fra veger i funksjonsklasse B og C.
-- E - Lokale adkomstveger
+- E - Lokale adkomstveger </br>
   Veger som kan være samleveier, men som mest domineres av adkomst til boliger og virksomheter langs disse veiene.
 
 Trafikklenker med funksjonsklasse E vurderes som lite relevant i en byindeks, og er derfor utelatt.
 
-Det kan være aktuelt å ta med enkelte viktige kommunale veger som ligger sentralt til i et område. Da kommunale veger ikke har angitt funksjonsklasse, må disse tildeles en verdi for at de skal kunne tas med i vurderingen av representativteten. De vil typisk kunne få funksjonsklasse D.
+Generelt kan det være aktuelt å ta med enkelte viktige kommunale veger som ligger sentralt til i et område. Da kommunale veger ikke har angitt funksjonsklasse, må disse tildeles en verdi for at de skal kunne tas med i vurderingen av representativteten. De vil typisk kunne få funksjonsklasse D. Det er ikke tatt med noen kommunale veger i analysene som beskrives i dette notatet.
+
+Gjennomgangstrafikk skal ikke inngå i datagrunnlaget for byindeksen. Som regel vil andelen gjennomgangstrafikk i et byområde være så liten at det ikke er en aktuell problemstilling. Men i enkelte tilfeller kan det være høy andel gjennomgangstrafikk på enkelte veger, og da bør det ikke være byindekspunkt på disse.
 
 
 ## Endringer i vegnettet
-Byindeksmetoden baserer seg på måling av den generelle endringen i trafikk for å estimere en trend over tid. Trafikken sammenlignes mellom to tidsperioder som i hvert av punktene der trafikken registreres må være normaltrafikk, ikke trafikk som er unormalt høy eller lav som følge av stengte eller nyåpnede veger i nærheten. Dersom vegnettet endres ved at enkelte veger stenges eller at nye veger åpnes, vil trafikkstrømmene lokalt bli veldig påvirket av dette og datagrunnlaget vil på enkelte steder ikke kunne sies å representere en generell trend. Derfor vil byindeksmetoden fungere dårligere ved større vegnettsendringer. I noen tilfeller vil punktene fange opp både veger med redusert og økt trafikk på en balansert måte, men dette vil føre til økt spredning i datagrunnlaget og følgelig større usikkerhet i indeksestimatet.
+Byindeksmetoden baserer seg på måling av den generelle endringen i trafikk for å estimere en trend over tid. Trafikken sammenlignes mellom to tidsperioder som i hvert av punktene der trafikken registreres må være normaltrafikk, ikke trafikk som er unormalt høy eller lav som følge av stengte eller nyåpnede veger i nærheten. Dersom vegnettet endres ved at enkelte veger stenges eller at nye veger åpnes, vil trafikkstrømmene lokalt bli veldig påvirket av dette og datagrunnlaget vil på enkelte steder ikke kunne sies å representere en generell trend. Derfor vil byindeksmetoden fungere dårligere ved større vegnettsendringer. I noen tilfeller vil punktene fange opp både veger med redusert og økt trafikk på en balansert måte, men dette vil føre til økt spredning i datagrunnlaget og følgelig større usikkerhet i indeksestimatet. Byindekspunkt som er eller vil bli betydelig berørt av vegnettsendringer bør derfor ikke inngå i datagrunnlaget.
 
 
 # Bodø
@@ -377,6 +382,8 @@ table_trps(links_bdo_2023)
 ```
 
 </br>
+
+Det finnes åtte bomstasjoner i området som alle ligger i Bodø by. Tre av disse ligger på kommunalveg og er dermed ikke aktuelle i denne analysen. De øvrige fem ligger på trafikklenker som også har trafikkregistreringspunkt. Det er derfor ikke aktuelt å benytte data fra bomstasjoner i denne byindeksen.
 
 En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_bdo.
 
@@ -446,7 +453,7 @@ Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function
 visualize_function_class_distribution(links_bdo_2023)
 ```
 
-I @fig-function_class_bdo ser vi at utvalget grovt sett ligner en del på populasjonen. Det er likevel noe overrepresentasjon i funksjonsklasse A, og noe underrepresentasjon i funksjonsklasse B.
+I @fig-function_class_bdo ser vi at utvalget grovt sett ligner en del på populasjonen. Det er likevel noe overrepresentasjon i funksjonsklasse A, og noe underrepresentasjon i funksjonsklasse B. Data for 2024 fordeler seg tilsvarende.
 
 
 ```{r}
@@ -478,6 +485,7 @@ En oppsummering av vurderingen for Bodøområdet:
 - En byindeks kan fint beregnes med eksisterende trafikkregistreringspunkt
 - Det er ikke behov for å benytte data fra bomstasjoner
 - Det er vegprosjekter som kan påvirke byindeksens representativitet, men sannsynligvis ikke i for stort omfang
+- Både 2023 og 2024 er aktuelle som referanseår
 
 
 # Ålesund
@@ -504,6 +512,8 @@ table_trps(links_aal_2023)
 
 </br>
 
+Det er 13 bomstasjoner i Ålesund by. Fire av disse ligger på trafikklenker som også har trafikkregistreringspunkt. De øvrige ni bomstasjonene ligger på lenker som har trafikkregistreringspunkt på sin nabolenke. Det er mulig å benytte disse som datagrunnlag i byindeksen, men det er tilstrekkelig datagrunnlag med ordinære trafikkregistreringspunkt.
+
 En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_aal.
 
 ```{r}
@@ -526,7 +536,7 @@ Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function
 visualize_function_class_distribution(links_aal_2023)
 ```
 
-I @fig-function_class_aal ser vi at utvalget ligner på populasjonen.
+I @fig-function_class_aal ser vi at utvalget ligner på populasjonen. Data for 2024 fordeler seg tilsvarende.
 
 
 ## Endringer i vegnettet
@@ -545,7 +555,7 @@ En oppsummering av vurderingen for Ålesundområdet:
 
 
 # Haugesund
-Det aktuelle området består her av hele Haugesund kommune, samt fastlandsdelen av Karmøy kommune.
+Det aktuelle området består her av hele Haugesund kommune, samt fastlandsdelen av Karmøy kommune, som vist i @fig-map_hau.
 
 ```{r}
 #| label: fig-map_hau
@@ -568,6 +578,10 @@ table_trps(links_hau_2023)
 
 </br>
 
+Det er sju bomstasjoner rundt Haugesund sentrum. Seks av disse registrerer trafikk i bare en av kjøreretningene, og er derfor ikke mulig å benytte i en byindeks. Den siste av de sju ligger på en trafikklenke som også har et trafikkregistreringspunkt.
+
+En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_hau.
+
 ```{r}
 #| label: tbl-trp_count_hau
 #| tbl-cap:  "Statistikk for trafikklenker i Haugesund."
@@ -588,15 +602,13 @@ Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function
 visualize_function_class_distribution(links_hau_2023)
 ```
 
-I @fig-function_class_hau ser vi at utvalget ikke ligner helt på populasjonen. Det er overrepresentasjon på funksjonsklassen A og B, mens det er underrepresentasjon på C og D. Ved å redusere antall punkt på A og B, vil dette jevne seg ut litt, men når det ikke er flere enn 16 punkt i utvalget så det er ønskelig å beholde så mange som mulig.
-
-Det er seks bomstasjoner rundt Haugesund sentrum, men alle disse registrerer trafikk i bare en av kjøreretningene, og er derfor ikke mulig å benytte i en byindeks.
+I @fig-function_class_hau ser vi at utvalget ikke ligner helt på populasjonen. Det er overrepresentasjon i funksjonsklasse A og B, mens det er underrepresentasjon på C og D. Ved å redusere antall punkt i A og B, vil dette jevne seg ut litt, men når det ikke er flere enn 16 punkt i utvalget så det er ønskelig å beholde så mange som mulig.
 
 I Karmøytunnelen er det tre trafikkregistreringspunkt. Trafikk som kommer inn fra Håviksiden og Mjåsundsiden og som skal nordover forbi Hellevik vil passere punktet som ligger i den nordre tunnelarmen. Da er det ikke behov for punktene i Håvik- og Mjåsundarmene. Tas disse to punktene ut av utvalget, vil ikke funksjonsklasse B lenger være overrepresentert.
 
-Trafikkregistreringspunktet på E134 ved Raglamyr på avkjøringen til Brakahaug har relativt lite trafikk og fanger kun opp en del av trafikken til et bergenset boligområde, og vil ikke inngå i utvalget av punkter i byindeksen.
+Trafikkregistreringspunktet på E134 ved Raglamyr på avkjøringen til Brakahaug har relativt lite trafikk og fanger kun opp en del av trafikken til et bergenset boligområde, og bør ikke inngå i utvalget av punkt i byindeksen.
 
-Fordelingen av trafikkarbeid i et justert utvalg vises i @fig-function_class_hau_adjusted. Det er nå en mer lik fordeling mellom populasjon og utvalg, men spesielt er funksjonsklasse A overrepresentert. Alle punkter i funksjonsklasse A ligger på E134, og her kan det være et lite innslag av gjennomgangstrafikk. Punktene ved Rossabø og Raglamyr vil ha relativt høy andel lokaltrafikk. De to ytterpunktene ved Toskatjørn og Norheim (Karmsund bru) har høy andel trafikk fra omlandet som skal til Haugesund. Ved å fjerne disse to fra utvalget, blir funksjonsklasse A veldig underrepresentert. Siden det totalt er relativt få punkter i utvalget, er det best om disse beholdes. 
+Fordelingen av trafikkarbeid i et justert utvalg vises i @fig-function_class_hau_adjusted. Det er nå en mer lik fordeling mellom populasjon og utvalg, men spesielt er funksjonsklasse A overrepresentert. Alle punkter i funksjonsklasse A ligger på E134, og her kan det være et lite innslag av gjennomgangstrafikk. Punktene ved Rossabø og Raglamyr vil ha relativt høy andel lokaltrafikk. De to ytterpunktene ved Toskatjørn og Norheim (Karmsund bru) har høy andel trafikk fra omlandet som skal til Haugesund. Ved å fjerne disse to fra utvalget, blir funksjonsklasse A veldig underrepresentert. Siden det totalt er relativt få punkter i utvalget oppnås bedre representativitet om disse likevel beholdes. 
 
 ```{r}
 #| label: fig-function_class_hau_adjusted
@@ -621,7 +633,7 @@ visualize_function_class_distribution()
 
 </br>
 
-Med 13 punkt i utvalget, utgjør dette fortsatt en relativt stor andel av populasjonen, som vist i @tbl-trp_count_hau_adjusted.
+Med 13 punkt i utvalget, utgjør dette fortsatt en relativt stor andel av populasjonen, som vist i @tbl-trp_count_hau_adjusted. Data for 2024 fordeler seg tilsvarende.
 
 ```{r}
 #| label: tbl-trp_count_hau_adjusted
@@ -642,6 +654,7 @@ links_hau_2023 |>
   table_link_statistics()
 ```
 
+
 ## Endringer i vegnettet
 Det er ingen vegprosjekter i området som kan påvirke byindeksen i den aktuelle perioden.
 
@@ -656,7 +669,7 @@ En oppsummering av vurderingen for Haugesundområdet:
 
 
 # Arendal/Grimstad
-Det relevante vegnettet i dette området består av kommunene Arendal og Grimstad. E18 har høy andel gjennomgangstrafikk, så denne vil ikke være med i populasjonen. Ramper til og fra E18 kunne ha vært med siden de per definisjon har kun lokaltrafikk, men siden det ikke finnes trafikkregistreringer på disse, er disse også utelatt fra denne analysen.
+Det relevante vegnettet i dette området består av kommunene Arendal og Grimstad. E18 har høy andel gjennomgangstrafikk, så denne er ikke med i populasjonen. Ramper til og fra E18 kunne ha vært med siden de per definisjon har kun lokaltrafikk, men siden det ikke finnes trafikkregistreringer på disse, er disse også utelatt fra denne analysen.
 
 
 ```{r}
@@ -680,6 +693,10 @@ table_trps(links_arg_2023)
 
 </br>
 
+I dette området er det kun to bomstasjoner, og begge disse ligger på hovedtraseen til E18. De er derfor ikke aktuelle å benytte i byindeksen.
+
+En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_arg.
+
 ```{r}
 #| label: tbl-trp_count_arg
 #| tbl-cap:  "Statistikk for trafikklenker i Arendal og Grimstad."
@@ -689,7 +706,7 @@ table_link_statistics(links_arg_2023)
 ```
 
 
-Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_arg.
+Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_arg. Data for 2024 fordeler seg tilsvarende.
 
 
 ```{r}
@@ -700,6 +717,10 @@ Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function
 
 visualize_function_class_distribution(links_arg_2023)
 ```
+
+</br>
+
+Fordelingen er noe overrepresentert i funksjonsklasse B og C, samtidig som den er underrepresentert i klasse D. Dette kan justeres noe ved å utelate enkelte punkter i klasse B og C.
 
 
 ## Konklusjon
@@ -712,7 +733,7 @@ En oppsummering av vurderingen for Arendal/Grimstad-området:
 
 
 # Vestfoldbyen
-Det relevante vegnettet i Vestfoldbyen består av kommunene Tønsberg, Sandefjord og Larvik. E18 har høy andel gjennomgangstrafikk, så denne vil ikke være med i populasjonen. Ramper til og fra E18 kunne ha vært med siden de per definisjon har kun lokaltrafikk, men siden det ikke finnes trafikkregistreringer på disse, er disse også utelatt fra denne analysen.
+Det relevante vegnettet i Vestfoldbyen består av kommunene Tønsberg, Sandefjord og Larvik. E18 har høy andel gjennomgangstrafikk, så denne er ikke med i populasjonen. Ramper til og fra E18 kunne ha vært med siden de per definisjon har kun lokaltrafikk, men siden det ikke finnes trafikkregistreringer på disse, er disse også utelatt fra denne analysen.
 
 
 ```{r}
@@ -736,6 +757,10 @@ table_trps(links_vfl_2023)
 
 </br>
 
+I dette området er det sju bomstasjoner som alle ligger på hovedtraseen til E18. De er derfor ikke aktuelle å benytte i byindeksen.
+
+En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_vfl.
+
 ```{r}
 #| label: tbl-trp_count_vfl
 #| tbl-cap:  "Statistikk for trafikklenker i Vestfoldbyen."
@@ -744,9 +769,7 @@ table_trps(links_vfl_2023)
 table_link_statistics(links_vfl_2023)
 ```
 
-
-Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_vfl.
-
+Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_vfl. Data for 2024 fordeler seg tilsvarende.
 
 ```{r}
 #| label: fig-function_class_vfl
@@ -756,6 +779,10 @@ Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function
 
 visualize_function_class_distribution(links_vfl_2023)
 ```
+
+</br>
+
+Fordelingen er noe overrepresentert i funksjonsklasse B, samtidig som den er underrepresentert i klasse D. Dette kan justeres noe ved å utelate enkelte punkter i klasse B.
 
 
 ## Konklusjon
@@ -767,4 +794,76 @@ En oppsummering av vurderingen for Vestfoldbyen:
 - Både 2023 og 2024 er aktuelle som referanseår
 
 
+# Tønsberg
+Dette området består av Tønsberg kommune. E18 har høy andel gjennomgangstrafikk, så denne er ikke være med i populasjonen. Ramper til og fra E18 kunne ha vært med siden de per definisjon har kun lokaltrafikk, men siden det ikke finnes trafikkregistreringer på disse, er disse også utelatt fra denne analysen.
+
+```{r}
+#| label: fig-map_tbg
+#| message: false
+#| fig-cap: !expr map_caption
+
+map_links_with_function_class(links_tbg_2023)
+```
+
+</br>
+
+En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen er angitt i @tbl-trp_tbg.
+
+```{r}
+#| label: tbl-trp_tbg
+#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks."
+
+table_trps(links_tbg_2023)
+```
+
+</br>
+
+I dette området er det kun en bomstasjon, og den ligger på hovedtraseen til E18. Den er derfor ikke aktuell å benytte i byindeksen.
+
+En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_tbg.
+
+```{r}
+#| label: tbl-trp_count_tbg
+#| tbl-cap:  "Statistikk for trafikklenker i Tønsberg."
+
+
+table_link_statistics(links_tbg_2023)
+```
+
+Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_tbg. Data for 2024 fordeler seg tilsvarende.
+
+```{r}
+#| label: fig-function_class_tbg
+#| fig-cap: "Fordeling av funksjonsklasse i populasjon og utvalg." 
+#| message: false
+#| warning: false
+
+visualize_function_class_distribution(links_tbg_2023)
+```
+
+</br>
+
+Fordelingen er noe overrepresentert i funksjonsklasse B, samtidig som den er underrepresentert i klasse D. Dette kan justeres noe ved å utelate enkelte punkter i klasse B.
+
+
+## Konklusjon
+En oppsummering av vurderingen for Tønsberg:
+
+- En byindeks kan fint beregnes med eksisterende trafikkregistreringspunkt
+- Det er ikke aktuelt å benytte data fra bomstasjoner
+- Det kan være noen mindre vegprosjekter i området, men som neppe vil påvirke byindeksens representativitet i løpet av den aktuelle perioden
+- Både 2023 og 2024 er aktuelle som referanseår
+
+
 # Oppsummering
+Basert på konklusjonene fra hvert av byområdene, blir det en felles oppsummering som gjelder for alle:
+
+- En byindeks kan fint beregnes med eksisterende trafikkregistreringspunkt
+- Det er ikke aktuelt eller nødvendig å benytte data fra bomstasjoner
+- Det kan være noen mindre vegprosjekter i enkelte av områdene, men som neppe vil påvirke byindeksens representativitet i løpet av den aktuelle perioden
+- Både 2023 og 2024 er aktuelle som referanseår
+
+En byindeks kan altså beregnes for disse byområdene uten noen ekstra investeringer. Det vil uansett måtte prioriteres inn noen ekstra arbeidstimer for gjennomgang av datagrunnlag, beregning og formidling av byindeksene, men dette kan tas av eksisterende personressurser (eventuelt mot nedprioritering av andre arbeidsoppgaver.)
+
+Enkelte bomstasjoner er plassert slik at de fint kan bidra med data til en byindeks. Men siden data fra bomstasjoner ennå ikke er integrert i Trafikkdatasystemet, så er det en ekstra jobb å hente inn data fra AutoPASS-systemet og klargjøre disse for en indeksberegning. Det er ønskelig å unngå dette ekstraarbeidet dersom det ikke anses for å være helt nødvendig.
+ 

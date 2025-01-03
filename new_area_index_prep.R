@@ -94,8 +94,15 @@ get_link_population <- function(area_municipality_ids) {
 # Haugesund c(1106, 1149)
 # Arendal/Grimstad c(4203, 4202)
 # Vestfoldbyen c(3905, 3907, 3909)
+# Tønsberg 3905
 
-municipality_ids <- c(3905, 3907, 3909)
+municipality_ids <-
+  #1804
+  #1508
+  #c(1106, 1149)
+  #c(4203, 4202)
+  #c(3905, 3907, 3909)
+  3905
 
 # Must reduce Ålesund area
 aalesund_polygon <-
@@ -169,7 +176,6 @@ haugesund_polygon |>
     opacity = 0.4
   )
 
-
 link_population_raw <-
   get_link_population(municipality_ids) |>
   dplyr::rowwise() |>
@@ -210,7 +216,8 @@ if(4203 | 3905 %in% municipality_ids) {
 
   link_population_raw <-
     link_population_raw |>
-    dplyr::filter(!stringr::str_detect(roadSystemReferences, "EV18"))
+    dplyr::filter(!stringr::str_detect(roadSystemReferences, "EV18")) |>
+    dplyr::filter(!stringr::str_detect(roadSystemReferences, "RV19")) # traffic between E18 and Horten, which does not belong to the area of interest
 
 }
 
@@ -363,7 +370,6 @@ eligible_selection <-
     aadt_lmv = round(aadt_lmv, -1)
   )
 
-
 population_tidy <-
   link_population_raw |>
   dplyr::select(
@@ -384,14 +390,14 @@ population_tidy <-
     by = join_by(id)
   )
 
-
 readr::write_rds(
   population_tidy,
-  #"new_area_index/links_bdo_2023.rds"
-  #"new_area_index/links_aal_2023.rds"
-  #"new_area_index/links_hau_2023.rds"
-  #"new_area_index/links_arg_2023.rds"
-  "new_area_index/links_vfl_2023.rds"
+  #"new_area_index/links_bdo_2024.rds"
+  #"new_area_index/links_aal_2024.rds"
+  #"new_area_index/links_hau_2024.rds"
+  #"new_area_index/links_arg_2024.rds"
+  #"new_area_index/links_vfl_2024.rds"
+  "new_area_index/links_tbg_2023.rds"
 )
 
 ## Toll stations

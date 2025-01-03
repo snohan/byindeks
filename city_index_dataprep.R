@@ -58,8 +58,8 @@ trp_id_msnr <-
 ## Choose publish month ----
 {
 present_year <- 2024
-index_month <- 11 # the one to be published now
-city_number <- 956
+index_month <- 12 # the one to be published now
+city_number <- 952
 }
 # End choose
 
@@ -718,7 +718,7 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[19:20]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[16:17]) |>
   dplyr::select(
     trp_id,
     year,
@@ -1095,7 +1095,10 @@ chain_link_se_p <- city_index_tromso_2019_2022$standard_error
 ### Yearly index ----
 city_index_chained <-
   city_index_yearly_all |>
-  dplyr::filter(month == 12) |>
+  dplyr::filter(
+    month == 12,
+    year_base == 2022
+  ) |>
   dplyr::select(
     index_period = year_from_to,
     year_base,
