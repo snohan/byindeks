@@ -59,7 +59,7 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 12 # the one to be published now
-city_number <- 952
+city_number <- 1952
 }
 # End choose
 
@@ -534,6 +534,10 @@ years_1_7 <-
   bind_rows(years_1_6, slice(city_index_full_years, 7)) %>%
   calculate_two_year_index()
 
+years_1_8 <-
+  bind_rows(years_1_7, slice(city_index_full_years, 8)) %>%
+  calculate_two_year_index()
+
 # Skipping intermediate years, adding just from first to last?
 city_index_yearly_all <-
   city_index_full_years |>
@@ -547,7 +551,8 @@ city_index_yearly_all <-
     years_1_4,
     years_1_5,
     years_1_6,
-    years_1_7
+    years_1_7,
+    years_1_8
   ) |>
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -718,7 +723,7 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[16:17]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[21:22]) |>
   dplyr::select(
     trp_id,
     year,
@@ -759,6 +764,7 @@ mdt_validated |>
   dplyr::mutate(valid_quality = coverage >= 50 & length_quality >= 98.5) |>
   create_mdt_barplot()
 
+source("exclude_trp_mdts_list.R")
 source("mdt_check.R")
 
 plot_mdt_comparisons |>
@@ -1328,9 +1334,9 @@ if(city_number == 18952){
   list(
     punkt_adt = trp_info_adt,
     punktindeks_maned = trp_index_monthly_wide,
-    byindeks_aarlig = city_index_yearly_all#,
-    #punkt_mdt = mdt_and_pi,
-    #by_glid_indeks = all_rolling_indexes_chained
+    byindeks_aarlig = city_index_yearly_all,
+    punkt_mdt = mdt_and_pi,
+    by_glid_indeks = all_rolling_indices
   ) |>
     writexl::write_xlsx(
       path = paste0(

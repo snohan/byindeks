@@ -73,16 +73,16 @@ links <-
 
 # City numbers
 # Refy City  Cnum  Chkd Resp
-# 2016 Busk  1952   11 Snorre
-# 2016 Gren   955   11 Snorre
-# 2016 Kris   957   11 Snorre
-# 2016 NGlo   953   11 Trond *
-# 2023 NGlo 18952   11 Trond *
+# 2016 Busk  1952   12 Snorre
+# 2016 Gren   955   12 Snorre
+# 2016 Kris   957   12 Snorre 956
+# 2016 NGlo   953   12 Trond *
+# 2023 NGlo 18952   12 Trond *
 # 2022 Trom 16952   12 Snorre
 # 2017 NJær   952   12 Snorre
-# 2018 Oslo   959   11 Trond *
-# 2018 Berg  8952   11 Trond *
-# 2019 Tron   960   11 Snorre
+# 2018 Oslo   959   12 Trond *
+# 2018 Berg  8952   12 Trond *
+# 2019 Tron   960   12 Snorre
 
 
 # TODO: look at normalized MDT visualized on links
@@ -92,7 +92,7 @@ links <-
 # Choose
 index_year <- 2024
 latest_published_month <- 11
-city_number <- 952
+city_number <- 1952
 # End choose
 
 new_month_year <-
@@ -238,14 +238,14 @@ if(city_number == 960){
   tolling_station_indices_prepared_old <-
     tolling_station_indices_prepared |>
     dplyr::filter(
-      month < (latest_published_month + 1) %% 12
+      month < (latest_published_month + 1) #%% 12
       #latest_published_month + 1
     )
   
   tolling_station_indices_prepared_new <-
     tolling_station_indices_prepared |>
     dplyr::filter(
-      month == (latest_published_month + 1) %% 12
+      month == (latest_published_month + 1) #%% 12
       #latest_published_month + 1
     )
   
@@ -355,6 +355,17 @@ if(T) {
     )
   
   if(city_number == 960){
+    
+    autopass_trp_id <-
+      trps_meta |> 
+      dplyr::select(
+        nvdb_id = trp_id,
+        autopass_id
+      ) |> 
+      dplyr::filter(
+        !is.na(autopass_id)
+      )
+    
     adt_ref_year_toll <-
       readr::read_rds(
         file = "data_indexpoints_tidy/trd_toll_aadt.rds"
@@ -366,7 +377,18 @@ if(T) {
       dplyr::select(trp_id, adt_ref = aadt) |> 
       dplyr::mutate(
         adt_ref = round(adt_ref, -1)
+      ) |> 
+      dplyr::left_join(
+        autopass_trp_id,
+        by = dplyr::join_by(trp_id == autopass_id)
+      ) |> 
+      dplyr::select(
+        -trp_id
+      ) |> 
+      dplyr::rename(
+        trp_id = nvdb_id
       )
+    
   }
   
   adt_ref_year_all <-
@@ -388,6 +410,40 @@ if(T) {
     dplyr::group_by(trp_id) %>%
     dplyr::filter(year == max(year)) %>%
     dplyr::select(trp_id, adt = aadt_length_range, year)
+  
+  
+  if(city_number == 960){
+    
+    adt_toll <-
+      readr::read_rds(
+        file = "data_indexpoints_tidy/trd_toll_aadt.rds"
+      ) |> 
+      dplyr::filter(
+        year == max(year),
+        class == "lette"
+      ) |> 
+      dplyr::select(trp_id, adt = aadt, year) |> 
+      dplyr::mutate(
+        adt = round(adt, -1)
+      ) |> 
+      dplyr::left_join(
+        autopass_trp_id,
+        by = dplyr::join_by(trp_id == autopass_id)
+      ) |> 
+      dplyr::select(
+        -trp_id
+      ) |> 
+      dplyr::rename(
+        trp_id = nvdb_id
+      )
+    
+    adt_filtered <-
+      dplyr::bind_rows(
+        adt_filtered,
+        adt_toll
+      )
+      
+  }
   
   this_citys_trps_all_adt <-
     trps_meta %>%

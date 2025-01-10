@@ -32,18 +32,18 @@ source("rmd_setup.R")
 ```{r get_data, include = FALSE}
 # City numbers
 
-# Buskerudbyen          1952 (2016) 08
-# Grenland               955 (2016) 08
-# Kristiansand og omegn  957 (2016) 08
-# Nedre Glomma 2023    18952 (2023) 08
+# Buskerudbyen          1952 (2016) 12
+# Grenland               955 (2016) 12
+# Kristiansand og omegn  957 (2016) 12
+# Nedre Glomma 2023    18952 (2023) 12
 # Tromsø 2022          16952 (2022) 12
 # Nord-Jæren             952 (2017) 12
-# Bergen                8952 (2018) 08
-# Oslo                   959 (2018) 09
-# Trondheim              960 (2019) 11
+# Bergen                8952 (2018) 12
+# Oslo                   959 (2018) 12
+# Trondheim              960 (2019) 12
 
 # Choose city number:
-city_number <- 952
+city_number <- 1952
 
 ## Meta info
 city_number_county_name <- 
@@ -131,7 +131,8 @@ last_year <- max(city_info$year)
 latest_complete_year <- 
   city_info |> 
   dplyr::filter(
-    index_type == "chained",
+    #index_type == "chained",
+    index_type == "direct",
     month == 12
   ) |> 
   dplyr::slice_max(year) |> 
@@ -362,7 +363,7 @@ De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeks
 if(city_number == 960) {
   all_point_info |> 
     #dplyr::slice(1:30) |> 
-    create_point_table_trd() |>
+    create_point_table_trd_2() |>
     flextable::footnote(
       i = 1,
       j = 2,
