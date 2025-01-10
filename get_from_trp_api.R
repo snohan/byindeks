@@ -126,8 +126,7 @@ get_points_from_trp_api <- function() {
             position
           }
         }
-        meteringDirectionChanged
-        direction {
+        directionReference {
           from
           to
         }
@@ -152,9 +151,8 @@ get_points_from_trp_api <- function() {
         data.trafficRegistrationPoints.location.roadLink.position,
       road_network_link =
         data.trafficRegistrationPoints.location.roadLink.id#,
-      #metering_direction_changed = data.trafficRegistrationPoints.meteringDirectionChanged,
-      #direction_from = data.trafficRegistrationPoints.direction.from,
-      #direction_to = data.trafficRegistrationPoints.direction.to
+      #direction_from = data.trafficRegistrationPoints.directionReference.from,
+      #direction_to = data.trafficRegistrationPoints.directionReference.to
       ) %>%
     dplyr::mutate(road_link_position = paste0(road_network_position, "@",
                                               road_network_link)#,

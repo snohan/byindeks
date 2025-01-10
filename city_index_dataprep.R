@@ -44,6 +44,7 @@ trp_id_msnr <-
 # Buskerudbyen 1952
 # Grenland 955
 # Kristiansand og omegn 957 kommune 956
+# Kristiansandsregionen 19953
 # Nedre Glomma 18952
 # Nord-Jæren 952
 # Oslo 959
@@ -59,7 +60,7 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 12 # the one to be published now
-city_number <- 1952
+city_number <- 19953
 }
 # End choose
 
@@ -107,7 +108,7 @@ last_year_month <-
     )
   )
 
-if(!(city_number %in% c(960, 16952, 18952))){
+if(!(city_number %in% c(960, 16952, 18952, 19953))){
   index_years_pre_2020 <- base::seq.int(reference_year + 1, 2019, 1)
 }else{
   index_years_pre_2020 <- NULL
@@ -123,7 +124,7 @@ if(city_number == 16952){
   index_years_from_2020 <- base::seq.int(2023, present_year, 1)
 }
 
-if(city_number == 18952){
+if(city_number %in% c(18952, 19953)){
   index_years_from_2020 <- base::seq.int(2024, present_year, 1)
 }
 
@@ -169,6 +170,10 @@ city_indexes <-
   if(city_number == 18952) {
     city_name <- "Nedre Glomma"
   }
+
+  if(city_number == 19953) {
+    city_name <- "Kristiansandsregionen"
+  }
 }
 
 # TODO: fetch for so far this year by index month
@@ -177,7 +182,7 @@ city_indexes <-
 # TRP index ----
 ## So far by December ----
 # Still need to specify csv-files for years before 2020 to get the pointindex as they are not in API
-if(!(city_number %in% c(8952, 16952, 18952))){
+if(!(city_number %in% c(8952, 16952, 18952, 19953))){
   trp_index_so_far_by_dec_pre_2020 <-
     purrr::map(
       index_years_pre_2020,
@@ -242,7 +247,7 @@ trp_index_so_far_by_dec_from_2020 <-
 #   )
 # Yes, seems so.
 
-if(city_number %in% c(8952, 16952, 18952)){
+if(city_number %in% c(8952, 16952, 18952, 19953)){
   trp_index_year_to_date_dec_bind <-
     dplyr::bind_rows(
       trp_index_so_far_by_dec_from_2020
@@ -326,7 +331,7 @@ trp_index_year_to_date_by_index_month <-
 
 ## Monthly ----
 # For Excel report
-if(!(city_number %in% c(8952, 16952, 18952))){
+if(!(city_number %in% c(8952, 16952, 18952, 19953))){
   trp_index_monthly_pre_2020 <-
     purrr::map_dfr(
       index_years_pre_2020,
@@ -360,7 +365,7 @@ trp_index_monthly_from_2020 <-
     index = index_short
   )
 
-if(city_number %in% c(8952, 16952, 18952)){
+if(city_number %in% c(8952, 16952, 18952, 19953)){
   trp_index_monthly <-
     dplyr::bind_rows(
       trp_index_monthly_from_2020
@@ -546,13 +551,13 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    years_1_2,
-    years_1_3,
-    years_1_4,
-    years_1_5,
-    years_1_6,
-    years_1_7,
-    years_1_8
+    # years_1_2,
+    # years_1_3,
+    # years_1_4,
+    # years_1_5,
+    # years_1_6,
+    # years_1_7,
+    # years_1_8
   ) |>
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -723,7 +728,7 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[21:22]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[26:28]) |>
   dplyr::select(
     trp_id,
     year,
@@ -893,14 +898,14 @@ all_36_month_indices <-
 all_rolling_indices <-
   dplyr::bind_rows(
     all_12_month_indices,
-    all_24_month_indices,
-    all_36_month_indices
+    #all_24_month_indices,
+    #all_36_month_indices
   )
 
 list(
-  all_12_month_indices,
-  all_24_month_indices,
-  all_36_month_indices
+  all_12_month_indices#,
+  #all_24_month_indices,
+  #all_36_month_indices
 ) |>
   readr::write_rds(
     file =
@@ -1329,7 +1334,7 @@ trp_info_adt <-
 # )
 
 # Write
-if(city_number == 18952){
+if(city_number %in% c(18952, 19953)){
 
   list(
     punkt_adt = trp_info_adt,
@@ -1391,7 +1396,7 @@ if(city_number == 960){
 }
 
 
-if(!(city_number %in% c(960, 16952, 18952))){
+if(!(city_number %in% c(960, 16952, 18952, 19953))){
 
   list(
     punkt_adt = trp_info_adt,

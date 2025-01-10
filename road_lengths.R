@@ -69,6 +69,24 @@ krs_all <- dplyr::bind_rows(kristiansand,
 write.csv2(krs_all, file = "road_lengths/road_lengths_957.csv",
            row.names = FALSE)
 
+# Kristiansandsregionen ####
+kristiansand <- get_road_length_for_municipality(4204)
+vennesla <- get_road_length_for_municipality(4223)
+lillesand <- get_road_length_for_municipality(4215)
+birkenes <- get_road_length_for_municipality(4216)
+iveland <- get_road_length_for_municipality(4218)
+
+krs_reg <-
+  dplyr::bind_rows(
+    kristiansand,
+    vennesla,
+    lillesand,
+    birkenes,
+    iveland
+  ) |>
+  dplyr::left_join(municipalities, by = join_by(municipality_number))
+
+write.csv2(krs_reg, file = "road_lengths/road_lengths_19953.csv", row.names = FALSE)
 
 # Nedre Glomma ####
 fredrikstad <- get_road_length_for_municipality(3004)

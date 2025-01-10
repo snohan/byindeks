@@ -1486,38 +1486,44 @@ get_road_length_for_municipality <- function(municipality_number) {
   # Paginated response, starting with an empty tibble to add each response to
   road_segments_selected <- tibble::tibble()
 
-  api_query <- paste0(nvdb_url_v3,
-                      "/vegnett/veglenkesekvenser/segmentert?",
-                      "kommune=",
-                      municipality_number,
-                      "&historisk=false",
-                      "&kryssystem=false",
-                      "&sideanlegg=false",
-                      "&detaljniva=VT,VTKB",
-                      "&typeveg=kanalisertveg,enkelbilveg",
-                      "&adskiltelop=Med,Nei",
-                      "&veglenketype=hoved",
-                      "&trafikantgruppe=K",
-                      "&geometritoleranse=30",
-                      "&tidspunkt='2021-01-01'")
+  api_query <-
+    paste0(
+      nvdb_url_v3,
+      "/vegnett/veglenkesekvenser/segmentert?",
+      "kommune=",
+      municipality_number,
+      "&historisk=false",
+      "&kryssystem=false",
+      "&sideanlegg=false",
+      "&detaljniva=VT,VTKB",
+      "&typeveg=kanalisertveg,enkelbilveg",
+      "&adskiltelop=Med,Nei",
+      "&veglenketype=hoved",
+      "&trafikantgruppe=K",
+      "&geometritoleranse=30",
+      "&tidspunkt='2025-01-01'"
+    )
 
   uthenta <- call_and_parse_nvdb_api(api_query)
 
-  road_segment_info <- uthenta$objekter %>%
-    dplyr::select(link_type = type,
-                  road_type = typeVeg,
-                  length_m = lengde,
-                  road_reference = vegsystemreferanse.kortform,
-                  road_category = vegsystemreferanse.vegsystem.vegkategori,
-                  road_phase = vegsystemreferanse.vegsystem.fase,
-                  road_number = vegsystemreferanse.vegsystem.nummer,
-                  ) %>%
+  road_segment_info <-
+    uthenta$objekter |>
+    dplyr::select(
+      link_type = type,
+      road_type = typeVeg,
+      length_m = lengde,
+      road_reference = vegsystemreferanse.kortform,
+      road_category = vegsystemreferanse.vegsystem.vegkategori,
+      road_phase = vegsystemreferanse.vegsystem.fase,
+      road_number = vegsystemreferanse.vegsystem.nummer,
+      ) |>
     dplyr::filter(road_category %in% c("E", "R", "F", "K"))
 
-  road_segments_selected <- dplyr::bind_rows(
-    road_segments_selected,
-    road_segment_info
-  )
+  road_segments_selected <-
+    dplyr::bind_rows(
+      road_segments_selected,
+      road_segment_info
+    )
 
   # How to know if has next page?
   # If "returned" < 1000 !!! Beware of changed page size in their API!
@@ -1529,28 +1535,32 @@ get_road_length_for_municipality <- function(municipality_number) {
 
     uthenta <- call_and_parse_nvdb_api(next_page)
 
-    road_segment_info <- uthenta$objekter %>%
-      dplyr::select(link_type = type,
-                    road_type = typeVeg,
-                    length_m = lengde,
-                    road_reference = vegsystemreferanse.kortform,
-                    road_category = vegsystemreferanse.vegsystem.vegkategori,
-                    road_phase = vegsystemreferanse.vegsystem.fase,
-                    road_number = vegsystemreferanse.vegsystem.nummer,
-      ) %>%
+    road_segment_info <-
+      uthenta$objekter |>
+      dplyr::select(
+        link_type = type,
+        road_type = typeVeg,
+        length_m = lengde,
+        road_reference = vegsystemreferanse.kortform,
+        road_category = vegsystemreferanse.vegsystem.vegkategori,
+        road_phase = vegsystemreferanse.vegsystem.fase,
+        road_number = vegsystemreferanse.vegsystem.nummer,
+      ) |>
       dplyr::filter(road_category %in% c("E", "R", "F", "K"))
 
-    road_segments_selected <- dplyr::bind_rows(
-      road_segments_selected,
-      road_segment_info
-    )
+    road_segments_selected <-
+      dplyr::bind_rows(
+        road_segments_selected,
+        road_segment_info
+      )
 
     returned <- uthenta$metadata$returnert
   }
 
-  road_lengths <- road_segments_selected %>%
-    group_by(road_category) %>%
-    summarise(length_km = round(sum(length_m) / 1000, digits = 0)) %>%
+  road_lengths <-
+    road_segments_selected |>
+    group_by(road_category) |>
+    summarise(length_km = round(sum(length_m) / 1000, digits = 0)) |>
     mutate(municipality_number = municipality_number)
 
   return(road_lengths)

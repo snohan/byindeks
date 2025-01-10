@@ -22,6 +22,7 @@ reference_year <-
       16952
     ) ~ 2022,
     city_number %in% c(
-      18952
+      18952,
+      19953
     ) ~ 2023
   )
