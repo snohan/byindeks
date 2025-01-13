@@ -44,7 +44,7 @@ source("rmd_setup.R")
 # Trondheim              960 (2019) 12
 
 # Choose city number:
-city_number <- 952
+city_number <- 1952
 
 ## Meta info
 city_number_county_name <- 
@@ -334,6 +334,7 @@ if(city_number == 957) {
 ## Områdeavgrensing og vegnett
 {{< include city_report_files/_intro.Rmd >}}
 
+{{< pagebreak >}}
 
 Veglengder fordelt på vegkategori for gjeldende område er oppsummert i tabell @tbl-road_length_sum.
 
@@ -443,9 +444,9 @@ En treårs glidende indeks er tilgjengelig fra og med det er gått tre år etter
 ## Endring per år
 Endring i trafikkmengde er også beregnet for hele kalenderår. I stedet for et tre års glidende gjennomsnitt tar denne beregningen utgangspunkt i indeksen mellom to påfølgende år. For hvert trafikkregistreringspunkt sammenlignes registrert trafikk dato for dato og time for time mellom to påfølgende år.
 
-Indekstall som gjelder for lengre perioder enn to påfølgende år er beregnet som en kjedet indeks av de mellomliggende års indekser. En kjedet indeks er en multiplikasjon av indekser på desimalform hvor en indeks på 1 tilsvarer ingen endring.
+Indekstall som gjelder for lengre perioder enn to påfølgende år er beregnet som en kjedet indeks av årsindeksene.^[En kjedet indeks er en multiplikasjon av indekser på desimalform hvor en indeks på 1 tilsvarer ingen endring.]
 
-Tabell @tbl-city_index viser den årlige endringen, samt prosentvis endring for ulike perioder.
+Tabell @tbl-city_index viser den årlige endringen, samt prosentvis endring sammenlignet med referanseåret.
 
 
 ```{r}
