@@ -19,11 +19,13 @@ alver <- get_road_length_for_municipality(4631)
 askoy <- get_road_length_for_municipality(4627)
 bjornafjorden <- get_road_length_for_municipality(4624)
 
-bergen_all <- dplyr::bind_rows(bergen,
-                               alver,
-                               askoy,
-                               bjornafjorden
-) %>%
+bergen_all <-
+  dplyr::bind_rows(
+    bergen,
+    alver,
+    askoy,
+    bjornafjorden
+  ) |>
   dplyr::left_join(municipalities)
 
 write.csv2(bergen_all, file = "road_lengths/road_lengths_8952.csv",
@@ -31,28 +33,34 @@ write.csv2(bergen_all, file = "road_lengths/road_lengths_8952.csv",
 
 
 # Buskerudbyen ####
-lier <- get_road_length_for_municipality(3049)
-drammen <- get_road_length_for_municipality(3005)
-eiker <- get_road_length_for_municipality(3048)
-kongsberg <- get_road_length_for_municipality(3006)
+lier <- get_road_length_for_municipality(3312)
+drammen <- get_road_length_for_municipality(3301)
+eiker <- get_road_length_for_municipality(3314)
+kongsberg <- get_road_length_for_municipality(3303)
 
-buskerudbyen <- dplyr::bind_rows(lier,
-                                 drammen,
-                                 eiker,
-                                 kongsberg) %>%
+buskerudbyen <-
+  dplyr::bind_rows(
+    lier,
+    drammen,
+    eiker,
+    kongsberg
+  ) |>
   dplyr::left_join(municipalities)
 
 write.csv2(buskerudbyen, file = "road_lengths/road_lengths_1952.csv",
            row.names = FALSE)
 
 # Grenland ####
-siljan <- get_road_length_for_municipality(3812)
-skien <- get_road_length_for_municipality(3807)
-porsgrunn <- get_road_length_for_municipality(3806)
+siljan <- get_road_length_for_municipality(4010)
+skien <- get_road_length_for_municipality(4003)
+porsgrunn <- get_road_length_for_municipality(4001)
 
-grenland <- dplyr::bind_rows(siljan,
-                             porsgrunn,
-                             skien) %>%
+grenland <-
+  dplyr::bind_rows(
+    siljan,
+    porsgrunn,
+    skien
+  ) |>
   dplyr::left_join(municipalities)
 
 write.csv2(grenland, file = "road_lengths/road_lengths_955.csv",
@@ -89,8 +97,8 @@ krs_reg <-
 write.csv2(krs_reg, file = "road_lengths/road_lengths_19953.csv", row.names = FALSE)
 
 # Nedre Glomma ####
-fredrikstad <- get_road_length_for_municipality(3004)
-sarpsborg <- get_road_length_for_municipality(3003)
+fredrikstad <- get_road_length_for_municipality(3107)
+sarpsborg <- get_road_length_for_municipality(3105)
 
 glomma <- dplyr::bind_rows(fredrikstad,
                              sarpsborg) %>%
@@ -106,64 +114,71 @@ sandnes <- get_road_length_for_municipality(1108)
 sola <- get_road_length_for_municipality(1124)
 randaberg <- get_road_length_for_municipality(1127)
 
-nord_jaeren_all <- dplyr::bind_rows(stavanger,
-                               sandnes,
-                               sola,
-                               randaberg) %>%
-  dplyr::left_join(municipalities)
+nord_jaeren_all <-
+  dplyr::bind_rows(
+    stavanger,
+    sandnes,
+    sola,
+    randaberg
+  ) |>
+  dplyr::left_join(municipalities, by = join_by(municipality_number))
 
-write.csv2(nord_jaeren_all, file = "road_lengths/road_lengths_952.csv",
-           row.names = FALSE)
+write.csv2(
+  nord_jaeren_all,
+  file = "road_lengths/road_lengths_952.csv",
+  row.names = FALSE
+)
 
 
 # Oslo og Akershus ####
 oslo <- get_road_length_for_municipality(301)
-barum <- get_road_length_for_municipality(3024)
-nordre_follo <- get_road_length_for_municipality(3020)
-lillestrom <- get_road_length_for_municipality(3030)
-ullensaker <- get_road_length_for_municipality(3033)
-as <- get_road_length_for_municipality(3021)
-ralingen <- get_road_length_for_municipality(3027)
-enebakk <- get_road_length_for_municipality(3028)
-vestby <- get_road_length_for_municipality(3019)
-frogn <- get_road_length_for_municipality(3022)
-nesodden <- get_road_length_for_municipality(3023)
-asker <- get_road_length_for_municipality(3025)
-aurskog <- get_road_length_for_municipality(3026)
-lorenskog <- get_road_length_for_municipality(3029)
-nittedal <- get_road_length_for_municipality(3031)
-gjerdrum <- get_road_length_for_municipality(3032)
-nannestad <- get_road_length_for_municipality(3036)
-nes <- get_road_length_for_municipality(3034)
-eidsvoll <- get_road_length_for_municipality(3035)
-hurdal <- get_road_length_for_municipality(3037)
+barum <- get_road_length_for_municipality(3201)
+nordre_follo <- get_road_length_for_municipality(3207)
+lillestrom <- get_road_length_for_municipality(3205)
+ullensaker <- get_road_length_for_municipality(3209)
+as <- get_road_length_for_municipality(3218)
+ralingen <- get_road_length_for_municipality(3224)
+enebakk <- get_road_length_for_municipality(3220)
+vestby <- get_road_length_for_municipality(3216)
+frogn <- get_road_length_for_municipality(3214)
+nesodden <- get_road_length_for_municipality(3212)
+asker <- get_road_length_for_municipality(3203)
+aurskog <- get_road_length_for_municipality(3226)
+lorenskog <- get_road_length_for_municipality(3222)
+nittedal <- get_road_length_for_municipality(3232)
+gjerdrum <- get_road_length_for_municipality(3230)
+nannestad <- get_road_length_for_municipality(3238)
+nes <- get_road_length_for_municipality(3228)
+eidsvoll <- get_road_length_for_municipality(3240)
+hurdal <- get_road_length_for_municipality(3242)
 
-oslo_all <- dplyr::bind_rows(oslo,
-                             barum,
-                             nordre_follo,
-                             lillestrom,
-                             ullensaker,
-                             as,
-                             ralingen,
-                             enebakk,
-                             vestby,
-                             frogn,
-                             nesodden,
-                             asker,
-                             aurskog,
-                             lorenskog,
-                             nittedal,
-                             gjerdrum,
-                             nannestad,
-                             nes,
-                             eidsvoll,
-                             hurdal) %>%
+oslo_all <-
+  dplyr::bind_rows(
+    oslo,
+    barum,
+    nordre_follo,
+    lillestrom,
+    ullensaker,
+    as,
+    ralingen,
+    enebakk,
+    vestby,
+    frogn,
+    nesodden,
+    asker,
+    aurskog,
+    lorenskog,
+    nittedal,
+    gjerdrum,
+    nannestad,
+    nes,
+    eidsvoll,
+    hurdal
+  ) |>
   dplyr::left_join(municipalities)
 
 write.csv2(oslo_all, file = "road_lengths/road_lengths_959.csv",
            row.names = FALSE)
-
-
 
 
 # Trondheim ####
@@ -171,11 +186,18 @@ trondheim <- get_road_length_for_municipality(5001)
 melhus <- get_road_length_for_municipality(5028)
 malvik <- get_road_length_for_municipality(5031)
 stjordal <- get_road_length_for_municipality(5035)
+skaun  <- get_road_length_for_municipality(5029)
+orkland  <- get_road_length_for_municipality(5059)
 
-trondheim_all <- dplyr::bind_rows(trondheim,
-                                  melhus,
-                                  malvik,
-                                  stjordal) %>%
+trondheim_all <-
+  dplyr::bind_rows(
+    trondheim,
+    melhus,
+    malvik,
+    stjordal,
+    skaun,
+    orkland
+  ) |>
   dplyr::left_join(municipalities)
 
 write.csv2(trondheim_all, file = "road_lengths/road_lengths_960.csv",
@@ -183,7 +205,7 @@ write.csv2(trondheim_all, file = "road_lengths/road_lengths_960.csv",
 
 
 # Tromsø ####
-tromso <- get_road_length_for_municipality(5401) %>%
+tromso <- get_road_length_for_municipality(5501) %>%
   dplyr::left_join(municipalities)
 
 write.csv2(tromso, file = "road_lengths/road_lengths_961.csv",

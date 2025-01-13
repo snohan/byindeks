@@ -44,7 +44,7 @@ source("rmd_setup.R")
 # Trondheim              960 (2019) 12
 
 # Choose city number:
-city_number <- 19953
+city_number <- 952
 
 ## Meta info
 city_number_county_name <- 
@@ -435,9 +435,6 @@ En treårs glidende indeks er tilgjengelig fra og med det er gått tre år etter
 
 {{< include city_report_files/_pandemic_remark_rolling_index.Rmd >}}
 
-<!-- Spesialtekst for Nord-Jæren -->
-{{< include city_report_files/_nord_jaeren_remark.Rmd >}}
-
 {{< pagebreak >}}
 
 {{< include city_report_files/_rolling_12_24.Rmd >}}
@@ -467,6 +464,9 @@ city_info |>
 ```
 
 {{< include city_report_files/_yearly_change_text.Rmd >}}
+
+<!-- Spesialtekst for Nord-Jæren -->
+{{< include city_report_files/_nord_jaeren_remark.Rmd >}}
 
 <!-- Gamle Kristiansand kommune -->
 {{< include city_report_files/_gamle_krs_kommune.Rmd >}}

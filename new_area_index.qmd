@@ -304,6 +304,26 @@ table_link_statistics <- function(link_df) {
   bold(part = "header") |>
   bg(bg = "#ED9300", part = "header")
 }
+
+
+calculate_ci_width <- function(link_df) {
+  
+  weights <-
+    link_df |> 
+    sf::st_drop_geometry() |> 
+    dplyr::filter(!is.na(point_id)) |> 
+    dplyr::select(aadt_lmv) |> 
+    dplyr::mutate(
+      sum_aadt_lmv = sum(aadt_lmv),
+      weight = aadt_lmv / sum_aadt_lmv,
+      squared_weight = weight^2
+    )
+    
+  ci_width <- round(1.96 * sqrt(sum(weights$squared_weight)) * 5, 1)
+  
+  return(ci_width)
+  
+}
 ```
 
 ```{r}
@@ -315,6 +335,13 @@ links_hau_2023 <- readr::read_rds("new_area_index/links_hau_2023.rds")
 links_arg_2023 <- readr::read_rds("new_area_index/links_arg_2023.rds")
 links_vfl_2023 <- readr::read_rds("new_area_index/links_vfl_2023.rds")
 links_tbg_2023 <- readr::read_rds("new_area_index/links_tbg_2023.rds")
+
+ci_width_bdo <- calculate_ci_width(links_bdo_2023)
+ci_width_aal <- calculate_ci_width(links_aal_2023)
+ci_width_hau <- calculate_ci_width(links_hau_2023)
+ci_width_arg <- calculate_ci_width(links_arg_2023)
+ci_width_vfl <- calculate_ci_width(links_vfl_2023)
+ci_width_tbg <- calculate_ci_width(links_tbg_2023)
 ```
 
 
@@ -327,7 +354,9 @@ Notatet er sist oppdatert 2. januar 2025. Kontaktperson er Snorre Hansen, Staten
 
 
 # Om byindeks og representativitet
-For å følge med på trafikkutviklingen i et byområde kan det beregnes en byindeks. Byindeksen benytter registrert trafikk på et utvalg steder i området og sammenligner størrelsen på denne mellom et referanseår og et beregningsår. Avgrensingen til det geografiske området som er relevant for byindeksen må være kjent, og vegnettet må være inndelt i trafikklenker. En trafikklenke er en vegstrekning mellom to kryss som langs hele sin lengde har samme trafikkmengde sett over et døgn. Byindeksen baserer seg på utvalgsmetodikk der alle trafikklenkene i området utgjør populasjonen, mens de trafikklenkene som har en trafikkregistrering utgjør utvalget.
+For å følge med på trafikkutviklingen i et byområde kan det beregnes en byindeks. Byindeksen benytter registrert trafikk på et utvalg steder i området og sammenligner størrelsen på denne mellom et referanseår og et beregningsår. Til en fireårig ordning passer det best med en indeks som viser utviklingen år for år, samt samlet fra referanseåret til sluttåret. Dersom ordningens periode blir utvidet, er det mulig å beregne en indeks basert på et tre års glidende snitt.
+
+Avgrensingen til det geografiske området som er relevant for byindeksen må være kjent, og vegnettet må være inndelt i trafikklenker. En trafikklenke er en vegstrekning mellom to kryss som langs hele sin lengde har samme trafikkmengde sett over et døgn. Byindeksen baserer seg på utvalgsmetodikk der alle trafikklenkene i området utgjør populasjonen, mens de trafikklenkene som har en trafikkregistrering utgjør utvalget.
 
 
 ## Trafikkarbeid
@@ -357,6 +386,12 @@ Gjennomgangstrafikk skal ikke inngå i datagrunnlaget for byindeksen. Som regel 
 
 ## Endringer i vegnettet
 Byindeksmetoden baserer seg på måling av den generelle endringen i trafikk for å estimere en trend over tid. Trafikken sammenlignes mellom to tidsperioder som i hvert av punktene der trafikken registreres må være normaltrafikk, ikke trafikk som er unormalt høy eller lav som følge av stengte eller nyåpnede veger i nærheten. Dersom vegnettet endres ved at enkelte veger stenges eller at nye veger åpnes, vil trafikkstrømmene lokalt bli veldig påvirket av dette og datagrunnlaget vil på enkelte steder ikke kunne sies å representere en generell trend. Derfor vil byindeksmetoden fungere dårligere ved større vegnettsendringer. I noen tilfeller vil punktene fange opp både veger med redusert og økt trafikk på en balansert måte, men dette vil føre til økt spredning i datagrunnlaget og følgelig større usikkerhet i indeksestimatet. Byindekspunkt som er eller vil bli betydelig berørt av vegnettsendringer bør derfor ikke inngå i datagrunnlaget.
+
+
+## Usikkerhet
+Byindeksen er et estimat med en viss usikkerhet som beskrives ved hjelp av et konfidensintervall. Usikkerhetens størrelse gjenspeiles av konfidensintervallets bredde, og denne er avhengig av antall byindekspunkt og variasjonen mellom disse. Siden byindeksen beregnes som et vektet gjennomsnitt av punktindeksene, der vektene er gitt av punktets trafikkmengde, vil homogeniteten til punktene ha noe å si for usikkerhetsberegningen.
+
+Forventet bredde på konfidensintervallet under normale forhold kan beregnes når vi kjenner trafikkmengden for hvert av punktene. Av erfaring er et typisk standardavvik for en byindeks på omkring 5 prosentpoeng.
 
 
 # Bodø
@@ -441,8 +476,11 @@ dplyr::bind_rows(
   bg(bg = "#ED9300", part = "header")
 ```
 
-Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_bdo.
+Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_bdo), "\\.", ",")` prosentpoeng.
 
+
+## Representativitet
+Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_bdo.
 
 ```{r}
 #| label: fig-function_class_bdo
@@ -524,8 +562,11 @@ En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-
 table_link_statistics(links_aal_2023)
 ```
 
-Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_aal.
+Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_aal), "\\.", ",")` prosentpoeng.
 
+
+## Representativitet
+Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_aal.
 
 ```{r}
 #| label: fig-function_class_aal
@@ -590,8 +631,11 @@ En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-
 table_link_statistics(links_hau_2023)
 ```
 
-Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_hau.
+Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_hau), "\\.", ",")` prosentpoeng.
 
+
+## Representativitet
+Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_hau.
 
 ```{r}
 #| label: fig-function_class_hau
@@ -705,9 +749,11 @@ En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-
 table_link_statistics(links_arg_2023)
 ```
 
+Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_arg), "\\.", ",")` prosentpoeng.
 
+
+## Representativitet
 Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_arg. Data for 2024 fordeler seg tilsvarende.
-
 
 ```{r}
 #| label: fig-function_class_arg
@@ -769,6 +815,10 @@ En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-
 table_link_statistics(links_vfl_2023)
 ```
 
+Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_vfl), "\\.", ",")` prosentpoeng.
+
+
+## Representativitet
 Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_vfl. Data for 2024 fordeler seg tilsvarende.
 
 ```{r}
@@ -830,6 +880,10 @@ En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-
 table_link_statistics(links_tbg_2023)
 ```
 
+Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_tbg), "\\.", ",")` prosentpoeng.
+
+
+## Representativitet
 Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_tbg. Data for 2024 fordeler seg tilsvarende.
 
 ```{r}
