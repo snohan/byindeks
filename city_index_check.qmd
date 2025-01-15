@@ -93,7 +93,7 @@ links <-
 # Choose
 index_year <- 2024
 latest_published_month <- 11
-city_number <- 19953
+city_number <- 959
 # End choose
 
 new_month_year <-
@@ -333,7 +333,7 @@ city_county_numbers <-
 
 
 # Need not fetch AADT every time
-if(T) {
+if(F) {
   
   adt <- get_aadt_by_length_for_trp_list(city_trps)
   
