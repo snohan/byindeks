@@ -8,7 +8,7 @@ source("indexpoints_tidying_functions.R")
 
 # Index codes and years ----
 last_complete_year <- 2023
-last_complete_month_this_year <- 9
+last_complete_month_this_year <- 12
 
 index_codes_and_reference_years <-
   tibble::tibble(
@@ -23,7 +23,8 @@ index_codes_and_reference_years <-
       6952,  # Nord-Jæren
       11952, # Tromsø
       14952, # Kristiansand
-      13952  # Trondheim
+      13952, # Trondheim
+      19952  # Buskerudbyen
     ),
     area_name = c(
       "Grenland",
@@ -35,7 +36,8 @@ index_codes_and_reference_years <-
       "Nord-Jæren",
       "Tromsø",
       "Kristiansand",
-      "Trondheim"
+      "Trondheim",
+      "Buskerudbyen"
     ),
     reference_year =
       c(
@@ -48,6 +50,7 @@ index_codes_and_reference_years <-
         2019,
         2021,
         2018,
+        2023,
         2023
       )
   ) |>
