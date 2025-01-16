@@ -60,7 +60,7 @@ trp_id_msnr <-
 {
 present_year <- 2024
 index_month <- 12 # the one to be published now
-city_number <- 19953
+city_number <- 959
 }
 # End choose
 
@@ -551,11 +551,11 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    # years_1_2,
-    # years_1_3,
-    # years_1_4,
-    # years_1_5,
-    # years_1_6,
+    years_1_2,
+    years_1_3,
+    years_1_4,
+    years_1_5,
+    years_1_6,
     # years_1_7,
     # years_1_8
   ) |>
@@ -898,14 +898,14 @@ all_36_month_indices <-
 all_rolling_indices <-
   dplyr::bind_rows(
     all_12_month_indices,
-    #all_24_month_indices,
-    #all_36_month_indices
+    all_24_month_indices,
+    all_36_month_indices
   )
 
 list(
-  all_12_month_indices#,
-  #all_24_month_indices,
-  #all_36_month_indices
+  all_12_month_indices,
+  all_24_month_indices,
+  all_36_month_indices
 ) |>
   readr::write_rds(
     file =
