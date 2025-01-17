@@ -6,7 +6,7 @@ Kartet i figur @fig-map_trp_zoomed viser plasseringen av trafikkregistreringspun
 
 all_point_info |>
   dplyr::filter(
-    municipality_name == "Drammen"
+    municipality_name == "Drammen" | trp_id %in% c("33386V180972", "53984V181332")
   ) |> 
   create_point_adt_map()
 ```

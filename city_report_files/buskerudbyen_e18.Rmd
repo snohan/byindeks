@@ -10,21 +10,23 @@ read.csv2("data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv") |>
     flextable()  |>
     colformat_int(j = "year", big.mark = "")  |>
     colformat_double(j = "index_short", digits = 1) |>
-    set_header_labels(name = "Navn",
-                      road_reference = "Vegreferanse",
-     #                 adt = "ÅDT",
-                      year = "År",
-                      index_short = "Endring i\ntrafikkmengde\n(%)") |>
+    set_header_labels(
+      name = "Navn",
+      road_reference = "Vegreferanse",
+      #adt = "ÅDT",
+      year = "År",
+      index_short = "Endring i\ntrafikkmengde\n(%)"
+    ) |>
     align(j = c(3, 4), align = "center", part = "all") |>
     bold(part = "header") |>
     #fontsize(size = 9, part = "all") |>
-    font(fontname = "Lucida Sans Unicode", part = "all") |>
+    #font(fontname = "Lucida Sans Unicode", part = "all") |>
     bg(bg = "#ED9300", part = "header") |>
     border_remove() |>
     hline_top(part = "header", border = borderline) |>
     hline_bottom(part = "all", border = borderline) |>
     autofit() |>
-    height_all(height = .2) |>
-    padding(padding.top = .3,
-            padding.bottom = .3)
+    height_all(height = .2) #|>
+    #padding(padding.top = .3,
+    #        padding.bottom = .3)
 ```

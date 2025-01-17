@@ -44,7 +44,7 @@ source("rmd_setup.R")
 # Trondheim              960 (2019) 12
 
 # Choose city number:
-city_number <- 959
+city_number <- 1952
 
 ## Meta info
 city_number_county_name <- 
@@ -201,27 +201,62 @@ if(any_36) {
       ci_upper
     )
   
-  latest_36_index_adjective <-
+  # latest_36_index_adjective <-
+  #   dplyr::if_else(
+  #     latest_36_index$index_p > 0,
+  #     "større",
+  #     "mindre"
+  #   )
+  
+  latest_36_index_weak <-
     dplyr::if_else(
-      latest_36_index$index_p > 0,
-      "større",
-      "mindre"
+      latest_36_index$index_p >= -1 & latest_36_index$index_p < 0 | latest_36_index$index_p <= 1 & latest_36_index$index_p > 0,
+      "svak",
+      ""
     )
   
-  latest_36_change_sentence <-
+  latest_36_index_adjective <-
+    dplyr::case_when(
+      latest_36_index$index_p > 0 ~ "økning",
+      latest_36_index$index_p < 0 ~ "nedgang",
+      latest_36_index$index_p == 0 ~ "endring"
+    )
+
+  latest_36_sentence <-
     paste(
-      "blitt",
+      latest_36_index_weak,
+      latest_36_index_adjective,
+      "på",
       sprintf("%.1f", abs(latest_36_index$index_p)),
-      "%",
-      latest_36_index_adjective
+      "%"
     ) |> 
     stringr::str_replace("\\.", ",")
+
   
-  latest_36_sentence <-
-    dplyr::if_else(
-      round(latest_36_index$index_p, 1) == 0,
-      "uendret",
-      latest_36_change_sentence
+  # latest_36_change_sentence <-
+  #   paste(
+  #     "blitt",
+  #     sprintf("%.1f", abs(latest_36_index$index_p)),
+  #     "%",
+  #     latest_36_index_adjective
+  #   ) |> 
+  #   stringr::str_replace("\\.", ",")
+  # 
+  # latest_36_sentence <-
+  #   dplyr::if_else(
+  #     round(latest_36_index$index_p, 1) == 0,
+  #     "uendret",
+  #     latest_36_change_sentence
+  #   )
+  
+  latest_36_ci_conclusion <-
+    dplyr::case_when(
+      latest_36_index$ci_lower < 0 & latest_36_index$ci_upper > 0 ~ 
+        "Det er ikke med sikkerhet mulig å si om trafikken har økt eller ikke - trafikken er omtrent på samme nivå som i referanseåret.",
+      latest_36_index$ci_lower >= 0 ~ 
+        "Trafikken har økt sammenlignet med referanseåret.",
+      latest_36_index$ci_upper <= 0 ~ 
+        "Trafikken har gått ned sammenlignet med referanseåret"
     )
   
   tbl_cap_all_36 <-

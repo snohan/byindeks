@@ -51,13 +51,16 @@ visualize_city_36_mdt_index(
 
 ## Resultat nullvekstmål
 
-Sammenlignet med referanseåret er trafikkmengden de siste tre årene i gjennomsnitt `r latest_36_sentence`. 
+<!--Sammenlignet med referanseåret er trafikkmengden de siste tre årene i gjennomsnitt-->
+Sammenlignet med referanseåret har trafikken de siste tre årene i gjennomsnitt hatt en 
+`r latest_36_sentence`, 
+og ligger mellom 
+`r stringr::str_replace(sprintf("%.1f", latest_36_index$ci_lower), "\\.", ",")` % og 
+`r stringr::str_replace(sprintf("%.1f", latest_36_index$ci_upper), "\\.", ",")` %. `r latest_36_ci_conclusion`
 
 :::
 
 \vspace{5mm}
 
-Tas måleusikkerheten i betraktning, ligger endringen i trafikkmengden mellom 
-`r stringr::str_replace(sprintf("%.1f", latest_36_index$ci_lower), "\\.", ",")` % og 
-`r stringr::str_replace(sprintf("%.1f", latest_36_index$ci_upper), "\\.", ",")` %. Dette intervallet er et konfidensintervall på 95 %, som vil si at den sanne endringen i trafikkmengde vil ligge innenfor et slikt intervall 95 % av gangene en tilsvarende måling blir gjort. Usikkerheten er i stor grad avhengig av hvor ulik endringen er i de trafikkregistreringspunktene som inngår i beregningene. Større endringer i vegnettet, som lokalt fører til endrete rutevalg for en betydelig andel av trafikken, vil derfor bidra til økt usikkerhet. Se forøvrig kapittel @sec-traffic for en nærmere omtale av spesielle trafikkforhold.
+Byindeksen har en viss usikkerhet knyttet til seg fordi den beregnes med data fra et begrenset *utvalg* trafikkregistreringspunkt.  Intervallet som er angitt ovenfor er et konfidensintervall på 95 %, som vil si at den sanne endringen i trafikkmengde vil ligge innenfor intervallet 95 % av gangene en tilsvarende måling blir gjort. Usikkerheten er i stor grad avhengig av hvor ulik endringen er i de trafikkregistreringspunktene som inngår i beregningene. Større endringer i vegnettet, som lokalt fører til endrete rutevalg for en betydelig andel av trafikken, vil derfor bidra til økt usikkerhet. Se forøvrig @sec-traffic for en nærmere omtale av spesielle trafikkforhold.
 

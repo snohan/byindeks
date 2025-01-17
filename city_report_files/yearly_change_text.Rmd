@@ -4,3 +4,7 @@ Beregningene estimerer her at endringen i trafikkmengden for lette kjøretøy fr
 Et 95 % konfidensintervall går fra 
 `r stringr::str_replace(sprintf("%.1f", latest_complete_year$ci_lower), "\\.", ",")` % til 
 `r stringr::str_replace(sprintf("%.1f", latest_complete_year$ci_upper), "\\.", ",")` %.
+
+
+### Sammenheng med tre års glidende indeks
+Beregningsmetoden for tre års glidende indeks og årlig indeks er litt forskjellig. Det settes ulike krav til hvor mye data som skal være tilgjengelig for hvert punkt over tid, og dermed kan datagrunnlaget bli noe ulikt. Da er det naturlig at resultatene ikke alltid er helt like. Det er viktig å sammenligne konfidensintervallene og hvis disse i stor grad overlapper, så er ikke resultatene signifikant forskjellige.
