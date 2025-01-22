@@ -166,7 +166,7 @@ any_rolling <- nrow(latest_complete_year) > 0
   
 if(any_rolling) {
 
-  rolling_indices <-
+rolling_indices <-
   readr::read_rds(
     paste0("data_indexpoints_tidy/rolling_indices_", city_number, ".rds")
   )
@@ -196,6 +196,7 @@ if(any_36) {
     dplyr::slice_max(month_object) |> 
     dplyr::select(
       index_p,
+      n_trp,
       standard_error_p,
       ci_lower,
       ci_upper
@@ -231,8 +232,9 @@ if(any_36) {
       "%"
     ) |> 
     stringr::str_replace("\\.", ",")
-
   
+  latest_36_n_trp <- latest_36_index$n_trp
+
   # latest_36_change_sentence <-
   #   paste(
   #     "blitt",
@@ -252,7 +254,7 @@ if(any_36) {
   latest_36_ci_conclusion <-
     dplyr::case_when(
       latest_36_index$ci_lower < 0 & latest_36_index$ci_upper > 0 ~ 
-        "Det er ikke med sikkerhet mulig å si om trafikken har økt eller ikke - trafikken er omtrent på samme nivå som i referanseåret.",
+        "Når denne regnemåten legges til grunn kan man ikke si med sikkerhet om trafikken har økt eller ikke sammenlignet med referanseåret, men den ligger omtrent på samme nivå.",
       latest_36_index$ci_lower >= 0 ~ 
         "Trafikken har økt sammenlignet med referanseåret.",
       latest_36_index$ci_upper <= 0 ~ 
@@ -365,6 +367,7 @@ if(city_number == 957) {
 
 {{< include city_report_files/_purpose.Rmd >}}
 
+{{< pagebreak >}}
 
 ## Områdeavgrensing og vegnett
 {{< include city_report_files/_intro.Rmd >}}

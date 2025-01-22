@@ -7,7 +7,7 @@ source("get_from_nvdb_api.R")
 }
 
 # Get TRP and crossings metainfo ----
-latest_published_month <- 9
+latest_published_month <- 12
 
 counties <-
   get_counties() |>
@@ -316,7 +316,8 @@ pointindices_by_length <-
       )
   )
 
-n_points <- pointindices_by_length |>
+n_points <-
+  pointindices_by_length |>
   dplyr::group_by(year, month, period, day_type, length_range) |>
   dplyr::summarise(no_points = n()) |>
   dplyr::mutate(road_category = "Europa-, riks- og fylkesveg") |>

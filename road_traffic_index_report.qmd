@@ -78,7 +78,7 @@ index_this_year_prepared_wide_country <-
 #| label: extract_data_for_text
 
 this_year <- 2024
-latest_month_number <- 10
+latest_month_number <- 12
 
 latest_month_name <-
   max(
@@ -259,7 +259,7 @@ table_caption_county_monthly <-
 
 
 # Vegtrafikkindeksen
-Vegtrafikkindeksen er i `r this_year` rekna ut frå om lag 800 utvalde trafikkregistreringspunkt som er eigd av Statens vegvesen og fylkeskommunane. Trafikken vert registrert kontinuerleg kvar time heile året, og for kvart trafikkregistreringspunkt vert trafikken samanlikna time for time, dato mot dato i kalendermånadene. Utvalet gir truleg eit godt bilete av utviklinga i trafikkarbeidet. Tala er gitt som endring i prosent i forhold til same tidsperiode året før. 
+Vegtrafikkindeksen er i `r this_year` rekna ut frå om lag 800 utvalde trafikkregistreringspunkt som er eigd av Statens vegvesen,  fylkeskommunane og Nye Veier AS. Trafikken vert registrert kontinuerleg kvar time heile året, og for kvart trafikkregistreringspunkt vert trafikken samanlikna time for time, dato mot dato i kalendermånadene. Utvalet gir truleg eit godt bilete av utviklinga i trafikkarbeidet. Tala er gitt som endring i prosent i forhold til same tidsperiode året før. 
 
 Ver merksam på at ulike forhold kan gi store utslag i tala per månad frå år til år. Slike hendingar kan vera helgedagar utan fast dato, til dømes påske og pinse. Veret er også ein faktor som kan gi utslag på månadstala. Koronapandemien og smitteverntiltaka påverka sterkt utviklinga i trafikken i perioden frå mars 2020 til mars 2022.
 
@@ -442,9 +442,9 @@ index_this_year_prepared_wide_country %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
   height_all(height = .2) %>%
-  width(j = 1, width = 0.7) %>%
-  width(j = 2, width = 0.8) %>%
-  width(j = 3:number_of_columns, width = 0.4) %>%
+  width(j = 1, width = 0.5) %>%
+  width(j = 2, width = 0.6) %>%
+  width(j = 3:number_of_columns, width = 0.36) %>%
   fix_border_issues() %>%
   padding(
     padding.top = .3,
@@ -752,8 +752,8 @@ index_this_year_prepared_wide %>%
   hline_top(part = "header", border = borderline) %>%
   hline_bottom(part = "all", border = borderline) %>%
   height_all(height = .2) %>%
-  width(j = 1, width = 1.5) %>%
-  width(j = 2:number_of_columns_2, width = 0.4) %>%
+  width(j = 1, width = 1) %>%
+  width(j = 2:number_of_columns_2, width = 0.39) %>%
   fix_border_issues() %>%
   padding(
     padding.top = .3,
@@ -854,7 +854,7 @@ historic_h_combinations <-
 
 ```{r}
 #| label: tbl-historic_all_table_1
-#| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 1995 til 2023."
+#| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 1995 til 2024."
 #| ft.arraystretch: 0.9
 
 historic_all_combinations %>% 
@@ -881,7 +881,7 @@ historic_all_combinations %>%
 
 ```{r}
 #| label: historic_all_table_2
-#| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 2005 til 2023."
+#| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 2005 til 2024."
 #| ft.arraystretch: 0.9
 
 historic_all_combinations %>% 
@@ -908,12 +908,12 @@ historic_all_combinations %>%
 
 ```{r}
 #| label: historic_all_table_3
-#| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 2015 til 2023."
+#| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 2015 til 2024."
 #| ft.arraystretch: 0.9
 
 historic_all_combinations %>% 
   dplyr::slice(-(1:20)) %>% 
-  dplyr::select(1, 22:29) %>% 
+  dplyr::select(1, 22:30) %>% 
   flextable::flextable() %>%
   colformat_double(j = 2:6, digits = 1) %>%
   set_header_labels(year = "År") %>%
@@ -937,7 +937,7 @@ historic_all_combinations %>%
 
 ```{r}
 #| label: historic_f_table
-#| tbl-cap: "Kumulativ trafikkutvikling på fylkesvegar i Noreg frå 2015 til 2023."
+#| tbl-cap: "Kumulativ trafikkutvikling på fylkesvegar i Noreg frå 2015 til 2024."
 #| ft.arraystretch: 0.9
 
 historic_f_all_combinations %>% 
@@ -964,12 +964,12 @@ historic_f_all_combinations %>%
 
 ```{r}
 #| label: historic_f_table_2
-#| tbl-cap: "Kumulativ trafikkutvikling på fylkesvegar i Noreg frå 2015 til 2023."
+#| tbl-cap: "Kumulativ trafikkutvikling på fylkesvegar i Noreg frå 2015 til 2024."
 #| ft.arraystretch: 0.9
 
 historic_f_all_combinations %>% 
   dplyr::slice(-(1:10)) %>% 
-  dplyr::select(1, 12:14) %>% 
+  dplyr::select(1, 12:15) %>% 
   flextable::flextable() %>%
   colformat_double(j = 2:flextable::ncol_keys(.), digits = 1) %>%
   set_header_labels(year = "År") %>%
@@ -989,10 +989,11 @@ historic_f_all_combinations %>%
   )
 ```
 
+{{< pagebreak >}}
 
 ```{r}
 #| label: historic_er_table
-#| tbl-cap: "Kumulativ trafikkutvikling på Europa- og riksvegar i Noreg frå 2015 til 2023."
+#| tbl-cap: "Kumulativ trafikkutvikling på Europa- og riksvegar i Noreg frå 2015 til 2024."
 #| ft.arraystretch: 0.9
 
 historic_er_all_combinations %>% 
@@ -1019,12 +1020,12 @@ historic_er_all_combinations %>%
 
 ```{r}
 #| label: historic_er_table_2
-#| tbl-cap: "Kumulativ trafikkutvikling på Europa- og riksvegar i Noreg frå 2015 til 2023."
+#| tbl-cap: "Kumulativ trafikkutvikling på Europa- og riksvegar i Noreg frå 2015 til 2024."
 #| ft.arraystretch: 0.9
 
 historic_er_all_combinations %>% 
   dplyr::slice(-(1:10)) %>% 
-  dplyr::select(1, 12:14) %>% 
+  dplyr::select(1, 12:15) %>% 
   flextable::flextable() %>%
   colformat_double(j = 2:flextable::ncol_keys(.), digits = 1) %>%
   set_header_labels(year = "År") %>%
@@ -1044,10 +1045,11 @@ historic_er_all_combinations %>%
   )
 ```
 
+{{< pagebreak >}}
 
 ```{r}
 #| label: historic_l_table_1
-#| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 1998 til 2023."
+#| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 1998 til 2024."
 #| ft.arraystretch: 0.9
 
 historic_l_combinations %>% 
@@ -1074,7 +1076,7 @@ historic_l_combinations %>%
 
 ```{r}
 #| label: historic_l_table_2
-#| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2008 til 2023."
+#| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2008 til 2024."
 #| ft.arraystretch: 0.9
 
 historic_l_combinations %>% 
@@ -1102,12 +1104,12 @@ historic_l_combinations %>%
 
 ```{r}
 #| label: historic_l_table_3
-#| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2018 til 2023."
+#| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2018 til 2024."
 #| ft.arraystretch: 0.9
 
 historic_l_combinations %>% 
   dplyr::slice(-(1:20)) %>% 
-  dplyr::select(1, 22:26) %>% 
+  dplyr::select(1, 22:27) %>% 
   flextable::flextable() %>%
   colformat_double(j = 2:6, digits = 1) %>%
   set_header_labels(year = "År") %>%
@@ -1130,7 +1132,7 @@ historic_l_combinations %>%
 
 ```{r}
 #| label: historic_h_table_1
-#| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 1998 til 2023."
+#| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 1998 til 2024."
 #| ft.arraystretch: 0.9
 
 historic_h_combinations %>% 
@@ -1158,7 +1160,7 @@ historic_h_combinations %>%
 
 ```{r}
 #| label: historic_h_table_2
-#| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2008 til 2023."
+#| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2008 til 2024."
 #| ft.arraystretch: 0.9
 
 historic_h_combinations %>% 
@@ -1186,12 +1188,12 @@ historic_h_combinations %>%
 
 ```{r}
 #| label: historic_h_table_3
-#| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2018 til 2023."
+#| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2018 til 2024."
 #| ft.arraystretch: 0.9
 
 historic_h_combinations %>% 
   dplyr::slice(-(1:20)) %>% 
-  dplyr::select(1, 22:26) %>% 
+  dplyr::select(1, 22:27) %>% 
   flextable::flextable() %>%
   colformat_double(j = 2:6, digits = 1) %>%
   set_header_labels(year = "År") %>%

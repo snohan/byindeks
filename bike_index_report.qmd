@@ -33,7 +33,7 @@ crossref:
 
 source("rmd_setup.R")
 
-last_published_month_number <- 9
+last_published_month_number <- 12
 
 index_all_years <-
   readr::read_rds(
@@ -161,6 +161,47 @@ table_index_chains("Bergen")
 
 index_for_plotting |> 
   plot_index_chain("Bergen")
+```
+
+
+# Buskerudbyen
+```{r}
+#| label: fig-map_bus
+#| tbl-cap: "Registeringspunkter for sykkeltrafikk i Buskerudbyen."
+#| ft.arraystretch: 0.9
+
+
+```
+
+
+```{r}
+#| label: tbl-trp_bus
+#| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Buskerudbyen."
+#| ft.arraystretch: 0.9
+
+table_bike_trps_with_sdt("Buskerudbyen")
+```
+
+
+
+```{r}
+#| label: tbl-bus
+#| tbl-cap: "Estimert endring i sykkeltrafikk i Buskerudbyen."
+#| ft.arraystretch: 0.9
+
+table_index_chains("Buskerudbyen")
+```
+
+
+
+```{r}
+#| label: fig-bus
+#| fig-width: 6.5
+#| fig-height: 6
+#| fig-cap: "Estimert endring i sykkeltrafikk i Buskerudbyen."
+
+index_for_plotting |> 
+  plot_index_chain("Buskerudbyen")
 ```
 
 

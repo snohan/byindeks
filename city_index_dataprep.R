@@ -1008,6 +1008,20 @@ trps_e18_index <-
   dplyr::left_join(
     point_index_e18,
     by = "trp_id"
+  ) |>
+  dplyr::rename(
+    index_short_p = index_short
+  ) |>
+  dplyr::ungroup() |>
+  dplyr::mutate(
+    index_short_i = 1 + (index_short_p / 100)
+  ) |>
+  dplyr::mutate(
+    chained_index = base::cumprod(index_short_i),
+    .by = trp_id
+  ) |>
+  dplyr::mutate(
+    chained_index_p = (chained_index - 1) * 100
   )
 
 write.csv2(

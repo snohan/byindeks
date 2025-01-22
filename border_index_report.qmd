@@ -154,7 +154,7 @@ table_historic_index <- function(index_df) {
     align(j = 2:5, align = "right", part = "all") |>
     bold(part = "header") |>
     #fontsize(size = 9, part = "all") |>
-    font(fontname = "Lucida Sans Unicode", part = "all") |>
+    #font(fontname = "Lucida Sans Unicode", part = "all") |>
     bg(bg = "#ED9300", part = "header") |>
     border_remove() |>
     hline_top(part = "header", border = borderline) |>
@@ -162,7 +162,8 @@ table_historic_index <- function(index_df) {
     height_all(height = .2) |>
     fix_border_issues() |>
     padding(padding.top = .3,
-            padding.bottom = .3)
+            padding.bottom = .3) |> 
+    width(width = 0.5)
 }
 ```
 
@@ -219,10 +220,10 @@ border_crossings_adt |>
     big.mark = "", 
     digits = 0
   ) |>
-  colformat_double(
+  colformat_int(
     j = 8, 
-    big.mark = "", 
-    digits = 0
+    big.mark = ""#, 
+    #digits = 0
   ) |>
   set_header_labels(
     road_category_and_number = "Veg-\nnummer",
@@ -527,7 +528,7 @@ historic_heavy_combinations <- calculate_all_index_chain_combinations(historic_h
 
 ```{r}
 #| label: tbl-historic_all_table
-#| tbl-cap: "Kumulativ trafikkutvikling fra 2016 til 2023."
+#| tbl-cap: "Kumulativ trafikkutvikling fra 2016 til 2024."
 #| ft.arraystretch: 0.9
 
 historic_all_combinations |> 
@@ -536,16 +537,18 @@ historic_all_combinations |>
 
 ```{r}
 #| label: tbl-historic_light_table
-#| tbl-cap: "Kumulativ trafikkutvikling for lette kjøretøy fra 2016 til 2023."
+#| tbl-cap: "Kumulativ trafikkutvikling for lette kjøretøy fra 2016 til 2024."
 #| ft.arraystretch: 0.9
 
 historic_light_combinations |> 
   table_historic_index()
 ```
 
+{{< pagebreak >}}
+
 ```{r}
 #| label: tbl-historic_heavy_table
-#| tbl-cap: "Kumulativ trafikkutvikling for tunge kjøretøy fra 2016 til 2023."
+#| tbl-cap: "Kumulativ trafikkutvikling for tunge kjøretøy fra 2016 til 2024."
 #| ft.arraystretch: 0.9
 
 historic_heavy_combinations |> 

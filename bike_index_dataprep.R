@@ -429,13 +429,19 @@ bike_trps <-
     by = join_by(trp_id)
   ) |>
   dplyr::mutate(
-    name = stringr::str_remove(name, " Sykkeltellepunkt"),
-    name = stringr::str_remove(name, " Sykkelsøyle"),
+    name = stringr::str_remove(name, " sykkeltellepunkt"),
+    name = stringr::str_remove(name, " sykkelsøyle"),
     name = stringr::str_remove(name, "sykkel "),
+    name = stringr::str_remove(name, " \\(sykkel\\)"),
+    name = stringr::str_remove(name, " \\(SYKKEL\\)"),
+    name = stringr::str_remove(name, "-SYKKEL"),
+    name = stringr::str_remove(name, "-sykkel"),
+    name = stringr::str_remove(name, " sykkel"),
     name = stringr::str_remove(name, " Sykkel"),
     name = stringr::str_remove(name, "-Sykkel"),
     name = stringr::str_remove(name, "\\(Sykkel\\)"),
-    name = stringr::str_remove(name, " Ny"),
+    name = stringr::str_remove(name, " ny"),
+    name = stringr::str_remove(name, " -$")
   )
 
 

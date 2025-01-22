@@ -5,7 +5,7 @@
 
 # Get data ----
 counties <-
-  get_counties() %>%
+  get_counties() |>
   dplyr::select(
     county_name,
     country_part_name
@@ -27,8 +27,8 @@ counties <-
 country_parts <- get_country_parts()
 
 points <-
-  get_points() %>%
-  dplyr::distinct(trp_id, .keep_all = T) %>%
+  get_points() |>
+  dplyr::distinct(trp_id, .keep_all = T) |>
   dplyr::select(
     trp_id,
     name,
@@ -36,16 +36,16 @@ points <-
     county_name,
     county_geono,
     municipality_name
-  ) %>%
-  dplyr::mutate(
-    name = stringr::str_to_title(name, locale = "no")
-  ) %>%
-  split_road_system_reference() %>%
+  ) |>
+  # dplyr::mutate(
+  #   name = stringr::str_to_title(name, locale = "no")
+  # ) |>
+  split_road_system_reference() |>
   # dplyr::select(
   #   trp_id,
   #   road_category,
   #   county_name
-  # ) %>%
+  # ) |>
   # For finding manually excluded trps:
   dplyr::select(
     trp_id,
@@ -54,14 +54,14 @@ points <-
     road_reference,
     county_name
     #county_name_latest = county_name # 2023
-  ) %>%
+  ) |>
   dplyr::mutate(
     road_category = dplyr::case_when(
       road_category == "F" ~ "Fylkesveg",
       road_category == "E" ~ "Europa- og riksveg",
       road_category == "R" ~ "Europa- og riksveg"
     )
-  ) %>%
+  ) |>
   dplyr::left_join(
     counties,
     by = "county_name"
@@ -70,7 +70,7 @@ points <-
 
 ## Choose month ----
 this_year <- 2024
-latest_month_number <- 10
+latest_month_number <- 12
 
 index_this_year <-
   get_published_road_traffic_index_for_months(
@@ -95,14 +95,14 @@ pointindices <- pointindex_this_year[[2]]
 
 # Sidetrack: Manually excluded
 # pointindices_manually_excluded <-
-#   pointindices %>%
+#   pointindices |>
 #   dplyr::filter(
 #     #is_excluded == FALSE,
 #     is_manually_excluded == TRUE,
 #     period == "year_to_date",
 #     day_type == "ALL",
 #     !is.na(index_total_p)
-#   ) %>%
+#   ) |>
 #   dplyr::select(
 #     trp_id,
 #     year,
@@ -124,13 +124,13 @@ pointindices <- pointindex_this_year[[2]]
 
 # Back on track
 pointindices_all <-
-  pointindices %>%
+  pointindices |>
   dplyr::filter(
     is_excluded == FALSE,
     is_manually_excluded == FALSE,
     period == "year_to_date",
     !is.na(index_total_p)
-  ) %>%
+  ) |>
   dplyr::select(
     trp_id,
     year,
@@ -138,19 +138,19 @@ pointindices_all <-
     period,
     day_type,
     index_p = index_total_p
-  ) %>%
+  ) |>
   dplyr::mutate(
     length_range = "alle"
   )
 
 pointindices_light_n_heavy <-
-  pointindices %>%
+  pointindices |>
   dplyr::filter(
     is_excluded == FALSE,
     is_manually_excluded == FALSE,
     length_excluded == FALSE,
     period == "year_to_date"
-  ) %>%
+  ) |>
   dplyr::select(
     trp_id,
     year,
@@ -159,12 +159,12 @@ pointindices_light_n_heavy <-
     day_type,
     index_short,
     index_long
-  ) %>%
+  ) |>
   tidyr::pivot_longer(
     cols = c("index_short", "index_long"),
     names_to = "length_range",
     values_to = "index_p"
-  ) %>%
+  ) |>
   dplyr::mutate(
     length_range =
       dplyr::case_when(
@@ -177,7 +177,7 @@ pointindices_year_to_date <-
   dplyr::bind_rows(
     pointindices_all,
     pointindices_light_n_heavy
-  ) %>%
+  ) |>
   dplyr::mutate(
     day_type =
       dplyr::case_when(
@@ -185,7 +185,7 @@ pointindices_year_to_date <-
         day_type == "WEEKDAY" ~ "yrkedøgn",
         day_type == "WEEKEND" ~ "helgedøgn"
       )
-  ) %>%
+  ) |>
   dplyr::left_join(points)
 
 
@@ -199,7 +199,7 @@ pointindices_year_to_date <-
 # Country, rf
 
 number_of_pointindices_county_r_f <-
-  pointindices_year_to_date %>%
+  pointindices_year_to_date |>
   dplyr::group_by(
     year,
     month,
@@ -208,14 +208,14 @@ number_of_pointindices_county_r_f <-
     length_range,
     road_category,
     county_name
-  ) %>%
-  dplyr::summarise(no_points = n()) %>%
-  dplyr::mutate(area_type = "COUNTY") %>%
-  dplyr::rename(area_name = county_name) %>%
+  ) |>
+  dplyr::summarise(no_points = n()) |>
+  dplyr::mutate(area_type = "COUNTY") |>
+  dplyr::rename(area_name = county_name) |>
   dplyr::ungroup()
 
 number_of_pointindices_county_rf <-
-  pointindices_year_to_date %>%
+  pointindices_year_to_date |>
   dplyr::group_by(
     year,
     month,
@@ -223,17 +223,17 @@ number_of_pointindices_county_rf <-
     day_type,
     length_range,
     county_name
-  ) %>%
-  dplyr::summarise(no_points = n()) %>%
+  ) |>
+  dplyr::summarise(no_points = n()) |>
   dplyr::mutate(
     area_type = "COUNTY",
     road_category = "Europa-, riks- og fylkesveg"
-  ) %>%
-  dplyr::rename(area_name = county_name) %>%
+  ) |>
+  dplyr::rename(area_name = county_name) |>
   dplyr::ungroup()
 
 number_of_pointindices_county_part_r_f <-
-  pointindices_year_to_date %>%
+  pointindices_year_to_date |>
   dplyr::group_by(
     year,
     month,
@@ -242,14 +242,14 @@ number_of_pointindices_county_part_r_f <-
     length_range,
     road_category,
     country_part_name
-  ) %>%
-  dplyr::summarise(no_points = n()) %>%
-  dplyr::mutate(area_type = "COUNTRY_PART") %>%
-  dplyr::rename(area_name = country_part_name) %>%
+  ) |>
+  dplyr::summarise(no_points = n()) |>
+  dplyr::mutate(area_type = "COUNTRY_PART") |>
+  dplyr::rename(area_name = country_part_name) |>
   dplyr::ungroup()
 
 number_of_pointindices_county_part_rf <-
-  pointindices_year_to_date %>%
+  pointindices_year_to_date |>
   dplyr::group_by(
     year,
     month,
@@ -257,17 +257,17 @@ number_of_pointindices_county_part_rf <-
     day_type,
     length_range,
     country_part_name
-  ) %>%
-  dplyr::summarise(no_points = n()) %>%
+  ) |>
+  dplyr::summarise(no_points = n()) |>
   dplyr::mutate(
     area_type = "COUNTRY_PART",
     road_category = "Europa-, riks- og fylkesveg"
-  ) %>%
-  dplyr::rename(area_name = country_part_name) %>%
+  ) |>
+  dplyr::rename(area_name = country_part_name) |>
   dplyr::ungroup()
 
 number_of_pointindices_country_r_f <-
-  pointindices_year_to_date %>%
+  pointindices_year_to_date |>
   dplyr::group_by(
     year,
     month,
@@ -275,28 +275,28 @@ number_of_pointindices_country_r_f <-
     day_type,
     length_range,
     road_category
-  ) %>%
-  dplyr::summarise(no_points = n()) %>%
+  ) |>
+  dplyr::summarise(no_points = n()) |>
   dplyr::mutate(
     area_type = "COUNTRY",
     area_name = "Norge"
-  ) %>%
+  ) |>
   dplyr::ungroup()
 
 number_of_pointindices_country_rf <-
-  pointindices_year_to_date %>%
+  pointindices_year_to_date |>
   dplyr::group_by(
     year,
     month,
     period,
     day_type,
     length_range
-  ) %>%
-  dplyr::summarise(no_points = n()) %>%
+  ) |>
+  dplyr::summarise(no_points = n()) |>
   dplyr::mutate(
     area_type = "COUNTRY",
     road_category = "Europa-, riks- og fylkesveg",
-    area_name = "Norge") %>%
+    area_name = "Norge") |>
   dplyr::ungroup()
 
 number_of_point_indices <- dplyr::bind_rows(
@@ -309,7 +309,7 @@ number_of_point_indices <- dplyr::bind_rows(
 )
 
 index_this_year_prepared <-
-  index_this_year %>%
+  index_this_year |>
   dplyr::mutate(
     length_range =
       dplyr::case_when(
@@ -323,13 +323,13 @@ index_this_year_prepared <-
         day_type == "WEEKDAY" ~ "yrkedøgn",
         day_type == "WEEKEND" ~ "helgedøgn"
       )
-  ) %>%
+  ) |>
   dplyr::mutate(
     road_category = dplyr::case_when(
       road_category == "FYLKESVEG" ~ "Fylkesveg",
       road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
       road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG" ~ "Europa-, riks- og fylkesveg")
-  ) %>%
+  ) |>
   dplyr::mutate(
     area_name = dplyr::case_when(
       area_name == "OSLO_OG_VIKEN" ~ "Oslo og Viken",
@@ -343,7 +343,7 @@ index_this_year_prepared <-
   dplyr::mutate(
     month_object = lubridate::make_date(year = year, month = month),
     month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)
-  ) %>%
+  ) |>
   dplyr::left_join(
     number_of_point_indices,
     by = c(
@@ -356,7 +356,7 @@ index_this_year_prepared <-
       "length_range",
       "day_type"
     )
-  ) %>%
+  ) |>
   dplyr::mutate(
     road_category =
       factor(
@@ -376,52 +376,52 @@ index_this_year_prepared <-
 
 
 index_this_year_prepared_wide <-
-  index_this_year_prepared %>%
+  index_this_year_prepared |>
   dplyr::filter(
     area_type == "COUNTY",
     period == "month",
     length_range == "alle",
     road_category == "Europa-, riks- og fylkesveg",
     day_type == "alle"
-  ) %>%
+  ) |>
   dplyr::mutate(
     month_name_short =
       lubridate::month(month_object, label = TRUE, abbr = TRUE),
     index_p = round(index_p, digits = 1),
     area_name = factor(area_name, levels = unique(counties$county_name))
-  ) %>%
+  ) |>
   dplyr::select(
     area_name,
     index_p,
     month_name_short
-  ) %>%
+  ) |>
   tidyr::pivot_wider(
     names_from = month_name_short,
     values_from = index_p
-  ) %>%
+  ) |>
   dplyr::arrange(area_name)
 
 index_this_year_prepared_wide_country <-
-  index_this_year_prepared %>%
+  index_this_year_prepared |>
   dplyr::filter(
     area_type == "COUNTRY",
     period == "month",
     length_range == "alle",
     road_category == "Europa-, riks- og fylkesveg"#,
     #day_type == "alle"
-  ) %>%
+  ) |>
   dplyr::mutate(
     month_name_short =
       lubridate::month(month_object, label = TRUE, abbr = TRUE),
     index_p = round(index_p, digits = 1),
     area_name = "Noreg"
-  ) %>%
+  ) |>
   dplyr::select(
     area_name,
     day_type,
     index_p,
     month_name_short
-  ) %>%
+  ) |>
   tidyr::pivot_wider(
     names_from = month_name_short,
     values_from = index_p

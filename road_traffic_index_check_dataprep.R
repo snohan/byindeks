@@ -41,8 +41,8 @@ get_published_pointindex_for_months_paginated(
     "road_traffic_pointindex_latest.rds"
   )
 
-get_points() %>%
-  dplyr::distinct(trp_id, .keep_all = T) %>%
+get_points() |>
+  dplyr::distinct(trp_id, .keep_all = T) |>
   dplyr::select(
     trp_id,
     name,
@@ -52,10 +52,10 @@ get_points() %>%
     municipality_name,
     lat, lon,
     road_link_position
-  ) %>%
-  dplyr::mutate(
-    name = stringr::str_to_title(name, locale = "no")
   ) |>
+  #dplyr::mutate(
+  #  name = stringr::str_to_title(name, locale = "no")
+  #) |>
   readr::write_rds(
     "trps.rds"
   )
