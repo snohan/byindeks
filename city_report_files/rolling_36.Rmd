@@ -43,6 +43,21 @@ visualize_city_36_mdt_index(
     base_year
   )
 )
+
+
+# library(svglite)
+# plot_36 <- 
+#   visualize_city_36_mdt_index(
+#   city_36_month,
+#   caption_credit,
+#   "Estimert endring i trafikkmengde siste glidende 3 år",
+#   paste0(
+#     "Sammenlignet med ",
+#     base_year
+#   )
+# )
+# 
+# ggsave(file = "H:/Programmering/R/byindeks/spesialuttak/glidende_indeks.svg", plot = plot_36, width=10, height=8)
 ```
 
 \vspace{7mm}
