@@ -37,13 +37,17 @@ library(tidyverse)
 library(patchwork)
 library(flextable)
 library(vcd)
-#library(sf)
+library(sf)
 #library(sfnetworks)
 library(igraph)
 library(tidygraph)
 library(htmltools)
-#library(leaflet)
+library(leaflet)
 library(RColorBrewer)
+library(leaflet)
+
+source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
+source("H:/Programmering/R/byindeks/traffic_link_functions.R")
 
 #source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
 
@@ -87,6 +91,8 @@ rtm_random_samples_ci <-
     base::sprintf("%.1f", random_samples_stats$ci_upper) |> stringr::str_replace("\\.",","),
     ")"
   )
+
+links_nj <- readr::read_rds("representativity/link_population_nj.rds")
 ```
 
 
@@ -562,7 +568,7 @@ Dette eksempelet gjelder kun for Trondheim og for en enkelt variant av år som s
 
 
 # Utvalg
-I Trafikkdatasystemet er det generert opp trafikklenker fra det digitale vegnettet i NVDB, og disse er så beriket med flere aktuelle variabler:
+I Trafikkdatasystemet er det generert opp trafikklenker fra det digitale vegnettet i NVDB, som så er beriket med flere aktuelle variabler:
 
 - vegkategori
 - lenkelengde
@@ -594,34 +600,9 @@ I byindekssammenheng er det kun relevant å se på reiser utført av bilfører. 
 
 
 ## Forklaringsvariabler
-For å finne ut om noen av de tilgjengelige variablene kan brukes til å forklare størrelsen og variasjonen til trafikklenkeindeksene, er det gjennomføret en korrelasjonanalyse.
+For å finne ut om noen av de tilgjengelige variablene kan brukes til å forklare størrelsen og variasjonen til trafikklenkeindeksene, er det gjennomført en korrelasjonanalyse. For kategoriske forklaringsvariabler kan vi visuelt vurdere variasjonen ved hjelp av boksplott, mens for numeriske ser vi på Spearmans korrelasjonskoeffisient (som tar høyde for eventuelle ikke-lineære sammenhenger).
 
-
-
-For kategoriske forklaringsvariabler kan vi visuelt vurdere variasjonen ved hjelp av boksplott, mens for numeriske ser vi på Spearmans korrelasjonskoeffisient (som tar høyde for eventuelle ikke-lineære sammenhenger).
-
-Det er ingen av de tilgjengelige variablene som har noen tydelig korrelasjon med trafikklenkeindeksen.
-
-Finn variabler som sørger for spredning likevel, ved hjelp av faglig innsikt. Funksjonsklasse?
-
-
-
-Byindeksen er beregnet som et vektet gjennomsnitt av indeksen for hver av trafikklenkene i utvalget, og det er trafikkarbeid som danner vektene. En trafikklenkes indeks kalles gjerne en punktindeks, da trafikkregistreringene foregår i et gitt passeringspunkt i vegbanen.
-
-
-## Stratifisering
-Kan ha ulike formål:
-
-- bedre representativitet (korrelasjon eller geografisk spredning)
-- mindre usikkerhet (grupper med likere verdier, lenker med stort trafikkarbeid)
-- presise estimater i spesielle grupper (vilkårlig)
-
-Hvis sammenhengen mellom trafikkarbeid og indeks ikke er lineær, er det en fordel å stratifisere trafikkarbeidet.
-
-Er det viktigere med høy dekningsgrad (trafikkarbeid) enn representativitet? Jamfør omsetningsandel i bedrifter. Men det må også være geografisk spredning.
-
-Stratifisere per måned, og dagtype. Vekte disse sammen - da får vi lavere usikkerhet?
-Være strengere på at hver trafikklenkeindeks skal være upåvirket av vegnettsendringer.
+Vi finner at ingen av de tilgjengelige variablene har noen tydelig korrelasjon med trafikklenkeindeksen.
 
 
 ## Sensitivitetsanalyse
@@ -666,8 +647,50 @@ Dette impliserer at det er en romlig korrelasjon mellom nabolenker, men den er i
 
 
 # Eksempel med Nord-Jæren
+Nord-Jæren er valgt ut som eksempel fordi det er en eksisterende byindeks med historikk tilbake til referanseåret 2017. Det er mange trafikkregistreringspunkter i området, og det er blitt flere etter 2017. Dagens byindeks benytter et relativt lavt antall punkter mot det som er tilgjengelig i dag. Hvordan et økende antall punkter kan benyttes utover i en tidsserie er et eget tema, men her er det interessant å sammenligne representativiteten til ulike utvalg. Det er ingen kommunale veger med i dagens byindeks, og det synes heller ikke å være relevant å inkludere noen av disse.
 
-## Fordeling av trafikklenker områder
+
+## Fordeling av trafikklenker
+I @fig-map_nj vises alle trafikklenker som er definert som populasjonen i området. 
+
+```{r}
+#| label: fig-map_nj
+#| message: false
+#| fig-cap: !expr map_caption
+
+map_links_with_function_class(links_nj)
+```
+
+</br>
+I @fig-function_class_nj vises trafikkarbeidsfordelingen til trafikklenkene oppdelt i funksjonsklasse. 
+
+```{r}
+#| label: fig-function_class_nj
+#| fig-cap: "Fordeling av funksjonsklasse i populasjon og utvalg." 
+#| message: false
+#| warning: false
+
+visualize_function_class_distribution(links_nj)
+```
+
+I @tbl-trp_count_nj oppsumeres andel trafikkarbeid i populasjon og utvalg.
+
+```{r}
+#| label: tbl-trp_count_nj
+#| tbl-cap:  "Statistikk for trafikklenker på Nord-Jæren."
+
+
+table_link_statistics(links_nj)
+```
+
+Utvalget av lenker med trafikkregistrering består her av alle kontinuerlige punkt som eksisterer per 2024. I en konkret byindeksberegning er det neppe mulig å bruke alle. Hvilke punkt som kan være med blir begrenset av:
+
+- tilgjengelighet på data av god nok kvalitet
+- hvilke år som skal sammenlignes (blant annet referanseår)
+- andel gjennomgangstrafikk
+- hva som er god nok geografisk spredning 
+- god nok fordeling på funksjonsklasse
+
 
 ## Ulike utvalg
 
