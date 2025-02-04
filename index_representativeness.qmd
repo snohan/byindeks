@@ -673,7 +673,7 @@ I @fig-function_class_nj vises trafikkarbeidsfordelingen til trafikklenkene oppd
 visualize_function_class_distribution(links_nj)
 ```
 
-I @tbl-trp_count_nj oppsumeres andel trafikkarbeid i populasjon og utvalg.
+I @tbl-trp_count_nj oppsummeres andel trafikkarbeid i populasjon og utvalg.
 
 ```{r}
 #| label: tbl-trp_count_nj
@@ -693,6 +693,49 @@ Utvalget av lenker med trafikkregistrering består her av alle kontinuerlige pun
 
 
 ## Ulike utvalg
+Ikke alle punkter kan være med i en indeksberegning. Noen ligger for nærme hverandre.
+
+### De opprinnelige 24
+I @fig-function_class_nj_24 vises trafikkarbeidsfordelingen til de 24 trafikklenkene som har de opprinnelige byindekspunktene. 
+
+```{r}
+#| label: fig-function_class_nj_24
+#| fig-cap: "Fordeling av funksjonsklasse i populasjon og utvalg med 24 punkt." 
+#| message: false
+#| warning: false
+
+links_nj |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        city_trp ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |> 
+  visualize_function_class_distribution()
+```
+
+I @tbl-trp_count_nj oppsummeres andel trafikkarbeid i populasjon og utvalg.
+
+```{r}
+#| label: tbl-trp_count_nj_24
+#| tbl-cap:  "Statistikk for trafikklenker på Nord-Jæren med utvalg på 24 punkt."
+
+links_nj |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        city_trp ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |> 
+  table_link_statistics()
+```
+
+
+### De foreslåtte 70?
+
+
 
 ## Simulerte utvalg
 

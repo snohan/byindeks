@@ -95,8 +95,7 @@ filter_links_with_trp <- function() {
     )
 }
 
-
-visualize_function_class_distribution <- function(link_population) {
+summarise_link_population_by_function_class <- function(link_population) {
 
   function_class_pop <-
     link_population |>
@@ -135,10 +134,61 @@ visualize_function_class_distribution <- function(link_population) {
     dplyr::bind_rows(
       function_class_pop,
       function_class_sam
+    ) |>
+    # explicitly have rows with zeroes in the sample for categories that exist in population
+    tidyr::complete(
+      function_class, nesting(selection, total_count, total_tw),
+      fill = list(
+        count = 0,
+        tw = 0,
+        percentage_count = 0,
+        percentage_tw = 0
+      )
+    ) |>
+    dplyr::filter(
+      # since function class is factor with levels, "E" shows up
+      function_class != "E"
     )
 
-  function_class_tw_plot <-
+  return(function_class_stats)
+
+}
+
+
+calculate_statistical_distance <- function(function_class_stats_df) {
+
+  function_class_stats_wide <-
     function_class_stats |>
+    dplyr::select(
+      function_class,
+      selection,
+      percentage_tw
+    ) |>
+    tidyr::pivot_wider(
+      names_from = selection,
+      values_from = percentage_tw
+    ) |>
+    dplyr::mutate(
+      variation_distance = abs(utvalg - populasjon),
+      squared_diff_of_square_roots = (sqrt(utvalg) - sqrt(populasjon))^2
+    )
+
+  function_class_stats_summarised <-
+    function_class_stats_wide |>
+    dplyr::summarise(
+      tvd = 0.5 * sum(variation_distance),
+      hellinger = (1 / sqrt(2)) * sqrt(sum(squared_diff_of_square_roots))
+    )
+
+  return(function_class_stats_summarised)
+
+}
+
+visualize_function_class_distribution <- function(link_population) {
+
+  function_class_tw_plot <-
+    # TODO: replace function call, presuming this has been done before calling this viz function?
+    summarise_link_population_by_function_class(link_population) |>
     ggplot(aes(function_class, percentage_tw, group = selection, fill = selection)) +
     geom_col(position = "dodge2") +
     theme_light() +

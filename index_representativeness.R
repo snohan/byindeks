@@ -1,14 +1,10 @@
 # Is the selection of city index points representative for the area?
-# Is the observed TRP indexes coming from the same distribution as the population of traffic links?
 
 # Setup ----
 {
   base::Sys.setlocale(locale = "nb.utf8")
   library(tidyverse)
   library(readxl)
-  library(fitdistrplus)
-  library(gamlss)
-  library(moments)
   library(corrplot)
   library(car)
   library(pwr)
@@ -22,6 +18,7 @@
   source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
 }
 
+# Later, need to keep only continuous TRPs on links
 trp_continuous <-
   get_points() |>
   dplyr::filter(
@@ -33,12 +30,11 @@ trp_continuous <-
   dplyr::distinct()
 
 
+# Link variable distributions ----
+# Look at how link variables are distributed
 
 
-# Traffic links ----
-# 1. Look for prediction variables when the traffic link index is the target variable.
-# 2. Compare sample links (those with index value, or theoretically those with TRP) with link population per prediction variable.
-
+## Traffic links without geometry ----
 all_links <-
   jsonlite::fromJSON("C:/Users/snohan/Desktop/traffic-links-2023.json") |>
   dplyr::filter(
@@ -174,6 +170,14 @@ all_links_tidy <-
       factor()
   )
 
+all_links_tidy_no_duplicates <-
+  all_links_tidy |>
+  dplyr::select(
+    -associatedTrpIds
+  ) |>
+  dplyr::distinct()
+
+#
 traffic_link_id_and_trp_id <-
   all_links_tidy |>
   dplyr::select(
@@ -184,6 +188,7 @@ traffic_link_id_and_trp_id <-
     !is.na(trp_id)
   )
 
+## Toll stations ----
 # Putting toll ids in same column as trp_id
 # Will duplicate those with both TRP and toll station
 # all_links_tidy_2 <-
@@ -214,14 +219,8 @@ traffic_link_id_and_trp_id <-
 #   ) |>
 #   dplyr::distinct()
 
-all_links_tidy_no_duplicates <-
-  all_links_tidy |>
-  dplyr::select(
-    -associatedTrpIds
-  ) |>
-  dplyr::distinct()
 
-# Look at how links are distributed
+## Link stats overall ----
 link_stats <-
   all_links_tidy_no_duplicates |>
   dplyr::summarise(
@@ -231,7 +230,7 @@ link_stats <-
   )
 
 
-## AADT and traffic work
+## AADT and traffic work ----
 # all_links_tidy_no_duplicates |>
 #   ggplot(aes(aadt)) +
 #   geom_histogram() +
@@ -261,6 +260,17 @@ link_stats <-
 
 #all_links_tidy_no_duplicates$traffic_work_Mkm |> base::summary()
 
+
+# Ratio of mean and variance
+# What distribution is traffic volume following?
+# Depends on
+# - time interval length
+# - time interval type (morning, day, night, weekday, weekend)
+# - lane type
+# - area type (urban or rural)
+
+
+## Other variables ----
 all_links_tidy_no_duplicates |>
   ggplot(aes(road_category)) +
   geom_bar() +
@@ -301,52 +311,9 @@ all_links_tidy_no_duplicates |>
   facet_wrap(facets = c("function_class", "city"))
 
 
-### City TRPs ----
-# city_id <-
-#   c(960, 952, 8952, 959, 1952, 955, 957)
-#
-# city_names <-
-#   c("Trondheim", "Nord-Jæren", "Bergen", "Oslo", "Buskerudbyen", "Grenland", "Kristiansand")
-#
-# city_names_and_ids <-
-#   tibble::tibble(
-#     city_id,
-#     city_names
-#   )
-#
-# city_trp_info <-
-#   purrr::map(
-#     city_id,
-#     ~ readr::read_rds(
-#       file = paste0(
-#         "index_trp_metadata/trp_",
-#         .x,
-#         ".rds"
-#       )
-#     ) |>
-#       dplyr::mutate(
-#         city_id = .x
-#       )
-#   ) |>
-#   dplyr::bind_rows() |>
-#   dplyr::select(
-#     city_id,
-#     p_id = trp_id,
-#     name
-#   ) |>
-#   dplyr::filter(
-#     # Removing toll station "Nord for Sluppen bru" which has been moved
-#     !(p_id == "1017875672")
-#   ) |>
-#   dplyr::left_join(
-#     city_names_and_ids,
-#     by = join_by(city_id)
-#   )
+## Prediction variables ----
+# Look for prediction variables when the traffic link index is the target variable.
 
-# TODO: links on municipality roads
-
-
-## TRP index ----
 trp_index_raw <-
   purrr::map(
     c(952, 8952, 1952, 18952),
@@ -395,7 +362,7 @@ link_index <-
   )
 
 
-#### Correlations numerical variables ----
+## Correlations numerical variables ----
 corr_numeric <- tibble::tibble()
 for (v in c(1, 2, 5:12)) {
 
@@ -438,7 +405,7 @@ link_index |>
   )
 
 
-#### Correlation categorical variables ----
+## Correlation categorical variables ----
 link_index |>
   # dplyr::filter(
   #   city == "Bergen"
@@ -498,339 +465,167 @@ stats::oneway.test(
 # TODO: Select features as is? Or transform?
 # Should set up a prediction model in order to be able to really select the most important features?
 # Looking too hard for something that isn't really there?
+# Same analysis using F_lamba_half does not give different conclusions
+# dplyr::mutate(
+#   F_lambda_half = 2 * (sqrt(length_calc_volume_short) - sqrt(length_base_volume_short))
+# )
 
-# Same analysis, but also looking at F_lamba_half
-month_trp_index <-
-  purrr::map(
-    c(1952, 955, 957, 952, 959, 8952),
-    ~ get_published_pointindex_for_months(.x, 2023, 12)[[2]]
-  ) |>
-  purrr::list_rbind() |>
-  dplyr::filter(
-    day_type == "ALL",
-    is_excluded == FALSE,
-    is_manually_excluded == FALSE,
-    length_excluded == FALSE,
-    period == "month"
-  ) |>
-  dplyr::select(
-    area_name,
-    trp_id,
-    year,
-    month,
-    period,
-    index_total_coverage,
-    length_coverage,
-    length_calc_volume_short,
-    length_base_volume_short,
-    index_short
-  ) |>
-  dplyr::mutate(
-    F_lambda_half = 2 * (sqrt(length_calc_volume_short) - sqrt(length_base_volume_short))
-  )
-
-### Check for normality
-unique_city_names <-
-  month_trp_index |>
-  dplyr::select(
-    area_name
-  ) |>
-  distinct()
-
-month_trp_index |>
-  # dplyr::filter(
-  #   area_name == unique_city_names$area_name[6]
-  # ) |>
-  ggplot(
-    aes(F_lambda_half)
-    #aes(index_short)
-  ) +
-  geom_histogram() +
-  facet_wrap(
-    facets = vars(month),
-    ncol = 3
-  )
-
-month_trp_index |>
-  # dplyr::filter(
-  #   area_name == unique_city_names$area_name[6]
-  # ) |>
-  ggplot(aes(sample = F_lambda_half)) +
-  stat_qq() +
-  stat_qq_line() +
-  facet_wrap(
-    facets = vars(month),
-    ncol = 3
-  )
+# Check for normality
+# unique_city_names <-
+#   month_trp_index |>
+#   dplyr::select(
+#     area_name
+#   ) |>
+#   distinct()
+#
+# month_trp_index |>
+#   # dplyr::filter(
+#   #   area_name == unique_city_names$area_name[6]
+#   # ) |>
+#   ggplot(
+#     aes(F_lambda_half)
+#     #aes(index_short)
+#   ) +
+#   geom_histogram() +
+#   facet_wrap(
+#     facets = vars(month),
+#     ncol = 3
+#   )
+#
+# month_trp_index |>
+#   # dplyr::filter(
+#   #   area_name == unique_city_names$area_name[6]
+#   # ) |>
+#   ggplot(aes(sample = F_lambda_half)) +
+#   stat_qq() +
+#   stat_qq_line() +
+#   facet_wrap(
+#     facets = vars(month),
+#     ncol = 3
+#   )
 
 # Looks fairly normal, and fairly same for index_short and F.
 
 ## Monthly index and links
-month_trp_index_links <-
-  month_trp_index |>
-  dplyr::left_join(
-    all_links_tidy_2,
-    by = join_by(trp_id == p_id)
-  ) |>
-  dplyr::select(
-    city,
-    #trp_id,
-    month,
-    #index_short,
-    F_lambda_half,
-    # Possible predictors, categorical
-    road_category,
-    urbanity = urbanRatio,
-    # minLanes,
-    # maxLanes,
-    # highestSpeedLimit,
-    functional_class,
-    function_class,
-    # Possible predictors, numerical
-    length,
-    aadt,
-    numberOfEstablishments,
-    numberOfEmployees,
-    numberOfInhabitants
-  ) |>
-  # Removing TRPs without match
-  dplyr::filter(
-    !is.na(road_category)
-  ) |>
-  dplyr::mutate(
-    #functional_class_max_lanes = paste(functional_class, maxLanes, sep = "_"),
-    #speed_min_lanes = paste(highestSpeedLimit, minLanes, sep = "_"),
-    #road_cat_urban = paste(road_category, urbanRatio, sep = "_"),
-    #function_class_min_lanes = paste(function_class, minLanes, sep = "_")
-    #speed_urban = paste(highestSpeedLimit, urbanRatio, sep = "_")
-    # min_lanes_groups =
-    #   dplyr::case_when(
-    #     minLanes %in% c(1, 2, 3) ~ "<4",
-    #     TRUE ~ ">=4"
-    #   ),
-    month = as.factor(month),
-    road_category =
-      dplyr::case_when(
-        road_category == "Europaveg" ~ "R",
-        road_category == "Riksveg" ~ "R",
-        road_category == "Fylkesveg" ~ "F"
-      ),
-    # speed_limit_grouped =
-    #   dplyr::case_when(
-    #     highestSpeedLimit %in% c(30, 40, 50) ~ "<=50",
-    #     highestSpeedLimit %in% c(60, 70, 80) ~ "<=80",
-    #     TRUE ~ ">80"
-    #   ),
-    urbanity =
-      dplyr::case_when(
-        urbanity %in% c("urban", "inter") ~ "urban",
-        TRUE ~ "rural"
-      ),
-    #traffic_work = length * aadt,
-    #interaction_term = paste(road_category, urbanity, sep = "_"),
-    length = log(length + 1),
-    aadt_group =
-      dplyr::case_when(
-        aadt < 5000 ~ "<5k",
-        aadt < 25000 ~ "<25k",
-        TRUE ~ ">25k"
-      ),
-    aadt = log(aadt + 1),
-    dplyr::across(
-      c(F_lambda_half, aadt, length, tidyselect::starts_with("number")),
-      ~ as.numeric(scale(.x))
-    )
-  )
+# month_trp_index_links <-
+#   month_trp_index |>
+#   dplyr::left_join(
+#     all_links_tidy_2,
+#     by = join_by(trp_id == p_id)
+#   ) |>
+#   dplyr::select(
+#     city,
+#     #trp_id,
+#     month,
+#     #index_short,
+#     F_lambda_half,
+#     # Possible predictors, categorical
+#     road_category,
+#     urbanity = urbanRatio,
+#     # minLanes,
+#     # maxLanes,
+#     # highestSpeedLimit,
+#     functional_class,
+#     function_class,
+#     # Possible predictors, numerical
+#     length,
+#     aadt,
+#     numberOfEstablishments,
+#     numberOfEmployees,
+#     numberOfInhabitants
+#   ) |>
+#   # Removing TRPs without match
+#   dplyr::filter(
+#     !is.na(road_category)
+#   ) |>
+#   dplyr::mutate(
+#     #functional_class_max_lanes = paste(functional_class, maxLanes, sep = "_"),
+#     #speed_min_lanes = paste(highestSpeedLimit, minLanes, sep = "_"),
+#     #road_cat_urban = paste(road_category, urbanRatio, sep = "_"),
+#     #function_class_min_lanes = paste(function_class, minLanes, sep = "_")
+#     #speed_urban = paste(highestSpeedLimit, urbanRatio, sep = "_")
+#     # min_lanes_groups =
+#     #   dplyr::case_when(
+#     #     minLanes %in% c(1, 2, 3) ~ "<4",
+#     #     TRUE ~ ">=4"
+#     #   ),
+#     month = as.factor(month),
+#     road_category =
+#       dplyr::case_when(
+#         road_category == "Europaveg" ~ "R",
+#         road_category == "Riksveg" ~ "R",
+#         road_category == "Fylkesveg" ~ "F"
+#       ),
+#     # speed_limit_grouped =
+#     #   dplyr::case_when(
+#     #     highestSpeedLimit %in% c(30, 40, 50) ~ "<=50",
+#     #     highestSpeedLimit %in% c(60, 70, 80) ~ "<=80",
+#     #     TRUE ~ ">80"
+#     #   ),
+#     urbanity =
+#       dplyr::case_when(
+#         urbanity %in% c("urban", "inter") ~ "urban",
+#         TRUE ~ "rural"
+#       ),
+#     #traffic_work = length * aadt,
+#     #interaction_term = paste(road_category, urbanity, sep = "_"),
+#     length = log(length + 1),
+#     aadt_group =
+#       dplyr::case_when(
+#         aadt < 5000 ~ "<5k",
+#         aadt < 25000 ~ "<25k",
+#         TRUE ~ ">25k"
+#       ),
+#     aadt = log(aadt + 1),
+#     dplyr::across(
+#       c(F_lambda_half, aadt, length, tidyselect::starts_with("number")),
+#       ~ as.numeric(scale(.x))
+#     )
+#   )
 
 # Not suitable to use speed or lanes here, as cities differ in occurrence.
 
 
 # Categorical variables
-month_trp_index_links |>
-  ggplot(
-    aes(
-      x = aadt_group,
-      y = F_lambda_half
-    )
-  ) +
-  geom_boxplot() +
-  facet_wrap(facets = "city")
+# month_trp_index_links |>
+#   ggplot(
+#     aes(
+#       x = aadt_group,
+#       y = F_lambda_half
+#     )
+#   ) +
+#   geom_boxplot() +
+#   facet_wrap(facets = "city")
 # No obvious groupings!
 # Month is one, obviously.
 
 
 # Numerical variables
-month_trp_index_links |>
-  dplyr::select(
-    F_lambda_half, aadt, length, tidyselect::starts_with("number")
-  ) |>
-  stats::cor(
-    method = "spearman"
-  ) |>
-  corrplot::corrplot(
-    type = "lower"
-  )
-
-month_trp_index_links |>
-  ggplot(aes(F_lambda_half, aadt)) +
-  geom_point()
-
-
-
-## Statistical distance ----
-# Comparing sample and population - do they look alike?
-
-# Kji-kvadrat test (med MC)
-test <- chisq.test(
-  x,
-  y,
-  simulate.p.value = TRUE
-)
+# month_trp_index_links |>
+#   dplyr::select(
+#     F_lambda_half, aadt, length, tidyselect::starts_with("number")
+#   ) |>
+#   stats::cor(
+#     method = "spearman"
+#   ) |>
+#   corrplot::corrplot(
+#     type = "lower"
+#   )
+#
+# month_trp_index_links |>
+#   ggplot(aes(F_lambda_half, aadt)) +
+#   geom_point()
 
 
-# og
-# Total Variation distance (not the  supremum definition, which is event-wise, rather the pd-one - easy to understand)
-# Hellinger distance (between 0 and 1, more difficult, 0 to 1)
-# Kullback-Leibler Divergence (too complicated, from 0 to Inf)
+# Link population ----
 
 
-# Power analysis (least n) ----
-# Say we want to detect wether traffic is changed, i.e. different from 0 % change.
+## Traffic links with geometry ----
+# Need geometry for
+# 1. Map plot
+# 2. Graph analysis
 
-# What effect size do we need to detect?
-# Cohen's d is the difference between two means divided by a standard deviation for the data.
-# If the difference is 1 %-point and the sd is about 5, then d is 0.2.
-# What is the empirical sd in terms of %-points?
-
-# Power: By what probability do we want to detect it? 0.9?
-# Significance level is 0.05.
-# We need to detect if change is unequal to zero, i.e. both positive and negative.
-# What is the smallest sample size that fullfills this?
-
-# What is the typical weighted sd under normal circumstances?
-city_ids <- c(
-  "8952",
-  "1952",
-  "955",
-  "957",
-  "953",
-  "952",
-  "959"
-)
-
-city_indices <-
-  purrr::map(
-    city_ids,
-    ~ get_published_index(., 2022, 12)
-  ) |>
-  purrr::list_rbind()
-
-city_indices_tidy <-
-  city_indices |>
-  dplyr::filter(
-    road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
-    length_range == "[..,5.6)",
-    day_type == "ALL",
-    period == "year_to_date"
-  )
-
-mean(city_indices_tidy$standard_deviation)
-median(city_indices_tidy$standard_deviation)
-# 4
-
-cohen_d <- 2 / 4
-
-# Choose wanted power and difference in mean
-power_analysis <-
-  pwr::pwr.t.test(
-  n = NULL,
-  d = cohen_d,
-  sig.level = 0.05,
-  power = 0.8,
-  type = "one.sample",
-  alternative = "two.sided"
-)
-
-power_analysis
-plot(power_analysis)
-
-
-# Ratio of mean and variance ----
-# What distribution is traffic volume following?
-# Depends on
-# - time interval length
-# - time interval type (morning, day, night, weekday, weekend)
-# - lane type
-# - area type (urban or rural)
-
-
-# Log ratio ----
-# An antisymmetric, additive and normed measure of change
-# Either ln (p) or 2 * (sqrt(v_2) - sqrt(v_1))
-
-point_index_tests <-
-  tibble::tibble(
-    base_volume = c(
-      100,
-      1000,
-      10000,
-      10200,
-      1200,
-      200,
-      2000,
-      2000,
-      2000,
-      20000,
-      20050,
-      20000,
-      1000000,
-      1000900,
-      1000000,
-      100
-    ),
-    calc_volume = c(
-      200,
-      1200,
-      10200,
-      10000,
-      1000,
-      100,
-      2000,
-      2050,
-      2100,
-      20050,
-      20250,
-      20250,
-      1000900,
-      1000000,
-      1010000,
-      101
-    )
-  ) |>
-  dplyr::mutate(
-    pi_i = calc_volume / base_volume,
-    pi_p = 100 * (calc_volume / base_volume - 1),
-    pi_i_ln = 100 * log(pi_i),
-    f_pi_i_lambda_half = (calc_volume - base_volume) / sqrt(base_volume),
-    F_pi_i_lambda_half = 2 * (sqrt(calc_volume) - sqrt(base_volume))
-  ) |>
-  dplyr::summarise(
-    pi_i = sum(calc_volume) / sum(base_volume),
-    total_F_pi_i_lambda_half = 2 * (sqrt(sum(calc_volume)) - sqrt(sum(base_volume))),
-    mean_F_pi_i_lambda_half = mean(F_pi_i_lambda_half)
-  )
-
-sum(point_index_tests$f_pi_i_lambda_half[10:11])
-sum(point_index_tests$F_pi_i_lambda_half[10:11])
-
-# I.e. F is additive, but f is not.
-# F has high values when comparing monthly traffic, but this will of course be smaller when we would compare monthly daily traffic.
-
-# F for the city doesn't say much. It would still be perilous to compare cities.
-
-
-# Traffic links from Adm ----
-
+# Need to know layer names if a query should limit rows during test readings.
 #layers <- sf::st_layers("C:/Users/snohan/Desktop/traffic_links_2023_2024-10-08.geojson")
 #names(links)
 
@@ -931,15 +726,7 @@ traffic_volumes <-
     .by = "link_id"
   )
 
-nodes <-
-  sf::st_read("C:/Users/snohan/Desktop/traffic-nodes-2023_2024-10-11.geojson") |>
-  sf::st_drop_geometry() |>
-  dplyr::select(
-    id,
-    #numberOfUndirectedLinks
-  ) |>
-  tibble::as_tibble()
-
+# Filter initially by municipality, but also remove links on the outer border of area
 all_municipality_ids <-
   links |>
   sf::st_drop_geometry() |>
@@ -948,12 +735,63 @@ all_municipality_ids <-
     all_municipality_ids = municipalityIds
   )
 
+# Need to filter links that do not intersect
 not_intersected <- function(x, y) !sf::st_intersects(x, y)
 
-## City link population ----
 
-### Nord-Jæren
-# NB! Need to remove duplicate links (crossing municipality boundaries)
+## City TRPs ----
+# Need to know what the sample is supposed to be (if all TRPs give good data)
+
+city_id <-
+  c(960, 952, 8952, 959, 1952, 955, 19953, 18952)
+
+city_names <-
+  c("Trondheim", "Nord-Jæren", "Bergen", "Oslo", "Buskerudbyen", "Grenland", "Kristiansand", "Nedre Glomma")
+
+city_names_and_ids <-
+  tibble::tibble(
+    city_id,
+    city_names
+  )
+
+city_trp_info <-
+  purrr::map(
+    city_id,
+    ~ readr::read_rds(
+      file = paste0(
+        "index_trp_metadata/trp_",
+        .x,
+        ".rds"
+      )
+    ) |>
+      dplyr::mutate(
+        city_id = .x
+      )
+  ) |>
+  dplyr::bind_rows() |>
+  dplyr::select(
+    city_id,
+    p_id = trp_id,
+    name
+  ) |>
+  dplyr::filter(
+    # Removing toll station "Nord for Sluppen bru" which has been moved
+    !(p_id == "1017875672")
+  ) |>
+  dplyr::left_join(
+    city_names_and_ids,
+    by = join_by(city_id)
+  )
+
+city_info_stats <-
+  city_trp_info |>
+  dplyr::summarise(
+    n_trp = n(),
+    .by = city_names
+  )
+
+
+## Population Nord-Jæren ----
 municipality_ids_nj <- c(1127, 1103, 1124, 1108)
 
 nj_polygon_north <-
@@ -990,7 +828,9 @@ links_nj_central <-
     -municipality_id,
     -trafficVolumes
   ) |>
+  # remove duplicate links (crossing municipality boundaries)
   dplyr::distinct() |>
+  # remove links crossing borders out of area
   dplyr::left_join(
     all_municipality_ids,
     by = dplyr::join_by(link_id)
@@ -1019,10 +859,10 @@ links_nj_central <-
     !is.na(traffic_work_km)
   ) |>
   sf::st_as_sf() |>
+  # areas in northern part are former municipalities not to be included
   sf::st_filter(nj_polygon_north, .predicate = not_intersected)
 
-
-# Need to remove links with function class D in eastern part
+# Need to remove links (with function class D?) in eastern part
 nj_polygon_east <-
   tibble::tibble(
     lon = c(
@@ -1050,15 +890,22 @@ links_nj_east_D <-
   #  function_class == "D"
   #)
 
-links_nj_central_reduced <-
+link_population <-
   links_nj_central |>
   dplyr::filter(
     !(link_id %in% links_nj_east_D$link_id),
-    # Removing som links in Figgjo
+    # Removing some links in Figgjo
     !(link_id == "0.0-1.0@320083"),
     !(link_id == "0.80529774-0.9731575@320669"),
     !(link_id == "0.72327267-0.80529774@320669"),
     !(link_id == "0.9731575-1.0@320669")
+  ) |>
+  dplyr::mutate(
+    city_trp =
+      dplyr::case_when(
+        point_id %in% city_trp_info$p_id ~ TRUE,
+        TRUE ~ FALSE
+      )
   )
 
 # Look at missing data
@@ -1069,314 +916,23 @@ links_nj_central_reduced <-
 #   )
 
 # Map
-links_nj_central_reduced |>
-  map_links_with_function_class()
+link_population |> map_links_with_function_class()
 
-readr::write_rds(links_nj_central_reduced, "representativity/link_population_nj.rds")
+# Save file for use in report
+readr::write_rds(link_population, "representativity/link_population_nj.rds")
 
 
-
-## Rolling index ----
-# TODO: use already checked MDT data to recalculate - differences will be
-# - traffic work weights
-# - finite population corrected CI
-
-# Need traffic_work per link that has TRP in order to calculate weighted mean
-mdt_tw <-
-  links_nj_central_reduced |>
+# Traffic graph ----
+# Need the nodes belonging to the links (should be downloaded same day)
+nodes <-
+  sf::st_read("C:/Users/snohan/Desktop/traffic-nodes-2023_2024-10-11.geojson") |>
   sf::st_drop_geometry() |>
   dplyr::select(
-    trp_id = point_id,
-    traffic_work
+    id,
+    #numberOfUndirectedLinks
   ) |>
-  dplyr::filter(
-    !is.na(trp_id)
-  )
+  tibble::as_tibble()
 
-
-{
-  present_year <- 2024
-  index_month <- 12
-  city_number <- 952
-}
-
-source("set_time_references.R")
-
-mdt_filtered <-
-  readr::read_rds(
-    file =
-      paste0(
-        "data_indexpoints_tidy/mdt_",
-        city_number,
-        ".rds"
-      )
-  )
-
-source("exclude_trp_mdts_list.R")
-
-filter_mdt <- function(mdt_df, year_dbl) {
-
-  mdt_df |>
-    dplyr::filter(
-      year == year_dbl,
-      coverage >= 50, # this is length_coverage!
-      length_quality >= 98.5
-    ) |>
-    dplyr::select(
-      trp_id,
-      year,
-      month,
-      mdt
-    ) |>
-    dplyr::group_by(
-      trp_id,
-      year
-    ) |>
-    dplyr::summarise(
-      n_months = n(),
-      mean_mdt = mean(mdt),
-      .groups = "drop"
-    ) |>
-    dplyr::filter(
-      n_months >= 10
-    )
-
-}
-
-
-# For testing
-base_year <- reference_year
-#last_year_month <- "2024-12-01"
-window_length <- 36
-grouping <- "by_area"
-mdt_df <- mdt_validated
-
-test <- calculate_rolling_indices_by_mdt(reference_year, last_year_month, window_length, mdt_validated, grouping)
-
-calculate_rolling_indices_by_mdt <-
-  function(base_year, last_year_month, window_length, mdt_df, grouping) {
-
-    # Window length is a number of months, a multiple of 12
-    # Grouping must be either:
-    # by_area
-    # by_sub_area
-    # by_trp
-
-    least_number_of_month_enums <-
-      dplyr::case_when(
-        window_length == 36 ~ 2,
-        TRUE ~ 0
-      )
-
-    least_number_of_months <-
-      dplyr::case_when(
-        window_length == 36 ~ 31,
-        window_length == 24 ~ 20,
-        window_length == 12 ~ 9
-      )
-
-    last_year_month <-
-      lubridate::as_date(last_year_month)
-
-    mean_mdt_in_window <-
-      mdt_df |>
-      dplyr::filter(
-        year_month %in%
-          base::seq.Date(
-            from = last_year_month - base::months(window_length - 1),
-            to = last_year_month,
-            by = "month"
-          )
-      ) |>
-      dplyr::filter(
-        coverage >= 50,
-        length_quality >= 98.5
-      ) |>
-      dplyr::group_by(
-        trp_id,
-        month
-      ) |>
-      dplyr::summarise(
-        n_months = n(),
-        mean_mdt = base::mean(mdt),
-        .groups = "drop_last"
-      ) |>
-      dplyr::filter(
-        n_months >= least_number_of_month_enums
-      ) |>
-      dplyr::group_by(
-        trp_id
-      ) |>
-      dplyr::summarise(
-        n_months = sum(n_months),
-        mean_mdt = base::mean(mean_mdt),
-        .groups = "drop"
-      ) |>
-      dplyr::filter(
-        n_months >= least_number_of_months
-      )
-
-    index_df <-
-      dplyr::inner_join(
-        filter_mdt(mdt_df, base_year),
-        mean_mdt_in_window,
-        by = "trp_id"
-      ) |>
-      dplyr::mutate(
-        w = mean_mdt.x / sum(mean_mdt.x),
-        trp_index_i = mean_mdt.y / mean_mdt.x,
-        #weigted_mean = sum(w * trp_index_i), # same as index_i :)
-        index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
-        sd_component = w * (trp_index_i - index_i)^2
-      )
-
-    if(grouping == "by_area") {
-      index_df_grouped <-
-        index_df |>
-        dplyr::summarise(
-          index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
-          index_p = (index_i - 1) * 100,
-          n_trp = n(),
-          n_eff = 1 / sum(w^2),
-          sd_sample_p = 100 * sqrt(sum(sd_component) * (1/(1 - 1/n_eff))),
-          standard_error_p = sd_sample_p / sqrt(n_eff),
-          .groups = "drop"
-        ) |>
-        dplyr::mutate(
-          ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
-          ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error_p, 1)
-        )
-    }
-
-    if(grouping == "by_sub_area") {
-      index_df_grouped <-
-        index_df |>
-        dplyr::left_join(
-          sub_areas,
-          by = join_by(trp_id)
-        ) |>
-        dplyr::summarise(
-          index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
-          index_p = (index_i - 1) * 100,
-          n_trp = n(),
-          n_eff = 1 / sum(w^2),
-          sd_sample_p = 100 * sqrt(sum(sd_component) * (1/(1 - 1/n_eff))),
-          standard_error_p = sd_sample_p / sqrt(n_eff),
-          .by = sub_area
-        ) |>
-        dplyr::mutate(
-          ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
-          ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error_p, 1)
-        )
-    }
-
-    if(grouping == "by_trp") {
-      index_df_grouped <-
-        index_df
-    }
-
-    index_df_final <-
-      index_df_grouped |>
-      dplyr::mutate(
-        index_period =
-          paste0(
-            base_year,
-            " - (",
-            (last_year_month - base::months(window_length - 1)) |>
-              lubridate::month(label = TRUE),
-            " ",
-            (last_year_month - base::months(window_length - 1)) |>
-              lubridate::year(),
-            " - ",
-            last_year_month |>
-              lubridate::month(label = TRUE),
-            " ",
-            last_year_month |>
-              lubridate::year(),
-            ")"
-          ),
-        month_object = last_year_month
-      ) |>
-      dplyr::mutate(
-        month_n = lubridate::month(month_object),
-        year = lubridate::year(month_object),
-        window = paste0(window_length, "_months")
-      )
-
-    return(index_df_final)
-
-  }
-
-
-calculate_rolling_indices <- function(window_length, grouping = "by_area") {
-
-  base::stopifnot(window_length %% 12 == 0)
-
-  n_years <- window_length / 12
-
-  first_possible_year_month <-
-    lubridate::as_date(
-      paste0(
-        reference_year + n_years,
-        "-12-01"
-      )
-    )
-
-  year_months_possible <-
-    base::seq.Date(
-      from = first_possible_year_month,
-      to = last_year_month,
-      by = "month"
-    )
-
-  purrr::map_dfr(
-    year_months_possible,
-    ~ calculate_rolling_indices_by_mdt(reference_year, .x, window_length, mdt_validated, grouping)
-  )
-
-}
-
-
-# TODO: include MDT for 2023 and 2024 and calculate index
-# TODO: alternative selections of TRPs
-# 1. Original 24
-# 2. Suggested 59
-# 3. Repeated random selection of n
-
-
-# City TRPs
-links_with_city_trp_nj <-
-  links_nj |>
-  sf::st_drop_geometry() |>
-  tidyr::unnest_longer(
-    trp_id
-  ) |>
-  dplyr::inner_join(
-    city_trp_info |>
-      dplyr::filter(
-        city_names == "Nord-Jæren"
-      ),
-    by = join_by(trp_id == p_id)
-  ) |>
-  dplyr::select(
-    link_id,
-    city_trp_id = trp_id
-  )
-
-links_nj_final <-
-  links_nj |>
-  dplyr::left_join(
-    links_with_city_trp_nj,
-    by = join_by(link_id)
-  ) |>
-  dplyr::select(
-    -trp_id
-  ) |>
-  sf::st_as_sf()
-
-
-
-## Traffic graph ----
 # Create graph
 nodes_nj <-
   dplyr::bind_rows(
@@ -1773,3 +1329,124 @@ L_nodes |>
   facet_wrap(
     ~ city_trp_lgl,
     ncol = 1)
+
+
+# Least n TRPs ----
+# aka power analysis
+# Say we want to detect wether traffic is changed, i.e. different from 0 % change.
+
+# What effect size do we need to detect?
+# Cohen's d is the difference between two means divided by a standard deviation for the data.
+# If the difference is 1 %-point and the sd is about 5, then d is 0.2.
+
+# Power: By what probability do we want to detect it? 0.9?
+# Significance level is 0.05.
+# We need to detect if change is unequal to zero, i.e. both positive and negative.
+# What is the smallest sample size that fullfills this?
+
+# What is the empirical weighted sd under normal circumstances?
+city_ids <- c(
+  "8952",
+  "1952",
+  "955",
+  "957",
+  "953",
+  "952",
+  "959"
+)
+
+city_indices <-
+  purrr::map(
+    city_ids,
+    ~ get_published_index(., 2022, 12)
+  ) |>
+  purrr::list_rbind()
+
+city_indices_tidy <-
+  city_indices |>
+  dplyr::filter(
+    road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+    length_range == "[..,5.6)",
+    day_type == "ALL",
+    period == "year_to_date"
+  )
+
+mean(city_indices_tidy$standard_deviation)
+median(city_indices_tidy$standard_deviation)
+# 4
+
+cohen_d <- 0.2 / 4
+
+# Choose wanted power and difference in mean
+# TODO: finite population
+# TODO: stratified sampling
+power_analysis <-
+  pwr::pwr.t.test(
+    n = NULL,
+    d = cohen_d,
+    sig.level = 0.05,
+    power = 0.8,
+    type = "one.sample",
+    alternative = "two.sided"
+  )
+
+power_analysis
+plot(power_analysis)
+
+
+# Statistical distance ----
+# Comparing sample and population - do they look alike?
+
+# Kji-kvadrat test (med MC)
+# test <- chisq.test(
+#   x, # tw in selection
+#   p, # expected probabilities, percentage tw in population
+#   simulate.p.value = TRUE
+# )
+# This won't work because the observations x are too large
+
+# chi_test <-
+#   stats::chisq.test(
+#     #x = function_class_stats_wide$tw_utvalg,
+#     #x = c(103980352, 25393543, 44294894, 10000),
+#     x = function_class_stats_wide$fake,
+#     p = function_class_stats_wide$percentage_tw_populasjon,
+#     simulate.p.value = TRUE
+#   )
+# df is supposed to be NA in this case, as this is a goodness of fit-test
+#chi_test
+
+# Total Variation distance (not the  supremum definition, which is event-wise, rather the pd-one - easy to understand)
+# Hellinger distance (between 0 and 1, more difficult, 0 to 1)
+# Kullback-Leibler Divergence (too complicated, from 0 to Inf) - won't work when some category is zero!
+
+
+
+# Sample calculations ----
+# Use past rolling index results, and calculate representativity over time
+
+city_id_samples <- c(952, 8952, 1952)
+#city_names <- c("Nord-Jæren", "Bergen", "Buskerudbyen")
+
+city_trp_rolling_index <-
+  purrr::map(
+    city_id_samples,
+    ~ readxl::read_xlsx(
+        path = paste0(
+          "data_indexpoints_tidy/tallmateriale_",
+          .x,
+          ".xlsx"
+        ),
+        sheet = "punkt_3_aar_glid_indeks"
+    ) |>
+      dplyr::mutate(
+        city_id = .x
+      )
+  ) |>
+  dplyr::bind_rows() |>
+  dplyr::select(
+    city_id,
+    trp_id,
+    last_month_in_index
+  )
+
