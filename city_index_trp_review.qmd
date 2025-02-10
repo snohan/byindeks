@@ -88,6 +88,11 @@ trp_info <-
   trps_and_links |> 
   sf::st_drop_geometry()
 
+writexl::write_xlsx(
+  trp_info,
+  "spesialuttak/nj_79_2023.xlsx"
+)
+
 # Links
 links_info <-
   trps_and_links |> 

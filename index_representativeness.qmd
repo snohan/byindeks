@@ -64,6 +64,16 @@ flextable::set_flextable_defaults(
 ```{r}
 #| label: data
 
+this_date <- lubridate::today()
+this_date_string <- 
+  base::paste0(
+    lubridate::mday(this_date), 
+    ". ", 
+    lubridate::month(this_date, label = TRUE, abbr = FALSE), 
+    " ", 
+    lubridate::year(this_date)
+  )
+
 rtm_trd <- readr::read_rds("representativity/rtm_20_22_trondheim.rds")
 rtm_trd_index <- readr::read_rds("representativity/rtm_20_22_trondheim_index.rds")
 rtm_random_samples <- readr::read_rds("representativity/rtm_random_samples.rds")
@@ -99,6 +109,10 @@ links_nj <- readr::read_rds("representativity/link_population_nj.rds")
 # Innledning
 Dette dokumentet er et supplement til notatet "Representativitet i byindeks" og inneholder detaljer om de utforskende dataanalysene som ligger til grunn for vurderingene som er beskrevet i hovednotatet.
 
+Dette notatet er sist oppdatert `r this_date_string`. Kontaktperson er Snorre Hansen, Statens vegvesen (Transport og samfunn, Transportutvikling, Veg- og transportteknologi).
+
+
+## Bakgrunn
 Utgangspunktet for indeksmetodikken er å se på vegnettet som en populasjon som det gjøres et utvalg fra. Individene i populasjonen er trafikklenker, som er vegstrekninger fra kryss til kryss som har homogen trafikkmengde på en tidsoppløsning som er minst et døgn.
 
 Arbeidet med representativitet er gjort før det er gjort en nærmere analyse på selve beregningsmetoden til byindeksen. Representativitet og beregningsmetode henger tett sammen, men det antas her at metodikken for beregning av byindeks er som et vektet gjennomsnitt av trafikklenkenes endring i trafikkarbeid, der trafikkarbeidet er vektene.

@@ -1,6 +1,10 @@
-# Want three files:
-# 1. RDS with traffic links for chosen TRP, to be shown in map.
-# 2. RDS with table summarising n TRP and measured traffic work per county.
+# The purpose of this script is to revise TRPs used in VTI, comprising:
+# a. Remove TRPs that won't give us any index data this coming year
+# b. Add some more TRPs to compensate
+
+# We want three files:
+# 1. RDS with traffic links for TRP candidates, to be shown in map.
+# 2. RDS with table summarising n TRP and measured traffic work per county and road category.
 # 3. Excel file with TRPs to keep and add to VTI.
 
 {
@@ -13,137 +17,27 @@
 
 # Get data ----
 ## Counties ----
-counties <-
-  get_counties()
-
-
-## TRP ----
-trp_for_vti <-
-  get_points() |>
-  dplyr::group_by(trp_id) |>
-  dplyr::slice(which.min(validFrom)) |>
-  dplyr::ungroup()
-
-trp_latest_data <- get_trps_latest_data()
-
-
-## Traffic links ----
-# Geojson from ADM
-links <-
-  sf::st_read("C:/Users/snohan/Desktop/traffic_links_2023.geojson") |>
-  dplyr::rename(
-    county_id = countyIds,
-    road_category = roadCategory,
-    trp_id = primaryTrpId,
-  ) |>
-  dplyr::mutate(
-    road_category =
-      dplyr::case_when(
-        road_category == "Europaveg" ~ "R",
-        road_category == "Riksveg" ~ "R",
-        TRUE ~ "F"
-      )
-  )
-
-
-## Traffic work ----
-traffic_work <-
-  links |>
-  sf::st_drop_geometry() |>
-  dplyr::select(
-    id,
-    length,
-    trp_id,
-    road_category,
-    county_id,
-    trafficVolumes
-  ) |>
-  dplyr::filter(
-    !(is.na(trafficVolumes))
-  ) |>
-  dplyr::mutate(
-    volumes = purrr::map(trafficVolumes, ~ jsonlite::fromJSON(.x))
-  ) |>
-  tidyr::unnest(
-    volumes
-  ) |>
-  dplyr::filter(
-    trafficVolumeType == "GUESSTIMATED"
-  ) |>
-  dplyr::select(
-    id,
-    length,
-    trp_id,
-    road_category,
-    county_id,
-    traffic_work = trafficWorkValue
-  ) |>
-  # Reduce to one county per link
-  dplyr::rowwise() |>
-  dplyr::mutate(
-    county_id_single = purrr::pluck(county_id, 1, 1)
-  ) |>
-  dplyr::ungroup() |>
-  dplyr::summarise(
-    traffic_work_mill_km = sum(traffic_work) / 1e9,
-    .by = c(county_id_single, road_category)
-  ) |>
-  dplyr::select(
-    county_id = county_id_single,
-    road_category,
-    traffic_work_mill_km
-  )
-
-readr::write_rds(
-  traffic_work,
-  file = "new_vti/traffic_work_2023.rds"
-)
-
-
-## AADT ----
-# coverage and length_quality previous year
-# Check last year for normality with previous years
-
-# trp_aadt_raw <-
-#   links_tidy$trp_id |>
-#   get_aadt_for_trp_list()
-#
-# readr::write_rds(
-#   trp_aadt_raw,
-#   file = "trp_aadt.rds"
-# )
-#
-# remove(trp_aadt_raw)
+counties <- get_counties()
 
 
 ## Point index last year ----
-# trps_last_year <- get_published_pointindex_for_months_paginated(962, 2023, 12)[[1]]
-#
+trps_last_year <- get_published_pointindex_for_months_paginated(962, 2024, 12)[[1]]
+
+# Fetch once and save?
 # readr::write_rds(
 #   trps_last_year,
 #   file = "new_vti/trps_last_year.rds"
 # )
 
 
-# Tidy ----
-## Tidy TRPs ----
-trp_for_vti_tidy <-
-  trp_for_vti |>
-  dplyr::select(
-    trp_id,
-    name,
-    traffic_type,
-    registration_frequency,
-    county_geono,
-    county_no,
-    county_name,
-    municipality_name,
-    road_reference,
-    road_link_position,
-    lat, lon,
-    valid_from = validFrom,
-    operational_status
-  ) |>
+## TRP ----
+trp_latest_data <- get_trps_latest_data()
+
+trp_for_vti <-
+  get_points() |>
+  dplyr::group_by(trp_id) |>
+  dplyr::slice(which.min(validFrom)) |>
+  dplyr::ungroup() |>
   dplyr::filter(
     traffic_type == "VEHICLE",
     registration_frequency == "CONTINUOUS",
@@ -157,12 +51,18 @@ trp_for_vti_tidy <-
   dplyr::mutate(
     latest_day = lubridate::floor_date(latest_data_by_hour)
   ) |>
-  dplyr::filter(
-    road_category != "K",
-    valid_from < "2023-01-01",
-    latest_day > "2024-01-26"
-    #stringr::str_detect(road_reference, "SD", negate = TRUE),
-    #stringr::str_detect(road_reference, "KD", negate = TRUE)
+  dplyr::select(
+    trp_id,
+    name,
+    county_geono,
+    county_name,
+    municipality_name,
+    road_reference,
+    road_category,
+    road_category_and_number,
+    lat, lon,
+    valid_from = validFrom,
+    latest_day
   ) |>
   dplyr::mutate(
     road_category =
@@ -171,13 +71,192 @@ trp_for_vti_tidy <-
         road_category == "R" ~ "R",
         road_category == "F" ~ "F"
       ),
-    name = stringr::str_to_title(name, locale = "no"),
     used_last_year =
       dplyr::case_when(
         trp_id %in% trps_last_year ~ TRUE,
         TRUE ~ FALSE
       )
   ) |>
+  dplyr::filter(
+    road_category %in% c("F", "R", "K"),
+    valid_from < "2024-01-01",
+    latest_day > "2025-02-01"
+    #stringr::str_detect(road_reference, "SD", negate = TRUE),
+    #stringr::str_detect(road_reference, "KD", negate = TRUE)
+  )
+
+
+## AADT ----
+# Coverage and length_quality previous year
+trp_aadt_raw <-
+  trp_for_vti$trp_id |>
+  get_aadt_for_trp_list()
+
+readr::write_rds(
+  trp_aadt_raw,
+  file = "trp_aadt.rds"
+)
+
+remove(trp_aadt_raw)
+
+trp_aadts <-
+  readr::read_rds("trp_aadt.rds") |>
+  dplyr::filter(
+    !(year %in% c(2020, 2021)),
+    year > 2014,
+    coverage > 50
+  ) |>
+  # Check last year for normality with previous years
+  dplyr::mutate(
+    median_aadt = median(adt, na.rm = TRUE),
+    .by = trp_id
+  ) |>
+  dplyr::mutate(
+    normal_year = adt > median_aadt * 0.75 & adt < median_aadt * 1.25,
+    valid_length_percent = round(valid_length_volume / adt * 100, digits = 1)
+  ) |>
+  dplyr::filter(
+    year == 2024,
+    coverage > 95,
+    adt >= 200,
+    valid_length_percent > 99,
+    normal_year == TRUE
+  ) |>
+  dplyr::select(
+    trp_id,
+    adt
+  )
+
+
+## Traffic links ----
+# Geojson from ADM
+# All links on R and F
+links <-
+  sf::read_sf(
+    "C:/Users/snohan/Desktop/traffic_links_2024_2025-02-10.geojson",
+    query =
+      "
+      SELECT
+        id,
+        countyIds,
+        roadCategory,
+        roadSystemReferences,
+        functionClass,
+        hasOnlyPublicTransportLanes,
+        isFerryRoute,
+        associatedTrpIds,
+        trafficVolumes
+      FROM \"traffic_links_2024_2025-02-10\"
+      "
+  ) |>
+  dplyr::rename(,
+    road_category = roadCategory
+  ) |>
+  dplyr::mutate(
+    road_category =
+      dplyr::case_when(
+        road_category == "Europaveg" ~ "R",
+        road_category == "Riksveg" ~ "R",
+        road_category == "Fylkesveg" ~ "F",
+        TRUE ~ road_category
+      )
+  ) |>
+  dplyr::filter(
+    road_category %in% c("R", "F"),
+    hasOnlyPublicTransportLanes == FALSE,
+    isFerryRoute == FALSE
+  ) |>
+  dplyr::select(
+    -hasOnlyPublicTransportLanes,
+    -isFerryRoute
+  )
+
+
+## County ID ----
+# Keep only one county id for border crossing ones
+link_county_id <-
+  links |>
+  sf::st_drop_geometry() |>
+  dplyr::select(
+    id,
+    countyIds
+  ) |>
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    county_id_single = purrr::pluck(countyIds, 1, 1)
+  ) |>
+  dplyr::ungroup() |>
+  dplyr::select(
+    id,
+    county_id = county_id_single
+  )
+
+
+## Traffic work ----
+traffic_work_per_link <-
+  links |>
+  sf::st_drop_geometry() |>
+  dplyr::select(
+    id,
+    trafficVolumes
+  ) |>
+  dplyr::filter(
+    !(is.na(trafficVolumes)),
+    !(trafficVolumes == "[ ]")
+  ) |>
+  dplyr::mutate(
+    volumes = purrr::map(trafficVolumes, ~ jsonlite::fromJSON(.x))
+  ) |>
+  tidyr::unnest(
+    volumes
+  ) |>
+  dplyr::filter(
+    trafficVolumeType == "GUESSTIMATED",
+    year == 2023,
+    trafficVolumeResolution == "ADT",
+    trafficWorkValue > 0
+  ) |>
+  dplyr::select(
+    id,
+    traffic_work_km = trafficWorkValue
+  )
+
+
+## TRP on link ----
+# All links and TRP ids
+link_trp_id <-
+  links |>
+  sf::st_drop_geometry() |>
+  dplyr::select(
+    id,
+    associatedTrpIds
+  ) |>
+  dplyr::filter(
+    !(associatedTrpIds == "[ ]")
+  ) |>
+  dplyr::mutate(
+    trp_id = purrr::map(associatedTrpIds, ~ jsonlite::fromJSON(.x))
+  ) |>
+  tidyr::unnest(
+    trp_id
+  ) |>
+  dplyr::select(
+    -associatedTrpIds
+  ) |>
+  dplyr::filter(
+    trp_id %in% trp_aadts$trp_id
+  ) #|>
+  # Some links will have two TRPs (one per direction)
+  #dplyr::mutate(
+  #  n_id = n(),
+  #  .by = id
+  #)
+
+
+# Tidy ----
+## Tidy TRPs ----
+trp_for_vti_tidy <-
+  trp_for_vti |>
   dplyr::inner_join(
     trp_aadts,
     by = "trp_id"
@@ -186,13 +265,12 @@ trp_for_vti_tidy <-
     trp_id,
     name,
     county_geono,
-    county_no,
     county_name,
     municipality_name,
     road_category,
     road_category_and_number,
     road_reference,
-    road_link_position,
+    #road_link_position,
     lat, lon,
     used_last_year,
     adt
@@ -212,53 +290,30 @@ readr::write_rds(
 ## Tidy links ----
 links_tidy <-
   links |>
+  dplyr::left_join(
+    link_county_id,
+    by = join_by(id)
+  ) |>
+  dplyr::left_join(
+    traffic_work_per_link,
+    by = join_by(id)
+  ) |>
+  dplyr::filter(
+    !is.na(traffic_work_km)
+  ) |>
+  dplyr::left_join(
+    # Will duplicate som links
+    link_trp_id,
+    by = join_by(id)
+  ) |>
   dplyr::select(
     id,
     county_id,
     road_category,
-    length,
-    trp_id,
-    isInvalid,
-    hasOnlyPublicTransportLanes,
-    blocked,
-    trafficVolumes
-  ) |>
-  dplyr::filter(
-    !is.na(trp_id),
-    isInvalid == FALSE,
-    hasOnlyPublicTransportLanes == FALSE,
-    blocked == FALSE,
-    # Remove periodic
-    trp_id %in% trp_for_vti_tidy$trp_id
-  ) |>
-  dplyr::mutate(
-    volumes = purrr::map(trafficVolumes, ~ jsonlite::fromJSON(.x))
-  ) |>
-  tidyr::unnest(
-    volumes
-  ) |>
-  dplyr::filter(
-    trafficVolumeType == "MEASURED",
-    trafficVolumeResolution == "ADT",
-    year == "2023"
-  ) |>
-  dplyr::rowwise() |>
-  dplyr::mutate(
-    county_id_single = purrr::pluck(county_id, 1, 1)
-  ) |>
-  dplyr::ungroup() |>
-  dplyr::select(
-    id,
-    county_id = county_id_single,
-    road_category,
-    length,
-    trp_id,
-    trp_id_source = sourceTrpId,
-    aadt = trafficVolumeValue,
-    coverage
-  ) |>
-  dplyr::filter(
-    trp_id == trp_id_source
+    roadSystemReferences,
+    function_class = functionClass,
+    traffic_work_km,
+    trp_id
   )
 
 readr::write_rds(
@@ -269,33 +324,8 @@ readr::write_rds(
 #remove(links)
 
 
-# Needed data read back in ----
-trp_aadts <-
-  readr::read_rds("trp_aadt.rds") |>
-  dplyr::filter(
-    !(year %in% c(2020, 2021)),
-    year > 2012
-  ) |>
-  dplyr::mutate(
-    median_aadt = median(adt, na.rm = TRUE),
-    .by = trp_id
-  ) |>
-  dplyr::mutate(
-    normal_year = adt > median_aadt * 0.75 & adt < median_aadt * 1.25,
-    valid_length_percent = round(valid_length_volume / adt * 100, digits = 1)
-  ) |>
-  dplyr::filter(
-    year == 2023,
-    coverage > 95,
-    adt >= 200,
-    valid_length_percent > 99,
-    normal_year == TRUE
-  ) |>
-  dplyr::select(
-    trp_id,
-    adt
-  )
-
+# Read back in ----
+# If you are back another day...
 trps_last_year <-
   readr::read_rds(
     file = "new_vti/trps_last_year.rds"
@@ -311,20 +341,16 @@ links_tidy <-
     file = "new_vti/links_tidy.rds"
   )
 
-traffic_work <-
-  readr::read_rds(
-    file = "new_vti/traffic_work_2023.rds"
-  )
-
 
 # TRP chosen ----
 # Less work:
 # 1. Would like to keep all TRPs from last year, except a few: used_last_year_but_discard
 # 2. Would like to not include any new ones, except a few: not_used_last_year_but_include
+# Classify all TRPs as keep, discard or add.
 
-#source("vti_trp_not_chosen_2023.R")
+# Look at map and decide on which new ones to add
 {
-source("new_vti/unwanted_vti_trp_2024.R")
+source("new_vti/unwanted_vti_trp_2025.R")
 
 trp_for_vti_chosen <-
   trp_for_vti_tidy |>
@@ -409,7 +435,7 @@ dplyr::bind_rows(
     name
   ) |>
   writexl::write_xlsx(
-    path = "new_vti/revise_vti_trp_2024.xlsx"
+    path = "new_vti/revise_vti_trp_2025.xlsx"
   )
 }
 
@@ -456,6 +482,26 @@ measured_traffic_work <-
     measured_traffic_work_mill_km,
     measured_percentage_of_traffic_work
   )
+
+
+## Traffic work stats ----
+# traffic_work_stats <-
+#   traffic_work_per_link |>
+#   dplyr::summarise(
+#     traffic_work_mill_km = sum(traffic_work_km) / 1e6,
+#     .by = c(county_id, road_category)
+#   ) |>
+#   dplyr::select(
+#     county_id = county_id_single,
+#     road_category,
+#     traffic_work_mill_km
+#   )
+#
+# readr::write_rds(
+#   traffic_work,
+#   file = "new_vti/traffic_work_2023.rds"
+# )
+
 
 
 ## 2. Summary tables ----

@@ -505,44 +505,46 @@ get_labels_for_trp_list <- function(trp_list) {
 #   )
 
 get_points_with_direction <- function() {
+
   # Get all traffic registration points
+
   api_query <-
     "query punkter_med_retning {
-  trafficRegistrationPoints {
-    id
-    name
-    trafficRegistrationType
-    location {
-      coordinates {
-        latLon {
-          lat
-          lon
+      trafficRegistrationPoints {
+        id
+        name
+        trafficRegistrationType
+        location {
+          coordinates {
+            latLon {
+              lat
+              lon
+            }
+          }
+          county {
+            geographicNumber
+            name
+          }
+          municipality {
+            name
+          }
+          roadReference {
+            roadCategory {
+              id
+            }
+            shortForm
+          }
+        }
+        direction {
+          fromAccordingToMetering
+          toAccordingToMetering
+        }
+        operationalStatus
+        latestData {
+          volumeByDay
         }
       }
-      county {
-        geographicNumber
-        name
-      }
-      municipality {
-        name
-      }
-      roadReference {
-        roadCategory {
-          id
-        }
-        shortForm
-      }
-    }
-    direction {
-      from
-      to
-    }
-    operationalStatus
-    latestData {
-      volumeByDay
-    }
-  }
-}"
+    }"
 
   myqueries <- Query$new()
   myqueries$query("api_data", api_query)
@@ -567,8 +569,8 @@ get_points_with_direction <- function() {
       county_name = data.trafficRegistrationPoints.location.county.name,
       county_no = data.trafficRegistrationPoints.location.county.geographicNumber,
       municipality_name = data.trafficRegistrationPoints.location.municipality.name,
-      from = data.trafficRegistrationPoints.direction.from,
-      to = data.trafficRegistrationPoints.direction.to,
+      from = data.trafficRegistrationPoints.direction.fromAccordingToMetering,
+      to = data.trafficRegistrationPoints.direction.toAccordingToMetering,
       lat =
         data.trafficRegistrationPoints.location.coordinates.latLon.lat,
       lon =
