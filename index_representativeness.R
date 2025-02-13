@@ -29,7 +29,7 @@ trp_continuous <-
   ) |>
   dplyr::distinct()
 
-
+#
 # Link variable distributions ----
 # Look at how link variables are distributed
 
@@ -631,8 +631,7 @@ stats::oneway.test(
 
 links <-
   sf::st_read(
-    #"C:/Users/snohan/Desktop/traffic_links_2023_2024-10-11.geojson",
-    "C:/Users/snohan/Desktop/traffic_links_2024_2025-01-28.geojson",
+    "C:/Users/snohan/Desktop/traffic_links_2024_2025-02-13.geojson",
     as_tibble = TRUE
     #query = "SELECT * FROM \"traffic_links_2024_2025-01-28\" LIMIT 150"
   ) |>
@@ -794,6 +793,48 @@ city_info_stats <-
 ## Population Nord-Jæren ----
 municipality_ids_nj <- c(1127, 1103, 1124, 1108)
 
+# Need two alternative population definitions to compare
+# 1. All links in all municipalities: "whole"
+# 2. Just the central nodes in urban area: "central"
+
+# 1. All links
+links_nj_whole <-
+  links |>
+  tidyr::unnest_longer(
+    municipalityIds,
+    values_to = "municipality_id"
+  ) |>
+  dplyr::filter(
+    municipality_id %in% municipality_ids_nj
+  ) |>
+  dplyr::select(
+    -municipality_id,
+    -trafficVolumes
+  ) |>
+  # remove duplicate links (crossing municipality boundaries)
+  dplyr::distinct() |>
+  dplyr::mutate(
+    city_trp =
+      dplyr::case_when(
+        point_id %in% city_trp_info$p_id ~ TRUE,
+        TRUE ~ FALSE
+      )
+  ) |>
+  dplyr::left_join(
+    traffic_volumes,
+    by = join_by(link_id)
+  ) |>
+  dplyr::filter(
+    !is.na(traffic_work_km),
+    !is.na(function_class)
+  ) |>
+  sf::st_as_sf()
+
+# Save file for use in report
+readr::write_rds(links_nj_whole, "representativity/link_population_nj_whole.rds")
+
+
+# 2. Central links
 nj_polygon_north <-
   tibble::tibble(
     lon = c(
@@ -814,7 +855,7 @@ nj_polygon_north <-
   dplyr::summarise(geometry = sf::st_combine(geometry)) |>
   sf::st_cast("POLYGON")
 
-links_nj_central <-
+links_nj_central_1 <-
   links |>
   tidyr::unnest_longer(
     municipalityIds,
@@ -890,8 +931,8 @@ links_nj_east_D <-
   #  function_class == "D"
   #)
 
-link_population <-
-  links_nj_central |>
+links_nj_central <-
+  links_nj_central_1 |>
   dplyr::filter(
     !(link_id %in% links_nj_east_D$link_id),
     # Removing some links in Figgjo
@@ -923,102 +964,27 @@ readr::write_rds(link_population, "representativity/link_population_nj.rds")
 
 
 # Traffic graph ----
-# Need the nodes belonging to the links (should be downloaded same day)
+# Need the nodes belonging to the links (should be downloaded same day as links)
 nodes <-
-  sf::st_read("C:/Users/snohan/Desktop/traffic-nodes-2023_2024-10-11.geojson") |>
+  sf::st_read("C:/Users/snohan/Desktop/traffic-nodes-2024_2025-02-13.geojson") |>
   sf::st_drop_geometry() |>
-  dplyr::select(
-    id,
-    #numberOfUndirectedLinks
-  ) |>
+  dplyr::select(id) |>
   tibble::as_tibble()
 
-# Create graph
-nodes_nj <-
-  dplyr::bind_rows(
-    nodes |>
-      dplyr::filter(
-        id %in% links_nj_final$from
-      ),
-    nodes |>
-      dplyr::filter(
-        id %in% links_nj_final$to
-      )
-  ) |>
-  dplyr::distinct() |>
-  tibble::as_tibble() |>
-  tibble::rowid_to_column("id_int") |>
-  dplyr::select(
-    id = id_int,
-    id_original = id
-  )
+# TODO: functionize!
+# 2. Create line grahp
+# 3. Make sure it can be used for repeated calculations of mean distance for various sets of sample links
 
-links_nj_final_plain <-
-  links_nj_final |>
-  sf::st_drop_geometry() |>
-  dplyr::left_join(
-    nodes_nj,
-    by = join_by(from == id_original)
-  ) |>
-  dplyr::rename(
-    from_int = id
-  ) |>
-  dplyr::left_join(
-    nodes_nj,
-    by = join_by(to == id_original)
-  ) |>
-  dplyr::rename(
-    to_int = id
-  ) |>
-  dplyr::select(
-    -from,
-    -to
-  ) |>
-  dplyr::rename(
-    from = from_int,
-    to = to_int
-  ) |>
-  # dplyr::mutate(
-  #   edge_id = paste0(from, "_", to)
-  # ) |>
-  dplyr::arrange(
-    from
-  ) |>
-  dplyr::mutate(
-    city_trp =
-      dplyr::case_when(
-        is.na(city_trp_id) ~ 0.5,
-        TRUE ~ 1
-      )
-  ) |>
-  dplyr::select(
-    -city_trp_id
-  ) |>
-  dplyr::left_join(
-    traffic_volumes,
-    by = join_by(link_id)
-  )
+test <- create_graph_from_links(links_nj_central)
 
-graph <-
-  tidygraph::tbl_graph(
-    nodes = nodes_nj,
-    node_key = "id",
-    edges = links_nj_final_plain,
-    directed = FALSE
-  )
-
-
-# Verify that graph contains one single component
-components <- igraph::components(graph)
-components$csize
 
 # If more than one, keeping the largest
-graph_tidy <- igraph::largest_component(graph)
+#graph_tidy <- igraph::largest_component(graph)
 
 # NB! Node ids are being reset to 1:n
-igraph::E(graph_tidy)
-igraph::edge_attr(graph_tidy)
-edges <- igraph::as_edgelist(graph_tidy)
+# igraph::E(graph_tidy)
+# igraph::edge_attr(graph_tidy)
+# edges <- igraph::as_edgelist(graph_tidy)
 
 # Or, if more than one
 # biggest_component_id <- which.max(components$csize)
@@ -1037,45 +1003,44 @@ edges <- igraph::as_edgelist(graph_tidy)
 
 
 # Plot
-ggraph(graph, layout = 'auto') +
-  geom_edge_link(
-    aes(
-      edge_colour = functional_road_class,
-      edge_width = city_trp
-    )
-  ) +
-  geom_node_point()
+# ggraph(graph, layout = 'auto') +
+#   geom_edge_link(
+#     aes(
+#       edge_colour = functional_road_class,
+#       edge_width = city_trp
+#     )
+#   ) +
+#   geom_node_point()
   #paletteer::scale_color_paletteer_d("LaCroixColoR::PeachPear")
 
-igraph::diameter(graph)
+#igraph::diameter(graph)
 
 # Clusters
-g_clusters <- igraph::cluster_edge_betweenness(graph)
-g_clusters$membership
-sizes(g_clusters)
-plot(g_clusters, graph)
+# g_clusters <- igraph::cluster_edge_betweenness(graph)
+# g_clusters$membership
+# sizes(g_clusters)
+# plot(g_clusters, graph)
 
 
 # Centrality
-G_graph <-
-  graph |>
-  igraph::set_edge_attr(
-    name = "edge_betweenness",
-    value = igraph::edge_betweenness(graph)
-  )
-
-igraph::edge_attr(G_graph)
+# G_graph <-
+#   graph |>
+#   igraph::set_edge_attr(
+#     name = "edge_betweenness",
+#     value = igraph::edge_betweenness(graph)
+#   )
+#
+# igraph::edge_attr(G_graph)
 
 # Plot
-ggraph(G_graph, layout = 'auto') +
-  geom_edge_link(
-    aes(
-      edge_colour = edge_betweenness,
-      edge_width = city_trp
-    )
-  ) +
-  geom_node_point()
-
+# ggraph(G_graph, layout = 'auto') +
+#   geom_edge_link(
+#     aes(
+#       edge_colour = edge_betweenness,
+#       edge_width = city_trp
+#     )
+#   ) +
+#   geom_node_point()
 
 
 ## Line graph ----
@@ -1096,112 +1061,20 @@ ggraph(G_graph, layout = 'auto') +
 #igraph::vertex_attr(line_graph)
 
 
-# Buliding a line graph manually to retain attributes
-# Let the original traffic link graph be G, and let the line graph be L.
-# Links in G will be nodes in L. Nodes in L will be connected if they were adjacent in G.
-L_nodes <-
-  links_nj_final_plain |>
-  tibble::rowid_to_column("id") |>
-  dplyr::mutate(
-    city_trp_lgl = city_trp == 1
-  ) |>
-  dplyr::select(
-    -from,
-    -to
-  )
+test_l <- create_line_graph(links_nj_central)
 
-# 1. Starting with the links in G, find which node ids they were connected to:
-links_nj_stripped <-
-  links_nj_final_plain |>
-  dplyr::select(
-    link_id, from, to
-  ) |>
-  tidyr::pivot_longer(
-    cols = c(from, to),
-    names_to = "new_link_id",
-    values_to = "connection_id"
-  ) |>
-  dplyr::select(
-    -new_link_id
-  )
-
-# 2. To find adjacent links in G, self join the list of links and their node ids:
-L_links <-
-  links_nj_stripped |>
-  dplyr::left_join(
-    links_nj_stripped,
-    by = join_by(connection_id),
-    relationship = "many-to-many"
-  ) |>
-  # Must remove self loops
-  dplyr::filter(
-    !(link_id.x == link_id.y)
-  ) |>
-  # Must remove duplicates
-  dplyr::rowwise() |>
-  dplyr::mutate(
-    sorted_id = list(c(link_id.x, link_id.y)) |> purrr::map(sort)
-  ) |>
-  dplyr::mutate(
-    new_from = purrr::pluck(sorted_id, 1, 1),
-    new_to = purrr::pluck(sorted_id, 2, 1)
-  ) |>
-  dplyr::ungroup() |>
-  dplyr::select(
-    connection_id, # need to have this here to not discard parallell links
-    new_from,
-    new_to
-  ) |>
-  dplyr::distinct() |>
-  dplyr::select(
-    -connection_id
-  ) |>
-  # Add new node ids
-  dplyr::left_join(
-    L_nodes |>
-      dplyr::select(
-        id, link_id
-      ),
-    by = join_by(new_from == link_id)
-  ) |>
-  dplyr::rename(
-    from = id
-  ) |>
-  dplyr::left_join(
-    L_nodes |>
-      dplyr::select(
-        id, link_id
-      ),
-    by = join_by(new_to == link_id)
-  ) |>
-  dplyr::select(
-    from,
-    to = id
-  )
-
-
-# 3. Build the graph
-L_graph <-
-  tidygraph::tbl_graph(
-    nodes = L_nodes,
-    node_key = "id",
-    edges = L_links,
-    directed = FALSE
-  )
-
-ggraph(L_graph, layout = 'auto') +
-  geom_edge_link() +
-  geom_node_point(
-    aes(
-      color = functional_road_class,
-      size = city_trp
-    )
-  )
-
-igraph::diameter(L_graph)
-igraph::vertex_attr(L_graph)
-degrees <- igraph::degree_distribution(L_graph)
-
+# ggraph(L_graph, layout = 'auto') +
+#   geom_edge_link() +
+#   geom_node_point(
+#     aes(
+#       color = functional_road_class,
+#       size = city_trp
+#     )
+#   )
+#
+# igraph::diameter(L_graph)
+# igraph::vertex_attr(L_graph)
+# degrees <- igraph::degree_distribution(L_graph)
 
 
 ## Node coverage ----
@@ -1241,21 +1114,44 @@ percentage_nodes_and_neighbors_sampled <- nrow(selected_nodes_and_neighbors) / n
 
 
 ## Mean distance to chosen nodes ----
+calculate_mean_distance_to_city_index_points <- function(l_graph) {
+
+  # Subset vertex id based on sample of city_trps
+  non_selected_nodes <-
+    tibble::tibble(
+      id = igraph::vertex_attr(test_l, "id"),
+      city_trp = igraph::vertex_attr(test_l, "city_trp")
+    ) |>
+    dplyr::filter(
+      !city_trp
+    )
+
+
+  # TODO: find shortest path from all non-selected to a selected
+  # Including nearest neighbors
+  selected_neighbors <-
+    L_nodes |>
+    dplyr::rowwise() |>
+    dplyr::mutate(
+      neighbors = list(igraph::neighbors(L_graph, id))
+    ) |>
+    dplyr::filter(
+      city_trp == 1
+    )
+
+  distances <-
+    igraph::distances(
+      l_graph,
+      v = non_selected_nodes$id,
+      to = selected_neighbors$id
+    ) |>
+    tibble::as_tibble()
+
+
+}
+
 igraph::mean_distance(L_graph)
 
-non_selected_nodes <-
-  L_nodes |>
-  dplyr::filter(
-    city_trp < 1
-  )
-
-distances <-
-  igraph::distances(
-    L_graph,
-    v = non_selected_nodes$id,
-    to = selected_neighbors$id
-  ) |>
-  tibble::as_tibble()
 
 shortest_distances <-
   distances |>

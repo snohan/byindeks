@@ -147,7 +147,7 @@ summarise_link_population_by_function_class <- function(link_population) {
     ) |>
     dplyr::filter(
       # since function class is factor with levels, "E" shows up
-      function_class != "E"
+      #function_class != "E"
     )
 
   return(function_class_stats)
@@ -158,7 +158,7 @@ summarise_link_population_by_function_class <- function(link_population) {
 calculate_statistical_distance <- function(function_class_stats_df) {
 
   function_class_stats_wide <-
-    function_class_stats |>
+    function_class_stats_df |>
     dplyr::select(
       function_class,
       selection,
@@ -176,8 +176,8 @@ calculate_statistical_distance <- function(function_class_stats_df) {
   function_class_stats_summarised <-
     function_class_stats_wide |>
     dplyr::summarise(
-      tvd = 0.5 * sum(variation_distance),
-      hellinger = (1 / sqrt(2)) * sqrt(sum(squared_diff_of_square_roots))
+      tvd = round(0.5 * sum(variation_distance), 2),
+      hellinger = round((1 / sqrt(2)) * sqrt(sum(squared_diff_of_square_roots)), 2)
     )
 
   return(function_class_stats_summarised)
@@ -412,5 +412,195 @@ calculate_ci_width <- function(link_df) {
   ci_width <- round(1.96 * sqrt(sum(weights$squared_weight)) * 5, 1)
 
   return(ci_width)
+
+}
+
+table_statistical_distance_comparison <- function(stat_df) {
+
+  stat_df |>
+    flextable::flextable() |>
+    colformat_double(j = 3:4, digits = 2) |>
+    set_header_labels(
+      population = "Populasjon",
+      selection = "Utvalg",
+      tvd = "TVD",
+      hellinger = "Hellinger"
+    ) |>
+    bold(part = "header") |>
+    bg(bg = "#ED9300", part = "header")
+}
+
+
+calculate_error_margin_with_finite_population <- function() {
+
+
+
+}
+
+# Create graph
+create_graph_from_links <- function(link_df) {
+
+  nodes_in_area <-
+    dplyr::bind_rows(
+      nodes |>
+        dplyr::filter(
+          id %in% link_df$from
+        ),
+      nodes |>
+        dplyr::filter(
+          id %in% link_df$to
+        )
+    ) |>
+    dplyr::distinct() |>
+    tibble::as_tibble() |>
+    tibble::rowid_to_column("id_int") |>
+    dplyr::select(
+      id = id_int,
+      id_original = id
+    )
+
+  edges_in_area <-
+    link_df |>
+    sf::st_drop_geometry() |>
+    dplyr::left_join(
+      nodes_in_area,
+      by = join_by(from == id_original)
+    ) |>
+    dplyr::rename(
+      from_int = id
+    ) |>
+    dplyr::left_join(
+      nodes_in_area,
+      by = join_by(to == id_original)
+    ) |>
+    dplyr::rename(
+      to_int = id
+    ) |>
+    dplyr::select(
+      -from,
+      -to
+    ) |>
+    dplyr::rename(
+      from = from_int,
+      to = to_int
+    ) |>
+    dplyr::arrange(
+      from
+    )
+
+  area_graph <-
+    tidygraph::tbl_graph(
+      nodes = nodes_in_area,
+      node_key = "id",
+      edges = edges_in_area,
+      directed = FALSE
+    )
+
+  # Verify that the graph is only one component
+  components <- igraph::components(area_graph)
+  components$no
+
+  if(components$no > 1) print("Warning: More than one graph component!")
+
+  return(area_graph)
+
+}
+
+
+create_line_graph <- function(link_df) {
+
+  # Buliding a line graph manually to retain attributes
+  # Let the original traffic link graph be G, and let the line graph be L.
+  # Links in G will be nodes in L. Nodes in L will be connected if they were adjacent in G.
+
+  L_nodes <-
+    link_df |>
+    sf::st_drop_geometry() |>
+    tibble::rowid_to_column("id") |>
+    dplyr::select(
+      -from,
+      -to
+    )
+
+  # 1. Starting with the links in G, find which node ids they were connected to:
+  links_stripped <-
+    link_df |>
+    sf::st_drop_geometry() |>
+    dplyr::select(
+      link_id, from, to
+    ) |>
+    tidyr::pivot_longer(
+      cols = c(from, to),
+      names_to = "new_link_id",
+      values_to = "connection_id"
+    ) |>
+    dplyr::select(
+      -new_link_id
+    )
+
+  # 2. To find adjacent links in G, self join the list of links and their node ids:
+  L_links <-
+    links_stripped |>
+    dplyr::left_join(
+      links_stripped,
+      by = join_by(connection_id),
+      relationship = "many-to-many"
+    ) |>
+    # Must remove self loops
+    dplyr::filter(
+      !(link_id.x == link_id.y)
+    ) |>
+    # Must remove duplicates
+    dplyr::rowwise() |>
+    dplyr::mutate(
+      sorted_id = list(c(link_id.x, link_id.y)) |> purrr::map(sort)
+    ) |>
+    dplyr::mutate(
+      new_from = purrr::pluck(sorted_id, 1, 1),
+      new_to = purrr::pluck(sorted_id, 2, 1)
+    ) |>
+    dplyr::ungroup() |>
+    dplyr::select(
+      connection_id, # need to have this here to not discard parallell links
+      new_from,
+      new_to
+    ) |>
+    dplyr::distinct() |>
+    dplyr::select(
+      -connection_id
+    ) |>
+    # Add new node ids
+    dplyr::left_join(
+      L_nodes |>
+        dplyr::select(
+          id, link_id
+        ),
+      by = join_by(new_from == link_id)
+    ) |>
+    dplyr::rename(
+      from = id
+    ) |>
+    dplyr::left_join(
+      L_nodes |>
+        dplyr::select(
+          id, link_id
+        ),
+      by = join_by(new_to == link_id)
+    ) |>
+    dplyr::select(
+      from,
+      to = id
+    )
+
+  # 3. Build the graph
+  L_graph <-
+    tidygraph::tbl_graph(
+      nodes = L_nodes,
+      node_key = "id",
+      edges = L_links,
+      directed = FALSE
+    )
+
+  return(L_graph)
 
 }
