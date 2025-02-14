@@ -196,7 +196,7 @@ Ved å se på vegnettet som en sammenhengende grafstruktur, kan det beregnes gra
 Et relevant mål er den gjennomsnittlige korteste avstanden fra trafikklenkene som ikke er med i utvalget $(P-S)$ til de som er utvalgt $(S)$. Dette sier noe om hvor spredt punktene ligger. Denne avstanden er definert som
 
 $$
-\bar{d}(P, S) = \frac{1}{\left| P - S \right|} \sum_{p \in P - S} \min_{s \in S} d(p, s),
+\bar{d}(P, S) = \frac{1}{P - S} \sum_{p \in P - S} \min_{s \in S} d(p, s),
 $$ {#eq-closeness_representation}
 
 hvor $d(p, s)$ er den korteste vegen fra trafikklenke $p$ til trafikklenke $s$. For å beregne dette er det nødvendig å linjetransformere grafen slik at trafikklenker blir representert som noder. I grafsammenheng er avstander kun målt i antall lenker som må traverseres for å komme fra en node til en annen.

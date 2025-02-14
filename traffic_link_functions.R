@@ -154,6 +154,31 @@ summarise_link_population_by_function_class <- function(link_population) {
 
 }
 
+# Statistical distance
+# Comparing sample and population - do they look alike?
+
+# Kji-kvadrat test (med MC)
+# test <- chisq.test(
+#   x, # tw in selection
+#   p, # expected probabilities, percentage tw in population
+#   simulate.p.value = TRUE
+# )
+# This won't work because the observations x are too large
+
+# chi_test <-
+#   stats::chisq.test(
+#     #x = function_class_stats_wide$tw_utvalg,
+#     #x = c(103980352, 25393543, 44294894, 10000),
+#     x = function_class_stats_wide$fake,
+#     p = function_class_stats_wide$percentage_tw_populasjon,
+#     simulate.p.value = TRUE
+#   )
+# df is supposed to be NA in this case, as this is a goodness of fit-test
+#chi_test
+
+# Total Variation distance (not the  supremum definition, which is event-wise, rather the pd-one - easy to understand)
+# Hellinger distance (between 0 and 1, more difficult, 0 to 1)
+# Kullback-Leibler Divergence (too complicated, from 0 to Inf) - won't work when some category is zero!
 
 calculate_statistical_distance <- function(function_class_stats_df) {
 
@@ -602,5 +627,60 @@ create_line_graph <- function(link_df) {
     )
 
   return(L_graph)
+
+}
+
+
+calculate_mean_distance_to_city_index_points <- function(l_graph) {
+
+  # Subset vertex id based on sample of city_trps
+  l_nodes <-
+    tibble::tibble(
+      id = igraph::vertex_attr(test_l, "id"),
+      city_trp = igraph::vertex_attr(test_l, "city_trp")
+    )
+
+  non_selected_nodes <-
+    l_nodes |>
+    dplyr::filter(
+      !city_trp
+    )
+
+  selected_nodes <-
+    l_nodes |>
+    dplyr::filter(
+      city_trp
+    )
+
+  selected_node_names <-
+    paste0(
+      "V",
+      c(1:nrow(selected_nodes))
+    )
+
+  distance_matrix <-
+    igraph::distances(
+      l_graph,
+      v = non_selected_nodes$id,
+      to = selected_nodes$id
+    )
+
+  # To avoid warnings form making a tibble
+  base::colnames(distance_matrix) <- selected_node_names
+
+  distance_tibble <-
+    distance_matrix |>
+    tibble::as_tibble() |>
+    dplyr::rowwise() |>
+    dplyr::mutate(
+      min_dist =
+        min(dplyr::c_across(tidyselect::everything()))
+    ) |>
+    dplyr::ungroup()
+
+  mean_shortest_distance <-
+    sum(distance_tibble$min_dist) / (nrow(non_selected_nodes) - nrow(selected_nodes))
+
+  return(mean_shortest_distance)
 
 }

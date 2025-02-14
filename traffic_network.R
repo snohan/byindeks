@@ -314,3 +314,209 @@ readr::write_rds(
   "trd_graf.rds"
 )
 
+
+# From work on representativeness ----
+# If more than one, keeping the largest
+#graph_tidy <- igraph::largest_component(graph)
+
+# NB! Node ids are being reset to 1:n
+# igraph::E(graph_tidy)
+# igraph::edge_attr(graph_tidy)
+# edges <- igraph::as_edgelist(graph_tidy)
+
+# Or, if more than one
+# biggest_component_id <- which.max(components$csize)
+#
+# nodes_in_biggest_component <-
+#   nodes_nj |>
+#   dplyr::mutate(
+#     component_membership = components$membership
+#   ) |>
+#   dplyr::filter(
+#     component_membership == biggest_component_id
+#   )
+#
+# graph_tidy <- igraph::induced_subgraph(graph, nodes_in_biggest_component$id)
+#igraph::isomorphic(test, graph_tidy)
+
+
+# Plot
+# ggraph(graph, layout = 'auto') +
+#   geom_edge_link(
+#     aes(
+#       edge_colour = functional_road_class,
+#       edge_width = city_trp
+#     )
+#   ) +
+#   geom_node_point()
+#paletteer::scale_color_paletteer_d("LaCroixColoR::PeachPear")
+
+#igraph::diameter(graph)
+
+# Clusters
+# g_clusters <- igraph::cluster_edge_betweenness(graph)
+# g_clusters$membership
+# sizes(g_clusters)
+# plot(g_clusters, graph)
+
+
+# Centrality
+# G_graph <-
+#   graph |>
+#   igraph::set_edge_attr(
+#     name = "edge_betweenness",
+#     value = igraph::edge_betweenness(graph)
+#   )
+#
+# igraph::edge_attr(G_graph)
+
+# Plot
+# ggraph(G_graph, layout = 'auto') +
+#   geom_edge_link(
+#     aes(
+#       edge_colour = edge_betweenness,
+#       edge_width = city_trp
+#     )
+#   ) +
+#   geom_node_point()
+
+
+## Line graph ----
+# I.e. links will be nodes and vice versa.
+# This in order to do analysis on links' spread and closeness
+
+# line_graph <-
+#   igraph::make_line_graph(graph) |>
+#   tidygraph::as_tbl_graph()
+# But edge attributes lostfrom original graph to the nodes in line graph
+
+# ggraph(line_graph, layout = 'auto') +
+#   geom_edge_link() +
+#   geom_node_point()
+#
+# igraph::diameter(line_graph)
+# igraph::E(line_graph)
+#igraph::vertex_attr(line_graph)
+
+# ggraph(L_graph, layout = 'auto') +
+#   geom_edge_link() +
+#   geom_node_point(
+#     aes(
+#       color = functional_road_class,
+#       size = city_trp
+#     )
+#   )
+#
+# igraph::diameter(L_graph)
+# igraph::vertex_attr(L_graph)
+# degrees <- igraph::degree_distribution(L_graph)
+
+
+## Node coverage ----
+percentage_nodes_sampled <- nrow(links_with_city_trp_nj) / nrow(links_nj_final_plain)
+
+# Including nearest neighbors
+selected_neighbors <-
+  L_nodes |>
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    neighbors = list(igraph::neighbors(L_graph, id))
+  ) |>
+  dplyr::filter(
+    city_trp == 1
+  )
+
+selected_nodes_and_neighbors <-
+  selected_neighbors |>
+  tidyr::unnest(
+    neighbors
+  ) |>
+  dplyr::select(
+    nodes = neighbors
+  ) |>
+  dplyr::mutate(
+    nodes = as.numeric(nodes)
+  ) |>
+  dplyr::bind_rows(
+    selected_neighbors |>
+      dplyr::select(
+        nodes = id
+      )
+  ) |>
+  dplyr::distinct()
+
+percentage_nodes_and_neighbors_sampled <- nrow(selected_nodes_and_neighbors) / nrow(links_nj_final_plain)
+
+
+igraph::mean_distance(L_graph)
+
+test_tbl <-
+  distance_matrix |>
+  tibble::as_tibble()
+
+
+shortest_distances <-
+  test_tbl |>
+  dplyr::mutate(
+    shortest = purrr::pmap_dbl(test_tbl, min)
+  )
+
+mean_shortest_distances <- mean(shortest_distances$shortest)
+sd_shortest_distances <- sd(shortest_distances$shortest)
+max_shortest_distances <- max(shortest_distances$shortest)
+
+
+
+
+## Weighted coverage ----
+# Traffic work is what counts
+percentage_traffic_work <-
+  L_nodes |>
+  dplyr::summarise(
+    traffic_work = sum(traffic_work, na.rm = TRUE),
+    .by = "city_trp_lgl"
+  ) |>
+  tidyr::pivot_wider(
+    names_from = "city_trp_lgl",
+    names_prefix = "trp_",
+    values_from = "traffic_work"
+  ) |>
+  dplyr::mutate(
+    total_tw = sum(trp_TRUE, trp_FALSE),
+    percentage_tw = trp_TRUE / total_tw
+  )
+
+
+## Compare distributions ----
+# Functional road class
+L_nodes |>
+  dplyr::summarise(
+    n = n(),
+    .by = c(city_trp_lgl, functional_road_class)
+  ) |>
+  tidyr::pivot_wider(
+    names_from = city_trp_lgl,
+    names_prefix = "trp_",
+    values_from = n
+  ) |>
+  dplyr::arrange(
+    functional_road_class
+  ) |>
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    trp_all = sum(trp_FALSE, trp_TRUE, na.rm = TRUE)
+  ) |>
+  dplyr::ungroup() |>
+  dplyr::mutate(
+    percentage_TRUE = trp_TRUE / sum(trp_TRUE, na.rm = TRUE),
+    percentage_all = trp_all / sum(trp_FALSE, trp_TRUE, na.rm = TRUE)
+  )
+
+L_nodes |>
+  ggplot2::ggplot(aes(functional_road_class)) +
+  geom_bar() +
+  facet_wrap(
+    ~ city_trp_lgl,
+    ncol = 1)
+
+
