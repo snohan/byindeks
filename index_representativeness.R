@@ -30,8 +30,6 @@ trp_continuous <-
 
 
 # Link population ----
-# Need geometry for map plot
-
 # Need to know layer names if a query should limit rows during test readings.
 #layers <- sf::st_layers("C:/Users/snohan/Desktop/traffic_links_2023_2024-10-08.geojson")
 #names(links)
@@ -147,7 +145,6 @@ not_intersected <- function(x, y) !sf::st_intersects(x, y)
 
 ## City TRPs ----
 # Need to know what the sample is supposed to be (if all TRPs give good data)
-
 city_id <-
   c(960, 952, 8952, 959, 1952, 955, 19953, 18952)
 
@@ -332,7 +329,7 @@ nj_polygon_east <-
   sf::st_cast("POLYGON")
 
 links_nj_east_D <-
-  links_nj_central |>
+  links_nj_central_1 |>
   sf::st_filter(nj_polygon_east, .predicate = st_intersects) #|>
   #dplyr::filter(
   #  function_class == "D"
@@ -367,7 +364,7 @@ links_nj_central <-
 link_population |> map_links_with_function_class()
 
 # Save file for use in report
-readr::write_rds(link_population, "representativity/link_population_nj.rds")
+readr::write_rds(links_nj_central, "representativity/link_population_nj.rds")
 
 
 # Traffic graph ----
@@ -413,8 +410,114 @@ city_trp_rolling_index <-
     city_id,
     trp_id,
     last_month_in_index
+  ) |>
+  dplyr::mutate(
+    last_month_in_index = lubridate::as_date(last_month_in_index)
   )
 
+# Calculate distance metrics for each index month for the city
+# Build a tibble with columns:
+# index_month
+# n_trp
+# ratio_trp
+# ratio_traffic_work
+# tvd
+# hellinger
+# mean distance
+
+# 1. Filter the city
+city_trp_rolling_index_nj <-
+  city_trp_rolling_index |>
+  dplyr::filter(
+    city_id == 952
+  )
+
+monthly_sample <- function(link_df, month_index_trp_list, month_string) {
+
+  this_month <-
+    month_index_trp_list |>
+    dplyr::filter(
+      last_month_in_index == month_string
+    )
+
+  monthly_sample_df <-
+    link_df |>
+    sf::st_drop_geometry() |>
+    dplyr::select(
+      link_id,
+      from, to,
+      function_class,
+      point_id,
+      traffic_work_km,
+      city_trp
+    ) |>
+    # dplyr::mutate(
+    #   city_trp =
+    #     dplyr::case_when(
+    #       point_id %in% this_month$trp_id ~ TRUE,
+    #       TRUE ~ FALSE
+    #     )
+    # ) |>
+    dplyr::mutate(
+      point_id =
+        dplyr::case_when(
+          point_id %in% this_month$trp_id ~ point_id,
+          TRUE ~ NA_character_
+        )
+    )
+
+  total_tw <- sum(link_df$traffic_work_km)
+
+  monthly_sample_tw <-
+    monthly_sample_df |>
+    dplyr::filter(
+      !is.na(point_id)
+    )
+
+  percentage_tw <- 100* (sum(monthly_sample_tw$traffic_work_km) / total_tw)
+
+  statistical_distances_df <-
+    monthly_sample_df |>
+    summarise_link_population_by_function_class() |>
+    calculate_statistical_distance() |>
+    dplyr::mutate(
+      percentage_tw = percentage_tw
+    )
+
+  return(statistical_distances_df)
+
+}
+
+# TODO: add calculation of mean distance to points here
+test_1 <- monthly_sample(links_nj_central, city_trp_rolling_index_nj, "2020-12-01")
+
+
+links_with_monthly_sample <- function(link_df, month_index_trp_list) {
+
+  n_links <- nrow(link_df)
+
+  n_trp_per_index <-
+    month_index_trp_list |>
+    dplyr::summarise(
+      n_trp = n(),
+      .by = last_month_in_index
+    ) |>
+    dplyr::mutate(
+      percentage_n_trp = 100 * (n_trp / n_links)
+    )
+
+  # 3. For each index month, the links_city_area$city_trp column must be updated
+
+  # Calculate distance metrics
+  # For each row,
+  #purrr::pmap_df(~ monthly_sample(link_df, month_index_trp_list, last_month_in_index))
+
+ # unnest?
+
+}
+
+
+test <- links_with_monthly_sample(links_nj_central, city_trp_rolling_index_nj)
 
 # Least n TRPs ----
 # aka power analysis

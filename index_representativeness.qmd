@@ -199,7 +199,7 @@ $$
 \bar{d}(P, S) = \frac{1}{P - S} \sum_{p \in P - S} \min_{s \in S} d(p, s),
 $$ {#eq-closeness_representation}
 
-hvor $d(p, s)$ er den korteste vegen fra trafikklenke $p$ til trafikklenke $s$. For å beregne dette er det nødvendig å linjetransformere grafen slik at trafikklenker blir representert som noder. I grafsammenheng er avstander kun målt i antall lenker som må traverseres for å komme fra en node til en annen.
+hvor $d(p, s)$ er den korteste vegen fra trafikklenke $p$ til trafikklenke $s$. For å beregne dette er det nødvendig å linjetransformere grafen slik at trafikklenker blir representert som noder. I grafsammenheng er avstander kun målt i antall lenker som må traverseres for å komme fra en node til en annen. Det er en forutsetning at vegnettet er sammenhengende for at denne verdien skal kunne beregnes.
 
 Med tanke på representativitet er det ingen naturlig grenseverdi for denne størrelsen, men den kan sammenlignes over tid. Det beste resultatet gitt $n$ punkt kan formuleres som et optimeringsproblem, som vi kan sammenligne det faktiske utvalget med. Helt generelt kan det være litt kunstig å sette et fast antall punkt, men dette kan argumenteres ut fra økonomiske hensyn. Det er således mulig å beregne hvor mye bedre representativiteten blir dersom antallet punkt øker, og tilsvarende hvor mye verre det blir om antallet minker. Metoden kan også brukes til å simulere utvalg, og peke ut den beste posisjonen til punkt $n+1$. Imidlertid er det ikke opplagt hvordan en slik beregning kan ta hensyn til fordeling av trafikkarbeid i funksjonsklasser.
 
@@ -218,6 +218,16 @@ Nord-Jæren egner seg godt som eksempel av flere grunner:
 
 
 ## Områdeavgrensing
+Dersom alle trafikklenker i kommunene tas med, blir trafikklenkepopulasjonen som vist i @fig-map_nj_whole.
+
+```{r}
+#| label: fig-map_nj_whole
+#| message: false
+#| fig-cap: !expr map_caption
+
+map_links_with_function_class(links_nj_whole)
+```
+
 For å konsentrere området til de mer bymessige og sentrale delene må vegene i de mest spredtbygde strøkene utelates fra populasjonen. Alle trafikklenker med funksjonsklasse E tas ut fra populasjonen, og trafikklenker med funksjonsklasse D i ytre strøk er også utelatt. Da gjenstår et vegnett som dekker de mest sentrale områdene. I @fig-map_nj vises alle trafikklenker som er definert som populasjonen i det sentrale området. 
 
 ```{r}
@@ -262,13 +272,13 @@ table_link_statistics(links_nj)
 
 
 ## Populasjonens betydning
-Hvilket område byindeksen skal gjelde for har noe å si for representativiteten. Ved å se på utvalget med de 24 trafikklenkene som har de opprinnelige byindekspunktene, kan vi sammenligne representativiteten av disse mellom en komplett og en sentral populasjon.
+Hvilket område byindeksen skal gjelde for har noe å si for representativiteten. Ved å se på utvalget med de 24 trafikklenkene som har de opprinnelige byindekspunktene, kan vi sammenligne representativiteten for disse mellom en populasjon som dekker hele vegnettet i kommunene og en populasjon som kun dekker selve byområdet.
 
 I @fig-function_class_nj_24 sammenlignes trafikkarbeidsfordelingen til de 24 utvalgte trafikklenkene med den sentrale populasjonen.
 
 ```{r}
 #| label: fig-function_class_nj_24
-#| fig-cap: "Fordeling av funksjonsklasse i populasjon for sentralt område og utvalg med 24 punkt." 
+#| fig-cap: "Fordeling av funksjonsklasse i populasjon for byområdet og utvalg med 24 punkt." 
 #| message: false
 #| warning: false
 
@@ -287,7 +297,7 @@ I @fig-function_class_nj_24_whole vises tilsvarende sammenligning med den komple
 
 ```{r}
 #| label: fig-function_class_nj_24_whole
-#| fig-cap: "Fordeling av funksjonsklasse i populasjon for komplett område og utvalg med 24 punkt." 
+#| fig-cap: "Fordeling av funksjonsklasse i populasjon for kommunene og utvalg med 24 punkt." 
 #| message: false
 #| warning: false
 
@@ -322,7 +332,7 @@ links_nj_whole_function_class_stats <-
   summarise_link_population_by_function_class() |>
   calculate_statistical_distance() |>
   dplyr::mutate(
-    population = "Komplett",
+    population = "Kommunene",
     selection = "24"
   ) |>
   dplyr::relocate(
@@ -341,7 +351,7 @@ links_nj_function_class_stats <-
   summarise_link_population_by_function_class() |>
   calculate_statistical_distance() |>
   dplyr::mutate(
-    population = "Sentralt",
+    population = "Byområdet",
     selection = "24"
   ) |>
   dplyr::relocate(
@@ -355,13 +365,13 @@ dplyr::bind_rows(
   table_statistical_distance_comparison()
 ```
 
-I dette tilfellet med 24 punkt, ser vi at en sentral populasjon er bedre representert enn den komplette populasjonen, og det er som forventet.
+I dette tilfellet med 24 punkt, ser vi at byområdet er bedre representert enn hele kommunene, og det er som forventet.
  
-I @tbl-trp_count_nj_24 oppsummeres andel trafikkarbeid i sentral populasjon og utvalg.
+I @tbl-trp_count_nj_24 oppsummeres andel trafikkarbeid i byområdet og utvalg.
 
 ```{r}
 #| label: tbl-trp_count_nj_24
-#| tbl-cap:  "Statistikk for trafikklenker på Nord-Jæren (sentralt)</br>med utvalg på 24 punkt."
+#| tbl-cap:  "Statistikk for trafikklenker på Nord-Jæren (byområdet)</br>med utvalg på 24 punkt."
 
 links_nj |> 
   dplyr::mutate(
@@ -374,11 +384,11 @@ links_nj |>
   table_link_statistics()
 ```
 
-I @tbl-trp_count_nj_24_whole oppsummeres andel trafikkarbeid i komplett populasjon og utvalg.
+I @tbl-trp_count_nj_24_whole oppsummeres andel trafikkarbeid i kommunene og utvalg.
 
 ```{r}
 #| label: tbl-trp_count_nj_24_whole
-#| tbl-cap:  "Statistikk for trafikklenker på Nord-Jæren (komplett)</br>med utvalg på 24 punkt."
+#| tbl-cap:  "Statistikk for trafikklenker på Nord-Jæren (kommunene)</br>med utvalg på 24 punkt."
 
 links_nj_whole |> 
   dplyr::mutate(
@@ -393,13 +403,17 @@ links_nj_whole |>
 
 Prosentandelene for antall lenker og trafikkarbeid øker litt med en redusert populasjon.
 
-Gjennomsnittlig avstand
+Gjennomsnittlig avstand fra trafikklenkene som ikke er med i utvalget til de som har byindekspunkt er på 4,0 for byområdet, mens for kommunene er denne verdien ikke mulig å beregne siden vegnettet ikke er sammenhengende.
 
 
-### Tidsserier
-Mål for representativitet
+### Usikkerhet
+Populasjonens størrelse har noe å si for dempingen av usikkerheten når vi holder utvalget fast.
+https://stats.stackexchange.com/questions/5158/explanation-of-finite-population-correction-factor
 
-Usikkerhet
+### Representativiteten tilbake i tid
+Ved å se på hvilke byindekspunkter som har vært med i datagrunnlaget for de månedlige beregningene av tre års glidende indeks, kan vi se hvordan representativiteten har vært over tid. Her er det trafikklenkepopulasjonen for byområdet som er benyttet.
+
+
 
 ### Konklusjon
 Det er flere fordeler med en begrenset og sentral populasjon kontra en komplett populasjon:

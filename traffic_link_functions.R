@@ -266,8 +266,8 @@ map_links_with_function_class <- function(link_df) {
 
   palette_function_class <-
     colorFactor(
-      palette = c("#158925", "#077197", "#b63434", "#687277"),
-      domain = c("A", "B", "C", "D")
+      palette = c("#158925", "#077197", "#b63434", "#444f55", "#858d90"),
+      domain = c("A", "B", "C", "D", "E")
     )
 
   map <-
@@ -537,7 +537,6 @@ create_line_graph <- function(link_df) {
   # Buliding a line graph manually to retain attributes
   # Let the original traffic link graph be G, and let the line graph be L.
   # Links in G will be nodes in L. Nodes in L will be connected if they were adjacent in G.
-
   L_nodes <-
     link_df |>
     sf::st_drop_geometry() |>
@@ -636,8 +635,8 @@ calculate_mean_distance_to_city_index_points <- function(l_graph) {
   # Subset vertex id based on sample of city_trps
   l_nodes <-
     tibble::tibble(
-      id = igraph::vertex_attr(test_l, "id"),
-      city_trp = igraph::vertex_attr(test_l, "city_trp")
+      id = igraph::vertex_attr(l_graph, "id"),
+      city_trp = igraph::vertex_attr(l_graph, "city_trp")
     )
 
   non_selected_nodes <-
