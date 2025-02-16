@@ -1,11 +1,12 @@
 # The purpose of this script is to revise TRPs used in VTI, comprising:
-# a. Remove TRPs that won't give us any index data this coming year
+# a. Discard TRPs that won't give us any index data this coming year
 # b. Add some more TRPs to compensate
+# c. Look at traffic work distribution in function classes (with statistical distances)
 
 # We want three files:
-# 1. RDS with traffic links for TRP candidates, to be shown in map.
-# 2. RDS with table summarising n TRP and measured traffic work per county and road category.
-# 3. Excel file with TRPs to keep and add to VTI.
+# OUTPUT#1. RDS with traffic links for TRP candidates, to be shown in map and visualized with traffic work distribution.
+# OUTPUT#2. RDS with table summarising n TRP and measured traffic work per county and road category.
+# OUTPUT#3. Excel file with TRPs to keep, discard and add to VTI.
 
 {
   source("H:/Programmering/R/byindeks/rmd_setup.R")
@@ -20,7 +21,7 @@
 counties <- get_counties()
 
 
-## Point index last year ----
+## TRP candidates ----
 trps_last_year <- get_published_pointindex_for_months_paginated(962, 2024, 12)[[1]]
 
 # Fetch once and save?
@@ -29,8 +30,6 @@ trps_last_year <- get_published_pointindex_for_months_paginated(962, 2024, 12)[[
 #   file = "new_vti/trps_last_year.rds"
 # )
 
-
-## TRP ----
 trp_latest_data <- get_trps_latest_data()
 
 trp_for_vti <-
@@ -78,7 +77,7 @@ trp_for_vti <-
       )
   ) |>
   dplyr::filter(
-    road_category %in% c("F", "R", "K"),
+    road_category %in% c("F", "R"),
     valid_from < "2024-01-01",
     latest_day > "2025-02-01"
     #stringr::str_detect(road_reference, "SD", negate = TRUE),
@@ -86,7 +85,7 @@ trp_for_vti <-
   )
 
 
-## AADT ----
+### AADT ----
 # Coverage and length_quality previous year
 trp_aadt_raw <-
   trp_for_vti$trp_id |>
@@ -104,7 +103,7 @@ trp_aadts <-
   dplyr::filter(
     !(year %in% c(2020, 2021)),
     year > 2014,
-    coverage > 50
+    coverage > 66
   ) |>
   # Check last year for normality with previous years
   dplyr::mutate(
@@ -133,7 +132,7 @@ trp_aadts <-
 # All links on R and F
 links <-
   sf::read_sf(
-    "C:/Users/snohan/Desktop/traffic_links_2024_2025-02-10.geojson",
+    "C:/Users/snohan/Desktop/traffic_links_2024_2025-02-13.geojson",
     query =
       "
       SELECT
@@ -146,11 +145,12 @@ links <-
         isFerryRoute,
         associatedTrpIds,
         trafficVolumes
-      FROM \"traffic_links_2024_2025-02-10\"
+      FROM \"traffic_links_2024_2025-02-13\"
       "
   ) |>
   dplyr::rename(,
-    road_category = roadCategory
+    road_category = roadCategory,
+    function_class = functionClass
   ) |>
   dplyr::mutate(
     road_category =
@@ -172,7 +172,7 @@ links <-
   )
 
 
-## County ID ----
+### County ID ----
 # Keep only one county id for border crossing ones
 link_county_id <-
   links |>
@@ -192,7 +192,7 @@ link_county_id <-
   )
 
 
-## Traffic work ----
+### Traffic work ----
 traffic_work_per_link <-
   links |>
   sf::st_drop_geometry() |>
@@ -270,6 +270,7 @@ trp_for_vti_tidy <-
     road_category,
     road_category_and_number,
     road_reference,
+    # TODO: function class?
     #road_link_position,
     lat, lon,
     used_last_year,
@@ -302,16 +303,21 @@ links_tidy <-
     !is.na(traffic_work_km)
   ) |>
   dplyr::left_join(
-    # Will duplicate som links
+    # Will duplicate some links?
     link_trp_id,
     by = join_by(id)
+  ) |>
+  dplyr::left_join(
+    counties,
+    by = join_by(county_id == county_number)
   ) |>
   dplyr::select(
     id,
     county_id,
+    county_geonumber = geo_number,
     road_category,
     roadSystemReferences,
-    function_class = functionClass,
+    function_class,
     traffic_work_km,
     trp_id
   )
@@ -321,7 +327,7 @@ readr::write_rds(
   file = "new_vti/links_tidy.rds"
 )
 
-#remove(links)
+remove(links)
 
 
 # Read back in ----
@@ -344,9 +350,12 @@ links_tidy <-
 
 # TRP chosen ----
 # Less work:
-# 1. Would like to keep all TRPs from last year, except a few: used_last_year_but_discard
-# 2. Would like to not include any new ones, except a few: not_used_last_year_but_include
-# Classify all TRPs as keep, discard or add.
+# Would like to keep all TRPs from last year, except a few: used_last_year_but_discard
+# Would like to not add any new ones, except a few: not_used_last_year_but_add
+# Classify all TRPs as either one of
+# - keep
+# - discard
+# - add
 
 # Look at map and decide on which new ones to add
 {
@@ -356,10 +365,11 @@ trp_for_vti_chosen <-
   trp_for_vti_tidy |>
   dplyr::filter(
     !(trp_id %in% used_last_year_but_discard),
-    !(trp_id %in% new_ones_not_to_include$trp_id)
+    !(trp_id %in% new_ones_not_to_add$trp_id)
   ) |>
   dplyr::mutate(
     trp_label = paste(name, road_category_and_number, adt, sep = "<br/>"),
+    # TODO: function_class?
     trp_label = lapply(trp_label, htmltools::HTML)
   )
 
@@ -370,7 +380,7 @@ readr::write_rds(
 }
 
 
-## 3. TRPs to add and remove ----
+# OUTPUT#3 TRPs ----
 {
 trps_last_year_to_keep <-
   trp_for_vti_chosen |>
@@ -440,14 +450,17 @@ dplyr::bind_rows(
 }
 
 
-## 1. Links chosen ----
+# OUTPUT#1 Links ----
 {
   links_chosen <-
     links_tidy |>
-    dplyr::filter(
-      trp_id %in% trp_for_vti_chosen$trp_id
-    ) |>
     dplyr::mutate(
+      # Need to keep all links in order to calculate traffic work ratios
+      trp_id =
+        dplyr::case_when(
+          trp_id %in% trp_for_vti_chosen$trp_id ~ trp_id,
+          TRUE ~ NA_character_
+        ),
       to_keep = dplyr::case_when(
         trp_id %in% trps_last_year_to_keep$trp_id ~ TRUE,
         TRUE ~ FALSE
@@ -461,7 +474,8 @@ dplyr::bind_rows(
 }
 
 
-## Measured traffic work ----
+# OUTPUT#2 Summary ----
+# Measured traffic work
 measured_traffic_work <-
   links_chosen |>
   sf::st_drop_geometry() |>
@@ -483,8 +497,7 @@ measured_traffic_work <-
     measured_percentage_of_traffic_work
   )
 
-
-## Traffic work stats ----
+# Traffic work stats
 # traffic_work_stats <-
 #   traffic_work_per_link |>
 #   dplyr::summarise(
@@ -502,9 +515,6 @@ measured_traffic_work <-
 #   file = "new_vti/traffic_work_2023.rds"
 # )
 
-
-
-## 2. Summary tables ----
 {
 county_table <-
   trp_for_vti_chosen |>

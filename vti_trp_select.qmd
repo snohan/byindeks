@@ -35,6 +35,7 @@ source("rmd_setup.R")
 library(DT)
 library(htmltools)
 library(sf)
+source("traffic_link_functions.R")
 ```
 
 
@@ -47,7 +48,7 @@ county_table <- readr::read_rds("new_vti/county_table.rds")
 country_table <- readr::read_rds("new_vti/country_table.rds")
 
 # Choose one county to look at:
-county_chosen <- c(1:15) # geonumber 1:15 
+county_chosen <- c(1:1) # geonumber 1:15 
 # Do not leave Oslo (3) alone
 
 trp_for_vti_chosen_here <-
@@ -67,7 +68,9 @@ trp_for_vti_aadt_F <-
 links_in_county <-
   links_chosen |> 
   dplyr::filter(
-    county_id %in% unique(trp_for_vti_chosen_here$county_no)
+    county_id %in% unique(trp_for_vti_chosen_here$county_no),
+    # In map, show only chosen
+    !is.na(trp_id)
   )
 
 palett_adt <-
@@ -86,6 +89,8 @@ link_color_keep <-
 
 
 # Fylke per vegkategori
+I @tbl-county oppsummeres antall trafikkregistreringspunkt som er valgt ut per fylke og vegkategori, samt hvor mye trafikkarbeid de representerer og hvilken andel dette utgjør av fylkets totale trafikkarbeid. 
+
 ```{r}
 #| label: tbl-county
 #| tbl-cap: "T_a er trafikkarbeid i millioner km."
@@ -111,8 +116,32 @@ county_table |>
       autoWidth = TRUE))
 ```
 
+Her burde vi ha en visualisering av trafikkarbeidets fordeling per fylke og vegkategori, hvor verdiene for populasjonen og utvlaget sammenlignes.
+
+
+```{r}
+#| label: fig-county_tw
+#| fig-caption: "Fordeling av trafikkarbeid."
+
+links_chosen |> 
+  dplyr::rename(
+    point_id = trp_id
+  ) |> 
+  dplyr::filter(
+    # TODO:
+    # Before I have figured how to call this function by county and road category (and build one big df that can be faceted) - test!
+    county_geonumber == 1,
+    road_category == "F"
+  ) |> 
+  visualize_function_class_distribution()
+```
+
+
+
 
 # Norge per vegkategori
+I @tbl-country oppsummeres antall trafikkregistreringspunkt som er valgt ut per vegkategori, samt hvor mye trafikkarbeid de representerer og hvilken andel dette utgjør av landets totale trafikkarbeid.
+
 ```{r}
 #| label: tbl-country
 #| tbl-cap: "T_a er trafikkarbeid i millioner km."
@@ -139,8 +168,11 @@ country_table |>
 
 
 # Kart
+Kartet i @fig-map viser hvilke trafikkregistreringspunkt som nå er valgt ut til bruk i Vegtrafikkindeksen.
+
 ```{r}
 #| label: fig-map
+#| fig-caption: "Trafikklenkene med utvalgte trafikkregistreringspunkt til bruk i Vegtrafikkindeksen."
 
 trp_for_vti_chosen_here |> 
   leaflet(
