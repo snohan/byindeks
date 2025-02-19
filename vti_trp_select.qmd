@@ -47,9 +47,9 @@ links_chosen <- readr::read_rds("new_vti/vti_links_chosen.rds")
 county_table <- readr::read_rds("new_vti/county_table.rds")
 country_table <- readr::read_rds("new_vti/country_table.rds")
 
-# Choose one county to look at:
-county_chosen <- c(1:1) # geonumber 1:15 
-# Do not leave Oslo (3) alone
+# Choose one (together with the neighboring) county to look at:
+county_chosen <- c(9, 10) # geonumber 1:15 
+# Do not leave Oslo (3) alone since it has no F roads
 
 trp_for_vti_chosen_here <-
   trp_for_vti_chosen |> 
@@ -68,7 +68,7 @@ trp_for_vti_aadt_F <-
 links_in_county <-
   links_chosen |> 
   dplyr::filter(
-    county_id %in% unique(trp_for_vti_chosen_here$county_no),
+    county_geono %in% unique(trp_for_vti_chosen_here$county_geono),
     # In map, show only chosen
     !is.na(trp_id)
   )
@@ -79,11 +79,13 @@ palett_adt <-
    domain = NULL
   )
 
-link_color_keep <-
+use_in_vti_categories <- c("keep", "add", "candidate")
+
+link_color_use_in_vti <-
   leaflet::colorFactor(
-    palette = c("#ed1c2e", "#0000ff"),
-    domain = c(TRUE, FALSE),
-    levels = c(TRUE, FALSE)
+    palette = c("#B63434", "#E32129", "#4b0082"),
+    domain = use_in_vti_categories,
+    levels = use_in_vti_categories
   )
 ```
 
@@ -93,22 +95,18 @@ I @tbl-county oppsummeres antall trafikkregistreringspunkt som er valgt ut per f
 
 ```{r}
 #| label: tbl-county
-#| tbl-cap: "T_a er trafikkarbeid i millioner km."
+#| tbl-cap: "Antal trafikkregistreringspunkt som er utvalgt per fylke og vegkategori, samt andelen trafikkarbeid disse representerer."
 
-# TODO: add road lengths
 county_table |> 
   dplyr::select(
     Fylke = county_name,
     Vegkat = road_category,
     n_trp,
-    T_a = traffic_work_mill_km,
-    T_a_VTI_prosent = measured_percentage_of_traffic_work
-  ) |> 
-  dplyr::mutate(
-    T_a = round(T_a)
+    Andel_trafikkarbeid = measured_percentage_of_traffic_work
   ) |> 
   DT::datatable(
     rownames = FALSE,
+    #colnames = c("Trafikkarbeid/(mill. km)"),
     filter = "none",
     options = list(
       dom = "t",
@@ -116,27 +114,74 @@ county_table |>
       autoWidth = TRUE))
 ```
 
-Her burde vi ha en visualisering av trafikkarbeidets fordeling per fylke og vegkategori, hvor verdiene for populasjonen og utvlaget sammenlignes.
+</br>
 
+I @fig-county_tw vises en visualisering av trafikkarbeidets fordeling per fylke og vegkategori, hvor verdiene for populasjonen og utvalget sammenlignes.
 
 ```{r}
 #| label: fig-county_tw
-#| fig-caption: "Fordeling av trafikkarbeid."
+#| fig-caption: "Fordeling av trafikkarbeid på fylkesveg."
+#| fig-height: 12
 
-links_chosen |> 
+links_chosen_F <-
+  links_chosen |>
   dplyr::rename(
     point_id = trp_id
   ) |> 
   dplyr::filter(
-    # TODO:
-    # Before I have figured how to call this function by county and road category (and build one big df that can be faceted) - test!
-    county_geonumber == 1,
-    road_category == "F"
-  ) |> 
-  visualize_function_class_distribution()
+    road_category == "F",
+    !is.na(function_class)
+  )
+  
+  summarised_counties <-
+    links_chosen_F |> 
+    dplyr::group_by(
+      county_name
+    ) |> 
+    dplyr::group_modify(
+      ~ summarise_link_population_by_function_class(.),
+      .keep = TRUE
+    ) |> 
+    dplyr::ungroup()
+  
+  summarised_counties |> 
+  ggplot(aes(function_class, percentage_tw, group = selection, fill = selection)) +
+    geom_col(position = "dodge2") +
+    theme_light() +
+    theme(
+      axis.ticks.x = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.y = element_blank(),
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.background = element_rect(fill = svv_background_color),
+      legend.position = "bottom"
+    ) +
+    scale_fill_manual(
+      values = c(
+        "populasjon" = "#008ec2",
+        "utvalg" = "#ed9300"
+      ),
+      labels = c(
+        "Alle trafikklenker (populasjon)",
+        "Trafikklenker med trafikkregistrering"
+      ),
+      name = "Utvalg"
+    ) +
+    labs(
+      x = "Funksjonsklasse",
+      y = NULL
+    ) +
+    ggtitle(
+      "Trafikkarbeid fordelt på funksjonsklasse",
+      "Data for 2024"
+    ) +
+  facet_wrap(
+    vars(county_name),
+    ncol = 2
+  )
 ```
-
-
 
 
 # Norge per vegkategori
@@ -144,18 +189,13 @@ I @tbl-country oppsummeres antall trafikkregistreringspunkt som er valgt ut per 
 
 ```{r}
 #| label: tbl-country
-#| tbl-cap: "T_a er trafikkarbeid i millioner km."
+#| tbl-cap: "Antal trafikkregistreringspunkt som er utvalgt per fylke og vegkategori, samt andelen trafikkarbeid disse representerer."
 
-# TODO: add road lengths
 country_table |> 
   dplyr::select(
     Vegkat = road_category,
     n_trp,
-    T_a = traffic_work_mill_km,
-    T_a_VTI_prosent = measured_percentage_of_traffic_work
-  ) |> 
-  dplyr::mutate(
-    T_a = round(T_a)
+    Andel_trafikkarbeid = measured_percentage_of_traffic_work
   ) |> 
   DT::datatable(
     rownames = FALSE,
@@ -166,6 +206,24 @@ country_table |>
       autoWidth = TRUE))
 ```
 
+</br>
+
+I @fig-country_tw vises en visualisering av trafikkarbeidets fordeling per fylke og vegkategori, hvor verdiene for populasjonen og utvalget sammenlignes.
+
+```{r}
+#| label: fig-country_tw
+#| fig-caption: "Fordeling av trafikkarbeid på fylkesveg."
+
+links_chosen |>
+  dplyr::rename(
+    point_id = trp_id
+  ) |> 
+  dplyr::filter(
+    road_category == "F",
+    !is.na(function_class)
+  ) |> 
+  visualize_function_class_distribution()
+```
 
 # Kart
 Kartet i @fig-map viser hvilke trafikkregistreringspunkt som nå er valgt ut til bruk i Vegtrafikkindeksen.
@@ -189,7 +247,7 @@ trp_for_vti_chosen_here |>
   addCircleMarkers(
     data = trp_for_vti_aadt_R,
     group = "R",
-    radius = 6,
+    radius = 7,
     stroke = T,
     weight = 2,
     color = "#58b02c",
@@ -202,7 +260,7 @@ trp_for_vti_chosen_here |>
   addCircleMarkers(
     data = trp_for_vti_aadt_F,
     group = "F",
-    radius = 6,
+    radius = 7,
     stroke = T,
     weight = 2,
     color = "#008ec2",
@@ -216,7 +274,7 @@ trp_for_vti_chosen_here |>
     data = links_in_county,
     opacity = 0.8,
     #fill = T,
-    color = ~link_color_keep(to_keep),
+    color = ~link_color_use_in_vti(use_in_vti),
     highlightOptions = highlightOptions(
       bringToFront = TRUE,
       sendToBack = FALSE,
@@ -234,8 +292,8 @@ trp_for_vti_chosen_here |>
   ) |> 
   addLegend(
     "bottomright",
-    pal = link_color_keep,
-    values = ~links_in_county$to_keep,
+    pal = link_color_use_in_vti,
+    values = ~links_in_county$use_in_vti,
     title = "I fjor",
     opacity = 0.7
   ) |> 

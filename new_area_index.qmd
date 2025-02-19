@@ -55,9 +55,6 @@ flextable::set_flextable_defaults(
   big.mark = " ",
   na_str = ""
 )
-
-
-
 ```
 
 ```{r}
