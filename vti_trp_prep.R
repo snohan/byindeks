@@ -86,6 +86,10 @@ trp_for_vti <-
       )
   )
 
+readr::write_rds(
+  trp_for_vti,
+  file = "new_vti/trp_for_vti.rds"
+)
 
 ### AADT ----
 # Coverage and length_quality previous year
@@ -369,6 +373,11 @@ remove(links)
 
 # Read back in ----
 # If you are back another day...
+trp_for_vti <-
+  readr::read_rds(
+    file = "new_vti/trp_for_vti.rds"
+  )
+
 trp_for_vti_tidy <-
   readr::read_rds(
     file = "new_vti/trp_for_vti_tidy.rds"
