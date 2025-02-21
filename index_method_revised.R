@@ -27,7 +27,7 @@ mdt_tw <-
   present_year <- 2024
   index_month <- 12
   city_number <- 952
-  }
+}
 
 source("set_time_references.R")
 

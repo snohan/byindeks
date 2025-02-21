@@ -14,7 +14,7 @@ source("indexpoints_tidying_functions.R")
 
 # Set manual variables ----
 {
-index_month <- 12 # to be published now
+index_month <- 1 # to be published now
 city_number <- 960
 city_name <- "Trondheim"
 }
@@ -26,7 +26,8 @@ trp_index_20 <- get_published_pointindex_for_months_trondheim(city_number, 2020,
 trp_index_21 <- get_published_pointindex_for_months_trondheim(city_number, 2021, 12)
 trp_index_22 <- get_published_pointindex_for_months_trondheim(city_number, 2022, 12)
 trp_index_23 <- get_published_pointindex_for_months_trondheim(city_number, 2023, 12)
-trp_index_24 <- get_published_pointindex_for_months_trondheim(city_number, 2024, index_month)
+trp_index_24 <- get_published_pointindex_for_months_trondheim(city_number, 2024, 12)
+trp_index_25 <- get_published_pointindex_for_months_trondheim(city_number, 2025, index_month)
 
 trp_index_all <-
   dplyr::bind_rows(
@@ -34,7 +35,8 @@ trp_index_all <-
     trp_index_21[[2]],
     trp_index_22[[2]],
     trp_index_23[[2]],
-    trp_index_24[[2]]
+    trp_index_24[[2]],
+    trp_index_25[[2]]
   )
 }
 
@@ -678,12 +680,12 @@ so_far_years_1_5 <-
   ) |>
   calculate_two_year_index()
 
-# so_far_years_1_6 <-
-#   dplyr::bind_rows(
-#     so_far_years_1_5,
-#     dplyr::slice(city_index_so_far, 6)
-#   ) |>
-#   calculate_two_year_index()
+so_far_years_1_6 <-
+  dplyr::bind_rows(
+    so_far_years_1_5,
+    dplyr::slice(city_index_so_far, 6)
+  ) |>
+  calculate_two_year_index()
 
 # Skipping intermediate years, adding just from first to last
 city_index_so_far_all <-
@@ -693,7 +695,7 @@ city_index_so_far_all <-
     so_far_years_1_3,
     so_far_years_1_4,
     so_far_years_1_5,
-    #so_far_years_1_6
+    so_far_years_1_6
   ) |>
   dplyr::mutate(
     length_range = "lette",

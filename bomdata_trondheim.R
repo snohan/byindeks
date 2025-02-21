@@ -323,8 +323,8 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "december" # English
-year_number <- 2024
+month_string <- "january" # English
+year_number <- 2025
 
 apar_data_for_month <-
   purrr::map_dfr(
@@ -380,7 +380,8 @@ apar_files <-
   list.files(
     "H:/Programmering/R/byindeks/bomdata_trondheim/raw_apar_2021-5_",
     #pattern = "2021.*",
-    pattern = "2022.*|2023.*|2024.*",
+    #pattern = "2022.*|2023.*|2024.*",
+    pattern = "2025.*",
     all.files = TRUE,
     no.. = TRUE,
     full.names = TRUE
@@ -492,7 +493,7 @@ plot_toll_station_data_per_lane <- function(toll_id_chosen, year_chosen) {
 }
 
 # Ranheim is 72
-plot_toll_station_data_per_lane("86", 2024)
+plot_toll_station_data_per_lane("69", 2025)
 
 
 ## Exclusions ----
@@ -580,7 +581,8 @@ tolling_data_daily_all <-
 readr::write_rds(
   tolling_data_daily_all,
   #file = "bomdata_trondheim/tolling_data_daily_2019-2021.rds"
-  file = "bomdata_trondheim/tolling_data_daily_2022-2024.rds"
+  #file = "bomdata_trondheim/tolling_data_daily_2022-2024.rds"
+  file = "bomdata_trondheim/tolling_data_daily_2025-2026.rds"
 )
 
 
@@ -784,13 +786,18 @@ tolling_station_index_2024 <-
   tolling_data_daily_all_years %>%
   calculate_monthly_index_for_tolling_stations_from_daily_traffic(2023, 2024)
 
+tolling_station_index_2025 <-
+  tolling_data_daily_all_years %>%
+  calculate_monthly_index_for_tolling_stations_from_daily_traffic(2024, 2025)
+
 tolling_station_indices <-
   dplyr::bind_rows(
     tolling_station_index_2020,
     tolling_station_index_2021,
     tolling_station_index_2022,
     tolling_station_index_2023,
-    tolling_station_index_2024
+    tolling_station_index_2024,
+    tolling_station_index_2025
   )
 
 readr::write_rds(

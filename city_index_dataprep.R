@@ -58,9 +58,9 @@ trp_id_msnr <-
 
 ## Choose publish month ----
 {
-present_year <- 2024
-index_month <- 12 # the one to be published now
-city_number <- 955
+present_year <- 2025
+index_month <- 1 # the one to be published now
+city_number <- 960
 }
 # End choose
 
@@ -642,7 +642,7 @@ mdt_filtered |>
 plotly::ggplotly(
   mdt_filtered |>
    dplyr::filter(
-     year == 2024
+     year == 2025
    ) |>
    ggplot(aes(year_month, length_quality, color = trp_id)) +
    geom_line()
@@ -679,7 +679,7 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[26:28]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[16:18]) |>
   dplyr::select(
     trp_id,
     year,
