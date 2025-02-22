@@ -60,7 +60,7 @@ trp_id_msnr <-
 {
 present_year <- 2025
 index_month <- 1 # the one to be published now
-city_number <- 8952
+city_number <- 18952
 }
 # End choose
 
@@ -502,11 +502,11 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    years_1_2,
-    years_1_3,
-    years_1_4,
-    years_1_5,
-    years_1_6,
+    #years_1_2,
+    #years_1_3,
+    #years_1_4,
+    #years_1_5,
+    #years_1_6,
     #years_1_7,
     # years_1_8
   ) |>
@@ -679,7 +679,7 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[66:68]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[17:22]) |>
   dplyr::select(
     trp_id,
     year,
@@ -848,15 +848,15 @@ all_36_month_indices <-
 
 all_rolling_indices <-
   dplyr::bind_rows(
-    all_12_month_indices,
-    all_24_month_indices,
-    all_36_month_indices
+    all_12_month_indices#,
+    #all_24_month_indices,
+    #all_36_month_indices
   )
 
 list(
-  all_12_month_indices,
-  all_24_month_indices,
-  all_36_month_indices
+  all_12_month_indices#,
+  #all_24_month_indices,
+  #all_36_month_indices
 ) |>
   readr::write_rds(
     file =
@@ -1372,9 +1372,6 @@ if(!(city_number %in% c(960, 16952, 18952, 19953))){
     punkt_mdt = mdt_and_pi,
     punkt_3_aar_glid_indeks = all_36_month_trp_indices,
     by_glid_indeks = all_rolling_indices
-    #by_3_aar_glid_indeks = all_36_month_indices,
-    #by_2_aar_glid_indeks = all_24_month_indices,
-    #by_1_aar_glid_indeks = all_12_month_indices
   ) |>
     writexl::write_xlsx(
       path = paste0(
