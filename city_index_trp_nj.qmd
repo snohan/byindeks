@@ -1,0 +1,145 @@
+---
+title: "Byindekspunkt Nord-Jæren"
+format: 
+  html:
+    css: svv.css
+    number-sections: true
+    toc: true
+    toc-location: left
+    toc-title: "Innhold"
+    toc-expand: true
+    df-print: paged
+    self-contained: true
+crossref:
+  fig-title: Figur
+  tbl-title: Tabell
+  title-delim: .
+  fig-prefix: figur
+  tbl-prefix: tabell
+editor: source
+knitr: 
+  opts_chunk: 
+    echo: false
+---
+
+```{r}
+#| label: todos
+
+# Update February 2025
+# Keep calculations for 2017-2023 as is.
+# TODO: Make a list (Excel) of all TRPs annotating which have contributed in the chain links:
+# 2017-2019
+# 2019-2023
+# 2023-
+# Maybe explain why TRPs have not been included
+# TODO: include adequately placed toll stations
+
+# TODO: Make a map showing just the ones selected for 2023-
+# Havedifferent layers:
+# 1. Showing only links with a TRP
+# (2. Showing only links without a TRP)
+# 3. Only TRPs as points
+# 4. Separate layers for eligible toll stations
+# In the byutredning they will use these to predict what the byindeks will show.
+```
+
+
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
+#| warning: false
+#| message: false
+  
+# Packages are loaded through sourcing rmd_setup.R
+source("rmd_setup.R")
+library(DT)
+library(htmltools)
+
+source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
+```
+
+
+```{r}
+#| label: data
+
+links_nj_trp <-readr::read_rds("representativity/nj_trp_links.rds")
+trps_nj <- readr::read_rds("representativity/nj_trps.rds")
+```
+
+
+## Anvendelige punkt fra 2023
+
+```{r}
+#| label: fig-map
+#| fig-cap: "Mulige punkt for 2023 og framover."
+
+leaflet(
+    trps_nj,
+    width = "100%",
+    options = leafletOptions(
+      crs = nvdb_crs,
+      zoomControl = TRUE
+    )
+  ) |> 
+  addTiles(
+    urlTemplate = nvdb_map_url,
+    attribution = nvdb_map_attribution
+  ) |> 
+  addCircleMarkers(
+    data = trps_nj,
+    radius = 6,
+    stroke = T,
+    weight = 2,
+    color = "#58b02c",
+    opacity = 0.8,
+    fill = F,
+    #fillColor = ,
+    fillOpacity = 0.8,
+    label = ~trp_label
+  ) |> 
+  addPolylines(
+    data = links_nj_trp,
+    group = "Trafikklenker",
+    opacity = 0.8,
+    #color = ~link_color_new_and_old(status),
+    highlightOptions = highlightOptions(
+      bringToFront = TRUE,
+      sendToBack = FALSE,
+      color = "#000000",
+      opacity = 0.6
+      )
+  ) |> 
+  addLayersControl(
+    overlayGroups = c("Trafikklenker"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+```
+
+
+I @tbl-trps vises hvilke punkt som er aktuelle å benytte fra 2023 og framover.
+```{r}
+#| label: tbl-trps
+#| tbl-cap: "Aktuelle punkter."
+
+trps_nj |>
+  dplyr::select(
+    name, road_reference
+  ) |>
+  DT::datatable(
+    filter = "top",
+    rownames = FALSE,
+    colnames = c(
+      "Punktnavn" = "name",
+      "Vegreferanse" = "road_reference"
+    ),
+    options = list(
+      #dom = "Blfrtip",
+      searching = FALSE,
+      pageLength = 25,
+      lengthChange = FALSE,
+      autoWidth = TRUE,
+      columnDefs = list(list(className = 'dt-left', targets = c(0, 1)))
+    )
+  )
+```

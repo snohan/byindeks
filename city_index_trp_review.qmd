@@ -22,7 +22,6 @@ knitr:
     echo: false
 ---
 
-
 ```{r}
 #| label: setup
 #| include: false

@@ -287,7 +287,7 @@ hent_vegpunkt_via_latlon_for_flere_punkter <- function(trp_df) {
 # }
 
 
-hent_kommune_v3 <- function(kommunenr) {
+hent_kommune <- function(kommunenr) {
 
   # kommunenr <- "5001"
 

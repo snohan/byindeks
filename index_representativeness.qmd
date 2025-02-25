@@ -50,8 +50,6 @@ library(leaflet)
 source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
 source("H:/Programmering/R/byindeks/traffic_link_functions.R")
 
-#source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
-
 flextable::set_flextable_defaults(
   #font.size = 8,
   #padding.bottom = .2,
@@ -105,6 +103,7 @@ rtm_random_samples_ci <-
 
 links_nj <- readr::read_rds("representativity/link_population_nj.rds")
 links_nj_whole <- readr::read_rds("representativity/link_population_nj_whole.rds")
+urban_area_nj <- readr::read_rds("representativity/urban_area_nj.rds")
 ```
 
 
@@ -235,7 +234,10 @@ For å konsentrere området til de mer bymessige og sentrale delene må vegene i
 #| message: false
 #| fig-cap: !expr map_caption
 
-map_links_with_function_class(links_nj)
+map_links_with_function_class(links_nj) |> 
+  addPolygons(
+    data = urban_area_nj
+  )
 ```
 
 
@@ -420,9 +422,10 @@ Det er flere fordeler med en begrenset og sentral populasjon kontra en komplett 
 
 - Færre punkter trengs for å få god representativitet
 - Usikkerheten i byindeksen blir lavere
+- Utvalget punkt som allerede er tatt i bruk ligger stort sett i sentrale deler
 - Det trengs ikke etableres nye punkter på de minste vegene (som uansett vil bidra lite til byindeksen, men som for representativitetens skyld burde være med)
 - Byindeksen vil i større grad fokusere på de delene av vegnettet hvor trafikkveksten utgjør et reelt problem
-- Utvalget punkt som allerede er tatt i bruk ligger stort sett i sentrale deler
+
 
 
 ## Utvalgets betydning
@@ -432,6 +435,7 @@ De 24.
 
 De foreslåtte 59.
 
+De mulige 89 fra 2023.
 
 
 ## Simulerte utvalg

@@ -28,6 +28,7 @@ counties <-
 
 
 ## TRP candidates ----
+### Index last year ----
 # Fetch once and save
 {
   trps_last_year <- get_published_pointindex_for_months_paginated(962, 2024, 12)[[1]]
@@ -43,6 +44,7 @@ trps_last_year <-
     file = "new_vti/trps_last_year.rds"
   )
 
+### Coverage last year ----
 trp_latest_data <- get_trps_latest_data()
 
 # NB! Do not filter anything more here as we need to catch those used last year (some may be lost in subsequent trp dfs)

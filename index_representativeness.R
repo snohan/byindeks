@@ -13,9 +13,34 @@
   library(leaflet)
   library(sf)
   source("get_from_trafficdata_api.R")
+  source("get_from_nvdb_api.R")
   source("H:/Programmering/R/byindeks/traffic_link_functions.R")
   source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
 }
+
+# Urban areas ----
+#urban_layers <- sf::st_layers("C:/Users/snohan/Desktop/tettsteder_2024.gdb")
+
+urban_areas <-
+  sf::st_read(
+    "C:/Users/snohan/Desktop/tettsteder_2024.gdb",
+    as_tibble = TRUE,
+    #layer = "tettsted",
+    query =
+      "SELECT
+      tettstednummer, tettstednavn, totalbefolkning, SHAPE
+      FROM \"tettsted\"
+      WHERE totalbefolkning > 1000
+      "
+  ) |>
+  dplyr::group_by(tettstednummer, tettstednavn, totalbefolkning) |>
+  dplyr::summarise(
+    geometry = sf::st_union(SHAPE),
+    .groups = "drop"
+  )
+
+slice(urban_areas, 1:2) |>
+  plot()
 
 # Later, need to keep only continuous TRPs on links
 trp_continuous <-
@@ -33,6 +58,17 @@ trp_continuous <-
 # Need to know layer names if a query should limit rows during test readings.
 #layers <- sf::st_layers("C:/Users/snohan/Desktop/traffic_links_2023_2024-10-08.geojson")
 #names(links)
+
+# TODO: decide on an algorithm for narrowing down the link population
+# 1. Merge the municipality polygons
+# 2. Shave off parts that are explicitly stated as outside area of scope
+# 3. Call this the agreement area
+# 4. Get all the urban area polygons lying inside the agreement area
+# 5. Remove urban areas with fewer than X inhabitants
+# 6. Do the same with arbeidsplasser and besøksintensive næringsvirksomheter
+# 7. Include all traffic links lying inside or overlaps with any of the filtered urban areas
+# 8. Exclude traffic links to minimize inclusion of through traffic
+# 9. If necessary, add some traffic links to make the resulting road network connected
 
 links <-
   sf::st_read(
@@ -68,6 +104,7 @@ links <-
   dplyr::mutate(
     # From list to character
     point_id = purrr::map(trp_id, ~ purrr::pluck(., 1)) # NB! What if there is more than one!
+    # TODO: look at how this is done in vti_trp_prep.R
   ) |>
   tidyr::unnest(
     point_id,
@@ -197,9 +234,40 @@ city_info_stats <-
 ## Population Nord-Jæren ----
 municipality_ids_nj <- c(1127, 1103, 1124, 1108)
 
+### Municipalities ----
+nj_municipality_polygon <-
+  purrr::map(
+    municipality_ids_nj,
+    ~ hent_kommune(.)
+  ) |>
+  purrr::list_rbind() |>
+  #tibble::as_tibble() |>
+  sf::st_as_sf() |>
+  sf::st_union()
+
+plot(nj_municipality_polygon)
+
+urban_areas_nj <-
+  urban_areas |>
+  # Pick areas manually by looking for them at Geonorge map
+  dplyr::filter(
+    tettstednummer == 4522
+  ) |>
+  sf::st_transform("wgs84")
+  # TODO: filter by area - figure out how!
+  #dplyr::rowwise() |>
+  #sf::st_intersects(nj_municipality_polygon) |>
+  #purrr::list_rbind()
+
+plot(urban_areas_nj)
+
+readr::write_rds(urban_areas_nj, "representativity/urban_area_nj.rds")
+# TODO: use urban area to choose population
+
+
 # Need two alternative population definitions to compare
 # 1. All links in all municipalities: "whole"
-# 2. Just the central nodes in urban area: "central"
+# 2. Just the central links in urban area: "central"
 
 # 1. All links
 links_nj_whole <-
