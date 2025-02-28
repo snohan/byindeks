@@ -8,6 +8,7 @@ library(sf)
 # Definer URI og sti ----
 #nvdb_url <- "https://www.vegvesen.no/nvdb/api/v2"
 nvdb_url_v3 <- "https://nvdbapiles-v3.atlas.vegvesen.no"
+nvdb_url_v4 <- "https://nvdbapiles.atlas.vegvesen.no"
 sti_vegobjekter <- "/vegobjekter"
 sti_veg <- "/veg"
 sti_posisjon <- "/posisjon"
@@ -289,7 +290,7 @@ hent_vegpunkt_via_latlon_for_flere_punkter <- function(trp_df) {
 
 hent_kommune <- function(kommunenr) {
 
-  # kommunenr <- "5001"
+  #kommunenr <- "1108"
 
   api_query_root <-
     paste0(
@@ -321,11 +322,10 @@ hent_kommune <- function(kommunenr) {
     dplyr::select(
       kommunenavn = Kommunenavn,
       kommunenr = Kommunenummer,
-      polygon = 1
+      geometry = "Geometri, flate"
     ) %>%
     sf::st_as_sf(
-      wkt = "polygon",
-      #crs = 5973) %>%
+      wkt = "geometry",
       crs = 25833
     ) %>%
     sf::st_zm(
@@ -335,6 +335,75 @@ hent_kommune <- function(kommunenr) {
     #sf::st_transform("+proj=longlat +datum=WGS84")
 
   return(kommuneinfo)
+}
+
+hent_historisk_kommune <- function(kommunenr_dagens, kommunenr_historisk) {
+
+  #kommunenr_dagens <- 1108
+  #kommunenr_historisk <- 1102
+
+  api_query_root <-
+    paste0(
+      nvdb_url_v3,
+      sti_vegobjekter,
+      "/536",
+      "?inkluder=egenskaper"
+    )
+
+  api_query <-
+    paste0(
+      api_query_root,
+      "&kommune=",
+      kommunenr_dagens
+    )
+
+  uthenta <- call_and_parse_nvdb_api(api_query)
+
+  kommuneinfo <-
+    dplyr::bind_rows(
+      uthenta$objekter$egenskaper,
+      .id = "kid"
+    )
+  # This includes the polygons for all old municipalities that are now part of the new one.
+  # Need to filter for the original.
+
+  den_opprinnelige <-
+    kommuneinfo |>
+    dplyr::select(
+      kid,
+      navn,
+      verdi
+    ) |>
+    dplyr::filter(
+      navn == "Kommunenummer",
+      verdi == kommunenr_historisk
+    )
+
+  kommuneinfo_gammel <-
+    kommuneinfo |>
+    dplyr::filter(
+      kid == den_opprinnelige$kid
+    ) |>
+    dplyr::select(navn, verdi) %>%
+    tidyr::pivot_wider(
+      names_from = navn,
+      values_from = verdi
+    ) %>%
+    dplyr::select(
+      kommunenavn = Kommunenavn,
+      kommunenr = Kommunenummer,
+      geometry = "Geometri, flate"
+    ) %>%
+    sf::st_as_sf(
+      wkt = "geometry",
+      crs = 25833 # UTM33
+    ) %>%
+    sf::st_zm(
+      drop = T,
+      what = "ZM"
+    )
+
+  return(kommuneinfo_gammel)
 }
 
 hent_alle_kommuner_v3 <- function() {

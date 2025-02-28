@@ -102,7 +102,7 @@ summarise_link_population_by_function_class <- function(link_population) {
     sf::st_drop_geometry() |>
     dplyr::summarise(
       count = n(),
-      tw = sum(traffic_work_km),
+      tw = sum(traffic_work_km, na.rm = TRUE),
       .by = c(function_class)
     ) |>
     dplyr::mutate(
@@ -119,7 +119,7 @@ summarise_link_population_by_function_class <- function(link_population) {
     dplyr::filter(!is.na(point_id)) |>
     dplyr::summarise(
       count = n(),
-      tw = sum(traffic_work_km),
+      tw = sum(traffic_work_km, na.rm = TRUE),
       .by = c(function_class)
     ) |>
     dplyr::mutate(
@@ -376,7 +376,7 @@ table_link_statistics <- function(link_df) {
       sf::st_drop_geometry() |>
       dplyr::summarise(
         number_of_links = n(),
-        traffic_work_mill_km = sum(traffic_work_km) / 1e6
+        traffic_work_mill_km = sum(traffic_work_km, na.rm = TRUE) / 1e6
       ) |>
       dplyr::mutate(
         selection = "population"
@@ -386,7 +386,7 @@ table_link_statistics <- function(link_df) {
       dplyr::filter(!is.na(point_id)) |>
       dplyr::summarise(
         number_of_links = n(),
-        traffic_work_mill_km = sum(traffic_work_km) / 1e6
+        traffic_work_mill_km = sum(traffic_work_km, na.rm = TRUE) / 1e6
       ) |>
       dplyr::mutate(
         selection = "sample"
@@ -681,5 +681,44 @@ calculate_mean_distance_to_city_index_points <- function(l_graph) {
     sum(distance_tibble$min_dist) / (nrow(non_selected_nodes) - nrow(selected_nodes))
 
   return(mean_shortest_distance)
+
+}
+
+
+get_link_population_inside_municipalities <- function(area_municipality_ids) {
+
+  # municipality_ids: integer vector
+
+  link_ids_intersecting_municipalities <-
+    link_municipality_id |>
+    dplyr::filter(
+      municipality_id %in% area_municipality_ids
+    )
+
+  link_ids_crossing_outer_borders <-
+    link_municipality_id |>
+    dplyr::filter(
+      link_id %in% link_ids_intersecting_municipalities$link_id,
+      !(municipality_id %in% area_municipality_ids)
+    )
+
+  link_ids_inside_municipalities <-
+    link_ids_intersecting_municipalities |>
+    dplyr::filter(
+      !(link_id %in% link_ids_crossing_outer_borders$link_id)
+    )
+
+  # Remove duplicates from links crossing internal borders in case of neighboring municipalities
+  link_ids_inside_municipalities_unique <-
+    link_ids_inside_municipalities$link_id |>
+    base::unique()
+
+  links_inside_municipalities <-
+    links |>
+    dplyr::filter(
+      link_id %in% link_ids_inside_municipalities_unique
+    )
+
+  return(links_inside_municipalities)
 
 }

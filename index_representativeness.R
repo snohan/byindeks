@@ -1,4 +1,36 @@
-# Is the selection of city index points representative for the area?
+# Purposes:
+
+# A. Define traffic link population objectively.
+  # An algorithm for narrowing down the link population:
+  # 1. Merge the municipality polygons.
+  # 2. Shave off parts that are explicitly stated as outside area of scope. Call this the agreement area.
+  # 3. Get all the urban area polygons lying inside the agreement area with more than 1 000 inhabitants.
+  # 4. Add areas with many ansatte and besøkende.
+  # 5. Call this area the city area.
+  # 6. Include all traffic links lying inside or overlaps with the city area.
+  # 7. Exclude traffic with high ratio of through traffic.
+  # 8. If necessary, add some traffic links to make the resulting road network connected between subareas.
+
+# B. Is the selection of city index points representative for the area?
+  # Calculate distance metrics for the selection of traffic links:
+  # 1. Number of links in selection (i.e. that has a TRP).
+  # 2. The ratio of selected links to the population size.
+  # 3. The ratio of the traffic work on the selected links to the population traffic work.
+  # 4. The total variation distance (TVD) between the relative distributions of traffic work for selection and population.
+  # 5. The Hellinger distance between the relative distributions of traffic work for selection and population.
+  # 6. Mean distance between links in the selection, given that the population is a connected graph with one component.
+
+  # Good representativity would be given by:
+  # 1. A smallest number of links in the selection
+  #    such that the expected uncertainty under typical conditions will be as low as desired.
+  #    This can be calculated per area, with a given population definition.
+  # 2. High ratio of selected links.
+  # 3. High ratio of selected traffic work.
+  # 4. Low TVD.
+  # 5. Low Hellinger distance.
+  # 6. Low mean distance between selected links.
+  # There is no general limit to any of these, except the first. All measures can be compared between selections.
+
 
 # Setup ----
 {
@@ -18,31 +50,7 @@
   source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
 }
 
-# Urban areas ----
-#urban_layers <- sf::st_layers("C:/Users/snohan/Desktop/tettsteder_2024.gdb")
-
-urban_areas <-
-  sf::st_read(
-    "C:/Users/snohan/Desktop/tettsteder_2024.gdb",
-    as_tibble = TRUE,
-    #layer = "tettsted",
-    query =
-      "SELECT
-      tettstednummer, tettstednavn, totalbefolkning, SHAPE
-      FROM \"tettsted\"
-      WHERE totalbefolkning > 1000
-      "
-  ) |>
-  dplyr::group_by(tettstednummer, tettstednavn, totalbefolkning) |>
-  dplyr::summarise(
-    geometry = sf::st_union(SHAPE),
-    .groups = "drop"
-  )
-
-slice(urban_areas, 1:2) |>
-  plot()
-
-# Later, need to keep only continuous TRPs on links
+# Need to keep only continuous TRPs in the following analyses
 trp_continuous <-
   get_points() |>
   dplyr::filter(
@@ -53,135 +61,9 @@ trp_continuous <-
   ) |>
   dplyr::distinct()
 
-
-# Link population ----
-# Need to know layer names if a query should limit rows during test readings.
-#layers <- sf::st_layers("C:/Users/snohan/Desktop/traffic_links_2023_2024-10-08.geojson")
-#names(links)
-
-# TODO: decide on an algorithm for narrowing down the link population
-# 1. Merge the municipality polygons
-# 2. Shave off parts that are explicitly stated as outside area of scope
-# 3. Call this the agreement area
-# 4. Get all the urban area polygons lying inside the agreement area
-# 5. Remove urban areas with fewer than X inhabitants
-# 6. Do the same with arbeidsplasser and besøksintensive næringsvirksomheter
-# 7. Include all traffic links lying inside or overlaps with any of the filtered urban areas
-# 8. Exclude traffic links to minimize inclusion of through traffic
-# 9. If necessary, add some traffic links to make the resulting road network connected
-
-links <-
-  sf::st_read(
-    "C:/Users/snohan/Desktop/traffic_links_2024_2025-02-13.geojson",
-    as_tibble = TRUE
-    #query = "SELECT * FROM \"traffic_links_2024_2025-01-28\" LIMIT 150"
-  ) |>
-  dplyr::select(
-    link_id = id,
-    roadSystemReferences,
-    from = startTrafficNodeId,
-    to = endTrafficNodeId,
-    municipalityIds,
-    associatedTrpIds,
-    hasOnlyPublicTransportLanes,
-    isFerryRoute,
-    function_class = functionClass,
-    length,
-    trafficVolumes
-  ) |>
-  dplyr::mutate(
-    function_class = as.factor(function_class)
-  ) |>
-  dplyr::filter(
-    hasOnlyPublicTransportLanes == FALSE,
-    isFerryRoute == FALSE
-  ) |>
-  dplyr::rowwise() |>
-  dplyr::mutate(
-    trp_id = stringr::str_extract_all(associatedTrpIds, "(?<=\")[:alnum:]+(?=\")")
-  ) |>
-  dplyr::ungroup() |>
-  dplyr::mutate(
-    # From list to character
-    point_id = purrr::map(trp_id, ~ purrr::pluck(., 1)) # NB! What if there is more than one!
-    # TODO: look at how this is done in vti_trp_prep.R
-  ) |>
-  tidyr::unnest(
-    point_id,
-    keep_empty = TRUE
-    # TODO: remove periodic trps
-  ) |>
-  dplyr::mutate(
-    point_id =
-      dplyr::case_when(
-        point_id %in% trp_continuous$trp_id ~ point_id,
-        TRUE ~ NA_character_
-      )
-  ) |>
-  dplyr::select(
-    -hasOnlyPublicTransportLanes,
-    -isFerryRoute,
-    -associatedTrpIds,
-    -trp_id
-  ) |>
-  sf::st_as_sf()
-
-traffic_volumes <-
-  links |>
-  sf::st_drop_geometry() |>
-  dplyr::select(
-    link_id,
-    trafficVolumes
-  ) |>
-  dplyr::filter(
-    !is.na(trafficVolumes)
-  ) |>
-  dplyr::rowwise() |>
-  dplyr::mutate(
-    traffic_volumes = list(jsonlite::fromJSON(trafficVolumes))
-  ) |>
-  # Need to remove empty lists before unnesting.
-  dplyr::filter(
-    purrr::map_int(list(traffic_volumes), ~length(.)) > 0
-  ) |>
-  tidyr::unnest(
-    traffic_volumes
-  ) |>
-  dplyr::filter(
-    year == 2023,
-    trafficVolumeResolution == "ADT"
-  ) |>
-  dplyr::select(
-    link_id,
-    trafficVolumeValue,
-    #year,
-    #coverage,
-    trafficWorkValue
-    #correctedStandardError,
-    #sourceType,
-    #registrationFrequency
-  ) |>
-  dplyr::summarise(
-    traffic_volume = mean(trafficVolumeValue) |> round(),
-    traffic_work_km = mean(trafficWorkValue),
-    .by = "link_id"
-  )
-
-# Filter initially by municipality, but also remove links on the outer border of area
-all_municipality_ids <-
-  links |>
-  sf::st_drop_geometry() |>
-  dplyr::select(
-    link_id,
-    all_municipality_ids = municipalityIds
-  )
-
-# Need to filter links that do not intersect
-not_intersected <- function(x, y) !sf::st_intersects(x, y)
-
-
-## City TRPs ----
 # Need to know what the sample is supposed to be (if all TRPs give good data)
+# I.e. the TRPs offically defined as the selection
+{
 city_id <-
   c(960, 952, 8952, 959, 1952, 955, 19953, 18952)
 
@@ -229,23 +111,140 @@ city_info_stats <-
     n_trp = n(),
     .by = city_names
   )
+}
+
+# Need to filter links by geometry that does not intersect
+not_intersected <- function(x, y) !sf::st_intersects(x, y)
 
 
-## Population Nord-Jæren ----
-municipality_ids_nj <- c(1127, 1103, 1124, 1108)
+# A. Population definition ----
+## Urban areas ----
+# Downloaded fgdb file from Geonorge: tettsteder, UTM33
 
-### Municipalities ----
-nj_municipality_polygon <-
+#urban_layers <- sf::st_layers("C:/Users/snohan/Desktop/tettsteder_2024.gdb")
+
+urban_areas <-
+  sf::st_read(
+    "C:/Users/snohan/Desktop/tettsteder_2024.gdb",
+    as_tibble = TRUE,
+    #layer = "tettsted",
+    query =
+      "SELECT
+      tettstednummer, tettstednavn, totalbefolkning, SHAPE
+      FROM \"tettsted\"
+      WHERE totalbefolkning > 1000
+      "
+  ) |>
+  dplyr::group_by(tettstednummer, tettstednavn, totalbefolkning) |>
+  dplyr::summarise(
+    geometry = sf::st_union(SHAPE),
+    .groups = "drop"
+  )
+
+#slice(urban_areas, 1:2) |> plot()
+
+
+## Traffic links ----
+# From traffic_link_prep.R
+links <- readr::read_rds("traffic_link_pop/links_raw.rds")
+
+# Need AADT and traffic work per link
+traffic_volumes <-
+  readr::read_rds("traffic_link_pop/link_traffic_volumes.rds") |>
+  dplyr::filter(
+    trafficVolumeType == "GUESSTIMATED",
+    year == 2023
+  ) |>
+  dplyr::select(
+    link_id,
+    aadt = trafficVolumeValue,
+    traffic_work_km = trafficWorkValue
+  )
+
+# Tidy links
+links_with_traffic_work <-
+  links |>
+  dplyr::left_join(
+    traffic_volumes,
+    by = dplyr::join_by(link_id)
+  ) |>
+  dplyr::select(
+    link_id,
+    from, to,
+    road_system_references,
+    function_class,
+    aadt,
+    traffic_work_km
+  ) |>
+  dplyr::mutate(
+    function_class =
+      dplyr::case_when(
+        link_id %in% c(
+          "0.02123723-0.84417966@283442",
+          "0.84417966-1.0@283442",
+          "0.0-1.0@3522080",
+          "0.57243185@319730-1.0@3522081"
+        ) ~ "B",
+        link_id %in% c(
+          "0.33524051-1.0@3607094",
+          "0.0-0.33524051@3607094",
+          "0.0-1.0@3444182"
+        ) ~ "C",
+        TRUE ~ function_class
+      )
+  ) |>
+  dplyr::filter(
+    #!is.na(traffic_work_km),
+    !is.na(function_class)
+  )
+
+# The tidy links above does not have columns for TRPs or municipalities.
+# This is because some links will have more than one TRP (e.g. one per direction).
+# When defining the population, it should have unique links.
+# The selection may well have more than one TRP per link (one TRP per direction), but it must still be a unique set of links.
+# A link may have multiple values in TPRs and municipalities.
+# Thus, make filters based on these two lists accordingly.
+
+link_trp_id <-
+  readr::read_rds("traffic_link_pop/link_trp_id.rds") |>
+  dplyr::filter(
+    trp_id %in% trp_continuous$trp_id
+  )
+
+link_municipality_id <-
+  readr::read_rds("traffic_link_pop/link_municipality_id.rds")
+
+
+## Nord-Jæren ----
+# Agreement area does not include the former municipalities of Rennesøy, Finnøy and Forsand.
+# Therefore, cannot use municipality ids directly, but geometric intersections with polygons.
+# There are two historic municipalities, and two contemporary.
+
+municipality_ids_nj_today <- c(1127, 1124)
+
+gamle_sandnes <- hent_historisk_kommune(1108, 1102)
+gamle_stavanger <- hent_historisk_kommune(1103, 1103)
+
+nj_municipality_today <-
   purrr::map(
-    municipality_ids_nj,
+    municipality_ids_nj_today,
     ~ hent_kommune(.)
   ) |>
   purrr::list_rbind() |>
-  #tibble::as_tibble() |>
-  sf::st_as_sf() |>
-  sf::st_union()
+  sf::st_as_sf()
+
+nj_municipality_polygon <-
+  dplyr::bind_rows(
+    nj_municipality_today,
+    gamle_sandnes,
+    gamle_stavanger
+  ) |>
+  sf::st_union() |>
+  sf::st_transform("wgs84")
 
 plot(nj_municipality_polygon)
+
+readr::write_rds(nj_municipality_polygon, "representativity/agreement_area_nj.rds")
 
 urban_areas_nj <-
   urban_areas |>
@@ -254,37 +253,50 @@ urban_areas_nj <-
     tettstednummer == 4522
   ) |>
   sf::st_transform("wgs84")
-  # TODO: filter by area - figure out how!
-  #dplyr::rowwise() |>
-  #sf::st_intersects(nj_municipality_polygon) |>
-  #purrr::list_rbind()
+
+# Simplifing the multipolygon to its convex hull in order to keep links between subareas.
+# This might lead to the inclusion of some unwanted links, but supposedly these are fewer than those we would miss.
+urban_areas_nj_convex_hull <-
+  urban_areas_nj |>
+  sf::st_convex_hull()
 
 plot(urban_areas_nj)
+plot(urban_areas_nj_convex_hull)
 
 readr::write_rds(urban_areas_nj, "representativity/urban_area_nj.rds")
-# TODO: use urban area to choose population
 
 
 # Need two alternative population definitions to compare
-# 1. All links in all municipalities: "whole"
-# 2. Just the central links in urban area: "central"
+# 1. All links in agreement area: "whole"
+# 2. Just the central links in city area: "central"
 
-# 1. All links
-links_nj_whole <-
-  links |>
-  tidyr::unnest_longer(
-    municipalityIds,
-    values_to = "municipality_id"
-  ) |>
+# 1. Agreement area
+# Want to use polygon to filter links
+# As geometry comparisons are heavy, limit links first
+
+link_ids_in_municipalities <-
+  link_municipality_id |>
   dplyr::filter(
-    municipality_id %in% municipality_ids_nj
+    municipality_id %in% c(1103, 1108, 1124, 1127)
+  )
+
+links_nj_whole <-
+  links_with_traffic_work |>
+  dplyr::filter(
+    link_id %in% link_ids_in_municipalities$link_id
   ) |>
-  dplyr::select(
-    -municipality_id,
-    -trafficVolumes
+  # Filter by polygon, using "covered_by" to not include those who cross the border
+  sf::st_filter(nj_municipality_polygon, .predicate = st_covered_by) |>
+  dplyr::left_join(
+    link_trp_id,
+    by = dplyr::join_by(link_id),
+    # Gives duplicates unless we specify to keep only one,
+    # and it doesn't matter which one here, hence "any":
+    multiple = "any"
   ) |>
-  # remove duplicate links (crossing municipality boundaries)
-  dplyr::distinct() |>
+  dplyr::rename(
+    point_id = trp_id
+  ) |>
   dplyr::mutate(
     city_trp =
       dplyr::case_when(
@@ -292,126 +304,67 @@ links_nj_whole <-
         TRUE ~ FALSE
       )
   ) |>
-  dplyr::left_join(
-    traffic_volumes,
-    by = join_by(link_id)
-  ) |>
   dplyr::filter(
-    !is.na(traffic_work_km),
-    !is.na(function_class)
+    !(link_id %in% c(
+      # Removing links on Åmøy
+      "0.73662178-0.97497915@320696",
+      "1.0-0.0@285751",
+      "0.97497915-0.97767398@320696"
+      )
+    )
+  )
+
+links_nj_whole |>
+  dplyr::select(
+    function_class
   ) |>
-  sf::st_as_sf()
+  plot()
 
 # Save file for use in report
 readr::write_rds(links_nj_whole, "representativity/link_population_nj_whole.rds")
 
+# 2. City area
+# Need to add links in fv. 510 out to Rege to keep a TRP in the population (it is one of the 24)
+# Rege could be removed from future version of index
 
-# 2. Central links
-nj_polygon_north <-
-  tibble::tibble(
-    lon = c(
-      5.7866566,
-      6.1565635,
-      5.8272271,
-      5.4658784
-    ),
-    lat = c(
-      59.0119612,
-      59.284531,
-      59.3473959,
-      59.0678125
-    )
-  ) |>
-  tibble::rowid_to_column("id") |>
-  sf::st_as_sf(coords = c("lon", "lat"), crs = 4326) |>
-  dplyr::summarise(geometry = sf::st_combine(geometry)) |>
-  sf::st_cast("POLYGON")
 
-links_nj_central_1 <-
-  links |>
-  tidyr::unnest_longer(
-    municipalityIds,
-    values_to = "municipality_id"
-  ) |>
+links_nj_city <-
+  links_with_traffic_work |>
   dplyr::filter(
-    municipality_id %in% municipality_ids_nj,
-    function_class %in% c("A", "B", "C", "D")
+    link_id %in% link_ids_in_municipalities$link_id
   ) |>
-  dplyr::select(
-    -municipality_id,
-    -trafficVolumes
-  ) |>
-  # remove duplicate links (crossing municipality boundaries)
-  dplyr::distinct() |>
-  # remove links crossing borders out of area
-  dplyr::left_join(
-    all_municipality_ids,
-    by = dplyr::join_by(link_id)
-  ) |>
-  dplyr::rowwise() |>
-  dplyr:::mutate(
-    not_border_crossing =
-      purrr::map_lgl(
-        unlist(all_municipality_ids),
-        ~ all(. %in% municipality_ids_nj)
-      ) |> all()
-  ) |>
-  dplyr::ungroup() |>
+  sf::st_filter(urban_areas_nj_convex_hull$geometry, .predicate = st_intersects) |>
+  # Add som links
+  #dplyr::bind_rows(
+  #
+  #) |>
+  # Remove some links
   dplyr::filter(
-    not_border_crossing == TRUE
+    !(link_id %in% c(
+      # Ryfylketunnelen
+      "0.0-1.0@2725983", "0.0-1.0@2725982",
+      # Byfjordtunnelen
+      "0.41798688@319527-0.56950694@320583",
+      # Links in south-west
+      "0.75290902@320683-1.0@2829293",
+      "0.22210744-1.0@320180",
+      "0.60727361-0.75290902@320683",
+      "0.68926696-1.0@320127",
+      "0.0-0.3298438@320128",
+      "0.3298438-1.0@320128",
+      "0.58471846@320670-0.75831918@320670"
+    )),
+    function_class != "E"
   ) |>
   dplyr::left_join(
-    traffic_volumes,
-    by = join_by(link_id)
+    link_trp_id,
+    by = dplyr::join_by(link_id),
+    # Gives duplicates unless we specify to keep only one,
+    # and it doesn't matter which one here, hence "any":
+    multiple = "any"
   ) |>
-  dplyr::select(
-    -not_border_crossing,
-    -all_municipality_ids
-  ) |>
-  dplyr::filter(
-    !is.na(traffic_work_km)
-  ) |>
-  sf::st_as_sf() |>
-  # areas in northern part are former municipalities not to be included
-  sf::st_filter(nj_polygon_north, .predicate = not_intersected)
-
-# Need to remove links (with function class D?) in eastern part
-nj_polygon_east <-
-  tibble::tibble(
-    lon = c(
-      5.7653664,
-      5.8236117,
-      6.4870498,
-      6.0794556
-    ),
-    lat = c(
-      58.9062453,
-      58.815903,
-      58.8686332,
-      59.0519824
-    )
-  ) |>
-  tibble::rowid_to_column("id") |>
-  sf::st_as_sf(coords = c("lon", "lat"), crs = 4326) |>
-  dplyr::summarise(geometry = sf::st_combine(geometry)) |>
-  sf::st_cast("POLYGON")
-
-links_nj_east_D <-
-  links_nj_central_1 |>
-  sf::st_filter(nj_polygon_east, .predicate = st_intersects) #|>
-  #dplyr::filter(
-  #  function_class == "D"
-  #)
-
-links_nj_central <-
-  links_nj_central_1 |>
-  dplyr::filter(
-    !(link_id %in% links_nj_east_D$link_id),
-    # Removing some links in Figgjo
-    !(link_id == "0.0-1.0@320083"),
-    !(link_id == "0.80529774-0.9731575@320669"),
-    !(link_id == "0.72327267-0.80529774@320669"),
-    !(link_id == "0.9731575-1.0@320669")
+  dplyr::rename(
+    point_id = trp_id
   ) |>
   dplyr::mutate(
     city_trp =
@@ -421,6 +374,123 @@ links_nj_central <-
       )
   )
 
+plot(links_nj_city)
+
+# 2. City area more manually
+# nj_polygon_north <-
+#   tibble::tibble(
+#     lon = c(
+#       5.7866566,
+#       6.1565635,
+#       5.8272271,
+#       5.4658784
+#     ),
+#     lat = c(
+#       59.0119612,
+#       59.284531,
+#       59.3473959,
+#       59.0678125
+#     )
+#   ) |>
+#   tibble::rowid_to_column("id") |>
+#   sf::st_as_sf(coords = c("lon", "lat"), crs = 4326) |>
+#   dplyr::summarise(geometry = sf::st_combine(geometry)) |>
+#   sf::st_cast("POLYGON")
+#
+# links_nj_central_1 <-
+#   links |>
+#   tidyr::unnest_longer(
+#     municipalityIds,
+#     values_to = "municipality_id"
+#   ) |>
+#   dplyr::filter(
+#     municipality_id %in% municipality_ids_nj,
+#     function_class %in% c("A", "B", "C", "D")
+#   ) |>
+#   dplyr::select(
+#     -municipality_id,
+#     -trafficVolumes
+#   ) |>
+#   # remove duplicate links (crossing municipality boundaries)
+#   dplyr::distinct() |>
+#   # remove links crossing borders out of area
+#   dplyr::left_join(
+#     all_municipality_ids,
+#     by = dplyr::join_by(link_id)
+#   ) |>
+#   dplyr::rowwise() |>
+#   dplyr:::mutate(
+#     not_border_crossing =
+#       purrr::map_lgl(
+#         unlist(all_municipality_ids),
+#         ~ all(. %in% municipality_ids_nj)
+#       ) |> all()
+#   ) |>
+#   dplyr::ungroup() |>
+#   dplyr::filter(
+#     not_border_crossing == TRUE
+#   ) |>
+#   dplyr::left_join(
+#     traffic_volumes,
+#     by = join_by(link_id)
+#   ) |>
+#   dplyr::select(
+#     -not_border_crossing,
+#     -all_municipality_ids
+#   ) |>
+#   dplyr::filter(
+#     !is.na(traffic_work_km)
+#   ) |>
+#   sf::st_as_sf() |>
+#   # areas in northern part are former municipalities not to be included
+#   sf::st_filter(nj_polygon_north, .predicate = not_intersected)
+#
+# # Need to remove links (with function class D?) in eastern part
+# nj_polygon_east <-
+#   tibble::tibble(
+#     lon = c(
+#       5.7653664,
+#       5.8236117,
+#       6.4870498,
+#       6.0794556
+#     ),
+#     lat = c(
+#       58.9062453,
+#       58.815903,
+#       58.8686332,
+#       59.0519824
+#     )
+#   ) |>
+#   tibble::rowid_to_column("id") |>
+#   sf::st_as_sf(coords = c("lon", "lat"), crs = 4326) |>
+#   dplyr::summarise(geometry = sf::st_combine(geometry)) |>
+#   sf::st_cast("POLYGON")
+#
+# links_nj_east_D <-
+#   links_nj_central_1 |>
+#   sf::st_filter(nj_polygon_east, .predicate = st_intersects) #|>
+#   #dplyr::filter(
+#   #  function_class == "D"
+#   #)
+#
+# links_nj_central <-
+#   links_nj_central_1 |>
+#   dplyr::filter(
+#     !(link_id %in% links_nj_east_D$link_id),
+#     # Removing some links in Figgjo
+#     !(link_id == "0.0-1.0@320083"),
+#     !(link_id == "0.80529774-0.9731575@320669"),
+#     !(link_id == "0.72327267-0.80529774@320669"),
+#     !(link_id == "0.9731575-1.0@320669")
+#   ) |>
+#   dplyr::mutate(
+#     city_trp =
+#       dplyr::case_when(
+#         point_id %in% city_trp_info$p_id ~ TRUE,
+#         TRUE ~ FALSE
+#       )
+#   )
+
 # Look at missing data
 # links_nj_missing <-
 #   links_nj |>
@@ -429,30 +499,22 @@ links_nj_central <-
 #   )
 
 # Map
-link_population |> map_links_with_function_class()
+#link_population |> map_links_with_function_class()
 
 # Save file for use in report
-readr::write_rds(links_nj_central, "representativity/link_population_nj.rds")
+readr::write_rds(links_nj_city, "representativity/link_population_nj.rds")
 
 
-# Traffic graph ----
-# Need the nodes belonging to the links (should be downloaded same day as links)
-# nodes <-
-#   sf::st_read("C:/Users/snohan/Desktop/traffic-nodes-2024_2025-02-13.geojson") |>
-#   sf::st_drop_geometry() |>
-#   dplyr::select(id) |>
-#   tibble::as_tibble()
-
-#city_graph <- create_graph_from_links(links_nj_central)
-
-# In fact, need only the line graph (no need for the traffic nodes explicitly)
-city_line_graph <- create_line_graph(links_nj_central)
-
-## Mean distance to chosen nodes ----
+### Mean distance to chosen nodes ----
+# Need only the line graph (no need for the traffic nodes explicitly)
+city_line_graph <- create_line_graph(links_nj_city)
 mean_dist <- calculate_mean_distance_to_city_index_points(city_line_graph)
 
+agreement_line_graph <- create_line_graph(links_nj_whole)
+mean_dist_agreement <- calculate_mean_distance_to_city_index_points(agreement_line_graph)
 
-# Sample calculations ----
+
+# B. Representativity measures ----
 # Use past rolling index results, and calculate representativity over time
 
 city_id_samples <- c(952, 8952, 1952)
@@ -587,7 +649,7 @@ links_with_monthly_sample <- function(link_df, month_index_trp_list) {
 
 test <- links_with_monthly_sample(links_nj_central, city_trp_rolling_index_nj)
 
-# Least n TRPs ----
+## Smallest selection  ----
 # aka power analysis
 # Say we want to detect wether traffic is changed, i.e. different from 0 % change.
 

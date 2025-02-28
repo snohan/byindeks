@@ -90,10 +90,6 @@ For å følge med på trafikkutviklingen i et byområde kan det beregnes en byin
 Avgrensingen til det geografiske området som er relevant for byindeksen må være kjent, og vegnettet må være inndelt i trafikklenker. En trafikklenke er en vegstrekning mellom to kryss som langs hele sin lengde har samme trafikkmengde sett over et døgn. Byindeksen baserer seg på utvalgsmetodikk der alle trafikklenkene i området utgjør populasjonen, mens de trafikklenkene som har en trafikkregistrering utgjør utvalget.
 
 
-## Trafikkarbeid
-For å måle endring i persontransport med bil, beregnes det trafikkarbeidet som denne trafikken utfører. Trafikkarbeidet på en trafikklenke måles i antall kjørte kilometer gjennom et år, og det kan beregnes som produktet av dens lengde i kilometer, trafikklenkens årsdøgntrafikk (ÅDT for lette kjøretøy) og 365 dager.
-
-
 ## Representativitet
 For at en byindeks skal kunne beregnes for et område, må utvalget være representativt for hele populasjonen. For å vurdere dette benyttes en inndeling av vegnettet i funksjonsklasse. Vegens funksjonsklasse angir hvilken funksjon den har eller er prioritert for. En veg med stor andel lange reiser (fjerntrafikk) må ha høy funksjonsklasse, mens en veg med hovedsakelig lokal trafikk gjerne kan ha mye trafikk, men vil ha lav funksjonsklasse. Det finnes følgende funksjonsklasser:
 
@@ -113,6 +109,8 @@ Trafikklenker med funksjonsklasse E vurderes som lite relevant i en byindeks, og
 Generelt kan det være aktuelt å ta med enkelte viktige kommunale veger som ligger sentralt til i et område. Da kommunale veger ikke har angitt funksjonsklasse, må disse tildeles en verdi for at de skal kunne tas med i vurderingen av representativteten. De vil typisk kunne få funksjonsklasse D. Det er ikke tatt med noen kommunale veger i analysene som beskrives i dette notatet.
 
 Gjennomgangstrafikk skal ikke inngå i datagrunnlaget for byindeksen. Som regel vil andelen gjennomgangstrafikk i et byområde være så liten at det ikke er en aktuell problemstilling. Men i enkelte tilfeller kan det være høy andel gjennomgangstrafikk på enkelte veger, og da bør det ikke være byindekspunkt på disse.
+
+Nullvekstmålet gjelder ikke mobile tjenesteytere og næringstrafikk med lette kjøretøy. Trafikkregistreringene klarer ikke å skille ut disse fra øvrig trafikk, men dersom enkelte vegstrekninger anses for å ha veldig høy andel slik trafikk, eller at det forventes uvanlig høy vekst i denne type trafikk, kan de aktuelle trafikklenkene utelates.
 
 
 ## Endringer i vegnettet

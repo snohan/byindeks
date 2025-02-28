@@ -6,90 +6,98 @@
   source("get_from_trafficdata_api.R")
   source("get_from_nvdb_api.R")
   source("traffic_link_functions.R")
-  #source("city_index_check_dataprep.R")
 }
 
+
+# Prerequisites ----
+## TRP meta data ----
+# From city_index_check_dataprep.R
+#source("city_index_check_dataprep.R")
 trp_meta_data <- readr::read_rds("trps_for_city_index.rds")
 
-# links_new <-
-#   sf::st_read("C:/Users/snohan/Desktop/traffic_links_2023_2024-12-12.geojson") |>
-#   dplyr::select(
-#     id,
-#     roadCategory,
-#     roadSystemReferences,
-#     functionalRoadClass,
-#     functionClass,
-#     startTrafficNodeId,
-#     endTrafficNodeId,
-#     hasOnlyPublicTransportLanes,
-#     length,
-#     isFerryRoute,
-#     associatedTrpIds,
-#     tollStationIds,
-#     trafficVolumes,
-#     municipalityIds
-#   ) |>
-#   dplyr::filter(
-#     hasOnlyPublicTransportLanes == FALSE,
-#     isFerryRoute == FALSE
-#   ) |>
-#   # Unnesting by municipalities will duplicate all links crossing a border
-#   tidyr::unnest(municipalityIds) |>
-#   dplyr::select(
-#     -hasOnlyPublicTransportLanes,
-#     -isFerryRoute
-#   )
+## Traffic links ----
+# From traffic_link_prep.R
+links <- readr::read_rds("traffic_link_pop/links_raw.rds")
 
-links <-
-  sf::st_read("C:/Users/snohan/Desktop/traffic_links_2023_2024-08-06.geojson") |>
-  dplyr::select(
-    id,
-    roadCategory,
-    roadSystemReferences,
-    functionalRoadClasses,
-    functionClasses,
-    startTrafficNodeId,
-    endTrafficNodeId,
-    hasOnlyPublicTransportLanes,
-    length,
-    isFerryTrafficLink,
-    associatedTrpIds,
-    associatedTollStationIds,
-    trafficVolumes,
-    municipalityIds
-  ) |>
+link_trp_id <-
+  readr::read_rds("traffic_link_pop/link_trp_id.rds") |>
   dplyr::filter(
-    hasOnlyPublicTransportLanes == FALSE,
-    isFerryTrafficLink == FALSE
-  ) |>
-  # Unnesting by municipalities will duplicate all links crossing a border
-  tidyr::unnest(municipalityIds) |>
-  tidyr::unnest(associatedTollStationIds, keep_empty = TRUE) |>
-  dplyr::select(
-    -hasOnlyPublicTransportLanes,
-    -isFerryTrafficLink
+    trp_id %in% trp_continuous$trp_id
   )
 
-get_link_population <- function(area_municipality_ids) {
+link_municipality_id <-
+  readr::read_rds("traffic_link_pop/link_municipality_id.rds")
 
-  # municipality_ids: integer vector
+traffic_volumes <-
+  readr::read_rds("traffic_link_pop/link_traffic_volumes.rds") |>
+  dplyr::filter(
+    trafficVolumeType == "GUESSTIMATED",
+    trafficVolumeResolution == "ADT",
+    year == 2023
+  ) |>
+  dplyr::select(
+    link_id,
+    aadt = trafficVolumeValue,
+    traffic_work_km = trafficWorkValue
+  )
 
-  links |>
-    dplyr::filter(
-      # If more than one municipality, the list must be deduplicated
-      municipalityIds %in% area_municipality_ids
-    ) |>
-    dplyr::select(
-      -municipalityIds
-    ) |>
-    dplyr::distinct()
 
-}
+## Urban areas ----
+# Downloaded fgdb file from Geonorge: tettsteder, UTM33
+
+#urban_layers <- sf::st_layers("C:/Users/snohan/Desktop/tettsteder_2024.gdb")
+
+urban_areas <-
+  sf::st_read(
+    "C:/Users/snohan/Desktop/tettsteder_2024.gdb",
+    as_tibble = TRUE,
+    #layer = "tettsted",
+    query =
+      "SELECT
+      tettstednummer, tettstednavn, totalbefolkning, SHAPE
+      FROM \"tettsted\"
+      WHERE totalbefolkning > 1000
+      "
+  ) |>
+  dplyr::group_by(tettstednummer, tettstednavn, totalbefolkning) |>
+  dplyr::summarise(
+    geometry = sf::st_union(SHAPE),
+    .groups = "drop"
+  )
 
 
 # Cities ----
-# Use municipalities first, then reduce area as needed "by hand"
-# Bodø 1804
+# Use municipalities first, then reduce area as needed "by hand" or urban polygons
+
+## Bodø ----
+municipality_ids <- 1804
+
+urban_area_bodo <-
+  urban_areas |>
+  dplyr::filter(
+    tettstednummer %in% c(7501, 7502, 7503)
+  ) |>
+  sf::st_transform("wgs84")
+
+urban_area_bodo_convex_hull <-
+  urban_area_bodo |>
+  dplyr::summarise(
+    geometry = sf::st_union(geometry)
+  ) |>
+  sf::st_convex_hull()
+
+
+city_link_population_raw <-
+  get_link_population_inside_municipalities(municipality_ids) |>
+  sf::st_filter(urban_area_bodo_convex_hull, .predicate = st_covered_by) |>
+  dplyr::filter(
+    function_class %in% c("A", "B", "C", "D")
+  )
+
+# HEREON ----
+
+
+
 # Ålesund 1508
 # Haugesund c(1106, 1149)
 # Arendal/Grimstad c(4203, 4202)
@@ -154,7 +162,8 @@ haugesund_polygon <-
   dplyr::summarise(geometry = sf::st_combine(geometry)) |>
   sf::st_cast("POLYGON")
 
-# For both Arendal/Grimstad and Vestfoldbyen, E18 has high percentage through traffic, so it will not be part of population.
+# For both Arendal/Grimstad and Vestfoldbyen, E18 has high percentage through traffic,
+# so it will not be part of population.
 
 
 # Check polygon on map
@@ -180,16 +189,13 @@ link_population_raw <-
   get_link_population(municipality_ids) |>
   dplyr::rowwise() |>
   dplyr::filter(
-    #!is.null(unlist(functionalRoadClasses)),
     !is.null(unlist(functionClasses))
   ) |>
   dplyr::mutate(
-    #functional_class = min(unlist(functionalRoadClasses)),
     function_class = dplyr::first(unlist(functionClasses)) |> stringr::str_sub(1,1)
   ) |>
   dplyr::select(
-    -functionClasses,
-    #-functionalRoadClasses,
+    -functionClasses
   ) |>
   dplyr::ungroup() |>
   dplyr::filter(
