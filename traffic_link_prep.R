@@ -90,6 +90,34 @@ readr::write_rds(
 
 
 # Toll stations
+link_toll_id <-
+  links_raw |>
+  sf::st_drop_geometry() |>
+  dplyr::select(
+    link_id,
+    tollStationIds
+  ) |>
+  dplyr::filter(
+    !(tollStationIds == "[ ]")
+  ) |>
+  dplyr::mutate(
+    toll_id = purrr::map(tollStationIds, ~ jsonlite::fromJSON(.x))
+  ) |>
+  tidyr::unnest(
+    toll_id
+  ) |>
+  dplyr::select(
+    link_id,
+    toll_id
+  ) |>
+  dplyr::mutate(
+    toll_id = as.character(toll_id)
+  )
+
+readr::write_rds(
+  link_toll_id,
+  "traffic_link_pop/link_toll_id.rds"
+)
 
 
 # Municipality ids

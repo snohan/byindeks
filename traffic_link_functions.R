@@ -209,7 +209,7 @@ calculate_statistical_distance <- function(function_class_stats_df) {
 
 }
 
-visualize_function_class_distribution <- function(link_population) {
+visualize_function_class_distribution <- function(link_population, sub_title) {
 
   function_class_tw_plot <-
     # TODO: replace function call, presuming this has been done before calling this viz function?
@@ -244,7 +244,7 @@ visualize_function_class_distribution <- function(link_population) {
     ) +
     ggtitle(
       "Trafikkarbeid fordelt på funksjonsklasse",
-      "Data for 2024"
+      sub_title
     )
 
   return(function_class_tw_plot)
@@ -300,7 +300,7 @@ map_links_with_function_class <- function(link_df) {
     ) |>
     addPolylines(
       data = links_with_trp,
-      #label = ~label_text,
+      label = ~label_text,
       opacity = 1,
       weight = 8,
       color = ~ palette_function_class(function_class),
@@ -688,7 +688,9 @@ calculate_mean_distance_to_city_index_points <- function(l_graph) {
 get_link_population_inside_municipalities <- function(area_municipality_ids) {
 
   # municipality_ids: integer vector
+  # 'links' must exist in global environment
 
+  # Links inside and crossing borders:
   link_ids_intersecting_municipalities <-
     link_municipality_id |>
     dplyr::filter(

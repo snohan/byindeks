@@ -1,5 +1,5 @@
 ---
-title: "Vurdering av mulighet for byindeks i byområder som er kandidater til ny tilskuddsordning"
+title: "Mulighet for byindeks i byområder med ny tilskuddsordning"
 format: 
   html:
     css: svv.css
@@ -34,7 +34,7 @@ base::Sys.setlocale(locale = "nb.utf8")
 svv_background_color <- "#F5F5F5"
 
 library(tidyverse)
-#library(patchwork)
+library(patchwork)
 library(flextable)
 #library(gt)
 library(sf)
@@ -60,19 +60,173 @@ flextable::set_flextable_defaults(
 ```{r}
 #| label: data
 
-links_bdo_2023 <- readr::read_rds("new_area_index/links_bdo_2023.rds")
-links_aal_2023 <- readr::read_rds("new_area_index/links_aal_2023.rds")
-links_hau_2023 <- readr::read_rds("new_area_index/links_hau_2023.rds")
-links_arg_2023 <- readr::read_rds("new_area_index/links_arg_2023.rds")
-links_vfl_2023 <- readr::read_rds("new_area_index/links_vfl_2023.rds")
-links_tbg_2023 <- readr::read_rds("new_area_index/links_tbg_2023.rds")
+links_bdo <- readr::read_rds("new_area_index/links_bdo_2024.rds")
+links_aal <- readr::read_rds("new_area_index/links_aal_2024.rds")
+links_hau <- readr::read_rds("new_area_index/links_hau_2024.rds")
+links_arg <- readr::read_rds("new_area_index/links_arg_2024.rds")
+links_vfl <- readr::read_rds("new_area_index/links_vfl_2024.rds")
+links_tbg <- readr::read_rds("new_area_index/links_tbg_2024.rds")
 
-ci_width_bdo <- calculate_ci_width(links_bdo_2023)
-ci_width_aal <- calculate_ci_width(links_aal_2023)
-ci_width_hau <- calculate_ci_width(links_hau_2023)
-ci_width_arg <- calculate_ci_width(links_arg_2023)
-ci_width_vfl <- calculate_ci_width(links_vfl_2023)
-ci_width_tbg <- calculate_ci_width(links_tbg_2023)
+links_bdo_2023 <-
+  links_bdo |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        !is.na(aadt_2023) ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |>
+  dplyr::rename(
+    aadt_lmv = aadt_2023
+  )
+
+links_bdo_2024 <-
+  links_bdo |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        !is.na(aadt_2024) ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |>
+  dplyr::rename(
+    aadt_lmv = aadt_2024
+  )
+
+ci_width_bdo_2023 <- calculate_ci_width(links_bdo_2023)
+ci_width_bdo_2024 <- calculate_ci_width(links_bdo_2024)
+
+links_aal_2023 <-
+  links_aal |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        !is.na(aadt_2023) ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |>
+  dplyr::rename(
+    aadt_lmv = aadt_2023
+  )
+
+links_aal_2024 <-
+  links_aal |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        !is.na(aadt_2024) ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |>
+  dplyr::rename(
+    aadt_lmv = aadt_2024
+  )
+
+ci_width_aal_2023 <- calculate_ci_width(links_aal_2023)
+ci_width_aal_2024 <- calculate_ci_width(links_aal_2024)
+
+
+links_hau_2023 <-
+  links_hau |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        !is.na(aadt_2023) ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |>
+  dplyr::rename(
+    aadt_lmv = aadt_2023
+  )
+
+ci_width_hau_2023 <- calculate_ci_width(links_hau_2023)
+
+links_arg_2023 <-
+  links_arg |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        !is.na(aadt_2023) ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |>
+  dplyr::rename(
+    aadt_lmv = aadt_2023
+  )
+
+links_arg_2024 <-
+  links_arg |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        !is.na(aadt_2024) ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |>
+  dplyr::rename(
+    aadt_lmv = aadt_2024
+  )
+
+ci_width_arg_2023 <- calculate_ci_width(links_arg_2023)
+ci_width_arg_2024 <- calculate_ci_width(links_arg_2024)
+
+links_vfl_2023 <-
+  links_vfl |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        !is.na(aadt_2023) ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |>
+  dplyr::rename(
+    aadt_lmv = aadt_2023
+  )
+
+links_vfl_2024 <-
+  links_vfl |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        !is.na(aadt_2024) ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |>
+  dplyr::rename(
+    aadt_lmv = aadt_2024
+  )
+
+ci_width_vfl_2023 <- calculate_ci_width(links_vfl_2023)
+ci_width_vfl_2024 <- calculate_ci_width(links_vfl_2024)
+
+links_tbg_2023 <-
+  links_tbg |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        !is.na(aadt_2023) ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |>
+  dplyr::rename(
+    aadt_lmv = aadt_2023
+  )
+
+links_tbg_2024 <-
+  links_tbg |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        !is.na(aadt_2024) ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |>
+  dplyr::rename(
+    aadt_lmv = aadt_2024
+  )
+
+ci_width_tbg_2023 <- calculate_ci_width(links_tbg_2023)
+ci_width_tbg_2024 <- calculate_ci_width(links_tbg_2024)
 ```
 
 
@@ -81,17 +235,17 @@ Statens vegvesen har fått i oppdrag fra Samferdselsdepartementet å forvalte en
 
 I dette notatet vurderes det om en byindeks kan beregnes med dagens tilgjengelighet på trafikkdata i de aktuelle byområdene. Det foreslås hvilke trafikkregistreringspunkter, eventuelt supplert med bomstasjoner, som kan benyttes i beregningen. Det vurderes også hva som kan være potensielle referanseår, hvor 2023 og 2024 er aktuelle.
 
-Notatet er sist oppdatert 2. januar 2025. Kontaktperson er Snorre Hansen, Statens vegvesen (Transport og samfunn, Transportutvikling, Veg- og transportteknologi).
+Notatet er sist oppdatert 4. mars 2025. Kontaktperson er Snorre Hansen, Statens vegvesen (Transport og samfunn, Transportutvikling, Veg- og transportteknologi).
 
 
 # Om byindeks og representativitet
 For å følge med på trafikkutviklingen i et byområde kan det beregnes en byindeks. Byindeksen benytter registrert trafikk på et utvalg steder i området og sammenligner størrelsen på denne mellom et referanseår og et beregningsår. Til en fireårig ordning passer det best med en indeks som viser utviklingen år for år, samt samlet fra referanseåret til sluttåret. Dersom ordningens periode blir utvidet, er det mulig å beregne en indeks basert på et tre års glidende snitt.
 
-Avgrensingen til det geografiske området som er relevant for byindeksen må være kjent, og vegnettet må være inndelt i trafikklenker. En trafikklenke er en vegstrekning mellom to kryss som langs hele sin lengde har samme trafikkmengde sett over et døgn. Byindeksen baserer seg på utvalgsmetodikk der alle trafikklenkene i området utgjør populasjonen, mens de trafikklenkene som har en trafikkregistrering utgjør utvalget.
+Avgrensingen til det geografiske området som er relevant for byindeksen må være kjent. Vegnettet er inndelt i trafikklenker, som er en vegstrekning mellom to kryss som langs hele sin lengde har samme trafikkmengde sett over et døgn. Byindeksen baserer seg på utvalgsmetodikk der alle trafikklenkene i området utgjør populasjonen, mens de trafikklenkene som har en trafikkregistrering utgjør utvalget.
 
 
 ## Representativitet
-For at en byindeks skal kunne beregnes for et område, må utvalget være representativt for hele populasjonen. For å vurdere dette benyttes en inndeling av vegnettet i funksjonsklasse. Vegens funksjonsklasse angir hvilken funksjon den har eller er prioritert for. En veg med stor andel lange reiser (fjerntrafikk) må ha høy funksjonsklasse, mens en veg med hovedsakelig lokal trafikk gjerne kan ha mye trafikk, men vil ha lav funksjonsklasse. Det finnes følgende funksjonsklasser:
+For at en byindeks skal kunne beregnes for et område, må utvalget være representativt for hele populasjonen. For å vurdere dette benyttes en inndeling av vegnettet i funksjonsklasse. Vegens funksjonsklasse angir hvilken funksjon den har eller er prioritert for. En veg med stor andel lange reiser (fjerntrafikk) må ha høy funksjonsklasse, mens en veg med hovedsakelig lokal trafikk gjerne kan ha mye trafikk, men vil ha lav funksjonsklasse. [Funksjonsklasser er definert som](https://datakatalogen.atlas.vegvesen.no/#/912/Funksjonsklasse):
 
 - A - Nasjonale hovedveger </br>
   Den høyeste funksjonsklassen. Alle Europa- og riksveger har funksjonsklasse A.
@@ -110,21 +264,23 @@ Generelt kan det være aktuelt å ta med enkelte viktige kommunale veger som lig
 
 Gjennomgangstrafikk skal ikke inngå i datagrunnlaget for byindeksen. Som regel vil andelen gjennomgangstrafikk i et byområde være så liten at det ikke er en aktuell problemstilling. Men i enkelte tilfeller kan det være høy andel gjennomgangstrafikk på enkelte veger, og da bør det ikke være byindekspunkt på disse.
 
-Nullvekstmålet gjelder ikke mobile tjenesteytere og næringstrafikk med lette kjøretøy. Trafikkregistreringene klarer ikke å skille ut disse fra øvrig trafikk, men dersom enkelte vegstrekninger anses for å ha veldig høy andel slik trafikk, eller at det forventes uvanlig høy vekst i denne type trafikk, kan de aktuelle trafikklenkene utelates.
+Nullvekstmålet gjelder ikke mobile tjenesteytere og næringstrafikk med lette kjøretøy. Trafikkregistreringene klarer ikke å skille ut disse fra øvrig trafikk, men dersom enkelte vegstrekninger anses for å ha veldig høy andel slik trafikk, eller at det forventes uvanlig høy vekst i denne type trafikk, kan de aktuelle trafikklenkene utelates fra byindeksen.
 
 
 ## Endringer i vegnettet
-Byindeksmetoden baserer seg på måling av den generelle endringen i trafikk for å estimere en trend over tid. Trafikken sammenlignes mellom to tidsperioder som i hvert av punktene der trafikken registreres må være normaltrafikk, ikke trafikk som er unormalt høy eller lav som følge av stengte eller nyåpnede veger i nærheten. Dersom vegnettet endres ved at enkelte veger stenges eller at nye veger åpnes, vil trafikkstrømmene lokalt bli veldig påvirket av dette og datagrunnlaget vil på enkelte steder ikke kunne sies å representere en generell trend. Derfor vil byindeksmetoden fungere dårligere ved større vegnettsendringer. I noen tilfeller vil punktene fange opp både veger med redusert og økt trafikk på en balansert måte, men dette vil føre til økt spredning i datagrunnlaget og følgelig større usikkerhet i indeksestimatet. Byindekspunkt som er eller vil bli betydelig berørt av vegnettsendringer bør derfor ikke inngå i datagrunnlaget.
+Byindeksmetoden baserer seg på måling av den generelle endringen i trafikk for å estimere en trend over tid. Trafikken sammenlignes mellom to tidsperioder som i hvert av punktene der trafikken registreres må være normaltrafikk, ikke trafikk som er unormalt høy eller lav som direkte følge av stengte eller nyåpnede veger i nærheten. Dersom vegnettet endres ved at enkelte veger stenges eller at nye veger åpnes, vil trafikkstrømmene lokalt bli veldig påvirket av dette og datagrunnlaget vil på enkelte steder ikke kunne sies å representere en generell trend. Derfor vil byindeksmetoden fungere dårligere ved større vegnettsendringer. 
+
+I noen tilfeller vil punktene fange opp både veger med redusert og økt trafikk på en balansert måte, men dette vil føre til økt spredning i datagrunnlaget og følgelig større usikkerhet i indeksestimatet. Byindekspunkt som er eller vil bli betydelig berørt av vegnettsendringer bør derfor ikke inngå i datagrunnlaget.
 
 
 ## Usikkerhet
-Byindeksen er et estimat med en viss usikkerhet som beskrives ved hjelp av et konfidensintervall. Usikkerhetens størrelse gjenspeiles av konfidensintervallets bredde, og denne er avhengig av antall byindekspunkt og variasjonen mellom disse. Siden byindeksen beregnes som et vektet gjennomsnitt av punktindeksene, der vektene er gitt av punktets trafikkmengde, vil homogeniteten til punktene ha noe å si for usikkerhetsberegningen.
+Byindeksen har en usikkerhet som beskrives ved hjelp av et konfidensintervall. Usikkerhetens størrelse gjenspeiles av konfidensintervallets bredde, og denne er avhengig av antall byindekspunkt og variasjonen mellom disse. Siden byindeksen beregnes som et vektet gjennomsnitt av punktindeksene, der vektene er gitt av punktets trafikkmengde, vil homogeniteten til punktene ha noe å si for usikkerhetsberegningen.
 
 Forventet bredde på konfidensintervallet under normale forhold kan beregnes når vi kjenner trafikkmengden for hvert av punktene. Av erfaring er et typisk standardavvik for en byindeks på omkring 5 prosentpoeng.
 
 
 # Bodø
-Det relevante vegnettet for dette byområdet består av alle Europa-, riks- og fylkesveger i Bodø kommune, som vist i @fig-map_bdo.
+Det relevante vegnettet for dette byområdet består av alle riks- og fylkesveger i og mellom tettstedene Løding, Bodø og Løpsmarka, som vist i @fig-map_bdo.
 
 ```{r}
 #| label: fig-map_bdo
@@ -136,25 +292,26 @@ map_links_with_function_class(links_bdo_2023)
 
 </br>
 
-En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen er angitt i @tbl-trp_bdo.
+Det finnes åtte bomstasjoner i området som alle ligger i Bodø by. Tre av disse ligger på kommunalveg og er dermed ikke aktuelle i denne analysen. De øvrige fem ligger på trafikklenker som også har trafikkregistreringspunkt. Det er derfor ikke aktuelt å benytte data fra bomstasjoner i denne byindeksen.
+
+
+## Referanseår 2023
+En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen med 2023 som referanseår er angitt i @tbl-trp_bdo_2023.
 
 ```{r}
-#| label: tbl-trp_bdo
-#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks."
+#| label: tbl-trp_bdo_2023
+#| tbl-cap: "Trafikkregistreringspunkt som kan benyttes i byindeks 2023."
 
 table_trps(links_bdo_2023)
 ```
 
 </br>
 
-Det finnes åtte bomstasjoner i området som alle ligger i Bodø by. Tre av disse ligger på kommunalveg og er dermed ikke aktuelle i denne analysen. De øvrige fem ligger på trafikklenker som også har trafikkregistreringspunkt. Det er derfor ikke aktuelt å benytte data fra bomstasjoner i denne byindeksen.
-
-En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_bdo.
+En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_bdo_2023.
 
 ```{r}
-#| label: tbl-trp_count_bdo
-#| tbl-cap:  "Statistikk for trafikklenker i Bodø."
-
+#| label: tbl-trp_count_bdo_2023
+#| tbl-cap:  "Statistikk for trafikklenker i Bodø, 2023."
 
 dplyr::bind_rows(
   links_bdo_2023 |> 
@@ -205,11 +362,81 @@ dplyr::bind_rows(
   bg(bg = "#ED9300", part = "header")
 ```
 
-Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_bdo), "\\.", ",")` prosentpoeng.
+Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_bdo_2023), "\\.", ",")` prosentpoeng.
+
+
+## Referanseår 2024
+En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen med 2024 som referanseår er angitt i @tbl-trp_bdo_2024.
+
+```{r}
+#| label: tbl-trp_bdo_2024
+#| tbl-cap: "Trafikkregistreringspunkt som kan benyttes i byindeks 2024."
+
+table_trps(links_bdo_2024)
+```
+
+</br>
+
+En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_bdo_2024.
+
+```{r}
+#| label: tbl-trp_count_bdo_2024
+#| tbl-cap:  "Statistikk for trafikklenker i Bodø, 2024."
+
+dplyr::bind_rows(
+  links_bdo_2024 |> 
+    sf::st_drop_geometry() |>
+    dplyr::summarise(
+      number_of_links = n(),
+      traffic_work_mill_km = sum(traffic_work_km) / 1e6
+    ) |> 
+    dplyr::mutate(
+      selection = "population"
+    ),
+  links_bdo_2024 |> 
+    sf::st_drop_geometry() |>
+    dplyr::filter(!is.na(point_id)) |> 
+    dplyr::summarise(
+      number_of_links = n(),
+      traffic_work_mill_km = sum(traffic_work_km) / 1e6
+    ) |> 
+    dplyr::mutate(
+      selection = "sample"
+    )
+  ) |> 
+  tidyr::pivot_longer(
+    cols = c(number_of_links, traffic_work_mill_km),
+    names_to = "quantity"
+  ) |> 
+  tidyr::pivot_wider(
+    names_from = selection,
+    values_from = value
+  ) |> 
+  dplyr::mutate(
+    percentage = 100 * (sample / population),
+    quantity =
+      dplyr::case_when(
+        quantity == "number_of_links" ~ "Antall trafikklenker",
+        quantity == "traffic_work_mill_km" ~ "Trafikkarbeid (mill. km)"
+      )
+  ) |> 
+  flextable::flextable() |>
+  colformat_double(j = 2:4, digits = 0) |>
+  set_header_labels(
+    quantity = "Størrelse",
+    population = "Populasjon",
+    sample = "Utvalg",
+    percentage = "Prosentandel (%)"
+  ) |>
+  bold(part = "header") |>
+  bg(bg = "#ED9300", part = "header")
+```
+
+Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_bdo_2024), "\\.", ",")` prosentpoeng.
 
 
 ## Representativitet
-Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_bdo.
+Det er bare to funksjonelle vegklasser i denne populasjonen og som vist i @fig-function_class_bdo er trafikkarbeidet ganske skjevt fordelt mellom disse. 
 
 ```{r}
 #| label: fig-function_class_bdo
@@ -217,29 +444,26 @@ Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function
 #| message: false
 #| warning: false
 
-visualize_function_class_distribution(links_bdo_2023)
+bdo_plot_2023 <- visualize_function_class_distribution(links_bdo_2023, "Data for 2023")
+bdo_plot_2024 <- visualize_function_class_distribution(links_bdo_2024, "Data for 2024")
+
+bdo_plot_2023 / bdo_plot_2024 +
+  patchwork::plot_layout(
+    axes = "collect",
+    guides = "collect"
+  ) +
+  patchwork::plot_annotation(
+    #title = "Trafikkarbeid fordelt på funksjonsklasse",
+    theme = theme(
+      plot.background = element_rect(fill = svv_background_color),
+      legend.position = "bottom"
+      )
+  )
 ```
 
-I @fig-function_class_bdo ser vi at utvalget grovt sett ligner en del på populasjonen. Det er likevel noe overrepresentasjon i funksjonsklasse A, og noe underrepresentasjon i funksjonsklasse B. Data for 2024 fordeler seg tilsvarende.
+</br>
 
-
-```{r}
-#| label: fig-function_class_bdo_adjusted
-#| fig-cap: "Fordeling av funksjonsvegklasse i populasjon og utvalg." 
-#| message: false
-#| warning: false
-
-# links_bdo_2023 |> 
-#   dplyr::mutate(
-#     point_id = 
-#       dplyr::case_when(
-#         point_id == "18346V886007" ~ NA_character_,
-#         point_id == "26549V2669516" ~ NA_character_,
-#         TRUE ~ point_id
-#       )
-#   ) |> 
-# visualize_function_class_distribution()
-```
+Slik punktene er plassert blir det litt overrepresentasjon i funksjonsklasse A. Det kan vurderes om ikke alle punktene skal være med for å få fordelingen i utvalget mer lik populasjonens. Utvalget for 2024, som har færre punkt enn 2023, er mer representativt med hensyn på funksjonsklasse. Men fordeling i funksjonsklasse er mer et hjelpemiddel enn en absolutt rettesnor, så det må utøves skjønn når punktenes geografiske plassering skal vurderes. Utvalget for 2023 dekker større andel av vegnettet og vil gi lavere usikkerhet, og dette må tas med i betraktningen.
 
 
 ## Endringer i vegnettet
@@ -252,7 +476,7 @@ En oppsummering av vurderingen for Bodøområdet:
 - En byindeks kan fint beregnes med eksisterende trafikkregistreringspunkt
 - Det er ikke behov for å benytte data fra bomstasjoner
 - Det er vegprosjekter som kan påvirke byindeksens representativitet, men sannsynligvis ikke i for stort omfang
-- Både 2023 og 2024 er aktuelle som referanseår
+- Både 2023 og 2024 er aktuelle som referanseår, men 2023 har flere punkt tilgjengelig
 
 
 # Ålesund
@@ -263,35 +487,57 @@ Det relevante vegnettet for dette byområdet består av Europa-, riks- og fylkes
 #| message: false
 #| fig-cap: !expr map_caption
 
-map_links_with_function_class(links_aal_2023)
-```
-
-</br>
-
-En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen er angitt i @tbl-trp_aal.
-
-```{r}
-#| label: tbl-trp_aal
-#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks."
-
-table_trps(links_aal_2023)
+map_links_with_function_class(links_aal)
 ```
 
 </br>
 
 Det er 13 bomstasjoner i Ålesund by. Fire av disse ligger på trafikklenker som også har trafikkregistreringspunkt. De øvrige ni bomstasjonene ligger på lenker som har trafikkregistreringspunkt på sin nabolenke. Det er mulig å benytte disse som datagrunnlag i byindeksen, men det er tilstrekkelig datagrunnlag med ordinære trafikkregistreringspunkt.
 
-En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_aal.
+
+## Referanseår 2023
+En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen med 2023 som referanseår er angitt i @tbl-trp_aal_2023.
 
 ```{r}
-#| label: tbl-trp_count_aal
-#| tbl-cap:  "Statistikk for trafikklenker i Ålesund."
+#| label: tbl-trp_aal_2023
+#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks, 2023."
+
+table_trps(links_aal_2023)
+```
+
+En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_aal_2023.
+
+```{r}
+#| label: tbl-trp_count_aal_2023
+#| tbl-cap:  "Statistikk for trafikklenker i Ålesund, 2023."
 
 
 table_link_statistics(links_aal_2023)
 ```
 
-Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_aal), "\\.", ",")` prosentpoeng.
+Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_aal_2023), "\\.", ",")` prosentpoeng.
+
+
+## Referanseår 2024
+En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen med 2024 som referanseår er angitt i @tbl-trp_aal_2024.
+
+```{r}
+#| label: tbl-trp_aal_2024
+#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks, 2024."
+
+table_trps(links_aal_2024)
+```
+
+En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_aal_2024.
+
+```{r}
+#| label: tbl-trp_count_aal_2024
+#| tbl-cap:  "Statistikk for trafikklenker i Ålesund, 2024."
+
+table_link_statistics(links_aal_2024)
+```
+
+Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_aal_2024), "\\.", ",")` prosentpoeng.
 
 
 ## Representativitet
@@ -303,10 +549,25 @@ Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function
 #| message: false
 #| warning: false
 
-visualize_function_class_distribution(links_aal_2023)
+aal_plot_2023 <- visualize_function_class_distribution(links_aal_2023, "Data for 2023")
+aal_plot_2024 <- visualize_function_class_distribution(links_aal_2024, "Data for 2024")
+
+aal_plot_2023 / aal_plot_2024 +
+  patchwork::plot_layout(
+    axes = "collect",
+    guides = "collect"
+  ) +
+  patchwork::plot_annotation(
+    theme = theme(
+      plot.background = element_rect(fill = svv_background_color),
+      legend.position = "bottom"
+      )
+  )
 ```
 
-I @fig-function_class_aal ser vi at utvalget ligner på populasjonen. Data for 2024 fordeler seg tilsvarende.
+</br>
+
+De to årene har henholdsvis 27 og 28 punkt tilgjengelig, men det er flere enn ett punkt som er forskjellig i utvalgene. Representativiteten med hensyn på funksjonsklasse er mye bedre for 2023 enn 2024. Utvalgene kan justeres noe for å få fordelingene likere, men uansett er det nok punkt i begge år.
 
 
 ## Endringer i vegnettet
@@ -332,12 +593,16 @@ Det aktuelle området består her av hele Haugesund kommune, samt fastlandsdelen
 #| message: false
 #| fig-cap: !expr map_caption
 
-map_links_with_function_class(links_hau_2023)
+map_links_with_function_class(links_hau)
 ```
 
 </br>
 
-En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen er angitt i @tbl-trp_hau.
+Det er sju bomstasjoner rundt Haugesund sentrum. Seks av disse registrerer trafikk i bare en av kjøreretningene, og er derfor ikke mulig å benytte i en byindeks. Den siste av de sju ligger på en trafikklenke som også har et trafikkregistreringspunkt.
+
+
+## Referanseår 2023 og 2024
+Utvalgene for 2023 og 2024 er like. En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen med 2023 og 2024 som referanseår er angitt i @tbl-trp_hau.
 
 ```{r}
 #| label: tbl-trp_hau
@@ -346,21 +611,16 @@ En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindekse
 table_trps(links_hau_2023)
 ```
 
-</br>
-
-Det er sju bomstasjoner rundt Haugesund sentrum. Seks av disse registrerer trafikk i bare en av kjøreretningene, og er derfor ikke mulig å benytte i en byindeks. Den siste av de sju ligger på en trafikklenke som også har et trafikkregistreringspunkt.
-
 En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_hau.
 
 ```{r}
 #| label: tbl-trp_count_hau
 #| tbl-cap:  "Statistikk for trafikklenker i Haugesund."
 
-
 table_link_statistics(links_hau_2023)
 ```
 
-Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_hau), "\\.", ",")` prosentpoeng.
+Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_hau_2023), "\\.", ",")` prosentpoeng.
 
 
 ## Representativitet
@@ -372,60 +632,16 @@ Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function
 #| message: false
 #| warning: false
 
-visualize_function_class_distribution(links_hau_2023)
+visualize_function_class_distribution(links_hau_2023, "Data for 2023/2024")
 ```
 
-I @fig-function_class_hau ser vi at utvalget ikke ligner helt på populasjonen. Det er overrepresentasjon i funksjonsklasse A og B, mens det er underrepresentasjon på C og D. Ved å redusere antall punkt i A og B, vil dette jevne seg ut litt, men når det ikke er flere enn 16 punkt i utvalget så det er ønskelig å beholde så mange som mulig.
+I @fig-function_class_hau ser vi at utvalget ikke ligner helt på populasjonen. Det er overrepresentasjon i funksjonsklasse A og underrepresentasjon på B, C og D. Ved å redusere antall punkt i A, vil dette jevne seg ut litt, men når det ikke er flere enn 10 punkt i utvalget så det er ønskelig å beholde så mange som mulig.
 
-I Karmøytunnelen er det tre trafikkregistreringspunkt. Trafikk som kommer inn fra Håviksiden og Mjåsundsiden og som skal nordover forbi Hellevik vil passere punktet som ligger i den nordre tunnelarmen. Da er det ikke behov for punktene i Håvik- og Mjåsundarmene. Tas disse to punktene ut av utvalget, vil ikke funksjonsklasse B lenger være overrepresentert.
+Trafikkregistreringspunktet på E134 ved Raglamyr på avkjøringen til Brakahaug har relativt lite trafikk og fanger kun opp en del av trafikken til et bergenset boligområde, og er ikke tatt me di utvalget av punkt i byindeksen.
 
-Trafikkregistreringspunktet på E134 ved Raglamyr på avkjøringen til Brakahaug har relativt lite trafikk og fanger kun opp en del av trafikken til et bergenset boligområde, og bør ikke inngå i utvalget av punkt i byindeksen.
+Alle punkter i funksjonsklasse A ligger på E134, og her kan det være et lite innslag av gjennomgangstrafikk. Punktene ved Rossabø og Raglamyr vil ha relativt høy andel lokaltrafikk. Ytterpunktet ved Norheim (Karmsund bru) har høy andel trafikk fra omlandet som skal til Haugesund. Ved å fjerne dette fra utvalget, blir funksjonsklasse A veldig underrepresentert. Siden det totalt er relativt få punkter i utvalget oppnås bedre representativitet om dette likevel beholdes.
 
-Fordelingen av trafikkarbeid i et justert utvalg vises i @fig-function_class_hau_adjusted. Det er nå en mer lik fordeling mellom populasjon og utvalg, men spesielt er funksjonsklasse A overrepresentert. Alle punkter i funksjonsklasse A ligger på E134, og her kan det være et lite innslag av gjennomgangstrafikk. Punktene ved Rossabø og Raglamyr vil ha relativt høy andel lokaltrafikk. De to ytterpunktene ved Toskatjørn og Norheim (Karmsund bru) har høy andel trafikk fra omlandet som skal til Haugesund. Ved å fjerne disse to fra utvalget, blir funksjonsklasse A veldig underrepresentert. Siden det totalt er relativt få punkter i utvalget oppnås bedre representativitet om disse likevel beholdes. 
-
-```{r}
-#| label: fig-function_class_hau_adjusted
-#| fig-cap: "Fordeling av funksjonsvegklasse i populasjon og justert utvalg." 
-#| message: false
-#| warning: false
-
-links_hau_2023 |>
-  dplyr::mutate(
-    point_id =
-      dplyr::case_when(
-        point_id == "30193V2370595" ~ NA_character_, # Karmøytunnelen Mjåsund
-        point_id == "77208V2370670" ~ NA_character_, # Karmøytunnelen Håvik
-        point_id == "57430V319659" ~ NA_character_, # Raglamyr Brakahaug
-        #point_id == "57053V319651" ~ NA_character_, # Toskatjørn
-        #point_id == "88119V319814" ~ NA_character_, # Norheim (Karmsund)
-        TRUE ~ point_id
-      )
-  ) |>
-visualize_function_class_distribution()
-```
-
-</br>
-
-Med 13 punkt i utvalget, utgjør dette fortsatt en relativt stor andel av populasjonen, som vist i @tbl-trp_count_hau_adjusted. Data for 2024 fordeler seg tilsvarende.
-
-```{r}
-#| label: tbl-trp_count_hau_adjusted
-#| tbl-cap:  "Statistikk for trafikklenker i Haugesund, justert utvalg."
-
-links_hau_2023 |>
-  dplyr::mutate(
-    point_id =
-      dplyr::case_when(
-        point_id == "30193V2370595" ~ NA_character_, # Karmøytunnelen Mjåsund
-        point_id == "77208V2370670" ~ NA_character_, # Karmøytunnelen Håvik
-        point_id == "57430V319659" ~ NA_character_, # Raglamyr Brakahaug
-        #point_id == "57053V319651" ~ NA_character_, # Toskatjørn
-        #point_id == "88119V319814" ~ NA_character_, # Norheim (Karmsund)
-        TRUE ~ point_id
-      )
-  ) |>
-  table_link_statistics()
-```
+For å øke representativiteten og minske usikkerheten kunne det med fordel ha vært en håndfull flere punkter i området.
 
 
 ## Endringer i vegnettet
@@ -435,54 +651,80 @@ Det er ingen vegprosjekter i området som kan påvirke byindeksen i den aktuelle
 ## Konklusjon
 En oppsummering av vurderingen for Haugesundområdet:
 
-- En byindeks kan fint beregnes med eksisterende trafikkregistreringspunkt
+- En byindeks kan fint beregnes med eksisterende trafikkregistreringspunkt, selv om det hadde vært en fordel med noen flere
 - Det er ikke aktuelt å benytte data fra bomstasjoner
 - Det er per januar 2024 ingen opplysinger om vegprosjekter som kan påvirke byindeksens representativitet i løpet av den aktuelle perioden
 - Både 2023 og 2024 er aktuelle som referanseår
 
 
 # Arendal/Grimstad
-Det relevante vegnettet i dette området består av kommunene Arendal og Grimstad. E18 har høy andel gjennomgangstrafikk, så denne er ikke med i populasjonen. Ramper til og fra E18 kunne ha vært med siden de per definisjon har kun lokaltrafikk, men siden det ikke finnes trafikkregistreringer på disse, er disse også utelatt fra denne analysen.
-
+Det relevante vegnettet i dette området består av tettstedene Arendal og Grimstad. E18 har høy andel gjennomgangstrafikk, så denne er ikke med i populasjonen. Ramper til og fra E18 kunne ha vært med siden de per definisjon har kun lokaltrafikk, men siden det ikke finnes trafikkregistreringer på disse, er disse også utelatt fra denne analysen.
 
 ```{r}
 #| label: fig-map_arg
 #| message: false
 #| fig-cap: !expr map_caption
 
-map_links_with_function_class(links_arg_2023)
-```
-
-</br>
-
-En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen er angitt i @tbl-trp_arg.
-
-```{r}
-#| label: tbl-trp_arg
-#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks."
-
-table_trps(links_arg_2023)
+map_links_with_function_class(links_arg)
 ```
 
 </br>
 
 I dette området er det kun to bomstasjoner, og begge disse ligger på hovedtraseen til E18. De er derfor ikke aktuelle å benytte i byindeksen.
 
-En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_arg.
+
+## Referanseår 2023
+En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen med 2023 som referanseår er angitt i @tbl-trp_arg_2023.
 
 ```{r}
-#| label: tbl-trp_count_arg
-#| tbl-cap:  "Statistikk for trafikklenker i Arendal og Grimstad."
+#| label: tbl-trp_arg_2023
+#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks, 2023."
+
+table_trps(links_arg_2023)
+```
+
+</br>
+
+En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_arg_2023.
+
+```{r}
+#| label: tbl-trp_count_arg_2023
+#| tbl-cap:  "Statistikk for trafikklenker i Arendal og Grimstad, 2023."
 
 
 table_link_statistics(links_arg_2023)
 ```
 
-Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_arg), "\\.", ",")` prosentpoeng.
+Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_arg_2023), "\\.", ",")` prosentpoeng.
+
+
+## Referanseår 2024
+En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen med 2024 som referanseår er angitt i @tbl-trp_arg_2024.
+
+```{r}
+#| label: tbl-trp_arg_2024
+#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks, 2024."
+
+table_trps(links_arg_2024)
+```
+
+</br>
+
+En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_arg_2024.
+
+```{r}
+#| label: tbl-trp_count_arg_2024
+#| tbl-cap:  "Statistikk for trafikklenker i Arendal og Grimstad, 2024."
+
+
+table_link_statistics(links_arg_2024)
+```
+
+Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_arg_2024), "\\.", ",")` prosentpoeng.
 
 
 ## Representativitet
-Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_arg. Data for 2024 fordeler seg tilsvarende.
+Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_arg.
 
 ```{r}
 #| label: fig-function_class_arg
@@ -490,12 +732,25 @@ Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function
 #| message: false
 #| warning: false
 
-visualize_function_class_distribution(links_arg_2023)
+arg_plot_2023 <- visualize_function_class_distribution(links_arg_2023, "Data for 2023")
+arg_plot_2024 <- visualize_function_class_distribution(links_arg_2024, "Data for 2024")
+
+arg_plot_2023 / arg_plot_2024 +
+  patchwork::plot_layout(
+    axes = "collect",
+    guides = "collect"
+  ) +
+  patchwork::plot_annotation(
+    theme = theme(
+      plot.background = element_rect(fill = svv_background_color),
+      legend.position = "bottom"
+      )
+  )
 ```
 
 </br>
 
-Fordelingen er noe overrepresentert i funksjonsklasse B og C, samtidig som den er underrepresentert i klasse D. Dette kan justeres noe ved å utelate enkelte punkter i klasse B og C.
+Fordelingen er noe for tung i funksjonsklasse C, samtidig som den er underrepresentert i klasse D. Dette kan justeres noe ved å utelate enkelte punkter i klasse C, men punktene har likevel en god spredning i vegnettet.
 
 
 ## Konklusjon
@@ -503,12 +758,12 @@ En oppsummering av vurderingen for Arendal/Grimstad-området:
 
 - En byindeks kan fint beregnes med eksisterende trafikkregistreringspunkt
 - Det er ikke aktuelt å benytte data fra bomstasjoner
-- Det er per januar 2025 ingen opplysinger om vegprosjekter som kan påvirke byindeksen i løpet av den aktuelle perioden
+- Det er per januar 2025 ingen opplysninger om vegprosjekter som kan påvirke byindeksen i løpet av den aktuelle perioden
 - Både 2023 og 2024 er aktuelle som referanseår
 
 
 # Vestfoldbyen
-Det relevante vegnettet i Vestfoldbyen består av kommunene Tønsberg, Sandefjord og Larvik. E18 har høy andel gjennomgangstrafikk, så denne er ikke med i populasjonen. Ramper til og fra E18 kunne ha vært med siden de per definisjon har kun lokaltrafikk, men siden det ikke finnes trafikkregistreringer på disse, er disse også utelatt fra denne analysen.
+Det relevante vegnettet i Vestfoldbyen består av tettstedene Tønsberg, Sandefjord og Larvik. E18 har høy andel gjennomgangstrafikk, så denne er ikke med i populasjonen. Ramper til og fra E18 kunne ha vært med siden de per definisjon har kun lokaltrafikk, men siden det ikke finnes trafikkregistreringer på disse, er disse også utelatt fra denne analysen.
 
 
 ```{r}
@@ -516,39 +771,64 @@ Det relevante vegnettet i Vestfoldbyen består av kommunene Tønsberg, Sandefjor
 #| message: false
 #| fig-cap: !expr map_caption
 
-map_links_with_function_class(links_vfl_2023)
-```
-
-</br>
-
-En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen er angitt i @tbl-trp_vfl.
-
-```{r}
-#| label: tbl-trp_vfl
-#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks."
-
-table_trps(links_vfl_2023)
+map_links_with_function_class(links_vfl)
 ```
 
 </br>
 
 I dette området er det sju bomstasjoner som alle ligger på hovedtraseen til E18. De er derfor ikke aktuelle å benytte i byindeksen.
 
-En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_vfl.
+
+## Referanseår 2023
+En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen med 2023 som referanseår er angitt i @tbl-trp_vfl_2023.
 
 ```{r}
-#| label: tbl-trp_count_vfl
-#| tbl-cap:  "Statistikk for trafikklenker i Vestfoldbyen."
+#| label: tbl-trp_vfl_2023
+#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks, 2023."
 
+table_trps(links_vfl_2023)
+```
+
+</br>
+
+En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_vfl_2023.
+
+```{r}
+#| label: tbl-trp_count_vfl_2023
+#| tbl-cap:  "Statistikk for trafikklenker i Vestfoldbyen, 2023."
 
 table_link_statistics(links_vfl_2023)
 ```
 
-Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_vfl), "\\.", ",")` prosentpoeng.
+Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_vfl_2023), "\\.", ",")` prosentpoeng.
+
+
+## Referanseår 2024
+En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen med 2024 som referanseår er angitt i @tbl-trp_vfl_2024.
+
+```{r}
+#| label: tbl-trp_vfl_2024
+#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks, 2024."
+
+table_trps(links_vfl_2024)
+```
+
+</br>
+
+En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_vfl_2024.
+
+```{r}
+#| label: tbl-trp_count_vfl_2024
+#| tbl-cap:  "Statistikk for trafikklenker i Vestfoldbyen, 2024."
+
+table_link_statistics(links_vfl_2024)
+```
+
+Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_vfl_2024), "\\.", ",")` prosentpoeng.
 
 
 ## Representativitet
-Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_vfl. Data for 2024 fordeler seg tilsvarende.
+Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_vfl. 
 
 ```{r}
 #| label: fig-function_class_vfl
@@ -556,12 +836,25 @@ Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function
 #| message: false
 #| warning: false
 
-visualize_function_class_distribution(links_vfl_2023)
+vfl_plot_2023 <- visualize_function_class_distribution(links_vfl_2023, "Data for 2023")
+vfl_plot_2024 <- visualize_function_class_distribution(links_vfl_2024, "Data for 2024")
+
+vfl_plot_2023 / vfl_plot_2024 +
+  patchwork::plot_layout(
+    axes = "collect",
+    guides = "collect"
+  ) +
+  patchwork::plot_annotation(
+    theme = theme(
+      plot.background = element_rect(fill = svv_background_color),
+      legend.position = "bottom"
+      )
+  )
 ```
 
 </br>
 
-Fordelingen er noe overrepresentert i funksjonsklasse B, samtidig som den er underrepresentert i klasse D. Dette kan justeres noe ved å utelate enkelte punkter i klasse B.
+Fordelingen er noe overrepresentert i funksjonsklasse B, samtidig som den er underrepresentert i klasse D. Dette kan eventuelt justeres noe ved å utelate enkelte punkter i klasse B, men punktene har ganske god spredning i byområdet.
 
 
 ## Konklusjon
@@ -574,46 +867,70 @@ En oppsummering av vurderingen for Vestfoldbyen:
 
 
 # Tønsberg
-Dette området består av Tønsberg kommune. E18 har høy andel gjennomgangstrafikk, så denne er ikke være med i populasjonen. Ramper til og fra E18 kunne ha vært med siden de per definisjon har kun lokaltrafikk, men siden det ikke finnes trafikkregistreringer på disse, er disse også utelatt fra denne analysen.
+Dette området består av tettstedet Tønsberg, samt Vear, Sem og Barkåker. E18 har høy andel gjennomgangstrafikk, så denne er ikke med i populasjonen. Ramper til og fra E18 kunne ha vært med siden de per definisjon har kun lokaltrafikk, men siden det ikke finnes trafikkregistreringer på disse, er disse også utelatt fra denne analysen.
 
 ```{r}
 #| label: fig-map_tbg
 #| message: false
 #| fig-cap: !expr map_caption
 
-map_links_with_function_class(links_tbg_2023)
-```
-
-</br>
-
-En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen er angitt i @tbl-trp_tbg.
-
-```{r}
-#| label: tbl-trp_tbg
-#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks."
-
-table_trps(links_tbg_2023)
+map_links_with_function_class(links_tbg)
 ```
 
 </br>
 
 I dette området er det kun en bomstasjon, og den ligger på hovedtraseen til E18. Den er derfor ikke aktuell å benytte i byindeksen.
 
-En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_tbg.
+## Referanseår 2023
+En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen med 2023 som referanseår er angitt i @tbl-trp_tbg_2023.
 
 ```{r}
-#| label: tbl-trp_count_tbg
-#| tbl-cap:  "Statistikk for trafikklenker i Tønsberg."
+#| label: tbl-trp_tbg_2023
+#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks, 2023."
 
+table_trps(links_tbg_2023)
+```
+
+</br>
+
+En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_tbg_2023.
+
+```{r}
+#| label: tbl-trp_count_tbg_2023
+#| tbl-cap:  "Statistikk for trafikklenker i Tønsberg, 2023."
 
 table_link_statistics(links_tbg_2023)
 ```
 
-Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_tbg), "\\.", ",")` prosentpoeng.
+Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_tbg_2023), "\\.", ",")` prosentpoeng.
+
+
+## Referanseår 2024
+En oversikt over hvilke trafikkregistreringspunkter som kan benyttes i byindeksen med 2024 som referanseår er angitt i @tbl-trp_tbg_2024.
+
+```{r}
+#| label: tbl-trp_tbg_2024
+#| tbl-cap: "Trafikkregistreringspunkt som benyttes i byindeks, 2024."
+
+table_trps(links_tbg_2024)
+```
+
+</br>
+
+En oppsummering av antall trafikklenker og summert trafikkarbeid er vist i @tbl-trp_count_tbg_2024.
+
+```{r}
+#| label: tbl-trp_count_tbg_2024
+#| tbl-cap:  "Statistikk for trafikklenker i Tønsberg, 2024."
+
+table_link_statistics(links_tbg_2024)
+```
+
+Under normale forhold vil forventet bredde på konfidensintervallet ligge omkring `r stringr::str_replace(sprintf("%.1f", ci_width_tbg_2024), "\\.", ",")` prosentpoeng.
 
 
 ## Representativitet
-Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_tbg. Data for 2024 fordeler seg tilsvarende.
+Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function_class_tbg. 
 
 ```{r}
 #| label: fig-function_class_tbg
@@ -621,12 +938,25 @@ Hvordan trafikkarbeidet fordeler seg på funksjonsklasse er vist i @fig-function
 #| message: false
 #| warning: false
 
-visualize_function_class_distribution(links_tbg_2023)
+tbg_plot_2023 <- visualize_function_class_distribution(links_tbg_2023, "Data for 2023")
+tbg_plot_2024 <- visualize_function_class_distribution(links_tbg_2024, "Data for 2024")
+
+tbg_plot_2023 / tbg_plot_2024 +
+  patchwork::plot_layout(
+    axes = "collect",
+    guides = "collect"
+  ) +
+  patchwork::plot_annotation(
+    theme = theme(
+      plot.background = element_rect(fill = svv_background_color),
+      legend.position = "bottom"
+      )
+  )
 ```
 
 </br>
 
-Fordelingen er noe overrepresentert i funksjonsklasse B, samtidig som den er underrepresentert i klasse D. Dette kan justeres noe ved å utelate enkelte punkter i klasse B.
+Fordelingen er noe overrepresentert i funksjonsklasse B, samtidig som den er underrepresentert i klasse D. Dette kan eventuelt justeres noe ved å utelate enkelte punkter i klasse B, men punktene har ganske god spredning i byområdet.
 
 
 ## Konklusjon

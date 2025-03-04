@@ -9,9 +9,12 @@ get_points() |>
     road_category_and_number,
     county_name,
     municipality_name,
-    lat, lon, road_link_position#,
-    #traffic_type,
-    #registration_frequency
+    lat, lon, road_link_position,
+    traffic_type,
+    registration_frequency
+  ) |>
+  dplyr::filter(
+    registration_frequency == "CONTINUOUS"
   ) |>
   readr::write_rds(
     "trps_for_city_index.rds"
