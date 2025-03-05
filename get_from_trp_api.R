@@ -257,6 +257,49 @@ get_trp_direction_reference <- function() {
 
 }
 
+get_trp_lane_numbering <- function() {
+
+  query <-
+    "query all_trp_lanes {
+      trafficRegistrationPoints {
+        id
+        location {
+          roadLink {
+            id
+            position
+          }
+        }
+        laneSensor {
+          trpLaneMapping {
+            trpLane {
+              internalLaneNumber
+              laneNumberAccordingToMetering
+              laneNumberAccordingToRoadLink
+            }
+          }
+        }
+      }
+    }"
+
+  response <-
+    get_via_httr(query) |>
+    tidyr::unnest(
+      data.trafficRegistrationPoints.laneSensor.trpLaneMapping,
+      keep_empty = TRUE
+    ) |>
+    dplyr::select(
+      trp_id = data.trafficRegistrationPoints.id,
+      road_link_id = data.trafficRegistrationPoints.location.roadLink.id,
+      road_link_position = data.trafficRegistrationPoints.location.roadLink.position,
+      lane_internal = trpLane.internalLaneNumber,
+      lane_according_to_current_metering = trpLane.laneNumberAccordingToMetering,
+      lane_according_to_current_road_link = trpLane.laneNumberAccordingToRoadLink
+    )
+
+  return(response)
+
+}
+
 
 get_trps_with_commission <- function() {
 

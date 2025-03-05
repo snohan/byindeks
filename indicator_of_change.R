@@ -66,3 +66,23 @@ sum(point_index_tests$F_pi_i_lambda_half[10:11])
 
 # F for the city doesn't say much. It would still be perilous to compare cities.
 
+
+# Ratio of private traffic ----
+index_i_from_ratio <- function(a) {
+
+  index_i = (1 - 0.12) / (1 - a)
+}
+
+as <- seq(10, 20, 0.1) / 100
+
+i_df <-
+  tibble::tibble(
+    as
+  ) |>
+  dplyr::mutate(
+    is = index_i_from_ratio(as),
+    ips = 100 * (is - 1),
+    aps = 100 * (as / 0.12 - 1)
+  )
+
+plot(as, i_df$ips)
