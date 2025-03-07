@@ -164,7 +164,7 @@ Vi finner at ingen av de tilgjengelige variablene har noen tydelig korrelasjon m
 
 
 ## Minste antall punkt
-
+Tar hensyn til at populasjonens størrelse er kjent.
 
 
 
@@ -189,7 +189,7 @@ Felles for begge måtene er at om de to fordelingene er helt like, så blir verd
 
 
 ## Geografisk spredning
-Ved å se på vegnettet som en sammenhengende grafstruktur, kan det beregnes grafparametre som beskriver dekningen og spredningen av trafikklenker.
+Ved å se på vegnettet som en sammenhengende grafstruktur, kan det beregnes grafparametre som beskriver dekningen og spredningen av trafikklenker. En utfordring med slike metrikker er at de må ta hensyn til at vegnettet endrer seg over tid.
 
 
 ### Gjennomsnittlig avstand til byindekspunkt
