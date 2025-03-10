@@ -14,7 +14,7 @@ source("indexpoints_tidying_functions.R")
 
 # Set manual variables ----
 {
-index_month <- 1 # to be published now
+index_month <- 2 # to be published now
 city_number <- 960
 city_name <- "Trondheim"
 }

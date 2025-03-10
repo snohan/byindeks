@@ -323,7 +323,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "january" # English
+month_string <- "february" # English
 year_number <- 2025
 
 apar_data_for_month <-
@@ -493,7 +493,7 @@ plot_toll_station_data_per_lane <- function(toll_id_chosen, year_chosen) {
 }
 
 # Ranheim is 72
-plot_toll_station_data_per_lane("69", 2025)
+plot_toll_station_data_per_lane("86", 2025)
 
 
 ## Exclusions ----
@@ -527,6 +527,8 @@ tolling_data_daily_tidy <-
   dplyr::filter(!(trp_id == "54" & month == "2024-10-01")) |>
   dplyr::filter(!(trp_id == "54" & month == "2024-11-01")) |>
   dplyr::filter(!(trp_id == "54" & month == "2024-12-01")) |>
+  dplyr::filter(!(trp_id == "54" &
+                    date %in% seq.Date(as.Date("2025-02-24"), as.Date("2025-03-09"), 1))) |>
   dplyr::filter(!(trp_id == "55" & month == "2021-05-01")) |>
   dplyr::filter(!(trp_id == "55" & month == "2021-06-01")) |>
   dplyr::filter(!(trp_id == "55" & month == "2021-07-01")) |>
@@ -535,6 +537,8 @@ tolling_data_daily_tidy <-
   dplyr::filter(!(trp_id == "55" & date %in% ymd(c("2023-06-26")))) |>
   dplyr::filter(!(trp_id == "55" &
                     month %in% seq.Date(as.Date("2023-07-01"), as.Date("2030-12-01"), by = "month"))) |>
+  dplyr::filter(!(trp_id == "55" &
+                    date %in% seq.Date(as.Date("2025-02-24"), as.Date("2025-03-09"), 1))) |>
   dplyr::filter(!(trp_id == "56" & month == "2021-04-01")) |>
   dplyr::filter(!(trp_id == "59" &
                     date %in% seq.Date(as.Date("2023-07-27"), as.Date("2023-07-28"), 1))) |>
@@ -543,6 +547,10 @@ tolling_data_daily_tidy <-
   dplyr::filter(!(trp_id == "63")) |>
   dplyr::filter(!(trp_id == "64" & date %in% ymd(c("2023-06-23")))) |>
   dplyr::filter(!(trp_id == "67" & date %in% ymd(c("2023-06-27", "2023-06-28")))) |>
+  dplyr::filter(!(trp_id == "67" &
+                    date %in% seq.Date(as.Date("2025-02-24"), as.Date("2025-03-09"), 1))) |>
+  dplyr::filter(!(trp_id == "68" &
+                    date %in% seq.Date(as.Date("2025-02-24"), as.Date("2025-03-09"), 1))) |>
   dplyr::filter(!(trp_id == "69" & date %in% ymd(c("2023-07-04", "2023-07-05")))) |>
   dplyr::filter(!(trp_id == "72" & month == "2021-04-01")) |>
   dplyr::filter(!(trp_id == "85" & date %in% ymd(c("2021-01-11", "2021-01-12", "2021-01-13")))) |>
