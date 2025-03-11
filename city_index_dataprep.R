@@ -60,7 +60,7 @@ trp_id_msnr <-
 {
 present_year <- 2025
 index_month <- 2 # the one to be published now
-city_number <- 960
+city_number <- 955
 }
 # End choose
 
@@ -1355,7 +1355,6 @@ if(city_number == 960){
       )
     )
 }
-
 
 if(!(city_number %in% c(960, 16952, 18952, 19953))){
 

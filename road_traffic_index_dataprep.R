@@ -10,19 +10,6 @@ counties <-
     county_name,
     country_part_name
   )
-  # December report 2023 must use 2023 counties
-  # dplyr::mutate(
-  #   counties_2023 = dplyr::case_when(
-  #     county_name %in% c("Østfold", "Akershus", "Buskerud") ~ "Viken",
-  #     county_name %in% c("Vestfold", "Telemark") ~ "Vestfold og Telemark",
-  #     county_name %in% c("Troms", "Finnmark") ~ "Troms og Finnmark",
-  #     TRUE ~ county_name
-  #   )
-  # ) |>
-  # dplyr::rename(
-  #   county_name = counties_2023,
-  #   county_name_new = county_name
-  # )
 
 country_parts <- get_country_parts()
 
@@ -69,8 +56,8 @@ points <-
   )
 
 ## Choose month ----
-this_year <- 2024
-latest_month_number <- 12
+this_year <- 2025
+latest_month_number <- 2
 
 index_this_year <-
   get_published_road_traffic_index_for_months(
@@ -186,7 +173,10 @@ pointindices_year_to_date <-
         day_type == "WEEKEND" ~ "helgedøgn"
       )
   ) |>
-  dplyr::left_join(points)
+  dplyr::left_join(
+    points,
+    by = join_by(trp_id)
+  )
 
 
 # N TRPs ----
