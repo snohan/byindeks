@@ -23,6 +23,7 @@
   library(writexl)
   library(readxl)
   library(plotly)
+  library(tictoc)
   options(warn = -1)
   svv_background_color <- "#F5F5F5"
 }
@@ -60,7 +61,7 @@ trp_id_msnr <-
 {
 present_year <- 2025
 index_month <- 2 # the one to be published now
-city_number <- 955
+city_number <- 16952
 }
 # End choose
 
@@ -502,11 +503,11 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    # years_1_2,
-    # years_1_3,
-    # years_1_4,
-    # years_1_5,
-    # years_1_6,
+    years_1_2,
+    #years_1_3,
+    #years_1_4,
+    #years_1_5,
+    #years_1_6,
     # years_1_7,
     # years_1_8
   ) |>
@@ -540,11 +541,16 @@ readr::write_rds(
 
 # Rolling index ----
 ## Get MDTs ----
-mdt <-
-  purrr::map_dfr(
-    years_from_reference_to_today,
-    ~ get_mdt_by_length_for_trp_list(city_trps, .x)
-  )
+
+{
+  tictoc::tic()
+  mdt <-
+    purrr::map_dfr(
+      years_from_reference_to_today,
+      ~ get_mdt_by_length_for_trp_list(city_trps, .x)
+    )
+  tictoc::toc()
+}
 
 # TRD
 if(city_number == 960) {
@@ -679,7 +685,10 @@ trp_not_ok <-
 # TODO: Shiny app for checking MDT
 
 mdt_validated |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[15:18]) |>
+  # Limit amount of data to plot to minimize plot generation waiting time
+  dplyr::filter(year > 2022) |>
+  # 3 at a time seems most efficient
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[22:23]) |>
   dplyr::select(
     trp_id,
     year,
@@ -849,14 +858,14 @@ all_36_month_indices <-
 all_rolling_indices <-
   dplyr::bind_rows(
     all_12_month_indices,
-    all_24_month_indices,
-    all_36_month_indices
+    all_24_month_indices#,
+    #all_36_month_indices
   )
 
 list(
   all_12_month_indices,
-  all_24_month_indices,
-  all_36_month_indices
+  all_24_month_indices#,
+  #all_36_month_indices
 ) |>
   readr::write_rds(
     file =
