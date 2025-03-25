@@ -140,6 +140,19 @@ links_hau_2023 <-
     aadt_lmv = aadt_2023
   )
 
+links_hau_2024 <-
+  links_hau |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        !is.na(aadt_2024) ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |>
+  dplyr::rename(
+    aadt_lmv = aadt_2024
+  )
+
 ci_width_hau_2023 <- calculate_ci_width(links_hau_2023)
 
 links_arg_2023 <-
@@ -230,31 +243,31 @@ ci_width_tbg_2023 <- calculate_ci_width(links_tbg_2023)
 ci_width_tbg_2024 <- calculate_ci_width(links_tbg_2024)
 
 # Write TRP list to Excel
-# links_hau_2023 |>
-#   sf::st_drop_geometry() |>
-#   dplyr::filter(!is.na(point_id)) |>
-#   dplyr::select(
-#     name,
-#     road_reference,
-#     aadt_lmv
-#   ) |>
-#   dplyr::mutate(
-#     ordered_road_reference =
-#       base::factor(
-#         road_reference,
-#         levels = stringr::str_sort(unique(road_reference), numeric = TRUE),
-#         ordered = TRUE
-#       )
-#   ) |>
-#   dplyr::arrange(
-#     ordered_road_reference
-#   ) |>
-#   dplyr::select(
-#     -ordered_road_reference
-#   ) |> 
-#   writexl::write_xlsx(
-#     "spesialuttak/byindekspunkt_haugesund.xlsx"  
-#   )
+links_hau_2024 |>
+  sf::st_drop_geometry() |>
+  dplyr::filter(!is.na(point_id)) |>
+  dplyr::select(
+    name,
+    road_reference,
+    aadt_lmv
+  ) |>
+  dplyr::mutate(
+    ordered_road_reference =
+      base::factor(
+        road_reference,
+        levels = stringr::str_sort(unique(road_reference), numeric = TRUE),
+        ordered = TRUE
+      )
+  ) |>
+  dplyr::arrange(
+    ordered_road_reference
+  ) |>
+  dplyr::select(
+    -ordered_road_reference
+  ) |>
+  writexl::write_xlsx(
+    "spesialuttak/byindekspunkt_haugesund_2024.xlsx"
+  )
 
 ```
 
