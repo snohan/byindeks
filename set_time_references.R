@@ -34,6 +34,10 @@
     index_years_from_2020 <- base::seq.int(2024, present_year, 1)
   }
 
+  if(city_number %in% c(19954, 19955, 20952)){
+    index_years_from_2020 <- base::seq.int(2025, present_year, 1)
+  }
+
   index_months_from_2020 <-
     c(
       base::rep(12, base::length(index_years_from_2020) - 1),

@@ -323,7 +323,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "february" # English
+month_string <- "march" # English
 year_number <- 2025
 
 apar_data_for_month <-
@@ -493,7 +493,7 @@ plot_toll_station_data_per_lane <- function(toll_id_chosen, year_chosen) {
 }
 
 # Ranheim is 72
-plot_toll_station_data_per_lane("86", 2025)
+plot_toll_station_data_per_lane("51", 2025)
 
 
 ## Exclusions ----
@@ -528,7 +528,7 @@ tolling_data_daily_tidy <-
   dplyr::filter(!(trp_id == "54" & month == "2024-11-01")) |>
   dplyr::filter(!(trp_id == "54" & month == "2024-12-01")) |>
   dplyr::filter(!(trp_id == "54" &
-                    date %in% seq.Date(as.Date("2025-02-24"), as.Date("2025-03-09"), 1))) |>
+                    date %in% seq.Date(as.Date("2025-02-26"), as.Date("2025-03-09"), 1))) |>
   dplyr::filter(!(trp_id == "55" & month == "2021-05-01")) |>
   dplyr::filter(!(trp_id == "55" & month == "2021-06-01")) |>
   dplyr::filter(!(trp_id == "55" & month == "2021-07-01")) |>
@@ -538,7 +538,7 @@ tolling_data_daily_tidy <-
   dplyr::filter(!(trp_id == "55" &
                     month %in% seq.Date(as.Date("2023-07-01"), as.Date("2030-12-01"), by = "month"))) |>
   dplyr::filter(!(trp_id == "55" &
-                    date %in% seq.Date(as.Date("2025-02-24"), as.Date("2025-03-09"), 1))) |>
+                    date %in% seq.Date(as.Date("2025-02-26"), as.Date("2025-03-09"), 1))) |>
   dplyr::filter(!(trp_id == "56" & month == "2021-04-01")) |>
   dplyr::filter(!(trp_id == "59" &
                     date %in% seq.Date(as.Date("2023-07-27"), as.Date("2023-07-28"), 1))) |>
