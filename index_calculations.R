@@ -996,7 +996,7 @@ readr::write_rds(
 )
 
 
-# TRD direct ----
+# Trondheim direct ----
 # Need
 # 1. 2014-2019 (no toll data, mostly NorTraf -> use DT?)
 # 2. 2019-2023

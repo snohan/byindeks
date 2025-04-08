@@ -84,6 +84,7 @@ links <-
 # 2018 Oslo   959   12 Trond *
 # 2018 Berg  8952   12 Trond *
 # 2019 Tron   960   12 Snorre
+# 2024 Aale 20952   02 Snorre
 
 
 # TODO: look at normalized MDT visualized on links
@@ -91,9 +92,9 @@ links <-
 
 
 # Choose
-index_year <- 2024
-latest_published_month <- 11
-city_number <- 959
+index_year <- 2025
+latest_published_month <- 2
+city_number <- 20952
 # End choose
 
 new_month_year <-
@@ -324,6 +325,9 @@ city_county_numbers <-
     city_number %in% c(959) ~ c(3, 32),
     city_number %in% c(8952) ~ c(46),
     city_number %in% c(960) ~ c(50),
+    city_number %in% c(19954) ~ c(18),
+    city_number %in% c(19955) ~ c(11),
+    city_number %in% c(20952) ~ c(15)
   )
 ```
 
@@ -333,7 +337,7 @@ city_county_numbers <-
 
 
 # Need not fetch AADT every time
-if(F) {
+if(T) {
   
   adt <- get_aadt_by_length_for_trp_list(city_trps)
   
@@ -1107,8 +1111,8 @@ leftover_trp_index_1 <-
 ```{r}
 #| label: city_index
 
-month_start = lubridate::make_date(year = 2024, month = 1)
-month_end = lubridate::make_date(year = 2024, month = 12)
+month_start = lubridate::make_date(year = 2025, month = 1)
+month_end = lubridate::make_date(year = 2025, month = 12)
 
 full_year_x_axis <- c(month_start, month_end)
 
