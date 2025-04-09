@@ -64,7 +64,7 @@ trp_id_msnr <-
 {
 present_year <- 2025
 index_month <- 3 # the one to be published now
-city_number <- 960
+city_number <- 16952
 }
 # End choose
 
@@ -507,11 +507,11 @@ city_index_yearly_all <-
   dplyr::bind_rows(
     # Include only for full years
     years_1_2,
-    years_1_3,
-    years_1_4,
-    years_1_5,
-    years_1_6,
-    years_1_7,
+    # years_1_3,
+    # years_1_4,
+    # years_1_5,
+    # years_1_6,
+    #years_1_7,
     # years_1_8
   ) |>
   dplyr::mutate(
@@ -688,9 +688,9 @@ trp_not_ok <-
 
 mdt_validated |>
   # Limit amount of data to plot to minimize plot generation waiting time
-  dplyr::filter(year > 2022) |>
+  dplyr::filter(year > 2021) |>
   # 3 at a time seems most efficient
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[13:18]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[21:23]) |>
   dplyr::select(
     trp_id,
     year,
@@ -860,14 +860,14 @@ all_36_month_indices <-
 all_rolling_indices <-
   dplyr::bind_rows(
     all_12_month_indices,
-    all_24_month_indices,
-    all_36_month_indices
+    all_24_month_indices#,
+    #all_36_month_indices
   )
 
 list(
   all_12_month_indices,
-  all_24_month_indices,
-  all_36_month_indices
+  all_24_month_indices#,
+  #all_36_month_indices
 ) |>
   readr::write_rds(
     file =
