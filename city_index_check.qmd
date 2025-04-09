@@ -73,10 +73,10 @@ links <-
 
 # City numbers
 # Refy City  Cnum  Chkd Resp
-# 2016 Busk  1952   12 Snorre
-# 2016 Gren   955   12 Snorre
-# 2023 Kris 19953   12 Snorre
-# 2023 NGlo 18952   12 Trond
+# 2016 Busk  1952   03 Snorre
+# 2016 Gren   955   03 Snorre
+# 2023 Kris 19953   03 Snorre
+# 2023 NGlo 18952   03 Trond
 # 2022 Trom 16952   03 Snorre
 # 2017 NJær   952   03 Snorre
 # 2018 Oslo   959   03 Trond
@@ -97,7 +97,7 @@ links <-
 # Choose
 index_year <- 2025
 latest_published_month <- 2
-city_number <- 16952
+city_number <- 955
 # End choose
 
 new_month_year <-
