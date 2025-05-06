@@ -3,31 +3,6 @@
 #source("H:/Programmering/R/byindeks/split_road_system_reference.R")
 library(ggpattern)
 
-# deprecated
-choose_city_trp_ids <- function(city_name,
-                                start_year) {
-
-  trp_ids <- cities_points %>%
-    dplyr::filter(city_area_name == city_name,
-                  agreement_start == start_year) %>%
-    dplyr::select(trp_id, legacyNortrafMpn) %>%
-    dplyr::rename(msnr = legacyNortrafMpn) %>%
-    dplyr::filter(!is.na(msnr)) %>%
-    dplyr::filter(!is.na(trp_id))
-}
-
-# deprecated
-choose_new_city_trp_ids <- function(city_name,
-                                start_year) {
-
-  trp_ids <- cities_points %>%
-    dplyr::filter(city_area_name == city_name,
-                  agreement_start == start_year) %>%
-    dplyr::select(trp_id) %>%
-    dplyr::filter(!is.na(trp_id))
-}
-
-
 read_pointindex_CSV <- function(filename) {
 
   # Read standard csv export from Datainn
