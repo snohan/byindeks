@@ -46,15 +46,17 @@ trp_id_msnr <-
 # Buskerudbyen 1952
 # Grenland 955
 # Haugesund 19955
-# Kristiansand og omegn 957 kommune 956
 # Kristiansandsregionen 19953
 # Nedre Glomma 18952
 # Nord-Jæren 952
 # Oslo 959
 # Trondheim 960
-# Tromsø 961
 # Tromsø 2022 16952
 # Ålesund 20952
+
+# Old:
+# Kristiansand og omegn 957 kommune 956
+# Tromsø 961
 
 ## Trondheim has its own script, all inclusive except for MDT 36 index
 #source("city_index_dataprep_trondheim_toll_stations")
@@ -63,8 +65,8 @@ trp_id_msnr <-
 ## Choose publish month ----
 {
 present_year <- 2025
-index_month <- 3 # the one to be published now
-city_number <- 955
+index_month <- 4 # the one to be published now
+city_number <- 960
 }
 # End choose
 
@@ -137,7 +139,8 @@ city_indexes <-
 # TRP index ----
 ## So far by December ----
 # Still need to specify csv-files for years before 2020 to get the pointindex as they are not in API
-if(!(city_number %in% c(8952, 16952, 18952, 19953))){
+#if(!(city_number %in% c(8952, 16952, 18952, 19953))){
+if((city_number %in% c(1952, 955, 952, 959))){
   trp_index_so_far_by_dec_pre_2020 <-
     purrr::map(
       index_years_pre_2020,
@@ -202,7 +205,8 @@ trp_index_so_far_by_dec_from_2020 <-
 #   )
 # Yes, seems so.
 
-if(city_number %in% c(8952, 16952, 18952, 19953)){
+#if(city_number %in% c(8952, 16952, 18952, 19953)){
+if(!(city_number %in% c(1952, 955, 952, 959))){
   trp_index_year_to_date_dec_bind <-
     dplyr::bind_rows(
       trp_index_so_far_by_dec_from_2020
@@ -286,7 +290,8 @@ trp_index_year_to_date_by_index_month <-
 
 ## Monthly ----
 # For Excel report
-if(!(city_number %in% c(8952, 16952, 18952, 19953))){
+#if(!(city_number %in% c(8952, 16952, 18952, 19953))){
+if((city_number %in% c(1952, 955, 952, 959))){
   trp_index_monthly_pre_2020 <-
     purrr::map_dfr(
       index_years_pre_2020,
@@ -320,7 +325,8 @@ trp_index_monthly_from_2020 <-
     index = index_short
   )
 
-if(city_number %in% c(8952, 16952, 18952, 19953)){
+#if(city_number %in% c(8952, 16952, 18952, 19953)){
+if(!(city_number %in% c(1952, 955, 952, 959))){
   trp_index_monthly <-
     dplyr::bind_rows(
       trp_index_monthly_from_2020
@@ -414,8 +420,8 @@ if(city_number == 960){
       name,
       road_category_and_number,
       year,
-      jan:des
-      #jan:nov
+      #jan:des
+      jan:apr
     ) |>
     dplyr::arrange(
       name,
@@ -506,13 +512,13 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    years_1_2,
-    years_1_3,
-    years_1_4,
-    years_1_5,
-    years_1_6,
-    years_1_7,
-    years_1_8
+    # years_1_2,
+    # years_1_3,
+    # years_1_4,
+    # years_1_5,
+    # years_1_6,
+    # years_1_7,
+    # years_1_8
   ) |>
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -688,9 +694,10 @@ trp_not_ok <-
 
 mdt_validated |>
   # Limit amount of data to plot to minimize plot generation waiting time
-  dplyr::filter(year > 2022) |>
+  #dplyr::filter(year > 2022) |>
+  dplyr::filter(!(year %in% c(2020, 2021, 2022))) |>
   # 3 at a time seems most efficient
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[20:22]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[15:18]) |>
   dplyr::select(
     trp_id,
     year,
@@ -879,11 +886,33 @@ list(
   )
 
 all_36_month_trp_indices <-
-  calculate_rolling_indices(36, "by_trp") |>
-  dplyr::left_join(
-    trp_names,
-    by = "trp_id"
-  ) |>
+  calculate_rolling_indices(36, "by_trp")
+
+if(city_number == 960) {
+
+  trd_toll_station_names <-
+    readr::read_rds(
+      "trd_toll_station_id.rds"
+    )
+
+  all_36_month_trp_indices <-
+    all_36_month_trp_indices |>
+    dplyr::left_join(
+      trd_toll_station_names,
+      by = "trp_id"
+    )
+
+}else{
+  all_36_month_trp_indices <-
+    all_36_month_trp_indices |>
+    dplyr::left_join(
+      trp_names,
+      by = "trp_id"
+    )
+}
+
+all_36_month_trp_indices <-
+  all_36_month_trp_indices |>
   dplyr::mutate(
     trp_index_p = (trp_index_i - 1) * 100,
     index_p = (index_i - 1) * 100
@@ -1311,6 +1340,24 @@ trp_info_adt <-
 # )
 
 # Write
+if(city_number %in% c(19954, 19955, 20952)){
+
+  list(
+    punkt_adt = trp_info_adt,
+    punktindeks_maned = trp_index_monthly_wide,
+    byindeks_aarlig = city_index_yearly_all,
+    punkt_mdt = mdt_and_pi#,
+    #by_glid_indeks = all_rolling_indices
+  ) |>
+    writexl::write_xlsx(
+      path = paste0(
+        "data_indexpoints_tidy/tallmateriale_",
+        city_number,
+        ".xlsx"
+      )
+    )
+}
+
 if(city_number %in% c(18952, 19953)){
 
   list(

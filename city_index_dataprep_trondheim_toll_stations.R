@@ -14,7 +14,7 @@ source("indexpoints_tidying_functions.R")
 
 # Set manual variables ----
 {
-index_month <- 3 # to be published now
+index_month <- 4 # to be published now
 city_number <- 960
 city_name <- "Trondheim"
 }
@@ -79,7 +79,7 @@ toll_index_monthly <-
 #
 # TRPs ----
 # Choosing most recent version of city trps
-city_trps <- trp_index_24[[1]]
+city_trps <- trp_index_25[[1]]
 
 # Removing Tungasletta Ystgaard (is removed from VTI, but is still in present in API before 2023)
 #city_trps <-
@@ -170,6 +170,29 @@ trd_station_type |>
   readr::write_rds(
     "trd_station_type.rds"
   )
+
+# To match ids in mdt data
+trd_toll_station_id <-
+  dplyr::bind_rows(
+    this_citys_trps,
+    toll_meta_data
+  ) |>
+  dplyr::select(
+    trp_id,
+    name
+  ) |>
+  dplyr::mutate(
+    trp_id = dplyr::case_when(
+      name == "Ranheim" ~ "72",
+      TRUE ~ trp_id
+    )
+  )
+
+trd_toll_station_id |>
+  readr::write_rds(
+    "trd_toll_station_id.rds"
+  )
+
 
 # AADT ----
 # Fetch AADT in city_index_check.Rmd

@@ -32,19 +32,22 @@ source("rmd_setup.R")
 ```{r get_data, include = FALSE}
 # City numbers
 
-# Buskerudbyen          1952 (2016) 12
-# Grenland               955 (2016) 12
-# Kristiansand og omegn  957 (2016) 12
-# Kristiansandsregionen19953 (2023) 12
-# Nedre Glomma 2023    18952 (2023) 12
-# Tromsø 2022          16952 (2022) 12
-# Nord-Jæren             952 (2017) 12
-# Bergen                8952 (2018) 12
-# Oslo                   959 (2018) 12
-# Trondheim              960 (2019) 12
+# Buskerudbyen          1952 2016 04
+# Grenland               955 2016 04
+# Kristiansandsregionen19953 2023 04
+# Nedre Glomma 2023    18952 2023 04
+# Tromsø 2022          16952 2022 04
+# Nord-Jæren             952 2017 04
+# Bergen                8952 2018 04
+# Oslo                   959 2018 04
+# Trondheim              960 2019 04
+# Bodø                 19954 2024
+# Ålesund              20952 2024 
+# Haugesund            19955 2024
+
 
 # Choose city number:
-city_number <- 959
+city_number <- 960
 
 ## Meta info
 city_number_county_name <- 

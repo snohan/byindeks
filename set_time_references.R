@@ -14,7 +14,8 @@
       )
     )
 
-  if(!(city_number %in% c(960, 16952, 18952, 19953))){
+  #if(!(city_number %in% c(960, 16952, 18952, 19953))){
+  if((city_number %in% c(1952, 955, 952, 959, 8952))){
     index_years_pre_2020 <- base::seq.int(reference_year + 1, 2019, 1)
   }else{
     index_years_pre_2020 <- NULL

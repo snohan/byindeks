@@ -69,7 +69,7 @@ visualize_city_36_mdt_index(
 <!--Sammenlignet med referanseåret er trafikkmengden de siste tre årene i gjennomsnitt-->
 <!--Sammenlignet med referanseåret har trafikken de siste tre årene i gjennomsnitt hatt en -->
 For de `r latest_36_n_trp` byindekspunktene som inngår i indeksen for tre års glidende gjennomsnitt, 
-viser beregningen at trafikken for de tre siste årene har hatt en `r latest_36_sentence` sammenlignet med referansåret `r base_year`.
+viser beregningen at trafikken for de tre siste årene har hatt en `r latest_36_sentence` sammenlignet med referanseåret `r base_year`.
 Beregningene har en feilmargin som betyr at trafikknivået ligger et sted mellom 
 `r stringr::str_replace(sprintf("%.1f", latest_36_index$ci_lower), "\\.", ",")` % og 
 `r stringr::str_replace(sprintf("%.1f", latest_36_index$ci_upper), "\\.", ",")` % sammenlignet med referanseåret. `r latest_36_ci_conclusion`
