@@ -82,42 +82,6 @@ read_old_pointindex_csv_monthly <- function(filename, given_year) {
 
 }
 
-# deprecated
-read_new_pointindex_csv <- function(filename) {
-  # Read new csv export from Datainn
-  read.csv2(filename) %>%
-    filter(døgn == "Alle",
-           lengdeklasse == "< 5,6m",
-           periode == "Hittil i år") %>%
-    mutate(index = as.numeric(str_replace(indeks, ",", ".")),
-           trafikkmengde.basisaar = as.numeric(
-             as.character("trafikkmengde basisår")),
-           trafikkmengde.indeksaar = as.numeric(
-             as.character("trafikkmengde indeksår"))) %>%
-  rename(trp_id = trpid) %>%
-  select(trp_id, index)
-}
-
-# deprecated
-#filename <- "data_index_raw/punktindeks_trondheim-2020-04.csv"
-read_new_pointindex_csv_with_volumes <- function(filename) {
-  # Read new csv export from Datainn
-  readr::read_csv2(filename,
-                   locale = readr::locale(
-                     encoding = "latin1",
-                     decimal_mark = ",",
-                     grouping_mark = " ")) %>%
-    filter(døgn == "Alle",
-           lengdeklasse == "< 5,6m",
-           periode == "Hittil i år") %>%
-    rename(trp_id = trpid,
-           base_volume = 12,
-           calc_volume = 11) %>%
-    mutate(index = as.numeric(str_replace(indeks, ",", ".")),
-           base_volume = as.numeric(as.character(base_volume)),
-           calc_volume = as.numeric(as.character(calc_volume))) %>%
-    select(trp_id, base_volume, calc_volume, index)
-}
 
 #filename <- "data_index_raw/punktindeks_nord-jaeren-2020-01.csv"
 #filename <- "data_index_raw/pointindex_trondheim-2019-12_2018.csv"
@@ -148,22 +112,6 @@ read_bikepointindex_csv <- function(filename) {
     select(msnr, index)
 }
 
-# deprecated
-read_city_index_csv <- function(filename) {
-  # Read standard csv export from Datainn
-  read.csv2(filename) %>%
-    rename_all(str_to_lower) %>%
-    filter(vegkategori == "E+R+F+K",
-           døgn == "Alle",
-           lengdeklasse == "< 5,6m",
-           periode == "Hittil i år") %>%
-    mutate(index = as.numeric(str_replace(indeks, ",", ".")),
-           dekning = as.numeric(str_replace(dekning, ",", ".")),
-           standardavvik = as.numeric(as.character(standardavvik)),
-           konfidensintervall = as.numeric(as.character(konfidensintervall))) %>%
-    select(index, dekning, standardavvik, konfidensintervall) %>%
-    as_tibble()
-}
 
 monthly_city_index <- function(city_index_for_a_year) {
 
@@ -395,32 +343,6 @@ calculate_all_possible_36_month_indexes <- function(city_monthly_df) {
 }
 
 
-
-# split_road_system_reference <- function(df) {
-#
-#   df_with_split_reference <- df %>%
-#     tidyr::separate(road_reference, c("road_system", "intersection_part"),
-#                     sep = "[[:blank:]][[:alpha:]]{1}D",
-#                     remove = FALSE, fill = "right") %>%
-#     dplyr::mutate(road_category = stringr::str_sub(road_system, 1, 1)) %>%
-#     dplyr::mutate(road_category = factor(road_category,
-#                                          levels = c("E", "R", "F", "K", "P"))) %>%
-#     tidyr::separate(road_system, c("road", "section_meter"),
-#                     sep = " S") %>%
-#     dplyr::mutate(road_number = as.numeric(stringr::str_sub(road, 3, -1))) %>%
-#     dplyr::mutate(road_category_and_number = paste0(road_category, "v", road_number)) %>%
-#     tidyr::separate(section_meter, c("section_number", "subsection_meter"),
-#                     sep = "D", convert = TRUE) %>%
-#     tidyr::separate(subsection_meter, c("subsection_number", "meter"),
-#                     sep = " m", convert = TRUE) %>%
-#     tidyr::separate(intersection_part, c("intersection_part_number", "intersection_meter"),
-#                     sep = " m", convert = TRUE)  %>%
-#     dplyr::arrange(road_category, road_number,
-#                    section_number, subsection_number, meter,
-#                    intersection_part_number, intersection_meter)
-# }
-
-
 filter_mdt <- function(mdt_df, year_dbl) {
 
   mdt_df |>
@@ -450,127 +372,6 @@ filter_mdt <- function(mdt_df, year_dbl) {
 
 }
 
-
-# calculate_rolling_indices_by_mdt_deprecated <-
-#   function(base_year, last_year_month, window_length, mdt_df, by_area = TRUE) {
-#
-#     # Window length is a number of months, a multiple of 12
-#     # by_area: boolean to get TRP or area values
-#
-#     least_number_of_month_enums <-
-#       dplyr::case_when(
-#         window_length == 36 ~ 2,
-#         TRUE ~ 0
-#       )
-#
-#     least_number_of_months <-
-#       dplyr::case_when(
-#         window_length == 36 ~ 31,
-#         window_length == 24 ~ 20,
-#         window_length == 12 ~ 9
-#       )
-#
-#     last_year_month <-
-#       lubridate::as_date(last_year_month)
-#
-#     mean_mdt_in_window <-
-#       mdt_df |>
-#       dplyr::filter(
-#         year_month %in%
-#           base::seq.Date(
-#             from = last_year_month - base::months(window_length - 1),
-#             to = last_year_month,
-#             by = "month"
-#           )
-#       ) |>
-#       dplyr::filter(
-#         coverage >= 50,
-#         length_quality >= 98.5
-#       ) |>
-#       dplyr::group_by(
-#         trp_id,
-#         month
-#       ) |>
-#       dplyr::summarise(
-#         n_months = n(),
-#         mean_mdt = base::mean(mdt),
-#         .groups = "drop_last"
-#       ) |>
-#       dplyr::filter(
-#         n_months >= least_number_of_month_enums
-#       ) |>
-#       dplyr::group_by(
-#         trp_id
-#       ) |>
-#       dplyr::summarise(
-#         n_months = sum(n_months),
-#         mean_mdt = base::mean(mean_mdt),
-#         .groups = "drop"
-#       ) |>
-#       dplyr::filter(
-#         n_months >= least_number_of_months
-#       )
-#
-#     index_df <-
-#       dplyr::inner_join(
-#         filter_mdt(mdt_df, base_year),
-#         mean_mdt_in_window,
-#         by = "trp_id"
-#       ) |>
-#       dplyr::mutate(
-#         w = mean_mdt.x / sum(mean_mdt.x),
-#         trp_index_i = mean_mdt.y / mean_mdt.x,
-#         #weigted_mean = sum(w * trp_index_i), # same as index_i :)
-#         index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
-#         sd_component = w * (trp_index_i - index_i)^2
-#       ) %>%
-#       # If TRP index is wanted, skip this summarise
-#       # NB! Native pipe does not support curly brace RHS, but magrittr does
-#       {if(by_area)
-#         dplyr::summarise(
-#           .,
-#           index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
-#           index_p = (index_i - 1) * 100,
-#           n_trp = n(),
-#           n_eff = 1 / sum(w^2),
-#           sd_sample_p = 100 * sqrt(sum(sd_component) * (1/(1 - 1/n_eff))),
-#           standard_error_p = sd_sample_p / sqrt(n_eff),
-#           .groups = "drop"
-#         ) |>
-#         dplyr::mutate(
-#           ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
-#           ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error_p, 1)
-#         )
-#         else .} |>
-#       dplyr::mutate(
-#         index_period =
-#           paste0(
-#             base_year,
-#             " - (",
-#             (last_year_month - base::months(window_length - 1)) |>
-#               lubridate::month(label = TRUE),
-#             " ",
-#             (last_year_month - base::months(window_length - 1)) |>
-#               lubridate::year(),
-#             " - ",
-#             last_year_month |>
-#               lubridate::month(label = TRUE),
-#             " ",
-#             last_year_month |>
-#               lubridate::year(),
-#             ")"
-#           ),
-#         month_object = last_year_month
-#       ) |>
-#       dplyr::mutate(
-#         month_n = lubridate::month(month_object),
-#         year = lubridate::year(month_object),
-#         window = paste0(window_length, "_months")
-#       )
-#
-#     return(index_df)
-#
-#   }
 
 # mdt_df <- mdt_validated
 # window_length <- 36
@@ -759,7 +560,6 @@ calculate_rolling_indices <- function(window_length, grouping = "by_area") {
   )
 
 }
-
 
 
 #trp_mdt_long_format <- test
