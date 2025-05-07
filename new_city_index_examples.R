@@ -21,6 +21,7 @@
 # Resolution in day type
 # - working days
 # - non-working days
+# - all days
 
 # Resolution in vehicle type:
 # - light (short)
@@ -50,15 +51,50 @@
 
   library(tidyverse)
 
-  source("H:/Programmering/R/byindeks/index_report_functions.R")
-  source("H:/Programmering/R/byindeks/split_road_system_reference.R")
+  source("split_road_system_reference.R")
+  source("indexpoints_tidying_functions.R")
+  source("index_report_functions.R")
   source("get_from_trafficdata_api.R")
-  source("road_events_functions.R")
   source("traffic_link_functions.R")
 }
 
-# Bergen
-# Traffic links 2024
-# We do not have any earlier links
-# Use the MDTs we already have
+# Bergen 8952
+city_number <- "8952"
+source("city_reference_year.R")
+
+# TRP
+this_citys_trps_all_adt_final <-
+  readr::read_rds(
+    file = paste0(
+      "index_trp_metadata/trp_",
+      city_number,
+      ".rds"
+    )
+  ) |>
+  dplyr::filter(
+    stringr::str_sub(road_category_and_number, 1, 1) != "K"
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    road_reference,
+    municipality_name,
+    #lat, lon,
+    adt, year_aadt, adt_ref
+  )
+
+# MDT
+mdt_filtered <-
+  readr::read_rds(
+    paste0(
+      "data_indexpoints_tidy/mdt_",
+      city_number,
+      ".rds"
+    )
+  )
+
+# TODO: heatmap per TRP per month, one for each year
+
+# Link population
+# Made on script city_link_population.R
 

@@ -5,9 +5,11 @@
 
 #layers <- sf::st_layers("C:/Users/snohan/Desktop/traffic_links_2023_2024-10-08.geojson")
 
+# Read from file ----
 links_raw <-
   sf::st_read(
-    "C:/Users/snohan/Desktop/traffic_links_2024_2025-02-27.geojson",
+    #"C:/Users/snohan/Desktop/traffic_links_2024_2025-02-27.geojson",
+    "C:/Users/snohan/Desktop/traffic_links_2024_2025-05-07.geojson",
     as_tibble = TRUE,
     query =
       "
@@ -15,6 +17,7 @@ links_raw <-
         id,
         roadCategory,
         roadSystemReferences,
+        length,
         startTrafficNodeId,
         endTrafficNodeId,
         municipalityIds,
@@ -24,7 +27,7 @@ links_raw <-
         isFerryRoute,
         functionClass,
         trafficVolumes
-      FROM \"traffic_links_2024_2025-02-27\"
+      FROM \"traffic_links_2024_2025-05-07\"
       "
   ) |>
   dplyr::rename(
@@ -48,20 +51,25 @@ links_raw <-
 
 # Making separate data frames holding the relations between
 # link_id and features that can occur multiple times per link.
-# Hence, thos columns are unnecessary in link df.
+# Hence, those columns are unnecessary in link df.
 
-links_raw |>
+# Bare raw links ----
+links_raw_bare <-
+  links_raw |>
   dplyr::select(
+    -length,
     -associatedTrpIds,
     -tollStationIds,
     -trafficVolumes,
     -municipalityIds
-  ) |>
-  readr::write_rds(
-    "traffic_link_pop/links_raw.rds"
   )
 
-# TRPs
+readr::write_rds(
+  links_raw_bare,
+  "traffic_link_pop/links_raw.rds"
+)
+
+# TRP ids ----
 link_trp_id <-
   links_raw |>
   sf::st_drop_geometry() |>
@@ -89,7 +97,7 @@ readr::write_rds(
 )
 
 
-# Toll stations
+# Toll station ids ----
 link_toll_id <-
   links_raw |>
   sf::st_drop_geometry() |>
@@ -120,7 +128,7 @@ readr::write_rds(
 )
 
 
-# Municipality ids
+# Municipality ids ----
 link_municipality_id <-
   links_raw |>
   sf::st_drop_geometry() |>
@@ -142,12 +150,13 @@ readr::write_rds(
 )
 
 
-# Traffic volumes
+# Traffic volumes, all ----
 link_traffic_volumes <-
   links_raw |>
   sf::st_drop_geometry() |>
   dplyr::select(
     link_id,
+    length,
     trafficVolumes
   ) |>
   dplyr::filter(
@@ -173,3 +182,59 @@ readr::write_rds(
   link_traffic_volumes,
   "traffic_link_pop/link_traffic_volumes.rds"
 )
+
+# Traffic volumes, one ----
+# A list with just one AADT and TW per link
+# Traffic volume type could be either a final one (overridden, model result)
+# or a preliminary one (measured, derived, guesstimated)
+value_origin_levels <- c("OVERRIDDEN", "MODEL_RESULT")
+
+link_traffic_2024 <-
+  link_traffic_volumes |>
+  dplyr::filter(
+    year == 2024,
+    trafficVolumeResolution == "ADT",
+    trafficVolumeType %in% value_origin_levels
+  ) |>
+  dplyr::mutate(
+    value_origin_factor =
+      base::factor(
+        trafficVolumeType,
+        levels = value_origin_levels
+      ),
+    value_origin_numeric = as.numeric(value_origin_factor)
+  ) |>
+  dplyr::slice_min(
+    value_origin_numeric,
+    by = link_id
+  ) |>
+  dplyr::select(
+    link_id,
+    length_m = length,
+    year,
+    aadt = trafficVolumeValue,
+    tw = trafficWorkValue,
+    heavy_ratio = heavyRatio
+    #value_origin_factor
+  )
+
+# TODO: add estimated standard error from model result?
+
+links_2024 <-
+  links_raw_bare |>
+  dplyr::right_join(
+    link_traffic_2024,
+    by = dplyr::join_by(link_id)
+  )
+
+readr::write_rds(
+  links_2024,
+  "traffic_link_pop/link_traffic_2024.rds"
+)
+
+missing_links <-
+  links_raw_bare |>
+  dplyr::filter(
+    !(link_id %in% link_traffic_2024$link_id)
+  )
+# Mostly kommunalveger, and no roads in any of the cities.

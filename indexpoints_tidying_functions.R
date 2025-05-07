@@ -1,6 +1,5 @@
 # Index tidying functions
 
-#source("H:/Programmering/R/byindeks/split_road_system_reference.R")
 library(ggpattern)
 
 read_pointindex_CSV <- function(filename) {
