@@ -66,7 +66,7 @@ trp_id_msnr <-
 {
 present_year <- 2025
 index_month <- 4 # the one to be published now
-city_number <- 960
+city_number <- 959
 }
 # End choose
 
@@ -512,11 +512,11 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    # years_1_2,
-    # years_1_3,
-    # years_1_4,
-    # years_1_5,
-    # years_1_6,
+    years_1_2,
+    years_1_3,
+    years_1_4,
+    years_1_5,
+    years_1_6,
     # years_1_7,
     # years_1_8
   ) |>

@@ -47,7 +47,7 @@ source("rmd_setup.R")
 
 
 # Choose city number:
-city_number <- 960
+city_number <- 18952
 
 ## Meta info
 city_number_county_name <- 
