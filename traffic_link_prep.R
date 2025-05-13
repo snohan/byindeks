@@ -70,6 +70,16 @@ readr::write_rds(
 )
 
 # TRP ids ----
+trp_continuous <-
+  get_points() |>
+  dplyr::filter(
+    registration_frequency == "CONTINUOUS"
+  ) |>
+  dplyr::select(
+    trp_id
+  ) |>
+  dplyr::distinct()
+
 link_trp_id <-
   links_raw |>
   sf::st_drop_geometry() |>
@@ -86,9 +96,23 @@ link_trp_id <-
   tidyr::unnest(
     trp_id
   ) |>
+  dplyr::filter(
+    trp_id %in% trp_continuous$trp_id
+  ) |>
   dplyr::select(
     link_id,
     trp_id
+  ) |>
+  # Adding some missing ones
+  dplyr::bind_rows(
+    tibble::tibble(
+      link_id = c(
+        "0.14008637@3144542-0.15493155@805693" # Rådal
+      ),
+      trp_id = c(
+        "12021V805693"
+      )
+    )
   )
 
 readr::write_rds(

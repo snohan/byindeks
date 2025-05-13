@@ -23,8 +23,11 @@
   base::Sys.setlocale(locale = "nb.utf8")
   library(tidyverse)
   library(sf)
+  library(leaflet)
+  source("get_from_trafficdata_api.R")
   source("get_from_nvdb_api.R")
   source("H:/Programmering/R/byindeks/traffic_link_functions.R")
+  source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
 
   # Need to filter links by geometry that does not intersect
   not_intersected <- function(x, y) !sf::st_intersects(x, y)
@@ -45,7 +48,6 @@ link_trp_id <- readr::read_rds("traffic_link_pop/link_trp_id.rds")
 # Downloaded fgdb file from Geonorge: tettsteder, UTM33
 
 #urban_layers <- sf::st_layers("C:/Users/snohan/Desktop/tettsteder_2024.gdb")
-
 urban_areas <-
   sf::st_read(
     "C:/Users/snohan/Desktop/tettsteder_2024.gdb",
@@ -69,6 +71,7 @@ urban_areas <-
 # Bergen ----
 city_number <- "8952"
 
+## City area ----
 # Nullvekstmålet gjelder innenfor de gamle kommunene Bergen, Askøy, Lindås, Os og Fjell.
 
 # Kommune | ny id | gammel id | gammelt navn
@@ -78,7 +81,14 @@ city_number <- "8952"
 # Askøy 4627 UENDRET
 # Bjørnafjorden 4624 1243 Os
 
-test <- hent_historisk_kommune(4631, 1263)
+municipality_ids <- c(4601, 4631, 4626, 4627, 4624)
+
+link_municipality_id_bergen <-
+  link_municipality_id |>
+  dplyr::filter(
+    municipality_id %in% municipality_ids
+  ) |>
+  dplyr::distinct()
 
 municipality_polygon_bergen <-
   dplyr::bind_rows(
@@ -108,13 +118,17 @@ readr::write_rds(
 # Geonorge map
 
 
+## Urban area ----
 # TODO:
 # Pick urban areas inside area polygon
 
 # Filter urban areas by area polygon
 urban_areas_bergen <-
   urban_areas |>
-  sf::st_filter(municipality_polygon_bergen, .predicate = st_intersects)
+  sf::st_filter(municipality_polygon_bergen, .predicate = st_intersects) |>
+  dplyr::filter(
+    !(tettstednummer %in% c(5182, 5241)) # Hammarsland just about touches the polygon, Lindås too remote?
+  )
 
 plot(urban_areas_bergen$geometry)
 
@@ -126,55 +140,114 @@ urban_areas_convex_hull <-
 
 plot(urban_areas_convex_hull$geometry)
 
-# HERE!!!!
+readr::write_rds(urban_areas_convex_hull, "representativity/urban_area_bergen.rds")
 
 
-readr::write_rds(urban_areas_nj, "representativity/urban_area_nj.rds")
+## City TRPs ----
+this_citys_trps_all_adt_final <-
+  readr::read_rds(
+    file = paste0(
+      "index_trp_metadata/trp_",
+      city_number,
+      ".rds"
+    )
+  )
 
-
-
-links_nj_city <-
-  links_with_traffic_work |>
+link_trp_id_city <-
+  link_trp_id |>
   dplyr::filter(
-    link_id %in% link_ids_in_municipalities$link_id
+    trp_id %in% this_citys_trps_all_adt_final$trp_id
+  )
+
+missing <-
+  this_citys_trps_all_adt_final |>
+  dplyr::filter(
+    !(trp_id %in% link_trp_id_city$trp_id)
+  )
+
+
+## Link population ----
+links_bergen <-
+  links_2024 |>
+  dplyr::filter(
+    link_id %in% link_municipality_id_bergen$link_id
   ) |>
-  sf::st_filter(urban_areas_nj_convex_hull$geometry, .predicate = st_intersects) |>
-  # Add som links
-  #dplyr::bind_rows(
-  #
-  #) |>
+  sf::st_filter(urban_areas_convex_hull$geometry, .predicate = st_intersects) |>
+  # Add some links
+  dplyr::bind_rows(
+    links_2024 |>
+      dplyr::filter(
+        link_id %in% c(
+          "0.6051633@2799781-0.62504593@805284",
+          "0.0@2799790-0.6051633@2799781",
+          "0.0-1.0@3144562",
+          "0.0-1.0@3144564",
+          "0.0-1.0@3144533",
+          "0.0-1.0@3144563",
+          "0.0-1.0@3144534",
+          "0.46122322-0.87083099@3144561",
+          "0.07223305-0.5311563@3144515",
+          "0.82103689-0.95636983@805614",
+          "0.88227822@2684724-0.61423683@2684728",
+          "0.61423683@2684728-0.0@1684324",
+          "1.0-0.0@1684319",
+          "1.0-0.0@1684318",
+          "1.0-0.0@1684317",
+          "0.7132308-1.0@805086",
+          "0.37001859-0.56645889@805723",
+          "0.0@1669839-0.37001859@805723",
+          "0.16618949@1669845-1.0@1669842",
+          "0.58043969@3447966-1.0@805406",
+          "0.38197472-1.0@3448017",
+          "0.0-0.61742596@3447967",
+          "0.61742596-1.0@3447967",
+          "0.0-0.38197472@3448017",
+          "0.10549267-0.24149404@805709",
+          "0.0-1.0@3441693",
+          "0.0-1.0@805018"
+        )
+      )
+  ) |>
   # Remove some links
   dplyr::filter(
     !(link_id %in% c(
-      # Ryfylketunnelen
-      "0.0-1.0@2725983", "0.0-1.0@2725982",
-      # Byfjordtunnelen
-      "0.41798688@319527-0.56950694@320583",
-      # Links in south-west
-      "0.75290902@320683-1.0@2829293",
-      "0.22210744-1.0@320180",
-      "0.60727361-0.75290902@320683",
-      "0.68926696-1.0@320127",
-      "0.0-0.3298438@320128",
-      "0.3298438-1.0@320128",
-      "0.58471846@320670-0.75831918@320670"
+      "0.0-0.58710252@805329",
+      "0.58710252-1.0@805329",
+      "0.0-1.0@769592"
     )),
     function_class != "E"
   ) |>
   dplyr::left_join(
-    link_trp_id,
-    by = dplyr::join_by(link_id),
-    # Gives duplicates unless we specify to keep only one,
-    # and it doesn't matter which one here, hence "any":
-    multiple = "any"
+    link_trp_id_city,
+    by = dplyr::join_by(link_id)
   ) |>
   dplyr::rename(
     point_id = trp_id
+  ) #|>
+  # dplyr::mutate(
+  #   city_trp =
+  #     dplyr::case_when(
+  #       point_id %in% city_trp_info$p_id ~ TRUE,
+  #       TRUE ~ FALSE
+  #     )
+  # )
+
+# Visual check
+map_links_with_function_class(links_bergen) |>
+  addPolygons(
+    data = municipality_polygon_bergen,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
   ) |>
-  dplyr::mutate(
-    city_trp =
-      dplyr::case_when(
-        point_id %in% city_trp_info$p_id ~ TRUE,
-        TRUE ~ FALSE
-      )
+  addPolygons(
+    data = urban_areas_bergen,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
   )
+
+readr::write_rds(
+  links_bergen,
+  "traffic_link_pop/links_bergen.rds"
+)

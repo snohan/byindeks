@@ -47,6 +47,8 @@ toll_meta_data <-
   readr::read_rds(
     file = "bomdata_trondheim/trd_toll_stations.rds"
   )
+# NVDB-ID
+# Autopass-ID
 
 toll_index_yearly <-
   readr::read_rds(
@@ -57,6 +59,7 @@ toll_index_yearly <-
     length_range = class
   ) |>
   dplyr::filter(length_range != "unknown")
+# Autopass-ID
 
 toll_index_monthly <-
   readr::read_rds(
@@ -75,6 +78,7 @@ toll_index_monthly <-
   ) |>
   dplyr::filter(length_range != "unknown")
 }
+# Autopass-ID
 
 #
 # TRPs ----
@@ -115,6 +119,7 @@ this_citys_trps_all <-
     lat, lon, road_link_position,
     station_type
   )
+# Autopass-ID
 
 # List of points with UTM
 # library(sf)
@@ -165,6 +170,7 @@ trd_station_type <-
     trp_id,
     station_type
   )
+# NVDB-ID
 
 trd_station_type |>
   readr::write_rds(
@@ -187,6 +193,7 @@ trd_toll_station_id <-
       TRUE ~ trp_id
     )
   )
+# Autopass-ID
 
 trd_toll_station_id |>
   readr::write_rds(
@@ -200,7 +207,16 @@ trd_toll_station_id |>
 this_citys_trps_all_adt_final <-
   readr::read_rds(
       "index_trp_metadata/trp_960.rds"
+  ) |>
+  dplyr::mutate(
+    trp_autopass_id =
+      dplyr::case_when(
+        is.na(autopass_id) ~ trp_id,
+        TRUE ~ autopass_id
+      )
   )
+# NVDB-ID
+# and hybrid columns
 
 trp_names <-
   this_citys_trps_all_adt_final |>
@@ -242,6 +258,7 @@ trp_toll_index_yearly <-
   dplyr::bind_rows(
     toll_index_yearly
   )
+# Autopass-ID
 
  #  dplyr::mutate(
  #    index = round(index, digits = 1)
@@ -271,6 +288,7 @@ trp_toll_index_yearly_short <-
     names_prefix = "index_",
     values_from = index
   )
+# Autopass-ID
 
 
 # Binding pointindices to all points
@@ -278,7 +296,7 @@ this_citys_trps_all_adt_final_index <-
   this_citys_trps_all_adt_final |>
   dplyr::left_join(
     trp_toll_index_yearly_short,
-    by = "trp_id"
+    by = dplyr::join_by(trp_autopass_id == trp_id)
   ) |>
   split_road_system_reference()
 

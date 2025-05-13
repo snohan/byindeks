@@ -66,7 +66,7 @@ trp_id_msnr <-
 {
 present_year <- 2025
 index_month <- 4 # the one to be published now
-city_number <- 959
+city_number <- 960
 }
 # End choose
 
@@ -340,51 +340,51 @@ if(!(city_number %in% c(1952, 955, 952, 959))){
 }
 
 # Solely for Excel ----
-if(city_number == 960){
-
-  trp_index_monthly_wide <-
-    trp_toll_index_monthly |>
-    tidyr::complete(
-      trp_id,
-      year,
-      month
-    ) |>
-    dplyr::mutate(
-      month_label = lubridate::make_date(
-        year = 2000,
-        month = month,
-        day = 1
-      ) |>
-        lubridate::month(label = TRUE)
-    ) |>
-    dplyr::select(
-      trp_id,
-      year,
-      month_label,
-      index
-    ) |>
-    tidyr::pivot_wider(
-      names_from = "month_label",
-      values_from = "index"
-    ) |>
-    dplyr::left_join(
-      this_citys_trps_all,
-      by = "trp_id"
-    ) |>
-    dplyr::select(
-      trp_id,
-      name,
-      road_category_and_number,
-      year,
-      jan:des
-    ) |>
-    dplyr::arrange(
-      name,
-      trp_id,
-      year
-    )
-
-}else{
+# if(city_number == 960){
+#
+#   trp_index_monthly_wide <-
+#     trp_toll_index_monthly |>
+#     tidyr::complete(
+#       trp_id,
+#       year,
+#       month
+#     ) |>
+#     dplyr::mutate(
+#       month_label = lubridate::make_date(
+#         year = 2000,
+#         month = month,
+#         day = 1
+#       ) |>
+#         lubridate::month(label = TRUE)
+#     ) |>
+#     dplyr::select(
+#       trp_id,
+#       year,
+#       month_label,
+#       index
+#     ) |>
+#     tidyr::pivot_wider(
+#       names_from = "month_label",
+#       values_from = "index"
+#     ) |>
+#     dplyr::left_join(
+#       this_citys_trps_all,
+#       by = "trp_id"
+#     ) |>
+#     dplyr::select(
+#       trp_id,
+#       name,
+#       road_category_and_number,
+#       year,
+#       jan:des
+#     ) |>
+#     dplyr::arrange(
+#       name,
+#       trp_id,
+#       year
+#     )
+#
+# }else{
 
   trp_index_monthly_wide <-
     trp_index_monthly |>
@@ -420,15 +420,15 @@ if(city_number == 960){
       name,
       road_category_and_number,
       year,
-      #jan:des
-      jan:apr
+      jan:des
+      #jan:apr
     ) |>
     dplyr::arrange(
       name,
       trp_id,
       year
     )
-}
+#}
 
 
 # City index ----

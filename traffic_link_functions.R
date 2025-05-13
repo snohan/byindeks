@@ -300,7 +300,7 @@ map_links_with_function_class <- function(link_df) {
     ) |>
     addPolylines(
       data = links_with_trp,
-      label = ~label_text,
+      #label = ~label_text,
       opacity = 1,
       weight = 8,
       color = ~ palette_function_class(function_class),
