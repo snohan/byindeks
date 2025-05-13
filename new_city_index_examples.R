@@ -119,6 +119,8 @@ missing <-
 # Some are outside urban area, some are missing from links
 
 ## MDT ----
+# TODO: heatmap per TRP per month, one for each year
+
 mdt_filtered <-
   readr::read_rds(
     paste0(
@@ -127,8 +129,19 @@ mdt_filtered <-
       ".rds"
     )
   )
+
+# To get the mdt_validated
+{
 source("exclude_trp_mdts_list.R")
-# TODO: heatmap per TRP per month, one for each year
+
+mdt_validated <-
+  mdt_validated |>
+  dplyr::inner_join(
+    # "inner" works as a filter here!
+    trp_weights,
+    by = dplyr::join_by(trp_id)
+  )
+}
 
 trp_mdt_ok_refyear <-
   mdt_validated |>
@@ -176,3 +189,74 @@ readr::write_csv2(
   mdt_yearly,
   "spesialuttak/mdt_bergen.csv"
 )
+
+
+## Index calculation ----
+# Since some TRPs are lost because they are outside area or missing from raw links,
+# a comparison between new and old methods must be based on same MDT data set, also.
+
+# Mostly interested in intervals of at least 12 months, thus limiting the examples.
+## All possible window indices ----
+calculate_all_rolling_indices_old <- function() {
+
+  all_12_month_indices <-
+    calculate_rolling_indices(12)
+
+  all_24_month_indices <-
+    calculate_rolling_indices(24)
+
+  all_36_month_indices <-
+    calculate_rolling_indices(36)
+
+  all_rolling_indices <-
+    dplyr::bind_rows(
+      all_12_month_indices,
+      all_24_month_indices,
+      all_36_month_indices
+    )
+
+  return(all_rolling_indices)
+}
+
+all_rolling_indices_old <- calculate_all_rolling_indices_old()
+
+# The offical results
+all_rolling_indices_official <-
+  readr::read_rds(
+    file =
+      paste0(
+        "data_indexpoints_tidy/rolling_indices_",
+        city_number,
+        ".rds"
+      )
+  ) |>
+  dplyr::bind_rows()
+
+
+prepare_rolling_indexes_for_comparison <- function(rolling_index_df) {
+
+  rolling_index_df |>
+    dplyr::mutate(
+      ci_width = ci_upper - ci_lower
+    ) |>
+    dplyr::select(
+      index_p,
+      n_trp,
+      ci_width,
+      index_period,
+      window
+    )
+
+}
+
+compare_indexes <-
+  dplyr::inner_join(
+    prepare_rolling_indexes_for_comparison(all_rolling_indices_official),
+    prepare_rolling_indexes_for_comparison(all_rolling_indices_old),
+    by = dplyr::join_by(index_period, window),
+    suffix = c("_official", "_old")
+  ) |>
+  dplyr::relocate(
+    index_period,
+    window
+  )
