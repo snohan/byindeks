@@ -1,4 +1,4 @@
-# Filter traffic links
+# Filter traffic links ----
 
 filter_traffic_links_by_county <- function(county_number) {
 
@@ -95,6 +95,48 @@ filter_links_with_trp <- function() {
     )
 }
 
+get_link_population_inside_municipalities <- function(area_municipality_ids) {
+
+  # municipality_ids: integer vector
+  # 'links' must exist in global environment
+
+  # Links inside and crossing borders:
+  link_ids_intersecting_municipalities <-
+    link_municipality_id |>
+    dplyr::filter(
+      municipality_id %in% area_municipality_ids
+    )
+
+  link_ids_crossing_outer_borders <-
+    link_municipality_id |>
+    dplyr::filter(
+      link_id %in% link_ids_intersecting_municipalities$link_id,
+      !(municipality_id %in% area_municipality_ids)
+    )
+
+  link_ids_inside_municipalities <-
+    link_ids_intersecting_municipalities |>
+    dplyr::filter(
+      !(link_id %in% link_ids_crossing_outer_borders$link_id)
+    )
+
+  # Remove duplicates from links crossing internal borders in case of neighboring municipalities
+  link_ids_inside_municipalities_unique <-
+    link_ids_inside_municipalities$link_id |>
+    base::unique()
+
+  links_inside_municipalities <-
+    links |>
+    dplyr::filter(
+      link_id %in% link_ids_inside_municipalities_unique
+    )
+
+  return(links_inside_municipalities)
+
+}
+
+
+# Visualize link distributions ----
 summarise_link_population_by_function_class <- function(link_population) {
 
   function_class_pop <-
@@ -154,60 +196,6 @@ summarise_link_population_by_function_class <- function(link_population) {
 
 }
 
-# Statistical distance
-# Comparing sample and population - do they look alike?
-
-# Kji-kvadrat test (med MC)
-# test <- chisq.test(
-#   x, # tw in selection
-#   p, # expected probabilities, percentage tw in population
-#   simulate.p.value = TRUE
-# )
-# This won't work because the observations x are too large
-
-# chi_test <-
-#   stats::chisq.test(
-#     #x = function_class_stats_wide$tw_utvalg,
-#     #x = c(103980352, 25393543, 44294894, 10000),
-#     x = function_class_stats_wide$fake,
-#     p = function_class_stats_wide$percentage_tw_populasjon,
-#     simulate.p.value = TRUE
-#   )
-# df is supposed to be NA in this case, as this is a goodness of fit-test
-#chi_test
-
-# Total Variation distance (not the  supremum definition, which is event-wise, rather the pd-one - easy to understand)
-# Hellinger distance (between 0 and 1, more difficult, 0 to 1)
-# Kullback-Leibler Divergence (too complicated, from 0 to Inf) - won't work when some category is zero!
-
-calculate_statistical_distance <- function(function_class_stats_df) {
-
-  function_class_stats_wide <-
-    function_class_stats_df |>
-    dplyr::select(
-      function_class,
-      selection,
-      percentage_tw
-    ) |>
-    tidyr::pivot_wider(
-      names_from = selection,
-      values_from = percentage_tw
-    ) |>
-    dplyr::mutate(
-      variation_distance = abs(utvalg - populasjon),
-      squared_diff_of_square_roots = (sqrt(utvalg) - sqrt(populasjon))^2
-    )
-
-  function_class_stats_summarised <-
-    function_class_stats_wide |>
-    dplyr::summarise(
-      tvd = round(0.5 * sum(variation_distance), 2),
-      hellinger = round((1 / sqrt(2)) * sqrt(sum(squared_diff_of_square_roots)), 2)
-    )
-
-  return(function_class_stats_summarised)
-
-}
 
 visualize_function_class_distribution <- function(link_population, sub_title) {
 
@@ -440,6 +428,63 @@ calculate_ci_width <- function(link_df) {
 
 }
 
+
+# Graph metrics ----
+# Statistical distance
+# Comparing sample and population - do they look alike?
+
+# Kji-kvadrat test (med MC)
+# test <- chisq.test(
+#   x, # tw in selection
+#   p, # expected probabilities, percentage tw in population
+#   simulate.p.value = TRUE
+# )
+# This won't work because the observations x are too large
+
+# chi_test <-
+#   stats::chisq.test(
+#     #x = function_class_stats_wide$tw_utvalg,
+#     #x = c(103980352, 25393543, 44294894, 10000),
+#     x = function_class_stats_wide$fake,
+#     p = function_class_stats_wide$percentage_tw_populasjon,
+#     simulate.p.value = TRUE
+#   )
+# df is supposed to be NA in this case, as this is a goodness of fit-test
+#chi_test
+
+# Total Variation distance (not the  supremum definition, which is event-wise, rather the pd-one - easy to understand)
+# Hellinger distance (between 0 and 1, more difficult, 0 to 1)
+# Kullback-Leibler Divergence (too complicated, from 0 to Inf) - won't work when some category is zero!
+
+calculate_statistical_distance <- function(function_class_stats_df) {
+
+  function_class_stats_wide <-
+    function_class_stats_df |>
+    dplyr::select(
+      function_class,
+      selection,
+      percentage_tw
+    ) |>
+    tidyr::pivot_wider(
+      names_from = selection,
+      values_from = percentage_tw
+    ) |>
+    dplyr::mutate(
+      variation_distance = abs(utvalg - populasjon),
+      squared_diff_of_square_roots = (sqrt(utvalg) - sqrt(populasjon))^2
+    )
+
+  function_class_stats_summarised <-
+    function_class_stats_wide |>
+    dplyr::summarise(
+      tvd = round(0.5 * sum(variation_distance), 2),
+      hellinger = round((1 / sqrt(2)) * sqrt(sum(squared_diff_of_square_roots)), 2)
+    )
+
+  return(function_class_stats_summarised)
+
+}
+
 table_statistical_distance_comparison <- function(stat_df) {
 
   stat_df |>
@@ -455,12 +500,6 @@ table_statistical_distance_comparison <- function(stat_df) {
     bg(bg = "#ED9300", part = "header")
 }
 
-
-calculate_error_margin_with_finite_population <- function() {
-
-
-
-}
 
 # Create graph
 create_graph_from_links <- function(link_df) {
@@ -681,46 +720,5 @@ calculate_mean_distance_to_city_index_points <- function(l_graph) {
     sum(distance_tibble$min_dist) / (nrow(non_selected_nodes) - nrow(selected_nodes))
 
   return(mean_shortest_distance)
-
-}
-
-
-get_link_population_inside_municipalities <- function(area_municipality_ids) {
-
-  # municipality_ids: integer vector
-  # 'links' must exist in global environment
-
-  # Links inside and crossing borders:
-  link_ids_intersecting_municipalities <-
-    link_municipality_id |>
-    dplyr::filter(
-      municipality_id %in% area_municipality_ids
-    )
-
-  link_ids_crossing_outer_borders <-
-    link_municipality_id |>
-    dplyr::filter(
-      link_id %in% link_ids_intersecting_municipalities$link_id,
-      !(municipality_id %in% area_municipality_ids)
-    )
-
-  link_ids_inside_municipalities <-
-    link_ids_intersecting_municipalities |>
-    dplyr::filter(
-      !(link_id %in% link_ids_crossing_outer_borders$link_id)
-    )
-
-  # Remove duplicates from links crossing internal borders in case of neighboring municipalities
-  link_ids_inside_municipalities_unique <-
-    link_ids_inside_municipalities$link_id |>
-    base::unique()
-
-  links_inside_municipalities <-
-    links |>
-    dplyr::filter(
-      link_id %in% link_ids_inside_municipalities_unique
-    )
-
-  return(links_inside_municipalities)
 
 }

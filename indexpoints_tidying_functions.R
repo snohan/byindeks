@@ -1,7 +1,10 @@
 # Index tidying functions
 
+# Setup ----
 library(ggpattern)
 
+
+# Read CSV ----
 read_pointindex_CSV <- function(filename) {
 
   # Read standard csv export from Datainn
@@ -81,7 +84,6 @@ read_old_pointindex_csv_monthly <- function(filename, given_year) {
 
 }
 
-
 #filename <- "data_index_raw/punktindeks_nord-jaeren-2020-01.csv"
 #filename <- "data_index_raw/pointindex_trondheim-2019-12_2018.csv"
 read_pointindex_csv_with_volumes <- function(filename) {
@@ -111,6 +113,29 @@ read_bikepointindex_csv <- function(filename) {
     select(msnr, index)
 }
 
+read_bike_index_csv <- function(filename) {
+  # Read standard csv export from Datainn
+  read.csv2(filename) %>%
+    filter(Vegkategori == "E+R+F+K",
+           døgn == "Alle",
+           lengdeklasse == "Alle",
+           periode == "Hittil i år") %>%
+    mutate(index = as.numeric(str_replace(indeks, ",", ".")),
+           dekning = as.numeric(str_replace(dekning, ",", ".")),
+           standardavvik = as.numeric(as.character(standardavvik)),
+           konfidensintervall = as.numeric(as.character(konfidensintervall))) %>%
+    select(index, dekning, standardavvik, konfidensintervall) %>%
+    as_tibble()
+}
+
+
+# Utils ----
+index_converter <- function(index) {
+  ifelse(
+    is.na(index),
+    1,
+    index/100 + 1)
+}
 
 monthly_city_index <- function(city_index_for_a_year) {
 
@@ -129,29 +154,43 @@ monthly_city_index <- function(city_index_for_a_year) {
 
 }
 
-read_bike_index_csv <- function(filename) {
-  # Read standard csv export from Datainn
-  read.csv2(filename) %>%
-    filter(Vegkategori == "E+R+F+K",
-           døgn == "Alle",
-           lengdeklasse == "Alle",
-           periode == "Hittil i år") %>%
-    mutate(index = as.numeric(str_replace(indeks, ",", ".")),
-           dekning = as.numeric(str_replace(dekning, ",", ".")),
-           standardavvik = as.numeric(as.character(standardavvik)),
-           konfidensintervall = as.numeric(as.character(konfidensintervall))) %>%
-    select(index, dekning, standardavvik, konfidensintervall) %>%
-    as_tibble()
+filter_city_index <- function(city_index_df, last_month, period_type) {
+
+  city_index_df |>
+    dplyr::filter(
+      month == last_month,
+      road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+      length_range == "[..,5.6)",
+      #length_range == "[5.6,..)",
+      period == period_type
+    )
+
+}
+
+# For TRD
+calculate_area_index <- function(trp_index_df) {
+
+  trp_index_df |>
+    dplyr::mutate(
+      weight = (base_volume / sum(base_volume))
+    ) |>
+    dplyr::summarise(
+      city_base_volume = sum(base_volume),
+      city_calc_volume = sum(calc_volume),
+      index_p = (city_calc_volume / city_base_volume - 1 ) * 100,
+      n_trp = n(),
+      standard_deviation = sqrt((1 / (1 - sum(weight^2) )) * sum(weight * (index - index_p)^2) ),
+      standard_error = sqrt(sum(weight^2) * standard_deviation^2),
+      .groups = "drop"
+    )|>
+    dplyr::select(
+      -city_base_volume,
+      -city_calc_volume
+    )
 }
 
 
-index_converter <- function(index) {
-  ifelse(
-    is.na(index),
-    1,
-    index/100 + 1)
-}
-
+# Chained index ----
 # Compound ci, need to iterate pairwise through the years!
 # I.e. make accumulated index for one more year
 #index_from_refyear <- 100*(prod(city_index_grenland$index_i)-1)
@@ -342,6 +381,45 @@ calculate_all_possible_36_month_indexes <- function(city_monthly_df) {
 }
 
 
+cum_se <- function(i1, i2, se1, se2) {
+
+  cum_se =
+    100 * sqrt(
+      i1^2 * 1e-4 * se2^2 + i2^2 * 1e-4 * se1^2 + 1e-4 * se1^2 * 1e-4 * se2^2
+    )
+}
+
+
+calculate_index_chain <- function(direct) {
+
+  chained <-
+    dplyr::bind_rows(
+      calculate_any_two_year_index(
+        direct[1,],
+        direct[2,]
+      )
+    )
+
+  n_chained_to_calculate <- base::nrow(direct) - 2
+
+  for (i in 1:n_chained_to_calculate) {
+
+    chained <-
+      chained |>
+      dplyr::bind_rows(
+        calculate_any_two_year_index(
+          chained[i,],
+          direct[i+2,]
+        )
+      )
+  }
+
+  return(chained)
+
+}
+
+
+# Rolling index ----
 filter_mdt <- function(mdt_df, year_dbl) {
 
   mdt_df |>
@@ -533,7 +611,7 @@ calculate_rolling_indices_by_mdt <-
 
 
 calculate_rolling_indices_tw <-
-  function(base_year, last_year_month, window_length, mdt_df, grouping) {
+  function(base_year, last_year_month, window_length, mdt_df, population_size, grouping) {
 
     # TODO: much is the same as old, tv version - separate into more functions?
 
@@ -542,6 +620,11 @@ calculate_rolling_indices_tw <-
     # by_area
     # by_sub_area
     # by_trp
+
+    # For testing:
+    base_year <- 2018
+    window_length <- 12
+    mdt_df <- mdt_validated
 
     least_number_of_month_enums <-
       dplyr::case_when(
@@ -558,6 +641,15 @@ calculate_rolling_indices_tw <-
 
     last_year_month <-
       lubridate::as_date(last_year_month)
+
+    weights_tw <-
+      mdt_df |>
+      dplyr::select(trp_id, length_m) |>
+      dplyr::distinct() |>
+      dplyr::mutate(
+        length_km = length_m / 1e3
+      ) |>
+      dplyr::select(-length_m)
 
     mean_mdt_in_window <-
       mdt_df |>
@@ -603,29 +695,56 @@ calculate_rolling_indices_tw <-
         mean_mdt_in_window,
         by = "trp_id"
       ) |>
+      dplyr::left_join(
+        weights_tw,
+        by = dplyr::join_by(trp_id)
+      ) |>
       dplyr::mutate(
-        w = mean_mdt.x / sum(mean_mdt.x),
+        tw.x = length_km * mean_mdt.x,
+        #tw.y = length_km * mean_mdt.y,
+        w_tw = tw.x / sum(tw.x),
+        w_tv = mean_mdt.x / sum(mean_mdt.x),
+        w_length = length_km / sum(tw.x),
         trp_index_i = mean_mdt.y / mean_mdt.x,
-        #weigted_mean = sum(w * trp_index_i), # same as index_i :)
-        index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
-        sd_component = w * (trp_index_i - index_i)^2
+        index_i = sum(w_tw * trp_index_i),
+        #index_i_2 = sum(w_length * mean_mdt.y),
+        sd_component = w_tw * (trp_index_i - index_i)^2,
+        # a1 = mean_mdt.x * mean_mdt.y,
+        # sum_a1 = sum(a1),
+        # a2 = mean_mdt.x^2,
+        # sum_a2 = sum(a2),
+        # test = sum_a1 / sum_a2, # ok
+        # alpha = sum(mean_mdt.x * mean_mdt.y) / sum(mean_mdt.x^2)
       )
+
+    # Normalized
+    #sum(index_df$w_tw)
+    # Not normalized
+    #sum(index_df$w_length)
 
     if(grouping == "by_area") {
       index_df_grouped <-
         index_df |>
         dplyr::summarise(
-          index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
+          index_i = sum(w_tw * trp_index_i),
           index_p = (index_i - 1) * 100,
           n_trp = n(),
-          n_eff = 1 / sum(w^2),
+          n_eff = 1 / sum(w_tw^2),
+          n_eff_tv = 1 / sum(w_tv^2),
           sd_sample_p = 100 * sqrt(sum(sd_component) * (1/(1 - 1/n_eff))),
-          standard_error_p = sd_sample_p / sqrt(n_eff),
+          standard_error_p = sd_sample_p / sqrt(n_eff) * (1 - n_trp / population_size),
+          cv_tv = sd(mean_mdt.x) / mean(mean_mdt.x),
+          cv_tw = sd(tw.x) / mean(tw.x),
+          alpha = sum(mean_mdt.x * mean_mdt.y) / sum(mean_mdt.x^2),
+          var_model_s = (1/(n_trp - 1)) * sum((mean_mdt.y - alpha * mean_mdt.x)^2),
+          se_model_p = 100 * sqrt(sum(w_length^2) * var_model_s),
           .groups = "drop"
         ) |>
         dplyr::mutate(
-          ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
-          ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error_p, 1)
+          #ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
+          #ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
+          em_selection = round(-stats::qt(0.025, n_trp - 1) * standard_error_p, 2),
+          em_model = round(-stats::qt(0.025, n_trp - 1) * se_model_p, 2)
         )
     }
 
@@ -719,7 +838,95 @@ calculate_rolling_indices <- function(window_length, grouping = "by_area") {
 
 }
 
+calculate_rolling_indices_tw_all <- function(window_length, population_size, grouping = "by_area") {
 
+  base::stopifnot(window_length %% 12 == 0)
+
+  n_years <- window_length / 12
+
+  first_possible_year_month <-
+    lubridate::as_date(
+      paste0(
+        reference_year + n_years,
+        "-12-01"
+      )
+    )
+
+  year_months_possible <-
+    base::seq.Date(
+      from = first_possible_year_month,
+      to = last_year_month,
+      by = "month"
+    )
+
+  purrr::map_dfr(
+    year_months_possible,
+    ~ calculate_rolling_indices_tw(reference_year, .x, window_length, mdt_validated, population_size, grouping)
+  )
+
+}
+
+calculate_all_rolling_indices_old <- function() {
+
+  all_12_month_indices <-
+    calculate_rolling_indices(12)
+
+  all_24_month_indices <-
+    calculate_rolling_indices(24)
+
+  all_36_month_indices <-
+    calculate_rolling_indices(36)
+
+  all_rolling_indices <-
+    dplyr::bind_rows(
+      all_12_month_indices,
+      all_24_month_indices,
+      all_36_month_indices
+    )
+
+  return(all_rolling_indices)
+}
+
+calculate_all_rolling_indices_tw <- function(population_size) {
+
+  all_12_month_indices <-
+    calculate_rolling_indices_tw_all(12, population_size)
+
+  all_24_month_indices <-
+    calculate_rolling_indices_tw_all(24, population_size)
+
+  all_36_month_indices <-
+    calculate_rolling_indices_tw_all(36, population_size)
+
+  all_rolling_indices <-
+    dplyr::bind_rows(
+      all_12_month_indices,
+      all_24_month_indices,
+      all_36_month_indices
+    )
+
+  return(all_rolling_indices)
+}
+
+prepare_rolling_indexes_for_comparison <- function(rolling_index_df) {
+
+  rolling_index_df |>
+    dplyr::mutate(
+      ci_width = ci_upper - ci_lower
+    ) |>
+    dplyr::select(
+      index_p,
+      n_trp,
+      n_eff,
+      ci_width,
+      index_period,
+      window
+    )
+
+}
+
+
+# Visualize ----
 #trp_mdt_long_format <- test
 create_mdt_barplot <- function(trp_mdt_long_format) {
 
@@ -805,77 +1012,9 @@ create_mdt_barplot <- function(trp_mdt_long_format) {
 }
 
 
-calculate_area_index <- function(trp_index_df) {
-
-  trp_index_df |>
-    dplyr::mutate(
-      weight = (base_volume / sum(base_volume))
-    ) |>
-    dplyr::summarise(
-      city_base_volume = sum(base_volume),
-      city_calc_volume = sum(calc_volume),
-      index_p = (city_calc_volume / city_base_volume - 1 ) * 100,
-      n_trp = n(),
-      standard_deviation = sqrt((1 / (1 - sum(weight^2) )) * sum(weight * (index - index_p)^2) ),
-      standard_error = sqrt(sum(weight^2) * standard_deviation^2),
-      .groups = "drop"
-    )|>
-    dplyr::select(
-      -city_base_volume,
-      -city_calc_volume
-    )
-}
 
 
-filter_city_index <- function(city_index_df, last_month, period_type) {
-
-  city_index_df |>
-    dplyr::filter(
-      month == last_month,
-      road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
-      length_range == "[..,5.6)",
-      #length_range == "[5.6,..)",
-      period == period_type
-    )
-
-}
 
 
-cum_se <- function(i1, i2, se1, se2) {
-
-  cum_se =
-    100 * sqrt(
-      i1^2 * 1e-4 * se2^2 + i2^2 * 1e-4 * se1^2 + 1e-4 * se1^2 * 1e-4 * se2^2
-    )
-}
-
-
-calculate_index_chain <- function(direct) {
-
-  chained <-
-    dplyr::bind_rows(
-      calculate_any_two_year_index(
-        direct[1,],
-        direct[2,]
-      )
-    )
-
-  n_chained_to_calculate <- base::nrow(direct) - 2
-
-  for (i in 1:n_chained_to_calculate) {
-
-    chained <-
-      chained |>
-      dplyr::bind_rows(
-        calculate_any_two_year_index(
-          chained[i,],
-          direct[i+2,]
-        )
-      )
-  }
-
-  return(chained)
-
-}
 
 
