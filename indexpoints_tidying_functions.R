@@ -622,9 +622,9 @@ calculate_rolling_indices_tw <-
     # by_trp
 
     # For testing:
-    base_year <- 2018
-    window_length <- 12
-    mdt_df <- mdt_validated
+    # base_year <- 2018
+    # window_length <- 12
+    # mdt_df <- mdt_validated
 
     least_number_of_month_enums <-
       dplyr::case_when(
@@ -706,6 +706,7 @@ calculate_rolling_indices_tw <-
         w_tv = mean_mdt.x / sum(mean_mdt.x),
         w_length = length_km / sum(tw.x),
         trp_index_i = mean_mdt.y / mean_mdt.x,
+        trp_index_p = (trp_index_i - 1) * 100,
         index_i = sum(w_tw * trp_index_i),
         #index_i_2 = sum(w_length * mean_mdt.y),
         sd_component = w_tw * (trp_index_i - index_i)^2,
@@ -723,6 +724,31 @@ calculate_rolling_indices_tw <-
     #sum(index_df$w_length)
 
     if(grouping == "by_area") {
+
+      calculate_tw_mean <- function(df, indices) {
+
+        bootstrapped_df <- df[indices,] # allows boot to select sample
+
+        summarised_df <-
+          bootstrapped_df |>
+          dplyr::summarise(
+            index_i = sum(w_tw * trp_index_i),
+            index_p = (index_i - 1) * 100,
+          )
+
+        return(summarised_df$index_p)
+      }
+
+      bootstrap_object <-
+        boot::boot(
+          data = index_df,
+          statistic = calculate_tw_mean,
+          R = 1000
+        )
+
+      booted_cis <- boot::boot.ci(bootstrap_object)
+      # bootsurv::pseudopop.boot.stsrs ???
+
       index_df_grouped <-
         index_df |>
         dplyr::summarise(
@@ -744,7 +770,9 @@ calculate_rolling_indices_tw <-
           #ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
           #ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
           em_selection = round(-stats::qt(0.025, n_trp - 1) * standard_error_p, 2),
-          em_model = round(-stats::qt(0.025, n_trp - 1) * se_model_p, 2)
+          em_model = round(-stats::qt(0.025, n_trp - 1) * se_model_p, 2),
+          bs_bca_lower = booted_cis$bca[1,4],
+          bs_bca_upper = booted_cis$bca[1,5]
         )
     }
 

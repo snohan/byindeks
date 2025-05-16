@@ -140,7 +140,7 @@ urban_areas_convex_hull <-
 
 plot(urban_areas_convex_hull$geometry)
 
-readr::write_rds(urban_areas_convex_hull, "representativity/urban_area_bergen.rds")
+readr::write_rds(urban_areas_bergen, "representativity/urban_area_bergen.rds")
 
 
 ## City TRPs ----
@@ -250,4 +250,201 @@ map_links_with_function_class(links_bergen) |>
 readr::write_rds(
   links_bergen,
   "traffic_link_pop/links_bergen.rds"
+)
+
+
+# Trondheim ----
+city_number <- "960"
+
+## City area ----
+# Nullvekstmålet gjelder innenfor kommunene Trondheim, Melhus, Skaun, Orkland, Malvik, Stjørdal.
+
+# Trondheim 5001
+# Melhus 5028
+# Skaun 5029
+# Orkland 5059
+# Malvik 5031
+# Stjørdal 5035
+
+municipality_ids <- c(5001, 5028, 5029, 5059, 5031, 5035)
+
+link_municipality_id_trondheim <-
+  link_municipality_id |>
+  dplyr::filter(
+    municipality_id %in% municipality_ids
+  ) |>
+  dplyr::distinct()
+
+municipality_polygon_trondheim <-
+  purrr::map(
+    municipality_ids,
+    ~ hent_kommune(.x)
+  ) |>
+  dplyr::bind_rows() |>
+  sf::st_union() |>
+  sf::st_transform("wgs84")
+
+plot(municipality_polygon_trondheim)
+
+readr::write_rds(
+  municipality_polygon_trondheim,
+  "traffic_link_pop/municipality_polygon_trondheim.rds"
+)
+
+
+## Urban area ----
+# TODO:
+# Pick urban areas inside area polygon
+
+# Filter urban areas by area polygon
+urban_areas_trondheim <-
+  urban_areas |>
+  sf::st_filter(municipality_polygon_trondheim, .predicate = st_intersects) |>
+  dplyr::filter(
+    !(tettstednummer %in% c(6611, 6654)) # Løkken verk, Lundamo too remote?
+  )
+
+plot(urban_areas_trondheim$geometry)
+
+# Simplifing the multipolygon to its convex hull in order to keep links between subareas.
+# This might lead to the inclusion of some unwanted links, but supposedly these are fewer than those we would miss.
+urban_areas_convex_hull <-
+  urban_areas_trondheim |>
+  sf::st_convex_hull() |>
+  sf::st_union() |>
+  sf::st_convex_hull()
+
+plot(urban_areas_convex_hull)
+
+readr::write_rds(urban_areas_trondheim, "representativity/urban_area_trondheim.rds")
+
+
+## City TRPs ----
+this_citys_trps_all_adt_final <-
+  readr::read_rds(
+    file = paste0(
+      "index_trp_metadata/trp_",
+      city_number,
+      ".rds"
+    )
+  )
+
+link_trp_id_city <-
+  link_trp_id |>
+  dplyr::filter(
+    trp_id %in% this_citys_trps_all_adt_final$trp_id
+  )
+
+link_toll_id_city <-
+  link_toll_id |>
+  dplyr::filter(
+    toll_id %in% this_citys_trps_all_adt_final$trp_id
+  ) |>
+  dplyr::rename(
+    trp_id = toll_id
+  )
+
+link_trp_id_city_all <-
+  dplyr::bind_rows(
+    link_trp_id_city,
+    link_toll_id_city
+  )
+
+missing <-
+  this_citys_trps_all_adt_final |>
+  dplyr::filter(
+    !(trp_id %in% link_trp_id_city_all$trp_id)
+  )
+
+
+## Link population ----
+links_trondheim <-
+  links_2024 |>
+  dplyr::filter(
+    link_id %in% link_municipality_id_trondheim$link_id
+  ) |>
+  sf::st_filter(urban_areas_convex_hull, .predicate = st_intersects) |>
+  # # Add some links
+  # dplyr::bind_rows(
+  #   links_2024 |>
+  #     dplyr::filter(
+  #       link_id %in% c(
+  #       )
+  #     )
+  # ) |>
+  # Remove some links
+  dplyr::filter(
+    !(link_id %in% c(
+      "0.0@1894431-0.58389315@578621",
+      "0.14550818-0.79428077@578644",
+      "0.53103253-0.85434986@72832",
+      "0.0-0.31477798@72825",
+      "0.03295556-0.2516549@72816",
+      "0.0-0.6999057@72844",
+      "0.32247438@72837-0.17890729@72326",
+      "0.50173511-0.74177907@72322",
+      "0.01461415@72322-0.49617953@72322",
+      "0.02138781-1.0@72671",
+      "0.0-0.5831847@72317",
+      "0.01434102@3293702-0.51747797@3293701",
+      "0.0@72167-1.0@3403124",
+      "0.0@3403125-1.0@3293717",
+      "0.56535722@3293701-0.97017035@72809",
+      "0.0@3293687-1.0@72646",
+      "0.41121651@72313-0.02582217@72836",
+      "0.02582217-0.20243871@72836",
+      "0.20243871-0.84854102@72836",
+      "0.84854102@72836-0.38777253@72314",
+      "0.38777253-0.43638662@72314",
+      "0.43638662@72314-1.0@2487849",
+      "0.0@42842-0.33210306@42346",
+      "0.33210306@42346-0.54681195@42346",
+      "0.54681195-0.83544095@42346",
+      "0.0@3355204-1.0@3925056",
+      "0.0@2599730-1.0@72680",
+      "0.81432724@42835-0.38680226@42837",
+      "0.42222879@72677-1.0@42840",
+      "0.02760821-0.03295556@72816",
+      "0.49617953-0.50173511@72322",
+      "0.51747797-0.56535722@3293701",
+      "0.0-1.0@41397",
+      "0.0-1.0@42838",
+      "0.20717289-0.81432724@42835",
+      "0.67943695-1.0@72678",
+      "0.08266532-0.42222879@72677",
+      "0.0@2200826-0.6423011@2739613",
+      "0.0-1.0@2739617",
+      "0.6423011-1.0@2739613",
+      "0.32162572-1.0@2739612",
+      "0.0-0.32162572@2739612",
+      "0.18437181-0.72729001@72696"
+    )),
+    function_class != "E"
+  ) |>
+  dplyr::left_join(
+    link_trp_id_city_all,
+    by = dplyr::join_by(link_id)
+  ) |>
+  dplyr::rename(
+    point_id = trp_id
+  )
+
+# Visual check
+map_links_with_function_class(links_trondheim) |>
+  addPolygons(
+    data = municipality_polygon_trondheim,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  ) |>
+  addPolygons(
+    data = urban_areas_trondheim,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  )
+
+readr::write_rds(
+  links_trondheim,
+  "traffic_link_pop/links_trondheim.rds"
 )

@@ -49,6 +49,7 @@ library(leaflet)
 
 source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
 source("H:/Programmering/R/byindeks/traffic_link_functions.R")
+source("H:/Programmering/R/byindeks/index_report_functions.R")
 
 flextable::set_flextable_defaults(
   #font.size = 8,
@@ -105,6 +106,148 @@ links_nj <- readr::read_rds("representativity/link_population_nj.rds")
 links_nj_whole <- readr::read_rds("representativity/link_population_nj_whole.rds")
 urban_area_nj <- readr::read_rds("representativity/urban_area_nj.rds")
 agreement_area_nj <- readr::read_rds("representativity/agreement_area_nj.rds")
+
+links_bergen <- readr::read_rds("traffic_link_pop/links_bergen.rds")
+urban_area_bergen <- readr::read_rds("representativity/urban_area_bergen.rds")
+municipality_polygon_bergen <- readr::read_rds("traffic_link_pop/municipality_polygon_bergen.rds")
+
+links_trondheim <- readr::read_rds("traffic_link_pop/links_trondheim.rds")
+urban_area_trondheim <- readr::read_rds("representativity/urban_area_trondheim.rds")
+municipality_polygon_trondheim <- readr::read_rds("traffic_link_pop/municipality_polygon_trondheim.rds")
+
+# Calculation examples
+# Bergen
+indexes_examples_bergen <-
+  readr::read_rds("representativity/new_index_examples_bergen.rds")
+
+indexes_official_bergen <-
+  readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_8952.rds")) |>
+  dplyr::bind_rows()
+
+indexes_comparison_bergen <-
+  dplyr::bind_rows(
+    indexes_examples_bergen[[1]] |> 
+      dplyr::mutate(
+        version = "old"
+      ),
+    indexes_examples_bergen[[2]] |> 
+      dplyr::mutate(
+        version = "new"
+      ),
+    indexes_official_bergen |> 
+      dplyr::mutate(
+        version = "official"
+      )
+  )
+
+error_comparison_bergen <-
+  dplyr::bind_rows(
+    indexes_examples_bergen[[1]] |> 
+      dplyr::mutate(
+        version = "old",
+        em = (ci_upper - ci_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      ),
+    indexes_examples_bergen[[2]] |> 
+      dplyr::mutate(
+        version = "new_sample_fpc"
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em = em_selection
+      ),
+    indexes_examples_bergen[[2]] |> 
+      dplyr::mutate(
+        version = "new_model"
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em = em_model
+      ),
+    indexes_examples_bergen[[2]] |> 
+      dplyr::mutate(
+        version = "new_bs_bca",
+        em = (bs_bca_upper - bs_bca_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      ),
+    indexes_official_bergen |> 
+      dplyr::mutate(
+        version = "official",
+        em = (ci_upper - ci_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      )
+  )
+
+# Trondheim
+indexes_examples_trondheim <-
+  readr::read_rds("representativity/new_index_examples_trondheim.rds")
+
+indexes_official_trondheim <-
+  readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_960.rds")) |>
+  dplyr::bind_rows()
+
+indexes_comparison_trondheim <-
+  dplyr::bind_rows(
+    indexes_examples_trondheim[[1]] |> 
+      dplyr::mutate(
+        version = "old"
+      ),
+    indexes_examples_trondheim[[2]] |> 
+      dplyr::mutate(
+        version = "new"
+      ),
+    indexes_official_trondheim |> 
+      dplyr::mutate(
+        version = "official"
+      )
+  )
+
+error_comparison_trondheim <-
+  dplyr::bind_rows(
+    indexes_examples_trondheim[[1]] |> 
+      dplyr::mutate(
+        version = "old",
+        em = (ci_upper - ci_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      ),
+    indexes_examples_trondheim[[2]] |> 
+      dplyr::mutate(
+        version = "new_sample_fpc"
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em = em_selection
+      ),
+    indexes_examples_trondheim[[2]] |> 
+      dplyr::mutate(
+        version = "new_model"
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em = em_model
+      ),
+    indexes_examples_trondheim[[2]] |> 
+      dplyr::mutate(
+        version = "new_bs_bca",
+        em = (bs_bca_upper - bs_bca_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      ),
+    indexes_official_trondheim |> 
+      dplyr::mutate(
+        version = "official",
+        em = (ci_upper - ci_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      )
+  )
+
 ```
 
 
@@ -469,16 +612,144 @@ Tidsserier for de historiske indeksverdiene med:
 
 
 # Eksempel med Bergen
+Indekstall for Bergen er beregnet med ny metode. Siden byindeksens område er noe snevret inn til de største tettstedene, er ikke alle punkt fra den offisielle indeksen med i regneeksemplene. Det er derfor også regnet ut en indeks med gammel metode for at sammenligningen skal bli rettferdig.
 
-# Eksempel med Buskerudbyen
+```{r}
+#| label: fig-map_bergen
+#| message: false
+#| fig-cap: !expr map_caption
 
-## Populasjon
+map_links_with_function_class(links_bergen) |> 
+  addPolygons(
+    data = municipality_polygon_bergen,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  ) |>
+  addPolygons(
+    data = urban_area_bergen,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  )
+```
 
-## Representativitet over tid
+```{r}
+#| label: bergen_examples_12
+#| fig_cap: "Sammenligning av indekstall for Bergen, ett års glidende indeks."
 
-### Årlig indeks
+visualize_index_examples(indexes_comparison_bergen, "12_months", "Bergen, ett års glidende indeks", "Regneeksempler")
+```
 
-### Glidende indeks
+```{r}
+#| label: bergen_examples_36
+#| fig_cap: "Sammenligning av indekstall for Bergen, tre års glidende indeks."
+
+visualize_index_examples(indexes_comparison_bergen, "36_months", "Bergen, tre års glidende indeks", "Regneeksempler")
+```
+
+```{r}
+#| label: bergen_examples_error_12
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Bergen, ett års glidende indeks."
+
+visualize_error_examples(error_comparison_bergen, "12_months", "Bergen, ett års glidende indeks", "Regneeksempler")
+```
+
+```{r}
+#| label: bergen_examples_error_12_2
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Bergen, ett års glidende indeks."
+
+error_comparison_bergen |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("12_months", "Bergen, ett års glidende indeks", "Regneeksempler")
+```
+
+
+```{r}
+#| label: bergen_examples_error_36_2
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Bergen, tre års glidende indeks."
+
+error_comparison_bergen |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("36_months", "Bergen, tre års glidende indeks", "Regneeksempler")
+```
+
+
+# Eksempel med Trondheim
+```{r}
+#| label: fig-map_trd
+#| message: false
+#| fig-cap: !expr map_caption
+
+map_links_with_function_class(links_trondheim) |> 
+  addPolygons(
+    data = municipality_polygon_trondheim,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  ) |>
+  addPolygons(
+    data = urban_area_trondheim,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  )
+```
+
+```{r}
+#| label: trd_examples_12
+#| fig_cap: "Sammenligning av indekstall for Trondheim, ett års glidende indeks."
+
+visualize_index_examples(indexes_comparison_trondheim, "12_months", "Trondheim, ett års glidende indeks", "Regneeksempler")
+```
+
+
+```{r}
+#| label: trd_examples_36
+#| fig_cap: "Sammenligning av indekstall for Trondheim, tre års glidende indeks."
+
+visualize_index_examples(indexes_comparison_trondheim, "36_months", "Trondheim, tre års glidende indeks", "Regneeksempler")
+```
+
 
 ## Usikkerhet
 Sammenligne feilmarginens størrelse over tid.
+```{r}
+#| label: trd_examples_error_12
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Trondheim, ett års glidende indeks."
+
+visualize_error_examples(error_comparison_trondheim, "12_months", "Trondheim, ett års glidende indeks", "Regneeksempler")
+```
+
+```{r}
+#| label: trd_examples_error_12_2
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Trondheim, ett års glidende indeks."
+
+error_comparison_trondheim |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("12_months", "Trondheim, ett års glidende indeks", "Regneeksempler")
+```
+
+
+```{r}
+#| label: trd_examples_error_36_2
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Trondheim, tre års glidende indeks."
+
+error_comparison_trondheim |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("36_months", "Trondheim, tre års glidende indeks", "Regneeksempler")
+```
+
+
+## Representativitet over tid
+
+
+

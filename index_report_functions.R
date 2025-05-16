@@ -1,6 +1,8 @@
-#
+# Utils ----
 borderline <- officer::fp_border(color = "black", style = "solid", width = 1)
 
+
+# TRP tables ----
 create_point_table <- function(all_point_info_df) {
 
   all_point_info_df %>%
@@ -110,6 +112,53 @@ create_point_table_trd <- function(all_point_info_df) {
     height_all(height = .1)
 }
 
+table_bike_trps_with_sdt <- function(chosen_area_name) {
+
+  bike_trp_info |>
+    dplyr::filter(
+      area_name == chosen_area_name
+    ) |>
+    dplyr::mutate(
+      name = stringr::str_trunc(name, 30, "right")
+    ) |>
+    dplyr::select(
+      name,
+      road_category_and_number,
+      municipality_name,
+      year,
+      WINTER,
+      SPRING,
+      SUMMER,
+      FALL
+    ) |>
+    dplyr::arrange(
+      road_category_and_number
+    ) |>
+    flextable() |>
+    colformat_double(j = 4, big.mark = "", digits = 0) |>
+    set_header_labels(
+      name = "Registreringspunkt",
+      road_category_and_number = "Veg",
+      municipality_name = "Kommune",
+      year = "År",
+      WINTER = "Vinter",
+      SPRING = "Vår",
+      SUMMER = "Sommer",
+      FALL = "Høst"
+    ) |>
+    align(j = 4, align = "center", part = "all") |>
+    bold(part = "header") |>
+    font(fontname = "Lucida Sans Unicode", part = "all")  |>
+    fontsize(size = 7, part = "all") |>
+    bg(bg = "#ED9300", part = "header") |>
+    border_remove() |>
+    hline_top(part = "header", border = borderline) |>
+    hline_bottom(part = "all", border = borderline) |>
+    autofit()
+}
+
+
+# Maps ----
 create_point_adt_map <- function(all_point_info_df) {
 
   palett_adt <-
@@ -558,6 +607,7 @@ map_links_with_trp_in_index <- function(link_df) {
 }
 
 
+# Area index tables ----
 create_city_index_table <- function(city_info) {
 
   city_table <- city_info %>%
@@ -846,7 +896,33 @@ road_category_names <- data.frame(
   road_category = c("E", "R", "F", "K"),
   road_category_name = c("Europaveg", "Riksveg", "Fylkesveg", "Kommunalveg"))
 
+create_corridor_index_table <- function(corridor_index_all_years) {
 
+  corridor_table <- corridor_index_all_years %>%
+    dplyr::select(year, index_total, index_short, index_long) %>%
+    flextable::flextable() %>%
+    colformat_num(j = 2:4, digits = 1) %>%
+    set_header_labels(year = "Periode",
+                      index_total = "Endring i alle \n (%)",
+                      index_short = "Endring i lette \n (%)",
+                      index_long = "Endring i tunge \n (%)") %>%
+    bold(part = "header") %>%
+    bg(bg = "#ED9300", part = "header") %>%
+    border_remove() %>%
+    hline_top(part = "header", border = borderline) %>%
+    hline_bottom(part = "all", border = borderline) %>%
+    align(align = "center", part = "header") %>%
+    autofit() %>%
+    height_all(height = .2) %>%
+    set_caption("Estimert endring i trafikkmengde.",
+                autonum = table_numbers,
+                style = "Tabelltekst")
+
+  return(corridor_table)
+}
+
+
+# Road length ----
 read_road_length_csv <- function(road_csv) {
 
   readr::read_csv2(road_csv,
@@ -859,7 +935,6 @@ read_road_length_csv <- function(road_csv) {
                                   levels = c("E", "R", "F", "K"))) %>%
     arrange(municipality_number, road_category)
 }
-
 
 create_municipality_road_length_table <- function(road_lengths) {
 
@@ -910,32 +985,8 @@ create_city_road_length_table <- function(road_lengths) {
   return(road_lengths_table)
 }
 
-create_corridor_index_table <- function(corridor_index_all_years) {
 
-  corridor_table <- corridor_index_all_years %>%
-    dplyr::select(year, index_total, index_short, index_long) %>%
-    flextable::flextable() %>%
-    colformat_num(j = 2:4, digits = 1) %>%
-    set_header_labels(year = "Periode",
-                      index_total = "Endring i alle \n (%)",
-                      index_short = "Endring i lette \n (%)",
-                      index_long = "Endring i tunge \n (%)") %>%
-    bold(part = "header") %>%
-    bg(bg = "#ED9300", part = "header") %>%
-    border_remove() %>%
-    hline_top(part = "header", border = borderline) %>%
-    hline_bottom(part = "all", border = borderline) %>%
-    align(align = "center", part = "header") %>%
-    autofit() %>%
-    height_all(height = .2) %>%
-    set_caption("Estimert endring i trafikkmengde.",
-                autonum = table_numbers,
-                style = "Tabelltekst")
-
-  return(corridor_table)
-}
-
-
+# Plots ----
 create_city_monthly_index_plot <- function(city_monthly) {
 
   city_monthly %>%
@@ -954,55 +1005,6 @@ create_city_monthly_index_plot <- function(city_monthly) {
          caption = caption_credit) +
     ggtitle("Estimert endring i trafikkmengde per måned",
             subtitle = "Trafikkmengde sammenlignet med samme måned året før")
-
-}
-
-calculate_all_index_chain_combinations <- function(df_index_i) {
-
-  # Input: A df with two columns, year and index_i
-  number_of_rows <- nrow(df_index_i)
-  year_count <- 1
-
-  first_index_year <- min(df_index_i$year)
-  resulting_df <-
-    df_index_i %>%
-    dplyr::select(year) %>%
-    tibble::add_row(year = first_index_year - 1) %>%
-    dplyr::arrange(year)
-
-  while (year_count <= number_of_rows) {
-
-    df_index_i_iteration <-
-      df_index_i %>%
-      dplyr::slice(year_count:number_of_rows)
-
-    first_year <- min(df_index_i_iteration$year)
-    base_year <- as.character(first_year - 1)
-
-    df_index_i_iteration_with_base_year <-
-      df_index_i_iteration %>%
-      tibble::add_row(year = first_year - 1, index_i = 1) %>%
-      dplyr::arrange(year)
-
-    next_column <-
-      df_index_i_iteration_with_base_year %>%
-      dplyr::mutate({{base_year}} := round(cumprod(index_i) * 100, digits = 1)) %>%
-      dplyr::select(-index_i)
-
-    resulting_df <-
-      dplyr::left_join(
-        resulting_df,
-        next_column,
-        by = "year"
-      )
-
-    year_count <- year_count + 1
-  }
-
-  resulting_df <- resulting_df %>%
-    dplyr::mutate(year = as.character(year))
-
-  return(resulting_df)
 
 }
 
@@ -1103,7 +1105,7 @@ visualize_rolling_indices <-
       ggplot2::geom_hline(
         yintercept = 0,
         color = "#58b02c",
-        size = 0.8,
+        linewidth = 0.8,
         alpha = 0.3
       ) +
       ggplot2::geom_line() +
@@ -1138,7 +1140,7 @@ visualize_rolling_indices <-
       ) +
       theme_light() +
       theme(
-        axis.text.x = element_text(vjust = 0.5),
+        axis.text.x = element_text(vjust = 0.5, angle = 90),
         axis.title.y = element_text(
           margin = margin(t = 0, r = 15, b = 0, l = 0)),
         axis.title.x = element_text(
@@ -1154,11 +1156,14 @@ visualize_rolling_indices <-
         legend.position = "bottom"
       ) +
       scale_x_date(
-        labels = scales::label_date("%b %Y")
+        labels = scales::label_date("%b %Y"),
+        date_breaks = "4 months"
       ) +
       ylim(
-        -max(abs(rolling_indices_df$index_p)),
-        max(abs(rolling_indices_df$index_p))
+        min(rolling_indices_df$index_p),
+        max(rolling_indices_df$index_p)
+        #-max(abs(rolling_indices_df$index_p)),
+        #max(abs(rolling_indices_df$index_p))
       ) +
       labs(
         x = NULL, y = "Endring i trafikkmengde (%)",
@@ -1169,50 +1174,198 @@ visualize_rolling_indices <-
       )
   }
 
+visualize_index_examples <-
+  function(index_df, window_length, title_text, sub_text) {
 
-table_bike_trps_with_sdt <- function(chosen_area_name) {
+    # window_length must be "12_months" or "24_months" or "36_months"
 
-  bike_trp_info |>
-    dplyr::filter(
-      area_name == chosen_area_name
-    ) |>
-    dplyr::mutate(
-      name = stringr::str_trunc(name, 30, "right")
-    ) |>
-    dplyr::select(
-      name,
-      road_category_and_number,
-      municipality_name,
-      year,
-      WINTER,
-      SPRING,
-      SUMMER,
-      FALL
-    ) |>
-    dplyr::arrange(
-      road_category_and_number
-    ) |>
-    flextable() |>
-    colformat_double(j = 4, big.mark = "", digits = 0) |>
-    set_header_labels(
-      name = "Registreringspunkt",
-      road_category_and_number = "Veg",
-      municipality_name = "Kommune",
-      year = "År",
-      WINTER = "Vinter",
-      SPRING = "Vår",
-      SUMMER = "Sommer",
-      FALL = "Høst"
-    ) |>
-    align(j = 4, align = "center", part = "all") |>
-    bold(part = "header") |>
-    font(fontname = "Lucida Sans Unicode", part = "all")  |>
-    fontsize(size = 7, part = "all") |>
-    bg(bg = "#ED9300", part = "header") |>
-    border_remove() |>
-    hline_top(part = "header", border = borderline) |>
-    hline_bottom(part = "all", border = borderline) |>
-    autofit()
+    index_df |>
+      dplyr::filter(
+        window == window_length
+      ) |>
+      ggplot2::ggplot(aes(x = month_object, y = index_p, color = version)) +
+      ggplot2::geom_hline(
+        yintercept = 0,
+        color = "#58b02c",
+        linewidth = 0.8,
+        alpha = 0.3
+      ) +
+      ggplot2::geom_line() +
+      ggplot2::geom_point() +
+      scale_color_manual(
+        values = c(
+          "old" = "#008ec2",
+          "official" = "#444f55",
+          "new" = "#ed9300"
+        ),
+        breaks = c(
+          "old",
+          "official",
+          "new"
+        ),
+        labels = c(
+          "Gammel",
+          "Offisiell",
+          "Ny"
+        ),
+        name = "Indeksversjon"
+      ) +
+      theme_light() +
+      theme(
+        axis.text.x = element_text(vjust = 0.5, angle = 90),
+        axis.title.y = element_text(
+          margin = margin(t = 0, r = 15, b = 0, l = 0)),
+        axis.title.x = element_text(
+          margin = margin(t = 15, r = 0, b = 0, l = 0)),
+        panel.grid.minor.x = element_blank(),
+        plot.caption =
+          element_text(
+            face = "italic",
+            size = 8,
+            lineheight = 1.5,
+            vjust = 0
+          ),
+        plot.background = element_rect(fill = svv_background_color),
+        panel.background = element_rect(fill = svv_background_color),
+        legend.background = element_rect(fill = svv_background_color),
+        legend.position = "bottom"
+      ) +
+      scale_x_date(
+        labels = scales::label_date("%b %Y"),
+        date_breaks = "4 months"
+      ) +
+      ylim(
+        min(index_df$index_p),
+        max(index_df$index_p)
+      ) +
+      labs(
+        x = NULL, y = "Endring i trafikkmengde (%)"
+      ) +
+      ggtitle(
+        title_text,
+        subtitle = sub_text
+      )
+  }
+
+
+visualize_error_examples <-
+  function(index_df, window_length, title_text, sub_text) {
+
+    # window_length must be "12_months" or "24_months" or "36_months"
+
+    index_df |>
+      dplyr::filter(
+        window == window_length
+      ) |>
+      ggplot2::ggplot(aes(x = month_object, y = em, color = version)) +
+      ggplot2::geom_line() +
+      ggplot2::geom_point() +
+      # scale_color_manual(
+      #   values = c(
+      #     "old" = "#008ec2",
+      #     "official" = "#444f55",
+      #     "new" = "#ed9300"
+      #   ),
+      #   breaks = c(
+      #     "old",
+      #     "official",
+      #     "new"
+      #   ),
+      #   labels = c(
+      #     "Gammel",
+      #     "Offisiell",
+      #     "Ny"
+      #   ),
+      #   name = "Indeksversjon"
+      # ) +
+      theme_light() +
+      theme(
+        axis.text.x = element_text(vjust = 0.5, angle = 90),
+        axis.title.y = element_text(
+          margin = margin(t = 0, r = 15, b = 0, l = 0)),
+        axis.title.x = element_text(
+          margin = margin(t = 15, r = 0, b = 0, l = 0)),
+        panel.grid.minor.x = element_blank(),
+        plot.caption =
+          element_text(
+            face = "italic",
+            size = 8,
+            lineheight = 1.5,
+            vjust = 0
+          ),
+        plot.background = element_rect(fill = svv_background_color),
+        panel.background = element_rect(fill = svv_background_color),
+        legend.background = element_rect(fill = svv_background_color),
+        legend.position = "bottom"
+      ) +
+      scale_x_date(
+        labels = scales::label_date("%b %Y"),
+        date_breaks = "4 months"
+      ) +
+      ylim(
+        min(index_df$em),
+        max(index_df$em)
+      ) +
+      labs(
+        x = NULL, y = "Feilmargin (%-poeng)"
+      ) +
+      ggtitle(
+        title_text,
+        subtitle = sub_text
+      )
+  }
+
+
+
+
+# Chains ----
+calculate_all_index_chain_combinations <- function(df_index_i) {
+
+  # Input: A df with two columns, year and index_i
+  number_of_rows <- nrow(df_index_i)
+  year_count <- 1
+
+  first_index_year <- min(df_index_i$year)
+  resulting_df <-
+    df_index_i %>%
+    dplyr::select(year) %>%
+    tibble::add_row(year = first_index_year - 1) %>%
+    dplyr::arrange(year)
+
+  while (year_count <= number_of_rows) {
+
+    df_index_i_iteration <-
+      df_index_i %>%
+      dplyr::slice(year_count:number_of_rows)
+
+    first_year <- min(df_index_i_iteration$year)
+    base_year <- as.character(first_year - 1)
+
+    df_index_i_iteration_with_base_year <-
+      df_index_i_iteration %>%
+      tibble::add_row(year = first_year - 1, index_i = 1) %>%
+      dplyr::arrange(year)
+
+    next_column <-
+      df_index_i_iteration_with_base_year %>%
+      dplyr::mutate({{base_year}} := round(cumprod(index_i) * 100, digits = 1)) %>%
+      dplyr::select(-index_i)
+
+    resulting_df <-
+      dplyr::left_join(
+        resulting_df,
+        next_column,
+        by = "year"
+      )
+
+    year_count <- year_count + 1
+  }
+
+  resulting_df <- resulting_df %>%
+    dplyr::mutate(year = as.character(year))
+
+  return(resulting_df)
+
 }
 
 table_index_chains <- function(chosen_name) {

@@ -197,7 +197,7 @@ summarise_link_population_by_function_class <- function(link_population) {
 }
 
 
-visualize_function_class_distribution <- function(link_population, sub_title) {
+visualize_function_class_distribution <- function(link_population, sub_title = "") {
 
   function_class_tw_plot <-
     # TODO: replace function call, presuming this has been done before calling this viz function?
