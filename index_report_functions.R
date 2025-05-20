@@ -1247,6 +1247,67 @@ visualize_index_examples <-
       )
   }
 
+visualize_n_trp <-
+  function(index_df, window_length, title_text, sub_text) {
+
+    # window_length must be "12_months" or "24_months" or "36_months"
+
+    index_df |>
+      dplyr::filter(
+        window == window_length,
+        version %in% c("official", "new")
+      ) |>
+      ggplot2::ggplot(aes(x = month_object, y = n_trp, color = version)) +
+      #ggplot2::geom_line() +
+      ggplot2::geom_point() +
+      scale_color_manual(
+        values = c(
+          "official" = "#444f55",
+          "new" = "#ed9300"
+        ),
+        breaks = c(
+          "official",
+          "new"
+        ),
+        labels = c(
+          "Offisiell",
+          "Ny"
+        ),
+        name = "Indeksversjon"
+      ) +
+      theme_light() +
+      theme(
+        axis.text.x = element_text(vjust = 0.5, angle = 90),
+        axis.title.y = element_text(
+          margin = margin(t = 0, r = 15, b = 0, l = 0)),
+        axis.title.x = element_text(
+          margin = margin(t = 15, r = 0, b = 0, l = 0)),
+        panel.grid.minor.x = element_blank(),
+        plot.caption =
+          element_text(
+            face = "italic",
+            size = 8,
+            lineheight = 1.5,
+            vjust = 0
+          ),
+        plot.background = element_rect(fill = svv_background_color),
+        panel.background = element_rect(fill = svv_background_color),
+        legend.background = element_rect(fill = svv_background_color),
+        legend.position = "bottom"
+      ) +
+      scale_x_date(
+        labels = scales::label_date("%b %Y"),
+        date_breaks = "4 months"
+      ) +
+      labs(
+        x = NULL, y = "Antall punkt"
+      ) +
+      ggtitle(
+        title_text,
+        subtitle = sub_text
+      )
+  }
+
 
 visualize_error_examples <-
   function(index_df, window_length, title_text, sub_text) {

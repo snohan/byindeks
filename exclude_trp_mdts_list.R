@@ -45,6 +45,7 @@ mdt_manual_exclusions <-
   mdt_manual_exclusions |>
   dplyr::filter(
     is.na(index_id) | index_id == city_number
+    # An exclusion is meant for either all indexes (empty index_id) or a specific index
   )
 
 # Exclude TRP all time

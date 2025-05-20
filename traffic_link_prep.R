@@ -62,6 +62,24 @@ links_raw_bare <-
     -tollStationIds,
     -trafficVolumes,
     -municipalityIds
+  ) |>
+  dplyr::mutate(
+    # Addung some missing values
+    function_class =
+      dplyr::case_when(
+        link_id %in% c(
+          "0.02123723-0.84417966@283442",
+          "0.84417966-1.0@283442",
+          "0.0-1.0@3522080",
+          "0.57243185@319730-1.0@3522081"
+        ) ~ "B",
+        link_id %in% c(
+          "0.33524051-1.0@3607094",
+          "0.0-0.33524051@3607094",
+          "0.0-1.0@3444182"
+        ) ~ "C",
+        TRUE ~ function_class
+      )
   )
 
 readr::write_rds(
@@ -262,3 +280,24 @@ missing_links <-
     !(link_id %in% link_traffic_2024$link_id)
   )
 # Mostly kommunalveger, and no roads in any of the cities.
+
+# Link weights ----
+link_id_weights_2024 <-
+  links_raw_bare |>
+  dplyr::right_join(
+    link_traffic_2024,
+    by = dplyr::join_by(link_id)
+  ) |>
+  sf::st_drop_geometry() |>
+  dplyr::select(
+    link_id, length_m, tw
+  ) |>
+  dplyr::left_join(
+    link_trp_id,
+    by = dplyr::join_by(link_id)
+  )
+
+readr::write_rds(
+  link_id_weights_2024,
+  "traffic_link_pop/link_id_weights_2024.rds"
+)

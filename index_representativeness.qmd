@@ -106,6 +106,7 @@ links_nj <- readr::read_rds("representativity/link_population_nj.rds")
 links_nj_whole <- readr::read_rds("representativity/link_population_nj_whole.rds")
 urban_area_nj <- readr::read_rds("representativity/urban_area_nj.rds")
 agreement_area_nj <- readr::read_rds("representativity/agreement_area_nj.rds")
+municipality_polygon_nj <- readr::read_rds("traffic_link_pop/municipality_polygon_nj.rds")
 
 links_bergen <- readr::read_rds("traffic_link_pop/links_bergen.rds")
 urban_area_bergen <- readr::read_rds("representativity/urban_area_bergen.rds")
@@ -239,6 +240,135 @@ error_comparison_trondheim <-
         window, month_object, version, em
       ),
     indexes_official_trondheim |> 
+      dplyr::mutate(
+        version = "official",
+        em = (ci_upper - ci_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      )
+  )
+
+
+# Nord-Jæren
+indexes_examples_nj <-
+  readr::read_rds("representativity/new_index_examples_nj.rds")
+
+indexes_official_nj <-
+  readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_952.rds")) |>
+  dplyr::bind_rows()
+
+indexes_comparison_nj <-
+  dplyr::bind_rows(
+    indexes_examples_nj[[1]] |> 
+      dplyr::mutate(
+        version = "old"
+      ),
+    indexes_examples_nj[[2]] |> 
+      dplyr::mutate(
+        version = "new"
+      ),
+    indexes_official_nj |> 
+      dplyr::mutate(
+        version = "official"
+      )
+  )
+
+error_comparison_nj <-
+  dplyr::bind_rows(
+    indexes_examples_nj[[1]] |> 
+      dplyr::mutate(
+        version = "old",
+        em = (ci_upper - ci_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      ),
+    indexes_examples_nj[[2]] |> 
+      dplyr::mutate(
+        version = "new_sample_fpc"
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em = em_selection
+      ),
+    indexes_examples_nj[[2]] |> 
+      dplyr::mutate(
+        version = "new_model"
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em = em_model
+      ),
+    indexes_examples_nj[[2]] |> 
+      dplyr::mutate(
+        version = "new_bs_bca",
+        em = (bs_bca_upper - bs_bca_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      ),
+    indexes_official_nj |> 
+      dplyr::mutate(
+        version = "official",
+        em = (ci_upper - ci_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      )
+  )
+
+# Nord-Jæren more TRPs
+indexes_examples_nj_2 <-
+  readr::read_rds("representativity/new_index_examples_2_nj.rds")
+
+indexes_comparison_nj_2 <-
+  dplyr::bind_rows(
+    indexes_examples_nj_2[[1]] |> 
+      dplyr::mutate(
+        version = "old"
+      ),
+    indexes_examples_nj_2[[2]] |> 
+      dplyr::mutate(
+        version = "new"
+      ),
+    indexes_official_nj |> 
+      dplyr::mutate(
+        version = "official"
+      )
+  )
+
+error_comparison_nj_2 <-
+  dplyr::bind_rows(
+    indexes_examples_nj_2[[1]] |> 
+      dplyr::mutate(
+        version = "old",
+        em = (ci_upper - ci_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      ),
+    indexes_examples_nj_2[[2]] |> 
+      dplyr::mutate(
+        version = "new_sample_fpc"
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em = em_selection
+      ),
+    indexes_examples_nj_2[[2]] |> 
+      dplyr::mutate(
+        version = "new_model"
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em = em_model
+      ),
+    indexes_examples_nj_2[[2]] |> 
+      dplyr::mutate(
+        version = "new_bs_bca",
+        em = (bs_bca_upper - bs_bca_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      ),
+    indexes_official_nj |> 
       dplyr::mutate(
         version = "official",
         em = (ci_upper - ci_lower) / 2
@@ -648,6 +778,9 @@ visualize_index_examples(indexes_comparison_bergen, "12_months", "Bergen, ett å
 visualize_index_examples(indexes_comparison_bergen, "36_months", "Bergen, tre års glidende indeks", "Regneeksempler")
 ```
 
+
+### Usikkerhet
+Sammenligne feilmarginens størrelse over tid.
 ```{r}
 #| label: bergen_examples_error_12
 #| fig_cap: "Sammenligning av feilmargin i indeksene for Bergen, ett års glidende indeks."
@@ -716,7 +849,7 @@ visualize_index_examples(indexes_comparison_trondheim, "36_months", "Trondheim, 
 ```
 
 
-## Usikkerhet
+### Usikkerhet
 Sammenligne feilmarginens størrelse over tid.
 ```{r}
 #| label: trd_examples_error_12
@@ -749,7 +882,126 @@ error_comparison_trondheim |>
 ```
 
 
-## Representativitet over tid
+# Eksempler Nord-Jæren
+Det er flere aspekter som kan sammenlignes:
+- ny og gammel beregningsmetode
+- betydningen av flere punkt
+- betydningen av kjedet indeks
+
+## Dagens punkter, direkte
+Samme punkter som i dagens metode. En direkte sammenligning med referanseåret.
+
+Ny metode endrer litt på punktutvalget, så derfor er gammel metode brukt på nytt med de samme punktene som ny metode bruker, slik at sammenligningen blir riktig.
+
+```{r}
+#| label: nj_examples_12
+#| fig_cap: "Sammenligning av indekstall for Nord-Jæren, ett års glidende indeks."
+
+visualize_index_examples(indexes_comparison_nj, "12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler")
+```
+
+```{r}
+#| label: nj_examples_n_trp
+#| fig_cap: "Antall punkt i byindeks Nord-Jæren, ett års glidende indeks."
+
+visualize_n_trp(indexes_comparison_nj, "12_months", "Nord-Jæren, ett års glidende indeks", "Antall punkt")
+```
+
+```{r}
+#| label: nj_examples_36
+#| fig_cap: "Sammenligning av indekstall for v, tre års glidende indeks."
+
+visualize_index_examples(indexes_comparison_nj, "36_months", "Nord-Jæren, tre års glidende indeks", "Regneeksempler")
+```
 
 
+### Usikkerhet
+Sammenligner feilmarginens størrelse over tid.
+```{r}
+#| label: nj_examples_error_12
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, ett års glidende indeks."
 
+visualize_error_examples(error_comparison_nj, "12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler")
+```
+
+```{r}
+#| label: nj_examples_error_12_nobs
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, ett års glidende indeks."
+
+error_comparison_nj |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler")
+```
+
+
+```{r}
+#| label: nj_examples_error_36_nobs
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, tre års glidende indeks."
+
+error_comparison_nj |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("36_months", "Nord-Jæren, tre års glidende indeks", "Regneeksempler")
+```
+
+
+## Flere punkt, direkte
+```{r}
+#| label: nj_examples_12_2
+#| fig_cap: "Sammenligning av indekstall for Nord-Jæren, ett års glidende indeks."
+
+visualize_index_examples(indexes_comparison_nj_2, "12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler med flere punkt")
+```
+
+```{r}
+#| label: nj_examples_n_trp_2
+#| fig_cap: "Antall punkt i byindeks Nord-Jæren, ett års glidende indeks."
+
+visualize_n_trp(indexes_comparison_nj_2, "12_months", "Nord-Jæren, ett års glidende indeks", "Antall punkt")
+```
+
+```{r}
+#| label: nj_examples_36_2
+#| fig_cap: "Sammenligning av indekstall for v, tre års glidende indeks."
+
+visualize_index_examples(indexes_comparison_nj_2, "36_months", "Nord-Jæren, tre års glidende indeks", "Regneeksempler med flere punkt")
+```
+
+
+### Usikkerhet
+Sammenligne feilmarginens størrelse over tid.
+```{r}
+#| label: nj_examples_error_12_2
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, ett års glidende indeks."
+
+visualize_error_examples(error_comparison_nj_2, "12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler med flere punkt")
+```
+
+```{r}
+#| label: nj_examples_error_12_nobs_2
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, ett års glidende indeks."
+
+error_comparison_nj_2 |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler med flere punkt")
+```
+
+
+```{r}
+#| label: nj_examples_error_36_nobs_2
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, tre års glidende indeks."
+
+error_comparison_nj_2 |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("36_months", "Nord-Jæren, tre års glidende indeks", "Regneeksempler med flere punkt")
+```
+
+
+## Flere punkt, kjedet

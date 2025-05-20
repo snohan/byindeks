@@ -448,3 +448,146 @@ readr::write_rds(
   links_trondheim,
   "traffic_link_pop/links_trondheim.rds"
 )
+
+
+# Nord-Jæren ----
+city_number <- "952"
+
+## City area ----
+# Nullvekstmålet gjelder innenfor kommunene Stavanger, Sandnes, Sola og Randaberg.
+# Agreement area does not include the former municipalities of Rennesøy, Finnøy and Forsand.
+# Therefore, cannot use municipality ids directly, but geometric intersections with polygons.
+# There are two historic municipalities, and two contemporary.
+
+municipality_ids <- c(1103, 1108, 1124, 1127)
+
+link_municipality_id_nj <-
+  link_municipality_id |>
+  dplyr::filter(
+    municipality_id %in% municipality_ids
+  ) |>
+  dplyr::distinct()
+
+
+municipality_polygon_nj <-
+  dplyr::bind_rows(
+    hent_historisk_kommune(1103, 1103),
+    hent_historisk_kommune(1108, 1102),
+    hent_kommune(1124),
+    hent_kommune(1127)
+  ) |>
+  sf::st_union() |>
+  sf::st_transform("wgs84")
+
+plot(municipality_polygon_nj)
+
+readr::write_rds(
+  municipality_polygon_nj,
+  "traffic_link_pop/municipality_polygon_nj.rds"
+)
+
+
+## Urban area ----
+# TODO:
+# Pick urban areas inside area polygon
+
+# Filter urban areas by area polygon
+urban_areas_nj <-
+  urban_areas |>
+  sf::st_filter(municipality_polygon_nj, .predicate = st_intersects) |>
+  dplyr::filter(
+    tettstednummer == 4522
+  )
+
+plot(urban_areas_nj$geometry)
+
+# Simplifing the multipolygon to its convex hull in order to keep links between subareas.
+# This might lead to the inclusion of some unwanted links, but supposedly these are fewer than those we would miss.
+urban_areas_convex_hull <-
+  urban_areas_nj |>
+  sf::st_convex_hull() |>
+  sf::st_union() |>
+  sf::st_convex_hull()
+
+plot(urban_areas_convex_hull)
+
+readr::write_rds(urban_areas_nj, "representativity/urban_area_nj.rds")
+
+
+## City TRPs ----
+this_citys_trps_all_adt_final <-
+  readr::read_rds(
+    file = paste0(
+      "index_trp_metadata/trp_",
+      city_number,
+      ".rds"
+    )
+  )
+
+link_trp_id_city <-
+  link_trp_id |>
+  dplyr::filter(
+    trp_id %in% this_citys_trps_all_adt_final$trp_id
+  )
+
+
+## Link population ----
+links_nj <-
+  links_2024 |>
+  dplyr::filter(
+    link_id %in% link_municipality_id_nj$link_id
+  ) |>
+  sf::st_filter(urban_areas_convex_hull, .predicate = st_intersects) |>
+  # # Add some links
+  # dplyr::bind_rows(
+  #   links_2024 |>
+  #     dplyr::filter(
+  #       link_id %in% c(
+  #       )
+  #     )
+  # ) |>
+  # Remove some links
+  dplyr::filter(
+    !(link_id %in% c(
+      # Ryfylketunnelen
+      "0.0-1.0@2725983", "0.0-1.0@2725982",
+      # Byfjordtunnelen
+      "0.41798688@319527-0.56950694@320583",
+      # Links in south-west
+      "0.75290902@320683-1.0@2829293",
+      "0.22210744-1.0@320180",
+      "0.60727361-0.75290902@320683",
+      "0.68926696-1.0@320127",
+      "0.0-0.3298438@320128",
+      "0.3298438-1.0@320128",
+      "0.58471846@320670-0.75831918@320670"
+    )),
+    function_class != "E"
+  ) |>
+  dplyr::left_join(
+    link_trp_id_city,
+    by = dplyr::join_by(link_id)
+  ) |>
+  dplyr::rename(
+    point_id = trp_id
+  )
+
+# Visual check
+map_links_with_function_class(links_nj) |>
+  addPolygons(
+    data = municipality_polygon_nj,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  ) |>
+  addPolygons(
+    data = urban_areas_nj,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  )
+
+readr::write_rds(
+  links_nj,
+  "traffic_link_pop/links_nj.rds"
+)
