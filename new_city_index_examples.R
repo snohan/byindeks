@@ -60,6 +60,7 @@
   source("traffic_link_functions.R")
 
   link_id_weights_2024 <- readr::read_rds("traffic_link_pop/link_id_weights_2024.rds")
+  points <- readr::read_rds("trps_for_city_index.rds")
 }
 
 # Bergen ----
@@ -701,6 +702,13 @@ list(
 
 ### Chaining ----
 # Must have tailored exclusions to accomodate a maximum utilisation of TRPs in each chain period
+mdt_2017_2019 <-
+  mdt_filtered |>
+  dplyr::filter(
+    !(trp_id %in% c(
+      "73355V319671" # Austråttunnelen, er komplementær med Hana ved Rovik som følge av ny bom?
+    ))
+  )
 
 # Chains
 index_2017_2019 <-
@@ -708,7 +716,7 @@ index_2017_2019 <-
     reference_year,
     "2019-12-01",
     12,
-    mdt_filtered,
+    mdt_2017_2019,
     population_size,
     "by_area"
   )
@@ -718,13 +726,25 @@ trp_index_2017_2019 <-
     reference_year,
     "2019-12-01",
     12,
-    mdt_filtered,
+    mdt_2017_2019,
     population_size,
     "by_trp"
   ) |>
   dplyr::left_join(
     points,
     by = dplyr::join_by(trp_id)
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    road_category_and_number,
+    index_period,
+    length_km,
+    w_tw, w_tv,
+    trp_index_p
+  ) |>
+  dplyr::arrange(
+    trp_index_p
   )
 
 index_2019_2023 <-
