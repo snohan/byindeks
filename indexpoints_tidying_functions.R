@@ -746,7 +746,7 @@ calculate_rolling_indices_tw <-
           R = 1000
         )
 
-      booted_cis <- boot::boot.ci(bootstrap_object)
+      booted_cis <- boot::boot.ci(bootstrap_object, type = c("norm", "basic", "perc", "bca"))
       # bootsurv::pseudopop.boot.stsrs ???
 
       index_df_grouped <-
