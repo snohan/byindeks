@@ -834,6 +834,12 @@ index_2017_2024_chained <-
     index_2023_2024
   )
 
+readr::write_rds(
+  index_2017_2024_chained,
+  "representativity/new_index_chain_nj.rds"
+)
+
+
 chained <- index_2017_2019$index_i * index_2019_2023$index_i * index_2023_2024$index_i
 
 chain_1 <-
@@ -870,9 +876,8 @@ index_chained <-
     period = paste0("jan-", month_name_short),
     index_p = round(index_p, 1),
     ci_lower = round(index_p - 1.96 * standard_error, 1),
-    ci_upper = round(index_p + 1.96 * standard_error, 1)
-    #ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error, 1),
-    #ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error, 1)
+    ci_upper = round(index_p + 1.96 * standard_error, 1),
+    version = "new_chained"
   ) |>
   dplyr::select(
     -year_base
@@ -886,6 +891,9 @@ index_chained_original <-
   dplyr::filter(
     index_type == "chained",
     year == 2024
+  ) |>
+  dplyr::mutate(
+    version = "original_chained"
   )
 
 index_12_month_original <-
@@ -901,12 +909,29 @@ index_12_month_original <-
   dplyr::filter(
     window == "12_months",
     month_object == "2024-12-01"
+  ) |>
+  dplyr::mutate(
+    version = "official_12_month"
   )
 
-# TODO: fix this, add which is which
 index_comparison <-
   dplyr::bind_rows(
     index_chained,
     index_chained_original,
     index_12_month_original
+  ) |>
+  dplyr::select(
+    version,
+    year,
+    n_trp,
+    index_p,
+    ci_lower, ci_upper
+  ) |>
+  dplyr::mutate(
+    ci_width = ci_upper - ci_lower
   )
+
+readr::write_rds(
+  index_comparison,
+  "representativity/new_index_comparison_nj.rds"
+)
