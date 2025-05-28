@@ -1,5 +1,5 @@
 ---
-title: "Representativitet i byindeks, appendikser"
+title: "Byindeks: eksempler med representativitet, indeks og usikkerhet"
 format: 
   html:
     css: svv.css
@@ -378,15 +378,19 @@ error_comparison_nj_2 <-
       )
   )
 
+index_2017_2024_chained_nj <- readr::read_rds("representativity/new_index_chain_nj.rds")
+index_comparison_nj <- readr::read_rds("representativity/new_index_comparison_nj.rds")
 ```
 
 
 # Innledning
-Dette dokumentet er et supplement til notatet [Representativitet i byindeks](https://vegvesen.sharepoint.com/:w:/r/sites/arb-Trafikkdataogtrafikkutviklingiby/Delte%20dokumenter/General/Arbeidsgruppa/Oppgaver/Representativitet%20i%20byindeks/Representativitet%20i%20byindeks.docx?d=w8fb786036594485bbb5d282a07b9db78&csf=1&web=1&e=p58ZHf) og inneholder detaljer om de utforskende dataanalysene som ligger til grunn for vurderingene som er beskrevet der.
+Dette dokumentet er et supplement til notatet [Forbedret byindeks](https://vegvesen.sharepoint.com/:w:/r/sites/arb-Trafikkdataogtrafikkutviklingiby/Delte%20dokumenter/General/Arbeidsgruppa/Oppgaver/Representativitet%20i%20byindeks/Representativitet%20i%20byindeks.docx?d=w8fb786036594485bbb5d282a07b9db78&csf=1&web=1&e=p58ZHf) og inneholder detaljer om de utforskende dataanalysene som ligger til grunn for vurderingene som er beskrevet der.
 
 Sist oppdatert `r this_date_string`. 
 
-Kontaktperson er Snorre Hansen, Statens vegvesen (Divisjon for Transport og samfunn, Avdeling for Transportutvikling, Seksjon for Veg- og transportteknologi).
+Kontaktperson er Snorre Hansen, </br>
+Statens vegvesen </br>
+(Divisjon for Transport og samfunn, Avdeling for Transportutvikling, Seksjon for Veg- og transportteknologi).
 
 
 ## Bakgrunn
@@ -438,6 +442,8 @@ Vi finner at ingen av de tilgjengelige variablene har noen tydelig korrelasjon m
 
 ## Minste antall punkt
 Tar hensyn til at populasjonens størrelse er kjent.
+
+UNDER ARBEID
 
 
 
@@ -703,6 +709,9 @@ Gjennomsnittlig avstand fra trafikklenkene som ikke er med i utvalget til de som
 Populasjonens størrelse har noe å si for dempingen av usikkerheten når vi holder utvalget fast.
 https://stats.stackexchange.com/questions/5158/explanation-of-finite-population-correction-factor
 
+UNDER ARBEID
+
+
 ### Representativiteten tilbake i tid
 Ved å se på hvilke byindekspunkter som har vært med i datagrunnlaget for de månedlige beregningene av tre års glidende indeks, kan vi se hvordan representativiteten har vært over tid. Her er det trafikklenkepopulasjonen for byområdet som er benyttet.
 
@@ -718,20 +727,6 @@ Det er flere fordeler med en begrenset og sentral populasjon kontra en komplett 
 - Byindeksen vil i større grad fokusere på de delene av vegnettet hvor trafikkveksten utgjør et reelt problem
 
 
-
-## Utvalgets betydning
-Vi holder populasjonen fast og varierer utvalget av punkt.
-
-De 24.
-
-De foreslåtte 59.
-
-De mulige 89 fra 2023.
-
-
-## Simulerte utvalg
-
-
 ## Mål for representativitet over tid
 Tidsserier for de historiske indeksverdiene med:
 
@@ -739,6 +734,159 @@ Tidsserier for de historiske indeksverdiene med:
 - dekningsgrad trafikkarbeid
 - total variasjonsavstand i trafikkarbeidsfordeling i funksjonsklasser
 - gjennomsnittlig avstand til byindekspunkt
+
+UNDER ARBEID
+
+
+## Regneeksempler forbedret metode
+Det er flere aspekter som kan sammenlignes:
+- ny og gammel beregningsmetode
+- betydningen av flere punkt
+- betydningen av kjedet indeks
+
+
+## Dagens punkter, direkte
+Samme punkter som i dagens metode. En direkte sammenligning med referanseåret.
+
+Ny metode endrer litt på punktutvalget, så derfor er gammel metode brukt på nytt med de samme punktene som ny metode bruker, slik at sammenligningen blir riktig.
+
+```{r}
+#| label: nj_examples_12
+#| fig_cap: "Sammenligning av indekstall for Nord-Jæren, ett års glidende indeks."
+
+visualize_index_examples(indexes_comparison_nj, "12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler")
+```
+
+```{r}
+#| label: nj_examples_n_trp
+#| fig_cap: "Antall punkt i byindeks Nord-Jæren, ett års glidende indeks."
+
+visualize_n_trp(indexes_comparison_nj, "12_months", "Nord-Jæren, ett års glidende indeks", "Antall punkt")
+```
+
+```{r}
+#| label: nj_examples_36
+#| fig_cap: "Sammenligning av indekstall for v, tre års glidende indeks."
+
+visualize_index_examples(indexes_comparison_nj, "36_months", "Nord-Jæren, tre års glidende indeks", "Regneeksempler")
+```
+
+
+### Usikkerhet
+Sammenligner feilmarginens størrelse over tid.
+```{r}
+#| label: nj_examples_error_12
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, ett års glidende indeks."
+
+visualize_error_examples(error_comparison_nj, "12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler")
+```
+
+```{r}
+#| label: nj_examples_error_12_nobs
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, ett års glidende indeks."
+
+error_comparison_nj |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler")
+```
+
+
+```{r}
+#| label: nj_examples_error_36_nobs
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, tre års glidende indeks."
+
+error_comparison_nj |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("36_months", "Nord-Jæren, tre års glidende indeks", "Regneeksempler")
+```
+
+
+## Flere punkt, direkte
+```{r}
+#| label: nj_examples_12_2
+#| fig_cap: "Sammenligning av indekstall for Nord-Jæren, ett års glidende indeks."
+
+visualize_index_examples(indexes_comparison_nj_2, "12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler med flere punkt")
+```
+
+```{r}
+#| label: nj_examples_n_trp_2
+#| fig_cap: "Antall punkt i byindeks Nord-Jæren, ett års glidende indeks."
+
+visualize_n_trp(indexes_comparison_nj_2, "12_months", "Nord-Jæren, ett års glidende indeks", "Antall punkt")
+```
+
+```{r}
+#| label: nj_examples_36_2
+#| fig_cap: "Sammenligning av indekstall for v, tre års glidende indeks."
+
+visualize_index_examples(indexes_comparison_nj_2, "36_months", "Nord-Jæren, tre års glidende indeks", "Regneeksempler med flere punkt")
+```
+
+
+### Usikkerhet
+Sammenligne feilmarginens størrelse over tid.
+```{r}
+#| label: nj_examples_error_12_2
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, ett års glidende indeks."
+
+visualize_error_examples(error_comparison_nj_2, "12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler med flere punkt")
+```
+
+```{r}
+#| label: nj_examples_error_12_nobs_2
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, ett års glidende indeks."
+
+error_comparison_nj_2 |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler med flere punkt")
+```
+
+
+```{r}
+#| label: nj_examples_error_36_nobs_2
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, tre års glidende indeks."
+
+error_comparison_nj_2 |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("36_months", "Nord-Jæren, tre års glidende indeks", "Regneeksempler med flere punkt")
+```
+
+
+## Flere punkt, kjedet
+For å utnytte tilgjengelig datagrunnlag bedre, bør det tas hensyn til at utvalget med punkter vil variere over tid. For Nord-Jæren er det nødvendig å ta hensyn til:
+
+- Flere punkter ble satt i drift i årene 2017 og 2018.
+- Nytt vegsystem med Eiganestunnelen og Ryfylketunnelen ble åpnet i 2020.
+- Byhaugtunnelen var stengt i omkring to år, og gjenåpnet i 2022.
+
+En kjedet indeks vil da kunne utnytte flere punkter med en inndeling i delperioder slik:
+
+- 2017-2019
+- 2019-2023
+- 2023- 
+
+Et regneeksempel for indeks til 2024 viser følgende:
+
+- 2017-2019: -3,3 % med 39 punkter
+- 2019-2023:  6,8 % med 42 punkter
+- 2023-2024:  0,8 % med 76 punkter
+
+Til sammen gir dette en endring fra 2017 til 2024 på 4,1 % med en feilmargin på 9,2 prosentpoeng.
+
+Til sammenligning er kjeding av årlig indeks slik vi finner den i den offisielle rapporten på 0,6 % med en feilmargin på 12,6 prosentpoeng. Her benyttes i varierende grad et antall punkter mellom 19 og 23.
+
+Ett års glidende indeks viser for 2024 en endring på 5,2 % med en feilmargin på 13,6 prosentpoeng. Her benyttes kun 16 punkter.
+
+Disse tallene illustrerer fordelen med en kjedet indeks da denne har et større antall punkt, og at feilmarginen er mindre.
 
 
 # Eksempel med Bergen
@@ -882,126 +1030,4 @@ error_comparison_trondheim |>
 ```
 
 
-# Eksempler Nord-Jæren
-Det er flere aspekter som kan sammenlignes:
-- ny og gammel beregningsmetode
-- betydningen av flere punkt
-- betydningen av kjedet indeks
 
-## Dagens punkter, direkte
-Samme punkter som i dagens metode. En direkte sammenligning med referanseåret.
-
-Ny metode endrer litt på punktutvalget, så derfor er gammel metode brukt på nytt med de samme punktene som ny metode bruker, slik at sammenligningen blir riktig.
-
-```{r}
-#| label: nj_examples_12
-#| fig_cap: "Sammenligning av indekstall for Nord-Jæren, ett års glidende indeks."
-
-visualize_index_examples(indexes_comparison_nj, "12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler")
-```
-
-```{r}
-#| label: nj_examples_n_trp
-#| fig_cap: "Antall punkt i byindeks Nord-Jæren, ett års glidende indeks."
-
-visualize_n_trp(indexes_comparison_nj, "12_months", "Nord-Jæren, ett års glidende indeks", "Antall punkt")
-```
-
-```{r}
-#| label: nj_examples_36
-#| fig_cap: "Sammenligning av indekstall for v, tre års glidende indeks."
-
-visualize_index_examples(indexes_comparison_nj, "36_months", "Nord-Jæren, tre års glidende indeks", "Regneeksempler")
-```
-
-
-### Usikkerhet
-Sammenligner feilmarginens størrelse over tid.
-```{r}
-#| label: nj_examples_error_12
-#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, ett års glidende indeks."
-
-visualize_error_examples(error_comparison_nj, "12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler")
-```
-
-```{r}
-#| label: nj_examples_error_12_nobs
-#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, ett års glidende indeks."
-
-error_comparison_nj |> 
-  dplyr::filter(
-    version != "new_bs_bca"
-  ) |> 
-  visualize_error_examples("12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler")
-```
-
-
-```{r}
-#| label: nj_examples_error_36_nobs
-#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, tre års glidende indeks."
-
-error_comparison_nj |> 
-  dplyr::filter(
-    version != "new_bs_bca"
-  ) |> 
-  visualize_error_examples("36_months", "Nord-Jæren, tre års glidende indeks", "Regneeksempler")
-```
-
-
-## Flere punkt, direkte
-```{r}
-#| label: nj_examples_12_2
-#| fig_cap: "Sammenligning av indekstall for Nord-Jæren, ett års glidende indeks."
-
-visualize_index_examples(indexes_comparison_nj_2, "12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler med flere punkt")
-```
-
-```{r}
-#| label: nj_examples_n_trp_2
-#| fig_cap: "Antall punkt i byindeks Nord-Jæren, ett års glidende indeks."
-
-visualize_n_trp(indexes_comparison_nj_2, "12_months", "Nord-Jæren, ett års glidende indeks", "Antall punkt")
-```
-
-```{r}
-#| label: nj_examples_36_2
-#| fig_cap: "Sammenligning av indekstall for v, tre års glidende indeks."
-
-visualize_index_examples(indexes_comparison_nj_2, "36_months", "Nord-Jæren, tre års glidende indeks", "Regneeksempler med flere punkt")
-```
-
-
-### Usikkerhet
-Sammenligne feilmarginens størrelse over tid.
-```{r}
-#| label: nj_examples_error_12_2
-#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, ett års glidende indeks."
-
-visualize_error_examples(error_comparison_nj_2, "12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler med flere punkt")
-```
-
-```{r}
-#| label: nj_examples_error_12_nobs_2
-#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, ett års glidende indeks."
-
-error_comparison_nj_2 |> 
-  dplyr::filter(
-    version != "new_bs_bca"
-  ) |> 
-  visualize_error_examples("12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler med flere punkt")
-```
-
-
-```{r}
-#| label: nj_examples_error_36_nobs_2
-#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, tre års glidende indeks."
-
-error_comparison_nj_2 |> 
-  dplyr::filter(
-    version != "new_bs_bca"
-  ) |> 
-  visualize_error_examples("36_months", "Nord-Jæren, tre års glidende indeks", "Regneeksempler med flere punkt")
-```
-
-
-## Flere punkt, kjedet
