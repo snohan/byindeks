@@ -415,12 +415,10 @@ create_pointindex_map <- function(all_point_info_df) {
   ## Combine the two color palettes
   rampcols <- c(rc1, rc2)
 
-  palett_index <-
-    colorNumeric(palette = rampcols,
-                 domain = NULL)
+  palett_index <- leaflet::colorNumeric(palette = rampcols, domain = NULL)
 
   pointindex_map <-
-    all_point_info_df %>%
+    all_point_info_df |>
     leaflet(
       width = "100%",
       height = 700,
@@ -429,11 +427,11 @@ create_pointindex_map <- function(all_point_info_df) {
           crs = nvdb_crs,
           zoomControl = F
           )
-    ) %>%
+    ) |>
     addTiles(
       urlTemplate = nvdb_map_url,
       attribution = nvdb_map_attribution
-    ) %>%
+    ) |>
     addCircleMarkers(
       lng = ~lon,
       lat = ~lat,
@@ -446,13 +444,81 @@ create_pointindex_map <- function(all_point_info_df) {
       fillColor = ~palett_index(index),
       fillOpacity = 0.8,
       label = ~label_text
-    ) %>%
-    addLegend("bottomright",
-              pal = palett_index,
-              values = ~index,
-              title = "Indeks",
-              opacity = 0.7,
-              labFormat = labelFormat(big.mark = " "))
+    ) |>
+    addLegend(
+      "bottomright",
+      pal = palett_index,
+      values = ~index,
+      title = "Indeks",
+      opacity = 0.7,
+      labFormat = labelFormat(big.mark = " ")
+    )
+
+  return(pointindex_map)
+}
+
+map_pointindex <- function(all_point_info_df, index_limit = 10) {
+
+  # Scale not dependent on actual values, but always red for negative, and green for positive
+  # Always symmetric
+  index_limit_text <- c(
+    paste0("< -", index_limit, " %"),
+    paste0("[-", index_limit, ", ", index_limit, "] %"),
+    paste0("> ", index_limit, " %")
+  )
+
+  palett_index_factor <-
+    leaflet::colorFactor(
+      palette = c("red", "orange", "green"),
+      levels = index_limit_text
+    )
+
+  pointindex_map <-
+    all_point_info_df |>
+    dplyr::mutate(
+      index_factor =
+        dplyr::case_when(
+          index < -index_limit ~ index_limit_text[1],
+          index <  index_limit ~ index_limit_text[2],
+          index >  index_limit ~ index_limit_text[3]
+        ) |>
+        base::factor(
+          levels = index_limit_text
+        )
+    ) |>
+    leaflet(
+      width = "100%",
+      height = 700,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F
+        )
+    ) |>
+    addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) |>
+    addCircleMarkers(
+      lng = ~lon,
+      lat = ~lat,
+      radius = 6,
+      stroke = T,
+      weight = 2,
+      color = "#444f55",
+      opacity = 0.8,
+      fill = T,
+      fillColor = ~palett_index_factor(index_factor),
+      fillOpacity = 0.8,
+      label = ~label_text
+    ) |>
+    addLegend(
+      "bottomright",
+      pal = palett_index_factor,
+      values = ~index_factor,
+      title = "Indeks",
+      opacity = 0.6
+    )
 
   return(pointindex_map)
 }
