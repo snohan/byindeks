@@ -28,7 +28,12 @@ split_road_system_reference <- function(df) {
       road_number = as.numeric(stringr::str_sub(road, 3, -1))
     ) |>
     dplyr::mutate(
-      road_category_and_number = paste0(road_category, "v ", road_number)
+      #road_category_and_number = paste0(road_category, "v ", road_number),
+      road_category_and_number =
+        dplyr::case_when(
+          road_category != "E" ~ paste0(stringr::str_to_lower(road_category), "v. ", road_number),
+          road_category == "E" ~ paste0(road_category, road_number)
+        ),
     ) |>
     tidyr::separate(
       col = section_meter,
