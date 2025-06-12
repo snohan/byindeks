@@ -33,7 +33,7 @@ crossref:
 
 source("rmd_setup.R")
 
-last_published_month_number <- 12
+last_published_month_number <- 5
 
 index_all_years <-
   readr::read_rds(
@@ -335,6 +335,7 @@ index_for_plotting |>
 table_bike_trps_with_sdt("Nord-Jæren")
 ```
 
+{{< pagebreak >}}
 
 ```{r}
 #| label: tbl-njr
@@ -344,6 +345,7 @@ table_bike_trps_with_sdt("Nord-Jæren")
 table_index_chains("Nord-Jæren")
 ```
 
+{{< pagebreak >}}
 
 ```{r}
 #| label: fig-njr

@@ -7,8 +7,8 @@ source("indexpoints_tidying_functions.R")
 }
 
 # Index codes and years ----
-last_complete_year <- 2023
-last_complete_month_this_year <- 12
+last_complete_year <- 2024
+last_complete_month_this_year <- 5
 
 index_codes_and_reference_years <-
   tibble::tibble(
@@ -478,7 +478,8 @@ bike_sdt <-
     get_sdt_for_trp_list(bike_trps$trp_id, 2021),
     get_sdt_for_trp_list(bike_trps$trp_id, 2022),
     get_sdt_for_trp_list(bike_trps$trp_id, 2023),
-    get_sdt_for_trp_list(bike_trps$trp_id, 2024)
+    get_sdt_for_trp_list(bike_trps$trp_id, 2024),
+    get_sdt_for_trp_list(bike_trps$trp_id, 2025)
   )
 
 
@@ -517,7 +518,6 @@ bike_sdt_wide <-
   dplyr::select(
     -seasons_na
   )
-
 
 bike_trp_sdt <-
   bike_trps |>

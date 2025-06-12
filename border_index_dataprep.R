@@ -7,7 +7,7 @@ source("get_from_nvdb_api.R")
 }
 
 # Get TRP and crossings metainfo ----
-latest_published_month <- 12
+latest_published_month <- 5
 
 counties <-
   get_counties() |>
@@ -63,8 +63,11 @@ border_crossings <-
   ) |>
   dplyr::mutate(
     road_category_and_number =
-      paste0(road_category_shortname, "v ", road_number),
-    aadt_short = round(adt * (1 - heavy_ratio / 100), digits = 0),
+      dplyr::case_when(
+        road_category_shortname != "E" ~ paste0(stringr::str_to_lower(road_category_shortname), "v. ", road_number),
+        road_category_shortname == "E" ~ paste0(road_category_shortname, road_number)
+      ),
+    aadt_short = base::ceiling(adt * (1 - heavy_ratio / 100)),
     aadt_long = adt - aadt_short
   ) |>
   dplyr::left_join(
@@ -72,14 +75,14 @@ border_crossings <-
     by = "municipality_number"
   ) |>
   dplyr::arrange(
-    desc(geo_number),
-    desc(municipality_number)
+    desc(sorting)
   ) |>
   dplyr::select(
     road_category_and_number,
     street_name,
-    geo_number,
-    county_name,
+    sorting,
+    #geo_number,
+    #county_name,
     municipality_number,
     municipality_name,
     border_country, adt, aadt_short, aadt_long,
@@ -177,33 +180,40 @@ border_trps_adt <-
   )
 
 # Must supply missing AADTs from NVDB based on road reference
-# Non-trp crossings have manual AAFT values from 2018 in CSV
+# Non-trp crossings have manual AADT values from 2018 in CSV
 missing_aadt <-
   border_trps_adt |>
-  dplyr::filter(adt == 0 | is.na(adt)) |>
-  dplyr::mutate(
-    adt = purrr::map(road_link_position, get_historic_aadt_by_roadlinkposition)) |>
-  tidyr::unnest(
-    cols = adt,
-    names_sep = "_"
+  dplyr::filter(adt == 0 | is.na(adt))
+
+
+if(nrow(missing_aadt) > 0) {
+
+  missing_aadt <-
+    missing_aadt |>
+    dplyr::mutate(
+      adt = purrr::map(road_link_position, get_historic_aadt_by_roadlinkposition)) |>
+    tidyr::unnest(
+      cols = adt,
+      names_sep = "_"
+      ) |>
+    dplyr::group_by(trp_id) |>
+    dplyr::slice_max(adt_year) |>
+    dplyr::ungroup() |>
+    dplyr::mutate(
+      aadt_short = base::round(adt_aadt_total * (1 - adt_heavy_percentage / 100), 0),
+      aadt_long =  base::round(adt_aadt_total * (adt_heavy_percentage / 100), 0)
     ) |>
-  dplyr::group_by(trp_id) |>
-  dplyr::slice_max(adt_year) |>
-  dplyr::ungroup() |>
-  dplyr::mutate(
-    aadt_short = base::round(adt_aadt_total * (1 - adt_heavy_percentage / 100), 0),
-    aadt_long =  base::round(adt_aadt_total * (adt_heavy_percentage / 100), 0)
-  ) |>
-  dplyr::select(
-    -year,
-    -adt_heavy_percentage,
-    -adt_road_link_position,
-    -adt_source
-  ) |>
-  dplyr::rename(
-    adt = adt_aadt_total,
-    year = adt_year
-  )
+    dplyr::select(
+      -year,
+      -adt_heavy_percentage,
+      -adt_road_link_position,
+      -adt_source
+    ) |>
+    dplyr::rename(
+      adt = adt_aadt_total,
+      year = adt_year
+    )
+}
 
 with_aadt <-
   border_trps_adt |>
@@ -215,8 +225,8 @@ border_crossings_adt <-
   border_crossings |>
   dplyr::filter(trp_id == "") |>
   dplyr::bind_rows(border_trps_adt_all) |>
-  dplyr::arrange(desc(geo_number), desc(municipality_number)) |>
-  dplyr::select(-geo_number, -municipality_number)
+  dplyr::arrange(desc(sorting)) #|>
+  #dplyr::select(-geo_number, -municipality_number)
 
 
 # Get published index ----
@@ -228,7 +238,8 @@ index_2020 <- get_published_index_for_months(2952, 2020, 12)
 index_2021 <- get_published_index_for_months(2952, 2021, 12)
 index_2022 <- get_published_index_for_months(2952, 2022, 12)
 index_2023 <- get_published_index_for_months(2952, 2023, 12)
-index_2024 <- get_published_index_for_months(2952, 2024, latest_published_month)
+index_2024 <- get_published_index_for_months(2952, 2024, 12)
+index_2025 <- get_published_index_for_months(2952, 2025, latest_published_month)
 }
 
 {
@@ -239,7 +250,8 @@ pointindex_2020 <- get_published_pointindex_for_months_paginated(2952, 2020, 12)
 pointindex_2021 <- get_published_pointindex_for_months_paginated(2952, 2021, 12)
 pointindex_2022 <- get_published_pointindex_for_months_paginated(2952, 2022, 12)
 pointindex_2023 <- get_published_pointindex_for_months_paginated(2952, 2023, 12)
-pointindex_2024 <- get_published_pointindex_for_months_paginated(2952, 2024, latest_published_month)
+pointindex_2024 <- get_published_pointindex_for_months_paginated(2952, 2024, 12)
+pointindex_2025 <- get_published_pointindex_for_months_paginated(2952, 2025, latest_published_month)
 }
 
 pointindices <-
@@ -251,7 +263,8 @@ pointindices <-
     pointindex_2021[[2]],
     pointindex_2022[[2]],
     pointindex_2023[[2]],
-    pointindex_2024[[2]]
+    pointindex_2024[[2]],
+    pointindex_2025[[2]]
   )
 
 pointindices_all <-
@@ -353,7 +366,8 @@ index_for_table <-
     index_2021,
     index_2022,
     index_2023,
-    index_2024
+    index_2024,
+    index_2025
   ) |>
   dplyr::mutate(
     length_range =
@@ -412,7 +426,8 @@ index_all_years <-
     index_2021,
     index_2022,
     index_2023,
-    index_2024
+    index_2024,
+    index_2025
   ) |>
   dplyr::mutate(
     length_range =

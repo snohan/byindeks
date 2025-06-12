@@ -257,7 +257,7 @@ border_crossings_adt |>
 ```
 
 
-Kartet i figur @fig-map_trp_index viser plasseringen av trafikkregistreringspunktene. Grenseovergangene med mest trafikk er Ev 6 og Fv 118 ved Svinesund, Ev 18 ved Ørje og Rv 2 ved Magnor.
+Kartet i figur @fig-map_trp_index viser plasseringen av trafikkregistreringspunktene. Grenseovergangene med mest trafikk er E6 og fv. 118 ved Svinesund, E18 ved Ørje og rv. 2 ved Magnor.
 
 ```{r}
 #| label: fig-map_trp_index
@@ -319,7 +319,7 @@ NB! Skalaen på y-aksen er veldig ulik i de to figurene. Dette skyldes de ekstre
 
 index_all_years |> 
   dplyr::filter(
-    year %in% c(2024)
+    year %in% c(2024, 2025)
   ) |> 
   create_monthly_index_lineplot()
 ```
@@ -397,6 +397,21 @@ index_for_table |>
   dplyr::filter(
     period == "month",
     year == 2024
+  ) |> 
+  create_monthly_index_table()
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-monthly_index_table_2025
+#| tbl-cap: "Riksgrenseindeks per måned 2025."
+#| ft.arraystretch: 0.9
+
+index_for_table |> 
+  dplyr::filter(
+    period == "month",
+    year == 2025
   ) |> 
   create_monthly_index_table()
 ```
