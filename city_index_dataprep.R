@@ -65,8 +65,8 @@ trp_id_msnr <-
 ## Choose publish month ----
 {
 present_year <- 2025
-index_month <- 4 # the one to be published now
-city_number <- 960
+index_month <- 5 # the one to be published now
+city_number <- 952
 }
 # End choose
 
@@ -386,7 +386,7 @@ if(!(city_number %in% c(1952, 955, 952, 959))){
 #
 # }else{
 
-  trp_index_monthly_wide <-
+trp_index_monthly_wide <-
     trp_index_monthly |>
     tidyr::complete(
       trp_id,
@@ -420,8 +420,8 @@ if(!(city_number %in% c(1952, 955, 952, 959))){
       name,
       road_category_and_number,
       year,
-      jan:des
-      #jan:apr
+      #jan:des
+      jan:mai
     ) |>
     dplyr::arrange(
       name,
@@ -517,7 +517,7 @@ city_index_yearly_all <-
     years_1_4,
     years_1_5,
     years_1_6,
-    # years_1_7,
+    years_1_7,
     # years_1_8
   ) |>
   dplyr::mutate(
@@ -653,14 +653,14 @@ mdt_filtered |>
 #   )
 
 # Length quality
-plotly::ggplotly(
-  mdt_filtered |>
-   dplyr::filter(
-     year == 2025
-   ) |>
-   ggplot(aes(year_month, length_quality, color = trp_id)) +
-   geom_line()
-)
+# plotly::ggplotly(
+#   mdt_filtered |>
+#    dplyr::filter(
+#      year == 2025
+#    ) |>
+#    ggplot(aes(year_month, length_quality, color = trp_id)) +
+#    geom_line()
+# )
 
 
 ## Check MDT validity ----
@@ -697,7 +697,7 @@ mdt_validated |>
   #dplyr::filter(year > 2022) |>
   dplyr::filter(!(year %in% c(2020, 2021, 2022))) |>
   # 3 at a time seems most efficient
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[15:18]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[14:17]) |>
   dplyr::select(
     trp_id,
     year,
@@ -741,8 +741,7 @@ mdt_validated |>
 source("exclude_trp_mdts_list.R")
 source("mdt_check.R")
 
-plot_mdt_comparisons |>
-  plotly::ggplotly()
+plot_mdt_comparisons |> plotly::ggplotly()
 
 ## Compare exclusions of MDT and index ----
 # Check that the "same" exclusions are used on PI as MDT
@@ -885,8 +884,7 @@ list(
       )
   )
 
-all_36_month_trp_indices <-
-  calculate_rolling_indices(36, "by_trp")
+all_36_month_trp_indices <- calculate_rolling_indices(36, "by_trp")
 
 if(city_number == 960) {
 
@@ -968,8 +966,7 @@ trp_mdt_plot <-
     y = ""
   )
 
-trp_mdt_plot |>
-  plotly::ggplotly()
+trp_mdt_plot |> plotly::ggplotly()
 
 
 # E18 Buskerudbyen ----
