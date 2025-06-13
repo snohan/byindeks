@@ -64,9 +64,9 @@ trp_id_msnr <-
 
 ## Choose publish month ----
 {
-present_year <- 2025
-index_month <- 5 # the one to be published now
-city_number <- 952
+  present_year <- 2025
+  index_month <- 5 # the one to be published now
+  city_number <- 1952
 }
 # End choose
 
@@ -518,7 +518,7 @@ city_index_yearly_all <-
     years_1_5,
     years_1_6,
     years_1_7,
-    # years_1_8
+    years_1_8
   ) |>
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -697,7 +697,7 @@ mdt_validated |>
   #dplyr::filter(year > 2022) |>
   dplyr::filter(!(year %in% c(2020, 2021, 2022))) |>
   # 3 at a time seems most efficient
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[14:17]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[20:22]) |>
   dplyr::select(
     trp_id,
     year,
