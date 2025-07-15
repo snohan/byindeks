@@ -260,22 +260,31 @@ create_point_adt_map_with_labels <- function(all_point_info_df) {
 create_point_adt_map_trondheim <- function(all_point_info_df) {
 
   palett_stasjonstype <-
-    colorFactor(palette = c("#db3b99", "#444f55"),
-                domain = c("Bomstasjon", "Trafikkregistrering"))
+    leaflet::colorFactor(
+      palette = c("#db3b99", "#444f55"),
+      domain = c("Bomstasjon", "Trafikkregistrering")
+    )
 
   palett_adt <-
-    colorNumeric(palette = "Greens",
+    leaflet::colorNumeric(palette = "Greens",
                  domain = NULL)
 
   point_adt_map <-
-    all_point_info_df %>%
-    leaflet(width = "100%",
-            height = 700,
-            options = leafletOptions(crs = nvdb_crs,
-                                     zoomControl = F)) %>%
-    addTiles(urlTemplate = nvdb_map_url,
-             attribution = nvdb_map_attribution) %>%
-    addCircleMarkers(
+    all_point_info_df |>
+    leaflet::leaflet(
+      width = "100%",
+      #height = 700,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F
+        )
+    ) |>
+    leaflet::addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) |>
+    leaflet::addCircleMarkers(
       lng = ~lon,
       lat = ~lat,
       radius = 6,
@@ -286,18 +295,23 @@ create_point_adt_map_trondheim <- function(all_point_info_df) {
       fill = T,
       fillColor = ~palett_adt(adt),
       fillOpacity = 0.8
-    ) %>%
-    addLegend("bottomright",
-              pal = palett_stasjonstype,
-              values = ~station_type,
-              title = "Stasjonstype",
-              opacity = 0.7) %>%
-    addLegend("bottomright",
-              pal = palett_adt,
-              values = ~adt,
-              title = "ÅDT",
-              opacity = 0.7,
-              labFormat = labelFormat(big.mark = " "))
+    ) |>
+    leaflet::addLegend(
+      position = "bottomleft",
+      pal = palett_stasjonstype,
+      values = ~station_type,
+      title = "Stasjonstype",
+      opacity = 0.7
+    ) |>
+    leaflet::addLegend(
+      position = "bottomright",
+      pal = palett_adt,
+      values = ~adt,
+      bins = 5,
+      title = "ÅDT",
+      opacity = 0.7,
+      labFormat = labelFormat(big.mark = " ")
+    )
 
   return(point_adt_map)
 }

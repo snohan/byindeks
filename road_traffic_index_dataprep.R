@@ -16,31 +16,14 @@ country_parts <- get_country_parts()
 points <-
   get_points() |>
   dplyr::distinct(trp_id, .keep_all = T) |>
-  dplyr::select(
-    trp_id,
-    name,
-    road_reference,
-    county_name,
-    county_geono,
-    municipality_name
-  ) |>
-  # dplyr::mutate(
-  #   name = stringr::str_to_title(name, locale = "no")
-  # ) |>
   split_road_system_reference() |>
-  # dplyr::select(
-  #   trp_id,
-  #   road_category,
-  #   county_name
-  # ) |>
-  # For finding manually excluded trps:
   dplyr::select(
     trp_id,
     name,
     road_category,
     road_reference,
-    county_name
-    #county_name_latest = county_name # 2023
+    county_name,
+    lat, lon
   ) |>
   dplyr::mutate(
     road_category = dplyr::case_when(
@@ -52,7 +35,6 @@ points <-
   dplyr::left_join(
     counties,
     by = "county_name"
-    #by = join_by("county_name_latest" == "county_name_new") # dec 2023
   )
 
 ## Choose month ----
@@ -79,6 +61,40 @@ pointindex_this_year <-
 
 # Prepare ----
 pointindices <- pointindex_this_year[[2]]
+
+# Sidetrack: Spotfire
+pointindices_spotfire <-
+  pointindices |>
+  dplyr::filter(
+    is_excluded == FALSE,
+    is_manually_excluded == FALSE,
+    length_excluded == FALSE,
+    period == "month",
+    day_type == "ALL",
+    !is.na(index_total_p)
+  ) |>
+  dplyr::left_join(
+    points,
+    by = dplyr::join_by(trp_id)
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    road_reference,
+    county_name,
+    lat, lon,
+    year,
+    month,
+    index_p = index_total_p,
+    index_total_coverage,
+    length_coverage
+  )
+
+readr::write_excel_csv2(
+  pointindices_spotfire,
+  "spesialuttak/vti_trp_index_spotfire_25-05.csv"
+)
+
 
 # Sidetrack: Manually excluded
 # pointindices_manually_excluded <-

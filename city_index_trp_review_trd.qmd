@@ -1,0 +1,213 @@
+---
+title: "Byåstunnelen og indekspunkter i Trondheim"
+format: 
+  pdf:
+    toc: true
+    number-sections: true
+    toc-title: Innhold
+    mainfont: "Arial"
+    include-in-header:
+      text: |
+        \newfontfamily\sectionfont[Color=ed9300]{Arial}
+        \newfontfamily\subsectionfont[Color=444f55]{Arial}
+        \newfontfamily\subsubsectionfont[Color=ed9300]{Arial}
+        \addtokomafont{section}{\sectionfont}
+        \addtokomafont{subsection}{\subsectionfont}
+        \addtokomafont{subsubsection}{\subsubsectionfont}
+        \usepackage[font=small,textfont=it,labelsep=period]{caption}
+crossref: 
+  tbl-title: "Tabell"
+  lot-title: "Tabeller"
+  tbl-prefix: ""
+  fig-title: "Figur"
+  lof-title: "Figurer"
+  fig-prefix: ""
+  title-delim: "."
+  sec-prefix: "kapittel"
+---
+
+```{r setup, include = FALSE, echo = FALSE}
+source("rmd_setup.R")
+source("H:/Programmering/R/byindeks/traffic_link_functions.R")
+library(patchwork)
+# \let\oldsection\section
+# \renewcommand\section{\clearpage\oldsection}
+```
+
+```{r get_data, include = FALSE}
+city_number <- 960
+
+all_point_info <- 
+  readr::read_rds(
+    file = paste0(
+      "index_trp_metadata/trp_",
+      city_number,
+      ".rds"
+    )
+  ) |> 
+  dplyr::mutate(
+    year_aadt = as.character(year_aadt)
+  )
+
+links_trondheim <- readr::read_rds("traffic_link_pop/links_trondheim.rds")
+```
+
+\listoftables
+
+\listoffigures
+
+{{< pagebreak >}}
+
+
+# Byindeksen og vegnettsendringer
+Byindeksen skal gi et estimat på hvordan trafikkmengden utvikler seg over tid. Når vegnettet endres ved at nye veganlegg åpnes eller eksisterende veger stenges, vil mange av bilistenes rutevalg endre seg. Dette betyr at noen byindekspunkter ikke lenger vil ha samme trafikksituasjon som før. Dermed kan ikke dagens situasjon sammenlignes med fremtidig situasjon. 
+
+På veger der endrete rutevalg fører til en betydelig endring i trafikkmengden, kan ikke et trafikkregistreringspunkt benyttes til en indeks som sammenligner situasjonen før og etter vegnettsendringen.
+
+En svakhet med byindeksen for hele byvekstområdet er også at det kun finnes indekspunkter i Trondheim, og ingen i omegnskommunene. Dette kan gjøre at lange reiser eksempelvis bare passerer 1-2 punkter, selv om reisen utgjør et betydelig transportarbeid sammenlignet med en reise i Trondheim sentrum som passerer et likt antall punkter.
+
+En annen svakhet er at mange av indekspunktene er bomstasjoner. En økning av bomtakstene vil for eksempel redusere trafikken i disse punktene, noe som gjør at bilførere velger andre reiseruter og det kan påvirke antall passeringer i byindeksen, men øke kjøretøykilometerne. I dagens bomsystem passerer hver bilreise i gjennomsnitt 2,6 indekspunkt. [^1]
+
+[^1]: Beregnet med regional transportmodell for Trondheimsområdet.
+
+
+## Dobbelttellinger
+En bilreise som helt eller delvis utføres innenfor byområdet vil kunne passere en eller flere av byindekspunktene, eller ingen av dem. Byindeksen registrerer ikke selve bilreisene og kan ikke fange opp lengden på disse. En bilreise utføres på et antall trafikklenker, og byindeksen fanger opp trafikkmengden på et utvalg av disse.
+
+Reise versus trafikkarbeid på lenke. Representativitet til å fange opp alle typer reiser.
+En lang reise bør fanges opp mer enn en gang.
+
+
+## Dagens byindekspunkter
+De `r nrow(all_point_info)`  byindekspunktene som inngår i dagens byindeks er listet opp i @tbl-trp. 
+
+```{r}
+#| label: tbl-trp
+#| tbl-cap: "Trafikkregistreringspunkt som inngår i byindeksen. Årsdøgntrafikk (ÅDT) er oppgitt for lette kjøretøy (målt til kortere enn 5,6 m)."
+#| ft.arraystretch: 1
+
+if(city_number == 960) {
+  all_point_info |> 
+    create_point_table_trd_2() |>
+    flextable::footnote(
+      i = 1,
+      j = 2,
+      value = flextable::as_paragraph(
+        c("B er bomstasjon, T er trafikkregistreringspunkt.")
+      ),
+      ref_symbols = c("a"),
+      part = "header"
+    ) |>
+    flextable::fontsize(
+      size = 8,
+      part = "footer"
+    )
+}else{
+  all_point_info |> 
+    create_point_table()  
+}
+```
+
+{{< pagebreak >}}
+
+Kartet i figur @fig-map_trp_all viser plasseringen av samtlige byindekspunkt i Trondheimsområdet.
+
+```{r}
+#| label: fig-map_trp_all
+#| fig-cap: "Kart som viser alle trafikkregistreringspunkt og årsdøgntrafikk."
+
+all_point_info |> create_point_adt_map_trondheim()
+```
+
+
+# Byåstunnelen
+Det er planer om å bygge tunnel mellom Nydalsbrua og Munkvoll/Dalgårdbrua på Byåsen. Foreløpig er det ikke bestemt når den vil stå ferdig, men når den åpnes vil mange rutevalg for bilturene i området bli endret. For byindeksen vil dette bety at enkelte av dagens byindekspunkter ikke lenger vil ha sammenlignbar trafikksituasjon før og etter tunnelåpningen.
+
+
+## Totalt transportarbeid
+Ved hjelp av transportmodellene kan det totale transportarbeidet for området estimeres. På bakgrunn av at Byåstunnelen er forutsatt åpnet innen 2050 i beregningene, ser vi en betydelig reduksjon i byindeksen sammenlignet med transportarbeidet. Dette skyldes i stor grad at reisende velger andre reiseruter, og dermed fanges ikke reisene opp i de samme punktene som før og det gir et feilaktig bilde av at biltrafikken reduseres. Som følge av dette er det gjort et arbeid med å gjennomgå byindekspunktene for å få de til å samsvare bedre med transportarbeidet.
+
+
+## Nye rutevalg
+Kartet i figur @fig-map_trp viser plasseringen av byindekspunktene i området som kan få endrete rutevalg som følge av Byåstunnelen.
+
+```{r}
+#| label: fig-map_trp
+#| fig-cap: "Kart som viser punktene som kan påvirkes av Byåstunnelen."
+
+all_point_info |>
+ dplyr::filter(
+   !(trp_id %in% 
+     c(
+      "18672V578623", # Meådalen
+      "22504V72241", # Øysand
+      "75341V41863", # Jonsvannsveien
+      "25280V41723", # Esp
+      "48351V2411216", # Sandmoen
+      "03476V41818", # Skovgård
+      "920506370", # Klett E6
+      "264832263", # Ranheim
+      "487415242", # Torgård
+      "265182534", # Klett fv
+      "265182530", # Være
+      "937707803", # Røddeveien
+      "487415243" # Tillerbrua
+      ))
+   ) |>
+ create_point_adt_map_trondheim()
+```
+
+Når Byåstunnelen åpner vil rutevalgene kunne endre seg mellom Byåsen og følgende reisemål:
+
+- E6 sør
+- E6 øst for Rotvoll
+- byen øst for Nidelva
+- Midtbyen
+- Flakk
+- Lade
+
+I figur @fig-skisse er det tegnet opp et forenklet vegnett for å gjøre analysen av trafikkstrømmene lettere. Hvilke punkter som påvirkes av ruteendringene er også tegnet inn.
+
+![Skisse av forenklet vegnett som blir påvirket av Byåstunnelen.](images/trd_byastunnelen_sketch.jpg){#fig-skisse}
+
+Transportmodellen er kjørt med to ulike vegnett, et hvor Byåstunnelen er med og et hvor den ikke er med. Ved å sammenligne disse to, kan veger og trafikklenker med endret trafikkstrøm identifiseres. I kombinasjon med kjennskap til vegnettet og hvilke ruter som er logiske valg i de ulike scenarioene, kan indekspunkter som ikke lenger vil egne seg identifiseres.
+
+
+### E6 sør
+Mellom Byåsen og E6 sør går trafikken i hovedsak langs to reiseruter hvor følgende punkter passeres:
+
+- Bøckmans veg, Oslovegen, Nydalsbrua sør
+- Bjørndalsbrua
+
+Etter at Byåstunnelen åpner blir det et nytt veivalg gjennom tunnelen og til Nydalsbrua. Da blir det færre passeringer i Bøckmans veg, Oslovegen og på Bjørndalsbrua. Men Nydalsbrua sør vil antakelig få litt flere passeringer da færre kjører om Granåsen og Bjørndalsbrua.
+
+
+### Byen øst for elva
+
+
+
+### Oppsummert
+Ved nærmere analyse kan en se at følgende punkter må tas ut av indeksen når Byåstunnelen åpner:
+
+- Bjørndalsbrua vest
+- Byåsveien ved Nyveibakken
+- Bøckmans veg, B-snitt
+- Sundland
+- Havnegata
+- Oslovegen
+- Gamle Oslovei, B-snitt
+- Byåsveien, B-snitt
+- Haakon VII s gt, O-snitt
+- Kroppanbrua
+- Nydalsbrua Sør (Oslovn)
+- Prinsens gt. Like nord for Elgeseter Bru
+
+Det å miste så mange punkter vil svekke representativiteten til indeksen mye. 
+
+
+## Nye indekspunkt
+Der hvor det planlegges større vegnettsendringer som får mange rutevalg til å endre seg, kan det være lurt å vurdere om det bør etableres nye trafikkregistreringspunkter på steder som gjør at trafikken fanges opp på en indeksvennlig måte.
+
+Om vi legger inn et framtidig punkt i Byåstunnelen, vil dette i sum kompensere for nedgangen i Bøckmansveg, Byåsveien (ved Havstad), Bjørndalsbrua og Breidablikveien (mellom Byåsvegen og Stavne). I Breidablikveien må det da etableres et punkt minst ett år før tunnelen åpner.
+
+Det bør vurderes om flere nye punkt kan kompensere for endringene som Byåstunnelen medfører.

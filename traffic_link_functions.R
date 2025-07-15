@@ -310,6 +310,74 @@ map_links_with_function_class <- function(link_df) {
   return(map)
 }
 
+
+map_links_wawo_trp <- function(link_df) {
+
+  links_with_trp <-
+    link_df |>
+    dplyr::filter(
+      !is.na(point_id)
+    )
+
+  links_without_trp <-
+    link_df |>
+    dplyr::filter(
+      is.na(point_id)
+    )
+
+  map <-
+    #link_df |>
+    links_without_trp |>
+    leaflet(
+      width = "100%",
+      height = 700,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F)
+    ) |>
+    addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) |>
+    addPolylines(
+      #data = links_without_trp,
+      #label = ~label_text,
+      opacity = 1,
+      weight = 4,
+      #color = ~ palette_function_class(function_class),
+      highlightOptions = highlightOptions(
+        bringToFront = TRUE,
+        sendToBack = FALSE,
+        color = "purple",
+        opacity = 0.6
+      )
+    ) |>
+    addPolylines(
+      data = links_with_trp,
+      #label = ~label_text,
+      opacity = 1,
+      weight = 8,
+      #color = ~ palette_function_class(function_class),
+      highlightOptions = highlightOptions(
+        bringToFront = TRUE,
+        sendToBack = FALSE,
+        color = "purple",
+        opacity = 0.6
+      )
+    ) #|>
+    # addLegend(
+    #   "bottomright",
+    #   pal = palette_function_class,
+    #   values = ~ function_class,
+    #   title = "Funksjonsklasse",
+    #   opacity = 0.7
+    # )
+
+  return(map)
+}
+
+
 map_caption <- "Trafikklenker og funksjonsklasse. Brede linjer indikerer lenker med trafikkregistrering."
 
 table_trps <- function(trp_df) {
