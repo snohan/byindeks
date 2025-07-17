@@ -3094,6 +3094,124 @@ get_dt_by_length_for_trp_list <- function(trp_list, from, to) {
   return(data_points)
 }
 
+#from <- "2025-06-01T00:00:00+02:00"
+#to <- "2025-06-03T00:00:00+02:00"
+
+get_daily_traffic_by_lane <- function(trp_id, from, to) {
+
+  # Default values
+  hasNextPage <- TRUE
+  cursor <- ""
+  dailyTraffic <- data.frame()
+
+  query <-
+  "
+  query dt ($trpId: String!, $fromDate: ZonedDateTime!, $toDate: ZonedDateTime!, $cursor: String!) {
+    trafficData(trafficRegistrationPointId: $trpId){
+      trafficRegistrationPoint {
+        id
+        name
+      }
+      volume {
+        byDay(from: $fromDate, to: $toDate, after: $cursor) {
+          edges {
+            node {
+              from
+              byLane {
+                lane {
+                  laneNumberAccordingToMetering
+                }
+                total {
+                  volumeNumbers {
+                    volume
+                  }
+                  coverage {
+                    percentage
+                  }
+                }
+              }
+            }
+          }
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+        }
+      }
+    }
+  }
+  "
+
+  while(hasNextPage == TRUE){
+
+    input_variables <-
+      list(
+        "trpId" = trp_id,
+        "fromDate" = from,
+        "toDate" = to,
+        "cursor" = cursor
+      )
+
+    my_query <- ghql::Query$new()$query(name = "data", query)
+
+    response <-
+      cli$exec(my_query$data, input_variables) %>%
+      jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
+
+    if(length(response$data$trafficData$volume$byDay$edges) == 0)
+      break;
+
+    response <-
+      response |>
+      as.data.frame() |>
+      tibble::as_tibble()
+
+    cursor <-
+      response$data.trafficData.volume.byDay.pageInfo.endCursor[1] |>
+      as.character()
+
+    hasNextPage <- response$data.trafficData.volume.byDay.pageInfo.hasNextPage[1]
+
+    response_data <-
+      response |>
+      dplyr::select(
+        -tidyselect::ends_with("hasNextPage"),
+        -tidyselect::ends_with("endCursor")
+      ) |>
+      tidyr::unnest(cols = data.trafficData.volume.byDay.edges.node.byLane)
+
+    dailyTraffic <- dplyr::bind_rows(dailyTraffic, response_data)
+  }
+
+  colnames_here <- c("trp_id", "trp_name", "from", "lane", "total_volume", "coverage")
+
+  if(nrow(dailyTraffic) == 0) {
+    dailyTraffic <-
+      setNames(data.frame(
+        matrix(ncol = 5, nrow = 0)),
+        colnames_here)
+  }else{
+    colnames(dailyTraffic) <- colnames_here
+    #dailyTraffic %<>% mutate(from = with_tz(ymd_hms(from), "CET"))
+  }
+
+  # To avoid error when joining, cast column type
+  dailyTraffic <-
+    dailyTraffic |>
+    dplyr::select(trp_id, from, lane, total_volume, coverage) |>
+    dplyr::mutate(
+      trp_id = as.character(trp_id),
+      #trp_name = as.character(trp_name),
+      from = with_tz(ymd_hms(from), "CET"),
+      lane = as.character(lane),
+      total_volume = as.integer(total_volume),
+      coverage = as.numeric(coverage)
+    )
+
+  return(dailyTraffic)
+}
+
+
 # trp_id <- "17681V704560"
 # from_day <- "2019-01-01"
 # to_day <- "2019-01-02"
@@ -4498,10 +4616,13 @@ get_trp_average_hour_of_day_traffic_for_all_day_types_for_trp_list <- function(t
 #the_month <- 1
 #day_type = "ALL"
 
-get_trp_average_day_of_week_traffic_by_month <- function(trp_id,
-                                                         the_year,
-                                                         the_month,
-                                                         day_type = "ALL") {
+get_trp_average_day_of_week_traffic_by_month <-
+  function(
+    trp_id,
+    the_year,
+    the_month,
+    day_type = "ALL"
+  ) {
 
   api_query <- paste0(
     "

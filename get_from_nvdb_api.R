@@ -1,31 +1,44 @@
 # Funksjoner for å hente nødvendig info fra NVDB-API v3.
 
-library(tidyverse)
-library(httr)
-#library(jsonlite)
-library(sf)
+# Setup ----
+{
+  library(tidyverse)
+  library(httr)
+  #library(jsonlite)
+  library(sf)
+}
 
-# Definer URI og sti ----
-#nvdb_url <- "https://www.vegvesen.no/nvdb/api/v2"
+# URI ----
 nvdb_url_v3 <- "https://nvdbapiles-v3.atlas.vegvesen.no"
 nvdb_url_v4 <- "https://nvdbapiles.atlas.vegvesen.no"
+nvdb_url <- nvdb_url_v3
+
+# Stier ----
 sti_vegobjekter <- "/vegobjekter"
 sti_veg <- "/veg"
 sti_posisjon <- "/posisjon"
 
+# Headers ----
 nvdb_v3_headers <- c(
   "X-Client" = "trafikkdatagruppa",
   "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
   "Accept" = "application/vnd.vegvesen.nvdb-v3-rev1+json"
 )
 
+nvdb_v4_headers <- c(
+  "X-Client" = "trafikkdatagruppa",
+  "X-Kontaktperson" = "snorre.hansen@vegvesen.no"
+)
 
+nvdb_headers <- nvdb_v4_headers
+
+# Utility functions ----
 call_and_parse_nvdb_api <- function(api_query) {
 
   respons <-
     httr::GET(
       api_query,
-      httr::add_headers(.headers = nvdb_v3_headers)
+      httr::add_headers(.headers = nvdb_headers)
     )
 
   uthenta <-
@@ -42,17 +55,18 @@ call_and_parse_nvdb_api <- function(api_query) {
 
 }
 
+
 # Vegnett ----
 # Hent stedfesting i punkt på vegnettet
 
 hent_vegpunkt <- function(vegsystemreferanse, kommunenr) {
 
-   #vegsystemreferanse <- "EV6S88D120m3330"
-   #kommunenr <- "5006"
+   #vegsystemreferanse <- "FV2216S1D1m30"
+   #kommunenr <- "3424"
 
   api_query <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       sti_veg,
       "?vegsystemreferanse=",
       vegsystemreferanse,
@@ -98,7 +112,7 @@ hent_veglenkesekvens <- function(veglenkesekvens_id) {
 
   api_query <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       "/vegnett",
       "/veglenkesekvenser/",
       veglenkesekvens_id
@@ -107,8 +121,8 @@ hent_veglenkesekvens <- function(veglenkesekvens_id) {
   uthenta <- call_and_parse_nvdb_api(api_query)
 
   resultat <-
-    dplyr::bind_rows(uthenta$veglenker) %>%
-    dplyr::arrange(veglenkenummer) %>%
+    dplyr::bind_rows(uthenta$veglenker) |>
+    dplyr::arrange(veglenkenummer) |>
     dplyr::select(
       veglenkenummer,
       type,
@@ -123,12 +137,12 @@ hent_veglenkesekvens <- function(veglenkesekvens_id) {
       geometri.srid,
       geometri.kommune,
       geometri.lengde
-    ) %>%
-    dplyr::rowwise() %>%
+    ) |>
+    dplyr::rowwise() |>
     dplyr::mutate(
       feltoversikt = stringr::str_c(feltoversikt, collapse = ", "),
       veglenkesekvens_id = veglenkesekvens_id
-    ) %>%
+    ) |>
     dplyr::relocate(
       veglenkesekvens_id,
       .before = "veglenkenummer"
@@ -144,7 +158,7 @@ hent_vegsystemreferanse <- function(veglenkeposisjon) {
 
   api_query <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       sti_veg,
       "?veglenkesekvens=",
       veglenkeposisjon
@@ -169,7 +183,7 @@ hent_vegpunkt_via_latlon <- function(lat, lon) {
 
   api_query <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       sti_posisjon,
       "?lat=",
       lat,
@@ -206,8 +220,10 @@ hent_vegpunkt_via_latlon_for_flere_punkter <- function(trp_df) {
 
     new_data_point <- data.frame(
       row_id = trp_df$row_id[trp_count],
-      hent_vegpunkt_via_latlon(trp_df$lat[trp_count],
-                               trp_df$lon[trp_count])
+      hent_vegpunkt_via_latlon(
+        trp_df$lat[trp_count],
+        trp_df$lon[trp_count]
+      )
     )
 
     if (ncol(new_data_point) < 10) {
@@ -220,7 +236,7 @@ hent_vegpunkt_via_latlon_for_flere_punkter <- function(trp_df) {
   }
 
   trp_data <-
-    data_points %>%
+    data_points |>
     dplyr::select(
       site_id = row_id,
       road_reference = vegsystemreferanse.kortform,
@@ -228,9 +244,9 @@ hent_vegpunkt_via_latlon_for_flere_punkter <- function(trp_df) {
       road_link_position = veglenkesekvens.kortform,
       distance = avstand,
       municipality = kommune
-    ) %>%
-    dplyr::filter(traffic_type == "K") %>%
-    dplyr::group_by(site_id) %>%
+    ) |>
+    dplyr::filter(traffic_type == "K") |>
+    dplyr::group_by(site_id) |>
     dplyr::slice_min(distance)
 
   return(trp_data)
@@ -238,63 +254,13 @@ hent_vegpunkt_via_latlon_for_flere_punkter <- function(trp_df) {
 
 
 # Geografiske områder ----
-
-# hent_kommune <- function(kommunenr) {
-#
-#   api_query <-
-#     paste0(
-#       nvdb_url_v3,
-#       sti_vegobjekter,
-#       "/536",
-#       "?inkluder=egenskaper,lokasjon"
-#     )
-#
-#   api_query_536_kommune <-
-#     paste0(
-#       api_query,
-#       "&kommune=",
-#       kommunenr,
-#       "&srid=wgs84"
-#     )
-#
-#   respons <-
-#     httr::GET(
-#       api_query_536_kommune,
-#       httr::add_headers(.headers = nvdb_v3_headers)
-#     )
-#
-#   uthenta <-
-#     jsonlite::fromJSON(
-#       stringr::str_conv(
-#         respons$content, encoding = "UTF-8"),
-#       simplifyDataFrame = T,
-#       flatten = T
-#     )
-#
-#   kommune <-
-#     dplyr::bind_rows(
-#       uthenta$objekter$egenskaper,
-#       .id = "kid"
-#     ) %>%
-#     dplyr::filter(id %in% c(4585))
-#
-#   kommunenavn <- kommune$verdi
-#
-#   polygon <- uthenta$objekter$lokasjon.geometri.wkt
-#
-#   svar <- list(kommunenavn, polygon)
-#
-#   return(svar)
-# }
-
-
 hent_kommune <- function(kommunenr) {
 
   #kommunenr <- "1108"
 
   api_query_root <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       sti_vegobjekter,
       "/946",
       "?inkluder=egenskaper"
@@ -313,25 +279,25 @@ hent_kommune <- function(kommunenr) {
     dplyr::bind_rows(
       uthenta$objekter$egenskaper[[1]],
       .id = "kid"
-    ) %>%
-    dplyr::select(navn, verdi) %>%
+    ) |>
+    dplyr::select(navn, verdi) |>
     tidyr::pivot_wider(
       names_from = navn,
       values_from = verdi
-    ) %>%
+    ) |>
     dplyr::select(
       kommunenavn = Kommunenavn,
       kommunenr = Kommunenummer,
       geometry = "Geometri, flate"
-    ) %>%
+    ) |>
     sf::st_as_sf(
       wkt = "geometry",
       crs = 25833
-    ) %>%
+    ) |>
     sf::st_zm(
       drop = T,
       what = "ZM"
-    ) #%>%
+    ) #|>
     #sf::st_transform("+proj=longlat +datum=WGS84")
 
   return(kommuneinfo)
@@ -344,7 +310,7 @@ hent_historisk_kommune <- function(kommunenr_dagens, kommunenr_historisk) {
 
   api_query_root <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       sti_vegobjekter,
       "/536",
       "?inkluder=egenskaper"
@@ -384,20 +350,20 @@ hent_historisk_kommune <- function(kommunenr_dagens, kommunenr_historisk) {
     dplyr::filter(
       kid == den_opprinnelige$kid
     ) |>
-    dplyr::select(navn, verdi) %>%
+    dplyr::select(navn, verdi) |>
     tidyr::pivot_wider(
       names_from = navn,
       values_from = verdi
-    ) %>%
+    ) |>
     dplyr::select(
       kommunenavn = Kommunenavn,
       kommunenr = Kommunenummer,
       geometry = "Geometri, flate"
-    ) %>%
+    ) |>
     sf::st_as_sf(
       wkt = "geometry",
       crs = 25833 # UTM33
-    ) %>%
+    ) |>
     sf::st_zm(
       drop = T,
       what = "ZM"
@@ -410,7 +376,7 @@ hent_alle_kommuner_v3 <- function() {
 
   api_query <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       "/omrader/kommuner",
       "?inkluder=kartutsnitt"
     )#&srid=wgs84")
@@ -418,13 +384,13 @@ hent_alle_kommuner_v3 <- function() {
   uthenta <- call_and_parse_nvdb_api(api_query)
 
   uthenta_sf <-
-    uthenta %>%
+    uthenta |>
     sf::st_as_sf(
       wkt = "kartutsnitt.wkt",
       crs = 5973
-    ) %>%
-    sf::st_zm(drop = T, what = "ZM") %>%
-    #dplyr::select(GEOMETRY) %>%
+    ) |>
+    sf::st_zm(drop = T, what = "ZM") |>
+    #dplyr::select(GEOMETRY) |>
     sf::st_transform("+proj=longlat +datum=WGS84")
 
   # uthenta_sf <- sf::st_as_sf(uthenta,
@@ -435,191 +401,7 @@ hent_alle_kommuner_v3 <- function() {
 }
 
 
-# Hent målestasjoner ----
-# hent_trafikkregistreringsstasjon_for_omraade <- function(omraadenr) {
-#
-#   # Fire siffer angir kommunenr.
-#   # Ett eller to siffer angir fylkenr.
-#
-#   api_query_482 <- paste0(nvdb_url,
-#                           sti_vegobjekter,
-#                           "/482",
-#                           "?inkluder=egenskaper,lokasjon")
-#
-#   omraadestreng <- ifelse(nchar(omraadenr) <= 2,
-#                           "&fylke=",
-#                           "&kommune="
-#   )
-#
-#   api_query_482_omraade <- paste0(api_query_482,
-#                                   omraadestreng,
-#                                   omraadenr,
-#                                   "&srid=wgs84",
-#                                   "&egenskap='3910=4892'")
-#   # Over: Filtrerer på kontinuerlige stasjoner
-#
-#   respons <- GET(api_query_482_omraade,
-#                  add_headers("X-Client" = "trafikkdatagruppa",
-#                              "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
-#                              "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
-#
-#   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-#                       simplifyDataFrame = T,
-#                       flatten = T)
-#
-#   trs <- uthenta$objekter %>%
-#     select(id, egenskaper) %>%
-#     unnest() %>%
-#     filter(id1 %in% c(4626, 4627, 5201, 9293, 3910)) %>%
-#     select(id, navn, verdi) %>%
-#     spread(navn, verdi)
-#
-#   vegreferanser <- uthenta$objekter %>%
-#     select(id, lokasjon.vegreferanser) %>%
-#     unnest()
-#
-#   # TODO: Ta bort fylkenr, kommunenr og mellomrom, slik at vegreferansen er på kortform
-#   # som kan brukes direkte i spørring etter trafikkmengde i NVDB-API.
-#
-#   koordinater <- uthenta$objekter %>%
-#     select(id, lokasjon.geometri.wkt) %>%
-#     unnest() %>%
-#     mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 10, -2)) %>%
-#     separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
-#              convert = T) %>%
-#     select(id, lat, lon)
-#
-#   trser <- trs %>%
-#     left_join(vegreferanser) %>%
-#     left_join(koordinater) %>%
-#     filter(Trafikantgruppe == "Motorkjøretøy") %>%
-#     filter(Status != "Nedlagt, ikke lov å bruke") %>%
-#     mutate(Veg = paste0(kategori, nummer)) %>%
-#     select(2, 5, 14:17) %>%
-#     mutate(Kommune = kommunenavn)
-#
-#   colnames(trser) <- c("Stasjonnr", "Navn", "Vegreferanse",
-#                        "lat", "lon", "Veg", "Kommune")
-#
-#   return(trser)
-# }
-
-
 # Bomstasjoner ----
-# Deprecated
-# hent_bomstasjon_for_kommune <- function(kommunenr) {
-#   # Laget for Trondheim
-#   api_query_45 <- paste0(nvdb_url,
-#                          sti_vegobjekter,
-#                          "/45",
-#                          "?inkluder=egenskaper,lokasjon")
-#
-#   api_query_45_kommune <- paste0(api_query_45,
-#                                  "&kommune=",
-#                                  kommunenr,
-#                                  "&srid=wgs84")
-#
-#   respons <- GET(api_query_45_kommune,
-#                  add_headers("X-Client" = "trafikkdatagruppa",
-#                              "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
-#                              "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
-#
-#   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-#                       simplifyDataFrame = T,
-#                       flatten = T)
-#
-#   bom <- uthenta$objekter %>%
-#     select(id, egenskaper) %>%
-#     unnest() %>%
-#     filter(id1 %in% c(1078, 9595)) %>%
-#     select(id, navn, verdi) %>%
-#     spread(navn, verdi)
-#
-#   vegreferanser <- uthenta$objekter %>%
-#     select(id, lokasjon.vegreferanser) %>%
-#     unnest()
-#
-#   koordinater <- uthenta$objekter %>%
-#     select(id, lokasjon.geometri.wkt) %>%
-#     unnest() %>%
-#     mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 10, -2)) %>%
-#     separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
-#              convert = T) %>%
-#     select(id, lat, lon)
-#
-#   bomer <- bom %>%
-#     left_join(vegreferanser) %>%
-#     left_join(koordinater) %>%
-#     mutate(Veg = paste0(kategori, nummer)) %>%
-#     select(-id, -fylke, -kommune, -kategori, -nummer,
-#            -status, -hp, -meter) %>%
-#     mutate(Kommune = kommunenavn)
-#
-#   colnames(bomer) <- c("Stasjonnr", "Navn", "Vegreferanse",
-#                        "lat", "lon", "Veg", "Kommune")
-#
-#   return(bomer)
-# }
-
-# get_tolling_stations <- function(kommunenr) {
-#
-#   # Laget for Trondheim
-#
-#   api_query_45 <- paste0(nvdb_url,
-#                          sti_vegobjekter,
-#                          "/45",
-#                          "?inkluder=egenskaper,lokasjon")
-#
-#   api_query_45_kommune <- paste0(api_query_45,
-#                                  "&kommune=",
-#                                  kommunenr,
-#                                  "&srid=wgs84")
-#
-#   respons <- GET(api_query_45_kommune,
-#                  add_headers("X-Client" = "trafikkdatagruppa",
-#                              "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
-#                              "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
-#
-#   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-#                       simplifyDataFrame = T,
-#                       flatten = T)
-#
-#   bom <- uthenta$objekter %>%
-#     select(id, egenskaper) %>%
-#     rename(id1 = id) %>%
-#     unnest(cols = c(egenskaper)) %>%
-#     filter(id %in% c(1078, 9595)) %>%
-#     select(id1, navn, verdi) %>%
-#     rename(id = id1) %>%
-#     spread(navn, verdi)
-#
-#   vegreferanser <- uthenta$objekter %>%
-#     select(id, lokasjon.vegreferanser) %>%
-#     unnest(cols = c(lokasjon.vegreferanser))
-#
-#   koordinater <- uthenta$objekter %>%
-#     select(id, lokasjon.geometri.wkt) %>%
-#     unnest(cols = c(lokasjon.geometri.wkt)) %>%
-#     mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 10, -2)) %>%
-#     separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
-#              convert = T) %>%
-#     select(id, lat, lon)
-#
-#   bomer <- bom %>%
-#     left_join(vegreferanser) %>%
-#     left_join(koordinater) %>%
-#     mutate(Veg = paste0(kategori, nummer)) %>%
-#     select(-id, -fylke, -kommune, -kategori, -nummer,
-#            -status, -hp, -meter) %>%
-#     mutate(Kommune = kommunenavn,
-#            kortform = str_sub(kortform, 6))
-#
-#   colnames(bomer) <- c("msnr", "name", "road_reference",
-#                        "lat", "lon", "road", "kommune")
-#
-#   return(bomer)
-# }
-
 #kommunenr <- "5001"
 get_tolling_stations <- function(kommunenr) {
 
@@ -627,7 +409,7 @@ get_tolling_stations <- function(kommunenr) {
 
   api_query_45 <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       sti_vegobjekter,
       "/45",
       "?inkluder=egenskaper,lokasjon"
@@ -643,43 +425,43 @@ get_tolling_stations <- function(kommunenr) {
 
   uthenta <- call_and_parse_nvdb_api(api_query)
 
-  bom <- uthenta$objekter %>%
-    dplyr::select(id, egenskaper) %>%
-    dplyr::rename(id1 = id) %>%
-    tidyr::unnest(cols = c(egenskaper)) %>%
-    dplyr::filter(id %in% c(1078, 9595)) %>%
-    dplyr::select(id1, navn, verdi) %>%
-    dplyr::rename(id = id1) %>%
-    tidyr::pivot_wider(names_from = navn, values_from = verdi) %>%
+  bom <- uthenta$objekter |>
+    dplyr::select(id, egenskaper) |>
+    dplyr::rename(id1 = id) |>
+    tidyr::unnest(cols = c(egenskaper)) |>
+    dplyr::filter(id %in% c(1078, 9595)) |>
+    dplyr::select(id1, navn, verdi) |>
+    dplyr::rename(id = id1) |>
+    tidyr::pivot_wider(names_from = navn, values_from = verdi) |>
     dplyr::rename(name = 2,
                   msnr = 3)
 
-  vegreferanser <- uthenta$objekter %>%
-    dplyr::select(id, lokasjon.vegsystemreferanser) %>%
-    tidyr::unnest(cols = c(lokasjon.vegsystemreferanser)) %>%
-    dplyr::select(id, kortform) %>%
+  vegreferanser <- uthenta$objekter |>
+    dplyr::select(id, lokasjon.vegsystemreferanser) |>
+    tidyr::unnest(cols = c(lokasjon.vegsystemreferanser)) |>
+    dplyr::select(id, kortform) |>
     dplyr::rename(road_reference = kortform)
 
-  koordinater <- uthenta$objekter %>%
-    dplyr::select(id, lokasjon.geometri.wkt) %>%
-    dplyr::mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 9, -2)) %>%
+  koordinater <- uthenta$objekter |>
+    dplyr::select(id, lokasjon.geometri.wkt) |>
+    dplyr::mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 9, -2)) |>
     tidyr::separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
-             convert = T) %>%
+             convert = T) |>
     dplyr::select(id, lat, lon)
 
-  veglenkeposisjoner <- uthenta$objekter %>%
-    dplyr::select(id, lokasjon.stedfestinger) %>%
-    tidyr::unnest(cols = c(lokasjon.stedfestinger)) %>%
-    dplyr::select(id, kortform) %>%
+  veglenkeposisjoner <- uthenta$objekter |>
+    dplyr::select(id, lokasjon.stedfestinger) |>
+    tidyr::unnest(cols = c(lokasjon.stedfestinger)) |>
+    dplyr::select(id, kortform) |>
     dplyr::rename(road_link_position = kortform)
 
   # Setter sammen
   bomer <-
     bom |>
-    dplyr::left_join(vegreferanser, by = "id") %>%
-    dplyr::left_join(koordinater, by = "id") %>%
-    dplyr::left_join(veglenkeposisjoner, by = "id") %>%
-    #dplyr::select(-id) %>%
+    dplyr::left_join(vegreferanser, by = "id") |>
+    dplyr::left_join(koordinater, by = "id") |>
+    dplyr::left_join(veglenkeposisjoner, by = "id") |>
+    #dplyr::select(-id) |>
     dplyr::select(nvdb_id = id, msnr, name, road_reference,
                   road_link_position, lat, lon)
 
@@ -691,7 +473,7 @@ get_all_tolling_stations <- function() {
 
   api_query_45 <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       sti_vegobjekter,
       "/45",
       "?inkluder=egenskaper,lokasjon"
@@ -706,14 +488,14 @@ get_all_tolling_stations <- function() {
   uthenta <- call_and_parse_nvdb_api(api_query)
 
   bom <-
-    uthenta$objekter %>%
-    dplyr::select(id, egenskaper) %>%
-    dplyr::rename(id1 = id) %>%
-    tidyr::unnest(cols = c(egenskaper)) %>%
-    dplyr::filter(id %in% c(1078, 9595, 11883, 9414)) %>%
-    dplyr::select(id1, navn, verdi) %>%
-    dplyr::rename(id = id1) %>%
-    tidyr::pivot_wider(names_from = navn, values_from = verdi) %>%
+    uthenta$objekter |>
+    dplyr::select(id, egenskaper) |>
+    dplyr::rename(id1 = id) |>
+    tidyr::unnest(cols = c(egenskaper)) |>
+    dplyr::filter(id %in% c(1078, 9595, 11883, 9414)) |>
+    dplyr::select(id1, navn, verdi) |>
+    dplyr::rename(id = id1) |>
+    tidyr::pivot_wider(names_from = navn, values_from = verdi) |>
     dplyr::rename(
       directions = 2,
       operator_id = 3,
@@ -721,31 +503,31 @@ get_all_tolling_stations <- function() {
       toll_station_id = 5
     )
 
-  vegreferanser <- uthenta$objekter %>%
-    dplyr::select(id, lokasjon.vegsystemreferanser) %>%
-    tidyr::unnest(cols = c(lokasjon.vegsystemreferanser)) %>%
-    dplyr::select(id, kortform) %>%
+  vegreferanser <- uthenta$objekter |>
+    dplyr::select(id, lokasjon.vegsystemreferanser) |>
+    tidyr::unnest(cols = c(lokasjon.vegsystemreferanser)) |>
+    dplyr::select(id, kortform) |>
     dplyr::rename(road_reference = kortform)
 
-  koordinater <- uthenta$objekter %>%
-    dplyr::select(id, lokasjon.geometri.wkt) %>%
-    dplyr::mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 9, -2)) %>%
+  koordinater <- uthenta$objekter |>
+    dplyr::select(id, lokasjon.geometri.wkt) |>
+    dplyr::mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 9, -2)) |>
     tidyr::separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
-                    convert = T) %>%
+                    convert = T) |>
     dplyr::select(id, lat, lon)
 
-  veglenkeposisjoner <- uthenta$objekter %>%
-    dplyr::select(id, lokasjon.stedfestinger) %>%
-    tidyr::unnest(cols = c(lokasjon.stedfestinger)) %>%
-    dplyr::select(id, kortform) %>%
+  veglenkeposisjoner <- uthenta$objekter |>
+    dplyr::select(id, lokasjon.stedfestinger) |>
+    tidyr::unnest(cols = c(lokasjon.stedfestinger)) |>
+    dplyr::select(id, kortform) |>
     dplyr::rename(road_link_position = kortform)
 
   # Setter sammen
   bomer <-
     bom |>
-    dplyr::left_join(vegreferanser, by = "id") %>%
-    dplyr::left_join(koordinater, by = "id") %>%
-    dplyr::left_join(veglenkeposisjoner, by = "id") %>%
+    dplyr::left_join(vegreferanser, by = "id") |>
+    dplyr::left_join(koordinater, by = "id") |>
+    dplyr::left_join(veglenkeposisjoner, by = "id") |>
     dplyr::select(
       nvdb_id = id,
       operator_id,
@@ -759,13 +541,14 @@ get_all_tolling_stations <- function() {
   return(bomer)
 }
 
+
 # Årsdøgntrafikk ----
 #roadref <- "fv76s1d1m18400"
 getAadtByRoadReference <- function(roadref) {
 
   api_query_540 <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       sti_vegobjekter,
       "/540",
       "?inkluder=egenskaper"
@@ -781,11 +564,11 @@ getAadtByRoadReference <- function(roadref) {
   uthenta <- call_and_parse_nvdb_api(api_query)
 
   adt_total <-
-    uthenta$objekter %>%
-    dplyr::select(id, egenskaper) %>%
-    rename(id1 = id) %>%
-    tidyr::unnest(cols = egenskaper) %>%
-    filter(id %in% c(4623)) %>%
+    uthenta$objekter |>
+    dplyr::select(id, egenskaper) |>
+    rename(id1 = id) |>
+    tidyr::unnest(cols = egenskaper) |>
+    filter(id %in% c(4623)) |>
     select(verdi)
 
   adt_verdi <- round(as.numeric(adt_total[1, 1]), digits = -2)
@@ -798,7 +581,7 @@ get_historic_aadt_by_roadlinkposition <- function(roadlinkposition) {
 
   api_query_540 <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       sti_vegobjekter,
       "/540",
       "?inkluder=egenskaper"
@@ -815,11 +598,11 @@ get_historic_aadt_by_roadlinkposition <- function(roadlinkposition) {
   uthenta <- call_and_parse_nvdb_api(api_query)
 
   adt_history <-
-    uthenta$objekter %>%
-    dplyr::select(id, egenskaper) %>%
-    dplyr::rename(id1 = id) %>%
-    tibble::as_tibble() %>%
-    tibble::rowid_to_column("versjon_id") %>%
+    uthenta$objekter |>
+    dplyr::select(id, egenskaper) |>
+    dplyr::rename(id1 = id) |>
+    tibble::as_tibble() |>
+    tibble::rowid_to_column("versjon_id") |>
     # Some responses have less rows in egenskaper, leading R to potentially
     # deduce diffrent data type for the verdi column - this will amend that
     dplyr::mutate(
@@ -831,28 +614,28 @@ get_historic_aadt_by_roadlinkposition <- function(roadlinkposition) {
         )
       )
     ) |>
-    tidyr::unnest(cols = egenskaper) %>%
-    dplyr::filter(id %in% c(4621, 4623, 4624, 4625)) %>%
-    dplyr::select(versjon_id, id, navn, verdi) %>%
+    tidyr::unnest(cols = egenskaper) |>
+    dplyr::filter(id %in% c(4621, 4623, 4624, 4625)) |>
+    dplyr::select(versjon_id, id, navn, verdi) |>
     dplyr::mutate(value_name = dplyr::case_when(
       id == 4621 ~ "year",
       id == 4623 ~ "aadt_total",
       id == 4624 ~ "heavy_percentage",
       id == 4625 ~ "source",
       TRUE ~ "unspecified"
-    )) %>%
-    dplyr::select(versjon_id, value_name, verdi) %>%
+    )) |>
+    dplyr::select(versjon_id, value_name, verdi) |>
     tidyr::pivot_wider(
       names_from = value_name,
       values_from = verdi
-    ) %>%
-    dplyr::select(-versjon_id) %>%
+    ) |>
+    dplyr::select(-versjon_id) |>
     dplyr::mutate(
       aadt_total = as.numeric(aadt_total),
       heavy_percentage = as.numeric(heavy_percentage),
       year = as.numeric(year)
-    ) %>%
-    dplyr::distinct() %>%
+    ) |>
+    dplyr::distinct() |>
     dplyr::arrange(year) |>
     dplyr::mutate(
       road_link_position = roadlinkposition
@@ -883,11 +666,11 @@ get_historic_aadt_by_roadlinkposition <- function(roadlinkposition) {
 #                       simplifyDataFrame = T,
 #                       flatten = T)
 #
-#   adt_total <- uthenta$objekter %>%
-#     select(id, egenskaper) %>%
-#     rename(id1 = id) %>%
-#     unnest(cols = c(egenskaper)) %>%
-#     filter(id %in% c(4623)) %>%
+#   adt_total <- uthenta$objekter |>
+#     select(id, egenskaper) |>
+#     rename(id1 = id) |>
+#     unnest(cols = c(egenskaper)) |>
+#     filter(id %in% c(4623)) |>
 #     select(verdi)
 #
 #   adt_verdi <- round(as.numeric(adt_total[1, 1]), digits = -1)
@@ -904,7 +687,7 @@ get_aadt_by_road <- function(roadcat_number) {
 
   api_query_root <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       sti_vegobjekter,
       "/540",
       "?inkluder=egenskaper,lokasjon"
@@ -919,50 +702,50 @@ get_aadt_by_road <- function(roadcat_number) {
 
   uthenta <- call_and_parse_nvdb_api(api_query)
 
-  adt <- uthenta$objekter %>%
-    dplyr::select(id, egenskaper) %>%
-    dplyr::rename(nvdb_objekt_id = id) %>%
-    tibble::as_tibble() %>%
-    tibble::rowid_to_column("objekt_nr") %>%
-    tidyr::unnest(cols = egenskaper) %>%
+  adt <- uthenta$objekter |>
+    dplyr::select(id, egenskaper) |>
+    dplyr::rename(nvdb_objekt_id = id) |>
+    tibble::as_tibble() |>
+    tibble::rowid_to_column("objekt_nr") |>
+    tidyr::unnest(cols = egenskaper) |>
     dplyr::filter(id %in% c(4621, # År, gjelder for
                             4623, # ÅDT total
                             4624, # Andel lange
                             4625  # Grunnlag
-                            )) %>%
-    dplyr::select(nvdb_objekt_id, egenskap_id = id, verdi) %>%
+                            )) |>
+    dplyr::select(nvdb_objekt_id, egenskap_id = id, verdi) |>
     dplyr::mutate(value_name = dplyr::case_when(
       egenskap_id == 4621 ~ "year",
       egenskap_id == 4623 ~ "aadt_total",
       egenskap_id == 4624 ~ "heavy_percentage",
       egenskap_id == 4625 ~ "source",
       TRUE ~ "unspecified"
-    )) %>%
-    dplyr::select(nvdb_objekt_id, value_name, verdi) %>%
+    )) |>
+    dplyr::select(nvdb_objekt_id, value_name, verdi) |>
     tidyr::pivot_wider(
       names_from = value_name,
       values_from = verdi
-    ) %>%
+    ) |>
     dplyr::mutate(aadt_total = as.numeric(aadt_total),
                   heavy_percentage = as.numeric(heavy_percentage))
 
-    location <- uthenta$objekter %>%
-      dplyr::select(id, geometry = lokasjon.geometri.wkt) %>%
-      dplyr::rename(nvdb_objekt_id = id) %>%
-      tibble::as_tibble() %>%
+    location <- uthenta$objekter |>
+      dplyr::select(id, geometry = lokasjon.geometri.wkt) |>
+      dplyr::rename(nvdb_objekt_id = id) |>
+      tibble::as_tibble() |>
       sf::st_as_sf(wkt = "geometry",
-                   crs = 5973) %>%
-      sf::st_zm(drop = T, what = "ZM") %>%
+                   crs = 5973) |>
+      sf::st_zm(drop = T, what = "ZM") |>
       sf::st_transform("+proj=longlat +datum=WGS84")
 
-    counties <- uthenta$objekter %>%
-      dplyr::select(id, county_numbers = lokasjon.fylker) %>%
-      dplyr::rename(nvdb_objekt_id = id) %>%
+    counties <- uthenta$objekter |>
+      dplyr::select(id, county_numbers = lokasjon.fylker) |>
+      dplyr::rename(nvdb_objekt_id = id) |>
       tibble::as_tibble()
 
   adt_location <-
-    dplyr::left_join(adt, location, by = "nvdb_objekt_id") %>%
-    sf::st_as_sf() %>%
+    dplyr::left_join(adt, location, by = "nvdb_objekt_id") |>
+    sf::st_as_sf() |>
     dplyr::left_join(counties, by = "nvdb_objekt_id")
 
   return(adt_location)
@@ -977,7 +760,11 @@ get_aadt_by_road <- function(roadcat_number) {
 # date = today_date
 # roads = "E,R,F"
 
-get_aadt_by_area <- function(area_number, segmentation = "false", date = today_date, roads = "E,R,F") {
+get_aadt_by_area <- function(
+    area_number,
+    segmentation = "false",
+    date = today_date,
+    roads = "E,R,F") {
 
   # Area numbers
   # County numbers
@@ -1008,7 +795,7 @@ get_aadt_by_area <- function(area_number, segmentation = "false", date = today_d
 
   api_query_root <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       sti_vegobjekter,
       "/540",
       "?segmentering=",
@@ -1051,7 +838,7 @@ get_aadt_by_area <- function(area_number, segmentation = "false", date = today_d
     respons <-
       httr::GET(
         uthenta$metadata$neste$href,
-        httr::add_headers(.headers = nvdb_v3_headers)
+        httr::add_headers(.headers = nvdb_headers)
       )
 
     uthenta <-
@@ -1073,11 +860,11 @@ get_aadt_by_area <- function(area_number, segmentation = "false", date = today_d
 
 
   adt <-
-    respons_objekter %>%
-    dplyr::select(id, egenskaper) %>%
-    dplyr::rename(nvdb_objekt_id = id) %>%
-    tibble::as_tibble() %>%
-    tibble::rowid_to_column("objekt_nr") %>%
+    respons_objekter |>
+    dplyr::select(id, egenskaper) |>
+    dplyr::rename(nvdb_objekt_id = id) |>
+    tibble::as_tibble() |>
+    tibble::rowid_to_column("objekt_nr") |>
     # Some objects lack "Grunnlag" which is a character
     # Then these will have only numeric values in "Verdi"
     # thus causing unnest to get incompatible types.
@@ -1091,64 +878,64 @@ get_aadt_by_area <- function(area_number, segmentation = "false", date = today_d
     ) |>
     tidyr::unnest(
       col = egenskaper
-    ) %>%
+    ) |>
     dplyr::filter(
       id %in% c(4621, # År, gjelder for
                 4623, # ÅDT total
                 4624, # Andel lange
                 4625  # Grunnlag
               )
-    ) %>%
+    ) |>
     dplyr::select(
       nvdb_objekt_id,
       egenskap_id = id,
       verdi
-    ) %>%
+    ) |>
     dplyr::mutate(value_name = dplyr::case_when(
       egenskap_id == 4621 ~ "year",
       egenskap_id == 4623 ~ "aadt_total",
       egenskap_id == 4624 ~ "heavy_percentage",
       egenskap_id == 4625 ~ "source",
       TRUE ~ "unspecified"
-    )) %>%
+    )) |>
     dplyr::select(
       nvdb_objekt_id,
       value_name,
       verdi
-    ) %>%
+    ) |>
     tidyr::pivot_wider(
       names_from = value_name,
       values_from = verdi
-    ) %>%
+    ) |>
     dplyr::mutate(
       aadt_total = as.numeric(aadt_total),
       heavy_percentage = as.numeric(heavy_percentage)
     )
 
   location <-
-    respons_objekter %>%
+    respons_objekter |>
     dplyr::select(
       id,
       length = lokasjon.lengde,
       geometry = lokasjon.geometri.wkt
-    ) %>%
-    dplyr::rename(nvdb_objekt_id = id) %>%
-    tibble::as_tibble() %>%
+    ) |>
+    dplyr::rename(nvdb_objekt_id = id) |>
+    tibble::as_tibble() |>
     sf::st_as_sf(wkt = "geometry",
-                 crs = 5973) %>%
-    sf::st_zm(drop = T, what = "ZM") %>%
+                 crs = 5973) |>
+    sf::st_zm(drop = T, what = "ZM") |>
     sf::st_transform("+proj=longlat +datum=WGS84")
 
   counties <-
-    respons_objekter %>%
-    dplyr::select(id, county_numbers = lokasjon.fylker) %>%
-    dplyr::rename(nvdb_objekt_id = id) %>%
+    respons_objekter |>
+    dplyr::select(id, county_numbers = lokasjon.fylker) |>
+    dplyr::rename(nvdb_objekt_id = id) |>
     tibble::as_tibble()
 
   road_category <-
-    respons_objekter %>%
-    dplyr::select(id, road_reference = lokasjon.vegsystemreferanser) %>%
-    dplyr::rename(nvdb_objekt_id = id) %>%
+    respons_objekter |>
+    dplyr::select(id, road_reference = lokasjon.vegsystemreferanser) |>
+    dplyr::rename(nvdb_objekt_id = id) |>
     tibble::as_tibble() |>
     tidyr::unnest(
       cols = road_reference
@@ -1179,8 +966,8 @@ get_aadt_by_area <- function(area_number, segmentation = "false", date = today_d
       adt,
       location,
       by = "nvdb_objekt_id"
-    ) %>%
-    sf::st_as_sf() %>%
+    ) |>
+    sf::st_as_sf() |>
     dplyr::left_join(
       counties,
       by = "nvdb_objekt_id"
@@ -1233,7 +1020,7 @@ get_aadt_by_area_with_all_road_references <-
 
   api_query_root <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       sti_vegobjekter,
       "/540",
       "?segmentering=",
@@ -1297,11 +1084,11 @@ get_aadt_by_area_with_all_road_references <-
   }
 
   adt <-
-    respons_objekter %>%
-    dplyr::select(id, egenskaper) %>%
-    dplyr::rename(nvdb_objekt_id = id) %>%
-    tibble::as_tibble() %>%
-    tibble::rowid_to_column("objekt_nr") %>%
+    respons_objekter |>
+    dplyr::select(id, egenskaper) |>
+    dplyr::rename(nvdb_objekt_id = id) |>
+    tibble::as_tibble() |>
+    tibble::rowid_to_column("objekt_nr") |>
     # Some objects lack "Grunnlag" which is a character
     # Then these will have only numeric values in "Verdi"
     # thus causing unnest to get incompatible types.
@@ -1315,59 +1102,59 @@ get_aadt_by_area_with_all_road_references <-
     ) |>
     tidyr::unnest(
       col = egenskaper
-    ) %>%
+    ) |>
     dplyr::filter(
       id %in% c(4621, # År, gjelder for
                 4623, # ÅDT total
                 4624, # Andel lange
                 4625  # Grunnlag
       )
-    ) %>%
+    ) |>
     dplyr::select(
       nvdb_objekt_id,
       egenskap_id = id,
       verdi
-    ) %>%
+    ) |>
     dplyr::mutate(value_name = dplyr::case_when(
       egenskap_id == 4621 ~ "year",
       egenskap_id == 4623 ~ "aadt_total",
       egenskap_id == 4624 ~ "heavy_percentage",
       egenskap_id == 4625 ~ "source",
       TRUE ~ "unspecified"
-    )) %>%
+    )) |>
     dplyr::select(
       nvdb_objekt_id,
       value_name,
       verdi
-    ) %>%
+    ) |>
     tidyr::pivot_wider(
       names_from = value_name,
       values_from = verdi
-    ) %>%
+    ) |>
     dplyr::mutate(
       aadt_total = as.numeric(aadt_total),
       heavy_percentage = as.numeric(heavy_percentage)
     )
 
   link_length <-
-    respons_objekter %>%
+    respons_objekter |>
     dplyr::select(
       id,
       length = lokasjon.lengde
-    ) %>%
-    dplyr::rename(nvdb_objekt_id = id) %>%
+    ) |>
+    dplyr::rename(nvdb_objekt_id = id) |>
     tibble::as_tibble()
 
   counties <-
-    respons_objekter %>%
-    dplyr::select(id, county_numbers = lokasjon.fylker) %>%
-    dplyr::rename(nvdb_objekt_id = id) %>%
+    respons_objekter |>
+    dplyr::select(id, county_numbers = lokasjon.fylker) |>
+    dplyr::rename(nvdb_objekt_id = id) |>
     tibble::as_tibble()
 
   road_category <-
-    respons_objekter %>%
-    dplyr::select(id, road_reference = lokasjon.vegsystemreferanser) %>%
-    dplyr::rename(nvdb_objekt_id = id) %>%
+    respons_objekter |>
+    dplyr::select(id, road_reference = lokasjon.vegsystemreferanser) |>
+    dplyr::rename(nvdb_objekt_id = id) |>
     tibble::as_tibble() |>
     tidyr::unnest(
       cols = road_reference
@@ -1394,7 +1181,7 @@ get_aadt_by_area_with_all_road_references <-
       adt,
       link_length,
       by = "nvdb_objekt_id"
-    ) %>%
+    ) |>
     dplyr::left_join(
       counties,
       by = "nvdb_objekt_id"
@@ -1409,37 +1196,6 @@ get_aadt_by_area_with_all_road_references <-
 
 
 # Fartsgrense ----
-# getSpeedLimit <- function(roadref) {
-#   api_query_105 <- paste0(nvdb_url,
-#                           sti_vegobjekter,
-#                           "/105",
-#                           "?inkluder=egenskaper")
-#
-#   api_query_105_vegref <- paste0(api_query_105,
-#                                  "&vegreferanse=",
-#                                  roadref)
-#
-#   respons <- GET(api_query_105_vegref,
-#                  add_headers("X-Client" = "trafikkdatagruppa",
-#                              "X-Kontaktperson" = "snorre.hansen@vegvesen.no",
-#                              "Accept" = "application/vnd.vegvesen.nvdb-v2+json"))
-#
-#   uthenta <- fromJSON(str_conv(respons$content, encoding = "UTF-8"),
-#                       simplifyDataFrame = T,
-#                       flatten = T)
-#
-#   speed_limit <- uthenta$objekter %>%
-#     select(id, egenskaper) %>%
-#     unnest() %>%
-#     filter(id1 %in% c(2021)) %>%
-#     select(verdi)
-#
-#   verdi <- speed_limit[1, 1]
-#
-#   return(verdi)
-# }
-
-
 # getSpeedLimit_roadlink <- function(roadlink) {
 #   api_query_105 <- paste0(nvdb_url,
 #                           sti_vegobjekter,
@@ -1464,13 +1220,13 @@ get_aadt_by_area_with_all_road_references <-
 #   if(length(objekter) == 0) {
 #     verdi = NA
 #   }else{
-#     speed_limit <- objekter %>%
-#       select(id, egenskaper) %>%
+#     speed_limit <- objekter |>
+#       select(id, egenskaper) |>
 #       # If more than one response, choosing the first (lazily avoiding
 #       # unnest to crash). Not sure what would be the right response to choose.
-#       slice(1) %>%
-#       unnest() %>%
-#       filter(id1 %in% c(2021)) %>%
+#       slice(1) |>
+#       unnest() |>
+#       filter(id1 %in% c(2021)) |>
 #       select(verdi)
 #
 #     verdi <- speed_limit[1, 1]
@@ -1485,7 +1241,7 @@ get_speedlimit_by_roadlink <- function(roadlink) {
 
   api_query_105 <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       sti_vegobjekter,
       "/105",
       "?inkluder=egenskaper"
@@ -1507,37 +1263,37 @@ get_speedlimit_by_roadlink <- function(roadlink) {
   if(length(objekter) == 0) {
     verdi = NA_integer_
   }else{
-    speed_limit_raw <- objekter %>%
-      dplyr::slice(1) %>% # avoid incompatible types
-      dplyr::select(egenskaper) %>%
+    speed_limit_raw <- objekter |>
+      dplyr::slice(1) |> # avoid incompatible types
+      dplyr::select(egenskaper) |>
       tidyr::unnest(
         cols = c(egenskaper)
       )
 
     # Some responses lack 5127 (valid from date)
     if(5127 %in% speed_limit_raw) {
-      speed_limit <- speed_limit_raw %>%
-        dplyr::filter(id %in% c(2021, 5127)) %>%
-        dplyr::select(navn, verdi) %>%
-        dplyr::distinct() %>%
+      speed_limit <- speed_limit_raw |>
+        dplyr::filter(id %in% c(2021, 5127)) |>
+        dplyr::select(navn, verdi) |>
+        dplyr::distinct() |>
         tidyr::pivot_wider(names_from = navn,
-                           values_from = verdi) %>%
+                           values_from = verdi) |>
         dplyr::rename(speed_limit = 1,
-                      valid_from = 2) %>%
-        dplyr::mutate(valid_from = lubridate::ymd(valid_from)) %>%
+                      valid_from = 2) |>
+        dplyr::mutate(valid_from = lubridate::ymd(valid_from)) |>
         # Choosing latest
         # History is not complete in NVDB as users sometime just replace
         # old speed limit with the new value (sic!)
         dplyr::filter(valid_from == max(valid_from))
 
-      verdi <- speed_limit$speed_limit[1] %>%
+      verdi <- speed_limit$speed_limit[1] |>
         as.numeric()
     }else{
-      speed_limit <- speed_limit_raw %>%
-        dplyr::filter(id %in% c(2021)) %>%
+      speed_limit <- speed_limit_raw |>
+        dplyr::filter(id %in% c(2021)) |>
         dplyr::select(navn, verdi)
 
-      verdi <- speed_limit$verdi[1] %>%
+      verdi <- speed_limit$verdi[1] |>
         as.numeric()
     }
   }
@@ -1557,7 +1313,7 @@ get_road_length_for_municipality <- function(municipality_number) {
 
   api_query <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       "/vegnett/veglenkesekvenser/segmentert?",
       "kommune=",
       municipality_number,
@@ -1649,7 +1405,7 @@ get_trafikkmengde_for_riksvegrute <- function(rutenavn, periode) {
   periode <- stringr::str_replace_all(periode, " ", "%20")
   resultat <- tibble::tibble()
 
-  api_query <- paste0(nvdb_url_v3,
+  api_query <- paste0(nvdb_url,
                       sti_vegobjekter,
                       "/540",
                       "?inkluder=egenskaper,lokasjon",
@@ -1670,45 +1426,45 @@ get_trafikkmengde_for_riksvegrute <- function(rutenavn, periode) {
 
   process_response <- function(uthenta) {
 
-  trafikkmengder <- uthenta$objekter %>%
-    dplyr::select(id, egenskaper) %>%
+  trafikkmengder <- uthenta$objekter |>
+    dplyr::select(id, egenskaper) |>
     # Avoiding bind_rows to fail due to different data types, when some rows are missing in response
-    dplyr::mutate(egenskaper = map(egenskaper, ~ .x %>%
-                        mutate_all(as.character))) %>%
-    tidyr::unnest(egenskaper, names_repair = "unique") %>%
-    dplyr::filter(id...2 %in% c(4621, 4623, 4624)) %>%
-    dplyr::select(id = id...1, navn, verdi) %>%
+    dplyr::mutate(egenskaper = map(egenskaper, ~ .x |>
+                        mutate_all(as.character))) |>
+    tidyr::unnest(egenskaper, names_repair = "unique") |>
+    dplyr::filter(id...2 %in% c(4621, 4623, 4624)) |>
+    dplyr::select(id = id...1, navn, verdi) |>
     dplyr::mutate(navn = dplyr::case_when(navn == "År, gjelder for" ~ "year",
                                           navn == "ÅDT, total" ~ "aadt",
-                                          navn == "ÅDT, andel lange kjøretøy" ~ "part_heavy")) %>%
-    tidyr::pivot_wider(names_from = navn, values_from = verdi) %>%
+                                          navn == "ÅDT, andel lange kjøretøy" ~ "part_heavy")) |>
+    tidyr::pivot_wider(names_from = navn, values_from = verdi) |>
     dplyr::mutate(aadt = as.numeric(aadt))
 
-  lengder <- uthenta$objekter %>%
+  lengder <- uthenta$objekter |>
     dplyr::select(id, lengde = lokasjon.lengde)
 
-  geometri <- uthenta$objekter %>%
-    dplyr::select(id, geometri = lokasjon.geometri.wkt) %>%
+  geometri <- uthenta$objekter |>
+    dplyr::select(id, geometri = lokasjon.geometri.wkt) |>
     dplyr::filter(!is.na(geometri))
 
-  vegsystemreferanser <- uthenta$objekter %>%
-    dplyr::select(id, vegsystemreferanser = lokasjon.vegsystemreferanser) %>%
-    tidyr::unnest(vegsystemreferanser) %>%
-    dplyr::select(id, kortform) %>%
-    dplyr::group_by(id) %>%
+  vegsystemreferanser <- uthenta$objekter |>
+    dplyr::select(id, vegsystemreferanser = lokasjon.vegsystemreferanser) |>
+    tidyr::unnest(vegsystemreferanser) |>
+    dplyr::select(id, kortform) |>
+    dplyr::group_by(id) |>
     dplyr::arrange(id, kortform)
 
-  vegsystemreferanser_start <- vegsystemreferanser %>%
+  vegsystemreferanser_start <- vegsystemreferanser |>
     dplyr::summarise(vegref_start = min(kortform))
 
-  vegsystemreferanser_slutt <- vegsystemreferanser %>%
+  vegsystemreferanser_slutt <- vegsystemreferanser |>
     dplyr::summarise(vegref_slutt = max(kortform))
 
-  trafikkmengder_med_lengder <- trafikkmengder %>%
-    dplyr::left_join(vegsystemreferanser_start) %>%
-    dplyr::left_join(vegsystemreferanser_slutt) %>%
-    dplyr::left_join(lengder) %>%
-    dplyr::left_join(geometri) %>%
+  trafikkmengder_med_lengder <- trafikkmengder |>
+    dplyr::left_join(vegsystemreferanser_start) |>
+    dplyr::left_join(vegsystemreferanser_slutt) |>
+    dplyr::left_join(lengder) |>
+    dplyr::left_join(geometri) |>
     dplyr::filter(lengde > 0)
 
   }
@@ -1747,11 +1503,11 @@ get_trafikkmengde_for_riksvegrute <- function(rutenavn, periode) {
     returned <- uthenta$metadata$returnert
   }
 
-  resultat_sf <- resultat %>%
+  resultat_sf <- resultat |>
     sf::st_as_sf(wkt = "geometri",
                  crs = 5973,
-                 na.fail = FALSE) %>%
-    sf::st_zm(drop = T, what = "ZM") %>%
+                 na.fail = FALSE) |>
+    sf::st_zm(drop = T, what = "ZM") |>
     sf::st_transform("+proj=longlat +datum=WGS84")
 
   return(resultat_sf)
@@ -1759,62 +1515,61 @@ get_trafikkmengde_for_riksvegrute <- function(rutenavn, periode) {
 
 
 # Nasjonale turistveger ----
-
 get_national_tourist_roads <- function() {
 
   api_query <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       "/vegobjekter/777?segmentering=true&inkluder=lokasjon,egenskaper"
     )
 
   uthenta <- call_and_parse_nvdb_api(api_query)
 
-  navn <- uthenta$objekter %>%
-    dplyr::select(objekt_id = id, egenskaper) %>%
-    tidyr::unnest(egenskaper) %>%
-    dplyr::filter(id %in% c(8128, 8129)) %>%
-    dplyr::select(objekt_id, navn, verdi) %>%
+  navn <- uthenta$objekter |>
+    dplyr::select(objekt_id = id, egenskaper) |>
+    tidyr::unnest(egenskaper) |>
+    dplyr::filter(id %in% c(8128, 8129)) |>
+    dplyr::select(objekt_id, navn, verdi) |>
     tidyr::spread(navn, verdi)
 
-  vegreferanser <- uthenta$objekter %>%
-    dplyr::select(objekt_id = id, lokasjon.vegsystemreferanser) %>%
-    tidyr::unnest(lokasjon.vegsystemreferanser) %>%
-    dplyr::mutate(veg = paste0(vegsystem.vegkategori, "v ", vegsystem.nummer)) %>%
-    dplyr::select(objekt_id, veg) %>%
+  vegreferanser <- uthenta$objekter |>
+    dplyr::select(objekt_id = id, lokasjon.vegsystemreferanser) |>
+    tidyr::unnest(lokasjon.vegsystemreferanser) |>
+    dplyr::mutate(veg = paste0(vegsystem.vegkategori, "v ", vegsystem.nummer)) |>
+    dplyr::select(objekt_id, veg) |>
     dplyr::distinct()
 
   # For å finne hvilke trper som ligger på strekningene
-  veglenkeposisjoner <- uthenta$objekter %>%
-    dplyr::select(objekt_id = id, lokasjon.stedfestinger) %>%
-    tidyr::unnest(lokasjon.stedfestinger) %>%
+  veglenkeposisjoner <- uthenta$objekter |>
+    dplyr::select(objekt_id = id, lokasjon.stedfestinger) |>
+    tidyr::unnest(lokasjon.stedfestinger) |>
     dplyr::select(objekt_id, veglenkesekvensid, startposisjon, sluttposisjon,
                   kortform)
 
-  lengder <- uthenta$objekter %>%
+  lengder <- uthenta$objekter |>
     dplyr::select(objekt_id = id, lokasjon.lengde)
 
-  geometri <- uthenta$objekter %>%
+  geometri <- uthenta$objekter |>
     dplyr::select(objekt_id = id, lokasjon.geometri.wkt)
 
-  srid <- uthenta$objekter %>%
+  srid <- uthenta$objekter |>
     dplyr::select(objekt_id = id, lokasjon.geometri.srid)
 
-  turistveg_vegreferanser <- navn %>%
-    dplyr::left_join(vegreferanser, by = "objekt_id") %>%
+  turistveg_vegreferanser <- navn |>
+    dplyr::left_join(vegreferanser, by = "objekt_id") |>
     dplyr::left_join(lengder, by = "objekt_id")
 
-  turistveg_veglenkeposisjoner <- navn %>%
-    dplyr::left_join(veglenkeposisjoner, by = "objekt_id") %>%
+  turistveg_veglenkeposisjoner <- navn |>
+    dplyr::left_join(veglenkeposisjoner, by = "objekt_id") |>
     dplyr::left_join(lengder, by = "objekt_id")
 
-  turistveg_geometri <- navn %>%
-    dplyr::left_join(geometri, by = "objekt_id") %>%
-    dplyr::left_join(srid, by = "objekt_id") %>%
+  turistveg_geometri <- navn |>
+    dplyr::left_join(geometri, by = "objekt_id") |>
+    dplyr::left_join(srid, by = "objekt_id") |>
     sf::st_as_sf(wkt = "lokasjon.geometri.wkt",
                  crs = 5973,
-                 na.fail = FALSE) %>%
-    sf::st_zm(drop = T, what = "ZM") %>%
+                 na.fail = FALSE) |>
+    sf::st_zm(drop = T, what = "ZM") |>
     sf::st_transform("+proj=longlat +datum=WGS84")
 
   turistveger <- list(
@@ -1836,7 +1591,7 @@ get_traffic_links <- function (filter_string) {
   # filter_string must be of type "&fylke=30&vegsystemreferanse=Ev6"
   api_query <-
     paste0(
-      nvdb_url_v3,
+      nvdb_url,
       "/vegobjekter/967?inkluder=lokasjon,egenskaper",
       filter_string,
       "&segmentering=false"
@@ -1844,16 +1599,16 @@ get_traffic_links <- function (filter_string) {
 
   uthenta <- call_and_parse_nvdb_api(api_query)
 
-  trafikklenke_id <- uthenta$objekter %>%
-    dplyr::select(object_id = id, egenskaper) %>%
-    tidyr::unnest(egenskaper) %>%
-    dplyr::filter(id %in% c(12212)) %>%
+  trafikklenke_id <- uthenta$objekter |>
+    dplyr::select(object_id = id, egenskaper) |>
+    tidyr::unnest(egenskaper) |>
+    dplyr::filter(id %in% c(12212)) |>
     dplyr::select(object_id, year = verdi)
 
-  vegreferanser <- uthenta$objekter %>%
-    dplyr::select(object_id = id, lokasjon.vegsystemreferanser) %>%
-    tidyr::unnest(lokasjon.vegsystemreferanser) %>%
-    dplyr::mutate(road = paste0(vegsystem.vegkategori, "v ", vegsystem.nummer)) %>%
+  vegreferanser <- uthenta$objekter |>
+    dplyr::select(object_id = id, lokasjon.vegsystemreferanser) |>
+    tidyr::unnest(lokasjon.vegsystemreferanser) |>
+    dplyr::mutate(road = paste0(vegsystem.vegkategori, "v ", vegsystem.nummer)) |>
     dplyr::select(
       object_id,
       road,
@@ -1862,13 +1617,13 @@ get_traffic_links <- function (filter_string) {
       #separate_carriageways = 'strekning.adskilte_løp',
       section_direction = strekning.retning,
       intersection_direction = kryssystem.retning
-    ) %>%
+    ) |>
     dplyr::distinct()
 
   # For å finne hvilke trper som ligger på strekningene
-  veglenkeposisjoner <- uthenta$objekter %>%
-    dplyr::select(object_id = id, lokasjon.stedfestinger) %>%
-    tidyr::unnest(lokasjon.stedfestinger) %>%
+  veglenkeposisjoner <- uthenta$objekter |>
+    dplyr::select(object_id = id, lokasjon.stedfestinger) |>
+    tidyr::unnest(lokasjon.stedfestinger) |>
     dplyr::select(
       object_id,
       veglenkesekvensid,
@@ -1877,30 +1632,30 @@ get_traffic_links <- function (filter_string) {
       kortform
     )
 
-  lengder <- uthenta$objekter %>%
+  lengder <- uthenta$objekter |>
     dplyr::select(object_id = id, length_m = lokasjon.lengde)
 
-  geometri <- uthenta$objekter %>%
+  geometri <- uthenta$objekter |>
     dplyr::select(object_id = id, geometry_wkt = lokasjon.geometri.wkt)
 
-  srid <- uthenta$objekter %>%
+  srid <- uthenta$objekter |>
     dplyr::select(object_id = id, lokasjon.geometri.srid)
 
-  trafikklenke_vegreferanser <- trafikklenke_id %>%
-    dplyr::left_join(vegreferanser, by = "object_id") %>%
+  trafikklenke_vegreferanser <- trafikklenke_id |>
+    dplyr::left_join(vegreferanser, by = "object_id") |>
     dplyr::left_join(lengder, by = "object_id")
 
-  trafikklenke_veglenkeposisjoner <- trafikklenke_id %>%
-    dplyr::left_join(veglenkeposisjoner, by = "object_id") %>%
+  trafikklenke_veglenkeposisjoner <- trafikklenke_id |>
+    dplyr::left_join(veglenkeposisjoner, by = "object_id") |>
     dplyr::left_join(lengder, by = "object_id")
 
-  trafikklenke_geometri <- trafikklenke_id %>%
-    dplyr::left_join(geometri, by = "object_id") %>%
-    dplyr::left_join(srid, by = "object_id") %>%
+  trafikklenke_geometri <- trafikklenke_id |>
+    dplyr::left_join(geometri, by = "object_id") |>
+    dplyr::left_join(srid, by = "object_id") |>
     sf::st_as_sf(wkt = "geometry_wkt",
                  crs = 5973,
-                 na.fail = FALSE) %>%
-    sf::st_zm(drop = T, what = "ZM") %>%
+                 na.fail = FALSE) |>
+    sf::st_zm(drop = T, what = "ZM") |>
     sf::st_transform("+proj=longlat +datum=WGS84")
 
   trafikklenker <- list(
@@ -1913,6 +1668,3 @@ get_traffic_links <- function (filter_string) {
 }
 
 #test <- get_traffic_links("&kommune=3030&vegsystemreferanse=Ev6")
-
-
-

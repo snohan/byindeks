@@ -41,7 +41,7 @@
 # Counties
 fylker <- get_counties()
 
-last_day_of_year <- "2023-12-31"
+last_day_of_year <- "2024-12-31"
 
 t_03 <- get_aadt_by_area(3, "true", last_day_of_year)
 t_31 <- get_aadt_by_area(31, "true", last_day_of_year)
@@ -80,12 +80,12 @@ aadt_link_raw <-
 
 readr::write_rds(
   aadt_link_raw,
-  file = "aadt_link_raw_2023.rds"
+  file = "aadt_link_raw_2024.rds"
 )
 
 aadt_link_raw <-
   readr::read_rds(
-    file = "aadt_link_raw_2023.rds"
+    file = "aadt_link_raw_2024.rds"
   )
 
 
@@ -117,7 +117,7 @@ traffic_work <-
 
 readr::write_rds(
   traffic_work,
-  file = "traffic_work_2023.rds"
+  file = "traffic_work_2024.rds"
 )
 
 # Excel
@@ -152,14 +152,14 @@ traffic_work_tidy <-
 
 writexl::write_xlsx(
   traffic_work_tidy,
-  "spesialuttak/trafikkarbeid_2023.xlsx"
+  "spesialuttak/trafikkarbeid_2024.xlsx"
 )
 
 
 # For weighting in VTI ----
 jsonlite::write_json(
   traffic_work,
-  path = "trafikkarbeid_2023.json",
+  path = "trafikkarbeid_2024.json",
   prettify = TRUE
 )
 
