@@ -63,6 +63,9 @@ links <-
 
 # TODO: add toll stations to links
 # notes
+# Slemdalsveien 6
+# Dølihagan 1-4, 6
+# Damsgårdsveien bom 1, 6
 ```
 
 
@@ -73,15 +76,15 @@ links <-
 
 # City numbers
 # Refy City  Cnum  Chkd Resp
-# 2016 Busk  1952   05 Snorre
-# 2016 Gren   955   05 Snorre
-# 2023 Kris 19953   05 Snorre
-# 2023 NGlo 18952   05 Trond
-# 2022 Trom 16952   05 Snorre
+# 2016 Busk  1952   06 Snorre
+# 2016 Gren   955   06 Snorre
+# 2023 Kris 19953   06 Snorre
+# 2023 NGlo 18952   06 Trond
+# 2022 Trom 16952   06 Snorre
 # 2017 NJær   952   06 Snorre
-# 2018 Oslo   959   05 Trond
-# 2018 Berg  8952   05 Trond
-# 2019 Tron   960   05 Snorre
+# 2018 Oslo   959   06 Trond
+# 2018 Berg  8952   06 Trond
+# 2019 Tron   960   06 Snorre
 # 2024 Aale 20952   06 Snorre
 # 2024 Haug 19955   06 Snorre
 # 2024 Bodø 19954   06 Snorre
@@ -97,7 +100,7 @@ links <-
 # Choose
 index_year <- 2025
 latest_published_month <- 5
-city_number <- 952
+city_number <- 960
 # End choose
 
 new_month_year <-

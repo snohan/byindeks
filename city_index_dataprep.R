@@ -66,7 +66,7 @@ trp_id_msnr <-
 {
   present_year <- 2025
   index_month <- 6 # the one to be published now
-  city_number <- 952
+  city_number <- 960
 }
 # End choose
 
@@ -420,8 +420,8 @@ trp_index_monthly_wide <-
       name,
       road_category_and_number,
       year,
-      #jan:des
-      jan:mai
+      jan:des
+      #jan:mai
     ) |>
     dplyr::arrange(
       name,
@@ -516,8 +516,8 @@ city_index_yearly_all <-
     years_1_3,
     years_1_4,
     years_1_5,
-    years_1_6,
-    years_1_7,
+    # years_1_6,
+    # years_1_7,
     # years_1_8
   ) |>
   dplyr::mutate(
@@ -697,7 +697,7 @@ mdt_validated |>
   #dplyr::filter(year > 2022) |>
   dplyr::filter(!(year %in% c(2020, 2021, 2022))) |>
   # 3 at a time seems most efficient
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[13:17]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[13:18]) |>
   dplyr::select(
     trp_id,
     year,

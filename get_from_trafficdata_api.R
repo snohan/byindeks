@@ -3094,8 +3094,8 @@ get_dt_by_length_for_trp_list <- function(trp_list, from, to) {
   return(data_points)
 }
 
-#from <- "2025-06-01T00:00:00+02:00"
-#to <- "2025-06-03T00:00:00+02:00"
+#from <- "2022-06-01T00:00:00+02:00"
+#to <- "2022-06-03T00:00:00+02:00"
 
 get_daily_traffic_by_lane <- function(trp_id, from, to) {
 
@@ -3158,8 +3158,9 @@ get_daily_traffic_by_lane <- function(trp_id, from, to) {
       cli$exec(my_query$data, input_variables) %>%
       jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
 
-    if(length(response$data$trafficData$volume$byDay$edges) == 0)
-      break;
+    if(length(response$data$trafficData$volume$byDay$edges) == 0) {
+      break
+    }
 
     response <-
       response |>
@@ -3188,7 +3189,7 @@ get_daily_traffic_by_lane <- function(trp_id, from, to) {
   if(nrow(dailyTraffic) == 0) {
     dailyTraffic <-
       setNames(data.frame(
-        matrix(ncol = 5, nrow = 0)),
+        matrix(ncol = 6, nrow = 0)),
         colnames_here)
   }else{
     colnames(dailyTraffic) <- colnames_here

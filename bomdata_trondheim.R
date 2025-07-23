@@ -323,7 +323,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "may" # English
+month_string <- "june" # English
 year_number <- 2025
 
 apar_data_for_month <-
@@ -493,7 +493,7 @@ plot_toll_station_data_per_lane <- function(toll_id_chosen, year_chosen) {
 }
 
 # Ranheim is 72
-plot_toll_station_data_per_lane("69", 2025)
+plot_toll_station_data_per_lane("72", 2025)
 
 ## Exclusions ----
 # Exclusions may be monthly or daily
@@ -816,21 +816,21 @@ readr::write_rds(
 
 
 ## Direct index ----
-tolling_station_index_2019_2023 <-
-  tolling_data_daily_all_years %>%
-  calculate_monthly_index_for_tolling_stations_from_daily_traffic(2019, 2023)
-
-tolling_station_index_2019_2024 <-
-  tolling_data_daily_all_years %>%
-  calculate_monthly_index_for_tolling_stations_from_daily_traffic(2019, 2024)
-
-dplyr::bind_rows(
-  tolling_station_index_2019_2023,
-  tolling_station_index_2019_2024
-) |>
-readr::write_rds(
-  file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser_direkte.rds",
-)
+# tolling_station_index_2019_2023 <-
+#   tolling_data_daily_all_years %>%
+#   calculate_monthly_index_for_tolling_stations_from_daily_traffic(2019, 2023)
+#
+# tolling_station_index_2019_2024 <-
+#   tolling_data_daily_all_years %>%
+#   calculate_monthly_index_for_tolling_stations_from_daily_traffic(2019, 2024)
+#
+# dplyr::bind_rows(
+#   tolling_station_index_2019_2023,
+#   tolling_station_index_2019_2024
+# ) |>
+# readr::write_rds(
+#   file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser_direkte.rds",
+# )
 
 
 # tolling_station_indices <-
