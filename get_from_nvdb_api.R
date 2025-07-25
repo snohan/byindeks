@@ -61,8 +61,8 @@ call_and_parse_nvdb_api <- function(api_query) {
 
 hent_vegpunkt <- function(vegsystemreferanse, kommunenr) {
 
-   #vegsystemreferanse <- "FV2216S1D1m30"
-   #kommunenr <- "3424"
+   vegsystemreferanse <- "EV39KS14D1m3902"
+   kommunenr <- "5055"
 
   api_query <-
     paste0(
