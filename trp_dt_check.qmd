@@ -45,6 +45,7 @@ library(plotly)
 source("get_from_trafficdata_api.R")
 source("split_road_system_reference.R")
 source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
+source("calendar_functions.R")
 
 boxplot_dt <- function(dt_df) {
   
@@ -201,34 +202,6 @@ dt <-
 
 ```{r}
 #| label: day_types
-
-# Day types ----
-# Need to classify days as working days or not.
-# Non-working days:
-# All Saturdays and Sundays
-# 1 January
-# Maundy Thursday
-# Good Friday
-# Easter Monday
-# 1 May
-# 17 May
-# Ascension day
-# Whit Monday
-# 24-26 December
-# 31 December
-
-find_moveable_holidays <- function(year) {
-  
-  c(
-      timeDate::Easter(year, -3),
-      timeDate::Easter(year, -2),
-      timeDate::Easter(year,  1),
-      timeDate::Ascension(year),
-      timeDate::PentecostMonday(year)
-    ) |> 
-      lubridate::as_date()
-  
-}
 
 moveable_holidays <-
   purrr::map(
