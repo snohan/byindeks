@@ -65,3 +65,39 @@ find_holidays <- function(year) {
     lubridate::make_date(year, 12, 31)
   )
 }
+
+number_of_non_working_days <- function(year_dbl) {
+
+  dates <-
+    base::seq.Date(
+      lubridate::make_date(year_dbl,  1,  1),
+      lubridate::make_date(year_dbl, 12, 31)
+    )
+
+  df <-
+    tibble::tibble(
+      date = dates
+    ) |>
+    dplyr::mutate(
+      year = year_dbl,
+      month = lubridate::month(date),
+      weekday = lubridate::wday(date, week_start = 1)
+    ) |>
+    dplyr::filter(
+      !(date %in% find_easter_days(year_dbl)),
+      !(date %in% find_pentecost_days(year_dbl))
+    ) |>
+    dplyr::mutate(
+      non_working_day =
+        dplyr::case_when(
+          weekday %in% c(6, 7) ~ TRUE,
+          date %in% find_holidays(year_dbl) ~ TRUE,
+          TRUE ~ FALSE
+        )
+    ) |>
+    dplyr::summarise(
+      n_days = n(),
+      .by = c(year, month, non_working_day)
+    )
+
+}
