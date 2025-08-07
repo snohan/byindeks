@@ -11,11 +11,7 @@
 }
 
 
-#
-# Link variable distributions ----
-# Look at how link variables are distributed
-
-
+# Link prep ----
 ## Traffic links without geometry ----
 all_links <-
   jsonlite::fromJSON("C:/Users/snohan/Desktop/traffic-links-2023.json") |>
@@ -212,6 +208,9 @@ link_stats <-
   )
 
 
+# Link variable distributions ----
+# Look at how link variables are distributed
+
 ## AADT and traffic work ----
 # all_links_tidy_no_duplicates |>
 #   ggplot(aes(aadt)) +
@@ -293,7 +292,7 @@ all_links_tidy_no_duplicates |>
   facet_wrap(facets = c("function_class", "city"))
 
 
-## Prediction variables ----
+# Prediction variables for index ----
 # Look for prediction variables when the traffic link index is the target variable.
 
 trp_index_raw <-
@@ -342,6 +341,11 @@ link_index <-
     all_links_tidy_no_duplicates,
     by = dplyr::join_by(id)
   )
+
+readr::write_rds(
+  link_index,
+  "representativity/links_and_index.rds"
+)
 
 
 ## Correlations numerical variables ----
@@ -404,11 +408,14 @@ link_index |>
   geom_boxplot()
 
 link_index |>
-  # dplyr::filter(
-  #   city == "Bergen"
-  # ) |>
+  dplyr::filter(
+    city == "Bergen",
+    function_class != "E"
+  ) |>
   ggplot(aes(function_class, index)) +
-  geom_boxplot() +
+  geom_boxplot(
+    outliers = FALSE
+  ) +
   facet_wrap(~month)
 
 # None!
@@ -598,3 +605,22 @@ stats::oneway.test(
 #   ggplot(aes(F_lambda_half, aadt)) +
 #   geom_point()
 
+
+# Prediction variables for traffic work ----
+
+all_links_tidy_no_duplicates |>
+  dplyr::filter(
+    #city == "Bergen",
+    function_class != "E"
+  ) |>
+  ggplot(aes(function_class, traffic_work_Mkm)) +
+  geom_boxplot(
+    outliers = FALSE
+  ) +
+  facet_wrap(facets = "city")
+
+  all_links_tidy_no_duplicates |>
+  ggplot(aes(function_class, aadt)) +
+  geom_boxplot(
+    outliers = FALSE
+  )

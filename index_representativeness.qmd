@@ -1,5 +1,5 @@
 ---
-title: "Byindeks: eksempler med representativitet, indeks og usikkerhet"
+title: "Byindeks: regneeksempler"
 format: 
   html:
     css: svv.css
@@ -64,6 +64,8 @@ flextable::set_flextable_defaults(
 ```{r}
 #| label: data
 
+
+# Misc
 this_date <- lubridate::today()
 this_date_string <- 
   base::paste0(
@@ -74,6 +76,8 @@ this_date_string <-
     lubridate::year(this_date)
   )
 
+
+# RTM
 rtm_trd <- readr::read_rds("representativity/rtm_20_22_trondheim.rds")
 rtm_trd_index <- readr::read_rds("representativity/rtm_20_22_trondheim_index.rds")
 rtm_random_samples <- readr::read_rds("representativity/rtm_random_samples.rds")
@@ -102,6 +106,11 @@ rtm_random_samples_ci <-
     ")"
   )
 
+
+# Links and index correlation
+links_and_index <- readr::read_rds("representativity/links_and_index.rds")
+
+# Calculation examples
 links_nj <- readr::read_rds("representativity/link_population_nj.rds")
 links_nj_whole <- readr::read_rds("representativity/link_population_nj_whole.rds")
 urban_area_nj <- readr::read_rds("representativity/urban_area_nj.rds")
@@ -388,13 +397,16 @@ Dette dokumentet er et supplement til notatet [Forbedret byindeks](https://vegve
 
 Sist oppdatert `r this_date_string`. 
 
-Kontaktperson er Snorre Hansen, </br>
+Kontaktperson: </br>
+Snorre Hansen, </br>
 Statens vegvesen </br>
-(Divisjon for Transport og samfunn, Avdeling for Transportutvikling, Seksjon for Veg- og transportteknologi).
+Divisjon for Transport og samfunn, </br>
+Avdeling for Transportutvikling, </br>
+Seksjon for Veg- og transportteknologi
 
 
 ## Bakgrunn
-Utgangspunktet for indeksmetodikken er å se på vegnettet som en populasjon som det gjøres et utvalg fra. Individene i populasjonen er trafikklenker, som er vegstrekninger fra kryss til kryss som har homogen trafikkmengde på en tidsoppløsning som er minst et døgn.
+Utgangspunktet for indeksmetodikken er å se på vegnettet som en populasjon som det gjøres et utvalg fra. Individene i populasjonen er trafikklenker, som er vegstrekninger fra kryss til kryss som har homogen trafikkmengde gitt en tidsoppløsning på minst et døgn.
 
 Arbeidet med representativitet er gjort før det er gjort en nærmere analyse på selve beregningsmetoden til byindeksen. Representativitet og beregningsmetode henger tett sammen, men det antas her at metodikken for beregning av byindeks er som et vektet gjennomsnitt av trafikklenkenes endring i trafikkarbeid, der trafikkarbeidet er vektene.
 
@@ -402,7 +414,7 @@ Arbeidet med representativitet er gjort før det er gjort en nærmere analyse p�
 {{< include index_representativeness_known_pop.qmd >}}
 
 
-# Utvalgsmetodikk
+# Forklaringsvariabler
 I Trafikkdatasystemet er det generert opp trafikklenker fra det digitale vegnettet i NVDB, som så er beriket med flere aktuelle variabler:
 
 - vegkategori
@@ -433,18 +445,82 @@ De regionale transportmodellene har egenskaper på sine trafikklenker som kunne 
 
 I byindekssammenheng er det kun relevant å se på reiser utført av bilfører. Verdiene finnes i hver enkelt delområdemodell, men det er ikke et felles sted å hente disse variablene fra, noe som gjør de mindre tilgjengelig og dermed uaktuelle for videre bruk i byindekssammenheng.
 
-
-## Forklaringsvariabler
 For å finne ut om noen av de tilgjengelige variablene kan brukes til å forklare størrelsen og variasjonen til trafikklenkeindeksene, er det gjennomført en korrelasjonanalyse. For kategoriske forklaringsvariabler kan vi visuelt vurdere variasjonen ved hjelp av boksplott, mens for numeriske ser vi på Spearmans korrelasjonskoeffisient (som tar høyde for eventuelle ikke-lineære sammenhenger).
 
-Vi finner at ingen av de tilgjengelige variablene har noen tydelig korrelasjon med trafikklenkeindeksen.
+Vi finner at ingen av de tilgjengelige variablene har noen sterk korrelasjon med trafikklenkeindeksen. For funksjonsklasse finner vi i enkelte måneder en svak korrelasjon, se @fig-correlation_brg og @fig-correlation_nj. Korrelasjon mellom en kontinuerlig variabel (indeks) og en kategorisk variabel (funksjonsklasse) vises tydelig i et boksplott dersom det er lite overlapp mellom boksene.
 
 
-## Minste antall punkt
-Tar hensyn til at populasjonens størrelse er kjent.
+```{r}
+#| label: fig-correlation_brg
+#| fig-cap: "Fordeling av trafikklenkeindekser per funksjonsklasse, Bergensområdet. Utliggere er ikke tatt med i visningen."
 
-UNDER ARBEID
+links_and_index |>
+  dplyr::filter(
+    city == "Bergen",
+    function_class != "E"
+  ) |>
+  ggplot(aes(function_class, index)) +
+  geom_boxplot(
+    outliers = FALSE
+  ) +
+  facet_wrap(~month) +
+  theme_light() +
+  theme(
+    panel.grid.minor.x = element_blank(),
+    plot.caption =
+      element_text(
+        face = "italic",
+        size = 8,
+        lineheight = 1.5,
+        vjust = 0
+      ),
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  ) +
+  labs(
+    x = "Funksjonsklasse", y = "Indeks (%-poeng)"
+  ) +
+  ggtitle(
+    "Trafikklenkeindeks per funksjonsklasse, Bergensområdet"
+  )
+```
 
+```{r}
+#| label: fig-correlation_nj
+#| fig-cap: "Fordeling av trafikklenkeindekser per funksjonsklasse, Nord-Jæren. Utliggere er ikke tatt med i visningen."
+
+links_and_index |>
+  dplyr::filter(
+    city == "Nord-Jæren",
+    function_class != "E"
+  ) |>
+  ggplot(aes(function_class, index)) +
+  geom_boxplot(
+    outliers = FALSE
+  ) +
+  facet_wrap(~month) +
+  theme_light() +
+  theme(
+    panel.grid.minor.x = element_blank(),
+    plot.caption =
+      element_text(
+        face = "italic",
+        size = 8,
+        lineheight = 1.5,
+        vjust = 0
+      ),
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  ) +
+  labs(
+    x = "Funksjonsklasse", y = "Indeks (%-poeng)"
+  ) +
+  ggtitle(
+    "Trafikklenkeindeks per funksjonsklasse, Nord-Jæren"
+  )
+```
+
+En kategorisk variabel som er korrelert med vår interessevariabel (indeks) kan benyttes til etterstratifisering for å korrigere for eventuelle skjevheter i utvalget. Selv om korrelasjonen til tider er ganske svak vil estimatet for områdeindeksen treffe nærmere sannheten med en etterstratifisering. Den estimerte usikkerheten kan også bli noe lavere.
 
 
 # Mål for representativitet
@@ -487,7 +563,13 @@ Med tanke på representativitet er det ingen naturlig grenseverdi for denne stø
 Et annet potensielt mål for representativitet i form av en metrikk på en graf, er andel utvalgte trafikklenker inkludert nærmeste nabolenker. Dette impliserer at det er en romlig korrelasjon mellom nabolenker, men den er ikke påviselig. Derfor anses ikke denne metrikken som aktuell.
 
 
-# Eksempel med Nord-Jæren
+## Minste antall punkt
+Tar hensyn til at populasjonens størrelse er kjent.
+
+GJENSTÅENDE ARBEID
+
+
+# Regneeksempel Nord-Jæren
 Nord-Jæren egner seg godt som eksempel av flere grunner: 
 
 - En byindeks med historikk tilbake til referanseåret 2017 gir godt grunnlag for å se på hvordan representativiteten har variert over tid.
@@ -727,7 +809,7 @@ Det er flere fordeler med en begrenset og sentral populasjon kontra en komplett 
 - Byindeksen vil i større grad fokusere på de delene av vegnettet hvor trafikkveksten utgjør et reelt problem
 
 
-## Mål for representativitet over tid
+## Representativitet over tid
 Tidsserier for de historiske indeksverdiene med:
 
 - andel trafikklenker
@@ -889,7 +971,7 @@ Ett års glidende indeks viser for 2024 en endring på 5,2 % med en feilmargin p
 Disse tallene illustrerer fordelen med en kjedet indeks da denne har et større antall punkt, og at feilmarginen er mindre.
 
 
-# Eksempel med Bergen
+# Regneeksempel Bergen
 Indekstall for Bergen er beregnet med ny metode. Siden byindeksens område er noe snevret inn til de største tettstedene, er ikke alle punkt fra den offisielle indeksen med i regneeksemplene. Det er derfor også regnet ut en indeks med gammel metode for at sammenligningen skal bli rettferdig.
 
 ```{r}
@@ -960,7 +1042,7 @@ error_comparison_bergen |>
 ```
 
 
-# Eksempel med Trondheim
+# Regneeksempel Trondheim
 ```{r}
 #| label: fig-map_trd
 #| message: false
