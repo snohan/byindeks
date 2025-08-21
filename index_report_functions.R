@@ -483,7 +483,7 @@ map_pointindex <- function(all_point_info_df, index_limit = 10) {
 
   palett_index_factor <-
     leaflet::colorFactor(
-      palette = c("red", "orange", "green"),
+      palette = c("red", "green", "purple"),
       levels = index_limit_text
     )
 
@@ -537,39 +537,66 @@ map_pointindex <- function(all_point_info_df, index_limit = 10) {
   return(pointindex_map)
 }
 
-map_pointindex_and_events <- function(this_df) {
+map_pointindex_and_events <- function(this_df, index_limit = 5) {
 
-  # Create a red-green scale based on index values
-  negative_value <-
-    round(abs(min(this_df$index_total_p, na.rm = T)), digits = 0) + 1
-  positive_value <-
-    round(max(this_df$index_total_p, na.rm = T), digits = 0) + 1
+  # Create a scale based on index values
+  # negative_value <-
+  #   round(abs(min(this_df$index_total_p, na.rm = T)), digits = 0) + 1
+  # positive_value <-
+  #   round(max(this_df$index_total_p, na.rm = T), digits = 0) + 1
 
   # If even the max value is negative
-  if(positive_value <= 0) positive_value <- 1
+  # if(positive_value <= 0) positive_value <- 1
 
-  rc1 <-
-    colorRampPalette(
-      colors = c("lightgreen", "green"),
-      space = "Lab")(negative_value)
+  # rc1 <-
+  #   colorRampPalette(
+  #     colors = c("lightgreen", "green"),
+  #     space = "Lab")(negative_value)
 
   ## Make vector of colors for values larger than 0 (180 colors)
-  rc2 <-
-    colorRampPalette(
-      colors = c("green", "darkgreen"),
-      space = "Lab")(positive_value)
+  # rc2 <-
+  #   colorRampPalette(
+  #     colors = c("green", "darkgreen"),
+  #     space = "Lab")(positive_value)
 
   ## Combine the two color palettes
-  rampcols <- c(rc1, rc2)
+  # rampcols <- c(rc1, rc2)
+  #
+  # palett_index <-
+  #   leaflet::colorNumeric(
+  #     palette = rampcols,
+  #     domain = NULL
+  #   )
+  #
+  # Discrete scale
+  index_limit_text <- c(
+    paste0("< -", index_limit, " %"),
+    paste0("[-", index_limit, ", ", index_limit, "] %"),
+    paste0("> ", index_limit, " %")
+  )
 
-  palett_index <-
-    leaflet::colorNumeric(
-      palette = rampcols,
-      domain = NULL
+  palett_index_factor <-
+    leaflet::colorFactor(
+      palette = c("red", "green", "purple"),
+      levels = index_limit_text
     )
 
   this_map <-
     this_df |>
+    dplyr::rename(
+      index = index_total_p
+    ) |>
+    dplyr::mutate(
+      index_factor =
+        dplyr::case_when(
+          index < -index_limit ~ index_limit_text[1],
+          index <  index_limit ~ index_limit_text[2],
+          index >  index_limit ~ index_limit_text[3]
+        ) |>
+        base::factor(
+          levels = index_limit_text
+        )
+    ) |>
     leaflet(
       width = "100%",
       height = 700,
@@ -587,7 +614,8 @@ map_pointindex_and_events <- function(this_df) {
       label = ~label_text,
       stroke = T,
       opacity = 1,
-      color = ~palett_index(index_total_p),
+      #color = ~palett_index(index_total_p),
+      color = ~palett_index_factor(index_factor),
       highlightOptions = highlightOptions(
         bringToFront = TRUE,
         sendToBack = FALSE,
@@ -595,13 +623,21 @@ map_pointindex_and_events <- function(this_df) {
         opacity = 0.6
       )
     ) |>
+    # addLegend(
+    #   "bottomright",
+    #   pal = palett_index,
+    #   values = ~index_total_p,
+    #   title = "Indeks",
+    #   opacity = 0.7,
+    #   labFormat = labelFormat(big.mark = " ")
+    # ) |>
     addLegend(
       "bottomright",
-      pal = palett_index,
-      values = ~index_total_p,
+      pal = palett_index_factor,
+      values = ~index_factor,
       title = "Indeks",
-      opacity = 0.7,
-        labFormat = labelFormat(big.mark = " ")
+      opacity = 0.6,
+      labFormat = labelFormat(big.mark = " ")
     )
 
   return(this_map)
