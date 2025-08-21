@@ -1685,10 +1685,13 @@ get_trp_mdt_with_coverage <- function(trp_id, mdt_year) {
         valid_length_volume = 5,
         valid_speed_volume = 6,
         mdt = 7,
-        confidence_width = 8) #%>%
-      #dplyr::mutate(trp_id = as.character(trp_id),
-       #             coverage = round(coverage, digits = 1),
-      #              uncertainty = signif(uncertainty, 2))
+        confidence_width = 8) |>
+      dplyr::mutate(
+        mdt = round(mdt, digits = -1)
+        #trp_id = as.character(trp_id),
+        #coverage = round(coverage, digits = 1),
+        #uncertainty = signif(uncertainty, 2)
+      )
   }
 
   return(trp_aadt)
@@ -2034,9 +2037,7 @@ get_mdt_for_trp_list <- function(trp_list, mdt_year) {
     trp_count <- trp_count + 1
   }
 
-  trp_mdt <-
-    data_points |>
-    dplyr::mutate(mdt = round(mdt, digits = -1))
+  trp_mdt <- data_points
 
   return(trp_mdt)
 }

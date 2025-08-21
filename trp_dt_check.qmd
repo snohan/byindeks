@@ -105,8 +105,8 @@ boxplot_per_year <- function(dt_df) {
 # User specify TRP, month and years here!
 
 # Choose TRP
-trp_id <- "00222V444290"
-month_number <- 6
+trp_id <- "10795V320297"
+month_number <- 7
 years <- c(2022:2025)
 ```
 

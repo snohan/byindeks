@@ -65,8 +65,8 @@ trp_id_msnr <-
 ## Choose publish month ----
 {
   present_year <- 2025
-  index_month <- 6 # the one to be published now
-  city_number <- 959
+  index_month <- 7 # the one to be published now
+  city_number <- 19953
 }
 # End choose
 
@@ -512,11 +512,11 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    years_1_2,
-    years_1_3,
-    years_1_4,
-    years_1_5,
-    years_1_6,
+    # years_1_2,
+    # years_1_3,
+    # years_1_4,
+    # years_1_5,
+    # years_1_6,
     # years_1_7,
     # years_1_8
   ) |>
@@ -697,7 +697,7 @@ mdt_validated |>
   #dplyr::filter(year > 2022) |>
   dplyr::filter(!(year %in% c(2020, 2021, 2022))) |>
   # 3 at a time seems most efficient
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[56:61]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[25:28]) |>
   dplyr::select(
     trp_id,
     year,
@@ -863,17 +863,30 @@ all_24_month_indices <-
 all_36_month_indices <-
   calculate_rolling_indices(36)
 
+compare_to_report <-
+  all_36_month_indices |>
+  dplyr::slice_max(month_n, by = year) |>
+  dplyr::select(
+    index_period,
+    n_trp,
+    index_p,
+    ci_lower, ci_upper
+  ) |>
+  dplyr::mutate(
+    index_p = round(index_p, 1)
+  )
+
 all_rolling_indices <-
   dplyr::bind_rows(
-    all_12_month_indices,
-    all_24_month_indices,
-    all_36_month_indices
+    all_12_month_indices#,
+    #all_24_month_indices,
+    #all_36_month_indices
   )
 
 list(
-  all_12_month_indices,
-  all_24_month_indices,
-  all_36_month_indices
+  all_12_month_indices#,
+  #all_24_month_indices,
+  #all_36_month_indices
 ) |>
   readr::write_rds(
     file =
