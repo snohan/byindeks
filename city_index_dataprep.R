@@ -66,7 +66,7 @@ trp_id_msnr <-
 {
   present_year <- 2025
   index_month <- 7 # the one to be published now
-  city_number <- 19953
+  city_number <- 8952
 }
 # End choose
 
@@ -87,6 +87,9 @@ trp_names <-
     trp_id,
     name,
     municipality_name
+  ) |>
+  dplyr::arrange(
+    name
   )
 
 # sub_areas <-
@@ -512,11 +515,11 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    # years_1_2,
-    # years_1_3,
-    # years_1_4,
-    # years_1_5,
-    # years_1_6,
+    years_1_2,
+    years_1_3,
+    years_1_4,
+    years_1_5,
+    years_1_6,
     # years_1_7,
     # years_1_8
   ) |>
@@ -678,6 +681,8 @@ trp_mdt_ok_refyear <-
   filter_mdt(reference_year) |>
   purrr::pluck(1)
 
+length(trp_mdt_ok_refyear)
+
 trp_not_ok <-
   trp_names |>
   dplyr::filter(
@@ -695,9 +700,9 @@ trp_not_ok <-
 mdt_validated |>
   # Limit amount of data to plot to minimize plot generation waiting time
   #dplyr::filter(year > 2022) |>
-  dplyr::filter(!(year %in% c(2020, 2021, 2022))) |>
+  dplyr::filter(!(year %in% c(2020, 2021))) |>
   # 3 at a time seems most efficient
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[25:28]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[65:68]) |>
   dplyr::select(
     trp_id,
     year,
@@ -853,7 +858,7 @@ mdt_and_pi_check <-
   )
 
 
-## All possible window indices ----
+## All possible window indices for area ----
 all_12_month_indices <-
   calculate_rolling_indices(12)
 
@@ -878,15 +883,15 @@ compare_to_report <-
 
 all_rolling_indices <-
   dplyr::bind_rows(
-    all_12_month_indices#,
-    #all_24_month_indices,
-    #all_36_month_indices
+    all_12_month_indices,
+    all_24_month_indices,
+    all_36_month_indices
   )
 
 list(
-  all_12_month_indices#,
-  #all_24_month_indices,
-  #all_36_month_indices
+  all_12_month_indices,
+  all_24_month_indices,
+  all_36_month_indices
 ) |>
   readr::write_rds(
     file =
@@ -897,6 +902,9 @@ list(
       )
   )
 
+
+## All possible window indices for TRP ----
+all_12_month_trp_indices <- calculate_rolling_indices(12, "by_trp")
 all_36_month_trp_indices <- calculate_rolling_indices(36, "by_trp")
 
 if(city_number == 960) {
@@ -920,10 +928,43 @@ if(city_number == 960) {
       trp_names,
       by = "trp_id"
     )
+
+  all_12_month_trp_indices <-
+    all_12_month_trp_indices |>
+    dplyr::left_join(
+      trp_names,
+      by = "trp_id"
+    )
 }
 
 all_36_month_trp_indices <-
   all_36_month_trp_indices |>
+  dplyr::mutate(
+    trp_index_p = (trp_index_i - 1) * 100,
+    index_p = (index_i - 1) * 100
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    #municipality_name,
+    #reference_year = year,
+    last_month_in_index = month_object,
+    index_period,
+    n_months_reference_year = n_months.x,
+    mean_mdt_reference_year = mean_mdt.x,
+    n_months_in_index_period = n_months.y,
+    mean_mdt_index_period = mean_mdt.y,
+    trp_index_p,
+    area_index_p = index_p
+  ) |>
+  dplyr::arrange(
+    last_month_in_index,
+    name,
+    trp_id
+  )
+
+all_12_month_trp_indices <-
+  all_12_month_trp_indices |>
   dplyr::mutate(
     trp_index_p = (trp_index_i - 1) * 100,
     index_p = (index_i - 1) * 100
@@ -963,7 +1004,7 @@ all_36_month_trp_indices <-
 
 
 # Check contribution from TRPs each possible 36 month index
-trp_mdt_plot <-
+trp_mdt_plot_36 <-
   all_36_month_trp_indices |>
   ggplot2::ggplot(
     aes(
@@ -979,7 +1020,25 @@ trp_mdt_plot <-
     y = ""
   )
 
-trp_mdt_plot |> plotly::ggplotly()
+trp_mdt_plot_36 |> plotly::ggplotly()
+
+trp_mdt_plot_12 <-
+  all_12_month_trp_indices |>
+  ggplot2::ggplot(
+    aes(
+      x = last_month_in_index,
+      y = name,
+      fill = trp_index_p
+    )
+  ) +
+  geom_tile() +
+  theme_minimal() +
+  labs(
+    x = "",
+    y = ""
+  )
+
+trp_mdt_plot_12 |> plotly::ggplotly()
 
 
 # E18 Buskerudbyen ----
