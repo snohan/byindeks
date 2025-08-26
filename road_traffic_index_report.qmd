@@ -65,7 +65,7 @@ index_this_year_prepared_wide_country <-
 #| label: extract_data_for_text
 
 this_year <- 2025
-latest_month_number <- 5
+latest_month_number <- 7
 
 latest_month_name <-
   max(

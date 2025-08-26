@@ -24,28 +24,6 @@ knitr:
 
 ```{r notes}
 # Ekskluder:
-# Dølihagan 1-5
-# Gamle Ringeriksvei ved Gjønnes 5
-# Ringstabekk 5
-# Stabekk seniorsenter 5
-# Lørentunell vest 4, 5
-# lørentunell øst 5
-# Ullern 5
-# Gaustad 5
-# Nydalsbrua 5
-# Venskrysset ø 1-5
-# Rudstad 5
-# Aslak bolt 5
-# Kallerud n 3-5
-# Alfarvegen 3-5
-# Vestheimgata 5
-# Nansetveien 3-5
-# Fokserød syd 5
-# Smieøya 5
-# Bø 1-5
-# Åndalsnes 5
-# Oslovegen 5
-# Brandvoll vest 5
 
 # Reberegn:
 
@@ -72,7 +50,7 @@ library(sf)
 
 index_year <- 2025
 # Last published month
-index_month <- 3
+index_month <- 5
 
 index_id <- 962
 
@@ -92,7 +70,7 @@ new_month_name_2 <-
 #   stringr::str_to_title()
 
 # run once per session !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-source("road_traffic_index_check_dataprep.R")
+#source("road_traffic_index_check_dataprep.R")
 
 road_traffic_index <- readr::read_rds("road_traffic_index_latest.rds")
 pointindex <- readr::read_rds("road_traffic_pointindex_latest.rds")
@@ -120,23 +98,23 @@ links <-
 
 # Look at details in one county at a time
 
-# 31 Østfold                05 Trond
-# 32 Akershus               05 Trond
-# 33 Buskerud               05 Trond
-#  3 Oslo                   05 Trond
-# 34 Innlandet              05 Snorre
-# 39 Vestfold               05 Trond
-# 40 Telemark               05 Trond
-# 42 Agder                  05 Trond
-# 11 Rogaland               05 Trond
-# 46 Vestland               05 Trond
-# 15 Møre og Romsdal        05 Trond
-# 50 Trøndelag              05 Snorre
-# 18 Nordland               05 Trond
-# 55 Troms                  05 Trond
-# 56 Finnmark               05 Trond
+# 31 Østfold                07 Trond
+# 32 Akershus               07 Trond
+# 33 Buskerud               07 Trond
+#  3 Oslo                   07 Trond
+# 34 Innlandet              07 Snorre
+# 39 Vestfold               07 Trond
+# 40 Telemark               07 Trond
+# 42 Agder                  07 Trond
+# 11 Rogaland               07 Trond
+# 46 Vestland               07 Trond
+# 15 Møre og Romsdal        07 Trond
+# 50 Trøndelag              07 Snorre
+# 18 Nordland               07 Trond
+# 55 Troms                  07 Trond
+# 56 Finnmark               07 Trond
 
-county_number_chosen <- 56
+county_number_chosen <- 31
 
 trps_meta <- 
   points %>% 

@@ -39,7 +39,7 @@ points <-
 
 ## Choose month ----
 this_year <- 2025
-latest_month_number <- 5
+latest_month_number <- 7
 
 index_this_year <-
   get_published_road_traffic_index_for_months(
@@ -63,37 +63,37 @@ pointindex_this_year <-
 pointindices <- pointindex_this_year[[2]]
 
 # Sidetrack: Spotfire
-pointindices_spotfire <-
-  pointindices |>
-  dplyr::filter(
-    is_excluded == FALSE,
-    is_manually_excluded == FALSE,
-    length_excluded == FALSE,
-    period == "month",
-    day_type == "ALL",
-    !is.na(index_total_p)
-  ) |>
-  dplyr::left_join(
-    points,
-    by = dplyr::join_by(trp_id)
-  ) |>
-  dplyr::select(
-    trp_id,
-    name,
-    road_reference,
-    county_name,
-    lat, lon,
-    year,
-    month,
-    index_p = index_total_p,
-    index_total_coverage,
-    length_coverage
-  )
-
-readr::write_excel_csv2(
-  pointindices_spotfire,
-  "spesialuttak/vti_trp_index_spotfire_25-05.csv"
-)
+# pointindices_spotfire <-
+#   pointindices |>
+#   dplyr::filter(
+#     is_excluded == FALSE,
+#     is_manually_excluded == FALSE,
+#     length_excluded == FALSE,
+#     period == "month",
+#     day_type == "ALL",
+#     !is.na(index_total_p)
+#   ) |>
+#   dplyr::left_join(
+#     points,
+#     by = dplyr::join_by(trp_id)
+#   ) |>
+#   dplyr::select(
+#     trp_id,
+#     name,
+#     road_reference,
+#     county_name,
+#     lat, lon,
+#     year,
+#     month,
+#     index_p = index_total_p,
+#     index_total_coverage,
+#     length_coverage
+#   )
+#
+# readr::write_excel_csv2(
+#   pointindices_spotfire,
+#   "spesialuttak/vti_trp_index_spotfire_25-05.csv"
+# )
 
 
 # Sidetrack: Manually excluded

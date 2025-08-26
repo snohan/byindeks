@@ -105,7 +105,7 @@ boxplot_per_year <- function(dt_df) {
 # User specify TRP, month and years here!
 
 # Choose TRP
-trp_id <- "10795V320297"
+trp_id <- "50233V320584"
 month_number <- 7
 years <- c(2022:2025)
 ```
@@ -117,7 +117,8 @@ years <- c(2022:2025)
 
 trp_meta_data <- 
   get_trp_metadata_by_list(trp_id) |> 
-  dplyr::slice_max(validFrom)
+  dplyr::slice_max(validFrom) |> 
+  dplyr::slice_tail(n = 1)
 
 trp_name_and_road_ref <- paste0(trp_meta_data$name, ", ", trp_meta_data$road_reference)
 
