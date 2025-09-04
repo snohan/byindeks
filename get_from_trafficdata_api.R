@@ -1854,13 +1854,13 @@ get_trp_mdt_by_direction <- function(trp_id, mdt_year) {
 #mdt_test_2 <- get_trp_mdt_by_lane("91582V930281", "2020")
 
 
-
-
 # test_all_nortraf <- get_mdt_by_length_for_trp("43623V704583", 2014)
 # test_mix_nortraf_new <- get_mdt_by_length_for_trp("43623V704583", 2015)
 # test_all_new <- get_mdt_by_length_for_trp("43623V704583", 2016)
-# test_none <- get_mdt_by_length_for_trp("01316V804837", 2022)
-# test_all_new <- get_mdt_by_length_for_trp("43623V704583", 2016)
+# test_none <- get_mdt_by_length_for_trp("16219V72812", 2022)
+# test_single_day <- get_mdt_by_length_for_trp("01316V804837", 2025)
+# trp_id <- "43623V704583"
+# mdt_year <- 2015
 
 get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
 
@@ -1957,7 +1957,23 @@ get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
       tidyr::unnest(
         cols = c(data.trafficData.volume.average.daily.byMonth.byLengthRange),
         names_sep = "."
-      ) %>%
+      )
+
+    if(
+      "data.trafficData.volume.average.daily.byMonth.byLengthRange.total.coverage" %in%
+      names(trp_mdt)
+      &&
+      "data.trafficData.volume.average.daily.byMonth.byLengthRange.total.coverage.percentage" %in%
+      names(trp_mdt)
+    ){
+     trp_mdt <-
+       trp_mdt |>
+       dplyr::select(-data.trafficData.volume.average.daily.byMonth.byLengthRange.total.coverage)
+    }
+
+    trp_mdt <-
+      trp_mdt |>
+      dplyr::rename_with(~ stringr::str_remove(.x, ".percentage")) |>
       # rename only columns that will exist if solely old data
       dplyr::rename(
         trp_id = data.trafficData.id,
@@ -1967,12 +1983,14 @@ get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
         mdt_length_range = data.trafficData.volume.average.daily.byMonth.byLengthRange.total.volume.average,
         # include sd to test if all data are old in next step
         sd_length_range = data.trafficData.volume.average.daily.byMonth.byLengthRange.total.volume.standardDeviation,
+        coverage = data.trafficData.volume.average.daily.byMonth.byLengthRange.total.coverage,
         mdt_total = data.trafficData.volume.average.daily.byMonth.total.volume.average
       ) %>%
       dplyr::mutate(trp_id = as.character(trp_id))
   }
 
-  if(all(is.na(trp_mdt$sd_length_range))
+  #if(all(is.na(trp_mdt$sd_length_range))
+  if(all(is.na(trp_mdt$coverage))
   ){
     trp_mdt <-
       trp_mdt %>%
@@ -1988,7 +2006,8 @@ get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
       trp_mdt %>%
       dplyr::rename(
         mdt_valid_length = data.trafficData.volume.average.daily.byMonth.total.validLengthVolume.average,
-        total_coverage = data.trafficData.volume.average.daily.byMonth.total.coverage.percentage,
+        total_coverage = data.trafficData.volume.average.daily.byMonth.total.coverage,
+        #total_coverage = coverage_length_range,
         sd_total = data.trafficData.volume.average.daily.byMonth.total.volume.standardDeviation
         #length_coverage = data.trafficData.volume.average.daily.byMonth.byLengthRange.total.coverage.percentage
       )
