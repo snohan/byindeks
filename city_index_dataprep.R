@@ -65,8 +65,8 @@ trp_id_msnr <-
 ## Choose publish month ----
 {
   present_year <- 2025
-  index_month <- 7 # the one to be published now
-  city_number <- 8952
+  index_month <- 8 # the one to be published now
+  city_number <- 16952
 }
 # End choose
 
@@ -104,7 +104,390 @@ trp_names <-
 source("set_time_references.R")
 
 
-# Fetch city indexes ----
+# City TRPs ----
+# TODO: TRPs might differ from year to year!
+city_trps <-
+  get_published_pointindex_for_months(city_number, max(index_years), 1)[[1]] |>
+  base::sort()
+
+
+# Rolling index ----
+# Do this first in order to wait for yearly index to be published in API
+## Get MDTs ----
+{
+  tictoc::tic()
+  mdt <-
+    purrr::map_dfr(
+      years_from_reference_to_today,
+      ~ get_mdt_by_length_for_trp_list(city_trps, .x)
+    )
+  tictoc::toc()
+}
+
+# TRD
+if(city_number == 960) {
+  toll_mdt_light <-
+    readr::read_rds(
+      file = "data_indexpoints_tidy/trd_toll_mdt.rds",
+    ) |>
+    dplyr::filter(
+      class == "lette"
+    ) |>
+    dplyr::rename(
+      year_month = month
+    ) |>
+    dplyr::mutate(
+      year = lubridate::year(year_month),
+      month = lubridate::month(year_month),
+      length_quality = 100
+    ) |>
+    dplyr::select(
+      -class,
+      -n_days,
+      -traffic
+    )
+  # TRD stop
+}
+
+mdt_filtered <-
+  mdt |>
+  dplyr::filter(
+    length_range == "[..,5.6)"
+  ) |>
+  dplyr::mutate(
+    mdt_valid_length = dplyr::case_when(
+      is.na(total_coverage) ~ mdt_total, # If NorTraf, assume high quality
+      TRUE ~ mdt_valid_length
+    ),
+    length_quality = mdt_valid_length / mdt_total * 100,
+    coverage = dplyr::case_when(
+      is.na(total_coverage) ~ 100, # If NorTraf, assume high quality
+      TRUE ~ total_coverage * length_quality / 100
+    )
+  ) |>
+  dplyr::left_join(
+    trp_names,
+    by = join_by(trp_id)
+  ) |>
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    mdt = mdt_length_range,
+    coverage,
+    length_quality,
+    #sub_area = municipality_name
+  ) |>
+  dplyr::mutate(
+    year_month = lubridate::as_date(
+      paste0(
+        year,
+        "-",
+        month,
+        "-01"
+      )
+    )
+  ) |>
+  tibble::as_tibble()
+
+if(city_number == 960){
+  mdt_filtered <-
+    mdt_filtered |>
+    dplyr::bind_rows(toll_mdt_light)
+}
+
+mdt_filtered |>
+  readr::write_rds(
+    file =
+      paste0(
+        "data_indexpoints_tidy/mdt_",
+        city_number,
+        ".rds"
+      )
+  )
+
+# Read back in
+# mdt_filtered <-
+#   readr::read_rds(
+#     paste0(
+#       "data_indexpoints_tidy/mdt_",
+#       city_number,
+#       ".rds"
+#     )
+#   )
+
+# Length quality
+# plotly::ggplotly(
+#   mdt_filtered |>
+#    dplyr::filter(
+#      year == 2025
+#    ) |>
+#    ggplot(aes(year_month, length_quality, color = trp_id)) +
+#    geom_line()
+# )
+
+
+## Check MDT validity ----
+# Exclude trp-months
+#source("exclude_trp_mdts.R")
+source("exclude_trp_mdts_list.R")
+
+
+## Check MDT ----
+trp_mdt_ok_refyear <-
+  mdt_validated |>
+  dplyr::filter(
+    trp_id %in% city_trps # avoid toll stations appearing here as they've already been checked
+  ) |>
+  filter_mdt(reference_year) |>
+  purrr::pluck(1)
+
+length(trp_mdt_ok_refyear)
+
+trp_not_ok <-
+  trp_names |>
+  dplyr::filter(
+    !(trp_id %in% trp_mdt_ok_refyear)
+  )
+
+# TODO: define sections
+# TODO: look at sectional TRPs concurrently
+# TODO: in map, draw curve connecting sectional TRPs
+
+# TODO: correlate exclusions of TRP index and MDT
+# TODO: show TRP contributions to rolling indices
+# TODO: Shiny app for checking MDT
+
+mdt_validated |>
+  # Limit amount of data to plot to minimize plot generation waiting time
+  #dplyr::filter(year > 2022) |>
+  dplyr::filter(!(year %in% c(2020, 2021))) |>
+  # 3 at a time seems most efficient
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[21:25]) |>
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    mdt,
+    coverage,
+    length_quality
+  ) |>
+  tidyr::complete(
+    trp_id,
+    year,
+    month,
+    fill = list(
+      mdt = 0,
+      coverage = 0,
+      length_quality = 0
+    )
+  ) |>
+  dplyr::mutate(month_object = lubridate::make_date(year = 2000, month = month, day = 1)) |>
+  dplyr::left_join(
+    points,
+    by = "trp_id"
+  ) |>
+  dplyr::mutate(
+    road_category_and_number_and_point_name =
+      paste0(road_category_and_number, " ", name)
+  ) |>
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    mdt,
+    coverage,
+    length_quality,
+    month_object,
+    road_category_and_number_and_point_name
+  ) |>
+  dplyr::mutate(valid_quality = coverage >= 50 & length_quality >= 98.5) |>
+  create_mdt_barplot()
+
+source("exclude_trp_mdts_list.R")
+
+#source("mdt_check.R")
+#plot_mdt_comparisons |> plotly::ggplotly()
+
+
+## All possible window indices for area ----
+all_12_month_indices <-
+  calculate_rolling_indices(12)
+
+all_24_month_indices <-
+  calculate_rolling_indices(24)
+
+all_36_month_indices <-
+  calculate_rolling_indices(36)
+
+compare_to_report <-
+  all_36_month_indices |>
+  dplyr::slice_max(month_n, by = year) |>
+  dplyr::select(
+    index_period,
+    n_trp,
+    index_p,
+    ci_lower, ci_upper
+  ) |>
+  dplyr::mutate(
+    index_p = round(index_p, 1)
+  )
+
+all_rolling_indices_list <-
+  list(
+    all_12_month_indices,
+    all_24_month_indices#,
+    #all_36_month_indices
+  )
+
+all_rolling_indices <-
+  dplyr::bind_rows(
+    all_rolling_indices_list
+  )
+
+all_rolling_indices_list |>
+  readr::write_rds(
+    file =
+      paste0(
+        "data_indexpoints_tidy/rolling_indices_",
+        city_number,
+        ".rds"
+      )
+  )
+
+
+## All possible window indices for TRP ----
+# 12
+all_12_month_trp_indices <-
+  calculate_rolling_indices(12, "by_trp") |>
+  dplyr::left_join(
+    trp_names,
+    by = "trp_id"
+  ) |>
+  dplyr::mutate(
+    trp_index_p = (trp_index_i - 1) * 100,
+    index_p = (index_i - 1) * 100
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    #municipality_name,
+    #reference_year = year,
+    last_month_in_index = month_object,
+    index_period,
+    n_months_reference_year = n_months.x,
+    mean_mdt_reference_year = mean_mdt.x,
+    n_months_in_index_period = n_months.y,
+    mean_mdt_index_period = mean_mdt.y,
+    trp_index_p,
+    area_index_p = index_p
+  ) |>
+  dplyr::arrange(
+    last_month_in_index,
+    name,
+    trp_id
+  )
+
+trp_mdt_plot_12 <-
+  all_12_month_trp_indices |>
+  ggplot2::ggplot(
+    aes(
+      x = last_month_in_index,
+      y = name,
+      fill = trp_index_p
+    )
+  ) +
+  geom_tile() +
+  theme_minimal() +
+  labs(
+    x = "",
+    y = ""
+  )
+
+trp_mdt_plot_12 |> plotly::ggplotly()
+
+# 36
+all_36_month_trp_indices <- calculate_rolling_indices(36, "by_trp")
+
+if(city_number == 960) {
+
+  trd_toll_station_names <-
+    readr::read_rds(
+      "trd_toll_station_id.rds"
+    )
+
+  all_36_month_trp_indices <-
+    all_36_month_trp_indices |>
+    dplyr::left_join(
+      trd_toll_station_names,
+      by = "trp_id"
+    )
+}
+
+all_36_month_trp_indices <-
+  all_36_month_trp_indices |>
+  dplyr::left_join(
+    trp_names,
+    by = "trp_id"
+  ) |>
+  dplyr::mutate(
+    trp_index_p = (trp_index_i - 1) * 100,
+    index_p = (index_i - 1) * 100
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    #municipality_name,
+    #reference_year = year,
+    last_month_in_index = month_object,
+    index_period,
+    n_months_reference_year = n_months.x,
+    mean_mdt_reference_year = mean_mdt.x,
+    n_months_in_index_period = n_months.y,
+    mean_mdt_index_period = mean_mdt.y,
+    trp_index_p,
+    area_index_p = index_p
+  ) |>
+  dplyr::arrange(
+    last_month_in_index,
+    name,
+    trp_id
+  )
+
+# Check contribution from TRPs each possible 36 month index
+trp_mdt_plot_36 <-
+  all_36_month_trp_indices |>
+  ggplot2::ggplot(
+    aes(
+      x = last_month_in_index,
+      y = name,
+      fill = trp_index_p
+    )
+  ) +
+  geom_tile() +
+  theme_minimal() +
+  labs(
+    x = "",
+    y = ""
+  )
+
+trp_mdt_plot_36 |> plotly::ggplotly()
+
+# Sub area
+# sub_area_36_month_trp_indices <-
+#   calculate_rolling_indices(36, "by_sub_area")
+#
+# writexl::write_xlsx(
+#   sub_area_36_month_trp_indices,
+#   path = paste0(
+#     "data_indexpoints_tidy/sub_area_rolling_indices_",
+#     city_number,
+#     ".xlsx"
+#   )
+# )
+
+
+# Fetch yearly city indexes ----
 {
 city_indexes <-
   purrr::map2(
@@ -115,11 +498,6 @@ city_indexes <-
   purrr::list_rbind() |>
   dplyr::filter(day_type == "ALL")
   # ALL, WEEKDAY or WEEKEND
-
-  # TODO: TRPs might differ from year to year!
-  city_trps <-
-    get_published_pointindex_for_months(city_number, max(index_years), index_month)[[1]] |>
-    base::sort()
 
   city_name <- city_indexes$area_name[nrow(city_indexes)]
 
@@ -164,6 +542,8 @@ if((city_number %in% c(1952, 955, 952, 959))){
       by = "msnr"
     ) |>
     dplyr::select(-msnr)
+}else{
+  trp_index_so_far_by_dec_pre_2020 <- data.frame()
 }
 
 trp_index_from_2020 <-
@@ -424,7 +804,8 @@ trp_index_monthly_wide <-
       road_category_and_number,
       year,
       jan:des
-      #jan:mai
+      #jan:aug
+      # TODO: generalize!
     ) |>
     dplyr::arrange(
       name,
@@ -515,11 +896,11 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    years_1_2,
-    years_1_3,
-    years_1_4,
-    years_1_5,
-    years_1_6,
+     years_1_2,
+    # years_1_3,
+    # years_1_4,
+    # years_1_5,
+    # years_1_6,
     # years_1_7,
     # years_1_8
   ) |>
@@ -551,494 +932,8 @@ readr::write_rds(
 )
 
 
-# Rolling index ----
-## Get MDTs ----
-{
-  tictoc::tic()
-  mdt <-
-    purrr::map_dfr(
-      years_from_reference_to_today,
-      ~ get_mdt_by_length_for_trp_list(city_trps, .x)
-    )
-  tictoc::toc()
-}
-
-# TRD
-if(city_number == 960) {
-  toll_mdt_light <-
-    readr::read_rds(
-      file = "data_indexpoints_tidy/trd_toll_mdt.rds",
-    ) |>
-    dplyr::filter(
-      class == "lette"
-    ) |>
-    dplyr::rename(
-      year_month = month
-    ) |>
-    dplyr::mutate(
-      year = lubridate::year(year_month),
-      month = lubridate::month(year_month),
-      length_quality = 100
-    ) |>
-    dplyr::select(
-      -class,
-      -n_days,
-      -traffic
-    )
-  # TRD stop
-}
-
-mdt_filtered <-
-  mdt |>
-  dplyr::filter(
-    length_range == "[..,5.6)"
-  ) |>
-  dplyr::mutate(
-    mdt_valid_length = dplyr::case_when(
-     is.na(total_coverage) ~ mdt_total, # If NorTraf, assume high quality
-     TRUE ~ mdt_valid_length
-    ),
-    length_quality = mdt_valid_length / mdt_total * 100,
-    coverage = dplyr::case_when(
-      is.na(total_coverage) ~ 100, # If NorTraf, assume high quality
-      TRUE ~ total_coverage * length_quality / 100
-    )
-  ) |>
-  dplyr::left_join(
-    trp_names,
-    by = join_by(trp_id)
-  ) |>
-  dplyr::select(
-    trp_id,
-    year,
-    month,
-    mdt = mdt_length_range,
-    coverage,
-    length_quality,
-    #sub_area = municipality_name
-  ) |>
-  dplyr::mutate(
-    year_month = lubridate::as_date(
-      paste0(
-        year,
-        "-",
-        month,
-        "-01"
-      )
-    )
-  ) |>
-  tibble::as_tibble()
-
-if(city_number == 960){
-  mdt_filtered <-
-    mdt_filtered |>
-    dplyr::bind_rows(toll_mdt_light)
-}
-
-mdt_filtered |>
-  readr::write_rds(
-    file =
-      paste0(
-        "data_indexpoints_tidy/mdt_",
-        city_number,
-        ".rds"
-      )
-  )
-
-# Read back in
-# mdt_filtered <-
-#   readr::read_rds(
-#     paste0(
-#       "data_indexpoints_tidy/mdt_",
-#       city_number,
-#       ".rds"
-#     )
-#   )
-
-# Length quality
-# plotly::ggplotly(
-#   mdt_filtered |>
-#    dplyr::filter(
-#      year == 2025
-#    ) |>
-#    ggplot(aes(year_month, length_quality, color = trp_id)) +
-#    geom_line()
-# )
-
-
-## Check MDT validity ----
-# Exclude trp-months
-#source("exclude_trp_mdts.R")
-source("exclude_trp_mdts_list.R")
-
-
-## Check MDT ----
-trp_mdt_ok_refyear <-
-  mdt_validated |>
-  dplyr::filter(
-    trp_id %in% city_trps # avoid toll stations appearing here as they've already been checked
-  ) |>
-  filter_mdt(reference_year) |>
-  purrr::pluck(1)
-
-length(trp_mdt_ok_refyear)
-
-trp_not_ok <-
-  trp_names |>
-  dplyr::filter(
-    !(trp_id %in% trp_mdt_ok_refyear)
-  )
-
-# TODO: define sections
-# TODO: look at sectional TRPs concurrently
-# TODO: in map, draw curve connecting sectional TRPs
-
-# TODO: correlate exclusions of TRP index and MDT
-# TODO: show TRP contributions to rolling indices
-# TODO: Shiny app for checking MDT
-
-mdt_validated |>
-  # Limit amount of data to plot to minimize plot generation waiting time
-  #dplyr::filter(year > 2022) |>
-  dplyr::filter(!(year %in% c(2020, 2021))) |>
-  # 3 at a time seems most efficient
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[65:68]) |>
-  dplyr::select(
-    trp_id,
-    year,
-    month,
-    mdt,
-    coverage,
-    length_quality
-  ) |>
-  tidyr::complete(
-    trp_id,
-    year,
-    month,
-    fill = list(
-      mdt = 0,
-      coverage = 0,
-      length_quality = 0
-    )
-  ) |>
-  dplyr::mutate(month_object = lubridate::make_date(year = 2000, month = month, day = 1)) |>
-  dplyr::left_join(
-    points,
-    by = "trp_id"
-  ) |>
-  dplyr::mutate(
-    road_category_and_number_and_point_name =
-      paste0(road_category_and_number, " ", name)
-  ) |>
-  dplyr::select(
-    trp_id,
-    year,
-    month,
-    mdt,
-    coverage,
-    length_quality,
-    month_object,
-    road_category_and_number_and_point_name
-  ) |>
-  dplyr::mutate(valid_quality = coverage >= 50 & length_quality >= 98.5) |>
-  create_mdt_barplot()
-
-source("exclude_trp_mdts_list.R")
-source("mdt_check.R")
-
-plot_mdt_comparisons |> plotly::ggplotly()
-
-## Compare exclusions of MDT and index ----
-# Check that the "same" exclusions are used on PI as MDT
-# TRD toll station MDTs already have the same exclusions
-if(city_number == 960){
-
-  mdt_and_pi <-
-    mdt_validated |>
-    dplyr::filter(
-      coverage >= 50,
-      length_quality >= 98.5
-    ) |>
-    dplyr::left_join(
-      dplyr::select(trp_toll_index_monthly, -year, -month, -length_range), # TRD
-      by = c("trp_id", "year_month" = "month_object") # TRD
-    ) |>
-    dplyr::left_join(
-      trp_names,
-      by = "trp_id"
-    ) |>
-    dplyr::select(
-      trp_id,
-      name,
-      year,
-      month,
-      mdt_coverage = coverage,
-      length_quality,
-      mdt,
-      index
-    ) |>
-    dplyr::arrange(
-      name,
-      trp_id,
-      year,
-      month
-    )
-}else{
-
-  mdt_and_pi <-
-    mdt_validated |>
-    dplyr::filter(
-      coverage >= 50,
-      length_quality >= 98.5
-    ) |>
-    dplyr::left_join(
-      trp_index_monthly,
-      by = c("trp_id", "year", "month")
-    ) |>
-    dplyr::left_join(
-      trp_names,
-      by = "trp_id"
-    ) |>
-    dplyr::select(
-      trp_id,
-      name,
-      year,
-      month,
-      mdt_coverage = coverage,
-      length_quality,
-      mdt,
-      index
-    ) |>
-    dplyr::arrange(
-      name,
-      trp_id,
-      year,
-      month
-    )
-
-}
-
-mdt_and_pi_check <-
-  mdt_and_pi |>
-  dplyr::select(
-    name,
-    year,
-    month,
-    mdt,
-    index
-  ) |>
-  tidyr::complete(
-    name,
-    year,
-    month
-  ) |>
-  dplyr::mutate(
-    month_label = lubridate::make_date(
-      year = 2000,
-      month = month,
-      day = 1
-    ) |>
-      lubridate::month(label = TRUE),
-    valid_value =
-      dplyr::case_when(
-        is.na(mdt) & is.na(index) ~ "",
-        is.na(mdt) & !is.na(index) ~ "index",
-        !is.na(mdt) & is.na(index) ~ "mdt",
-        !is.na(mdt) & !is.na(index) ~ "BOTH",
-      )
-  ) |>
-  dplyr::select(
-    -month,
-    -mdt,
-    -index
-  ) |>
-  tidyr::pivot_wider(
-    names_from = "month_label",
-    values_from = "valid_value"
-  )
-
-
-## All possible window indices for area ----
-all_12_month_indices <-
-  calculate_rolling_indices(12)
-
-all_24_month_indices <-
-  calculate_rolling_indices(24)
-
-all_36_month_indices <-
-  calculate_rolling_indices(36)
-
-compare_to_report <-
-  all_36_month_indices |>
-  dplyr::slice_max(month_n, by = year) |>
-  dplyr::select(
-    index_period,
-    n_trp,
-    index_p,
-    ci_lower, ci_upper
-  ) |>
-  dplyr::mutate(
-    index_p = round(index_p, 1)
-  )
-
-all_rolling_indices <-
-  dplyr::bind_rows(
-    all_12_month_indices,
-    all_24_month_indices,
-    all_36_month_indices
-  )
-
-list(
-  all_12_month_indices,
-  all_24_month_indices,
-  all_36_month_indices
-) |>
-  readr::write_rds(
-    file =
-      paste0(
-        "data_indexpoints_tidy/rolling_indices_",
-        city_number,
-        ".rds"
-      )
-  )
-
-
-## All possible window indices for TRP ----
-all_12_month_trp_indices <- calculate_rolling_indices(12, "by_trp")
-all_36_month_trp_indices <- calculate_rolling_indices(36, "by_trp")
-
-if(city_number == 960) {
-
-  trd_toll_station_names <-
-    readr::read_rds(
-      "trd_toll_station_id.rds"
-    )
-
-  all_36_month_trp_indices <-
-    all_36_month_trp_indices |>
-    dplyr::left_join(
-      trd_toll_station_names,
-      by = "trp_id"
-    )
-
-}else{
-  all_36_month_trp_indices <-
-    all_36_month_trp_indices |>
-    dplyr::left_join(
-      trp_names,
-      by = "trp_id"
-    )
-
-  all_12_month_trp_indices <-
-    all_12_month_trp_indices |>
-    dplyr::left_join(
-      trp_names,
-      by = "trp_id"
-    )
-}
-
-all_36_month_trp_indices <-
-  all_36_month_trp_indices |>
-  dplyr::mutate(
-    trp_index_p = (trp_index_i - 1) * 100,
-    index_p = (index_i - 1) * 100
-  ) |>
-  dplyr::select(
-    trp_id,
-    name,
-    #municipality_name,
-    #reference_year = year,
-    last_month_in_index = month_object,
-    index_period,
-    n_months_reference_year = n_months.x,
-    mean_mdt_reference_year = mean_mdt.x,
-    n_months_in_index_period = n_months.y,
-    mean_mdt_index_period = mean_mdt.y,
-    trp_index_p,
-    area_index_p = index_p
-  ) |>
-  dplyr::arrange(
-    last_month_in_index,
-    name,
-    trp_id
-  )
-
-all_12_month_trp_indices <-
-  all_12_month_trp_indices |>
-  dplyr::mutate(
-    trp_index_p = (trp_index_i - 1) * 100,
-    index_p = (index_i - 1) * 100
-  ) |>
-  dplyr::select(
-    trp_id,
-    name,
-    #municipality_name,
-    #reference_year = year,
-    last_month_in_index = month_object,
-    index_period,
-    n_months_reference_year = n_months.x,
-    mean_mdt_reference_year = mean_mdt.x,
-    n_months_in_index_period = n_months.y,
-    mean_mdt_index_period = mean_mdt.y,
-    trp_index_p,
-    area_index_p = index_p
-  ) |>
-  dplyr::arrange(
-    last_month_in_index,
-    name,
-    trp_id
-  )
-
-# Sub area
-# sub_area_36_month_trp_indices <-
-#   calculate_rolling_indices(36, "by_sub_area")
-#
-# writexl::write_xlsx(
-#   sub_area_36_month_trp_indices,
-#   path = paste0(
-#     "data_indexpoints_tidy/sub_area_rolling_indices_",
-#     city_number,
-#     ".xlsx"
-#   )
-# )
-
-
-# Check contribution from TRPs each possible 36 month index
-trp_mdt_plot_36 <-
-  all_36_month_trp_indices |>
-  ggplot2::ggplot(
-    aes(
-      x = last_month_in_index,
-      y = name,
-      fill = trp_index_p
-    )
-  ) +
-  geom_tile() +
-  theme_minimal() +
-  labs(
-    x = "",
-    y = ""
-  )
-
-trp_mdt_plot_36 |> plotly::ggplotly()
-
-trp_mdt_plot_12 <-
-  all_12_month_trp_indices |>
-  ggplot2::ggplot(
-    aes(
-      x = last_month_in_index,
-      y = name,
-      fill = trp_index_p
-    )
-  ) +
-  geom_tile() +
-  theme_minimal() +
-  labs(
-    x = "",
-    y = ""
-  )
-
-trp_mdt_plot_12 |> plotly::ggplotly()
+# Compare exclusions of MDT and index ----
+#source("compare_exclusions.R")
 
 
 # E18 Buskerudbyen ----
@@ -1414,8 +1309,8 @@ if(city_number %in% c(19954, 19955, 20952)){
   list(
     punkt_adt = trp_info_adt,
     punktindeks_maned = trp_index_monthly_wide,
-    byindeks_aarlig = city_index_yearly_all,
-    punkt_mdt = mdt_and_pi#,
+    byindeks_aarlig = city_index_yearly_all#,
+    #punkt_mdt = mdt_and_pi,
     #by_glid_indeks = all_rolling_indices
   ) |>
     writexl::write_xlsx(
@@ -1433,7 +1328,7 @@ if(city_number %in% c(18952, 19953)){
     punkt_adt = trp_info_adt,
     punktindeks_maned = trp_index_monthly_wide,
     byindeks_aarlig = city_index_yearly_all,
-    punkt_mdt = mdt_and_pi,
+    #punkt_mdt = mdt_and_pi,
     by_glid_indeks = all_rolling_indices
   ) |>
     writexl::write_xlsx(
@@ -1451,7 +1346,7 @@ if(city_number == 16952){
     punkt_adt = trp_info_adt,
     punktindeks_maned = trp_index_monthly_wide,
     byindeks_aarlig = city_index_final,
-    punkt_mdt = mdt_and_pi,
+    #punkt_mdt = mdt_and_pi,
     #punkt_3_aar_glid_indeks = all_36_month_trp_indices,
     by_glid_indeks = all_rolling_indexes_chained
   ) |>
@@ -1470,7 +1365,7 @@ if(city_number == 960){
     punkt_adt = this_citys_trps_all_adt_final_index,
     punktindeks_maned = trp_index_monthly_wide,
     byindeks_aarlig = city_index_yearly_all,
-    punkt_mdt = mdt_and_pi,
+    #punkt_mdt = mdt_and_pi,
     punkt_3_aar_glid_indeks = all_36_month_trp_indices,
     by_glid_indeks = all_rolling_indices,
     byindeks_hittil = city_index_so_far_all
@@ -1492,7 +1387,7 @@ if(!(city_number %in% c(960, 16952, 18952, 19953))){
     #punktindeks_ar = this_citys_trp_index_refyear, # drop
     byindeks_aarlig = city_index_yearly_all,
     #byindeks_maanedlig = city_index_monthly,
-    punkt_mdt = mdt_and_pi,
+    #punkt_mdt = mdt_and_pi,
     punkt_3_aar_glid_indeks = all_36_month_trp_indices,
     by_glid_indeks = all_rolling_indices
   ) |>
