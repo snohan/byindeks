@@ -32,22 +32,22 @@ source("rmd_setup.R")
 ```{r get_data, include = FALSE}
 # City numbers
 
-# Buskerudbyen          1952 2016 04
-# Grenland               955 2016 04
-# Kristiansandsregionen19953 2023 04
-# Nedre Glomma 2023    18952 2023 04
-# Tromsø 2022          16952 2022 04
-# Nord-Jæren             952 2017 04
-# Bergen                8952 2018 04
-# Oslo                   959 2018 04
-# Trondheim              960 2019 04
+# Buskerudbyen          1952 2016
+# Grenland               955 2016
+# Kristiansand         19953 2023
+# Nedre Glomma 2023    18952 2023
+# Tromsø 2022          16952 2022
+# Nord-Jæren             952 2017
+# Bergen                8952 2018
+# Oslo                   959 2018
+# Trondheim              960 2019
 # Bodø                 19954 2024
 # Ålesund              20952 2024 
 # Haugesund            19955 2024
 
 
 # Choose city number:
-city_number <- 18952
+city_number <- 960
 
 ## Meta info
 city_number_county_name <- 
@@ -257,7 +257,8 @@ if(any_36) {
   latest_36_ci_conclusion <-
     dplyr::case_when(
       latest_36_index$ci_lower < 0 & latest_36_index$ci_upper > 0 ~ 
-        "Når denne regnemåten legges til grunn kan man ikke si med sikkerhet om trafikken har økt eller ikke sammenlignet med referanseåret, men den ligger omtrent på samme nivå.",
+        "Når denne regnemåten legges til grunn kan man ikke si helt sikkert om trafikken har økt eller ikke sammenlignet med referanseåret, men den ligger omtrent på samme nivå.",
+      #men tendensen her tyder på en økning.",
       latest_36_index$ci_lower >= 0 ~ 
         "Trafikken har økt sammenlignet med referanseåret.",
       latest_36_index$ci_upper <= 0 ~ 

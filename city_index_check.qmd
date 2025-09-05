@@ -44,7 +44,7 @@ library(DT)
 library(htmltools)
 
 # NB! run once per session
-#source("city_index_check_dataprep.R")
+source("city_index_check_dataprep.R")
 
 {
 points <- readr::read_rds("trps_for_city_index.rds")
@@ -73,18 +73,18 @@ links <-
 
 # City numbers
 # Refy City  Cnum  Chkd Resp
-# 2016 Busk  1952   07 Snorre
-# 2016 Gren   955   07 Snorre
-# 2023 Kris 19953   07 Snorre
-# 2023 NGlo 18952   07 Trond
-# 2022 Trom 16952   07 Snorre
-# 2017 NJær   952   07 Snorre
-# 2018 Oslo   959   07 Trond
-# 2018 Berg  8952   07 Trond
-# 2019 Tron   960   07 Snorre
-# 2024 Aale 20952   07 Snorre
-# 2024 Haug 19955   07 Snorre
-# 2024 Bodø 19954   07 Snorre
+# 2016 Busk  1952   08 Snorre
+# 2016 Gren   955   08 Snorre
+# 2023 Kris 19953   08 Snorre
+# 2023 NGlo 18952   08 Trond
+# 2022 Trom 16952   08 Snorre
+# 2017 NJær   952   08 Snorre
+# 2018 Oslo   959   08 Trond
+# 2018 Berg  8952   08 Trond
+# 2019 Tron   960   08 Snorre
+# 2024 Aale 20952   08 Snorre
+# 2024 Haug 19955   08 Snorre
+# 2024 Bodø 19954   08 Snorre
 
 # Old:
 # 2016 Kris   957   12 Snorre 956
@@ -96,8 +96,8 @@ links <-
 
 # Choose
 index_year <- 2025
-latest_published_month <- 6
-city_number <- 8952
+latest_published_month <- 7
+city_number <- 960
 # End choose
 
 new_month_year <-
@@ -340,7 +340,7 @@ city_county_numbers <-
 
 
 # Need not fetch AADT every time
-if(T) {
+if(F) {
   
   adt <- get_aadt_by_length_for_trp_list(city_trps)
   
