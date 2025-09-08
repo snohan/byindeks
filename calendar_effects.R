@@ -45,24 +45,6 @@ n_non_w_days_2 <-
   )
 
 # Definition of weights ----
-period_names <-
-  c(
-    "januar",
-    "februar",
-    "mars",
-    "påske",
-    "april",
-    "mai",
-    "pinse",
-    "juni",
-    "juli",
-    "august",
-    "september",
-    "oktober",
-    "november",
-    "desember"
-  )
-
 period_days <-
   c(
     31,
@@ -137,7 +119,7 @@ non_working_days <-
     8.56,
     8.87,
     8.56,
-    11.59
+    11.69
   )
 
 day_type_weights <-
@@ -150,6 +132,37 @@ day_type_weights <-
 readr::write_rds(
   day_type_weights,
   "calendar_weights/day_type_weights.rds"
+)
+
+day_type_weights_relative <-
+  day_type_weights |>
+  dplyr::mutate(
+    sum_days = sum(working_days, non_working_days),
+    working_day_weight = working_days / sum_days,
+    non_working_day_weight = non_working_days / sum_days,
+    .by = month_name
+  ) |>
+  dplyr::select(
+    month = month_name,
+    working_day = working_day_weight,
+    non_working_day = non_working_day_weight
+  ) |>
+  tidyr::pivot_longer(
+    cols = c(working_day, non_working_day),
+    names_to = "non_working_day",
+    values_to = "weight"
+  ) |>
+  dplyr::mutate(
+    non_working_day =
+      dplyr::case_when(
+        non_working_day == "non_working_day" ~ TRUE,
+        TRUE ~ FALSE
+      )
+  )
+
+readr::write_rds(
+  day_type_weights_relative,
+  "calendar_weights/day_type_weights_relative.rds"
 )
 
 

@@ -7,6 +7,10 @@ library(ghql)
 library(lubridate)
 library(magrittr)
 
+source("calendar_functions.R")
+day_type_weights_relative <- readr::read_rds("calendar_weights/day_type_weights_relative.rds")
+
+
 cli <- ghql::GraphqlClient$new(
   url = "https://trafikkdata-api.atlas.vegvesen.no/?query="
   #headers = list(
@@ -212,6 +216,7 @@ get_points <- function() {
 
 
 get_trp_metadata_by_list <- function(trp_list) {
+
   # Get chosen traffic registration points
 
   input_variables <-
@@ -1849,33 +1854,181 @@ get_trp_mdt_by_direction <- function(trp_id, mdt_year) {
   return(trp_aadt)
 }
 
+#year <- 2025
+#trp_id <- "43623V704583"
+calculate_calendar_adjusted_mdt <- function(trp_id, year) {
+
+  # trp_id: String!
+  # year: Int!
+
+  from <- paste0(year, "-01-01T00:00:00Z")
+  to   <- paste0(year, "-12-31T00:00:00Z")
+
+  # Easter and Pentecost days
+  complete_calendar <- make_complete_calendar_year(year)
+  classified_days <- classify_days(year) |> dplyr::select(date, non_working_day)
+  n_days_in_calendar <- number_of_days(year)
+
+  dt <-
+    get_dt_by_length_for_trp(trp_id, from, to) |>
+    dplyr::filter(
+      total_coverage >= 99,
+      length_quality >= 99,
+      length_range %in% c("[..,5.6)", "[5.6,..)")
+    )
+
+  dt_long <-
+    dplyr::bind_rows(
+      dt |>
+        dplyr::mutate(
+          length_class = "alle"
+        ) |>
+        dplyr::select(
+          trp_id = point_id,
+          length_class,
+          date = from,
+          volume = total_volume
+        ) |>
+        dplyr::distinct(),
+      dt |>
+        dplyr::mutate(
+          length_class =
+            dplyr::case_when(
+              length_range == "[..,5.6)" ~ "korte",
+              length_range == "[5.6,..)" ~ "lange"
+            ),
+          length_class = base::factor(length_class, levels = c("alle", "korte", "lange"))
+        )  |>
+        dplyr::select(
+          trp_id = point_id,
+          length_class,
+          date = from,
+          volume = length_range_volume
+        )
+    ) |>
+    dplyr::left_join(
+      complete_calendar,
+      by = dplyr::join_by(date)
+    )
+
+  # Easter and Pentecost MDTs
+  mdt_easter <-
+   dt_long |>
+    dplyr::filter(
+      month %in% c("påske", "pinse")
+    ) |>
+    dplyr::summarise(
+      mdt = base::mean(volume, na.rm = FALSE) |> round(-1),
+      n_days_in_data = n(),
+      .by = c(trp_id, length_class, month)
+    ) |>
+    dplyr::filter(
+      !(month == "påske" & n_days_in_data < 6),
+      !(month == "pinse" & n_days_in_data != 4)
+    ) |>
+    dplyr::arrange(month, length_class)
+
+  # Classify non-working days
+  ydt <-
+    dt_long |>
+    dplyr::filter(
+      !(month %in% c("påske", "pinse"))
+    ) |>
+    dplyr::left_join(
+      classified_days,
+      by = dplyr::join_by(date)
+    ) |>
+    dplyr::summarise(
+      mdt = base::mean(volume, na.rm = FALSE),
+      n_days_in_data = n(),
+      .by = c(trp_id, length_class, month, non_working_day)
+    )
+
+  # If a day type has little data
+  too_much_missing <-
+    ydt |>
+    dplyr::select(
+      month, non_working_day, n_days_in_data
+    ) |>
+    dplyr::distinct() |>
+    dplyr::filter(
+      !(non_working_day == TRUE  & n_days_in_data >= 3),
+      !(non_working_day == FALSE & n_days_in_data >= 7)
+    )
+
+  mdt_weighted <-
+    ydt |>
+    dplyr::filter(
+      !(month %in% too_much_missing$month)
+    ) |>
+    dplyr::arrange(month, length_class, non_working_day) |>
+    dplyr::left_join(
+      day_type_weights_relative,
+      by = dplyr::join_by(month, non_working_day)
+    ) |>
+    dplyr::summarise(
+      mdt = sum(mdt * weight) |> round(-1),
+      n_days_in_data = sum(n_days_in_data),
+      .by = c(trp_id, length_class, month)
+    )
+
+  mdt <-
+    dplyr::bind_rows(
+      mdt_easter,
+      mdt_weighted
+    ) |>
+    dplyr::arrange(month, length_class) |>
+    dplyr::left_join(
+      n_days_in_calendar |> dplyr::rename(n_days_in_calendar = n_days),
+      by = dplyr::join_by(month)
+    ) |>
+    dplyr::mutate(
+      coverage_percentage = 100 * n_days_in_data / n_days_in_calendar
+    )
+
+  return(mdt)
+}
+
+{
+  tic()
+  dt_test <- calculate_calendar_adjusted_mdt("43623V704583", 2025)
+  toc()
+}
 
 #mdt_test <- get_trp_mdt_with_coverage("91582V930281", "2020")
 #mdt_test_2 <- get_trp_mdt_by_lane("91582V930281", "2020")
 
-
 # test_all_nortraf <- get_mdt_by_length_for_trp("43623V704583", 2014)
 # test_mix_nortraf_new <- get_mdt_by_length_for_trp("43623V704583", 2015)
-# test_all_new <- get_mdt_by_length_for_trp("43623V704583", 2016)
+# test_all_new <- get_mdt_by_length_for_trp("43623V704583", 2016, "WEEKEND")
 # test_none <- get_mdt_by_length_for_trp("16219V72812", 2022)
 # test_single_day <- get_mdt_by_length_for_trp("01316V804837", 2025)
 # trp_id <- "43623V704583"
 # mdt_year <- 2015
 
-get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
+get_mdt_by_length_for_trp <- function(trp_id, mdt_year, day_type = "ALL") {
 
   # Get all MDTs for a trp
-  api_query <-
+  # Day type: ALL, WEEKDAY, WEEKEND
+
+  input_variables <-
+    list(
+      "trpId" = trp_id,
+      "mdtYear" = mdt_year,
+      "dayType" = day_type
+    )
+
+  query <-
     paste0(
-      "query trp_mdt {
-        trafficData(trafficRegistrationPointId: \"", trp_id,"\") {
+      "query trp_mdt ($trpId: String!, $mdtYear: Year!, $dayType: DayType) {
+        trafficData(trafficRegistrationPointId: $trpId) {
           trafficRegistrationPoint {
             id
           }
     volume {
       average {
         daily {
-          byMonth(dayType: ALL, year: ", mdt_year, "){
+          byMonth(dayType: $dayType, year: $mdtYear){
             year
             month
             total {
@@ -1912,18 +2065,21 @@ get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
 }
 ")
 
-  myqueries <- Query$new()
-  myqueries$query("mdts", api_query)
+  my_query <- ghql::Query$new()$query(name = "my_query", query)
 
   trp_mdt <-
-    cli$exec(myqueries$queries$mdts) %>%
-    jsonlite::fromJSON(
-      simplifyDataFrame = T,
-      flatten = T
-    )
+    cli$exec(my_query$my_query, input_variables) |>
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
 
-  # trp_mdt_length <-
-  #   length(trp_mdt$data$trafficData$volume$average$daily$byMonth$byLengthRange)
+  # myqueries <- Query$new()
+  # myqueries$query("mdts", query)
+  #
+  # trp_mdt <-
+  #   cli$exec(myqueries$queries$mdts) %>%
+  #   jsonlite::fromJSON(
+  #     simplifyDataFrame = T,
+  #     flatten = T
+  #   )
 
   # Is there any length range MDTs?
   n_length_range <-
@@ -1936,16 +2092,8 @@ get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
 
   if(
     is.null(trp_mdt$data$trafficData$volume$average$daily$byMonth$total.volume.average)
-    #all(is.na(trp_mdt$data$trafficData$volume$average$daily$byMonth$total))
-    #rlang::is_empty(
-    #  trp_mdt$data$trafficData$volume$average$daily$byMonth
-    #)
     |
     n_length_range == 0
-    #    rlang::is_empty(
-    #      trp_mdt$data$trafficData$volume$average$daily$byMonth$byLengthRange
-    #trp_mdt$data$trafficData$volume$average$daily$byMonth$byLengthRange[[trp_mdt_length]]
-    #    )
   ){
     # if no total mdt
     # if no length range mdt
@@ -1989,7 +2137,6 @@ get_mdt_by_length_for_trp <- function(trp_id, mdt_year) {
       dplyr::mutate(trp_id = as.character(trp_id))
   }
 
-  #if(all(is.na(trp_mdt$sd_length_range))
   if(all(is.na(trp_mdt$coverage))
   ){
     trp_mdt <-
@@ -2453,7 +2600,7 @@ get_pointindices_for_trp_list <- function(trp_list, index_year) {
 }
 
 
-# Hourly and daily traffic ####
+# Hourly and daily traffic ----
 
 #trp_id <- "92719V1125906"
 #from <- "2019-01-01T00:00:00.000+01:00"

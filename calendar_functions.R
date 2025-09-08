@@ -15,6 +15,24 @@ library(timeDate)
 # 24-26 December
 # 31 December
 
+period_names <-
+  c(
+    "januar",
+    "februar",
+    "mars",
+    "påske",
+    "april",
+    "mai",
+    "pinse",
+    "juni",
+    "juli",
+    "august",
+    "september",
+    "oktober",
+    "november",
+    "desember"
+  )
+
 
 find_moveable_holidays <- function(year) {
 
@@ -66,38 +84,87 @@ find_holidays <- function(year) {
   )
 }
 
-number_of_non_working_days <- function(year_dbl) {
 
-  dates <-
-    base::seq.Date(
-      lubridate::make_date(year_dbl,  1,  1),
-      lubridate::make_date(year_dbl, 12, 31)
-    )
+make_complete_calendar_year <- function(year) {
+
+  # year: Int!
+
+  easter_days <- find_easter_days(year)
+  pentecost_days <- find_pentecost_days(year)
 
   df <-
     tibble::tibble(
-      date = dates
+      date =
+        base::seq.Date(
+          lubridate::make_date(year,  1,  1),
+          lubridate::make_date(year, 12, 31)
+        )
     ) |>
     dplyr::mutate(
-      year = year_dbl,
-      month = lubridate::month(date),
-      weekday = lubridate::wday(date, week_start = 1)
-    ) |>
+      year = year,
+      month = lubridate::month(date, label = TRUE, abbr = FALSE),
+      weekday = lubridate::wday(date, week_start = 1),
+      month =
+        dplyr::case_when(
+          date %in% easter_days ~ "påske",
+          date %in% pentecost_days ~ "pinse",
+          TRUE ~ month
+        ),
+      month = base::factor(month, levels = period_names)
+    )
+
+}
+
+#complete_calendar_test <- make_complete_calendar_year(2025)
+
+
+number_of_days <- function(year) {
+
+  # year: Int!
+
+  df <-
+    make_complete_calendar_year(year) |>
+    dplyr::summarise(
+      n_days = n(),
+      .by = month
+    )
+
+}
+
+#n_days_test <- number_of_days(2025)
+
+
+classify_days <- function(year) {
+
+  holidays <- find_holidays(year)
+
+  df <-
+    make_complete_calendar_year(year) |>
     dplyr::filter(
-      !(date %in% find_easter_days(year_dbl)),
-      !(date %in% find_pentecost_days(year_dbl))
+      !(month %in% c("påske", "pinse"))
     ) |>
     dplyr::mutate(
       non_working_day =
         dplyr::case_when(
           weekday %in% c(6, 7) ~ TRUE,
-          date %in% find_holidays(year_dbl) ~ TRUE,
+          date %in% holidays ~ TRUE,
           TRUE ~ FALSE
         )
-    ) |>
+    )
+
+}
+
+#classified_days_test <- classify_days(2025)
+
+
+number_of_non_working_days <- function(year) {
+
+  classify_days(year) |>
     dplyr::summarise(
       n_days = n(),
       .by = c(year, month, non_working_day)
     )
 
 }
+
+#number_of_non_working_days_test <- number_of_non_working_days(2025)
