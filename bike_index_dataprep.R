@@ -8,7 +8,7 @@ source("indexpoints_tidying_functions.R")
 
 # Index codes and years ----
 last_complete_year <- 2024
-last_complete_month_this_year <- 5
+last_complete_month_this_year <- 8
 
 index_codes_and_reference_years <-
   tibble::tibble(

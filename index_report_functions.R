@@ -21,8 +21,8 @@ create_point_table <- function(all_point_info_df) {
       adt = "ÅDT\nnyeste år",
       year_aadt = "År\n(nyeste)"
     ) %>%
-    align(i = 1, j = c(3, 4, 5), align = "center", part = "header") %>%
-    align(j = c(5), align = "center", part = "body") %>%
+    flextable::align(i = 1, j = c(3, 4, 5), align = "center", part = "header") %>%
+    flextable::align(j = c(5), align = "center", part = "body") %>%
     bold(part = "header") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%
@@ -59,8 +59,8 @@ create_point_table_trd_2 <- function(all_point_info_df) {
       adt = "ÅDT\nnyeste år",
       year_aadt = "År\n(nyeste)"
     ) %>%
-    align(i = 1, j = c(4, 5), align = "center", part = "header") %>%
-    align(j = c(6), align = "center", part = "body") %>%
+    flextable::align(i = 1, j = c(4, 5), align = "center", part = "header") %>%
+    flextable::align(j = c(6), align = "center", part = "body") %>%
     bold(part = "header") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%
@@ -96,8 +96,8 @@ create_point_table_trd <- function(all_point_info_df) {
       adt = "ÅDT",
       year_aadt = "År"
     ) %>%
-    align(i = 1, j = c(4, 5), align = "center", part = "header") %>%
-    align(j = c(5), align = "center", part = "body") %>%
+    flextable::align(i = 1, j = c(4, 5), align = "center", part = "header") %>%
+    flextable::align(j = c(5), align = "center", part = "body") %>%
     bold(part = "header") %>%
     bg(bg = "#ED9300", part = "header") %>%
     border_remove() %>%
@@ -146,7 +146,7 @@ table_bike_trps_with_sdt <- function(chosen_area_name) {
       SUMMER = "Sommer",
       FALL = "Høst"
     ) |>
-    align(j = 4, align = "center", part = "all") |>
+    flextable::align(j = 4, align = "center", part = "all") |>
     bold(part = "header") |>
     font(fontname = "Lucida Sans Unicode", part = "all")  |>
     fontsize(size = 7, part = "all") |>
@@ -789,7 +789,7 @@ create_city_index_table_sd <- function(city_info) {
       #standard_deviation = "Standardavvik \n (%)",
       standard_error = "Standardfeil \n (%)"
     ) %>%
-    align(
+    flextable::align(
       j = c("period", "n_trp", "index_p", #"standard_deviation",
             "standard_error"),
       align = "center", part = "all"
@@ -857,7 +857,7 @@ create_city_index_table_ci <- function(city_info) {
       index_p = "Byindeks\n(endring i\ntrafikkmengde)\n(%)",
       ci = "Konfidens-\nintervall\n(%-poeng)"
     ) |>
-    align(
+    flextable::align(
       #j = c("n_trp", "ci"),
       align = "center", part = "all"
     ) |>
@@ -893,7 +893,7 @@ create_monthly_city_index_table <- function(city_monthly) {
     border_remove() %>%
     hline_top(part = "header", border = borderline) %>%
     hline_bottom(part = "all", border = borderline) %>%
-    align(j = 3, align = "center", part = "header") %>%
+    flextable::align(j = 3, align = "center", part = "header") %>%
     autofit() %>%
     height_all(height = .2) %>%
     set_caption("Estimert endring i trafikkmengde per måned.",
@@ -918,7 +918,7 @@ create_city_36_index_table <- function(city_36_month) {
     border_remove() %>%
     hline_top(part = "header", border = borderline) %>%
     hline_bottom(part = "all", border = borderline) %>%
-    align(j = 2, align = "left") %>%
+    flextable::align(j = 2, align = "left") %>%
     autofit() %>%
     height_all(height = .2) %>%
     set_caption("Estimert endring i trafikkmengde for siste tre år.",
@@ -956,7 +956,7 @@ create_city_mdt_36_index_table <- function(city_36_month) {
     border_remove() %>%
     hline_top(part = "header", border = borderline) %>%
     hline_bottom(part = "all", border = borderline) %>%
-    align(align = "center", part = "all") |>
+    flextable::align(align = "center", part = "all") |>
     autofit() %>%
     height_all(height = .1)
 
@@ -1001,7 +1001,7 @@ create_city_mdt_36_index_table_ci <- function(city_36_month) {
     border_remove() |>
     hline_top(part = "header", border = borderline) |>
     hline_bottom(part = "all", border = borderline) |>
-    align(align = "center", part = "all") |>
+    flextable::align(align = "center", part = "all") |>
     autofit() |>
     height_all(height = .1)
 
@@ -1027,7 +1027,7 @@ create_corridor_index_table <- function(corridor_index_all_years) {
     border_remove() %>%
     hline_top(part = "header", border = borderline) %>%
     hline_bottom(part = "all", border = borderline) %>%
-    align(align = "center", part = "header") %>%
+    flextable::align(align = "center", part = "header") %>%
     autofit() %>%
     height_all(height = .2) %>%
     set_caption("Estimert endring i trafikkmengde.",
@@ -1587,9 +1587,9 @@ table_index_chains <- function(chosen_name) {
       ci_upper = ""
     ) |>
     merge_at(i = 1, j = 6:7, part = "header") |>
-    align(i = 1, j = 6, align = "center", part = "header") |>
-    align(j = 2:4, align = "center", part = "all") |>
-    align(j = 5, align = "center", part = "header") |>
+    flextable::align(i = 1, j = 6, align = "center", part = "header") |>
+    flextable::align(j = 2:4, align = "center", part = "all") |>
+    flextable::align(j = 5, align = "center", part = "header") |>
     bold(part = "header") |>
     font(fontname = "Lucida Sans Unicode", part = "all")  |>
     bg(bg = "#ED9300", part = "header") |>

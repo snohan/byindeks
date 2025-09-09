@@ -117,10 +117,10 @@ create_monthly_index_table <- function(index_df) {
       standard_deviation, 
       no_points
     ) |>
-    flextable() |>
-    colformat_int(j = 2, big.mark = "") |>
-    colformat_double(j = 4:6, digits = 1) |>
-    set_header_labels(
+    flextable::flextable() |>
+    flextable::colformat_int(j = 2, big.mark = "") |>
+    flextable::colformat_double(j = 4:6, digits = 1) |>
+    flextable::set_header_labels(
       month_name = "Måned", year = "År", 
       length_range = "Kjøretøy-\nklasse",
       index_p = "Endring i\ntrafikk-\nmengde\n(%)",
@@ -128,8 +128,8 @@ create_monthly_index_table <- function(index_df) {
       standard_deviation = "Standard-\navvik\n(%)",
       no_points = "Antall\npunkt"
     ) |>
-    align(j = c(2, 3, 7), align = "center", part = "all") |>
-    align(j = 4:6, align = "center", part = "header") |>
+    flextable::align(j = c(2, 3, 7), align = "center", part = "all") |>
+    flextable::align(j = 4:6, align = "center", part = "header") |>
     bold(part = "header") |>
     bg(bg = "#ED9300", part = "header") |>
     border_remove() |>
@@ -149,9 +149,9 @@ table_historic_index <- function(index_df) {
 
   index_df |> 
     flextable::flextable() |>
-    colformat_double(j = 2:5, digits = 1) |>
-    set_header_labels(year = "År") |>
-    align(j = 2:5, align = "right", part = "all") |>
+    flextable::colformat_double(j = 2:5, digits = 1) |>
+    flextable::set_header_labels(year = "År") |>
+    flextable::align(j = 2:5, align = "right", part = "all") |>
     bold(part = "header") |>
     #fontsize(size = 9, part = "all") |>
     #font(fontname = "Lucida Sans Unicode", part = "all") |>
@@ -213,19 +213,19 @@ border_crossings_adt |>
     adt, aadt_short, aadt_long, year
     #name
   ) |>
-  flextable() |>
+  flextable::flextable() |>
   #colformat_int(j = 6:8) |>
-  colformat_double(
+  flextable::colformat_double(
     j = 5:7, 
     big.mark = "", 
     digits = 0
   ) |>
-  colformat_int(
+  flextable::colformat_int(
     j = 8, 
     big.mark = ""#, 
     #digits = 0
   ) |>
-  set_header_labels(
+  flextable::set_header_labels(
     road_category_and_number = "Veg-\nnummer",
     street_name = "Vegnavn",
     municipality_name = "Kommune",
@@ -236,12 +236,12 @@ border_crossings_adt |>
     year = "År"
     #name = "Trafikk-\nregistreringspunkt"
   ) |>
-  align(
+  flextable::align(
     i = 1, j = 5:7, 
     align = "center", 
     part = "header"
   ) |>
-  align(
+  flextable::align(
     j = 8, 
     align = "center", 
     part = "all"
@@ -453,10 +453,10 @@ index_for_table |>
       standard_deviation, 
       no_points
     ) |>
-    flextable() |>
-    colformat_int(j = 1, big.mark = "") |>
-    colformat_double(j = 3:5, digits = 1) |>
-    set_header_labels(
+    flextable::flextable() |>
+    flextable::colformat_int(j = 1, big.mark = "") |>
+    flextable::colformat_double(j = 3:5, digits = 1) |>
+    flextable::set_header_labels(
       year = "År", 
       length_range = "Kjøretøy-\nklasse",
       index_p = "Endring i\ntrafikk-\nmengde\n(%)",
@@ -464,9 +464,9 @@ index_for_table |>
       standard_deviation = "Standard-\navvik\n(%)",
       no_points = "Antall\npunkt"
     ) |>
-    align(j = 3:5, align = "right", part = "body") |>
-    align(j = 3:5, align = "center", part = "header") |>
-    align(j = c(1, 2, 6), align = "center", part = "all") |>
+    flextable::align(j = 3:5, align = "right", part = "body") |>
+    flextable::align(j = 3:5, align = "center", part = "header") |>
+    flextable::align(j = c(1, 2, 6), align = "center", part = "all") |>
     bold(part = "header") |>
     bg(bg = "#ED9300", part = "header") |>
     border_remove() |>

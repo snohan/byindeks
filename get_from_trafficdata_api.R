@@ -1989,11 +1989,11 @@ calculate_calendar_adjusted_mdt <- function(trp_id, year) {
   return(mdt)
 }
 
-{
-  tic()
-  dt_test <- calculate_calendar_adjusted_mdt("43623V704583", 2025)
-  toc()
-}
+# {
+#   tic()
+#   dt_test <- calculate_calendar_adjusted_mdt("43623V704583", 2025)
+#   toc()
+# }
 
 #mdt_test <- get_trp_mdt_with_coverage("91582V930281", "2020")
 #mdt_test_2 <- get_trp_mdt_by_lane("91582V930281", "2020")
