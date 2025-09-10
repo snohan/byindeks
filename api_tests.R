@@ -109,6 +109,18 @@
 # from_day <- "2019-01-01"
 # to_day <- "2019-01-02"
 
+## DT by length ----
+trp_id <- "00000V1993681" # NorTraf, no coverage
+from <- "2018-07-01T00:00:00+02:00"
+to   <- "2018-07-05T00:00:00+02:00"
+
+trp_id <- "37235B802722" # No length data
+trp_id <- "43623V704583" # With coverage
+from <- "2025-01-01T00:00:00+02:00"
+to   <- "2025-09-09T00:00:00+02:00"
+
+test <- get_dt_by_length_for_trp_2(trp_id, from, to)
+
 # Average HT and DT ----
 #trp_id <- #"79743V1125914"
 # "78481V42532"

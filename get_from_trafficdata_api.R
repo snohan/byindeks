@@ -3015,13 +3015,10 @@ get_dt_for_trp_list <- function(trp_list, from, to) {
   return(data_points)
 }
 
-trp_id <- "00000V1993681"
-from <- "2018-01-01T00:00:00+01:00"
-to   <- "2018-01-05T00:00:00+01:00"
-test <- get_dt_by_length_for_trp(trp_id, from, to)
 
-get_dt_by_length_for_trp <- function(trp_id, from, to) {
+get_dt_by_length_for_trp_old <- function(trp_id, from, to) {
 
+  # DEPRECATED
   # Default values
   hasNextPage <- TRUE
   cursor <- ""
@@ -3150,8 +3147,7 @@ get_dt_by_length_for_trp <- function(trp_id, from, to) {
 }
 
 
-
-get_dt_by_length_for_trp_2 <- function(trp_id, from, to) {
+get_dt_by_length_for_trp <- function(trp_id, from, to) {
 
   cursor <- ""
   hasNextPage <- TRUE
@@ -3224,81 +3220,63 @@ get_dt_by_length_for_trp_2 <- function(trp_id, from, to) {
       cli$exec(my_query$my_query, input_variables) |>
       jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
 
-    # Show API error message if any
-    if (!is.null(response$errors)) {
-      base::print(
-        paste0(
-          "GraphQL errors encountered: ",
-          jsonlite::toJSON(response$errors$message)
-        )
-      )
-    }
+    source("api_error_message.R")
 
-    # Stop if no data
-    if(length(response$data$trafficData$volume$byDay$edges) == 0)
-      break;
-
-    response <- tibble::as_tibble(response)
-    cursor <- response$data.trafficData.volume.byDay.pageInfo.endCursor[1] |> as.character()
-    hasNextPage <- response$data.trafficData.volume.byDay.pageInfo.hasNextPage[1]
-
-
-    # TODO: what if
-    # - no length data:
-    # - no coverage:
-
-    # Skip parsing page if no volume numbers
-    if(length(trafficData$data.trafficData.volume.byDay.edges.node.total.volumeNumbers.volume) == 0) {
-      trafficData <- data.frame()
+    # If no data or no length data, return empty tibble
+    if(
+      base::length(response$data$trafficData$volume$byDay$edges) == 0
+      |
+      length(response$data$trafficData$volume$byDay$edges$node.byLengthRange[[1]]) == 0
+    ){
+      print(paste0(trp_id, " has no data or no length data!"))
     }else{
-      trafficData %<>%
-        select(
+      dt_page <-
+        response |>
+        base::as.data.frame() |>
+        tibble::as_tibble() |>
+        dplyr::select(
           -data.trafficData.volume.byDay.pageInfo.hasNextPage,
           -data.trafficData.volume.byDay.pageInfo.endCursor
-        ) %>%
+        ) |>
         tidyr::unnest(
           cols = data.trafficData.volume.byDay.edges.node.byLengthRange
-        ) %>%
-        dplyr::select(
-          point_id = data.trafficData.id,
-          from = data.trafficData.volume.byDay.edges.node.from,
-          total_volume = data.trafficData.volume.byDay.edges.node.total.volumeNumbers.volume,
-          total_coverage = data.trafficData.volume.byDay.edges.node.total.coverage.percentage,
-          length_range = lengthRange.representation,
-          length_range_volume = total.volumeNumbers.volume,
-          length_quality = data.trafficData.volume.byDay.edges.node.total.volumeNumbers.validLength.percentage
-        )
+        ) |>
+        # Column names will be different if coverage exists or not, so to make them same:
+        dplyr::rename_with(~ stringr::str_remove(.x, ".percentage"))
+
+      dt <- dplyr::bind_rows(dt, dt_page)
     }
 
-    dt <- dplyr::bind_rows(dt, response)
+    cursor <- response$data$trafficData$volume$byDay$pageInfo$endCursor
+    hasNextPage <- response$data$trafficData$volume$byDay$pageInfo$hasNextPage
   }
 
-
-
-  colunm_names <- c("point_id", "from", "total_volume", "total_coverage",
-                    "length_range", "length_range_volume", "length_quality")
-
-  if(nrow(dt) == 0) {
-    dt <- setNames(data.frame(matrix(ncol = 7, nrow = 0)),
-                             colunm_names)
-  }else{
-    #colnames(dailyTraffic) <- colunm_names
+  if(nrow(dt) > 0) {
+    dt <-
+      dt |>
+      dplyr::select(
+        trp_id = data.trafficData.id,
+        from = data.trafficData.volume.byDay.edges.node.from,
+        total_volume = data.trafficData.volume.byDay.edges.node.total.volumeNumbers.volume,
+        total_coverage = data.trafficData.volume.byDay.edges.node.total.coverage,
+        length_range = lengthRange.representation,
+        length_range_volume = total.volumeNumbers.volume,
+        length_quality = data.trafficData.volume.byDay.edges.node.total.volumeNumbers.validLength
+      ) |>
+      dplyr::mutate(
+        # Assume high quality if NorTraf (coverage does not exist)
+        total_coverage =
+          dplyr::case_when(
+            is.na(total_coverage) ~ 100,
+            TRUE ~ total_coverage
+          ),
+        length_quality =
+          dplyr::case_when(
+            is.na(length_quality) ~ 100,
+            TRUE ~ length_quality
+          )
+      )
   }
-
-  # To avoid error when joining, cast column type
-  dt <-
-    dt |>
-    dplyr::filter(!is.na(total_volume)) |>
-    dplyr::mutate(
-      point_id = as.character(point_id),
-      #from = with_tz(ymd_hms(from), "CET"),
-      from = clock::date_parse(from),
-      total_volume = as.integer(total_volume),
-      total_coverage = as.numeric(total_coverage),
-      length_range = as.character(length_range),
-      length_range_volume = as.integer(length_range_volume),
-      length_quality = as.numeric(length_quality)
-    )
 
   return(dt)
 }
