@@ -113,7 +113,9 @@ get_municipalities <- function() {
 
 # Traffic registration points (TRPs) ----
 get_points <- function() {
+
   # Get all traffic registration points
+
   query_points <-
     "query all_trps {
   trafficRegistrationPoints {
@@ -484,31 +486,6 @@ get_labels_for_trp_list <- function(trp_list) {
   return(labels)
 }
 
-# Test
-# mosvatn <- get_trp_labels("55507V319881")
-# mosvatn_unnested <-
-#   mosvatn |>
-#   tidyr::unnest_wider(
-#     affectedLanes
-#   ) |>
-#   dplyr::select(
-#     trp_id = data.trafficRegistrationPoints.id,
-#     label_start = validFrom,
-#     label_end = validTo,
-#     lane = lane.laneNumber
-#   ) |>
-#   dplyr::mutate(
-#     dplyr::across(
-#       .cols = c(label_start, label_end),
-#       .fns = ~ floor_date(with_tz(ymd_hms(.x)), unit = "hour")
-#     ),
-#     date_interval = lubridate::interval(label_start, label_end)
-#   ) |>
-#   tidyr::unnest_longer(
-#     lane,
-#     keep_empty = TRUE
-#   )
-
 get_points_with_direction <- function() {
 
   # Get all traffic registration points
@@ -870,7 +847,6 @@ get_aadt_for_trp_list <- function(trp_list, day_type = "ALL") {
 }
 
 
-#trp_id <-"43623V704583"
 get_trp_aadt_by_direction <- function(trp_id) {
 
   print(trp_id)
@@ -1130,10 +1106,6 @@ get_aadt_by_length_for_trp <- function(trp_id, day_type = "ALL") {
   return(trp_aadt)
 }
 
-#trp_list <- trp_distinct$trp_id[1:2]
-#test_list <- trp_id = c("91582V930281", "01316V804837")
-#test <- get_mdt_by_lane_for_trp_list(trp_list, "2020")
-#test_adt <- getAdtForpoints_by_length(test_list)
 
 get_aadt_by_length_for_trp_list <- function(trp_list, day_type = "ALL") {
 
@@ -1168,21 +1140,6 @@ get_aadt_by_length_for_trp_list <- function(trp_list, day_type = "ALL") {
   return(trp_adt)
 }
 
-
-# test_list <-
-#   c(
-#     "39215V320588", # kontinuerlig
-#     "79404V1175648", # radar med lengde
-#     "41078V805609", # radar uten lengde
-#     "98963V1719019", # some early years without length data
-#     "12567V1060674", # no ci
-#     "63254V319822" # no data at all
-#   )
-
-#trp_id <- "12567V1060674"
-#trp_id <- "63254V319822"
-
-#test <- get_aadt_by_direction_and_length(trp_id)
 
 get_aadt_by_direction_and_length <- function(trp_id, day_type = "ALL") {
 
@@ -1617,16 +1574,6 @@ get_periodic_aadt_by_length_for_trp_list <- function(trp_list) {
   return(trp_aadt_all)
 }
 
-# test_list <-
-#   c(
-#     "39215V320588", # kontinuerlig
-#     "79404V1175648", # radar med lengde
-#     "41078V805609" # radar uten lengde
-#   )
-#
-# test_aadt <-
-#   get_periodic_aadt_by_length_for_trp_list(test_list)
-
 
 # MDT ----
 get_trp_mdt_with_coverage <- function(trp_id, mdt_year) {
@@ -1989,22 +1936,6 @@ calculate_calendar_adjusted_mdt <- function(trp_id, year) {
   return(mdt)
 }
 
-# {
-#   tic()
-#   dt_test <- calculate_calendar_adjusted_mdt("43623V704583", 2025)
-#   toc()
-# }
-
-#mdt_test <- get_trp_mdt_with_coverage("91582V930281", "2020")
-#mdt_test_2 <- get_trp_mdt_by_lane("91582V930281", "2020")
-
-# test_all_nortraf <- get_mdt_by_length_for_trp("43623V704583", 2014)
-# test_mix_nortraf_new <- get_mdt_by_length_for_trp("43623V704583", 2015)
-# test_all_new <- get_mdt_by_length_for_trp("43623V704583", 2016, "WEEKEND")
-# test_none <- get_mdt_by_length_for_trp("16219V72812", 2022)
-# test_single_day <- get_mdt_by_length_for_trp("01316V804837", 2025)
-# trp_id <- "43623V704583"
-# mdt_year <- 2015
 
 get_mdt_by_length_for_trp <- function(trp_id, mdt_year, day_type = "ALL") {
 
@@ -2365,8 +2296,6 @@ get_trp_sdt <- function(trp_id, given_year) {
 }
 
 
-#trp_list <- trp_distinct$trp_id[1:3]
-#mdt_year <- "2021"
 get_sdt_for_trp_list <- function(trp_list, mdt_year) {
 
   number_of_points <- length(trp_list)
@@ -2393,13 +2322,7 @@ get_sdt_for_trp_list <- function(trp_list, mdt_year) {
 }
 
 
-
 # Point indices ####
-#indexyear <- "2020"
-#trp_ids <- "\"44656V72812\", \"77022V72359\""
-#trp_ids <- "35258V2475662"
-#trp_ids <- "47719V443837" # Vollsveien med alle lengdetall ekskludert
-#trp_ids <- "17909V41450" # trp helt uten data
 
 get_pointindices <- function(trp_ids, indexyear) {
   # Get pointindex for trps
@@ -2600,16 +2523,7 @@ get_pointindices_for_trp_list <- function(trp_list, index_year) {
 }
 
 
-# Hourly and daily traffic ----
-
-#trp_id <- "92719V1125906"
-#from <- "2019-01-01T00:00:00.000+01:00"
-#to <- "2019-02-01T00:00:00.000+01:00"
-
-# trp_id <- "30868V1109333"
-# from <- "2023-05-30T08:00:00.000+02:00"
-# to <- "2023-05-30T09:00:00.000+02:00"
-
+# HT and DT ----
 get_hourly_traffic_by_length_lane <- function(trp_id, from, to) {
 
   # ZonedDateTime:
@@ -2739,10 +2653,6 @@ get_hourly_traffic_by_length_lane <- function(trp_id, from, to) {
 
 }
 
-# Test
-# trp_id <- "06970V72811"
-# from <- paste0(as.character(2014), "-01-01T00:00:00.000+01:00")
-# to <- paste0(as.character(2014 + 1), "-01-01T00:00:00.000+01:00")
 
 get_hourly_traffic_by_length <- function(trp_id, from, to) {
 
@@ -2987,13 +2897,6 @@ getHourlytraffic <- function(trpID, from, to) {
   return(hourlyTraffic)
 }
 
- # trp_id <- "68068V521218"
- # from <- "2020-01-01T00:00:00+01:00"
- # to <- "2021-01-01T00:00:00+01:00"
-# test1 <- get_daily_traffic(trps$trp_id[1], from, to)
-# test2 <- get_daily_traffic(trps$trp_id[2], from, to)
-#
-# test_bind <- bind_rows(test1, test2)
 
 get_daily_traffic <- function(trp_id, from, to) {
 
@@ -3112,6 +3015,10 @@ get_dt_for_trp_list <- function(trp_list, from, to) {
   return(data_points)
 }
 
+trp_id <- "00000V1993681"
+from <- "2018-01-01T00:00:00+01:00"
+to   <- "2018-01-05T00:00:00+01:00"
+test <- get_dt_by_length_for_trp(trp_id, from, to)
 
 get_dt_by_length_for_trp <- function(trp_id, from, to) {
 
@@ -3243,6 +3150,160 @@ get_dt_by_length_for_trp <- function(trp_id, from, to) {
 }
 
 
+
+get_dt_by_length_for_trp_2 <- function(trp_id, from, to) {
+
+  cursor <- ""
+  hasNextPage <- TRUE
+  dt <- tibble::tibble()
+
+  query <-
+    "query dt (
+      $trpId: String!,
+      $from: ZonedDateTime!, $to: ZonedDateTime!,
+      $cursor: String
+      ) {
+      trafficData (trafficRegistrationPointId: $trpId){
+        trafficRegistrationPoint {
+          id
+        }
+        volume {
+          byDay (
+            from: $from,
+            to: $to,
+            after: $cursor) {
+            edges {
+              node {
+                from
+                total {
+                  volumeNumbers {
+                    volume
+                    validLength {
+                      percentage
+                    }
+                  }
+                  coverage {
+                    percentage
+                  }
+                }
+                byLengthRange {
+                  lengthRange {
+                    representation
+                  }
+                  total {
+                    volumeNumbers {
+                      volume
+                    }
+                  }
+                }
+              }
+            }
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+          }
+        }
+      }
+    }"
+
+
+  while(hasNextPage == TRUE){
+
+    input_variables <-
+      list(
+        "trpId" = trp_id,
+        "from" = from,
+        "to" = to,
+        "cursor" = cursor
+      )
+
+    my_query <- ghql::Query$new()$query(name = "my_query", query)
+
+    response <-
+      cli$exec(my_query$my_query, input_variables) |>
+      jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
+
+    # Show API error message if any
+    if (!is.null(response$errors)) {
+      base::print(
+        paste0(
+          "GraphQL errors encountered: ",
+          jsonlite::toJSON(response$errors$message)
+        )
+      )
+    }
+
+    # Stop if no data
+    if(length(response$data$trafficData$volume$byDay$edges) == 0)
+      break;
+
+    response <- tibble::as_tibble(response)
+    cursor <- response$data.trafficData.volume.byDay.pageInfo.endCursor[1] |> as.character()
+    hasNextPage <- response$data.trafficData.volume.byDay.pageInfo.hasNextPage[1]
+
+
+    # TODO: what if
+    # - no length data:
+    # - no coverage:
+
+    # Skip parsing page if no volume numbers
+    if(length(trafficData$data.trafficData.volume.byDay.edges.node.total.volumeNumbers.volume) == 0) {
+      trafficData <- data.frame()
+    }else{
+      trafficData %<>%
+        select(
+          -data.trafficData.volume.byDay.pageInfo.hasNextPage,
+          -data.trafficData.volume.byDay.pageInfo.endCursor
+        ) %>%
+        tidyr::unnest(
+          cols = data.trafficData.volume.byDay.edges.node.byLengthRange
+        ) %>%
+        dplyr::select(
+          point_id = data.trafficData.id,
+          from = data.trafficData.volume.byDay.edges.node.from,
+          total_volume = data.trafficData.volume.byDay.edges.node.total.volumeNumbers.volume,
+          total_coverage = data.trafficData.volume.byDay.edges.node.total.coverage.percentage,
+          length_range = lengthRange.representation,
+          length_range_volume = total.volumeNumbers.volume,
+          length_quality = data.trafficData.volume.byDay.edges.node.total.volumeNumbers.validLength.percentage
+        )
+    }
+
+    dt <- dplyr::bind_rows(dt, response)
+  }
+
+
+
+  colunm_names <- c("point_id", "from", "total_volume", "total_coverage",
+                    "length_range", "length_range_volume", "length_quality")
+
+  if(nrow(dt) == 0) {
+    dt <- setNames(data.frame(matrix(ncol = 7, nrow = 0)),
+                             colunm_names)
+  }else{
+    #colnames(dailyTraffic) <- colunm_names
+  }
+
+  # To avoid error when joining, cast column type
+  dt <-
+    dt |>
+    dplyr::filter(!is.na(total_volume)) |>
+    dplyr::mutate(
+      point_id = as.character(point_id),
+      #from = with_tz(ymd_hms(from), "CET"),
+      from = clock::date_parse(from),
+      total_volume = as.integer(total_volume),
+      total_coverage = as.numeric(total_coverage),
+      length_range = as.character(length_range),
+      length_range_volume = as.integer(length_range_volume),
+      length_quality = as.numeric(length_quality)
+    )
+
+  return(dt)
+}
+
+
 get_dt_by_length_for_trp_list <- function(trp_list, from, to) {
 
   number_of_points <- length(trp_list)
@@ -3261,8 +3322,6 @@ get_dt_by_length_for_trp_list <- function(trp_list, from, to) {
   return(data_points)
 }
 
-#from <- "2022-06-01T00:00:00+02:00"
-#to <- "2022-06-03T00:00:00+02:00"
 
 get_daily_traffic_by_lane <- function(trp_id, from, to) {
 
@@ -3379,10 +3438,6 @@ get_daily_traffic_by_lane <- function(trp_id, from, to) {
   return(dailyTraffic)
 }
 
-
-# trp_id <- "17681V704560"
-# from_day <- "2019-01-01"
-# to_day <- "2019-01-02"
 
 get_dt_by_direction <- function(trp_id, from_day, to_day) {
 
@@ -3509,9 +3564,6 @@ get_dt_by_direction <- function(trp_id, from_day, to_day) {
 
 
 # Published indices ####
-# index_id <- 953
-# indexyear <- 2023
-# indexmonth <- 9
 
 get_published_index <- function(index_id, indexyear, indexmonth) {
 
@@ -3864,9 +3916,6 @@ get_published_pointindex <- function(index_id, indexyear, indexmonth) {
 }
 
 
-#indexmonth <- "10"
-#indexyear <- "2020"
-#index_id <- "960"
 get_published_pointindex_trondheim <- function(index_id, indexyear, indexmonth) {
   # Need volume numbers for length classes in order to calculate city index
   # Get published index for a given area, year and month
@@ -4185,10 +4234,6 @@ query_published_pointindex_page <- function(index_id, indexyear, indexmonth,
 
 }
 
-
-#index_id <- 962
-#indexyear <- 2020
-#indexmonth <- 1
 
 get_published_pointindex_paginated <- function(index_id, indexyear, indexmonth) {
   # Get published index for a given area, year and month
@@ -4531,9 +4576,6 @@ get_published_bikepointindex_for_months <- function(index_id, index_year, last_m
 # Only difference being that this includes area_type and
 # uses EUROPA_RIKS_FYLKESVEG instead of the one with KOMMUNALVEG also
 
-#index_id <- 962
-#indexyear <- 2020
-#indexmonth <- 8
 
 get_published_road_traffic_index <- function(index_id, indexyear, indexmonth) {
   # Get published index for a given area, year and month
@@ -4672,11 +4714,6 @@ get_published_road_traffic_index_for_months <- function(index_id, index_year, la
 
 
 # Average hourly and daily traffic ####
-#trp_id <- #"79743V1125914"
- # "78481V42532"
-#the_year <- "2019"
-#day_type = "ALL"
-
 get_trp_average_hour_of_day_traffic <- function(trp_id, the_year, day_type) {
 
   # Get all AADTs for a trp
@@ -4778,12 +4815,6 @@ get_trp_average_hour_of_day_traffic_for_all_day_types_for_trp_list <- function(t
 }
 
 
-#trp_id <- "79743V1125914"
-# "78481V42532"
-#the_year <- "2019"
-#the_month <- 1
-#day_type = "ALL"
-
 get_trp_average_day_of_week_traffic_by_month <-
   function(
     trp_id,
@@ -4866,7 +4897,6 @@ get_trp_average_day_of_week_traffic_by_month <-
 }
 
 
-
 get_trp_average_day_of_week_traffic_by_month_for_a_year <- function(trp_id, the_year) {
 
   data_points <- data.frame()
@@ -4884,7 +4914,6 @@ get_trp_average_day_of_week_traffic_by_month_for_a_year <- function(trp_id, the_
 
   return(data_points)
 }
-
 
 
 get_trp_average_day_of_week_traffic_by_month_for_a_year_for_trp_list <- function(trp_list, the_year) {
@@ -4906,10 +4935,6 @@ get_trp_average_day_of_week_traffic_by_month_for_a_year_for_trp_list <- function
   return(data_points)
 }
 
-# year = 2022
-# week_no = 2
-# day_type = "WEEKDAY"
-# trp_id = "17681V704560"
 
 get_hour_of_day_week_direction_total <- function(year, week_no, day_type, trp_id) {
 
@@ -5079,6 +5104,3 @@ get_hour_of_day_week_direction_length <- function(year, week_no, day_type, trp_i
   return(response)
 
 }
-
-
-
