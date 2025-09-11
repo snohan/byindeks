@@ -2,10 +2,10 @@
 
 # From before:
 # - get MDT from API
-# - filter for short vehicles, necessary columnsand add trp data
+# - filter for short vehicles, necessary columns and add trp data
 # THIS IS SAVED AS "data_indexpoints_tidy/mdt_CITYID.rds"
 # - exclusions stored in csv
-# - use in calculations where criterias are applied
+# - use in calculations where minimum criteria are applied
 
 # Now:
 # - get DT from API
@@ -14,7 +14,7 @@
 
 # Setup ----
 {
-  source("get_from_trafficdata.R")
+  source("get_from_trafficdata_api.R")
   source("calendar_functions.R")
   library(tictoc)
 }
@@ -48,8 +48,7 @@ city_trps <-
 # First, make cMDT per TRP and store them in folder cMDT
 
 # cMDT
-trp_number <- 1
-
+trp_number <- 83
 
 {
   tic()
@@ -60,31 +59,29 @@ trp_number <- 1
     ) |>
     purrr::list_rbind()
 
+  cmdt |>
+    readr::write_rds(
+      file =
+        paste0(
+          "cmdt/cmdt_",
+          city_number,
+          "_",
+          city_trps[trp_number],
+          ".rds"
+        )
+    )
+
   toc()
 }
 
 
-{
-  tic()
-  cmdt <- calculate_calendar_adjusted_mdt(city_trps[trp_number], 2018)
-  toc()
-}
-
-cmdt |>
-  readr::write_rds(
-    file =
-      paste0(
-        "cmdt/cmdt_",
-        city_number,
-        "_",
-        city_trps[trp_number],
-        ".rds"
-      )
-  )
-
-# Then gather all cMDT per city in a rds file
-
-
+# Then gather all cMDT per city in an rds file
+cmdt_city <-
+  purrr::map(
+    list.files("cmdt", paste0("cmdt_", city_number), full.names = TRUE),
+    ~ readr::read_rds(.x)
+  ) |>
+  purrr::list_rbind()
 
 cmdt_city |>
   readr::write_rds(
@@ -95,3 +92,6 @@ cmdt_city |>
         ".rds"
       )
   )
+
+
+# mdt_old <- read_rds("data_indexpoints_tidy/mdt_8952.rds")

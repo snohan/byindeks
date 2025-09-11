@@ -43,6 +43,8 @@
 # - Buskerudbyen (has had representativity issues, no chaining?)
 # - Trondheim (representativity issues, no chaining?)
 # - Nord-Jæren (with new chaining strategy)
+# - Grenland
+# - Oslo
 
 
 # Setup ----
@@ -219,9 +221,6 @@ list(
 readr::write_rds(
   "representativity/new_index_examples_bergen.rds"
 )
-
-# For Jonas
-#all_rolling_indices_new |> readr::write_csv2("spesialuttak/alle_glidende_indekser_test_bergen.csv")
 
 # The offical results
 all_rolling_indices_official <-

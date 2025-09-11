@@ -1801,137 +1801,149 @@ get_trp_mdt_by_direction <- function(trp_id, mdt_year) {
   return(trp_aadt)
 }
 
-#year <- 2025
+#year <- 2022
 #trp_id <- "43623V704583"
 calculate_calendar_adjusted_mdt <- function(trp_id, year) {
 
   # trp_id: String!
   # year: Int!
 
-  from <- paste0(year, "-01-01T00:00:00Z")
-  to   <- paste0(year, "-12-31T00:00:00Z")
+  from <- paste0(year    , "-01-02T00:00:00Z") # day 2 sic to avoid last day in previous month
+  to   <- paste0(year + 1, "-01-01T00:00:00Z")
 
   # Easter and Pentecost days
   complete_calendar <- make_complete_calendar_year(year)
   classified_days <- classify_days(year) |> dplyr::select(date, non_working_day)
   n_days_in_calendar <- number_of_days(year)
 
-  dt <-
-    get_dt_by_length_for_trp(trp_id, from, to) |>
-    dplyr::filter(
-      total_coverage >= 99,
-      length_quality >= 99,
-      length_range %in% c("[..,5.6)", "[5.6,..)")
-    )
+  dt <- get_dt_by_length_for_trp(trp_id, from, to)
 
-  dt_long <-
-    dplyr::bind_rows(
+  if(nrow(dt) > 0) {
+
+    dt <-
       dt |>
-        dplyr::mutate(
-          length_class = "alle"
-        ) |>
-        dplyr::select(
-          trp_id = point_id,
-          length_class,
-          date = from,
-          volume = total_volume
-        ) |>
-        dplyr::distinct(),
-      dt |>
-        dplyr::mutate(
-          length_class =
-            dplyr::case_when(
-              length_range == "[..,5.6)" ~ "korte",
-              length_range == "[5.6,..)" ~ "lange"
-            ),
-          length_class = base::factor(length_class, levels = c("alle", "korte", "lange"))
-        )  |>
-        dplyr::select(
-          trp_id = point_id,
-          length_class,
-          date = from,
-          volume = length_range_volume
-        )
-    ) |>
-    dplyr::left_join(
-      complete_calendar,
-      by = dplyr::join_by(date)
-    )
+      dplyr::filter(
+        total_coverage >= 99,
+        length_quality >= 99,
+        length_range %in% c("[..,5.6)", "[5.6,..)")
+      )
 
-  # Easter and Pentecost MDTs
-  mdt_easter <-
-   dt_long |>
-    dplyr::filter(
-      month %in% c("påske", "pinse")
-    ) |>
-    dplyr::summarise(
-      mdt = base::mean(volume, na.rm = FALSE) |> round(-1),
-      n_days_in_data = n(),
-      .by = c(trp_id, length_class, month)
-    ) |>
-    dplyr::filter(
-      !(month == "påske" & n_days_in_data < 6),
-      !(month == "pinse" & n_days_in_data != 4)
-    ) |>
-    dplyr::arrange(month, length_class)
+    dt_long <-
+      dplyr::bind_rows(
+        dt |>
+          dplyr::mutate(
+            length_class = "alle"
+          ) |>
+          dplyr::select(
+            trp_id,
+            length_class,
+            date = from,
+            volume = total_volume
+          ) |>
+          dplyr::distinct(),
+        dt |>
+          dplyr::mutate(
+            length_class =
+              dplyr::case_when(
+                length_range == "[..,5.6)" ~ "korte",
+                length_range == "[5.6,..)" ~ "lange"
+              ),
+            length_class = base::factor(length_class, levels = c("alle", "korte", "lange"))
+          )  |>
+          dplyr::select(
+            trp_id,
+            length_class,
+            date = from,
+            volume = length_range_volume
+          )
+      ) |>
+      dplyr::left_join(
+        complete_calendar,
+        by = dplyr::join_by(date)
+      )
 
-  # Classify non-working days
-  ydt <-
-    dt_long |>
-    dplyr::filter(
-      !(month %in% c("påske", "pinse"))
-    ) |>
-    dplyr::left_join(
-      classified_days,
-      by = dplyr::join_by(date)
-    ) |>
-    dplyr::summarise(
-      mdt = base::mean(volume, na.rm = FALSE),
-      n_days_in_data = n(),
-      .by = c(trp_id, length_class, month, non_working_day)
-    )
+    # Easter and Pentecost MDTs
+    mdt_easter <-
+     dt_long |>
+      dplyr::filter(
+        month %in% c("påske", "pinse")
+      ) |>
+      dplyr::summarise(
+        mdt = base::mean(volume, na.rm = FALSE) |> round(-1),
+        n_days_in_data = n(),
+        .by = c(trp_id, length_class, month)
+      ) |>
+      dplyr::filter(
+        !(month == "påske" & n_days_in_data < 6),
+        !(month == "pinse" & n_days_in_data != 4)
+      ) |>
+      dplyr::arrange(month, length_class)
 
-  # If a day type has little data
-  too_much_missing <-
-    ydt |>
-    dplyr::select(
-      month, non_working_day, n_days_in_data
-    ) |>
-    dplyr::distinct() |>
-    dplyr::filter(
-      !(non_working_day == TRUE  & n_days_in_data >= 3),
-      !(non_working_day == FALSE & n_days_in_data >= 7)
-    )
+    # Classify non-working days
+    ydt <-
+      dt_long |>
+      dplyr::filter(
+        !(month %in% c("påske", "pinse"))
+      ) |>
+      dplyr::left_join(
+        classified_days,
+        by = dplyr::join_by(date)
+      ) |>
+      dplyr::summarise(
+        mdt = base::mean(volume, na.rm = FALSE),
+        n_days_in_data = n(),
+        .by = c(trp_id, length_class, month, non_working_day)
+      )
 
-  mdt_weighted <-
-    ydt |>
-    dplyr::filter(
-      !(month %in% too_much_missing$month)
-    ) |>
-    dplyr::arrange(month, length_class, non_working_day) |>
-    dplyr::left_join(
-      day_type_weights_relative,
-      by = dplyr::join_by(month, non_working_day)
-    ) |>
-    dplyr::summarise(
-      mdt = sum(mdt * weight) |> round(-1),
-      n_days_in_data = sum(n_days_in_data),
-      .by = c(trp_id, length_class, month)
-    )
+    # If a day type has little data
+    too_much_missing <-
+      ydt |>
+      dplyr::select(
+        month, non_working_day, n_days_in_data
+      ) |>
+      dplyr::distinct() |>
+      dplyr::filter(
+        !(non_working_day == TRUE  & n_days_in_data >= 3),
+        !(non_working_day == FALSE & n_days_in_data >= 7)
+      )
 
-  mdt <-
-    dplyr::bind_rows(
-      mdt_easter,
-      mdt_weighted
-    ) |>
-    dplyr::arrange(month, length_class) |>
-    dplyr::left_join(
-      n_days_in_calendar |> dplyr::rename(n_days_in_calendar = n_days),
-      by = dplyr::join_by(month)
-    ) |>
-    dplyr::mutate(
-      coverage_percentage = 100 * n_days_in_data / n_days_in_calendar
-    )
+    mdt_weighted <-
+      ydt |>
+      dplyr::filter(
+        !(month %in% too_much_missing$month)
+      ) |>
+      dplyr::arrange(month, length_class, non_working_day) |>
+      dplyr::left_join(
+        day_type_weights_relative,
+        by = dplyr::join_by(month, non_working_day)
+      ) |>
+      dplyr::summarise(
+        mdt = sum(mdt * weight) |> round(-1),
+        n_days_in_data = sum(n_days_in_data),
+        .by = c(trp_id, length_class, month)
+      )
+
+    mdt <-
+      dplyr::bind_rows(
+        mdt_easter,
+        mdt_weighted
+      ) |>
+      dplyr::arrange(month, length_class) |>
+      dplyr::left_join(
+        n_days_in_calendar |> dplyr::rename(n_days_in_calendar = n_days),
+        by = dplyr::join_by(month)
+      ) |>
+      dplyr::mutate(
+        coverage_percentage = 100 * n_days_in_data / n_days_in_calendar,
+        year = year
+      ) |>
+      dplyr::relocate(
+        year,
+        .before = month
+      )
+  }else{
+    mdt <- tibble::tibble()
+  }
 
   return(mdt)
 }
@@ -3223,28 +3235,33 @@ get_dt_by_length_for_trp <- function(trp_id, from, to) {
     source("api_error_message.R")
 
     # If no data or no length data, return empty tibble
-    if(
-      base::length(response$data$trafficData$volume$byDay$edges) == 0
-      |
-      length(response$data$trafficData$volume$byDay$edges$node.byLengthRange[[1]]) == 0
-    ){
-      print(paste0(trp_id, " has no data or no length data!"))
-    }else{
-      dt_page <-
-        response |>
-        base::as.data.frame() |>
-        tibble::as_tibble() |>
-        dplyr::select(
-          -data.trafficData.volume.byDay.pageInfo.hasNextPage,
-          -data.trafficData.volume.byDay.pageInfo.endCursor
-        ) |>
-        tidyr::unnest(
-          cols = data.trafficData.volume.byDay.edges.node.byLengthRange
-        ) |>
-        # Column names will be different if coverage exists or not, so to make them same:
-        dplyr::rename_with(~ stringr::str_remove(.x, ".percentage"))
+    if(base::length(response$data$trafficData$volume$byDay$edges) == 0){
 
-      dt <- dplyr::bind_rows(dt, dt_page)
+      print(paste0(trp_id, ": missing data!"))
+
+    }else{
+
+      if(length(purrr::list_c(response$data$trafficData$volume$byDay$edges$node.byLengthRange)) == 0){
+
+        print(paste0(trp_id, ": missing length data!"))
+
+      }else{
+        dt_page <-
+          response |>
+          base::as.data.frame() |>
+          tibble::as_tibble() |>
+          dplyr::select(
+            -data.trafficData.volume.byDay.pageInfo.hasNextPage,
+            -data.trafficData.volume.byDay.pageInfo.endCursor
+          ) |>
+          tidyr::unnest(
+            cols = data.trafficData.volume.byDay.edges.node.byLengthRange
+          ) |>
+          # Column names will be different if coverage exists or not, so to make them same:
+          dplyr::rename_with(~ stringr::str_remove(.x, ".percentage"))
+
+        dt <- dplyr::bind_rows(dt, dt_page)
+      }
     }
 
     cursor <- response$data$trafficData$volume$byDay$pageInfo$endCursor
@@ -3264,6 +3281,7 @@ get_dt_by_length_for_trp <- function(trp_id, from, to) {
         length_quality = data.trafficData.volume.byDay.edges.node.total.volumeNumbers.validLength
       ) |>
       dplyr::mutate(
+        from = lubridate::as_date(from),
         # Assume high quality if NorTraf (coverage does not exist)
         total_coverage =
           dplyr::case_when(

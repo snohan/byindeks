@@ -1,0 +1,921 @@
+---
+title: "Byindeks, regneeksempler"
+format: 
+  html:
+    css: svv.css
+    number-sections: true
+    toc: true
+    toc-location: left
+    toc-title: "Innhold"
+    toc-expand: true
+    toc-depth: 2
+    df-print: paged
+    self-contained: true
+crossref:
+  fig-title: Figur
+  tbl-title: Tabell
+  title-delim: .
+  fig-prefix: figur
+  tbl-prefix: tabell
+editor: source
+knitr: 
+  opts_chunk: 
+    echo: false
+---
+
+
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
+#| warning: false
+#| message: false
+  
+base::Sys.setlocale(locale = "nb.utf8")
+svv_background_color <- "#F5F5F5"
+
+library(tidyverse)
+library(patchwork)
+library(flextable)
+library(vcd)
+library(sf)
+#library(sfnetworks)
+library(igraph)
+library(tidygraph)
+library(htmltools)
+library(leaflet)
+library(RColorBrewer)
+library(leaflet)
+
+source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
+source("H:/Programmering/R/byindeks/traffic_link_functions.R")
+source("H:/Programmering/R/byindeks/index_report_functions.R")
+
+flextable::set_flextable_defaults(
+  #font.size = 8,
+  #padding.bottom = .2,
+  #padding.top = .4,
+  decimal.mark = ",",
+  big.mark = " ",
+  na_str = ""
+)
+```
+
+```{r}
+#| label: data
+
+
+# Misc
+this_date <- lubridate::today()
+this_date_string <- 
+  base::paste0(
+    lubridate::mday(this_date), 
+    ". ", 
+    lubridate::month(this_date, label = TRUE, abbr = FALSE), 
+    " ", 
+    lubridate::year(this_date)
+  )
+
+
+# Calculation examples
+links_nj <- readr::read_rds("representativity/link_population_nj.rds")
+links_nj_whole <- readr::read_rds("representativity/link_population_nj_whole.rds")
+urban_area_nj <- readr::read_rds("representativity/urban_area_nj.rds")
+agreement_area_nj <- readr::read_rds("representativity/agreement_area_nj.rds")
+municipality_polygon_nj <- readr::read_rds("traffic_link_pop/municipality_polygon_nj.rds")
+
+links_bergen <- readr::read_rds("traffic_link_pop/links_bergen.rds")
+urban_area_bergen <- readr::read_rds("representativity/urban_area_bergen.rds")
+municipality_polygon_bergen <- readr::read_rds("traffic_link_pop/municipality_polygon_bergen.rds")
+
+links_trondheim <- readr::read_rds("traffic_link_pop/links_trondheim.rds")
+urban_area_trondheim <- readr::read_rds("representativity/urban_area_trondheim.rds")
+municipality_polygon_trondheim <- readr::read_rds("traffic_link_pop/municipality_polygon_trondheim.rds")
+
+# Calculation examples
+# Bergen
+indexes_examples_bergen <-
+  readr::read_rds("representativity/new_index_examples_bergen.rds")
+
+indexes_official_bergen <-
+  readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_8952.rds")) |>
+  dplyr::bind_rows()
+
+indexes_comparison_bergen <-
+  dplyr::bind_rows(
+    indexes_examples_bergen[[1]] |> 
+      dplyr::mutate(
+        version = "old"
+      ),
+    indexes_examples_bergen[[2]] |> 
+      dplyr::mutate(
+        version = "new"
+      ),
+    indexes_official_bergen |> 
+      dplyr::mutate(
+        version = "official"
+      )
+  ) |> 
+  dplyr::filter(
+    month_object < "2025-01-01"
+  )
+
+error_comparison_bergen <-
+  dplyr::bind_rows(
+    indexes_examples_bergen[[1]] |> 
+      dplyr::mutate(
+        version = "old",
+        em = (ci_upper - ci_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      ),
+    indexes_examples_bergen[[2]] |> 
+      dplyr::mutate(
+        version = "new_sample_fpc"
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em = em_selection
+      ),
+    indexes_examples_bergen[[2]] |> 
+      dplyr::mutate(
+        version = "new_model"
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em = em_model
+      ),
+    indexes_examples_bergen[[2]] |> 
+      dplyr::mutate(
+        version = "new_bs_bca",
+        em = (bs_bca_upper - bs_bca_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      ),
+    indexes_official_bergen |> 
+      dplyr::mutate(
+        version = "official",
+        em = (ci_upper - ci_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      )
+  )
+
+# Trondheim
+indexes_examples_trondheim <-
+  readr::read_rds("representativity/new_index_examples_trondheim.rds")
+
+indexes_official_trondheim <-
+  readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_960.rds")) |>
+  dplyr::bind_rows()
+
+indexes_comparison_trondheim <-
+  dplyr::bind_rows(
+    indexes_examples_trondheim[[1]] |> 
+      dplyr::mutate(
+        version = "old"
+      ),
+    indexes_examples_trondheim[[2]] |> 
+      dplyr::mutate(
+        version = "new"
+      ),
+    indexes_official_trondheim |> 
+      dplyr::mutate(
+        version = "official"
+      )
+  )
+
+error_comparison_trondheim <-
+  dplyr::bind_rows(
+    indexes_examples_trondheim[[1]] |> 
+      dplyr::mutate(
+        version = "old",
+        em = (ci_upper - ci_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      ),
+    indexes_examples_trondheim[[2]] |> 
+      dplyr::mutate(
+        version = "new_sample_fpc"
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em = em_selection
+      ),
+    indexes_examples_trondheim[[2]] |> 
+      dplyr::mutate(
+        version = "new_model"
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em = em_model
+      ),
+    indexes_examples_trondheim[[2]] |> 
+      dplyr::mutate(
+        version = "new_bs_bca",
+        em = (bs_bca_upper - bs_bca_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      ),
+    indexes_official_trondheim |> 
+      dplyr::mutate(
+        version = "official",
+        em = (ci_upper - ci_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      )
+  )
+
+
+# Nord-Jæren
+indexes_examples_nj <-
+  readr::read_rds("representativity/new_index_examples_nj.rds")
+
+indexes_official_nj <-
+  readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_952.rds")) |>
+  dplyr::bind_rows()
+
+indexes_comparison_nj <-
+  dplyr::bind_rows(
+    indexes_examples_nj[[1]] |> 
+      dplyr::mutate(
+        version = "old"
+      ),
+    indexes_examples_nj[[2]] |> 
+      dplyr::mutate(
+        version = "new"
+      ),
+    indexes_official_nj |> 
+      dplyr::mutate(
+        version = "official"
+      )
+  )
+
+error_comparison_nj <-
+  dplyr::bind_rows(
+    indexes_examples_nj[[1]] |> 
+      dplyr::mutate(
+        version = "old",
+        em = (ci_upper - ci_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      ),
+    indexes_examples_nj[[2]] |> 
+      dplyr::mutate(
+        version = "new_sample_fpc"
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em = em_selection
+      ),
+    indexes_examples_nj[[2]] |> 
+      dplyr::mutate(
+        version = "new_model"
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em = em_model
+      ),
+    indexes_examples_nj[[2]] |> 
+      dplyr::mutate(
+        version = "new_bs_bca",
+        em = (bs_bca_upper - bs_bca_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      ),
+    indexes_official_nj |> 
+      dplyr::mutate(
+        version = "official",
+        em = (ci_upper - ci_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      )
+  )
+
+# Nord-Jæren more TRPs
+indexes_examples_nj_2 <-
+  readr::read_rds("representativity/new_index_examples_2_nj.rds")
+
+indexes_comparison_nj_2 <-
+  dplyr::bind_rows(
+    indexes_examples_nj_2[[1]] |> 
+      dplyr::mutate(
+        version = "old"
+      ),
+    indexes_examples_nj_2[[2]] |> 
+      dplyr::mutate(
+        version = "new"
+      ),
+    indexes_official_nj |> 
+      dplyr::mutate(
+        version = "official"
+      )
+  )
+
+error_comparison_nj_2 <-
+  dplyr::bind_rows(
+    indexes_examples_nj_2[[1]] |> 
+      dplyr::mutate(
+        version = "old",
+        em = (ci_upper - ci_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      ),
+    indexes_examples_nj_2[[2]] |> 
+      dplyr::mutate(
+        version = "new_sample_fpc"
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em = em_selection
+      ),
+    indexes_examples_nj_2[[2]] |> 
+      dplyr::mutate(
+        version = "new_model"
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em = em_model
+      ),
+    indexes_examples_nj_2[[2]] |> 
+      dplyr::mutate(
+        version = "new_bs_bca",
+        em = (bs_bca_upper - bs_bca_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      ),
+    indexes_official_nj |> 
+      dplyr::mutate(
+        version = "official",
+        em = (ci_upper - ci_lower) / 2
+      ) |> 
+      dplyr::select(
+        window, month_object, version, em
+      )
+  )
+
+index_2017_2024_chained_nj <- readr::read_rds("representativity/new_index_chain_nj.rds")
+index_comparison_nj <- readr::read_rds("representativity/new_index_comparison_nj.rds")
+```
+
+
+# Innledning
+Dette dokumentet er et supplement til notatet [Forbedret byindeks](https://vegvesen.sharepoint.com/:w:/r/sites/arb-Trafikkdataogtrafikkutviklingiby/Delte%20dokumenter/General/Arbeidsgruppa/Oppgaver/Representativitet%20i%20byindeks/Representativitet%20i%20byindeks.docx?d=w8fb786036594485bbb5d282a07b9db78&csf=1&web=1&e=p58ZHf) og inneholder detaljer om de utforskende dataanalysene som ligger til grunn for vurderingene som er beskrevet der.
+
+Sist oppdatert `r this_date_string`. 
+
+Kontaktperson: </br>
+Snorre Hansen, </br>
+Statens vegvesen </br>
+Divisjon for Transport og samfunn, </br>
+Avdeling for Transportutvikling, </br>
+Seksjon for Veg- og transportteknologi
+
+
+# Nord-Jæren
+Nord-Jæren egner seg godt som eksempel av flere grunner: 
+
+- En byindeks med historikk tilbake til referanseåret 2017 gir godt grunnlag for å se på hvordan representativiteten har variert over tid.
+- De ytre områdene av kommunene er ikke bymessige, som gir en mulighet til å tydeliggjøre forskjellen i hvordan områdedefinisjonen påvirker byindeksen.
+- Det er ingen kommunale veger som bør dekkes av byindeksen og de tilgjengelige trafikklenkene utgjør derfor et komplett vegnett.
+- Det er mange trafikkregistreringspunkter i området, og det er blitt flere etter 2017. Dagens byindeks benytter relativt få punkter mot det som er tilgjengelig i dag. Hvordan et økende antall punkter kan benyttes utover i en tidsserie er et eget tema, men her er det interessant å sammenligne representativiteten til ulike utvalg.
+
+
+## Områdeavgrensing
+Hvilket område byindeksen skal være representativ for er viktig med tanke på hvilke byindekspunkt som skal inngå i datagrunnlaget. En mer begrenset populasjon vil i teorien bidra til mindre usikkerhet.
+
+
+### Avtaleområdet
+Avtaleområdet omfatter kommunene Randaberg og Sola slik de er i dag, samt de kommunegrensene som gjaldt for Stavanger og Sandnes fram til 2019, altså før kommunesammenslåinger som gjaldt fra 1. januar 2020.
+
+Dersom alle trafikklenker i avtaleområdet tas med, blir trafikklenkepopulasjonen som vist i @fig-map_nj_whole.
+
+```{r}
+#| label: fig-map_nj_whole
+#| message: false
+#| fig-cap: !expr map_caption
+
+map_links_with_function_class(links_nj_whole) |> 
+  addPolygons(
+    data = agreement_area_nj,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  )
+```
+
+
+## Byområdet
+For å begrense populasjonen til de mer bymessige og sentrale delene, kan vi se på tettstedsområdet definert av Statistisk sentralbyrå. I utgangspunktet beholdes kun trafikklenker som ligger innenfor eller overlapper med dette området, men de  viktigste vegene mellom de ulike delområdene må også inkluderes. I tillegg utelates alle trafikklenker med funksjonsklasse E, da disse er av mindre betydning. I @fig-map_nj vises alle trafikklenker som er definert som populasjonen i det byområdet. 
+
+```{r}
+#| label: fig-map_nj
+#| message: false
+#| fig-cap: !expr map_caption
+
+map_links_with_function_class(links_nj) |> 
+  addPolygons(
+    data = urban_area_nj,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  )
+```
+
+
+## Trafikkarbeidsfordeling i funksjonsklasser
+I @fig-function_class_nj vises hvordan trafikkarbeidet til trafikklenkene i byområdet fordeler seg i funksjonsklassene.
+
+```{r}
+#| label: fig-function_class_nj
+#| fig-cap: "Fordeling av funksjonsklasse i populasjon og utvalg." 
+#| message: false
+#| warning: false
+
+visualize_function_class_distribution(links_nj)
+```
+
+</br>
+
+Utvalget av lenker med trafikkregistrering består her av alle kontinuerlige punkt som eksisterer per 2024. I en konkret byindeksberegning er det neppe mulig å bruke alle. Hvilke punkt som kan være med blir begrenset av:
+
+- tilgjengelighet på data av god nok kvalitet
+- hvilke år som skal sammenlignes (blant annet referanseår)
+- andel gjennomgangstrafikk
+- hva som er god nok geografisk spredning 
+- god nok fordeling på funksjonsklasse
+
+I @tbl-trp_count_nj oppsummeres andel trafikkarbeid i populasjonen og det maksimale, teoretiske utvalget.
+
+```{r}
+#| label: tbl-trp_count_nj
+#| tbl-cap:  "Statistikk for trafikklenker på Nord-Jæren."
+
+table_link_statistics(links_nj)
+```
+
+
+## Populasjonens betydning
+Hvilket område byindeksen skal gjelde for har noe å si for representativiteten. Ved å se på utvalget med de 24 trafikklenkene som har de opprinnelige byindekspunktene, kan vi sammenligne representativiteten for disse mellom en populasjon som dekker hele avtaleområdet og en populasjon som kun dekker selve byområdet.
+
+I @fig-function_class_nj_24 sammenlignes trafikkarbeidsfordelingen til de 23 utvalgte trafikklenkene med byområdets populasjon (punktet ved Rege faller utenfor byområdet).
+
+```{r}
+#| label: fig-function_class_nj_24
+#| fig-cap: "Fordeling av funksjonsklasse i populasjon for byområdet og utvalg med 24 punkt." 
+#| message: false
+#| warning: false
+
+links_nj |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        city_trp ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |> 
+  visualize_function_class_distribution()
+```
+
+I @fig-function_class_nj_24_whole vises tilsvarende sammenligning med populasjonen for hele avtaleområdet. 
+
+```{r}
+#| label: fig-function_class_nj_24_whole
+#| fig-cap: "Fordeling av funksjonsklasse i populasjon for avtaleområdet og utvalg med 24 punkt." 
+#| message: false
+#| warning: false
+
+links_nj_whole |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        city_trp ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |> 
+  visualize_function_class_distribution()
+```
+
+Forskjellene er ikke så store, men for avtaleområdet er det en flere veger med funksjonsklasse D og E. Da det ikke finnes nok trafikkregistreringspunkter på disse vegene, må det etableres nye dersom disse skal representeres godt i byindeksen. Vi ser også ut fra fordelingen at klasse E utgjør en veldig liten andel av det totale trafikkarbeidet, så byindekspunkter her vil bidra veldig lite til byindeksen. Tilsvarende er det en betydelig andel trafikkarbeid i klasse D i populasjonen, men disse er ikke representert i utvalget av 24 punkt. Her finnes det noen punkt, og ved å inkludere iallfall noen av disse, vil representativiteten øke.
+
+Som et objektivt mål på representativiteten kan forskjellen mellom trafikkarbeidsfordelingen i funksjonsklasser for henholdsvis populasjon og utvalg beregnes. Det er her brukt to ulike måter å beregne forskjellen på, som vist i @tbl-stat_distance_nj_24. De to metodene som er brukt her er "total variation distance" (TVD) og Hellingers distanse. Felles for begge målene er at om fordelingene er like, så blir verdien null.
+
+```{r}
+#| label: tbl-stat_distance_nj_24
+#| tbl-cap:  "Sammenligning av likheten i populasjon</br>og utvalg med et utvalg på 24 punkt."
+
+links_nj_whole_function_class_stats <-
+  links_nj_whole |>
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        city_trp ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |>
+  summarise_link_population_by_function_class() |>
+  calculate_statistical_distance() |>
+  dplyr::mutate(
+    population = "Avtaleområdet",
+    selection = "24"
+  ) |>
+  dplyr::relocate(
+    population, selection
+  )
+
+links_nj_function_class_stats <-
+  links_nj |>
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        city_trp ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |>
+  summarise_link_population_by_function_class() |>
+  calculate_statistical_distance() |>
+  dplyr::mutate(
+    population = "Byområdet",
+    selection = "23"
+  ) |>
+  dplyr::relocate(
+    population, selection
+  )
+
+dplyr::bind_rows(
+  links_nj_whole_function_class_stats,
+  links_nj_function_class_stats
+) |> 
+  table_statistical_distance_comparison()
+```
+
+I dette tilfellet med 24 punkt, ser vi at byområdet er bedre representert enn avtaleområdet, og det er som forventet.
+ 
+I @tbl-trp_count_nj_24 oppsummeres andel trafikkarbeid i byområdet og utvalg.
+
+```{r}
+#| label: tbl-trp_count_nj_24
+#| tbl-cap:  "Statistikk for trafikklenker på Nord-Jæren</br>(byområdet) med utvalg på 23 punkt."
+
+links_nj |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        city_trp ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |> 
+  table_link_statistics()
+```
+
+I @tbl-trp_count_nj_24_whole oppsummeres andel trafikkarbeid i avtaleområdet og utvalg.
+
+```{r}
+#| label: tbl-trp_count_nj_24_whole
+#| tbl-cap:  "Statistikk for trafikklenker på Nord-Jæren</br>(avtaleområdet) med utvalg på 24 punkt."
+
+links_nj_whole |> 
+  dplyr::mutate(
+    point_id =
+      dplyr::case_when(
+        city_trp ~ point_id,
+        TRUE ~ NA_character_
+      )
+  ) |> 
+  table_link_statistics()
+```
+
+Prosentandelene for antall lenker og trafikkarbeid øker litt med en redusert populasjon.
+
+Gjennomsnittlig avstand fra trafikklenkene som ikke er med i utvalget til de som har byindekspunkt er på 3,8 for byområdet, mens avtaleområdet er denne verdien 3,9.
+
+
+### Usikkerhet
+Populasjonens størrelse har noe å si for dempingen av usikkerheten når vi holder utvalget fast.
+https://stats.stackexchange.com/questions/5158/explanation-of-finite-population-correction-factor
+
+UNDER ARBEID
+
+
+### Representativiteten tilbake i tid
+Ved å se på hvilke byindekspunkter som har vært med i datagrunnlaget for de månedlige beregningene av tre års glidende indeks, kan vi se hvordan representativiteten har vært over tid. Her er det trafikklenkepopulasjonen for byområdet som er benyttet.
+
+
+
+### Konklusjon
+Det er flere fordeler med en begrenset og sentral populasjon kontra en komplett populasjon:
+
+- Færre punkter trengs for å få god representativitet
+- Usikkerheten i byindeksen blir lavere
+- Utvalget punkt som allerede er tatt i bruk ligger stort sett i sentrale deler
+- Det trengs ikke etableres nye punkter på de minste vegene (som uansett vil bidra lite til byindeksen, men som for representativitetens skyld burde være med)
+- Byindeksen vil i større grad fokusere på de delene av vegnettet hvor trafikkveksten utgjør et reelt problem
+
+
+## Representativitet over tid
+Tidsserier for de historiske indeksverdiene med:
+
+- andel trafikklenker
+- dekningsgrad trafikkarbeid
+- total variasjonsavstand i trafikkarbeidsfordeling i funksjonsklasser
+- gjennomsnittlig avstand til byindekspunkt
+
+UNDER ARBEID
+
+
+## Regneeksempler forbedret metode
+Det er flere aspekter som kan sammenlignes:
+- ny og gammel beregningsmetode
+- betydningen av flere punkt
+- betydningen av kjedet indeks
+
+
+## Dagens punkter, direkte
+Samme punkter som i dagens metode. En direkte sammenligning med referanseåret.
+
+Ny metode endrer litt på punktutvalget, så derfor er gammel metode brukt på nytt med de samme punktene som ny metode bruker, slik at sammenligningen blir riktig.
+
+```{r}
+#| label: nj_examples_12
+#| fig_cap: "Sammenligning av indekstall for Nord-Jæren, ett års glidende indeks."
+
+visualize_index_examples(indexes_comparison_nj, "12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler")
+```
+
+```{r}
+#| label: nj_examples_n_trp
+#| fig_cap: "Antall punkt i byindeks Nord-Jæren, ett års glidende indeks."
+
+visualize_n_trp(indexes_comparison_nj, "12_months", "Nord-Jæren, ett års glidende indeks", "Antall punkt")
+```
+
+```{r}
+#| label: nj_examples_36
+#| fig_cap: "Sammenligning av indekstall for v, tre års glidende indeks."
+
+visualize_index_examples(indexes_comparison_nj, "36_months", "Nord-Jæren, tre års glidende indeks", "Regneeksempler")
+```
+
+
+### Usikkerhet
+Sammenligner feilmarginens størrelse over tid.
+```{r}
+#| label: nj_examples_error_12
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, ett års glidende indeks."
+
+visualize_error_examples(error_comparison_nj, "12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler")
+```
+
+```{r}
+#| label: nj_examples_error_12_nobs
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, ett års glidende indeks."
+
+error_comparison_nj |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler")
+```
+
+
+```{r}
+#| label: nj_examples_error_36_nobs
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, tre års glidende indeks."
+
+error_comparison_nj |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("36_months", "Nord-Jæren, tre års glidende indeks", "Regneeksempler")
+```
+
+
+## Flere punkt, direkte
+```{r}
+#| label: nj_examples_12_2
+#| fig_cap: "Sammenligning av indekstall for Nord-Jæren, ett års glidende indeks."
+
+visualize_index_examples(indexes_comparison_nj_2, "12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler med flere punkt")
+```
+
+```{r}
+#| label: nj_examples_n_trp_2
+#| fig_cap: "Antall punkt i byindeks Nord-Jæren, ett års glidende indeks."
+
+visualize_n_trp(indexes_comparison_nj_2, "12_months", "Nord-Jæren, ett års glidende indeks", "Antall punkt")
+```
+
+```{r}
+#| label: nj_examples_36_2
+#| fig_cap: "Sammenligning av indekstall for v, tre års glidende indeks."
+
+visualize_index_examples(indexes_comparison_nj_2, "36_months", "Nord-Jæren, tre års glidende indeks", "Regneeksempler med flere punkt")
+```
+
+
+### Usikkerhet
+Sammenligne feilmarginens størrelse over tid.
+```{r}
+#| label: nj_examples_error_12_2
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, ett års glidende indeks."
+
+visualize_error_examples(error_comparison_nj_2, "12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler med flere punkt")
+```
+
+```{r}
+#| label: nj_examples_error_12_nobs_2
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, ett års glidende indeks."
+
+error_comparison_nj_2 |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("12_months", "Nord-Jæren, ett års glidende indeks", "Regneeksempler med flere punkt")
+```
+
+
+```{r}
+#| label: nj_examples_error_36_nobs_2
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Nord-Jæren, tre års glidende indeks."
+
+error_comparison_nj_2 |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("36_months", "Nord-Jæren, tre års glidende indeks", "Regneeksempler med flere punkt")
+```
+
+
+## Flere punkt, kjedet
+For å utnytte tilgjengelig datagrunnlag bedre, bør det tas hensyn til at utvalget med punkter vil variere over tid. For Nord-Jæren er det nødvendig å ta hensyn til:
+
+- Flere punkter ble satt i drift i årene 2017 og 2018.
+- Nytt vegsystem med Eiganestunnelen og Ryfylketunnelen ble åpnet i 2020.
+- Byhaugtunnelen var stengt i omkring to år, og gjenåpnet i 2022.
+
+En kjedet indeks vil da kunne utnytte flere punkter med en inndeling i delperioder slik:
+
+- 2017-2019
+- 2019-2023
+- 2023- 
+
+Et regneeksempel for indeks til 2024 viser følgende:
+
+- 2017-2019: -3,3 % med 39 punkter
+- 2019-2023:  6,8 % med 42 punkter
+- 2023-2024:  0,8 % med 76 punkter
+
+Til sammen gir dette en endring fra 2017 til 2024 på 4,1 % med en feilmargin på 9,2 prosentpoeng.
+
+Til sammenligning er kjeding av årlig indeks slik vi finner den i den offisielle rapporten på 0,6 % med en feilmargin på 12,6 prosentpoeng. Her benyttes i varierende grad et antall punkter mellom 19 og 23.
+
+Ett års glidende indeks viser for 2024 en endring på 5,2 % med en feilmargin på 13,6 prosentpoeng. Her benyttes kun 16 punkter.
+
+Disse tallene illustrerer fordelen med en kjedet indeks da denne har et større antall punkt, og at feilmarginen er mindre.
+
+
+# Bergen
+Indekstall for Bergen er beregnet med ny metode. Siden byindeksens område er noe snevret inn til de største tettstedene, er ikke alle punkt fra den offisielle indeksen med i regneeksemplene. Det er derfor også regnet ut en indeks med gammel metode for at sammenligningen skal bli rettferdig.
+
+```{r}
+#| label: fig-map_bergen
+#| message: false
+#| fig-cap: !expr map_caption
+
+map_links_with_function_class(links_bergen) |> 
+  addPolygons(
+    data = municipality_polygon_bergen,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  ) |>
+  addPolygons(
+    data = urban_area_bergen,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  )
+```
+
+```{r}
+#| label: bergen_examples_12
+#| fig_cap: "Sammenligning av indekstall for Bergen, ett års glidende indeks."
+
+visualize_index_examples(indexes_comparison_bergen, "12_months", "Bergen, ett års glidende indeks", "Regneeksempler")
+```
+
+```{r}
+#| label: bergen_examples_36
+#| fig_cap: "Sammenligning av indekstall for Bergen, tre års glidende indeks."
+
+visualize_index_examples(indexes_comparison_bergen, "36_months", "Bergen, tre års glidende indeks", "Regneeksempler")
+```
+
+
+### Usikkerhet
+Sammenligne feilmarginens størrelse over tid.
+```{r}
+#| label: bergen_examples_error_12
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Bergen, ett års glidende indeks."
+
+visualize_error_examples(error_comparison_bergen, "12_months", "Bergen, ett års glidende indeks", "Regneeksempler")
+```
+
+```{r}
+#| label: bergen_examples_error_12_2
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Bergen, ett års glidende indeks."
+
+error_comparison_bergen |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("12_months", "Bergen, ett års glidende indeks", "Regneeksempler")
+```
+
+
+```{r}
+#| label: bergen_examples_error_36_2
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Bergen, tre års glidende indeks."
+
+error_comparison_bergen |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("36_months", "Bergen, tre års glidende indeks", "Regneeksempler")
+```
+
+
+# Trondheim
+```{r}
+#| label: fig-map_trd
+#| message: false
+#| fig-cap: !expr map_caption
+
+map_links_with_function_class(links_trondheim) |> 
+  addPolygons(
+    data = municipality_polygon_trondheim,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  ) |>
+  addPolygons(
+    data = urban_area_trondheim,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  )
+```
+
+```{r}
+#| label: trd_examples_12
+#| fig_cap: "Sammenligning av indekstall for Trondheim, ett års glidende indeks."
+
+visualize_index_examples(indexes_comparison_trondheim, "12_months", "Trondheim, ett års glidende indeks", "Regneeksempler")
+```
+
+
+```{r}
+#| label: trd_examples_36
+#| fig_cap: "Sammenligning av indekstall for Trondheim, tre års glidende indeks."
+
+visualize_index_examples(indexes_comparison_trondheim, "36_months", "Trondheim, tre års glidende indeks", "Regneeksempler")
+```
+
+
+### Usikkerhet
+Sammenligne feilmarginens størrelse over tid.
+```{r}
+#| label: trd_examples_error_12
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Trondheim, ett års glidende indeks."
+
+visualize_error_examples(error_comparison_trondheim, "12_months", "Trondheim, ett års glidende indeks", "Regneeksempler")
+```
+
+```{r}
+#| label: trd_examples_error_12_2
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Trondheim, ett års glidende indeks."
+
+error_comparison_trondheim |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("12_months", "Trondheim, ett års glidende indeks", "Regneeksempler")
+```
+
+
+```{r}
+#| label: trd_examples_error_36_2
+#| fig_cap: "Sammenligning av feilmargin i indeksene for Trondheim, tre års glidende indeks."
+
+error_comparison_trondheim |> 
+  dplyr::filter(
+    version != "new_bs_bca"
+  ) |> 
+  visualize_error_examples("36_months", "Trondheim, tre års glidende indeks", "Regneeksempler")
+```
+
+
+
