@@ -33,6 +33,12 @@ period_names <-
     "desember"
   )
 
+period_names_df <-
+  tibble::tibble(
+    period_id = c(1:14),
+    period_name = period_names
+  )
+
 
 find_moveable_holidays <- function(year) {
 
