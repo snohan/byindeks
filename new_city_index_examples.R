@@ -68,8 +68,9 @@
 
 # Bergen ----
 city_number <- "8952"
-present_year <- 2025
-index_month <- 4
+present_year <- 2024
+index_month <- 12
+chosen_period_name <- "desember"
 source("set_time_references.R")
 
 
@@ -133,7 +134,7 @@ missing <-
 mdt_filtered <-
   readr::read_rds(
     paste0(
-      "data_indexpoints_tidy/mdt_",
+      "data_indexpoints_tidy/cmdt_",
       city_number,
       ".rds"
     )
@@ -194,10 +195,10 @@ n_trp_per_year <-
     year
   )
 
-readr::write_csv2(
-  mdt_yearly,
-  "spesialuttak/mdt_bergen.csv"
-)
+# readr::write_csv2(
+#   mdt_yearly,
+#   "spesialuttak/mdt_bergen.csv"
+# )
 
 
 ## Index calculation ----

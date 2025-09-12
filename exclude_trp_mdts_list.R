@@ -1,12 +1,14 @@
-# Filtering from Excel file
+# Filtering from Excel file ----
 
 mdt_manual_exclusions <-
   readxl::read_excel(
     "trp_mdt_manual_exclusions.xlsx"
   )
 
+# TODO: keep months as number, put easter as 34 and pentecost as 56
 
-# Add metainfo and write Excel for sharing
+
+# Add metainfo to Excel ----
 points <- readr::read_rds("trps_for_city_index.rds")
 
 mdt_manual_exclusions_meta <-
@@ -40,7 +42,7 @@ writexl::write_xlsx(
 )
 
 
-# Filter for city
+# Filter by city id ----
 mdt_manual_exclusions <-
   mdt_manual_exclusions |>
   dplyr::filter(
@@ -48,14 +50,14 @@ mdt_manual_exclusions <-
     # An exclusion is meant for either all indexes (empty index_id) or a specific index
   )
 
-# Exclude TRP all time
+# Exclude TRP all time ----
 all_timers <-
   mdt_manual_exclusions |>
   dplyr::filter(
     is.na(from_year)
   )
 
-# Exclude TRP from year
+# Exclude TRP from year ----
 # Make all months to exclude explicit
 year_fromers <-
   mdt_manual_exclusions |>
@@ -64,6 +66,7 @@ year_fromers <-
     is.na(to_year)
   ) |>
   dplyr::mutate(
+    # TODO: calendar MDTs with easter and pentecost!
     from_date = lubridate::make_date(from_year, from_month, 1)
   ) |>
   dplyr::rowwise() |>
@@ -84,7 +87,7 @@ year_fromers <-
   )
 
 
-# Exclude TRP month sequence
+# Exclude TRP month sequence ----
 # Make all months to exclude explicit
 month_sequencers <-
   mdt_manual_exclusions |>
@@ -112,7 +115,7 @@ month_sequencers <-
     year_month
   )
 
-#
+# Validated MDTs ----
 mdt_validated <-
   mdt_filtered |>
   dplyr::filter(
