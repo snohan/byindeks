@@ -229,7 +229,6 @@ mdt_filtered |>
 
 ## Check MDT validity ----
 # Exclude trp-months
-#source("exclude_trp_mdts.R")
 source("exclude_trp_mdts_list.R")
 
 
