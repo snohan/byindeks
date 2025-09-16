@@ -54,40 +54,40 @@ index_months <-
   )
 
 # Calendar MDT periods ----
-last_year_c_month <- paste0(present_year, "-", chosen_period_name)
+#last_year_c_month <- paste0(present_year, "-", chosen_period_name)
 
 
 # Two alternatives ----
 ## City specific ids ----
-last_period_id <-
-  period_names_df |>
-  dplyr::filter(period_name == chosen_period_name) |>
-  purrr::pluck(1)
-
-complete_period_names <- tibble::tibble()
-
-for(i in 1:length(years_from_reference_to_today)) {
-
-  add_year <-
-    period_names_df |>
-    dplyr::mutate(
-      year = years_from_reference_to_today[i]
-    )
-
-  complete_period_names <-
-    dplyr::bind_rows(complete_period_names, add_year)
-}
+# last_period_id <-
+#   period_names_df |>
+#   dplyr::filter(period_name == chosen_period_name) |>
+#   purrr::pluck(1)
+#
+# complete_period_names <- tibble::tibble()
+#
+# for(i in 1:length(years_from_reference_to_today)) {
+#
+#   add_year <-
+#     period_names_df |>
+#     dplyr::mutate(
+#       year = years_from_reference_to_today[i]
+#     )
+#
+#   complete_period_names <-
+#     dplyr::bind_rows(complete_period_names, add_year)
+# }
 
 # Chip off periods later than the chosen
-all_period_names <-
-  complete_period_names |>
-  dplyr::filter(
-    !(year >= present_year & period_id > last_period_id)
-  ) |>
-  dplyr::mutate(
-    year_period_id = dplyr::row_number(),
-    year_period_name = base::paste0(year, "-", period_name)
-  )
+# all_period_names <-
+#   complete_period_names |>
+#   dplyr::filter(
+#     !(year >= present_year & period_id > last_period_id)
+#   ) |>
+#   dplyr::mutate(
+#     year_period_id = dplyr::row_number(),
+#     year_period_name = base::paste0(year, "-", period_name)
+#   )
 
 
 ## Universal calendar period ids ----

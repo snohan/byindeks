@@ -60,12 +60,12 @@
 
 
 # Bergen ----
-city_number <- "8952"
-present_year <- 2024
-index_month <- 12
-chosen_period_name <- "desember"
-source("set_time_references.R")
-
+{
+  city_number <- "8952"
+  present_year <- 2024
+  index_month <- 12
+  source("set_time_references.R")
+}
 
 ## TRPs ----
 this_citys_trps_all_adt_final <-
@@ -151,11 +151,16 @@ mdt_validated <-
 
 trp_mdt_ok_refyear <-
   mdt_validated |>
-  dplyr::filter(
-    trp_id %in% links_bergen$point_id
-  ) |>
-  filter_mdt(reference_year) |>
-  purrr::pluck(1)
+  filter_cmdt(paste0(reference_year, "-januar")) |>
+  purrr::pluck("trp_id") |>
+  base::unique()
+
+
+
+# HERE!!!!
+
+
+
 
 mdt_yearly <-
   mdt_validated |>

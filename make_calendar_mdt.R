@@ -48,7 +48,7 @@ city_trps <-
 # First, make cMDT per TRP and store them in folder cMDT
 
 # cMDT
-trp_number <- 83
+trp_number <- 79
 
 {
   tic()

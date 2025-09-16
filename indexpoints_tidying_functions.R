@@ -451,6 +451,81 @@ filter_mdt <- function(mdt_df, year_dbl) {
 }
 
 
+check_year_representativity <- function(mdt_trp_one_year) {
+
+  # Given an mdt trp df, check if a trp has the required periods
+
+  mdt_trp_one_year_checked <-
+    mdt_trp_one_year |>
+    dplyr::select(
+      trp_id, month
+    ) |>
+    dplyr::summarise(
+      jan_feb = base::any(c("januar", "februar") %in% month),
+      mar_apr = base::any(c("mars", "april") %in% month),
+      sep_okt_nov = base::any(c("september", "oktober", "november") %in% month),
+      andre = base::all(c("påske", "mai", "juni", "juli", "august", "desember") %in% month),
+      # Pentecost may be missing. Will be missing in both index periods by the inner join
+      .by = trp_id
+    ) |>
+    dplyr::mutate(
+      alle = base::all(jan_feb, mar_apr, sep_okt_nov, andre),
+      .by = trp_id
+    ) |>
+    dplyr::filter(alle)
+
+}
+
+
+
+filter_cmdt <- function(mdt_df, period_start) {
+
+  # For any set of consecutive 14 periods, i.e. "whole" years, check that there are enough data
+  # period_start: year_period_name, e.g. "2024-januar"
+
+  # Testing:
+  #period_start <- "2023-januar"
+  #mdt_df <- mdt_validated
+
+  base::stopifnot(period_start %in% universal_calendar_periods$year_period_name)
+
+  universal_year_period_id_start <-
+    universal_calendar_periods |>
+    dplyr::filter(
+      year_period_name == period_start
+    ) |>
+    purrr::pluck("universal_year_period_id")
+
+  universal_year_period_id_end <- universal_year_period_id_start + 13
+
+  mdt_df_out <-
+    mdt_df |>
+    dplyr::filter(
+      universal_year_period_id %in% c(universal_year_period_id_start:universal_year_period_id_end)
+    ) |>
+    dplyr::select(
+      trp_id,
+      universal_year_period_id,
+      month,
+      mdt,
+      coverage_percentage,
+      tw,
+      length_m
+    )
+
+  representative_trps <- check_year_representativity(mdt_df_out)
+
+  mdt_df_out_representative_year <-
+    mdt_df_out |>
+    dplyr::filter(
+      trp_id %in% representative_trps$trp_id
+    )
+
+  return(mdt_df_out_representative_year)
+
+}
+
+
 # mdt_df <- mdt_validated
 # window_length <- 36
 # base_year <- reference_year
@@ -956,247 +1031,285 @@ calculate_all_rolling_indices_tw <- function(population_size) {
 
 
 ## cMDT TW 1 ----
-calculate_rolling_indices_tw_cmdt <-
-  function(last_year_month, window_length, mdt_df, population_size, grouping) {
+calculate_rolling_indices_tw_cmdt <- function(mdt_df, last_period, n_rolling_years, population_size, grouping) {
 
-    # TODO: 14 periods in a year!
+  # MDT df as first input so that piping it works.
+  # n_rolling_years: INT, number of whole years in rolling window length
+  # No need to filter by coverage here as this has been done in cMDT calculation
+  # TODO: minimum criteria for two and three year index
+  # TODO: weighted mean
 
-    # Window length is a number of periods, a multiple of 14
-    # Grouping must be either:
-    # by_area
-    # by_sub_area
-    # by_trp
+  # Grouping must be either:
+  # by_area
+  # by_sub_area
+  # by_trp
 
-    # For testing:
-    # base_year <- 2018
-    # window_length <- 14
-    # mdt_df <- mdt_validated
+  # For testing:
+  # base_year <- 2018
+  # window_length <- 14
+  # mdt_df <- mdt_validated
 
 
-    # Find base year from mdt
-    base_year <- min(mdt_df$year)
+  # No need to have base year as input, rather, find this from given MDTs
+  # One may choose another base year by first filtering the mdt_df before calling this function
+  base_year <- min(mdt_df$year)
 
-    last_period_month <-
-      mdt_df |>
-      slice_max(year_period_id) |>
-      purrr::pluck()
 
-    least_number_of_month_enums <-
-      dplyr::case_when(
-        window_length == 36 ~ 2,
-        TRUE ~ 0
-      )
+  least_number_of_month_enums <-
+    dplyr::case_when(
+      window_length == 36 ~ 2,
+      TRUE ~ 0
+    )
 
-    least_number_of_months <-
-      dplyr::case_when(
-        window_length == 36 ~ 31,
-        window_length == 24 ~ 20,
-        window_length == 12 ~ 9
-      )
+  least_number_of_months <-
+    dplyr::case_when(
+      window_length == 36 ~ 31,
+      window_length == 24 ~ 20,
+      window_length == 12 ~ 9
+    )
 
-    last_year_month <-
-      lubridate::as_date(last_year_month)
+  last_year_month <- lubridate::as_date(last_year_month)
 
-    weights_tw <-
-      mdt_df |>
-      dplyr::select(trp_id, length_m) |>
-      dplyr::distinct() |>
-      dplyr::mutate(
-        length_km = length_m / 1e3
-      ) |>
-      dplyr::select(-length_m)
+  weights_tw <-
+    mdt_df |>
+    dplyr::select(trp_id, length_m) |>
+    dplyr::distinct() |>
+    dplyr::mutate(
+      length_km = length_m / 1e3
+    ) |>
+    dplyr::select(-length_m)
 
-    mean_mdt_in_window <-
-      mdt_df |>
-      dplyr::filter(
-        year_month %in%
-          base::seq.Date(
-            from = last_year_month - base::months(window_length - 1),
-            to = last_year_month,
-            by = "month"
-          )
-      ) |>
-      dplyr::filter(
-        coverage >= 50,
-        length_quality >= 98.5
-      ) |>
-      dplyr::group_by(
-        trp_id,
-        month
-      ) |>
-      dplyr::summarise(
-        n_months = n(),
-        mean_mdt = base::mean(mdt),
-        .groups = "drop_last"
-      ) |>
-      dplyr::filter(
-        n_months >= least_number_of_month_enums
-      ) |>
-      dplyr::group_by(
-        trp_id
-      ) |>
-      dplyr::summarise(
-        n_months = sum(n_months),
-        mean_mdt = base::mean(mean_mdt),
-        .groups = "drop"
-      ) |>
-      dplyr::filter(
-        n_months >= least_number_of_months
-      )
-
-    index_df <-
-      dplyr::inner_join(
-        filter_mdt(mdt_df, base_year),
-        mean_mdt_in_window,
-        by = "trp_id"
-      ) |>
-      dplyr::left_join(
-        weights_tw,
-        by = dplyr::join_by(trp_id)
-      ) |>
-      dplyr::mutate(
-        tw.x = length_km * mean_mdt.x,
-        #tw.y = length_km * mean_mdt.y,
-        w_tw = tw.x / sum(tw.x),
-        w_tv = mean_mdt.x / sum(mean_mdt.x),
-        w_length = length_km / sum(tw.x),
-        trp_index_i = mean_mdt.y / mean_mdt.x,
-        trp_index_p = (trp_index_i - 1) * 100,
-        index_i = sum(w_tw * trp_index_i),
-        #index_i_2 = sum(w_length * mean_mdt.y),
-        sd_component = w_tw * (trp_index_i - index_i)^2,
-        # a1 = mean_mdt.x * mean_mdt.y,
-        # sum_a1 = sum(a1),
-        # a2 = mean_mdt.x^2,
-        # sum_a2 = sum(a2),
-        # test = sum_a1 / sum_a2, # ok
-        # alpha = sum(mean_mdt.x * mean_mdt.y) / sum(mean_mdt.x^2)
-      )
-
-    # Normalized
-    #sum(index_df$w_tw)
-    # Not normalized
-    #sum(index_df$w_length)
-
-    if(grouping == "by_area") {
-
-      calculate_tw_mean <- function(df, indices) {
-
-        bootstrapped_df <- df[indices,] # allows boot to select sample
-
-        summarised_df <-
-          bootstrapped_df |>
-          dplyr::summarise(
-            index_i = sum(w_tw * trp_index_i),
-            index_p = (index_i - 1) * 100,
-          )
-
-        return(summarised_df$index_p)
-      }
-
-      bootstrap_object <-
-        boot::boot(
-          data = index_df,
-          statistic = calculate_tw_mean,
-          R = 1000
+  mean_mdt_in_window <-
+    mdt_df |>
+    dplyr::filter(
+      year_month %in%
+        base::seq.Date(
+          from = last_year_month - base::months(window_length - 1),
+          to = last_year_month,
+          by = "month"
         )
+    ) |>
+    dplyr::filter(
+      coverage >= 50,
+      length_quality >= 98.5
+    ) |>
+    dplyr::group_by(
+      trp_id,
+      month
+    ) |>
+    dplyr::summarise(
+      n_months = n(),
+      mean_mdt = base::mean(mdt),
+      .groups = "drop_last"
+    ) |>
+    dplyr::filter(
+      n_months >= least_number_of_month_enums
+    ) |>
+    dplyr::group_by(
+      trp_id
+    ) |>
+    dplyr::summarise(
+      n_months = sum(n_months),
+      mean_mdt = base::mean(mean_mdt),
+      .groups = "drop"
+    ) |>
+    dplyr::filter(
+      n_months >= least_number_of_months
+    )
 
-      booted_cis <- boot::boot.ci(bootstrap_object, type = c("norm", "basic", "perc", "bca"))
-      # bootsurv::pseudopop.boot.stsrs ???
+  index_df <-
+    dplyr::inner_join(
+      filter_mdt(mdt_df, base_year),
+      mean_mdt_in_window,
+      by = "trp_id"
+    ) |>
+    dplyr::left_join(
+      weights_tw,
+      by = dplyr::join_by(trp_id)
+    ) |>
+    dplyr::mutate(
+      tw.x = length_km * mean_mdt.x,
+      #tw.y = length_km * mean_mdt.y,
+      w_tw = tw.x / sum(tw.x),
+      w_tv = mean_mdt.x / sum(mean_mdt.x),
+      w_length = length_km / sum(tw.x),
+      trp_index_i = mean_mdt.y / mean_mdt.x,
+      trp_index_p = (trp_index_i - 1) * 100,
+      index_i = sum(w_tw * trp_index_i),
+      #index_i_2 = sum(w_length * mean_mdt.y),
+      sd_component = w_tw * (trp_index_i - index_i)^2,
+      # a1 = mean_mdt.x * mean_mdt.y,
+      # sum_a1 = sum(a1),
+      # a2 = mean_mdt.x^2,
+      # sum_a2 = sum(a2),
+      # test = sum_a1 / sum_a2, # ok
+      # alpha = sum(mean_mdt.x * mean_mdt.y) / sum(mean_mdt.x^2)
+    )
 
-      index_df_grouped <-
-        index_df |>
+  # Normalized
+  #sum(index_df$w_tw)
+  # Not normalized
+  #sum(index_df$w_length)
+
+  if(grouping == "by_area") {
+
+    calculate_tw_mean <- function(df, indices) {
+
+      bootstrapped_df <- df[indices,] # allows boot to select sample
+
+      summarised_df <-
+        bootstrapped_df |>
         dplyr::summarise(
           index_i = sum(w_tw * trp_index_i),
           index_p = (index_i - 1) * 100,
-          n_trp = n(),
-          n_eff = 1 / sum(w_tw^2),
-          n_eff_tv = 1 / sum(w_tv^2),
-          sd_sample_p = 100 * sqrt(sum(sd_component) * (1/(1 - 1/n_eff))),
-          standard_error_p = sd_sample_p / sqrt(n_eff) * (1 - n_trp / population_size),
-          cv_tv = sd(mean_mdt.x) / mean(mean_mdt.x),
-          cv_tw = sd(tw.x) / mean(tw.x),
-          alpha = sum(mean_mdt.x * mean_mdt.y) / sum(mean_mdt.x^2),
-          var_model_s = (1/(n_trp - 1)) * sum((mean_mdt.y - alpha * mean_mdt.x)^2),
-          se_model_p = 100 * sqrt(sum(w_length^2) * var_model_s),
-          .groups = "drop"
-        ) |>
-        dplyr::mutate(
-          #ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
-          #ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
-          em_selection = round(-stats::qt(0.025, n_trp - 1) * standard_error_p, 2),
-          em_model = round(-stats::qt(0.025, n_trp - 1) * se_model_p, 2),
-          bs_bca_lower = booted_cis$bca[1,4],
-          bs_bca_upper = booted_cis$bca[1,5]
         )
+
+      return(summarised_df$index_p)
     }
 
-    # TODO:
-    if(grouping == "by_sub_area") {
-      index_df_grouped <-
-        index_df |>
-        dplyr::left_join(
-          sub_areas,
-          by = join_by(trp_id)
-        ) |>
-        dplyr::summarise(
-          index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
-          index_p = (index_i - 1) * 100,
-          n_trp = n(),
-          n_eff = 1 / sum(w^2),
-          sd_sample_p = 100 * sqrt(sum(sd_component) * (1/(1 - 1/n_eff))),
-          standard_error_p = sd_sample_p / sqrt(n_eff),
-          .by = sub_area
-        ) |>
-        dplyr::mutate(
-          ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
-          ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error_p, 1)
-        )
-    }
-
-    # TODO:
-    if(grouping == "by_trp") {
-      index_df_grouped <-
-        index_df
-    }
-
-    index_df_final <-
-      index_df_grouped |>
-      dplyr::mutate(
-        index_period =
-          paste0(
-            base_year,
-            " - (",
-            (last_year_month - base::months(window_length - 1)) |>
-              lubridate::month(label = TRUE),
-            " ",
-            (last_year_month - base::months(window_length - 1)) |>
-              lubridate::year(),
-            " - ",
-            last_year_month |>
-              lubridate::month(label = TRUE),
-            " ",
-            last_year_month |>
-              lubridate::year(),
-            ")"
-          ),
-        month_object = last_year_month
-      ) |>
-      dplyr::mutate(
-        month_n = lubridate::month(month_object),
-        year = lubridate::year(month_object),
-        window = paste0(window_length, "_months")
+    bootstrap_object <-
+      boot::boot(
+        data = index_df,
+        statistic = calculate_tw_mean,
+        R = 1000
       )
 
-    return(index_df_final)
+    booted_cis <- boot::boot.ci(bootstrap_object, type = c("norm", "basic", "perc", "bca"))
+    # bootsurv::pseudopop.boot.stsrs ???
 
+    index_df_grouped <-
+      index_df |>
+      dplyr::summarise(
+        index_i = sum(w_tw * trp_index_i),
+        index_p = (index_i - 1) * 100,
+        n_trp = n(),
+        n_eff = 1 / sum(w_tw^2),
+        n_eff_tv = 1 / sum(w_tv^2),
+        sd_sample_p = 100 * sqrt(sum(sd_component) * (1/(1 - 1/n_eff))),
+        standard_error_p = sd_sample_p / sqrt(n_eff) * (1 - n_trp / population_size),
+        cv_tv = sd(mean_mdt.x) / mean(mean_mdt.x),
+        cv_tw = sd(tw.x) / mean(tw.x),
+        alpha = sum(mean_mdt.x * mean_mdt.y) / sum(mean_mdt.x^2),
+        var_model_s = (1/(n_trp - 1)) * sum((mean_mdt.y - alpha * mean_mdt.x)^2),
+        se_model_p = 100 * sqrt(sum(w_length^2) * var_model_s),
+        .groups = "drop"
+      ) |>
+      dplyr::mutate(
+        #ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
+        #ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
+        em_selection = round(-stats::qt(0.025, n_trp - 1) * standard_error_p, 2),
+        em_model = round(-stats::qt(0.025, n_trp - 1) * se_model_p, 2),
+        bs_bca_lower = booted_cis$bca[1,4],
+        bs_bca_upper = booted_cis$bca[1,5]
+      )
   }
+
+  # TODO:
+  if(grouping == "by_sub_area") {
+    index_df_grouped <-
+      index_df |>
+      dplyr::left_join(
+        sub_areas,
+        by = join_by(trp_id)
+      ) |>
+      dplyr::summarise(
+        index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
+        index_p = (index_i - 1) * 100,
+        n_trp = n(),
+        n_eff = 1 / sum(w^2),
+        sd_sample_p = 100 * sqrt(sum(sd_component) * (1/(1 - 1/n_eff))),
+        standard_error_p = sd_sample_p / sqrt(n_eff),
+        .by = sub_area
+      ) |>
+      dplyr::mutate(
+        ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
+        ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error_p, 1)
+      )
+  }
+
+  # TODO:
+  if(grouping == "by_trp") {
+    index_df_grouped <-
+      index_df
+  }
+
+  index_df_final <-
+    index_df_grouped |>
+    dplyr::mutate(
+      index_period =
+        paste0(
+          base_year,
+          " - (",
+          (last_year_month - base::months(window_length - 1)) |>
+            lubridate::month(label = TRUE),
+          " ",
+          (last_year_month - base::months(window_length - 1)) |>
+            lubridate::year(),
+          " - ",
+          last_year_month |>
+            lubridate::month(label = TRUE),
+          " ",
+          last_year_month |>
+            lubridate::year(),
+          ")"
+        ),
+      month_object = last_year_month
+    ) |>
+    dplyr::mutate(
+      month_n = lubridate::month(month_object),
+      year = lubridate::year(month_object),
+      window = paste0(window_length, "_months")
+    )
+
+  return(index_df_final)
+
+}
 
 
 ## cMDT TW 2 ----
+calculate_rolling_indices_tw_all_cmdt <- function(n_rolling_years, population_size, grouping = "by_area") {
+
+  # No need to have last period as input, rather, find this from given MDTs
+  # One may choose another end of the series by first filtering the mdt_df before calling this function
+  last_period <-
+    mdt_df |>
+    slice_max(universal_year_period_id) |>
+    purrr::pluck("universal_year_period_id")
+
+  base::stopifnot(n_rolling_years %in% c(1:3))
+
+  # TODO:
+  first_possible_year_month <-
+    lubridate::as_date(
+      paste0(
+        reference_year + n_years,
+        "-12-01"
+      )
+    )
+
+  year_months_possible <-
+    base::seq.Date(
+      from = first_possible_year_month,
+      to = last_year_month,
+      by = "month"
+    )
+
+  purrr::map_dfr(
+    year_months_possible,
+    ~ calculate_rolling_indices_tw_cmdt(
+      mdt_validated,
+      .x,
+      n_rolling_years,
+      population_size,
+      grouping
+    )
+  )
+
+}
 ## cMDT TW 3 ----
 
 
+# Compare ----
 prepare_rolling_indexes_for_comparison <- function(rolling_index_df) {
 
   rolling_index_df |>

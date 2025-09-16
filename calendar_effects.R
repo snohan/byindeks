@@ -170,5 +170,5 @@ readr::write_rds(
 
 
 
-# Classification og TRPs by relativ distribution of periods ----
+# Classification og TRPs by relative distribution of periods ----
 # Is it important?

@@ -1802,7 +1802,7 @@ get_trp_mdt_by_direction <- function(trp_id, mdt_year) {
 }
 
 #year <- 2022
-#trp_id <- "43623V704583"
+#trp_id <- "94767V804742"
 calculate_calendar_adjusted_mdt <- function(trp_id, year) {
 
   # trp_id: String!
@@ -1896,51 +1896,69 @@ calculate_calendar_adjusted_mdt <- function(trp_id, year) {
       )
 
     # If a day type has little data
-    too_much_missing <-
+    ok_months <-
       ydt |>
       dplyr::select(
         month, non_working_day, n_days_in_data
       ) |>
       dplyr::distinct() |>
       dplyr::filter(
-        !(non_working_day == TRUE  & n_days_in_data >= 3),
-        !(non_working_day == FALSE & n_days_in_data >= 7)
-      )
-
-    mdt_weighted <-
-      ydt |>
-      dplyr::filter(
-        !(month %in% too_much_missing$month)
-      ) |>
-      dplyr::arrange(month, length_class, non_working_day) |>
-      dplyr::left_join(
-        day_type_weights_relative,
-        by = dplyr::join_by(month, non_working_day)
-      ) |>
-      dplyr::summarise(
-        mdt = sum(mdt * weight) |> round(-1),
-        n_days_in_data = sum(n_days_in_data),
-        .by = c(trp_id, length_class, month)
-      )
-
-    mdt <-
-      dplyr::bind_rows(
-        mdt_easter,
-        mdt_weighted
-      ) |>
-      dplyr::arrange(month, length_class) |>
-      dplyr::left_join(
-        n_days_in_calendar |> dplyr::rename(n_days_in_calendar = n_days),
-        by = dplyr::join_by(month)
+        non_working_day == TRUE  & n_days_in_data >= 3 |
+        non_working_day == FALSE & n_days_in_data >= 7
       ) |>
       dplyr::mutate(
-        coverage_percentage = 100 * n_days_in_data / n_days_in_calendar,
-        year = year
+        month_count = n(),
+        .by = month
       ) |>
-      dplyr::relocate(
-        year,
-        .before = month
+      dplyr::filter(
+        month_count == 2
       )
+
+    if(nrow(ok_months) > 0) {
+
+      mdt_weighted <-
+        ydt |>
+        dplyr::filter(
+          (month %in% ok_months$month)
+        ) |>
+        dplyr::arrange(month, length_class, non_working_day) |>
+        dplyr::left_join(
+          day_type_weights_relative,
+          by = dplyr::join_by(month, non_working_day)
+        ) |>
+        dplyr::summarise(
+          mdt = sum(mdt * weight) |> round(-1),
+          n_days_in_data = sum(n_days_in_data),
+          .by = c(trp_id, length_class, month)
+        )
+    }else{
+      mdt_weighted <- tibble::tibble()
+    }
+
+    if(nrow(ok_months) > 0 | nrow(mdt_easter) > 0) {
+
+      mdt <-
+        dplyr::bind_rows(
+          mdt_easter,
+          mdt_weighted
+        ) |>
+        dplyr::arrange(month, length_class) |>
+        dplyr::left_join(
+          n_days_in_calendar |> dplyr::rename(n_days_in_calendar = n_days),
+          by = dplyr::join_by(month)
+        ) |>
+        dplyr::mutate(
+          coverage_percentage = 100 * n_days_in_data / n_days_in_calendar,
+          year = year
+        ) |>
+        dplyr::relocate(
+          year,
+          .before = month
+        )
+    }else{
+      mdt <- tibble::tibble()
+    }
+
   }else{
     mdt <- tibble::tibble()
   }
