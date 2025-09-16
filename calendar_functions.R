@@ -15,6 +15,8 @@ library(timeDate)
 # 24-26 December
 # 31 December
 
+
+# Period names definition ----
 period_names <-
   c(
     "januar",
@@ -40,6 +42,7 @@ period_names_df <-
   )
 
 
+# Calendar functions ----
 find_moveable_holidays <- function(year) {
 
   c(

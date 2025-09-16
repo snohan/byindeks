@@ -66,7 +66,6 @@ year_fromers <-
     is.na(to_year)
   ) |>
   dplyr::mutate(
-    # TODO: calendar MDTs with easter and pentecost!
     from_date = lubridate::make_date(from_year, from_month, 1)
   ) |>
   dplyr::rowwise() |>
@@ -129,8 +128,3 @@ mdt_validated <-
     month_sequencers,
     by = c("trp_id", "year_month")
   )
-
-
-
-
-

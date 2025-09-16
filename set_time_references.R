@@ -56,6 +56,9 @@ index_months <-
 # Calendar MDT periods ----
 last_year_c_month <- paste0(present_year, "-", chosen_period_name)
 
+
+# Two alternatives ----
+## City specific ids ----
 last_period_id <-
   period_names_df |>
   dplyr::filter(period_name == chosen_period_name) |>
@@ -85,3 +88,61 @@ all_period_names <-
     year_period_id = dplyr::row_number(),
     year_period_name = base::paste0(year, "-", period_name)
   )
+
+
+## Universal calendar period ids ----
+# Universal ids beginning 2016-01
+
+month_and_period_ids <-
+  tibble::tibble(
+    month_id = c(1,2,3,34,4,5,56,6,7,8,9,10,11,12),
+    period_id = c(1:14)
+  )
+
+{
+  universal_calendar_periods <- tibble::tibble()
+
+  calendar_years <- c(2016:2050)
+
+  for(i in 1:length(calendar_years)) {
+
+    add_year <-
+      period_names_df |>
+      dplyr::mutate(
+        year = calendar_years[i]
+      )
+
+    universal_calendar_periods <-
+      dplyr::bind_rows(universal_calendar_periods, add_year) |>
+      dplyr::mutate(
+        universal_year_period_id = dplyr::row_number(),
+        year_period_name = base::paste0(year, "-", period_name)
+      )
+  }
+
+  universal_calendar_periods <-
+    universal_calendar_periods |>
+    dplyr::left_join(
+      month_and_period_ids,
+      by = "period_id"
+    ) |>
+    dplyr::select(
+      universal_year_period_id,
+      year,
+      month_id,
+      period_id,
+      period_name,
+      year_period_name
+    )
+
+}
+
+latest_universal_year_period_id <-
+  universal_calendar_periods |>
+  dplyr::filter(
+    year == present_year,
+    month_id == index_month
+  ) |>
+  purrr::pluck(1)
+
+

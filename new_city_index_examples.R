@@ -1,19 +1,19 @@
 # Calculate city index using new method
 
+# Introduction ----
 # New concepts:
-# - Using only MDT (normal situation, seasonally adjusted)
-# - Traffic work weights (need traffic links)
+# - Using calendar adjusted MDT
+# - Traffic work weights (from traffic links)
 # - Chaining when necessary (need to suitably subdivide index period, possibly one road net version per subperiod)
 # - Estimate confidence interval (compare and decide which method to use)
 # - Measures of representativity
 
 # To be included later:
-# - Seasonally adjusted MDT
-# - Vehicle classification by type, not just length
+# - Vehicle classification by type, not length
 
 # Resolution in time:
 # - Month by month
-# - So far this year
+# - So far this year? Unnecessary?
 # - Last 12 months
 # - Last 24 months
 # - Last 36 months
@@ -29,22 +29,14 @@
 # - all
 
 # How to compare:
+# - hard to make direct comparisons and attribute differences to specific parts of new method
 # - new versus old index results in different time resolutions, separated from new chaining strategies
 # - the impact of new chaining strategies leading to better representativity
-
 
 # What are isolated improvements?
 # - measures of representativity, especially traffic work
 # - smaller (?) confidence interval, mostly (?) due to finiteness of population
 # - traffic work weights
-
-# Suitable cities as examples:
-# - Bergen (chaining might be useful)
-# - Buskerudbyen (has had representativity issues, no chaining?)
-# - Trondheim (representativity issues, no chaining?)
-# - Nord-Jæren (with new chaining strategy)
-# - Grenland
-# - Oslo
 
 
 # Setup ----
@@ -65,6 +57,7 @@
   link_trp_id <- readr::read_rds("traffic_link_pop/link_trp_id.rds")
   points <- readr::read_rds("trps_for_city_index.rds")
 }
+
 
 # Bergen ----
 city_number <- "8952"
@@ -121,16 +114,15 @@ trp_weights <-
     length_m = base::round(length_m)
   )
 
-missing <-
-  this_citys_trps_all_adt_final |>
-  dplyr::filter(
-    !(trp_id %in% trp_weights$trp_id)
-  )
+# missing <-
+#   this_citys_trps_all_adt_final |>
+#   dplyr::filter(
+#     !(trp_id %in% trp_weights$trp_id)
+#   )
 # Some are outside urban area, some are missing from links
 
 
 ## MDT ----
-# TODO: heatmap per TRP per month, one for each year
 mdt_filtered <-
   readr::read_rds(
     paste0(
@@ -138,17 +130,21 @@ mdt_filtered <-
       city_number,
       ".rds"
     )
+  ) |>
+  dplyr::filter(
+    length_class == "korte"
   )
 
-# To get the mdt_validated
+
+# To get the mdt_validated df
 {
-source("exclude_trp_mdts_list.R")
+source("exclude_cmdt.R")
 
 mdt_validated <-
   mdt_validated |>
   dplyr::inner_join(
     # "inner" works as a filter here!
-    trp_weights,
+    trp_weights, # NB! these TRPs are filtered by urban area
     by = dplyr::join_by(trp_id)
   )
 }
