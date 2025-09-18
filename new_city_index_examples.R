@@ -137,17 +137,7 @@ mdt_filtered <-
 
 
 # To get the mdt_validated df
-{
 source("exclude_cmdt.R")
-
-mdt_validated <-
-  mdt_validated |>
-  dplyr::inner_join(
-    # "inner" works as a filter here!
-    trp_weights, # NB! these TRPs are filtered by urban area
-    by = dplyr::join_by(trp_id)
-  )
-}
 
 trp_mdt_ok_refyear <-
   mdt_validated |>
@@ -155,6 +145,43 @@ trp_mdt_ok_refyear <-
   purrr::pluck("trp_id") |>
   base::unique()
 
+length(trp_mdt_ok_refyear)
+
+mdt_validated |>
+  # Limit amount of data to plot to minimize plot generation waiting time
+  #dplyr::filter(year > 2022) |>
+  #dplyr::filter(!(year %in% c(2020, 2021))) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[1:3]) |>
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    mdt
+  ) |>
+  tidyr::complete(
+    trp_id,
+    year,
+    month,
+    fill = list(
+      mdt = NA_real_
+    )
+  ) |>
+  dplyr::left_join(
+    points,
+    by = "trp_id"
+  ) |>
+  dplyr::mutate(
+    road_category_and_number_and_point_name = paste0(road_category_and_number, " ", name),
+    year = forcats::as_factor(year)
+  ) |>
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    mdt,
+    road_category_and_number_and_point_name
+  ) |>
+  barplot_cmdt()
 
 
 # HERE!!!!

@@ -171,4 +171,12 @@ mdt_validated <-
   dplyr::anti_join(
     month_sequencers,
     by = c("trp_id", "universal_year_period_id")
+  ) |>
+  dplyr::inner_join(
+    # "inner" works as a filter here!
+    trp_weights, # NB! these TRPs are filtered by urban area
+    by = dplyr::join_by(trp_id)
+  ) |>
+  dplyr::mutate(
+    month = base::factor(month, levels = period_names)
   )
