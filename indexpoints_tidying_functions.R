@@ -4,6 +4,9 @@
 library(ggpattern)
 source("calendar_functions.R")
 
+period_weights <- readr::read_rds("calendar_weights/periods.rds")
+period_weights_imputed <- readr::read_rds("calendar_weights/period_weights_imputed.rds")
+
 
 # Read CSV ----
 read_pointindex_CSV <- function(filename) {
@@ -465,7 +468,7 @@ check_year_representativity <- function(mdt_trp_one_year) {
       mar_apr = base::any(c("mars", "april") %in% month),
       sep_okt_nov = base::any(c("september", "oktober", "november") %in% month),
       andre = base::all(c("påske", "mai", "juni", "juli", "august", "desember") %in% month),
-      # Pentecost may be missing. Will be missing in both index periods by the inner join
+      # Pentecost may be missing. Must be missing in both index periods by inner join.
       .by = trp_id
     ) |>
     dplyr::mutate(
@@ -477,24 +480,32 @@ check_year_representativity <- function(mdt_trp_one_year) {
 }
 
 
-
 filter_cmdt <- function(mdt_df, period_start) {
 
   # For any set of consecutive 14 periods, i.e. "whole" years, check that there are enough data
-  # period_start: year_period_name, e.g. "2024-januar"
+
+  # period_start:
+  # - if string, year_period_name, e.g. "2024-januar"
+  # - if numerical, universal_year_period_id
 
   # Testing:
   #period_start <- "2023-januar"
   #mdt_df <- mdt_validated
 
-  base::stopifnot(period_start %in% universal_calendar_periods$year_period_name)
 
-  universal_year_period_id_start <-
-    universal_calendar_periods |>
-    dplyr::filter(
-      year_period_name == period_start
-    ) |>
-    purrr::pluck("universal_year_period_id")
+  if(is.character(period_start)) {
+    base::stopifnot(period_start %in% universal_calendar_periods$year_period_name)
+
+    universal_year_period_id_start <-
+      universal_calendar_periods |>
+        dplyr::filter(
+          year_period_name == period_start
+        ) |>
+        purrr::pluck("universal_year_period_id")
+
+  }else{
+    universal_year_period_id_start <- period_start
+  }
 
   universal_year_period_id_end <- universal_year_period_id_start + 13
 
@@ -505,12 +516,13 @@ filter_cmdt <- function(mdt_df, period_start) {
     ) |>
     dplyr::select(
       trp_id,
-      universal_year_period_id,
+      #universal_year_period_id,
       month,
-      mdt,
-      coverage_percentage,
-      tw,
-      length_m
+      mdt#,
+      #coverage_percentage,
+      #length_m,
+      #function_class,
+      #tw_kkm
     )
 
   representative_trps <- check_year_representativity(mdt_df_out)
@@ -526,12 +538,59 @@ filter_cmdt <- function(mdt_df, period_start) {
 }
 
 
+impute_missing_cmdt <- function(filtered_cmdt_df) {
+
+  imputed_cmdt <-
+    dplyr::bind_rows(
+      filtered_cmdt_df |>
+        dplyr::filter(
+          month %in% c("januar", "februar")
+        ) |>
+        dplyr::summarise(
+          mdt = base::mean(mdt),
+          .by = trp_id
+        ) |>
+        dplyr::mutate(
+          month = "jan_feb"
+        ),
+      filtered_cmdt_df |>
+        dplyr::filter(
+          month %in% c("mars", "april")
+        ) |>
+        dplyr::summarise(
+          mdt = base::mean(mdt),
+          .by = trp_id
+        ) |>
+        dplyr::mutate(
+          month = "mar_apr"
+        ),
+      filtered_cmdt_df |>
+        dplyr::filter(
+          month %in% c("september", "oktober", "november")
+        ) |>
+        dplyr::summarise(
+          mdt = base::mean(mdt),
+          .by = trp_id
+        ) |>
+        dplyr::mutate(
+          month = "sep_okt_nov"
+        ),
+      filtered_cmdt_df |>
+        dplyr::filter(
+          !(month %in% c("januar", "februar", "mars", "april", "september", "oktober", "november"))
+        )
+    )
+
+  return(imputed_cmdt)
+}
+
+
+## MDT old 1 ----
 # mdt_df <- mdt_validated
 # window_length <- 36
 # base_year <- reference_year
 # last_year_month <- "2023-11-01"
 
-## MDT old 1 ----
 calculate_rolling_indices_by_mdt <-
   function(base_year, last_year_month, window_length, mdt_df, grouping) {
 
@@ -1030,45 +1089,79 @@ calculate_all_rolling_indices_tw <- function(population_size) {
 }
 
 
-## cMDT TW 1 ----
-calculate_rolling_indices_tw_cmdt <- function(mdt_df, last_period, n_rolling_years, population_size, grouping) {
+## cMDT ----
+rolling_index_trp <- function(cmdt_df) {
 
-  # MDT df as first input so that piping it works.
+  # One-year rolling index per TRP, for all possible windows.
+  # One may choose another end of the series by first filtering the mdt_df before calling this function.
+
+  base_year_start_id <- base::min(cmdt_df$universal_year_period_id)
+  first_rolling_window_start <- base::min(cmdt_df$universal_year_period_id + 14)
+  last_rolling_window_start <- base::max(cmdt_df$universal_year_period_id - 13)
+  possible_window_starts <- c(first_rolling_window_start:last_rolling_window_start)
+
+  base_year_cmdt <-
+    filter_cmdt(cmdt_df, base_year_start_id) |>
+    impute_missing_cmdt()
+
+  # For each TRP, find base year and rolling window cmdt
+  # inner join to make sure we compare the same months (pentecost may be missing)
+  # calculate weighted mean cMDT, which is the p in the index formula
+
+  trp_window_index <- tibble::tibble()
+
+  for(i in 1:length(possible_window_starts)) {
+
+    window_cmdt <-
+      filter_cmdt(cmdt_df, possible_window_starts[i]) |>
+      impute_missing_cmdt()
+
+    trp_window_index_i <-
+      dplyr::inner_join(
+        base_year_cmdt,
+        window_cmdt |> dplyr::select(trp_id, month, mdt),
+        by = dplyr::join_by(trp_id, month),
+        suffix = c("_base", "_window")
+      ) |>
+      dplyr::left_join(
+        period_weights_imputed,
+        by = "month"
+      ) |>
+      dplyr::summarise(
+        mean_mdt_base = base::sum(mdt_base * period_days) / base::sum(period_days),
+        mean_mdt_window = base::sum(mdt_window * period_days) / base::sum(period_days),
+        index_i = mean_mdt_window / mean_mdt_base,
+        index_p = 100 * (index_i - 1),
+        .by = "trp_id"
+      ) |>
+      dplyr::mutate(
+        universal_year_period_id_end = possible_window_starts[i] + 13
+      )
+
+    trp_window_index <-
+      dplyr::bind_rows(
+        trp_window_index,
+        trp_window_index_i
+      )
+
+  }
+
+  return(trp_window_index)
+}
+
+
+calculate_rolling_indices_cmdt <- function(trp_window_index, population_size) {
+
   # n_rolling_years: INT, number of whole years in rolling window length
   # No need to filter by coverage here as this has been done in cMDT calculation
-  # TODO: minimum criteria for two and three year index
-  # TODO: weighted mean
 
-  # Grouping must be either:
-  # by_area
-  # by_sub_area
-  # by_trp
-
-  # For testing:
-  # base_year <- 2018
-  # window_length <- 14
-  # mdt_df <- mdt_validated
-
-
-  # No need to have base year as input, rather, find this from given MDTs
-  # One may choose another base year by first filtering the mdt_df before calling this function
-  base_year <- min(mdt_df$year)
-
-
-  least_number_of_month_enums <-
-    dplyr::case_when(
-      window_length == 36 ~ 2,
-      TRUE ~ 0
+  window_index <-
+    trp_window_index |>
+    dplyr::left_join(
+      trp_weights,
+      by = "trp_id"
     )
 
-  least_number_of_months <-
-    dplyr::case_when(
-      window_length == 36 ~ 31,
-      window_length == 24 ~ 20,
-      window_length == 12 ~ 9
-    )
-
-  last_year_month <- lubridate::as_date(last_year_month)
 
   weights_tw <-
     mdt_df |>

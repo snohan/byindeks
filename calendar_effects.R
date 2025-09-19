@@ -74,6 +74,39 @@ readr::write_rds(
   "calendar_weights/periods.rds"
 )
 
+# Imputed period weights
+period_weights_imputed <-
+  dplyr::bind_rows(
+    period_weights |>
+      dplyr::filter(
+        period_name %in% c("januar", "februar")
+      ) |>
+      dplyr::summarise(period_days = base::sum(period_days)) |>
+      dplyr::mutate(month = "jan_feb"),
+    period_weights |>
+      dplyr::filter(
+        period_name %in% c("mars", "april")
+      ) |>
+      dplyr::summarise(period_days = base::sum(period_days)) |>
+      dplyr::mutate(month = "mar_apr"),
+    period_weights |>
+      dplyr::filter(
+        period_name %in% c("september", "oktober", "november")
+      ) |>
+      dplyr::summarise(period_days = base::sum(period_days)) |>
+      dplyr::mutate(month = "sep_okt_nov"),
+    period_weights |>
+      dplyr::filter(
+        !(period_name %in% c("januar", "februar", "mars", "april", "september", "oktober", "november"))
+      ) |>
+      dplyr::rename(month = period_name)
+  )
+
+readr::write_rds(
+  period_weights_imputed,
+  "calendar_weights/period_weights_imputed.rds"
+)
+
 month_names <-
   c(
     "januar",
