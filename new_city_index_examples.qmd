@@ -94,8 +94,7 @@ municipality_polygon_trondheim <- readr::read_rds("traffic_link_pop/municipality
 
 # Calculation examples
 # Bergen
-indexes_examples_bergen <-
-  readr::read_rds("representativity/new_index_examples_bergen.rds")
+indexes_examples_bergen <- readr::read_rds("representativity/new_index_examples_bergen.rds")
 
 indexes_official_bergen <-
   readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_8952.rds")) |>

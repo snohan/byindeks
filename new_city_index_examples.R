@@ -98,6 +98,21 @@ links_bergen <-
 
 population_size <- nrow(links_bergen)
 
+function_class_tw <-
+  links_bergen |>
+  sf::st_drop_geometry() |>
+  dplyr::filter(
+    !is.na(point_id)
+  ) |>
+  dplyr::select(
+    tw_km = tw,
+    function_class
+  ) |>
+  dplyr::summarise(
+    tw_kkm = base::sum(tw_km) / 1000,
+    .by = function_class
+  )
+
 trp_weights <-
   links_bergen |>
   sf::st_drop_geometry() |>
@@ -106,13 +121,17 @@ trp_weights <-
   ) |>
   dplyr::select(
     trp_id = point_id,
-    tw,
-    length_m
+    length_m,
+    function_class
   ) |>
   dplyr::mutate(
-    tw = base::round(tw / 1000),
     length_m = base::round(length_m)
+  ) |>
+  dplyr::left_join(
+    function_class_tw,
+    by = "function_class"
   )
+
 
 # missing <-
 #   this_citys_trps_all_adt_final |>
@@ -162,9 +181,7 @@ mdt_validated |>
     trp_id,
     year,
     month,
-    fill = list(
-      mdt = NA_real_
-    )
+    fill = list(mdt = NA_real_)
   ) |>
   dplyr::left_join(
     points,
@@ -184,58 +201,17 @@ mdt_validated |>
   barplot_cmdt()
 
 
+## Index calculation ----
+# In production we would calculate monthly index, so-far-this-year index. But here, we only do rolling index.
+
+
+
+
 # HERE!!!!
 
 
 
 
-mdt_yearly <-
-  mdt_validated |>
-  dplyr::filter(
-    trp_id %in% trp_mdt_ok_refyear,
-    coverage >= 50,
-    length_quality >= 98.5
-  ) |>
-  dplyr::group_by(
-    trp_id,
-    year
-  ) |>
-  dplyr::summarise(
-    n_months = n(),
-    mean_mdt = base::mean(mdt) |> base::floor(),
-    .groups = "drop"
-  ) |>
-  dplyr::filter(
-    n_months >= 9
-  ) |>
-  dplyr::inner_join(
-    trp_weights,
-    by = dplyr::join_by(trp_id)
-  )
-
-n_trp_per_year <-
-  mdt_yearly |>
-  dplyr::summarise(
-    n_trp = n(),
-    .by = year
-  ) |>
-  dplyr::arrange(
-    year
-  )
-
-# readr::write_csv2(
-#   mdt_yearly,
-#   "spesialuttak/mdt_bergen.csv"
-# )
-
-
-## Index calculation ----
-# Since some TRPs are lost because they are outside urban area or missing from raw links,
-# a comparison between new and old methods must be based on same MDT data set, also.
-
-# Mostly interested in intervals of at least 12 months, thus limiting the examples.
-
-all_rolling_indices_old <- calculate_all_rolling_indices_old()
 
 {
 tictoc::tic()
