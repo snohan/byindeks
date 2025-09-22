@@ -532,7 +532,7 @@ calculate_rolling_indices_by_mdt <- function(base_year, last_year_month, window_
       dplyr::mutate(
         w = mean_mdt.x / sum(mean_mdt.x),
         trp_index_i = mean_mdt.y / mean_mdt.x,
-        #weigted_mean = sum(w * trp_index_i), # same as index_i :)
+        #weighted_mean = sum(w * trp_index_i), # same as index_i :)
         index_i = sum(mean_mdt.y) / sum(mean_mdt.x),
         sd_component = w * (trp_index_i - index_i)^2
       )
@@ -958,10 +958,9 @@ calculate_all_rolling_indices_tw <- function(population_size) {
 
 
 # Rolling index CMDT ----
-
 check_year_representativity <- function(mdt_trp_one_year) {
 
-  # Given an mdt trp df, check if a trp has the required periods
+  # Given an CMDT TRP df, check if a TRP has the required periods.
 
   mdt_trp_one_year_checked <-
     mdt_trp_one_year |>
@@ -1045,6 +1044,10 @@ filter_cmdt <- function(mdt_df, period_start) {
 
 impute_missing_cmdt <- function(filtered_cmdt_df) {
 
+  # Group some periods together in order to allow for some missingness,
+  # and impute explicitly by nearby period.
+  # This instead of no imputation, which is still an imputation (probably a bad one), when missingness is allowed.
+
   imputed_cmdt <-
     dplyr::bind_rows(
       filtered_cmdt_df |>
@@ -1089,23 +1092,22 @@ impute_missing_cmdt <- function(filtered_cmdt_df) {
   return(imputed_cmdt)
 }
 
+
 rolling_index_trp <- function(cmdt_df) {
 
   # One-year rolling index per TRP, for all possible windows.
-  # One may choose another end of the series by first filtering the mdt_df before calling this function.
+  # One may choose start and end of the series by first filtering the df before calling this function.
 
-  base_year_start_id <- base::min(cmdt_df$universal_year_period_id)
+  base_year_start_id <- base::min(cmdt_df$universal_year_period_id) # TODO: check that this is a January
   first_rolling_window_start <- base::min(cmdt_df$universal_year_period_id + 14)
   last_rolling_window_start <- base::max(cmdt_df$universal_year_period_id - 13)
   possible_window_starts <- c(first_rolling_window_start:last_rolling_window_start)
 
-  base_year_cmdt <-
-    filter_cmdt(cmdt_df, base_year_start_id) |>
-    impute_missing_cmdt()
+  base_year_cmdt <- filter_cmdt(cmdt_df, base_year_start_id) |> impute_missing_cmdt()
 
-  # For each TRP, find base year and rolling window cmdt
-  # inner join to make sure we compare the same months (pentecost may be missing)
-  # calculate weighted mean cMDT, which is the p in the index formula
+  # For each TRP, find base year and rolling window cmdt,
+  # inner join to make sure we compare the same months (pentecost may be missing),
+  # and calculate weighted mean cMDT, which is the p in the index formula.
 
   trp_window_index <- tibble::tibble()
 
@@ -1149,7 +1151,10 @@ rolling_index_trp <- function(cmdt_df) {
 }
 
 
-calculate_one_year_rolling_indexes_cmdt <- function(trp_window_index, population_size) {
+rolling_index_area <- function(trp_window_index, population_size) {
+
+  # Weigh each TRP by its traffic work contribution.
+  # Post stratify by function class.
 
   window_index_f <-
     trp_window_index |>
@@ -1157,43 +1162,73 @@ calculate_one_year_rolling_indexes_cmdt <- function(trp_window_index, population
       trp_weights,
       by = "trp_id"
     ) |>
-    dplyr::summarise(
-      index_i = base::sum(mean_mdt_window * length_m) / base::sum(mean_mdt_base * length_m),
-      index_p = 100 * (index_i - 1),
-      n_trp = n(),
-      .by = c(universal_year_period_id_end, function_class, tw_kkm)
+    dplyr::mutate(
+      tw = base::sum(mean_mdt_base * length_m),
+      .by = c(universal_year_period_id_end, function_class)
     ) |>
-    dplyr::summarise(
-      index_p = base::sum(index_p * tw_kkm) / base::sum(tw_kkm),
-      n_trp = base::sum(n_trp),
-      .by = universal_year_period_id_end
-    )
-
-  window_index <-
-    trp_window_index |>
-    dplyr::left_join(
-      trp_weights,
-      by = "trp_id"
+    dplyr::mutate(
+      p_abi_i = mean_mdt_window / mean_mdt_base,
+      w_ai = mean_mdt_base * length_m / tw
     ) |>
     dplyr::summarise(
       index_i = base::sum(mean_mdt_window * length_m) / base::sum(mean_mdt_base * length_m),
       index_p = 100 * (index_i - 1),
+      w_ai =  length_m / base::sum(mean_mdt_base * length_m),
+      # var_abi_i = (1 / (1 - base::sum(w_ai^2))) * base::sum( w_ai * (p_ab_i - index_i)^2), # HERE!!!
       n_trp = n(),
-      .by = c(universal_year_period_id_end)
-    )
+      mean_tw_estimated_base   = base::mean(mean_mdt_base   * length_m),
+      mean_tw_estimated_window = base::mean(mean_mdt_window * length_m),
+      sd_a = stats::sd(mean_mdt_base   * length_m),
+      sd_b = stats::sd(mean_mdt_window * length_m),
+      rho = stats::cor(mean_mdt_base, mean_mdt_window),
+      c_ab = rho * sd_a * sd_b / (mean_tw_estimated_base * mean_tw_estimated_window),
+      c_aa = sd_a^2 / mean_tw_estimated_base^2,
+      .by = c(universal_year_period_id_end, function_class, tw_kkm, n_links)
+    ) |>
+    dplyr::mutate(
+      ratio_factor = (1 - n_trp/n_links) / n_links,
+      index_p_beale = index_p * (1 + ratio_factor * c_ab) / (1 + ratio_factor * c_aa),
+      beale_factor = (1 + ratio_factor * c_ab) / (1 + ratio_factor * c_aa) # Bergen: all very close to 1
+    ) |>
+    dplyr::relocate(index_p_beale, .before = n_trp)
 
-  compare_windows <-
-    dplyr::left_join(
-      window_index_f |> dplyr::select(universal_year_period_id_end, index_p_f = index_p),
-      window_index   |> dplyr::select(universal_year_period_id_end, index_p),
-      by = "universal_year_period_id_end"
-    )
 
-  # HERE !!!!
+    window_index_post_stratified <-
+      window_index_f |>
+        dplyr::summarise(
+          index_p = base::sum(index_p * tw_kkm) / base::sum(tw_kkm),
+          index_p_beale = base::sum(index_p_beale * tw_kkm) / base::sum(tw_kkm),
+          n_trp = base::sum(n_trp),
+          .by = universal_year_period_id_end
+        )
+
 
   # TODO: variance and ci
 
+  # Compare with index without post stratification by function class
+  # window_index <-
+  #   trp_window_index |>
+  #   dplyr::left_join(
+  #     trp_weights,
+  #     by = "trp_id"
+  #   ) |>
+  #   dplyr::summarise(
+  #     index_i = base::sum(mean_mdt_window * length_m) / base::sum(mean_mdt_base * length_m),
+  #     index_p = 100 * (index_i - 1),
+  #     n_trp = n(),
+  #     .by = c(universal_year_period_id_end)
+  #   )
+  #
+  # compare_windows <-
+  #   dplyr::left_join(
+  #     window_index_f |> dplyr::select(universal_year_period_id_end, index_p_f = index_p),
+  #     window_index   |> dplyr::select(universal_year_period_id_end, index_p),
+  #     by = "universal_year_period_id_end"
+  #   )
 
+  return(window_index_post_stratified)
+
+}
 
   calculate_tw_mean <- function(df, indices) {
 
@@ -1274,51 +1309,57 @@ calculate_one_year_rolling_indexes_cmdt <- function(trp_window_index, population
       window = paste0(window_length, "_months")
     )
 
-  return(index_df_final)
-
-}
 
 
-calculate_multiple_year_rolling_indexes_cmdt <- function(n_rolling_years, population_size, grouping = "by_area") {
 
-  # No need to have last period as input, rather, find this from given MDTs
-  # One may choose another end of the series by first filtering the mdt_df before calling this function
+rolling_index_multiple_years <- function(one_year_rolling_index_df, n_rolling_years) {
+
+  # No need to have start and end period as input, this is given implicit in one_year_rolling_index_df
+
+  base::stopifnot(n_rolling_years %in% c(2, 3))
+
+  first_end_period_in_multiple_year_window <-
+    one_year_rolling_index_df |>
+    dplyr::slice_min(universal_year_period_id_end) |>
+    purrr::pluck("universal_year_period_id_end")
+
   last_period <-
-    mdt_df |>
-    slice_max(universal_year_period_id) |>
-    purrr::pluck("universal_year_period_id")
+    one_year_rolling_index_df |>
+    dplyr::slice_max(universal_year_period_id_end) |>
+    purrr::pluck("universal_year_period_id_end")
 
-  base::stopifnot(n_rolling_years %in% c(1:3))
+  last_end_period_in_multiple_year_window <-
+    last_period - (n_rolling_years - 1) * 14
 
-  # TODO:
-  first_possible_year_month <-
-    lubridate::as_date(
-      paste0(
-        reference_year + n_years,
-        "-12-01"
+
+  window_indexes <- tibble::tibble()
+
+  for(j in first_end_period_in_multiple_year_window:last_end_period_in_multiple_year_window) {
+
+    window_index_j <-
+      window_index_f |>
+      dplyr::filter(
+        universal_year_period_id_end %in% base::seq(j, j + (n_rolling_years - 1) * 14, 14)
+      ) |>
+      dplyr::summarise(
+        index_p = base::mean(index_p)
+      ) |>
+      dplyr::mutate(
+        # Last years end of window id
+        universal_year_period_id = j + (n_rolling_years - 1) * 14
       )
-    )
 
-  year_months_possible <-
-    base::seq.Date(
-      from = first_possible_year_month,
-      to = last_year_month,
-      by = "month"
-    )
+    window_indexes <-
+      dplyr::bind_rows(
+        window_indexes,
+        window_index_j
+      )
 
-  purrr::map_dfr(
-    year_months_possible,
-    ~ calculate_rolling_indices_tw_cmdt(
-      mdt_validated,
-      .x,
-      n_rolling_years,
-      population_size,
-      grouping
-    )
-  )
+  }
+
+  return(window_indexes)
 
 }
-
 
 
 # Compare ----

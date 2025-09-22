@@ -101,17 +101,16 @@ population_size <- nrow(links_bergen)
 function_class_tw <-
   links_bergen |>
   sf::st_drop_geometry() |>
-  dplyr::filter(
-    !is.na(point_id)
-  ) |>
   dplyr::select(
     tw_km = tw,
     function_class
   ) |>
   dplyr::summarise(
     tw_kkm = base::sum(tw_km) / 1000,
+    n_links = n(),
     .by = function_class
-  )
+  ) |>
+  dplyr::arrange(function_class)
 
 trp_weights <-
   links_bergen |>
@@ -205,6 +204,26 @@ mdt_validated |>
 # In production we would calculate monthly index, so-far-this-year index. But here, we only do rolling index.
 
 
+# Steps in adding uncertainty estimation
+# 1
+# TODO: add standard error in CMDT, based on missing days
+# For now, assume no uncerainty here, and it probably is much smaller than the contribution from spatial TRP sampling.
+
+# 2
+# TODO: adding up uncertainty in CMDT in this weighed yearly mean CMDT
+# For now, assume no uncerainty here, and it probably is much smaller than the contribution from spatial TRP sampling.
+trp_window_index <- rolling_index_trp(mdt_validated)
+
+# 3
+# TODO: uncertainty estimation
+area_index_one_year <- rolling_index_area(trp_window_index, population_size)
+
+# 4
+# TODO: uncertainty estimation
+area_index_two_years <- rolling_index_multiple_years(area_index_one_year, 2)
+area_index_three_years <- rolling_index_multiple_years(area_index_one_year, 3)
+
+
 
 
 # HERE!!!!
@@ -213,11 +232,6 @@ mdt_validated |>
 
 
 
-{
-tictoc::tic()
-all_rolling_indices_new <- calculate_all_rolling_indices_tw(population_size)
-tictoc::toc()
-}
 
 list(
   all_rolling_indices_old,
