@@ -1128,10 +1128,13 @@ rolling_index_trp <- function(cmdt_df) {
         period_weights_imputed,
         by = "month"
       ) |>
+      # Notation:
+      # a: base year
+      # b: calculation year (window)
       dplyr::summarise(
-        mean_mdt_base = base::sum(mdt_base * period_days) / base::sum(period_days),
-        mean_mdt_window = base::sum(mdt_window * period_days) / base::sum(period_days),
-        index_i = mean_mdt_window / mean_mdt_base,
+        mean_mdt_a = base::sum(mdt_base * period_days) / base::sum(period_days),
+        mean_mdt_b = base::sum(mdt_window * period_days) / base::sum(period_days),
+        index_i = mean_mdt_b / mean_mdt_a,
         index_p = 100 * (index_i - 1),
         .by = "trp_id"
       ) |>
@@ -1156,6 +1159,11 @@ rolling_index_area <- function(trp_window_index, population_size) {
   # Weigh each TRP by its traffic work contribution.
   # Post stratify by function class.
 
+  # Notation:
+  # a: base year
+  # b: calculation year (window)
+  # fcl: function class
+
   window_index_f <-
     trp_window_index |>
     dplyr::left_join(
@@ -1163,27 +1171,46 @@ rolling_index_area <- function(trp_window_index, population_size) {
       by = "trp_id"
     ) |>
     dplyr::mutate(
-      tw = base::sum(mean_mdt_base * length_m),
+      tw_fcl_observed_a = base::sum(mean_mdt_a * length_m),
+      tw_fcl_observed_b = base::sum(mean_mdt_b * length_m),
+      # Population model based variance
+      beta_pop_model = base::sum(mean_mdt_a * mean_mdt_b) / base::sum(mean_mdt_a^2),
+      # Robust variance
+      ratio_of_mean_observed = base::sum(tw_fcl_observed_b) / base::sum(tw_fcl_observed_a),
+      # var_robust_factor_fcl = 1 / tw_fcl_observed_a^2,
+      #
       .by = c(universal_year_period_id_end, function_class)
     ) |>
     dplyr::mutate(
-      p_abi_i = mean_mdt_window / mean_mdt_base,
-      w_ai = mean_mdt_base * length_m / tw
+      p_abi_i = mean_mdt_b / mean_mdt_a,
+      #w_trp_a = mean_mdt_a * length_m / tw,
+      # Population model based variance
+      w_trp_length_a =  length_m / tw_fcl_observed_a,
+      # Robust variance
+      tw_trp_a = length_m * mean_mdt_a,
+      tw_trp_b = length_m * mean_mdt_b,
+      var_robust_factor_trp = 1/(1 - tw_trp_a / tw_fcl_observed_a),
+      var_robust_diff = (tw_trp_b - ratio_of_mean_observed * tw_trp_a)^2
     ) |>
     dplyr::summarise(
-      index_i = base::sum(mean_mdt_window * length_m) / base::sum(mean_mdt_base * length_m),
+      index_i = base::sum(mean_mdt_b * length_m) / base::sum(mean_mdt_a * length_m),
       index_p = 100 * (index_i - 1),
-      w_ai =  length_m / base::sum(mean_mdt_base * length_m),
-      # var_abi_i = (1 / (1 - base::sum(w_ai^2))) * base::sum( w_ai * (p_ab_i - index_i)^2), # HERE!!!
       n_trp = n(),
-      mean_tw_estimated_base   = base::mean(mean_mdt_base   * length_m),
-      mean_tw_estimated_window = base::mean(mean_mdt_window * length_m),
-      sd_a = stats::sd(mean_mdt_base   * length_m),
-      sd_b = stats::sd(mean_mdt_window * length_m),
-      rho = stats::cor(mean_mdt_base, mean_mdt_window),
-      c_ab = rho * sd_a * sd_b / (mean_tw_estimated_base * mean_tw_estimated_window),
-      c_aa = sd_a^2 / mean_tw_estimated_base^2,
-      .by = c(universal_year_period_id_end, function_class, tw_kkm, n_links)
+      # Beale
+      mean_tw_estimated_a = base::mean(mean_mdt_a * length_m),
+      mean_tw_estimated_b = base::mean(mean_mdt_b * length_m),
+      sd_a = stats::sd(mean_mdt_a * length_m),
+      sd_b = stats::sd(mean_mdt_b * length_m),
+      rho = stats::cor(mean_mdt_a, mean_mdt_b),
+      c_ab = rho * sd_a * sd_b / (mean_tw_estimated_a * mean_tw_estimated_b),
+      c_aa = sd_a^2 / mean_tw_estimated_a^2,
+      #
+      # Population model based variance
+      var_pop_model_fcl = base::sum(w_trp_length_a^2) * (1/(n_trp - 1)) * base::sum((mean_mdt_b - beta_pop_model * mean_mdt_a)^2),
+      # Robust variance
+      var_robust_fcl = (1 / base::sum(mean_mdt_a * length_m)^2) * base::sum(var_robust_factor_trp * var_robust_diff),
+      #
+      .by = c(universal_year_period_id_end, function_class, tw_fcl_population_kkm, n_links)
     ) |>
     dplyr::mutate(
       ratio_factor = (1 - n_trp/n_links) / n_links,
@@ -1192,15 +1219,30 @@ rolling_index_area <- function(trp_window_index, population_size) {
     ) |>
     dplyr::relocate(index_p_beale, .before = n_trp)
 
-
     window_index_post_stratified <-
       window_index_f |>
         dplyr::summarise(
-          index_p = base::sum(index_p * tw_kkm) / base::sum(tw_kkm),
-          index_p_beale = base::sum(index_p_beale * tw_kkm) / base::sum(tw_kkm),
+          index_p = (base::sum(index_p * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(2),
+          index_p_beale = (base::sum(index_p_beale * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(2),
           n_trp = base::sum(n_trp),
+          # Population model based variance
+          var_pop_model = base::sum((tw_fcl_population_kkm / base::sum(tw_fcl_population_kkm))^2 * var_pop_model_fcl),
+          sd_pop_model_p = 100 * base::sqrt(var_pop_model),
+          em_pop_model = base::round(-stats::qt(0.025, n_trp - 1) * sd_pop_model_p, 2),
+          # Robust variance
+          var_robust = base::sum((tw_fcl_population_kkm / base::sum(tw_fcl_population_kkm))^2 * var_robust_fcl),
+          sd_robust_p = 100 * base::sqrt(var_robust),
+          em_robust = base::round(-stats::qt(0.025, n_trp - 1) * sd_robust_p, 2),
+          #
           .by = universal_year_period_id_end
-        )
+        ) |>
+      dplyr::select(
+        index_p,
+        index_p_beale,
+        n_trp,
+        em_pop_model,
+        em_robust
+      )
 
 
   # TODO: variance and ci

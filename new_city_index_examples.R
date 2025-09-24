@@ -106,7 +106,7 @@ function_class_tw <-
     function_class
   ) |>
   dplyr::summarise(
-    tw_kkm = base::sum(tw_km) / 1000,
+    tw_fcl_population_kkm = base::sum(tw_km) / 1000,
     n_links = n(),
     .by = function_class
   ) |>
