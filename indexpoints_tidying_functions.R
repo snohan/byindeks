@@ -1093,6 +1093,11 @@ impute_missing_cmdt <- function(filtered_cmdt_df) {
 }
 
 
+# Notation:
+# a: base year
+# b: calculation year (window)
+# fcl: function class
+
 rolling_index_trp <- function(cmdt_df) {
 
   # One-year rolling index per TRP, for all possible windows.
@@ -1128,9 +1133,6 @@ rolling_index_trp <- function(cmdt_df) {
         period_weights_imputed,
         by = "month"
       ) |>
-      # Notation:
-      # a: base year
-      # b: calculation year (window)
       dplyr::summarise(
         mean_mdt_a = base::sum(mdt_base * period_days) / base::sum(period_days),
         mean_mdt_b = base::sum(mdt_window * period_days) / base::sum(period_days),
@@ -1158,11 +1160,6 @@ rolling_index_area <- function(trp_window_index, population_size) {
 
   # Weigh each TRP by its traffic work contribution.
   # Post stratify by function class.
-
-  # Notation:
-  # a: base year
-  # b: calculation year (window)
-  # fcl: function class
 
   window_index_f <-
     trp_window_index |>
@@ -1237,10 +1234,13 @@ rolling_index_area <- function(trp_window_index, population_size) {
           .by = universal_year_period_id_end
         ) |>
       dplyr::select(
+        universal_year_period_id_end,
         index_p,
         index_p_beale,
         n_trp,
+        var_pop_model,
         em_pop_model,
+        var_robust,
         em_robust
       )
 
@@ -1271,6 +1271,19 @@ rolling_index_area <- function(trp_window_index, population_size) {
   return(window_index_post_stratified)
 
 }
+
+# covariance_rolling <-
+#   cov(
+#     dplyr::inner_join(
+#       trp_window_index |> dplyr::filter(universal_year_period_id_end == 56),
+#       trp_window_index |> dplyr::filter(universal_year_period_id_end == 84),
+#       by = "trp_id"
+#     ) |>
+#       dplyr::select(
+#         starts_with("index_p")
+#       )
+#   )
+
 
   calculate_tw_mean <- function(df, indices) {
 
@@ -1352,8 +1365,6 @@ rolling_index_area <- function(trp_window_index, population_size) {
     )
 
 
-
-
 rolling_index_multiple_years <- function(one_year_rolling_index_df, n_rolling_years) {
 
   # No need to have start and end period as input, this is given implicit in one_year_rolling_index_df
@@ -1379,16 +1390,28 @@ rolling_index_multiple_years <- function(one_year_rolling_index_df, n_rolling_ye
   for(j in first_end_period_in_multiple_year_window:last_end_period_in_multiple_year_window) {
 
     window_index_j <-
-      window_index_f |>
+      one_year_rolling_index_df |>
       dplyr::filter(
         universal_year_period_id_end %in% base::seq(j, j + (n_rolling_years - 1) * 14, 14)
       ) |>
       dplyr::summarise(
-        index_p = base::mean(index_p)
+        index_p = base::mean(index_p),
+        # TODO: covariance?
+        var_pop_model_rolling = base::sum(var_pop_model) / n_rolling_years^2,
+        sd_pop_model_rolling_p = 100 * base::sqrt(var_pop_model_rolling),
+        em_pop_model_rolling = base::round(-stats::qnorm(0.025) * sd_pop_model_rolling_p, 2),
+        #
+        var_robust_rolling = base::sum(var_robust) / n_rolling_years^2,
+        sd_robust_rolling_p = 100 * base::sqrt(var_robust_rolling),
+        em_robust_rolling = base::round(-stats::qnorm(0.025) * sd_robust_rolling_p, 2)
       ) |>
       dplyr::mutate(
         # Last years end of window id
         universal_year_period_id = j + (n_rolling_years - 1) * 14
+      ) |>
+      dplyr::select(
+        -tidyselect::starts_with("var_"),
+        -tidyselect::starts_with("sd_")
       )
 
     window_indexes <-
