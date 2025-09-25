@@ -1156,34 +1156,31 @@ rolling_index_trp <- function(cmdt_df) {
 }
 
 
-rolling_index_area <- function(trp_window_index, population_size) {
+rolling_index_area <- function(trp_window_index) {
 
   # Weigh each TRP by its traffic work contribution.
   # Post stratify by function class.
 
   window_index_f <-
     trp_window_index |>
-    dplyr::left_join(
-      trp_weights,
-      by = "trp_id"
-    ) |>
+    dplyr::left_join(trp_weights, by = "trp_id") |>
+    # Need some global variables before summarising
     dplyr::mutate(
       tw_fcl_observed_a = base::sum(mean_mdt_a * length_m),
       tw_fcl_observed_b = base::sum(mean_mdt_b * length_m),
-      # Population model based variance
+      # Variance: Population model
       beta_pop_model = base::sum(mean_mdt_a * mean_mdt_b) / base::sum(mean_mdt_a^2),
-      # Robust variance
+      # Variance: Robust
       ratio_of_mean_observed = base::sum(tw_fcl_observed_b) / base::sum(tw_fcl_observed_a),
-      # var_robust_factor_fcl = 1 / tw_fcl_observed_a^2,
       #
       .by = c(universal_year_period_id_end, function_class)
     ) |>
+    # Entities needed in each summation variable
     dplyr::mutate(
       p_abi_i = mean_mdt_b / mean_mdt_a,
-      #w_trp_a = mean_mdt_a * length_m / tw,
-      # Population model based variance
+      # Variance: Population model
       w_trp_length_a =  length_m / tw_fcl_observed_a,
-      # Robust variance
+      # Variance: Robust
       tw_trp_a = length_m * mean_mdt_a,
       tw_trp_b = length_m * mean_mdt_b,
       var_robust_factor_trp = 1/(1 - tw_trp_a / tw_fcl_observed_a),
@@ -1201,18 +1198,21 @@ rolling_index_area <- function(trp_window_index, population_size) {
       rho = stats::cor(mean_mdt_a, mean_mdt_b),
       c_ab = rho * sd_a * sd_b / (mean_tw_estimated_a * mean_tw_estimated_b),
       c_aa = sd_a^2 / mean_tw_estimated_a^2,
-      #
-      # Population model based variance
+      # Variance: Population model
       var_pop_model_fcl = base::sum(w_trp_length_a^2) * (1/(n_trp - 1)) * base::sum((mean_mdt_b - beta_pop_model * mean_mdt_a)^2),
-      # Robust variance
+      # Variance: Robust
       var_robust_fcl = (1 / base::sum(mean_mdt_a * length_m)^2) * base::sum(var_robust_factor_trp * var_robust_diff),
       #
       .by = c(universal_year_period_id_end, function_class, tw_fcl_population_kkm, n_links)
     ) |>
     dplyr::mutate(
+      # Beale
       ratio_factor = (1 - n_trp/n_links) / n_links,
       index_p_beale = index_p * (1 + ratio_factor * c_ab) / (1 + ratio_factor * c_aa),
-      beale_factor = (1 + ratio_factor * c_ab) / (1 + ratio_factor * c_aa) # Bergen: all very close to 1
+      beale_factor = (1 + ratio_factor * c_ab) / (1 + ratio_factor * c_aa), # Bergen: all very close to 1
+      # Variance: ratio estimator
+      #var_re_tw_b_fcl = n_links^2 * (1 - n_trp/n_links) / n_trp * (sd_b^2 + index_i^2 * sd_a^2 - 2 * index_i * rho * sd_a * sd_b),
+      #var_re_sys_fcl = (1 - n_trp/n_links) / (n_trp * mean_tw_estimated_a^2) * (index_i * sd_a^2 - rho * sd_a * sd_b)
     ) |>
     dplyr::relocate(index_p_beale, .before = n_trp)
 
@@ -1222,14 +1222,17 @@ rolling_index_area <- function(trp_window_index, population_size) {
           index_p = (base::sum(index_p * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(2),
           index_p_beale = (base::sum(index_p_beale * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(2),
           n_trp = base::sum(n_trp),
-          # Population model based variance
+          # Variance: Population model
           var_pop_model = base::sum((tw_fcl_population_kkm / base::sum(tw_fcl_population_kkm))^2 * var_pop_model_fcl),
           sd_pop_model_p = 100 * base::sqrt(var_pop_model),
           em_pop_model = base::round(-stats::qt(0.025, n_trp - 1) * sd_pop_model_p, 2),
-          # Robust variance
+          # Variance: Robust
           var_robust = base::sum((tw_fcl_population_kkm / base::sum(tw_fcl_population_kkm))^2 * var_robust_fcl),
           sd_robust_p = 100 * base::sqrt(var_robust),
           em_robust = base::round(-stats::qt(0.025, n_trp - 1) * sd_robust_p, 2),
+          # Variance: ratio estimator
+          #var_re = (1/base::sum(tw_fcl_population_kkm)^2) * base::sum(var_re_tw_b_fcl + tw_fcl_population_kkm^2 * var_re_sys_fcl^2),
+          #em_re = base::round(-stats::qt(0.025, n_trp - 1) * 100 * base::sqrt(var_re), 2), # Way too big! Something's wrong...
           #
           .by = universal_year_period_id_end
         ) |>
@@ -1242,6 +1245,8 @@ rolling_index_area <- function(trp_window_index, population_size) {
         em_pop_model,
         var_robust,
         em_robust
+        #var_re,
+        #em_re
       )
 
 
@@ -1272,18 +1277,18 @@ rolling_index_area <- function(trp_window_index, population_size) {
 
 }
 
-# covariance_rolling <-
-#   cov(
-#     dplyr::inner_join(
-#       trp_window_index |> dplyr::filter(universal_year_period_id_end == 56),
-#       trp_window_index |> dplyr::filter(universal_year_period_id_end == 84),
-#       by = "trp_id"
-#     ) |>
-#       dplyr::select(
-#         starts_with("index_p")
-#       )
-#   )
 
+rolling_index_area_bootstrap <- function(trp_window_index) {
+
+  # Plain bootstrap
+  # Pseudopopulation
+  # Non-random sample
+
+  # Take a bootstrapped sample from each period,
+  # calculate its area index
+
+
+}
 
   calculate_tw_mean <- function(df, indices) {
 
@@ -1306,63 +1311,10 @@ rolling_index_area <- function(trp_window_index, population_size) {
       R = 1000
     )
 
-  booted_cis <- boot::boot.ci(bootstrap_object, type = c("norm", "basic", "perc", "bca"))
   # bootsurv::pseudopop.boot.stsrs ???
 
-  index_df_grouped <-
-    index_df |>
-    dplyr::summarise(
-      index_i = sum(w_tw * trp_index_i),
-      index_p = (index_i - 1) * 100,
-      n_trp = n(),
-      n_eff = 1 / sum(w_tw^2),
-      n_eff_tv = 1 / sum(w_tv^2),
-      sd_sample_p = 100 * sqrt(sum(sd_component) * (1/(1 - 1/n_eff))),
-      standard_error_p = sd_sample_p / sqrt(n_eff) * (1 - n_trp / population_size),
-      cv_tv = sd(mean_mdt.x) / mean(mean_mdt.x),
-      cv_tw = sd(tw.x) / mean(tw.x),
-      alpha = sum(mean_mdt.x * mean_mdt.y) / sum(mean_mdt.x^2),
-      var_model_s = (1/(n_trp - 1)) * sum((mean_mdt.y - alpha * mean_mdt.x)^2),
-      se_model_p = 100 * sqrt(sum(w_length^2) * var_model_s),
-      .groups = "drop"
-    ) |>
-    dplyr::mutate(
-      #ci_lower = round(index_p + stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
-      #ci_upper = round(index_p - stats::qt(0.025, n_trp - 1) * standard_error_p, 1),
-      em_selection = round(-stats::qt(0.025, n_trp - 1) * standard_error_p, 2),
-      em_model = round(-stats::qt(0.025, n_trp - 1) * se_model_p, 2),
-      bs_bca_lower = booted_cis$bca[1,4],
-      bs_bca_upper = booted_cis$bca[1,5]
-    )
 
 
-  index_df_final <-
-    index_df_grouped |>
-    dplyr::mutate(
-      index_period =
-        paste0(
-          base_year,
-          " - (",
-          (last_year_month - base::months(window_length - 1)) |>
-            lubridate::month(label = TRUE),
-          " ",
-          (last_year_month - base::months(window_length - 1)) |>
-            lubridate::year(),
-          " - ",
-          last_year_month |>
-            lubridate::month(label = TRUE),
-          " ",
-          last_year_month |>
-            lubridate::year(),
-          ")"
-        ),
-      month_object = last_year_month
-    ) |>
-    dplyr::mutate(
-      month_n = lubridate::month(month_object),
-      year = lubridate::year(month_object),
-      window = paste0(window_length, "_months")
-    )
 
 
 rolling_index_multiple_years <- function(one_year_rolling_index_df, n_rolling_years) {
@@ -1425,6 +1377,18 @@ rolling_index_multiple_years <- function(one_year_rolling_index_df, n_rolling_ye
   return(window_indexes)
 
 }
+
+# covariance_rolling <-
+#   cov(
+#     dplyr::inner_join(
+#       trp_window_index |> dplyr::filter(universal_year_period_id_end == 56),
+#       trp_window_index |> dplyr::filter(universal_year_period_id_end == 84),
+#       by = "trp_id"
+#     ) |>
+#       dplyr::select(
+#         starts_with("index_p")
+#       )
+#   )
 
 
 # Compare ----
