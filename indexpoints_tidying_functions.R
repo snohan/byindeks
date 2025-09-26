@@ -1249,9 +1249,6 @@ rolling_index_area <- function(trp_window_index) {
         #em_re
       )
 
-
-  # TODO: variance and ci
-
   # Compare with index without post stratification by function class
   # window_index <-
   #   trp_window_index |>
@@ -1278,9 +1275,9 @@ rolling_index_area <- function(trp_window_index) {
 }
 
 
-rolling_index_area_bootstrap <- function(trp_window_index) {
+#rolling_index_area_bootstrap <- function(trp_window_index) {
 
-  # Plain bootstrap
+  # Plain bootstrap, let post-stratification adjust for bias
   # Pseudopopulation
   # Non-random sample
 
@@ -1288,33 +1285,40 @@ rolling_index_area_bootstrap <- function(trp_window_index) {
   # calculate its area index
 
 
-}
+#}
 
-  calculate_tw_mean <- function(df, indices) {
+# calculate_index_p_bs <- function(trp_window_index) {
+#
+#   index_p_df <-
+#     trp_window_index |>
+#     dplyr::left_join(trp_weights, by = "trp_id") |>
+#     dplyr::mutate(
+#       tw_a = mean_mdt_a * length_m,
+#       tw_b = mean_mdt_b * length_m
+#     ) |>
+#     dplyr::select(
+#       universal_year_period_id_end,
+#       trp_id,
+#       tw_a, tw_b,
+#       function_class,
+#       tw_fcl_population_kkm
+#     )
+#
+#   stratified_index_p <-
+#     index_p_df |>
+#     dplyr::summarise(
+#       index_i = base::sum(tw_b) / base::sum(tw_a),
+#       index_p = 100 * (index_i - 1),
+#       .by = c(universal_year_period_id_end, function_class, tw_fcl_population_kkm)
+#     ) |>
+#     dplyr::summarise(
+#       index_p = (base::sum(index_p * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(2),
+#       .by = universal_year_period_id_end
+#     )
+#
+# }
 
-    bootstrapped_df <- df[indices,] # allows boot to select sample
-
-    summarised_df <-
-      bootstrapped_df |>
-      dplyr::summarise(
-        index_i = sum(w_tw * trp_index_i),
-        index_p = (index_i - 1) * 100,
-      )
-
-    return(summarised_df$index_p)
-  }
-
-  bootstrap_object <-
-    boot::boot(
-      data = index_df,
-      statistic = calculate_tw_mean,
-      R = 1000
-    )
-
-  # bootsurv::pseudopop.boot.stsrs ???
-
-
-
+# bootsurv::pseudopop.boot.stsrs ???
 
 
 rolling_index_multiple_years <- function(one_year_rolling_index_df, n_rolling_years) {
