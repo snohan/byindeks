@@ -800,17 +800,45 @@ map_links_with_function_class(links_bergen) |>
 ```
 
 ```{r}
-#| label: bergen_examples_12
+#| label: bergen_12_official
 #| fig_cap: "Sammenligning av indekstall for Bergen, ett års glidende indeks."
 
-visualize_index_examples(indexes_comparison_bergen, "12_months", "Bergen, ett års glidende indeks", "Regneeksempler")
+indexes_official_bergen |> 
+  dplyr::filter(
+    window == "12_months",
+    year < 2025
+  ) |> 
+  visualize_city_36_mdt_index(
+    "Data: Statens vegvesen",
+    "Estimert endring i trafikkmengde siste glidende 1 år",
+    paste0("Sammenlignet med 2018")
+  ) +
+  theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  )
 ```
 
 ```{r}
-#| label: bergen_examples_36
-#| fig_cap: "Sammenligning av indekstall for Bergen, tre års glidende indeks."
+#| label: bergen_36_official
+#| fig_cap: "Offisiell indek for Bergen, tre års glidende indeks."
 
-visualize_index_examples(indexes_comparison_bergen, "36_months", "Bergen, tre års glidende indeks", "Regneeksempler")
+indexes_official_bergen |> 
+  dplyr::filter(
+    window == "36_months",
+    year < 2025
+  ) |> 
+  visualize_city_36_mdt_index(
+    "Data: Statens vegvesen",
+    "Estimert endring i trafikkmengde siste glidende 3 år",
+    paste0("Sammenlignet med 2018")
+  ) +
+  theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  )
 ```
 
 

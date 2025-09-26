@@ -1158,10 +1158,9 @@ create_city_monthly_index_plot <- function(city_monthly) {
 #```
 
 
-visualize_city_36_mdt_index <-
-  function(city_36_month_df, caption_text, title_text, sub_text) {
+visualize_city_36_mdt_index <- function(city_36_month_df, caption_text, title_text, sub_text) {
 
-    city_36_month_df %>%
+  city_36_month_df |>
     ggplot2::ggplot(aes(x = month_object, y = index_p)) +
     ggplot2::geom_hline(
       yintercept = 0,
@@ -1182,7 +1181,7 @@ visualize_city_36_mdt_index <-
     ggplot2::geom_point(color = "#ED9300") +
     theme_light() +
     theme(
-      axis.text.x = element_text(vjust = 0.5),
+      axis.text.x = element_text(vjust = 0.5, angle = 90),
       axis.title.y = element_text(
         margin = margin(t = 0, r = 15, b = 0, l = 0)),
       axis.title.x = element_text(
@@ -1196,8 +1195,9 @@ visualize_city_36_mdt_index <-
           vjust = 0
         )
     ) +
-    scale_x_date(
-      labels = scales::label_date("%b %Y")
+    ggplot2::scale_x_date(
+      labels = scales::label_date("%b %y"),
+      date_breaks = "4 months"
     ) +
     ylim(
       -max(abs(city_36_month_df$ci_lower)),
@@ -1213,10 +1213,9 @@ visualize_city_36_mdt_index <-
 }
 
 
-visualize_rolling_indices <-
-  function(rolling_indices_df, caption_text, title_text, sub_text) {
+visualize_rolling_indices <- function(rolling_indices_df, caption_text, title_text, sub_text) {
 
-    rolling_indices_df %>%
+    rolling_indices_df |>
       ggplot2::ggplot(aes(x = month_object, y = index_p, color = window, linetype = window)) +
       ggplot2::geom_hline(
         yintercept = 0,
@@ -1272,14 +1271,12 @@ visualize_rolling_indices <-
         legend.position = "bottom"
       ) +
       scale_x_date(
-        labels = scales::label_date("%b %Y"),
+        labels = scales::label_date("%b %y"),
         date_breaks = "4 months"
       ) +
       ylim(
         min(rolling_indices_df$index_p),
         max(rolling_indices_df$index_p)
-        #-max(abs(rolling_indices_df$index_p)),
-        #max(abs(rolling_indices_df$index_p))
       ) +
       labs(
         x = NULL, y = "Endring i trafikkmengde (%)",
@@ -1290,8 +1287,7 @@ visualize_rolling_indices <-
       )
   }
 
-visualize_index_examples <-
-  function(index_df, window_length, title_text, sub_text) {
+visualize_index_examples <- function(index_df, window_length, title_text, sub_text) {
 
     # window_length must be "12_months" or "24_months" or "36_months"
 
@@ -1363,8 +1359,7 @@ visualize_index_examples <-
       )
   }
 
-visualize_n_trp <-
-  function(index_df, window_length, title_text, sub_text) {
+visualize_n_trp <- function(index_df, window_length, title_text, sub_text) {
 
     # window_length must be "12_months" or "24_months" or "36_months"
 
@@ -1425,8 +1420,7 @@ visualize_n_trp <-
   }
 
 
-visualize_error_examples <-
-  function(index_df, window_length, title_text, sub_text) {
+visualize_error_examples <- function(index_df, window_length, title_text, sub_text) {
 
     # window_length must be "12_months" or "24_months" or "36_months"
 
@@ -1491,8 +1485,6 @@ visualize_error_examples <-
         subtitle = sub_text
       )
   }
-
-
 
 
 # Chains ----

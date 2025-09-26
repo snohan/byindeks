@@ -1218,32 +1218,38 @@ rolling_index_area <- function(trp_window_index) {
 
     window_index_post_stratified <-
       window_index_f |>
-        dplyr::summarise(
-          index_p = (base::sum(index_p * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(2),
-          index_p_beale = (base::sum(index_p_beale * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(2),
-          n_trp = base::sum(n_trp),
-          # Variance: Population model
-          var_pop_model = base::sum((tw_fcl_population_kkm / base::sum(tw_fcl_population_kkm))^2 * var_pop_model_fcl),
-          sd_pop_model_p = 100 * base::sqrt(var_pop_model),
-          em_pop_model = base::round(-stats::qt(0.025, n_trp - 1) * sd_pop_model_p, 2),
-          # Variance: Robust
-          var_robust = base::sum((tw_fcl_population_kkm / base::sum(tw_fcl_population_kkm))^2 * var_robust_fcl),
-          sd_robust_p = 100 * base::sqrt(var_robust),
-          em_robust = base::round(-stats::qt(0.025, n_trp - 1) * sd_robust_p, 2),
-          # Variance: ratio estimator
-          #var_re = (1/base::sum(tw_fcl_population_kkm)^2) * base::sum(var_re_tw_b_fcl + tw_fcl_population_kkm^2 * var_re_sys_fcl^2),
-          #em_re = base::round(-stats::qt(0.025, n_trp - 1) * 100 * base::sqrt(var_re), 2), # Way too big! Something's wrong...
-          #
-          .by = universal_year_period_id_end
-        ) |>
+      dplyr::summarise(
+        index_p = (base::sum(index_p * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(2),
+        index_p_beale = (base::sum(index_p_beale * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(2),
+        n_trp = base::sum(n_trp),
+        # Variance: Population model
+        var_pop_model = base::sum((tw_fcl_population_kkm / base::sum(tw_fcl_population_kkm))^2 * var_pop_model_fcl),
+        sd_pop_model_p = 100 * base::sqrt(var_pop_model),
+        em_pop_model = base::round(-stats::qt(0.025, n_trp - 1) * sd_pop_model_p, 2),
+        # Variance: Robust
+        var_robust = base::sum((tw_fcl_population_kkm / base::sum(tw_fcl_population_kkm))^2 * var_robust_fcl),
+        sd_robust_p = 100 * base::sqrt(var_robust),
+        em_robust = base::round(-stats::qt(0.025, n_trp - 1) * sd_robust_p, 2),
+        # Variance: ratio estimator
+        #var_re = (1/base::sum(tw_fcl_population_kkm)^2) * base::sum(var_re_tw_b_fcl + tw_fcl_population_kkm^2 * var_re_sys_fcl^2),
+        #em_re = base::round(-stats::qt(0.025, n_trp - 1) * 100 * base::sqrt(var_re), 2), # Way too big! Something's wrong...
+        #
+        .by = universal_year_period_id_end
+      )  |>
+      dplyr::left_join(
+        universal_calendar_periods,
+        by = dplyr::join_by(universal_year_period_id_end == universal_year_period_id)
+      ) |>
+      dplyr::mutate(x_label = paste0(stringr::str_sub(period_name, 1, 3), " ", stringr::str_sub(year, 3, 4))) |>
       dplyr::select(
-        universal_year_period_id_end,
+        universal_year_period_id = universal_year_period_id_end,
+        x_label,
         index_p,
         index_p_beale,
         n_trp,
-        var_pop_model,
+        #var_pop_model,
         em_pop_model,
-        var_robust,
+        #var_robust,
         em_robust
         #var_re,
         #em_re
@@ -1359,7 +1365,9 @@ rolling_index_multiple_years <- function(one_year_rolling_index_df, n_rolling_ye
         #
         var_robust_rolling = base::sum(var_robust) / n_rolling_years^2,
         sd_robust_rolling_p = 100 * base::sqrt(var_robust_rolling),
-        em_robust_rolling = base::round(-stats::qnorm(0.025) * sd_robust_rolling_p, 2)
+        em_robust_rolling = base::round(-stats::qnorm(0.025) * sd_robust_rolling_p, 2),
+        ci_lower = index_p - em_robust_rolling,
+        ci_upper = index_p + em_robust_rolling
       ) |>
       dplyr::mutate(
         # Last years end of window id
@@ -1377,6 +1385,20 @@ rolling_index_multiple_years <- function(one_year_rolling_index_df, n_rolling_ye
       )
 
   }
+
+  window_indexes <-
+    window_indexes |>
+    dplyr::left_join(
+      universal_calendar_periods,
+      by = dplyr::join_by(universal_year_period_id)
+    ) |>
+    dplyr::mutate(x_label = paste0(stringr::str_sub(period_name, 1, 3), " ", stringr::str_sub(year, 3, 4))) |>
+    dplyr::select(
+      universal_year_period_id,
+      x_label,
+      index_p,
+      ci_lower, ci_upper
+    )
 
   return(window_indexes)
 

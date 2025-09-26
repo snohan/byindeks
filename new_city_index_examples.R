@@ -215,55 +215,44 @@ mdt_validated |>
 trp_window_index <- rolling_index_trp(mdt_validated)
 
 # 3
-# TODO: uncertainty estimation
-area_index_one_year <- rolling_index_area(trp_window_index, population_size)
+area_index_one_year <- rolling_index_area(trp_window_index)
 
 # 4
-# TODO: uncertainty estimation
-area_index_two_years <- rolling_index_multiple_years(area_index_one_year, 2)
+#area_index_two_years <- rolling_index_multiple_years(area_index_one_year, 2)
 area_index_three_years <- rolling_index_multiple_years(area_index_one_year, 3)
 
 
-
-
-# HERE!!!!
-
-
-
-
-
-
-list(
-  all_rolling_indices_old,
-  all_rolling_indices_new
-) |>
-readr::write_rds(
-  "representativity/new_index_examples_bergen.rds"
-)
-
 # The offical results
-all_rolling_indices_official <-
-  readr::read_rds(
-    file =
-      paste0(
-        "data_indexpoints_tidy/rolling_indices_",
-        city_number,
-        ".rds"
-      )
-  ) |>
-  dplyr::bind_rows()
+# all_rolling_indices_official <-
+#   readr::read_rds(
+#     file =
+#       paste0(
+#         "data_indexpoints_tidy/rolling_indices_",
+#         city_number,
+#         ".rds"
+#       )
+#   ) |>
+#   dplyr::bind_rows()
 
-compare_indexes <-
-  dplyr::inner_join(
-    prepare_rolling_indexes_for_comparison(all_rolling_indices_official),
-    prepare_rolling_indexes_for_comparison(all_rolling_indices_old),
-    by = dplyr::join_by(index_period, window),
-    suffix = c("_official", "_old")
-  ) |>
-  dplyr::relocate(
-    index_period,
-    window
-  )
+# list(
+#   all_rolling_indices_old,
+#   all_rolling_indices_new
+# ) |>
+# readr::write_rds(
+#   "representativity/new_index_examples_bergen.rds"
+# )
+
+# compare_indexes <-
+#   dplyr::inner_join(
+#     prepare_rolling_indexes_for_comparison(all_rolling_indices_official),
+#     prepare_rolling_indexes_for_comparison(all_rolling_indices_old),
+#     by = dplyr::join_by(index_period, window),
+#     suffix = c("_official", "_old")
+#   ) |>
+#   dplyr::relocate(
+#     index_period,
+#     window
+#   )
 
 
 # Trondheim ----
