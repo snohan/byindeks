@@ -1234,23 +1234,26 @@ rolling_index_area <- function(trp_window_index) {
         #var_re = (1/base::sum(tw_fcl_population_kkm)^2) * base::sum(var_re_tw_b_fcl + tw_fcl_population_kkm^2 * var_re_sys_fcl^2),
         #em_re = base::round(-stats::qt(0.025, n_trp - 1) * 100 * base::sqrt(var_re), 2), # Way too big! Something's wrong...
         #
+        ci_lower = index_p - em_robust,
+        ci_upper = index_p + em_robust,
         .by = universal_year_period_id_end
       )  |>
       dplyr::left_join(
         universal_calendar_periods,
         by = dplyr::join_by(universal_year_period_id_end == universal_year_period_id)
       ) |>
-      dplyr::mutate(x_label = paste0(stringr::str_sub(period_name, 1, 3), " ", stringr::str_sub(year, 3, 4))) |>
       dplyr::select(
         universal_year_period_id = universal_year_period_id_end,
         x_label,
         index_p,
         index_p_beale,
         n_trp,
-        #var_pop_model,
+        var_pop_model,
         em_pop_model,
-        #var_robust,
-        em_robust
+        var_robust,
+        em_robust,
+        ci_lower,
+        ci_upper
         #var_re,
         #em_re
       )
@@ -1335,13 +1338,13 @@ rolling_index_multiple_years <- function(one_year_rolling_index_df, n_rolling_ye
 
   first_end_period_in_multiple_year_window <-
     one_year_rolling_index_df |>
-    dplyr::slice_min(universal_year_period_id_end) |>
-    purrr::pluck("universal_year_period_id_end")
+    dplyr::slice_min(universal_year_period_id) |>
+    purrr::pluck("universal_year_period_id")
 
   last_period <-
     one_year_rolling_index_df |>
-    dplyr::slice_max(universal_year_period_id_end) |>
-    purrr::pluck("universal_year_period_id_end")
+    dplyr::slice_max(universal_year_period_id) |>
+    purrr::pluck("universal_year_period_id")
 
   last_end_period_in_multiple_year_window <-
     last_period - (n_rolling_years - 1) * 14
@@ -1354,7 +1357,7 @@ rolling_index_multiple_years <- function(one_year_rolling_index_df, n_rolling_ye
     window_index_j <-
       one_year_rolling_index_df |>
       dplyr::filter(
-        universal_year_period_id_end %in% base::seq(j, j + (n_rolling_years - 1) * 14, 14)
+        universal_year_period_id %in% base::seq(j, j + (n_rolling_years - 1) * 14, 14)
       ) |>
       dplyr::summarise(
         index_p = base::mean(index_p),
@@ -1392,7 +1395,6 @@ rolling_index_multiple_years <- function(one_year_rolling_index_df, n_rolling_ye
       universal_calendar_periods,
       by = dplyr::join_by(universal_year_period_id)
     ) |>
-    dplyr::mutate(x_label = paste0(stringr::str_sub(period_name, 1, 3), " ", stringr::str_sub(year, 3, 4))) |>
     dplyr::select(
       universal_year_period_id,
       x_label,

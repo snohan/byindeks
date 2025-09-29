@@ -96,7 +96,7 @@ links_bergen <-
     "traffic_link_pop/links_bergen.rds"
   )
 
-population_size <- nrow(links_bergen)
+#population_size <- nrow(links_bergen)
 
 function_class_tw <-
   links_bergen |>
@@ -220,6 +220,35 @@ area_index_one_year <- rolling_index_area(trp_window_index)
 # 4
 #area_index_two_years <- rolling_index_multiple_years(area_index_one_year, 2)
 area_index_three_years <- rolling_index_multiple_years(area_index_one_year, 3)
+
+list(
+  area_index_one_year |>
+    dplyr::select(
+      universal_year_period_id,
+      x_label,
+      index_p,
+      ci_lower,
+      ci_upper,
+      n_trp
+    ) |>
+    dplyr::mutate(
+      window_years = "one"
+    ),
+  area_index_three_years |>
+    dplyr::select(
+      universal_year_period_id,
+      x_label,
+      index_p,
+      ci_lower,
+      ci_upper
+    ) |>
+    dplyr::mutate(
+      window_years = "three"
+    )
+) |>
+readr::write_rds(
+  "representativity/rolling_cmdt_index_bergen.rds"
+)
 
 
 # The offical results

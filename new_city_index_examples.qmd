@@ -96,6 +96,9 @@ municipality_polygon_trondheim <- readr::read_rds("traffic_link_pop/municipality
 # Bergen
 indexes_examples_bergen <- readr::read_rds("representativity/new_index_examples_bergen.rds")
 
+index_examples_cmdt_bergen <- readr::read_rds("representativity/rolling_cmdt_index_bergen.rds") |>
+  dplyr::bind_rows()
+
 indexes_official_bergen <-
   readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_8952.rds")) |>
   dplyr::bind_rows()
@@ -799,9 +802,11 @@ map_links_with_function_class(links_bergen) |>
   )
 ```
 
+
+## Ett års glidende indeks
 ```{r}
-#| label: bergen_12_official
-#| fig_cap: "Sammenligning av indekstall for Bergen, ett års glidende indeks."
+#| label: fig-bergen_official_12
+#| fig-cap: "Offisiell indeks for Bergen, ett års glidende indeks."
 
 indexes_official_bergen |> 
   dplyr::filter(
@@ -810,7 +815,7 @@ indexes_official_bergen |>
   ) |> 
   visualize_city_36_mdt_index(
     "Data: Statens vegvesen",
-    "Estimert endring i trafikkmengde siste glidende 1 år",
+    "Estimert endring i trafikkmengde siste glidende 1 år, nåværende metode",
     paste0("Sammenlignet med 2018")
   ) +
   theme(
@@ -821,8 +826,137 @@ indexes_official_bergen |>
 ```
 
 ```{r}
-#| label: bergen_36_official
-#| fig_cap: "Offisiell indek for Bergen, tre års glidende indeks."
+#| label: fig-bergen_improved_12
+#| fig-cap: "Forbedret indeks for Bergen, ett års glidende indeks."
+
+index_examples_cmdt_bergen |> 
+  dplyr::filter(window_years == "one") |> 
+  visualize_rolling_cmdt_index(
+    "Data: Statens vegvesen",
+    "Estimert endring i trafikkmengde siste glidende 1 år, forbedret metode",
+    paste0("Sammenlignet med 2018")
+  ) +
+  theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  )
+```
+
+```{r}
+#| label: fig-bergen_compare_em_12
+#| fig-cap: "Sammenligning av feilmargin." 
+
+dplyr::inner_join(
+  indexes_official_bergen |> 
+  dplyr::filter(window == "12_months") |> 
+  dplyr::mutate(
+    x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4)),
+    official = base::abs(ci_upper - ci_lower) /2
+  ) |> 
+  dplyr::select(x_label, official),
+  index_examples_cmdt_bergen |> 
+  dplyr::filter(window_years == "one") |> 
+  dplyr::mutate(improved = base::abs(ci_upper - ci_lower) /2) |> 
+  dplyr::select(x_label, improved),
+  by = dplyr::join_by(x_label)
+) |> 
+tidyr::pivot_longer(
+  cols = c(official, improved),
+  names_to = "version"
+) |> 
+dplyr::mutate(
+  x_label = as.factor(x_label) |> forcats::fct_inorder()
+) |> 
+ggplot(aes(x_label, value, color = version)) +
+geom_point() +
+theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 90),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        )
+    ) +
+ggplot2::scale_x_discrete(
+  name = NULL,
+  breaks = ~ dplyr::if_else(stringr::str_detect(.x, "apr|aug|des"), .x, "")  
+) +
+  theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  )
+
+```
+
+```{r}
+#| label: fig-bergen_compare_n_trp_12
+#| fig-cap: "Sammenligning av antall punkt." 
+
+dplyr::inner_join(
+  indexes_official_bergen |> 
+  dplyr::filter(window == "12_months") |> 
+  dplyr::mutate(
+    x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4))
+  ) |> 
+  dplyr::select(x_label, official = n_trp),
+  index_examples_cmdt_bergen |> 
+  dplyr::filter(window_years == "one") |> 
+  dplyr::select(x_label, improved = n_trp),
+  by = dplyr::join_by(x_label)
+) |> 
+tidyr::pivot_longer(
+  cols = c(official, improved),
+  names_to = "version"
+) |> 
+dplyr::mutate(
+  x_label = as.factor(x_label) |> forcats::fct_inorder()
+) |> 
+ggplot(aes(x_label, value, color = version)) +
+geom_point() +
+theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 90),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        )
+    ) +
+ggplot2::scale_x_discrete(
+  name = NULL,
+  breaks = ~ dplyr::if_else(stringr::str_detect(.x, "apr|aug|des"), .x, "")  
+) +
+  theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  )
+
+```
+
+
+## Tre års glidende indeks
+
+```{r}
+#| label: fig-bergen_36_official
+#| fig-cap: "Offisiell indeks for Bergen, tre års glidende indeks."
 
 indexes_official_bergen |> 
   dplyr::filter(
@@ -831,7 +965,7 @@ indexes_official_bergen |>
   ) |> 
   visualize_city_36_mdt_index(
     "Data: Statens vegvesen",
-    "Estimert endring i trafikkmengde siste glidende 3 år",
+    "Estimert endring i trafikkmengde siste glidende 3 år, nåværende metode",
     paste0("Sammenlignet med 2018")
   ) +
   theme(
@@ -841,37 +975,77 @@ indexes_official_bergen |>
   )
 ```
 
-
-### Usikkerhet
-Sammenligne feilmarginens størrelse over tid.
 ```{r}
-#| label: bergen_examples_error_12
-#| fig_cap: "Sammenligning av feilmargin i indeksene for Bergen, ett års glidende indeks."
+#| label: fig-bergen_improved_36
+#| fig-cap: "Forbedret indeks for Bergen, tre års glidende indeks."
 
-visualize_error_examples(error_comparison_bergen, "12_months", "Bergen, ett års glidende indeks", "Regneeksempler")
+index_examples_cmdt_bergen |> 
+  dplyr::filter(window_years == "three") |> 
+  visualize_rolling_cmdt_index(
+    "Data: Statens vegvesen",
+    "Estimert endring i trafikkmengde siste glidende 3 år, forbedret metode",
+    paste0("Sammenlignet med 2018")
+  ) +
+  theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  )
 ```
 
 ```{r}
-#| label: bergen_examples_error_12_2
-#| fig_cap: "Sammenligning av feilmargin i indeksene for Bergen, ett års glidende indeks."
+#| label: fig-bergen_compare_em_36
+#| fig-cap: "Sammenligning av feilmargin." 
 
-error_comparison_bergen |> 
-  dplyr::filter(
-    version != "new_bs_bca"
+dplyr::inner_join(
+  indexes_official_bergen |> 
+  dplyr::filter(window == "36_months") |> 
+  dplyr::mutate(
+    x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4)),
+    official = base::abs(ci_upper - ci_lower) /2
   ) |> 
-  visualize_error_examples("12_months", "Bergen, ett års glidende indeks", "Regneeksempler")
-```
+  dplyr::select(x_label, official),
+  index_examples_cmdt_bergen |> 
+  dplyr::filter(window_years == "three") |> 
+  dplyr::mutate(improved = base::abs(ci_upper - ci_lower) /2) |> 
+  dplyr::select(x_label, improved),
+  by = dplyr::join_by(x_label)
+) |> 
+tidyr::pivot_longer(
+  cols = c(official, improved),
+  names_to = "version"
+) |> 
+dplyr::mutate(
+  x_label = as.factor(x_label) |> forcats::fct_inorder()
+) |> 
+ggplot(aes(x_label, value, color = version)) +
+geom_point() +
+theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 90),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        )
+    ) +
+ggplot2::scale_x_discrete(
+  name = NULL,
+  breaks = ~ dplyr::if_else(stringr::str_detect(.x, "apr|aug|des"), .x, "")  
+) +
+  theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  )
 
-
-```{r}
-#| label: bergen_examples_error_36_2
-#| fig_cap: "Sammenligning av feilmargin i indeksene for Bergen, tre års glidende indeks."
-
-error_comparison_bergen |> 
-  dplyr::filter(
-    version != "new_bs_bca"
-  ) |> 
-  visualize_error_examples("36_months", "Bergen, tre års glidende indeks", "Regneeksempler")
 ```
 
 

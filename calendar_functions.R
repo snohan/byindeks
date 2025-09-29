@@ -78,13 +78,17 @@ month_and_period_ids <-
       month_and_period_ids,
       by = "period_id"
     ) |>
+    dplyr::mutate(
+      x_label = base::paste0(stringr::str_sub(period_name, 1, 3), " ", stringr::str_sub(year, 3, 4))
+    ) |>
     dplyr::select(
       universal_year_period_id,
       year,
       month_id,
       period_id,
       period_name,
-      year_period_name
+      year_period_name,
+      x_label
     )
 
   }
