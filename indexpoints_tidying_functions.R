@@ -1219,6 +1219,7 @@ rolling_index_area <- function(trp_window_index) {
     window_index_post_stratified <-
       window_index_f |>
       dplyr::summarise(
+        index_i = (base::sum(index_i * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(2),
         index_p = (base::sum(index_p * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(2),
         index_p_beale = (base::sum(index_p_beale * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(2),
         n_trp = base::sum(n_trp),
@@ -1228,8 +1229,10 @@ rolling_index_area <- function(trp_window_index) {
         em_pop_model = base::round(-stats::qt(0.025, n_trp - 1) * sd_pop_model_p, 2),
         # Variance: Robust
         var_robust = base::sum((tw_fcl_population_kkm / base::sum(tw_fcl_population_kkm))^2 * var_robust_fcl),
+        sd_robust_i = base::sqrt(var_robust),
         sd_robust_p = 100 * base::sqrt(var_robust),
         em_robust = base::round(-stats::qt(0.025, n_trp - 1) * sd_robust_p, 2),
+        em_robust_i = base::round(-stats::qt(0.025, n_trp - 1) * sd_robust_i, 2),
         # Variance: ratio estimator
         #var_re = (1/base::sum(tw_fcl_population_kkm)^2) * base::sum(var_re_tw_b_fcl + tw_fcl_population_kkm^2 * var_re_sys_fcl^2),
         #em_re = base::round(-stats::qt(0.025, n_trp - 1) * 100 * base::sqrt(var_re), 2), # Way too big! Something's wrong...
@@ -1245,6 +1248,7 @@ rolling_index_area <- function(trp_window_index) {
       dplyr::select(
         universal_year_period_id = universal_year_period_id_end,
         x_label,
+        index_i,
         index_p,
         index_p_beale,
         n_trp,
@@ -1252,6 +1256,7 @@ rolling_index_area <- function(trp_window_index) {
         em_pop_model,
         var_robust,
         em_robust,
+        em_robust_i,
         ci_lower,
         ci_upper
         #var_re,

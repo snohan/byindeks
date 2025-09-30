@@ -852,17 +852,17 @@ dplyr::inner_join(
   dplyr::filter(window == "12_months") |> 
   dplyr::mutate(
     x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4)),
-    official = base::abs(ci_upper - ci_lower) /2
+    dagens = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)
   ) |> 
-  dplyr::select(x_label, official),
+  dplyr::select(x_label, dagens),
   index_examples_cmdt_bergen |> 
   dplyr::filter(window_years == "one") |> 
-  dplyr::mutate(improved = base::abs(ci_upper - ci_lower) /2) |> 
-  dplyr::select(x_label, improved),
+  dplyr::mutate(forbedret = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)) |> 
+  dplyr::select(x_label, forbedret),
   by = dplyr::join_by(x_label)
 ) |> 
 tidyr::pivot_longer(
-  cols = c(official, improved),
+  cols = c(dagens, forbedret),
   names_to = "version"
 ) |> 
 dplyr::mutate(
@@ -870,32 +870,51 @@ dplyr::mutate(
 ) |> 
 ggplot(aes(x_label, value, color = version)) +
 geom_point() +
+scale_color_manual(
+  values = c(
+    "dagens" = "#008ec2",
+    "forbedret" = "#ed9300"
+  ),
+  breaks = c(
+    "dagens",
+    "forbedret"
+  ),
+  labels = c(
+    "Dagens",
+    "Forbedret"
+  ),
+  name = "Metode"
+) +
 theme_light() +
-    theme(
-      axis.text.x = element_text(vjust = 0.5, angle = 90),
-      axis.title.y = element_text(
-        margin = margin(t = 0, r = 15, b = 0, l = 0)),
-      axis.title.x = element_text(
-        margin = margin(t = 15, r = 0, b = 0, l = 0)),
-      panel.grid.minor.x = element_blank(),
-      plot.caption =
-        element_text(
-          face = "italic",
-          size = 8,
-          lineheight = 1.5,
-          vjust = 0
-        )
-    ) +
+  theme(
+    axis.text.x = element_text(vjust = 0.5, angle = 90),
+    axis.title.y = element_text(
+      margin = margin(t = 0, r = 15, b = 0, l = 0)),
+    axis.title.x = element_text(
+      margin = margin(t = 15, r = 0, b = 0, l = 0)),
+    panel.grid.minor.x = element_blank(),
+    plot.caption =
+      element_text(
+        face = "italic",
+        size = 8,
+        lineheight = 1.5,
+        vjust = 0
+      ),
+    legend.position = "bottom"
+  ) +
 ggplot2::scale_x_discrete(
   name = NULL,
   breaks = ~ dplyr::if_else(stringr::str_detect(.x, "apr|aug|des"), .x, "")  
 ) +
-  theme(
-    plot.background = element_rect(fill = svv_background_color),
-    panel.background = element_rect(fill = svv_background_color),
-    legend.background = element_rect(fill = svv_background_color)
-  )
-
+theme(
+  plot.background = element_rect(fill = svv_background_color),
+  panel.background = element_rect(fill = svv_background_color),
+  legend.background = element_rect(fill = svv_background_color)
+) +
+labs(
+  x = NULL, y = "Relativ feilmargin"
+) +
+ggtitle("Relativ feilmargin")
 ```
 
 ```{r}
@@ -908,14 +927,14 @@ dplyr::inner_join(
   dplyr::mutate(
     x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4))
   ) |> 
-  dplyr::select(x_label, official = n_trp),
+  dplyr::select(x_label, dagens = n_trp),
   index_examples_cmdt_bergen |> 
   dplyr::filter(window_years == "one") |> 
-  dplyr::select(x_label, improved = n_trp),
+  dplyr::select(x_label, forbedret = n_trp),
   by = dplyr::join_by(x_label)
 ) |> 
 tidyr::pivot_longer(
-  cols = c(official, improved),
+  cols = c(dagens, forbedret),
   names_to = "version"
 ) |> 
 dplyr::mutate(
@@ -923,32 +942,51 @@ dplyr::mutate(
 ) |> 
 ggplot(aes(x_label, value, color = version)) +
 geom_point() +
+scale_color_manual(
+  values = c(
+    "dagens" = "#008ec2",
+    "forbedret" = "#ed9300"
+  ),
+  breaks = c(
+    "dagens",
+    "forbedret"
+  ),
+  labels = c(
+    "Dagens",
+    "Forbedret"
+  ),
+  name = "Metode"
+) +
 theme_light() +
-    theme(
-      axis.text.x = element_text(vjust = 0.5, angle = 90),
-      axis.title.y = element_text(
-        margin = margin(t = 0, r = 15, b = 0, l = 0)),
-      axis.title.x = element_text(
-        margin = margin(t = 15, r = 0, b = 0, l = 0)),
-      panel.grid.minor.x = element_blank(),
-      plot.caption =
-        element_text(
-          face = "italic",
-          size = 8,
-          lineheight = 1.5,
-          vjust = 0
-        )
-    ) +
+theme(
+  axis.text.x = element_text(vjust = 0.5, angle = 90),
+  axis.title.y = element_text(
+    margin = margin(t = 0, r = 15, b = 0, l = 0)),
+  axis.title.x = element_text(
+    margin = margin(t = 15, r = 0, b = 0, l = 0)),
+  panel.grid.minor.x = element_blank(),
+  plot.caption =
+    element_text(
+      face = "italic",
+      size = 8,
+      lineheight = 1.5,
+      vjust = 0
+    ),
+  legend.position = "bottom"
+) +
 ggplot2::scale_x_discrete(
   name = NULL,
   breaks = ~ dplyr::if_else(stringr::str_detect(.x, "apr|aug|des"), .x, "")  
 ) +
-  theme(
-    plot.background = element_rect(fill = svv_background_color),
-    panel.background = element_rect(fill = svv_background_color),
-    legend.background = element_rect(fill = svv_background_color)
-  )
-
+theme(
+  plot.background = element_rect(fill = svv_background_color),
+  panel.background = element_rect(fill = svv_background_color),
+  legend.background = element_rect(fill = svv_background_color)
+) +
+labs(
+  x = NULL, y = "Antall punkt"
+) +
+ggtitle("Antall punkt i datagrunnlaget")
 ```
 
 
@@ -1002,17 +1040,17 @@ dplyr::inner_join(
   dplyr::filter(window == "36_months") |> 
   dplyr::mutate(
     x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4)),
-    official = base::abs(ci_upper - ci_lower) /2
+    dagens = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)
   ) |> 
-  dplyr::select(x_label, official),
+  dplyr::select(x_label, dagens),
   index_examples_cmdt_bergen |> 
   dplyr::filter(window_years == "three") |> 
-  dplyr::mutate(improved = base::abs(ci_upper - ci_lower) /2) |> 
-  dplyr::select(x_label, improved),
+  dplyr::mutate(forbedret = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)) |> 
+  dplyr::select(x_label, forbedret),
   by = dplyr::join_by(x_label)
 ) |> 
 tidyr::pivot_longer(
-  cols = c(official, improved),
+  cols = c(dagens, forbedret),
   names_to = "version"
 ) |> 
 dplyr::mutate(
@@ -1020,31 +1058,51 @@ dplyr::mutate(
 ) |> 
 ggplot(aes(x_label, value, color = version)) +
 geom_point() +
+scale_color_manual(
+  values = c(
+    "dagens" = "#008ec2",
+    "forbedret" = "#ed9300"
+  ),
+  breaks = c(
+    "dagens",
+    "forbedret"
+  ),
+  labels = c(
+    "Dagens",
+    "Forbedret"
+  ),
+  name = "Metode"
+) +
 theme_light() +
-    theme(
-      axis.text.x = element_text(vjust = 0.5, angle = 90),
-      axis.title.y = element_text(
-        margin = margin(t = 0, r = 15, b = 0, l = 0)),
-      axis.title.x = element_text(
-        margin = margin(t = 15, r = 0, b = 0, l = 0)),
-      panel.grid.minor.x = element_blank(),
-      plot.caption =
-        element_text(
-          face = "italic",
-          size = 8,
-          lineheight = 1.5,
-          vjust = 0
-        )
-    ) +
+theme(
+  axis.text.x = element_text(vjust = 0.5, angle = 90),
+  axis.title.y = element_text(
+    margin = margin(t = 0, r = 15, b = 0, l = 0)),
+  axis.title.x = element_text(
+    margin = margin(t = 15, r = 0, b = 0, l = 0)),
+  panel.grid.minor.x = element_blank(),
+  plot.caption =
+    element_text(
+      face = "italic",
+      size = 8,
+      lineheight = 1.5,
+      vjust = 0
+    ),
+  legend.position = "bottom"
+) +
 ggplot2::scale_x_discrete(
   name = NULL,
   breaks = ~ dplyr::if_else(stringr::str_detect(.x, "apr|aug|des"), .x, "")  
 ) +
-  theme(
-    plot.background = element_rect(fill = svv_background_color),
-    panel.background = element_rect(fill = svv_background_color),
-    legend.background = element_rect(fill = svv_background_color)
-  )
+theme(
+  plot.background = element_rect(fill = svv_background_color),
+  panel.background = element_rect(fill = svv_background_color),
+  legend.background = element_rect(fill = svv_background_color)
+) +
+labs(
+  x = NULL, y = "Relativ feilmargin"
+) +
+ggtitle("Relativ feilmargin")
 
 ```
 

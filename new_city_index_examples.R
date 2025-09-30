@@ -214,6 +214,18 @@ mdt_validated |>
 # For now, assume no uncerainty here, and it probably is much smaller than the contribution from spatial TRP sampling.
 trp_window_index <- rolling_index_trp(mdt_validated)
 
+trp_window_index_wide <-
+  trp_window_index |>
+  dplyr::mutate(
+    index_p = round(index_p, 1)
+  ) |>
+  tidyr::pivot_wider(
+    id_cols = trp_id,
+    names_from = universal_year_period_id_end,
+    names_prefix = "u_",
+    values_from = index_p
+  )
+
 # 3
 area_index_one_year <- rolling_index_area(trp_window_index)
 
