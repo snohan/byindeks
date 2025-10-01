@@ -32,7 +32,7 @@
 {
   present_year <- 2024
   index_month <- 12
-  city_number <- 8952
+  city_number <- 952
 }
 
 # City years
@@ -44,11 +44,21 @@ city_trps <-
   get_published_pointindex_for_months(city_number, max(index_years), 1)[[1]] |>
   base::sort()
 
+## Nord-Jæren more TRPs
+link_trp_id <- readr::read_rds("traffic_link_pop/link_trp_id.rds")
+
+trps_existing <-
+  link_trp_id |>
+  dplyr::filter(
+    link_id %in% links_nj$link_id
+  )
+
+city_trps <- trps_existing$trp_id
 
 # First, make cMDT per TRP and store them in folder cMDT
 
 # cMDT
-trp_number <- 79
+trp_number <- 95
 
 {
   tic()

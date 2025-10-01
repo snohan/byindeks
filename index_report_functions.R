@@ -1560,6 +1560,113 @@ visualize_error_examples <- function(index_df, window_length, title_text, sub_te
   }
 
 
+visualize_em_comparison <- function(df) {
+
+  # df is an inner join of dfs holding results from the two index methods
+
+  ggplot(df, aes(x_label, value, color = version)) +
+    geom_point() +
+    scale_color_manual(
+      values = c(
+        "dagens" = "#008ec2",
+        "forbedret" = "#ed9300"
+      ),
+      breaks = c(
+        "dagens",
+        "forbedret"
+      ),
+      labels = c(
+        "Dagens",
+        "Forbedret"
+      ),
+      name = "Metode"
+    ) +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 90),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        ),
+      legend.position = "bottom"
+    ) +
+    ggplot2::scale_x_discrete(
+      name = NULL,
+      breaks = ~ dplyr::if_else(stringr::str_detect(.x, "apr|aug|des"), .x, "")
+    ) +
+    theme(
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.background = element_rect(fill = svv_background_color)
+    ) +
+    labs(
+      x = NULL, y = "Relativ feilmargin"
+    ) +
+    ggtitle("Relativ feilmargin")
+
+}
+
+
+visualize_n_trp_comparison <- function(df) {
+
+  ggplot(df, aes(x_label, value, color = version)) +
+    geom_point() +
+    scale_color_manual(
+      values = c(
+        "dagens" = "#008ec2",
+        "forbedret" = "#ed9300"
+      ),
+      breaks = c(
+        "dagens",
+        "forbedret"
+      ),
+      labels = c(
+        "Dagens",
+        "Forbedret"
+      ),
+      name = "Metode"
+    ) +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 90),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        ),
+      legend.position = "bottom"
+    ) +
+    ggplot2::scale_x_discrete(
+      name = NULL,
+      breaks = ~ dplyr::if_else(stringr::str_detect(.x, "apr|aug|des"), .x, "")
+    ) +
+    theme(
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.background = element_rect(fill = svv_background_color)
+    ) +
+    labs(
+      x = NULL, y = "Antall punkt"
+    ) +
+    ggtitle("Antall punkt i datagrunnlaget")
+
+}
+
 # Chains ----
 calculate_all_index_chain_combinations <- function(df_index_i) {
 

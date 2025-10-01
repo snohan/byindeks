@@ -475,7 +475,6 @@ this_citys_trps_all_adt_final <-
 links_nj <- readr::read_rds("traffic_link_pop/links_nj.rds")
 population_size <- nrow(links_nj)
 
-
 ## Original TRPs ----
 trp_weights <-
   links_nj |>
@@ -715,7 +714,8 @@ list(
 ### Chained ----
 # Must have tailored exclusions to accomodate a maximum utilisation of TRPs in each chain period
 mdt_2017_2019 <-
-  mdt_filtered |>
+  #mdt_filtered |>
+  mdt_validated |>
   dplyr::filter(
     !(trp_id %in% c(
       "73355V319671", # Austråttunnelen, er komplementær med Hana ved Rovik som følge av ny bom?
@@ -983,3 +983,155 @@ readr::write_rds(
   index_comparison,
   "representativity/new_index_comparison_nj.rds"
 )
+
+
+## CMDT and improved ----
+
+function_class_tw <-
+  links_nj |>
+  sf::st_drop_geometry() |>
+  dplyr::select(
+    tw_km = tw,
+    function_class
+  ) |>
+  dplyr::summarise(
+    tw_fcl_population_kkm = base::sum(tw_km) / 1000,
+    n_links = n(),
+    .by = function_class
+  ) |>
+  dplyr::arrange(function_class)
+
+trp_weights <-
+  links_nj |>
+  sf::st_drop_geometry() |>
+  dplyr::left_join(
+    link_trp_id,
+    by = "link_id"
+  ) |>
+  dplyr::filter(
+    !is.na(trp_id)
+  ) |>
+  dplyr::select(
+    trp_id,
+    length_m,
+    function_class
+  ) |>
+  dplyr::mutate(
+    length_m = base::round(length_m)
+  ) |>
+  dplyr::left_join(
+    function_class_tw,
+    by = "function_class"
+  )
+
+### CMDT ----
+mdt_filtered <-
+  readr::read_rds(
+    paste0(
+      "data_indexpoints_tidy/cmdt_",
+      city_number,
+      ".rds"
+    )
+  ) |>
+  dplyr::filter(
+    length_class == "korte"
+  )
+
+# To get the mdt_validated df
+source("exclude_cmdt.R")
+length(unique(mdt_validated$trp_id))
+
+trp_mdt_ok_refyear <-
+  mdt_validated |>
+  filter_cmdt(paste0(reference_year, "-januar")) |>
+  purrr::pluck("trp_id") |>
+  base::unique()
+
+length(trp_mdt_ok_refyear)
+
+
+### Original TRPs ----
+trp_window_index <-
+  mdt_validated |>
+  dplyr::filter(
+    trp_id %in% this_citys_trps_all_adt_final$trp_id
+  ) |>
+  rolling_index_trp()
+
+area_index_one_year <- rolling_index_area(trp_window_index)
+
+area_index_three_years <- rolling_index_multiple_years(area_index_one_year, 3)
+
+list(
+  area_index_one_year |>
+    dplyr::select(
+      universal_year_period_id,
+      x_label,
+      index_p,
+      ci_lower,
+      ci_upper,
+      n_trp
+    ) |>
+    dplyr::mutate(
+      window_years = "one"
+    ),
+  area_index_three_years |>
+    dplyr::select(
+      universal_year_period_id,
+      x_label,
+      index_p,
+      ci_lower,
+      ci_upper
+    ) |>
+    dplyr::mutate(
+      window_years = "three"
+    )
+  ) |>
+  readr::write_rds(
+    "representativity/rolling_cmdt_index_nj.rds"
+  )
+
+
+### More TRPs ----
+trp_window_index_more <-
+  mdt_validated |>
+  rolling_index_trp()
+
+area_index_one_year_more <- rolling_index_area(trp_window_index_more)
+# Little to gain from more TRPs unless we chain in 2019 and 2023
+
+
+### Chained ----
+# Chain link 1: 2017-2019
+cmdt_chain_1 <-
+  area_index_one_year_more |>
+  dplyr::filter(
+    x_label == "des 19"
+  )
+
+# Chain link 2: 2019-2023
+trp_window_index_2 <-
+  mdt_validated |>
+  dplyr::filter(
+    year >= 2019
+  ) |>
+  rolling_index_trp()
+
+area_index_one_year_2 <- rolling_index_area(trp_window_index_2)
+
+cmdt_chain_2 <-
+  area_index_one_year_2 |>
+  dplyr::filter(
+    x_label == "des 23"
+  )
+
+# Chain link 3: 2023-2024
+trp_window_index_3 <-
+  mdt_validated |>
+  dplyr::filter(
+    year >= 2023
+  ) |>
+  rolling_index_trp()
+
+area_index_one_year_3 <- rolling_index_area(trp_window_index_3)
+

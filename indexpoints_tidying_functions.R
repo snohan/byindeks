@@ -1173,7 +1173,12 @@ rolling_index_area <- function(trp_window_index) {
       # Variance: Robust
       ratio_of_mean_observed = base::sum(tw_fcl_observed_b) / base::sum(tw_fcl_observed_a),
       #
+      n_links_in_selection = n(),
       .by = c(universal_year_period_id_end, function_class)
+    ) |>
+    # Can't have just one link in a function class
+    dplyr::filter(
+      n_links_in_selection > 1
     ) |>
     # Entities needed in each summation variable
     dplyr::mutate(

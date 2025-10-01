@@ -470,7 +470,7 @@ table_link_statistics <- function(link_df) {
       quantity = "Størrelse",
       population = "Populasjon",
       sample = "Utvalg",
-      percentage = "Prosentandel (%)"
+      percentage = "Utvalgets andel (%)"
     ) |>
     bold(part = "header") |>
     bg(bg = "#ED9300", part = "header")
