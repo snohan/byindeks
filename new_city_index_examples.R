@@ -504,7 +504,7 @@ population_size <- nrow(links_nj)
 
 
 ### MDT ----
-# mdt_filtered <-
+# mdt_filtered_o <-
 #   readr::read_rds(
 #     paste0(
 #       "data_indexpoints_tidy/mdt_",
@@ -514,17 +514,20 @@ population_size <- nrow(links_nj)
 #   )
 
 # To get the mdt_validated
-# {
-#   source("exclude_trp_mdts_list.R")
+# source("exclude_trp_mdts_list.R")
 #
-#   mdt_validated <-
-#     mdt_validated |>
-#     dplyr::inner_join(
-#       # "inner" works as a filter here!
-#       trp_weights,
-#       by = dplyr::join_by(trp_id)
-#     )
-# }
+# mdt_validated <-
+#   mdt_validated |>
+#   dplyr::inner_join(
+#     # "inner" works as a filter here!
+#     trp_weights,
+#     by = dplyr::join_by(trp_id)
+#   ) |>
+#   dplyr::summarise(
+#     n_trp = n(),
+#     .by = "year_month"
+#   )
+
 
 # trp_mdt_ok_refyear <-
 #   mdt_validated |>
@@ -1042,41 +1045,37 @@ mdt_filtered <-
 source("exclude_cmdt.R")
 length(unique(mdt_validated$trp_id))
 
-trp_mdt_ok_refyear <-
-  mdt_validated |>
-  filter_cmdt(paste0(reference_year, "-januar")) |>
-  purrr::pluck("trp_id") |>
-  base::unique()
-
-length(trp_mdt_ok_refyear)
-
 
 ### Original TRPs ----
-trp_window_index <-
+nj_index_month <-
   mdt_validated |>
   dplyr::filter(
     trp_id %in% this_citys_trps_all_adt_final$trp_id
   ) |>
-  rolling_index_trp()
+  calculate_area_index_month(population_size)
 
-area_index_one_year <- rolling_index_area(trp_window_index)
+area_index_one_year_nj <- calculate_rolling_area_index_one_year(nj_index_month)
 
-area_index_three_years <- rolling_index_multiple_years(area_index_one_year, 3)
+area_index_three_years_nj <- calculate_rolling_index_multiple_years(area_index_one_year_nj, 3)
+
+readr::write_rds(
+  nj_index_month,
+  "representativity/cmdt_index_month_nj.rds"
+)
 
 list(
-  area_index_one_year |>
+  area_index_one_year_nj |>
     dplyr::select(
       universal_year_period_id,
       x_label,
       index_p,
       ci_lower,
-      ci_upper,
-      n_trp
+      ci_upper
     ) |>
     dplyr::mutate(
       window_years = "one"
     ),
-  area_index_three_years |>
+  area_index_three_years_nj |>
     dplyr::select(
       universal_year_period_id,
       x_label,
@@ -1094,7 +1093,7 @@ list(
 
 
 ### More TRPs ----
-trp_window_index_more <-
+nj_index_month_more <-
   mdt_validated |>
   dplyr::filter(
     !(trp_id %in% c(
@@ -1106,22 +1105,56 @@ trp_window_index_more <-
     !(trp_id == "89457V2303027" & universal_year_period_id == 15),
     !(trp_id == "71798V319583" & universal_year_period_id %in% c(15, 16, 17))
   ) |>
-  rolling_index_trp()
+  calculate_area_index_month(population_size)
 
-area_index_one_year_more <- rolling_index_area(trp_window_index_more)
-# Little to gain from more TRPs unless we chain in 2019 and 2023
+area_index_one_year_nj_more <- calculate_rolling_area_index_one_year(nj_index_month_more)
+
+area_index_three_years_nj_more <- calculate_rolling_index_multiple_years(area_index_one_year_nj_more, 3)
+
+readr::write_rds(
+  nj_index_month_more,
+  "representativity/cmdt_index_month_nj_more.rds"
+)
+
+list(
+  area_index_one_year_nj_more |>
+    dplyr::select(
+      universal_year_period_id,
+      x_label,
+      index_p,
+      ci_lower,
+      ci_upper
+    ) |>
+    dplyr::mutate(
+      window_years = "one"
+    ),
+  area_index_three_years_nj_more |>
+    dplyr::select(
+      universal_year_period_id,
+      x_label,
+      index_p,
+      ci_lower,
+      ci_upper
+    ) |>
+    dplyr::mutate(
+      window_years = "three"
+    )
+) |>
+  readr::write_rds(
+    "representativity/rolling_cmdt_index_nj_more.rds"
+  )
 
 
 ### Chained ----
 # Chain link 1: 2017-2019
 cmdt_chain_1 <-
-  area_index_one_year_more |>
+  area_index_one_year_nj_more |>
   dplyr::filter(
     x_label == "des 19"
   )
 
 # Chain link 2: 2019-2023
-trp_window_index_2 <-
+nj_index_month_more_2 <-
   mdt_validated |>
   dplyr::filter(
     !(trp_id %in% c(
@@ -1148,18 +1181,18 @@ trp_window_index_2 <-
   dplyr::filter(
     year >= 2019
   ) |>
-  rolling_index_trp()
+  calculate_area_index_month(population_size)
 
-area_index_one_year_2 <- rolling_index_area(trp_window_index_2)
+area_index_one_year_nj_more_2 <- calculate_rolling_area_index_one_year(nj_index_month_more_2)
 
 cmdt_chain_2 <-
-  area_index_one_year_2 |>
+  area_index_one_year_nj_more_2 |>
   dplyr::filter(
     x_label == "des 23"
   )
 
 # Chain link 3: 2023-2024
-trp_window_index_3 <-
+nj_index_month_more_3 <-
   mdt_validated |>
   dplyr::filter(
     !(trp_id %in% c(
@@ -1171,14 +1204,54 @@ trp_window_index_3 <-
   dplyr::filter(
     year >= 2023
   ) |>
-  rolling_index_trp()
+  calculate_area_index_month(population_size)
 
-area_index_one_year_3 <- rolling_index_area(trp_window_index_3)
+area_index_one_year_nj_more_3 <- calculate_rolling_area_index_one_year(nj_index_month_more_3)
 
 # Gather
+nj_index_month_more_chained <-
+  dplyr::bind_rows(
+    nj_index_month_more |>
+      dplyr::filter(
+        universal_year_period_id <= 56
+      ),
+    nj_index_month_more_2 |>
+      dplyr::filter(
+        universal_year_period_id <= 112
+      ),
+    nj_index_month_more_3 |>
+      dplyr::filter(
+        universal_year_period_id <= 126
+      )
+  )
+
+readr::write_rds(
+  nj_index_month_more_chained,
+  "representativity/cmdt_index_month_nj_more_chained.rds"
+)
+
 index_chained <-
   dplyr::bind_rows(
     cmdt_chain_1,
     cmdt_chain_2,
-    area_index_one_year_3
+    area_index_one_year_nj_more_3
+  ) |>
+  dplyr::mutate(
+    universal_year_period_id = as.character(universal_year_period_id)
+  ) |>
+  dplyr::select(
+    universal_year_period_id,
+    index_i, var_i
+  )
+
+index_chain_1_2 <- calculate_chained_cmdt_index(dplyr::slice(index_chained, 1), dplyr::slice(index_chained, 2))
+
+index_chain_1_2_3 <-
+  calculate_chained_cmdt_index(index_chain_1_2, dplyr::slice(index_chained, 3)) |>
+  dplyr::mutate(
+    index_p = 100 * (index_i - 1),
+    sd_p = 100 * base::sqrt(var_i),
+    em_p = -stats::qnorm(0.025) * sd_p,
+    ci_lower = index_p - em_p,
+    ci_upper = index_p + em_p
   )

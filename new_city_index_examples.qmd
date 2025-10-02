@@ -234,11 +234,21 @@ error_comparison_trondheim <-
 
 
 # Nord-Jæren
-index_examples_cmdt_nj <- 
+qmd_index_examples_cmdt_nj_month <- readr::read_rds("representativity/cmdt_index_month_nj.rds")
+
+qmd_index_examples_cmdt_nj <- 
   readr::read_rds("representativity/rolling_cmdt_index_nj.rds") |>
   dplyr::bind_rows()
 
-indexes_official_nj <-
+qmd_index_examples_cmdt_nj_month_more <- readr::read_rds("representativity/cmdt_index_month_nj_more.rds")
+
+qmd_index_examples_cmdt_nj_more <- 
+  readr::read_rds("representativity/rolling_cmdt_index_nj_more.rds") |>
+  dplyr::bind_rows()
+
+qmd_index_examples_cmdt_nj_month_more_chained <- readr::read_rds("representativity/cmdt_index_month_nj_more_chained.rds")
+
+qmd_indexes_official_nj <-
   readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_952.rds")) |>
   dplyr::bind_rows()
 
@@ -304,68 +314,68 @@ indexes_official_nj <-
 
 
 # Nord-Jæren more TRPs
-indexes_examples_nj_2 <- readr::read_rds("representativity/new_index_examples_2_nj.rds")
+# indexes_examples_nj_2 <- readr::read_rds("representativity/new_index_examples_2_nj.rds")
+# 
+# indexes_comparison_nj_2 <-
+#   dplyr::bind_rows(
+#     indexes_examples_nj_2[[1]] |> 
+#       dplyr::mutate(
+#         version = "old"
+#       ),
+#     indexes_examples_nj_2[[2]] |> 
+#       dplyr::mutate(
+#         version = "new"
+#       ),
+#     indexes_official_nj |> 
+#       dplyr::mutate(
+#         version = "official"
+#       )
+#   )
+# 
+# error_comparison_nj_2 <-
+#   dplyr::bind_rows(
+#     indexes_examples_nj_2[[1]] |> 
+#       dplyr::mutate(
+#         version = "old",
+#         em = (ci_upper - ci_lower) / 2
+#       ) |> 
+#       dplyr::select(
+#         window, month_object, version, em
+#       ),
+#     indexes_examples_nj_2[[2]] |> 
+#       dplyr::mutate(
+#         version = "new_sample_fpc"
+#       ) |> 
+#       dplyr::select(
+#         window, month_object, version, em = em_selection
+#       ),
+#     indexes_examples_nj_2[[2]] |> 
+#       dplyr::mutate(
+#         version = "new_model"
+#       ) |> 
+#       dplyr::select(
+#         window, month_object, version, em = em_model
+#       ),
+#     indexes_examples_nj_2[[2]] |> 
+#       dplyr::mutate(
+#         version = "new_bs_bca",
+#         em = (bs_bca_upper - bs_bca_lower) / 2
+#       ) |> 
+#       dplyr::select(
+#         window, month_object, version, em
+#       ),
+#     indexes_official_nj |> 
+#       dplyr::mutate(
+#         version = "official",
+#         em = (ci_upper - ci_lower) / 2
+#       ) |> 
+#       dplyr::select(
+#         window, month_object, version, em
+#       )
+#   )
 
-indexes_comparison_nj_2 <-
-  dplyr::bind_rows(
-    indexes_examples_nj_2[[1]] |> 
-      dplyr::mutate(
-        version = "old"
-      ),
-    indexes_examples_nj_2[[2]] |> 
-      dplyr::mutate(
-        version = "new"
-      ),
-    indexes_official_nj |> 
-      dplyr::mutate(
-        version = "official"
-      )
-  )
-
-error_comparison_nj_2 <-
-  dplyr::bind_rows(
-    indexes_examples_nj_2[[1]] |> 
-      dplyr::mutate(
-        version = "old",
-        em = (ci_upper - ci_lower) / 2
-      ) |> 
-      dplyr::select(
-        window, month_object, version, em
-      ),
-    indexes_examples_nj_2[[2]] |> 
-      dplyr::mutate(
-        version = "new_sample_fpc"
-      ) |> 
-      dplyr::select(
-        window, month_object, version, em = em_selection
-      ),
-    indexes_examples_nj_2[[2]] |> 
-      dplyr::mutate(
-        version = "new_model"
-      ) |> 
-      dplyr::select(
-        window, month_object, version, em = em_model
-      ),
-    indexes_examples_nj_2[[2]] |> 
-      dplyr::mutate(
-        version = "new_bs_bca",
-        em = (bs_bca_upper - bs_bca_lower) / 2
-      ) |> 
-      dplyr::select(
-        window, month_object, version, em
-      ),
-    indexes_official_nj |> 
-      dplyr::mutate(
-        version = "official",
-        em = (ci_upper - ci_lower) / 2
-      ) |> 
-      dplyr::select(
-        window, month_object, version, em
-      )
-  )
-
-index_2017_2024_chained_nj <- readr::read_rds("representativity/new_index_chain_nj.rds")
-index_comparison_nj <- readr::read_rds("representativity/new_index_comparison_nj.rds")
+#index_2017_2024_chained_nj <- readr::read_rds("representativity/new_index_chain_nj.rds")
+#index_comparison_nj <- readr::read_rds("representativity/new_index_comparison_nj.rds")
 ```
 
 
@@ -631,7 +641,7 @@ I disse eksemplene benyttes de samme punktene som i dagens metode. Her er indeks
 #| label: fig-nj_official_12
 #| fig-cap: "Offisiell indeks for Nord-Jæren, ett års glidende indeks."
 
-indexes_official_nj |> 
+qmd_indexes_official_nj |> 
   dplyr::filter(
     window == "12_months",
     year < 2025
@@ -653,7 +663,7 @@ indexes_official_nj |>
 #| label: fig-nj_improved_12
 #| fig-cap: "Forbedret indeks for Nord-Jæren, ett års glidende indeks."
 
-index_examples_cmdt_nj |> 
+qmd_index_examples_cmdt_nj |> 
   dplyr::filter(window_years == "one") |> 
   visualize_rolling_cmdt_index(
     "Data: Statens vegvesen",
@@ -673,17 +683,17 @@ index_examples_cmdt_nj |>
 #| fig-cap: "Sammenligning av feilmargin." 
 
 dplyr::inner_join(
-  indexes_official_nj |> 
-  dplyr::filter(window == "12_months") |> 
-  dplyr::mutate(
-    x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4)),
-    dagens = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)
-  ) |> 
-  dplyr::select(x_label, dagens),
-  index_examples_cmdt_nj |> 
-  dplyr::filter(window_years == "one") |> 
-  dplyr::mutate(forbedret = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)) |> 
-  dplyr::select(x_label, forbedret),
+  qmd_indexes_official_nj |> 
+    dplyr::filter(window == "12_months") |> 
+    dplyr::mutate(
+      x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4)),
+      dagens = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)
+    ) |> 
+    dplyr::select(x_label, dagens),
+  qmd_index_examples_cmdt_nj |> 
+    dplyr::filter(window_years == "one") |> 
+    dplyr::mutate(forbedret = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)) |> 
+    dplyr::select(x_label, forbedret),
   by = dplyr::join_by(x_label)
 ) |> 
 tidyr::pivot_longer(
@@ -701,24 +711,23 @@ visualize_em_comparison()
 #| fig-cap: "Sammenligning av antall punkt." 
 
 dplyr::inner_join(
-  indexes_official_nj |> 
-  dplyr::filter(window == "12_months") |> 
-  dplyr::mutate(
-    x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4))
-  ) |> 
-  dplyr::select(x_label, dagens = n_trp),
-  index_examples_cmdt_nj |> 
-  dplyr::filter(window_years == "one") |> 
-  dplyr::select(x_label, forbedret = n_trp),
+  qmd_indexes_official_nj |>
+    dplyr::filter(window == "12_months") |>
+    dplyr::mutate(
+      x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4))
+    ) |>
+    dplyr::select(x_label, dagens = n_trp),
+  qmd_index_examples_cmdt_nj_month |>
+    dplyr::select(x_label, forbedret = n_trp),
   by = dplyr::join_by(x_label)
-) |> 
+) |>
 tidyr::pivot_longer(
   cols = c(dagens, forbedret),
   names_to = "version"
-) |> 
+) |>
 dplyr::mutate(
   x_label = as.factor(x_label) |> forcats::fct_inorder()
-) |> 
+) |>
 visualize_n_trp_comparison()
 ```
 
@@ -729,7 +738,7 @@ visualize_n_trp_comparison()
 #| label: fig-nj_official_36
 #| fig-cap: "Offisiell indeks for Nord-Jæren, tre års glidende indeks."
 
-indexes_official_nj |> 
+qmd_indexes_official_nj |> 
   dplyr::filter(
     window == "36_months",
     year < 2025
@@ -751,8 +760,8 @@ indexes_official_nj |>
 #| label: fig-nj_improved_36
 #| fig-cap: "Forbedret indeks for Nord-Jæren, tre års glidende indeks."
 
-index_examples_cmdt_nj |> 
-  dplyr::filter(window_years == "one") |> 
+qmd_index_examples_cmdt_nj |> 
+  dplyr::filter(window_years == "three") |> 
   visualize_rolling_cmdt_index(
     "Data: Statens vegvesen",
     "Estimert endring i trafikkmengde siste glidende 3 år, forbedret metode",
@@ -771,17 +780,17 @@ index_examples_cmdt_nj |>
 #| fig-cap: "Sammenligning av feilmargin." 
 
 dplyr::inner_join(
-  indexes_official_nj |> 
-  dplyr::filter(window == "36_months") |> 
-  dplyr::mutate(
-    x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4)),
-    dagens = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)
-  ) |> 
-  dplyr::select(x_label, dagens),
-  index_examples_cmdt_nj |> 
-  dplyr::filter(window_years == "three") |> 
-  dplyr::mutate(forbedret = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)) |> 
-  dplyr::select(x_label, forbedret),
+  qmd_indexes_official_nj |> 
+    dplyr::filter(window == "36_months") |> 
+    dplyr::mutate(
+      x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4)),
+      dagens = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)
+    ) |> 
+    dplyr::select(x_label, dagens),
+  qmd_index_examples_cmdt_nj |> 
+    dplyr::filter(window_years == "three") |> 
+    dplyr::mutate(forbedret = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)) |> 
+    dplyr::select(x_label, forbedret),
   by = dplyr::join_by(x_label)
 ) |> 
 tidyr::pivot_longer(
@@ -792,6 +801,84 @@ dplyr::mutate(
   x_label = as.factor(x_label) |> forcats::fct_inorder()
 ) |> 
 visualize_em_comparison()
+```
+
+
+### Direkte indeks, utvidet utvalg
+I disse eksemplene benyttes de samme punktene som i dagens metode. Her er indeksen en direkte sammenligning med referanseåret.
+
+```{r}
+#| label: fig-nj_improved_12_more
+#| fig-cap: "Forbedret indeks for Nord-Jæren, ett års glidende indeks."
+
+qmd_index_examples_cmdt_nj_more |> 
+  dplyr::filter(window_years == "one") |> 
+  visualize_rolling_cmdt_index(
+    "Data: Statens vegvesen",
+    "Estimert endring i trafikkmengde siste glidende 1 år, forbedret metode",
+    paste0("Sammenlignet med 2017")
+  ) +
+  theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  )
+```
+
+```{r}
+#| label: fig-nj_n_trp_12_more
+#| fig-cap: "Antall punkt." 
+
+qmd_index_examples_cmdt_nj_month_more |>
+  dplyr::select(x_label, n_trp) |>
+  dplyr::mutate(
+    x_label = as.factor(x_label) |> forcats::fct_inorder()
+  ) |>
+  ggplot2::ggplot(aes(x = x_label, y = n_trp)) +
+    ggplot2::geom_point(color = "#ed9300") +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 90),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        ),
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.background = element_rect(fill = svv_background_color),
+      legend.position = "bottom"
+    ) +
+    labs(
+      x = NULL, y = "Antall punkt"
+    ) +
+    ggtitle("Antall punkt")
+```
+
+
+```{r}
+#| label: fig-nj_improved_36_more
+#| fig-cap: "Forbedret indeks for Nord-Jæren, tre års glidende indeks."
+
+qmd_index_examples_cmdt_nj_more |> 
+  dplyr::filter(window_years == "three") |> 
+  visualize_rolling_cmdt_index(
+    "Data: Statens vegvesen",
+    "Estimert endring i trafikkmengde siste glidende 3 år, forbedret metode",
+    paste0("Sammenlignet med 2017")
+  ) +
+  theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  )
 ```
 
 
@@ -808,19 +895,57 @@ En kjedet indeks vil da kunne utnytte flere punkter med en inndeling i delperiod
 - 2019-2023
 - 2023- 
 
+
+```{r}
+#| label: fig-nj_n_trp_chained
+#| fig-cap: "Antall punkt." 
+
+qmd_index_examples_cmdt_nj_month_more_chained |>
+  dplyr::select(x_label, n_trp) |>
+  dplyr::mutate(
+    x_label = as.factor(x_label) |> forcats::fct_inorder()
+  ) |>
+  ggplot2::ggplot(aes(x = x_label, y = n_trp)) +
+    ggplot2::geom_point(color = "#ed9300") +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 90),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        ),
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.background = element_rect(fill = svv_background_color),
+      legend.position = "bottom"
+    ) +
+    labs(
+      x = NULL, y = "Antall punkt"
+    ) +
+    ggtitle("Antall punkt")
+```
+
 Et regneeksempel for indeks til 2024 viser følgende:
 
-- 2017-2019: -3,3 % med 39 punkter
-- 2019-2023:  6,8 % med 42 punkter
-- 2023-2024:  0,8 % med 76 punkter
+- 2017-2019: -2,5 % 
+- 2019-2023:  6,4 % 
+- 2023-2024:  1,0 % 
 
-Til sammen gir dette en endring fra 2017 til 2024 på 4,1 % med en feilmargin på 9,2 prosentpoeng.
+Til sammen gir dette en endring fra 2017 til 2024 på 4,8 % med en feilmargin på 1,2 prosentpoeng.
 
 Til sammenligning er kjeding av årlig indeks slik vi finner den i den offisielle rapporten på 0,6 % med en feilmargin på 12,6 prosentpoeng. Her benyttes i varierende grad et antall punkter mellom 19 og 23.
 
-Ett års glidende indeks viser for 2024 en endring på 5,2 % med en feilmargin på 13,6 prosentpoeng. Her benyttes kun 16 punkter.
+Ett års glidende indeks viser for 2024 en endring på 6,5 % med en feilmargin på 1,3 prosentpoeng.
 
-Disse tallene illustrerer fordelen med en kjedet indeks da denne har et større antall punkt, og at feilmarginen er mindre.
+Disse tallene illustrerer fordelen med en periodevis kjedet indeks da denne har et større antall punkt. Feilmarginen er mye mindre enn for årlig kjedet indeks, men på samme nivå som ett års glidende indeks.
 
 
 # Bergen
