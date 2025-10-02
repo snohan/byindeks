@@ -95,8 +95,7 @@ links_bergen <-
   readr::read_rds(
     "traffic_link_pop/links_bergen.rds"
   )
-
-#population_size <- nrow(links_bergen)
+population_size <- nrow(links_bergen)
 
 function_class_tw <-
   links_bergen |>
@@ -157,47 +156,47 @@ mdt_filtered <-
 # To get the mdt_validated df
 source("exclude_cmdt.R")
 
-trp_mdt_ok_refyear <-
-  mdt_validated |>
-  filter_cmdt(paste0(reference_year, "-januar")) |>
-  purrr::pluck("trp_id") |>
-  base::unique()
+# trp_mdt_ok_refyear <-
+#   mdt_validated |>
+#   filter_cmdt(paste0(reference_year, "-januar")) |>
+#   purrr::pluck("trp_id") |>
+#   base::unique()
+#
+# length(trp_mdt_ok_refyear)
 
-length(trp_mdt_ok_refyear)
-
-mdt_validated |>
-  # Limit amount of data to plot to minimize plot generation waiting time
-  #dplyr::filter(year > 2022) |>
-  #dplyr::filter(!(year %in% c(2020, 2021))) |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[1:3]) |>
-  dplyr::select(
-    trp_id,
-    year,
-    month,
-    mdt
-  ) |>
-  tidyr::complete(
-    trp_id,
-    year,
-    month,
-    fill = list(mdt = NA_real_)
-  ) |>
-  dplyr::left_join(
-    points,
-    by = "trp_id"
-  ) |>
-  dplyr::mutate(
-    road_category_and_number_and_point_name = paste0(road_category_and_number, " ", name),
-    year = forcats::as_factor(year)
-  ) |>
-  dplyr::select(
-    trp_id,
-    year,
-    month,
-    mdt,
-    road_category_and_number_and_point_name
-  ) |>
-  barplot_cmdt()
+# mdt_validated |>
+#   # Limit amount of data to plot to minimize plot generation waiting time
+#   #dplyr::filter(year > 2022) |>
+#   #dplyr::filter(!(year %in% c(2020, 2021))) |>
+#   dplyr::filter(trp_id %in% trp_mdt_ok_refyear[1:3]) |>
+#   dplyr::select(
+#     trp_id,
+#     year,
+#     month,
+#     mdt
+#   ) |>
+#   tidyr::complete(
+#     trp_id,
+#     year,
+#     month,
+#     fill = list(mdt = NA_real_)
+#   ) |>
+#   dplyr::left_join(
+#     points,
+#     by = "trp_id"
+#   ) |>
+#   dplyr::mutate(
+#     road_category_and_number_and_point_name = paste0(road_category_and_number, " ", name),
+#     year = forcats::as_factor(year)
+#   ) |>
+#   dplyr::select(
+#     trp_id,
+#     year,
+#     month,
+#     mdt,
+#     road_category_and_number_and_point_name
+#   ) |>
+#   barplot_cmdt()
 
 
 ## Index calculation ----
@@ -212,41 +211,32 @@ mdt_validated |>
 # 2
 # TODO: adding up uncertainty in CMDT in this weighed yearly mean CMDT
 # For now, assume no uncerainty here, and it probably is much smaller than the contribution from spatial TRP sampling.
-trp_window_index <- rolling_index_trp(mdt_validated)
+brg_index_month <-
+  mdt_validated |>
+  calculate_area_index_month(population_size)
 
-trp_window_index_wide <-
-  trp_window_index |>
-  dplyr::mutate(
-    index_p = round(index_p, 1)
-  ) |>
-  tidyr::pivot_wider(
-    id_cols = trp_id,
-    names_from = universal_year_period_id_end,
-    names_prefix = "u_",
-    values_from = index_p
-  )
+area_index_one_year_brg <- calculate_rolling_area_index_one_year(brg_index_month)
 
-# 3
-area_index_one_year <- rolling_index_area(trp_window_index)
+area_index_three_years_brg <- calculate_rolling_index_multiple_years(area_index_one_year_brg, 3)
 
-# 4
-#area_index_two_years <- rolling_index_multiple_years(area_index_one_year, 2)
-area_index_three_years <- rolling_index_multiple_years(area_index_one_year, 3)
+readr::write_rds(
+  brg_index_month,
+  "representativity/cmdt_index_month_brg.rds"
+)
 
 list(
-  area_index_one_year |>
+  area_index_one_year_brg |>
     dplyr::select(
       universal_year_period_id,
       x_label,
       index_p,
       ci_lower,
-      ci_upper,
-      n_trp
+      ci_upper
     ) |>
     dplyr::mutate(
       window_years = "one"
     ),
-  area_index_three_years |>
+  area_index_three_years_brg |>
     dplyr::select(
       universal_year_period_id,
       x_label,
@@ -258,9 +248,63 @@ list(
       window_years = "three"
     )
 ) |>
-readr::write_rds(
-  "representativity/rolling_cmdt_index_bergen.rds"
-)
+  readr::write_rds(
+    "representativity/rolling_cmdt_index_brg.rds"
+  )
+
+
+
+
+
+# trp_window_index <- rolling_index_trp(mdt_validated)
+#
+# trp_window_index_wide <-
+#   trp_window_index |>
+#   dplyr::mutate(
+#     index_p = round(index_p, 1)
+#   ) |>
+#   tidyr::pivot_wider(
+#     id_cols = trp_id,
+#     names_from = universal_year_period_id_end,
+#     names_prefix = "u_",
+#     values_from = index_p
+#   )
+#
+# # 3
+# area_index_one_year <- rolling_index_area(trp_window_index)
+#
+# # 4
+# #area_index_two_years <- rolling_index_multiple_years(area_index_one_year, 2)
+# area_index_three_years <- rolling_index_multiple_years(area_index_one_year, 3)
+#
+# list(
+#   area_index_one_year |>
+#     dplyr::select(
+#       universal_year_period_id,
+#       x_label,
+#       index_p,
+#       ci_lower,
+#       ci_upper,
+#       n_trp
+#     ) |>
+#     dplyr::mutate(
+#       window_years = "one"
+#     ),
+#   area_index_three_years |>
+#     dplyr::select(
+#       universal_year_period_id,
+#       x_label,
+#       index_p,
+#       ci_lower,
+#       ci_upper
+#     ) |>
+#     dplyr::mutate(
+#       window_years = "three"
+#     )
+# ) |>
+# readr::write_rds(
+#   "representativity/rolling_cmdt_index_bergen.rds"
+# )
 
 
 # The offical results

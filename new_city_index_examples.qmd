@@ -95,11 +95,17 @@ municipality_polygon_trondheim <- readr::read_rds("traffic_link_pop/municipality
 
 # Calculation examples
 # Bergen
-index_examples_cmdt_bergen <- 
-  readr::read_rds("representativity/rolling_cmdt_index_bergen.rds") |>
+# index_examples_cmdt_bergen <- 
+#   readr::read_rds("representativity/rolling_cmdt_index_bergen.rds") |>
+#   dplyr::bind_rows()
+
+qmd_index_examples_cmdt_brg_month <- readr::read_rds("representativity/cmdt_index_month_brg.rds")
+
+qmd_index_examples_cmdt_brg <- 
+  readr::read_rds("representativity/rolling_cmdt_index_brg.rds") |>
   dplyr::bind_rows()
 
-indexes_official_bergen <-
+qmd_indexes_official_bergen <-
   readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_8952.rds")) |>
   dplyr::bind_rows()
 
@@ -980,7 +986,7 @@ map_links_with_function_class(links_bergen) |>
 #| label: fig-bergen_official_12
 #| fig-cap: "Offisiell indeks for Bergen, ett års glidende indeks."
 
-indexes_official_bergen |> 
+qmd_indexes_official_bergen |> 
   dplyr::filter(
     window == "12_months",
     year < 2025
@@ -1001,7 +1007,7 @@ indexes_official_bergen |>
 #| label: fig-bergen_improved_12
 #| fig-cap: "Forbedret indeks for Bergen, ett års glidende indeks."
 
-index_examples_cmdt_bergen |> 
+qmd_index_examples_cmdt_brg |> 
   dplyr::filter(window_years == "one") |> 
   visualize_rolling_cmdt_index(
     "Data: Statens vegvesen",
@@ -1020,17 +1026,17 @@ index_examples_cmdt_bergen |>
 #| fig-cap: "Sammenligning av feilmargin." 
 
 dplyr::inner_join(
-  indexes_official_bergen |> 
-  dplyr::filter(window == "12_months") |> 
-  dplyr::mutate(
-    x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4)),
-    dagens = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)
-  ) |> 
-  dplyr::select(x_label, dagens),
-  index_examples_cmdt_bergen |> 
-  dplyr::filter(window_years == "one") |> 
-  dplyr::mutate(forbedret = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)) |> 
-  dplyr::select(x_label, forbedret),
+  qmd_indexes_official_bergen |> 
+    dplyr::filter(window == "12_months") |> 
+    dplyr::mutate(
+      x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4)),
+      dagens = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)
+    ) |> 
+    dplyr::select(x_label, dagens),
+  qmd_index_examples_cmdt_brg |> 
+    dplyr::filter(window_years == "one") |> 
+    dplyr::mutate(forbedret = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)) |> 
+    dplyr::select(x_label, forbedret),
   by = dplyr::join_by(x_label)
 ) |> 
 tidyr::pivot_longer(
@@ -1048,26 +1054,26 @@ visualize_em_comparison()
 #| label: fig-bergen_compare_n_trp_12
 #| fig-cap: "Sammenligning av antall punkt." 
 
-dplyr::inner_join(
-  indexes_official_bergen |> 
-  dplyr::filter(window == "12_months") |> 
-  dplyr::mutate(
-    x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4))
-  ) |> 
-  dplyr::select(x_label, dagens = n_trp),
-  index_examples_cmdt_bergen |> 
-  dplyr::filter(window_years == "one") |> 
-  dplyr::select(x_label, forbedret = n_trp),
-  by = dplyr::join_by(x_label)
-) |> 
-tidyr::pivot_longer(
-  cols = c(dagens, forbedret),
-  names_to = "version"
-) |> 
-dplyr::mutate(
-  x_label = as.factor(x_label) |> forcats::fct_inorder()
-) |> 
-visualize_n_trp_comparison()
+# dplyr::inner_join(
+#   indexes_official_bergen |> 
+#   dplyr::filter(window == "12_months") |> 
+#   dplyr::mutate(
+#     x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4))
+#   ) |> 
+#   dplyr::select(x_label, dagens = n_trp),
+#   index_examples_cmdt_bergen |> 
+#   dplyr::filter(window_years == "one") |> 
+#   dplyr::select(x_label, forbedret = n_trp),
+#   by = dplyr::join_by(x_label)
+# ) |> 
+# tidyr::pivot_longer(
+#   cols = c(dagens, forbedret),
+#   names_to = "version"
+# ) |> 
+# dplyr::mutate(
+#   x_label = as.factor(x_label) |> forcats::fct_inorder()
+# ) |> 
+# visualize_n_trp_comparison()
 ```
 
 
@@ -1077,7 +1083,7 @@ visualize_n_trp_comparison()
 #| label: fig-bergen_36_official
 #| fig-cap: "Offisiell indeks for Bergen, tre års glidende indeks."
 
-indexes_official_bergen |> 
+qmd_indexes_official_bergen |> 
   dplyr::filter(
     window == "36_months",
     year < 2025
@@ -1098,7 +1104,7 @@ indexes_official_bergen |>
 #| label: fig-bergen_improved_36
 #| fig-cap: "Forbedret indeks for Bergen, tre års glidende indeks."
 
-index_examples_cmdt_bergen |> 
+qmd_index_examples_cmdt_brg |> 
   dplyr::filter(window_years == "three") |> 
   visualize_rolling_cmdt_index(
     "Data: Statens vegvesen",
@@ -1117,14 +1123,14 @@ index_examples_cmdt_bergen |>
 #| fig-cap: "Sammenligning av feilmargin." 
 
 dplyr::inner_join(
-  indexes_official_bergen |> 
+  qmd_indexes_official_bergen |> 
   dplyr::filter(window == "36_months") |> 
   dplyr::mutate(
     x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4)),
     dagens = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)
   ) |> 
   dplyr::select(x_label, dagens),
-  index_examples_cmdt_bergen |> 
+  qmd_index_examples_cmdt_brg |> 
   dplyr::filter(window_years == "three") |> 
   dplyr::mutate(forbedret = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)) |> 
   dplyr::select(x_label, forbedret),
