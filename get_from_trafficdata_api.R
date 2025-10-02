@@ -7,8 +7,8 @@ library(ghql)
 library(lubridate)
 library(magrittr)
 
-source("calendar_functions.R")
-day_type_weights_relative <- readr::read_rds("calendar_weights/day_type_weights_relative.rds")
+source("H:/Programmering/R/byindeks/calendar_functions.R")
+day_type_weights_relative <- readr::read_rds("H:/Programmering/R/byindeks/calendar_weights/day_type_weights_relative.rds")
 
 
 cli <- ghql::GraphqlClient$new(
@@ -3176,7 +3176,9 @@ get_dt_by_length_for_trp_old <- function(trp_id, from, to) {
   return(dailyTraffic)
 }
 
-
+# trp_id <- "10239V2725979"
+# from <- "2017-01-02T00:00:00Z"
+# to <- "2017-02-02T00:00:00Z"
 get_dt_by_length_for_trp <- function(trp_id, from, to) {
 
   cursor <- ""

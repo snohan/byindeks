@@ -95,8 +95,6 @@ municipality_polygon_trondheim <- readr::read_rds("traffic_link_pop/municipality
 
 # Calculation examples
 # Bergen
-indexes_examples_bergen <- readr::read_rds("representativity/new_index_examples_bergen.rds")
-
 index_examples_cmdt_bergen <- 
   readr::read_rds("representativity/rolling_cmdt_index_bergen.rds") |>
   dplyr::bind_rows()
@@ -105,66 +103,68 @@ indexes_official_bergen <-
   readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_8952.rds")) |>
   dplyr::bind_rows()
 
-indexes_comparison_bergen <-
-  dplyr::bind_rows(
-    indexes_examples_bergen[[1]] |> 
-      dplyr::mutate(
-        version = "old"
-      ),
-    indexes_examples_bergen[[2]] |> 
-      dplyr::mutate(
-        version = "new"
-      ),
-    indexes_official_bergen |> 
-      dplyr::mutate(
-        version = "official"
-      )
-  ) |> 
-  dplyr::filter(
-    month_object < "2025-01-01"
-  )
+# indexes_examples_bergen <- readr::read_rds("representativity/new_index_examples_bergen.rds")
 
-error_comparison_bergen <-
-  dplyr::bind_rows(
-    indexes_examples_bergen[[1]] |> 
-      dplyr::mutate(
-        version = "old",
-        em = (ci_upper - ci_lower) / 2
-      ) |> 
-      dplyr::select(
-        window, month_object, version, em
-      ),
-    indexes_examples_bergen[[2]] |> 
-      dplyr::mutate(
-        version = "new_sample_fpc"
-      ) |> 
-      dplyr::select(
-        window, month_object, version, em = em_selection
-      ),
-    indexes_examples_bergen[[2]] |> 
-      dplyr::mutate(
-        version = "new_model"
-      ) |> 
-      dplyr::select(
-        window, month_object, version, em = em_model
-      ),
-    indexes_examples_bergen[[2]] |> 
-      dplyr::mutate(
-        version = "new_bs_bca",
-        em = (bs_bca_upper - bs_bca_lower) / 2
-      ) |> 
-      dplyr::select(
-        window, month_object, version, em
-      ),
-    indexes_official_bergen |> 
-      dplyr::mutate(
-        version = "official",
-        em = (ci_upper - ci_lower) / 2
-      ) |> 
-      dplyr::select(
-        window, month_object, version, em
-      )
-  )
+# indexes_comparison_bergen <-
+#   dplyr::bind_rows(
+#     indexes_examples_bergen[[1]] |> 
+#       dplyr::mutate(
+#         version = "old"
+#       ),
+#     indexes_examples_bergen[[2]] |> 
+#       dplyr::mutate(
+#         version = "new"
+#       ),
+#     indexes_official_bergen |> 
+#       dplyr::mutate(
+#         version = "official"
+#       )
+#   ) |> 
+#   dplyr::filter(
+#     month_object < "2025-01-01"
+#   )
+# 
+# error_comparison_bergen <-
+#   dplyr::bind_rows(
+#     indexes_examples_bergen[[1]] |> 
+#       dplyr::mutate(
+#         version = "old",
+#         em = (ci_upper - ci_lower) / 2
+#       ) |> 
+#       dplyr::select(
+#         window, month_object, version, em
+#       ),
+#     indexes_examples_bergen[[2]] |> 
+#       dplyr::mutate(
+#         version = "new_sample_fpc"
+#       ) |> 
+#       dplyr::select(
+#         window, month_object, version, em = em_selection
+#       ),
+#     indexes_examples_bergen[[2]] |> 
+#       dplyr::mutate(
+#         version = "new_model"
+#       ) |> 
+#       dplyr::select(
+#         window, month_object, version, em = em_model
+#       ),
+#     indexes_examples_bergen[[2]] |> 
+#       dplyr::mutate(
+#         version = "new_bs_bca",
+#         em = (bs_bca_upper - bs_bca_lower) / 2
+#       ) |> 
+#       dplyr::select(
+#         window, month_object, version, em
+#       ),
+#     indexes_official_bergen |> 
+#       dplyr::mutate(
+#         version = "official",
+#         em = (ci_upper - ci_lower) / 2
+#       ) |> 
+#       dplyr::select(
+#         window, month_object, version, em
+#       )
+#   )
 
 
 # Trondheim
@@ -234,8 +234,6 @@ error_comparison_trondheim <-
 
 
 # Nord-Jæren
-indexes_examples_nj <- readr::read_rds("representativity/new_index_examples_nj.rds")
-
 index_examples_cmdt_nj <- 
   readr::read_rds("representativity/rolling_cmdt_index_nj.rds") |>
   dplyr::bind_rows()
@@ -244,63 +242,65 @@ indexes_official_nj <-
   readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_952.rds")) |>
   dplyr::bind_rows()
 
-indexes_comparison_nj <-
-  dplyr::bind_rows(
-    indexes_examples_nj[[1]] |> 
-      dplyr::mutate(
-        version = "old"
-      ),
-    indexes_examples_nj[[2]] |> 
-      dplyr::mutate(
-        version = "new"
-      ),
-    indexes_official_nj |> 
-      dplyr::mutate(
-        version = "official"
-      )
-  )
-
-error_comparison_nj <-
-  dplyr::bind_rows(
-    indexes_examples_nj[[1]] |> 
-      dplyr::mutate(
-        version = "old",
-        em = (ci_upper - ci_lower) / 2
-      ) |> 
-      dplyr::select(
-        window, month_object, version, em
-      ),
-    indexes_examples_nj[[2]] |> 
-      dplyr::mutate(
-        version = "new_sample_fpc"
-      ) |> 
-      dplyr::select(
-        window, month_object, version, em = em_selection
-      ),
-    indexes_examples_nj[[2]] |> 
-      dplyr::mutate(
-        version = "new_model"
-      ) |> 
-      dplyr::select(
-        window, month_object, version, em = em_model
-      ),
-    indexes_examples_nj[[2]] |> 
-      dplyr::mutate(
-        version = "new_bs_bca",
-        em = (bs_bca_upper - bs_bca_lower) / 2
-      ) |> 
-      dplyr::select(
-        window, month_object, version, em
-      ),
-    indexes_official_nj |> 
-      dplyr::mutate(
-        version = "official",
-        em = (ci_upper - ci_lower) / 2
-      ) |> 
-      dplyr::select(
-        window, month_object, version, em
-      )
-  )
+# indexes_examples_nj <- readr::read_rds("representativity/new_index_examples_nj.rds")
+# 
+# indexes_comparison_nj <-
+#   dplyr::bind_rows(
+#     indexes_examples_nj[[1]] |> 
+#       dplyr::mutate(
+#         version = "old"
+#       ),
+#     indexes_examples_nj[[2]] |> 
+#       dplyr::mutate(
+#         version = "new"
+#       ),
+#     indexes_official_nj |> 
+#       dplyr::mutate(
+#         version = "official"
+#       )
+#   )
+# 
+# error_comparison_nj <-
+#   dplyr::bind_rows(
+#     indexes_examples_nj[[1]] |> 
+#       dplyr::mutate(
+#         version = "old",
+#         em = (ci_upper - ci_lower) / 2
+#       ) |> 
+#       dplyr::select(
+#         window, month_object, version, em
+#       ),
+#     indexes_examples_nj[[2]] |> 
+#       dplyr::mutate(
+#         version = "new_sample_fpc"
+#       ) |> 
+#       dplyr::select(
+#         window, month_object, version, em = em_selection
+#       ),
+#     indexes_examples_nj[[2]] |> 
+#       dplyr::mutate(
+#         version = "new_model"
+#       ) |> 
+#       dplyr::select(
+#         window, month_object, version, em = em_model
+#       ),
+#     indexes_examples_nj[[2]] |> 
+#       dplyr::mutate(
+#         version = "new_bs_bca",
+#         em = (bs_bca_upper - bs_bca_lower) / 2
+#       ) |> 
+#       dplyr::select(
+#         window, month_object, version, em
+#       ),
+#     indexes_official_nj |> 
+#       dplyr::mutate(
+#         version = "official",
+#         em = (ci_upper - ci_lower) / 2
+#       ) |> 
+#       dplyr::select(
+#         window, month_object, version, em
+#       )
+#   )
 
 
 # Nord-Jæren more TRPs

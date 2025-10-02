@@ -299,6 +299,45 @@ calculate_any_two_year_index <- function(index_row_1, index_row_2) {
 }
 
 
+calculate_chained_cmdt_index <- function(index_row_1, index_row_2) {
+
+  two_years <-
+    dplyr::bind_rows(
+      index_row_1,
+      index_row_2
+    )
+
+  base <- index_row_1$universal_year_period_id
+  comp <- index_row_2$universal_year_period_id
+
+  two_years_to_one <-
+    list(
+      index_i = prod(two_years$index_i),
+      base <- index_row_1$universal_year_period_id,
+      comp <- index_row_2$universal_year_period_id,
+      # TODO: HERE!!!
+      standard_error =
+        100 * sqrt(
+          two_years$index_i[1]^2 * 1e-4 * two_years$standard_error[2]^2 +
+            two_years$index_i[2]^2 * 1e-4 * two_years$standard_error[1]^2 +
+            1e-4 * two_years$standard_error[1]^2 * 1e-4 * two_years$standard_error[2]^2
+        )
+    ) |>
+    tibble::as_tibble() |>
+    dplyr::select(
+      year_base,
+      year,
+      month,
+      index_i,
+      n_trp,
+      standard_error
+    ) |>
+    dplyr::mutate(
+      index_type = "chained"
+    )
+}
+
+
 calculate_two_years_index_36_month_version <- function(city_index_df) {
 
   # TODO: add sd and ci
@@ -1224,7 +1263,7 @@ rolling_index_area <- function(trp_window_index) {
     window_index_post_stratified <-
       window_index_f |>
       dplyr::summarise(
-        index_i = (base::sum(index_i * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(2),
+        index_i = (base::sum(index_i * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(4),
         index_p = (base::sum(index_p * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(2),
         index_p_beale = (base::sum(index_p_beale * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(2),
         n_trp = base::sum(n_trp),
@@ -1236,8 +1275,8 @@ rolling_index_area <- function(trp_window_index) {
         var_robust = base::sum((tw_fcl_population_kkm / base::sum(tw_fcl_population_kkm))^2 * var_robust_fcl),
         sd_robust_i = base::sqrt(var_robust),
         sd_robust_p = 100 * base::sqrt(var_robust),
-        em_robust = base::round(-stats::qt(0.025, n_trp - 1) * sd_robust_p, 2),
-        em_robust_i = base::round(-stats::qt(0.025, n_trp - 1) * sd_robust_i, 2),
+        em_robust = base::round(-stats::qt(0.025, n_trp - 1) * sd_robust_p, 4),
+        em_robust_i = base::round(-stats::qt(0.025, n_trp - 1) * sd_robust_i, 4),
         # Variance: ratio estimator
         #var_re = (1/base::sum(tw_fcl_population_kkm)^2) * base::sum(var_re_tw_b_fcl + tw_fcl_population_kkm^2 * var_re_sys_fcl^2),
         #em_re = base::round(-stats::qt(0.025, n_trp - 1) * 100 * base::sqrt(var_re), 2), # Way too big! Something's wrong...
@@ -1378,7 +1417,7 @@ rolling_index_multiple_years <- function(one_year_rolling_index_df, n_rolling_ye
         #
         var_robust_rolling = base::sum(var_robust) / n_rolling_years^2,
         sd_robust_rolling_p = 100 * base::sqrt(var_robust_rolling),
-        em_robust_rolling = base::round(-stats::qnorm(0.025) * sd_robust_rolling_p, 2),
+        em_robust_rolling = base::round(-stats::qnorm(0.025) * sd_robust_rolling_p, 4),
         ci_lower = index_p - em_robust_rolling,
         ci_upper = index_p + em_robust_rolling
       ) |>
@@ -1427,6 +1466,215 @@ rolling_index_multiple_years <- function(one_year_rolling_index_df, n_rolling_ye
 #         starts_with("index_p")
 #       )
 #   )
+
+
+# Rolling index CMDT take 2 ----
+# Monthly city index based on whichever TRPs are available, without considering their time representativeness by year.
+
+calculate_trp_index_month <- function(trp_mdt_df) {
+
+  #
+
+
+}
+
+calculate_area_index_month <- function(trp_mdt_df) {
+
+  # Testing:
+  #trp_mdt_df <- mdt_validated
+
+  # For each month, need to inner join base year (a) and calculation year (b)
+  year_a <- base::min(trp_mdt_df$year)
+  calculation_years <- c((year_a + 1):base::max(trp_mdt_df$year))
+
+  mdt_a <-
+    trp_mdt_df |>
+    dplyr::filter(
+      year == year_a
+    ) |>
+    dplyr::select(
+      trp_id,
+      year_a = year,
+      month,
+      mdt,
+      length_m,
+      fcl = function_class,
+      tw_fcl_population_kkm
+    )
+
+  area_index_month <- tibble::tibble()
+
+  for(i in 1:(base::length(calculation_years))) {
+
+    mdt_b <-
+      trp_mdt_df |>
+      dplyr::filter(
+        year == calculation_years[i]
+      ) |>
+      dplyr::select(
+        trp_id,
+        year_b = year,
+        month,
+        mdt,
+        universal_year_period_id
+      )
+
+    area_index_month_fcl <-
+      dplyr::inner_join(
+        mdt_a,
+        mdt_b,
+        by = dplyr::join_by(trp_id, month),
+        suffix = c("_a", "_b")
+      ) |>
+      # Need some global variables before summarising
+      dplyr::mutate(
+        tw_fcl_observed_a = base::sum(mdt_a * length_m),
+        tw_fcl_observed_b = base::sum(mdt_b * length_m),
+        # Variance: Population model
+        beta_pop_model = base::sum(mdt_a * mdt_b) / base::sum(mdt_a^2),
+        # Variance: Robust
+        ratio_of_mean_observed = base::sum(tw_fcl_observed_b) / base::sum(tw_fcl_observed_a),
+        #
+        n_links_in_selection = n(),
+        .by = c(universal_year_period_id, fcl)
+      ) |>
+      # Can't have just one link in a function class
+      dplyr::filter(
+        n_links_in_selection > 1
+      ) |>
+      # Entities needed in each summation variable
+      dplyr::mutate(
+        #p_abi_i = mdt_b / mdt_a,
+        # Variance: Population model
+        w_trp_length_a =  length_m / tw_fcl_observed_a,
+        # Variance: Robust
+        tw_trp_a = length_m * mdt_a,
+        tw_trp_b = length_m * mdt_b,
+        var_robust_factor_trp = 1/(1 - tw_trp_a / tw_fcl_observed_a),
+        var_robust_diff = (tw_trp_b - ratio_of_mean_observed * tw_trp_a)^2
+      ) |>
+      dplyr::summarise(
+        index_i = base::sum(mdt_b * length_m) / base::sum(mdt_a * length_m),
+        index_p = 100 * (index_i - 1),
+        n_trp = n(),
+        # Variance: Population model
+        var_pop_model_fcl = base::sum(w_trp_length_a^2) * (1/(n_trp - 1)) * base::sum((mdt_b - beta_pop_model * mdt_a)^2),
+        # Variance: Robust
+        var_robust_fcl = (1 / base::sum(mdt_a * length_m)^2) * base::sum(var_robust_factor_trp * var_robust_diff),
+        #
+        .by = c(universal_year_period_id, fcl, tw_fcl_population_kkm)
+      ) |>
+      dplyr::arrange(
+        fcl, universal_year_period_id
+      )
+
+    area_index_month_i <-
+      area_index_month_fcl |>
+      dplyr::summarise(
+        index_i = (base::sum(index_i * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(4),
+        index_p = (base::sum(index_p * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(2),
+        n_trp = base::sum(n_trp),
+        # Variance: Population model
+        var_pop_model = base::sum((tw_fcl_population_kkm / base::sum(tw_fcl_population_kkm))^2 * var_pop_model_fcl),
+        sd_pop_model_p = 100 * base::sqrt(var_pop_model),
+        em_pop_model = base::round(-stats::qt(0.025, n_trp - 1) * sd_pop_model_p, 2),
+        # Variance: Robust
+        var_robust_i = base::sum((tw_fcl_population_kkm / base::sum(tw_fcl_population_kkm))^2 * var_robust_fcl),
+        sd_robust_i = base::sqrt(var_robust_i),
+        em_robust_i = base::round(-stats::qt(0.025, n_trp - 1) * sd_robust_i, 4),
+        sd_robust_p = 100 * base::sqrt(var_robust_i),
+        em_robust_p = base::round(-stats::qt(0.025, n_trp - 1) * sd_robust_p, 4),
+        #
+        ci_lower = index_p - em_robust_p,
+        ci_upper = index_p + em_robust_p,
+        .by = universal_year_period_id
+      )  |>
+      dplyr::left_join(
+        universal_calendar_periods,
+        by = dplyr::join_by(universal_year_period_id)
+      ) |>
+      dplyr::select(
+        universal_year_period_id,
+        x_label,
+        period_name,
+        index_i,
+        index_p,
+        n_trp,
+        #var_pop_model,
+        #em_pop_model,
+        var_robust_i,
+        ci_lower,
+        ci_upper
+      )
+
+    area_index_month <-
+      dplyr::bind_rows(
+        area_index_month,
+        area_index_month_i
+      )
+
+  }
+
+  return(area_index_month)
+}
+
+
+calculate_rolling_area_index_one_year <- function(area_index_month_df) {
+
+  area_index_month_tidy <-
+    area_index_month |>
+    dplyr::left_join(
+      period_weights,
+      by = dplyr::join_by(period_name)
+    ) |>
+    dplyr::select(
+      universal_year_period_id,
+      index_i,
+      var_robust_i,
+      period_days
+    )
+
+  # One-year rolling index for all possible windows.
+  # One may choose start and end of the series by first filtering the df before calling this function.
+
+  first_start_id <- base::min(area_index_month_tidy$universal_year_period_id)
+  last_start_id <- base::max(area_index_month_tidy$universal_year_period_id - 13)
+  possible_window_starts <- c(first_start_id:last_start_id)
+
+  rolling_area_index_month <- tibble::tibble()
+
+  for(i in c(1:(base::length(possible_window_starts)))) {
+
+    window_ids <- c(possible_window_starts[i]:(possible_window_starts[i] + 13))
+
+    rolling_area_index_month_i <-
+      area_index_month_tidy |>
+      dplyr::filter(
+        universal_year_period_id %in% window_ids
+      ) |>
+      dplyr::summarise(
+        index_i = base::sum((period_days / base::sum(period_days)) * index_i),
+        index_p = 100 * (index_i - 1),
+        var_i = base::sum((period_days / base::sum(period_days))^2 * var_robust_i),
+        sd_p = 100 * base::sqrt(var_i),
+        em_p = base::round(-stats::qnorm(0.025) * sd_p, 4),
+        ci_lower = index_p - em_p,
+        ci_upper = index_p + em_p,
+        universal_year_period_id = window_ids[14]
+      )
+
+    rolling_area_index_month <-
+      dplyr::bind_rows(
+        rolling_area_index_month,
+        rolling_area_index_month_i
+      )
+
+  }
+
+  return(rolling_area_index_month)
+
+}
+
 
 
 # Compare ----
