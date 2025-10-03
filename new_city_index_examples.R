@@ -219,6 +219,13 @@ area_index_one_year_brg <- calculate_rolling_area_index_one_year(brg_index_month
 
 area_index_three_years_brg <- calculate_rolling_index_multiple_years(area_index_one_year_brg, 3)
 
+# Sidetrack: for showing some data in presentation
+viz_mdt <- mdt_validated |> select(trp_id, year, month, mdt, length_m, function_class)
+viz_month <- brg_index_month |> select(x_label, index_p, n_trp)
+viz_one_y <- area_index_one_year_brg |> select(x_label, index_p, ci_lower, ci_upper) |> mutate(across(where(is.double), ~ round(.x, 1)))
+viz_three_y <- area_index_three_years_brg |> mutate(across(where(is.double), ~ round(.x, 1)))
+
+# Back on track
 readr::write_rds(
   brg_index_month,
   "representativity/cmdt_index_month_brg.rds"

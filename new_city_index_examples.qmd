@@ -661,7 +661,8 @@ qmd_indexes_official_nj |>
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
-  )
+  ) +
+  ylim(-16, 15)
 ```
 
 
@@ -680,7 +681,8 @@ qmd_index_examples_cmdt_nj |>
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
-  )
+  ) +
+  ylim(-16, 15)
 ```
 
 
@@ -758,7 +760,8 @@ qmd_indexes_official_nj |>
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
-  )
+  ) +
+  ylim(-12, 12)
 ```
 
 
@@ -777,7 +780,8 @@ qmd_index_examples_cmdt_nj |>
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
-  )
+  ) +
+  ylim(-12, 12)
 ```
 
 
@@ -828,7 +832,8 @@ qmd_index_examples_cmdt_nj_more |>
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
-  )
+  ) +
+  ylim(-16, 15)
 ```
 
 ```{r}
@@ -862,6 +867,10 @@ qmd_index_examples_cmdt_nj_month_more |>
       legend.background = element_rect(fill = svv_background_color),
       legend.position = "bottom"
     ) +
+    ggplot2::scale_x_discrete(
+      name = NULL,
+      breaks = ~ dplyr::if_else(stringr::str_detect(.x, "des"), .x, "")
+    ) +
     labs(
       x = NULL, y = "Antall punkt"
     ) +
@@ -884,7 +893,8 @@ qmd_index_examples_cmdt_nj_more |>
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
-  )
+  ) +
+  ylim(-12, 12)
 ```
 
 
@@ -932,6 +942,10 @@ qmd_index_examples_cmdt_nj_month_more_chained |>
       panel.background = element_rect(fill = svv_background_color),
       legend.background = element_rect(fill = svv_background_color),
       legend.position = "bottom"
+    ) +
+    ggplot2::scale_x_discrete(
+      name = NULL,
+      breaks = ~ dplyr::if_else(stringr::str_detect(.x, "des"), .x, "")
     ) +
     labs(
       x = NULL, y = "Antall punkt"
@@ -1000,7 +1014,8 @@ qmd_indexes_official_bergen |>
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
-  )
+  ) +
+  ylim(-15, 4)
 ```
 
 ```{r}
@@ -1018,7 +1033,8 @@ qmd_index_examples_cmdt_brg |>
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
-  )
+  ) +
+  ylim(-15, 4)
 ```
 
 ```{r}
@@ -1054,26 +1070,25 @@ visualize_em_comparison()
 #| label: fig-bergen_compare_n_trp_12
 #| fig-cap: "Sammenligning av antall punkt." 
 
-# dplyr::inner_join(
-#   indexes_official_bergen |> 
-#   dplyr::filter(window == "12_months") |> 
-#   dplyr::mutate(
-#     x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4))
-#   ) |> 
-#   dplyr::select(x_label, dagens = n_trp),
-#   index_examples_cmdt_bergen |> 
-#   dplyr::filter(window_years == "one") |> 
-#   dplyr::select(x_label, forbedret = n_trp),
-#   by = dplyr::join_by(x_label)
-# ) |> 
-# tidyr::pivot_longer(
-#   cols = c(dagens, forbedret),
-#   names_to = "version"
-# ) |> 
-# dplyr::mutate(
-#   x_label = as.factor(x_label) |> forcats::fct_inorder()
-# ) |> 
-# visualize_n_trp_comparison()
+dplyr::inner_join(
+  qmd_indexes_official_bergen |>
+    dplyr::filter(window == "12_months") |>
+    dplyr::mutate(
+      x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4))
+    ) |>
+    dplyr::select(x_label, dagens = n_trp),
+  qmd_index_examples_cmdt_brg_month |>
+    dplyr::select(x_label, forbedret = n_trp),
+  by = dplyr::join_by(x_label)
+) |>
+tidyr::pivot_longer(
+  cols = c(dagens, forbedret),
+  names_to = "version"
+) |>
+dplyr::mutate(
+  x_label = as.factor(x_label) |> forcats::fct_inorder()
+) |>
+visualize_n_trp_comparison()
 ```
 
 
@@ -1097,7 +1112,8 @@ qmd_indexes_official_bergen |>
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
-  )
+  ) +
+  ylim(-10, 4)
 ```
 
 ```{r}
@@ -1115,7 +1131,8 @@ qmd_index_examples_cmdt_brg |>
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
-  )
+  ) +
+  ylim(-10, 4)
 ```
 
 ```{r}
