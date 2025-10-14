@@ -14,7 +14,7 @@ source("indexpoints_tidying_functions.R")
 
 # Set manual variables ----
 {
-index_month <- 8 # to be published now
+index_month <- 9 # to be published now
 city_number <- 960
 city_name <- "Trondheim"
 }
@@ -120,39 +120,6 @@ this_citys_trps_all <-
     station_type
   )
 # Autopass-ID
-
-# List of points with UTM
-# library(sf)
-# library(writexl)
-#
-# city_points_utm <-
-#   this_citys_trps_all |>
-#   dplyr::select(
-#     name,
-#     road_reference,
-#     station_type,
-#     lat, lon
-#   ) |>
-#   sf::st_as_sf(
-#     coords = c("lon", "lat"),
-#     crs = 4326
-#   ) |>
-#   sf::st_transform(32633) |>
-#   dplyr::mutate(
-#     utm33 = sf::st_as_text(geometry)
-#   )
-#
-#
-# city_points_utm |>
-#   ggplot() +
-#   geom_sf()
-#
-# city_points_utm |>
-#   sf::st_drop_geometry() |>
-#   writexl::write_xlsx(
-#     path = "spesialuttak/trd_points_utm.xlsx"
-#   )
-#
 
 trd_station_type <-
   dplyr::bind_rows(

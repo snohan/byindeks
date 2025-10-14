@@ -1,24 +1,24 @@
-# GETTING IN
-# Hourly traffic per class per lane per tolling station (APAR)
-# Tolling station metadata (NVDB)
+# IN
+# - Hourly traffic per class per lane per tolling station (APAR)
+# - Tolling station metadata (NVDB)
 
 # OUT
-# Tolling station metadata tidied
-# Tolling station MDT
-# Tolling station index by month
-# Tolling station index by year
+# - Tolling station metadata tidied
+# - Tolling station MDT
+# - Tolling station index by month
+# - Tolling station index by year
 
 # NEXT
-# city_index_check.Rmd
-# city_index_dataprep_trondheim_toll_stations.R
+# 1. city_index_check.Rmd
+# 2. city_index_dataprep_trondheim_toll_stations.R
 
 {
-  source("rmd_setup.R")
-  source("get_from_trafficdata_api.R")
+  #source("rmd_setup.R")
+  #source("get_from_trafficdata_api.R")
   source("get_from_nvdb_api.R")
+  #library(readxl)
 }
 
-library(readxl)
 
 # Tolling station info ----
 
@@ -323,7 +323,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "august" # English
+month_string <- "september" # English
 year_number <- 2025
 
 apar_data_for_month <-
@@ -493,7 +493,7 @@ plot_toll_station_data_per_lane <- function(toll_id_chosen, year_chosen) {
 }
 
 # Ranheim is 72
-plot_toll_station_data_per_lane("68", 2025)
+plot_toll_station_data_per_lane("86", 2025)
 
 ## Exclusions ----
 # Exclusions may be monthly or daily

@@ -64,7 +64,7 @@ trp_id_msnr <-
 {
   present_year <- 2025
   index_month <- 9 # the one to be published now
-  city_number <- 952
+  city_number <- 16952
 }
 
 
@@ -242,7 +242,7 @@ trp_not_ok <-
 
 mdt_validated |>
   dplyr::filter(!(year %in% c(2020, 2021))) |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[13:17]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[21:23]) |>
   dplyr::select(
     trp_id,
     year, month,
@@ -308,8 +308,8 @@ compare_to_report <-
 all_rolling_indices_list <-
   list(
     all_12_month_indices,
-    all_24_month_indices,
-    all_36_month_indices
+    all_24_month_indices#,
+    #all_36_month_indices
   )
 
 all_rolling_indices <-
@@ -363,7 +363,6 @@ city_indexes <-
 ## TRP index ----
 ## So far by December ----
 # Still need to specify csv-files for years before 2020 to get the pointindex as they are not in API
-#if(!(city_number %in% c(8952, 16952, 18952, 19953))){
 if((city_number %in% c(1952, 955, 952, 959))){
   trp_index_so_far_by_dec_pre_2020 <-
     purrr::map(
@@ -421,8 +420,6 @@ trp_index_so_far_by_dec_from_2020 <-
     index = index_short
   )
 
-
-#if(city_number %in% c(8952, 16952, 18952, 19953)){
 if(!(city_number %in% c(1952, 955, 952, 959))){
   trp_index_year_to_date_dec_bind <-
     dplyr::bind_rows(
@@ -450,14 +447,6 @@ trp_index_year_to_date_dec <-
     n_trp = n(),
     sum_of_squared_weights = sum(squared_weight)
   )
-
-# n_points_per_month <-
-#   trp_index_monthly %>%
-#   dplyr::group_by(
-#     year,
-#     month
-#   ) %>%
-#   dplyr::summarise(n_trp = n())
 
 
 ## So far by index month ----
@@ -507,7 +496,6 @@ trp_index_year_to_date_by_index_month <-
 
 ## Monthly ----
 # For Excel report
-#if(!(city_number %in% c(8952, 16952, 18952, 19953))){
 if((city_number %in% c(1952, 955, 952, 959))){
   trp_index_monthly_pre_2020 <-
     purrr::map_dfr(
@@ -542,7 +530,6 @@ trp_index_monthly_from_2020 <-
     index = index_short
   )
 
-#if(city_number %in% c(8952, 16952, 18952, 19953)){
 if(!(city_number %in% c(1952, 955, 952, 959))){
   trp_index_monthly <-
     dplyr::bind_rows(
@@ -557,52 +544,6 @@ if(!(city_number %in% c(1952, 955, 952, 959))){
 }
 
 # Solely for Excel ----
-# if(city_number == 960){
-#
-#   trp_index_monthly_wide <-
-#     trp_toll_index_monthly |>
-#     tidyr::complete(
-#       trp_id,
-#       year,
-#       month
-#     ) |>
-#     dplyr::mutate(
-#       month_label = lubridate::make_date(
-#         year = 2000,
-#         month = month,
-#         day = 1
-#       ) |>
-#         lubridate::month(label = TRUE)
-#     ) |>
-#     dplyr::select(
-#       trp_id,
-#       year,
-#       month_label,
-#       index
-#     ) |>
-#     tidyr::pivot_wider(
-#       names_from = "month_label",
-#       values_from = "index"
-#     ) |>
-#     dplyr::left_join(
-#       this_citys_trps_all,
-#       by = "trp_id"
-#     ) |>
-#     dplyr::select(
-#       trp_id,
-#       name,
-#       road_category_and_number,
-#       year,
-#       jan:des
-#     ) |>
-#     dplyr::arrange(
-#       name,
-#       trp_id,
-#       year
-#     )
-#
-# }else{
-
 trp_index_monthly_wide <-
     trp_index_monthly |>
     tidyr::complete(
@@ -646,7 +587,6 @@ trp_index_monthly_wide <-
       trp_id,
       year
     )
-#}
 
 
 # City index ----
@@ -724,12 +664,12 @@ city_index_yearly_all <-
   dplyr::bind_rows(
     # Include only for full years
     years_1_2,
-    years_1_3,
-    years_1_4,
-    years_1_5,
-    years_1_6,
-    years_1_7,
-    #years_1_8
+    # years_1_3,
+    # years_1_4,
+    # years_1_5,
+    # years_1_6,
+    # years_1_7,
+    # years_1_8
   ) |>
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
@@ -1106,7 +1046,6 @@ if(city_number == 16952){
     punkt_adt = trp_info_adt,
     punktindeks_maned = trp_index_monthly_wide,
     byindeks_aarlig = city_index_final,
-    #punkt_3_aar_glid_indeks = all_36_month_trp_indices,
     by_glid_indeks = all_rolling_indexes_chained
   ) |>
     writexl::write_xlsx(
@@ -1124,8 +1063,6 @@ if(city_number == 960){
     punkt_adt = this_citys_trps_all_adt_final_index,
     punktindeks_maned = trp_index_monthly_wide,
     byindeks_aarlig = city_index_yearly_all,
-    #punkt_mdt = mdt_and_pi,
-    #punkt_3_aar_glid_indeks = all_36_month_trp_indices,
     by_glid_indeks = all_rolling_indices,
     byindeks_hittil = city_index_so_far_all
   ) |>
@@ -1144,7 +1081,6 @@ if(!(city_number %in% c(960, 16952, 18952, 19953))){
     punkt_adt = trp_info_adt,
     punktindeks_maned = trp_index_monthly_wide,
     byindeks_aarlig = city_index_yearly_all,
-    #punkt_3_aar_glid_indeks = all_36_month_trp_indices,
     by_glid_indeks = all_rolling_indices
   ) |>
     writexl::write_xlsx(
