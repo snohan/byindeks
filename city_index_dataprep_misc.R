@@ -481,6 +481,9 @@ writexl::write_xlsx(
   "spesialuttak/byindeks_trs_emu.xlsx"
 )
 
+# Compare exclusions of MDT and index ----
+#source("compare_exclusions.R")s
+
 # Theory ----
 # Is the product of two normal variables still normal when means are close to 1 and with small deviation?
 # Seems so
@@ -498,3 +501,13 @@ writexl::write_xlsx(
 # lines(x, dn ,col=2, lwd=2)
 # legend('topright', legend=c('Estimated density', 'Normal
 #     distribution'), lwd=2, lty=c(1,1),col=c(1,2))
+
+# Is the SD weighted from the API?
+# test <-
+#   trp_index_so_far_by_dec_from_2020 |>
+#   dplyr::summarise(
+#     n = n(),
+#     sd = sd(index),
+#     .by = year
+#   )
+# Yes, seems so.
