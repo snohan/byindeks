@@ -67,7 +67,7 @@ points <- readr::read_rds("trps.rds")
 
 # Choose
 index_year <- 2025
-index_month <- 7 # latest published
+index_month <- 8 # latest published
 city_number <- 12952
 
 new_month_name <- 

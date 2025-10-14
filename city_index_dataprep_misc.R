@@ -1,5 +1,26 @@
 # Leftover code for special use
 
+# Sub area
+# sub_areas <-
+#   trp_names |>
+#   dplyr::select(
+#     trp_id,
+#     sub_area = municipality_name
+#   )
+
+# sub_area_36_month_trp_indices <-
+#   calculate_rolling_indices(36, "by_sub_area")
+#
+# writexl::write_xlsx(
+#   sub_area_36_month_trp_indices,
+#   path = paste0(
+#     "data_indexpoints_tidy/sub_area_rolling_indices_",
+#     city_number,
+#     ".xlsx"
+#   )
+# )
+
+
 ## Chained pointindex ----
 # drop this
 # trp_index_from_refyear <-
@@ -460,3 +481,20 @@ writexl::write_xlsx(
   "spesialuttak/byindeks_trs_emu.xlsx"
 )
 
+# Theory ----
+# Is the product of two normal variables still normal when means are close to 1 and with small deviation?
+# Seems so
+# library(extraDistr)
+# n1 = extraDistr::rlst(1e4, 10, 1, .025)
+# n2 = extraDistr::rlst(1e4, 10, 1, .025)
+# #n1 <- rnorm(10000,1,.005)
+# #n2 <- rnorm(10000,1,.005)
+# n  <- n1*n2
+# d  <- density(n)
+# plot(d,lwd=2)
+# x  <- par('usr')
+# dn <- dnorm(d$x,mean=mean(n),sd=sd(n))
+# x  <- seq(x[1],x[2],length.out=length(dn))
+# lines(x, dn ,col=2, lwd=2)
+# legend('topright', legend=c('Estimated density', 'Normal
+#     distribution'), lwd=2, lty=c(1,1),col=c(1,2))
