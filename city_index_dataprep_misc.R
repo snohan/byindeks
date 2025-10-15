@@ -545,3 +545,15 @@ writexl::write_xlsx(
 #     path = "spesialuttak/trd_points_utm.xlsx"
 #   )
 #
+
+
+
+# Length quality ----
+plotly::ggplotly(
+  mdt_filtered |>
+    dplyr::filter(
+      year == 2025
+    ) |>
+    ggplot(aes(year_month, length_quality, color = trp_id)) +
+    geom_line()
+)

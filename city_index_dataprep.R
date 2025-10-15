@@ -64,7 +64,7 @@ trp_id_msnr <-
 {
   present_year <- 2025
   index_month <- 9 # the one to be published now
-  city_number <- 16952
+  city_number <- 19954
 }
 
 
@@ -114,15 +114,12 @@ city_trps <-
   tictoc::toc()
 }
 
-# TRD
 if(city_number == 960) {
   toll_mdt_light <-
     readr::read_rds(
       file = "data_indexpoints_tidy/trd_toll_mdt.rds",
     ) |>
-    dplyr::filter(
-      class == "lette"
-    ) |>
+    dplyr::filter(class == "lette") |>
     dplyr::rename(
       year_month = month
     ) |>
@@ -136,14 +133,11 @@ if(city_number == 960) {
       -n_days,
       -traffic
     )
-  # TRD stop
 }
 
 mdt_filtered <-
   mdt |>
-  dplyr::filter(
-    length_range == "[..,5.6)"
-  ) |>
+  dplyr::filter(length_range == "[..,5.6)") |>
   dplyr::mutate(
     mdt_valid_length = dplyr::case_when(
       is.na(total_coverage) ~ mdt_total, # If NorTraf, assume high quality
@@ -161,8 +155,7 @@ mdt_filtered <-
   ) |>
   dplyr::select(
     trp_id,
-    year,
-    month,
+    year, month,
     mdt = mdt_length_range,
     coverage,
     length_quality,
@@ -199,16 +192,6 @@ mdt_filtered |>
 # Read back in
 # mdt_filtered <- readr::read_rds(paste0("data_indexpoints_tidy/mdt_", city_number, ".rds"))
 
-# Length quality
-# plotly::ggplotly(
-#   mdt_filtered |>
-#    dplyr::filter(
-#      year == 2025
-#    ) |>
-#    ggplot(aes(year_month, length_quality, color = trp_id)) +
-#    geom_line()
-# )
-
 
 ## Check MDT validity ----
 # Exclude trp-months
@@ -242,7 +225,7 @@ trp_not_ok <-
 
 mdt_validated |>
   dplyr::filter(!(year %in% c(2020, 2021))) |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[21:23]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[6:9]) |>
   dplyr::select(
     trp_id,
     year, month,
@@ -282,15 +265,10 @@ source("exclude_trp_mdts_list.R")
 #plot_mdt_comparisons |> plotly::ggplotly()
 
 
-## All possible window indices for area ----
-all_12_month_indices <-
-  calculate_rolling_indices(12)
-
-all_24_month_indices <-
-  calculate_rolling_indices(24)
-
-all_36_month_indices <-
-  calculate_rolling_indices(36)
+## All possible window indexes ----
+all_12_month_indices <- calculate_rolling_indices(12)
+all_24_month_indices <- calculate_rolling_indices(24)
+all_36_month_indices <- calculate_rolling_indices(36)
 
 compare_to_report <-
   all_36_month_indices |>
@@ -301,15 +279,13 @@ compare_to_report <-
     index_p,
     ci_lower, ci_upper
   ) |>
-  dplyr::mutate(
-    index_p = round(index_p, 1)
-  )
+  dplyr::mutate(index_p = round(index_p, 1))
 
 all_rolling_indices_list <-
   list(
     all_12_month_indices,
-    all_24_month_indices#,
-    #all_36_month_indices
+    all_24_month_indices,
+    all_36_month_indices
   )
 
 all_rolling_indices <-
@@ -628,8 +604,7 @@ city_index_full_years <-
 
 
 ## Chained city index ----
-years_1_2 <-
-  calculate_two_year_index(city_index_full_years)
+years_1_2 <- calculate_two_year_index(city_index_full_years)
 
 years_1_3 <-
   bind_rows(years_1_2, slice(city_index_full_years, 3)) %>%
@@ -664,10 +639,10 @@ city_index_yearly_all <-
   dplyr::bind_rows(
     # Include only for full years
     years_1_2,
-    # years_1_3,
-    # years_1_4,
-    # years_1_5,
-    # years_1_6,
+    years_1_3,
+    years_1_4,
+    years_1_5,
+    years_1_6,
     # years_1_7,
     # years_1_8
   ) |>
@@ -698,7 +673,7 @@ if(city_number == 1952) {
 }
 
 
-# Combining a direct index with rolling indexes ----
+# Combining direct and rolling ----
 ## Nord-Jæren test ----
 chain_start_year_from_to <- "2017-2019"
 
