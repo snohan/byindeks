@@ -3,6 +3,7 @@ title: "Sjekk av vegtrafikkindeks"
 format: 
   html:
     css: svv.css
+    page-layout: full
     number-sections: true
     toc: true
     toc-location: left
@@ -50,7 +51,7 @@ library(sf)
 
 index_year <- 2025
 # Last published month
-index_month <- 5
+index_month <- 7
 
 index_id <- 962
 
@@ -70,7 +71,7 @@ new_month_name_2 <-
 #   stringr::str_to_title()
 
 # run once per session !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#source("road_traffic_index_check_dataprep.R")
+# source("road_traffic_index_check_dataprep.R")
 
 road_traffic_index <- readr::read_rds("road_traffic_index_latest.rds")
 pointindex <- readr::read_rds("road_traffic_pointindex_latest.rds")
@@ -98,23 +99,23 @@ links <-
 
 # Look at details in one county at a time
 
-# 31 Østfold                07 Trond
-# 32 Akershus               07 Trond
-# 33 Buskerud               07 Trond
-#  3 Oslo                   07 Trond
-# 34 Innlandet              07 Snorre
-# 39 Vestfold               07 Trond
-# 40 Telemark               07 Trond
-# 42 Agder                  07 Trond
-# 11 Rogaland               07 Trond
-# 46 Vestland               07 Trond
-# 15 Møre og Romsdal        07 Trond
-# 50 Trøndelag              07 Snorre
-# 18 Nordland               07 Trond
-# 55 Troms                  07 Trond
-# 56 Finnmark               07 Trond
+# 31 Østfold                09 Trond
+# 32 Akershus               09 Trond
+# 33 Buskerud               09 Trond
+#  3 Oslo                   09 Trond
+# 34 Innlandet              09 Snorre
+# 39 Vestfold               09 Trond
+# 40 Telemark               09 Trond
+# 42 Agder                  09 Trond
+# 11 Rogaland               09 Trond
+# 46 Vestland               09 Trond
+# 15 Møre og Romsdal        09 Trond
+# 50 Trøndelag              09 Snorre
+# 18 Nordland               09 Trond
+# 55 Troms                  09 Trond
+# 56 Finnmark               09 Trond
 
-county_number_chosen <- 31
+county_number_chosen <- 3
 
 trps_meta <- 
   points %>% 
@@ -423,19 +424,20 @@ pointindex_prepared_all_wide_diff <-
 pointindex_wide <- 
   dplyr::bind_rows(
     pointindex_prepared_all_wide_total_index,
-    pointindex_prepared_all_wide_coverage,
-    pointindex_prepared_all_wide_length_coverage,
-    pointindex_prepared_all_wide_short,
-    pointindex_prepared_all_wide_long,
-    pointindex_prepared_all_wide_check,
-    pointindex_prepared_all_wide_diff
-  ) %>% 
-  split_road_system_reference() %>% 
+    # pointindex_prepared_all_wide_coverage,
+    # pointindex_prepared_all_wide_length_coverage,
+    # pointindex_prepared_all_wide_short,
+    # pointindex_prepared_all_wide_long,
+    # pointindex_prepared_all_wide_check,
+    # pointindex_prepared_all_wide_diff
+  ) |> 
+  split_road_system_reference() |> 
   dplyr::select(
     name, 
     road = road_category_and_number,
     adt:value_type
-  )
+  ) |> 
+  dplyr::select(-value_type)
   #dplyr::arrange(road_reference)
 
 # Longing for plot

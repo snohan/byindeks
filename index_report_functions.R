@@ -537,7 +537,7 @@ map_pointindex <- function(all_point_info_df, index_limit = 10) {
   return(pointindex_map)
 }
 
-map_pointindex_and_events <- function(this_df, index_limit = 5) {
+map_pointindex_and_events <- function(this_df, index_limit = 8) {
 
   # Create a scale based on index values
   # negative_value <-
