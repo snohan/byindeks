@@ -262,8 +262,8 @@ map_links_with_function_class <- function(link_df) {
     #link_df |>
     links_without_trp |>
     leaflet(
-      width = "100%",
-      height = 700,
+      #width = "100%",
+      #height = 700,
       options =
         leafletOptions(
           crs = nvdb_crs,

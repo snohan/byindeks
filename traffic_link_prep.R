@@ -64,20 +64,34 @@ links_raw_bare <-
     -municipalityIds
   ) |>
   dplyr::mutate(
-    # Addung some missing values
+    # Adding some missing values
     function_class =
       dplyr::case_when(
+        link_id %in% c(
+          "0.23461012@444232-0.0@3401843"
+        ) ~ "A",
         link_id %in% c(
           "0.02123723-0.84417966@283442",
           "0.84417966-1.0@283442",
           "0.0-1.0@3522080",
-          "0.57243185@319730-1.0@3522081"
+          "0.57243185@319730-1.0@3522081",
+          "0.0-1.0@3341087",
+          "0.0@3600894-1.0@443647",
+          "0.0-1.0@3342537"
         ) ~ "B",
         link_id %in% c(
           "0.33524051-1.0@3607094",
           "0.0-0.33524051@3607094",
           "0.0-1.0@3444182"
         ) ~ "C",
+        link_id %in% c(
+          "0.0-0.59197863@443783",
+          "0.0@3449804-1.0@443768",
+          "0.0@443768-1.0@3341657",
+          "0.52129651@3381269-1.0@3857826",
+          "0.0-0.56199619@443881",
+          "0.0@3447686-1.0@443882"
+        ) ~ "D",
         TRUE ~ function_class
       )
   )
@@ -225,6 +239,7 @@ readr::write_rds(
   "traffic_link_pop/link_traffic_volumes.rds"
 )
 
+
 # Traffic volumes, one ----
 # A list with just one AADT and TW per link
 # Traffic volume type could be either a final one (overridden, model result)
@@ -280,6 +295,7 @@ missing_links <-
     !(link_id %in% link_traffic_2024$link_id)
   )
 # Mostly kommunalveger, and no roads in any of the cities.
+
 
 # Link weights ----
 link_id_weights_2024 <-

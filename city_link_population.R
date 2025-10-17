@@ -1,6 +1,14 @@
 # Define traffic link populations for city areas
-# Want to make one file per city that holds
-# Link id, geometry, function class, road category, road number, length, municipality_id, trp id, toll station id
+# Want to make one file per city that holds:
+# - link id
+# - geometry
+# - function class
+# - road category
+# - road number
+# - length
+# - municipality_id
+# - trp id
+# - toll station id
 
 # Steps in deciding population per city:
 # 1. Find the city area definition in terms of municipalities, or more specific if applicable (City agreements/ØKV/SD).
@@ -9,13 +17,12 @@
 # 4. Find the traffic links intersecting with this final area.
 
 # Global necessities:
-# A. All traffic links (ADM)
+# A. All traffic links (downloadable in ADM)
 # B. All urban area polygons (SSB/Geonorge)
 
 # Local necessities:
 # C. City area definition in terms of municipalities, and more specific if applicable (City agreements/ØKV/SD)
 # D. Municipality polygons (NVDB)
-
 
 
 # Setup ----
@@ -590,4 +597,263 @@ map_links_with_function_class(links_nj) |>
 readr::write_rds(
   links_nj,
   "traffic_link_pop/links_nj.rds"
+)
+
+
+# Oslo ----
+city_number <- "959"
+
+## City area ----
+# Nullvekstmålet gjelder Oslo kommune og Akershus slik fylket var avgrenset før 1. januar 2020.
+
+municipality_ids <- c(301)
+
+link_municipality_id_osl <-
+  link_municipality_id |>
+  dplyr::filter(
+    municipality_id %in% municipality_ids |
+    stringr::str_detect(municipality_id, "^32")
+  ) |>
+  dplyr::distinct()
+
+municipality_polygon_osl <-
+  dplyr::bind_rows(
+    hent_fylke(3),
+    hent_fylker_historiske() |>
+      dplyr::filter(
+        nr == "2"
+      )
+  ) |>
+  sf::st_union() |>
+  sf::st_transform("wgs84") |>
+  sf::st_simplify(dTolerance = 1000)
+
+plot(municipality_polygon_osl)
+
+readr::write_rds(
+  municipality_polygon_osl,
+  "traffic_link_pop/municipality_polygon_oslo.rds"
+)
+
+## Urban area ----
+urban_areas_oslo <-
+  urban_areas |>
+  sf::st_filter(municipality_polygon_osl, .predicate = st_intersects) |>
+  sf::st_simplify(dTolerance = 100) |>
+  dplyr::filter(
+    !(tettstednummer %in% c("0031")) # Moss
+  )
+
+plot(urban_areas_oslo$geometry)
+
+# urban_areas_convex_hull <-
+#   urban_areas_oslo |>
+#   sf::st_union() |>
+#   sf::st_convex_hull()
+#
+# plot(urban_areas_convex_hull)
+
+urban_areas_concave <-
+  urban_areas_oslo |>
+  sf::st_union() |>
+  sf::st_concave_hull(ratio = 0.4)
+
+urban_areas_concave |>
+  leaflet(options = leafletOptions(crs = nvdb_crs)) |>
+  addTiles(
+    urlTemplate = nvdb_map_url,
+    attribution = nvdb_map_attribution
+  ) |>
+  addPolylines(
+    opacity = 1,
+    weight = 4,
+    highlightOptions = highlightOptions(
+      bringToFront = TRUE,
+      sendToBack = FALSE,
+      color = "purple",
+      opacity = 0.6
+    )
+  ) |>
+  addPolylines(
+    data = urban_areas_oslo,
+    opacity = 1,
+    weight = 8,
+    color = "red",
+    highlightOptions = highlightOptions(
+      bringToFront = TRUE,
+      sendToBack = FALSE,
+      color = "purple",
+      opacity = 0.6
+    )
+  ) |>
+  addPolylines(
+    data = municipality_polygon_osl,
+    opacity = 1,
+    weight = 8,
+    color = "green",
+    highlightOptions = highlightOptions(
+      bringToFront = TRUE,
+      sendToBack = FALSE,
+      color = "purple",
+      opacity = 0.6
+    )
+  )
+
+readr::write_rds(urban_areas_oslo, "representativity/urban_area_oslo.rds")
+
+
+## City TRPs ----
+this_citys_trps_all_adt_final <-
+  readr::read_rds(
+    file = paste0(
+      "index_trp_metadata/trp_",
+      city_number,
+      ".rds"
+    )
+  )
+
+link_trp_id_city <-
+  link_trp_id |>
+  dplyr::filter(
+    trp_id %in% this_citys_trps_all_adt_final$trp_id
+  )
+
+missing <-
+  this_citys_trps_all_adt_final |>
+  dplyr::filter(
+    !(trp_id %in% link_trp_id_city$trp_id)
+  )
+
+
+## Link population ----
+links_oslo <-
+  links_2024 |>
+  dplyr::filter(
+    link_id %in% link_municipality_id_osl$link_id
+  ) |>
+  sf::st_filter(urban_areas_concave, .predicate = st_intersects) |>
+  # Add some links
+  dplyr::bind_rows(
+    links_2024 |>
+      dplyr::filter(
+        link_id %in% c(
+          "0.40035126@443722-0.9488912@443721",
+          "1.0-0.40035126@443722",
+          "0.0@443499-1.0@1205912",
+          "0.0@1205913-1.0@443499",
+          "0.0-1.0@443500",
+          "0.0-1.0@443160",
+          "0.0-1.0@443161",
+          "0.44850952-0.46071237@443149",
+          "0.46071237-0.55280806@443149",
+          "0.0@443501-1.0@1992885",
+          "0.0@1992890-0.49517412@443501",
+          "0.85064777@971600-1.0@1992888",
+          "0.67427556@443733-1.0@443734",
+          "0.0@971601-0.67427556@443733",
+          "0.0-1.0@2682281",
+          "0.89978332@444251-0.25089956@444252",
+          "0.25089956-0.27690461@444252"
+        )
+      )
+  ) |>
+  # Remove some links
+  dplyr::filter(
+    !(link_id %in% c(
+      "0.0@444315-1.0@409685",
+      "0.0-0.60711864@443723",
+      "0.0-0.98977308@443726",
+      "0.67339081@443723-0.20561992@443752",
+      "0.0-1.0@443764",
+      "0.7899178-1.0@443756",
+      "0.0@443736-1.0@443755",
+      "0.0@1748035-0.88675969@1748078",
+      "0.65317784-0.78055188@443756",
+      "0.52143138-0.48884684@443293",
+      "0.78055188-0.7899178@443756",
+      "0.15425706@971574-0.3911717@443743",
+      "0.3911717-0.0@443743",
+      "0.37160563-0.40033598@444251",
+      "0.93947297@971549-0.37160563@444251",
+      "0.0-1.0@443962",
+      "0.0-1.0@443963",
+      "0.36461762-1.0@443782",
+      "1.0@180902-0.0@443429",
+      "0.987741@971417-1.0@3228193",
+      "0.0-1.0@443911",
+      "0.2524736-0.59761294@444250",
+      "0.0-0.51440309@443912",
+      "0.20573676@443671-1.0@443672",
+      "0.172767@443919-1.0@443920",
+      "0.0-0.4857445@444355",
+      "0.0-1.0@444356",
+      "0.12061301-0.65976112@444303",
+      "0.0-0.5665972@443378",
+      "0.0-0.38874923@444090",
+      "0.72753925-1.0@444098",
+      "0.0-1.0@444099",
+      "0.0-0.72753925@444098",
+      "0.10814654-0.64287309@444313",
+      "0.0991457-0.87074757@444306",
+      "0.0@1897418-0.89647393@2037750",
+      "0.0-1.0@444124",
+      "0.0-1.0@2037771",
+      "0.3261947-0.67776283@2037788",
+      "0.0@2038004-0.37150721@443706",
+      "0.15413866@443479-0.25462557@443480",
+      "0.0-0.38512095@444134",
+      "0.0-1.0@443438",
+      "0.19164779-1.0@444136",
+      "0.78348151@444241-0.59048337@1060044",
+      "0.0-1.0@443928",
+      "0.0-1.0@443924",
+      "0.12158789-0.172767@443919",
+      "0.78597885-1.0@443923",
+      "0.0-0.78597885@443923",
+      "0.38251546-0.79223076@443925",
+      "0.75213077@444129-0.69568483@444130",
+      "0.3385874-0.99074851@604781",
+      "0.72859351-0.97808765@605550",
+      "0.66912707-0.72859351@605550",
+      "1.0@3344853-0.01680531@1773691",
+      "0.35511204@181021-1.0@181022",
+      "0.16410394-0.35511204@181021",
+      "0.14362553-1.0@444345",
+      "0.69568483-1.0@444130"
+    )),
+    function_class != "E"
+  ) |>
+  dplyr::left_join(
+    link_trp_id_city,
+    by = dplyr::join_by(link_id)
+  ) |>
+  dplyr::rename(
+    point_id = trp_id
+  ) #|>
+# dplyr::mutate(
+#   city_trp =
+#     dplyr::case_when(
+#       point_id %in% city_trp_info$p_id ~ TRUE,
+#       TRUE ~ FALSE
+#     )
+# )
+
+# Visual check
+map_links_with_function_class(links_oslo) |>
+  addPolygons(
+    data = municipality_polygon_osl,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  ) |>
+  addPolygons(
+    data = urban_areas_oslo,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  )
+
+readr::write_rds(
+  links_oslo,
+  "traffic_link_pop/links_oslo.rds"
 )
