@@ -11,7 +11,7 @@
 # URI ----
 nvdb_url_v3 <- "https://nvdbapiles-v3.atlas.vegvesen.no"
 nvdb_url_v4 <- "https://nvdbapiles.atlas.vegvesen.no"
-nvdb_url <- nvdb_url_v3
+nvdb_url <- nvdb_url_v4
 
 # Stier ----
 sti_vegobjekter <- "/vegobjekter"
@@ -398,6 +398,97 @@ hent_alle_kommuner_v3 <- function() {
   #                            crs = "+proj=longlat +datum=WGS84")
   #
   return(uthenta_sf)
+}
+
+
+hent_fylke <- function(fylkenr) {
+
+  # Testing:
+  # fylkenr <- "3"
+
+  api_query_root <-
+    paste0(
+      nvdb_url,
+      sti_vegobjekter,
+      "/945",
+      "?inkluder=egenskaper"
+    )
+
+  api_query <-
+    paste0(
+      api_query_root,
+      "&fylke=",
+      fylkenr
+    )
+
+  uthenta <- call_and_parse_nvdb_api(api_query)
+
+  info <-
+    dplyr::bind_rows(
+      uthenta$objekter$egenskaper[[1]],
+      .id = "kid"
+    ) |>
+    dplyr::select(navn, verdi) |>
+    tidyr::pivot_wider(
+      names_from = navn,
+      values_from = verdi
+    ) |>
+    dplyr::select(
+      navn = Fylkesnavn,
+      nr = Fylkesnummer,
+      geometry = "Geometri, flate"
+    ) |>
+    sf::st_as_sf(
+      wkt = "geometry",
+      crs = 25833
+    ) |>
+    sf::st_zm(
+      drop = T,
+      what = "ZM"
+    ) #|>
+  #sf::st_transform("+proj=longlat +datum=WGS84")
+
+  return(info)
+}
+
+hent_fylker_historiske <- function() {
+
+  api_query_root <-
+    paste0(
+      nvdb_url,
+      sti_vegobjekter,
+      "/535",
+      "?inkluder=egenskaper"
+    )
+
+  uthenta <- call_and_parse_nvdb_api(api_query_root)
+
+  info <-
+    dplyr::bind_rows(
+      uthenta$objekter$egenskaper,
+      .id = "kid"
+    ) |>
+    dplyr::select(kid, navn, verdi) |>
+    tidyr::pivot_wider(
+      names_from = navn,
+      values_from = verdi
+    ) |>
+    dplyr::select(
+      navn = Fylkesnavn,
+      nr = Fylkesnummer,
+      geometry = "Geometri, flate"
+    ) |>
+    sf::st_as_sf(
+      wkt = "geometry",
+      crs = 25833
+    ) |>
+    sf::st_zm(
+      drop = T,
+      what = "ZM"
+    ) #|>
+  #sf::st_transform("+proj=longlat +datum=WGS84")
+
+  return(info)
 }
 
 
