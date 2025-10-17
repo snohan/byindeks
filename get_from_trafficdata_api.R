@@ -1802,7 +1802,7 @@ get_trp_mdt_by_direction <- function(trp_id, mdt_year) {
 }
 
 #year <- 2022
-#trp_id <- "94767V804742"
+#trp_id <- "00222V444290"
 calculate_calendar_adjusted_mdt <- function(trp_id, year) {
 
   # trp_id: String!

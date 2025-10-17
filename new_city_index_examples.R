@@ -45,7 +45,7 @@
   svv_background_color <- "#F5F5F5"
 
   library(tidyverse)
-  library(boot)
+  #library(boot)
 
   source("split_road_system_reference.R")
   source("indexpoints_tidying_functions.R")
@@ -156,48 +156,6 @@ mdt_filtered <-
 # To get the mdt_validated df
 source("exclude_cmdt.R")
 
-# trp_mdt_ok_refyear <-
-#   mdt_validated |>
-#   filter_cmdt(paste0(reference_year, "-januar")) |>
-#   purrr::pluck("trp_id") |>
-#   base::unique()
-#
-# length(trp_mdt_ok_refyear)
-
-# mdt_validated |>
-#   # Limit amount of data to plot to minimize plot generation waiting time
-#   #dplyr::filter(year > 2022) |>
-#   #dplyr::filter(!(year %in% c(2020, 2021))) |>
-#   dplyr::filter(trp_id %in% trp_mdt_ok_refyear[1:3]) |>
-#   dplyr::select(
-#     trp_id,
-#     year,
-#     month,
-#     mdt
-#   ) |>
-#   tidyr::complete(
-#     trp_id,
-#     year,
-#     month,
-#     fill = list(mdt = NA_real_)
-#   ) |>
-#   dplyr::left_join(
-#     points,
-#     by = "trp_id"
-#   ) |>
-#   dplyr::mutate(
-#     road_category_and_number_and_point_name = paste0(road_category_and_number, " ", name),
-#     year = forcats::as_factor(year)
-#   ) |>
-#   dplyr::select(
-#     trp_id,
-#     year,
-#     month,
-#     mdt,
-#     road_category_and_number_and_point_name
-#   ) |>
-#   barplot_cmdt()
-
 
 ## Index calculation ----
 # In production we would calculate monthly index, so-far-this-year index. But here, we only do rolling index.
@@ -209,8 +167,8 @@ source("exclude_cmdt.R")
 # For now, assume no uncerainty here, and it probably is much smaller than the contribution from spatial TRP sampling.
 
 # 2
-# TODO: adding up uncertainty in CMDT in this weighed yearly mean CMDT
-# For now, assume no uncerainty here, and it probably is much smaller than the contribution from spatial TRP sampling.
+# TODO: adding up uncertainty in CMDT in this weighted yearly mean CMDT
+# For now, assume no uncertainty here, and it probably is much smaller than the contribution from spatial TRP sampling.
 brg_index_month <-
   mdt_validated |>
   calculate_area_index_month(population_size)
@@ -1305,4 +1263,172 @@ index_chain_1_2_3 <-
     em_p = -stats::qnorm(0.025) * sd_p,
     ci_lower = index_p - em_p,
     ci_upper = index_p + em_p
+  )
+
+
+# Oslo ----
+{
+  city_number <- "959"
+  present_year <- 2024
+  index_month <- 12
+  source("set_time_references.R")
+}
+
+## TRPs ----
+this_citys_trps_all_adt_final <-
+  readr::read_rds(
+    file = paste0(
+      "index_trp_metadata/trp_",
+      city_number,
+      ".rds"
+    )
+  ) |>
+  dplyr::select(
+    trp_id,
+    name,
+    road_reference,
+    municipality_name,
+    #lat, lon,
+    adt, year_aadt, adt_ref
+  )
+
+
+## Link population ----
+# Made in script city_link_population.R
+links_oslo <-
+  readr::read_rds(
+    "traffic_link_pop/links_oslo.rds"
+  )
+population_size <- nrow(links_oslo)
+
+function_class_tw <-
+  links_oslo |>
+  sf::st_drop_geometry() |>
+  dplyr::select(
+    tw_km = tw,
+    function_class
+  ) |>
+  dplyr::summarise(
+    tw_fcl_population_kkm = base::sum(tw_km) / 1000,
+    n_links = n(),
+    .by = function_class
+  ) |>
+  dplyr::arrange(function_class)
+
+trp_weights <-
+  links_oslo |>
+  sf::st_drop_geometry() |>
+  dplyr::filter(
+    !is.na(point_id)
+  ) |>
+  dplyr::select(
+    trp_id = point_id,
+    length_m,
+    function_class
+  ) |>
+  dplyr::mutate(
+    length_m = base::round(length_m)
+  ) |>
+  dplyr::left_join(
+    function_class_tw,
+    by = "function_class"
+  )
+
+# missing <-
+#   this_citys_trps_all_adt_final |>
+#   dplyr::filter(
+#     !(trp_id %in% trp_weights$trp_id)
+#   )
+# Årnes Runni is outside urban area, Fjellsrud syd is on wrong road (no data since 2017)
+
+
+## MDT ----
+mdt_filtered <-
+  readr::read_rds(
+    paste0(
+      "data_indexpoints_tidy/cmdt_",
+      city_number,
+      ".rds"
+    )
+  ) |>
+  dplyr::filter(
+    length_class == "korte"
+  )
+
+# To get the mdt_validated df
+source("exclude_cmdt.R")
+
+# mdt_validated |>
+#   dplyr::filter(trp_id %in% city_trps[1:2]) |>
+#   dplyr::select(
+#     trp_id,
+#     year,
+#     month,
+#     mdt
+#   ) |>
+#   tidyr::complete(
+#     trp_id,
+#     year,
+#     month,
+#     fill = list(mdt = NA_real_)
+#   ) |>
+#   dplyr::left_join(
+#     points,
+#     by = "trp_id"
+#   ) |>
+#   dplyr::mutate(
+#     road_category_and_number_and_point_name = paste0(road_category_and_number, " ", name),
+#     year = forcats::as_factor(year)
+#   ) |>
+#   dplyr::select(
+#     trp_id,
+#     year,
+#     month,
+#     mdt,
+#     road_category_and_number_and_point_name
+#   ) |>
+#   barplot_cmdt()
+
+
+## Index calculation ----
+oslo_index_month <-
+  mdt_validated |>
+  calculate_area_index_month(population_size)
+
+area_index_one_year_oslo <- calculate_rolling_area_index_one_year(oslo_index_month)
+
+area_index_three_years_oslo <- calculate_rolling_index_multiple_years(area_index_one_year_oslo, 3)
+
+# Back on track
+readr::write_rds(
+  oslo_index_month,
+  "representativity/cmdt_index_month_oslo.rds"
+)
+
+list(
+  area_index_one_year_oslo |>
+    dplyr::select(
+      universal_year_period_id,
+      x_label,
+      index_p,
+      ci_lower,
+      ci_upper
+    ) |>
+    dplyr::mutate(
+      window_years = "one"
+    ),
+  area_index_three_years_oslo |>
+    dplyr::select(
+      universal_year_period_id,
+      x_label,
+      index_p,
+      ci_lower,
+      ci_upper
+    ) |>
+    dplyr::mutate(
+      window_years = "three"
+    )
+) |>
+  readr::write_rds(
+    "representativity/rolling_cmdt_index_oslo.rds"
   )

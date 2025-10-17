@@ -32,7 +32,7 @@
 {
   present_year <- 2024
   index_month <- 12
-  city_number <- 952
+  city_number <- "959"
 }
 
 # City years
@@ -43,6 +43,13 @@ source("set_time_references.R")
 city_trps <-
   get_published_pointindex_for_months(city_number, max(index_years), 1)[[1]] |>
   base::sort()
+
+if(city_number == "959") {
+  city_trps <-
+    city_trps |>
+    stringr::str_subset("18012V444303", negate = TRUE) |>
+    stringr::str_subset("18573V444291", negate = TRUE)
+}
 
 ## Nord-Jæren more TRPs
 link_trp_id <- readr::read_rds("traffic_link_pop/link_trp_id.rds")
@@ -58,7 +65,7 @@ city_trps <- trps_existing$trp_id
 # First, make cMDT per TRP and store them in folder cMDT
 
 # cMDT
-trp_number <- 95
+trp_number <- 88
 
 {
   tic()
@@ -83,7 +90,6 @@ trp_number <- 95
 
   toc()
 }
-
 
 # Then gather all cMDT per city in an rds file
 cmdt_city <-

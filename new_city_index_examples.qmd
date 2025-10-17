@@ -92,6 +92,10 @@ links_trondheim <- readr::read_rds("traffic_link_pop/links_trondheim.rds")
 urban_area_trondheim <- readr::read_rds("representativity/urban_area_trondheim.rds")
 municipality_polygon_trondheim <- readr::read_rds("traffic_link_pop/municipality_polygon_trondheim.rds")
 
+links_oslo <- readr::read_rds("traffic_link_pop/links_oslo.rds")
+urban_area_oslo <- readr::read_rds("representativity/urban_area_oslo.rds")
+municipality_polygon_oslo <- readr::read_rds("traffic_link_pop/municipality_polygon_oslo.rds")
+
 
 # Calculation examples
 # Bergen
@@ -382,6 +386,18 @@ qmd_indexes_official_nj <-
 
 #index_2017_2024_chained_nj <- readr::read_rds("representativity/new_index_chain_nj.rds")
 #index_comparison_nj <- readr::read_rds("representativity/new_index_comparison_nj.rds")
+
+
+# Oslo
+qmd_index_examples_cmdt_oslo_month <- readr::read_rds("representativity/cmdt_index_month_oslo.rds")
+
+qmd_index_examples_cmdt_oslo <- 
+  readr::read_rds("representativity/rolling_cmdt_index_oslo.rds") |>
+  dplyr::bind_rows()
+
+qmd_indexes_official_oslo <-
+  readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_959.rds")) |>
+  dplyr::bind_rows()
 ```
 
 
@@ -1237,3 +1253,197 @@ error_comparison_trondheim |>
 
 
 
+# Oslo
+Indekstall for Oslo er beregnet med ny metode.
+
+```{r}
+#| label: fig-map_oslo
+#| message: false
+#| fig-cap: !expr map_caption
+
+map_links_with_function_class(links_oslo) |> 
+  addPolygons(
+    data = municipality_polygon_oslo,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  ) |>
+  addPolygons(
+    data = urban_area_oslo,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  )
+```
+
+
+## Regneeksempler
+
+
+### Ett års glidende indeks
+```{r}
+#| label: fig-oslo_official_12
+#| fig-cap: "Offisiell indeks for Oslo, ett års glidende indeks."
+
+qmd_indexes_official_oslo |> 
+  dplyr::filter(
+    window == "12_months",
+    year < 2025
+  ) |> 
+  visualize_city_36_mdt_index(
+    "Data: Statens vegvesen",
+    "Estimert endring i trafikkmengde siste glidende 1 år, nåværende metode",
+    paste0("Sammenlignet med 2018")
+  ) +
+  theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  ) +
+  ylim(-15, 4)
+```
+
+```{r}
+#| label: fig-oslo_improved_12
+#| fig-cap: "Forbedret indeks for Oslo, ett års glidende indeks."
+
+qmd_index_examples_cmdt_oslo |> 
+  dplyr::filter(window_years == "one") |> 
+  visualize_rolling_cmdt_index(
+    "Data: Statens vegvesen",
+    "Estimert endring i trafikkmengde siste glidende 1 år, forbedret metode",
+    paste0("Sammenlignet med 2018")
+  ) +
+  theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  ) +
+  ylim(-15, 4)
+```
+
+```{r}
+#| label: fig-oslo_compare_em_12
+#| fig-cap: "Sammenligning av feilmargin." 
+
+dplyr::inner_join(
+  qmd_indexes_official_oslo |> 
+    dplyr::filter(window == "12_months") |> 
+    dplyr::mutate(
+      x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4)),
+      dagens = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)
+    ) |> 
+    dplyr::select(x_label, dagens),
+  qmd_index_examples_cmdt_oslo |> 
+    dplyr::filter(window_years == "one") |> 
+    dplyr::mutate(forbedret = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)) |> 
+    dplyr::select(x_label, forbedret),
+  by = dplyr::join_by(x_label)
+) |> 
+tidyr::pivot_longer(
+  cols = c(dagens, forbedret),
+  names_to = "version"
+) |> 
+dplyr::mutate(
+  x_label = as.factor(x_label) |> forcats::fct_inorder()
+) |> 
+visualize_em_comparison()
+```
+
+
+```{r}
+#| label: fig-oslo_compare_n_trp_12
+#| fig-cap: "Sammenligning av antall punkt." 
+
+dplyr::inner_join(
+  qmd_indexes_official_oslo |>
+    dplyr::filter(window == "12_months") |>
+    dplyr::mutate(
+      x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4))
+    ) |>
+    dplyr::select(x_label, dagens = n_trp),
+  qmd_index_examples_cmdt_oslo_month |>
+    dplyr::select(x_label, forbedret = n_trp),
+  by = dplyr::join_by(x_label)
+) |>
+tidyr::pivot_longer(
+  cols = c(dagens, forbedret),
+  names_to = "version"
+) |>
+dplyr::mutate(
+  x_label = as.factor(x_label) |> forcats::fct_inorder()
+) |>
+visualize_n_trp_comparison()
+```
+
+
+### Tre års glidende indeks
+
+```{r}
+#| label: fig-oslo_36_official
+#| fig-cap: "Offisiell indeks for Oslo, tre års glidende indeks."
+
+qmd_indexes_official_oslo |> 
+  dplyr::filter(
+    window == "36_months",
+    year < 2025
+  ) |> 
+  visualize_city_36_mdt_index(
+    "Data: Statens vegvesen",
+    "Estimert endring i trafikkmengde siste glidende 3 år, dagens metode",
+    paste0("Sammenlignet med 2018")
+  ) +
+  theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  ) +
+  ylim(-8, 4)
+```
+
+```{r}
+#| label: fig-oslo_improved_36
+#| fig-cap: "Forbedret indeks for Oslo, tre års glidende indeks."
+
+qmd_index_examples_cmdt_oslo |> 
+  dplyr::filter(window_years == "three") |> 
+  visualize_rolling_cmdt_index(
+    "Data: Statens vegvesen",
+    "Estimert endring i trafikkmengde siste glidende 3 år, forbedret metode",
+    paste0("Sammenlignet med 2018")
+  ) +
+  theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  ) +
+  ylim(-8, 4)
+```
+
+```{r}
+#| label: fig-oslo_compare_em_36
+#| fig-cap: "Sammenligning av feilmargin." 
+
+dplyr::inner_join(
+  qmd_indexes_official_oslo |> 
+  dplyr::filter(window == "36_months") |> 
+  dplyr::mutate(
+    x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4)),
+    dagens = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)
+  ) |> 
+  dplyr::select(x_label, dagens),
+  qmd_index_examples_cmdt_oslo |> 
+  dplyr::filter(window_years == "three") |> 
+  dplyr::mutate(forbedret = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)) |> 
+  dplyr::select(x_label, forbedret),
+  by = dplyr::join_by(x_label)
+) |> 
+tidyr::pivot_longer(
+  cols = c(dagens, forbedret),
+  names_to = "version"
+) |> 
+dplyr::mutate(
+  x_label = as.factor(x_label) |> forcats::fct_inorder()
+) |> 
+visualize_em_comparison()
+```
