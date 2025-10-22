@@ -19,6 +19,7 @@ Thumbs.db
 *.tex
 *.json
 *.geojson
+*.ipynb
 
 # Folders
 *tmp*
@@ -26,12 +27,8 @@ archive
 bomdata_trondheim
 new_vti
 *images/
-*kurs/
-*sd/
 *data_index_raw/bike*
-*former_scripts/
 *spesialuttak/
-*ipynb
 
 # Scripts
 trp_api_cookies.R
@@ -46,6 +43,7 @@ punkter_med_adt.csv
 sykkelindekser_aug_2020.csv
 trp_aadts.csv
 trp_for_vti_2021.csv
+rolling_index_scrapped_code.R
 
 # Exceptions
 !data_indexpoints_tidy/*.xlsx
