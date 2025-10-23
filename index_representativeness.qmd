@@ -38,12 +38,7 @@ library(tidyverse)
 library(patchwork)
 library(flextable)
 library(vcd)
-library(sf)
-#library(sfnetworks)
-library(igraph)
-library(tidygraph)
 library(htmltools)
-library(leaflet)
 library(RColorBrewer)
 library(leaflet)
 
@@ -52,9 +47,6 @@ source("H:/Programmering/R/byindeks/traffic_link_functions.R")
 source("H:/Programmering/R/byindeks/index_report_functions.R")
 
 flextable::set_flextable_defaults(
-  #font.size = 8,
-  #padding.bottom = .2,
-  #padding.top = .4,
   decimal.mark = ",",
   big.mark = " ",
   na_str = ""
@@ -109,7 +101,6 @@ rtm_random_samples_ci <-
 
 # Links and index correlation
 links_and_index <- readr::read_rds("representativity/links_and_index.rds")
-
 ```
 
 # Innledning
@@ -244,11 +235,24 @@ En kategorisk variabel som er korrelert med vår interessevariabel (indeks) kan 
 
 
 # Mål for representativitet
-Føyningsmål ("goodness of fit") fra for eksempel Kolmogorov-Smirnov-testen gir ett tall som er den største avstanden mellom to fordelinger. Et avstandsmål som summerer opp "hele" avviket mellom to fordelinger er å foretrekke.
+Hvor godt kan et utvalg sies å representere sin populasjon? Dette kan beskrives på ulike måter. En enkel måte er å sammenligne størrelsen på utvalg og populasjon. For en indeks kan vi enkelt beregne og sammenligne:
+
+- antall trafikklenker med indekspunkt og antall trafikklenker i populasjonen
+- andel av populasjonens trafikklenker som er med i utvalget
+- samlet trafikkarbeid i henholdsvis utvalg og populasjon
+- andel av populasjonens trafikkarbeid som er med i utvalget
+
+Dette kan gjøres for hver funksjonsklasse.
+
+En annen måte å sammenligne utvalg og populasjon på er å benytte en variabel som finnes på alle enheter i populasjonen og sammenligne fordelingen av denne.
+
+Når populasjonen har en grafstruktur, kan et mål for utvalgets spredning i grafen beregnes.
 
 
 ## Fordeling av trafikklenker
-Trafikklenkenes trafikkarbeid kan fordeles etter funksjonsklasse. Ved å sammenligne utvalgets fordeling med populasjonens fordeling, vil graden av likhet være et mål på representativitet. Her er det sett på to ulike måter å beregne forskjellen på. Den ene måten kalles "total variation distance" (TVD) og beregnes ved først å finne den absolutte forskjellen mellom utvalget $S$ og populasjonen $P$ sine andeler trafikkarbeid for hver funksjonsklasse $k$, for så å summere disse for alle funksjonsklassene og til slutt dele på to. Matematisk kan dette skrives slik:
+Trafikklenkenes trafikkarbeid kan fordeles etter funksjonsklasse. Ved å sammenligne utvalgets fordeling med populasjonens fordeling, vil graden av likhet være et mål på representativitet. Slike føyningsmål ("goodness of fit") fra for eksempel Kolmogorov-Smirnov-testen gir ett tall som er den største avstanden mellom to fordelinger. Et avstandsmål som summerer opp "hele" avviket mellom to fordelinger er å foretrekke. Her er det sett på to ulike måter å beregne forskjellen på. 
+
+Den ene måten kalles "total variation distance" (TVD) og beregnes ved først å finne den absolutte forskjellen mellom utvalget $S$ og populasjonen $P$ sine andeler trafikkarbeid for hver funksjonsklasse $k$, for så å summere disse for alle funksjonsklassene og til slutt dele på to. Matematisk kan dette skrives slik:
 
 $$
 \delta(P, S) = \frac{1}{2} \sum_k \left| P(k) - S(k) \right|.

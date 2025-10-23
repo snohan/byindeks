@@ -305,6 +305,22 @@ list(
 #   )
 
 
+## Representativity ----
+# Representativity per month:
+# - tvd (includes differences per function class)
+# - n_trp
+# - link_ratio
+
+# Representativity per one year rolling:
+# - mean of per-month values
+
+# Representativity per three year rolling:
+# - mean of one-year values
+
+
+
+
+
 # Trondheim ----
 city_number <- "960"
 present_year <- 2025
