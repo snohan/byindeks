@@ -1,6 +1,6 @@
 # Filtering from Excel file ----
 
-# keep months as number, put easter as 34 and pentecost as 56
+# Keep months as number, put Easter as 34 and Pentecost as 56
 mdt_manual_exclusions <-
   readxl::read_excel(
     "trp_mdt_manual_exclusions.xlsx"

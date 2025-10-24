@@ -863,6 +863,7 @@ qmd_index_examples_cmdt_nj_month_more |>
   ) |>
   ggplot2::ggplot(aes(x = x_label, y = n_trp)) +
     ggplot2::geom_point(color = "#ed9300") +
+    geom_line(group = '', color = "#ed9300") +
     theme_light() +
     theme(
       axis.text.x = element_text(vjust = 0.5, angle = 90),
@@ -939,6 +940,7 @@ qmd_index_examples_cmdt_nj_month_more_chained |>
   ) |>
   ggplot2::ggplot(aes(x = x_label, y = n_trp)) +
     ggplot2::geom_point(color = "#ed9300") +
+    geom_line(group = '', color = "#ed9300") +
     theme_light() +
     theme(
       axis.text.x = element_text(vjust = 0.5, angle = 90),
@@ -1011,6 +1013,50 @@ map_links_with_function_class(links_bergen) |>
 ## Regneeksempler
 
 
+### Representativitet
+```{r}
+#| label: fig-bergen_compare_n_trp_12
+#| fig-cap: "Sammenligning av antall punkt." 
+
+dplyr::inner_join(
+  qmd_indexes_official_bergen |>
+    dplyr::filter(window == "12_months") |>
+    dplyr::mutate(
+      x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4))
+    ) |>
+    dplyr::select(x_label, dagens = n_trp),
+  qmd_index_examples_cmdt_brg_month |>
+    dplyr::select(x_label, forbedret = n_trp),
+  by = dplyr::join_by(x_label)
+) |>
+tidyr::pivot_longer(
+  cols = c(dagens, forbedret),
+  names_to = "version"
+) |>
+dplyr::mutate(
+  x_label = as.factor(x_label) |> forcats::fct_inorder()
+) |>
+visualize_n_trp_comparison()
+```
+
+```{r}
+#| label: fig-bergen_repr
+#| fig-cap: "Utvalgets representativitet over tid." 
+
+qmd_index_examples_cmdt_brg_month |>
+  dplyr::select(
+    x_label, n_trp_perc, tw_perc, tvd
+  ) |> 
+  tidyr::pivot_longer(
+    cols = c(n_trp_perc, tw_perc, tvd),
+    names_to = "measure"
+  ) |>
+  dplyr::mutate(
+    x_label = as.factor(x_label) |> forcats::fct_inorder()
+  ) |>
+  visualize_representativity()
+```
+
 ### Ett års glidende indeks
 ```{r}
 #| label: fig-bergen_official_12
@@ -1079,32 +1125,6 @@ dplyr::mutate(
   x_label = as.factor(x_label) |> forcats::fct_inorder()
 ) |> 
 visualize_em_comparison()
-```
-
-
-```{r}
-#| label: fig-bergen_compare_n_trp_12
-#| fig-cap: "Sammenligning av antall punkt." 
-
-dplyr::inner_join(
-  qmd_indexes_official_bergen |>
-    dplyr::filter(window == "12_months") |>
-    dplyr::mutate(
-      x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4))
-    ) |>
-    dplyr::select(x_label, dagens = n_trp),
-  qmd_index_examples_cmdt_brg_month |>
-    dplyr::select(x_label, forbedret = n_trp),
-  by = dplyr::join_by(x_label)
-) |>
-tidyr::pivot_longer(
-  cols = c(dagens, forbedret),
-  names_to = "version"
-) |>
-dplyr::mutate(
-  x_label = as.factor(x_label) |> forcats::fct_inorder()
-) |>
-visualize_n_trp_comparison()
 ```
 
 

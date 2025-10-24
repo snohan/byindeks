@@ -96,6 +96,7 @@ links_bergen <-
     "traffic_link_pop/links_bergen.rds"
   )
 population_size <- nrow(links_bergen)
+population_size_tw_kkm <- base::sum(links_bergen$tw) * 1e-3
 
 function_class_tw <-
   links_bergen |>
@@ -105,9 +106,12 @@ function_class_tw <-
     function_class
   ) |>
   dplyr::summarise(
-    tw_fcl_population_kkm = base::sum(tw_km) / 1000,
+    tw_fcl_population_kkm = base::sum(tw_km) * 1e-3,
     n_links = n(),
     .by = function_class
+  ) |>
+  dplyr::mutate(
+    tw_fcl_population_share = tw_fcl_population_kkm / population_size_tw_kkm
   ) |>
   dplyr::arrange(function_class)
 
@@ -120,10 +124,12 @@ trp_weights <-
   dplyr::select(
     trp_id = point_id,
     length_m,
+    trp_tw_ref_kkm = tw,
     function_class
   ) |>
   dplyr::mutate(
-    length_m = base::round(length_m)
+    length_m = base::round(length_m),
+    trp_tw_ref_kkm = trp_tw_ref_kkm * 1e-3
   ) |>
   dplyr::left_join(
     function_class_tw,
@@ -178,10 +184,10 @@ area_index_one_year_brg <- calculate_rolling_area_index_one_year(brg_index_month
 area_index_three_years_brg <- calculate_rolling_index_multiple_years(area_index_one_year_brg, 3)
 
 # Sidetrack: for showing some data in presentation
-viz_mdt <- mdt_validated |> select(trp_id, year, month, mdt, length_m, function_class)
-viz_month <- brg_index_month |> select(x_label, index_p, n_trp)
-viz_one_y <- area_index_one_year_brg |> select(x_label, index_p, ci_lower, ci_upper) |> mutate(across(where(is.double), ~ round(.x, 1)))
-viz_three_y <- area_index_three_years_brg |> mutate(across(where(is.double), ~ round(.x, 1)))
+# viz_mdt <- mdt_validated |> select(trp_id, year, month, mdt, length_m, function_class)
+# viz_month <- brg_index_month |> select(x_label, index_p, n_trp)
+# viz_one_y <- area_index_one_year_brg |> select(x_label, index_p, ci_lower, ci_upper) |> mutate(across(where(is.double), ~ round(.x, 1)))
+# viz_three_y <- area_index_three_years_brg |> mutate(across(where(is.double), ~ round(.x, 1)))
 
 # Back on track
 readr::write_rds(
@@ -309,10 +315,10 @@ list(
 # Representativity per month:
 # - tvd (includes differences per function class)
 # - n_trp
-# - link_ratio
+# - tw_ratio
 
 # Representativity per one year rolling:
-# - mean of per-month values
+# - mean or median of per-month values
 
 # Representativity per three year rolling:
 # - mean of one-year values

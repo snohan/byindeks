@@ -1564,8 +1564,9 @@ visualize_em_comparison <- function(df) {
 
   # df is an inner join of dfs holding results from the two index methods
 
-  ggplot(df, aes(x_label, value, color = version)) +
+  ggplot(df, aes(x_label, value, color = version, group = version)) +
     geom_point() +
+    geom_line() +
     scale_color_manual(
       values = c(
         "dagens" = "#008ec2",
@@ -1602,6 +1603,7 @@ visualize_em_comparison <- function(df) {
       name = NULL,
       breaks = ~ dplyr::if_else(stringr::str_detect(.x, "apr|aug|des"), .x, "")
     ) +
+    ylim(0, NA) +
     theme(
       plot.background = element_rect(fill = svv_background_color),
       panel.background = element_rect(fill = svv_background_color),
@@ -1617,8 +1619,9 @@ visualize_em_comparison <- function(df) {
 
 visualize_n_trp_comparison <- function(df) {
 
-  ggplot(df, aes(x_label, value, color = version)) +
+  ggplot(df, aes(x_label, value, color = version, group = version)) +
     geom_point() +
+    geom_line() +
     scale_color_manual(
       values = c(
         "dagens" = "#008ec2",
@@ -1634,6 +1637,7 @@ visualize_n_trp_comparison <- function(df) {
       ),
       name = "Metode"
     ) +
+    ylim(0, NA) +
     theme_light() +
     theme(
       axis.text.x = element_text(vjust = 0.5, angle = 90),
@@ -1664,6 +1668,64 @@ visualize_n_trp_comparison <- function(df) {
       x = NULL, y = "Antall punkt"
     ) +
     ggtitle("Antall punkt i datagrunnlaget")
+
+}
+
+
+visualize_representativity <- function(df) {
+
+  ggplot(df, aes(x_label, value, color = measure, group = measure)) +
+    geom_point() +
+    geom_line() +
+    scale_color_manual(
+      values = c(
+        "n_trp_perc" = "#008ec2",
+        "tw_perc" = "#ed9300",
+        "tvd" = "#444f55"
+      ),
+      breaks = c(
+        "n_trp_perc",
+        "tw_perc",
+        "tvd"
+      ),
+      labels = c(
+        "Lenker",
+        "Trafikkarbeid",
+        "TVD"
+      ),
+      name = "Mål"
+    ) +
+    ylim(0, 100) +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 90),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        ),
+      legend.position = "bottom"
+    ) +
+    ggplot2::scale_x_discrete(
+      name = NULL,
+      breaks = ~ dplyr::if_else(stringr::str_detect(.x, "apr|aug|des"), .x, "")
+    ) +
+    theme(
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.background = element_rect(fill = svv_background_color)
+    ) +
+    labs(
+      x = NULL, y = "Andel (%)"
+    ) +
+    ggtitle("Representativitet")
 
 }
 

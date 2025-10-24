@@ -693,10 +693,12 @@ calculate_all_rolling_indices_old <- function() {
 # Monthly city index based on whichever TRPs are available,
 # without considering their time representativeness by year.
 
-calculate_area_index_month <- function(trp_mdt_df, population_size_dbl) {
+calculate_area_index_month <- function(trp_mdt_df, population_size_dbl, population_size_tw) {
 
   # Testing:
-  #trp_mdt_df <- mdt_validated
+  # trp_mdt_df <- mdt_validated
+  # population_size_dbl <- population_size
+  # population_size_tw <- population_size_tw_kkm
 
   # For each month, need to inner join base year (a) and calculation year (b)
   year_a <- base::min(trp_mdt_df$year)
@@ -714,7 +716,9 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl) {
       mdt,
       length_m,
       fcl = function_class,
-      tw_fcl_population_kkm
+      trp_tw_ref_kkm,
+      tw_fcl_population_kkm,
+      tw_fcl_population_share
     )
 
   area_index_month <- tibble::tibble()
@@ -725,6 +729,8 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl) {
       trp_mdt_df |>
       dplyr::filter(
         year == calculation_years[i]
+        # Testing:
+        # year == 2019
       ) |>
       dplyr::select(
         trp_id,
@@ -740,6 +746,12 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl) {
         mdt_b,
         by = dplyr::join_by(trp_id, month),
         suffix = c("_a", "_b")
+      ) |>
+      dplyr::select(
+        trp_id,
+        year_a, year_b, month, universal_year_period_id,
+        mdt_a, mdt_b,
+        length_m, fcl, trp_tw_ref_kkm, tw_fcl_population_kkm, tw_fcl_population_share
       ) |>
       # Need some global variables before summarising
       dplyr::mutate(
@@ -777,7 +789,15 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl) {
         # Variance: Robust
         var_robust_fcl = (1 / base::sum(mdt_a * length_m)^2) * base::sum(var_robust_factor_trp * var_robust_diff),
         #
-        .by = c(universal_year_period_id, fcl, tw_fcl_population_kkm)
+        tw_fcl_selection_ref = base::sum(trp_tw_ref_kkm),
+        .by = c(universal_year_period_id, fcl, tw_fcl_population_kkm, tw_fcl_population_share)
+      ) |>
+      dplyr::mutate(
+        tw_selection_ref_share = tw_fcl_selection_ref / base::sum(tw_fcl_selection_ref),
+        .by = universal_year_period_id
+      ) |>
+      dplyr::mutate(
+        tvd_diff = base::abs(tw_fcl_population_share - tw_selection_ref_share)
       ) |>
       dplyr::arrange(
         fcl, universal_year_period_id
@@ -804,6 +824,8 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl) {
         ci_upper = index_p + em_robust_p,
         # Representativity
         n_trp_perc = 100 * n_trp / population_size_dbl,
+        tw_perc = 100 * base::sum(tw_fcl_selection_ref) / base::sum(tw_fcl_population_kkm),
+        tvd = 100 * 0.5 * base::sum(tvd_diff),
         .by = universal_year_period_id
       )  |>
       dplyr::left_join(
@@ -818,6 +840,8 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl) {
         index_p,
         n_trp,
         n_trp_perc,
+        tw_perc,
+        tvd,
         #var_pop_model,
         #em_pop_model,
         var_robust_i,
