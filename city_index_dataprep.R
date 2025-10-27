@@ -64,7 +64,7 @@ trp_id_msnr <-
 {
   present_year <- 2025
   index_month <- 9 # the one to be published now
-  city_number <- 19954
+  city_number <- 959
 }
 
 
@@ -89,6 +89,16 @@ trp_names <-
     name
   )
 
+if(city_number == 959) {
+
+  sub_areas <-
+    this_citys_trps_all_adt_final |>
+    dplyr::select(
+      trp_id,
+      sub_area = county_name
+    )
+}
+
 
 ## Set time references ----
 source("set_time_references.R")
@@ -99,6 +109,8 @@ source("set_time_references.R")
 city_trps <-
   get_published_pointindex_for_months(city_number, max(index_years), 1)[[1]] |>
   base::sort()
+
+
 
 
 # Rolling index ----
@@ -190,7 +202,7 @@ mdt_filtered |>
   )
 
 # Read back in
-# mdt_filtered <- readr::read_rds(paste0("data_indexpoints_tidy/mdt_", city_number, ".rds"))
+mdt_filtered <- readr::read_rds(paste0("data_indexpoints_tidy/mdt_", city_number, ".rds"))
 
 
 ## Check MDT validity ----
@@ -304,6 +316,10 @@ all_rolling_indices_list |>
   )
 
 # See city_index_rolling_trp.R
+
+if(city_number == 959) {
+  source("city_index_rolling_sub_area.R")
+}
 
 
 # Fetch yearly city indexes ----
@@ -1040,6 +1056,24 @@ if(city_number == 960){
     byindeks_aarlig = city_index_yearly_all,
     by_glid_indeks = all_rolling_indices,
     byindeks_hittil = city_index_so_far_all
+  ) |>
+    writexl::write_xlsx(
+      path = paste0(
+        "data_indexpoints_tidy/tallmateriale_",
+        city_number,
+        ".xlsx"
+      )
+    )
+}
+
+if(city_number %in% c(959)){
+
+  list(
+    punkt_adt = trp_info_adt,
+    punktindeks_maned = trp_index_monthly_wide,
+    byindeks_aarlig = city_index_yearly_all,
+    by_glid_indeks = all_rolling_indices,
+    by_glid_indeks_sub = all_rolling_indices_sub
   ) |>
     writexl::write_xlsx(
       path = paste0(
