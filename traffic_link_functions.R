@@ -465,7 +465,8 @@ table_link_statistics <- function(link_df) {
         )
     ) |>
     flextable::flextable() |>
-    colformat_double(j = 2:4, digits = 0) |>
+    colformat_double(j = 2:3, digits = 0) |>
+    colformat_double(j = 4, digits = 1) |>
     set_header_labels(
       quantity = "Størrelse",
       population = "Populasjon",

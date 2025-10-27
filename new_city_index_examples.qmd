@@ -3,6 +3,7 @@ title: "Byindeks, regneeksempler"
 format: 
   html:
     css: svv.css
+    page-layout: full
     number-sections: true
     toc: true
     toc-location: left
@@ -402,7 +403,9 @@ qmd_indexes_official_oslo <-
 
 
 # Innledning
-Dette dokumentet er et supplement til notatet [Forbedret byindeks](https://vegvesen.sharepoint.com/:w:/r/sites/arb-Trafikkdataogtrafikkutviklingiby/Delte%20dokumenter/General/Arbeidsgruppa/Oppgaver/Representativitet%20i%20byindeks/Representativitet%20i%20byindeks.docx?d=w8fb786036594485bbb5d282a07b9db78&csf=1&web=1&e=p58ZHf) og inneholder detaljer om de utforskende dataanalysene som ligger til grunn for vurderingene som er beskrevet der.
+I dette dokumentet presenteres resultatene fra regneeksempler med forbedret indeksmetode. Resultatene sammenlignes med de offisielle indekstallene.
+
+Dokumentet er et supplement til hovednotatet [Forbedret byindeks](https://vegvesen.sharepoint.com/:w:/r/sites/arb-Trafikkdataogtrafikkutviklingiby/Delte%20dokumenter/General/Arbeidsgruppa/Oppgaver/Representativitet%20i%20byindeks/Representativitet%20i%20byindeks.docx?d=w8fb786036594485bbb5d282a07b9db78&csf=1&web=1&e=p58ZHf).
 
 Sist oppdatert `r this_date_string`. 
 
@@ -415,22 +418,9 @@ Seksjon for Veg- og transportteknologi
 
 
 # Nord-Jæren
-Nord-Jæren egner seg godt som eksempel av flere grunner: 
+Hvilket område byindeksen skal være representativ for er viktig med tanke på hvilke byindekspunkt som skal inngå i datagrunnlaget. Avtaleområdet omfatter kommunene Randaberg og Sola slik de er i dag, samt de kommunegrensene som gjaldt for Stavanger og Sandnes fram til 2019, altså før kommunesammenslåingene som gjaldt fra 1. januar 2020.
 
-- En byindeks med historikk tilbake til referanseåret 2017 gir godt grunnlag for å se på hvordan representativiteten har variert over tid.
-- De ytre områdene av kommunene er ikke bymessige, som gir en mulighet til å tydeliggjøre forskjellen i hvordan områdedefinisjonen påvirker byindeksen.
-- Det er ingen kommunale veger som bør dekkes av byindeksen og de tilgjengelige trafikklenkene utgjør derfor et komplett vegnett.
-- Det er mange trafikkregistreringspunkter i området, og det er blitt betydelig flere etter 2017.
-
-
-## Områdeavgrensing
-Hvilket område byindeksen skal være representativ for er viktig med tanke på hvilke byindekspunkt som skal inngå i datagrunnlaget. En mer begrenset populasjon vil i teorien bidra til mindre usikkerhet.
-
-
-### Avtaleområdet
-Avtaleområdet omfatter kommunene Randaberg og Sola slik de er i dag, samt de kommunegrensene som gjaldt for Stavanger og Sandnes fram til 2019, altså før kommunesammenslåinger som gjaldt fra 1. januar 2020.
-
-Dersom alle trafikklenker i avtaleområdet tas med, blir trafikklenkepopulasjonen som vist i @fig-map_nj_whole.
+Dersom alle trafikklenker i *avtaleområdet* tas med, blir trafikklenkepopulasjonen som vist i @fig-map_nj_whole.
 
 ```{r}
 #| label: fig-map_nj_whole
@@ -446,9 +436,7 @@ map_links_with_function_class(links_nj_whole) |>
   )
 ```
 
-
-### Byområdet
-For å begrense populasjonen til de mer bymessige og sentrale delene, kan vi se på tettstedsområdet definert av Statistisk sentralbyrå. I utgangspunktet beholdes kun trafikklenker som ligger innenfor eller overlapper med dette området, men de  viktigste vegene mellom de ulike delområdene må også inkluderes. I tillegg utelates alle trafikklenker med funksjonsklasse E, da disse er av mindre betydning. I @fig-map_nj vises alle trafikklenker som er definert som populasjonen i *byområdet*. 
+For å begrense populasjonen til de mer bymessige og sentrale delene, kan vi se på tettstedsområdet definert av Statistisk sentralbyrå. I utgangspunktet beholdes kun trafikklenker som ligger innenfor eller overlapper med dette området, men de viktigste vegene mellom de ulike delområdene må også inkluderes. I tillegg utelates alle trafikklenker med funksjonsklasse E, da disse er av mindre betydning. I @fig-map_nj vises alle trafikklenker som er definert som populasjonen i *byområdet*. 
 
 ```{r}
 #| label: fig-map_nj
@@ -482,7 +470,7 @@ visualize_function_class_distribution(links_nj)
 Utvalget av lenker med trafikkregistrering består her av alle kontinuerlige punkt som eksisterer per 2024. I en konkret byindeksberegning er det neppe mulig å bruke alle. Hvilke punkt som kan være med blir begrenset av:
 
 - tilgjengelighet på data av god nok kvalitet
-- hvilke år som skal sammenlignes (blant annet referanseår)
+- hvilke år som skal sammenlignes (referanseår)
 - andel gjennomgangstrafikk
 - hva som er god nok geografisk spredning 
 - god nok fordeling på funksjonsklasse
@@ -631,12 +619,12 @@ Prosentandelene for antall lenker og trafikkarbeid øker litt med en redusert po
 
 I en forbedret metode vil indeksen være stratifisert på funksjonsklasse. Det vil si at det beregnes først en indeks per funksjonsklasse, som så vektes sammen til en indeks for byområdet. Vektene vil her være andelen trafikkarbeid i funksjonsklassene. Dette vil kompensere for eventuelle skjevheter i utvalget.
 
-Gjennomsnittlig avstand fra trafikklenkene som ikke er med i utvalget til de som har byindekspunkt er på 3,8 for byområdet, mens avtaleområdet er denne verdien 3,9.
+Gjennomsnittlig avstand fra en trafikklenke som ikke er med i utvalget til en som har byindekspunkt er på 3,8 for byområdet, mens for avtaleområdet er denne verdien 3,9.
 
 Det er flere fordeler med en begrenset og sentral populasjon kontra en komplett populasjon:
 
 - Færre punkter trengs for å få god representativitet
-- Usikkerheten i byindeksen blir lavere
+- Usikkerheten i byindeksen blir gjerne lavere
 - Utvalget punkt som allerede er tatt i bruk ligger stort sett i sentrale deler
 - Det trengs ikke etableres nye punkter på de minste vegene (som uansett vil bidra lite til byindeksen, men som for representativitetens skyld burde være med)
 - Byindeksen vil i større grad fokusere på de delene av vegnettet hvor trafikkveksten utgjør et reelt problem
@@ -645,19 +633,22 @@ Representativiteten kan over tid følges med egne tidsserier for:
 
 - antall og andel trafikklenker med indekspunkt
 - andel trafikkarbeid med indekspunkt
+- likhet i fordeling av trafikkarbeid per funksjonsklasse mellom utvalg og populasjon
 - gjennomsnittlig avstand til byindekspunkt
 
 
 ## Regneeksempler
-Det er flere aspekter som kan sammenlignes:
+For Nord-Jæren er det flere aspekter som kan sammenlignes:
 
 - dagens og forbedret metode
 - betydningen av flere punkt
-- betydningen av kjedet indeks
+- kjedet indeks
 
 
-### Direkte indeks, dagens utvalg, ett år
-I disse eksemplene benyttes de samme punktene som i dagens metode. Her er indeksen en direkte sammenligning med referanseåret.
+### Dagens utvalg av punkt
+I disse regneeksemplene benyttes de samme punktene som i dagens metode, og indeksen er en direkte sammenligning med referanseåret.
+
+I @fig-nj_official_12 og @fig-nj_improved_12 vises resultatene for ett års glidende indeks.
 
 ```{r}
 #| label: fig-nj_official_12
@@ -701,10 +692,11 @@ qmd_index_examples_cmdt_nj |>
   ylim(-16, 15)
 ```
 
+Sammenligner vi resultatene som er vist i @fig-nj_official_12 og @fig-nj_improved_12, ser vi at den generelle trenden over tid er ganske lik, men at forbedret metode jevnt over gir noe høyere verdi på indeksen. Den mest tydelige forskjellen mellom de to er at usikkerheten er mye mindre med forbedret metode. En sammenligning av relativ feilmargin med de to metodene er vist i @fig-nj_compare_em_12.
 
 ```{r}
 #| label: fig-nj_compare_em_12
-#| fig-cap: "Sammenligning av feilmargin." 
+#| fig-cap: "Sammenligning av feilmargin, ett års glidende indeks." 
 
 dplyr::inner_join(
   qmd_indexes_official_nj |> 
@@ -730,33 +722,7 @@ dplyr::mutate(
 visualize_em_comparison()
 ```
 
-```{r}
-#| label: fig-nj_compare_n_trp_12
-#| fig-cap: "Sammenligning av antall punkt." 
-
-dplyr::inner_join(
-  qmd_indexes_official_nj |>
-    dplyr::filter(window == "12_months") |>
-    dplyr::mutate(
-      x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4))
-    ) |>
-    dplyr::select(x_label, dagens = n_trp),
-  qmd_index_examples_cmdt_nj_month |>
-    dplyr::select(x_label, forbedret = n_trp),
-  by = dplyr::join_by(x_label)
-) |>
-tidyr::pivot_longer(
-  cols = c(dagens, forbedret),
-  names_to = "version"
-) |>
-dplyr::mutate(
-  x_label = as.factor(x_label) |> forcats::fct_inorder()
-) |>
-visualize_n_trp_comparison()
-```
-
-
-### Direkte indeks, dagens utvalg, tre år
+Tilsvarende resultater for tre års glidende indeks vises i @fig-nj_official_36 og @fig-nj_improved_36.
 
 ```{r}
 #| label: fig-nj_official_36
@@ -780,7 +746,6 @@ qmd_indexes_official_nj |>
   ylim(-12, 12)
 ```
 
-
 ```{r}
 #| label: fig-nj_improved_36
 #| fig-cap: "Forbedret indeks for Nord-Jæren, tre års glidende indeks."
@@ -800,10 +765,11 @@ qmd_index_examples_cmdt_nj |>
   ylim(-12, 12)
 ```
 
+Som for ett års glidende indeks, ser vi at den generelle trenden over tid er ganske lik, men at forbedret metode jevnt over gir noe høyere verdi på indeksen. Den mest tydelige forskjellen mellom de to er også her at usikkerheten er mye mindre med forbedret metode. En sammenligning av relativ feilmargin med de to metodene er vist i @fig-nj_compare_em_36.
 
 ```{r}
 #| label: fig-nj_compare_em_36
-#| fig-cap: "Sammenligning av feilmargin." 
+#| fig-cap: "Sammenligning av feilmargin, tre års glidende indeks." 
 
 dplyr::inner_join(
   qmd_indexes_official_nj |> 
@@ -830,31 +796,12 @@ visualize_em_comparison()
 ```
 
 
-### Direkte indeks, utvidet utvalg
-I disse eksemplene benyttes de samme punktene som i dagens metode. Her er indeksen en direkte sammenligning med referanseåret.
-
-```{r}
-#| label: fig-nj_improved_12_more
-#| fig-cap: "Forbedret indeks for Nord-Jæren, ett års glidende indeks."
-
-qmd_index_examples_cmdt_nj_more |> 
-  dplyr::filter(window_years == "one") |> 
-  visualize_rolling_cmdt_index(
-    "Data: Statens vegvesen",
-    "Estimert endring i trafikkmengde siste glidende 1 år, forbedret metode",
-    paste0("Sammenlignet med 2017")
-  ) +
-  theme(
-    plot.background = element_rect(fill = svv_background_color),
-    panel.background = element_rect(fill = svv_background_color),
-    legend.background = element_rect(fill = svv_background_color)
-  ) +
-  ylim(-16, 15)
-```
+### Utvidet utvalg punkt
+I disse regneeksemplene benyttes de fleste av trafikkregistreringspunktene som finnes i byområdet. Antall punkt øker utover året ettersom flere punkter ble satt i drift i løpet av referanseåret, se @fig-nj_n_trp_12_more.
 
 ```{r}
 #| label: fig-nj_n_trp_12_more
-#| fig-cap: "Antall punkt." 
+#| fig-cap: "Utvidet antall punkt i byområdet." 
 
 qmd_index_examples_cmdt_nj_month_more |>
   dplyr::select(x_label, n_trp) |>
@@ -894,11 +841,34 @@ qmd_index_examples_cmdt_nj_month_more |>
     ggtitle("Antall punkt")
 ```
 
+I @fig-nj_improved_12_more vises resultatene for ett års glidende indeks med forbedret metode. Også her er indeksen en direkte sammenligning med referanseåret.
+
+```{r}
+#| label: fig-nj_improved_12_more
+#| fig-cap: "Forbedret indeks for Nord-Jæren, ett års glidende indeks."
+
+qmd_index_examples_cmdt_nj_more |> 
+  dplyr::filter(window_years == "one") |> 
+  visualize_rolling_cmdt_index(
+    "Data: Statens vegvesen",
+    "Estimert endring i trafikkmengde siste glidende 1 år, forbedret metode",
+    paste0("Sammenlignet med 2017")
+  ) +
+  theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  ) +
+  ylim(-16, 15)
+```
+
+I @fig-nj_improved_36_more vises resultatene for tre års glidende indeks med forbedret metode.
 
 ```{r}
 #| label: fig-nj_improved_36_more
 #| fig-cap: "Forbedret indeks for Nord-Jæren, tre års glidende indeks."
 
+# TODO: include the line for index with today's n_trp
 qmd_index_examples_cmdt_nj_more |> 
   dplyr::filter(window_years == "three") |> 
   visualize_rolling_cmdt_index(
@@ -913,6 +883,10 @@ qmd_index_examples_cmdt_nj_more |>
   ) +
   ylim(-12, 12)
 ```
+
+En sammenligning av relativ feilmargin i tre års glidende indeks basert på henholdsvis dagens utvalg og utvidet utvalg, er vist i X.
+
+
 
 
 ### Kjedet indeks
@@ -933,6 +907,7 @@ En kjedet indeks vil da kunne utnytte flere punkter med en inndeling i delperiod
 #| label: fig-nj_n_trp_chained
 #| fig-cap: "Antall punkt." 
 
+# TODO: include n_trp for direct index
 qmd_index_examples_cmdt_nj_month_more_chained |>
   dplyr::select(x_label, n_trp) |>
   dplyr::mutate(
@@ -987,7 +962,7 @@ Disse tallene illustrerer fordelen med en periodevis kjedet indeks da denne har 
 
 
 # Bergen
-Indekstall for Bergen er beregnet med ny metode. Siden byindeksens område er noe snevret inn til de største tettstedene, er ikke alle punkt fra den offisielle indeksen med i regneeksemplene. Det er derfor også regnet ut en indeks med gammel metode for at sammenligningen skal bli rettferdig.
+Indekstall for Bergen er beregnet med forbedret metode. Det aktuelle vegnettet er vist i @fig-map_bergen. 
 
 ```{r}
 #| label: fig-map_bergen
@@ -1009,11 +984,8 @@ map_links_with_function_class(links_bergen) |>
   )
 ```
 
+I forbedret metode er byindeksens område snevret inn til å omfatte kun de største tettstedene, og derfor er ikke alle punkt fra den offisielle indeksen tatt med i regneeksemplene. Antall punkt som bidrar med datagrunnlag i de enkelte månedene er vist i @fig-bergen_compare_n_trp_12.
 
-## Regneeksempler
-
-
-### Representativitet
 ```{r}
 #| label: fig-bergen_compare_n_trp_12
 #| fig-cap: "Sammenligning av antall punkt." 
@@ -1039,6 +1011,8 @@ dplyr::mutate(
 visualize_n_trp_comparison()
 ```
 
+For hver månedsindeks kan vi beregne representativiteten til punktutvalget. Dette er vist i @fig-bergen_repr.
+
 ```{r}
 #| label: fig-bergen_repr
 #| fig-cap: "Utvalgets representativitet over tid." 
@@ -1057,7 +1031,7 @@ qmd_index_examples_cmdt_brg_month |>
   visualize_representativity()
 ```
 
-### Ett års glidende indeks
+## Ett års glidende indeks
 ```{r}
 #| label: fig-bergen_official_12
 #| fig-cap: "Offisiell indeks for Bergen, ett års glidende indeks."
@@ -1128,7 +1102,7 @@ visualize_em_comparison()
 ```
 
 
-### Tre års glidende indeks
+## Tre års glidende indeks
 
 ```{r}
 #| label: fig-bergen_36_official
@@ -1201,6 +1175,8 @@ visualize_em_comparison()
 
 
 # Trondheim
+Vegnettet som overlapper med de sentrale tettstedene er vist i @fig-map_trd.
+
 ```{r}
 #| label: fig-map_trd
 #| message: false
@@ -1274,7 +1250,7 @@ error_comparison_trondheim |>
 
 
 # Oslo
-Indekstall for Oslo er beregnet med ny metode.
+Vegnettet som overlapper med de sentrale tettstedene er vist i @fig-map_oslo.
 
 ```{r}
 #| label: fig-map_oslo
@@ -1296,11 +1272,35 @@ map_links_with_function_class(links_oslo) |>
   )
 ```
 
+Antall punkt som er med i månedsindeksene, er vist i @fig-oslo_compare_n_trp_12.
 
-## Regneeksempler
+```{r}
+#| label: fig-oslo_compare_n_trp_12
+#| fig-cap: "Sammenligning av antall punkt." 
+
+dplyr::inner_join(
+  qmd_indexes_official_oslo |>
+    dplyr::filter(window == "12_months") |>
+    dplyr::mutate(
+      x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4))
+    ) |>
+    dplyr::select(x_label, dagens = n_trp),
+  qmd_index_examples_cmdt_oslo_month |>
+    dplyr::select(x_label, forbedret = n_trp),
+  by = dplyr::join_by(x_label)
+) |>
+tidyr::pivot_longer(
+  cols = c(dagens, forbedret),
+  names_to = "version"
+) |>
+dplyr::mutate(
+  x_label = as.factor(x_label) |> forcats::fct_inorder()
+) |>
+visualize_n_trp_comparison()
+```
 
 
-### Ett års glidende indeks
+## Ett års glidende indeks
 ```{r}
 #| label: fig-oslo_official_12
 #| fig-cap: "Offisiell indeks for Oslo, ett års glidende indeks."
@@ -1371,33 +1371,8 @@ visualize_em_comparison()
 ```
 
 
-```{r}
-#| label: fig-oslo_compare_n_trp_12
-#| fig-cap: "Sammenligning av antall punkt." 
 
-dplyr::inner_join(
-  qmd_indexes_official_oslo |>
-    dplyr::filter(window == "12_months") |>
-    dplyr::mutate(
-      x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4))
-    ) |>
-    dplyr::select(x_label, dagens = n_trp),
-  qmd_index_examples_cmdt_oslo_month |>
-    dplyr::select(x_label, forbedret = n_trp),
-  by = dplyr::join_by(x_label)
-) |>
-tidyr::pivot_longer(
-  cols = c(dagens, forbedret),
-  names_to = "version"
-) |>
-dplyr::mutate(
-  x_label = as.factor(x_label) |> forcats::fct_inorder()
-) |>
-visualize_n_trp_comparison()
-```
-
-
-### Tre års glidende indeks
+## Tre års glidende indeks
 
 ```{r}
 #| label: fig-oslo_36_official

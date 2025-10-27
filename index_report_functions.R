@@ -1695,7 +1695,7 @@ visualize_representativity <- function(df) {
       ),
       name = "Mål"
     ) +
-    ylim(0, 100) +
+    ylim(0, NA) +
     theme_light() +
     theme(
       axis.text.x = element_text(vjust = 0.5, angle = 90),
@@ -1725,7 +1725,7 @@ visualize_representativity <- function(df) {
     labs(
       x = NULL, y = "Andel (%)"
     ) +
-    ggtitle("Representativitet")
+    ggtitle("Representativitet i byindeksen utvalg trafikklenker")
 
 }
 
