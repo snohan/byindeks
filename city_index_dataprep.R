@@ -55,8 +55,7 @@ trp_id_msnr <-
 # Kristiansand og omegn 957 kommune 956
 # Tromsø 961
 
-## Trondheim has its own script, all inclusive except MDT index:
-# city_index_dataprep_trondheim_toll_stations.R
+## Trondheim has its own script, all inclusive except MDT index: city_index_dataprep_trd.R
 
 
 # Time ----
@@ -304,37 +303,8 @@ if(city_number == 959) {
 }
 
 
-# Yearly index ----
-{
-city_indexes <-
-  purrr::map2(
-    index_years,
-    index_months,
-    ~ get_published_index_for_months(city_number, .x, .y)
-  ) |>
-  purrr::list_rbind() |>
-  dplyr::filter(day_type == "ALL")
-  # ALL, WEEKDAY or WEEKEND
-
-  city_name <- city_indexes$area_name[nrow(city_indexes)]
-
-  if(city_number == 16952) {
-    city_name <- "Tromsø"
-  }
-
-  if(city_number == 18952) {
-    city_name <- "Nedre Glomma"
-  }
-
-  if(city_number == 19953) {
-    city_name <- "Kristiansandsregionen"
-  }
-}
-
-# TODO: fetch for so far this year by index month
-
-
-## TRP index by year ----
+# Yearly TRP index ----
+# So far by year
 # Still need to specify csv-files for years before 2020 to get the pointindex as they are not in API
 if((city_number %in% c(1952, 955, 952, 959))){
   trp_index_so_far_by_dec_pre_2020 <-
@@ -419,9 +389,7 @@ trp_index_year_to_date_dec <-
     sum_of_squared_weights = sum(squared_weight)
   )
 
-
-## TRP index by month ----
-# For Excel
+# TRP index by month for Excel
 if((city_number %in% c(1952, 955, 952, 959))){
   trp_index_monthly_pre_2020 <-
     purrr::map_dfr(
@@ -512,7 +480,35 @@ trp_index_monthly_wide <-
     )
 
 
-## City index ----
+# Yearly city index ----
+{
+  city_indexes <-
+    purrr::map2(
+      index_years,
+      index_months,
+      ~ get_published_index_for_months(city_number, .x, .y)
+    ) |>
+    purrr::list_rbind() |>
+    dplyr::filter(day_type == "ALL")
+  # ALL, WEEKDAY or WEEKEND
+
+  city_name <- city_indexes$area_name[nrow(city_indexes)]
+
+  if(city_number == 16952) {
+    city_name <- "Tromsø"
+  }
+
+  if(city_number == 18952) {
+    city_name <- "Nedre Glomma"
+  }
+
+  if(city_number == 19953) {
+    city_name <- "Kristiansandsregionen"
+  }
+}
+
+# TODO: fetch for so far this year by index month
+
 city_index_full_years <-
   city_indexes |>
   dplyr::filter(
@@ -897,7 +893,7 @@ ydt_filtered <-
   dplyr::filter(coverage > 50) |>
   dplyr::group_by(trp_id) |>
   dplyr::filter(year == max(year)) |>
-  # Assuming thhis to be the same year as for AADT
+  # Assuming this to be the same year as for AADT
   dplyr::select(trp_id, length_range, ydt = aadt_length_range) |>
   dplyr::mutate(
     ydt = round(ydt, -1),
