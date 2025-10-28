@@ -557,3 +557,49 @@ plotly::ggplotly(
     ggplot(aes(year_month, length_quality, color = trp_id)) +
     geom_line()
 )
+
+
+## So far by index month ----
+# Only relevant if index month is not 12!
+# TODO: chained index - later!
+# TODO: OLD VTI VERSION: fetch file given month for so far this year index
+# As of now the csv files are implicitly containing index values for December's "so far".
+
+# TODO: trp_index_so_far_by_index_month_pre_2020
+
+trp_index_so_far_by_index_month_from_2020 <-
+  trp_index_from_2020 |>
+  dplyr::filter(
+    day_type == "ALL",
+    is_excluded == FALSE,
+    is_manually_excluded == FALSE,
+    length_excluded == FALSE,
+    period == "year_to_date",
+    month == index_month
+  ) |>
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    base_volume,
+    index = index_short
+  )
+
+trp_index_year_to_date_by_index_month <-
+  dplyr::bind_rows(
+    #trp_index_so_far_by_index_month_pre_2020,
+    trp_index_so_far_by_index_month_from_2020
+  ) |>
+  dplyr::filter(!is.na(base_volume)) |>
+  dplyr::group_by(
+    year
+  ) |>
+  dplyr::mutate(
+    city_base_volume = sum(base_volume),
+    squared_weight = (base_volume / sum(base_volume))^2
+  ) |>
+  dplyr::summarise(
+    n_trp = n(),
+    sum_of_squared_weights = sum(squared_weight)
+  )
+

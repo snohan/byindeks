@@ -7,9 +7,10 @@
 # - MDT (Traffic data API)
 
 # OUT
-# - City index
-# - Chained yearly city index
-# - Rolling index based on MDT
+# - RDS files:
+#   - City index
+#   - Chained yearly city index
+#   - Rolling index based on MDT
 # - Excel file with all data
 
 
@@ -28,17 +29,15 @@
 }
 
 
-## Connection to old data ----
+# Old data ----
 # (This is only used to match old index data from before 2020)
-cities_points <- read.csv2("data_points_raw/cities_points.csv")
-
 trp_id_msnr <-
-  cities_points |>
+  read.csv2("data_points_raw/cities_points.csv") |>
   dplyr::select(trp_id, msnr = legacyNortrafMpn) |>
   dplyr::distinct()
 
 
-## City IDs ----
+# City IDs
 # Bergen 8952
 # Bodø 19954
 # Buskerudbyen 1952
@@ -56,19 +55,21 @@ trp_id_msnr <-
 # Kristiansand og omegn 957 kommune 956
 # Tromsø 961
 
-## Trondheim has its own script, all inclusive except for MDT 36 index
-#source("city_index_dataprep_trondheim_toll_stations")
-# Trondheim stop
+## Trondheim has its own script, all inclusive except MDT index:
+# city_index_dataprep_trondheim_toll_stations.R
 
-## Choose publish month ----
+
+# Time ----
 {
   present_year <- 2025
   index_month <- 9 # the one to be published now
   city_number <- 959
 }
 
+source("set_time_references.R")
 
-## TRP names ----
+
+# TRPs ----
 this_citys_trps_all_adt_final <-
   readr::read_rds(
     file = paste0(
@@ -85,9 +86,7 @@ trp_names <-
     name,
     municipality_name
   ) |>
-  dplyr::arrange(
-    name
-  )
+  dplyr::arrange(name)
 
 if(city_number == 959) {
 
@@ -99,18 +98,10 @@ if(city_number == 959) {
     )
 }
 
-
-## Set time references ----
-source("set_time_references.R")
-
-
-# City TRPs ----
 # TODO: TRPs might differ from year to year!
 city_trps <-
   get_published_pointindex_for_months(city_number, max(index_years), 1)[[1]] |>
   base::sort()
-
-
 
 
 # Rolling index ----
@@ -174,14 +165,7 @@ mdt_filtered <-
     #sub_area = municipality_name
   ) |>
   dplyr::mutate(
-    year_month = lubridate::as_date(
-      paste0(
-        year,
-        "-",
-        month,
-        "-01"
-      )
-    )
+    year_month = lubridate::as_date(paste0(year, "-", month, "-01"))
   ) |>
   tibble::as_tibble()
 
@@ -205,12 +189,10 @@ mdt_filtered |>
 mdt_filtered <- readr::read_rds(paste0("data_indexpoints_tidy/mdt_", city_number, ".rds"))
 
 
-## Check MDT validity ----
+## Check validity ----
 # Exclude trp-months
 source("exclude_trp_mdts_list.R")
 
-
-## Check MDT ----
 trp_mdt_ok_refyear <-
   mdt_validated |>
   dplyr::filter(
@@ -277,7 +259,7 @@ source("exclude_trp_mdts_list.R")
 #plot_mdt_comparisons |> plotly::ggplotly()
 
 
-## All possible window indexes ----
+## Rolling index ----
 all_12_month_indices <- calculate_rolling_indices(12)
 all_24_month_indices <- calculate_rolling_indices(24)
 all_36_month_indices <- calculate_rolling_indices(36)
@@ -315,14 +297,14 @@ all_rolling_indices_list |>
       )
   )
 
-# See city_index_rolling_trp.R
+# city_index_rolling_trp.R
 
 if(city_number == 959) {
   source("city_index_rolling_sub_area.R")
 }
 
 
-# Fetch yearly city indexes ----
+# Yearly index ----
 {
 city_indexes <-
   purrr::map2(
@@ -352,8 +334,7 @@ city_indexes <-
 # TODO: fetch for so far this year by index month
 
 
-## TRP index ----
-## So far by December ----
+## TRP index by year ----
 # Still need to specify csv-files for years before 2020 to get the pointindex as they are not in API
 if((city_number %in% c(1952, 955, 952, 959))){
   trp_index_so_far_by_dec_pre_2020 <-
@@ -428,9 +409,7 @@ if(!(city_number %in% c(1952, 955, 952, 959))){
 trp_index_year_to_date_dec <-
   trp_index_year_to_date_dec_bind |>
   dplyr::filter(!is.na(base_volume)) |>
-  dplyr::group_by(
-    year
-  ) |>
+  dplyr::group_by(year) |>
   dplyr::mutate(
     city_base_volume = sum(base_volume),
     squared_weight = (base_volume / sum(base_volume))^2
@@ -441,53 +420,8 @@ trp_index_year_to_date_dec <-
   )
 
 
-## So far by index month ----
-# Only relevant if index month is not 12!
-# TODO: chained index - later!
-# TODO: OLD VTI VERSION: fetch file given month for so far this year index
-# As of now the csv files are implicitly containing index values for December's "so far".
-
-# TODO: trp_index_so_far_by_index_month_pre_2020
-
-trp_index_so_far_by_index_month_from_2020 <-
-  trp_index_from_2020 |>
-  dplyr::filter(
-    day_type == "ALL",
-    is_excluded == FALSE,
-    is_manually_excluded == FALSE,
-    length_excluded == FALSE,
-    period == "year_to_date",
-    month == index_month
-  ) |>
-  dplyr::select(
-    trp_id,
-    year,
-    month,
-    base_volume,
-    index = index_short
-  )
-
-trp_index_year_to_date_by_index_month <-
-  dplyr::bind_rows(
-    #trp_index_so_far_by_index_month_pre_2020,
-    trp_index_so_far_by_index_month_from_2020
-  ) |>
-  dplyr::filter(!is.na(base_volume)) |>
-  dplyr::group_by(
-    year
-  ) |>
-  dplyr::mutate(
-    city_base_volume = sum(base_volume),
-    squared_weight = (base_volume / sum(base_volume))^2
-  ) |>
-  dplyr::summarise(
-    n_trp = n(),
-    sum_of_squared_weights = sum(squared_weight)
-  )
-
-
-## Monthly ----
-# For Excel report
+## TRP index by month ----
+# For Excel
 if((city_number %in% c(1952, 955, 952, 959))){
   trp_index_monthly_pre_2020 <-
     purrr::map_dfr(
@@ -495,9 +429,7 @@ if((city_number %in% c(1952, 955, 952, 959))){
       ~ read_old_pointindex_csv_monthly(
         paste0("data_index_raw/pointindex_", city_number, "_", .x, ".csv")
       ) |>
-      dplyr::mutate(
-        year = .x
-      )
+      dplyr::mutate(year = .x)
     ) |>
     dplyr::left_join(
       trp_id_msnr,
@@ -535,7 +467,6 @@ if(!(city_number %in% c(1952, 955, 952, 959))){
     )
 }
 
-# Solely for Excel ----
 trp_index_monthly_wide <-
     trp_index_monthly |>
     tidyr::complete(
@@ -581,7 +512,7 @@ trp_index_monthly_wide <-
     )
 
 
-# City index ----
+## City index ----
 city_index_full_years <-
   city_indexes |>
   dplyr::filter(
@@ -601,7 +532,6 @@ city_index_full_years <-
     year_base = year - 1,
     index_i = index_converter(index_p),
     variance = standard_deviation^2,
-    #standard_error = base::round(sqrt(sum_of_squared_weights) * standard_deviation, digits = 1)
     standard_error = sqrt(sum_of_squared_weights) * standard_deviation
   ) %>%
   dplyr::select(
@@ -619,7 +549,7 @@ city_index_full_years <-
   dplyr::arrange(year)
 
 
-## Chained city index ----
+## Chained city index
 years_1_2 <- calculate_two_year_index(city_index_full_years)
 
 years_1_3 <-
@@ -689,7 +619,7 @@ if(city_number == 1952) {
 }
 
 
-# Combining direct and rolling ----
+# Combine direct and rolling ----
 ## Nord-Jæren test ----
 chain_start_year_from_to <- "2017-2019"
 
@@ -774,7 +704,7 @@ city_index_tromso_2019_2022 <-
 chain_link_se_p <- city_index_tromso_2019_2022$standard_error
 
 
-### Yearly index ----
+### Yearly index
 city_index_chained <-
   city_index_yearly_all |>
   dplyr::filter(
@@ -868,7 +798,7 @@ readr::write_rds(
 )
 
 
-### Rolling index ----
+### Rolling index
 all_rolling_indexes <-
   readr::read_rds(
     file =
@@ -923,8 +853,8 @@ all_rolling_indexes_chained |>
   )
 
 
-# TRP data to Excel ----
-## Add YDT ----
+# Excel ----
+## Add YDT
 # Not for TRD!
 {
 ydt <- get_aadt_by_length_for_trp_list(this_citys_trps_all_adt_final$trp_id, "WEEKDAY")
