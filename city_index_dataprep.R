@@ -55,8 +55,6 @@ trp_id_msnr <-
 # Kristiansand og omegn 957 kommune 956
 # Tromsø 961
 
-## Trondheim has its own script, all inclusive except MDT index: city_index_dataprep_trd.R
-
 
 # Time ----
 {
@@ -304,6 +302,11 @@ if(city_number == 959) {
 
 
 # Yearly TRP index ----
+
+# TRD:
+# Trondheim has its own script for yearly index: city_index_dataprep_trd.R
+# Come back here for writing Excel file
+
 # So far by year
 # Still need to specify csv-files for years before 2020 to get the pointindex as they are not in API
 if((city_number %in% c(1952, 955, 952, 959))){
@@ -849,8 +852,8 @@ all_rolling_indexes_chained |>
   )
 
 
-# Excel ----
-## Add YDT
+# YDT ----
+# For Excel
 # Not for TRD!
 {
 ydt <- get_aadt_by_length_for_trp_list(this_citys_trps_all_adt_final$trp_id, "WEEKDAY")
@@ -922,107 +925,5 @@ trp_info_adt <-
 
 }
 
-# Write
-if(city_number %in% c(19954, 19955, 20952)){
-
-  list(
-    punkt_adt = trp_info_adt,
-    punktindeks_maned = trp_index_monthly_wide,
-    byindeks_aarlig = city_index_yearly_all#,
-    #by_glid_indeks = all_rolling_indices
-  ) |>
-    writexl::write_xlsx(
-      path = paste0(
-        "data_indexpoints_tidy/tallmateriale_",
-        city_number,
-        ".xlsx"
-      )
-    )
-}
-
-if(city_number %in% c(18952, 19953)){
-
-  list(
-    punkt_adt = trp_info_adt,
-    punktindeks_maned = trp_index_monthly_wide,
-    byindeks_aarlig = city_index_yearly_all,
-    by_glid_indeks = all_rolling_indices
-  ) |>
-    writexl::write_xlsx(
-      path = paste0(
-        "data_indexpoints_tidy/tallmateriale_",
-        city_number,
-        ".xlsx"
-      )
-    )
-}
-
-if(city_number == 16952){
-
-  list(
-    punkt_adt = trp_info_adt,
-    punktindeks_maned = trp_index_monthly_wide,
-    byindeks_aarlig = city_index_final,
-    by_glid_indeks = all_rolling_indexes_chained
-  ) |>
-    writexl::write_xlsx(
-      path = paste0(
-        "data_indexpoints_tidy/tallmateriale_",
-        city_number,
-        ".xlsx"
-      )
-    )
-}
-
-if(city_number == 960){
-
-  list(
-    punkt_adt = this_citys_trps_all_adt_final_index,
-    punktindeks_maned = trp_index_monthly_wide,
-    byindeks_aarlig = city_index_yearly_all,
-    by_glid_indeks = all_rolling_indices,
-    byindeks_hittil = city_index_so_far_all
-  ) |>
-    writexl::write_xlsx(
-      path = paste0(
-        "data_indexpoints_tidy/tallmateriale_",
-        city_number,
-        ".xlsx"
-      )
-    )
-}
-
-if(city_number %in% c(959)){
-
-  list(
-    punkt_adt = trp_info_adt,
-    punktindeks_maned = trp_index_monthly_wide,
-    byindeks_aarlig = city_index_yearly_all,
-    by_glid_indeks = all_rolling_indices,
-    by_glid_indeks_sub = all_rolling_indices_sub
-  ) |>
-    writexl::write_xlsx(
-      path = paste0(
-        "data_indexpoints_tidy/tallmateriale_",
-        city_number,
-        ".xlsx"
-      )
-    )
-}
-
-if(!(city_number %in% c(960, 16952, 18952, 19953))){
-
-  list(
-    punkt_adt = trp_info_adt,
-    punktindeks_maned = trp_index_monthly_wide,
-    byindeks_aarlig = city_index_yearly_all,
-    by_glid_indeks = all_rolling_indices
-  ) |>
-    writexl::write_xlsx(
-      path = paste0(
-        "data_indexpoints_tidy/tallmateriale_",
-        city_number,
-        ".xlsx"
-      )
-    )
-}
+# Write Excel ----
+source("city_index_to_excel.R")

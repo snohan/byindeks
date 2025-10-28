@@ -10,17 +10,9 @@
 # City index
 # Excel file
 
-source("indexpoints_tidying_functions.R")
-
-# Set manual variables ----
-{
-index_month <- 9 # to be published now
-city_number <- 960
 city_name <- "Trondheim"
-}
 
 # Get data ----
-## TD API ----
 {
 trp_index_20 <- get_published_pointindex_for_months_trondheim(city_number, 2020, 12)
 trp_index_21 <- get_published_pointindex_for_months_trondheim(city_number, 2021, 12)
@@ -40,7 +32,7 @@ trp_index_all <-
   )
 }
 
-## Prepared toll data ----
+# Prepared toll data
 # Made in bomdata_trondheim.R
 {
 toll_meta_data <-
@@ -80,7 +72,7 @@ toll_index_monthly <-
 }
 # Autopass-ID
 
-#
+
 # TRPs ----
 # Choosing most recent version of city trps
 city_trps <- trp_index_25[[1]]
@@ -140,11 +132,9 @@ trd_station_type <-
 # NVDB-ID
 
 trd_station_type |>
-  readr::write_rds(
-    "trd_station_type.rds"
-  )
+  readr::write_rds("trd_station_type.rds")
 
-# To match ids in mdt data
+# To match ids in MDT data
 trd_toll_station_id <-
   dplyr::bind_rows(
     this_citys_trps,
@@ -163,18 +153,14 @@ trd_toll_station_id <-
 # Autopass-ID
 
 trd_toll_station_id |>
-  readr::write_rds(
-    "trd_toll_station_id.rds"
-  )
+  readr::write_rds("trd_toll_station_id.rds")
 
 
 # AADT ----
 # Fetch AADT in city_index_check.Rmd
 
 this_citys_trps_all_adt_final <-
-  readr::read_rds(
-      "index_trp_metadata/trp_960.rds"
-  ) |>
+  readr::read_rds("index_trp_metadata/trp_960.rds") |>
   dplyr::mutate(
     trp_autopass_id =
       dplyr::case_when(
@@ -354,9 +340,7 @@ city_index_yearly_light <-
 years_1_2 <-
   city_index_yearly_light |>
   calculate_two_year_index() |>
-  dplyr::mutate(
-    index_type = "chained"
-  )
+  dplyr::mutate(index_type = "chained")
 
 years_1_3 <-
   dplyr::bind_rows(
@@ -364,9 +348,7 @@ years_1_3 <-
     dplyr::slice(city_index_yearly_light, 3)
   ) |>
   calculate_two_year_index() |>
-  dplyr::mutate(
-    index_type = "chained"
-  )
+  dplyr::mutate(index_type = "chained")
 
 years_1_4 <-
   dplyr::bind_rows(
@@ -374,9 +356,7 @@ years_1_4 <-
     dplyr::slice(city_index_yearly_light, 4)
   ) |>
   calculate_two_year_index() |>
-  dplyr::mutate(
-    index_type = "chained"
-  )
+  dplyr::mutate(index_type = "chained")
 
 years_1_5 <-
   dplyr::bind_rows(
@@ -384,16 +364,12 @@ years_1_5 <-
     dplyr::slice(city_index_yearly_light, 5)
   ) |>
   calculate_two_year_index() |>
-  dplyr::mutate(
-    index_type = "chained"
-  )
+  dplyr::mutate(index_type = "chained")
 
 # Skipping intermediate years, adding just from first to last
 city_index_yearly_all <-
   city_index_yearly_light |>
-  dplyr::mutate(
-    index_type = "direct"
-  ) |>
+  dplyr::mutate(index_type = "direct") |>
   dplyr::bind_rows(
     years_1_2,
     years_1_3,
@@ -455,9 +431,7 @@ trp_index_monthly <-
 trp_toll_index_monthly <-
   toll_index_monthly |>
   dplyr::bind_rows(trp_index_monthly) |>
-  dplyr::filter(
-    length_range == "lette"
-  ) |>
+  dplyr::filter(length_range == "lette") |>
   dplyr::mutate(
     year = lubridate::year(month_object),
     month = lubridate::month(month_object)
@@ -472,7 +446,7 @@ trp_toll_index_monthly <-
 #   dplyr::summarise(n_trp = n())
 
 
-# Sidetrack: for making Excel file in city_index_dataprep.R
+# Sidetrack: for Excel file in city_index_dataprep.R
 trp_index_monthly_wide <-
   # Exception from naming convention to match same df from other cities
   trp_toll_index_monthly |>
@@ -721,14 +695,6 @@ readr::write_rds(
   file = paste0("data_indexpoints_tidy/city_index_so_far_", city_number, ".rds")
 )
 
-# Husk å lage fil for Miljøpakken
-# TODO: include in Excel file for all cities
-# write.csv2(
-#   city_index_so_far_all,
-#   file = paste0("data_indexpoints_tidy/city_index_so_far_", city_number, ".csv"),
-#   row.names = F
-# )
-
 
 # MDT ----
-# Use city_index_dataprep.R and run first "Set time references", then jump straight to "Rolling index"
+# Already done in city_index_dataprep.R!
