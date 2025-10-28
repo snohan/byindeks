@@ -13,38 +13,34 @@ read_pointindex_CSV <- function(filename) {
 
   # Read standard csv export from Datainn
 
-  read.csv2(
+  utils::read.csv2(
     filename,
     encoding = "latin1"
-    #check.names = FALSE
     ) |>
     dplyr::filter(
       døgn == "Alle",
       #døgn == "Yrkesdøgn",
       lengdeklasse == "< 5,6m",
       periode == "Hittil i år"
-    ) %>%
+    ) |>
     dplyr::mutate(
       trs = as.numeric(msnr),
-      trafikkmengde.basisaar =
-        as.numeric(as.character(trafikkmengde.basisår)),
-      trafikkmengde.indeksaar =
-        as.numeric(as.character(trafikkmengde.indeksår))
+      trafikkmengde.basisaar = as.numeric(as.character(trafikkmengde.basisår)),
+      trafikkmengde.indeksaar = as.numeric(as.character(trafikkmengde.indeksår))
     ) |>
     # Why sum and recalculate index?
-    dplyr::group_by(trs) %>%
     dplyr::summarise(
       trafikkmengde_basisaar = sum(trafikkmengde.basisaar),
       trafikkmengde_indeksaar = sum(trafikkmengde.indeksaar),
-      index =
-        round(
-          (trafikkmengde_indeksaar/
-            trafikkmengde_basisaar - 1) * 100,
-          digits = 1
-        )
+      index = round((trafikkmengde_indeksaar/trafikkmengde_basisaar - 1) * 100, 1),
+      .by = c(trs)
     ) |>
-    dplyr::rename(msnr = trs) %>%
-    dplyr::select(msnr, index, base_volume = trafikkmengde_basisaar)
+    dplyr::select(
+      msnr = trs,
+      index,
+      base_volume = trafikkmengde_basisaar,
+      calc_volume = trafikkmengde_indeksaar
+    )
 
 }
 
@@ -186,7 +182,7 @@ calculate_area_index <- function(trp_index_df) {
       standard_deviation = sqrt((1 / (1 - sum(weight^2) )) * sum(weight * (index - index_p)^2) ),
       standard_error = sqrt(sum(weight^2) * standard_deviation^2),
       .groups = "drop"
-    )|>
+    ) |>
     dplyr::select(
       -city_base_volume,
       -city_calc_volume

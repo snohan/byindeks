@@ -3866,18 +3866,14 @@ get_published_pointindex <- function(index_id, indexyear, indexmonth) {
     dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
     dplyr::mutate(
       length_range =
-        dplyr::if_else(
-          length_range == "[..,5.6)",
-          "short", "long")
-    ) %>%
+        dplyr::if_else(length_range == "[..,5.6)", "short", "long")
+    ) |>
     tidyr::pivot_wider(
       names_from = length_range,
-      #names_prefix = "index_",
-      #values_from = length_index
       values_from = c(length_index, length_calc_volume, length_base_volume)
     ) %>%
     dplyr::mutate(period = "month") |>
-     dplyr::rename(index_short = length_index_short)
+    dplyr::rename(index_short = length_index_short)
 
     year_to_date_data <-
       unnested_data %>%
@@ -3907,16 +3903,12 @@ get_published_pointindex <- function(index_id, indexyear, indexmonth) {
       dplyr::filter(length_range %in% c("[..,5.6)", "[5.6,..)")) %>%
       dplyr::mutate(
         length_range =
-          dplyr::if_else(
-            length_range == "[..,5.6)",
-            "short", "long")
-      ) %>%
+          dplyr::if_else(length_range == "[..,5.6)", "short", "long")
+      ) |>
       tidyr::pivot_wider(
         names_from = length_range,
-        #names_prefix = "index_",
-        #values_from = length_index
         values_from = c(length_index, length_calc_volume, length_base_volume)
-      ) %>%
+      ) |>
       dplyr::mutate(period = "year_to_date") |>
       dplyr::rename(index_short = length_index_short)
 

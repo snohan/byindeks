@@ -698,3 +698,7 @@ readr::write_rds(
 
 # MDT ----
 # Already done in city_index_dataprep.R!
+
+
+# Write Excel ----
+source("city_index_to_excel.R")

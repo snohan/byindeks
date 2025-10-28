@@ -29,7 +29,7 @@
 }
 
 
-# Old data ----
+# Old data connection ----
 # (This is only used to match old index data from before 2020)
 trp_id_msnr <-
   read.csv2("data_points_raw/cities_points.csv") |>
@@ -37,29 +37,32 @@ trp_id_msnr <-
   dplyr::distinct()
 
 
-# City IDs
-# Bergen 8952
-# Bodø 19954
-# Buskerudbyen 1952
-# Grenland 955
-# Haugesund 19955
-# Kristiansandsregionen 19953
-# Nedre Glomma 18952
-# Nord-Jæren 952
-# Oslo 959
-# Trondheim 960
-# Tromsø 2022 16952
-# Ålesund 20952
-
-# Old:
-# Kristiansand og omegn 957 kommune 956
-# Tromsø 961
-
-
 # Time ----
+# City IDs
+# 2016:
+#   Buskerudbyen 1952
+#   Grenland 955
+# 2017:
+#   Nord-Jæren 952
+# 2018:
+#   Bergen 8952
+#   Oslo 959
+# 2019:
+#   Trondheim 960
+# 2022:
+#   Tromsø 2022 16952
+# 2023:
+#   Kristiansandsregionen 19953
+#   Nedre Glomma 18952
+# 2024:
+#   Bodø 19954
+#   Haugesund 19955
+#   Ålesund 20952
+
 {
   present_year <- 2025
-  index_month <- 9 # the one to be published now
+  # month to be published now:
+  index_month <- 9
   city_number <- 959
 }
 
@@ -86,7 +89,6 @@ trp_names <-
   dplyr::arrange(name)
 
 if(city_number == 959) {
-
   sub_areas <-
     this_citys_trps_all_adt_final |>
     dplyr::select(
@@ -305,7 +307,6 @@ if(city_number == 959) {
 
 # TRD:
 # Trondheim has its own script for yearly index: city_index_dataprep_trd.R
-# Come back here for writing Excel file
 
 # So far by year
 # Still need to specify csv-files for years before 2020 to get the pointindex as they are not in API
@@ -362,7 +363,8 @@ trp_index_so_far_by_dec_from_2020 <-
     trp_id,
     year,
     month,
-    base_volume,
+    base_volume = length_base_volume_short,
+    calc_volume = length_calc_volume_short,
     index = index_short
   )
 
@@ -376,6 +378,25 @@ if(!(city_number %in% c(1952, 955, 952, 959))){
     dplyr::bind_rows(
       trp_index_so_far_by_dec_pre_2020,
       trp_index_so_far_by_dec_from_2020
+    )
+}
+
+# Test: this should reproduce city index:
+test <-
+  trp_index_year_to_date_dec_bind |>
+  dplyr::group_by(year) |>
+  dplyr::group_modify(
+    ~ calculate_area_index(.)
+  )
+
+# Sub area
+if(city_number == 959) {
+  city_index_sub_area <-
+    trp_index_year_to_date_dec_bind |>
+    dplyr::left_join(sub_areas, by = "trp_id") |>
+    dplyr::group_by(year, sub_area) |>
+    dplyr::group_modify(
+      ~ calculate_area_index(.)
     )
 }
 
@@ -532,7 +553,7 @@ city_index_full_years <-
     index_i = index_converter(index_p),
     variance = standard_deviation^2,
     standard_error = sqrt(sum_of_squared_weights) * standard_deviation
-  ) %>%
+  ) |>
   dplyr::select(
     year_base,
     year,
@@ -544,7 +565,7 @@ city_index_full_years <-
     n_trp,
     standard_error,
     sum_of_squared_weights
-  ) %>%
+  ) |>
   dplyr::arrange(year)
 
 
@@ -924,6 +945,7 @@ trp_info_adt <-
   )
 
 }
+
 
 # Write Excel ----
 source("city_index_to_excel.R")
