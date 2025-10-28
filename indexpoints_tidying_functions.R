@@ -177,6 +177,7 @@ calculate_area_index <- function(trp_index_df) {
     dplyr::summarise(
       city_base_volume = sum(base_volume),
       city_calc_volume = sum(calc_volume),
+      month = base::max(month),
       index_p = (city_calc_volume / city_base_volume - 1 ) * 100,
       n_trp = n(),
       standard_deviation = sqrt((1 / (1 - sum(weight^2) )) * sum(weight * (index - index_p)^2) ),
@@ -200,9 +201,7 @@ calculate_two_year_index <- function(city_index_df) {
   two_years <-
     city_index_df |>
     dplyr::select(
-      #index_p,
       index_i,
-      #variance,
       standard_error,
       n_trp
     ) %>%

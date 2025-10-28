@@ -94,6 +94,16 @@ if(city_number == 959) {
     dplyr::select(
       trp_id,
       sub_area = county_name
+    ) |>
+    # Some old TRPs no longer part of definition
+    dplyr::bind_rows(
+      tibble::tribble(
+        ~trp_id, ~sub_area,
+        "23568V444232", "Akershus",
+        "30552V444220", "Akershus",
+        "88537V444232", "Akershus",
+        "69931V443604", "Akershus"
+      )
     )
 }
 
@@ -381,25 +391,7 @@ if(!(city_number %in% c(1952, 955, 952, 959))){
     )
 }
 
-# Test: this should reproduce city index:
-test <-
-  trp_index_year_to_date_dec_bind |>
-  dplyr::group_by(year) |>
-  dplyr::group_modify(
-    ~ calculate_area_index(.)
-  )
-
-# Sub area
-if(city_number == 959) {
-  city_index_sub_area <-
-    trp_index_year_to_date_dec_bind |>
-    dplyr::left_join(sub_areas, by = "trp_id") |>
-    dplyr::group_by(year, sub_area) |>
-    dplyr::group_modify(
-      ~ calculate_area_index(.)
-    )
-}
-
+# Weighting standard error
 trp_index_year_to_date_dec <-
   trp_index_year_to_date_dec_bind |>
   dplyr::filter(!is.na(base_volume)) |>
@@ -568,6 +560,14 @@ city_index_full_years <-
   ) |>
   dplyr::arrange(year)
 
+# Test: this should reproduce city index from TRP index:
+test <-
+  trp_index_year_to_date_dec_bind |>
+  dplyr::group_by(year) |>
+  dplyr::group_modify(
+    ~ calculate_area_index(.)
+  )
+
 
 ## Chained city index
 years_1_2 <- calculate_two_year_index(city_index_full_years)
@@ -631,6 +631,11 @@ readr::write_rds(
   city_index_yearly_all,
   file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")
 )
+
+# Sub area yearly index
+if(city_number == 959) {
+  source("city_index_yearly_sub_area.R")
+}
 
 
 # E18 Buskerudbyen ----
