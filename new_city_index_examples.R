@@ -64,8 +64,8 @@
   links_in_area <- readr::read_rds("traffic_link_pop/links_bergen.rds")
 }
 
-source("new_city_examples_prepare.R")
-source("new_city_examples_calculate.R")
+source("new_city_index_examples_prepare.R")
+source("new_city_index_examples_calculate.R")
 
 # Check:
 # missing <-
@@ -88,8 +88,8 @@ source("new_city_examples_calculate.R")
   links_in_area <- readr::read_rds("traffic_link_pop/links_oslo.rds")
 }
 
-source("new_city_examples_prepare.R")
-source("new_city_examples_calculate.R")
+source("new_city_index_examples_prepare.R")
+source("new_city_index_examples_calculate.R")
 
 # missing <-
 #   this_citys_trps_all_adt_final |>
@@ -250,7 +250,7 @@ list(
   links_in_area <- readr::read_rds("traffic_link_pop/links_nj.rds")
 }
 
-source("new_city_examples_prepare.R")
+source("new_city_index_examples_prepare.R")
 
 # missing <-
 #   this_citys_trps_all_adt_final |>
@@ -344,7 +344,7 @@ list(
   )
 
 
-### More TRPs ----
+## More TRPs ----
 nj_index_month_more <-
   mdt_validated |>
   dplyr::filter(
@@ -397,7 +397,7 @@ list(
   )
 
 
-### Chained ----
+## Chained ----
 # Chain link 1: 2017-2019
 cmdt_chain_1 <-
   area_index_one_year_nj_more |>

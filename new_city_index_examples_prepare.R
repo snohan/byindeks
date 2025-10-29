@@ -43,26 +43,58 @@ function_class_tw <-
   ) |>
   dplyr::arrange(function_class)
 
-trp_weights <-
-  links_in_area |>
-  sf::st_drop_geometry() |>
-  dplyr::filter(
-    !is.na(point_id)
-  ) |>
-  dplyr::select(
-    trp_id = point_id,
-    length_m,
-    trp_tw_ref_kkm = tw,
-    function_class
-  ) |>
-  dplyr::mutate(
-    length_m = base::round(length_m),
-    trp_tw_ref_kkm = trp_tw_ref_kkm * 1e-3
-  ) |>
-  dplyr::left_join(
-    function_class_tw,
-    by = "function_class"
-  )
+
+if(city_number == "952") {
+
+  # In order to use more than the 23 TRPs
+  trp_weights <-
+    links_in_area |>
+    sf::st_drop_geometry() |>
+    dplyr::left_join(
+      link_trp_id,
+      by = "link_id"
+    ) |>
+    dplyr::filter(
+      !is.na(trp_id)
+    ) |>
+    dplyr::select(
+      trp_id,
+      length_m,
+      trp_tw_ref_kkm = tw,
+      function_class
+    ) |>
+    dplyr::mutate(
+      length_m = base::round(length_m),
+      trp_tw_ref_kkm = trp_tw_ref_kkm * 1e-3
+    ) |>
+    dplyr::left_join(
+      function_class_tw,
+      by = "function_class"
+    )
+
+}else{
+
+  trp_weights <-
+    links_in_area |>
+    sf::st_drop_geometry() |>
+    dplyr::filter(
+      !is.na(point_id)
+    ) |>
+    dplyr::select(
+      trp_id = point_id,
+      length_m,
+      trp_tw_ref_kkm = tw,
+      function_class
+    ) |>
+    dplyr::mutate(
+      length_m = base::round(length_m),
+      trp_tw_ref_kkm = trp_tw_ref_kkm * 1e-3
+    ) |>
+    dplyr::left_join(
+      function_class_tw,
+      by = "function_class"
+    )
+}
 
 
 # MDT ----

@@ -453,6 +453,26 @@ Regneeksemplene er derfor laget i tre varianter, slik de er presentert i det fø
 ### Dagens utvalg av punkt
 I disse regneeksemplene benyttes de samme punktene som i dagens metode, og indeksen er en direkte sammenligning med referanseåret.
 
+For hver månedsindeks kan vi beregne representativiteten til punktutvalget. Dette er vist i @fig-nj_repr.
+
+```{r}
+#| label: fig-nj_repr
+#| fig-cap: "Utvalgets representativitet over tid." 
+
+qmd_index_examples_cmdt_nj_month |>
+  dplyr::select(
+    x_label, n_trp_perc, tw_perc, tvd
+  ) |> 
+  tidyr::pivot_longer(
+    cols = c(n_trp_perc, tw_perc, tvd),
+    names_to = "measure"
+  ) |>
+  dplyr::mutate(
+    x_label = as.factor(x_label) |> forcats::fct_inorder()
+  ) |>
+  visualize_representativity()
+```
+
 I @fig-nj_official_12 og @fig-nj_improved_12 vises resultatene for ett års glidende indeks.
 
 ```{r}
@@ -644,6 +664,26 @@ qmd_index_examples_cmdt_nj_month_more |>
       x = NULL, y = "Antall punkt"
     ) +
     ggtitle("Antall punkt")
+```
+
+For hver månedsindeks kan vi beregne representativiteten til punktutvalget. Dette er vist i @fig-nj_repr_more.
+
+```{r}
+#| label: fig-nj_repr_more
+#| fig-cap: "Utvalgets representativitet over tid." 
+
+qmd_index_examples_cmdt_nj_month_more |>
+  dplyr::select(
+    x_label, n_trp_perc, tw_perc, tvd
+  ) |> 
+  tidyr::pivot_longer(
+    cols = c(n_trp_perc, tw_perc, tvd),
+    names_to = "measure"
+  ) |>
+  dplyr::mutate(
+    x_label = as.factor(x_label) |> forcats::fct_inorder()
+  ) |>
+  visualize_representativity()
 ```
 
 I @fig-nj_improved_12_more vises resultatene for ett års glidende indeks med forbedret metode. Også her er indeksen en direkte sammenligning med referanseåret.
