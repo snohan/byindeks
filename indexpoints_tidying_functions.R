@@ -401,13 +401,13 @@ calculate_all_possible_36_month_indexes <- function(city_monthly_df) {
 }
 
 
-cum_se <- function(i1, i2, se1, se2) {
-
-  cum_se =
-    100 * sqrt(
-      i1^2 * 1e-4 * se2^2 + i2^2 * 1e-4 * se1^2 + 1e-4 * se1^2 * 1e-4 * se2^2
-    )
-}
+# cum_se <- function(i1, i2, se1, se2) {
+#
+#   cum_se =
+#     100 * sqrt(
+#       i1^2 * 1e-4 * se2^2 + i2^2 * 1e-4 * se1^2 + 1e-4 * se1^2 * 1e-4 * se2^2
+#     )
+# }
 
 
 calculate_index_chain <- function(direct) {

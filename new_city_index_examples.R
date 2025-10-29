@@ -65,6 +65,7 @@
 }
 
 source("new_city_examples_prepare.R")
+source("new_city_examples_calculate.R")
 
 # Check:
 # missing <-
@@ -79,6 +80,23 @@ source("new_city_examples_prepare.R")
 # viz_month <- brg_index_month |> select(x_label, index_p, n_trp)
 # viz_one_y <- area_index_one_year_brg |> select(x_label, index_p, ci_lower, ci_upper) |> mutate(across(where(is.double), ~ round(.x, 1)))
 # viz_three_y <- area_index_three_years_brg |> mutate(across(where(is.double), ~ round(.x, 1)))
+
+
+# Oslo ----
+{
+  city_number <- "959"
+  links_in_area <- readr::read_rds("traffic_link_pop/links_oslo.rds")
+}
+
+source("new_city_examples_prepare.R")
+source("new_city_examples_calculate.R")
+
+# missing <-
+#   this_citys_trps_all_adt_final |>
+#   dplyr::filter(
+#     !(trp_id %in% trp_weights$trp_id)
+#   )
+# Årnes Runni is outside urban area, Fjellsrud syd is on wrong road (no data since 2017)
 
 
 # Trondheim ----
@@ -229,56 +247,10 @@ list(
 # Nord-Jæren ----
 {
   city_number <- "952"
-  present_year <- 2024
-  index_month <- 12
-  source("set_time_references.R")
+  links_in_area <- readr::read_rds("traffic_link_pop/links_nj.rds")
 }
 
-
-## TRPs ----
-this_citys_trps_all_adt_final <-
-  readr::read_rds(
-    file = paste0(
-      "index_trp_metadata/trp_",
-      city_number,
-      ".rds"
-    )
-  ) |>
-  dplyr::filter(
-    stringr::str_sub(road_category_and_number, 1, 1) != "K"
-  ) |>
-  dplyr::select(
-    trp_id,
-    name,
-    road_reference,
-    municipality_name,
-    #lat, lon,
-    adt, year_aadt, adt_ref
-  )
-
-
-## Link population ----
-# Made in script city_link_population.R
-links_nj <- readr::read_rds("traffic_link_pop/links_nj.rds")
-population_size <- nrow(links_nj)
-
-
-## Original TRPs ----
-# trp_weights <-
-#   links_nj |>
-#   sf::st_drop_geometry() |>
-#   dplyr::filter(
-#     !is.na(point_id)
-#   ) |>
-#   dplyr::select(
-#     trp_id = point_id,
-#     tw,
-#     length_m
-#   ) |>
-#   dplyr::mutate(
-#     tw = base::round(tw / 1000),
-#     length_m = base::round(length_m)
-#   )
+source("new_city_examples_prepare.R")
 
 # missing <-
 #   this_citys_trps_all_adt_final |>
@@ -287,66 +259,6 @@ population_size <- nrow(links_nj)
 #   )
 # Rege is outside urban area
 
-
-### MDT ----
-# mdt_filtered_o <-
-#   readr::read_rds(
-#     paste0(
-#       "data_indexpoints_tidy/mdt_",
-#       city_number,
-#       ".rds"
-#     )
-#   )
-
-# To get the mdt_validated
-# source("exclude_trp_mdts_list.R")
-#
-# mdt_validated <-
-#   mdt_validated |>
-#   dplyr::inner_join(
-#     # "inner" works as a filter here!
-#     trp_weights,
-#     by = dplyr::join_by(trp_id)
-#   ) |>
-#   dplyr::summarise(
-#     n_trp = n(),
-#     .by = "year_month"
-#   )
-
-
-# trp_mdt_ok_refyear <-
-#   mdt_validated |>
-#   dplyr::filter(
-#     trp_id %in% links_nj$point_id
-#   ) |>
-#   filter_mdt(reference_year) |>
-#   purrr::pluck(1)
-
-
-### Index calculation ----
-#all_rolling_indices_old <- calculate_all_rolling_indices_old()
-
-# {
-#   tictoc::tic()
-#   all_rolling_indices_new <- calculate_all_rolling_indices_tw(population_size)
-#   tictoc::toc()
-# }
-#
-# list(
-#   all_rolling_indices_old,
-#   all_rolling_indices_new
-# ) |>
-#   readr::write_rds(
-#     "representativity/new_index_examples_nj.rds"
-#   )
-
-
-## More TRPS ----
-# Using as many TRPs as possible
-# 1. Existing TRPs
-# 2. All MDTs
-# 3. Filter MDTs by year
-# 4. Decide chain intervals
 
 # trps_existing <-
 #   link_trp_id |>
@@ -776,19 +688,19 @@ population_size <- nrow(links_nj)
 
 
 ## CMDT and improved ----
-function_class_tw <-
-  links_nj |>
-  sf::st_drop_geometry() |>
-  dplyr::select(
-    tw_km = tw,
-    function_class
-  ) |>
-  dplyr::summarise(
-    tw_fcl_population_kkm = base::sum(tw_km) / 1000,
-    n_links = n(),
-    .by = function_class
-  ) |>
-  dplyr::arrange(function_class)
+# function_class_tw <-
+#   links_nj |>
+#   sf::st_drop_geometry() |>
+#   dplyr::select(
+#     tw_km = tw,
+#     function_class
+#   ) |>
+#   dplyr::summarise(
+#     tw_fcl_population_kkm = base::sum(tw_km) / 1000,
+#     n_links = n(),
+#     .by = function_class
+#   ) |>
+#   dplyr::arrange(function_class)
 
 trp_weights <-
   links_nj |>
@@ -814,21 +726,21 @@ trp_weights <-
   )
 
 ### CMDT ----
-mdt_filtered <-
-  readr::read_rds(
-    paste0(
-      "data_indexpoints_tidy/cmdt_",
-      city_number,
-      ".rds"
-    )
-  ) |>
-  dplyr::filter(
-    length_class == "korte"
-  )
+# mdt_filtered <-
+#   readr::read_rds(
+#     paste0(
+#       "data_indexpoints_tidy/cmdt_",
+#       city_number,
+#       ".rds"
+#     )
+#   ) |>
+#   dplyr::filter(
+#     length_class == "korte"
+#   )
 
 # To get the mdt_validated df
-source("exclude_cmdt.R")
-length(unique(mdt_validated$trp_id))
+# source("exclude_cmdt.R")
+# length(unique(mdt_validated$trp_id))
 
 
 ### Original TRPs ----
@@ -1039,165 +951,4 @@ index_chain_1_2_3 <-
     em_p = -stats::qnorm(0.025) * sd_p,
     ci_lower = index_p - em_p,
     ci_upper = index_p + em_p
-  )
-
-
-# Oslo ----
-{
-  city_number <- "959"
-  present_year <- 2024
-  index_month <- 12
-  source("set_time_references.R")
-}
-
-## TRPs ----
-this_citys_trps_all_adt_final <-
-  readr::read_rds(
-    file = paste0("index_trp_metadata/trp_", city_number, ".rds")
-  ) |>
-  dplyr::select(
-    trp_id,
-    name,
-    road_reference,
-    municipality_name,
-    adt, year_aadt, adt_ref
-  )
-
-
-## Link population ----
-# Made in script city_link_population.R
-links_oslo <- readr::read_rds("traffic_link_pop/links_oslo.rds")
-population_size <- nrow(links_oslo)
-population_size_tw_kkm <- base::sum(links_oslo$tw) * 1e-3
-
-function_class_tw <-
-  links_oslo |>
-  sf::st_drop_geometry() |>
-  dplyr::select(
-    tw_km = tw,
-    function_class
-  ) |>
-  dplyr::summarise(
-    tw_fcl_population_kkm = base::sum(tw_km) / 1000,
-    n_links = n(),
-    .by = function_class
-  ) |>
-  dplyr::arrange(function_class)
-
-trp_weights <-
-  links_oslo |>
-  sf::st_drop_geometry() |>
-  dplyr::filter(
-    !is.na(point_id)
-  ) |>
-  dplyr::select(
-    trp_id = point_id,
-    length_m,
-    function_class
-  ) |>
-  dplyr::mutate(
-    length_m = base::round(length_m)
-  ) |>
-  dplyr::left_join(
-    function_class_tw,
-    by = "function_class"
-  )
-
-# missing <-
-#   this_citys_trps_all_adt_final |>
-#   dplyr::filter(
-#     !(trp_id %in% trp_weights$trp_id)
-#   )
-# Årnes Runni is outside urban area, Fjellsrud syd is on wrong road (no data since 2017)
-
-
-## MDT ----
-mdt_filtered <-
-  readr::read_rds(
-    paste0(
-      "data_indexpoints_tidy/cmdt_",
-      city_number,
-      ".rds"
-    )
-  ) |>
-  dplyr::filter(
-    length_class == "korte"
-  )
-
-# To get the mdt_validated df
-source("exclude_cmdt.R")
-
-# mdt_validated |>
-#   dplyr::filter(trp_id %in% city_trps[1:2]) |>
-#   dplyr::select(
-#     trp_id,
-#     year,
-#     month,
-#     mdt
-#   ) |>
-#   tidyr::complete(
-#     trp_id,
-#     year,
-#     month,
-#     fill = list(mdt = NA_real_)
-#   ) |>
-#   dplyr::left_join(
-#     points,
-#     by = "trp_id"
-#   ) |>
-#   dplyr::mutate(
-#     road_category_and_number_and_point_name = paste0(road_category_and_number, " ", name),
-#     year = forcats::as_factor(year)
-#   ) |>
-#   dplyr::select(
-#     trp_id,
-#     year,
-#     month,
-#     mdt,
-#     road_category_and_number_and_point_name
-#   ) |>
-#   barplot_cmdt()
-
-
-## Index calculation ----
-oslo_index_month <-
-  mdt_validated |>
-  calculate_area_index_month(population_size)
-
-area_index_one_year_oslo <- calculate_rolling_area_index_one_year(oslo_index_month)
-
-area_index_three_years_oslo <- calculate_rolling_index_multiple_years(area_index_one_year_oslo, 3)
-
-# Back on track
-readr::write_rds(
-  oslo_index_month,
-  "representativity/cmdt_index_month_oslo.rds"
-)
-
-list(
-  area_index_one_year_oslo |>
-    dplyr::select(
-      universal_year_period_id,
-      x_label,
-      index_p,
-      ci_lower,
-      ci_upper
-    ) |>
-    dplyr::mutate(
-      window_years = "one"
-    ),
-  area_index_three_years_oslo |>
-    dplyr::select(
-      universal_year_period_id,
-      x_label,
-      index_p,
-      ci_lower,
-      ci_upper
-    ) |>
-    dplyr::mutate(
-      window_years = "three"
-    )
-) |>
-  readr::write_rds(
-    "representativity/rolling_cmdt_index_oslo.rds"
   )

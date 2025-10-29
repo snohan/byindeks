@@ -100,14 +100,26 @@ municipality_polygon_oslo <- readr::read_rds("traffic_link_pop/municipality_poly
 
 # Calculation examples
 ## Bergen
-qmd_index_examples_cmdt_brg_month <- readr::read_rds("representativity/cmdt_index_month_brg.rds")
+qmd_index_examples_cmdt_brg_month <- readr::read_rds("representativity/cmdt_index_month_8952.rds")
 
 qmd_index_examples_cmdt_brg <- 
-  readr::read_rds("representativity/rolling_cmdt_index_brg.rds") |>
+  readr::read_rds("representativity/rolling_cmdt_index_8952.rds") |>
   dplyr::bind_rows()
 
 qmd_indexes_official_bergen <-
   readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_8952.rds")) |>
+  dplyr::bind_rows()
+
+
+## Oslo
+qmd_index_examples_cmdt_oslo_month <- readr::read_rds("representativity/cmdt_index_month_959.rds")
+
+qmd_index_examples_cmdt_oslo <- 
+  readr::read_rds("representativity/rolling_cmdt_index_959.rds") |>
+  dplyr::bind_rows()
+
+qmd_indexes_official_oslo <-
+  readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_959.rds")) |>
   dplyr::bind_rows()
 
 
@@ -194,18 +206,6 @@ qmd_index_examples_cmdt_nj_month_more_chained <- readr::read_rds("representativi
 
 qmd_indexes_official_nj <-
   readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_952.rds")) |>
-  dplyr::bind_rows()
-
-
-## Oslo
-qmd_index_examples_cmdt_oslo_month <- readr::read_rds("representativity/cmdt_index_month_oslo.rds")
-
-qmd_index_examples_cmdt_oslo <- 
-  readr::read_rds("representativity/rolling_cmdt_index_oslo.rds") |>
-  dplyr::bind_rows()
-
-qmd_indexes_official_oslo <-
-  readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_959.rds")) |>
   dplyr::bind_rows()
 ```
 
