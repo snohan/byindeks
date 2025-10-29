@@ -729,9 +729,80 @@ qmd_index_examples_cmdt_nj_more |>
   ylim(-12, 12)
 ```
 
-En sammenligning av relativ feilmargin i tre års glidende indeks basert på henholdsvis dagens utvalg og utvidet utvalg, er vist i X.
+En sammenligning av relativ feilmargin i tre års glidende indeks basert på henholdsvis dagens utvalg og utvidet utvalg, er vist i @fig-nj_compare_em_more.
 
+```{r}
+#| label: fig-nj_compare_em_more
+#| fig-cap: "Sammenligning av feilmargin, tre års glidende indeks." 
 
+dplyr::inner_join(
+  qmd_index_examples_cmdt_nj_more |> 
+    dplyr::filter(window_years == "three") |> 
+    dplyr::mutate(utvidet = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)) |> 
+    dplyr::select(x_label, utvidet),
+  qmd_index_examples_cmdt_nj |> 
+    dplyr::filter(window_years == "three") |> 
+    dplyr::mutate(dagens = (base::abs(ci_upper - ci_lower) / 200) / (index_p / 100 + 1)) |> 
+    dplyr::select(x_label, dagens),
+  by = dplyr::join_by(x_label)
+) |> 
+tidyr::pivot_longer(
+  cols = c(dagens, utvidet),
+  names_to = "version"
+) |> 
+dplyr::mutate(
+  x_label = as.factor(x_label) |> forcats::fct_inorder()
+) |> 
+ggplot(aes(x_label, value, color = version, group = version)) +
+    geom_point() +
+    geom_line() +
+    scale_color_manual(
+      values = c(
+        "dagens" = "#008ec2",
+        "utvidet" = "#ed9300"
+      ),
+      breaks = c(
+        "dagens",
+        "utvidet"
+      ),
+      labels = c(
+        "Dagens",
+        "Utvidet"
+      ),
+      name = "Utvalg"
+    ) +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 90),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        ),
+      legend.position = "bottom"
+    ) +
+    ggplot2::scale_x_discrete(
+      name = NULL,
+      breaks = ~ dplyr::if_else(stringr::str_detect(.x, "apr|aug|des"), .x, "")
+    ) +
+    ylim(0, NA) +
+    theme(
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.background = element_rect(fill = svv_background_color)
+    ) +
+    labs(
+      x = NULL, y = "Relativ feilmargin"
+    ) +
+    ggtitle("Relativ feilmargin")
+```
 
 
 ### Kjedet indeks
