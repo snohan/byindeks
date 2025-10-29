@@ -1,18 +1,17 @@
 # Calculate city index using new method
 
-# Introduction ----
-# New concepts:
-# - Using calendar adjusted MDT
+# Background ----
+# New concepts in improved method:
+# - Calendar adjusted MDT
 # - Traffic work weights (from traffic links)
 # - Chaining when necessary (need to suitably subdivide index period, possibly one road net version per subperiod)
-# - Estimate confidence interval (compare and decide which method to use)
 # - Measures of representativity
 
 # To be included later:
 # - Vehicle classification by type, not length
 
 # Resolution in time:
-# - Month by month
+# - Month
 # - So far this year? Unnecessary?
 # - Last 12 months
 # - Last 24 months
@@ -28,15 +27,15 @@
 # - heavy (long)
 # - all
 
-# How to compare:
+# How to compare methods:
 # - hard to make direct comparisons and attribute differences to specific parts of new method
 # - new versus old index results in different time resolutions, separated from new chaining strategies
 # - the impact of new chaining strategies leading to better representativity
 
 # What are isolated improvements?
-# - measures of representativity, especially traffic work
-# - smaller (?) confidence interval, mostly (?) due to finiteness of population
-# - traffic work weights
+# - more measures of representativity
+# - smaller confidence interval, mostly due to weighting scheme
+# - traffic work weights by link and strata
 
 
 # Setup ----
@@ -47,10 +46,10 @@
   library(tidyverse)
   #library(boot)
 
+  source("get_from_trafficdata_api.R")
   source("split_road_system_reference.R")
   source("indexpoints_tidying_functions.R")
   source("index_report_functions.R")
-  source("get_from_trafficdata_api.R")
   source("traffic_link_functions.R")
 
   link_id_weights_2024 <- readr::read_rds("traffic_link_pop/link_id_weights_2024.rds")
@@ -62,269 +61,24 @@
 # Bergen ----
 {
   city_number <- "8952"
-  present_year <- 2024
-  index_month <- 12
-  source("set_time_references.R")
+  links_in_area <- readr::read_rds("traffic_link_pop/links_bergen.rds")
 }
 
-## TRPs ----
-this_citys_trps_all_adt_final <-
-  readr::read_rds(
-    file = paste0(
-      "index_trp_metadata/trp_",
-      city_number,
-      ".rds"
-    )
-  ) |>
-  dplyr::filter(
-    stringr::str_sub(road_category_and_number, 1, 1) != "K"
-  ) |>
-  dplyr::select(
-    trp_id,
-    name,
-    road_reference,
-    municipality_name,
-    #lat, lon,
-    adt, year_aadt, adt_ref
-  )
+source("new_city_examples_prepare.R")
 
-
-## Link population ----
-# Made in script city_link_population.R
-links_bergen <-
-  readr::read_rds(
-    "traffic_link_pop/links_bergen.rds"
-  )
-population_size <- nrow(links_bergen)
-population_size_tw_kkm <- base::sum(links_bergen$tw) * 1e-3
-
-function_class_tw <-
-  links_bergen |>
-  sf::st_drop_geometry() |>
-  dplyr::select(
-    tw_km = tw,
-    function_class
-  ) |>
-  dplyr::summarise(
-    tw_fcl_population_kkm = base::sum(tw_km) * 1e-3,
-    n_links = n(),
-    .by = function_class
-  ) |>
-  dplyr::mutate(
-    tw_fcl_population_share = tw_fcl_population_kkm / population_size_tw_kkm
-  ) |>
-  dplyr::arrange(function_class)
-
-trp_weights <-
-  links_bergen |>
-  sf::st_drop_geometry() |>
-  dplyr::filter(
-    !is.na(point_id)
-  ) |>
-  dplyr::select(
-    trp_id = point_id,
-    length_m,
-    trp_tw_ref_kkm = tw,
-    function_class
-  ) |>
-  dplyr::mutate(
-    length_m = base::round(length_m),
-    trp_tw_ref_kkm = trp_tw_ref_kkm * 1e-3
-  ) |>
-  dplyr::left_join(
-    function_class_tw,
-    by = "function_class"
-  )
-
-
+# Check:
 # missing <-
 #   this_citys_trps_all_adt_final |>
 #   dplyr::filter(
 #     !(trp_id %in% trp_weights$trp_id)
 #   )
-# Some are outside urban area, some are missing from links
-
-
-## MDT ----
-mdt_filtered <-
-  readr::read_rds(
-    paste0(
-      "data_indexpoints_tidy/cmdt_",
-      city_number,
-      ".rds"
-    )
-  ) |>
-  dplyr::filter(
-    length_class == "korte"
-  )
-
-
-# To get the mdt_validated df
-source("exclude_cmdt.R")
-
-
-## Index calculation ----
-# In production we would calculate monthly index, so-far-this-year index. But here, we only do rolling index.
-
-
-# Steps in adding uncertainty estimation
-# 1
-# TODO: add standard error in CMDT, based on missing days
-# For now, assume no uncerainty here, and it probably is much smaller than the contribution from spatial TRP sampling.
-
-# 2
-# TODO: adding up uncertainty in CMDT in this weighted yearly mean CMDT
-# For now, assume no uncertainty here, and it probably is much smaller than the contribution from spatial TRP sampling.
-brg_index_month <-
-  mdt_validated |>
-  calculate_area_index_month(population_size)
-
-area_index_one_year_brg <- calculate_rolling_area_index_one_year(brg_index_month)
-
-area_index_three_years_brg <- calculate_rolling_index_multiple_years(area_index_one_year_brg, 3)
+# Some TRPs are outside urban area, some are missing from links.
 
 # Sidetrack: for showing some data in presentation
 # viz_mdt <- mdt_validated |> select(trp_id, year, month, mdt, length_m, function_class)
 # viz_month <- brg_index_month |> select(x_label, index_p, n_trp)
 # viz_one_y <- area_index_one_year_brg |> select(x_label, index_p, ci_lower, ci_upper) |> mutate(across(where(is.double), ~ round(.x, 1)))
 # viz_three_y <- area_index_three_years_brg |> mutate(across(where(is.double), ~ round(.x, 1)))
-
-# Back on track
-readr::write_rds(
-  brg_index_month,
-  "representativity/cmdt_index_month_brg.rds"
-)
-
-list(
-  area_index_one_year_brg |>
-    dplyr::select(
-      universal_year_period_id,
-      x_label,
-      index_p,
-      ci_lower,
-      ci_upper
-    ) |>
-    dplyr::mutate(
-      window_years = "one"
-    ),
-  area_index_three_years_brg |>
-    dplyr::select(
-      universal_year_period_id,
-      x_label,
-      index_p,
-      ci_lower,
-      ci_upper
-    ) |>
-    dplyr::mutate(
-      window_years = "three"
-    )
-) |>
-  readr::write_rds(
-    "representativity/rolling_cmdt_index_brg.rds"
-  )
-
-
-
-
-
-# trp_window_index <- rolling_index_trp(mdt_validated)
-#
-# trp_window_index_wide <-
-#   trp_window_index |>
-#   dplyr::mutate(
-#     index_p = round(index_p, 1)
-#   ) |>
-#   tidyr::pivot_wider(
-#     id_cols = trp_id,
-#     names_from = universal_year_period_id_end,
-#     names_prefix = "u_",
-#     values_from = index_p
-#   )
-#
-# # 3
-# area_index_one_year <- rolling_index_area(trp_window_index)
-#
-# # 4
-# #area_index_two_years <- rolling_index_multiple_years(area_index_one_year, 2)
-# area_index_three_years <- rolling_index_multiple_years(area_index_one_year, 3)
-#
-# list(
-#   area_index_one_year |>
-#     dplyr::select(
-#       universal_year_period_id,
-#       x_label,
-#       index_p,
-#       ci_lower,
-#       ci_upper,
-#       n_trp
-#     ) |>
-#     dplyr::mutate(
-#       window_years = "one"
-#     ),
-#   area_index_three_years |>
-#     dplyr::select(
-#       universal_year_period_id,
-#       x_label,
-#       index_p,
-#       ci_lower,
-#       ci_upper
-#     ) |>
-#     dplyr::mutate(
-#       window_years = "three"
-#     )
-# ) |>
-# readr::write_rds(
-#   "representativity/rolling_cmdt_index_bergen.rds"
-# )
-
-
-# The offical results
-# all_rolling_indices_official <-
-#   readr::read_rds(
-#     file =
-#       paste0(
-#         "data_indexpoints_tidy/rolling_indices_",
-#         city_number,
-#         ".rds"
-#       )
-#   ) |>
-#   dplyr::bind_rows()
-
-# list(
-#   all_rolling_indices_old,
-#   all_rolling_indices_new
-# ) |>
-# readr::write_rds(
-#   "representativity/new_index_examples_bergen.rds"
-# )
-
-# compare_indexes <-
-#   dplyr::inner_join(
-#     prepare_rolling_indexes_for_comparison(all_rolling_indices_official),
-#     prepare_rolling_indexes_for_comparison(all_rolling_indices_old),
-#     by = dplyr::join_by(index_period, window),
-#     suffix = c("_official", "_old")
-#   ) |>
-#   dplyr::relocate(
-#     index_period,
-#     window
-#   )
-
-
-## Representativity ----
-# Representativity per month:
-# - tvd (includes differences per function class)
-# - n_trp
-# - tw_ratio
-
-# Representativity per one year rolling:
-# - mean or median of per-month values
-
-# Representativity per three year rolling:
-# - mean of one-year values
-
-
-
 
 
 # Trondheim ----
@@ -1299,29 +1053,22 @@ index_chain_1_2_3 <-
 ## TRPs ----
 this_citys_trps_all_adt_final <-
   readr::read_rds(
-    file = paste0(
-      "index_trp_metadata/trp_",
-      city_number,
-      ".rds"
-    )
+    file = paste0("index_trp_metadata/trp_", city_number, ".rds")
   ) |>
   dplyr::select(
     trp_id,
     name,
     road_reference,
     municipality_name,
-    #lat, lon,
     adt, year_aadt, adt_ref
   )
 
 
 ## Link population ----
 # Made in script city_link_population.R
-links_oslo <-
-  readr::read_rds(
-    "traffic_link_pop/links_oslo.rds"
-  )
+links_oslo <- readr::read_rds("traffic_link_pop/links_oslo.rds")
 population_size <- nrow(links_oslo)
+population_size_tw_kkm <- base::sum(links_oslo$tw) * 1e-3
 
 function_class_tw <-
   links_oslo |>
