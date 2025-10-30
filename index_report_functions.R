@@ -1725,7 +1725,7 @@ visualize_representativity <- function(df) {
     labs(
       x = NULL, y = "Andel (%)"
     ) +
-    ggtitle("Representativitet i byindeksen utvalg trafikklenker")
+    ggtitle("Representativitet i byindeksens utvalg av trafikklenker")
 
 }
 

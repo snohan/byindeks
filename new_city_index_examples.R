@@ -465,15 +465,15 @@ nj_index_month_more_chained <-
   dplyr::bind_rows(
     nj_index_month_more |>
       dplyr::filter(
-        universal_year_period_id <= 56
+        universal_year_period_id %in% c(43:56)
       ),
     nj_index_month_more_2 |>
       dplyr::filter(
-        universal_year_period_id <= 112
+        universal_year_period_id %in% c(99:112)
       ),
     nj_index_month_more_3 |>
       dplyr::filter(
-        universal_year_period_id <= 126
+        universal_year_period_id %in% c(113:126)
       )
   )
 

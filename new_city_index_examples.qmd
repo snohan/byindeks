@@ -818,12 +818,12 @@ En kjedet indeks vil da kunne utnytte flere punkter med en inndeling i delperiod
 - 2019-2023
 - 2023- 
 
+Antallet punkt som er tilgjengelig er da som vist i @fig-nj_n_trp_chained.
 
 ```{r}
 #| label: fig-nj_n_trp_chained
 #| fig-cap: "Antall punkt." 
 
-# TODO: include n_trp for direct index
 qmd_index_examples_cmdt_nj_month_more_chained |>
   dplyr::select(x_label, n_trp) |>
   dplyr::mutate(
@@ -862,7 +862,27 @@ qmd_index_examples_cmdt_nj_month_more_chained |>
     ggtitle("Antall punkt")
 ```
 
-Et regneeksempel for indeks til 2024 viser følgende:
+For hver månedsindeks kan vi beregne representativiteten til punktutvalget. Dette er vist i @fig-nj_repr_chained.
+
+```{r}
+#| label: fig-nj_repr_chained
+#| fig-cap: "Utvalgets representativitet over tid." 
+
+qmd_index_examples_cmdt_nj_month_more_chained |>
+  dplyr::select(
+    x_label, n_trp_perc, tw_perc, tvd
+  ) |> 
+  tidyr::pivot_longer(
+    cols = c(n_trp_perc, tw_perc, tvd),
+    names_to = "measure"
+  ) |>
+  dplyr::mutate(
+    x_label = as.factor(x_label) |> forcats::fct_inorder()
+  ) |>
+  visualize_representativity()
+```
+
+Et regneeksempel for indeks til 2024 viser følgende estimater for endringen i trafikk:
 
 - 2017-2019: -2,5 % 
 - 2019-2023:  6,4 % 
