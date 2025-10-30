@@ -15,13 +15,11 @@
 {
   #source("rmd_setup.R")
   #source("get_from_trafficdata_api.R")
-  source("get_from_nvdb_api.R")
   #library(readxl)
 }
 
 
 # Tolling station info ----
-
 tolling_station_ids_original <-
   c(
     "51",  # Dette er egentlig to ulike, hver med to felt
@@ -39,86 +37,9 @@ tolling_station_ids_original <-
     # this affects fetching data from NDVB API and APAR API.
   )
 
-# The 20 to use
-tolling_station_ids_nvdb <-
-  c(
-    "51",  # Dette er egentlig to ulike, hver med to felt
-    # Klett (1,2), Røddeveien (3,4)
-    # Endrer nedenfor Røddeveien til id 512 og felt 1 og 2
-    "512",
-    "52", "53", "54", "55",
-    "56", # "Kroppan bru", som egentlig ikke er på Kroppan bru, men
-    # Holtermannsvegen utenfor Siemens er to stasjoner, også 57.
-    # Slår disse sammen nedenfor, og setter feltnummer etter dagens metrering
-    "58", "59", "60", "61", "62", "64", "65", "66", "67",
-    "68", "69", "85", "86",
-    #"72"
-    # From 01.11.2023, Ranheim changed ID from 72 (operator ID 100121) to 1 (operator ID 100149)
-    "1"
-    )
-
 # Moholt
 # 63 felt 5 er KD3
 # Antar: 63 felt 6 er KD4
-
-kommunenr <- "5001"
-kommunenavn <-
-  hent_kommune_v3(kommunenr) |>
-  dplyr::select(kommunenavn) |>
-  purrr::pluck(1)
-
-kommune_bomer_uttak <-
-  get_tolling_stations(kommunenr)
-
-kommune_bomer <-
-  kommune_bomer_uttak %>%
-  dplyr::rename(
-    trp_id = msnr
-  ) %>%
-  dplyr::mutate(
-    station_type = "Bomstasjon"
-  ) %>%
-  dplyr::select(trp_id, everything()) %>%
-  dplyr::filter(
-    trp_id %in% tolling_station_ids_nvdb
-  ) %>%
-  dplyr::mutate(
-    name = stringr::str_replace(name, "\\,.+$", ""),
-    name = stringr::str_replace(name, " M-snitt\\)$", ""),
-    name = stringr::str_replace(name, "\\. K-snitt$", ""),
-    name = stringr::str_replace(name, " \\(Nordgående\\)$", ""),
-    name = stringr::str_replace(name, " \\(Sørgående\\)$", ""),
-    name = stringr::str_replace(name, "Rv.707", "Fv 707"),
-    trp_id =
-      dplyr::case_when(
-        name == "Klett Røddeveien" ~ "512",
-        TRUE ~ trp_id
-      ),
-    municipality_name = "Trondheim"
-  ) %>%
-  dplyr::arrange(
-    trp_id
-  )
-
-readr::write_rds(
-  kommune_bomer,
-  file = "bomdata_trondheim/trd_toll_stations.rds"
-)
-
-# Names from toll data files
-# bom_felt_og_stasjon <-
-#   read.csv2(
-#     "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_felt_og_stasjon.csv"
-#   ) %>%
-#   dplyr::select(-felt) %>%
-#   dplyr::rename(name = stasjon)
-#
-# trh_bomer <-
-#   kommune_bomer %>%
-#   dplyr::select(-name) %>%
-#   dplyr::left_join(bom_felt_og_stasjon, by = c("msnr" = "kode")) %>%
-#   dplyr::select(-msnr) %>%
-#   dplyr::mutate(municipality_name = "Trondheim")
 
 
 # Hourly ----
@@ -130,175 +51,7 @@ readr::write_rds(
 # Normalizing data
 # Storing together
 
-
-## 2019--2021-03 Vegamot files ----
-
-# Adding station ID
-# Implicitly adding the two Kroppan bru to one trp
-tolling_station_codes <-
-  readr::read_csv2(
-    "H:/Programmering/R/byindeks/bomdata_trondheim/tolling_station_codes.csv",
-    locale = readr::locale(encoding = "latin1")
-  ) %>%
-  dplyr::mutate(
-    trp_id = as.character(trp_id)
-  ) |>
-  dplyr::arrange(
-    trp_id
-  )
-
-files_2019_2021 <-
-  list.files(
-    "H:/Programmering/R/byindeks/bomdata_trondheim/raw_2019_2021-3",
-    all.files = TRUE,
-    no.. = TRUE,
-    full.names = TRUE
-  )
-
-data_2019_2021 <-
-  do.call(
-    bind_rows,
-    lapply(
-      files_2019_2021,
-      readxl::read_xlsx
-    )
-  )
-
-data_2019_2021_hourly <-
-  data_2019_2021 %>%
-  dplyr::select(
-    date = Dato,
-    hour = Time,
-    station_code = Kjørefelt,
-    class = Klasse,
-    traffic = Passeringer
-  ) %>%
-  dplyr::filter(date != "29.02.2016") %>%
-  dplyr::filter(date != "29.02.2020") %>%
-  dplyr::mutate(
-    date = lubridate::dmy(date),
-    hour = stringr::str_sub(hour, 1, 2) %>% as.numeric(),
-    station_code = stringr::str_replace(station_code, "KROP-N-2", "KROP-6"),
-    station_code = stringr::str_replace(station_code, "KROP-N-3", "KROP-4"),
-    station_code = stringr::str_replace(station_code, "KROP-N-4", "KROP-2"),
-    station_code = stringr::str_replace(station_code, "KROP-S-2", "KROP-1"),
-    station_code = stringr::str_replace(station_code, "KROP-S-3", "KROP-3"),
-    lane =
-      stringr::str_extract(station_code, "-[:digit:]+") |>
-      stringr::str_sub(2, -1),
-    station_code = stringr::str_sub(station_code, 1, 5),
-    station_code = stringr::str_replace(station_code, "KLE-1", "KLETT-E6"),
-    station_code = stringr::str_replace(station_code, "KLE-2", "KLETT-E6"),
-    station_code = stringr::str_replace(station_code, "KLE-3", "KLETT-E6"),
-    station_code = stringr::str_replace(station_code, "KLE-4", "KLETT-E6"),
-    station_code = stringr::str_replace(station_code, "Rødde", "Rodde"),
-    class =
-      dplyr::case_when(
-        class == "Ukjent" ~ "ukjent",
-        class == "Liten bil" ~ "lette",
-        class == "Stor bil" ~ "tunge"
-      )
-  ) %>%
-  dplyr::filter(
-    !(station_code %in%
-        c("BUVIK", "E39-T", "HOMVI", "JONSV", "RAMPE", "THAMS",
-          "TONST", "ØYSAN", "LEIST"))
-  ) %>%
-  dplyr::left_join(
-    # Herein lies the adding of 56 and 57 to just 56
-    tolling_station_codes,
-    by = "station_code"
-  ) %>%
-  dplyr::select(
-    trp_id,
-    lane,
-    date,
-    hour,
-    class,
-    traffic
-  ) |>
-  dplyr::arrange(
-    date,
-    hour,
-    trp_id,
-    lane,
-    class
-  )
-
-readr::write_rds(
-  data_2019_2021_hourly,
-  file = "bomdata_trondheim/data_2019_2021_hourly.rds"
-  )
-
-remove(data_2019_2021)
-
-data_2019_2021_hourly <-
-  readr::read_rds(
-    file = "bomdata_trondheim/data_2019_2021_hourly.rds"
-  )
-
-
-## 2021-04 ----
-# Datasettet for april 2021 skal etter sigende mangle fritakspasseringer.
-# Men etter en titt på dataene så virker det ikke som om dette er et problem.
-
-april_2021_daily <-
-  readxl::read_xlsx(
-    path = "H:/Programmering/R/byindeks/bomdata_trondheim/raw_2021-5_/bom_2021-04.xlsx"
-  ) |>
-  dplyr::select(
-    date = Dato,
-    Stasjon,
-    lane = 'Kjørefelt',
-    class = Klasse,
-    traffic = Passeringer
-  ) |>
-  dplyr::mutate(
-    date = lubridate::as_date(date),
-    trp_id = stringr::str_extract(Stasjon, "\\[?[:digit:]+\\]{1}") |>
-      stringr::str_sub(2, -2) |>
-      base::as.numeric() |>
-      base::as.character(),
-    trp_id =
-      dplyr::case_when(
-        trp_id %in% c("10034", "10035") ~ "512",
-        trp_id %in% c("57") ~ "56",
-        TRUE ~ trp_id
-      ),
-    lane = base::as.character(lane),
-    class =
-      dplyr::case_when(
-        class == "Ukjent" ~ "ukjent",
-        class == "1" ~ "lette",
-        class == "2" ~ "tunge"
-      )
-  ) |>
-  dplyr::filter(
-    trp_id %in% tolling_station_ids
-  ) |>
-  dplyr::select(
-    trp_id,
-    lane,
-    date,
-    class,
-    traffic
-  ) |>
-  # Data set has a hidden parameter (hour rule, maybe) - summarize
-  dplyr::group_by(
-    trp_id,
-    lane,
-    date,
-    class
-  ) |>
-  dplyr::summarise(
-    traffic = sum(traffic),
-    .groups = "drop"
-  ) |>
-  dplyr::mutate(
-    day = lubridate::mday(date),
-    month = lubridate::floor_date(date, "month"),
-    year = lubridate::year(date)
-  )
+# Pre APAR, see bomdata_trondheim_hourly_pre_apar.R
 
 
 ## 2021-05- APAR API ----
@@ -617,18 +370,6 @@ tolling_data_daily_all_years <-
   )
 
 
-# Test
-# test <-
-#   tolling_data_daily_all_years |>
-#   dplyr::filter(
-#     trp_id == "52",
-#     class == "lette"
-#   ) |>
-#   dplyr::summarise(
-#     month_traffic = sum(traffic),
-#     .by = c(year, month)
-#   )
-
 # MDT ----
 toll_mdt_class <-
   tolling_data_daily_all_years |>
@@ -659,6 +400,10 @@ readr::write_rds(
 #   readr::read_rds(
 #     file = "data_indexpoints_tidy/trd_toll_mdt.rds",
 #   )
+
+
+# CMDT ----
+
 
 
 # AADT ----
