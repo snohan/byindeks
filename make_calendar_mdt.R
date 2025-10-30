@@ -109,6 +109,3 @@ cmdt_city |>
         ".rds"
       )
   )
-
-
-# mdt_old <- read_rds("data_indexpoints_tidy/mdt_8952.rds")

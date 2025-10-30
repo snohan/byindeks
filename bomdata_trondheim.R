@@ -403,7 +403,47 @@ readr::write_rds(
 
 
 # CMDT ----
+toll_nvdb_id <-
+  kommune_bomer |>
+  dplyr::select(
+    trp_id, nvdb_id
+  ) |>
+  dplyr::mutate(
+    trp_id =
+      dplyr::case_when(
+        trp_id == "1" ~ "72",
+        TRUE ~ trp_id
+      ),
+    nvdb_id = base::as.character(nvdb_id)
+  )
 
+source("calculate_cmdt_toll.R")
+
+{
+  tic()
+  for (i in 1:length(tolling_station_ids_original)) {
+
+    cmdt <-
+      purrr::map(
+        years_from_reference_to_today,
+        ~ calculate_cmdt_toll(tolling_station_ids_original[i], .x)
+      ) |>
+      purrr::list_rbind()
+
+    cmdt |>
+      readr::write_rds(
+        file =
+          paste0(
+            "cmdt/cmdt_",
+            city_number,
+            "_",
+            tolling_station_ids_original[i],
+            ".rds"
+          )
+      )
+  }
+  toc()
+}
 
 
 # AADT ----
