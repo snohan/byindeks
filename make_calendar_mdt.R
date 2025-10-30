@@ -32,7 +32,7 @@
 {
   present_year <- 2024
   index_month <- 12
-  city_number <- "959"
+  city_number <- "960"
 }
 
 # City years
@@ -52,20 +52,21 @@ if(city_number == "959") {
 }
 
 ## Nord-Jæren more TRPs
-link_trp_id <- readr::read_rds("traffic_link_pop/link_trp_id.rds")
+if(city_number == "952") {
+  link_trp_id <- readr::read_rds("traffic_link_pop/link_trp_id.rds")
 
-trps_existing <-
-  link_trp_id |>
-  dplyr::filter(
-    link_id %in% links_nj$link_id
-  )
+  trps_existing <-
+    link_trp_id |>
+    dplyr::filter(
+      link_id %in% links_nj$link_id
+    )
 
-city_trps <- trps_existing$trp_id
+  city_trps <- trps_existing$trp_id
+}
 
 # First, make cMDT per TRP and store them in folder cMDT
-
 # cMDT
-trp_number <- 88
+trp_number <- 29
 
 {
   tic()

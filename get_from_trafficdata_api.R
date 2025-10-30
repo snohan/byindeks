@@ -1801,12 +1801,15 @@ get_trp_mdt_by_direction <- function(trp_id, mdt_year) {
   return(trp_aadt)
 }
 
-#year <- 2022
-#trp_id <- "00222V444290"
 calculate_calendar_adjusted_mdt <- function(trp_id, year) {
 
   # trp_id: String!
   # year: Int!
+
+  # Testing:
+  # year <- 2022
+  # trp_id <- "00222V444290"
+
 
   from <- paste0(year    , "-01-02T00:00:00Z") # day 2 sic to avoid last day in previous month
   to   <- paste0(year + 1, "-01-01T00:00:00Z")
@@ -3176,10 +3179,12 @@ get_dt_by_length_for_trp_old <- function(trp_id, from, to) {
   return(dailyTraffic)
 }
 
-# trp_id <- "10239V2725979"
-# from <- "2017-01-02T00:00:00Z"
-# to <- "2017-02-02T00:00:00Z"
 get_dt_by_length_for_trp <- function(trp_id, from, to) {
+
+  # Testing:
+  # trp_id <- "03476V41818"
+  # from <- "2019-01-02T00:00:00Z"
+  # to <- "2019-02-02T00:00:00Z"
 
   cursor <- ""
   hasNextPage <- TRUE
