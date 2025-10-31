@@ -24,7 +24,7 @@ is_odd <- function(x) x[x %% 2 == 1]
 
 # Areas ----
 get_counties <- function() {
-  # Get all counties
+
   api_query <-
     "query counties {
        areas {
@@ -58,6 +58,7 @@ get_counties <- function() {
 
   return(counties)
 }
+
 
 get_country_parts <- function() {
 
@@ -114,49 +115,47 @@ get_municipalities <- function() {
 # Traffic registration points (TRPs) ----
 get_points <- function() {
 
-  # Get all traffic registration points
-
   query_points <-
     "query all_trps {
-  trafficRegistrationPoints {
-    id
-    name
-    trafficRegistrationType
-    registrationFrequency
-    location {
-      coordinates {
-        latLon {
-          lat
-          lon
+      trafficRegistrationPoints {
+        id
+        name
+        trafficRegistrationType
+        registrationFrequency
+        location {
+          coordinates {
+            latLon {
+              lat
+              lon
+            }
+          }
+          county {
+            name
+            number
+            geographicNumber
+          }
+          municipality {
+            name
+            number
+          }
+          roadReference {
+              shortForm
+          }
+          roadLinkSequence {
+            relativePosition
+            roadLinkSequenceId
+          }
         }
+        commissions {
+          validFrom
+          validTo
+          lanes {
+            laneNumber
+          }
+        }
+        operationalStatus
       }
-      county {
-        name
-        number
-        geographicNumber
-      }
-      municipality {
-        name
-        number
-      }
-      roadReference {
-          shortForm
-      }
-      roadLinkSequence {
-        relativePosition
-        roadLinkSequenceId
-      }
-    }
-    commissions {
-      validFrom
-      validTo
-      lanes {
-        laneNumber
-      }
-    }
-    operationalStatus
-  }
-}"
+    }"
 
   myqueries <- Query$new()
   myqueries$query("points", query_points)
@@ -218,8 +217,6 @@ get_points <- function() {
 
 
 get_trp_metadata_by_list <- function(trp_list) {
-
-  # Get chosen traffic registration points
 
   input_variables <-
     list(
@@ -847,54 +844,64 @@ get_aadt_for_trp_list <- function(trp_list, day_type = "ALL") {
 }
 
 
-get_trp_aadt_by_direction <- function(trp_id) {
+get_trp_aadt_by_direction <- function(trp_id, day_type = "ALL") {
+
+  # day_type: WEEKDAY or WEEKEND
+
+  input_variables <-
+    list(
+      "trpId" = trp_id,
+      "dayType" = day_type
+    )
 
   print(trp_id)
-  my_query <- paste0(
-    "query aadt {
-    trafficData(trafficRegistrationPointId: \"", trp_id,"\"){
-      trafficRegistrationPoint{
-        id
-      }
-      volume{
-    average{
-      daily{
-        byYear (dayType: ALL){
-          year
-          dayType
-          byDirection {
-            heading
-            total{
-              coverage{
-                percentage
-                included {
-                  numerator
-                  denominator
+
+  query <-
+    "query aadt ($trpId: String!, $dayType: DayType!) {
+      trafficData(trafficRegistrationPointId: $trpId){
+        trafficRegistrationPoint{
+          id
+        }
+        volume{
+          average{
+            daily{
+              byYear (dayType: $dayType) {
+                year
+                dayType
+                byDirection {
+                  heading
+                  total{
+                    coverage{
+                      percentage
+                      included {
+                        numerator
+                        denominator
+                      }
+                    }
+                    validLengthVolume{
+                      average
+                    }
+                    validSpeedVolume{
+                      average
+                    }
+                    volume{
+                      average
+                      standardDeviation
+                    }
+                  }
                 }
-              }
-              validLengthVolume{
-                average
-              }
-              validSpeedVolume{
-                average
-              }
-              volume{
-                average
-                standardDeviation
               }
             }
           }
         }
       }
     }
-  }
-}
-}")
+  "
 
-  myqueries <- Query$new()
-  myqueries$query("aadts", my_query)
+  my_query <- ghql::Query$new()$query(name = "my_query", query)
 
-  trp_aadt <- cli$exec(myqueries$queries$aadts) %>%
+  trp_aadt <-
+    cli$exec(my_query$my_query, input_variables) |>
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
 
   # Check if no value
@@ -902,11 +909,10 @@ get_trp_aadt_by_direction <- function(trp_id) {
     is_empty(
       trp_aadt$data$trafficData$volume$average$daily$byYear$byDirection[1]
     ) |
-     is.null(
-       trp_aadt$data$trafficData$volume$average$daily$byYear$byDirection[[1]]$total.volume.average
-     )
-    ){
-    # Når det ikke er noe data
+    is.null(
+      trp_aadt$data$trafficData$volume$average$daily$byYear$byDirection[[1]]$total.volume.average
+    )
+  ){
     trp_aadt <- data.frame()
   }else{
     trp_aadt <- trp_aadt %>%
@@ -923,37 +929,33 @@ get_trp_aadt_by_direction <- function(trp_id) {
         #valid_speed_volume = total.validSpeedVolume.average,
         adt = total.volume.average,
         standard_deviation = total.volume.standardDeviation
-      ) %>%
-      dplyr::mutate(
-        trp_id = as.character(trp_id),
-        heading = stringr::str_to_title(heading, locale = "no"),
       )
   }
 
-    if(
-      "total.coverage.included.numerator" %in% colnames(trp_aadt)
-    ){
-      trp_aadt <-
-        trp_aadt %>%
-        dplyr::rename(
-          days_included = total.coverage.included.numerator,
-          days_in_year = total.coverage.included.denominator
-        ) %>%
-        dplyr::mutate(
-          se_mean =
-            standard_deviation /
-            sqrt(days_included) *
-            sqrt((days_in_year - days_included) / (days_in_year - 1))
-        )
-    }else{
-      trp_aadt <- trp_aadt
+  if(
+    "total.coverage.included.numerator" %in% colnames(trp_aadt)
+  ){
+    trp_aadt <-
+      trp_aadt %>%
+      dplyr::rename(
+        days_included = total.coverage.included.numerator,
+        days_in_total = total.coverage.included.denominator
+      ) %>%
+      dplyr::mutate(
+        se_mean =
+          standard_deviation /
+          sqrt(days_included) *
+          sqrt((days_in_total - days_included) / (days_in_total - 1))
+      )
+  }else{
+    trp_aadt <- trp_aadt
   }
 
   return(trp_aadt)
 }
 
 
-get_aadt_by_direction_for_trp_list <- function(trp_list) {
+get_aadt_by_direction_for_trp_list <- function(trp_list, day_type = "ALL") {
 
   number_of_points <- length(trp_list)
   data_points <- data.frame()
@@ -966,7 +968,7 @@ get_aadt_by_direction_for_trp_list <- function(trp_list) {
     data_points <-
       bind_rows(
         data_points,
-        get_trp_aadt_by_direction(trp_list[trp_count])
+        get_trp_aadt_by_direction(trp_list[trp_count], day_type)
       )
 
     trp_count <- trp_count + 1
@@ -1038,16 +1040,6 @@ get_aadt_by_length_for_trp <- function(trp_id, day_type = "ALL") {
   trp_aadt <-
     cli$exec(my_query$my_query, input_variables) |>
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
-
-  # myqueries <- Query$new()
-  # myqueries$query("aadts", query_aadt)
-  #
-  # trp_aadt <-
-  #   cli$exec(myqueries$queries$aadts) |>
-  #   jsonlite::fromJSON(
-  #     simplifyDataFrame = T,
-  #     flatten = T
-  #   )
 
   trp_aadt_length <-
     purrr::list_rbind(trp_aadt$data$trafficData$volume$average$daily$byYear$byLengthRange)
@@ -1577,6 +1569,7 @@ get_periodic_aadt_by_length_for_trp_list <- function(trp_list) {
 
 # MDT ----
 get_trp_mdt_with_coverage <- function(trp_id, mdt_year) {
+
   # Get all MDTs for a trp
   query_aadt <- paste0(
     "query trp_mdt{
@@ -1651,6 +1644,7 @@ get_trp_mdt_with_coverage <- function(trp_id, mdt_year) {
 
 #mdt_year <- "2020"
 get_trp_mdt_by_lane <- function(trp_id, mdt_year) {
+
   # Get all MDTs for a trp
   query_mdt <- paste0(
     "query trp_mdt{
@@ -1730,36 +1724,136 @@ get_trp_mdt_by_lane <- function(trp_id, mdt_year) {
 
 #trp_id <- "61425V181294"
 #mdt_year <- "2020"
-get_trp_mdt_by_direction <- function(trp_id, mdt_year) {
-  # Get all MDTs for a trp
-  query_mdt <- paste0(
-    "query trp_mdt{
-    trafficData(trafficRegistrationPointId: \"", trp_id,"\"){
-      trafficRegistrationPoint{
-        id
-      }
-      volume{
-    average{
-      daily{
-        byMonth(dayType: ALL, year: ", mdt_year, "){
-          year
-          month
-          byDirection {
-            heading
-            total{
-              coverage{
-                percentage
-              }
-              validLengthVolume{
-                average
-              }
-              validSpeedVolume{
-                average
-              }
-              volume{
-                average
-                confidenceInterval{
-                  confidenceWidth
+# get_trp_mdt_by_direction <- function(trp_id, mdt_year) {
+#
+#   # Get all MDTs for a trp
+#
+#
+#
+#   query_mdt <- paste0(
+#     "query trp_mdt{
+#     trafficData(trafficRegistrationPointId: \"", trp_id,"\"){
+#       trafficRegistrationPoint{
+#         id
+#       }
+#       volume{
+#     average{
+#       daily{
+#         byMonth(dayType: ALL, year: ", mdt_year, "){
+#           year
+#           month
+#           byDirection {
+#             heading
+#             total{
+#               coverage{
+#                 percentage
+#               }
+#               validLengthVolume{
+#                 average
+#               }
+#               validSpeedVolume{
+#                 average
+#               }
+#               volume{
+#                 average
+#                 confidenceInterval{
+#                   confidenceWidth
+#                 }
+#               }
+#             }
+#           }
+#         }
+#       }
+#     }
+#   }
+# }
+# }")
+#
+#   myqueries <- Query$new()
+#   myqueries$query("mdts", query_mdt)
+#
+#   trp_aadt <- cli$exec(myqueries$queries$mdts) %>%
+#     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
+#
+#   # Check if no value
+#   if(is_empty(trp_aadt$data$trafficData$volume$average$daily$byMonth$byDirection[1]) |
+#      is.null(trp_aadt$data$trafficData$volume$average$daily$byMonth$byDirection[[1]]$total.volume.average)){
+#     # Når det ikke er noe MDT
+#     trp_aadt <- data.frame()
+#   }else{
+#     trp_aadt <- trp_aadt %>%
+#       as.data.frame() %>%
+#       tidyr::unnest(cols = data.trafficData.volume.average.daily.byMonth.byDirection) %>%
+#       dplyr::rename(
+#         trp_id = data.trafficData.id,
+#         year = data.trafficData.volume.average.daily.byMonth.year,
+#         month = data.trafficData.volume.average.daily.byMonth.month,
+#         coverage = total.coverage.percentage,
+#         valid_length_volume = total.validLengthVolume.average,
+#         valid_speed_volume = total.validSpeedVolume.average,
+#         mdt = total.volume.average) %>%
+#       dplyr::mutate(trp_id = as.character(trp_id),
+#                     heading = stringr::str_to_title(heading, locale = "no"))
+#   }
+#
+#   return(trp_aadt)
+# }
+
+
+get_trp_mdt_by_direction <- function(trp_id, mdt_year, day_type = "ALL") {
+
+  # Testing:
+  # trp_id <- "88943B804091"
+  # mdt_year <- 2024
+  # day_type <- "WEEKDAY"
+
+  input_variables <-
+    list(
+      "trpId" = trp_id,
+      "year" = mdt_year,
+      "dayType" = day_type
+    )
+
+  print(mdt_year)
+  print(trp_id)
+
+  query <-
+    "query mdt ($trpId: String!, $year: Year!, $dayType: DayType!) {
+      trafficData(trafficRegistrationPointId: $trpId){
+        trafficRegistrationPoint{
+          id
+        }
+        volume{
+          average{
+            daily{
+              byMonth(dayType: $dayType, year: $year){
+                year
+                month
+                dayType
+                byDirection {
+                  heading
+                  total{
+                    coverage{
+                      percentage
+                      included {
+                        numerator
+                        denominator
+                      }
+                    }
+                    validLengthVolume{
+                      average
+                    }
+                    validSpeedVolume{
+                      average
+                    }
+                    volume{
+                      average
+                      standardDeviation
+                      confidenceInterval{
+                        confidenceWidth
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -1767,39 +1861,79 @@ get_trp_mdt_by_direction <- function(trp_id, mdt_year) {
         }
       }
     }
-  }
-}
-}")
+  "
 
-  myqueries <- Query$new()
-  myqueries$query("mdts", query_mdt)
+  my_query <- ghql::Query$new()$query(name = "my_query", query)
 
-  trp_aadt <- cli$exec(myqueries$queries$mdts) %>%
+  response <-
+    cli$exec(my_query$my_query, input_variables) |>
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
 
   # Check if no value
-  if(is_empty(trp_aadt$data$trafficData$volume$average$daily$byMonth$byDirection[1]) |
-     is.null(trp_aadt$data$trafficData$volume$average$daily$byMonth$byDirection[[1]]$total.volume.average)){
+  if(is_empty(response$data$trafficData$volume$average$daily$byMonth$byDirection[1]) |
+     is.null(response$data$trafficData$volume$average$daily$byMonth$byDirection[[1]]$total.volume.average)){
     # Når det ikke er noe MDT
-    trp_aadt <- data.frame()
+    response <- data.frame()
   }else{
-    trp_aadt <- trp_aadt %>%
-      as.data.frame() %>%
-      tidyr::unnest(cols = data.trafficData.volume.average.daily.byMonth.byDirection) %>%
+    response <- response |>
+      base::as.data.frame() |>
+      tidyr::unnest(cols = data.trafficData.volume.average.daily.byMonth.byDirection) |>
       dplyr::rename(
         trp_id = data.trafficData.id,
         year = data.trafficData.volume.average.daily.byMonth.year,
         month = data.trafficData.volume.average.daily.byMonth.month,
+        day_type = data.trafficData.volume.average.daily.byMonth.dayType,
         coverage = total.coverage.percentage,
         valid_length_volume = total.validLengthVolume.average,
         valid_speed_volume = total.validSpeedVolume.average,
-        mdt = total.volume.average) %>%
-      dplyr::mutate(trp_id = as.character(trp_id),
-                    heading = stringr::str_to_title(heading, locale = "no"))
+        mdt = total.volume.average,
+        standard_deviation = total.volume.standardDeviation
+      )
   }
 
-  return(trp_aadt)
+  if(
+    "total.coverage.included.numerator" %in% colnames(response)
+  ){
+    response <- response |>
+      dplyr::rename(
+        days_included = total.coverage.included.numerator,
+        days_in_total = total.coverage.included.denominator
+      ) |>
+      dplyr::mutate(
+        se_mean =
+          standard_deviation /
+          sqrt(days_included) *
+          sqrt((days_in_total - days_included) / (days_in_total - 1))
+      )
+  }else{
+    response <- response
+  }
+
+  return(response)
 }
+
+
+get_mdt_by_direction_for_trp_list <- function(trp_list, mdt_year, day_type = "ALL") {
+
+  number_of_points <- length(trp_list)
+  data_points <- data.frame()
+  trp_count <- 1
+
+  while (trp_count <= number_of_points) {
+    data_points <-
+      dplyr::bind_rows(
+        data_points,
+        get_trp_mdt_by_direction(trp_list[trp_count], mdt_year, day_type)
+      )
+    trp_count <- trp_count + 1
+  }
+
+  trp_mdt <- data_points |>
+    dplyr::mutate(mdt = round(mdt, digits = -1))
+
+  return(trp_mdt)
+}
+
 
 calculate_calendar_adjusted_mdt <- function(trp_id, year) {
 
@@ -2193,26 +2327,25 @@ get_mdt_by_lane_for_trp_list <- function(trp_list, mdt_year) {
 }
 
 
-get_mdt_by_direction_for_trp_list <- function(trp_list, mdt_year) {
-
-  number_of_points <- length(trp_list)
-  data_points <- data.frame()
-  trp_count <- 1
-
-  while (trp_count <= number_of_points) {
-    data_points <- bind_rows(data_points,
-                             get_trp_mdt_by_direction(
-                               trp_list[trp_count],
-                               mdt_year))
-    trp_count <- trp_count + 1
-  }
-
-  trp_mdt <- data_points %>%
-    dplyr::mutate(mdt = round(mdt, digits = -1))
-
-  return(trp_mdt)
-}
-
+# get_mdt_by_direction_for_trp_list <- function(trp_list, mdt_year) {
+#
+#   number_of_points <- length(trp_list)
+#   data_points <- data.frame()
+#   trp_count <- 1
+#
+#   while (trp_count <= number_of_points) {
+#     data_points <- bind_rows(data_points,
+#                              get_trp_mdt_by_direction(
+#                                trp_list[trp_count],
+#                                mdt_year))
+#     trp_count <- trp_count + 1
+#   }
+#
+#   trp_mdt <- data_points %>%
+#     dplyr::mutate(mdt = round(mdt, digits = -1))
+#
+#   return(trp_mdt)
+# }
 
 
 
