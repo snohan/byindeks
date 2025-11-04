@@ -44,6 +44,8 @@ index_months_from_2020 <-
     index_month
   )
 
+index_months_from_2020_so_far <- c(base::rep(index_month, base::length(index_years_from_2020)))
+
 index_years <-
   base::seq.int(reference_year + 1, present_year, 1)
 
@@ -51,6 +53,11 @@ index_months <-
   c(
     base::rep(12, base::length(index_years) - 1),
     index_month
+  )
+
+index_months_so_far <-
+  c(
+    base::rep(index_month, base::length(index_years))
   )
 
 latest_universal_year_period_id <-

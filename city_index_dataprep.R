@@ -62,7 +62,7 @@ trp_id_msnr <-
 {
   present_year <- 2025
   # month to be published now:
-  index_month <- 9
+  index_month <- 8
   city_number <- 959
 }
 
@@ -333,6 +333,8 @@ if((city_number %in% c(1952, 955, 952, 959))){
         dplyr::mutate(
           year = .x,
           month = 12
+          # So far
+          #month = index_month
         )
     ) |>
     purrr::list_rbind() |>
@@ -349,6 +351,8 @@ trp_index_from_2020 <-
   purrr::map2(
     index_years_from_2020,
     index_months_from_2020,
+    # So far
+    # index_months_from_2020_so_far,
     ~ get_published_pointindex_for_months(city_number, .x, .y)[[2]]
   ) |>
   purrr::list_rbind() |>
@@ -502,6 +506,8 @@ trp_index_monthly_wide <-
     purrr::map2(
       index_years,
       index_months,
+      # So far
+      # index_months_so_far,
       ~ get_published_index_for_months(city_number, .x, .y)
     ) |>
     purrr::list_rbind() |>
