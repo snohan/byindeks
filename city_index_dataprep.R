@@ -615,7 +615,7 @@ city_index_yearly_all <-
     years_1_4,
     years_1_5,
     years_1_6,
-    # years_1_7,
+    years_1_7,
     # years_1_8
   ) |>
   dplyr::mutate(

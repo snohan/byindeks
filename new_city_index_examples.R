@@ -58,6 +58,11 @@
 }
 
 
+# Relative importance ----
+ind <- c(-2, 2, 2, 10)
+ind_mean_centered <- ind - mean(ind)
+
+
 # Bergen ----
 {
   city_number <- "8952"

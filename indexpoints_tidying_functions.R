@@ -694,6 +694,7 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl, populati
   # trp_mdt_df <- mdt_validated
   # population_size_dbl <- population_size
   # population_size_tw <- population_size_tw_kkm
+  # i <- 1
 
   # For each month, need to inner join base year (a) and calculation year (b)
   year_a <- base::min(trp_mdt_df$year)
@@ -716,16 +717,15 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl, populati
       tw_fcl_population_share
     )
 
+  link_index_month <- tibble::tibble()
   area_index_month <- tibble::tibble()
 
-  for(i in 1:(base::length(calculation_years))) {
+  for(y in 1:(base::length(calculation_years))) {
 
     mdt_b <-
       trp_mdt_df |>
       dplyr::filter(
-        year == calculation_years[i]
-        # Testing:
-        # year == 2019
+        year == calculation_years[y]
       ) |>
       dplyr::select(
         trp_id,
@@ -735,7 +735,7 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl, populati
         universal_year_period_id
       )
 
-    area_index_month_fcl <-
+    link_index_month_fcl_y <-
       dplyr::inner_join(
         mdt_a,
         mdt_b,
@@ -766,7 +766,8 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl, populati
       ) |>
       # Entities needed in each summation variable
       dplyr::mutate(
-        #p_abi_i = mdt_b / mdt_a,
+        p_abi_i = mdt_b / mdt_a,
+        share_link_to_fcl = mdt_a * length_m / tw_fcl_observed_a,
         # Variance: Population model
         w_trp_length_a =  length_m / tw_fcl_observed_a,
         # Variance: Robust
@@ -774,7 +775,10 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl, populati
         tw_trp_b = length_m * mdt_b,
         var_robust_factor_trp = 1/(1 - tw_trp_a / tw_fcl_observed_a),
         var_robust_diff = (tw_trp_b - ratio_of_mean_observed * tw_trp_a)^2
-      ) |>
+      )
+
+    area_index_month_fcl_y <-
+      link_index_month_fcl_y |>
       dplyr::summarise(
         index_i = base::sum(mdt_b * length_m) / base::sum(mdt_a * length_m),
         index_p = 100 * (index_i - 1),
@@ -798,8 +802,8 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl, populati
         fcl, universal_year_period_id
       )
 
-    area_index_month_i <-
-      area_index_month_fcl |>
+    area_index_month_y <-
+      area_index_month_fcl_y |>
       dplyr::summarise(
         index_i = (base::sum(index_i * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(4),
         index_p = (base::sum(index_p * tw_fcl_population_kkm) / base::sum(tw_fcl_population_kkm)) |> base::round(2),
@@ -847,12 +851,52 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl, populati
     area_index_month <-
       dplyr::bind_rows(
         area_index_month,
-        area_index_month_i
+        area_index_month_y
       )
 
+    link_index_month_y <-
+      link_index_month_fcl_y |>
+      dplyr::left_join(
+        area_index_month_y |>
+          dplyr::select(
+            universal_year_period_id, index_p
+          ),
+        by = "universal_year_period_id"
+      ) |>
+      dplyr::select(
+        trp_id,
+        year_a, year_b, month, universal_year_period_id,
+        tw_fcl_population_share, share_link_to_fcl, p_abi_i,index_p
+      ) |>
+      dplyr::mutate(
+        p_abi_p = 100 * (p_abi_i - 1),
+        ww = tw_fcl_population_share * share_link_to_fcl,
+        ww_p_abi_p = ww * p_abi_p,
+        pull = ww * (p_abi_p - index_p)
+      )
+
+    # link_index_check <-
+    #   link_index_month_y |>
+    #   dplyr::summarise(
+    #     index_p_check = base::sum(ww_p_abi_p),
+    #     .by = universal_year_period_id
+    #   )
+    # index_p is reproduced - ok!
+
+    link_index_month <-
+      dplyr::bind_rows(
+        link_index_month,
+        link_index_month_y
+      )
   }
 
-  return(area_index_month)
+  return_object <-
+    base::list(
+      area_index_month,
+      link_index_month
+    )
+
+  return(return_object)
 }
 
 

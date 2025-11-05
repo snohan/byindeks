@@ -6,9 +6,12 @@
 # For now, assume no uncerainty here,
 # and it probably is much smaller than the contribution from spatial TRP sampling.
 
-area_index_month <-
+index_month_values <-
   mdt_validated |>
   calculate_area_index_month(population_size)
+
+area_index_month <- index_month_values[[1]]
+link_index_month <- index_month_values[[2]]
 
 area_index_one_year <- calculate_rolling_area_index_one_year(area_index_month)
 
@@ -17,6 +20,11 @@ area_index_three_years <- calculate_rolling_index_multiple_years(area_index_one_
 readr::write_rds(
   area_index_month,
   base::paste0("representativity/cmdt_index_month_", city_number, ".rds")
+)
+
+readr::write_rds(
+  link_index_month,
+  base::paste0("representativity/link_index_month_", city_number, ".rds")
 )
 
 list(
