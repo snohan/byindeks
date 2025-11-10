@@ -25,11 +25,18 @@ crossref:
   sec-prefix: "kapittel"
 ---
 
-```{r setup, include = FALSE, echo = FALSE}
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
+
 source("rmd_setup.R")
 ```
 
-```{r get_data, include = FALSE}
+```{r}
+#| label: get_data
+#| include: false
+
 # City numbers
 
 # Buskerudbyen          1952 2016

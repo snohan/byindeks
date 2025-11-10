@@ -76,7 +76,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "september" # English
+month_string <- "october" # English
 year_number <- 2025
 
 apar_data_for_month <-
@@ -230,23 +230,27 @@ plot_toll_station_data_per_lane <- function(toll_id_chosen, year_chosen) {
       dplyr::select(name) |>
       purrr::pluck(1)
 
-    tolling_data_daily_lane %>%
+    tolling_data_daily_lane |>
     dplyr::filter(
       trp_id == toll_id_chosen,
       year %in% c(year_chosen)
-    ) %>%
+    ) |>
     ggplot(aes(day, traffic, color = lane, linetype = class)) +
     geom_line(linewidth = 1) +
     facet_grid(
       rows = vars(month)
     ) +
     theme_minimal() +
+    scale_x_continuous(
+      breaks = base::seq(5, 30, by = 5),
+      minor_breaks = c(1:31)
+    ) +
     ggplot2::ggtitle(toll_station_name)
 
 }
 
-# Ranheim is 72
-plot_toll_station_data_per_lane("86", 2025)
+# Ranheim is 72, 21 stations
+plot_toll_station_data_per_lane(tolling_station_ids_original[3], 2025)
 
 ## Exclusions ----
 # Exclusions may be monthly or daily
@@ -265,51 +269,43 @@ plot_toll_station_data_per_lane("86", 2025)
 
 tolling_data_daily_tidy <-
   tolling_data_daily |>
+  dplyr::filter(!(trp_id == "51" & date %in% ymd(c("2025-10-04")))) |>
   dplyr::filter(!(trp_id == "52" & date %in% ymd(c("2022-05-12", "2022-05-13", "2022-05-20")))) |>
-  dplyr::filter(!(trp_id == "52" & date %in% ymd(c("2023-01-18", "2023-01-19",
-                                             "2023-04-24", "2023-04-25", "2023-04-26")))) |>
+  dplyr::filter(!(trp_id == "52" & date %in% ymd(c("2023-01-18", "2023-01-19", "2023-04-24", "2023-04-25", "2023-04-26")))) |>
+  dplyr::filter(!(trp_id == "52" & date %in% ymd(c("2025-10-04")))) |>
   dplyr::filter(!(trp_id == "54" & month == "2021-03-01")) |>
   dplyr::filter(!(trp_id == "54" & month == "2021-04-01")) |>
   dplyr::filter(!(trp_id == "54" & month == "2021-05-01")) |>
   dplyr::filter(!(trp_id == "54" & month == "2021-06-01")) |>
   dplyr::filter(!(trp_id == "54" & month == "2021-07-01")) |>
-  dplyr::filter(!(trp_id == "54" &
-                   date %in% seq.Date(as.Date("2021-08-01"), as.Date("2021-08-15"), 1))) |>
+  dplyr::filter(!(trp_id == "54" & date %in% seq.Date(as.Date("2021-08-01"), as.Date("2021-08-15"), 1))) |>
   dplyr::filter(!(trp_id == "54" & year == 2022)) |>
   dplyr::filter(!(trp_id == "54" & month == "2024-10-01")) |>
   dplyr::filter(!(trp_id == "54" & month == "2024-11-01")) |>
   dplyr::filter(!(trp_id == "54" & month == "2024-12-01")) |>
-  dplyr::filter(!(trp_id == "54" &
-                    date %in% seq.Date(as.Date("2025-02-26"), as.Date("2025-03-09"), 1))) |>
+  dplyr::filter(!(trp_id == "54" & date %in% seq.Date(as.Date("2025-02-26"), as.Date("2025-03-09"), 1))) |>
   dplyr::filter(!(trp_id == "55" & month == "2021-05-01")) |>
   dplyr::filter(!(trp_id == "55" & month == "2021-06-01")) |>
   dplyr::filter(!(trp_id == "55" & month == "2021-07-01")) |>
-  dplyr::filter(!(trp_id == "55" &
-                    date %in% seq.Date(as.Date("2021-08-01"), as.Date("2021-08-15"), 1))) |>
+  dplyr::filter(!(trp_id == "55" & date %in% seq.Date(as.Date("2021-08-01"), as.Date("2021-08-15"), 1))) |>
   dplyr::filter(!(trp_id == "55" & date %in% ymd(c("2023-06-26")))) |>
-  dplyr::filter(!(trp_id == "55" &
-                    month %in% seq.Date(as.Date("2023-07-01"), as.Date("2030-12-01"), by = "month"))) |>
-  dplyr::filter(!(trp_id == "55" &
-                    date %in% seq.Date(as.Date("2025-02-26"), as.Date("2025-03-09"), 1))) |>
+  dplyr::filter(!(trp_id == "55" & month %in% seq.Date(as.Date("2023-07-01"), as.Date("2030-12-01"), by = "month"))) |>
+  dplyr::filter(!(trp_id == "55" & date %in% seq.Date(as.Date("2025-02-26"), as.Date("2025-03-09"), 1))) |>
   dplyr::filter(!(trp_id == "56" & month == "2021-04-01")) |>
-  dplyr::filter(!(trp_id == "59" &
-                    date %in% seq.Date(as.Date("2023-07-27"), as.Date("2023-07-28"), 1))) |>
-  dplyr::filter(!(trp_id == "59" &
-                    date %in% seq.Date(as.Date("2025-08-17"), as.Date("2025-08-18"), 1))) |>
+  dplyr::filter(!(trp_id == "59" & date %in% seq.Date(as.Date("2023-07-27"), as.Date("2023-07-28"), 1))) |>
+  dplyr::filter(!(trp_id == "59" & date %in% ymd(c("2025-08-17", "2025-10-26")))) |>
+  dplyr::filter(!(trp_id == "60" & date %in% ymd(c("2025-10-26")))) |>
   dplyr::filter(!(trp_id == "61" & date %in% ymd(c("2023-06-20")))) |>
   dplyr::filter(!(trp_id == "62" & date %in% ymd(c("2023-04-12", "2023-04-13")))) |>
   dplyr::filter(!(trp_id == "63")) |>
   dplyr::filter(!(trp_id == "64" & date %in% ymd(c("2023-06-23")))) |>
   dplyr::filter(!(trp_id == "67" & date %in% ymd(c("2023-06-27", "2023-06-28")))) |>
-  dplyr::filter(!(trp_id == "67" &
-                    date %in% seq.Date(as.Date("2025-02-24"), as.Date("2025-03-09"), 1))) |>
-  dplyr::filter(!(trp_id == "67" &
-                    date %in% seq.Date(as.Date("2025-05-12"), as.Date("2025-10-31"), 1))) |>
-  dplyr::filter(!(trp_id == "68" &
-                    date %in% seq.Date(as.Date("2025-02-24"), as.Date("2025-03-09"), 1))) |>
+  dplyr::filter(!(trp_id == "67" & date %in% seq.Date(as.Date("2025-02-24"), as.Date("2025-03-09"), 1))) |>
+  dplyr::filter(!(trp_id == "67" & date %in% seq.Date(as.Date("2025-05-12"), as.Date("2025-10-31"), 1))) |>
+  dplyr::filter(!(trp_id == "68" & date %in% seq.Date(as.Date("2025-02-24"), as.Date("2025-03-09"), 1))) |>
   dplyr::filter(!(trp_id == "69" & date %in% ymd(c("2023-07-04", "2023-07-05")))) |>
   dplyr::filter(!(trp_id == "72" & month == "2021-04-01")) |>
-  dplyr::filter(!(trp_id == "85" & date %in% ymd(c("2021-01-11", "2021-01-12", "2021-01-13")))) |>
+  dplyr::filter(!(trp_id == "85" & date %in% ymd(c("2021-01-11", "2021-01-12", "2021-01-13", "2025-10-04")))) |>
   dplyr::filter(!(trp_id == "86" & month == "2021-01-01")) |>
   dplyr::filter(!(trp_id == "86" & month == "2021-03-01")) |>
   dplyr::filter(!(trp_id == "86" & month == "2021-04-01"))

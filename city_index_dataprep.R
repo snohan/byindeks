@@ -62,8 +62,8 @@ trp_id_msnr <-
 {
   present_year <- 2025
   # month to be published now:
-  index_month <- 8
-  city_number <- 959
+  index_month <- 10
+  city_number <- 960
 }
 
 source("set_time_references.R")
@@ -195,7 +195,7 @@ mdt_filtered |>
   )
 
 # Read back in
-mdt_filtered <- readr::read_rds(paste0("data_indexpoints_tidy/mdt_", city_number, ".rds"))
+#mdt_filtered <- readr::read_rds(paste0("data_indexpoints_tidy/mdt_", city_number, ".rds"))
 
 
 ## Check validity ----
@@ -228,7 +228,7 @@ trp_not_ok <-
 
 mdt_validated |>
   dplyr::filter(!(year %in% c(2020, 2021))) |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[6:9]) |>
+  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[15:18]) |>
   dplyr::select(
     trp_id,
     year, month,
