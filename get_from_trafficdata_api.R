@@ -2348,9 +2348,6 @@ get_mdt_by_lane_for_trp_list <- function(trp_list, mdt_year) {
 # }
 
 
-
-
-
 get_mdt_by_length_for_trp_list <- function(trp_list, mdt_year) {
 
   number_of_points <- length(trp_list)

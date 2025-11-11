@@ -68,7 +68,7 @@ links <-
 
 
 ```{r}
-#| label: get_data
+#| label: data
 
 # Look at details in one city at a time
 
@@ -77,11 +77,11 @@ links <-
 # 2016 Busk  1952   09 Snorre
 # 2016 Gren   955   09 Snorre
 
-# 2017 NJær   952   09 Snorre
+# 2017 NJær   952   10 Snorre
 # 2018 Oslo   959   09 Trond
-# 2018 Berg  8952   09 Trond
-# 2019 Tron   960   09 Snorre
-# 2022 Trom 16952   09 Snorre
+# 2018 Berg  8952   10 Trond
+# 2019 Tron   960   10 Snorre
+# 2022 Trom 16952   10 Snorre
 # 2023 Kris 19953   09 Snorre
 # 2023 NGlo 18952   09 Trond
 
@@ -96,7 +96,7 @@ links <-
 # Choose
 index_year <- 2025
 latest_published_month <- 9
-city_number <- 960
+city_number <- 8952
 # End choose
 
 new_month_year <-
@@ -950,63 +950,138 @@ city_trps_new_pointindex <-
 
 # Widening for table view
 pointindex_prepared_all_wide_total_index <- 
-  pointindex_prepared_all %>% 
+  pointindex_prepared_all |> 
   dplyr::select(
     name, 
     road_category_and_number, 
     adt, 
     month, 
     index_total_p
-  ) %>% 
+  ) |> 
   tidyr::pivot_wider(
     names_from = month, 
     values_from = index_total_p,
     names_prefix = "m"
-  ) %>% 
-  dplyr::mutate(value_type = "index_total_p")
+  ) |>  
+  # make all these names take up four rows so the table always takes up same amount of vertical space
+  dplyr::mutate(
+    value_type = 
+      paste(
+        " ", "<br/>",
+        "index", "<br/>",
+        "total", "<br/>",
+        "p"
+      )
+  )
 
 pointindex_prepared_all_wide_coverage <- 
-  pointindex_prepared_all %>% 
-  dplyr::select(name, road_category_and_number, adt, month, index_total_coverage) %>% 
-  tidyr::pivot_wider(names_from = month, values_from = index_total_coverage,
-                     names_prefix = "m") %>% 
-  dplyr::mutate(value_type = "index_total_coverage")
+  pointindex_prepared_all |> 
+  dplyr::select(name, road_category_and_number, adt, month, index_total_coverage) |> 
+  tidyr::pivot_wider(
+    names_from = month, 
+    values_from = index_total_coverage,
+    names_prefix = "m"
+  ) |> 
+  dplyr::mutate(
+    value_type = 
+      paste(
+        " ", "<br/>",
+        "index", "<br/>",
+        "total", "<br/>",
+        "coverage"
+      )
+  )
 
 pointindex_prepared_all_wide_length_coverage <- 
-  pointindex_prepared_all %>% 
-  dplyr::select(name, road_category_and_number, adt, month, length_coverage) %>% 
-  tidyr::pivot_wider(names_from = month, values_from = length_coverage,
-                     names_prefix = "m") %>% 
-  dplyr::mutate(value_type = "length_coverage")
+  pointindex_prepared_all |> 
+  dplyr::select(name, road_category_and_number, adt, month, length_coverage) |> 
+  tidyr::pivot_wider(
+    names_from = month, 
+    values_from = length_coverage,
+    names_prefix = "m"
+  ) |> 
+  dplyr::mutate(
+    value_type = 
+      paste(
+        " ", "<br/>",
+        " ", "<br/>",
+        "length", "<br/>",
+        "coverage"
+      )
+  )
 
 pointindex_prepared_all_wide_short <- 
-  pointindex_prepared_all %>% 
-  dplyr::select(name, road_category_and_number, adt, month, index_short) %>% 
-  tidyr::pivot_wider(names_from = month, values_from = index_short,
-                     names_prefix = "m") %>% 
-  dplyr::mutate(value_type = "index_short")
+  pointindex_prepared_all |> 
+  dplyr::select(name, road_category_and_number, adt, month, index_short) |> 
+  tidyr::pivot_wider(
+    names_from = month, 
+    values_from = index_short,
+    names_prefix = "m"
+  ) |> 
+  dplyr::mutate(
+    value_type = 
+      paste(
+        " ", "<br/>",
+        "index", "<br/>",
+        "short", "<br/>",
+        "p"
+      )
+  )
 
 pointindex_prepared_all_wide_long <- 
-  pointindex_prepared_all %>% 
-  dplyr::select(name, road_category_and_number, adt, month, index_long) %>% 
-  tidyr::pivot_wider(names_from = month, values_from = index_long,
-                     names_prefix = "m") %>% 
-  dplyr::mutate(value_type = "index_long")
+  pointindex_prepared_all |> 
+  dplyr::select(name, road_category_and_number, adt, month, index_long) |> 
+  tidyr::pivot_wider(
+    names_from = month, 
+    values_from = index_long,
+    names_prefix = "m"
+  ) |> 
+  dplyr::mutate(
+    value_type = 
+      paste(
+        " ", "<br/>",
+        "index", "<br/>",
+        "long", "<br/>",
+        "p"
+      )
+  )
 
 pointindex_prepared_all_wide_check <- 
-  pointindex_prepared_all %>% 
-  dplyr::select(name, road_category_and_number, adt, month, total_short_long_check) %>% 
-  tidyr::pivot_wider(names_from = month, values_from = total_short_long_check,
-                     names_prefix = "m") %>% 
-  dplyr::mutate(value_type = "total_short_long_check")
+  pointindex_prepared_all |> 
+  dplyr::select(name, road_category_and_number, adt, month, total_short_long_check) |> 
+  tidyr::pivot_wider(
+    names_from = month, 
+    values_from = total_short_long_check,
+    names_prefix = "m"
+  ) |>  
+  dplyr::mutate(
+    value_type = 
+      paste(
+        "total", "<br/>",
+        "short", "<br/>",
+        "long", "<br/>",
+        "check"
+      )
+  )
 
 pointindex_prepared_all_wide_diff <- 
-  pointindex_prepared_all %>% 
-  dplyr::select(name, road_category_and_number, adt, month, diff_total_short) %>% 
-  tidyr::pivot_wider(names_from = month, values_from = diff_total_short,
-                     names_prefix = "m") %>% 
-  dplyr::mutate(value_type = "diff_total_short")
-
+  pointindex_prepared_all |> 
+  dplyr::select(name, road_category_and_number, adt, month, diff_total_short) |> 
+  tidyr::pivot_wider(
+    names_from = month, 
+    values_from = diff_total_short,
+    names_prefix = "m"
+  ) |>  
+  dplyr::mutate(
+    value_type = 
+      paste(
+        " ", "<br/>",
+        "diff", "<br/>",
+        "total", "<br/>",
+        "short"
+      )
+  )
+  
 pointindex_wide <- 
   dplyr::bind_rows(
     pointindex_prepared_all_wide_total_index,
@@ -1182,8 +1257,6 @@ if(nrow(leftover_trp_index_1) != 0){
 ```
 
 
-
-
 ```{r}
 #| label: map_linkindex_and_events_2
 #| message: false
@@ -1200,7 +1273,6 @@ if(nrow(leftover_trp_index_1) != 0){
 #   dplyr::rename(index = index_total_p) |>
 #   create_pointindex_map()
 ```
-
 
 
 ```{r}
@@ -1238,10 +1310,7 @@ pointindex_plot <-
     panel.background = element_rect(fill = svv_background_color)
   )
 
-pointindex_plot |> 
-  plotly::ggplotly(
-    #width = 900, height = 700
-  )
+pointindex_plot |> plotly::ggplotly()
 ```
 
 
@@ -1351,6 +1420,7 @@ pointindex_wide |>
   DT::datatable(
     filter = "top",
     rownames = FALSE,
+    escape = FALSE,
     options = list(
       dom = "ftip",
       pageLength = 14,
