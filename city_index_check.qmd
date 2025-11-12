@@ -78,11 +78,11 @@ links <-
 # 2016 Gren   955   09 Snorre
 
 # 2017 NJær   952   10 Snorre
-# 2018 Oslo   959   09 Trond
+# 2018 Oslo   959   10 Trond
 # 2018 Berg  8952   10 Trond
 # 2019 Tron   960   10 Snorre
 # 2022 Trom 16952   10 Snorre
-# 2023 Kris 19953   09 Snorre
+# 2023 Kris 19953   10 Snorre
 # 2023 NGlo 18952   09 Trond
 
 # 2024 Aale 20952   09 Snorre
@@ -96,7 +96,7 @@ links <-
 # Choose
 index_year <- 2025
 latest_published_month <- 9
-city_number <- 8952
+city_number <- 18952
 # End choose
 
 new_month_year <-
@@ -1086,13 +1086,12 @@ pointindex_wide <-
   dplyr::bind_rows(
     pointindex_prepared_all_wide_total_index,
     pointindex_prepared_all_wide_coverage,
-    pointindex_prepared_all_wide_length_coverage,
+    #pointindex_prepared_all_wide_length_coverage,
     pointindex_prepared_all_wide_short,
     pointindex_prepared_all_wide_long,
     pointindex_prepared_all_wide_check,
     pointindex_prepared_all_wide_diff
   ) |> 
-  # split_road_system_reference() %>% 
   dplyr::rename(
     road = road_category_and_number,
   ) |> 
@@ -1423,23 +1422,11 @@ pointindex_wide |>
     escape = FALSE,
     options = list(
       dom = "ftip",
-      pageLength = 14,
-      #lengthMenu = c(14, 28),
-      autoWidth = TRUE))
+      pageLength = 12,
+      autoWidth = TRUE
+    )
+  )
 ```
 
 
 {{< include city_report_files/_traffic.Rmd >}}
-
-
-```{r notes}
-# Ekskluderinger:
-
-# NGL
-# St. Hansfjellet 10
-# TODO: length quality 10
-# TODO: MDTs and Excel file
-
-
-# 
-```
