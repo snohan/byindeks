@@ -63,7 +63,7 @@ trp_id_msnr <-
   present_year <- 2025
   # month to be published now:
   index_month <- 10
-  city_number <- 18952
+  city_number <- 1952
 }
 
 source("set_time_references.R")
@@ -286,9 +286,9 @@ compare_to_report <-
 
 all_rolling_indices_list <-
   list(
-    all_12_month_indices
-    # all_24_month_indices,
-    # all_36_month_indices
+    all_12_month_indices,
+    all_24_month_indices,
+    all_36_month_indices
   )
 
 all_rolling_indices <-
@@ -610,13 +610,13 @@ city_index_yearly_all <-
   ) |>
   dplyr::bind_rows(
     # Include only for full years
-    # years_1_2,
-    # years_1_3,
-    # years_1_4,
-    # years_1_5,
-    # years_1_6,
-    # years_1_7,
-    # years_1_8
+    years_1_2,
+    years_1_3,
+    years_1_4,
+    years_1_5,
+    years_1_6,
+    years_1_7,
+    years_1_8
   ) |>
   dplyr::mutate(
     year_from_to = paste0(year_base, "-", year),
