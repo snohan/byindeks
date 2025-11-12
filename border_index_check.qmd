@@ -3,6 +3,7 @@ title: "Sjekk av riksgrenseindeks"
 format: 
   html:
     css: svv.css
+    page-layout: full
     number-sections: true
     toc: true
     toc-location: left
@@ -42,12 +43,12 @@ library(htmltools)
 
 
 ```{r}
-#| label: get_data
+#| label: data
 
 # Choose
 index_year <- 2025
 # Last published month
-index_month <- 8
+index_month <- 9
 index_id <- 2952
 
 new_month_name <- 
@@ -83,6 +84,15 @@ trps_meta <- points %>%
 
 # New month's pointindices
 point_index_new <- get_pointindices_for_trp_list(border_trps, index_year)
+
+# AADT
+adt <- get_aadt_by_length_for_trp_list(trps_meta$trp_id)
+
+adt_filtered <- adt %>%
+  dplyr::filter(length_range == "[..,5.6)") %>%
+  dplyr::group_by(trp_id) %>%
+  dplyr::filter(year == max(year)) %>%
+  dplyr::select(trp_id, adt = aadt_total)
 ```
 
 
@@ -145,6 +155,9 @@ pointindex_prepared_all <-
     point_index_new_prepared
   ) %>% 
   dplyr::left_join(trps_meta, by = "trp_id") %>% 
+  dplyr::left_join(
+    adt_filtered, by = "trp_id"
+    ) %>% 
   dplyr::mutate(
     short_is_least = index_short < index_long,
     short_is_least_check = index_total_p >= index_short & index_total_p <= index_long,
@@ -170,121 +183,7 @@ trps_new_pointindex <-
             index_total_coverage, " %"),
     label_text = lapply(label_text, htmltools::HTML))
 
-
-# Widening for table view
-pointindex_prepared_all_wide_total_index <- pointindex_prepared_all %>% 
-  dplyr::select(name, road_reference, month, index_total_p) %>% 
-  tidyr::pivot_wider(names_from = month, values_from = index_total_p,
-                     names_prefix = "m") %>% 
-  dplyr::mutate(value_type = "index_total_p")
-
-pointindex_prepared_all_wide_coverage <- pointindex_prepared_all %>% 
-  dplyr::select(name, road_reference, month, index_total_coverage) %>% 
-  tidyr::pivot_wider(names_from = month, values_from = index_total_coverage,
-                     names_prefix = "m") %>% 
-  dplyr::mutate(value_type = "index_total_coverage")
-
-pointindex_prepared_all_wide_length_coverage <- pointindex_prepared_all %>% 
-  dplyr::select(name, road_reference, month, length_coverage) %>% 
-  tidyr::pivot_wider(names_from = month, values_from = length_coverage,
-                     names_prefix = "m") %>% 
-  dplyr::mutate(value_type = "length_coverage")
-
-pointindex_prepared_all_wide_short <- pointindex_prepared_all %>% 
-  dplyr::select(name, road_reference, month, index_short) %>% 
-  tidyr::pivot_wider(names_from = month, values_from = index_short,
-                     names_prefix = "m") %>% 
-  dplyr::mutate(value_type = "index_short")
-
-pointindex_prepared_all_wide_long <- pointindex_prepared_all %>% 
-  dplyr::select(name, road_reference, month, index_long) %>% 
-  tidyr::pivot_wider(names_from = month, values_from = index_long,
-                     names_prefix = "m") %>% 
-  dplyr::mutate(value_type = "index_long")
-
-pointindex_prepared_all_wide_check <- pointindex_prepared_all %>% 
-  dplyr::select(name, road_reference, month, total_short_long_check) %>% 
-  tidyr::pivot_wider(names_from = month, values_from = total_short_long_check,
-                     names_prefix = "m") %>% 
-  dplyr::mutate(value_type = "total_short_long_check")
-
-pointindex_prepared_all_wide_diff <- pointindex_prepared_all %>% 
-  dplyr::select(name, road_reference, month, diff_total_short) %>% 
-  tidyr::pivot_wider(names_from = month, values_from = diff_total_short,
-                     names_prefix = "m") %>% 
-  dplyr::mutate(value_type = "diff_total_short")
-
-pointindex_wide <- dplyr::bind_rows(
-  pointindex_prepared_all_wide_total_index,
-  pointindex_prepared_all_wide_coverage,
-  pointindex_prepared_all_wide_length_coverage,
-  pointindex_prepared_all_wide_short,
-  pointindex_prepared_all_wide_long,
-  pointindex_prepared_all_wide_check,
-  pointindex_prepared_all_wide_diff
-  ) %>% 
-  split_road_system_reference() %>% 
-  dplyr::select(name, road = road_category_and_number,
-                m1:value_type)
-  #dplyr::arrange(road_reference)
-
-# Longing :) for plot
-pointindex_long <- 
-  pointindex_prepared_all %>% 
-  dplyr::select(trp_id:road_category_and_number)
-
-pointindex_long_total <- 
-  pointindex_long %>% 
-  dplyr::select(
-    trp_id, 
-    year, 
-    month, 
-    index = index_total_p, 
-    coverage = index_total_coverage,
-    length_excluded, 
-    name, 
-    road_reference, 
-    road_category_and_number
-  ) %>% 
-  dplyr::mutate(length_range = "total")
-
-pointindex_long_short <- 
-  pointindex_long %>% 
-  dplyr::select(
-    trp_id, 
-    year, 
-    month, 
-    index_short, 
-    index_long, 
-    coverage = length_coverage, 
-    length_excluded, 
-    name, 
-    road_reference, 
-    road_category_and_number
-  ) %>% 
-  tidyr::pivot_longer(
-    cols = c("index_short", "index_long"), 
-    names_to = "length_range",
-    values_to = "index"
-  )
-
-pointindex_long_2 <- 
-  dplyr::bind_rows(
-    pointindex_long_total,
-    pointindex_long_short
-  ) %>% 
-  dplyr::mutate(
-    length_range = 
-      dplyr::case_when(
-        length_range == "total" ~ "alle",
-        length_range == "index_short" ~ "lette",
-        length_range == "index_long" ~ "tunge"
-      )
-  ) %>% 
-  dplyr::mutate(
-    month_object = lubridate::make_date(year = year, month = month),
-    month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)
-  )
+source("trp_index_wide_and_long.R")
 ```
 
 
@@ -464,15 +363,11 @@ pointindex_prepared_all |>
 pointindex_wide |> 
   DT::datatable(
     filter = "top",
+    escape = FALSE,
     options = list(
       dom = "ftip",
-      pageLength = 14,
-      #lengthMenu = c(14, 28),
-      autoWidth = TRUE))
-```
-
-
-```{r notes}
-# Ekskluderinger:
-
+      pageLength = 12,
+      autoWidth = TRUE
+    )
+  )
 ```
