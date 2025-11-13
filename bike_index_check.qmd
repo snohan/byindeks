@@ -3,6 +3,7 @@ title: "Sjekk av sykkelindeks"
 format: 
   html:
     css: svv.css
+    page-layout: full
     number-sections: true
     toc: true
     toc-location: left
@@ -52,23 +53,23 @@ points <- readr::read_rds("trps.rds")
 # Look at details in one city at a time
 
 # City numbers
-# Bergen 5952         2019 - 2025-08
-# Buskerudbyen 19952  2023 - 2025-08
-# Førde 9952          2018 - 2025-08
-# Grenland 4953       2018 - 2025-08
-# Kristiansand 14952  2018 - 2025-08
-# Nedre Glomma 5953   2019 - 2025-08
-# Nord-Jæren 6952     2020 - 2025-08
-# Osloområdet 17952   2018 - 2025-08
-# Tromsø 11952        2021 - 2025-08
-# Trondheim 13952     2023 - 2025-08
-# Vestfold 12952      2017 - 2025-08
+# Bergen 5952         2019 - 2025-10
+# Buskerudbyen 19952  2023 - 2025-09
+# Førde 9952          2018 - 2025-09
+# Grenland 4953       2018 - 2025-09
+# Kristiansand 14952  2018 - 2025-09
+# Nedre Glomma 5953   2019 - 2025-09
+# Nord-Jæren 6952     2020 - 2025-09
+# Osloområdet 17952   2018 - 2025-09
+# Tromsø 11952        2021 - 2025-09
+# Trondheim 13952     2023 - 2025-09
+# Vestfold 12952      2017 - 2025-09
 
 
 # Choose
 index_year <- 2025
-index_month <- 8 # latest published
-city_number <- 12952
+index_month <- 9 # latest published
+city_number <- 19952
 
 new_month_name <- 
   lubridate::as_date(paste0(index_year, "-", index_month + 1, "-01")) |> 
@@ -307,51 +308,62 @@ city_trps_new_pointindex <-
 
 # Widening for table view
 pointindex_prepared_all_wide_total_index <- 
-  pointindex_prepared_all %>% 
+  pointindex_prepared_all |> 
   dplyr::select(
     name, 
-    road_reference, 
+    road_category_and_number, 
     adt, 
     month, 
     index_total_p
-  ) %>% 
+  ) |>  
   tidyr::pivot_wider(
     names_from = month, 
     values_from = index_total_p,
     names_prefix = "m"
-  ) %>% 
-  dplyr::mutate(value_type = "index_total_p")
+  ) |> 
+  dplyr::mutate(
+    value_type =
+      paste(
+        " ", "<br/>",
+        "index", "<br/>",
+        "total", "<br/>",
+        "p"
+      )
+  )
 
 pointindex_prepared_all_wide_coverage <- 
-  pointindex_prepared_all %>% 
+  pointindex_prepared_all |> 
   dplyr::select(
     name, 
-    road_reference, 
+    road_category_and_number, 
     adt, 
     month, 
     index_total_coverage
-  ) %>% 
+  ) |> 
   tidyr::pivot_wider(
     names_from = month, values_from = index_total_coverage,
     names_prefix = "m"
-  ) %>% 
-  dplyr::mutate(value_type = "index_total_coverage")
+  ) |> 
+    dplyr::mutate(
+    value_type =
+      paste(
+        " ", "<br/>",
+        "index", "<br/>",
+        "total", "<br/>",
+        "coverage"
+      )
+  )
 
 pointindex_wide <- 
   dplyr::bind_rows(
   pointindex_prepared_all_wide_total_index,
   pointindex_prepared_all_wide_coverage
-  ) %>% 
-  split_road_system_reference() %>% 
-  dplyr::select(
-    name, 
-    road = road_category_and_number,
-    adt:value_type
   ) |> 
+  dplyr::rename(road = road_category_and_number) |> 
   dplyr::mutate(
     dplyr::across(starts_with("m"), round)
-  )
-  #dplyr::arrange(road_reference)
+  ) |>
+  dplyr::arrange(name)
 
 # Longing :) for plot
 pointindex_long <- 
@@ -415,12 +427,8 @@ city_index_prepared %>%
 #| label: map_trp_index
 
 city_trps_new_pointindex |> 
-  dplyr::rename(
-    index = index_total_p
-  ) |> 
-  dplyr::filter(
-    !is.na(index)
-  ) |> 
+  dplyr::rename(index = index_total_p) |> 
+  dplyr::filter(!is.na(index)) |> 
   map_pointindex()
 ```
 
@@ -479,8 +487,7 @@ pointindex_plot <-
     panel.background = element_rect(fill = svv_background_color)
   )
 
-pointindex_plot %>% plotly::ggplotly(#width = 900, height = 700
-  )
+pointindex_plot |> plotly::ggplotly()
 ```
 
 
@@ -522,12 +529,8 @@ pointindex_plot %>% plotly::ggplotly(#width = 900, height = 700
 #| fig-cap: "Punktindeksenes spredning."
 
 pointindex_prepared_all |> 
-  dplyr::filter(
-    month > index_month
-  ) |> 
-  dplyr::mutate(
-    month = factor(month)
-  ) |> 
+  dplyr::filter(month > index_month) |> 
+  dplyr::mutate(month = factor(month)) |> 
   ggplot(
     aes(
       month,
@@ -548,12 +551,8 @@ pointindex_prepared_all |>
 #| fig-cap: "Punktindeksenes fordeling."
 
 pointindex_prepared_all |> 
-  dplyr::filter(
-    month > index_month
-  ) |> 
-  dplyr::mutate(
-    month = factor(month)
-  ) |> 
+  dplyr::filter(month > index_month) |> 
+  dplyr::mutate(month = factor(month)) |> 
   ggplot(
     aes(
       index_total_p
@@ -581,15 +580,11 @@ pointindex_prepared_all |>
 pointindex_wide |> 
   DT::datatable(
     filter = "top",
+    escape = FALSE,
     options = list(
       dom = "ftip",
-      pageLength = 14,
-      #lengthMenu = c(14, 28),
-      autoWidth = TRUE))
-```
-
-
-```{r notes}
-# Ekskluderinger:
-
+      pageLength = 12,
+      autoWidth = TRUE
+    )
+  )
 ```
