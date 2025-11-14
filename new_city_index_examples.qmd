@@ -1227,7 +1227,7 @@ qmd_indexes_official_trd |>
 #| label: fig-trd_improved_36
 #| fig-cap: "Forbedret indeks for Trondheim, tre års glidende indeks."
 
-qmd_index_examples_cmdt_brg |> 
+qmd_index_examples_cmdt_trd |> 
   dplyr::filter(window_years == "three") |> 
   visualize_rolling_cmdt_index(
     "Data: Statens vegvesen",
