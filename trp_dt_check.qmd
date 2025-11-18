@@ -102,7 +102,7 @@ boxplot_per_year <- function(dt_df) {
 ```{r}
 #| label: input
 
-# User specify TRP, month and years here!
+# Specify TRP, month and years here!
 
 # Choose TRP
 trp_id <- "51812V1203972"

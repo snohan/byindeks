@@ -44,11 +44,12 @@ read_pointindex_CSV <- function(filename) {
 
 }
 
-read_old_pointindex_csv_monthly <- function(filename, given_year) {
+
+read_old_pointindex_csv_monthly_with_volumes <- function(filename, given_year) {
 
   # Read standard csv export from old VTI-app in Datainn
 
-  read.csv2(
+  utils::read.csv2(
     filename,
     encoding = "latin1"
   ) |>
@@ -58,29 +59,77 @@ read_old_pointindex_csv_monthly <- function(filename, given_year) {
     !(periode %in% c("Hittil i år", "Siste 12 måneder")),
     indeks != "-"
   ) |>
-    dplyr::mutate(
-      trs = as.numeric(msnr),
-      #year = given_year,
-      month = dplyr::case_when(
-        periode == "Januar" ~ 1,
-        periode == "Februar" ~ 2,
-        periode == "Mars" ~ 3,
-        periode == "April" ~ 4,
-        periode == "Mai" ~ 5,
-        periode == "Juni" ~ 6,
-        periode == "Juli" ~ 7,
-        periode == "August" ~ 8,
-        periode == "September" ~ 9,
-        periode == "Oktober" ~ 10,
-        periode == "November" ~ 11,
-        periode == "Desember" ~ 12
-     ),
-     index = decimal_point(indeks) |>
-       as.numeric()
-    ) |>
-    dplyr::select(trs, #year,
-                  month, index) |>
-    dplyr::rename(msnr = trs)
+  dplyr::mutate(
+    trs = as.numeric(msnr),
+    year = given_year,
+    month = dplyr::case_when(
+      periode == "Januar" ~ 1,
+      periode == "Februar" ~ 2,
+      periode == "Mars" ~ 3,
+      periode == "April" ~ 4,
+      periode == "Mai" ~ 5,
+      periode == "Juni" ~ 6,
+      periode == "Juli" ~ 7,
+      periode == "August" ~ 8,
+      periode == "September" ~ 9,
+      periode == "Oktober" ~ 10,
+      periode == "November" ~ 11,
+      periode == "Desember" ~ 12
+    ),
+    trafikkmengde.basisaar = as.numeric(as.character(trafikkmengde.basisår)),
+    trafikkmengde.indeksaar = as.numeric(as.character(trafikkmengde.indeksår)),
+    index = decimal_point(indeks) |> as.numeric()
+  ) |>
+  dplyr::select(
+    trs,
+    year,
+    month,
+    trafikkmengde.basisaar,
+    trafikkmengde.indeksaar,
+    index
+  ) |>
+  dplyr::rename(msnr = trs)
+
+}
+
+
+read_old_pointindex_csv_monthly <- function(filename, given_year) {
+
+  # Read standard csv export from old VTI-app in Datainn
+
+  utils::read.csv2(
+    filename,
+    encoding = "latin1"
+  ) |>
+  dplyr::filter(
+    døgn == "Alle",
+    lengdeklasse == "< 5,6m",
+    !(periode %in% c("Hittil i år", "Siste 12 måneder")),
+    indeks != "-"
+  ) |>
+  dplyr::mutate(
+    trs = as.numeric(msnr),
+    #year = given_year,
+    month = dplyr::case_when(
+      periode == "Januar" ~ 1,
+      periode == "Februar" ~ 2,
+      periode == "Mars" ~ 3,
+      periode == "April" ~ 4,
+      periode == "Mai" ~ 5,
+      periode == "Juni" ~ 6,
+      periode == "Juli" ~ 7,
+      periode == "August" ~ 8,
+      periode == "September" ~ 9,
+      periode == "Oktober" ~ 10,
+      periode == "November" ~ 11,
+      periode == "Desember" ~ 12
+   ),
+   index = decimal_point(indeks) |>
+     as.numeric()
+  ) |>
+  dplyr::select(trs, #year,
+                month, index) |>
+  dplyr::rename(msnr = trs)
 
 }
 
