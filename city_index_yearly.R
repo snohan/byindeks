@@ -82,77 +82,13 @@ city_index_full_years <-
   dplyr::arrange(year)
 
 # Test: this should reproduce city index from TRP index:
-test <-
-  trp_index_year_to_date_dec_bind |>
-  dplyr::group_by(year) |>
-  dplyr::group_modify(
-    ~ calculate_area_index(.)
-  )
+# test <-
+#   trp_index_year_to_date_dec_bind |>
+#   dplyr::group_by(year) |>
+#   dplyr::group_modify(
+#     ~ calculate_area_index(.)
+#   )
 
 
 ## Chained city index
-years_1_2 <- calculate_two_year_index(city_index_full_years)
-
-years_1_3 <-
-  bind_rows(years_1_2, slice(city_index_full_years, 3)) %>%
-  calculate_two_year_index()
-
-years_1_4 <-
-  bind_rows(years_1_3, slice(city_index_full_years, 4)) %>%
-  calculate_two_year_index()
-
-years_1_5 <-
-  bind_rows(years_1_4, slice(city_index_full_years, 5)) %>%
-  calculate_two_year_index()
-
-years_1_6 <-
-  bind_rows(years_1_5, slice(city_index_full_years, 6)) %>%
-  calculate_two_year_index()
-
-years_1_7 <-
-  bind_rows(years_1_6, slice(city_index_full_years, 7)) %>%
-  calculate_two_year_index()
-
-# years_1_8 <-
-#   bind_rows(years_1_7, slice(city_index_full_years, 8)) %>%
-#   calculate_two_year_index()
-
-# Skipping intermediate years, adding just from first to last?
-city_index_yearly_all <-
-  city_index_full_years |>
-  dplyr::mutate(
-    index_type = "direct"
-  ) |>
-  dplyr::bind_rows(
-    # Include only for full years
-    years_1_2,
-    years_1_3,
-    years_1_4,
-    years_1_5,
-    years_1_6,
-    years_1_7,
-    # years_1_8
-  ) |>
-  dplyr::mutate(
-    year_from_to = paste0(year_base, "-", year),
-    area_name = city_name,
-    month_name_short = lubridate::month(month, label = TRUE),
-    period = paste0("jan-", month_name_short),
-    index_p = round(index_p, 1),
-    ci_lower = round(index_p - 1.96 * standard_error, 1),
-    ci_upper = round(index_p + 1.96 * standard_error, 1)
-  ) |>
-  dplyr::select(
-    -standard_deviation,
-    -variance,
-    -sum_of_squared_weights
-  )
-
-readr::write_rds(
-  city_index_yearly_all,
-  file = paste0("data_indexpoints_tidy/byindeks_", file_name_addition, city_number, ".rds")
-)
-
-if(so_far) {
-  city_index_yearly_all_so_far <- city_index_yearly_all
-}
+source("city_index_yearly_chain.R")
