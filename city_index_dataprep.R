@@ -62,8 +62,8 @@ trp_id_msnr <-
 {
   present_year <- 2025
   # month to be published now:
-  index_month <- 10
-  city_number <- 1952
+  index_month <- 8
+  city_number <- 959
 }
 
 source("set_time_references.R")
@@ -313,335 +313,45 @@ if(city_number == 959) {
 }
 
 
-# Yearly TRP index ----
+# Yearly index ----
+# TRD: Trondheim has its own script for yearly index: city_index_dataprep_trd.R
 
-# TRD:
-# Trondheim has its own script for yearly index: city_index_dataprep_trd.R
-
-# So far by year
-# Still need to specify csv-files for years before 2020 to get the pointindex as they are not in API
-if((city_number %in% c(1952, 955, 952, 959))){
-  trp_index_so_far_by_dec_pre_2020 <-
-    purrr::map(
-      index_years_pre_2020,
-      ~ read_pointindex_CSV(
-        paste0("data_index_raw/pointindex_", city_number, "_", .x, ".csv")
-      ) |>
-        dplyr::rename(
-          index = 2
-        ) |>
-        dplyr::mutate(
-          year = .x,
-          month = 12
-          # So far
-          #month = index_month
-        )
-    ) |>
-    purrr::list_rbind() |>
-    dplyr::left_join(
-      trp_id_msnr,
-      by = "msnr"
-    ) |>
-    dplyr::select(-msnr)
-}else{
-  trp_index_so_far_by_dec_pre_2020 <- data.frame()
-}
-
-trp_index_from_2020 <-
-  purrr::map2(
-    index_years_from_2020,
-    index_months_from_2020,
-    # So far
-    # index_months_from_2020_so_far,
-    ~ get_published_pointindex_for_months(city_number, .x, .y)[[2]]
-  ) |>
-  purrr::list_rbind() |>
-  dplyr::filter(
-    trp_id != "98963V1719019" # Sandesund sør is wrongly included in API response
-  )
-
-trp_index_so_far_by_dec_from_2020 <-
-  trp_index_from_2020 |>
-  dplyr::filter(
-    day_type == "ALL",
-    is_excluded == FALSE,
-    is_manually_excluded == FALSE,
-    length_excluded == FALSE,
-    period == "year_to_date"
-  ) |>
-  dplyr::slice_max(
-    order_by = month,
-    by = c(trp_id, year)
-  ) |>
-  dplyr::select(
-    trp_id,
-    year,
-    month,
-    base_volume = length_base_volume_short,
-    calc_volume = length_calc_volume_short,
-    index = index_short
-  )
-
-if(!(city_number %in% c(1952, 955, 952, 959))){
-  trp_index_year_to_date_dec_bind <-
-    dplyr::bind_rows(
-      trp_index_so_far_by_dec_from_2020
-    )
-}else{
-  trp_index_year_to_date_dec_bind <-
-    dplyr::bind_rows(
-      trp_index_so_far_by_dec_pre_2020,
-      trp_index_so_far_by_dec_from_2020
-    )
-}
-
-# Weighting standard error
-trp_index_year_to_date_dec <-
-  trp_index_year_to_date_dec_bind |>
-  dplyr::filter(!is.na(base_volume)) |>
-  dplyr::group_by(year) |>
-  dplyr::mutate(
-    city_base_volume = sum(base_volume),
-    squared_weight = (base_volume / sum(base_volume))^2
-  ) |>
-  dplyr::summarise(
-    n_trp = n(),
-    sum_of_squared_weights = sum(squared_weight)
-  )
-
-# TRP index by month for Excel
-if((city_number %in% c(1952, 955, 952, 959))){
-  trp_index_monthly_pre_2020 <-
-    purrr::map_dfr(
-      index_years_pre_2020,
-      ~ read_old_pointindex_csv_monthly(
-        paste0("data_index_raw/pointindex_", city_number, "_", .x, ".csv")
-      ) |>
-      dplyr::mutate(year = .x)
-    ) |>
-    dplyr::left_join(
-      trp_id_msnr,
-      by = "msnr"
-    ) |>
-    dplyr::select(-msnr)
-}
-
-trp_index_monthly_from_2020 <-
-  trp_index_from_2020 |>
-  dplyr::filter(
-    day_type == "ALL",
-    is_excluded == FALSE,
-    is_manually_excluded == FALSE,
-    length_excluded == FALSE,
-    period == "month"
-  ) |>
-  dplyr::select(
-    trp_id,
-    year,
-    month,
-    index = index_short
-  )
-
-if(!(city_number %in% c(1952, 955, 952, 959))){
-  trp_index_monthly <-
-    dplyr::bind_rows(
-      trp_index_monthly_from_2020
-    )
-}else{
-  trp_index_monthly <-
-    dplyr::bind_rows(
-      trp_index_monthly_pre_2020,
-      trp_index_monthly_from_2020
-    )
-}
-
-trp_index_monthly_wide <-
-    trp_index_monthly |>
-    tidyr::complete(
-      trp_id,
-      year,
-      month
-    ) |>
-    dplyr::mutate(
-      month_label = lubridate::make_date(
-        year = 2000,
-        month = month,
-        day = 1
-      ) |>
-        lubridate::month(label = TRUE)
-    ) |>
-    dplyr::select(
-      trp_id,
-      year,
-      month_label,
-      index
-    ) |>
-    tidyr::pivot_wider(
-      names_from = "month_label",
-      values_from = "index"
-    ) |>
-    dplyr::left_join(
-      this_citys_trps_all_adt_final,
-      by = "trp_id"
-    ) |>
-    dplyr::select(
-      trp_id,
-      name,
-      road_category_and_number,
-      year,
-      jan:des
-      #jan:aug
-      # TODO: generalize!
-    ) |>
-    dplyr::arrange(
-      name,
-      trp_id,
-      year
-    )
+# TODO: one for whole years, and one for so-far-this-year
 
 
-# Yearly city index ----
-{
-  city_indexes <-
-    purrr::map2(
-      index_years,
-      index_months,
-      # So far
-      # index_months_so_far,
-      ~ get_published_index_for_months(city_number, .x, .y)
-    ) |>
-    purrr::list_rbind() |>
-    dplyr::filter(day_type == "ALL")
-  # ALL, WEEKDAY or WEEKEND
+## Yearly TRP index ----
 
-  city_name <- city_indexes$area_name[nrow(city_indexes)]
+# TODO: generalize calculation of yearly index so that versions of so-far and whole-year can be done with same code
+# NB! Will not work for indexes using data from before 2019 (except Bergen)
 
-  if(city_number == 16952) {
-    city_name <- "Tromsø"
+## So-far TRUE ----
+# Makes no sense if the index_month is 1 or 12, but just include it in the workflow anyway (hopefully the results will be the same as for whole years)
+so_far <- TRUE
+source("city_index_trp_yearly.R")
+
+  # Sub area
+  if(city_number == 959) {
+    source("city_index_yearly_sub_area.R")
   }
 
-  if(city_number == 18952) {
-    city_name <- "Nedre Glomma"
+  # Whole area
+  source("city_index_yearly.R")
+
+
+## So-far FALSE ----
+so_far <- FALSE
+source("city_index_trp_yearly.R")
+
+  # Sub area
+  if(city_number == 959) {
+    source("city_index_yearly_sub_area.R")
   }
 
-  if(city_number == 19953) {
-    city_name <- "Kristiansandsregionen"
-  }
-}
+  # Whole area
+  source("city_index_yearly.R")
 
-# TODO: fetch for so far this year by index month
-
-city_index_full_years <-
-  city_indexes |>
-  dplyr::filter(
-    road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
-    length_range == "[..,5.6)",
-    period == "year_to_date"
-  ) |>
-  dplyr::slice_max(
-    order_by = month,
-    by = year
-  ) |>
-  dplyr::left_join(
-    trp_index_year_to_date_dec,
-    by = "year"
-  ) |>
-  dplyr::mutate(
-    year_base = year - 1,
-    index_i = index_converter(index_p),
-    variance = standard_deviation^2,
-    standard_error = sqrt(sum_of_squared_weights) * standard_deviation
-  ) |>
-  dplyr::select(
-    year_base,
-    year,
-    month,
-    index_p,
-    index_i,
-    standard_deviation,
-    variance,
-    n_trp,
-    standard_error,
-    sum_of_squared_weights
-  ) |>
-  dplyr::arrange(year)
-
-# Test: this should reproduce city index from TRP index:
-test <-
-  trp_index_year_to_date_dec_bind |>
-  dplyr::group_by(year) |>
-  dplyr::group_modify(
-    ~ calculate_area_index(.)
-  )
-
-
-## Chained city index
-years_1_2 <- calculate_two_year_index(city_index_full_years)
-
-years_1_3 <-
-  bind_rows(years_1_2, slice(city_index_full_years, 3)) %>%
-  calculate_two_year_index()
-
-years_1_4 <-
-  bind_rows(years_1_3, slice(city_index_full_years, 4)) %>%
-   calculate_two_year_index()
-
-years_1_5 <-
-  bind_rows(years_1_4, slice(city_index_full_years, 5)) %>%
-  calculate_two_year_index()
-
-years_1_6 <-
-  bind_rows(years_1_5, slice(city_index_full_years, 6)) %>%
-  calculate_two_year_index()
-
-years_1_7 <-
-  bind_rows(years_1_6, slice(city_index_full_years, 7)) %>%
-  calculate_two_year_index()
-
-years_1_8 <-
-  bind_rows(years_1_7, slice(city_index_full_years, 8)) %>%
-  calculate_two_year_index()
-
-# Skipping intermediate years, adding just from first to last?
-city_index_yearly_all <-
-  city_index_full_years |>
-  dplyr::mutate(
-    index_type = "direct"
-  ) |>
-  dplyr::bind_rows(
-    # Include only for full years
-    years_1_2,
-    years_1_3,
-    years_1_4,
-    years_1_5,
-    years_1_6,
-    years_1_7,
-    years_1_8
-  ) |>
-  dplyr::mutate(
-    year_from_to = paste0(year_base, "-", year),
-    area_name = city_name,
-    month_name_short = lubridate::month(month, label = TRUE),
-    period = paste0("jan-", month_name_short),
-    index_p = round(index_p, 1),
-    ci_lower = round(index_p - 1.96 * standard_error, 1),
-    ci_upper = round(index_p + 1.96 * standard_error, 1)
-  ) |>
-  dplyr::select(
-    -standard_deviation,
-    -variance,
-    -sum_of_squared_weights
-  )
-
-readr::write_rds(
-  city_index_yearly_all,
-  file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")
-)
-
-# Sub area yearly index
-if(city_number == 959) {
-  source("city_index_yearly_sub_area.R")
-}
+  # TRP index by month for Excel
+  source("city_index_trp_index_by_month.R")
 
 
 # E18 Buskerudbyen ----

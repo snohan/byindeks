@@ -1,6 +1,8 @@
+# Yearly city index sub area
 
 city_index_sub_area <-
-  trp_index_year_to_date_dec_bind |>
+  trp_index_so_far |>
+  #trp_index_year_to_date_dec_bind |>
   dplyr::left_join(sub_areas, by = "trp_id") |>
   dplyr::group_by(year, sub_area) |>
   dplyr::group_modify(
@@ -9,8 +11,10 @@ city_index_sub_area <-
   dplyr::ungroup()
 
 # Weighting standard error
-trp_index_year_to_date_dec_sub <-
-  trp_index_year_to_date_dec_bind |>
+#trp_index_year_to_date_dec_sub <-
+trp_index_so_far_sub <-
+  #trp_index_year_to_date_dec_bind |>
+  trp_index_so_far |>
   dplyr::left_join(
     sub_areas,
     by = "trp_id"
@@ -29,7 +33,7 @@ trp_index_year_to_date_dec_sub <-
 city_index_full_years_sub <-
   city_index_sub_area |>
   dplyr::left_join(
-    trp_index_year_to_date_dec_sub,
+    trp_index_so_far_sub,
     by = dplyr::join_by(year, sub_area)
   ) |>
   dplyr::mutate(
@@ -84,10 +88,10 @@ for(i in 1:length(unique_sub_areas)) {
     bind_rows(years_1_5, slice(city_index_full_years_i, 6)) %>%
     calculate_two_year_index()
 
-  # years_1_7 <-
-  #   bind_rows(years_1_6, slice(city_index_full_years_i, 7)) %>%
-  #   calculate_two_year_index()
-  #
+  years_1_7 <-
+    bind_rows(years_1_6, slice(city_index_full_years_i, 7)) %>%
+    calculate_two_year_index()
+
   # years_1_8 <-
   #   bind_rows(years_1_7, slice(city_index_full_years_i, 8)) %>%
   #   calculate_two_year_index()
@@ -102,7 +106,7 @@ for(i in 1:length(unique_sub_areas)) {
       years_1_4,
       years_1_5,
       years_1_6,
-      # years_1_7,
+      years_1_7,
       # years_1_8
     ) |>
     dplyr::mutate(
@@ -130,5 +134,9 @@ for(i in 1:length(unique_sub_areas)) {
 
 readr::write_rds(
   city_index_yearly_all_sub,
-  file = paste0("data_indexpoints_tidy/byindeks_sub_", city_number, ".rds")
+  file = paste0("data_indexpoints_tidy/byindeks_sub_", file_name_addition, city_number, ".rds")
 )
+
+if(so_far) {
+  city_index_yearly_all_sub_so_far <- city_index_yearly_all_sub
+}
