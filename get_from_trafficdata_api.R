@@ -4574,12 +4574,24 @@ get_published_pointindex_bike <- function(index_id, indexyear, indexmonth) {
   # Pagination is ignored here
   # Returns: list with two elements; trp_ids, pointindices
 
-  api_query <- paste0(
-    "query published_index {
+  # Testing:
+  # index_id <- 13952
+  # indexyear <- 2025
+  # indexmonth <- 1
+
+  input_variables <-
+    list(
+      "indexId" = index_id,
+      "indexYear" = indexyear,
+      "indexMonth" = indexmonth
+    )
+
+  query <-
+    "query published_index ($indexId: Int!, $indexYear: Year!, $indexMonth: Month) {
       publishedAreaTrafficVolumeIndex (
-        id: ", index_id, ",
-        year: ", indexyear, ",
-        month: ", indexmonth, ") {
+        id: $indexId
+        year: $indexYear
+        month: $indexMonth) {
         id
         name
         period {
@@ -4628,61 +4640,68 @@ get_published_pointindex_bike <- function(index_id, indexyear, indexmonth) {
           }
         }
       }
-  }")
+  }"
 
-  myqueries <- Query$new()
-  myqueries$query("data", api_query)
+  my_query <- ghql::Query$new()$query(name = "my_query", query)
 
-  trp_data <- cli$exec(myqueries$queries$data) %>%
+  response <-
+    cli$exec(my_query$my_query, input_variables) |>
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
 
   # Unwrap one part at a time
-  # 1. monthIndicesByDayType
-  # 2. yearToDateIndicesByDayType
+  # 1. month
+  # 2. yearToDate
 
-  unnested_data <- trp_data$data %>%
-    as.data.frame() %>%
-    tidyr::unnest(cols = c(
-      publishedAreaTrafficVolumeIndex.containsPointTrafficVolumeIndices.edges))
+  unnested_data <-
+    response$data |>
+    as.data.frame() |>
+    tidyr::unnest(
+      cols = c(publishedAreaTrafficVolumeIndex.containsPointTrafficVolumeIndices.edges)
+    )
 
   indexpoints <- unnested_data$node.pointTrafficVolumeIndex.trafficRegistrationPoint.id
 
-  monthly_data <- unnested_data %>%
-    tidyr::unnest(cols = c(node.pointTrafficVolumeIndex.volumeIndicesMonth)) %>%
-    dplyr::select(-node.pointTrafficVolumeIndex.volumeIndicesYearToDate) %>%
-    dplyr::select(area_name = publishedAreaTrafficVolumeIndex.name,
-                  trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
-                  year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
-                  month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
-                  day_type = dayType,
-                  is_excluded = isExcluded,
-                  is_manually_excluded = node.isManuallyExcluded,
-                  index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
-                  base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
-                  index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage
-    ) %>%
-    dplyr::filter(day_type == "ALL") %>%
+  monthly_data <-
+    unnested_data |>
+    tidyr::unnest(cols = c(node.pointTrafficVolumeIndex.volumeIndicesMonth)) |>
+    dplyr::select(-node.pointTrafficVolumeIndex.volumeIndicesYearToDate) |>
+    dplyr::select(
+      index_code = publishedAreaTrafficVolumeIndex.id,
+      area_name = publishedAreaTrafficVolumeIndex.name,
+      trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
+      year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
+      month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
+      day_type = dayType,
+      is_excluded = isExcluded,
+      is_manually_excluded = node.isManuallyExcluded,
+      index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
+      base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
+      index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage
+    ) |>
+    dplyr::filter(day_type == "ALL") |>
     dplyr::mutate(period = "month")
 
-  year_to_date_data <- unnested_data %>%
-    tidyr::unnest(cols = c(node.pointTrafficVolumeIndex.volumeIndicesYearToDate)) %>%
-    dplyr::select(- node.pointTrafficVolumeIndex.volumeIndicesMonth) %>%
-    dplyr::select(area_name = publishedAreaTrafficVolumeIndex.name,
-                  trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
-                  year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
-                  month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
-                  day_type = dayType,
-                  is_excluded = isExcluded,
-                  is_manually_excluded = node.isManuallyExcluded,
-                  index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
-                  base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
-                  index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage
-    ) %>%
-    dplyr::filter(day_type == "ALL") %>%
+  year_to_date_data <-
+    unnested_data |>
+    tidyr::unnest(cols = c(node.pointTrafficVolumeIndex.volumeIndicesYearToDate)) |>
+    dplyr::select(- node.pointTrafficVolumeIndex.volumeIndicesMonth) |>
+    dplyr::select(
+      index_code = publishedAreaTrafficVolumeIndex.id,
+      area_name = publishedAreaTrafficVolumeIndex.name,
+      trp_id = node.pointTrafficVolumeIndex.trafficRegistrationPoint.id,
+      year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
+      month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month,
+      day_type = dayType,
+      is_excluded = isExcluded,
+      is_manually_excluded = node.isManuallyExcluded,
+      index_total_p = totalTrafficVolumeIndex.indexNumber.index.percentageChange,
+      base_volume = totalTrafficVolumeIndex.indexNumber.index.baseVolume,
+      index_total_coverage = totalTrafficVolumeIndex.indexCoverage.hours.percentage
+    ) |>
+    dplyr::filter(day_type == "ALL") |>
     dplyr::mutate(period = "year_to_date")
 
-  published_index <- bind_rows(monthly_data,
-                               year_to_date_data)
+  published_index <- dplyr::bind_rows(monthly_data, year_to_date_data)
 
   published_points <- list(indexpoints, published_index)
 
@@ -4695,8 +4714,7 @@ get_published_bikepointindex_for_months <- function(index_id, index_year, last_m
   i <- 1
 
   # Saving only one version of indexpoints
-  indexpoints <-
-    get_published_pointindex_bike(index_id, index_year, last_month)[[1]]
+  indexpoints <- get_published_pointindex_bike(index_id, index_year, last_month)[[1]]
 
   while (i < last_month + 1) {
 

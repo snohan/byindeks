@@ -1,0 +1,91 @@
+---
+title: "Sykkelindeks"
+format: 
+  html:
+    css: svv.css
+    page-layout: full
+    number-sections: true
+    toc: true
+    toc-location: left
+    toc-title: "Innhold"
+    toc-expand: true
+    df-print: paged
+    self-contained: true
+crossref:
+  fig-title: Figur
+  tbl-title: Tabell
+  title-delim: .
+  fig-prefix: figur
+  tbl-prefix: tabell
+editor: source
+knitr: 
+  opts_chunk: 
+    echo: false
+---
+
+
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
+#| warning: false
+#| message: false
+  
+source("rmd_setup.R")
+library(DT)
+library(htmltools)
+```
+
+```{r}
+#| label: data
+
+index_info <- readr::read_rds("data_indexpoints_tidy/bike_index_info.rds")
+trp_sf <- readr::read_rds("data_indexpoints_tidy/bike_trp_sf.rds")
+
+```
+
+
+# Hvor?
+Det er i dag `r nrow(index_info)` byer som har sykkelindeks. Hvilke disse er, er vist i @fig-map.
+
+```{r}
+#| label: fig-map
+#| fig-cap: "Byer med sykkelindeks. I parentes angis startår og antall sykkelregistreringspunkt."
+#| fig-height: 10
+
+index_info |> 
+  leaflet::leaflet(
+    options =
+      leaflet::leafletOptions(
+        crs = nvdb_crs,
+        zoomControl = F
+      )
+  ) |> 
+  leaflet::addTiles(
+    urlTemplate = nvdb_map_url,
+    attribution = nvdb_map_attribution
+  ) |> 
+  leaflet::addLabelOnlyMarkers(
+    label = ~label_text,
+    labelOptions = leaflet::labelOptions(
+      noHide = T,
+      direction = "top",
+      opacity = 0.9
+    )
+  ) |> 
+  addCircleMarkers(
+    radius = 6,
+    stroke = T,
+    weight = 2,
+    color = "#444f55",
+    opacity = 0.8,
+    fill = T,
+    fillOpacity = 0.8,
+    data = trp_sf
+  )
+```
+
+
+# Mer sykling?
+Byene har ulike startår, men 2023 er det tidligste året som alle indeksene har felles. Setter vi dette året som nullpunkt, kan vi sammenligne den relative utviklingen. Dette er vist i FIGUR.
+

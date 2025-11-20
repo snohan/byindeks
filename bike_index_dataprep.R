@@ -1,14 +1,15 @@
 # Source ----
 {
-source("rmd_setup.R")
-source("get_from_trafficdata_api.R")
-source("index_report_functions.R")
-source("indexpoints_tidying_functions.R")
+  source("rmd_setup.R")
+  source("get_from_trafficdata_api.R")
+  source("index_report_functions.R")
+  source("indexpoints_tidying_functions.R")
+  library(sf)
 }
 
 # Index codes and years ----
 last_complete_year <- 2024
-last_complete_month_this_year <- 8
+last_complete_month_this_year <- 9
 
 index_codes_and_reference_years <-
   tibble::tibble(
@@ -56,7 +57,6 @@ index_codes_and_reference_years <-
   ) |>
   dplyr::rowwise() |>
   dplyr::mutate(
-    #index_years = list(c((reference_year + 1):last_complete_year))
     index_years =
       dplyr::if_else(
         reference_year == last_complete_year,
@@ -163,7 +163,86 @@ bike_trp_indexes <-
   )
 
 
-# City and n TRP ----
+# Bike TRPs ----
+bike_trps <-
+  bike_trp_indexes_so_far_this_year |>
+  dplyr::filter(
+    month == 1,
+    period == "month"
+  ) |>
+  dplyr::select(
+    index_code,
+    trp_id
+  )
+
+bike_trp_n <-
+  bike_trps |>
+  dplyr::summarise(
+    n_trp = n(),
+    .by = index_code
+  )
+
+trp_meta_data <-
+  get_trp_metadata_by_list(bike_trps$trp_id) |>
+  dplyr::select(trp_id, lat, lon) |>
+  dplyr::distinct()
+
+bike_trps_sf <-
+  bike_trps |>
+  dplyr::left_join(
+    trp_meta_data,
+    by = "trp_id"
+  ) |>
+  sf::st_as_sf(
+    coords = c("lon", "lat"),
+    crs = 4326
+  )
+
+readr::write_rds(
+  bike_trps_sf,
+  file = "data_indexpoints_tidy/bike_trp_sf.rds"
+)
+
+bike_index_centroid <-
+  bike_trps_sf |>
+  dplyr::summarise(
+    geometry = sf::st_union(geometry),
+    .by = index_code
+  ) |>
+  dplyr::mutate(centroid = sf::st_centroid(geometry)) |>
+  sf::st_drop_geometry()
+
+
+# City info ----
+bike_index_info <-
+  index_codes_and_reference_years |>
+  dplyr::select(-index_years) |>
+  dplyr::left_join(
+    bike_trp_n,
+    by = "index_code"
+  ) |>
+  dplyr::left_join(
+    bike_index_centroid,
+    by = "index_code"
+  ) |>
+  sf::st_sf(sf_column_name = "centroid", crs = 4326) |>
+  dplyr::arrange(area_name) |>
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    label_text =
+      paste0(
+        area_name, "<br>",
+        "(", reference_year, ", ", n_trp, " pkt)"
+      ) |> htmltools::HTML()
+  ) |>
+  dplyr::ungroup()
+
+readr::write_rds(
+  bike_index_info,
+  file = "data_indexpoints_tidy/bike_index_info.rds"
+)
+
+
 bike_indexes_all <-
   dplyr::left_join(
     bike_indexes,
