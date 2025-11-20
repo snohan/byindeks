@@ -76,50 +76,6 @@ index_codes_and_index_years <-
   dplyr::filter(!is.na(index_years))
 
 
-# City index ----
-bike_indexes_complete <-
-  purrr::map2(
-    index_codes_and_index_years$index_code,
-    index_codes_and_index_years$index_years,
-    ~ get_published_index_for_months(.x, .y, 12)
-  ) |>
-  purrr::list_rbind()
-
-bike_indexes_so_far_this_year <-
-  purrr::map(
-    index_codes_and_reference_years$index_code,
-    ~ get_published_index_for_months(., last_complete_year + 1, last_complete_month_this_year)
-  ) |>
-  purrr::list_rbind()
-
-bike_indexes <-
-  dplyr::bind_rows(
-    bike_indexes_complete,
-    bike_indexes_so_far_this_year
-  ) |>
-  dplyr::filter(
-    length_range == "[..,..)",
-    road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
-    day_type == "ALL"
-  ) |>
-  dplyr::select(
-    #index_code = publishedAreaTrafficVolumeIndex.id,
-    area_name,
-    year,
-    month,
-    period,
-    index_p,
-    index_i,
-    base_volume,
-    standard_deviation
-  ) |>
-  dplyr::mutate(
-    month_object = lubridate::make_date(year = year, month = month),
-    month_object_2000 = lubridate::make_date(year = 2000, month = month),
-    month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)
-  )
-
-
 # TRP index ----
 # Need n TRP and base volume for weighting
 bike_trp_indexes_complete <-
@@ -242,6 +198,49 @@ readr::write_rds(
   file = "data_indexpoints_tidy/bike_index_info.rds"
 )
 
+
+# City index ----
+bike_indexes_complete <-
+  purrr::map2(
+    index_codes_and_index_years$index_code,
+    index_codes_and_index_years$index_years,
+    ~ get_published_index_for_months(.x, .y, 12)
+  ) |>
+  purrr::list_rbind()
+
+bike_indexes_so_far_this_year <-
+  purrr::map(
+    index_codes_and_reference_years$index_code,
+    ~ get_published_index_for_months(., last_complete_year + 1, last_complete_month_this_year)
+  ) |>
+  purrr::list_rbind()
+
+bike_indexes <-
+  dplyr::bind_rows(
+    bike_indexes_complete,
+    bike_indexes_so_far_this_year
+  ) |>
+  dplyr::filter(
+    length_range == "[..,..)",
+    road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG_KOMMUNALVEG",
+    day_type == "ALL"
+  ) |>
+  dplyr::select(
+    #index_code = publishedAreaTrafficVolumeIndex.id,
+    area_name,
+    year,
+    month,
+    period,
+    index_p,
+    index_i,
+    base_volume,
+    standard_deviation
+  ) |>
+  dplyr::mutate(
+    month_object = lubridate::make_date(year = year, month = month),
+    month_object_2000 = lubridate::make_date(year = 2000, month = month),
+    month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)
+  )
 
 bike_indexes_all <-
   dplyr::left_join(

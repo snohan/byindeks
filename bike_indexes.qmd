@@ -45,8 +45,8 @@ trp_sf <- readr::read_rds("data_indexpoints_tidy/bike_trp_sf.rds")
 ```
 
 
-# Hvor?
-Det er i dag `r nrow(index_info)` byer som har sykkelindeks. Hvilke disse er, er vist i @fig-map.
+# Hvor har vi sykkelindeks?
+Det er i dag `r nrow(index_info)` byer som har sykkelindeks, som vist i @fig-map.
 
 ```{r}
 #| label: fig-map
@@ -67,13 +67,14 @@ index_info |>
   ) |> 
   leaflet::addLabelOnlyMarkers(
     label = ~label_text,
-    labelOptions = leaflet::labelOptions(
-      noHide = T,
-      direction = "top",
-      opacity = 0.9
-    )
+    labelOptions = 
+      leaflet::labelOptions(
+        noHide = T,
+        direction = "top",
+        opacity = 0.9
+      )
   ) |> 
-  addCircleMarkers(
+  leaflet::addCircleMarkers(
     radius = 6,
     stroke = T,
     weight = 2,
@@ -86,6 +87,4 @@ index_info |>
 ```
 
 
-# Mer sykling?
-Byene har ulike startår, men 2023 er det tidligste året som alle indeksene har felles. Setter vi dette året som nullpunkt, kan vi sammenligne den relative utviklingen. Dette er vist i FIGUR.
 
