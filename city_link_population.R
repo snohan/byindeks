@@ -57,7 +57,7 @@ link_trp_id <- readr::read_rds("traffic_link_pop/link_trp_id.rds")
 #urban_layers <- sf::st_layers("C:/Users/snohan/Desktop/tettsteder_2024.gdb")
 urban_areas <-
   sf::st_read(
-    "C:/Users/snohan/Desktop/tettsteder_2024.gdb",
+    "H:/Tettsteder/tettsteder_2024.gdb",
     as_tibble = TRUE,
     #layer = "tettsted",
     query =

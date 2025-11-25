@@ -125,7 +125,7 @@ not_intersected <- function(x, y) !sf::st_intersects(x, y)
 
 urban_areas <-
   sf::st_read(
-    "C:/Users/snohan/Desktop/tettsteder_2024.gdb",
+    "H:/Tettsteder/tettsteder_2024.gdb",
     as_tibble = TRUE,
     #layer = "tettsted",
     query =
