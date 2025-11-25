@@ -23,7 +23,7 @@ trd_kommuner <-
 # Geojson files from ADM
 test_directed_links <-
   sf::st_read(
-    "C:/Users/snohan/Desktop/directed_traffic_links_2023.geojson",
+    "H:/Trafikkdata/trafikklenker/directed_traffic_links_2023.geojson",
     query =
       "SELECT *
       FROM \"directed_traffic_links_2023\"
@@ -32,7 +32,7 @@ test_directed_links <-
 
 directed_links <-
   sf::st_read(
-    "C:/Users/snohan/Desktop/directed_traffic_links_2023.geojson",
+    "H:/Trafikkdata/trafikklenker/directed_traffic_links_2023.geojson",
     query =
       "SELECT
           id, parentTrafficLinkId, length, primaryTrpId, lowestSpeedLimit, isFerryTrafficLink,
@@ -85,7 +85,7 @@ directed_links <-
 
 ## Nodes ----
 nodes <-
-  sf::st_read("C:/Users/snohan/Desktop/traffic-nodes-2023.geojson") |>
+  sf::st_read("H:/Trafikkdata/trafikklenker/traffic-nodes-2023.geojson") |>
   # Trim nodes to the ones in area
   dplyr::filter(
     id %in% unique(c(directed_links$from, directed_links$to))

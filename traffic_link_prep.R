@@ -9,7 +9,7 @@
 links_raw <-
   sf::st_read(
     #"C:/Users/snohan/Desktop/traffic_links_2024_2025-02-27.geojson",
-    "C:/Users/snohan/Desktop/traffic_links_2024_2025-05-07.geojson",
+    "H:/Trafikkdata/trafikklenker/traffic_links_2024_2025-05-07.geojson",
     as_tibble = TRUE,
     query =
       "

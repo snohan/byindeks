@@ -14,7 +14,7 @@
 # Link prep ----
 ## Traffic links without geometry ----
 all_links <-
-  jsonlite::fromJSON("C:/Users/snohan/Desktop/traffic-links-2023.json") |>
+  jsonlite::fromJSON("H:/Trafikkdata/trafikklenker/traffic-links-2023.json") |>
   dplyr::filter(
     hasOnlyPublicTransportLanes == FALSE,
     isFerryTrafficLink == FALSE

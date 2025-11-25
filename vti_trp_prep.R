@@ -141,7 +141,7 @@ trp_aadts <-
 # All links on R and F
 links <-
   sf::read_sf(
-    "C:/Users/snohan/Desktop/traffic_links_2024_2025-02-13.geojson",
+    "H:/Trafikkdata/trafikklenker/traffic_links_2024_2025-05-07.geojson",
     query =
       "
       SELECT
@@ -154,7 +154,7 @@ links <-
         isFerryRoute,
         associatedTrpIds,
         trafficVolumes
-      FROM \"traffic_links_2024_2025-02-13\"
+      FROM \"traffic_links_2024_2025-05-07\"
       "
   ) |>
   dplyr::rename(,

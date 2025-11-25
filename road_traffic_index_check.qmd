@@ -85,7 +85,7 @@ events <- readr::read_rds("events/events.rds")
 
 # Traffic links from Adm ----
 links <-
-  sf::st_read("C:/Users/snohan/Desktop/traffic_links_2023_2024-08-06.geojson") |>
+  sf::st_read("H:/Trafikkdata/trafikklenker/traffic_links_2023_2024-08-06.geojson") |>
   dplyr::select(
     id,
     countyIds,

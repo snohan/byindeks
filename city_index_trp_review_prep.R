@@ -184,7 +184,8 @@ trp_aadt_tidy <-
 ## Traffic links 2023 ----
 # Geojson from ADM
 links <-
-  sf::st_read("C:/Users/snohan/Desktop/traffic_links_2023.geojson") |>
+  #sf::st_read("C:/Users/snohan/Desktop/traffic_links_2023.geojson") |>
+  sf::st_read("H:/Trafikkdata/trafikklenker/traffic_links_2023_2024-08-06.geojson") |>
   dplyr::rename(
     municipality_ids = municipalityIds,
     trp_id = primaryTrpId,
@@ -654,7 +655,8 @@ trps_2023 <-
 ## Traffic links 2023 ----
 # Geojson from ADM
 links <-
-  sf::st_read("C:/Users/snohan/Desktop/traffic_links_2023_2024-04-09.geojson") |>
+  #sf::st_read("C:/Users/snohan/Desktop/traffic_links_2023_2024-04-09.geojson") |>
+  sf::st_read("H:/Trafikkdata/trafikklenker/traffic_links_2023_2024-08-06.geojson") |>
   dplyr::rename(
     municipality_ids = municipalityIds,
     trp_id = primaryTrpId,
@@ -904,7 +906,8 @@ trps_2023 <-
 ## Traffic links 2023 ----
 # Geojson from ADM
 links <-
-  sf::st_read("C:/Users/snohan/Desktop/traffic_links_2023_2024-05-19.geojson") |>
+  #sf::st_read("C:/Users/snohan/Desktop/traffic_links_2023_2024-05-19.geojson") |>
+  sf::st_read("H:/Trafikkdata/trafikklenker/traffic_links_2023_2024-08-06.geojson") |>
   dplyr::rename(
     municipality_ids = municipalityIds,
     trp_id = primaryTrpId,
