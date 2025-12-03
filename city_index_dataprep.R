@@ -62,8 +62,8 @@ trp_id_msnr <-
 {
   present_year <- 2025
   # month to be published now:
-  index_month <- 8
-  city_number <- 959
+  index_month <- 11
+  city_number <- 19953
 }
 
 source("set_time_references.R")
@@ -226,42 +226,7 @@ trp_not_ok <-
 # TODO: show TRP contributions to rolling indices
 # TODO: Shiny app for checking MDT
 
-mdt_validated |>
-  dplyr::filter(!(year %in% c(2020, 2021, 2022))) |>
-  dplyr::filter(trp_id %in% trp_mdt_ok_refyear[20:22]) |>
-  dplyr::select(
-    trp_id,
-    year, month,
-    mdt,
-    coverage, length_quality
-  ) |>
-  tidyr::complete(
-    trp_id, year, month,
-    fill = list(
-      mdt = 0,
-      coverage = 0,
-      length_quality = 0
-    )
-  ) |>
-  dplyr::mutate(month_object = lubridate::make_date(year = 2000, month = month, day = 1)) |>
-  dplyr::left_join(
-    points,
-    by = "trp_id"
-  ) |>
-  dplyr::mutate(
-    road_category_and_number_and_point_name = paste0(road_category_and_number, " ", name)
-  ) |>
-  dplyr::select(
-    trp_id,
-    year, month,
-    mdt,
-    coverage, length_quality,
-    month_object,
-    road_category_and_number_and_point_name
-  ) |>
-  dplyr::mutate(valid_quality = coverage >= 50 & length_quality >= 98.5) |>
-  create_mdt_barplot()
-
+plot_mdt(25)
 source("exclude_trp_mdts_list.R")
 
 #source("mdt_check.R")
@@ -286,9 +251,9 @@ compare_to_report <-
 
 all_rolling_indices_list <-
   list(
-    all_12_month_indices,
-    all_24_month_indices,
-    all_36_month_indices
+    all_12_month_indices#,
+    #all_24_month_indices,
+    #all_36_month_indices
   )
 
 all_rolling_indices <-

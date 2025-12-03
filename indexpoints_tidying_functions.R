@@ -1190,6 +1190,49 @@ create_mdt_barplot <- function(trp_mdt_long_format) {
     )
 }
 
+plot_mdt <- function(start_trp_n, n_trp_tp_plot = 3) {
+
+  print(
+    paste0("Plotting TRPs from ", start_trp_n, " to ", start_trp_n + n_trp_tp_plot, ".")
+  )
+
+  mdt_validated |>
+    dplyr::filter(!(year %in% c(2020, 2021, 2022))) |>
+    dplyr::filter(trp_id %in% trp_mdt_ok_refyear[start_trp_n:(start_trp_n + n_trp_tp_plot)]) |>
+    dplyr::select(
+      trp_id,
+      year, month,
+      mdt,
+      coverage, length_quality
+    ) |>
+    tidyr::complete(
+      trp_id, year, month,
+      fill = list(
+        mdt = 0,
+        coverage = 0,
+        length_quality = 0
+      )
+    ) |>
+    dplyr::mutate(month_object = lubridate::make_date(year = 2000, month = month, day = 1)) |>
+    dplyr::left_join(
+      points,
+      by = "trp_id"
+    ) |>
+    dplyr::mutate(
+      road_category_and_number_and_point_name = paste0(road_category_and_number, " ", name)
+    ) |>
+    dplyr::select(
+      trp_id,
+      year, month,
+      mdt,
+      coverage, length_quality,
+      month_object,
+      road_category_and_number_and_point_name
+    ) |>
+    dplyr::mutate(valid_quality = coverage >= 50 & length_quality >= 98.5) |>
+    create_mdt_barplot()
+
+}
 
 barplot_cmdt <- function(cmdt_df) {
 
