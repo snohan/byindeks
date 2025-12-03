@@ -1106,33 +1106,27 @@ prepare_rolling_indexes_for_comparison <- function(rolling_index_df) {
 
 
 # Visualize ----
-#trp_mdt_long_format <- test
 create_mdt_barplot <- function(trp_mdt_long_format) {
 
-  #min_month_object <- min(trp_mdt_long_format$month_object)
-  #max_month_object <- max(trp_mdt_long_format$month_object)
-
-  trp_mdt_long_format %>%
-    dplyr::mutate(
-      year = as.character(year)
-    ) %>%
+  trp_mdt_long_format |> 
+    dplyr::mutate(year = as.character(year)) |> 
     ggplot2::ggplot(
       aes(
-        x = month, #month_object,
+        x = month,
         y = mdt,
         fill = year,
         pattern = valid_quality
       )
     ) +
     ggpattern::geom_col_pattern(
-      position = "dodge", #position_dodge(preserve = 'single'),
+      position = "dodge",
       pattern_density = 0.5,
       pattern_spacing = 0.03
     ) +
     geom_text(
       aes(
-        x = month, #month_object,
-        label = if_else(mdt == 0, "NA", "")#NULL)
+        x = month,
+        label = dplyr::if_else(mdt == 0, "NA", "")
       ),
       position = position_dodge(0.8),
       vjust = 1
@@ -1142,7 +1136,9 @@ create_mdt_barplot <- function(trp_mdt_long_format) {
       labeller = label_wrap_gen(width = 12),
       scales = "free_y"
     ) +
-    theme_light(base_size = 10) +
+    theme_light(
+      #base_size = 10
+    ) +
     theme(
       #axis.text.x = element_text(angle = 90),
       axis.ticks.x = element_blank(),
@@ -1190,15 +1186,15 @@ create_mdt_barplot <- function(trp_mdt_long_format) {
     )
 }
 
-plot_mdt <- function(start_trp_n, n_trp_tp_plot = 3) {
+plot_mdt <- function(start_trp_n, n_trp_tp_plot = 4) {
 
   print(
-    paste0("Plotting TRPs from ", start_trp_n, " to ", start_trp_n + n_trp_tp_plot, ".")
+    paste0("Plotting TRPs from ", start_trp_n, " to ", start_trp_n + n_trp_tp_plot - 1, ".")
   )
 
   mdt_validated |>
     dplyr::filter(!(year %in% c(2020, 2021, 2022))) |>
-    dplyr::filter(trp_id %in% trp_mdt_ok_refyear[start_trp_n:(start_trp_n + n_trp_tp_plot)]) |>
+    dplyr::filter(trp_id %in% trp_mdt_ok_refyear[start_trp_n:(start_trp_n + n_trp_tp_plot - 1)]) |>
     dplyr::select(
       trp_id,
       year, month,
