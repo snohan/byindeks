@@ -1193,7 +1193,7 @@ plot_mdt <- function(start_trp_n, n_trp_tp_plot = 4) {
   )
 
   mdt_validated |>
-    dplyr::filter(!(year %in% c(2020, 2021, 2022))) |>
+    dplyr::filter(!(year %in% c(2020, 2021))) |>
     dplyr::filter(trp_id %in% trp_mdt_ok_refyear[start_trp_n:(start_trp_n + n_trp_tp_plot - 1)]) |>
     dplyr::select(
       trp_id,

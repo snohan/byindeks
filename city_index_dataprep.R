@@ -63,7 +63,7 @@ trp_id_msnr <-
   present_year <- 2025
   # month to be published now:
   index_month <- 11
-  city_number <- 19953
+  city_number <- 20952
 }
 
 source("set_time_references.R")
@@ -226,7 +226,7 @@ trp_not_ok <-
 # TODO: show TRP contributions to rolling indices
 # TODO: Shiny app for checking MDT
 
-plot_mdt(25)
+plot_mdt(17)
 source("exclude_trp_mdts_list.R")
 
 #source("mdt_check.R")
@@ -251,9 +251,9 @@ compare_to_report <-
 
 all_rolling_indices_list <-
   list(
-    all_12_month_indices#,
-    #all_24_month_indices,
-    #all_36_month_indices
+    all_12_month_indices,
+    all_24_month_indices,
+    all_36_month_indices
   )
 
 all_rolling_indices <-
@@ -294,29 +294,29 @@ if(city_number == 959) {
 so_far <- TRUE
 source("city_index_trp_yearly.R")
 
-  # Sub area
-  if(city_number == 959) {
-    source("city_index_yearly_sub_area.R")
-  }
+# Sub area
+if(city_number == 959) {
+  source("city_index_yearly_sub_area.R")
+}
 
-  # Whole area
-  source("city_index_yearly.R")
+# Whole area
+source("city_index_yearly.R")
 
 
 ## So-far FALSE ----
 so_far <- FALSE
 source("city_index_trp_yearly.R")
 
-  # Sub area
-  if(city_number == 959) {
-    source("city_index_yearly_sub_area.R")
-  }
+# Sub area
+if(city_number == 959) {
+  source("city_index_yearly_sub_area.R")
+}
 
-  # Whole area
-  source("city_index_yearly.R")
+# Whole area
+source("city_index_yearly.R")
 
-  # TRP index by month for Excel
-  source("city_index_trp_index_by_month.R")
+# TRP index by month for Excel
+source("city_index_trp_index_by_month.R")
 
 
 # E18 Buskerudbyen ----
@@ -327,68 +327,67 @@ if(city_number == 1952) {
 
 # Combine direct and rolling ----
 ## Nord-Jæren test ----
-chain_start_year_from_to <- "2017-2019"
+# chain_start_year_from_to <- "2017-2019"
 
-city_index_njaeren_2017_2019_official <-
-  city_info |>
-  dplyr::filter(year_from_to == chain_start_year_from_to)
+# city_index_njaeren_2017_2019_official <-
+#   city_info |>
+#   dplyr::filter(year_from_to == chain_start_year_from_to)
 
-chain_link_index_i <- city_index_njaeren_2017_2019_official$index_i
-chain_link_se_p <- city_index_njaeren_2017_2019_official$standard_error
+# chain_link_index_i <- city_index_njaeren_2017_2019_official$index_i
+# chain_link_se_p <- city_index_njaeren_2017_2019_official$standard_error
 
-all_36_month_indices_combined <-
-  all_36_month_indices |>
-  dplyr::select(
-    index_period,
-    month_object,
-    month_n,
-    year,
-    window,
-    n_trp,
-    index_i,
-    standard_error_p
-  ) |>
-  dplyr::mutate(
-    index_period =
-      paste0(
-        stringr::str_sub(chain_start_year_from_to, 1, 4),
-        stringr::str_sub(index_period, 5, -1)
-      ),
-    chained_index_i = index_i * chain_link_index_i,
-    index_p = (chained_index_i - 1) * 100,
-    standard_error =
-      100 * sqrt(
-        index_i^2 * 1e-4 * chain_link_se_p^2 +
-          chain_link_index_i^2 * 1e-4 * standard_error_p^2 +
-          1e-4 * chain_link_se_p^2 * 1e-4 * standard_error_p^2
-      ),
-    ci_lower = round(index_p - 1.96 * standard_error, 1),
-    ci_upper = round(index_p + 1.96 * standard_error, 1)
-  ) |>
-  dplyr::select(
-    index_period,
-    month_object,
-    month_n,
-    year,
-    window,
-    n_trp,
-    index_i = chained_index_i,
-    index_p,
-    standard_error,
-    ci_lower,
-    ci_upper
-  )
+# all_36_month_indices_combined <-
+#   all_36_month_indices |>
+#   dplyr::select(
+#     index_period,
+#     month_object,
+#     month_n,
+#     year,
+#     window,
+#     n_trp,
+#     index_i,
+#     standard_error_p
+#   ) |>
+#   dplyr::mutate(
+#     index_period =
+#       paste0(
+#         stringr::str_sub(chain_start_year_from_to, 1, 4),
+#         stringr::str_sub(index_period, 5, -1)
+#       ),
+#     chained_index_i = index_i * chain_link_index_i,
+#     index_p = (chained_index_i - 1) * 100,
+#     standard_error =
+#       100 * sqrt(
+#         index_i^2 * 1e-4 * chain_link_se_p^2 +
+#           chain_link_index_i^2 * 1e-4 * standard_error_p^2 +
+#           1e-4 * chain_link_se_p^2 * 1e-4 * standard_error_p^2
+#       ),
+#     ci_lower = round(index_p - 1.96 * standard_error, 1),
+#     ci_upper = round(index_p + 1.96 * standard_error, 1)
+#   ) |>
+#   dplyr::select(
+#     index_period,
+#     month_object,
+#     month_n,
+#     year,
+#     window,
+#     n_trp,
+#     index_i = chained_index_i,
+#     index_p,
+#     standard_error,
+#     ci_lower,
+#     ci_upper
+#   )
 
-
-readr::write_rds(
-  all_36_month_indices_combined,
-  file =
-    paste0(
-      "data_indexpoints_tidy/combined_indices_",
-      city_number,
-      ".rds"
-    )
-)
+# readr::write_rds(
+#   all_36_month_indices_combined,
+#   file =
+#     paste0(
+#       "data_indexpoints_tidy/combined_indices_",
+#       city_number,
+#       ".rds"
+#     )
+# )
 
 
 ## Tromsø ----
