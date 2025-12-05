@@ -45,7 +45,7 @@ library(DT)
 library(htmltools)
 
 # NB! run once per session
-source("city_index_check_dataprep.R")
+# source("city_index_check_dataprep.R")
 
 {
 points <- readr::read_rds("trps_for_city_index.rds")
@@ -61,9 +61,7 @@ links <-
   )
 }
 
-
 # TODO: add toll stations to links
-# notes
 ```
 
 
@@ -74,20 +72,20 @@ links <-
 
 # City numbers
 # Refy City  Cnum  Chkd Resp
-# 2016 Busk  1952   09 Snorre
-# 2016 Gren   955   09 Snorre
+# 2016 Busk  1952   11 Snorre
+# 2016 Gren   955   11 Snorre
 
-# 2017 NJær   952   10 Snorre
-# 2018 Oslo   959   10 Trond
-# 2018 Berg  8952   10 Trond
+# 2017 NJær   952   11 Snorre
+# 2018 Oslo   959   11 Trond
+# 2018 Berg  8952   11 Trond
 # 2019 Tron   960   10 Snorre
-# 2022 Trom 16952   10 Snorre
+# 2022 Trom 16952   11 Snorre
 # 2023 Kris 19953   11 Snorre
-# 2023 NGlo 18952   09 Trond
+# 2023 NGlo 18952   11 Trond
 
-# 2024 Aale 20952   09 Snorre
-# 2024 Haug 19955   09 Snorre
-# 2024 Bodø 19954   09 Snorre
+# 2024 Aale 20952   11 Snorre
+# 2024 Haug 19955   11 Snorre
+# 2024 Bodø 19954   11 Snorre
 
 # TODO: look at normalized MDT visualized on links
 # TODO: use graph centrality measures to evaluate changes in links and routings
@@ -96,7 +94,7 @@ links <-
 # Choose
 index_year <- 2025
 latest_published_month <- 10
-city_number <- 19953
+city_number <- 8952
 # End choose
 
 new_month_year <-
@@ -282,8 +280,7 @@ city_trps <- pointindex[[1]]
 
 # TRD: Removing Tungasletta Ystgaard
 # NGL: Removing periodic Hauge bru (originally included by mistake)
-city_trps <-
- city_trps[! city_trps %in% c("84826V42881", "98352V971490")]
+city_trps <- city_trps[! city_trps %in% c("84826V42881", "98352V971490")]
 
 pointindices <- pointindex[[2]]
 city_name <- city_index$area_name[1]
@@ -336,7 +333,6 @@ city_county_numbers <-
 
 ```{r}
 #| label: aadt
-
 
 # Need not fetch AADT every time
 if(F) {
@@ -664,50 +660,6 @@ point_index_new <-
     new_month_year
   )
 
-# pi_2019 <-
-#   get_pointindices_for_trp_list(
-#     city_trps, 
-#     index_year - 3
-#   )
-# 
-# pi_trd <-
-#   dplyr::bind_rows(
-#     point_index_new,
-#     pi_2021,
-#     pi_2020,
-#     pi_2019
-#   ) |> 
-#   dplyr::filter(
-#     period == "year_to_date",
-#     month == 12
-#   ) |> 
-#   dplyr::left_join(
-#     trps_meta,
-#     by = "trp_id"
-#   ) |> 
-#   dplyr::select(
-#     trp_id,
-#     name,
-#     road_reference,
-#     year,
-#     month,
-#     day_type,
-#     index_total_p,
-#     index_total_coverage,
-#     length_excluded,
-#     length_coverage,
-#     index_short,
-#     index_long
-#   )
-# 
-# library(writexl)
-# 
-# writexl::write_xlsx(
-#   pi_trd,
-#   path = "punktindeks_trd.xlsx"
-# )
-
-
 city_index_prepared <- 
   city_index %>% 
   dplyr::filter(period == "month") %>% 
@@ -958,7 +910,8 @@ links_with_events_and_pointindex_1 <- join_events_and_trp_index_with_links(lates
 leftover_trp_index_1 <-
   city_trps_new_pointindex |> 
   dplyr::filter(
-    !(trp_id %in% links_with_events_and_pointindex_1$this_area_trp_id)
+    !(trp_id %in% links_with_events_and_pointindex_1$this_area_trp_id),
+    !is.na(index_total_p)
   )
 
 # links_with_events_and_pointindex_2 <- join_events_and_trp_index_with_links(6, point_index_new_prepared_2)

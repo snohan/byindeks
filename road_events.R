@@ -32,3 +32,20 @@ readr::write_rds(
   events,
   "events/events.rds"
 )
+
+
+# New version, Saga 2
+# Fetch selected events by SQL in Trino (Starburst?) using DataGrip in traind datalab
+
+test <-
+  readr::read_csv(
+    "H:/my_data/events_20251202.csv",
+    n_max = 20
+  ) |> 
+  dplyr::mutate(
+    interval = lubridate::interval(date_start, date_end)
+  ) |> 
+  sf::st_as_sf(
+    wkt = "geografi",
+    crs = "wgs84"
+  )
