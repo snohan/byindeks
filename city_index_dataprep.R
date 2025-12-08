@@ -63,7 +63,7 @@ trp_id_msnr <-
   present_year <- 2025
   # month to be published now:
   index_month <- 11
-  city_number <- 8952
+  city_number <- 960
 }
 
 source("set_time_references.R")
@@ -226,7 +226,7 @@ trp_not_ok <-
 # TODO: show TRP contributions to rolling indices
 # TODO: Shiny app for checking MDT
 
-plot_mdt(65)
+plot_mdt(13)
 source("exclude_trp_mdts_list.R")
 
 #source("mdt_check.R")
