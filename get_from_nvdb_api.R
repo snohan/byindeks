@@ -423,8 +423,7 @@ hent_fylke <- function(fylkenr) {
     sf::st_zm(
       drop = T,
       what = "ZM"
-    ) #|>
-  #sf::st_transform("+proj=longlat +datum=WGS84")
+    )
 
   return(info)
 }

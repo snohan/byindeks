@@ -15,7 +15,6 @@ library(clock)
 library(RColorBrewer)
 library(webshot2)
 library(officer) # fp_border color in flextable
-#library(officedown)
 library(scales)
 
 source("H:/Programmering/R/byindeks/index_report_functions.R")
@@ -49,21 +48,9 @@ decimal_point <- function(number) {
 flextable::set_flextable_defaults(
   font.size = 8,
   font.family = "Arial",
-  #font.family = "Lucida Sans Unicode",
-  #font.family = "LTF Etica Light",
   #padding.bottom = .2,
   #padding.top = .4,
   decimal.mark = ",",
   big.mark = " ",
   na_str = ""
 )
-
-# Numbering tables
-# table_numbers <- officer::run_autonum(
-#   seq_id = "table",
-#   pre_label = "Tabell ",
-#   post_label = ". ",
-#   bkm = NULL,
-#   bkm_all = FALSE,
-#   prop = NULL
-# )
