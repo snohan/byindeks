@@ -36,11 +36,19 @@ filter_links_with_trp_no_toll <- function() {
           id,
           associatedTrpIds
         ) |>
+        dplyr::rowwise() |> 
+        dplyr::mutate(
+          associatedTrpIds = list(jsonlite::fromJSON(associatedTrpIds, simplifyVector = F))
+        ) |> 
+        dplyr::ungroup() |> 
         tidyr::unnest(
           # Will duplicate links with more than one TRP
           associatedTrpIds,
           keep_empty = FALSE
         ) |>
+        dplyr::mutate(
+          associatedTrpIds = unlist(associatedTrpIds)
+        ) |> 
         dplyr::rename(
           this_area_trp_id = associatedTrpIds
         )

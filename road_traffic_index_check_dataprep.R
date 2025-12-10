@@ -53,9 +53,6 @@ get_points() |>
     lat, lon,
     road_link_position
   ) |>
-  #dplyr::mutate(
-  #  name = stringr::str_to_title(name, locale = "no")
-  #) |>
   readr::write_rds(
     "trps.rds"
   )

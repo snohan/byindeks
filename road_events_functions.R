@@ -32,6 +32,36 @@ filter_events_by_month <- function(index_month_chosen) {
   return(events_this_month)
 }
 
+get_events_in_year_month <- function(events_df, year_dbl, index_month_dbl) {
+
+  month_start <-
+    paste0(
+      year_dbl,
+      "-",
+      stringr::str_pad(index_month_dbl, width = 2, pad = "0"),
+      "-01"
+    ) |>
+    lubridate::ymd(tz = "CET")
+
+  month_end <- month_start + base::months(1) - lubridate::days(1)
+  month_interval <- lubridate::interval(month_start, month_end)
+  
+  events_this_year_month <-
+    events_df |>
+    dplyr::mutate(
+      this_month =
+        lubridate::int_overlaps(
+          interval,
+          month_interval
+        )
+    ) |>
+    dplyr::filter(
+      this_month
+    )
+
+  return(events_this_year_month)
+}
+
 
 # Join ----
 # TODO: Would be faster if events were filtered by county beforehand
