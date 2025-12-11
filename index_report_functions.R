@@ -593,9 +593,7 @@ map_pointindex_and_events <- function(this_df, index_limit = 8) {
           index <  index_limit ~ index_limit_text[2],
           index >  index_limit ~ index_limit_text[3]
         ) |>
-        base::factor(
-          levels = index_limit_text
-        )
+        base::factor(levels = index_limit_text)
     ) |>
     leaflet(
       width = "100%",
@@ -611,7 +609,7 @@ map_pointindex_and_events <- function(this_df, index_limit = 8) {
       attribution = nvdb_map_attribution
     ) |>
     addPolylines(
-      label = ~label_text,
+      label = ~text,
       stroke = T,
       opacity = 1,
       #color = ~palett_index(index_total_p),

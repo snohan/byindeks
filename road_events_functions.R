@@ -1,37 +1,5 @@
 # Filter events by month and join with links
 
-# Events this month ----
-filter_events_by_month <- function(index_month_chosen) {
-
-  month_start <-
-    paste0(
-      index_year - 1,
-      "-",
-      stringr::str_pad(index_month_chosen, width = 2, pad = "0"),
-      "-01"
-    ) |>
-    lubridate::ymd(tz = "CET")
-
-  month_end <- month_start + base::months(1) - lubridate::days(1)
-  this_month_interval_base <- lubridate::interval(month_start, month_end)
-  # TODO: find events in calculation year when these are available
-
-  events_this_month <-
-    events |>
-    dplyr::mutate(
-      this_month =
-        lubridate::int_overlaps(
-          interval,
-          this_month_interval_base
-        )
-    ) |>
-    dplyr::filter(
-      this_month
-    )
-
-  return(events_this_month)
-}
-
 get_events_in_year_month <- function(events_df, year_dbl, index_month_dbl) {
 
   month_start <-
@@ -63,88 +31,88 @@ get_events_in_year_month <- function(events_df, year_dbl, index_month_dbl) {
 }
 
 
-# Join ----
-# TODO: Would be faster if events were filtered by county beforehand
-join_events_and_trp_index_with_links <- function(index_month_chosen, point_index_new_prepared_df) {
+join_links_and_trp_index <- function(link_df, trp_index_df) {
 
-  events_and_links <-
-    filter_events_by_month(index_month_chosen) |>
-    sf::st_join(
-      links_in_county |>
-        dplyr::select(id),
-      join = "st_crosses",
-      largest = TRUE
-    ) |>
-    sf::st_drop_geometry() |>
-    dplyr::select(
-      description,
-      allVehicles,
-      passability,
-      isWinterClosed,
-      interval,
-      id
-    ) |>
+  links_with_trp_index <-
+    link_df |> 
+    dplyr::left_join(
+      trp_index_df,
+      by = "trp_id"
+    ) |> 
     dplyr::filter(
-      !is.na(id)
-    ) |>
-    dplyr::mutate(
-      event_info =
-        paste0(
-          description, "<br/>",
-          " Alle: ", allVehicles,
-          ". Passerbarhet: ", passability,
-          ". Vinterstengt: ", isWinterClosed, "<br/>",
-          ". Tid: ", interval
-        )
-    ) |>
-    dplyr::select(
-      id,
-      event_info
-    ) |>
-    # More than one event per link
-    dplyr::summarise(
-      event_text = paste(event_info, collapse = "<br/>"),
-      .by = id
-    )
-
-  links_with_events_and_pointindex <-
-    links_in_county |>
-    dplyr::select(id) |>
-    dplyr::left_join(
-      links_with_trp,
-      by = dplyr::join_by(id)
-    ) |>
-    dplyr::left_join(
-      point_index_new_prepared_df,
-      by = dplyr::join_by(this_area_trp_id == trp_id)
-    ) |>
-    dplyr::left_join(
-      events_and_links,
-      by = dplyr::join_by(id)
-    ) |>
-    dplyr::filter(
-      !is.na(index_total_p) | !is.na(event_text)
-    ) |>
+      !is.na(index_total_p)
+    ) |> 
     dplyr::left_join(
       trps_meta,
-      by = dplyr::join_by(this_area_trp_id == trp_id)
-    ) |>
+      by = "trp_id"
+    ) |> 
     dplyr::mutate(
-      label_text =
-        paste(name, ", ",
-              road_category_and_number, "<br/>",
-              index_total_p, " %", "<br/>",
-              index_total_coverage, " %", "<br/>",
-              event_text),
-      label_text = lapply(label_text, htmltools::HTML)
-    ) |>
+      info_text =
+        paste0(
+          trp_id, " ", name, "<br/>",
+          "Indeks alle: ", index_total_p, "<br/>",
+          "Indeks korte: ", index_short, "<br/>",
+          "Indeks lange: ", index_long
+        )
+    ) |> 
     dplyr::select(
-      id,
-      this_area_trp_id,
-      label_text,
-      index_total_p,
-      event_text
+      link_id, info_text, index_total_p
     )
 
-  return(links_with_events_and_pointindex)
+}
+
+
+join_links_and_events_by_geometry <- function(link_df, event_df) {
+
+  # Do the join, but keep only ids
+  links_with_events <- 
+    link_df |> 
+    dplyr::select(link_id) |> 
+    sf::st_join(
+      event_df,
+      join = "st_crosses",
+      left = FALSE,
+      largest = TRUE
+    ) |> 
+    sf::st_drop_geometry() |> 
+    dplyr::select(link_id, event_id, info_text)
+
+}
+
+
+prepare_links_for_mapping <- function(base_year_dbl, calc_year_dbl, index_month_dbl, trp_index_df) {
+
+  events_b <- get_events_in_year_month(events, base_year_dbl, index_month_dbl)
+  events_c <- get_events_in_year_month(events, calc_year_dbl, index_month_dbl)
+
+  links_with_trp_index <- join_links_and_trp_index(links_with_trp, trp_index_df)
+
+  links_with_events_b <- join_links_and_events_by_geometry(links_in_area, events_b)
+  links_with_events_c <- join_links_and_events_by_geometry(links_in_area, events_c)
+
+  # Per link
+  links_with_info <-
+    dplyr::bind_rows(
+      links_with_trp_index,
+      links_with_events_b,
+      links_with_events_c
+    ) |> 
+    dplyr::select(
+    link_id, info_text, index_total_p 
+    ) |> 
+    dplyr::distinct() |> 
+    dplyr::summarise(
+      text = paste(info_text, collapse = "<br/>"),
+      .by = c(link_id, index_total_p)
+    ) |> 
+    dplyr::mutate(
+      text = lapply(text, htmltools::HTML)
+    )
+
+  links_for_map <- 
+    links_in_county |> 
+    dplyr::filter(link_id %in% links_with_info$link_id) |> 
+    dplyr::left_join(links_with_info, by = "link_id") |> 
+    dplyr::select(link_id, text, index_total_p)
+    
 }

@@ -36,7 +36,6 @@ source("rmd_setup.R")
 # Traffic Data API calls to get points metadata and aadt
 source("get_from_trafficdata_api.R")
 source("split_road_system_reference.R")
-source("road_events_functions.R")
 source("traffic_link_functions.R")
 library(DT)
 library(htmltools)
@@ -89,6 +88,14 @@ pointindices <- pointindex[[2]]
 # 56 Finnmark         09 Trond
 
 county_number_chosen <- 3
+
+county_polygon <- 
+  readr::read_rds(
+    "H:/my_data/fylker.rds"
+  ) |> 
+  dplyr::filter(
+    nr == county_number_chosen
+  )
 
 trps_meta <- 
   points |> 
@@ -271,25 +278,28 @@ source("trp_index_wide_and_long.R")
 ```{r}
 #| label: data_prep_events
 
-events <- readr::read_rds("H:/my_data/events_20251202.rds")
+# Map traffic links that have either an event or a TRP index, or both.
 
+# Need some generic functions
+source("road_events_functions.R")
 
-
-# Traffic links from Adm ----
 links <-
   sf::st_read("H:/Trafikkdata/trafikklenker/traffic_links_2025_2025-12-10.geojson") |>
   dplyr::select(
-    id,
+    link_id = id,
     countyIds,
     associatedTrpIds
   )
 
-links_in_county <- filter_traffic_links_by_county(county_number_chosen)
+links_in_area <- filter_traffic_links_by_county(county_number_chosen)
 links_with_trp <- filter_links_with_trp_no_toll()
 
-# Events and TRP index on links
-links_with_events_and_pointindex_1 <- join_events_and_trp_index_with_links(index_month + 1, point_index_new_prepared_1)
-links_with_events_and_pointindex_2 <- join_events_and_trp_index_with_links(index_month + 2, point_index_new_prepared_2)
+events <- 
+  readr::read_rds("H:/my_data/events_20251202.rds") |> 
+  sf::st_filter(county_polygon, .predicate = st_intersects)
+
+links_for_map_1 <- prepare_links_for_mapping(index_year - 1, index_year, index_month + 1, point_index_new_prepared_1)
+links_for_map_2 <- prepare_links_for_mapping(index_year - 1, index_year, index_month + 1, point_index_new_prepared_2)
 ```
 
 
@@ -301,7 +311,7 @@ links_with_events_and_pointindex_2 <- join_events_and_trp_index_with_links(index
 #| label: map_linkindex_and_events
 #| message: false
 
-links_with_events_and_pointindex_1 |> map_pointindex_and_events()
+links_for_map_1 |> map_pointindex_and_events()
 ```
 
 
@@ -313,7 +323,7 @@ links_with_events_and_pointindex_1 |> map_pointindex_and_events()
 
 ## `r new_month_name_2`
 
-links_with_events_and_pointindex_2 |> map_pointindex_and_events()
+links_for_map_2 |> map_pointindex_and_events()
 ```
 
 
