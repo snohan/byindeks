@@ -642,6 +642,135 @@ map_pointindex_and_events <- function(this_df, index_limit = 8) {
 }
 
 
+map_trp_index_and_events <- function(link_df, event_df, index_limit = 8) {
+
+  # Discrete scale for index
+  index_limit_text <- c(
+    paste0("< -", index_limit, " %"),
+    paste0("[-", index_limit, ", ", index_limit, "] %"),
+    paste0("> ", index_limit, " %")
+  )
+
+  palett_index_factor <-
+    leaflet::colorFactor(
+      palette = c("red", "#1D7721", "purple"),
+      levels = index_limit_text
+    )
+  
+# Need to split events by geometry type  
+events_this_month_points <- dplyr::filter(event_df, sf::st_geometry_type(geografi) == "POINT")
+events_this_month_lines  <- dplyr::filter(event_df, sf::st_geometry_type(geografi) != "POINT")
+
+  this_map <-
+    link_df |>
+    dplyr::rename(
+      index = index_total_p
+    ) |>
+    dplyr::mutate(
+      index_factor =
+        dplyr::case_when(
+          index < -index_limit ~ index_limit_text[1],
+          index <  index_limit ~ index_limit_text[2],
+          index >  index_limit ~ index_limit_text[3]
+        ) |>
+        base::factor(levels = index_limit_text)
+    ) |>
+    leaflet(
+      width = "100%",
+      height = 800,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F
+        )
+    ) |>
+    addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) |>
+    addPolylines(
+      group = "index",
+      label = ~info_text,
+      stroke = T,
+      opacity = 1,
+      color = ~palett_index_factor(index_factor),
+      highlightOptions = highlightOptions(
+        bringToFront = TRUE,
+        sendToBack = FALSE,
+        color = "#636363",
+        opacity = 0.6
+      )
+    ) |>
+    addPolylines(
+      data = events_this_month_lines,
+      group = "events",
+      label = ~info_text,
+      stroke = T,
+      opacity = 1,
+      highlightOptions = highlightOptions(
+        bringToFront = TRUE,
+        sendToBack = FALSE,
+        color = "#636363",
+        opacity = 0.6
+      )
+    ) |> 
+    addMarkers(
+      data = events_this_month_points,
+      group = "events",
+      label = ~info_text
+    ) |> 
+    addLayersControl(
+      overlayGroups = c("index", "events"),
+      options = layersControlOptions(collapsed = FALSE)
+    ) |> 
+    addLegend(
+      "bottomright",
+      pal = palett_index_factor,
+      values = ~index_factor,
+      title = "Indeks",
+      opacity = 0.6,
+      labFormat = labelFormat(big.mark = " ")
+    )
+
+  return(this_map)
+}
+
+
+map_links_for_index_check <- function(base_year_dbl, calc_year_dbl, index_month_dbl, trp_index_df, index_limit_dbl = 4) {
+
+  links_with_trp_index <- join_links_and_trp_index(links_with_trp, trp_index_df)
+
+  links_for_map <- 
+      links_in_area |> 
+      dplyr::filter(link_id %in% links_with_trp$link_id) |> 
+      dplyr::left_join(links_with_trp_index, by = "link_id") |> 
+      dplyr::select(link_id, info_text, index_total_p) |> 
+      dplyr::mutate(
+        info_text = lapply(info_text, htmltools::HTML)
+      )
+
+  events_b <- get_events_in_year_month(events, base_year_dbl, index_month_dbl)
+  events_c <- get_events_in_year_month(events, calc_year_dbl, index_month_dbl)
+
+  # Need to keep only distinct events and have them in one layer
+  events_this_month <-
+    dplyr::bind_rows(
+      events_b,
+      events_c
+    ) |> 
+    dplyr::distinct() |> 
+    dplyr::select(info_text) |> 
+    dplyr::mutate(
+      info_text = lapply(info_text, htmltools::HTML)
+    )
+
+  map <- map_trp_index_and_events(links_for_map, events_this_month, index_limit_dbl)
+
+  return(map)
+
+}
+
+
 map_links_with_trp <- function(link_df) {
 
   map <-

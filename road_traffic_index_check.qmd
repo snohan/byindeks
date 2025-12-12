@@ -4,7 +4,7 @@ format:
   html:
     css: svv.css
     page-layout: full
-    number-sections: true
+    number-sections: false
     toc: true
     toc-location: left
     toc-title: "Innhold"
@@ -71,8 +71,8 @@ pointindices <- pointindex[[2]]
 ```{r}
 #| label: filter_for_county
 
-# 31 Østfold          09 Trond
-# 32 Akershus         09 Trond
+# 31 Østfold          11 Trond
+# 32 Akershus         11 Trond
 # 33 Buskerud         09 Trond
 #  3 Oslo             09 Trond
 # 34 Innlandet        09 Snorre
@@ -87,7 +87,7 @@ pointindices <- pointindex[[2]]
 # 55 Troms            09 Trond
 # 56 Finnmark         09 Trond
 
-county_number_chosen <- 3
+county_number_chosen <- 31
 
 county_polygon <- 
   readr::read_rds(
@@ -277,6 +277,10 @@ source("trp_index_wide_and_long.R")
 
 ```{r}
 #| label: data_prep_events
+#| include: false
+#| echo: false
+#| warning: false
+#| message: false
 
 # Map traffic links that have either an event or a TRP index, or both.
 
@@ -297,9 +301,6 @@ links_with_trp <- filter_links_with_trp_no_toll()
 events <- 
   readr::read_rds("H:/my_data/events_20251202.rds") |> 
   sf::st_filter(county_polygon, .predicate = st_intersects)
-
-links_for_map_1 <- prepare_links_for_mapping(index_year - 1, index_year, index_month + 1, point_index_new_prepared_1)
-links_for_map_2 <- prepare_links_for_mapping(index_year - 1, index_year, index_month + 1, point_index_new_prepared_2)
 ```
 
 
@@ -311,7 +312,7 @@ links_for_map_2 <- prepare_links_for_mapping(index_year - 1, index_year, index_m
 #| label: map_linkindex_and_events
 #| message: false
 
-links_for_map_1 |> map_pointindex_and_events()
+map_links_for_index_check(index_year - 1, index_year, index_month + 1, point_index_new_prepared_1, 4)
 ```
 
 
@@ -323,7 +324,7 @@ links_for_map_1 |> map_pointindex_and_events()
 
 ## `r new_month_name_2`
 
-links_for_map_2 |> map_pointindex_and_events()
+map_links_for_index_check(index_year - 1, index_year, index_month + 2, point_index_new_prepared_2, 4)
 ```
 
 
@@ -457,8 +458,8 @@ pointindex_wide |>
     rownames = FALSE,
     options = list(
       dom = "Blfrtip",
-      pageLength = 21,
-      lengthMenu = c(21, 42, 63),
+      pageLength = 12,
+      lengthMenu = c(6, 12, 18),
       autoWidth = TRUE)
   )
 ```
