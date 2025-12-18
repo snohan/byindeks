@@ -73,21 +73,21 @@ pointindices <- pointindex[[2]]
 
 # 31 Østfold          11 Trond
 # 32 Akershus         11 Trond
-# 33 Buskerud         09 Trond
-#  3 Oslo             09 Trond
-# 34 Innlandet        09 Snorre
-# 39 Vestfold         09 Trond
-# 40 Telemark         09 Trond
-# 42 Agder            09 Trond
-# 11 Rogaland         09 Trond
-# 46 Vestland         09 Trond
-# 15 Møre og Romsdal  09 Trond
-# 50 Trøndelag        09 Snorre
-# 18 Nordland         09 Trond
-# 55 Troms            09 Trond
-# 56 Finnmark         09 Trond
+# 33 Buskerud         11 Trond
+#  3 Oslo             11 Trond
+# 34 Innlandet        11 Snorre
+# 39 Vestfold         11 Trond
+# 40 Telemark         11 Trond
+# 42 Agder            11 Trond
+# 11 Rogaland         11 Trond
+# 46 Vestland         11 Trond
+# 15 Møre og Romsdal  11 Trond
+# 50 Trøndelag        11 Snorre
+# 18 Nordland         11 Trond
+# 55 Troms            11 Trond
+# 56 Finnmark         11 Trond
 
-county_number_chosen <- 31
+county_number_chosen <- 56
 
 county_polygon <- 
   readr::read_rds(
@@ -312,7 +312,7 @@ events <-
 #| label: map_linkindex_and_events
 #| message: false
 
-map_links_for_index_check(index_year - 1, index_year, index_month + 1, point_index_new_prepared_1, 4)
+map_links_for_index_check(index_year - 1, index_year, index_month + 1, point_index_new_prepared_1, 5)
 ```
 
 
@@ -324,7 +324,7 @@ map_links_for_index_check(index_year - 1, index_year, index_month + 1, point_ind
 
 ## `r new_month_name_2`
 
-map_links_for_index_check(index_year - 1, index_year, index_month + 2, point_index_new_prepared_2, 4)
+map_links_for_index_check(index_year - 1, index_year, index_month + 2, point_index_new_prepared_2, 5)
 ```
 
 

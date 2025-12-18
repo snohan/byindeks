@@ -22,6 +22,10 @@ events <-
         interval
       )
   ) |> 
+  dplyr::filter(
+    # Remove beveglig arbeid
+    !(stringr::str_detect(info_text, "evegelig") & stringr::str_detect(info_text, "tengt", negate = TRUE))
+  ) |> 
   sf::st_as_sf(
     wkt = "geografi",
     crs = "wgs84"
@@ -33,12 +37,12 @@ events <-
   )
 
 # A look at "bevegelig"
-# moving_events <-
-#   events |> 
-#   sf::st_drop_geometry() |> 
-#   dplyr::filter(
-#     stringr::str_detect(note, "evegelig")
-#   )
+moving_events <-
+  events |> 
+  sf::st_drop_geometry() |> 
+  dplyr::filter(
+    !(stringr::str_detect(info_text, "evegelig") & stringr::str_detect(info_text, "tengt", negate = TRUE))
+  )
 # Just keep them for now, though most of them probably won't matter.
 
 readr::write_rds(

@@ -37,7 +37,7 @@ source("get_from_trafficdata_api.R")
 #| label: get_data
 
 counties <-
-  get_counties() %>%
+  get_counties() |> 
   dplyr::select(
     county_name,
     country_part_name
@@ -65,7 +65,7 @@ index_this_year_prepared_wide_country <-
 #| label: extract_data_for_text
 
 this_year <- 2025
-latest_month_number <- 9
+latest_month_number <- 11
 
 latest_month_name <-
   max(
