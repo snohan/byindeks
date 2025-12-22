@@ -59,8 +59,8 @@
 
 
 # Relative importance ----
-ind <- c(-2, 2, 2, 10)
-ind_mean_centered <- ind - mean(ind)
+# ind <- c(-2, 2, 2, 10)
+# ind_mean_centered <- ind - mean(ind)
 
 
 # Bergen ----

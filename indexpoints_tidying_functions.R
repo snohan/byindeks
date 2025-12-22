@@ -991,7 +991,9 @@ calculate_rolling_area_index_one_year <- function(area_index_month_df) {
         em_p = base::round(-stats::qnorm(0.025) * sd_p, 4),
         ci_lower = index_p - em_p,
         ci_upper = index_p + em_p,
-        universal_year_period_id = window_ids[14]
+        universal_year_period_id = window_ids[14],
+        # Number of TRPs
+        mean_n_trp = base::floor(base::mean(n_trp))
       ) |>
       dplyr::left_join(
         universal_calendar_periods,

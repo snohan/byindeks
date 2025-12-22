@@ -51,6 +51,7 @@ library(leaflet)
 source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
 source("H:/Programmering/R/byindeks/traffic_link_functions.R")
 source("H:/Programmering/R/byindeks/index_report_functions.R")
+source("H:/Programmering/R/road_traffic_index/chain.R")
 
 flextable::set_flextable_defaults(
   #font.size = 8,
@@ -764,7 +765,20 @@ En kjedet indeks vil da kunne utnytte flere punkter med en inndeling i delperiod
 - 2019-2023
 - 2023- 
 
-Antallet punkt som er tilgjengelig er da som vist i @fig-nj_n_trp_chained.
+Det vil da være to "mellomår" som knytter sammen delperiodene. Hvilke år som sammenlignes kan illustreres grafisk som vist i @fig-chain_nj.
+
+```{r}
+#| label: fig-chain_nj
+#| fig-cap: "Kjedet byindeks for Nord-Jæren. Linjene viser hvilke år som sammenlignes. Eksempelvis vil trafikken i 2026 sammenlignes med 2023 som gir en indeks for 2023–2026. Denne indeksverdien vil deretter kjedes med indeksene for henholdsvis 2019–2023 og 2017–2019, slik at vi til slutt oppnår en indeksverdi for 2017–2026."
+
+plot_index_chain_graph(graph_nj) +
+  theme(
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color)
+    )
+```
+
+Antall punkt tilgjengelig per måned er som vist i @fig-nj_n_trp_chained.
 
 ```{r}
 #| label: fig-nj_n_trp_chained
@@ -805,7 +819,7 @@ qmd_index_examples_cmdt_nj_month_more_chained |>
     labs(
       x = NULL, y = "Antall punkt"
     ) +
-    ggtitle("Antall punkt")
+    ggtitle("Antall punkt per måned")
 ```
 
 For hver månedsindeks kan vi beregne representativiteten til punktutvalget. Dette er vist i @fig-nj_repr_chained.

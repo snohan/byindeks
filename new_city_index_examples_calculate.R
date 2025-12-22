@@ -3,8 +3,9 @@
 # and so-far-this-year index. But here, we only do rolling index.
 
 # TODO: add standard error in CMDT, based on missing days
-# For now, assume no uncerainty here,
+# For now, assume no uncertainty here,
 # and it probably is much smaller than the contribution from spatial TRP sampling.
+
 
 index_month_values <-
   mdt_validated |>

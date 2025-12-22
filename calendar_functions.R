@@ -44,7 +44,6 @@ period_names_df <-
 
 # Universal calendar period ids ----
 # Universal ids beginning 2016-01
-
 month_and_period_ids <-
   tibble::tibble(
     month_id = c(1,2,3,34,4,5,56,6,7,8,9,10,11,12),
