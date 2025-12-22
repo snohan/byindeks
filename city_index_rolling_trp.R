@@ -32,6 +32,12 @@ all_12_month_trp_indices <-
 
 trp_mdt_plot_12 <-
   all_12_month_trp_indices |>
+  dplyr::filter(
+    last_month_in_index >= "2022-12-01"
+  ) |> 
+  dplyr::mutate(
+    last_month_in_index = as.character(last_month_in_index) |> factor()
+  ) |> 
   ggplot2::ggplot(
     aes(
       x = last_month_in_index,
@@ -42,11 +48,22 @@ trp_mdt_plot_12 <-
   geom_tile() +
   theme_minimal() +
   labs(
+    title = "Ett års glidende indeks i byindekspunktene",
     x = "",
-    y = ""
-  )
+    y = "",
+    fill = "Endring\n(%)"
+  ) +
+  theme(
+    panel.grid.major = element_blank(), # Remove major grid lines
+    panel.grid.minor = element_blank(), # Remove minor grid lines
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+    axis.text = element_text(size = 12),
+    legend.position = "right"
+  ) +
+  scale_fill_viridis(discrete = FALSE)
 
 trp_mdt_plot_12 |> plotly::ggplotly()
+
 
 # 36
 all_36_month_trp_indices <- calculate_rolling_indices(36, "by_trp")
