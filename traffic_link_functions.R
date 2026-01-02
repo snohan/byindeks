@@ -68,38 +68,53 @@ filter_links_with_trp <- function() {
       links |>
         sf::st_drop_geometry() |>
         dplyr::select(
-          id,
+          link_id,
           associatedTrpIds
         ) |>
+        dplyr::rowwise() |> 
+        dplyr::mutate(
+          associatedTrpIds = list(jsonlite::fromJSON(associatedTrpIds, simplifyVector = F))
+        ) |> 
+        dplyr::ungroup() |> 
         tidyr::unnest(
           # Will duplicate links with more than one TRP
           associatedTrpIds,
           keep_empty = FALSE
         ) |>
+        tidyr::unnest(
+          # Hoist up that one remaining level
+          associatedTrpIds,
+          keep_empty = FALSE
+        ) |>
         dplyr::rename(
-          this_area_trp_id = associatedTrpIds
+          trp_id = associatedTrpIds
         ),
       links |>
         sf::st_drop_geometry() |>
         dplyr::select(
-          id,
-          associatedTollStationIds
+          link_id,
+          tollStationIds
         ) |>
+        dplyr::rowwise() |> 
+        dplyr::mutate(
+          tollStationIds = list(jsonlite::fromJSON(tollStationIds, simplifyVector = F))
+        ) |> 
+        dplyr::ungroup() |> 
         tidyr::unnest(
           # No duplicate
-          associatedTollStationIds,
+          tollStationIds,
           keep_empty = FALSE
         ) |>
         dplyr::rename(
-          this_area_trp_id = associatedTollStationIds
+          trp_id = tollStationIds
         ) |>
         dplyr::mutate(
-          this_area_trp_id = as.character(this_area_trp_id)
+          trp_id = as.character(trp_id)
         )
     ) |>
     # Narrow down list (duplicates disappear)
     dplyr::filter(
-      this_area_trp_id %in% trps_meta$trp_id
+      trp_id %in% trps_meta$trp_id
     )
 }
 

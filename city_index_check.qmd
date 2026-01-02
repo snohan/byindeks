@@ -47,26 +47,13 @@ library(htmltools)
 # NB! run once per session
 # source("city_index_check_dataprep.R")
 
-{
 points <- readr::read_rds("trps_for_city_index.rds")
-events <- readr::read_rds("events/events.rds")
-# Traffic links from Adm ----
-links <-
-  sf::st_read("H:/Trafikkdata/trafikklenker/traffic_links_2023_2024-08-06.geojson") |>
-  dplyr::select(
-    id,
-    countyIds,
-    associatedTrpIds,
-    associatedTollStationIds
-  )
-}
-
-# TODO: add toll stations to links
+counties <- readr::read_rds("counties.rds")
 ```
 
 
 ```{r}
-#| label: data
+#| label: choose_city_and_month
 
 # Look at details in one city at a time
 
@@ -93,8 +80,8 @@ links <-
 
 # Choose
 index_year <- 2025
-latest_published_month <- 10
-city_number <- 8952
+latest_published_month <- 11
+city_number <- 952
 # End choose
 
 new_month_year <-
@@ -116,11 +103,6 @@ new_month_name <-
 
 # new_month_name_2 <-
 #   lubridate::as_date(paste0("2000-", (latest_published_month + 2) %% 12, "-01")) |>
-#   lubridate::month(label = TRUE, abbr = FALSE) |>
-#   stringr::str_to_title()
-
-# new_month_name_3 <-
-#   lubridate::as_date(paste0("2000-", (latest_published_month + 3) %% 12, "-01")) |>
 #   lubridate::month(label = TRUE, abbr = FALSE) |>
 #   stringr::str_to_title()
 
@@ -191,7 +173,6 @@ if(city_number == 960){
       trp_id = nvdb_id
     )
   
-  
   tolling_station_indices_prepared <-
     readr::read_rds(
       file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
@@ -246,22 +227,8 @@ if(city_number == 960){
   
   tolling_station_indices_prepared_new <-
     tolling_station_indices_prepared |>
-    dplyr::filter(
-      month == (latest_published_month + 1) #%% 12
-      #latest_published_month + 1
-    )
-  
-  # tolling_station_indices_prepared_new_2 <-
-  #   tolling_station_indices_prepared |>
-  #   dplyr::filter(
-  #     month == (latest_published_month + 2) %% 12
-  #   )
-
-  # tolling_station_indices_prepared_new_3 <-
-  #   tolling_station_indices_prepared |>
-  #   dplyr::filter(
-  #     month == (latest_published_month + 3) %% 12
-  #   )
+    dplyr::filter(month == (latest_published_month + 1)) 
+# %% 12
 }
 ```
 
@@ -315,19 +282,24 @@ city_county_numbers <-
   dplyr::case_when(
     city_number %in% c(1952) ~ c(33),
     city_number %in% c(955) ~ c(40),
-    city_number %in% c(957) ~ c(42),
-    city_number %in% c(19953) ~ c(42),
-    city_number %in% c(18952) ~ c(31),
-    city_number %in% c(953) ~ c(31),
+    city_number %in% c(957, 19953) ~ c(42),
+    city_number %in% c(953, 18952) ~ c(31),
     city_number %in% c(16952) ~ c(55),
-    city_number %in% c(952) ~ c(11),
+    city_number %in% c(952, 19955) ~ 11,
     city_number %in% c(959) ~ c(3, 32),
     city_number %in% c(8952) ~ c(46),
     city_number %in% c(960) ~ c(50),
     city_number %in% c(19954) ~ c(18),
-    city_number %in% c(19955) ~ c(11),
     city_number %in% c(20952) ~ c(15)
-  )
+  ) |> base::unique()
+
+  area_polygon <- 
+    readr::read_rds(
+      "H:/my_data/fylker.rds"
+    ) |> 
+    dplyr::filter(
+      nr %in% city_county_numbers
+    )
 ```
 
 
@@ -651,7 +623,7 @@ if(F) {
 
 
 ```{r}
-#| label: data_prep
+#| label: data_prep_index
 
 # New month's pointindices
 point_index_new <- 
@@ -883,36 +855,46 @@ city_trps_new_pointindex <-
 #             index_total_p, " %", "<br/>",
 #             index_total_coverage, " %"),
 #     label_text = lapply(label_text, htmltools::HTML))
-# 
-# city_trps_new_pointindex_4 <- trps_meta %>%
-#   dplyr::left_join(
-#     point_index_new_prepared_4,
-#       by = "trp_id"
-#   ) %>%
-#   dplyr::mutate(
-#     label_text =
-#       paste(name, ", ",
-#             road_category_and_number, "<br/>",
-#             index_total_p, " %", "<br/>",
-#             index_total_coverage, " %"),
-#     label_text = lapply(label_text, htmltools::HTML))
-
-# city_trps_new_pointindex_5 <- trps_meta %>% 
-#   dplyr::left_join(point_index_new_prepared_5)
 
 source("trp_index_wide_and_long.R")
+```
+
+
+```{r}
+#| label: data_prep_events
+#| include: false
+#| echo: false
+#| warning: false
+#| message: false
+
+events <- 
+  readr::read_rds("H:/my_data/events_20260102.rds") |> 
+  sf::st_filter(area_polygon, .predicate = st_intersects)
+
+# Traffic links from Adm ----
+links <-
+  # sf::st_read("H:/Trafikkdata/trafikklenker/traffic_links_2023_2024-08-06.geojson") |>
+  sf::st_read("H:/Trafikkdata/trafikklenker/traffic_links_2025_2025-12-10.geojson") |>
+  dplyr::select(
+    link_id = id,
+    countyIds,
+    associatedTrpIds,
+    tollStationIds
+  )
+
+# TODO: add toll stations to links
 
 # Links
-links_in_county <- filter_traffic_links_by_county(city_county_numbers)
+links_in_area <- filter_traffic_links_by_county(city_county_numbers)
 links_with_trp <- filter_links_with_trp()
 
-links_with_events_and_pointindex_1 <- join_events_and_trp_index_with_links(latest_published_month + 1, point_index_new_prepared_1)
-leftover_trp_index_1 <-
-  city_trps_new_pointindex |> 
-  dplyr::filter(
-    !(trp_id %in% links_with_events_and_pointindex_1$this_area_trp_id),
-    !is.na(index_total_p)
-  )
+# links_with_events_and_pointindex_1 <- join_events_and_trp_index_with_links(latest_published_month + 1, point_index_new_prepared_1)
+# leftover_trp_index_1 <-
+#   city_trps_new_pointindex |> 
+#   dplyr::filter(
+#     !(trp_id %in% links_with_events_and_pointindex_1$this_area_trp_id),
+#     !is.na(index_total_p)
+#   )
 
 # links_with_events_and_pointindex_2 <- join_events_and_trp_index_with_links(6, point_index_new_prepared_2)
 # leftover_trp_index_2 <-
@@ -920,14 +902,6 @@ leftover_trp_index_1 <-
 #   dplyr::filter(
 #     !(trp_id %in% links_with_events_and_pointindex_2$this_area_trp_id)
 #   )
-
-# links_with_events_and_pointindex_3 <- join_events_and_trp_index_with_links(7, point_index_new_prepared_3)
-# leftover_trp_index_3 <-
-#   city_trps_new_pointindex |> 
-#   dplyr::filter(
-#     !(trp_id %in% links_with_events_and_pointindex_3$this_area_trp_id)
-#   )
-
 ```
 
 
@@ -988,20 +962,22 @@ city_index_prepared |>
 #| label: map_linkindex_and_events
 #| message: false
 
-links_with_events_and_pointindex_1 |> 
-  map_pointindex_and_events()
+# links_with_events_and_pointindex_1 |> 
+#   map_pointindex_and_events()
+
+map_links_for_index_check(index_year - 1, index_year, latest_published_month + 1, point_index_new_prepared_1, 5)
 ```
 
 
 ```{r}
 #| label: map_trp_index_1
 
-if(nrow(leftover_trp_index_1) != 0){
+# if(nrow(leftover_trp_index_1) != 0){
   
- leftover_trp_index_1 |> 
-  dplyr::rename(index = index_total_p) |> 
-  create_pointindex_map() 
-}
+#  leftover_trp_index_1 |> 
+#   dplyr::rename(index = index_total_p) |> 
+#   create_pointindex_map() 
+# }
 ```
 
 

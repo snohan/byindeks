@@ -7,7 +7,7 @@ library(sf)
 
 events <-
   readr::read_csv(
-    "H:/my_data/events_20251202.csv"
+    "H:/my_data/events_20260102.csv"
     #n_max = 20
   ) |> 
   dplyr::mutate(
@@ -47,5 +47,5 @@ moving_events <-
 
 readr::write_rds(
   events,
-  "H:/my_data/events_20251202.rds"
+  "H:/my_data/events_20260102.rds"
 )
