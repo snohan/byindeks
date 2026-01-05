@@ -1188,6 +1188,70 @@ create_mdt_barplot <- function(trp_mdt_long_format) {
     )
 }
 
+barplot_heavy_percentage <- function(data_df) {
+
+  # Test:
+  # data_df <- test
+
+  data_df |> 
+    dplyr::mutate(year = as.character(year)) |> 
+    ggplot2::ggplot(
+      aes(
+        x = month,
+        y = heavy_percentage,
+        fill = year
+      )
+    ) +
+    geom_col(position = "dodge") +
+    geom_text(
+      aes(
+        x = month,
+        label = dplyr::if_else(heavy_percentage == 0, "NA", "")
+      ),
+      position = position_dodge(0.8),
+      vjust = 1
+    ) +
+    ggplot2::facet_grid(
+      rows = vars(road_category_and_number_and_point_name),
+      labeller = label_wrap_gen(width = 12),
+      scales = "free_y"
+    ) +
+    theme_light(
+      #base_size = 10
+    ) +
+    theme(
+      axis.ticks.x = element_blank(),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.y = element_blank(),
+      strip.text.y = element_text(angle = 90),
+      strip.background = element_rect(fill = "#444f55"),
+      plot.background = element_rect(fill = svv_background_color),
+      panel.background = element_rect(fill = svv_background_color),
+      legend.position = "bottom",
+      legend.background = element_rect(fill = svv_background_color),
+      legend.key = element_blank()
+    ) +
+    scale_fill_viridis_d(
+      name = "\u00c5r",
+      option = "viridis"
+    ) +
+    scale_x_continuous(
+      breaks = seq(1, 12, 1)
+    ) +
+    labs(
+      x = NULL,
+      y = "Prosentandel tunge kjøretøy",
+      caption = "Data: Statens vegvesen og fylkeskommunene"
+    ) +
+    ggtitle(
+      "Prosentandel tunge kjøretøy",
+      subtitle = ""
+    )
+}
+
 plot_mdt <- function(start_trp_n, n_trp_tp_plot = 4) {
 
   print(
@@ -1195,8 +1259,11 @@ plot_mdt <- function(start_trp_n, n_trp_tp_plot = 4) {
   )
 
   mdt_validated |>
-    dplyr::filter(!(year %in% c(2020, 2021))) |>
-    dplyr::filter(trp_id %in% trp_mdt_ok_refyear[start_trp_n:(start_trp_n + n_trp_tp_plot - 1)]) |>
+    # dplyr::filter(!(year %in% c(2020, 2021))) |>
+    dplyr::filter(
+      trp_id %in% trp_mdt_ok_refyear[start_trp_n:(start_trp_n + n_trp_tp_plot - 1)],
+      year %in% relevant_years_to_plot
+    ) |>
     dplyr::select(
       trp_id,
       year, month,
@@ -1229,6 +1296,49 @@ plot_mdt <- function(start_trp_n, n_trp_tp_plot = 4) {
     ) |>
     dplyr::mutate(valid_quality = coverage >= 50 & length_quality >= 98.5) |>
     create_mdt_barplot()
+
+}
+
+plot_heavy_percentage <- function(start_trp_n, n_trp_tp_plot = 4) {
+
+  # Test:
+  # start_trp_n <- 1
+
+  # test <-
+  mdt_validated |>
+    dplyr::filter(trp_id %in% trp_mdt_ok_refyear[start_trp_n:(start_trp_n + n_trp_tp_plot - 1)]) |>
+    dplyr::filter(
+        coverage >= 50,
+        length_quality >= 98.5,
+        year %in% relevant_years_to_plot
+    ) |>
+    dplyr::select(
+      trp_id,
+      year, month,
+      heavy_percentage
+    ) |>
+    tidyr::complete(
+      trp_id, year, month,
+      fill = list(
+        heavy_percentage = 0
+      )
+    ) |>
+    dplyr::mutate(month_object = lubridate::make_date(year = 2000, month = month, day = 1)) |>
+    dplyr::left_join(
+      points,
+      by = "trp_id"
+    ) |>
+    dplyr::mutate(
+      road_category_and_number_and_point_name = paste0(road_category_and_number, " ", name)
+    ) |>
+    dplyr::select(
+      trp_id,
+      year, month,
+      heavy_percentage,
+      month_object,
+      road_category_and_number_and_point_name
+    ) |>
+    barplot_heavy_percentage()
 
 }
 

@@ -1017,14 +1017,14 @@ map_links_for_index_check(index_year - 1, index_year, latest_published_month + 1
 ```
 
 
-## Kurver per punkt for totaltrafikk
+## Kurver per punkt
 
 ```{r}
-#| label: pointindex_sparkline
+#| label: pointindex_sparkline_short
 
 pointindex_plot <- 
   pointindex_prepared_all |> 
-  ggplot2::ggplot(aes(x = month, y = index_total_p, color = name)) +
+  ggplot2::ggplot(aes(x = month, y = index_short, color = name)) +
   geom_line() +
   scale_x_discrete(breaks = seq(1, latest_published_month + 1, 1)) +
   theme_minimal() +
@@ -1032,7 +1032,27 @@ pointindex_plot <-
     legend.position = "bottom",
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color)
-  )
+  ) +
+  labs(x = "", y = "Indeks, korte (%)", title = "Korte", color = "")
+
+pointindex_plot |> plotly::ggplotly()
+```
+
+```{r}
+#| label: pointindex_sparkline_long
+
+pointindex_plot <- 
+  pointindex_prepared_all |> 
+  ggplot2::ggplot(aes(x = month, y = index_long, color = name)) +
+  geom_line() +
+  scale_x_discrete(breaks = seq(1, latest_published_month + 1, 1)) +
+  theme_minimal() +
+    theme(
+    legend.position = "bottom",
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color)
+  ) +
+  labs(x = "", y = "Indeks, lange (%)", title = "Lange", color = "")
 
 pointindex_plot |> plotly::ggplotly()
 ```
@@ -1091,7 +1111,8 @@ pointindex_prepared_all |>
   ggplot(
     aes(
       month,
-      index_total_p
+      index_short
+      #index_total_p
     )
   ) +
   geom_boxplot() +
@@ -1100,7 +1121,8 @@ pointindex_prepared_all |>
     legend.position = "bottom",
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color)
-  )
+  ) +
+  labs(y = "Indeks, korte (%)")
 ```
 
 ```{r}
@@ -1116,7 +1138,8 @@ pointindex_prepared_all |>
   ) |> 
   ggplot(
     aes(
-      index_total_p
+      index_short
+      #index_total_p
     )
   ) +
   geom_histogram() +
@@ -1130,7 +1153,8 @@ pointindex_prepared_all |>
     legend.position = "bottom",
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color)
-  )
+  ) +
+  labs(x = "Antall", y = "Indeks, korte (%)")
 ```
 
 

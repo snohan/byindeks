@@ -33,7 +33,6 @@ index_yearly_direct <-
     n_trp
   )
 
-
 index_yearly_chained <-
   index_yearly |>
   dplyr::filter(

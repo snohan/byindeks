@@ -62,8 +62,8 @@ trp_id_msnr <-
 {
   present_year <- 2025
   # month to be published now:
-  index_month <- 11
-  city_number <- 8952
+  index_month <- 12
+  city_number <- 952
 }
 
 source("set_time_references.R")
@@ -159,7 +159,8 @@ mdt_filtered <-
     coverage = dplyr::case_when(
       is.na(total_coverage) ~ 100, # If NorTraf, assume high quality
       TRUE ~ total_coverage * length_quality / 100
-    )
+    ),
+    heavy_percentage = (1 - mdt_length_range / mdt_total) * 100
   ) |>
   dplyr::left_join(
     trp_names,
@@ -171,6 +172,7 @@ mdt_filtered <-
     mdt = mdt_length_range,
     coverage,
     length_quality,
+    heavy_percentage
     #sub_area = municipality_name
   ) |>
   dplyr::mutate(
@@ -226,7 +228,10 @@ trp_not_ok <-
 # TODO: show TRP contributions to rolling indices
 # TODO: Shiny app for checking MDT
 
-plot_mdt(13)
+start_at <- 17
+plot_mdt(start_at)
+plot_heavy_percentage(start_at)
+
 source("exclude_trp_mdts_list.R")
 
 #source("mdt_check.R")

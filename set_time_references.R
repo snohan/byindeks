@@ -57,3 +57,12 @@ latest_universal_year_period_id <-
     month_id == index_month
   ) |>
   purrr::pluck(1)
+
+
+if(index_month == 12) {
+  relevant_years_to_plot <- c(reference_year, (present_year - 2):present_year)
+}else{
+  relevant_years_to_plot <- c(reference_year, (present_year - 3):present_year)
+}
+
+relevant_years_to_plot <- relevant_years_to_plot[relevant_years_to_plot >= reference_year]
