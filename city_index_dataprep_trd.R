@@ -189,12 +189,11 @@ trp_toll_index_yearly <-
     length_excluded == FALSE
   ) |>
   # Need latest value per year
-  dplyr::group_by(year) |>
   dplyr::filter(
-    period == "year_to_date",
-    month == max(month)
+    period == "year_to_date"
+    # month == max(month)
   ) |>
-  dplyr::ungroup() |>
+  dplyr::slice_max(month, by = c(trp_id, year)) |> 
   dplyr::select(
     trp_id,
     year,
@@ -206,7 +205,10 @@ trp_toll_index_yearly <-
     index
   ) |>
   dplyr::mutate(
-    month = lubridate::make_date(year = year, month = month)
+    # month = lubridate::make_date(year = year, month = month)
+    # In case some TRPs doesn't have December as latest month, and for the subsequent grouping to work as intended,
+    # name all months per year as December here for the yearly index.
+    month = lubridate::make_date(year = year, month = 12)
   ) |>
   dplyr::bind_rows(
     toll_index_yearly
@@ -366,6 +368,14 @@ years_1_5 <-
   calculate_two_year_index() |>
   dplyr::mutate(index_type = "chained")
 
+years_1_6 <-
+  dplyr::bind_rows(
+    years_1_5,
+    dplyr::slice(city_index_yearly_light, 6)
+  ) |>
+  calculate_two_year_index() |>
+  dplyr::mutate(index_type = "chained")
+
 # Skipping intermediate years, adding just from first to last
 city_index_yearly_all <-
   city_index_yearly_light |>
@@ -374,7 +384,8 @@ city_index_yearly_all <-
     years_1_2,
     years_1_3,
     years_1_4,
-    years_1_5
+    years_1_5,
+    years_1_6
   ) |>
   dplyr::mutate(
     length_range = "lette",

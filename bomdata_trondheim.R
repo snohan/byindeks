@@ -76,7 +76,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "november" # English
+month_string <- "december" # English
 year_number <- 2025
 
 apar_data_for_month <-
@@ -250,7 +250,7 @@ plot_toll_station_data_per_lane <- function(toll_id_chosen, year_chosen) {
 }
 
 # Ranheim is 72, 21 stations
-plot_toll_station_data_per_lane(tolling_station_ids_original[15], 2025)
+plot_toll_station_data_per_lane(tolling_station_ids_original[21], 2025)
 
 # Exclusions
 source("bomdata_trondheim_exclusions.R")
