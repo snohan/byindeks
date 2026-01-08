@@ -1139,10 +1139,9 @@ create_mdt_barplot <- function(trp_mdt_long_format) {
       scales = "free_y"
     ) +
     theme_light(
-      #base_size = 10
+      base_size = 18
     ) +
     theme(
-      #axis.text.x = element_text(angle = 90),
       axis.ticks.x = element_blank(),
       axis.title.y = element_text(
         margin = margin(t = 0, r = 15, b = 0, l = 0)),
@@ -1157,11 +1156,6 @@ create_mdt_barplot <- function(trp_mdt_long_format) {
       legend.background = element_rect(fill = svv_background_color),
       legend.key = element_blank()
     ) +
-    # scale_x_date(
-    #   breaks = scales::breaks_width("months"),
-    #   labels = scales::label_date("%b"),
-    #   #limits = c(min_month_object, max_month_object)
-    # ) +
     scale_fill_viridis_d(
       name = "\u00c5r",
       option = "viridis"
@@ -1174,7 +1168,6 @@ create_mdt_barplot <- function(trp_mdt_long_format) {
       )
     ) +
     scale_x_continuous(
-      #labels = as.character(month),
       breaks = seq(1, 12, 1)
     ) +
     labs(
@@ -1217,7 +1210,7 @@ barplot_heavy_percentage <- function(data_df) {
       scales = "free_y"
     ) +
     theme_light(
-      #base_size = 10
+      base_size = 18
     ) +
     theme(
       axis.ticks.x = element_blank(),
