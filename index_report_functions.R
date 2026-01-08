@@ -641,15 +641,41 @@ map_pointindex_and_events <- function(this_df, index_limit = 8) {
   return(this_map)
 }
 
+create_index_limit_text <- function(index_limit_dbl) {
 
-map_trp_index_and_events <- function(link_df, event_df, index_limit = 8) {
+ # Discrete scale for index
+  index_limit_text <- c(
+    paste0("< -", index_limit_dbl, " %"),
+    paste0("[-", index_limit_dbl, ", ", index_limit_dbl, "] %"),
+    paste0("> ", index_limit_dbl, " %")
+  )
+
+}
+
+
+add_index_factor_column <- function(index_df, index_limit_text_chr, index_limit_dbl) {
+
+  # index_df must have a column called index
+
+  index_df_with_index_limit_factor <-
+    index_df |> 
+    dplyr::mutate(
+      index_factor =
+        dplyr::case_when(
+          index < -index_limit_dbl ~ index_limit_text_chr[1],
+          index <  index_limit_dbl ~ index_limit_text_chr[2],
+          index >  index_limit_dbl ~ index_limit_text_chr[3]
+        ) |>
+        base::factor(levels = index_limit_text_chr)
+    )
+
+}
+
+
+map_trp_index_and_events <- function(link_df, event_df, trps_without_links_df, index_limit = 8) {
 
   # Discrete scale for index
-  index_limit_text <- c(
-    paste0("< -", index_limit, " %"),
-    paste0("[-", index_limit, ", ", index_limit, "] %"),
-    paste0("> ", index_limit, " %")
-  )
+  index_limit_text <- create_index_limit_text(index_limit)
 
   palett_index_factor <-
     leaflet::colorFactor(
@@ -666,15 +692,16 @@ events_this_month_lines  <- dplyr::filter(event_df, sf::st_geometry_type(geograf
     dplyr::rename(
       index = index_total_p
     ) |>
-    dplyr::mutate(
-      index_factor =
-        dplyr::case_when(
-          index < -index_limit ~ index_limit_text[1],
-          index <  index_limit ~ index_limit_text[2],
-          index >  index_limit ~ index_limit_text[3]
-        ) |>
-        base::factor(levels = index_limit_text)
-    ) |>
+    add_index_factor_column(index_limit_text, index_limit) |> 
+    # dplyr::mutate(
+    #   index_factor =
+    #     dplyr::case_when(
+    #       index < -index_limit ~ index_limit_text[1],
+    #       index <  index_limit ~ index_limit_text[2],
+    #       index >  index_limit ~ index_limit_text[3]
+    #     ) |>
+    #     base::factor(levels = index_limit_text)
+    # ) |>
     leaflet(
       width = "100%",
       height = 800,
@@ -701,6 +728,25 @@ events_this_month_lines  <- dplyr::filter(event_df, sf::st_geometry_type(geograf
         opacity = 0.6
       )
     ) |>
+    addCircleMarkers(
+      data = trps_without_links_df |> add_index_factor_column(index_limit_text, index_limit),
+      group = "index",
+      label = ~info_text,
+      radius = 6,
+      stroke = T,
+      weight = 2,
+      color = "#444f55",
+      opacity = 0.8,
+      fill = T,
+      fillColor = ~palett_index_factor(index_factor),
+      fillOpacity = 0.8
+      # highlightOptions = highlightOptions(
+      #   bringToFront = TRUE,
+      #   sendToBack = FALSE,
+      #   color = "#636363",
+      #   opacity = 0.6
+      # )
+    ) |> 
     addPolylines(
       data = events_this_month_lines,
       group = "events",
@@ -738,7 +784,11 @@ events_this_month_lines  <- dplyr::filter(event_df, sf::st_geometry_type(geograf
 
 map_links_for_index_check <- function(base_year_dbl, calc_year_dbl, index_month_dbl, trp_index_df, index_limit_dbl = 4) {
 
+  # Test
+  # trp_index_df <- point_index_new_prepared_1
+
   links_with_trp_index <- join_links_and_trp_index(links_with_trp, trp_index_df)
+  trps_without_links <- find_trps_without_links(trp_index_df)
 
   links_for_map <- 
       links_in_area |> 
@@ -764,7 +814,7 @@ map_links_for_index_check <- function(base_year_dbl, calc_year_dbl, index_month_
       info_text = lapply(info_text, htmltools::HTML)
     )
 
-  map <- map_trp_index_and_events(links_for_map, events_this_month, index_limit_dbl)
+  map <- map_trp_index_and_events(links_for_map, events_this_month, trps_without_links, index_limit_dbl)
 
   return(map)
 
