@@ -114,7 +114,6 @@ city_trps <-
 
 
 # Rolling index ----
-# Do this first in order to wait for yearly index to be published in API
 ## Get MDTs ----
 {
   tictoc::tic()
@@ -228,7 +227,7 @@ trp_not_ok <-
 # TODO: show TRP contributions to rolling indices
 # TODO: Shiny app for checking MDT
 
-start_at <- 17
+start_at <- 21
 plot_mdt(start_at)
 plot_heavy_percentage(start_at)
 
@@ -254,6 +253,11 @@ compare_to_report <-
   ) |>
   dplyr::mutate(index_p = round(index_p, 1))
 
+# Check TRP contributions
+source("city_index_rolling_trp.R")
+trp_mdt_plot_12 |> plotly::ggplotly()
+trp_mdt_plot_36 |> plotly::ggplotly()
+
 all_rolling_indices_list <-
   list(
     all_12_month_indices,
@@ -276,8 +280,6 @@ all_rolling_indices_list |>
       )
   )
 
-# city_index_rolling_trp.R
-
 if(city_number == 959) {
   source("city_index_rolling_sub_area.R")
 }
@@ -285,8 +287,6 @@ if(city_number == 959) {
 
 # Yearly index ----
 # TRD: Trondheim has its own script for yearly index: city_index_dataprep_trd.R
-
-# TODO: one for whole years, and one for so-far-this-year
 
 
 ## Yearly TRP index ----
@@ -552,7 +552,15 @@ all_rolling_indexes_chained <-
     index_i
   )
 
-all_rolling_indexes_chained |>
+# Same format as other rolling index dfs
+all_rolling_indices_list <-
+  list(
+    all_rolling_indexes_chained |> dplyr::filter(window == "12_months"),
+    all_rolling_indexes_chained |> dplyr::filter(window == "24_months"),
+    all_rolling_indexes_chained |> dplyr::filter(window == "36_months")
+  )
+
+all_rolling_indices_list |>
   readr::write_rds(
     file =
       paste0(

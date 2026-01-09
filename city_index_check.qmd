@@ -62,16 +62,16 @@ counties <- readr::read_rds("counties.rds")
 # 2016 Busk  1952   11 Snorre
 # 2016 Gren   955   11 Snorre
 
-# 2017 NJær   952   11 Snorre
+# 2017 NJær   952   12 Snorre
 # 2018 Oslo   959   11 Trond
 # 2018 Berg  8952   11 Trond
-# 2019 Tron   960   11 Snorre
-# 2022 Trom 16952   11 Snorre
+# 2019 Tron   960   12 Snorre
+# 2022 Trom 16952   12 Snorre
 # 2023 Kris 19953   11 Snorre
 # 2023 NGlo 18952   11 Trond
 
 # 2024 Aale 20952   11 Snorre
-# 2024 Haug 19955   11 Snorre
+# 2024 Haug 19955   12 Snorre
 # 2024 Bodø 19954   11 Snorre
 
 # TODO: look at normalized MDT visualized on links
@@ -81,7 +81,7 @@ counties <- readr::read_rds("counties.rds")
 # Choose
 index_year <- 2025
 latest_published_month <- 11
-city_number <- 952
+city_number <- 8952
 # End choose
 
 new_month_year <-
@@ -307,7 +307,7 @@ city_county_numbers <-
 #| label: aadt
 
 # Need not fetch AADT every time
-if(F) {
+if(T) {
   
   adt <- get_aadt_by_length_for_trp_list(city_trps)
   
@@ -799,8 +799,6 @@ pointindex_prepared_all <-
     short_is_least = index_short < index_long,
     short_is_least_check = index_total_p >= index_short & index_total_p <= index_long,
     long_is_least_check = index_total_p >= index_long & index_total_p <= index_short,
-    #short_is_least_check = dplyr::between(index_total_p, index_short, index_long),
-    #long_is_least_check = dplyr::between(index_total_p, index_long, index_short),
     total_short_long_check = dplyr::case_when(
       short_is_least & short_is_least_check ~ 0, #"ok",
       short_is_least & !short_is_least_check ~ 1, #"not ok",
@@ -811,8 +809,6 @@ pointindex_prepared_all <-
   )
      
 # For map
-# TODO: add point features for point indexes on municipality roads
-# Important for TRD, OSL, TRS, KRS (next version)
 city_trps_new_pointindex <- 
   trps_meta %>% 
   dplyr::left_join(
@@ -873,7 +869,6 @@ events <-
 
 # Traffic links from Adm ----
 links <-
-  # sf::st_read("H:/Trafikkdata/trafikklenker/traffic_links_2023_2024-08-06.geojson") |>
   sf::st_read("H:/Trafikkdata/trafikklenker/traffic_links_2025_2025-12-10.geojson") |>
   dplyr::select(
     link_id = id,
@@ -882,26 +877,8 @@ links <-
     tollStationIds
   )
 
-# TODO: add toll stations to links
-
-# Links
 links_in_area <- filter_traffic_links_by_county(city_county_numbers)
 links_with_trp <- filter_links_with_trp()
-
-# links_with_events_and_pointindex_1 <- join_events_and_trp_index_with_links(latest_published_month + 1, point_index_new_prepared_1)
-# leftover_trp_index_1 <-
-#   city_trps_new_pointindex |> 
-#   dplyr::filter(
-#     !(trp_id %in% links_with_events_and_pointindex_1$this_area_trp_id),
-#     !is.na(index_total_p)
-#   )
-
-# links_with_events_and_pointindex_2 <- join_events_and_trp_index_with_links(6, point_index_new_prepared_2)
-# leftover_trp_index_2 <-
-#   city_trps_new_pointindex |>
-#   dplyr::filter(
-#     !(trp_id %in% links_with_events_and_pointindex_2$this_area_trp_id)
-#   )
 ```
 
 
@@ -962,22 +939,7 @@ city_index_prepared |>
 #| label: map_linkindex_and_events
 #| message: false
 
-# links_with_events_and_pointindex_1 |> 
-#   map_pointindex_and_events()
-
 map_links_for_index_check(index_year - 1, index_year, latest_published_month + 1, point_index_new_prepared_1, 5)
-```
-
-
-```{r}
-#| label: map_trp_index_1
-
-# if(nrow(leftover_trp_index_1) != 0){
-  
-#  leftover_trp_index_1 |> 
-#   dplyr::rename(index = index_total_p) |> 
-#   create_pointindex_map() 
-# }
 ```
 
 
@@ -990,14 +952,6 @@ map_links_for_index_check(index_year - 1, index_year, latest_published_month + 1
 #   map_pointindex_and_events()
 ```
 
-```{r}
-#| label: map_trp_index_2
-
-# leftover_trp_index_2 |>
-#   dplyr::rename(index = index_total_p) |>
-#   create_pointindex_map()
-```
-
 
 ```{r}
 #| label: map_linkindex_and_events_3
@@ -1008,13 +962,6 @@ map_links_for_index_check(index_year - 1, index_year, latest_published_month + 1
 #   map_pointindex_and_events()
 ```
 
-```{r}
-#| label: map_trp_index_3
-
-# leftover_trp_index_3 |> 
-#   dplyr::rename(index = index_total_p) |> 
-#   create_pointindex_map()
-```
 
 
 ## Kurver per punkt
@@ -1094,7 +1041,6 @@ pointindex_plot |> plotly::ggplotly()
 ```
 
 
-
 ## Spredning i punktindekser
 
 ```{r}
@@ -1124,6 +1070,7 @@ pointindex_prepared_all |>
   ) +
   labs(y = "Indeks, korte (%)")
 ```
+
 
 ```{r}
 #| label: histogram
