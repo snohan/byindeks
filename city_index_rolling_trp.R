@@ -114,6 +114,9 @@ all_36_month_trp_indices <-
 # Check contribution from TRPs each possible 36 month index
 trp_mdt_plot_36 <-
   all_36_month_trp_indices |>
+  dplyr::mutate(
+    last_month_in_index = as.character(last_month_in_index) |> factor()
+  ) |> 
   ggplot2::ggplot(
     aes(
       x = last_month_in_index,
@@ -124,7 +127,7 @@ trp_mdt_plot_36 <-
   geom_tile() +
   theme_minimal() +
   labs(
-    title = "Ett års glidende indeks i byindekspunktene",
+    title = "Tre års glidende indeks i byindekspunktene",
     x = "",
     y = "",
     fill = "Endring\n(%)"
