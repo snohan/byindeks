@@ -1391,7 +1391,7 @@ visualize_city_36_mdt_index <- function(city_36_month_df, caption_text, title_te
     theme(
       axis.text.x = element_text(vjust = 0.5, angle = 90),
       axis.title.y = element_text(
-        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+        margin = margin(t = 0, r = 10, b = 0, l = 0)),
       axis.title.x = element_text(
         margin = margin(t = 15, r = 0, b = 0, l = 0)),
       panel.grid.minor.x = element_blank(),
@@ -1455,7 +1455,7 @@ visualize_rolling_cmdt_index <- function(rolling_cmdt_df, caption_text, title_te
     theme(
       axis.text.x = element_text(vjust = 0.5, angle = 90),
       axis.title.y = element_text(
-        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+        margin = margin(t = 0, r = 10, b = 0, l = 0)),
       axis.title.x = element_text(
         margin = margin(t = 15, r = 0, b = 0, l = 0)),
       panel.grid.minor.x = element_blank(),
@@ -1526,7 +1526,7 @@ visualize_rolling_indices <- function(rolling_indices_df, caption_text, title_te
       theme(
         axis.text.x = element_text(vjust = 0.5, angle = 90),
         axis.title.y = element_text(
-          margin = margin(t = 0, r = 15, b = 0, l = 0)),
+          margin = margin(t = 0, r = 10, b = 0, l = 0)),
         axis.title.x = element_text(
           margin = margin(t = 15, r = 0, b = 0, l = 0)),
         panel.grid.minor.x = element_blank(),
@@ -1543,10 +1543,10 @@ visualize_rolling_indices <- function(rolling_indices_df, caption_text, title_te
         labels = scales::label_date("%b %y"),
         date_breaks = "4 months"
       ) +
-      ylim(
-        min(rolling_indices_df$index_p),
-        max(rolling_indices_df$index_p)
-      ) +
+      # ylim(
+      #   min(rolling_indices_df$index_p),
+      #   max(rolling_indices_df$index_p)
+      # ) +
       labs(
         x = NULL, y = "Endring i trafikkmengde (%)",
         caption = caption_text) +

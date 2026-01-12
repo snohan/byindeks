@@ -32,7 +32,7 @@ city_36_month |>
 #| label: fig-plot_city_36
 #| fig-cap: "Tidsserie med tre års glidende indeks. Skravert område angir usikkerheten i beregningene i form av et 95 % konfidensintervall."
 #| fig-scap: "Tidsserie med tre års glidende indeks." 
-#| fig-dpi: 600
+#| fig-height: 5
 
 visualize_city_36_mdt_index(
   city_36_month,

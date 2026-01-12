@@ -1,0 +1,99 @@
+{{< pagebreak >}}
+
+## Delområder
+Separate tre års glidende indekser for Akershus og Oslo sammenlignet med indeksen for hele Osloområdet samlet er vist i figur @fig-sub_area_rolling.
+
+```{r}
+#| label: fig-sub_area_rolling
+#| fig-height: 5
+#| fig-cap: "Tre års glidende indeks for hvert delområde."
+
+rolling_indices_sub <-
+    readr::read_rds(
+        paste0("data_indexpoints_tidy/rolling_indices_sub_area_", city_number, ".rds")
+    ) |> 
+    dplyr::bind_rows() |> 
+    dplyr::filter(
+        window == "36_months"
+    ) |> 
+    dplyr::rename(
+        area = sub_area
+    ) |> 
+    dplyr::bind_rows(
+        city_36_month |> 
+            dplyr::mutate(
+                area = "Osloområdet"
+            )
+    ) |> 
+    dplyr::mutate(
+      area = factor(area, levels = c("Osloområdet", "Akershus", "Oslo"))
+    )
+
+# Plot
+
+visualize_rolling_sub_area_index <- function(city_36_month_df, caption_text, title_text, sub_text) {
+
+  x_breaks_labels <-
+    city_36_month_df |>
+    dplyr::filter(
+      month_n %in% c(4, 8, 12)
+    ) |>
+    dplyr::mutate(
+      x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4))
+    )
+
+  x_breaks <- x_breaks_labels |> purrr::pluck("month_object")
+  x_labels <- x_breaks_labels |> purrr::pluck("x_label")
+
+  city_36_month_df |>
+    ggplot2::ggplot(aes(x = month_object, y = index_p, linetype = area)) +
+    ggplot2::geom_hline(
+      yintercept = 0,
+      color = "#58b02c",
+      linewidth = 0.8,
+      alpha = 0.3
+    ) +
+    ggplot2::geom_line(color = "#ed9300") +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 90),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 15, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        ),
+        legend.position = "bottom"
+    ) +
+    ggplot2::scale_x_date(
+      breaks = x_breaks,
+      labels = x_labels
+    ) +
+    labs(
+      x = NULL, y = "Endring i trafikkmengde (%)", linetype = "Område",
+      caption = caption_text) +
+    ggtitle(
+      title_text,
+      subtitle = sub_text
+    )
+}
+
+
+visualize_rolling_sub_area_index(
+  rolling_indices_sub,
+  caption_credit,
+  "Estimert endring i trafikkmengde siste glidende 3 år",
+  paste0(
+    "Sammenlignet med ",
+    base_year
+  )
+)
+
+```
+

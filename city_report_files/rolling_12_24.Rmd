@@ -4,7 +4,7 @@ Tre års glidende indeks glatter ut trender som er av kortere varighet, men som 
 ```{r}
 #| label: fig-rolling_indices
 #| fig-cap: "Tidsserier med ett, to og tre års glidende indeks."
-#| fig-dpi: 300
+#| fig-height: 5
 
 visualize_rolling_indices(
   rolling_indices_long,
