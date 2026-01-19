@@ -1484,6 +1484,12 @@ visualize_rolling_cmdt_index <- function(rolling_cmdt_df, caption_text, title_te
 
 visualize_rolling_indices <- function(rolling_indices_df, caption_text, title_text, sub_text) {
 
+    # Test
+    # rolling_indices_df <- rolling_indices_long
+    # caption_text <- caption_credit
+    # title_text <- "TEST"
+    # sub_text <- "test"
+  
     rolling_indices_df |>
       ggplot2::ggplot(aes(x = month_object, y = index_p, color = window, linetype = window)) +
       ggplot2::geom_hline(
@@ -1541,20 +1547,13 @@ visualize_rolling_indices <- function(rolling_indices_df, caption_text, title_te
       ) +
       scale_x_date(
         labels = scales::label_date("%b %y"),
-        date_breaks = "4 months"
+        breaks = ~ dplyr::if_else(lubridate::month(.x) %in% c(4, 8, 12), .x, NA_Date_)
       ) +
-      # ylim(
-      #   min(rolling_indices_df$index_p),
-      #   max(rolling_indices_df$index_p)
-      # ) +
       labs(
         x = NULL, y = "Endring i trafikkmengde (%)",
         caption = caption_text) +
-      ggtitle(
-        title_text,
-        subtitle = sub_text
-      )
-  }
+      ggtitle(title_text, subtitle = sub_text)
+}
 
 visualize_index_examples <- function(index_df, window_length, title_text, sub_text) {
 

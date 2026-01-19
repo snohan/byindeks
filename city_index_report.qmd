@@ -41,84 +41,69 @@ source("rmd_setup.R")
 
 # Buskerudbyen          1952 2016
 # Grenland               955 2016
-# Kristiansand         19953 2023
-# Nedre Glomma 2023    18952 2023
-# Tromsø 2022          16952 2022
 # Nord-Jæren             952 2017
 # Bergen                8952 2018
 # Oslo                   959 2018
 # Trondheim              960 2019
+# Tromsø 2022          16952 2022
+# Kristiansand         19953 2023
+# Nedre Glomma 2023    18952 2023
 # Bodø                 19954 2024
 # Ålesund              20952 2024 
 # Haugesund            19955 2024
 
 
 # Choose city number:
-city_number <- 959
+city_number <- 20952
 
 ## Meta info
 city_number_county_name <- 
-  tibble::tibble(
-    city_no = c(8952, 1952, 955, 957, 19953, 953, 18952, 952, 959, 960, 961, 16952),
-    county_name = 
-      c("Vestland", 
-        "Buskerud", 
-        "Telemark", 
-        "Agder",
-        "Agder",
-        "Østfold",
-        "Østfold",
-        "Rogaland", 
-        "Oslo kommune, Akershus", 
-        "Trøndelag",
-        "Troms",
-        "Troms"
-      )
+  tibble::tribble(
+    ~ city_no, ~county_name,
+    8952, "Vestland", 
+    1952, "Buskerud", 
+    955, "Telemark", 
+    957, "Agder",
+    19953, "Agder",
+    953, "Østfold",
+    18952, "Østfold",
+    952, "Rogaland", 
+    959, "Oslo kommune, Akershus", 
+    960, "Trøndelag",
+    961, "Troms",
+    16952, "Troms",
+    19954, "Nordland",
+    20952, "Møre og Romsdal",
+    19955, "Vestland"
   )
+
 
 county_name <- 
-  city_number_county_name %>% 
-  dplyr::filter(city_no == city_number) %>% 
-  dplyr::select(county_name) %>% 
+  city_number_county_name |> 
+  dplyr::filter(city_no == city_number) |> 
+  dplyr::select(county_name) |> 
   as.character()
 
-caption_credit <- 
-  paste0(
-    "Data: Statens vegvesen, ",
-    county_name,
-    " fylkeskommune."
-  )
+caption_credit <- paste0("Data: Statens vegvesen, ", county_name, " fylkeskommune.")
 
-road_lengths <-
-  read_road_length_csv(
-    paste0("road_lengths/road_lengths_", city_number, ".csv")
-  )
+if(!(city_number %in% c(19954, 20952, 19955))) {
+  road_lengths <- read_road_length_csv(paste0("road_lengths/road_lengths_", city_number, ".csv"))
+}
   
 all_point_info <- 
   readr::read_rds(
     file = paste0(
-      "index_trp_metadata/trp_",
-      city_number,
-      ".rds"
+      "index_trp_metadata/trp_", city_number, ".rds"
     )
   ) |> 
-  dplyr::mutate(
-    year_aadt = as.character(year_aadt)
-  )
+  dplyr::mutate(year_aadt = as.character(year_aadt))
 
 
 ## Yearly index
-city_info <-
-  readr::read_rds(
-    paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")
-  ) 
+city_info <- readr::read_rds(paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")) 
 
 if(city_number == 960) {
-  
-  city_info <-
-    city_info |> 
-    dplyr::filter(length_range == "lette")
-  
+  city_info <- city_info |> dplyr::filter(length_range == "lette")
 }
 
 latest_month <- 
@@ -143,7 +128,6 @@ last_year <- max(city_info$year)
 latest_complete_year <- 
   city_info |> 
   dplyr::filter(
-    #index_type == "chained",
     index_type == "direct",
     month == 12
   ) |> 
@@ -185,7 +169,6 @@ rolling_indices_long <-
   rolling_indices |> 
   dplyr::bind_rows()
 
-
 any_36 <-
   rolling_indices_long |> 
   dplyr::filter(
@@ -198,8 +181,7 @@ any_36 <-
 }
 
 if(any_36) {
-  city_36_month <-
-    rolling_indices[[3]]
+  city_36_month <- rolling_indices[[3]]
   
   latest_36_index <-
     city_36_month |> 
@@ -285,13 +267,13 @@ intro_file <- paste0("city_report_files/intro_", city_number, ".Rmd")
 traffic_file <- paste0("city_report_files/trafikkforhold_", city_number, ".Rmd")
 
 # Does the index period encompass 2020-2022 pandemic?
-if(city_number %in% c(16952, 18952, 19953)) {
+if(city_number %in% c(16952, 18952, 19953, 19954, 20952, 19955)) {
   pandemic_rolling_index_file <- "city_report_files/pandemic_rolling_index_empty.Rmd"
 }else{
   pandemic_rolling_index_file <- "city_report_files/pandemic_rolling_index_text.Rmd"
 }
 
-if(city_number %in% c(16952, 18952, 19953)) {
+if(city_number %in% c(16952, 18952, 19953, 19954, 20952, 19955)) {
   pandemic_traffic_file <- "city_report_files/pandemic_rolling_index_empty.Rmd"
 }else{
   pandemic_traffic_file <- "city_report_files/pandemic_traffic_text.Rmd"
@@ -323,11 +305,11 @@ if(city_number == 957) {
   gamle_krs_kommune_file <- ""
 }
 
-if(city_number == 959) {
-  sub_area_rolling_file <- "city_report_files/sub_area_rolling.Rmd"
-}else{
-  sub_area_rolling_file <- ""
-}
+# if(city_number == 959) {
+#   sub_area_rolling_file <- "city_report_files/sub_area_rolling.Rmd"
+# }else{
+#   sub_area_rolling_file <- ""
+# }
 
 
 # Buskerudbyen
@@ -348,7 +330,6 @@ if(city_number == 957) {
       paste0("data_indexpoints_tidy/byindeks_956.rds")
     ) |>
     dplyr::mutate(
-      #month_object = lubridate::make_date(year = year, month = month),
       month_name_short = lubridate::month(month, label = TRUE),
       period = paste0("jan-", month_name_short)
     )
@@ -384,30 +365,32 @@ if(city_number == 957) {
 
 {{< include city_report_files/_purpose.Rmd >}}
 
-{{< pagebreak >}}
-
-## Områdeavgrensing og vegnett
+## Områdeavgrensing
 {{< include city_report_files/_intro.Rmd >}}
 
 {{< pagebreak >}}
 
-Veglengder fordelt på vegkategori for gjeldende område er oppsummert i tabell @tbl-road_length_sum.
 
 ```{r}
 #| label: tbl-road_length_sum
 #| tbl-cap: "Veglengder."
 #| ft.arraystretch: 0.9
 
-if(city_number == 957) {
-  road_lengths |> create_municipality_road_length_table()  
-}else{
-  road_lengths |> create_city_road_length_table()  
-}
+# Veglengder fordelt på vegkategori for gjeldende område er oppsummert i tabell @tbl-road_length_sum.
+
+# if(city_number == 957) {
+#   road_lengths |> create_municipality_road_length_table()  
+# }else{
+#   road_lengths |> create_city_road_length_table()  
+# }
+
+
+# {{< include city_report_files/_roadnet.Rmd >}}
+
+# {{< pagebreak >}}
+
 ```
 
-{{< include city_report_files/_roadnet.Rmd >}}
-
-{{< pagebreak >}}
 
 ## Byindekspunktene
 
@@ -420,7 +403,6 @@ De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeks
 
 if(city_number == 960) {
   all_point_info |> 
-    #dplyr::slice(1:30) |> 
     create_point_table_trd_2() |>
     flextable::footnote(
       i = 1,
@@ -436,9 +418,7 @@ if(city_number == 960) {
       part = "footer"
     )
 }else{
-  all_point_info |> 
-    #dplyr::slice(1:30) |> 
-    create_point_table()  
+  all_point_info |> create_point_table()  
 }
 ```
 
@@ -466,7 +446,7 @@ if(city_number == 960) {
 }
 ```
 
-<!-- Buskerudbyen zoomed map here -->
+<!-- Buskerudbyen zoomed map -->
 {{< include city_report_files/_map_zoomed.Rmd >}}
 
 {{< pagebreak >}}
@@ -491,8 +471,6 @@ En treårs glidende indeks er tilgjengelig fra og med det er gått tre år etter
 
 {{< include city_report_files/_pandemic_remark_rolling_index.Rmd >}}
 
-{{< include city_report_files/_sub_area_rolling.Rmd >}}
-
 {{< pagebreak >}}
 
 {{< include city_report_files/_rolling_12_24.Rmd >}}
@@ -510,6 +488,8 @@ Tabell @tbl-city_index viser den årlige indeksen, samt en prosentvis endring sa
 #| label: tbl-city_index
 #| tbl-cap: "Årlig indeks, og kjedet årlig indeks."
 #| ft.arraystretch: 0.9
+
+# {{< include city_report_files/_sub_area_rolling.Rmd >}}
 
 # TODO: line plot of chained index
 # TODO: split into two versions: one for whole years, one for so far this year (only relevant in intermediate reports)
