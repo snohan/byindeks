@@ -147,6 +147,7 @@ hent_veglenkesekvens <- function(veglenkesekvens_id) {
       feltoversikt = stringr::str_c(feltoversikt, collapse = ", "),
       veglenkesekvens_id = veglenkesekvens_id
     ) |>
+    dplyr::ungroup() |> 
     dplyr::relocate(
       veglenkesekvens_id,
       .before = "veglenkenummer"
@@ -155,6 +156,29 @@ hent_veglenkesekvens <- function(veglenkesekvens_id) {
   return(resultat)
 }
 
+hent_feltnummer <- function(veglenkeposisjon) {
+
+  # Test
+  # veglenkeposisjon <- "0.61418692@3112188"
+
+  print(veglenkeposisjon)
+
+  veglenkesekvens_id = stringr::str_extract(veglenkeposisjon, "(?<=@).*")
+  posisjon = stringr::str_extract(veglenkeposisjon, ".*(?=@)")
+
+  veglenker <- 
+    hent_veglenkesekvens(veglenkesekvens_id) |> 
+    dplyr::filter(
+      startposisjon <= posisjon,
+      sluttposisjon >= posisjon
+    ) |> 
+    dplyr::slice_max(startdato) |> 
+    dplyr::select(feltoversikt) |> 
+    dplyr::distinct()
+
+    return(veglenker$feltoversikt)
+
+}
 
 hent_vegsystemreferanse <- function(veglenkeposisjon) {
 
@@ -565,11 +589,12 @@ get_all_tolling_stations <- function() {
     dplyr::select(id1, navn, verdi) |>
     dplyr::rename(id = id1) |>
     tidyr::pivot_wider(names_from = navn, values_from = verdi) |>
-    dplyr::rename(
-      directions = 2,
-      operator_id = 3,
-      toll_station_name = 4,
-      toll_station_id = 5
+    dplyr::select(
+      id,
+      operator_id = 2,
+      toll_station_id = Bomstasjon_Id,
+      toll_station_name = 'Navn bomstasjon',
+      directions = Innkrevningsretning      
     )
 
   vegreferanser <- uthenta$objekter |>
@@ -578,12 +603,13 @@ get_all_tolling_stations <- function() {
     dplyr::select(id, kortform) |>
     dplyr::rename(road_reference = kortform)
 
-  koordinater <- uthenta$objekter |>
-    dplyr::select(id, lokasjon.geometri.wkt) |>
-    dplyr::mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 9, -2)) |>
-    tidyr::separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
-                    convert = T) |>
-    dplyr::select(id, lat, lon)
+  koordinater <- uthenta$objekter |> 
+    dplyr::select(id, geometry = lokasjon.geometri.wkt)
+    
+    # dplyr::mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 9, -2)) |>
+    # tidyr::separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
+    #                 convert = T) |>
+    # dplyr::select(id, lat, lon)
 
   veglenkeposisjoner <- uthenta$objekter |>
     dplyr::select(id, lokasjon.stedfestinger) |>
@@ -597,13 +623,14 @@ get_all_tolling_stations <- function() {
     dplyr::left_join(vegreferanser, by = "id") |>
     dplyr::left_join(koordinater, by = "id") |>
     dplyr::left_join(veglenkeposisjoner, by = "id") |>
+    sf::st_as_sf(wkt = "geometry", crs = 4326) |> 
     dplyr::select(
       nvdb_id = id,
       operator_id,
       toll_station_id,
       toll_station_name,
       road_reference,
-      road_link_position, lat, lon,
+      road_link_position,
       directions
     )
 
