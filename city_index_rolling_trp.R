@@ -142,3 +142,16 @@ trp_mdt_plot_36 <-
   scale_fill_viridis(discrete = FALSE)
 
 
+# Write
+list(
+  all_12_month_trp_indices,
+  all_36_month_trp_indices
+) |> 
+readr::write_rds(
+  file =
+    paste0(
+      "data_indexpoints_tidy/rolling_trp_indices_",
+      city_number,
+      ".rds"
+    )
+)

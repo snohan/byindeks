@@ -4,7 +4,9 @@ Byvekstavtalene har mål om nullvekst i persontransport med bil: *I byområdene 
 
 
 ## Metodikk og datagrunnlag
-Byindeksen beregner endring i trafikkmengde for byområdet. Metoden er basert på trafikkregistreringer fra faste punkter fordelt på riks- og fylkesveger, samt på enkelte kommunale veger, og er ment å gi et representativt bilde av trafikkutviklingen i avtaleområdet. Det tas hensyn til perioder hvor registreringsutstyret ikke har vært i drift, og perioder hvor trafikken i stor grad er påvirket av vegstenginger, omkjøringer og permanente strukturelle endringer i vegnettet (åpning av nye veger).
+Byindeksen estimerer en generell endring i trafikkmengde for byområdet. Datagrunnlaget for byindeksen kommer fra faste trafikkregistreringspunkter fordelt på riks- og fylkesveger, samt i enkelte tilfeller på utvalgte kommunale veger. Kommunalt vegnett har typisk størst samlet lengde, men dette omfatter også alle små boliggater som hver for seg har relativt lite trafikk. Trafikkregistreringene på de mer trafikkerte riks- og fylkesvegene vil fange opp en betydelig andel av trafikkmengden i området, og vil sånn sett være representativt som grunnlag for et mål på den totale endringen i trafikkmengden.
+
+Det tas hensyn til perioder hvor registreringsutstyret ikke har vært i drift, og perioder hvor trafikken i stor grad er påvirket av vegstenginger, omkjøringer og permanente strukturelle endringer i vegnettet (åpning av nye veger).
 
 Metodikken for beregning av byindeks er beskrevet nærmere i rapporten "Metodikk for beregning av byindeks", som er tilgjengelig på [vegvesen.no](https://www.vegvesen.no/fag/trafikk/trafikkdata/trafikkutvikling/).
 

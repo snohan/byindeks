@@ -36,6 +36,7 @@ e18 <- read.csv2("data_indexpoints_tidy/buskerudbyen_e18_punktindekser.csv")
 ```{r}
 #| label: tbl-e18_buskerudbyen
 #| tbl-cap: "Endring i trafikkmengde på E18."
+#| ft.arraystretch: 1
 
 e18 |> 
   dplyr::select(name, road_reference, year, index_short_p, index_total_coverage) |>
@@ -43,7 +44,7 @@ e18 |>
   dplyr::mutate(
     index_period = paste0(year - 1, "-", year)
   ) |> 
-  dplyr::select(name, road_reference, index_period, index_short_p) |>
+  dplyr::select(name, index_period, index_short_p) |>
   dplyr::rename(
     year = index_period
   ) |> 
@@ -51,22 +52,18 @@ e18 |>
   colformat_int(j = "year", big.mark = "")  |>
   colformat_double(j = "index_short_p", digits = 1) |>
   set_header_labels(
-    name = "Navn",
-    road_reference = "Vegreferanse",
-    #adt = "ÅDT",
+    name = "Punktnavn",
+    # road_reference = "Vegreferanse",
+    # adt = "ÅDT",
     year = "Periode",
     index_short_p = "Endring i\ntrafikkmengde\n(%)"
   ) |>
-  align(j = c(3, 4), align = "center", part = "all") |>
+  align(j = c(2, 3), align = "center", part = "all") |>
   bold(part = "header") |>
-  #fontsize(size = 9, part = "all") |>
-  #font(fontname = "Lucida Sans Unicode", part = "all") |>
   bg(bg = "#ED9300", part = "header") |>
   border_remove() |>
   hline_top(part = "header", border = borderline) |>
   hline_bottom(part = "all", border = borderline) |>
   autofit() |>
-  height_all(height = .2) #|>
-  #padding(padding.top = .3,
-  #        padding.bottom = .3)
+  height_all(height = .2)
 ```

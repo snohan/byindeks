@@ -54,23 +54,23 @@ source("rmd_setup.R")
 
 
 # Choose city number:
-city_number <- 20952
+city_number <- 1952
 
 ## Meta info
 city_number_county_name <- 
   tibble::tribble(
     ~ city_no, ~county_name,
-    8952, "Vestland", 
-    1952, "Buskerud", 
-    955, "Telemark", 
-    957, "Agder",
+    8952,  "Vestland", 
+    1952,  "Buskerud", 
+    955,   "Telemark", 
+    957,   "Agder",
     19953, "Agder",
-    953, "Østfold",
+    953,   "Østfold",
     18952, "Østfold",
-    952, "Rogaland", 
-    959, "Oslo kommune, Akershus", 
-    960, "Trøndelag",
-    961, "Troms",
+    952,   "Rogaland", 
+    959,   "Oslo kommune, Akershus", 
+    960,   "Trøndelag",
+    961,   "Troms",
     16952, "Troms",
     19954, "Nordland",
     20952, "Møre og Romsdal",
@@ -365,40 +365,16 @@ if(city_number == 957) {
 
 {{< include city_report_files/_purpose.Rmd >}}
 
-## Områdeavgrensing
+## Områdeavgrensing og byindekspunkt
 {{< include city_report_files/_intro.Rmd >}}
 
-{{< pagebreak >}}
+Som utgangspunkt er det de `r nrow(all_point_info)` trafikkregistreringspunktene vist i tabell @tbl-trp som inngår i byindeksen. Årsdøgntrafikk (ÅDT) er her oppgitt for lette kjøretøy (målt til kortere enn 5,6 m). Mer data fra de enkelte trafikkregistreringspunktene kan utforskes på [trafikkdata.no](http:://trafikkdata.no).
 
-
-```{r}
-#| label: tbl-road_length_sum
-#| tbl-cap: "Veglengder."
-#| ft.arraystretch: 0.9
-
-# Veglengder fordelt på vegkategori for gjeldende område er oppsummert i tabell @tbl-road_length_sum.
-
-# if(city_number == 957) {
-#   road_lengths |> create_municipality_road_length_table()  
-# }else{
-#   road_lengths |> create_city_road_length_table()  
-# }
-
-
-# {{< include city_report_files/_roadnet.Rmd >}}
-
-# {{< pagebreak >}}
-
-```
-
-
-## Byindekspunktene
-
-De `r nrow(all_point_info)`  trafikkregistreringspunktene som inngår i byindeksen er listet opp nedenfor. Årsdøgntrafikk (ÅDT) er oppgitt for lette kjøretøy (målt til kortere enn 5,6 m). NB! I beregning av ÅDT-verdiene er det ikke tatt hensyn til eventuelle strukturelle endringer i vegnettet på samme måte som dette kan føre til eksluderinger i indeksberegningene. Endring i summert ÅDT for flere punkt kan derfor ikke ukritisk benyttes som mål på endring i trafikkmengde for området.
+NB! I beregning av ÅDT-verdiene er det ikke tatt hensyn til eventuelle strukturelle endringer i vegnettet på samme måte som dette kan føre til eksluderinger i indeksberegningene. Endring i summert ÅDT for flere punkt kan derfor ikke ukritisk benyttes som mål på endring i trafikkmengde for området.
 
 ```{r}
-#| label: tbl-trp-1
-#| tbl-cap: "Trafikkregistreringspunkt som inngår i byindeksen."
+#| label: tbl-trp
+#| tbl-cap: "Trafikkregistreringspunkt i byindeksen."
 #| ft.arraystretch: 1
 
 if(city_number == 960) {
@@ -430,8 +406,6 @@ Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene i
 #| label: fig-map_trp
 #| fig-cap: "Kart som viser trafikkregistreringspunkt og årsdøgntrafikk."
 #| fig-scap: "Kart som viser trafikkregistreringspunkt og årsdøgntrafikk."
-
-# fig-width: 7
 
 # TRD
 # Punktet Meådalen på E14 mellom Stjørdal og Meråker er utelatt fra kartvisningen.
@@ -486,7 +460,7 @@ Tabell @tbl-city_index viser den årlige indeksen, samt en prosentvis endring sa
 
 ```{r}
 #| label: tbl-city_index
-#| tbl-cap: "Årlig indeks, og kjedet årlig indeks."
+#| tbl-cap: "Årlig indeks og kjedet årlig indeks."
 #| ft.arraystretch: 0.9
 
 # {{< include city_report_files/_sub_area_rolling.Rmd >}}

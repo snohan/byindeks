@@ -15,7 +15,7 @@ create_point_table <- function(all_point_info_df) {
     ) %>%
     flextable() %>%
     set_header_labels(
-      name = "Navn",
+      name = "Punktnavn",
       road_reference = "Vegreferanse",
       adt_ref = "ÅDT\nreferanseår",
       adt = "ÅDT\nnyeste år",
@@ -1407,10 +1407,6 @@ visualize_city_36_mdt_index <- function(city_36_month_df, caption_text, title_te
       breaks = x_breaks,
       labels = x_labels
     ) +
-    # ylim(
-    #   -max(abs(city_36_month_df$ci_lower)),
-    #   max(abs(city_36_month_df$ci_upper))
-    # ) +
     labs(
       x = NULL, y = "Endring i trafikkmengde (%)",
       caption = caption_text) +
@@ -1490,69 +1486,81 @@ visualize_rolling_indices <- function(rolling_indices_df, caption_text, title_te
     # title_text <- "TEST"
     # sub_text <- "test"
   
+  x_breaks_labels <-
     rolling_indices_df |>
-      ggplot2::ggplot(aes(x = month_object, y = index_p, color = window, linetype = window)) +
-      ggplot2::geom_hline(
-        yintercept = 0,
-        color = "#58b02c",
-        linewidth = 0.8,
-        alpha = 0.3
-      ) +
-      ggplot2::geom_line() +
-      ggplot2::geom_point() +
-      scale_color_manual(
-        values = c(
-          "12_months" = "#008ec2",
-          "24_months" = "#444f55",
-          "36_months" = "#ed9300"
+    dplyr::filter(
+      month_n %in% c(4, 8, 12)
+    ) |>
+    dplyr::mutate(
+      x_label = base::paste0(lubridate::month(month_object, label = TRUE), " ", stringr::str_sub(year, 3, 4))
+    )
+
+  x_breaks <- x_breaks_labels |> purrr::pluck("month_object")
+  x_labels <- x_breaks_labels |> purrr::pluck("x_label")
+  
+  rolling_indices_df |>
+    ggplot2::ggplot(aes(x = month_object, y = index_p, color = window, linetype = window)) +
+    ggplot2::geom_hline(
+      yintercept = 0,
+      color = "#58b02c",
+      linewidth = 0.8,
+      alpha = 0.3
+    ) +
+    ggplot2::geom_line() +
+    ggplot2::geom_point() +
+    scale_color_manual(
+      values = c(
+        "12_months" = "#008ec2",
+        "24_months" = "#444f55",
+        "36_months" = "#ed9300"
+      ),
+      breaks = c(
+        "12_months",
+        "24_months",
+        "36_months"
+      ),
+      labels = c(
+        "Siste 1 år",
+        "Siste 2 år",
+        "Siste 3 år"
+      ),
+      name = "Gjennomsnittsperiode"
+    ) +
+    scale_linetype_manual(
+      values = c(
+        "12_months" = "dotted",
+        "24_months" = "dotted",
+        "36_months" = "solid"
+      ),
+      breaks = NULL,
+      labels = NULL,
+      name = ""
+    ) +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 90),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 10, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
         ),
-        breaks = c(
-          "12_months",
-          "24_months",
-          "36_months"
-        ),
-        labels = c(
-          "Siste 1 år",
-          "Siste 2 år",
-          "Siste 3 år"
-        ),
-        name = "Gjennomsnittsperiode"
-      ) +
-      scale_linetype_manual(
-        values = c(
-          "12_months" = "dotted",
-          "24_months" = "dotted",
-          "36_months" = "solid"
-        ),
-        breaks = NULL,
-        labels = NULL,
-        name = ""
-      ) +
-      theme_light() +
-      theme(
-        axis.text.x = element_text(vjust = 0.5, angle = 90),
-        axis.title.y = element_text(
-          margin = margin(t = 0, r = 10, b = 0, l = 0)),
-        axis.title.x = element_text(
-          margin = margin(t = 15, r = 0, b = 0, l = 0)),
-        panel.grid.minor.x = element_blank(),
-        plot.caption =
-          element_text(
-            face = "italic",
-            size = 8,
-            lineheight = 1.5,
-            vjust = 0
-          ),
-        legend.position = "bottom"
-      ) +
-      scale_x_date(
-        labels = scales::label_date("%b %y"),
-        breaks = ~ dplyr::if_else(lubridate::month(.x) %in% c(4, 8, 12), .x, NA_Date_)
-      ) +
-      labs(
-        x = NULL, y = "Endring i trafikkmengde (%)",
-        caption = caption_text) +
-      ggtitle(title_text, subtitle = sub_text)
+      legend.position = "bottom"
+    ) +
+    scale_x_date(
+      breaks = x_breaks,
+      labels = x_labels
+    ) +
+    labs(
+      x = NULL, y = "Endring i trafikkmengde (%)",
+      caption = caption_text) +
+    ggtitle(title_text, subtitle = sub_text)
 }
 
 visualize_index_examples <- function(index_df, window_length, title_text, sub_text) {

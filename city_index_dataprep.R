@@ -63,7 +63,7 @@ trp_id_msnr <-
   present_year <- 2025
   # month to be published now:
   index_month <- 12
-  city_number <- 19954
+  city_number <- 1952
 }
 
 source("set_time_references.R")
