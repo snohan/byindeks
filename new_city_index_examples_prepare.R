@@ -1,5 +1,5 @@
 # Time ----
-present_year <- 2024
+present_year <- 2025
 index_month <- 12
 source("set_time_references.R")
 

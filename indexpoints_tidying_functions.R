@@ -354,13 +354,74 @@ calculate_chained_cmdt_index <- function(index_row_1, index_row_2) {
     list(
       universal_year_period_id = paste0(index_row_1$universal_year_period_id, "_", index_row_2$universal_year_period_id),
       index_i = index_row_1$index_i * index_row_2$index_i,
-      # TODO: HERE!!!
       var_i =
         index_row_1$index_i^2 * index_row_2$var_i +
         index_row_2$index_i^2 * index_row_1$var_i +
         index_row_1$var_i * index_row_2$var_i
     ) |>
     tibble::as_tibble()
+}
+
+
+chain_index_months <- function(index_months_df) {
+
+  # Test:
+  # index_months_df <- 
+  #   nj_index_month_chained_all |> 
+  #   dplyr::filter(
+  #     chain_part %in% c(1, 2)
+  #   )
+
+  # Input must be restricted to just two consecutive chain parts
+  
+  months_to_be_chained <-
+    index_months_df |> 
+    dplyr::slice_max(chain_part)
+
+  first_chain_months <-
+    index_months_df |> 
+    dplyr::filter(
+      universal_year_period_id %in% months_to_be_chained$universal_year_period_id_chain
+    )
+
+  chained_months_df <- tibble::tibble()
+
+  for(i in 1:base::nrow(months_to_be_chained)) {
+  
+    chained_month_i <-
+      calculate_chained_cmdt_index(
+        first_chain_months |> dplyr::slice((i - 1) %% 14 + 1),
+        months_to_be_chained |> dplyr::slice(i)      
+      )
+    
+    chained_months_df <-
+      dplyr::bind_rows(
+        chained_months_df,
+        chained_month_i
+      )
+  }
+
+  chained_months_tidy <-
+    chained_months_df |> 
+    dplyr::rename(compared_ids = universal_year_period_id) |> 
+    dplyr::mutate(
+      universal_year_period_id = stringr::str_extract(compared_ids, "(?<=_).*") |> as.numeric(),
+      compared_to_id = stringr::str_extract(compared_ids, ".*(?=_)") |> as.numeric()
+    ) |> 
+    dplyr::left_join(
+      universal_calendar_periods |> 
+        dplyr::select(universal_year_period_id, x_label, period_name),
+      by = "universal_year_period_id"
+    ) |> 
+    dplyr::left_join(
+      first_chain_months |> dplyr::select(universal_year_period_id, compared_to),
+      by = dplyr::join_by(compared_to_id == universal_year_period_id)
+    ) |> 
+    dplyr::select(
+      universal_year_period_id, x_label, compared_to, period_name, compared_ids, index_i, var_i
+    )
+
+  return(chained_months_tidy)
 }
 
 
@@ -681,33 +742,73 @@ calculate_rolling_indices_by_mdt <- function(base_year, last_year_month, window_
 
 
 ## MDT old 2 ----
+# calculate_rolling_indices <- function(window_length, grouping = "by_area") {
+
+#   base::stopifnot(window_length %% 12 == 0)
+
+#   n_years <- window_length / 12
+
+#   first_possible_year_month <-
+#     lubridate::as_date(
+#       paste0(
+#         reference_year + n_years,
+#         "-12-01"
+#       )
+#     )
+
+#   year_months_possible <-
+#     base::seq.Date(
+#       from = first_possible_year_month,
+#       to = last_year_month,
+#       by = "month"
+#     )
+
+#   purrr::map_dfr(
+#     year_months_possible,
+#     ~ calculate_rolling_indices_by_mdt(reference_year, .x, window_length, mdt_validated, grouping)
+#   )
+
+# }
+
 calculate_rolling_indices <- function(window_length, grouping = "by_area") {
 
-  base::stopifnot(window_length %% 12 == 0)
+  base::tryCatch(
+    expr = {
 
-  n_years <- window_length / 12
+      base::stopifnot(window_length %% 12 == 0)
+      n_years <- window_length / 12
 
-  first_possible_year_month <-
-    lubridate::as_date(
-      paste0(
-        reference_year + n_years,
-        "-12-01"
+      first_possible_year_month <-
+        lubridate::as_date(
+          paste0(reference_year + n_years, "-12-01")
+        )
+
+      year_months_possible <-
+        base::seq.Date(
+          from = first_possible_year_month,
+          to = last_year_month,
+          by = "month"
+        )
+
+      purrr::map_dfr(
+        year_months_possible,
+        ~ calculate_rolling_indices_by_mdt(reference_year, .x, window_length, mdt_validated, grouping)
       )
-    )
 
-  year_months_possible <-
-    base::seq.Date(
-      from = first_possible_year_month,
-      to = last_year_month,
-      by = "month"
-    )
+    },
+    error = function(e) {
 
-  purrr::map_dfr(
-    year_months_possible,
-    ~ calculate_rolling_indices_by_mdt(reference_year, .x, window_length, mdt_validated, grouping)
+      print(e)
+
+      empty_df <- data.frame() 
+      
+      return(empty_df)
+    }
+
   )
 
 }
+
 
 
 ## MDT old 3 ----
@@ -880,9 +981,13 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl, populati
         universal_calendar_periods,
         by = dplyr::join_by(universal_year_period_id)
       ) |>
+      dplyr::mutate(
+        compared_to = year_a
+      ) |> 
       dplyr::select(
         universal_year_period_id,
         x_label,
+        compared_to,
         period_name,
         index_i,
         index_p,
@@ -952,6 +1057,7 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl, populati
 calculate_rolling_area_index_one_year <- function(area_index_month_df) {
 
   area_index_month_tidy <-
+    # nj_index_month_more_2[[1]] |> 
     area_index_month_df |>
     dplyr::left_join(
       period_weights,
@@ -970,6 +1076,10 @@ calculate_rolling_area_index_one_year <- function(area_index_month_df) {
   first_start_id <- base::min(area_index_month_tidy$universal_year_period_id)
   last_start_id <- base::max(area_index_month_tidy$universal_year_period_id - 13)
   possible_window_starts <- c(first_start_id:last_start_id)
+  
+  compared_to_year_df <- 
+    universal_calendar_periods |> 
+    dplyr::filter(universal_year_period_id == (first_start_id - 1))
 
   rolling_area_index <- tibble::tibble()
 
@@ -991,17 +1101,19 @@ calculate_rolling_area_index_one_year <- function(area_index_month_df) {
         em_p = base::round(-stats::qnorm(0.025) * sd_p, 4),
         ci_lower = index_p - em_p,
         ci_upper = index_p + em_p,
-        universal_year_period_id = window_ids[14],
-        # Number of TRPs
-        mean_n_trp = base::floor(base::mean(n_trp))
+        universal_year_period_id = window_ids[14]
       ) |>
       dplyr::left_join(
         universal_calendar_periods,
         by = dplyr::join_by(universal_year_period_id)
       ) |>
+      dplyr::mutate(
+        compared_to = compared_to_year_df$year
+      ) |> 
       dplyr::select(
         universal_year_period_id,
         x_label,
+        compared_to,
         index_i,
         index_p,
         var_i,

@@ -6,7 +6,6 @@
 # For now, assume no uncertainty here,
 # and it probably is much smaller than the contribution from spatial TRP sampling.
 
-
 index_month_values <-
   mdt_validated |>
   calculate_area_index_month(population_size)

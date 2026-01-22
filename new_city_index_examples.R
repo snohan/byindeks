@@ -12,7 +12,7 @@
 
 # Resolution in time:
 # - Month
-# - So far this year? Unnecessary?
+# - So far this year
 # - Last 12 months
 # - Last 24 months
 # - Last 36 months
@@ -95,6 +95,7 @@ source("new_city_index_examples_calculate.R")
 
 source("new_city_index_examples_prepare.R")
 source("new_city_index_examples_calculate.R")
+
 
 # missing <-
 #   this_citys_trps_all_adt_final |>
@@ -183,7 +184,7 @@ nj_index_month <-
   ) |>
   calculate_area_index_month(population_size)
 
-area_index_one_year_nj <- calculate_rolling_area_index_one_year(nj_index_month)
+area_index_one_year_nj <- calculate_rolling_area_index_one_year(nj_index_month[[1]])
 
 area_index_three_years_nj <- calculate_rolling_index_multiple_years(area_index_one_year_nj, 3)
 
@@ -236,7 +237,7 @@ nj_index_month_more <-
   ) |>
   calculate_area_index_month(population_size)
 
-area_index_one_year_nj_more <- calculate_rolling_area_index_one_year(nj_index_month_more)
+area_index_one_year_nj_more <- calculate_rolling_area_index_one_year(nj_index_month_more[[1]])
 
 area_index_three_years_nj_more <- calculate_rolling_index_multiple_years(area_index_one_year_nj_more, 3)
 
@@ -275,6 +276,9 @@ list(
 
 
 ## Chained ----
+### Version done in 2025 ----
+# Goal: have an index chain solely through the link years
+
 # Chain link 1: 2017-2019
 cmdt_chain_1 <-
   area_index_one_year_nj_more |>
@@ -312,7 +316,7 @@ nj_index_month_more_2 <-
   ) |>
   calculate_area_index_month(population_size)
 
-area_index_one_year_nj_more_2 <- calculate_rolling_area_index_one_year(nj_index_month_more_2)
+area_index_one_year_nj_more_2 <- calculate_rolling_area_index_one_year(nj_index_month_more_2[[1]])
 
 cmdt_chain_2 <-
   area_index_one_year_nj_more_2 |>
@@ -320,7 +324,7 @@ cmdt_chain_2 <-
     x_label == "des 23"
   )
 
-# Chain link 3: 2023-2024
+# Chain link 3: 2023-
 nj_index_month_more_3 <-
   mdt_validated |>
   dplyr::filter(
@@ -335,20 +339,20 @@ nj_index_month_more_3 <-
   ) |>
   calculate_area_index_month(population_size)
 
-area_index_one_year_nj_more_3 <- calculate_rolling_area_index_one_year(nj_index_month_more_3)
+area_index_one_year_nj_more_3 <- calculate_rolling_area_index_one_year(nj_index_month_more_3[[1]])
 
 # Gather
 nj_index_month_more_chained <-
   dplyr::bind_rows(
-    nj_index_month_more |>
+    nj_index_month_more[[1]] |>
       dplyr::filter(
         universal_year_period_id %in% c(43:56)
       ),
-    nj_index_month_more_2 |>
+    nj_index_month_more_2[[1]] |>
       dplyr::filter(
         universal_year_period_id %in% c(99:112)
       ),
-    nj_index_month_more_3 |>
+    nj_index_month_more_3[[1]] |>
       dplyr::filter(
         universal_year_period_id %in% c(113:126)
       )
@@ -384,3 +388,78 @@ index_chain_1_2_3 <-
     ci_lower = index_p - em_p,
     ci_upper = index_p + em_p
   )
+
+
+### Version done in 2026 ----
+# Goal: have a continuous rolling index time series
+# Must then chain each month
+
+# Gathering CMDT for all chain parts
+nj_index_month_chain_all <-
+  dplyr::bind_rows(
+    nj_index_month_more[[1]] |> 
+      dplyr::filter(
+        universal_year_period_id <= 56
+      ),
+    nj_index_month_more_2[[1]] |> 
+      dplyr::filter(
+        universal_year_period_id <= 112
+      ),
+    nj_index_month_more_3[[1]] |> 
+      dplyr::filter(
+        universal_year_period_id > 112
+      )
+  )
+# Number of TRPs and representativity measures should be taken from this!
+
+# Next: all but first chain part is not yet chained back to ref year.
+# For calculating rolling indices, we only need universal_year_period_id, index_i, var_i.
+# Must chain each month
+# Chain part 1: 2017-2019, no chaining
+# Chain part 2: 2019-2023, chained via 2019
+# Chain part 3: 2023-, chained via 2023 and 2019
+nj_index_month_chained_all <-
+  nj_index_month_chain_all |> 
+  dplyr::select(
+    universal_year_period_id, x_label, compared_to, period_name, index_i, var_i = var_robust_i
+  ) |> 
+  dplyr::left_join(
+    universal_calendar_periods |> 
+      dplyr::select(universal_year_period_id_chain = universal_year_period_id, year, period_name),
+    by = dplyr::join_by(compared_to == year, period_name)
+  ) |> 
+  dplyr::mutate(
+    # Need to chain in series, identifying the different parts:
+    chain_part = as.numeric(factor(compared_to))
+  )
+
+# Chain part 2
+chain_part_2 <- 
+  nj_index_month_chained_all |> 
+  dplyr::filter(
+    chain_part %in% c(1, 2)
+  ) |> 
+  chain_index_months()
+
+
+
+chain_part_3 <-
+  dplyr::bind_rows(
+    chain_part_2 |> 
+      dplyr::left_join(
+        universal_calendar_periods |> 
+          dplyr::select(universal_year_period_id_chain = universal_year_period_id, year, period_name),
+        by = dplyr::join_by(compared_to == year, period_name)
+      ) |> 
+      dplyr::mutate(
+        # Need to chain in series, identifying the different parts:
+        chain_part = 2
+      ),
+    nj_index_month_chained_all |> 
+      dplyr::filter(
+        chain_part == 3
+      ) 
+  ) |> 
+  chain_index_months()
+
+

@@ -29,40 +29,40 @@ Hvilke byindekspunkter som er med i datagrunnlaget for den siste tre års gliden
 
 ```{r}
 #| label: tbl-trp_36
-#| tbl-cap: "Byindekspunktene som bidrar til den siste tre års glidende indeksen"
+#| tbl-cap: "Byindekspunktene som bidrar til den siste tre års glidende indeksen."
 #| ft.arraystretch: 1
 
 readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_trp_indices_", city_number, ".rds"))[[2]] |> 
-dplyr::slice_max(last_month_in_index) |> 
-dplyr::select(trp_id, name, trp_index_p) |> 
-dplyr::left_join(
-  all_point_info |> 
-  dplyr::select(
-    trp_id, road_category_and_number, municipality_name, adt
-  ),
-  by = "trp_id"
-) |> 
-dplyr::select(name, road_category_and_number, municipality_name, adt, trp_index_p) |> 
-flextable::flextable() |>
-colformat_double(
-  j = c("trp_index_p"),
-  digits = 1
-) |>
-set_header_labels(
-  name = "Punktnavn",
-  road_category_and_number = "Veg",
-  municipality_name = "Kommune",
-  adt = "Siste ÅDT",
-  trp_index_p = "Endring i\ntrafikkmengde\n(%)"
-) |>
-flextable::align(j = c(5), align = "center", part = "header") |> 
-bold(part = "header") |>
-bg(bg = "#ED9300", part = "header") |>
-border_remove() |>
-hline_top(part = "header", border = borderline) |>
-hline_bottom(part = "all", border = borderline) |>
-autofit() |>
-height_all(height = .1)
+  dplyr::slice_max(last_month_in_index) |> 
+  dplyr::select(trp_id, name, trp_index_p) |> 
+  dplyr::left_join(
+    all_point_info |> 
+    dplyr::select(
+      trp_id, road_category_and_number, municipality_name, adt
+    ),
+    by = "trp_id"
+  ) |> 
+  dplyr::select(name, road_category_and_number, municipality_name, adt, trp_index_p) |> 
+  flextable::flextable() |>
+  colformat_double(
+    j = c("trp_index_p"),
+    digits = 1
+  ) |>
+  set_header_labels(
+    name = "Punktnavn",
+    road_category_and_number = "Veg",
+    municipality_name = "Kommune",
+    adt = paste0("ÅDT ", last_year),
+    trp_index_p = "Endring fra\nreferanseår til\nsiste tre år\n(%)"
+  ) |>
+  flextable::align(j = c(5), align = "center", part = "header") |> 
+  bold(part = "header") |>
+  bg(bg = "#ED9300", part = "header") |>
+  border_remove() |>
+  hline_top(part = "header", border = borderline) |>
+  hline_bottom(part = "all", border = borderline) |>
+  autofit() |>
+  height_all(height = .1)
 ```
 
 {{< pagebreak >}}

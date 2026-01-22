@@ -1941,7 +1941,7 @@ calculate_calendar_adjusted_mdt <- function(trp_id, year) {
   # year: Int!
 
   # Testing:
-  # year <- 2022
+  # year <- 2025
   # trp_id <- "00222V444290"
 
 
@@ -3313,6 +3313,7 @@ get_dt_by_length_for_trp <- function(trp_id, from, to) {
 
   # Testing:
   # trp_id <- "03476V41818"
+  # trp_id <- "00222V444290"
   # from <- "2019-01-02T00:00:00Z"
   # to <- "2019-02-02T00:00:00Z"
 

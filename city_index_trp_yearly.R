@@ -89,3 +89,28 @@ trp_index_so_far <-
     trp_index_so_far_pre_2020,
     trp_index_so_far_from_2020
   )
+
+trp_index_so_far_for_excel <-
+  trp_index_so_far |> 
+  dplyr::left_join(
+    this_citys_trps_all_adt_final,
+    by = "trp_id"
+  ) |> 
+  dplyr::select(
+    trp_id,
+    name,
+    road_category_and_number,
+    year,
+    index
+  ) |>
+  dplyr::mutate(
+    index_period = paste0("index_", year - 1, "_", year)
+  ) |> 
+  tidyr::pivot_wider(
+    id_cols = c(trp_id, name, road_category_and_number),
+    names_from = "index_period",
+    values_from = "index"
+  ) |> 
+  dplyr::arrange(
+    name
+  )

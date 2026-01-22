@@ -40,7 +40,6 @@ library(patchwork)
 library(flextable)
 library(vcd)
 library(sf)
-#library(sfnetworks)
 library(igraph)
 library(tidygraph)
 library(htmltools)
@@ -54,9 +53,6 @@ source("H:/Programmering/R/byindeks/index_report_functions.R")
 source("H:/Programmering/R/road_traffic_index/chain.R")
 
 flextable::set_flextable_defaults(
-  #font.size = 8,
-  #padding.bottom = .2,
-  #padding.top = .4,
   decimal.mark = ",",
   big.mark = " ",
   na_str = ""
@@ -206,6 +202,13 @@ map_links_with_function_class(links_nj) |>
     fill = FALSE
   )
 ```
+
+I tillegg til å sammenligne resultater for dagens og forbedret indeksmetode, er det for Nord-Jæren nødvendig å se på:
+
+- betydningen av flere punkt
+- kjedet indeks
+
+Regneeksemplene er derfor laget i tre varianter, slik de er presentert nedenfor.
 
 
 ## Representativitet
@@ -388,16 +391,7 @@ Representativiteten kan over tid følges med egne tidsserier for:
 - gjennomsnittlig avstand til byindekspunkt
 
 
-## Regneeksempler
-I tillegg til å sammenligne resultater for dagens og forbedret indeksmetode, er det for Nord-Jæren nødvendig å se på:
-
-- betydningen av flere punkt
-- kjedet indeks
-
-Regneeksemplene er derfor laget i tre varianter, slik de er presentert i det følgende.
-
-
-### Dagens utvalg av punkt
+## Dagens utvalg av punkt
 I disse regneeksemplene benyttes de samme punktene som i dagens metode, og indeksen er en direkte sammenligning med referanseåret.
 
 For hver månedsindeks kan vi beregne representativiteten til punktutvalget. Dette er vist i @fig-nj_repr.
@@ -568,7 +562,7 @@ visualize_em_comparison()
 ```
 
 
-### Utvidet utvalg punkt
+## Utvidet utvalg punkt
 I disse regneeksemplene benyttes de fleste av trafikkregistreringspunktene som finnes i byområdet. Antall punkt øker utover året ettersom flere punkter ble satt i drift i løpet av referanseåret, se @fig-nj_n_trp_12_more.
 
 ```{r}
@@ -752,7 +746,7 @@ ggplot(aes(x_label, value, color = version, group = version)) +
 ```
 
 
-### Kjedet indeks
+## Kjedet indeks
 For å utnytte tilgjengelig datagrunnlag bedre, bør det tas hensyn til at utvalget med punkter vil variere over tid. For Nord-Jæren er det nødvendig å ta hensyn til:
 
 - Flere punkter ble satt i drift i årene 2017 og 2018.
@@ -927,6 +921,7 @@ qmd_index_examples_cmdt_brg_month |>
   visualize_representativity()
 ```
 
+
 ## Ett års glidende indeks
 ```{r}
 #| label: fig-bergen_official_12
@@ -934,8 +929,8 @@ qmd_index_examples_cmdt_brg_month |>
 
 qmd_indexes_official_bergen |> 
   dplyr::filter(
-    window == "12_months",
-    year < 2025
+    window == "12_months"
+    # year < 2025
   ) |> 
   visualize_city_36_mdt_index(
     "Data: Statens vegvesen",
@@ -947,7 +942,7 @@ qmd_indexes_official_bergen |>
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
   ) +
-  ylim(-15, 4)
+  ylim(-15, 10)
 ```
 
 ```{r}
@@ -966,7 +961,7 @@ qmd_index_examples_cmdt_brg |>
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
   ) +
-  ylim(-15, 4)
+  ylim(-15, 10)
 ```
 
 ```{r}
@@ -1006,8 +1001,8 @@ visualize_em_comparison()
 
 qmd_indexes_official_bergen |> 
   dplyr::filter(
-    window == "36_months",
-    year < 2025
+    window == "36_months"
+    # year < 2025
   ) |> 
   visualize_city_36_mdt_index(
     "Data: Statens vegvesen",
@@ -1019,7 +1014,7 @@ qmd_indexes_official_bergen |>
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
   ) +
-  ylim(-10, 4)
+  ylim(-10, 5)
 ```
 
 ```{r}
@@ -1038,7 +1033,7 @@ qmd_index_examples_cmdt_brg |>
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
   ) +
-  ylim(-10, 4)
+  ylim(-10, 5)
 ```
 
 ```{r}
@@ -1363,8 +1358,8 @@ qmd_index_examples_cmdt_oslo_month |>
 
 qmd_indexes_official_oslo |> 
   dplyr::filter(
-    window == "12_months",
-    year < 2025
+    window == "12_months"
+    # year < 2025
   ) |> 
   visualize_city_36_mdt_index(
     "Data: Statens vegvesen",
@@ -1376,7 +1371,7 @@ qmd_indexes_official_oslo |>
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
   ) +
-  ylim(-15, 4)
+  ylim(-15, 10)
 ```
 
 ```{r}
@@ -1395,7 +1390,7 @@ qmd_index_examples_cmdt_oslo |>
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
   ) +
-  ylim(-15, 4)
+  ylim(-15, 10)
 ```
 
 ```{r}
@@ -1436,8 +1431,8 @@ visualize_em_comparison()
 
 qmd_indexes_official_oslo |> 
   dplyr::filter(
-    window == "36_months",
-    year < 2025
+    window == "36_months"
+    # year < 2025
   ) |> 
   visualize_city_36_mdt_index(
     "Data: Statens vegvesen",
