@@ -1478,6 +1478,72 @@ visualize_rolling_cmdt_index <- function(rolling_cmdt_df, caption_text, title_te
 }
 
 
+visualize_rolling_cmdt_indices_12_36 <- function(rolling_cmdt_df, title_text, sub_text) {
+
+  x_breaks_labels <-
+    rolling_cmdt_df |>
+    dplyr::filter(
+      stringr::str_detect(x_label, pattern = "apr|aug|des")
+    )
+
+  x_breaks <- x_breaks_labels |> purrr::pluck("universal_year_period_id")
+  x_labels <- x_breaks_labels |> purrr::pluck("x_label")
+
+  rolling_cmdt_df |>
+    ggplot2::ggplot(aes(x = universal_year_period_id, y = index_p, color = window_years, group = window_years)) +
+    ggplot2::geom_hline(
+      yintercept = 0,
+      color = "#58b02c",
+      linewidth = 0.8,
+      alpha = 0.3
+    ) +
+    ggplot2::geom_line() +
+    ggplot2::geom_point() +
+    facet_grid(rows = vars(area)) +
+    ggplot2::scale_color_manual(
+      values = c(
+        "one" = "#008ec2",
+        "three" = "#ed9300"
+      ),
+      labels = c(
+        "1 år",
+        "3 år"
+      ),
+      name = "Glidende periode"
+    ) +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 90),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 10, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        ),
+      legend.position = "bottom"
+    ) +
+    ggplot2::scale_x_continuous(
+      name = NULL,
+      breaks = x_breaks,
+      labels = x_labels
+    ) +
+    labs(
+      x = NULL, y = "Endring i trafikkmengde (%)"
+      # caption = caption_text
+    ) +
+    ggtitle(
+      title_text,
+      subtitle = sub_text
+    )
+}
+
+
 visualize_rolling_indices <- function(rolling_indices_df, caption_text, title_text, sub_text) {
 
     # Test
@@ -1559,7 +1625,8 @@ visualize_rolling_indices <- function(rolling_indices_df, caption_text, title_te
     ) +
     labs(
       x = NULL, y = "Endring i trafikkmengde (%)",
-      caption = caption_text) +
+      caption = caption_text
+    ) +
     ggtitle(title_text, subtitle = sub_text)
 }
 

@@ -98,7 +98,6 @@ municipality_polygon_oslo <- readr::read_rds("traffic_link_pop/municipality_poly
 # Calculation examples
 ## Bergen
 qmd_index_examples_cmdt_brg_month <- readr::read_rds("representativity/cmdt_index_month_8952.rds")
-
 qmd_index_examples_cmdt_brg <- 
   readr::read_rds("representativity/rolling_cmdt_index_8952.rds") |>
   dplyr::bind_rows()
@@ -110,7 +109,6 @@ qmd_indexes_official_bergen <-
 
 ## Oslo
 qmd_index_examples_cmdt_oslo_month <- readr::read_rds("representativity/cmdt_index_month_959.rds")
-
 qmd_index_examples_cmdt_oslo <- 
   readr::read_rds("representativity/rolling_cmdt_index_959.rds") |>
   dplyr::bind_rows()
@@ -122,7 +120,6 @@ qmd_indexes_official_oslo <-
 
 ## Trondheim
 qmd_index_examples_cmdt_trd_month <- readr::read_rds("representativity/cmdt_index_month_960.rds")
-
 qmd_index_examples_cmdt_trd <- 
   readr::read_rds("representativity/rolling_cmdt_index_960.rds") |>
   dplyr::bind_rows()
@@ -133,19 +130,20 @@ qmd_indexes_official_trd <-
 
 
 ## Nord-Jæren
-qmd_index_examples_cmdt_nj_month <- readr::read_rds("representativity/cmdt_index_month_nj.rds")
-
+qmd_index_examples_cmdt_nj_month <- readr::read_rds("representativity/cmdt_index_month_nj.rds")[[1]]
 qmd_index_examples_cmdt_nj <- 
   readr::read_rds("representativity/rolling_cmdt_index_nj.rds") |>
   dplyr::bind_rows()
 
-qmd_index_examples_cmdt_nj_month_more <- readr::read_rds("representativity/cmdt_index_month_nj_more.rds")
-
+qmd_index_examples_cmdt_nj_month_more <- readr::read_rds("representativity/cmdt_index_month_nj_more.rds")[[1]]
 qmd_index_examples_cmdt_nj_more <- 
   readr::read_rds("representativity/rolling_cmdt_index_nj_more.rds") |>
   dplyr::bind_rows()
 
-qmd_index_examples_cmdt_nj_month_more_chained <- readr::read_rds("representativity/cmdt_index_month_nj_more_chained.rds")
+qmd_index_examples_cmdt_nj_month_chained <- readr::read_rds("representativity/cmdt_index_month_nj_original_chain_parts.rds")
+qmd_index_examples_cmdt_nj_chained <- 
+  readr::read_rds("representativity/rolling_cmdt_index_nj_chained.rds") |>
+  dplyr::bind_rows()
 
 qmd_indexes_official_nj <-
   readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_952.rds")) |>
@@ -747,7 +745,7 @@ ggplot(aes(x_label, value, color = version, group = version)) +
 
 
 ## Kjedet indeks
-For å utnytte tilgjengelig datagrunnlag bedre, bør det tas hensyn til at utvalget med punkter vil variere over tid. For Nord-Jæren er det nødvendig å ta hensyn til:
+For å utnytte tilgjengelig data bedre, bør det tas hensyn til at utvalget med punkter vil variere over tid. For Nord-Jæren er det nødvendig å ta hensyn til:
 
 - Flere punkter ble satt i drift i årene 2017 og 2018.
 - Nytt vegsystem med Eiganestunnelen og Ryfylketunnelen ble åpnet i 2020.
@@ -759,11 +757,11 @@ En kjedet indeks vil da kunne utnytte flere punkter med en inndeling i delperiod
 - 2019-2023
 - 2023- 
 
-Det vil da være to "mellomår" som knytter sammen delperiodene. Hvilke år som sammenlignes kan illustreres grafisk som vist i @fig-chain_nj.
+Det vil da være to "mellomår", 2019 og 2023, som knytter sammen delperiodene. Hvilke år som sammenlignes kan illustreres grafisk som vist i @fig-chain_nj.
 
 ```{r}
 #| label: fig-chain_nj
-#| fig-cap: "Kjedet byindeks for Nord-Jæren. Linjene viser hvilke år som sammenlignes. Eksempelvis vil trafikken i 2026 sammenlignes med 2023 som gir en indeks for 2023–2026. Denne indeksverdien vil deretter kjedes med indeksene for henholdsvis 2019–2023 og 2017–2019, slik at vi til slutt oppnår en indeksverdi for 2017–2026."
+#| fig-cap: "Prinsippskisse av kjedet byindeks for Nord-Jæren. Linjene viser hvilke år som sammenlignes. Eksempelvis vil trafikken i 2026 sammenlignes med 2023 som gir en indeks for 2023–2026. Denne indeksverdien vil deretter kjedes med indeksene for henholdsvis 2019–2023 og 2017–2019, slik at vi til slutt får en indeksverdi for 2017–2026."
 
 plot_index_chain_graph(graph_nj) +
   theme(
@@ -778,42 +776,63 @@ Antall punkt tilgjengelig per måned er som vist i @fig-nj_n_trp_chained.
 #| label: fig-nj_n_trp_chained
 #| fig-cap: "Antall punkt." 
 
-qmd_index_examples_cmdt_nj_month_more_chained |>
-  dplyr::select(x_label, n_trp) |>
+dplyr::bind_rows(
+  qmd_index_examples_cmdt_nj_month |>
+    dplyr::mutate(
+      selection = "Dagens"
+    ),
+  qmd_index_examples_cmdt_nj_month_more |> 
+      dplyr::mutate(
+      selection = "Utvidet"
+    ),
+  qmd_index_examples_cmdt_nj_month_chained |>
+    dplyr::mutate(
+      selection = "Kjedet"
+    )    
+) |>
+  dplyr::select(x_label, n_trp, selection) |>
   dplyr::mutate(
     x_label = as.factor(x_label) |> forcats::fct_inorder()
   ) |>
-  ggplot2::ggplot(aes(x = x_label, y = n_trp)) +
-    ggplot2::geom_point(color = "#ed9300") +
-    geom_line(group = '', color = "#ed9300") +
-    theme_light() +
-    theme(
-      axis.text.x = element_text(vjust = 0.5, angle = 90),
-      axis.title.y = element_text(
-        margin = margin(t = 0, r = 15, b = 0, l = 0)),
-      axis.title.x = element_text(
-        margin = margin(t = 15, r = 0, b = 0, l = 0)),
-      panel.grid.minor.x = element_blank(),
-      plot.caption =
-        element_text(
-          face = "italic",
-          size = 8,
-          lineheight = 1.5,
-          vjust = 0
-        ),
-      plot.background = element_rect(fill = svv_background_color),
-      panel.background = element_rect(fill = svv_background_color),
-      legend.background = element_rect(fill = svv_background_color),
-      legend.position = "bottom"
-    ) +
-    ggplot2::scale_x_discrete(
-      name = NULL,
-      breaks = ~ dplyr::if_else(stringr::str_detect(.x, "des"), .x, "")
-    ) +
-    labs(
-      x = NULL, y = "Antall punkt"
-    ) +
-    ggtitle("Antall punkt per måned")
+  ggplot2::ggplot(aes(x = x_label, y = n_trp, color = selection, group = selection)) +
+  ggplot2::geom_point() +
+  ggplot2::geom_line() +
+  ggplot2::scale_color_manual(
+    values = c(
+      "Dagens" = "#008ec2",
+      "Utvidet" = "#444f55",
+      "Kjedet" = "#ed9300"
+    ),
+    name = "Utvalg"
+  ) +
+  theme_light() +
+  theme(
+    axis.text.x = element_text(vjust = 0.5, angle = 90),
+    axis.title.y = element_text(
+      margin = margin(t = 0, r = 15, b = 0, l = 0)),
+    axis.title.x = element_text(
+      margin = margin(t = 15, r = 0, b = 0, l = 0)),
+    panel.grid.minor.x = element_blank(),
+    plot.caption =
+      element_text(
+        face = "italic",
+        size = 8,
+        lineheight = 1.5,
+        vjust = 0
+      ),
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color),
+    legend.position = "bottom"
+  ) +
+  ggplot2::scale_x_discrete(
+    name = NULL,
+    breaks = ~ dplyr::if_else(stringr::str_detect(.x, "des"), .x, "")
+  ) +
+  labs(
+    x = NULL, y = "Antall punkt"
+  ) +
+  ggtitle("Antall punkt per måned")
 ```
 
 For hver månedsindeks kan vi beregne representativiteten til punktutvalget. Dette er vist i @fig-nj_repr_chained.
@@ -822,7 +841,7 @@ For hver månedsindeks kan vi beregne representativiteten til punktutvalget. Det
 #| label: fig-nj_repr_chained
 #| fig-cap: "Utvalgets representativitet over tid." 
 
-qmd_index_examples_cmdt_nj_month_more_chained |>
+qmd_index_examples_cmdt_nj_month_chained |>
   dplyr::select(
     x_label, n_trp_perc, tw_perc, tvd
   ) |> 
@@ -836,19 +855,51 @@ qmd_index_examples_cmdt_nj_month_more_chained |>
   visualize_representativity()
 ```
 
-Et regneeksempel for indeks til 2024 viser følgende estimater for endringen i trafikk:
+I @fig-nj_chained_1y vises resultatene for kjedet ett års glidende indeks med forbedret metode.
 
-- 2017-2019: -2,5 % 
-- 2019-2023:  6,4 % 
-- 2023-2024:  1,0 % 
+```{r}
+#| label: fig-nj_chained_1y
+#| fig-cap: "Kjedet ett års glidende indeks for Nord-Jæren."
 
-Til sammen gir dette en endring fra 2017 til 2024 på 4,8 % med en feilmargin på 1,2 prosentpoeng.
+fig_nj_chained_1y <-
+  qmd_index_examples_cmdt_nj_chained |> 
+  dplyr::filter(window_years == "one") |> 
+  visualize_rolling_cmdt_index(
+    "Data: Statens vegvesen",
+    "Estimert endring i trafikkmengde siste glidende 1 år, forbedret metode",
+    paste0("Sammenlignet med 2017, med kjeding")
+  ) +
+  theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  ) 
 
-Til sammenligning er kjeding av årlig indeks slik vi finner den i den offisielle rapporten på 0,6 % med en feilmargin på 12,6 prosentpoeng. Her benyttes i varierende grad et antall punkter mellom 19 og 23.
+fig_nj_chained_1y + ylim(-16, 15)
+```
 
-Ett års glidende indeks viser for 2024 en endring på 6,5 % med en feilmargin på 1,3 prosentpoeng.
+I @fig-nj_chained_3y vises resultatene for kjedet tre års glidende indeks med forbedret metode.
 
-Disse tallene illustrerer fordelen med en periodevis kjedet indeks da denne har et større antall punkt. Feilmarginen er mye mindre enn for årlig kjedet indeks, men på samme nivå som ett års glidende indeks.
+```{r}
+#| label: fig-nj_chained_3y
+#| fig-cap: "Kjedet tre års glidende indeks for Nord-Jæren."
+
+fig_nj_chained_3y <-
+  qmd_index_examples_cmdt_nj_chained |> 
+  dplyr::filter(window_years == "three") |> 
+  visualize_rolling_cmdt_index(
+    "Data: Statens vegvesen",
+    "Estimert endring i trafikkmengde siste glidende 3 år, forbedret metode",
+    paste0("Sammenlignet med 2017, med kjeding")
+  ) +
+  theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  ) 
+
+fig_nj_chained_3y + ylim(-12, 12)
+```
 
 
 # Bergen
@@ -949,7 +1000,8 @@ qmd_indexes_official_bergen |>
 #| label: fig-bergen_improved_12
 #| fig-cap: "Forbedret indeks for Bergen, ett års glidende indeks."
 
-qmd_index_examples_cmdt_brg |> 
+fig_brg_improved_1y <-
+  qmd_index_examples_cmdt_brg |> 
   dplyr::filter(window_years == "one") |> 
   visualize_rolling_cmdt_index(
     "Data: Statens vegvesen",
@@ -960,8 +1012,9 @@ qmd_index_examples_cmdt_brg |>
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
-  ) +
-  ylim(-15, 10)
+  )
+  
+fig_brg_improved_1y + ylim(-15, 10)
 ```
 
 ```{r}
@@ -1021,7 +1074,8 @@ qmd_indexes_official_bergen |>
 #| label: fig-bergen_improved_36
 #| fig-cap: "Forbedret indeks for Bergen, tre års glidende indeks."
 
-qmd_index_examples_cmdt_brg |> 
+fig_brg_improved_3y <-
+  qmd_index_examples_cmdt_brg |> 
   dplyr::filter(window_years == "three") |> 
   visualize_rolling_cmdt_index(
     "Data: Statens vegvesen",
@@ -1032,8 +1086,9 @@ qmd_index_examples_cmdt_brg |>
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
-  ) +
-  ylim(-10, 5)
+  )
+  
+fig_brg_improved_3y + ylim(-10, 5)
 ```
 
 ```{r}
@@ -1073,7 +1128,8 @@ Vegnettet som overlapper med de sentrale tettstedene er vist i @fig-map_trd.
 #| message: false
 #| fig-cap: !expr map_caption
 
-map_links_with_function_class(links_trondheim) |> 
+trd_map <- 
+  map_links_with_function_class(links_trondheim) |> 
   addPolygons(
     data = municipality_polygon_trondheim,
     weight = 3,
@@ -1086,6 +1142,8 @@ map_links_with_function_class(links_trondheim) |>
     opacity = 0.3,
     fill = FALSE
   )
+
+trd_map
 ```
 
 
@@ -1143,10 +1201,7 @@ qmd_index_examples_cmdt_trd_month |>
 #| fig-cap: "Offisiell indeks for Trondheim, ett års glidende indeks."
 
 qmd_indexes_official_trd |> 
-  dplyr::filter(
-    window == "12_months",
-    year < 2025
-  ) |> 
+  dplyr::filter(window == "12_months") |> 
   visualize_city_36_mdt_index(
     "Data: Statens vegvesen",
     "Estimert endring i trafikkmengde siste glidende 1 år, nåværende metode",
@@ -1215,10 +1270,7 @@ visualize_em_comparison()
 #| fig-cap: "Offisiell indeks for Trondheim, tre års glidende indeks."
 
 qmd_indexes_official_trd |> 
-  dplyr::filter(
-    window == "36_months",
-    year < 2025
-  ) |> 
+  dplyr::filter(window == "36_months") |> 
   visualize_city_36_mdt_index(
     "Data: Statens vegvesen",
     "Estimert endring i trafikkmengde siste glidende 3 år, dagens metode",
@@ -1378,7 +1430,8 @@ qmd_indexes_official_oslo |>
 #| label: fig-oslo_improved_12
 #| fig-cap: "Forbedret indeks for Oslo, ett års glidende indeks."
 
-qmd_index_examples_cmdt_oslo |> 
+fig_osl_improved_1y <-
+  qmd_index_examples_cmdt_oslo |> 
   dplyr::filter(window_years == "one") |> 
   visualize_rolling_cmdt_index(
     "Data: Statens vegvesen",
@@ -1389,8 +1442,9 @@ qmd_index_examples_cmdt_oslo |>
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
-  ) +
-  ylim(-15, 10)
+  )
+  
+fig_osl_improved_1y + ylim(-15, 10)
 ```
 
 ```{r}
@@ -1451,7 +1505,8 @@ qmd_indexes_official_oslo |>
 #| label: fig-oslo_improved_36
 #| fig-cap: "Forbedret indeks for Oslo, tre års glidende indeks."
 
-qmd_index_examples_cmdt_oslo |> 
+fig_osl_improved_3y <-
+  qmd_index_examples_cmdt_oslo |> 
   dplyr::filter(window_years == "three") |> 
   visualize_rolling_cmdt_index(
     "Data: Statens vegvesen",
@@ -1462,8 +1517,9 @@ qmd_index_examples_cmdt_oslo |>
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
-  ) +
-  ylim(-8, 4)
+  ) 
+    
+fig_osl_improved_3y + ylim(-8, 4)
 ```
 
 ```{r}

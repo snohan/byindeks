@@ -395,7 +395,7 @@ index_chain_1_2_3 <-
 # Must then chain each month
 
 # Gathering CMDT for all chain parts
-nj_index_month_chain_all <-
+ nj_month_indices_original <-
   dplyr::bind_rows(
     nj_index_month_more[[1]] |> 
       dplyr::filter(
@@ -411,6 +411,10 @@ nj_index_month_chain_all <-
       )
   )
 # Number of TRPs and representativity measures should be taken from this!
+readr::write_rds(
+  nj_month_indices_original,
+  "representativity/cmdt_index_month_nj_original_chain_parts.rds"
+)
 
 # Next: all but first chain part is not yet chained back to ref year.
 # For calculating rolling indices, we only need universal_year_period_id, index_i, var_i.
@@ -418,8 +422,10 @@ nj_index_month_chain_all <-
 # Chain part 1: 2017-2019, no chaining
 # Chain part 2: 2019-2023, chained via 2019
 # Chain part 3: 2023-, chained via 2023 and 2019
-nj_index_month_chained_all <-
-  nj_index_month_chain_all |> 
+
+# nj_index_month_chained_all <-
+nj_month_indices_original_with_chain_info <-
+  nj_month_indices_original |> 
   dplyr::select(
     universal_year_period_id, x_label, compared_to, period_name, index_i, var_i = var_robust_i
   ) |> 
@@ -429,19 +435,27 @@ nj_index_month_chained_all <-
     by = dplyr::join_by(compared_to == year, period_name)
   ) |> 
   dplyr::mutate(
-    # Need to chain in series, identifying the different parts:
+    # Need to chain each chain part in consecutive order, identifying the different parts:
     chain_part = as.numeric(factor(compared_to))
   )
 
-# Chain part 2
+# Chain parts
+chain_part_1 <- 
+  nj_month_indices_original_with_chain_info |> 
+  dplyr::filter(chain_part %in% c(1)) |> 
+  dplyr::select(
+    universal_year_period_id, x_label, period_name, compared_to, index_i, var_i
+  )
+
 chain_part_2 <- 
-  nj_index_month_chained_all |> 
+  nj_month_indices_original_with_chain_info |> 
   dplyr::filter(
     chain_part %in% c(1, 2)
   ) |> 
-  chain_index_months()
-
-
+  chain_index_months() |> 
+  dplyr::select(
+    universal_year_period_id, x_label, period_name, compared_to, index_i, var_i
+  )
 
 chain_part_3 <-
   dplyr::bind_rows(
@@ -455,11 +469,50 @@ chain_part_3 <-
         # Need to chain in series, identifying the different parts:
         chain_part = 2
       ),
-    nj_index_month_chained_all |> 
+    nj_month_indices_original_with_chain_info |> 
       dplyr::filter(
         chain_part == 3
       ) 
   ) |> 
   chain_index_months()
 
+nj_month_indices_chained <- 
+  dplyr::bind_rows(
+    chain_part_1,
+    chain_part_2,
+    chain_part_3
+  ) |> 
+  dplyr::select(
+    universal_year_period_id, x_label, period_name, compared_to, index_i, var_robust_i = var_i
+  )
 
+area_index_one_year_nj_chained <- calculate_rolling_area_index_one_year(nj_month_indices_chained)
+area_index_three_years_nj_chained <- calculate_rolling_index_multiple_years(area_index_one_year_nj_chained, 3)
+
+list(
+  area_index_one_year_nj_chained |>
+    dplyr::select(
+      universal_year_period_id,
+      x_label,
+      index_p,
+      ci_lower,
+      ci_upper
+    ) |>
+    dplyr::mutate(
+      window_years = "one"
+    ),
+  area_index_three_years_nj_chained |>
+    dplyr::select(
+      universal_year_period_id,
+      x_label,
+      index_p,
+      ci_lower,
+      ci_upper
+    ) |>
+    dplyr::mutate(
+      window_years = "three"
+    )
+) |>
+  readr::write_rds(
+    "representativity/rolling_cmdt_index_nj_chained.rds"
+  )

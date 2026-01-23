@@ -22,15 +22,13 @@
 
 # City numbers ----
 # Refy City  Cnum
-# 2016 Busk  1952
-# 2016 Gren   955
 # 2017 NJær   952
 # 2018 Oslo   959
 # 2018 Berg  8952
 # 2019 Tron   960
 
 {
-  present_year <- 2024
+  present_year <- 2025
   index_month <- 12
   city_number <- "960"
 }
@@ -58,7 +56,7 @@ if(city_number == "952") {
   trps_existing <-
     link_trp_id |>
     dplyr::filter(
-      link_id %in% links_nj$link_id
+      link_id %in% links_in_area$link_id
     )
 
   city_trps <- trps_existing$trp_id
@@ -66,14 +64,20 @@ if(city_number == "952") {
 
 # First, make cMDT per TRP and store them in folder cMDT
 # cMDT
-trp_number <- 29
+# trp_number <- 88
 
-{
-  tic()
+for(i in 1:length(city_trps)) {
+  
+  # tic()
+  print(paste0(i, ": ", city_trps[i]))
+
   cmdt <-
     purrr::map(
-      years_from_reference_to_today,
-      ~ calculate_calendar_adjusted_mdt(city_trps[trp_number], .x)
+      # From the beginning
+      # years_from_reference_to_today,
+      # Or just add new data
+      2025,
+      ~ calculate_calendar_adjusted_mdt(city_trps[i], .x)
     ) |>
     purrr::list_rbind()
 
@@ -84,13 +88,16 @@ trp_number <- 29
           "cmdt/cmdt_",
           city_number,
           "_",
-          city_trps[trp_number],
+          city_trps[i],
+          # For adding new data in a separate file
+          "_2025",
           ".rds"
         )
     )
 
-  toc()
+  # toc()
 }
+
 
 # Then gather all cMDT per city in an rds file
 cmdt_city <-
