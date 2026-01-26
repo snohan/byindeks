@@ -65,16 +65,12 @@ index_this_year_prepared_wide_country <-
 #| label: extract_data_for_text
 
 this_year <- 2025
-latest_month_number <- 11
+latest_month_number <- 12
 
-latest_month_name <-
-  max(
-    index_this_year_prepared$month_name
-  ) %>%
-  as.character()
+latest_month_name <- base::max(index_this_year_prepared$month_name) |> base::as.character()
 
 index_this_month <-
-  index_this_year_prepared %>%
+  index_this_year_prepared |> 
   dplyr::filter(
     area_type == "COUNTRY",
     period == "month",
@@ -84,13 +80,10 @@ index_this_month <-
     month == latest_month_number
   )
 
-less_or_more_month <-
-  dplyr::if_else(
-    index_this_month$index_p < 0, "mindre", "meir"
-  )
+less_or_more_month <- dplyr::if_else(index_this_month$index_p < 0, "mindre", "meir")
 
 index_so_far_this_year_all <-
-  index_this_year_prepared %>%
+  index_this_year_prepared |> 
   dplyr::filter(
     area_type == "COUNTRY",
     period == "year_to_date",
@@ -98,14 +91,11 @@ index_so_far_this_year_all <-
     road_category == "Europa-, riks- og fylkesveg",
     day_type == "alle",
     month == latest_month_number
-  ) %>%
-  dplyr::select(index_p) %>%
+  ) |> 
+  dplyr::select(index_p) |> 
   round(digits = 1)
 
-less_or_more_so_far <-
-  dplyr::if_else(
-    index_so_far_this_year_all$index_p < 0, "mindre", "meir"
-  )
+less_or_more_so_far <- dplyr::if_else(index_so_far_this_year_all$index_p < 0, "mindre", "meir")
 
 index_so_far_this_year_all_character <-
   index_so_far_this_year_all %>%
@@ -756,9 +746,9 @@ Vegtrafikkindeksen er berekna kvart år sidan 1995, og tabellane nedan viser kum
 
 
 ```{r historic}
-historic <- 
-  read.csv2("road_traffic_index_historic.csv") %>% 
-  tibble::as_tibble()
+#| label: get_historic
+
+historic <- read.csv2("road_traffic_index_historic.csv") |> tibble::as_tibble()
 
 # all
 historic_all <- 
@@ -773,8 +763,7 @@ historic_all <-
   ) %>% 
   dplyr::select(year, index_i)
 
-historic_all_combinations <- 
-  calculate_all_index_chain_combinations(historic_all)
+historic_all_combinations <- calculate_all_index_chain_combinations(historic_all)
 
 # road category
 historic_f <- 
@@ -789,8 +778,7 @@ historic_f <-
   ) %>% 
   dplyr::select(year, index_i)
 
-historic_f_all_combinations <-
-  calculate_all_index_chain_combinations(historic_f)
+historic_f_all_combinations <- calculate_all_index_chain_combinations(historic_f)
 
 historic_er <- 
   historic %>% 
@@ -804,8 +792,7 @@ historic_er <-
   ) %>% 
   dplyr::select(year, index_i)
 
-historic_er_all_combinations <-
-  calculate_all_index_chain_combinations(historic_er)
+historic_er_all_combinations <- calculate_all_index_chain_combinations(historic_er)
 
 # light and heavy
 historic_l <- 
@@ -820,8 +807,7 @@ historic_l <-
   ) %>% 
   dplyr::select(year, index_i)
 
-historic_l_combinations <- 
-  calculate_all_index_chain_combinations(historic_l)
+historic_l_combinations <- calculate_all_index_chain_combinations(historic_l)
 
 historic_h <- 
   historic %>% 
@@ -835,13 +821,12 @@ historic_h <-
   ) %>% 
   dplyr::select(year, index_i)
 
-historic_h_combinations <- 
-  calculate_all_index_chain_combinations(historic_h)
+historic_h_combinations <- calculate_all_index_chain_combinations(historic_h)
 ```
 
 ```{r}
 #| label: tbl-historic_all_table_1
-#| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 1995 til 2024."
+#| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 1995 til 2025."
 #| ft.arraystretch: 0.9
 
 historic_all_combinations %>% 
@@ -851,7 +836,6 @@ historic_all_combinations %>%
   set_header_labels(year = "År") %>%
   flextable::align(j = 2:11, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -868,7 +852,7 @@ historic_all_combinations %>%
 
 ```{r}
 #| label: historic_all_table_2
-#| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 2005 til 2024."
+#| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 2005 til 2025."
 #| ft.arraystretch: 0.9
 
 historic_all_combinations %>% 
@@ -879,7 +863,6 @@ historic_all_combinations %>%
   set_header_labels(year = "År") %>%
   flextable::align(j = 2:11, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -895,19 +878,17 @@ historic_all_combinations %>%
 
 ```{r}
 #| label: historic_all_table_3
-#| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 2015 til 2024."
+#| tbl-cap: "Kumulativ trafikkutvikling i Noreg frå 2015 til 2025."
 #| ft.arraystretch: 0.9
 
 historic_all_combinations %>% 
   dplyr::slice(-(1:20)) %>% 
-  dplyr::select(1, 22:30) %>% 
+  dplyr::select(1, 22:31) %>% 
   flextable::flextable() %>%
   colformat_double(j = 2:6, digits = 1) %>%
   set_header_labels(year = "År") %>%
   flextable::align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  #fontsize(size = 9, part = "all") %>%
-  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -924,7 +905,7 @@ historic_all_combinations %>%
 
 ```{r}
 #| label: historic_f_table
-#| tbl-cap: "Kumulativ trafikkutvikling på fylkesvegar i Noreg frå 2015 til 2024."
+#| tbl-cap: "Kumulativ trafikkutvikling på fylkesvegar i Noreg frå 2015 til 2025."
 #| ft.arraystretch: 0.9
 
 historic_f_all_combinations %>% 
@@ -934,8 +915,6 @@ historic_f_all_combinations %>%
   set_header_labels(year = "År") %>%
   flextable::align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  #fontsize(size = 9, part = "all") %>%
-  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -951,19 +930,17 @@ historic_f_all_combinations %>%
 
 ```{r}
 #| label: historic_f_table_2
-#| tbl-cap: "Kumulativ trafikkutvikling på fylkesvegar i Noreg frå 2015 til 2024."
+#| tbl-cap: "Kumulativ trafikkutvikling på fylkesvegar i Noreg frå 2015 til 2025."
 #| ft.arraystretch: 0.9
 
 historic_f_all_combinations %>% 
   dplyr::slice(-(1:10)) %>% 
-  dplyr::select(1, 12:15) %>% 
+  dplyr::select(1, 12:16) %>% 
   flextable::flextable() %>%
   colformat_double(j = 2:flextable::ncol_keys(.), digits = 1) %>%
   set_header_labels(year = "År") %>%
   flextable::align(j = 2:flextable::ncol_keys(.), align = "right", part = "all") %>%
   bold(part = "header") %>%
-  #fontsize(size = 9, part = "all") %>%
-  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -980,7 +957,7 @@ historic_f_all_combinations %>%
 
 ```{r}
 #| label: historic_er_table
-#| tbl-cap: "Kumulativ trafikkutvikling på Europa- og riksvegar i Noreg frå 2015 til 2024."
+#| tbl-cap: "Kumulativ trafikkutvikling på Europa- og riksvegar i Noreg frå 2015 til 2025."
 #| ft.arraystretch: 0.9
 
 historic_er_all_combinations %>% 
@@ -990,8 +967,6 @@ historic_er_all_combinations %>%
   set_header_labels(year = "År") %>%
   flextable::align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  #fontsize(size = 9, part = "all") %>%
-  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -1007,19 +982,17 @@ historic_er_all_combinations %>%
 
 ```{r}
 #| label: historic_er_table_2
-#| tbl-cap: "Kumulativ trafikkutvikling på Europa- og riksvegar i Noreg frå 2015 til 2024."
+#| tbl-cap: "Kumulativ trafikkutvikling på Europa- og riksvegar i Noreg frå 2015 til 2025."
 #| ft.arraystretch: 0.9
 
 historic_er_all_combinations %>% 
   dplyr::slice(-(1:10)) %>% 
-  dplyr::select(1, 12:15) %>% 
+  dplyr::select(1, 12:16) %>% 
   flextable::flextable() %>%
   colformat_double(j = 2:flextable::ncol_keys(.), digits = 1) %>%
   set_header_labels(year = "År") %>%
   flextable::align(j = 2:flextable::ncol_keys(.), align = "right", part = "all") %>%
   bold(part = "header") %>%
-  #fontsize(size = 9, part = "all") %>%
-  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -1036,7 +1009,7 @@ historic_er_all_combinations %>%
 
 ```{r}
 #| label: historic_l_table_1
-#| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 1998 til 2024."
+#| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 1998 til 2025."
 #| ft.arraystretch: 0.9
 
 historic_l_combinations %>% 
@@ -1046,7 +1019,6 @@ historic_l_combinations %>%
   set_header_labels(year = "År") %>%
   flextable::align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -1063,7 +1035,7 @@ historic_l_combinations %>%
 
 ```{r}
 #| label: historic_l_table_2
-#| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2008 til 2024."
+#| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2008 til 2025."
 #| ft.arraystretch: 0.9
 
 historic_l_combinations %>% 
@@ -1074,8 +1046,6 @@ historic_l_combinations %>%
   set_header_labels(year = "År") %>%
   flextable::align(j = 2:11, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  #fontsize(size = 9, part = "all") %>%
-  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -1091,18 +1061,17 @@ historic_l_combinations %>%
 
 ```{r}
 #| label: historic_l_table_3
-#| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2018 til 2024."
+#| tbl-cap: "Kumulativ trafikkutvikling for lette køyretøy i Noreg frå 2018 til 2025."
 #| ft.arraystretch: 0.9
 
 historic_l_combinations %>% 
   dplyr::slice(-(1:20)) %>% 
-  dplyr::select(1, 22:27) %>% 
+  dplyr::select(1, 22:28) %>% 
   flextable::flextable() %>%
   colformat_double(j = 2:6, digits = 1) %>%
   set_header_labels(year = "År") %>%
   flextable::align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -1119,7 +1088,7 @@ historic_l_combinations %>%
 
 ```{r}
 #| label: historic_h_table_1
-#| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 1998 til 2024."
+#| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 1998 til 2025."
 #| ft.arraystretch: 0.9
 
 historic_h_combinations %>% 
@@ -1129,8 +1098,6 @@ historic_h_combinations %>%
   set_header_labels(year = "År") %>%
   flextable::align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  #fontsize(size = 9, part = "all") %>%
-  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -1147,7 +1114,7 @@ historic_h_combinations %>%
 
 ```{r}
 #| label: historic_h_table_2
-#| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2008 til 2024."
+#| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2008 til 2025."
 #| ft.arraystretch: 0.9
 
 historic_h_combinations %>% 
@@ -1158,8 +1125,6 @@ historic_h_combinations %>%
   set_header_labels(year = "År") %>%
   flextable::align(j = 2:11, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  #fontsize(size = 9, part = "all") %>%
-  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%
@@ -1175,19 +1140,17 @@ historic_h_combinations %>%
 
 ```{r}
 #| label: historic_h_table_3
-#| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2018 til 2024."
+#| tbl-cap: "Kumulativ trafikkutvikling for tunge køyretøy i Noreg frå 2018 til 2025."
 #| ft.arraystretch: 0.9
 
 historic_h_combinations %>% 
   dplyr::slice(-(1:20)) %>% 
-  dplyr::select(1, 22:27) %>% 
+  dplyr::select(1, 22:28) %>% 
   flextable::flextable() %>%
   colformat_double(j = 2:6, digits = 1) %>%
   set_header_labels(year = "År") %>%
   flextable::align(j = 2:6, align = "right", part = "all") %>%
   bold(part = "header") %>%
-  #fontsize(size = 9, part = "all") %>%
-  #font(fontname = "Lucida Sans Unicode", part = "all") %>%
   bg(bg = "#ED9300", part = "header") %>%
   border_remove() %>%
   hline_top(part = "header", border = borderline) %>%

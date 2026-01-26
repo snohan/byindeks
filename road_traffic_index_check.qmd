@@ -43,17 +43,17 @@ library(sf)
 
 index_id <- 962
 index_year <- 2025
-index_month <- 9 # last published month!
+index_month <- 11 # last published month!
 
 new_month_name <-
   lubridate::as_date(paste(index_year, index_month + 1, "01", sep = "-")) |> 
   lubridate::month(label = TRUE, abbr = FALSE) |> 
   stringr::str_to_title()
 
-new_month_name_2 <-
-  lubridate::as_date(paste(index_year, index_month + 2, "01", sep = "-")) |>
-  lubridate::month(label = TRUE, abbr = FALSE) |>
-  stringr::str_to_title()
+# new_month_name_2 <-
+#   lubridate::as_date(paste(index_year, index_month + 2, "01", sep = "-")) |>
+#   lubridate::month(label = TRUE, abbr = FALSE) |>
+#   stringr::str_to_title()
 
 # Run once per session !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # source("road_traffic_index_check_dataprep.R")
@@ -71,23 +71,23 @@ pointindices <- pointindex[[2]]
 ```{r}
 #| label: filter_for_county
 
-# 31 Østfold          11 Trond
-# 32 Akershus         11 Trond
-# 33 Buskerud         11 Trond
-#  3 Oslo             11 Trond
-# 34 Innlandet        11 Snorre
-# 39 Vestfold         11 Trond
-# 40 Telemark         11 Trond
-# 42 Agder            11 Trond
-# 11 Rogaland         11 Trond
-# 46 Vestland         11 Trond
-# 15 Møre og Romsdal  11 Trond
-# 50 Trøndelag        11 Snorre
-# 18 Nordland         11 Trond
-# 55 Troms            11 Trond
-# 56 Finnmark         11 Trond
+# 34 Innlandet        12 Snorre
+# 31 Østfold          12 Trond
+#  3 Oslo             12 Trond
+# 32 Akershus         12 Trond
+# 33 Buskerud         12 Trond
+# 39 Vestfold         12 Trond
+# 40 Telemark         12 Trond
+# 42 Agder            12 Trond
+# 11 Rogaland         12 Trond
+# 46 Vestland         12 Trond
+# 15 Møre og Romsdal  12 Trond
+# 50 Trøndelag        12 Snorre
+# 18 Nordland         12 Trond
+# 55 Troms            12 Trond
+# 56 Finnmark         12 Trond
 
-county_number_chosen <- 56
+county_number_chosen <- 34
 
 county_polygon <- 
   readr::read_rds(
@@ -199,22 +199,22 @@ point_index_new_prepared_1 <-
                 index_total_coverage, length_excluded, length_coverage,
                 index_short, index_long)
 
-point_index_new_prepared_2 <-
-  point_index_new %>%
-  dplyr::filter(day_type == "ALL",
-                period == "month",
-                month == index_month + 2) %>%
-  dplyr::select(trp_id, year, month, index_total_p,
-                index_total_coverage, length_excluded, length_coverage,
-                index_short, index_long)
+# point_index_new_prepared_2 <-
+#   point_index_new %>%
+#   dplyr::filter(day_type == "ALL",
+#                 period == "month",
+#                 month == index_month + 2) %>%
+#   dplyr::select(trp_id, year, month, index_total_p,
+#                 index_total_coverage, length_excluded, length_coverage,
+#                 index_short, index_long)
 
 
 # When using CSV we do not need new pointindex from api
 pointindex_prepared_all <- 
   dplyr::bind_rows(
     pointindex_prepared,
-    point_index_new_prepared_1,
-    point_index_new_prepared_2
+    point_index_new_prepared_1
+    # point_index_new_prepared_2
     ) %>% 
   dplyr::left_join(
     trps_meta, by = "trp_id"
@@ -255,20 +255,20 @@ trps_new_pointindex_1 <-
             index_total_coverage, " %"),
     label_text = lapply(label_text, htmltools::HTML))
 
-trps_new_pointindex_2 <-
-  trps_meta %>%
-  dplyr::inner_join(
-    point_index_new_prepared_2,
-    by = "trp_id"
-  ) %>%
-  dplyr::mutate(
-    label_text =
-      paste(name, ", ",
-            road_category_and_number, "<br/>",
-            index_total_p, " %", "<br/>",
-            index_total_coverage, " %"),
-    label_text = lapply(label_text, htmltools::HTML)
-  )
+# trps_new_pointindex_2 <-
+#   trps_meta %>%
+#   dplyr::inner_join(
+#     point_index_new_prepared_2,
+#     by = "trp_id"
+#   ) %>%
+#   dplyr::mutate(
+#     label_text =
+#       paste(name, ", ",
+#             road_category_and_number, "<br/>",
+#             index_total_p, " %", "<br/>",
+#             index_total_coverage, " %"),
+#     label_text = lapply(label_text, htmltools::HTML)
+#   )
 
 # Widening for table view
 source("trp_index_wide_and_long.R")
@@ -316,15 +316,13 @@ map_links_for_index_check(index_year - 1, index_year, index_month + 1, point_ind
 ```
 
 
-## `r new_month_name_2`
-
 ```{r}
 #| label: map_linkindex_and_events_2
 #| message: false
 
 ## `r new_month_name_2`
 
-map_links_for_index_check(index_year - 1, index_year, index_month + 2, point_index_new_prepared_2, 5)
+# map_links_for_index_check(index_year - 1, index_year, index_month + 2, point_index_new_prepared_2, 5)
 ```
 
 

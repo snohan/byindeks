@@ -4740,7 +4740,9 @@ get_published_bikepointindex_for_months <- function(index_id, index_year, last_m
 
 
 get_published_road_traffic_index <- function(index_id, indexyear, indexmonth) {
+
   # Get published index for a given area, year and month
+
   api_query <- paste0(
     "query published_index {
       publishedAreaTrafficVolumeIndex (
@@ -4825,8 +4827,10 @@ get_published_road_traffic_index <- function(index_id, indexyear, indexmonth) {
       year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
       month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month
     ) %>%
-    dplyr::select(area_name, area_type, year, month, road_category, length_range, day_type,
-                  index_p, standard_deviation) %>%
+    dplyr::select(
+      area_name, area_type, year, month, road_category, length_range, day_type,
+      index_p, standard_deviation
+    ) |> 
     dplyr::mutate(period = "month")
 
   year_to_date_data <- trp_data$data %>%
@@ -4849,12 +4853,13 @@ get_published_road_traffic_index <- function(index_id, indexyear, indexmonth) {
       year = publishedAreaTrafficVolumeIndex.period.calculationMonth.year,
       month = publishedAreaTrafficVolumeIndex.period.calculationMonth.month
     ) %>%
-    dplyr::select(area_name, area_type, year, month, road_category, length_range, day_type,
-                  index_p, standard_deviation) %>%
+    dplyr::select(
+      area_name, area_type, year, month, road_category, length_range, day_type,
+      index_p, standard_deviation
+    ) |> 
     dplyr::mutate(period = "year_to_date")
 
-  published_index <- bind_rows(monthly_data,
-                               year_to_date_data)
+  published_index <- dplyr::bind_rows(monthly_data, year_to_date_data)
 
   return(published_index)
 }
@@ -4864,15 +4869,18 @@ get_published_road_traffic_index_for_months <- function(index_id, index_year, la
 
   index_table <- tibble::tibble()
   i <- 1
+
   while (i < last_month + 1) {
-    index_table <- dplyr::bind_rows(index_table,
-                                    get_published_road_traffic_index(index_id, index_year, i))
+    index_table <- 
+      dplyr::bind_rows(
+        index_table,
+        get_published_road_traffic_index(index_id, index_year, i)
+      )
     i = i + 1
   }
 
   return(index_table)
 }
-
 
 
 # Average hourly and daily traffic ####

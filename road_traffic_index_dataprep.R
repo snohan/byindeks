@@ -39,7 +39,7 @@ points <-
 
 ## Choose month ----
 this_year <- 2025
-latest_month_number <- 11
+latest_month_number <- 12
 
 index_this_year <-
   get_published_road_traffic_index_for_months(
@@ -336,16 +336,16 @@ index_this_year_prepared <-
       road_category == "EUROPAVEG_RIKSVEG" ~ "Europa- og riksveg",
       road_category == "EUROPAVEG_RIKSVEG_FYLKESVEG" ~ "Europa-, riks- og fylkesveg")
   ) |>
-  dplyr::mutate(
-    area_name = dplyr::case_when(
-      area_name == "OSLO_OG_VIKEN" ~ "Oslo og Viken",
-      area_name == "INNLANDET" ~ "Innlandet",
-      area_name == "AGDER_OG_SOROSTLANDET" ~ "Agder og Sør-Østlandet",
-      area_name == "VESTLANDET" ~ "Vestlandet",
-      area_name == "TRONDELAG" ~ "Trøndelag",
-      area_name == "NORD_NORGE" ~ "Nord-Norge",
-      TRUE ~ area_name)
-  ) |>
+  # dplyr::mutate(
+  #   area_name = dplyr::case_when(
+  #     area_name == "OSLO_OG_VIKEN" ~ "Oslo og Viken",
+  #     area_name == "INNLANDET" ~ "Innlandet",
+  #     area_name == "AGDER_OG_SOROSTLANDET" ~ "Agder og Sør-Østlandet",
+  #     area_name == "VESTLANDET" ~ "Vestlandet",
+  #     area_name == "TRONDELAG" ~ "Trøndelag",
+  #     area_name == "NORD_NORGE" ~ "Nord-Norge",
+  #     TRUE ~ area_name)
+  # ) |>
   dplyr::mutate(
     month_object = lubridate::make_date(year = year, month = month),
     month_name = lubridate::month(month_object, label = TRUE, abbr = FALSE)
@@ -380,6 +380,35 @@ index_this_year_prepared <-
     standard_deviation = round(standard_deviation, digits = 1)
   )
 
+
+if(latest_month_number == 12) {
+# To update CSV with historic values
+csv_historic <-
+  index_this_year_prepared |>
+  dplyr::filter(
+    area_type == "COUNTRY",
+    month == 12,
+    period == "year_to_date",
+    day_type == "alle"
+  )
+
+# Reported numbers to Dep via OPA
+dep_values <-
+  index_this_year_prepared |>
+  dplyr::filter(
+    area_type %in% c("COUNTRY", "COUNTRY_PART"),
+    month == 12,
+    period == "year_to_date",
+    length_range == "alle",
+    day_type == "alle",
+    road_category == "Europa-, riks- og fylkesveg"
+  ) |> 
+  dplyr::arrange(area_type) |> 
+  dplyr::relocate(index_p, .after = area_name)
+
+  readr::write_csv2(dep_values, "spesialuttak/vti.csv")
+  writexl::write_xlsx(dep_values, "spesialuttak/vti.xlsx")
+}
 
 index_this_year_prepared_wide <-
   index_this_year_prepared |>
