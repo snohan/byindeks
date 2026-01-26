@@ -420,8 +420,7 @@ I @fig-nj_official_12 og @fig-nj_improved_12 vises resultatene for ett års glid
 
 qmd_indexes_official_nj |> 
   dplyr::filter(
-    window == "12_months",
-    year < 2025
+    window == "12_months"
   ) |> 
   visualize_city_36_mdt_index(
     "Data: Statens vegvesen",
@@ -493,10 +492,7 @@ Tilsvarende resultater for tre års glidende indeks vises i @fig-nj_official_36 
 #| fig-cap: "Offisiell indeks for Nord-Jæren, tre års glidende indeks."
 
 qmd_indexes_official_nj |> 
-  dplyr::filter(
-    window == "36_months",
-    year < 2025
-  ) |> 
+  dplyr::filter(window == "36_months") |> 
   visualize_city_36_mdt_index(
     "Data: Statens vegvesen",
     "Estimert endring i trafikkmengde siste glidende 3 år, dagens metode",
@@ -507,7 +503,7 @@ qmd_indexes_official_nj |>
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
   ) +
-  ylim(-12, 12)
+  ylim(-12, 14)
 ```
 
 ```{r}
@@ -526,7 +522,7 @@ qmd_index_examples_cmdt_nj |>
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
   ) +
-  ylim(-12, 12)
+  ylim(-12, 14)
 ```
 
 Som for ett års glidende indeks, ser vi at den generelle trenden over tid er ganske lik, men at forbedret metode jevnt over gir noe høyere verdi på indeksen. Den mest tydelige forskjellen mellom de to er også her at usikkerheten er mye mindre med forbedret metode. En sammenligning av relativ feilmargin med de to metodene er vist i @fig-nj_compare_em_36.
@@ -898,7 +894,7 @@ fig_nj_chained_3y <-
     legend.background = element_rect(fill = svv_background_color)
   ) 
 
-fig_nj_chained_3y + ylim(-12, 12)
+fig_nj_chained_3y + ylim(-12, 14)
 ```
 
 
