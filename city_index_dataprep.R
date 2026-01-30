@@ -63,7 +63,7 @@ trp_id_msnr <-
   present_year <- 2025
   # month to be published now:
   index_month <- 12
-  city_number <- 960
+  city_number <- 20952
 }
 
 source("set_time_references.R")
@@ -260,9 +260,9 @@ trp_mdt_plot_36 |> plotly::ggplotly()
 
 all_rolling_indices_list <-
   list(
-    all_12_month_indices,
-    all_24_month_indices,
-    all_36_month_indices
+    all_12_month_indices
+    # all_24_month_indices,
+    # all_36_month_indices
   )
 
 all_rolling_indices <-

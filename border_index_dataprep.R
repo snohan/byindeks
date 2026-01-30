@@ -7,7 +7,7 @@ source("get_from_nvdb_api.R")
 }
 
 # Get TRP and crossings metainfo ----
-latest_published_month <- 8
+latest_published_month <- 12
 
 counties <-
   get_counties() |>
@@ -469,4 +469,3 @@ readr::write_rds(
   index_all_years,
   file = "border_index_data/index_all_years.rds"
 )
-

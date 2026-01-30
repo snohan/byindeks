@@ -297,12 +297,12 @@ I figur @fig-lineplot_historic_1 er det tydelig at de største endringene skylde
 #| label: fig-lineplot_historic_2
 #| fig-width: 6
 #| fig-height: 6.2
-#| fig-cap: "Riksgrenseindeks per måned mellom to påfølgende år i perioden 2019-2023."
+#| fig-cap: "Riksgrenseindeks per måned mellom to påfølgende år i perioden 2019-2022."
 #| fig-pos: "!h"
 
 index_all_years |> 
   dplyr::filter(
-    year %in% c(2020, 2021, 2022, 2023)
+    year %in% c(2020, 2021, 2022)
   ) |> 
   create_monthly_index_lineplot()
 ```
@@ -314,17 +314,17 @@ NB! Skalaen på y-aksen er veldig ulik i de to figurene. Dette skyldes de ekstre
 #| label: fig-lineplot_historic_3
 #| fig-width: 6
 #| fig-height: 6.2
-#| fig-cap: "Riksgrenseindeks per måned mellom to påfølgende år i perioden 2024-."
+#| fig-cap: "Riksgrenseindeks per måned mellom to påfølgende år i perioden 2023-."
 #| fig-pos: "!h"
 
 index_all_years |> 
   dplyr::filter(
-    year %in% c(2024, 2025)
+    year %in% c(2023:2025)
   ) |> 
   create_monthly_index_lineplot()
 ```
 
-Tabell @tbl-monthly_index_table_2020, @tbl-monthly_index_table_2021, @tbl-monthly_index_table_2022 og @tbl-monthly_index_table_2023 viser tallgrunnlaget for figur @fig-lineplot_historic_2 og @fig-lineplot_historic_3. Indekstallene er en estimert samlet endring i trafikkmengde per måned, sammenlignet med samme måned året før. Usikkerheten i estimatet er synliggjort med standardfeil og standardavvik. Standardfeilen sier noe om hvor nære indeksen (som er et estimat) er den faktiske endringen i trafikken, mens standardavviket sier noe om hvor ulik trafikkendringen var på de ulike trafikkregistreringspunktene.
+De følgende tabellene viser tallgrunnlaget for figur @fig-lineplot_historic_2 og @fig-lineplot_historic_3. Indekstallene er en estimert samlet endring i trafikkmengde per måned, sammenlignet med samme måned året før. Usikkerheten i estimatet er synliggjort med standardfeil og standardavvik. Standardfeilen sier noe om hvor nære indeksen (som er et estimat) er den faktiske endringen i trafikken, mens standardavviket sier noe om hvor ulik trafikkendringen var på de ulike trafikkregistreringspunktene.
 
 {{< pagebreak >}}
 
@@ -543,7 +543,7 @@ historic_heavy_combinations <- calculate_all_index_chain_combinations(historic_h
 
 ```{r}
 #| label: tbl-historic_all_table
-#| tbl-cap: "Kumulativ trafikkutvikling fra 2016 til 2024."
+#| tbl-cap: "Kumulativ trafikkutvikling fra 2016 til 2025."
 #| ft.arraystretch: 0.9
 
 historic_all_combinations |> 
@@ -552,7 +552,7 @@ historic_all_combinations |>
 
 ```{r}
 #| label: tbl-historic_light_table
-#| tbl-cap: "Kumulativ trafikkutvikling for lette kjøretøy fra 2016 til 2024."
+#| tbl-cap: "Kumulativ trafikkutvikling for lette kjøretøy fra 2016 til 2025."
 #| ft.arraystretch: 0.9
 
 historic_light_combinations |> 
@@ -563,7 +563,7 @@ historic_light_combinations |>
 
 ```{r}
 #| label: tbl-historic_heavy_table
-#| tbl-cap: "Kumulativ trafikkutvikling for tunge kjøretøy fra 2016 til 2024."
+#| tbl-cap: "Kumulativ trafikkutvikling for tunge kjøretøy fra 2016 til 2025."
 #| ft.arraystretch: 0.9
 
 historic_heavy_combinations |> 

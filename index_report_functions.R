@@ -159,7 +159,7 @@ table_bike_trps_with_sdt <- function(chosen_area_name) {
 
 
 # Maps ----
-create_point_adt_map <- function(all_point_info_df) {
+create_point_adt_map <- function(all_point_info_df, legend_title = "\u00c5DT") {
 
   palett_adt <-
     leaflet::colorNumeric(
@@ -170,8 +170,6 @@ create_point_adt_map <- function(all_point_info_df) {
   point_adt_map <-
     all_point_info_df |>
     leaflet::leaflet(
-      #width = "100%",
-      #height = 700,
       options =
         leafletOptions(
           crs = nvdb_crs,
@@ -199,7 +197,7 @@ create_point_adt_map <- function(all_point_info_df) {
       "bottomright",
       pal = palett_adt,
       values = ~adt,
-      title = "\u00c5DT",
+      title = legend_title,
       opacity = 0.6,
       labFormat = leaflet::labelFormat(big.mark = " ")
     )
