@@ -79,7 +79,7 @@ counties <- readr::read_rds("counties.rds")
 # Choose
 index_year <- 2025
 latest_published_month <- 11
-city_number <- 18952
+city_number <- 20952
 # End choose
 
 new_month_year <-
@@ -305,7 +305,7 @@ city_county_numbers <-
 #| label: aadt
 
 # Need not fetch AADT every time
-if(T) {
+if(F) {
   
   adt <- get_aadt_by_length_for_trp_list(city_trps)
   

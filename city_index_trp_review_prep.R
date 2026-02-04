@@ -1009,3 +1009,104 @@ readr::write_rds(
   links_with_chosen_trp,
   "chosen_links_krs_2023_2.rds"
 )
+
+
+# Tønsberg ----
+municipality_names <- c("Tønsberg", "Færder")
+
+municipality_numbers <-
+  municipalities |>
+  dplyr::filter(
+    municipality_name %in% municipality_names
+  )
+
+
+# Possible TRPs
+trps_filtered <-
+  points |>
+  dplyr::filter(
+    traffic_type == "VEHICLE",
+    registration_frequency == "CONTINUOUS",
+    operational_status != "RETIRED"
+  ) |>
+  dplyr::mutate(
+    operational_status = stringr::str_to_lower(operational_status, locale = "no")
+  ) |>
+  dplyr::filter(
+    municipality_name %in% municipality_names
+  ) |>
+  split_road_system_reference() |>
+  dplyr::select(
+    trp_id,
+    name,
+    operational_status,
+    road_reference,
+    road_category_and_number,
+    municipality_name,
+    lat, lon
+  )
+
+trp_aadts <-
+  trps_filtered$trp_id |>
+  get_aadt_for_trp_list()
+
+trps_aadt_2025 <-
+  trp_aadts |>
+  dplyr::filter(
+    year %in% c(2025)
+  ) |>
+  dplyr::mutate(
+    valid_length_percent = round(valid_length_volume / adt * 100, digits = 1),
+    # good enough coverage for index (50), sliding (84)
+    # valid length percent set a bit below 98.5 to allow som variation - might be enough good days each month
+    good_enough = dplyr::case_when(
+      (coverage > 50 & valid_length_percent > 90) ~ TRUE,
+      TRUE ~ FALSE
+    ),
+    reason = dplyr::case_when(
+      coverage <= 50 ~ "Lav dekningsgrad",
+      valid_length_percent <= 98.5 ~ "Dårlige lengdemålinger",
+      TRUE ~ ""
+    ),
+    adt = round(adt, -1)
+  ) |>
+  dplyr::select(
+    trp_id,
+    adt,
+    good_enough,
+    reason
+  )
+
+trps_2025 <-
+  trps_filtered |>
+  dplyr::left_join(
+    trps_aadt_2025,
+    by = dplyr::join_by(trp_id)
+  ) |>
+  dplyr::filter(
+    !is.na(adt),
+    !(road_category_and_number == "E18"),
+    !(trp_id %in% c(
+      # Utenfor byområdet
+      "08776V1175849", # Vrengen
+      "67508V1175849", # Budal
+      "00545V1175549", # Eidene
+      "00241V1175824", # Låne
+      "50074V1175825", # Svinevoll
+      "59656V2252845", # Andebuveien
+      "13515V1175879", # Slagendalen
+      "72351V1175548" # Nedre Langgate (rare data)
+    ))
+  ) |> 
+  dplyr::mutate(
+    # final_status =
+    #   reason |>
+    #   forcats::as_factor(),
+    trp_label = paste(name, road_category_and_number, adt, sep = "<br/>"),
+    trp_label = lapply(trp_label, htmltools::HTML)
+  ) |> 
+  dplyr::select(
+    trp_id, name, road_reference, municipality_name, adt
+  )
+
+writexl::write_xlsx(trps_2024, "spesialuttak/byindeks_tonsberg_punkter.xlsx")

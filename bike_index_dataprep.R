@@ -9,7 +9,7 @@
 
 # Index codes and years ----
 last_complete_year <- 2024
-last_complete_month_this_year <- 9
+last_complete_month_this_year <- 12
 
 index_codes_and_reference_years <-
   tibble::tibble(
@@ -458,7 +458,7 @@ for (i in index_years) {
 }
 
 
-# Write ----
+# Write
 bike_index_all_long <-
   dplyr::bind_rows(
     bike_index_complete_years_chained_long,
@@ -488,6 +488,23 @@ bike_index_all_long <-
 readr::write_rds(
   bike_index_all_long,
   file = "data_indexpoints_tidy/bike_index_all_long.rds"
+)
+
+
+# Historic combinations ----
+bike_index_historic_combinations <-
+  bike_index_complete_years |> 
+  dplyr::select(area_name, year, index_i) |> 
+  tidyr::nest(.by = area_name) |>
+  dplyr::mutate(
+    chained_dfs = purrr::map(data, ~ calculate_all_index_chain_combinations(.x))
+  )
+  
+# bike_index_historic_combinations$chained_dfs[[1]]
+
+readr::write_rds(
+  bike_index_historic_combinations,
+  file = "data_indexpoints_tidy/bike_index_historic_combinations.rds"
 )
 
 

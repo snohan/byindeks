@@ -33,15 +33,11 @@ crossref:
 
 source("rmd_setup.R")
 
-last_published_month_number <- 8
+last_published_month_number <- 12
 
 index_all_years <-
-  readr::read_rds(
-    file = "data_indexpoints_tidy/bike_index_all_long.rds"
-  ) |> 
-  dplyr::filter(
-      compared_to_ref_year == TRUE
-  ) |> 
+  readr::read_rds(file = "data_indexpoints_tidy/bike_index_all_long.rds") |> 
+  dplyr::filter(compared_to_ref_year == TRUE) |> 
   dplyr::mutate(
     years = paste0(year_base, "-", year),
     month_name = lubridate::make_date(year, month, 1) |> lubridate::month(label = TRUE),
@@ -81,6 +77,8 @@ index_for_plotting <-
     months,
     year
   )
+
+qmd_bike_index_historic_combinations <- readr::read_rds("data_indexpoints_tidy/bike_index_historic_combinations.rds")
 
 bike_trp_info <- readr::read_rds(file = "data_indexpoints_tidy/bike_trp_sdt.rds")
 ```
@@ -126,12 +124,18 @@ I denne rapporten er det for hvert byområde inkludert en tabell over de aktuell
 # Bergen
 ```{r}
 #| label: fig-map_brg
-#| tbl-cap: "Registeringspunkter for sykkeltrafikk i Bergen."
-#| ft.arraystretch: 0.9
+#| fig-cap: "Registeringspunkter for sykkeltrafikk i Bergen. Skalaen viser sommerdøgntrafikk (SDT)."
+#| fig-scap: "Registeringspunkter for sykkeltrafikk i Bergen."
 
-
+bike_trp_info |> 
+  dplyr::filter(
+    area_name == "Bergen"
+  ) |> 
+  dplyr::mutate(adt = SUMMER) |> 
+  create_point_adt_map("SDT")
 ```
 
+{{< pagebreak >}}
 
 ```{r}
 #| label: tbl-trp_brg
@@ -141,7 +145,7 @@ I denne rapporten er det for hvert byområde inkludert en tabell over de aktuell
 table_bike_trps_with_sdt("Bergen")
 ```
 
-
+{{< pagebreak >}}
 
 ```{r}
 #| label: tbl-brg
@@ -152,6 +156,18 @@ table_index_chains("Bergen")
 ```
 
 
+```{r}
+#| label: tbl-historic_matrix_brg
+#| tbl-cap: "Endring fra ulike startår, Bergen."
+#| ft.arraystretch: 0.9
+
+qmd_bike_index_historic_combinations |> 
+  dplyr::filter(area_name == "Bergen") |> 
+  purrr:::pluck("chained_dfs", 1) |> 
+  table_historic_index()
+```
+
+{{< pagebreak >}}
 
 ```{r}
 #| label: fig-brg
@@ -159,20 +175,25 @@ table_index_chains("Bergen")
 #| fig-height: 6
 #| fig-cap: "Estimert endring i sykkeltrafikk i Bergen."
 
-index_for_plotting |> 
-  plot_index_chain("Bergen")
+index_for_plotting |> plot_index_chain("Bergen")
 ```
 
 
 # Buskerudbyen
 ```{r}
 #| label: fig-map_bus
-#| tbl-cap: "Registeringspunkter for sykkeltrafikk i Buskerudbyen."
-#| ft.arraystretch: 0.9
+#| fig-cap: "Registeringspunkter for sykkeltrafikk i Buskerudbyen. Skalaen viser sommerdøgntrafikk (SDT)."
+#| fig-scap: "Registeringspunkter for sykkeltrafikk i Buskerudbyen."
 
-
+bike_trp_info |> 
+  dplyr::filter(
+    area_name == "Buskerudbyen"
+  ) |> 
+  dplyr::mutate(adt = SUMMER) |> 
+  create_point_adt_map("SDT")
 ```
 
+{{< pagebreak >}}
 
 ```{r}
 #| label: tbl-trp_bus
@@ -181,7 +202,6 @@ index_for_plotting |>
 
 table_bike_trps_with_sdt("Buskerudbyen")
 ```
-
 
 
 ```{r}
@@ -193,6 +213,18 @@ table_index_chains("Buskerudbyen")
 ```
 
 
+```{r}
+#| label: tbl-historic_matrix_bus
+#| tbl-cap: "Endring fra ulike startår, Buskerudbyen."
+#| ft.arraystretch: 0.9
+
+qmd_bike_index_historic_combinations |> 
+  dplyr::filter(area_name == "Buskerudbyen") |> 
+  purrr:::pluck("chained_dfs", 1) |> 
+  table_historic_index()
+```
+
+{{< pagebreak >}}
 
 ```{r}
 #| label: fig-bus
@@ -206,6 +238,21 @@ index_for_plotting |>
 
 
 # Førde
+```{r}
+#| label: fig-map_frd
+#| fig-cap: "Registeringspunkter for sykkeltrafikk i Førde. Skalaen viser sommerdøgntrafikk (SDT)."
+#| fig-scap: "Registeringspunkter for sykkeltrafikk i Førde."
+
+bike_trp_info |> 
+  dplyr::filter(
+    area_name == "Førde"
+  ) |> 
+  dplyr::mutate(adt = SUMMER) |> 
+  create_point_adt_map("SDT")
+```
+
+{{< pagebreak >}}
+
 ```{r}
 #| label: tbl-trp_frd
 #| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Førde."
@@ -225,6 +272,18 @@ table_index_chains("Førde")
 
 
 ```{r}
+#| label: tbl-historic_matrix_frd
+#| tbl-cap: "Endring fra ulike startår, Førde."
+#| ft.arraystretch: 0.9
+
+qmd_bike_index_historic_combinations |> 
+  dplyr::filter(area_name == "Førde") |> 
+  purrr:::pluck("chained_dfs", 1) |> 
+  table_historic_index()
+```
+
+
+```{r}
 #| label: fig-frd
 #| fig-width: 6.5
 #| fig-height: 6
@@ -236,6 +295,21 @@ index_for_plotting |>
 
 
 # Grenland
+```{r}
+#| label: fig-map_grl
+#| fig-cap: "Registeringspunkter for sykkeltrafikk i Grenland. Skalaen viser sommerdøgntrafikk (SDT)."
+#| fig-scap: "Registeringspunkter for sykkeltrafikk i Grenland."
+
+bike_trp_info |> 
+  dplyr::filter(
+    area_name == "Grenland"
+  ) |> 
+  dplyr::mutate(adt = SUMMER) |> 
+  create_point_adt_map("SDT")
+```
+
+{{< pagebreak >}}
+
 ```{r}
 #| label: tbl-trp_grl
 #| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Grenland."
@@ -256,6 +330,18 @@ table_index_chains("Grenland")
 
 
 ```{r}
+#| label: tbl-historic_matrix_grl
+#| tbl-cap: "Endring fra ulike startår, Grenland."
+#| ft.arraystretch: 0.9
+
+qmd_bike_index_historic_combinations |> 
+  dplyr::filter(area_name == "Grenland") |> 
+  purrr:::pluck("chained_dfs", 1) |> 
+  table_historic_index()
+```
+
+
+```{r}
 #| label: fig-grl
 #| fig-width: 6.5
 #| fig-height: 6
@@ -268,6 +354,21 @@ index_for_plotting |>
 
 # Kristiansand
 ```{r}
+#| label: fig-map_krs
+#| fig-cap: "Registeringspunkter for sykkeltrafikk i Kristiansand. Skalaen viser sommerdøgntrafikk (SDT)."
+#| fig-scap: "Registeringspunkter for sykkeltrafikk i Kristiansand."
+
+bike_trp_info |> 
+  dplyr::filter(
+    area_name == "Kristiansand"
+  ) |> 
+  dplyr::mutate(adt = SUMMER) |> 
+  create_point_adt_map("SDT")
+```
+
+{{< pagebreak >}}
+
+```{r}
 #| label: tbl-trp_krs
 #| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Kristiansand."
 #| ft.arraystretch: 0.9
@@ -278,7 +379,7 @@ table_bike_trps_with_sdt("Kristiansand")
 
 ```{r}
 #| label: tbl-krs
-#| tbl-cap: "Estimert endring i sykkeltrafikk i Kristiansand"
+#| tbl-cap: "Estimert endring i sykkeltrafikk i Kristiansand."
 #| ft.arraystretch: 0.9
 
 table_index_chains("Kristiansand")
@@ -286,10 +387,22 @@ table_index_chains("Kristiansand")
 
 
 ```{r}
+#| label: tbl-historic_matrix_krs
+#| tbl-cap: "Endring fra ulike startår, Kristiansand."
+#| ft.arraystretch: 0.9
+
+qmd_bike_index_historic_combinations |> 
+  dplyr::filter(area_name == "Kristiansand") |> 
+  purrr:::pluck("chained_dfs", 1) |> 
+  table_historic_index()
+```
+
+
+```{r}
 #| label: fig-krs
 #| fig-width: 6.5
 #| fig-height: 6
-#| fig-cap: "Estimert endring i sykkeltrafikk i Kristiansand"
+#| fig-cap: "Estimert endring i sykkeltrafikk i Kristiansand."
 
 index_for_plotting |> 
   plot_index_chain("Kristiansand")
@@ -298,6 +411,21 @@ index_for_plotting |>
 
 # Nedre Glomma
 ```{r}
+#| label: fig-map_ngl
+#| fig-cap: "Registeringspunkter for sykkeltrafikk i Nedre Glomma. Skalaen viser sommerdøgntrafikk (SDT)."
+#| fig-scap: "Registeringspunkter for sykkeltrafikk i Nedre Glomma."
+
+bike_trp_info |> 
+  dplyr::filter(
+    area_name == "Nedre Glomma"
+  ) |> 
+  dplyr::mutate(adt = SUMMER) |> 
+  create_point_adt_map("SDT")
+```
+
+{{< pagebreak >}}
+
+```{r}
 #| label: tbl-trp_ngl
 #| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Nedre Glomma."
 #| ft.arraystretch: 0.9
@@ -305,6 +433,7 @@ index_for_plotting |>
 table_bike_trps_with_sdt("Nedre Glomma")
 ```
 
+{{< pagebreak >}}
 
 ```{r}
 #| label: tbl-ngl
@@ -312,6 +441,18 @@ table_bike_trps_with_sdt("Nedre Glomma")
 #| ft.arraystretch: 0.9
 
 table_index_chains("Nedre Glomma")
+```
+
+
+```{r}
+#| label: tbl-historic_matrix_ngl
+#| tbl-cap: "Endring fra ulike startår, Nedre Glomma."
+#| ft.arraystretch: 0.9
+
+qmd_bike_index_historic_combinations |> 
+  dplyr::filter(area_name == "Nedre Glomma") |> 
+  purrr:::pluck("chained_dfs", 1) |> 
+  table_historic_index()
 ```
 
 
@@ -327,6 +468,21 @@ index_for_plotting |>
 
 
 # Nord-Jæren
+```{r}
+#| label: fig-map_njr
+#| fig-cap: "Registeringspunkter for sykkeltrafikk i Nord-Jæren. Skalaen viser sommerdøgntrafikk (SDT)."
+#| fig-scap: "Registeringspunkter for sykkeltrafikk i Nord-Jæren."
+
+bike_trp_info |> 
+  dplyr::filter(
+    area_name == "Nord-Jæren"
+  ) |> 
+  dplyr::mutate(adt = SUMMER) |> 
+  create_point_adt_map("SDT")
+```
+
+{{< pagebreak >}}
+
 ```{r}
 #| label: tbl-trp_njr
 #| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Nord-Jæren."
@@ -345,6 +501,18 @@ table_bike_trps_with_sdt("Nord-Jæren")
 table_index_chains("Nord-Jæren")
 ```
 
+
+```{r}
+#| label: tbl-historic_matrix_njr
+#| tbl-cap: "Endring fra ulike startår, Nord-Jæren."
+#| ft.arraystretch: 0.9
+
+qmd_bike_index_historic_combinations |> 
+  dplyr::filter(area_name == "Nord-Jæren") |> 
+  purrr:::pluck("chained_dfs", 1) |> 
+  table_historic_index()
+```
+
 {{< pagebreak >}}
 
 ```{r}
@@ -359,6 +527,21 @@ index_for_plotting |>
 
 
 # Osloområdet
+```{r}
+#| label: fig-map_osl
+#| fig-cap: "Registeringspunkter for sykkeltrafikk i Osloområdet. Skalaen viser sommerdøgntrafikk (SDT)."
+#| fig-scap: "Registeringspunkter for sykkeltrafikk i Osloområdet."
+
+bike_trp_info |> 
+  dplyr::filter(
+    area_name == "Osloområdet"
+  ) |> 
+  dplyr::mutate(adt = SUMMER) |> 
+  create_point_adt_map("SDT")
+```
+
+{{< pagebreak >}}
+
 ```{r}
 #| label: tbl-trp_osl
 #| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Osloområdet."
@@ -378,6 +561,18 @@ table_index_chains("Osloområdet")
 
 
 ```{r}
+#| label: tbl-historic_matrix_osl
+#| tbl-cap: "Endring fra ulike startår, Osloområdet."
+#| ft.arraystretch: 0.9
+
+qmd_bike_index_historic_combinations |> 
+  dplyr::filter(area_name == "Osloområdet") |> 
+  purrr:::pluck("chained_dfs", 1) |> 
+  table_historic_index()
+```
+
+
+```{r}
 #| label: fig-osl
 #| fig-width: 6.5
 #| fig-height: 6
@@ -389,6 +584,21 @@ index_for_plotting |>
 
 
 # Tromsø
+```{r}
+#| label: fig-map_trm
+#| fig-cap: "Registeringspunkter for sykkeltrafikk i Tromsø. Skalaen viser sommerdøgntrafikk (SDT)."
+#| fig-scap: "Registeringspunkter for sykkeltrafikk i Tromsø."
+
+bike_trp_info |> 
+  dplyr::filter(
+    area_name == "Tromsø"
+  ) |> 
+  dplyr::mutate(adt = SUMMER) |> 
+  create_point_adt_map("SDT")
+```
+
+{{< pagebreak >}}
+
 ```{r}
 #| label: tbl-trp_trm
 #| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Tromsø."
@@ -408,6 +618,18 @@ table_index_chains("Tromsø")
 
 
 ```{r}
+#| label: tbl-historic_matrix_trm
+#| tbl-cap: "Endring fra ulike startår, Tromsø."
+#| ft.arraystretch: 0.9
+
+qmd_bike_index_historic_combinations |> 
+  dplyr::filter(area_name == "Tromsø") |> 
+  purrr:::pluck("chained_dfs", 1) |> 
+  table_historic_index()
+```
+
+
+```{r}
 #| label: fig-trm
 #| fig-width: 6.5
 #| fig-height: 6
@@ -419,6 +641,21 @@ index_for_plotting |>
 
 
 # Trondheim
+```{r}
+#| label: fig-map_trd
+#| fig-cap: "Registeringspunkter for sykkeltrafikk i Trondheim. Skalaen viser sommerdøgntrafikk (SDT)."
+#| fig-scap: "Registeringspunkter for sykkeltrafikk i Trondheim."
+
+bike_trp_info |> 
+  dplyr::filter(
+    area_name == "Trondheim"
+  ) |> 
+  dplyr::mutate(adt = SUMMER) |> 
+  create_point_adt_map("SDT")
+```
+
+{{< pagebreak >}}
+
 ```{r}
 #| label: tbl-trp_trd
 #| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Trondheim."
@@ -435,6 +672,19 @@ table_bike_trps_with_sdt("Trondheim")
 table_index_chains("Trondheim")
 ```
 
+
+```{r}
+#| label: tbl-historic_matrix_trd
+#| tbl-cap: "Endring fra ulike startår, Trondheim."
+#| ft.arraystretch: 0.9
+
+qmd_bike_index_historic_combinations |> 
+  dplyr::filter(area_name == "Trondheim") |> 
+  purrr:::pluck("chained_dfs", 1) |> 
+  table_historic_index()
+```
+
+
 ```{r}
 #| label: fig-trd
 #| fig-width: 6.5
@@ -448,6 +698,21 @@ index_for_plotting |>
 
 # Vestfold
 ```{r}
+#| label: fig-map_ves
+#| fig-cap: "Registeringspunkter for sykkeltrafikk i Vestfold. Skalaen viser sommerdøgntrafikk (SDT)."
+#| fig-scap: "Registeringspunkter for sykkeltrafikk i Vestfold."
+
+bike_trp_info |> 
+  dplyr::filter(
+    area_name == "Vestfold"
+  ) |> 
+  dplyr::mutate(adt = SUMMER) |> 
+  create_point_adt_map("SDT")
+```
+
+{{< pagebreak >}}
+
+```{r}
 #| label: tbl-trp_ves
 #| tbl-cap: "Sesongdøgntrafikk ved registeringspunkter i Vestfold."
 #| ft.arraystretch: 0.9
@@ -455,6 +720,7 @@ index_for_plotting |>
 table_bike_trps_with_sdt("Vestfold")
 ```
 
+{{< pagebreak >}}
 
 ```{r}
 #| label: tbl-ves
@@ -462,6 +728,18 @@ table_bike_trps_with_sdt("Vestfold")
 #| ft.arraystretch: 0.9
 
 table_index_chains("Vestfold")
+```
+
+
+```{r}
+#| label: tbl-historic_matrix_ves
+#| tbl-cap: "Endring fra ulike startår, Vestfold."
+#| ft.arraystretch: 0.9
+
+qmd_bike_index_historic_combinations |> 
+  dplyr::filter(area_name == "Vestfold") |> 
+  purrr:::pluck("chained_dfs", 1) |> 
+  table_historic_index()
 ```
 
 

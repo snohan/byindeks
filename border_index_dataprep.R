@@ -95,7 +95,7 @@ border_crossings <-
 
 # TODO: find all 51 crossings in NVDB (remove csv dependency)
 
-# Point AADT
+# Point AADT ----
 # TODO: all from same source
 border_trps <-
   border_crossings |>

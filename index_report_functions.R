@@ -157,6 +157,53 @@ table_bike_trps_with_sdt <- function(chosen_area_name) {
     autofit()
 }
 
+# For border index
+create_monthly_index_table <- function(index_df) {
+  
+  last_month <- max(index_df$month)
+  this_year <- max(index_df$year)
+  
+  index_df |>
+    dplyr::arrange(
+      length_range, 
+      month
+    ) |> 
+    dplyr::select(
+      month_name, 
+      year, 
+      length_range, 
+      index_p, 
+      standard_error, 
+      standard_deviation, 
+      no_points
+    ) |>
+    flextable::flextable() |>
+    flextable::colformat_int(j = 2, big.mark = "") |>
+    flextable::colformat_double(j = 4:6, digits = 1) |>
+    flextable::set_header_labels(
+      month_name = "Måned", year = "År", 
+      length_range = "Kjøretøy-\nklasse",
+      index_p = "Endring i\ntrafikk-\nmengde\n(%)",
+      standard_error = "Standard-\nfeil\n(%)",
+      standard_deviation = "Standard-\navvik\n(%)",
+      no_points = "Antall\npunkt"
+    ) |>
+    flextable::align(j = c(2, 3, 7), align = "center", part = "all") |>
+    flextable::align(j = 4:6, align = "center", part = "header") |>
+    bold(part = "header") |>
+    bg(bg = "#ED9300", part = "header") |>
+    border_remove() |>
+    hline_top(part = "header", border = borderline) |>
+    hline_bottom(part = "all", border = borderline) |>
+    hline(
+      i = c(last_month, 2 * last_month), 
+      part = "body",
+      border = fp_border(color = "#dadada", width = 1)
+    ) |> 
+    height_all(height = .2) |>
+    width(j = 3, width = .8) |> 
+    fix_border_issues()
+}
 
 # Maps ----
 create_point_adt_map <- function(all_point_info_df, legend_title = "\u00c5DT") {
@@ -796,11 +843,11 @@ events_this_month_lines  <- dplyr::filter(event_df, sf::st_geometry_type(geograf
 map_links_for_index_check <- function(base_year_dbl, calc_year_dbl, index_month_dbl, trp_index_df, index_limit_dbl = 4) {
 
   # Test
-  # trp_index_df <- point_index_new_prepared_1
-  # index_limit_dbl <- 5
-  # base_year_dbl <- index_year - 1
-  # calc_year_dbl <- index_year
-  # index_month_dbl <- latest_published_month + 1
+  trp_index_df <- point_index_new_prepared_1
+  index_limit_dbl <- 5
+  base_year_dbl <- index_year - 1
+  calc_year_dbl <- index_year
+  index_month_dbl <- latest_published_month + 1
 
   links_with_trp_index <- join_links_and_trp_index(links_with_trp, trp_index_df)
   trps_without_links <- find_trps_without_links(trp_index_df)
@@ -821,8 +868,8 @@ map_links_for_index_check <- function(base_year_dbl, calc_year_dbl, index_month_
   # Need to keep only distinct events and have them in one layer
   events_this_month <-
     dplyr::bind_rows(
-      events_b,
-      events_c
+      events_b |> dplyr::select(-interval),
+      events_c |> dplyr::select(-interval)
     ) |> 
     dplyr::distinct() |> 
     dplyr::select(info_text) |> 
@@ -1229,6 +1276,75 @@ create_corridor_index_table <- function(corridor_index_all_years) {
                 style = "Tabelltekst")
 
   return(corridor_table)
+}
+
+# For border index
+create_monthly_index_lineplot <- function(index_df) {
+  
+  index_df |> 
+    dplyr::filter(period == "month") |> 
+    ggplot2::ggplot(
+      aes(
+        x = month_object, 
+        y = index_p, 
+        color = length_range
+      )
+    ) +
+    ggplot2::geom_line() +
+    ggplot2::geom_point() +
+    ggplot2::facet_grid(rows = vars(year)) +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(angle = 90),
+      axis.title.y = 
+        element_text(
+          margin = margin(t = 0, r = 15, b = 0, l = 0)
+        ),
+      axis.title.x = 
+        element_text(
+            margin = margin(t = 15, r = 0, b = 0, l = 0)),
+            panel.grid.minor.x = element_blank()
+    ) +
+    scale_x_date(
+      breaks = scales::breaks_width("months"),
+      labels = scales::label_date("%b")
+    ) +
+    scale_color_manual(
+      values = c("alle" = "#008ec2",
+                 "lette" = "#ed9300",
+                 "tunge" = "#444f55"),
+       name = "Kjøretøyklasse"
+    ) +
+    labs(
+      x = NULL, y = "Endring i trafikkmengde (%) \n",
+      caption = "Data: Statens vegvesen og fylkeskommunene"
+    ) +
+    ggtitle(
+      "Estimert endring i trafikkmengde ved riksgrensen",
+      subtitle = "Trafikkmengde per måned sammenlignet med foregående år"
+    ) +
+    theme(legend.position = "bottom")
+}
+
+
+# Historic indexes
+table_historic_index <- function(index_df) {
+
+  index_df |> 
+    flextable::flextable() |>
+    flextable::colformat_double(j = 2:base::ncol(index_df), digits = 1) |>
+    flextable::set_header_labels(year = "År") |>
+    flextable::align(j = 2:base::ncol(index_df), align = "right", part = "all") |>
+    bold(part = "header") |>
+    bg(bg = "#ED9300", part = "header") |>
+    border_remove() |>
+    hline_top(part = "header", border = borderline) |>
+    hline_bottom(part = "all", border = borderline) |>
+    height_all(height = .2) |>
+    fix_border_issues() |>
+    padding(padding.top = .3,
+            padding.bottom = .3) |> 
+    width(width = 0.5)
 }
 
 
