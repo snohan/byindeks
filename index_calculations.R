@@ -182,7 +182,7 @@ readr::write_rds(
 )
 
 
-# Test Dramsvegen ----
+## Test Dramsvegen ----
 dramsvegen_ht_base_year <-
   get_hourly_traffic_by_length(
     "30868V1109333",
@@ -247,6 +247,42 @@ dramsvegen <-
   dplyr::mutate(
     index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1)
   )
+
+
+## Tromsø vinter ----
+# Adding winter month comparisons
+# Need december 2021-2018 and december 2022-2021
+trps_2019_2022 <-
+  base::list.files(path = "trp_index/tromso", full.names = TRUE) |>
+  purrr::map(~ readr::read_rds(.x)) |>
+  purrr::list_rbind() |>
+  dplyr::summarise(
+    traffic_base = sum(traffic_base),
+    traffic_calc = sum(traffic_calc),
+    n_months = n(),
+    .by = c(trp_id)
+  ) |>
+  dplyr::filter(
+    n_months >= 6
+  )
+
+trp_index_data <-
+  calculate_trp_index(
+    "tromso_winter",
+    trps_2019_2022$trp_id[15],
+    2018,
+    2021
+  )
+
+trp_index_data <-
+  calculate_trp_index(
+    "tromso_winter",
+    city_trps[30],
+    2021,
+    2022
+  )
+
+
 
 
 # Nord-Jæren 2017-2019 direct ----

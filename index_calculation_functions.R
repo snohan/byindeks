@@ -77,13 +77,14 @@ calculate_hourly_index_traffic <- function(traffic_by_length) {
   return(hourly_traffic)
 }
 
-# trp_id <- trp_2017[16]
-# trp_id <- "30868V1109333"
-# calc_year <- 2023
-# base_year <- 2022
-
 
 calculate_trp_index <- function(subfolder_name, trp_id, base_year, calc_year) {
+
+  # Testing:
+  # trp_id <- trp_2017[16]
+  trp_id <- "02636V1125920"
+  calc_year <- 2021
+  base_year <- 2019
 
   ht_base_year <-
     get_hourly_traffic_by_length(
