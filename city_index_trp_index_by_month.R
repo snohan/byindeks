@@ -18,6 +18,24 @@ if( city_number %in% c(1952, 955, 952, 959) ){
 
 }
 
+if(city_number == 16952) {
+
+  trp_index_monthly_pre_2020 <-
+    base::list.files(path = "trp_index/tromso", full.names = TRUE) |>
+    purrr::map(~ readr::read_rds(.x)) |>
+    purrr::list_rbind() |> 
+    dplyr::mutate(
+      index_p = ((traffic_calc / traffic_base - 1) * 100) |> round(1)
+    ) |> 
+    dplyr::select(
+      trp_id,
+      month,
+      index = index_p
+    ) |> 
+    dplyr::mutate(year = 2022)
+
+}
+
 trp_index_monthly_from_2020 <-
   trp_index_from_2020 |>
   dplyr::filter(
@@ -97,3 +115,20 @@ trp_index_monthly_wide <-
     ~ stringr::str_remove(.x, "m_"),
     tidyselect::starts_with("m_")
   )
+
+if(city_number == 16952) { 
+
+  trp_index_monthly_wide <-
+    trp_index_monthly_wide |> 
+    dplyr::mutate(
+      year_from = 
+        dplyr::case_when(
+          year == 2022 ~ 2019,
+          TRUE ~ year -1
+        )
+    ) |> 
+    dplyr::relocate(
+      year_from, .before = year
+    )
+}
+

@@ -63,7 +63,7 @@ trp_id_msnr <-
   present_year <- 2025
   # month to be published now:
   index_month <- 12
-  city_number <- 20952
+  city_number <- 16952
 }
 
 source("set_time_references.R")
@@ -196,7 +196,7 @@ mdt_filtered |>
   )
 
 # Read back in
-# mdt_filtered <- readr::read_rds(paste0("data_indexpoints_tidy/mdt_", city_number, ".rds"))
+mdt_filtered <- readr::read_rds(paste0("data_indexpoints_tidy/mdt_", city_number, ".rds"))
 
 
 ## Check validity ----
@@ -260,9 +260,9 @@ trp_mdt_plot_36 |> plotly::ggplotly()
 
 all_rolling_indices_list <-
   list(
-    all_12_month_indices
-    # all_24_month_indices,
-    # all_36_month_indices
+    all_12_month_indices,
+    all_24_month_indices,
+    all_36_month_indices
   )
 
 all_rolling_indices <-
@@ -319,6 +319,7 @@ if(city_number == 959) {
 
 # Whole area
 source("city_index_yearly.R")
+
 
 # TRP index by month for Excel
 source("city_index_trp_index_by_month.R")

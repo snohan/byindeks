@@ -23,7 +23,9 @@ if(city_number == 16952){
   list(
     punkt_adt = trp_info_adt,
     punktindeks_maned = trp_index_monthly_wide,
+    punktindeks_aar = trp_index_so_far_for_excel,
     byindeks_aarlig = city_index_final,
+    punkt_glid_indeks = all_rolling_trp_indices,
     by_glid_indeks = all_rolling_indexes_chained
   ) |>
     writexl::write_xlsx(
