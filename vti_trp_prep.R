@@ -31,7 +31,7 @@ counties <-
 ### Index last year ----
 # Fetch once and save
 {
-  trps_last_year <- get_published_pointindex_for_months_paginated(962, 2024, 12)[[1]]
+  trps_last_year <- get_published_pointindex_for_months_paginated(962, 2025, 12)[[1]]
 
   readr::write_rds(
     trps_last_year,
@@ -39,10 +39,10 @@ counties <-
   )
 }
 # Read back in
-trps_last_year <-
-  readr::read_rds(
-    file = "new_vti/trps_last_year.rds"
-  )
+# trps_last_year <-
+#   readr::read_rds(
+#     file = "new_vti/trps_last_year.rds"
+#   )
 
 ### Coverage last year ----
 trp_latest_data <- get_trps_latest_data()
@@ -77,7 +77,8 @@ trp_for_vti <-
     road_category_and_number,
     lat, lon,
     valid_from = validFrom,
-    latest_day
+    latest_day,
+    operational_status
   ) |>
   dplyr::mutate(
     road_category =
@@ -111,7 +112,7 @@ trp_aadts <-
   readr::read_rds("trp_aadt.rds") |>
   dplyr::filter(
     !(year %in% c(2020, 2021)),
-    year > 2014,
+    year > 2015,
     coverage > 66
   ) |>
   # Check last year for normality with previous years
@@ -124,7 +125,7 @@ trp_aadts <-
     valid_length_percent = round(valid_length_volume / adt * 100, digits = 1)
   ) |>
   dplyr::filter(
-    year == 2024,
+    year == 2025,
     coverage > 95,
     adt >= 200,
     valid_length_percent > 99,
@@ -154,7 +155,7 @@ links <-
         isFerryRoute,
         associatedTrpIds,
         trafficVolumes
-      FROM \"traffic_links_2024_2025-05-07\"
+        FROM \"traffic_links_2024_2025-05-07\"
       "
   ) |>
   dplyr::rename(,
@@ -182,11 +183,7 @@ links <-
 
 
 # Some links may be missing function class
-links_na <-
-  links |>
-  dplyr::filter(
-    is.na(function_class)
-  )
+links_na <- links |> dplyr::filter(is.na(function_class))
 
 ### County ID ----
 # Keep only one county id for border crossing ones
@@ -280,8 +277,8 @@ trp_for_vti_tidy <-
   dplyr::filter(
     operational_status == "OPERATIONAL",
     road_category %in% c("F", "R"),
-    valid_from < "2024-01-01",
-    latest_day > "2025-02-15"
+    valid_from < "2025-01-01",
+    latest_day > "2026-02-14"
     #stringr::str_detect(road_reference, "SD", negate = TRUE),
     #stringr::str_detect(road_reference, "KD", negate = TRUE)
   ) |>
@@ -345,8 +342,7 @@ links_tidy <-
   ) |>
   dplyr::left_join(
     # Will duplicate some links
-    link_trp_id |>
-      dplyr::select(-function_class),
+    link_trp_id |> dplyr::select(-function_class),
     by = join_by(id)
   ) |>
   dplyr::left_join(
@@ -403,14 +399,42 @@ links_tidy <-
 # - add
 # - candidate (left as candidates)
 
+# Before beginning the manual search, make an Excel file with candidates
+# and add column to manually assign 'y' to include candidates
+# NB! DO NOT OVERWRITE AFTER YOU HAVE STARTED WORKING ON IT!!!
+# trp_for_vti_chosen |>
+#   dplyr::select(
+#     county_geono,
+#     county_name,
+#     municipality_name,
+#     trp_id,
+#     name,
+#     road_category_and_number,
+#     use_in_vti
+#   ) |>
+#   dplyr::filter(
+#     use_in_vti %in% c("candidate", "keep")
+#   ) |> 
+#   dplyr::arrange(
+#     county_geono,
+#     name
+#   ) |>
+#   dplyr::mutate(
+#     include = ""
+#   ) |> 
+#   writexl::write_xlsx(
+#     path = "new_vti/revise_vti_trp_2026_manual.xlsx"
+#   )
+
+
 # Look at map and decide on which new ones to add
 {
-source("new_vti/unwanted_vti_trp_2025.R")
-
+source("new_vti/unwanted_vti_trp_2026.R")
+  
 trp_for_vti_chosen <-
   trp_for_vti_tidy |>
   dplyr::filter(
-    !(trp_id %in% used_last_year_but_discard),
+    !(trp_id %in% used_last_year_but_discard$trp_id),
     !(trp_id %in% declined_candidates$trp_id)
   ) |>
   dplyr::mutate(
@@ -420,7 +444,7 @@ trp_for_vti_chosen <-
     use_in_vti =
       dplyr::case_when(
         #trp_id %in% used_last_year_but_discard ~ "discard",
-        trp_id %in% new_ones_to_add ~ "add",
+        trp_id %in% new_ones_to_add$trp_id ~ "add",
         TRUE ~ use_in_vti
       ),
     trp_label = paste(name, road_category_and_number, function_class, adt, sep = "<br/>"),
@@ -435,6 +459,7 @@ readr::write_rds(
 
 
 # OUTPUT#3 TRPs ----
+# Excel file with TRPs to keep, discard and add to VTI.
 # Can not just use trp_for_vti_chosen here as some of the ones used last year may have been lost in all the filtering of candidates for next year
 # These need not be shown in map, but they must be in the list which is being used to update the selection in the GUI
 # keep and add are complete, but discard must be complemented by looking at the list of those used last year
@@ -481,7 +506,7 @@ dplyr::bind_rows(
     name
   ) |>
   writexl::write_xlsx(
-    path = "new_vti/revise_vti_trp_2025.xlsx"
+    path = "new_vti/revise_vti_trp_2026.xlsx"
   )
 }
 
