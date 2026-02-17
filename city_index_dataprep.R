@@ -63,7 +63,7 @@ trp_id_msnr <-
   present_year <- 2025
   # month to be published now:
   index_month <- 12
-  city_number <- 16952
+  city_number <- 955
 }
 
 source("set_time_references.R")
@@ -196,7 +196,7 @@ mdt_filtered |>
   )
 
 # Read back in
-mdt_filtered <- readr::read_rds(paste0("data_indexpoints_tidy/mdt_", city_number, ".rds"))
+# mdt_filtered <- readr::read_rds(paste0("data_indexpoints_tidy/mdt_", city_number, ".rds"))
 
 
 ## Check validity ----

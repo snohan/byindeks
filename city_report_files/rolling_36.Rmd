@@ -25,6 +25,8 @@ city_36_month |>
   )
 ```
 
+{{< pagebreak >}}
+
 Hvilke byindekspunkter som er med i datagrunnlaget for den siste tre års glidende indeksen er vist i tabell @tbl-trp_36.
 
 ```{r}
