@@ -82,9 +82,9 @@ calculate_trp_index <- function(subfolder_name, trp_id, base_year, calc_year) {
 
   # Testing:
   # trp_id <- trp_2017[16]
-  trp_id <- "02636V1125920"
-  calc_year <- 2021
-  base_year <- 2019
+  # trp_id <- "02636V1125920"
+  # calc_year <- 2021
+  # base_year <- 2019
 
   ht_base_year <-
     get_hourly_traffic_by_length(
@@ -152,6 +152,11 @@ calculate_trp_index <- function(subfolder_name, trp_id, base_year, calc_year) {
       #by = join_by(month, day, hour, lanes_hour),
       suffix = c("_base", "_calc")
     ) |>
+    # Add filter for parts of day
+    # Remember to remove criteria of >=16 hours further down
+    dplyr::filter(
+      hour %in% c(9:14, 17:23)
+    ) |> 
     dplyr::summarise(
       traffic_base = sum(traffic_base),
       traffic_calc = sum(traffic_calc),
@@ -168,11 +173,10 @@ calculate_trp_index <- function(subfolder_name, trp_id, base_year, calc_year) {
       by = join_by(month, day)
     ) |>
     dplyr::mutate(
-      ok_length =
-        length_quality_calc >= 95 & length_quality_base >= 95
+      ok_length = length_quality_calc >= 95 & length_quality_base >= 95
     ) |>
     dplyr::filter(
-      n_hours >= 16,
+      # n_hours >= 16,
       ok_length == TRUE
     ) |>
     dplyr::summarise(

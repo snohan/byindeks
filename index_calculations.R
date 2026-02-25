@@ -283,7 +283,36 @@ trp_index_data <-
   )
 
 
+# Tromsø tourist index ----
+# A few chosen TRPs to be compared directly from 2019 tp 2025
+# Including seasonal, so must add dec 18 vs dec 24
+trps <- c(
+  "99846V2429627",
+  "95741V1125961",
+  "98487V2057940",
+  "61732V1126304",
+  "92719V1125906",
+  "07954V1125849"
+)
 
+# NB! The function calculate_trp_index must be with hour filters!
+
+# Need also dec 18 vs dec 24
+trp_index_data <-
+  calculate_trp_index(
+    "tromso_tourist",
+    trps[6],
+    2018,
+    2024
+  )
+
+trp_index_data <-
+  calculate_trp_index(
+    "tromso_tourist",
+    trps[6],
+    2019,
+    2025
+  )
 
 # Nord-Jæren 2017-2019 direct ----
 trps_aadt_in_period_tidy <-
