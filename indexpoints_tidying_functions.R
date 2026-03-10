@@ -1220,6 +1220,9 @@ prepare_rolling_indexes_for_comparison <- function(rolling_index_df) {
 # Visualize ----
 create_mdt_barplot <- function(trp_mdt_long_format) {
 
+  # Test:
+  # trp_mdt_long_format <- mdt_validated_to_plot
+
   trp_mdt_long_format |> 
     dplyr::mutate(year = as.character(year)) |> 
     ggplot2::ggplot(
@@ -1230,6 +1233,7 @@ create_mdt_barplot <- function(trp_mdt_long_format) {
         pattern = valid_quality
       )
     ) +
+    # geom_col(position = "dodge") +
     ggpattern::geom_col_pattern(
       position = "dodge",
       pattern_density = 0.5,
@@ -1357,11 +1361,16 @@ barplot_heavy_percentage <- function(data_df) {
 
 plot_mdt <- function(start_trp_n, n_trp_tp_plot = 4) {
 
+  # Test
+  # start_trp_n <- 1
+  # n_trp_tp_plot = 4
+  
   print(
     paste0("Plotting TRPs from ", start_trp_n, " to ", start_trp_n + n_trp_tp_plot - 1, ".")
   )
 
-  mdt_validated |>
+  mdt_validated_to_plot <- 
+    mdt_validated |>
     # dplyr::filter(!(year %in% c(2020, 2021))) |>
     dplyr::filter(
       trp_id %in% trp_mdt_ok_refyear[start_trp_n:(start_trp_n + n_trp_tp_plot - 1)],
@@ -1397,8 +1406,9 @@ plot_mdt <- function(start_trp_n, n_trp_tp_plot = 4) {
       month_object,
       road_category_and_number_and_point_name
     ) |>
-    dplyr::mutate(valid_quality = coverage >= 50 & length_quality >= 98.5) |>
-    create_mdt_barplot()
+    dplyr::mutate(valid_quality = coverage >= 50 & length_quality >= 98.5)
+  
+    mdt_validated_to_plot |> create_mdt_barplot()
 
 }
 

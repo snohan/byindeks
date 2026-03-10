@@ -120,6 +120,12 @@ if(nrow(all_36_month_trp_indices > 0)){
       trp_id
     )
 
+  x_axis_breaks_36 <- 
+    all_36_month_trp_indices$last_month_in_index |> 
+    base::unique() |> 
+    base::as.character() |> 
+    stringr::str_subset("-12-")
+
 # Check contribution from TRPs each possible 36 month index
 trp_mdt_plot_36 <-
   all_36_month_trp_indices |>
@@ -148,7 +154,8 @@ trp_mdt_plot_36 <-
     axis.text = element_text(size = 12),
     legend.position = "right"
   ) +
-  scale_fill_viridis(discrete = FALSE)
+  scale_fill_viridis(discrete = FALSE) +
+  scale_x_discrete(breaks = x_axis_breaks)
 }
 
 # Write

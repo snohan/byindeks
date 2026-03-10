@@ -71,7 +71,7 @@ trp_jackknife_delta_plot_12 <-
   scale_fill_viridis(discrete = FALSE) +
   scale_x_discrete(breaks = x_axis_breaks)
 
-trp_jackknife_delta_plot_12 |> plotly::ggplotly()
+# trp_jackknife_delta_plot_12 |> plotly::ggplotly()
 
 
 # Plot with city index
@@ -142,4 +142,4 @@ visualize_city_index_jackknife <- function(city_index_df, pseudo_observation_df)
     ggtitle("Byindeks og jackknife-variasjoner")
 }
 
-visualize_city_index_jackknife(all_12_month_indices, pseudo_observations)
+# visualize_city_index_jackknife(all_12_month_indices, pseudo_observations)

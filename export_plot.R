@@ -2,7 +2,7 @@
 library(svglite)
 ggplot2::ggsave(
   # filename = "images/nj_chain_graph.svg",
-  filename = "images/nj_improved_3y.svg",
+  filename = "images/mdt_pattern_test.svg",
   width = 8, height = 5
 )
 

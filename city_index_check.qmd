@@ -62,24 +62,24 @@ counties <- readr::read_rds("counties.rds")
 # 2016 Busk  1952   12 Snorre
 # 2016 Gren   955   12 Snorre
 
-# 2017 NJær   952   12 Snorre
+# 2017 NJær   952   02 Snorre
 # 2018 Oslo   959   12 Trond
 # 2018 Berg  8952   12 Trond
 # 2019 Tron   960   12 Snorre
-# 2022 Trom 16952   12 Snorre
+# 2022 Trom 16952   02 Snorre
 # 2023 Kris 19953   12 Snorre
 # 2023 NGlo 18952   12 Trond
 
-# 2024 Aale 20952   11 Snorre
+# 2024 Aale 20952   12 Snorre
 # 2024 Haug 19955   12 Snorre
-# 2024 Bodø 19954   11 Snorre
+# 2024 Bodø 19954   12 Snorre
 
 # TODO: use graph centrality measures to evaluate changes in links and routings
 
 # Choose
-index_year <- 2025
-latest_published_month <- 11
-city_number <- 20952
+index_year <- 2026
+latest_published_month <- 1
+city_number <- 16952
 # End choose
 
 new_month_year <-
@@ -305,7 +305,7 @@ city_county_numbers <-
 #| label: aadt
 
 # Need not fetch AADT every time
-if(F) {
+if(latest_published_month == 4) {
   
   adt <- get_aadt_by_length_for_trp_list(city_trps)
   
@@ -862,7 +862,7 @@ source("trp_index_wide_and_long.R")
 #| message: false
 
 events <- 
-  readr::read_rds("H:/my_data/events_20260102.rds") |> 
+  readr::read_rds("H:/my_data/events_20260310.rds") |> 
   sf::st_filter(area_polygon, .predicate = st_intersects)
 
 # Traffic links from Adm ----
@@ -885,8 +885,8 @@ links_with_trp <- filter_links_with_trp()
 ```{r}
 #| label: city_index
 
-month_start = lubridate::make_date(year = 2025, month = 1)
-month_end = lubridate::make_date(year = 2025, month = 12)
+month_start = lubridate::make_date(year = index_year, month = 1)
+month_end = lubridate::make_date(year = index_year, month = 12)
 
 full_year_x_axis <- c(month_start, month_end)
 

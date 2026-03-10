@@ -24,6 +24,7 @@
   library(readxl)
   library(plotly)
   library(tictoc)
+  library(svglite)
   options(warn = -1)
   svv_background_color <- "#F5F5F5"
 }
@@ -60,10 +61,10 @@ trp_id_msnr <-
 #   Ålesund 20952
 
 {
-  present_year <- 2025
+  present_year <- 2026
   # month to be published now:
-  index_month <- 12
-  city_number <- 955
+  index_month <- 2
+  city_number <- 16952
 }
 
 source("set_time_references.R")
@@ -119,7 +120,8 @@ city_trps <-
   tictoc::tic()
   mdt <-
     purrr::map_dfr(
-      years_from_reference_to_today,
+      present_year,
+      # years_from_reference_to_today,
       ~ get_mdt_by_length_for_trp_list(city_trps, .x)
     )
   tictoc::toc()
@@ -146,7 +148,7 @@ if(city_number == 960) {
     )
 }
 
-mdt_filtered <-
+mdt_filtered_new <-
   mdt |>
   dplyr::filter(length_range == "[..,5.6)") |>
   dplyr::mutate(
@@ -184,6 +186,19 @@ if(city_number == 960){
     mdt_filtered |>
     dplyr::bind_rows(toll_mdt_light)
 }
+
+# Read back in for previous years
+mdt_filtered_old <- 
+  readr::read_rds(paste0("data_indexpoints_tidy/mdt_", city_number, ".rds")) |> 
+  dplyr::filter(
+    year != present_year
+  )
+
+mdt_filtered <-
+  dplyr::bind_rows(
+    mdt_filtered_old,
+    mdt_filtered_new
+  )
 
 mdt_filtered |>
   readr::write_rds(
@@ -227,14 +242,16 @@ trp_not_ok <-
 # TODO: show TRP contributions to rolling indices
 # TODO: Shiny app for checking MDT
 
-start_at <- 25
+start_at <- 21
 plot_mdt(start_at)
+# Workaround as Positron won't show patterns
+ggplot2::ggsave(filename = "images/mdt_pattern_test.svg", width = 12, height = 12)
 plot_heavy_percentage(start_at)
 
 source("exclude_trp_mdts_list.R")
 
-#source("mdt_check.R")
-#plot_mdt_comparisons |> plotly::ggplotly()
+# source("mdt_check.R")
+# plot_mdt_comparisons |> plotly::ggplotly()
 
 
 ## Rolling index ----
@@ -283,6 +300,10 @@ all_rolling_indices_list |>
 if(city_number == 959) {
   source("city_index_rolling_sub_area.R")
 }
+
+source("city_index_jackknife.R")
+trp_jackknife_delta_plot_12 |> plotly::ggplotly()
+visualize_city_index_jackknife(all_12_month_indices, pseudo_observations)
 
 
 # Yearly index ----

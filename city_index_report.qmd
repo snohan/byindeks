@@ -567,6 +567,18 @@ Trafikkregistreringspunkter må derfor ses i sammenheng med langvarige hendelser
 Ved innføring eller fjerning av bomring, tilføring eller fjerning av bomstasjoner, samt endring av bomtakster, vil trafikken påvirkes. Trafikkregistreringspunkter som påvirkes av dette blir ikke tatt ut av datagrunnlaget så lenge de fanger opp trafikkfordelingen på veger som både får økt og redusert trafikk som følge av dette.
 
 
+## Næringstransport og mobil tjeneseyting
+Byindeksen skal estimere endring i persontransport med bil, men det er også en del næringstransport og mobil tjeneseyting med samme type biler. I datagrunnlaget er det ikke mulig å skille på reiseformålet til de registrerte bilene. 
+
+Transportøkonomisk instiutt har i rapporten "Varebiler og mobile tjenesteytere: Andel mobile tjenestereiser i de fire største norske byområdene" sett på fordeling av reiseformål for trafikk med lette kjørtøy:
+
+*Personbilene står for den store majoriteten av trafikkarbeidet fra lette kjøretøy både i landet som helhet og i de fire største byområdene. Andel næringstrafikk som er unntatt nullvekstmålet utgjør en relativt liten andel av trafikkarbeidet fra lette kjøretøy i dagens situasjon.
+
+Analyser av historiske data fra kjørelengderegisteret og den nasjonale reisevaneundersøkelsen viser ingen klar indikasjon på at andelen næringstrafikk fra lette kjøretøy har økt siste tiår. Personbiltrafikken er i stor grad dimensjonerende for trafikkutviklingen for lette kjøretøy. Det er lite som tyder på at næringstrafikken alene kan forklare trafikkveksten man finner i enkelte byområder. Statistikken gir heller ikke grunn til å anta at næringstrafikkens andel av trafikkarbeidet vil øke vesentlig fremover.*
+
+Næringstransport og mobil tjeneseyting vil derfor ha begrenset innvirkning på byindeksen.
+
+
 {{< include city_report_files/_pandemic_traffic.Rmd >}}
 
 {{< include city_report_files/_traffic.Rmd >}}
