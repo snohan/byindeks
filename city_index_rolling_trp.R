@@ -1,7 +1,7 @@
 ## All possible window indices for TRP ----
 # 12
 all_12_month_trp_indices <-
-  calculate_rolling_indices(12, "by_trp") |>
+  calculate_rolling_indices(12, grouping = "by_trp") |>
   dplyr::left_join(
     trp_names,
     by = "trp_id"
@@ -29,6 +29,12 @@ all_12_month_trp_indices <-
     name,
     trp_id
   )
+
+x_axis_breaks <- 
+  all_12_month_trp_indices$last_month_in_index |> 
+  base::unique() |> 
+  base::as.character() |> 
+  stringr::str_subset("-12-")
 
 trp_mdt_plot_12 <-
   all_12_month_trp_indices |>
@@ -60,11 +66,12 @@ trp_mdt_plot_12 <-
     axis.text = element_text(size = 12),
     legend.position = "right"
   ) +
-  scale_fill_viridis(discrete = FALSE)
+  scale_fill_viridis(discrete = FALSE) +
+  scale_x_discrete(breaks = x_axis_breaks)
 
 
 # 36
-all_36_month_trp_indices <- calculate_rolling_indices(36, "by_trp")
+all_36_month_trp_indices <- calculate_rolling_indices(36, grouping = "by_trp")
 
 if(city_number == 960) {
 

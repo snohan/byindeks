@@ -608,8 +608,7 @@ calculate_rolling_indices_by_mdt <- function(base_year, last_year_month, window_
         window_length == 12 ~ 9
       )
 
-    last_year_month <-
-      lubridate::as_date(last_year_month)
+    last_year_month <- lubridate::as_date(last_year_month)
 
     mean_mdt_in_window <-
       mdt_df |>
@@ -704,8 +703,7 @@ calculate_rolling_indices_by_mdt <- function(base_year, last_year_month, window_
     }
 
     if(grouping == "by_trp") {
-      index_df_grouped <-
-        index_df
+      index_df_grouped <- index_df
     }
 
     index_df_final <-
@@ -770,7 +768,7 @@ calculate_rolling_indices_by_mdt <- function(base_year, last_year_month, window_
 
 # }
 
-calculate_rolling_indices <- function(window_length, grouping = "by_area") {
+calculate_rolling_indices <- function(window_length, mdt_validated_df = mdt_validated, grouping = "by_area") {
 
   base::tryCatch(
     expr = {
@@ -792,7 +790,7 @@ calculate_rolling_indices <- function(window_length, grouping = "by_area") {
 
       purrr::map_dfr(
         year_months_possible,
-        ~ calculate_rolling_indices_by_mdt(reference_year, .x, window_length, mdt_validated, grouping)
+        ~ calculate_rolling_indices_by_mdt(reference_year, .x, window_length, mdt_validated_df, grouping)
       )
 
     },

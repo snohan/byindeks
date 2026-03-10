@@ -1,0 +1,264 @@
+# Kvalitetsdeklarasjon
+Denne kvalitetsdeklarasjonen er en beskrivelse av kvaliteten til trafikkindeksen.
+
+Malen til denne kvalitetsdeklarasjonen er utarbeidet med utgangspunkt i rapporten "Recommendations for Quality Declarations of Road Traffic Surveys" (NordFoU, 2018) og Statistisk sentralbyrås anbefalinger om kvalitet i offisiell statistikk.
+
+
+## Definisjoner
+| Størrelse               | Forklaring                                                    |
+|:------------------------|:--------------------------------------------------------------|
+| Indeks                  | Endring i en variabel                                         |
+| Trafikk                 | Trafikant eller kjøretøy i transport                          |
+| Trafikkmengde           | Antall trafikanter eller kjøretøy                             |
+| Trafikkarbeid           | Antall kjørte kilometer                                       |
+| Trafikkindeks           | Estimert endring i trafikk                                    |
+| Trafikkmengdeindeks     | Trafikkindeks basert på trafikkmengde                         |
+| Trafikkarbeidsindeks    | Trafikkindeks basert på trafikkarbeid                         |
+| Månedsdøgntrafikk (MDT) | Gjennomsnittlig antall kjøretøy per døgn i måneden            |
+| Observasjonsvariabel    | En størrelse som kan observeres direkte (eksempel: MDT)       |
+| Observasjon             | En konkret verdi for en observasjonsvariabel                  |
+| Parameter               | En fast og ukjent, men estimerbar størrelse i populasjonen    |
+| Estimand                | Den sanne, men ukjente verdien til en størrelse               |
+| Estimator               | Her: beregningsformelen for trafikkindeksen                   |
+| Estimat                 | Her: et trafikkindeksresultat (eksempel: et estimat på 1,0 %) |
+| Konfunder               | Variabel som påvirker både observasjonene og estimatet        |
+
+
+## Relevans
+Vegtransport er en viktig del av det moderne samfunnet. Mange ressurser går med til å planlegge, bygge, drifte og vedlikeholde vegnettet. I takt med befolkningsøkning og økonomisk vekst, øker også trafikken. En trafikkindeks gir informasjon om hvor og hvor mye trafikken endrer seg over tid.
+
+
+### Formål
+En trafikkindeks kan benyttes som grunnlag for beslutningstakere og som mål på om tiltak har hatt effekt.
+
+Formålet med en byindeks er å vite om persontransport med bil øker eller minker i byområder. Byindeksen er en indikator for nullvekstmålet.
+
+### Formålsegnethet
+Suitable for: [trend monitoring, short-term change detection, policy evaluation at area-level]
+Limitations: [local small-area inference, rare-event months, structural breaks]
+
+### Brukere og bruksområder
+
+
+### Innhold
+Estimand
+Estimator
+
+Områdeavgrensing
+Representativitet
+Utvalg
+
+Variabler (observerbare)
+Parametre (estimerbare)
+
+Datakilder og punktutvalg
+Datainnsamling, editering og beregninger
+Traffic volume measurement mode: [inductive loops / radar / camera / tube / manual]
+Counting protocol:
+- aggregation: [minute → hour → day → month]
+- vehicle classification used
+- treatment of bidirectional flows
+- Calibration and verification: field tests
+
+Sesongjustering
+Referanseperiode
+
+#### Trafikantgrupper
+Sykkel
+Bil, lette tunge
+
+#### Foreløpige og endelige resultater
+
+
+## Nøyaktighet
+[Oppsummering av delkapitlene nedenfor]
+
+
+### Feilkilder og usikkerhet
+Trafikkindeksen er et estimat som har en viss usikkerhet knyttet til seg. Kilder til usikkerhet er blant andre at datagrunnlaget kommer fra et utvalg fra en populasjon, at det er målefeil heftet ved trafikkregistreringene og at det er bortfall av data.
+
+#### Utvalgsusikkerhet
+sampling design (SRS, stratified, clustered, PPS, etc.)
+Sample size and allocation
+Selection probabilities
+Estimation procedures (weights, calibration, variance estimation method such as bootstrap or Taylor linearization)
+Skjevheter i utvalget av trafikkregistreringspunkt
+Ikke-sannsynlighetsutvalg
+For få punkter
+
+#### Dekningsgrad og bortfall av data
+Bortfall av data:
+- Unit: site offline for month (no usable data).
+- Item: partial missing days/hours.
+- lane coverage issues.
+- Missingness pattern: [random vs clustered outages]
+- Downtime causes: [power, network, maintenance, weather]
+Nonresponse adjustment methodologies (weighting classes, propensity models, imputation)
+
+#### Målefeil
+Tett trafikk. Utstyr og kø. I saktegående kø kan målevariasjon som ikke reflekterer reelle endringer i trafikknivå.
+Feltskifte
+Fartsendring
+Kjøretøyklassifisering: Kan undervurdere lette kjøretøy i områder med mange «lange, men lette» kjøretøy.
+Bortfall av kjøretøyklassifisering
+
+#### Dataprosessering
+
+
+#### Estimering
+Punktdominans: Avhenger av by og punktsett; reduseres med større og bedre stratifiserte utvalg. 
+Does the same counting technology perform similarly across:
+- high-speed roads vs urban streets
+- multi-lane vs single-lane
+- winter conditions vs summer
+Outlier detection: [rule-based, robust model], thresholds.
+Treatment of extreme events: [keep, flag, adjust?]
+Consistency checks: day-of-week
+
+Provide a table-like bullet list of each error source with:
+- mechanism
+- direction of potential bias
+- mitigation
+- evidence/monitoring metric
+
+
+### Konfundere
+En konfunder kan påvirke et estimat slik at det viser et annet resultat enn den sanne estimanden. Konfundere kan gi utslag lokalt i kortere perioder, men mye kan dempes gjennom datavasking og metodiske grep. Den kumulative effekten er over tid vanligvis liten.
+
+#### Gjennomgangstrafikk
+I byindeksen skal estimatet ikke være påvirket av endring i gjennomgangstrafikk. I de fleste byområder er dette et lite problem, da det er mye mindre trafikk som er ren gjennomgangstrafikk enn den som har lokal forankring. I noen byområder finnes det enkelte veger som har en større andel gjennomgangstrafikk. Så langt det lar seg gjøre, vil trafikkregistreringer på disse vegene ikke inngå i datagrunnlaget. Gjennomgangstrafikk vil derfor ha liten eller ingen innvirkning på byindeksen.
+
+#### Næringstransport og mobil tjeneseyting
+Byindeksen skal estimere endring i persontransport med bil, men det er også en del næringstransport og mobil tjenesteyting med samme type biler. I datagrunnlaget er det ikke mulig å skille på reiseformålet til de registrerte bilene. Transportøkonomisk instiutt har i rapporten "Varebiler og mobile tjenesteytere: Andel mobile tjenestereiser i de fire største norske byområdene" sett på fordeling av reiseformål for trafikk med lette kjøretøy:
+
+*Personbilene står for den store majoriteten av trafikkarbeidet fra lette kjøretøy både i landet som helhet og i de fire største byområdene. Andel næringstrafikk som er unntatt nullvekstmålet utgjør en relativt liten andel av trafikkarbeidet fra lette kjøretøy i dagens situasjon.
+
+Analyser av historiske data fra kjørelengderegisteret og den nasjonale reisevaneundersøkelsen viser ingen klar indikasjon på at andelen næringstrafikk fra lette kjøretøy har økt siste tiår. Personbiltrafikken er i stor grad dimensjonerende for trafikkutviklingen for lette kjøretøy. Det er lite som tyder på at næringstrafikken alene kan forklare trafikkveksten man finner i enkelte byområder. Statistikken gir heller ikke grunn til å anta at næringstrafikkens andel av trafikkarbeidet vil øke vesentlig fremover.*
+
+Næringstransport og mobil tjeneseyting vil derfor ha begrenset innvirkning på byindeksen.
+
+#### Endringer i vegsystemet
+Det er flere typer av endringer i vegsystemet som påvirker trafikkflyten: åpning av nye veier, stenging av veger, endret kapasitet på enkeltstrekninger. Felles for disse endringene er at en betydelig andel av trafikantene kan ta andre veivalg enn før. Dette vil da føre til en endring i trafikk i trafikkregistreringspunktene som ikke er et uttrykk for en generell trend i omfanget av total trafikk. I datakontrollen vil punkter som er påvirket av vegsystemendringer bli luket ut. Derfor vil trafikkindeksen i liten grad være direkte påvirket av dette, men ved omfattende vegomlegginger vil representativiteten bli dårligere. Det er særlig i byområder som får omfattende endringer i vegsystemet at dette kan være en utfordring.
+
+Hvilke vegsystemendringer som er av betydning og hvordan disse er håndtert i datakontrollen, er beskrevet nærmere i rapporteringen av den enkelte trafikkindeksen.
+
+#### Kalendereffekter
+Antall yrkedøgn og helgedøgn varierer fra år til år, og trafikkmengden på slike dager er ulik. Dermed vil ulik fordeling av døgntype i årene som sammenlignes kunne påvirke byindeksen noe, men i liten grad. Påsken og pinsen som bytter plass mellom henholdsvis mars og april, og mai og juni, vil ha mer å si for byindeksestimatet. I datakontrollen er det rutine å påse at ethvert trafikkregistreringspunkt fanger opp slike perioder i sin helhet. Dette vil i noen tilfeller føre til at enkelte indekspunkter blir holdt utenfor beregningen. Effekten på byindeksen er liten.
+
+#### Endring i målefeil
+Dersom en systematisk målefeil ved et trafikkregistreringspunkt oppstår, kan dette påvirke byindeksen. Det kan for eksempel være feil i trafikkmengden eller kjøretøyklassifiseringen. Slike feil er det gode rutiner for å fange opp i datakontrollen. Effekten på byindeksen er derfor neglisjerbar.
+
+
+### Ikke-konfunderende faktorer
+Ut fra formålet til en trafikkindeks, finnes det flere faktorer som er legitime grunner til at trafikken endrer seg. De viktigste oppstår som følge av en endring i:
+- bruk av øvrige transportformer, f.eks: kollektiv, sykling, gange
+- antall bomstasjoner og bomtakster
+- parkeringstilbud
+- bruk av hjemmekontor
+- avgifter og prisnivå (drivstoff o.l.)
+- øvrige føringer i samfunnet
+- vær- og føreforhold
+
+
+### Validitet
+Med validitet menes her i hvilken grad trafikkindeksen måler det den er ment å måle. Validiteten må vurderes ut fra datakildenes relevans, samt effekten av feilkilder og konfundere.
+
+Når trafikkindeksen skal estimere endring i trafikk, er det en styrke for validiteten at datagrunnlaget er faktiske registreringer av trafikkmengde. Datagrunnlaget er ikke basert på modeller eller estimater. Trafikken registreres kontinuerlig året rundt, som gjør det mulig å gjøre gode sammenligninger over tid. Trafikkregistreringsutstyr som fungerer som normalt, gir ikke nevneverdige bidrag til feil i estimatet denne sammenhengen. Utstyr med målefeil er det gode rutiner for å fange opp og ta ut av datagrunnlaget.
+
+Validiteten er også avhengig av at trafikkregistreringene gir gode data som er uttrykk for en generell trend. Indekspunkt som viser endring i trafikk som i stor grad skyldes irrelevante forhold er det også gode rutiner for å oppdage. Det er med andre ord sjelden at "feil" data blir med i indeksen.
+
+Validiteten påvirkes også av representativiteten til indekspunktene, i betydningen av hvilke veger de er plassert på. Indekspunktene gir informasjon om utviklingen på en liten andel av vegene i et område, men de skal være mange nok og med god nok geografisk spredning til at de er representative for den generelle trafikkutviklingen. Med færre indekspunkt som gir data, vil validiteten minke. Ved bortfall av data, som i byområder kan bli betydelig i forbindelse med større endringer i vegsystemet, kan indekspunktene dekke kun en liten andel av vegene og representativiteten vil ikke være like god.
+
+En samlet vurdering av aktuelle konfundere antyder at de har relativt liten påvirkning på en trafikkindeks. Generelt vil validiteten til en trafikkindeks være høy, men enkelte byindekser kan i perioder ha noe lavere validitet. Validiteten til byindeksen kan vurderes opp mot RVU-basert trafikkarbeid. Samsvar mellom RVU og byindeks vil være en pekepinn på god validitet.
+
+
+### Reliabilitet
+Med reliabilitet menes her i hvilken grad resultatet for en trafikkindeks varierer med ulike utvalg av indekspunkt fra samme populasjon. Med ulike tilfeldige utvalg av samme antall indekspunkt, for samme tidsperiode, vil trafikkindeksen få litt forskjellig resultat i hvert tilfelle. Et estimat for denne variasjonen er gitt av konfidensintervallet. Et smalt konfidensintervall antyder høy reliabilitet. 
+
+Reliabiliteten påvirkes mye av hvor mange indekspunkt som er med i utvalget, og hvor stor forskjell det er i trafikkens endring i punktene. Små utvalg vil generelt gi større variasjon fra utvalg til utvalg. Vektingen av de enkelte punktene har også noe å si med tanke på sammensetningen i et utvalg. Noen indekspunkter med mye trafikk kan virke dominerende på estimatet.
+
+Reliabiliteten til en trafikkindeks kan belyses på ulike måter:
+- standardfeil og konfidensintervall
+- jackknife-gjentaking: reberegne indeksen ved å systematisk utelukke ett og ett punkt. Aktuelle måltall er maksimalt avvik og 95-persentilen til avvikene. Lave verdier på disse indikerer høy reliabilitet.
+- stikkprøvegjentaking i form av ikke-parametrisk bootstrap: tilfeldig trekke ut et like stort utvalg fra det opprinnelige utvalget av indekspunkter, med tilbakelegging, og beregne trafikkindeksen. Dette gjøres flere tusen ganger. Aktuelle måltall her er konfidensintervall og relativ standardfeil. Lave verdier på disse indikerer høy reliabilitet.
+
+
+### Kvalitetsindikatorer
+Kvaliteten til en trafikkindeks kan beskrives ved hjelp av kvalitetsindikatorer. Her er en generell beskrivelse av noen indikatorer som kan tallfestes for hver utgave av en indeks.
+
+SSB: Anbefalte kvalitetsindikatorer i offisiell statistikk
+
+#### Usikkerhet
+Variasjonskoeffisient = standardfeil / indeks
+Hovedtall bør ha en variasjonskoeffisient som ligger under 3 prosent. Ved variasjonskoeffisient på nærmere 20 prosent må en vurdere nytten av å publisere tallene.
+
+Variance estimation method: bootstrap
+Standard error
+Confidence interval
+Effective sample size (n_eff)
+Coverage ratio: covered length/total public road length, also by strata
+Offline rate: share of planned site-days missing
+
+#### Enhetsfrafall
+Statistikknivå: Verdi = 1 - Antall enheter mottatt / Antall enheter i utvalg
+rapportering til Finansdepartementet: antall enheter mottatt / antall enheter i utvalget * 100
+
+#### Partielt frafall
+For hver variabel: Andel med blank verdi i forhold til antall enheter rapportert og som skal fylle ut variabelen
+Indikatoren kjøres på inndata-tilstanden, det vil si før editering og imputering utføres
+For hver (nøkkel)variabel: Verdi = 1 - Antall enheter med verdi / Antall enheter i utvalget.
+
+#### Datakompletthetsandel
+Denne indikatoren ligner på partielt frafall. Forskjellen er at denne kjøres på datatilstandene fra Klargjorte data og utover, altså etter editering og imputering. Mens indikatoren for partielt frafall kjøres på inndata-tilstanden, altså før editering og imputering.
+Verdi = Antall med verdi / Antall enheter i datasett.
+Inputen her er datasett med ferdig klargjort data eller statistikk.
+Verdien er i utgangspunktet på variabelnivå. Kan aggregeres opp på statistikknivå og avdelings- eller organisasjonsnivå.
+Andel trafikkarbeid i utvalg
+
+#### Bias–variance decomposition summary
+Sampling precision: [SE/CV/CI]
+Dominant bias risks this month:
+- [e.g., concentrated outages on high-volume roads]
+- [e.g., construction detours to unmeasured local roads]
+Net effect (qualitative or quantified via sensitivity analysis): [small/moderate/large]
+
+#### Quality summary
+Include this as a compact box in each monthly publication:
+
+Coverage (frame): [x%] of public road length covered by frame; sample covers [x%] of length in high-volume strata
+Availability: valid data for [x%] of planned site-days; imputation share [x%]
+Precision: SE, 95% CI
+Comparability risks this month: [none / weather / major roadworks / calendar effects ]
+Overall fitness for purpose: [High/Medium/Low]
+Rapporter alltid antall punkter, andel gyldige døgn, og andeler per stratum for måneden.
+
+
+## Aktualitet
+Indeksene oppdateres månedlig, og som regel innen den 20. i påfølgende måneden.
+Prosesseringstid. Kvalitetssjekker.
+
+
+## Tilgjengelighet
+Rapporter
+API
+Dashbord
+Grunnlagsdata
+Dokumentasjon av metodikk
+
+
+## Sammenlignbarhet
+
+### Over tid
+
+### Internal consistency
+Cross-check totals vs domain totals (sum over strata equals overall).
+Logical checks: day-of-week pattern consistency; extreme event plausibility.
+
+### Sammenheng med annen statistikk
+RVU
+https://www.vegvesen.no/vegprosjekter/nasjonal-transportplan/den-nasjonale-reisevaneundersokelsen/
+
+Kjørelengder
+https://www.ssb.no/transport-og-reiseliv/landtransport/statistikk/kjorelengder
+
+Vegtrafikkindeksen
