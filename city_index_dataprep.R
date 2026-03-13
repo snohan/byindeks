@@ -64,7 +64,7 @@ trp_id_msnr <-
   present_year <- 2026
   # month to be published now:
   index_month <- 2
-  city_number <- 16952
+  city_number <- 960
 }
 
 source("set_time_references.R")
@@ -127,27 +127,6 @@ city_trps <-
   tictoc::toc()
 }
 
-if(city_number == 960) {
-  toll_mdt_light <-
-    readr::read_rds(
-      file = "data_indexpoints_tidy/trd_toll_mdt.rds",
-    ) |>
-    dplyr::filter(class == "lette") |>
-    dplyr::rename(
-      year_month = month
-    ) |>
-    dplyr::mutate(
-      year = lubridate::year(year_month),
-      month = lubridate::month(year_month),
-      length_quality = 100
-    ) |>
-    dplyr::select(
-      -class,
-      -n_days,
-      -traffic
-    )
-}
-
 mdt_filtered_new <-
   mdt |>
   dplyr::filter(length_range == "[..,5.6)") |>
@@ -181,12 +160,6 @@ mdt_filtered_new <-
   ) |>
   tibble::as_tibble()
 
-if(city_number == 960){
-  mdt_filtered <-
-    mdt_filtered |>
-    dplyr::bind_rows(toll_mdt_light)
-}
-
 # Read back in for previous years
 mdt_filtered_old <- 
   readr::read_rds(paste0("data_indexpoints_tidy/mdt_", city_number, ".rds")) |> 
@@ -199,6 +172,35 @@ mdt_filtered <-
     mdt_filtered_old,
     mdt_filtered_new
   )
+
+if(city_number == 960){
+  toll_mdt_light <-
+    readr::read_rds(
+      file = "data_indexpoints_tidy/trd_toll_mdt.rds",
+    ) |>
+    dplyr::rename(
+      year_month = month
+    ) |>
+    dplyr::mutate(
+      year = lubridate::year(year_month),
+      month = lubridate::month(year_month),
+      length_quality = 100
+    ) |>
+    dplyr::filter(
+      class == "lette",
+      year == present_year
+    ) |>
+    dplyr::select(
+      -class,
+      -n_days,
+      -traffic
+    )
+  
+  mdt_filtered <-
+    mdt_filtered |>
+    dplyr::bind_rows(toll_mdt_light)
+
+}
 
 mdt_filtered |>
   readr::write_rds(
@@ -242,7 +244,7 @@ trp_not_ok <-
 # TODO: show TRP contributions to rolling indices
 # TODO: Shiny app for checking MDT
 
-start_at <- 21
+start_at <- 25
 plot_mdt(start_at)
 # Workaround as Positron won't show patterns
 ggplot2::ggsave(filename = "images/mdt_pattern_test.svg", width = 12, height = 12)

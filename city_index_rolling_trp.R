@@ -1,4 +1,25 @@
 ## All possible window indices for TRP ----
+
+if(city_number == 960) {
+
+  trp_names <-
+    trp_names |> 
+    dplyr::left_join(
+      toll_meta_data <- readr::read_rds(file = "bomdata_trondheim/trd_toll_stations.rds") |> 
+        dplyr::select(trp_id_2 = trp_id, nvdb_id),
+      by = join_by(trp_id == nvdb_id)
+    ) |> 
+    dplyr::mutate(
+      trp_id = dplyr::case_when(
+        is.na(trp_id_2) ~ trp_id,
+        TRUE ~ trp_id_2
+      )
+    ) |> 
+    dplyr::select(-trp_id_2)
+  
+}
+
+
 # 12
 all_12_month_trp_indices <-
   calculate_rolling_indices(12, grouping = "by_trp") |>
@@ -30,63 +51,55 @@ all_12_month_trp_indices <-
     trp_id
   )
 
-x_axis_breaks <- 
-  all_12_month_trp_indices$last_month_in_index |> 
-  base::unique() |> 
-  base::as.character() |> 
-  stringr::str_subset("-12-")
 
-trp_mdt_plot_12 <-
-  all_12_month_trp_indices |>
-  # dplyr::filter(
-  #   last_month_in_index >= "2022-12-01"
-  # ) |> 
-  dplyr::mutate(
-    last_month_in_index = as.character(last_month_in_index) |> factor()
-  ) |> 
-  ggplot2::ggplot(
-    aes(
-      x = last_month_in_index,
-      y = name,
-      fill = trp_index_p
-    )
-  ) +
-  geom_tile() +
-  theme_minimal() +
-  labs(
-    title = "Ett års glidende indeks i byindekspunktene",
-    x = "",
-    y = "",
-    fill = "Endring\n(%)"
-  ) +
-  theme(
-    panel.grid.major = element_blank(), # Remove major grid lines
-    panel.grid.minor = element_blank(), # Remove minor grid lines
-    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
-    axis.text = element_text(size = 12),
-    legend.position = "right"
-  ) +
-  scale_fill_viridis(discrete = FALSE) +
-  scale_x_discrete(breaks = x_axis_breaks)
+plot_trp_mdt_index <- function(trp_mdt_index_df, n_years_str) {
+
+  title_str <- paste0(n_years_str, " års glidende indeks i byindekspunktene")
+
+  x_axis_breaks <- 
+    trp_mdt_index_df$last_month_in_index |> 
+    base::unique() |> 
+    base::as.character() |> 
+    stringr::str_subset("-12-")
+
+  trp_mdt_index_plot <-
+    trp_mdt_index_df |>
+    dplyr::mutate(
+      last_month_in_index = as.character(last_month_in_index) |> factor()
+    ) |> 
+    ggplot2::ggplot(
+      aes(
+        x = last_month_in_index,
+        y = name,
+        fill = trp_index_p
+      )
+    ) +
+    geom_tile() +
+    theme_minimal() +
+    labs(
+      title = title_str,
+      x = "",
+      y = "",
+      fill = "Endring\n(%)"
+    ) +
+    theme(
+      panel.grid.major = element_blank(), # Remove major grid lines
+      panel.grid.minor = element_blank(), # Remove minor grid lines
+      axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+      axis.text = element_text(size = 12),
+      legend.position = "right"
+    ) +
+    scale_fill_viridis(discrete = FALSE) +
+    scale_x_discrete(breaks = x_axis_breaks)
+
+  return(trp_mdt_index_plot)
+}
+
+trp_mdt_plot_12 <- plot_trp_mdt_index(all_12_month_trp_indices, "Ett")
 
 
 # 36
 all_36_month_trp_indices <- calculate_rolling_indices(36, grouping = "by_trp")
-
-if(city_number == 960) {
-
-  trd_toll_station_names <-
-    readr::read_rds(
-      "trd_toll_station_id.rds"
-    )
-
-  all_36_month_trp_indices <-
-    all_36_month_trp_indices |>
-    dplyr::left_join(
-      trd_toll_station_names,
-      by = "trp_id"
-    )
-}
 
 if(nrow(all_36_month_trp_indices > 0)){
 
@@ -120,43 +133,10 @@ if(nrow(all_36_month_trp_indices > 0)){
       trp_id
     )
 
-  x_axis_breaks_36 <- 
-    all_36_month_trp_indices$last_month_in_index |> 
-    base::unique() |> 
-    base::as.character() |> 
-    stringr::str_subset("-12-")
+  trp_mdt_plot_36 <- plot_trp_mdt_index(all_36_month_trp_indices, "Tre")
 
-# Check contribution from TRPs each possible 36 month index
-trp_mdt_plot_36 <-
-  all_36_month_trp_indices |>
-  dplyr::mutate(
-    last_month_in_index = as.character(last_month_in_index) |> factor()
-  ) |> 
-  ggplot2::ggplot(
-    aes(
-      x = last_month_in_index,
-      y = name,
-      fill = trp_index_p
-    )
-  ) +
-  geom_tile() +
-  theme_minimal() +
-  labs(
-    title = "Tre års glidende indeks i byindekspunktene",
-    x = "",
-    y = "",
-    fill = "Endring\n(%)"
-  ) +
-  theme(
-    panel.grid.major = element_blank(), # Remove major grid lines
-    panel.grid.minor = element_blank(), # Remove minor grid lines
-    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
-    axis.text = element_text(size = 12),
-    legend.position = "right"
-  ) +
-  scale_fill_viridis(discrete = FALSE) +
-  scale_x_discrete(breaks = x_axis_breaks)
-}
+  }
+
 
 # Write
 list(

@@ -1,8 +1,21 @@
 ## Jackknife ----
 # Run calculate_rolling_indices for every sample with one TRP left out
+
+trp_mdt_ok_refyear_all <- trp_mdt_ok_refyear
+
+if(city_number == 960){
+
+  # Include toll stations here
+  trp_mdt_ok_refyear_all <-
+    mdt_validated |>
+    filter_mdt(reference_year) |>
+    purrr::pluck(1)
+
+}
+
 all_12_month_indices_jackknife <- 
   purrr::map_dfr(
-    trp_mdt_ok_refyear,
+    trp_mdt_ok_refyear_all,
     ~ calculate_rolling_indices(
         12, 
         mdt_validated_df = mdt_validated |> dplyr::filter(trp_id != .x)
@@ -21,25 +34,25 @@ all_12_month_indices_jackknife_tidy <-
     by = dplyr::join_by(trp_id_left_out == trp_id, month_object == last_month_in_index)
   )
   
-  pseudo_observations <-
-    # Compare jackknife index to original index
-    dplyr::left_join(
-      all_12_month_indices_jackknife_tidy |> dplyr::select(trp_id_left_out, index_p_jack = index_p, month_object),
-      all_12_month_indices |> dplyr::select(index_p, n_trp, month_object),      
-      by = dplyr::join_by(month_object)
-    ) |> 
-    # Add TRP index
-    dplyr::left_join(
-      all_12_month_trp_indices |> dplyr::select(trp_id, name, last_month_in_index, trp_index_p),
-      by = dplyr::join_by(trp_id_left_out == trp_id, month_object == last_month_in_index)
-    ) |> 
-    dplyr::mutate(
-      trp_index_p_pseudo = n_trp * index_p - (n_trp - 1) * index_p_jack,
-      index_p_delta = index_p_jack - index_p
-    ) |> 
-    dplyr::select(
-      trp_id = trp_id_left_out, name, month_object, index_p, index_p_jack, index_p_delta, everything()
-    )
+pseudo_observations <-
+  # Compare jackknife index to original index
+  dplyr::left_join(
+    all_12_month_indices_jackknife_tidy |> dplyr::select(trp_id_left_out, index_p_jack = index_p, month_object),
+    all_12_month_indices |> dplyr::select(index_p, n_trp, month_object),      
+    by = dplyr::join_by(month_object)
+  ) |> 
+  # Add TRP index
+  dplyr::left_join(
+    all_12_month_trp_indices |> dplyr::select(trp_id, name, last_month_in_index, trp_index_p),
+    by = dplyr::join_by(trp_id_left_out == trp_id, month_object == last_month_in_index)
+  ) |> 
+  dplyr::mutate(
+    trp_index_p_pseudo = n_trp * index_p - (n_trp - 1) * index_p_jack,
+    index_p_delta = index_p_jack - index_p
+  ) |> 
+  dplyr::select(
+    trp_id = trp_id_left_out, name, month_object, index_p, index_p_jack, index_p_delta, everything()
+  )
   
 trp_jackknife_delta_plot_12 <-
   pseudo_observations |>

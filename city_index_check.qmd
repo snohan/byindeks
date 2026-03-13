@@ -65,7 +65,7 @@ counties <- readr::read_rds("counties.rds")
 # 2017 NJær   952   02 Snorre
 # 2018 Oslo   959   12 Trond
 # 2018 Berg  8952   12 Trond
-# 2019 Tron   960   12 Snorre
+# 2019 Tron   960   02 Snorre
 # 2022 Trom 16952   02 Snorre
 # 2023 Kris 19953   12 Snorre
 # 2023 NGlo 18952   12 Trond
@@ -79,7 +79,7 @@ counties <- readr::read_rds("counties.rds")
 # Choose
 index_year <- 2026
 latest_published_month <- 1
-city_number <- 16952
+city_number <- 960
 # End choose
 
 new_month_year <-
@@ -261,7 +261,7 @@ city_name <- city_index$area_name[1]
 if(city_number == 960){
   
   trps_meta <- 
-    points %>% 
+    points |> 
     dplyr::filter(trp_id %in% city_trps) |> 
     # TRD
     dplyr::bind_rows(
@@ -292,12 +292,8 @@ city_county_numbers <-
   ) |> base::unique()
 
   area_polygon <- 
-    readr::read_rds(
-      "H:/my_data/fylker.rds"
-    ) |> 
-    dplyr::filter(
-      nr %in% city_county_numbers
-    )
+    readr::read_rds("H:/my_data/fylker.rds") |> 
+    dplyr::filter(nr %in% city_county_numbers)
 ```
 
 
@@ -305,7 +301,10 @@ city_county_numbers <-
 #| label: aadt
 
 # Need not fetch AADT every time
-if(latest_published_month == 4) {
+if(
+  T
+  # latest_published_month == 4
+  ) {
   
   adt <- get_aadt_by_length_for_trp_list(city_trps)
   
@@ -333,11 +332,11 @@ if(latest_published_month == 4) {
     autopass_trp_id <-
       trps_meta |> 
       dplyr::select(
-        nvdb_id = trp_id,
-        autopass_id
+        nvdb_id,
+        autopass_id = trp_id
       ) |> 
       dplyr::filter(
-        !is.na(autopass_id)
+        !is.na(nvdb_id)
       )
     
     adt_ref_year_toll <-
@@ -392,10 +391,8 @@ if(latest_published_month == 4) {
       readr::read_rds(
         file = "data_indexpoints_tidy/trd_toll_aadt.rds"
       ) |> 
-      dplyr::filter(
-        year == max(year),
-        class == "lette"
-      ) |> 
+      dplyr::slice_max(year, by = trp_id) |> 
+      dplyr::filter(class == "lette") |> 
       dplyr::select(trp_id, adt = aadt, year) |> 
       dplyr::mutate(
         adt = round(adt, -1)
@@ -420,7 +417,7 @@ if(latest_published_month == 4) {
   }
   
   this_citys_trps_all_adt <-
-    trps_meta %>%
+    trps_meta |> 
     dplyr::left_join(
       adt_filtered,
       by = "trp_id"
@@ -517,7 +514,7 @@ if(latest_published_month == 4) {
   #   )
   
   missing_adt <-
-    this_citys_trps_all_adt %>%
+    this_citys_trps_all_adt |> 
     dplyr::filter(is.na(adt))
   
   
@@ -578,10 +575,7 @@ if(latest_published_month == 4) {
   
   if(city_number == 960){
   
-    trd_station_type <-
-      readr::read_rds(
-        "trd_station_type.rds"
-      )
+    trd_station_type <- readr::read_rds("trd_station_type.rds")
     
     this_citys_trps_all_adt_final <-
       this_citys_trps_all_adt_final |> 
@@ -595,28 +589,16 @@ if(latest_published_month == 4) {
       )
   }
 
-  # TODO: add sections of TRPs
+}
   
-  readr::write_rds(
-    this_citys_trps_all_adt_final,
+this_citys_trps_all_adt_final <-
+  readr::read_rds(
     file = paste0(
       "index_trp_metadata/trp_",
       city_number,
       ".rds"
-    )
+    ) 
   )
-  
-}else{
-  
-  this_citys_trps_all_adt_final <-
-    readr::read_rds(
-      file = paste0(
-        "index_trp_metadata/trp_",
-        city_number,
-        ".rds"
-      ) 
-    )
-}
 ```
 
 

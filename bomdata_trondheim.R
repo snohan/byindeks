@@ -12,29 +12,23 @@
 # 1. city_index_check.Rmd
 # 2. city_index_dataprep_trondheim_toll_stations.R
 
-{
-  #source("rmd_setup.R")
-  #source("get_from_trafficdata_api.R")
-  #library(readxl)
-}
-
 
 # Tolling station info ----
 tolling_station_ids_original <-
   c(
-    "51",  # Dette er egentlig to ulike, hver med to felt
+    "51",  # Dette er egentlig to ulike punkt, hvert med to felt
     # Klett (1,2), Røddeveien (3,4)
     # Endrer nedenfor Røddeveien til id 512 og felt 1 og 2
     "512",
-    "52", "53", "54", "55",
-    "56", # "Kroppan bru", som egentlig ikke er på Kroppan bru, men
-    # Holtermannsvegen utenfor Siemens er to stasjoner, også 57.
+    "52", "53", "54", 
+    "55", # Flyttet fra Nord for Sluppen bru til Oslovegen nord for Nydalsbrua med oppstart medio august 2023
+    "56", # "Kroppan bru", som egentlig ikke er på Kroppan bru (Holtermannsvegen utenfor Siemens), er to stasjoner, også 57.
     # Slår disse sammen nedenfor, og setter feltnummer etter dagens metrering
     "58", "59", "60", "61", "62", "64", "65", "66", "67",
     "68", "69", "85", "86",
     "72"
-    # From 01.11.2023, Ranheim changed ID from 72 (operator ID 100121) to 1 (operator ID 100149)
-    # this affects fetching data from NDVB API and APAR API.
+    # From 01.11.2023, Ranheim changed ID from 72 (operator ID 100121) to 1 (operator ID 100149),
+    # and this affects fetching data from NDVB API and APAR API.
   )
 
 # Moholt
@@ -58,26 +52,20 @@ tolling_station_ids_original <-
 ### Fetch new ----
 source("apar.R")
 
+# The Autopass-IDs found in response from Autopass Analytics:
 tolling_station_ids_apar <-
   c(
-    "51",  # Dette er egentlig to ulike, hver med to felt
-    # Klett (1,2), Røddeveien (3,4)
-    # Endrer nedenfor Røddeveien til id 512 og felt 1 og 2
-    #"512",
+    "51",
     "52", "53", "54", "55",
-    "56", "57", # "Kroppan bru", som egentlig ikke er på Kroppan bru, men
-    # Holtermannsvegen utenfor Siemens er to stasjoner, også 57.
-    # Slår disse sammen nedenfor, og setter feltnummer etter dagens metrering
+    "56", "57",
     "58", "59", "60", "61", "62", "64", "65", "66", "67",
     "68", "69", "85", "86",
-    # From 01.11.2023, Ranheim changed ID from 72 (operator ID 100121) to 1 (operator ID 100149)
-    #"72"
-    "1"
+    "1" # Ranheim changed ID from 72 
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "december" # English
-year_number <- 2025
+month_string <- "february" # English!
+year_number <- 2026
 
 apar_data_for_month <-
   purrr::map_dfr(
@@ -103,8 +91,11 @@ apar_data_for_month_tidy <-
   dplyr::mutate(
     trp_id =
       dplyr::case_when(
+        # Split Klett og Røddeveien
         trp_id == "51" & lane %in% c("3", "4") ~ "512",
+        # Merge "Kroppanbrua" (the misnomer...)
         trp_id == "57" ~ "56",
+        # Keep consistent Ranheim ID in data
         trp_id == "1" ~ "72",
         TRUE ~ trp_id
       ),
@@ -134,7 +125,7 @@ apar_files <-
     "H:/Programmering/R/byindeks/bomdata_trondheim/raw_apar_2021-5_",
     #pattern = "2021.*",
     #pattern = "2022.*|2023.*|2024.*",
-    pattern = "2025.*",
+    pattern = "2025.*|2026.*",
     all.files = TRUE,
     no.. = TRUE,
     full.names = TRUE
@@ -215,10 +206,7 @@ tolling_data_daily <-
 
 # Check ----
 # Plot to see if data are ok
-kommune_bomer <-
-  readr::read_rds(
-    file = "bomdata_trondheim/trd_toll_stations.rds"
-  )
+kommune_bomer <- readr::read_rds(file = "bomdata_trondheim/trd_toll_stations.rds")
 
 plot_toll_station_data_per_lane <- function(toll_id_chosen, year_chosen) {
 
@@ -250,7 +238,7 @@ plot_toll_station_data_per_lane <- function(toll_id_chosen, year_chosen) {
 }
 
 # Ranheim is 72, 21 stations
-plot_toll_station_data_per_lane(tolling_station_ids_original[21], 2025)
+plot_toll_station_data_per_lane(tolling_station_ids_original[21], 2026)
 
 # Exclusions
 source("bomdata_trondheim_exclusions.R")
@@ -527,6 +515,10 @@ tolling_station_index_2025 <-
   tolling_data_daily_all_years %>%
   calculate_monthly_index_for_tolling_stations_from_daily_traffic(2024, 2025)
 
+tolling_station_index_2026 <-
+  tolling_data_daily_all_years %>%
+  calculate_monthly_index_for_tolling_stations_from_daily_traffic(2025, 2026)
+
 tolling_station_indices <-
   dplyr::bind_rows(
     tolling_station_index_2020,
@@ -534,7 +526,8 @@ tolling_station_indices <-
     tolling_station_index_2022,
     tolling_station_index_2023,
     tolling_station_index_2024,
-    tolling_station_index_2025
+    tolling_station_index_2025,
+    tolling_station_index_2026
   )
 
 readr::write_rds(

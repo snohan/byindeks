@@ -843,11 +843,11 @@ events_this_month_lines  <- dplyr::filter(event_df, sf::st_geometry_type(geograf
 map_links_for_index_check <- function(base_year_dbl, calc_year_dbl, index_month_dbl, trp_index_df, index_limit_dbl = 4) {
 
   # Test
-  trp_index_df <- point_index_new_prepared_1
-  index_limit_dbl <- 5
-  base_year_dbl <- index_year - 1
-  calc_year_dbl <- index_year
-  index_month_dbl <- latest_published_month + 1
+  # trp_index_df <- point_index_new_prepared_1
+  # index_limit_dbl <- 5
+  # base_year_dbl <- index_year - 1
+  # calc_year_dbl <- index_year
+  # index_month_dbl <- latest_published_month + 1
 
   links_with_trp_index <- join_links_and_trp_index(links_with_trp, trp_index_df)
   trps_without_links <- find_trps_without_links(trp_index_df)
@@ -857,10 +857,7 @@ map_links_for_index_check <- function(base_year_dbl, calc_year_dbl, index_month_
       dplyr::filter(link_id %in% links_with_trp$link_id) |> 
       dplyr::left_join(links_with_trp_index, by = "link_id") |> 
       dplyr::select(link_id, info_text, index_total_p) |> 
-      dplyr::mutate(
-        # info_text = lapply(info_text, htmltools::HTML)
-        info_text = purrr::map(info_text, htmltools::HTML)
-      )
+      dplyr::mutate(info_text = purrr::map(info_text, htmltools::HTML))
 
   events_b <- get_events_in_year_month(events, base_year_dbl, index_month_dbl)
   events_c <- get_events_in_year_month(events, calc_year_dbl, index_month_dbl)

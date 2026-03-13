@@ -518,7 +518,8 @@ get_tolling_stations <- function(kommunenr) {
 
   uthenta <- call_and_parse_nvdb_api(api_query)
 
-  bom <- uthenta$objekter |>
+  bom <- 
+    uthenta$objekter |>
     dplyr::select(id, egenskaper) |>
     dplyr::rename(id1 = id) |>
     tidyr::unnest(cols = c(egenskaper)) |>
@@ -526,23 +527,32 @@ get_tolling_stations <- function(kommunenr) {
     dplyr::select(id1, navn, verdi) |>
     dplyr::rename(id = id1) |>
     tidyr::pivot_wider(names_from = navn, values_from = verdi) |>
-    dplyr::rename(name = 2,
-                  msnr = 3)
+    dplyr::rename(
+      name = "Navn bomstasjon",
+      trp_id = "Bomstasjon_Id"
+    )
 
-  vegreferanser <- uthenta$objekter |>
+  vegreferanser <- 
+    uthenta$objekter |>
     dplyr::select(id, lokasjon.vegsystemreferanser) |>
     tidyr::unnest(cols = c(lokasjon.vegsystemreferanser)) |>
     dplyr::select(id, kortform) |>
     dplyr::rename(road_reference = kortform)
 
-  koordinater <- uthenta$objekter |>
+  koordinater <- 
+    uthenta$objekter |>
     dplyr::select(id, lokasjon.geometri.wkt) |>
-    dplyr::mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 9, -2)) |>
-    tidyr::separate(geometri_sub, into = c("lat", "lon", "alt"), sep = "[[:space:]]",
-             convert = T) |>
+    dplyr::mutate(geometri_sub = str_sub(lokasjon.geometri.wkt, 10, -2)) |>
+    tidyr::separate(
+      geometri_sub, 
+      into = c("lat", "lon", "alt"), 
+      sep = "[[:space:]]",
+      convert = T
+    ) |>
     dplyr::select(id, lat, lon)
 
-  veglenkeposisjoner <- uthenta$objekter |>
+  veglenkeposisjoner <- 
+    uthenta$objekter |>
     dplyr::select(id, lokasjon.stedfestinger) |>
     tidyr::unnest(cols = c(lokasjon.stedfestinger)) |>
     dplyr::select(id, kortform) |>
@@ -555,8 +565,15 @@ get_tolling_stations <- function(kommunenr) {
     dplyr::left_join(koordinater, by = "id") |>
     dplyr::left_join(veglenkeposisjoner, by = "id") |>
     #dplyr::select(-id) |>
-    dplyr::select(nvdb_id = id, msnr, name, road_reference,
-                  road_link_position, lat, lon)
+    dplyr::select(
+      nvdb_id = id, 
+      trp_id, name, 
+      road_reference,
+      road_link_position, lat, lon
+    ) |> 
+    dplyr::mutate(
+      nvdb_id = base::as.character(nvdb_id)
+    )
 
   return(bomer)
 }
