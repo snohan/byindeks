@@ -54,6 +54,14 @@ pseudo_observations <-
     trp_id = trp_id_left_out, name, month_object, index_p, index_p_jack, index_p_delta, everything()
   )
   
+
+x_axis_breaks_jack <- 
+    pseudo_observations$month_object |> 
+    base::unique() |> 
+    base::as.character() |> 
+    stringr::str_subset("-12-")
+
+
 trp_jackknife_delta_plot_12 <-
   pseudo_observations |>
   dplyr::mutate(
@@ -82,7 +90,7 @@ trp_jackknife_delta_plot_12 <-
     legend.position = "right"
   ) +
   scale_fill_viridis(discrete = FALSE) +
-  scale_x_discrete(breaks = x_axis_breaks)
+  scale_x_discrete(breaks = x_axis_breaks_jack)
 
 # trp_jackknife_delta_plot_12 |> plotly::ggplotly()
 
