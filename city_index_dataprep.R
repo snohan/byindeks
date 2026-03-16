@@ -64,7 +64,7 @@ trp_id_msnr <-
   present_year <- 2026
   # month to be published now:
   index_month <- 2
-  city_number <- 960
+  city_number <- 1952
 }
 
 source("set_time_references.R")
@@ -87,6 +87,13 @@ trp_names <-
     name,
     municipality_name
   ) |>
+  # Avoid duplicate names
+  dplyr::mutate(
+    name = dplyr::case_when(
+      trp_id == "86349V805605" ~ "Indre Arne E16",
+      TRUE ~ name
+    )
+  ) |> 
   dplyr::arrange(name)
 
 if(city_number == 959) {
@@ -244,7 +251,7 @@ trp_not_ok <-
 # TODO: show TRP contributions to rolling indices
 # TODO: Shiny app for checking MDT
 
-start_at <- 25
+start_at <- 21
 plot_mdt(start_at)
 # Workaround as Positron won't show patterns
 ggplot2::ggsave(filename = "images/mdt_pattern_test.svg", width = 12, height = 12)
