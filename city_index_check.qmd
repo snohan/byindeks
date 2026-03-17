@@ -308,8 +308,8 @@ city_county_numbers <-
 
 # Need not fetch AADT every time
 if(
-  T
-  # latest_published_month == 4
+  # T
+  latest_published_month == 4
   ) {
   source("city_index_dataprep_update_aadt.R")
 }else{

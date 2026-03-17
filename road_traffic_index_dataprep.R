@@ -38,8 +38,8 @@ points <-
   )
 
 ## Choose month ----
-this_year <- 2025
-latest_month_number <- 12
+this_year <- 2026
+latest_month_number <- 2
 
 index_this_year <-
   get_published_road_traffic_index_for_months(
