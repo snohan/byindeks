@@ -5,38 +5,32 @@ borderline <- officer::fp_border(color = "black", style = "solid", width = 1)
 # TRP tables ----
 create_point_table <- function(all_point_info_df) {
 
-  all_point_info_df %>%
+  all_point_info_df |> 
     select(
       name,
       road_reference,
       adt_ref,
       adt,
       year_aadt
-    ) %>%
-    flextable() %>%
+    ) |> 
+    flextable() |> 
     set_header_labels(
       name = "Punktnavn",
       road_reference = "Vegreferanse",
       adt_ref = "ÅDT\nreferanseår",
       adt = "ÅDT\nnyeste år",
       year_aadt = "År\n(nyeste)"
-    ) %>%
-    flextable::align(i = 1, j = c(3, 4, 5), align = "center", part = "header") %>%
-    flextable::align(j = c(5), align = "center", part = "body") %>%
-    bold(part = "header") %>%
-    bg(bg = "#ED9300", part = "header") %>%
-    border_remove() %>%
-    hline_top(part = "header", border = borderline) %>%
-    hline_bottom(part = "all", border = borderline) %>%
+    ) |> 
+    flextable::align(i = 1, j = c(3, 4, 5), align = "center", part = "header") |> 
+    flextable::align(j = c(5), align = "center", part = "body") |> 
+    bold(part = "header") |> 
+    bg(bg = "#ED9300", part = "header") |> 
+    border_remove() |> 
+    hline_top(part = "header", border = borderline) |> 
+    hline_bottom(part = "all", border = borderline) |> 
     width(j = 1, 2) |>
     width(j = 2, 1.2)
-    #autofit() %>%
-    # padding(
-    #   j = 1,
-    #   padding.left = 20,
-    #   part = "all"
-    # ) |>
-    # height_all(height = .1)
+  
 }
 
 create_point_table_trd_2 <- function(all_point_info_df) {
