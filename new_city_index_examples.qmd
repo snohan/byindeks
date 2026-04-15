@@ -62,7 +62,6 @@ flextable::set_flextable_defaults(
 ```{r}
 #| label: data
 
-
 # General
 this_date <- lubridate::today()
 this_date_string <- 
@@ -73,7 +72,6 @@ this_date_string <-
     " ", 
     lubridate::year(this_date)
   )
-
 
 # Area
 links_nj <- readr::read_rds("representativity/link_population_nj.rds")
@@ -195,6 +193,12 @@ For å begrense populasjonen til de mer bymessige og sentrale delene, kan vi se 
 map_links_with_function_class(links_nj) |> 
   addPolygons(
     data = urban_area_nj,
+    weight = 3,
+    opacity = 0.3,
+    fill = FALSE
+  )  |> 
+  addPolygons(
+    data = agreement_area_nj,
     weight = 3,
     opacity = 0.3,
     fill = FALSE
@@ -905,6 +909,7 @@ Indekstall for Bergen er beregnet med forbedret metode. Det aktuelle vegnettet e
 #| label: fig-map_bergen
 #| message: false
 #| fig-cap: !expr map_caption
+#| fig
 
 map_links_with_function_class(links_bergen) |> 
   addPolygons(

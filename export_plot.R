@@ -18,8 +18,8 @@ htmlwidgets::saveWidget(
 # Mapshot
 library(mapview)
 mapview::mapshot2(
-  trd_map,
-  file = "images/trd_map.png"
+  the_map,
+  file = "images/osl_map.png"
 )
 
 # Put toghether

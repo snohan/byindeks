@@ -54,7 +54,7 @@ source("rmd_setup.R")
 
 
 # Choose city number:
-city_number <- 955
+city_number <- 959
 
 ## Meta info
 city_number_county_name <- 
@@ -415,9 +415,11 @@ if(city_number == 960) {
    dplyr::filter(trp_id != "18672V578623") |> # avoid map being too zoomed out
    create_point_adt_map_trondheim()
 }else{
-  all_point_info |>
+  the_map <-
+    all_point_info |>
     create_point_adt_map()
 }
+the_map
 ```
 
 <!-- Buskerudbyen zoomed map -->

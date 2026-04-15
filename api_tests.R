@@ -44,7 +44,6 @@
 #trp_list <- trp_distinct$trp_id[1:2]
 #test_list <- trp_id = c("91582V930281", "01316V804837")
 #test <- get_mdt_by_lane_for_trp_list(trp_list, "2020")
-#test_adt <- getAdtForpoints_by_length(test_list)
 
 # test_list <-
 #   c(

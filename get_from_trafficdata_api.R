@@ -1,6 +1,7 @@
 # Fetching data from Trafikkdata-API or TRP-API
 
 # Libraries and helper functions ----
+{
 library(tidyverse)
 library(jsonlite)
 library(ghql)
@@ -10,22 +11,23 @@ library(magrittr)
 source("H:/Programmering/R/byindeks/calendar_functions.R")
 day_type_weights_relative <- readr::read_rds("H:/Programmering/R/byindeks/calendar_weights/day_type_weights_relative.rds")
 
-
 cli <- ghql::GraphqlClient$new(
-  url = "https://trafikkdata-api.atlas.vegvesen.no/?query="
-  #headers = list(
-  #  'content-type' = 'application/json')
+  url = "https://trafikkdata-api.atlas.vegvesen.no/?query=",
+  headers = list(
+    # 'content-type' = 'application/json'
+    'x-client' = 'snorre.hansen'
+  )
 )
-
+  
 # Helper functions
 is_even <- function(x) x[x %% 2 == 0]
 is_odd <- function(x) x[x %% 2 == 1]
-
+}
 
 # Areas ----
 get_counties <- function() {
 
-  api_query <-
+  query <-
     "query counties {
        areas {
          counties {
@@ -40,29 +42,28 @@ get_counties <- function() {
        }
     }"
 
-  myqueries <- Query$new()
-  myqueries$query("data", api_query)
+  my_query <- ghql::Query$new()$query(name = "my_query", query)
 
-  counties <-
-    cli$exec(myqueries$queries$data) %>%
-    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
-    as.data.frame() %>%
+  response <-
+    cli$exec(my_query$my_query) |>
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) |> 
+    as.data.frame() |> 
     dplyr::rename(
       county_number = data.areas.counties.number,
       geo_number = data.areas.counties.geographicNumber,
       county_name = data.areas.counties.name,
       country_part_number = data.areas.counties.countryPart.id,
       country_part_name = data.areas.counties.countryPart.name
-    ) %>%
-    arrange(geo_number)
+    ) |> 
+    dplyr::arrange(geo_number)
 
-  return(counties)
+  return(response)
 }
 
 
 get_country_parts <- function() {
 
-  query_api <-
+  query <-
     "query country_parts {
       areas {
         countryParts {
@@ -72,21 +73,25 @@ get_country_parts <- function() {
       }
     }"
 
-  myqueries <- Query$new()
-  myqueries$query("response", query_api)
+  my_query <- ghql::Query$new()$query(name = "my_query", query)
 
-  country_parts <- cli$exec(myqueries$queries$response) %>%
-    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
-    as.data.frame() %>%
-    dplyr::rename(country_part_number = 1,
-                  country_part_name = 2) %>%
+  response <-
+    cli$exec(my_query$my_query) |>
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) |> 
+    as.data.frame() |> 
+    dplyr::rename(
+      country_part_number = 1,
+      country_part_name = 2
+    ) |> 
     dplyr::arrange(country_part_number)
+    
+  return(response)
 }
 
 
 get_municipalities <- function() {
 
-  query_api <-
+  query <-
     "query municipalities {
        areas {
          municipalities {
@@ -99,16 +104,19 @@ get_municipalities <- function() {
        }
      }"
 
-  myqueries <- Query$new()
-  myqueries$query("response", query_api)
+  my_query <- ghql::Query$new()$query(name = "my_query", query)
 
-  counties <-
-    cli$exec(myqueries$queries$response) %>%
-    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
-    as.data.frame() %>%
-    dplyr::rename(municipality_number = 1,
-                  municipality_name = 2,
-                  county_number = 3)
+  response <-
+    cli$exec(my_query$my_query) |>
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) |> 
+    as.data.frame() |> 
+    dplyr::rename(
+      municipality_number = 1,
+      municipality_name = 2,
+      county_number = 3
+    )
+    
+  return(response)
 }
 
 
@@ -848,6 +856,10 @@ get_trp_aadt_by_direction <- function(trp_id, day_type = "ALL") {
 
   # day_type: WEEKDAY or WEEKEND
 
+  # Test:
+  # trp_id = "43623V704583"
+  # day_type = "ALL"
+
   input_variables <-
     list(
       "trpId" = trp_id,
@@ -887,6 +899,7 @@ get_trp_aadt_by_direction <- function(trp_id, day_type = "ALL") {
                     volume{
                       average
                       standardDeviation
+                      correctedStandardError
                     }
                   }
                 }
@@ -915,8 +928,8 @@ get_trp_aadt_by_direction <- function(trp_id, day_type = "ALL") {
   ){
     trp_aadt <- data.frame()
   }else{
-    trp_aadt <- trp_aadt %>%
-      as.data.frame() %>%
+    trp_aadt <- trp_aadt |> 
+      as.data.frame() |> 
       tidyr::unnest(
         cols = data.trafficData.volume.average.daily.byYear.byDirection
       ) %>%
@@ -928,7 +941,8 @@ get_trp_aadt_by_direction <- function(trp_id, day_type = "ALL") {
         #valid_length_volume = total.validLengthVolume.average,
         #valid_speed_volume = total.validSpeedVolume.average,
         adt = total.volume.average,
-        standard_deviation = total.volume.standardDeviation
+        standard_deviation = total.volume.standardDeviation,
+        se = total.volume.correctedStandardError
       )
   }
 
@@ -2687,6 +2701,108 @@ get_pointindices_for_trp_list <- function(trp_list, index_year) {
 
 
 # HT and DT ----
+get_hourly_traffic_by_lane <- function(trp_id, from, to) {
+
+  # ZonedDateTime:
+  # A datetime with timezone, e.g. "2017-01-24T00:00:00.000+01:00"
+
+  # Response is paginated
+  # Default values
+  hasNextPage <- TRUE
+  end_cursor <- ""
+  hourly_traffic <- data.frame()
+
+  query <-
+    "query hourly_traffic ($trpId: String!, $from: ZonedDateTime!, $to: ZonedDateTime!, $endCursor: String!) {
+       trafficData (trafficRegistrationPointId: $trpId) {
+         trafficRegistrationPoint {
+           id
+         }
+        volume {
+          byHour (from: $from, to: $to, after: $endCursor) {
+            edges {
+              node {
+                from
+                byLane {
+                  lane {
+                    laneNumberAccordingToMetering
+                  }
+                  total {
+										volumeNumbers {
+                      volume
+                      validLength {
+                        percentage
+                      }
+										}
+                    coverage {
+                      percentage
+                    }
+                  }
+                }
+              }
+            }
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+          }
+        }
+      }
+    }"
+
+  my_query <- ghql::Query$new()$query(name = "my_query", query)
+
+  while(hasNextPage == TRUE){
+
+    input_variables <-
+      list(
+        "trpId" = trp_id,
+        "from" = from,
+        "to" = to,
+        "endCursor" = end_cursor
+      )
+
+    response <-
+      cli$exec(my_query$my_query, input_variables) |>
+      jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
+
+    if(length(response$data$trafficData$volume$byHour$edges) == 0)
+      break;
+
+    end_cursor <- response$data$trafficData$volume$byHour$pageInfo$endCursor
+
+    hasNextPage <- response$data$trafficData$volume$byHour$pageInfo$hasNextPage
+
+    response_data <-
+      response |>
+      base::as.data.frame() |>
+      tibble::as_tibble() |>
+      dplyr::select(
+        -tidyselect::ends_with("hasNextPage"),
+        -tidyselect::ends_with("endCursor")
+      ) |>
+      tidyr::unnest(cols = data.trafficData.volume.byHour.edges.node.byLane)
+
+    hourly_traffic <- dplyr::bind_rows(hourly_traffic, response_data)
+  }
+
+  hourly_traffic_tidy <-
+    hourly_traffic |>
+    dplyr::select(
+      trp_id = data.trafficData.id,
+      from = data.trafficData.volume.byHour.edges.node.from,
+      total_coverage = total.coverage.percentage,
+      length_quality = total.volumeNumbers.validLength.percentage,
+      traffic = total.volumeNumbers.volume,
+      lane = lane.laneNumberAccordingToMetering
+    ) |>
+    dplyr::mutate(from = lubridate::with_tz(lubridate::ymd_hms(from), "CET"))
+
+ return(hourly_traffic_tidy)
+
+}
+
+
 get_hourly_traffic_by_length_lane <- function(trp_id, from, to) {
 
   # ZonedDateTime:
@@ -5277,3 +5393,4 @@ get_hour_of_day_week_direction_length <- function(year, week_no, day_type, trp_i
   return(response)
 
 }
+  
