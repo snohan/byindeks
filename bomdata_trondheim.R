@@ -12,6 +12,7 @@
 # 1. city_index_check.Rmd
 # 2. city_index_dataprep_trondheim_toll_stations.R
 
+library(tictoc)
 
 # Tolling station info ----
 tolling_station_ids_original <-
@@ -64,7 +65,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "february" # English!
+month_string <- "march" # English!
 year_number <- 2026
 
 apar_data_for_month <-

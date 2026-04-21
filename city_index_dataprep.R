@@ -63,8 +63,8 @@ trp_id_msnr <-
 {
   present_year <- 2026
   # month to be published now:
-  index_month <- 2
-  city_number <- 955
+  index_month <- 3
+  city_number <- 960
 }
 
 source("set_time_references.R")
@@ -200,7 +200,7 @@ trp_not_ok <-
 # TODO: show TRP contributions to rolling indices
 # TODO: Shiny app for checking MDT
 
-start_at <- 21
+start_at <- 17
 plot_mdt(start_at)
 # Workaround as Positron won't show patterns
 ggplot2::ggsave(filename = "images/mdt_pattern_test.svg", width = 12, height = 12)
