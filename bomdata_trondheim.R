@@ -50,7 +50,7 @@ tolling_station_ids_original <-
 
 
 ## 2021-05- APAR API ----
-### Fetch new ----
+### Fetch new ---- 
 source("apar.R")
 
 # The Autopass-IDs found in response from Autopass Analytics:
@@ -72,10 +72,10 @@ apar_data_for_month <-
   purrr::map_dfr(
     tolling_station_ids_apar,
     ~ get_apar_data(
-      dataset_id = trondheim_apar_id,
-      station_code = .,
-      month_string = month_string,
-      year_number = year_number
+        dataset_id = trondheim_apar_id,
+        station_code = .,
+        month_string = month_string,
+        year_number = year_number
     )
   )
 

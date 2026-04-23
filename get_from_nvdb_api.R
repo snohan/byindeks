@@ -495,10 +495,10 @@ hent_fylker_historiske <- function() {
 
 
 # Bomstasjoner ----
-get_tolling_stations <- function(kommunenr) {
+get_tolling_stations <- function(kommunenr, tidspunkt = 0) {
 
-  # Laget for Trondheim
   # kommunenr <- "5001"
+  # tidspunkt <- "2025-01-01"
 
   api_query_45 <-
     paste0(
@@ -515,6 +515,10 @@ get_tolling_stations <- function(kommunenr) {
      kommunenr,
      "&srid=wgs84"
     )
+  
+  if(tidspunkt != 0) {
+    api_query <- paste0(api_query, "&tidspunkt=", tidspunkt)
+  }
 
   uthenta <- call_and_parse_nvdb_api(api_query)
 
