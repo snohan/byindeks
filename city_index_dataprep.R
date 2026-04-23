@@ -64,7 +64,7 @@ trp_id_msnr <-
   present_year <- 2026
   # month to be published now:
   index_month <- 3
-  city_number <- 960
+  city_number <- 19954
 }
 
 source("set_time_references.R")
@@ -200,11 +200,11 @@ trp_not_ok <-
 # TODO: show TRP contributions to rolling indices
 # TODO: Shiny app for checking MDT
 
-start_at <- 17
+start_at <- 5
 plot_mdt(start_at)
 # Workaround as Positron won't show patterns
 ggplot2::ggsave(filename = "images/mdt_pattern_test.svg", width = 12, height = 12)
-plot_heavy_percentage(start_at)
+# plot_heavy_percentage(start_at)
 
 source("exclude_trp_mdts_list.R")
 
@@ -235,9 +235,9 @@ trp_mdt_plot_36 |> plotly::ggplotly()
 
 all_rolling_indices_list <-
   list(
-    all_12_month_indices,
-    all_24_month_indices,
-    all_36_month_indices
+    all_12_month_indices#,
+    # all_24_month_indices,
+    # all_36_month_indices
   )
 
 all_rolling_indices <-
@@ -298,7 +298,7 @@ if(city_number == 959) {
 
 # Whole area
 source("city_index_yearly.R")
-
+# And then check last report to see if the numbers are still the same
 
 # TRP index by month for Excel
 source("city_index_trp_index_by_month.R")
