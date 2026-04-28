@@ -143,7 +143,7 @@ pointindex_wide <-
     pointindex_prepared_all_wide_diff
   ) |>
   dplyr::mutate(
-    value_type = lapply(value_type, htmltools::HTML)
+    value_type = purrr::map(value_type, htmltools::HTML)
   ) |> 
   dplyr::rename(
     road = road_category_and_number,

@@ -497,7 +497,8 @@ hent_fylker_historiske <- function() {
 # Bomstasjoner ----
 get_tolling_stations <- function(kommunenr, tidspunkt = 0) {
 
-  # kommunenr <- "5001"
+  # Test:
+  # kommunenr <- "1106"
   # tidspunkt <- "2025-01-01"
 
   api_query_45 <-
@@ -562,17 +563,25 @@ get_tolling_stations <- function(kommunenr, tidspunkt = 0) {
     dplyr::select(id, kortform) |>
     dplyr::rename(road_link_position = kortform)
 
+  kommuner <-
+    uthenta$objekter |>
+    dplyr::select(id, lokasjon.kommuner) |>
+    tidyr::unnest(cols = c(lokasjon.kommuner)) |>
+    dplyr::select(id, municipality_number = lokasjon.kommuner)
+
   # Setter sammen
   bomer <-
     bom |>
     dplyr::left_join(vegreferanser, by = "id") |>
     dplyr::left_join(koordinater, by = "id") |>
     dplyr::left_join(veglenkeposisjoner, by = "id") |>
+    dplyr::left_join(kommuner, by = "id") |>
     #dplyr::select(-id) |>
     dplyr::select(
       nvdb_id = id, 
       trp_id, name, 
       road_reference,
+      municipality_number,
       road_link_position, lat, lon
     ) |> 
     dplyr::mutate(

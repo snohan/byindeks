@@ -78,8 +78,8 @@ counties <- readr::read_rds("counties.rds")
 
 # Choose
 index_year <- 2026
-latest_published_month <- 2
-city_number <- 19954
+latest_published_month <- 1
+city_number <- 19955
 # End choose
 
 new_month_year <-
@@ -117,7 +117,7 @@ source("city_reference_year.R")
 #   }
 
 # Fetch
-# For TRD this is the unofficial
+# For TRD and HAU this is the unofficial
 city_index <- 
   get_published_index_for_months(
     city_number, 
@@ -137,17 +137,35 @@ traffic_file <- paste0("city_report_files/trafikkforhold_", city_number, ".Rmd")
 
 
 ```{r}
-#| label: trondheim
+#| label: toll_stations
 
-# NB! There are other parts of the code that is specific to TRD
-# TRD toll station index
+# NB! There are also other parts of the code that is specific to toll cities
 
-if(city_number == 960){
+toll_data_is_included <- city_number %in% c(960, 19955)
+
+if(toll_data_is_included){
   
-  trd_toll_stations_meta <-
-    readr::read_rds(
-      file = "bomdata_trondheim/trd_toll_stations.rds"
-    ) |>
+  if(city_number == 960){
+
+    toll_stations_meta_raw <-
+      readr::read_rds("bomdata_trondheim/trd_toll_stations.rds") |>
+      dplyr::mutate(
+        trp_id = dplyr::case_when(
+          trp_id == "1" ~ "72", # Ranheim
+          TRUE ~ trp_id
+        )
+      )
+
+    tolling_station_indices_prepared_raw <- readr::read_rds("H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds")
+  }
+  
+  if(city_number == 19955){
+    toll_stations_meta_raw <- readr::read_rds("bomdata_haugesund/bomstasjoner_haugalandspakken.rds")
+    tolling_station_indices_prepared_raw <- readr::read_rds("H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser_haugesund.rds")
+  }
+
+  toll_stations_meta <-
+    toll_stations_meta_raw |> 
     split_road_system_reference() |>
     dplyr::select(
       trp_id,
@@ -160,10 +178,6 @@ if(city_number == 960){
       road_link_position
     ) |> 
     dplyr::mutate(
-      trp_id = dplyr::case_when(
-        trp_id == "1" ~ "72", # Ranheim
-        TRUE ~ trp_id
-      ),
       nvdb_id = as.character(nvdb_id)
     ) |> 
     dplyr::rename(
@@ -172,9 +186,7 @@ if(city_number == 960){
     )
   
   tolling_station_indices_prepared <-
-    readr::read_rds(
-      file = "H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds",
-    ) |>
+    tolling_station_indices_prepared_raw |>
     dplyr::mutate(
       year = lubridate::year(month_calc),
       month = lubridate::month(month_calc),
@@ -202,7 +214,7 @@ if(city_number == 960){
       values_from = index
     ) |> 
     dplyr::left_join(
-      trd_toll_stations_meta |> 
+      toll_stations_meta |> 
         dplyr::select(
           autopass_id, trp_id
         ),
@@ -234,13 +246,6 @@ if(city_number == 960){
 ```{r}
 #| label: city_trps
 
-# All API PI (not old ones on CSV)
-# former_pointindices <-
-#   purrr::map_dfr(
-#     previous_index_years,
-#     ~ get_published_pointindex_for_months(city_number, .x, 12)[[2]]
-#   )
-
 city_trps <- pointindex[[1]]
 
 # if(city_number == 955) {
@@ -256,22 +261,13 @@ city_trps <- city_trps[! city_trps %in% c("84826V42881", "98352V971490")]
 pointindices <- pointindex[[2]]
 city_name <- city_index$area_name[1]
 
-# trps_meta <- 
-#   points %>% 
-#   dplyr::filter(trp_id %in% city_trps) |> 
-#   # TRD
-#   dplyr::bind_rows(
-#     trd_toll_stations_meta
-#   )
-
-if(city_number == 960){
+if(toll_data_is_included){
   
   trps_meta <- 
     points |> 
     dplyr::filter(trp_id %in% city_trps) |> 
-    # TRD
     dplyr::bind_rows(
-      trd_toll_stations_meta
+      toll_stations_meta
     )
   
 }else{
@@ -308,10 +304,12 @@ city_county_numbers <-
 
 # Need not fetch AADT every time
 if(
-  # T
-  latest_published_month == 4
+  T
+  # latest_published_month == 4
   ) {
+
   source("city_index_dataprep_update_aadt.R")
+
 }else{
   
   this_citys_trps_all_adt_final <-
@@ -380,11 +378,10 @@ pointindex_prepared <-
     index_long = length_index_long
   ) 
 
-if(city_number == 960){
+if(toll_data_is_included){
   
   pointindex_prepared <- 
     pointindex_prepared |> 
-    # TRD
     dplyr::bind_rows(
      tolling_station_indices_prepared_old
     )
@@ -410,11 +407,10 @@ point_index_new_prepared_1 <-
     index_long
   )
 
-if(city_number == 960){
+if(toll_data_is_included){
   
   point_index_new_prepared_1 <- 
     point_index_new_prepared_1 |> 
-    # TRD
     dplyr::bind_rows(
      tolling_station_indices_prepared_new
     )
@@ -440,7 +436,7 @@ if(city_number == 960){
 #     index_long
 #   )
 # 
-# if(city_number == 960){
+# if(toll_data_is_included){
 # 
 #   point_index_new_prepared_2 <-
 #     point_index_new_prepared_2 |>
@@ -451,35 +447,6 @@ if(city_number == 960){
 # 
 # }
 
-# point_index_new_prepared_3 <-
-#   point_index_new %>%
-#   dplyr::filter(
-#     day_type == "ALL",
-#     period == "month",
-#     month == latest_published_month + 3
-#   ) %>%
-#   dplyr::select(
-#     trp_id,
-#     year,
-#     month,
-#     index_total_p,
-#     index_total_coverage,
-#     length_excluded,
-#     length_coverage,
-#     index_short,
-#     index_long
-#   )
-# 
-# if(city_number == 960){
-#   
-#   point_index_new_prepared_3 <- 
-#     point_index_new_prepared_3 |> 
-#     # TRD
-#     dplyr::bind_rows(
-#      tolling_station_indices_prepared_new_3
-#     )
-#   
-# }
 
 pointindex_prepared_all <- 
   dplyr::bind_rows(
@@ -518,14 +485,14 @@ city_trps_new_pointindex <-
   dplyr::left_join(
     point_index_new_prepared_1,
     by = "trp_id"
-  ) %>% 
+  ) |> 
   dplyr::mutate(
     label_text = 
       paste(name, ", ",
             road_category_and_number, "<br/>",
             index_total_p, " %", "<br/>",
             index_total_coverage, " %"),
-    label_text = lapply(label_text, htmltools::HTML)
+    label_text = purrr::map(label_text, htmltools::HTML)
   )
 
 # city_trps_new_pointindex_2 <-
@@ -540,7 +507,7 @@ city_trps_new_pointindex <-
 #             road_category_and_number, "<br/>",
 #             index_total_p, " %", "<br/>",
 #             index_total_coverage, " %"),
-#     label_text = lapply(label_text, htmltools::HTML))
+#     label_text = purrr::map(label_text, htmltools::HTML))
 
 # city_trps_new_pointindex_3 <- 
 #   trps_meta %>%
@@ -554,7 +521,7 @@ city_trps_new_pointindex <-
 #             road_category_and_number, "<br/>",
 #             index_total_p, " %", "<br/>",
 #             index_total_coverage, " %"),
-#     label_text = lapply(label_text, htmltools::HTML))
+#     label_text = purrr::map(label_text, htmltools::HTML))
 
 source("trp_index_wide_and_long.R")
 ```
@@ -676,15 +643,15 @@ map_links_for_index_check(index_year - 1, index_year, latest_published_month + 1
 pointindex_plot <- 
   pointindex_prepared_all |> 
   ggplot2::ggplot(aes(x = month, y = index_short, color = name)) +
-  geom_line() +
-  scale_x_discrete(breaks = seq(1, latest_published_month + 1, 1)) +
-  theme_minimal() +
+  ggplot2::geom_line() +
+  ggplot2::scale_x_discrete(breaks = seq(1, latest_published_month + 1, 1)) +
+  ggplot2::theme_minimal() +
     theme(
     legend.position = "bottom",
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color)
   ) +
-  labs(x = "", y = "Indeks, korte (%)", title = "Korte", color = "")
+  ggplot2::labs(x = "", y = "Indeks, korte (%)", title = "Korte", color = "")
 
 pointindex_plot |> plotly::ggplotly()
 ```
@@ -695,15 +662,15 @@ pointindex_plot |> plotly::ggplotly()
 pointindex_plot <- 
   pointindex_prepared_all |> 
   ggplot2::ggplot(aes(x = month, y = index_long, color = name)) +
-  geom_line() +
-  scale_x_discrete(breaks = seq(1, latest_published_month + 1, 1)) +
-  theme_minimal() +
+  ggplot2::geom_line() +
+  ggplot2::scale_x_discrete(breaks = seq(1, latest_published_month + 1, 1)) +
+  ggplot2::theme_minimal() +
     theme(
     legend.position = "bottom",
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color)
   ) +
-  labs(x = "", y = "Indeks, lange (%)", title = "Lange", color = "")
+  ggplot2::labs(x = "", y = "Indeks, lange (%)", title = "Lange", color = "")
 
 pointindex_plot |> plotly::ggplotly()
 ```
@@ -758,21 +725,21 @@ pointindex_prepared_all |>
   dplyr::mutate(
     month = factor(month)
   ) |> 
-  ggplot(
+  ggplot2::ggplot(
     aes(
       month,
       index_short
       #index_total_p
     )
   ) +
-  geom_boxplot() +
-  theme_minimal() +
-  theme(
+  ggplot2::geom_boxplot() +
+  ggplot2::theme_minimal() +
+  ggplot2::theme(
     legend.position = "bottom",
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color)
   ) +
-  labs(y = "Indeks, korte (%)")
+  ggplot2::labs(y = "Indeks, korte (%)")
 ```
 
 
@@ -787,25 +754,25 @@ pointindex_prepared_all |>
   dplyr::mutate(
     month = factor(month)
   ) |> 
-  ggplot(
+  ggplot2::ggplot(
     aes(
       index_short
       #index_total_p
     )
   ) +
-  geom_histogram() +
-  facet_wrap(
+  ggplot2::geom_histogram() +
+  ggplot2::facet_wrap(
     ggplot2::vars(month),
     dir = "v",
     scales = "free"
   ) +
-  theme_minimal() +
-  theme(
+  ggplot2::theme_minimal() +
+  ggplot2::theme(
     legend.position = "bottom",
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color)
   ) +
-  labs(x = "Antall", y = "Indeks, korte (%)")
+  ggplot2::labs(x = "Antall", y = "Indeks, korte (%)")
 ```
 
 

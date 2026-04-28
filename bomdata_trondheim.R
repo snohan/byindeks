@@ -375,6 +375,17 @@ readr::write_rds(
 )
 
 # TRP index ----
+# New way:
+index_years <- c(2020:2026)
+
+tolling_station_indices <-
+  purrr::map(
+    index_years,
+    ~ calculate_monthly_index_for_tolling_stations_from_daily_traffic(tolling_data_daily_final, .x - 1, .x)
+  ) |> 
+  purrr::list_rbind()
+
+# As before:
 tolling_station_index_2020 <-
   tolling_data_daily_all_years %>%
   calculate_monthly_index_for_tolling_stations_from_daily_traffic(2019, 2020)

@@ -306,50 +306,6 @@
 #```
 
 
-#```{r}
-##| label: tbl-trp-3
-##| tbl-cap: "Trafikkregistreringspunkt som inngår i byindeksen, del 3."
-##| ft.arraystretch: 0.9
-
-# if(nrow(all_point_info) > 70) {
-#   all_point_info |>
-#     dplyr::slice(71:100) |>
-#     create_point_table()
-# }
-
-# {{< pagebreak >}}
-#```
-
-
-# Sara Fjellvær ----
-# toll_station_dt_2019 <-
-#   tolling_data_daily_all_years |>
-#   dplyr::filter(
-#     year == 2019
-#   ) |>
-#   dplyr::left_join(
-#     toll_meta_data,
-#     by = join_by(trp_id)
-#   ) |>
-#   dplyr::select(
-#     trp_id,
-#     name,
-#     road_reference,
-#     road_link_position,
-#     lat, lon,
-#     date,
-#     month,
-#     day,
-#     class,
-#     traffic_volume = traffic
-#   )
-#
-# library(writexl)
-# writexl::write_xlsx(
-#   toll_station_dt_2019,
-#   "spesialuttak/bomdata_trd_2019.xlsx"
-# )
-
 
 # TRPs with EMU3 ----
 # Bergen 8952

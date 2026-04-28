@@ -1,3 +1,4 @@
+# City yearly index for TRD
 # Binds TRP and toll station index
 # Calculates city index
 # (Just for TRD - instead of the more general city_index_dataprep.R)
@@ -9,6 +10,7 @@
 # OUT
 # City index
 # Excel file
+
 
 city_name <- "Trondheim"
 

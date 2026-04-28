@@ -2,6 +2,7 @@ source("city_reference_year.R")
 
 years_from_reference_to_today <- base::seq(reference_year, present_year)
 
+
 # MDT periods
 last_year_month <- lubridate::as_date(paste0(present_year, "-", index_month, "-01"))
 
@@ -25,8 +26,12 @@ if(city_number %in% c(18952, 19953)){
   index_years_from_2020 <- base::seq.int(2024, present_year, 1)
 }
 
-if(city_number %in% c(19954, 19955, 20952)){
+if(city_number %in% c(19954, 20952)){
   index_years_from_2020 <- base::seq.int(2025, present_year, 1)
+}
+
+if(city_number %in% c(19955)){
+  index_years_from_2020 <- base::seq.int(2026, present_year, 1)
 }
 
 index_months_from_2020 <-

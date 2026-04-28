@@ -63,8 +63,8 @@ trp_id_msnr <-
 {
   present_year <- 2026
   # month to be published now:
-  index_month <- 3
-  city_number <- 19954
+  index_month <- 1
+  city_number <- 19955
 }
 
 source("set_time_references.R")
@@ -90,7 +90,7 @@ trp_names <-
   # Avoid duplicate names
   dplyr::mutate(
     name = dplyr::case_when(
-      trp_id == "86349V805605" ~ "Indre Arne E16",
+      trp_id == "86349V805605" ~ "Indre Arna E16",
       TRUE ~ name
     )
   ) |> 
