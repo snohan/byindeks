@@ -1392,7 +1392,14 @@ plot_mdt <- function(start_trp_n, n_trp_tp_plot = 4) {
     ) |>
     dplyr::mutate(month_object = lubridate::make_date(year = 2000, month = month, day = 1)) |>
     dplyr::left_join(
-      points,
+      # points,
+      this_citys_trps_all_adt_final |> 
+        dplyr::mutate(
+          trp_id = dplyr::case_when(
+            is.na(autopass_id) ~ trp_id,
+            TRUE ~ autopass_id
+          )
+        ),
       by = "trp_id"
     ) |>
     dplyr::mutate(

@@ -71,8 +71,8 @@ counties <- readr::read_rds("counties.rds")
 # 2023 NGlo 18952   03 Trond
 
 # 2024 Aale 20952   03 Snorre
-# 2025 Haug 19955      Snorre
-# 2024 Bodø 19954   02 Snorre
+# 2025 Haug 19955   03 Snorre
+# 2024 Bodø 19954   03 Snorre
 
 # TODO: use graph centrality measures to evaluate changes in links and routings
 
@@ -304,8 +304,8 @@ city_county_numbers <-
 
 # Need not fetch AADT every time
 if(
-  T
-  # latest_published_month == 4
+  # T
+  latest_published_month == 4
   ) {
 
   source("city_index_dataprep_update_aadt.R")

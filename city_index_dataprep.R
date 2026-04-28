@@ -60,10 +60,12 @@ trp_id_msnr <-
 #   Haugesund 19955
 #   Ålesund 20952
 
+toll_data_is_included <- city_number %in% c(960, 19955)
+
 {
   present_year <- 2026
   # month to be published now:
-  index_month <- 1
+  index_month <- 3
   city_number <- 19955
 }
 
@@ -123,50 +125,11 @@ city_trps <-
 
 # Rolling index ----
 ## Get MDTs ----
-# If just last year
-source("city_index_dataprep_mdt_last.R")
-
-# If for all years
-# source("city_index_dataprep_mdt_all.R")
-
-if(city_number == 960){
-  toll_mdt_light <-
-    readr::read_rds(
-      file = "data_indexpoints_tidy/trd_toll_mdt.rds",
-    ) |>
-    dplyr::rename(
-      year_month = month
-    ) |>
-    dplyr::mutate(
-      year = lubridate::year(year_month),
-      month = lubridate::month(year_month),
-      length_quality = 100
-    ) |>
-    dplyr::filter(
-      class == "lette",
-      year == present_year
-    ) |>
-    dplyr::select(
-      -class,
-      -n_days,
-      -traffic
-    )
-  
-  mdt_filtered <-
-    mdt_filtered |>
-    dplyr::bind_rows(toll_mdt_light)
-
-}
-
-mdt_filtered |>
-  readr::write_rds(
-    file =
-      paste0(
-        "data_indexpoints_tidy/mdt_",
-        city_number,
-        ".rds"
-      )
-  )
+# Need not fetch all MDTs for all years every time
+# May choose to fetch only for the present year
+# fetch_mdt_for_just_present_year <- TRUE
+fetch_mdt_for_just_present_year <- FALSE
+source("city_index_dataprep_mdt.R")
 
 # Read back in
 # mdt_filtered <- readr::read_rds(paste0("data_indexpoints_tidy/mdt_", city_number, ".rds"))
@@ -178,9 +141,9 @@ source("exclude_trp_mdts_list.R")
 
 trp_mdt_ok_refyear <-
   mdt_validated |>
-  dplyr::filter(
-    trp_id %in% city_trps # avoid toll stations appearing here as they've already been checked
-  ) |>
+  # dplyr::filter(
+  #   trp_id %in% city_trps # avoid toll stations appearing here as they've already been checked
+  # ) |>
   filter_mdt(reference_year) |>
   purrr::pluck(1)
 
@@ -200,7 +163,7 @@ trp_not_ok <-
 # TODO: show TRP contributions to rolling indices
 # TODO: Shiny app for checking MDT
 
-start_at <- 5
+start_at <- 13
 plot_mdt(start_at)
 # Workaround as Positron won't show patterns
 ggplot2::ggsave(filename = "images/mdt_pattern_test.svg", width = 12, height = 12)
@@ -212,7 +175,7 @@ source("exclude_trp_mdts_list.R")
 # plot_mdt_comparisons |> plotly::ggplotly()
 
 
-## Rolling index ----
+## Rolling indices ----
 all_12_month_indices <- calculate_rolling_indices(12)
 all_24_month_indices <- calculate_rolling_indices(24)
 all_36_month_indices <- calculate_rolling_indices(36)
@@ -266,6 +229,7 @@ visualize_city_index_jackknife(all_12_month_indices, pseudo_observations)
 
 # Yearly index ----
 # TRD: Trondheim has its own script for yearly index: city_index_dataprep_trd.R
+# HAU: Haugesund has its own script for yearly index: city_index_dataprep_hau.R
 
 
 ## Yearly TRP index ----
