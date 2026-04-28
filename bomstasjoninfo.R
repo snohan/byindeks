@@ -1,6 +1,7 @@
 source("get_from_nvdb_api.R")
 source("H:/Programmering/R/byindeks/split_road_system_reference.R")
 
+
 # Trondheim ----
 # Toll station ids the way they appear in NVDB and Autopass
 tolling_station_ids_nvdb <-
@@ -74,6 +75,11 @@ bomstasjoner_haugalandspakken <-
   ) |> 
   dplyr::arrange(trp_id)
 
+readr::write_rds(
+  bomstasjoner_haugalandspakken,
+  file = "bomdata_haugesund/bomstasjoner_haugalandspakken.rds"
+)
+
 bomstasjoner_bypakke_haugesund <- 
   get_tolling_stations(1106) |> # Ikke tilgjengelig i NVDB per 23.04.2026
   dplyr::mutate(station_type = "Bomstasjon") |> 
@@ -82,3 +88,8 @@ bomstasjoner_bypakke_haugesund <-
     trp_id, nvdb_id, name, road_reference, road_category_and_number, road_link_position, lat, lon, station_type
   ) |> 
   dplyr::arrange(trp_id)
+
+readr::write_rds(
+  bomstasjoner_bypakke_haugesund,
+  file = "bomdata_haugesund/bomstasjoner_bypakke_haugesund.rds"
+)

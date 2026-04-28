@@ -13,6 +13,7 @@
 # 2. city_index_dataprep_trondheim_toll_stations.R
 
 library(tictoc)
+source("toll_station_functions.R")
 
 # Tolling station info ----
 tolling_station_ids_original <-
@@ -209,37 +210,9 @@ tolling_data_daily <-
 # Plot to see if data are ok
 kommune_bomer <- readr::read_rds(file = "bomdata_trondheim/trd_toll_stations.rds")
 
-plot_toll_station_data_per_lane <- function(toll_id_chosen, year_chosen) {
-
-    toll_station_name <-
-      kommune_bomer |>
-      dplyr::filter(
-        trp_id == toll_id_chosen
-      ) |>
-      dplyr::select(name) |>
-      purrr::pluck(1)
-
-    tolling_data_daily_lane |>
-    dplyr::filter(
-      trp_id == toll_id_chosen,
-      year %in% c(year_chosen)
-    ) |>
-    ggplot(aes(day, traffic, color = lane, linetype = class)) +
-    geom_line(linewidth = 1) +
-    facet_grid(
-      rows = vars(month)
-    ) +
-    theme_minimal() +
-    scale_x_continuous(
-      breaks = base::seq(5, 30, by = 5),
-      minor_breaks = c(1:31)
-    ) +
-    ggplot2::ggtitle(toll_station_name)
-
-}
-
 # Ranheim is 72, 21 stations
-plot_toll_station_data_per_lane(tolling_station_ids_original[21], 2026)
+plot_toll_station_data_per_lane(tolling_station_ids_original[21], 2026, kommune_bomer)
+
 
 # Exclusions
 source("bomdata_trondheim_exclusions.R")
@@ -402,96 +375,6 @@ readr::write_rds(
 )
 
 # TRP index ----
-## Monthly ----
-# calculate_monthly_index_for_tolling_stations <-
-#   function(monthly_class_data, baseyear) {
-#
-#     basedata <-
-#       monthly_class_data %>%
-#       dplyr::filter(year == baseyear)
-#
-#     calcdata <- monthly_class_data %>%
-#       dplyr::filter(year == baseyear + 1)
-#
-#     indexdata <-
-#       dplyr::inner_join(
-#         basedata,
-#         calcdata,
-#         by = c("month", "trp_id", "class"),
-#         suffix = c("_base", "_calc"),
-#       ) %>%
-#       dplyr::group_by(
-#         trp_id,
-#         class,
-#         month
-#       ) %>%
-#       dplyr::summarise(
-#         monthly_volume_base = sum(traffic_base),
-#         monthly_volume_calc = sum(traffic_calc),
-#         .groups = "drop"
-#       ) %>%
-#       dplyr::mutate(
-#         index_p =
-#           (monthly_volume_calc / monthly_volume_base - 1) * 100 %>%
-#           round(digits = 2),
-#         month_as_date =
-#           lubridate::ymd(
-#             paste(baseyear + 1, month, "1", sep = "-")
-#           )
-#       )
-#   }
-
-
-# daily_class_data <- tolling_data_daily_all_years
-# baseyear <- 2021
-# calcyear <- 2022
-
-calculate_monthly_index_for_tolling_stations_from_daily_traffic <-
-  function(daily_class_data, baseyear, calcyear) {
-
-    basedata <-
-      daily_class_data %>%
-      dplyr::filter(year == baseyear) |>
-      dplyr::mutate(
-        month_number = lubridate::month(date)
-      )
-
-    calcdata <-
-      daily_class_data %>%
-      dplyr::filter(year == calcyear) |> # baseyear + 1
-      dplyr::mutate(
-        month_number = lubridate::month(date)
-      )
-
-    indexdata <-
-      dplyr::inner_join(
-        basedata,
-        calcdata,
-        by = c("day", "month_number", "trp_id", "class"),
-        suffix = c("_base", "_calc"),
-      ) |>
-      dplyr::group_by(
-        trp_id,
-        class,
-        month_calc
-      ) |>
-      dplyr::summarise(
-        monthly_volume_base = sum(traffic_base),
-        monthly_volume_calc = sum(traffic_calc),
-        n_days = n(),
-        .groups = "drop"
-      ) %>%
-      dplyr::mutate(
-        index_p =
-          (monthly_volume_calc / monthly_volume_base - 1) * 100 %>%
-          round(digits = 2),
-        n_days_of_month = lubridate::days_in_month(month_calc),
-        # TODO: should count no Feb as 29?
-        coverage = (n_days / n_days_of_month) * 100
-        # NB! Not correct for HMV as some stations have days without any HMVs
-      )
-  }
-
 tolling_station_index_2020 <-
   tolling_data_daily_all_years %>%
   calculate_monthly_index_for_tolling_stations_from_daily_traffic(2019, 2020)
