@@ -1,5 +1,8 @@
+# All AADTs ----
 adt <- get_aadt_by_length_for_trp_list(city_trps)
   
+
+# AADT reference year ----
 adt_reference_year <- 
   if(city_number == 16952) {
     2019
@@ -11,53 +14,56 @@ adt_ref_year <-
   adt |> 
   dplyr::filter(
     length_range == "[..,5.6)",
-    #coverage > 50, # many from NorTraf
     year == adt_reference_year
   ) |> 
-  dplyr::select(trp_id, adt_ref = aadt_length_range) |> 
-  dplyr::mutate(
-    adt_ref = round(adt_ref, -1)
-  )
-  
-if(city_number == 960){
-  
-  autopass_trp_id <-
-    trps_meta |> 
-    dplyr::select(
-      nvdb_id,
-      autopass_id = trp_id
-    ) |> 
-    dplyr::filter(
-      !is.na(nvdb_id)
-    )
-  
+  dplyr::select(trp_id, adt_ref = aadt_length_range)  
+
+if(toll_data_is_included) {
+
+  if(city_number == 960){
+      adt_toll_raw <- readr::read_rds("data_indexpoints_tidy/trd_toll_aadt.rds")
+  }
+
+  if(city_number == 19955){
+    adt_toll_raw <- readr::read_rds("data_indexpoints_tidy/haugesund_toll_aadt.rds")
+  }
+
+  # Avoid using incomplete year
+  if(latest_published_month < 12) {
+
+    adt_toll_raw <-
+      adt_toll_raw |> 
+      dplyr::filter(
+        year != index_year
+      )
+
+  }
+
   adt_ref_year_toll <-
-    readr::read_rds(
-      file = "data_indexpoints_tidy/trd_toll_aadt.rds"
-    ) |> 
+    adt_toll_raw |> 
     dplyr::filter(
-      year == 2019,
+      year == reference_year,
       class == "lette"
     ) |> 
-    dplyr::select(trp_id, adt_ref = aadt) |> 
-    dplyr::mutate(
-      adt_ref = round(adt_ref, -1)
-    ) |> 
-    dplyr::left_join(
-      autopass_trp_id,
-      by = dplyr::join_by(trp_id == autopass_id)
+    # The trps_meta uses nvdb_id as trp_id for toll stations, but all toll data use autopass_id as trp_id.
+    # So in order to match AADT values to the final trp list, we need to swap trp_id here from being autopass_id to become nvdb_id:
+    dplyr::select(autopass_id = trp_id, adt_ref = aadt) |> 
+    dplyr::inner_join(
+      dplyr::select(
+        trps_meta,
+        trp_id, # here: nvdb_id
+        autopass_id
+      ),
+      by = dplyr::join_by(autopass_id)
     ) |> 
     dplyr::select(
-      -trp_id
-    ) |> 
-    dplyr::rename(
-      trp_id = nvdb_id
+      -autopass_id
     )
   
 }
   
 adt_ref_year_all <-
-  if(city_number == 960) {
+  if(toll_data_is_included) {
     dplyr::bind_rows(
       adt_ref_year,
       adt_ref_year_toll
@@ -65,7 +71,9 @@ adt_ref_year_all <-
   }else{
     adt_ref_year
   }
-  
+
+
+# AADT most recent year ----
 adt_filtered <- 
   adt |> 
   dplyr::filter(length_range == "[..,5.6)") |> 
@@ -98,33 +106,31 @@ if(city_number == 955){
 
 }
   
-if(city_number == 960){
+if(toll_data_is_included){
   
-  adt_toll <-
-    readr::read_rds(
-      file = "data_indexpoints_tidy/trd_toll_aadt.rds"
-    ) |> 
-    dplyr::slice_max(year, by = trp_id) |> 
+  adt_toll_most_recent <-
+    adt_toll_raw |> 
     dplyr::filter(class == "lette") |> 
-    dplyr::select(trp_id, adt = aadt, year) |> 
-    dplyr::mutate(
-      adt = round(adt, -1)
-    ) |> 
-    dplyr::left_join(
-      autopass_trp_id,
-      by = dplyr::join_by(trp_id == autopass_id)
+    dplyr::slice_max(year, by = trp_id) |> 
+    # The trps_meta uses nvdb_id as trp_id for toll stations, but all toll data use autopass_id as trp_id.
+    # So in order to match AADT values to the final trp list, we need to swap trp_id here from being autopass_id to become nvdb_id:
+    dplyr::select(autopass_id = trp_id, adt = aadt, year) |> 
+    dplyr::inner_join(
+      dplyr::select(
+        trps_meta,
+        trp_id, # here: nvdb_id
+        autopass_id
+      ),
+      by = dplyr::join_by(autopass_id)
     ) |> 
     dplyr::select(
-      -trp_id
-    ) |> 
-    dplyr::rename(
-      trp_id = nvdb_id
+      -autopass_id
     )
   
   adt_filtered <-
     dplyr::bind_rows(
       adt_filtered,
-      adt_toll
+      adt_toll_most_recent
     )
     
 }
@@ -137,94 +143,7 @@ this_citys_trps_all_adt <-
   )
   
 
-# Special
-# adt_light_years <-
-#   adt |> 
-#   tibble::as_tibble() |> 
-#   dplyr::filter(
-#     length_range == "[..,5.6)",
-#     year >= 2017
-#   ) |> 
-#   dplyr::select(
-#     trp_id,
-#     year,
-#     aadt = aadt_length_range
-#     #aadt_valid_length,
-#     #coverage
-#   ) |> 
-#   tidyr::pivot_wider(
-#     names_from = year,
-#     values_from = aadt
-#   ) |> 
-#   dplyr::left_join(
-#     trps_meta,
-#     by = "trp_id"
-#   ) |> 
-#   dplyr::select(
-#     name,
-#     road_reference,
-#     road_category_and_number,
-#     municipality_name,
-#     "2017":"2022"
-#   ) |> 
-#   dplyr::arrange(
-#     road_reference
-#   )
-# 
-# writexl::write_xlsx(
-#   adt_light_years,
-#   "spesialuttak/nedre_glomma_adt.xlsx"
-# )
-
-# adt_filtered <-
-#   adt %>%
-#   dplyr::filter(
-#     length_range %in% c("[..,5.6)", "[5.6,..)")
-#     ) %>%
-#   dplyr::mutate(
-#     length_quality = round(aadt_valid_length / aadt_total * 100)
-#   ) %>%
-#   #dplyr::filter(
-#   #  length_quality > 90
-#   #) %>%
-#   dplyr::filter(
-#     coverage > 50
-#   ) %>%
-#   dplyr::mutate(
-#     length_range =
-#       dplyr::case_when(
-#         length_range == "[..,5.6)" ~ "lette",
-#         length_range == "[5.6,..)" ~ "tunge",
-#         TRUE ~ length_range
-#       )
-#   ) %>%
-#   dplyr::select(
-#     trp_id,
-#     year,
-#     length_range,
-#     aadt_length_range,
-#     coverage,
-#     aadt_total,
-#     sd_total,
-#     length_quality
-#   ) %>%
-#   tidyr::pivot_wider(
-#     names_from = "length_range",
-#     names_prefix = "aadt_",
-#     values_from = "aadt_length_range"
-#   ) %>%
-#   dplyr::group_by(trp_id) %>%
-#   dplyr::filter(year == max(year)) %>%
-#   dplyr::select(
-#     trp_id,
-#     year,
-#     coverage,
-#     length_quality,
-#     aadt_total,
-#     aadt_lette,
-#     aadt_tunge
-#   )
-
+# Fetch missing AADTs from NVDB ----
 missing_adt <-
   this_citys_trps_all_adt |> 
   dplyr::filter(is.na(adt))
@@ -269,34 +188,21 @@ if(nrow(missing_adt) == 0) {
 }
   
   
-# Finally all aadt
+# Finally all AADT ----
 this_citys_trps_all_adt_final <-
   this_citys_trps_all_adt |> 
   dplyr::filter(!is.na(adt)) |> 
   dplyr::bind_rows(missing_adt_fixed) |> 
-  dplyr::mutate(adt = round(adt, -1)) |> 
   dplyr::rename(year_aadt = year) |> 
   dplyr::left_join(
     adt_ref_year_all,
     by = join_by(trp_id)
+  ) |> 
+  dplyr::mutate(
+    adt = round(adt, -1),
+    adt_ref = round(adt_ref, -1)
   )
   
-if(city_number == 960){
-
-  trd_station_type <- readr::read_rds("trd_station_type.rds")
-  
-  this_citys_trps_all_adt_final <-
-    this_citys_trps_all_adt_final |> 
-    # TRD (city_index_dataprep_trondheim_toll_stations.R)
-    dplyr::left_join(
-      trd_station_type,
-      by = "trp_id"
-    ) |>
-    dplyr::mutate(
-      station_type_short = stringr::str_sub(station_type, 1, 1)
-    )
-}
-
 readr::write_rds(
   this_citys_trps_all_adt_final,
   file = paste0(

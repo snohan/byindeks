@@ -60,8 +60,6 @@ trp_id_msnr <-
 #   Haugesund 19955
 #   Ålesund 20952
 
-toll_data_is_included <- city_number %in% c(960, 19955)
-
 {
   present_year <- 2026
   # month to be published now:
@@ -69,6 +67,7 @@ toll_data_is_included <- city_number %in% c(960, 19955)
   city_number <- 19955
 }
 
+toll_data_is_included <- city_number %in% c(960, 19955)
 source("set_time_references.R")
 
 

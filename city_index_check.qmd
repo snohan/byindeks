@@ -45,7 +45,7 @@ library(DT)
 library(htmltools)
 
 # NB! run once per session
-source("city_index_check_dataprep.R")
+# source("city_index_check_dataprep.R")
 
 points <- readr::read_rds("trps_for_city_index.rds")
 counties <- readr::read_rds("counties.rds")
@@ -78,7 +78,7 @@ counties <- readr::read_rds("counties.rds")
 
 # Choose
 index_year <- 2026
-latest_published_month <- 1
+latest_published_month <- 2
 city_number <- 19955
 # End choose
 
@@ -178,7 +178,8 @@ if(toll_data_is_included){
       road_link_position
     ) |> 
     dplyr::mutate(
-      nvdb_id = as.character(nvdb_id)
+      nvdb_id = as.character(nvdb_id),
+      station_type = "AutoPASS bomstasjon"
     ) |> 
     dplyr::rename(
       autopass_id = trp_id,
@@ -266,8 +267,14 @@ if(toll_data_is_included){
   trps_meta <- 
     points |> 
     dplyr::filter(trp_id %in% city_trps) |> 
+    dplyr::mutate(
+      station_type = "Trafikkregistrering"
+    ) |> 
     dplyr::bind_rows(
       toll_stations_meta
+    ) |>
+    dplyr::mutate(
+      station_type_short = stringr::str_sub(station_type, 1, 1)
     )
   
 }else{
@@ -304,8 +311,8 @@ city_county_numbers <-
 
 # Need not fetch AADT every time
 if(
-  # T
-  latest_published_month == 4
+  T
+  # latest_published_month == 4
   ) {
 
   source("city_index_dataprep_update_aadt.R")

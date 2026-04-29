@@ -14,17 +14,17 @@ bomstasjoner_haugalandspakken <- readr::read_rds("bomdata_haugesund/bomstasjoner
 
 
 ## Fetch hourly data ----
-tolling_station_ids_apar <- c(1, 2, 5:9)
+autopass_station_ids <- c(1, 2, 5:9)
 
 month_string <- "march" # English!
 year_number <- 2026
 
 apar_data_for_month <-
   purrr::map_dfr(
-    tolling_station_ids_apar,
+    autopass_station_ids,
     ~ get_apar_data(
         dataset_id = haugesund_apar_id_haugalandspakken,
-        station_code = .,
+        autopass_station_id = .,
         month_string = month_string,
         year_number = year_number
     )
@@ -273,7 +273,7 @@ readr::write_rds(
 
 # Bypakke Haugesund og fastlands-Karmøy
 # 2026-04 --
-tolling_station_ids_apar <- c(1:11)
+autopass_station_ids <- c(1:11)
 
 # Fetch all data for all trp_ids for a month, and store
 month_string <- "april" # English!
@@ -281,10 +281,10 @@ year_number <- 2026
 
 apar_data_for_month <-
   purrr::map_dfr(
-    tolling_station_ids_apar,
+    autopass_station_ids,
     ~ get_apar_data(
         dataset_id = haugesund_apar_id_bypakke_haugesund,
-        station_code = .,
+        autopass_station_id = .,
         month_string = month_string,
         year_number = year_number
     )
