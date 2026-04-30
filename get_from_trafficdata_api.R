@@ -4179,19 +4179,24 @@ get_published_pointindex <- function(index_id, indexyear, indexmonth) {
 }
 
 
-get_published_pointindex_trondheim <- function(index_id, indexyear, indexmonth) {
+get_published_pointindex_toll_cities <- function(index_id, indexyear, indexmonth) {
+
   # Need volume numbers for length classes in order to calculate city index
   # Get published index for a given area, year and month
   # Response is paginated if more than 100 points!
   # Pagination is ignored here
   # Returns: list with two elements; trp_ids, pointindices
 
-  api_query <- paste0(
-    "query published_index {
-      publishedAreaTrafficVolumeIndex (
-        id: ", index_id, ",
-        year: ", indexyear, ",
-        month: ", indexmonth, ") {
+  input_variables <-
+    list(
+      "id" = index_id,
+      "year" = indexyear,
+      "month" = indexmonth
+    )
+
+  query <-
+    "query published_index ($id: Int!, $year: Year!, $month: Month!) {
+      publishedAreaTrafficVolumeIndex (id: $id, year: $year, month: $month) {
         id
         name
         period {
@@ -4259,12 +4264,12 @@ get_published_pointindex_trondheim <- function(index_id, indexyear, indexmonth) 
         }
       }
     }
-  }")
+  }"
 
-  myqueries <- Query$new()
-  myqueries$query("data", api_query)
+  my_query <- ghql::Query$new()$query(name = "my_query", query)
 
-  trp_data <- cli$exec(myqueries$queries$data) %>%
+  trp_data <-
+    cli$exec(my_query$my_query, input_variables) |> 
     jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
 
   # Unwrap one part at a time
@@ -4412,8 +4417,7 @@ get_published_pointindex_trondheim <- function(index_id, indexyear, indexmonth) 
   return(published_points)
 }
 
-query_published_pointindex_page <- function(index_id, indexyear, indexmonth,
-                                            cursor) {
+query_published_pointindex_page <- function(index_id, indexyear, indexmonth, cursor) {
 
   # TODO: report a bug in the API, as it doesn't work with cursors other than null
   api_query <- paste0(
@@ -4635,20 +4639,20 @@ get_published_pointindex_for_months <- function(index_id, index_year, last_month
   return(published_points)
 }
 
-get_published_pointindex_for_months_trondheim <- function(index_id, index_year, last_month) {
+get_published_pointindex_for_months_toll_cities <- function(index_id, index_year, last_month) {
 
   published_pointindex <- tibble::tibble()
   i <- 1
 
   # Saving only one version of indexpoints
-  indexpoints <- get_published_pointindex_trondheim(index_id, index_year, last_month)[[1]]
+  indexpoints <- get_published_pointindex_toll_cities(index_id, index_year, last_month)[[1]]
 
   while (i < last_month + 1) {
 
     published_pointindex <-
       dplyr::bind_rows(
         published_pointindex,
-        get_published_pointindex_trondheim(index_id, index_year, i)[[2]]
+        get_published_pointindex_toll_cities(index_id, index_year, i)[[2]]
       )
 
     i = i + 1

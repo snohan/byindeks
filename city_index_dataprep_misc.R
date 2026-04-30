@@ -559,3 +559,66 @@ trp_index_year_to_date_by_index_month <-
     sum_of_squared_weights = sum(squared_weight)
   )
 
+## Nord-Jæren test ----
+# chain_start_year_from_to <- "2017-2019"
+
+# city_index_njaeren_2017_2019_official <-
+#   city_info |>
+#   dplyr::filter(year_from_to == chain_start_year_from_to)
+
+# chain_link_index_i <- city_index_njaeren_2017_2019_official$index_i
+# chain_link_se_p <- city_index_njaeren_2017_2019_official$standard_error
+
+# all_36_month_indices_combined <-
+#   all_36_month_indices |>
+#   dplyr::select(
+#     index_period,
+#     month_object,
+#     month_n,
+#     year,
+#     window,
+#     n_trp,
+#     index_i,
+#     standard_error_p
+#   ) |>
+#   dplyr::mutate(
+#     index_period =
+#       paste0(
+#         stringr::str_sub(chain_start_year_from_to, 1, 4),
+#         stringr::str_sub(index_period, 5, -1)
+#       ),
+#     chained_index_i = index_i * chain_link_index_i,
+#     index_p = (chained_index_i - 1) * 100,
+#     standard_error =
+#       100 * sqrt(
+#         index_i^2 * 1e-4 * chain_link_se_p^2 +
+#           chain_link_index_i^2 * 1e-4 * standard_error_p^2 +
+#           1e-4 * chain_link_se_p^2 * 1e-4 * standard_error_p^2
+#       ),
+#     ci_lower = round(index_p - 1.96 * standard_error, 1),
+#     ci_upper = round(index_p + 1.96 * standard_error, 1)
+#   ) |>
+#   dplyr::select(
+#     index_period,
+#     month_object,
+#     month_n,
+#     year,
+#     window,
+#     n_trp,
+#     index_i = chained_index_i,
+#     index_p,
+#     standard_error,
+#     ci_lower,
+#     ci_upper
+#   )
+
+# readr::write_rds(
+#   all_36_month_indices_combined,
+#   file =
+#     paste0(
+#       "data_indexpoints_tidy/combined_indices_",
+#       city_number,
+#       ".rds"
+#     )
+# )
+

@@ -1067,7 +1067,7 @@ readr::write_rds(
 # 2. 2019-2023
 
 ## TRP ----
-trd_trp <- get_published_pointindex_for_months_trondheim(960, 2023, 12)[[1]]
+trd_trp <- get_published_pointindex_for_months_toll_cities(960, 2023, 12)[[1]]
 
 # As no toll station data is available from 2014, might add some TRPs at same place
 trd_trp_add <- c(

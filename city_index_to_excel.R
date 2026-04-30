@@ -1,6 +1,24 @@
 # Write city index to Excel ----
 
-if(city_number %in% c(19954, 19955, 20952)){
+if(city_number %in% c(19955)){
+
+  list(
+    punkt_adt = this_citys_trps_all_adt_final_index,
+    punktindeks_maned = trp_index_monthly_wide,
+    # byindeks_aarlig = city_index_yearly_all,
+    byindeks_hittil = city_index_yearly_all_so_far
+    # by_glid_indeks = all_rolling_indices
+  ) |>
+    writexl::write_xlsx(
+      path = paste0(
+        "data_indexpoints_tidy/tallmateriale_",
+        city_number,
+        ".xlsx"
+      )
+    )
+}
+
+if(city_number %in% c(19954, 20952)){
 
   list(
     punkt_adt = trp_info_adt,
