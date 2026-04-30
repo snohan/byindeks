@@ -1,4 +1,4 @@
-# Yearly TRP index
+# Yearly TRP index ----
 
 if(so_far) {
   end_month <- index_month
@@ -72,7 +72,6 @@ if(city_number == 16952) {
     )
 
 }
-
 
 trp_index_from_2020 <-
   purrr::map2(

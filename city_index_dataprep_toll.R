@@ -14,7 +14,6 @@ if(city_number == 960) {
 
   city_name <- "Trondheim"
 
-  # Get data ----
   trp_index_20 <- get_published_pointindex_for_months_toll_cities(city_number, 2020, 12)
   trp_index_21 <- get_published_pointindex_for_months_toll_cities(city_number, 2021, 12)
   trp_index_22 <- get_published_pointindex_for_months_toll_cities(city_number, 2022, 12)
@@ -34,156 +33,28 @@ if(city_number == 960) {
       trp_index_26[[2]]
     )
 
-  # Choosing most recent version of city trps
-  city_trps <- trp_index_25[[1]]
-  
-  # Prepared toll data
-  # Made in bomdata_trondheim.R
-  toll_meta_data <- readr::read_rds(file = "bomdata_trondheim/trd_toll_stations.rds")
-  # NVDB-ID
-  # Autopass-ID
-
   toll_index_yearly_raw <- readr::read_rds("H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_aarsindekser.rds")
   toll_index_monthly_raw <- readr::read_rds("H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser.rds")
 }
 
-
-# if hau
 if(city_number == 19955) {
 
-  #
-city_name <- "Haugesund"
+  city_name <- "Haugesund"
 
-# Get data ----
-{
-trp_index_26 <- get_published_pointindex_for_months_toll_cities(city_number, 2026, index_month)
+  trp_index_26 <- get_published_pointindex_for_months_toll_cities(city_number, 2026, index_month)
 
-trp_index_all <-
-  dplyr::bind_rows(
-    trp_index_26[[2]]
-  )
-}
-
-
-# Prepared toll data
-# Made in bomdata_haugesund.R
-{
-  toll_meta_data <- readr::read_rds("bomdata_haugesund/bomstasjoner_haugalandspakken.rds")
-  # NVDB-ID
-  # trp_id = Autopass-ID
-
-  toll_index_yearly <-
-    readr::read_rds("H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_aarsindekser_haugesund.rds") |>
-    dplyr::rename(
-      index = index_p,
-      length_range = class
-    ) |>
-    dplyr::filter(length_range != "unknown")
-  # trp_id = Autopass-ID
-
-  toll_index_monthly <-
-    readr::read_rds("H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser_haugesund.rds") |>
-    dplyr::mutate(
-      month_object = lubridate::ymd(month_calc)
-    ) |>
-    dplyr::select(
-      trp_id,
-      length_range = class,
-      base_volume = monthly_volume_base,
-      calc_volume = monthly_volume_calc,
-      index = index_p,
-      month_object
-    ) |>
-    dplyr::filter(length_range != "unknown")
-  # trp_id = Autopass-ID
-
-}
-
-
-
-}
-
-# TRPs ----
-
-
-this_citys_trps <-
-  readr::read_rds("trps_for_city_index.rds") |>
-  dplyr::filter(trp_id %in% city_trps) |>
-  dplyr::select(
-    trp_id,
-    name,
-    road_reference,
-    #municipality_name,
-    lat, lon, road_link_position
-  ) |>
-  dplyr::mutate(station_type = "Trafikkregistrering")
-
-
-# TRPs and tolling stations together
-this_citys_trps_all <-
-  dplyr::bind_rows(
-    this_citys_trps,
-    toll_meta_data
-  ) |>
-  split_road_system_reference() |>
-  dplyr::select(
-    trp_id,
-    name,
-    road_reference,
-    road_category_and_number,
-    municipality_name,
-    lat, lon, road_link_position,
-    station_type
-  )
-# Autopass-ID
-
-# To match ids in MDT data
-trd_toll_station_id <-
-  dplyr::bind_rows(
-    this_citys_trps,
-    toll_meta_data
-  ) |>
-  dplyr::select(
-    trp_id,
-    name
-  ) |>
-  dplyr::mutate(
-    trp_id = dplyr::case_when(
-      name == "Ranheim" ~ "72",
-      TRUE ~ trp_id
+  trp_index_all <-
+    dplyr::bind_rows(
+      trp_index_26[[2]]
     )
-  )
-# Autopass-ID
 
-
-
-# delete
-this_citys_trps_all_adt_final <-
-  readr::read_rds("index_trp_metadata/trp_960.rds") |>
-  dplyr::mutate(
-    trp_autopass_id =
-      dplyr::case_when(
-        is.na(autopass_id) ~ trp_id,
-        TRUE ~ autopass_id
-      )
-  )
-# NVDB-ID
-# and hybrid columns
-
-
-
+  toll_index_yearly_raw <- readr::read_rds("H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_aarsindekser_haugesund.rds")
+  toll_index_monthly_raw <- readr::read_rds("H:/Programmering/R/byindeks/data_indexpoints_tidy/bom_maanedsindekser_haugesund.rds")
+}
+# Raw data from AutoPASS has trp_id = autopass_id
 
 
 # TRP index yearly ----
-toll_index_yearly <-
-  toll_index_yearly_raw |>
-  dplyr::rename(
-    index = index_p,
-    length_range = class
-  ) |>
-  dplyr::filter(length_range != "unknown")
-# Autopass-ID
-
 trp_toll_index_yearly <-
   trp_index_all |>
   dplyr::filter(
@@ -219,20 +90,24 @@ trp_toll_index_yearly <-
     )
   ) |>
   dplyr::bind_rows(
-    toll_index_yearly
+    toll_index_yearly_raw |>
+      dplyr::rename(
+        index = index_p,
+        length_range = class
+      ) |>
+      dplyr::filter(length_range != "unknown")
   )
-# Autopass-ID
 
  trp_toll_index_yearly_short <-
   trp_toll_index_yearly |>
   dplyr::filter(length_range == "lette") |>
   dplyr::select(trp_id, year, index) |>
+  dplyr::mutate(index = base::round(index, 2)) |> 
   tidyr::pivot_wider(
     names_from = year,
     names_prefix = "index_",
     values_from = index
   )
-# Autopass-ID
 
 
 # Binding pointindices to all points
@@ -240,43 +115,44 @@ this_citys_trps_all_adt_final_index <-
   this_citys_trps_all_adt_final |>
   dplyr::left_join(
     trp_toll_index_yearly_short,
-    by = dplyr::join_by(trp_autopass_id == trp_id)
+    by = dplyr::join_by(autopass_id == trp_id)
   ) |>
   split_road_system_reference()
 
-trp_index_refyear <-
-  this_citys_trps_all_adt_final_index |>
-  dplyr::select(
-    trp_id,
-    tidyselect::starts_with("index")
-  ) |>
-  dplyr::filter(
-    dplyr::if_all(
-      .cols = tidyselect::starts_with("index"),
-      .fns = ~ !is.na(.x)
-    )
-  ) |>
-  dplyr::mutate(
-    dplyr::across(
-      .cols = tidyselect::starts_with("index"),
-      .fns = ~ index_converter(.))
-  ) |>
-  dplyr::rowwise() |>
-  dplyr::mutate(index = prod(c_across(tidyselect::starts_with("index")))) |>
-  dplyr::mutate(index = round(100 * (index - 1), digits = 1)) |>
-  dplyr::select(trp_id, index)
+# Delete?
+# trp_index_refyear <-
+#   this_citys_trps_all_adt_final_index |>
+#   dplyr::select(
+#     trp_id,
+#     tidyselect::starts_with("index")
+#   ) |>
+#   dplyr::filter(
+#     dplyr::if_all(
+#       .cols = tidyselect::starts_with("index"),
+#       .fns = ~ !is.na(.x)
+#     )
+#   ) |>
+#   dplyr::mutate(
+#     dplyr::across(
+#       .cols = tidyselect::starts_with("index"),
+#       .fns = ~ index_converter(.))
+#   ) |>
+#   dplyr::rowwise() |>
+#   dplyr::mutate(index = prod(c_across(tidyselect::starts_with("index")))) |>
+#   dplyr::mutate(index = round(100 * (index - 1), digits = 2)) |>
+#   dplyr::select(trp_id, index)
 
-this_citys_trp_index_refyear <-
-  this_citys_trps_all_adt_final_index |>
-  dplyr::left_join(
-    trp_index_refyear,
-    by = "trp_id"
-  )
+# this_citys_trp_index_refyear <-
+#   this_citys_trps_all_adt_final_index |>
+#   dplyr::left_join(
+#     trp_index_refyear,
+#     by = "trp_id"
+#   )
 
-readr::write_rds(
-  this_citys_trp_index_refyear,
-  file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".rds")
-)
+# readr::write_rds(
+#   this_citys_trp_index_refyear,
+#   file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".rds")
+# )
 
 
 # City index yearly----
@@ -362,13 +238,13 @@ years_1_6 <-
 city_index_yearly_all <-
   city_index_yearly_light |>
   dplyr::mutate(index_type = "direct") |>
-  dplyr::bind_rows(
-    years_1_2,
-    years_1_3,
-    years_1_4,
-    years_1_5,
-    years_1_6
-  ) |>
+  # dplyr::bind_rows(
+  #   years_1_2,
+  #   years_1_3,
+  #   years_1_4,
+  #   years_1_5,
+  #   years_1_6
+  # ) |>
   dplyr::mutate(
     length_range = "lette",
     year_from_to = paste0(year_base, "-", year),
@@ -377,8 +253,11 @@ city_index_yearly_all <-
     period = paste0("jan-", month_name_short),
     #ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error, 1),
     #ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error, 1),
-    ci_lower = round(index_p - 1.96 * standard_error, 1),
-    ci_upper = round(index_p + 1.96 * standard_error, 1)
+    ci_lower = round(index_p - 1.96 * standard_error, 2),
+    ci_upper = round(index_p + 1.96 * standard_error, 2),
+    index_p = base::round(index_p, 2),
+    index_i = base::round(index_i, 2),
+    standard_error = base::round(standard_error, 2)
   )
 
 readr::write_rds(
@@ -430,7 +309,8 @@ trp_toll_index_monthly <-
   dplyr::filter(length_range == "lette") |>
   dplyr::mutate(
     year = lubridate::year(month_object),
-    month = lubridate::month(month_object)
+    month = lubridate::month(month_object),
+    index = base::round(index, 2)
   )
 
 # n_points_per_month <-
@@ -460,7 +340,7 @@ trp_index_monthly_wide <-
       lubridate::month(label = TRUE)
   ) |>
   dplyr::select(
-    trp_id,
+    autopass_id = trp_id,
     year,
     month_label,
     index
@@ -469,22 +349,18 @@ trp_index_monthly_wide <-
     names_from = "month_label",
     values_from = "index"
   ) |>
-  dplyr::left_join(
-    this_citys_trps_all,
-    by = "trp_id"
+  dplyr::right_join(
+    this_citys_trps_all_adt_final,
+    by = dplyr::join_by(autopass_id)
   ) |>
   dplyr::select(
     trp_id,
     name,
     road_category_and_number,
     year,
-    jan:des
+    jan:mar
   ) |>
-  dplyr::arrange(
-    name,
-    trp_id,
-    year
-  )
+  dplyr::arrange(road_category_and_number, name, year)
 
 city_index_monthly <-
   trp_toll_index_monthly |>
@@ -499,13 +375,16 @@ city_index_monthly <-
   ) |>
   calculate_area_index() |>
   dplyr::mutate(
-    area_name = "Trondheim",
+    area_name = city_name,
     year = lubridate::year(month_object),
     month = lubridate::month(month_object),
     period = "month",
     month_name =
       lubridate::month(month_object, label = TRUE, abbr = FALSE) |>
-      stringr::str_to_title()
+      stringr::str_to_title(),
+    index_p = base::round(index_p, 2),
+    standard_deviation = base::round(standard_deviation, 2),
+    standard_error = base::round(standard_error, 2)
   )
 
 readr::write_rds(

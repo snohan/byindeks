@@ -1,4 +1,4 @@
-# Yearly city index
+# Yearly city index ----
 
 # Weighting standard error
 city_index_n_trp <-
@@ -90,5 +90,5 @@ city_index_full_years <-
 #   )
 
 
-## Chained city index
+# Chained city index ----
 source("city_index_yearly_chain.R")

@@ -1,5 +1,4 @@
 # Chained yearly index
-
 if( so_far ) {
 
   city_index_years_to_chain <- city_index_full_years

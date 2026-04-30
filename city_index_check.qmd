@@ -245,7 +245,7 @@ if(toll_data_is_included){
 
 
 ```{r}
-#| label: city_trps
+#| label: TRPs
 
 city_trps <- pointindex[[1]]
 
@@ -274,7 +274,12 @@ if(toll_data_is_included){
       toll_stations_meta
     ) |>
     dplyr::mutate(
-      station_type_short = stringr::str_sub(station_type, 1, 1)
+      station_type_short = stringr::str_sub(station_type, 1, 1),
+      autopass_id = 
+        dplyr::case_when(
+          is.na(autopass_id) ~ trp_id,
+          TRUE ~ autopass_id
+        )
     )
   
 }else{
@@ -307,7 +312,7 @@ city_county_numbers <-
 
 
 ```{r}
-#| label: aadt
+#| label: AADT
 
 # Need not fetch AADT every time
 if(

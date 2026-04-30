@@ -61,7 +61,7 @@ if(toll_data_is_included) {
     )
   
 }
-  
+ 
 adt_ref_year_all <-
   if(toll_data_is_included) {
     dplyr::bind_rows(
@@ -201,8 +201,11 @@ this_citys_trps_all_adt_final <-
   dplyr::mutate(
     adt = round(adt, -1),
     adt_ref = round(adt_ref, -1)
+  ) |> 
+  dplyr::arrange(
+    road_category_and_number, name
   )
-  
+
 readr::write_rds(
   this_citys_trps_all_adt_final,
   file = paste0(

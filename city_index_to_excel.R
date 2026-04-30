@@ -3,10 +3,11 @@
 if(city_number %in% c(19955)){
 
   list(
-    punkt_adt = this_citys_trps_all_adt_final_index,
+    punkt_adt = this_citys_trps_all_adt_final,
     punktindeks_maned = trp_index_monthly_wide,
-    # byindeks_aarlig = city_index_yearly_all,
-    byindeks_hittil = city_index_yearly_all_so_far
+    byindeks_maanedlig = city_index_monthly,
+    byindeks_aarlig = city_index_yearly_all
+    # byindeks_hittil = city_index_yearly_all_so_far
     # by_glid_indeks = all_rolling_indices
   ) |>
     writexl::write_xlsx(
@@ -58,7 +59,7 @@ if(city_number == 16952){
 if(city_number == 960){
 
   list(
-    punkt_adt = this_citys_trps_all_adt_final_index,
+    punkt_adt = this_citys_trps_all_adt_final,
     punktindeks_maned = trp_index_monthly_wide,
     byindeks_aarlig = city_index_yearly_all,
     byindeks_hittil = city_index_so_far_all,
