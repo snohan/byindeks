@@ -64,8 +64,8 @@ trp_id_msnr <-
 {
   present_year <- 2026
   # month to be published now:
-  index_month <- 3
-  city_number <- 19955
+  index_month <- 4
+  city_number <- 1952
 }
 
 toll_data_is_included <- city_number %in% c(960, 19955)
@@ -81,6 +81,14 @@ this_citys_trps_all_adt_final <-
       ".rds"
     )
   )
+
+if(!toll_data_is_included) {
+
+  # In order for to plot work generically
+  this_citys_trps_all_adt_final <-
+    this_citys_trps_all_adt_final |> 
+    dplyr::mutate(autopass_id = NA_character_)
+}
 
 trp_names <-
   this_citys_trps_all_adt_final |>
@@ -127,8 +135,8 @@ city_trps <-
 ## Get MDTs ----
 # Need not fetch all MDTs for all years every time
 # May choose to fetch only for the present year
-# fetch_mdt_for_just_present_year <- TRUE
-fetch_mdt_for_just_present_year <- FALSE
+fetch_mdt_for_just_present_year <- TRUE
+# fetch_mdt_for_just_present_year <- FALSE
 source("city_index_dataprep_mdt.R")
 
 # Read back in
@@ -156,8 +164,8 @@ trp_not_ok <-
 # TODO: look at sectional TRPs concurrently
 # TODO: in map, draw curve connecting sectional TRPs
 
-start_at <- 13
-plot_mdt(start_at)
+start_at <- 21
+plot_mdt(start_at, 5)
 # Workaround as Positron won't show patterns
 ggplot2::ggsave(filename = "images/mdt_pattern_test.svg", width = 12, height = 12)
 # plot_heavy_percentage(start_at)
@@ -191,9 +199,9 @@ trp_mdt_plot_36 |> plotly::ggplotly()
 
 all_rolling_indices_list <-
   list(
-    all_12_month_indices#,
-    # all_24_month_indices,
-    # all_36_month_indices
+    all_12_month_indices,
+    all_24_month_indices,
+    all_36_month_indices
   )
 
 all_rolling_indices <- dplyr::bind_rows(all_rolling_indices_list)

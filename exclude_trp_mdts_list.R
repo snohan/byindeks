@@ -20,7 +20,6 @@ mdt_manual_exclusions_meta <-
   dplyr::select(
     trp_id,
     name,
-    county_name,
     municipality_name,
     road_category_and_number,
     from_year,
@@ -29,7 +28,6 @@ mdt_manual_exclusions_meta <-
     to_month
   ) |>
   dplyr::arrange(
-    county_name,
     name
   ) |>
   dplyr::filter(

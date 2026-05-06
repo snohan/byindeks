@@ -11,6 +11,7 @@ get_points() |>
     road_reference,
     road_category_and_number,
     municipality_name,
+    county_name,
     lat, lon, road_link_position
   ) |>
   readr::write_rds(

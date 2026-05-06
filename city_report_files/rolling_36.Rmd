@@ -27,11 +27,11 @@ city_36_month |>
 
 {{< pagebreak >}}
 
-Hvilke byindekspunkter som er med i datagrunnlaget for den siste tre års glidende indeksen er vist i tabell @tbl-trp_36.
+Hvilke byindekspunkter som er med i datagrunnlaget for den nyeste tre års glidende indeksen er vist i tabell @tbl-trp_36.
 
 ```{r}
 #| label: tbl-trp_36
-#| tbl-cap: "Byindekspunktene som bidrar til den siste tre års glidende indeksen."
+#| tbl-cap: "Byindekspunktene som bidrar til den nyeste tre års glidende indeksen."
 #| ft.arraystretch: 1
 
 readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_trp_indices_", city_number, ".rds"))[[2]] |> 
@@ -54,7 +54,7 @@ readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_trp_indices_", city
     name = "Punktnavn",
     road_category_and_number = "Veg",
     municipality_name = "Kommune",
-    adt = paste0("ÅDT ", last_year),
+    adt = paste0("ÅDT ", latest_complete_year$year),
     trp_index_p = "Endring fra\nreferanseår til\nsiste tre år\n(%)"
   ) |>
   flextable::align(j = c(5), align = "center", part = "header") |> 

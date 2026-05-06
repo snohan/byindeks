@@ -1396,8 +1396,9 @@ plot_mdt <- function(start_trp_n, n_trp_tp_plot = 4) {
       this_citys_trps_all_adt_final |> 
         dplyr::mutate(
           trp_id = dplyr::case_when(
-            is.na(autopass_id) ~ trp_id,
-            TRUE ~ autopass_id
+            toll_data_is_included & is.na(autopass_id) ~ trp_id,
+            toll_data_is_included & !is.na(autopass_id) ~ autopass_id,
+            TRUE ~ trp_id
           )
         ),
       by = "trp_id"
