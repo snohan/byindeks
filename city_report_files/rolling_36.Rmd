@@ -1,5 +1,7 @@
 Resultatene for hele kalenderår er gitt i tabell @tbl-city_36. En tidsserie med månedsvis utvikling er vist i figur @fig-plot_city_36.
 
+{{< pagebreak >}}
+
 ```{r}
 #| label: tbl-city_36
 #| tbl-cap: "Tre års glidende indeks."
@@ -45,6 +47,7 @@ readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_trp_indices_", city
     by = "trp_id"
   ) |> 
   dplyr::select(name, road_category_and_number, municipality_name, adt, trp_index_p) |> 
+  dplyr::arrange(road_category_and_number, name) |> 
   flextable::flextable() |>
   colformat_double(
     j = c("trp_index_p"),

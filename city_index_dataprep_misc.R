@@ -622,3 +622,60 @@ trp_index_year_to_date_by_index_month <-
 #     )
 # )
 
+
+# TRD chained TRP index
+#  trp_toll_index_yearly_short <-
+#   trp_toll_index_yearly |>
+#   dplyr::filter(length_range == "lette") |>
+#   dplyr::select(trp_id, year, index) |>
+#   dplyr::mutate(index = base::round(index, 2)) |> 
+#   tidyr::pivot_wider(
+#     names_from = year,
+#     names_prefix = "index_",
+#     values_from = index
+#   )
+
+
+# Binding pointindices to all points
+# this_citys_trps_all_adt_final_index <-
+#   this_citys_trps_all_adt_final |>
+#   dplyr::left_join(
+#     trp_toll_index_yearly_short,
+#     by = dplyr::join_by(autopass_id == trp_id)
+#   ) |>
+#   split_road_system_reference()
+
+# Delete?
+# trp_index_refyear <-
+#   this_citys_trps_all_adt_final_index |>
+#   dplyr::select(
+#     trp_id,
+#     tidyselect::starts_with("index")
+#   ) |>
+#   dplyr::filter(
+#     dplyr::if_all(
+#       .cols = tidyselect::starts_with("index"),
+#       .fns = ~ !is.na(.x)
+#     )
+#   ) |>
+#   dplyr::mutate(
+#     dplyr::across(
+#       .cols = tidyselect::starts_with("index"),
+#       .fns = ~ index_converter(.))
+#   ) |>
+#   dplyr::rowwise() |>
+#   dplyr::mutate(index = prod(c_across(tidyselect::starts_with("index")))) |>
+#   dplyr::mutate(index = round(100 * (index - 1), digits = 2)) |>
+#   dplyr::select(trp_id, index)
+
+# this_citys_trp_index_refyear <-
+#   this_citys_trps_all_adt_final_index |>
+#   dplyr::left_join(
+#     trp_index_refyear,
+#     by = "trp_id"
+#   )
+
+# readr::write_rds(
+#   this_citys_trp_index_refyear,
+#   file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".rds")
+# )

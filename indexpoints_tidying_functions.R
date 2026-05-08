@@ -226,7 +226,6 @@ calculate_area_index <- function(trp_index_df) {
     dplyr::summarise(
       city_base_volume = sum(base_volume),
       city_calc_volume = sum(calc_volume),
-      month = base::max(month),
       index_p = (city_calc_volume / city_base_volume - 1 ) * 100,
       n_trp = n(),
       standard_deviation = sqrt((1 / (1 - sum(weight^2) )) * sum(weight * (index - index_p)^2) ),
@@ -292,6 +291,33 @@ calculate_two_year_index <- function(city_index_df) {
       index_type = "chained"
     )
 }
+
+tidy_city_index_df <- function(df) {
+
+  df |> 
+  dplyr::mutate(
+    year_from_to = paste0(year_base, "-", year),
+    area_name = city_name,
+    month_name_short = lubridate::month(month, label = TRUE),
+    period = paste0("jan-", month_name_short),
+    #ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error, 1),
+    #ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error, 1),
+    ci_lower = round(index_p - 1.96 * standard_error, 2),
+    ci_upper = round(index_p + 1.96 * standard_error, 2),
+    index_p = base::round(index_p, 2),
+    index_i = base::round(index_i, 2),
+    standard_error = base::round(standard_error, 2)
+  ) |> 
+  dplyr::select(
+    area_name,
+    year_base, year, year_from_to, month, period,
+    index_type, n_trp,
+    index_i, index_p, 
+    standard_error, ci_lower, ci_upper
+  )
+
+}
+
 
 
 calculate_any_two_year_index <- function(index_row_1, index_row_2) {
@@ -581,12 +607,6 @@ filter_mdt <- function(mdt_df, year_dbl) {
 
 
 ## MDT old 1 ----
-
-# mdt_df <- mdt_validated
-# window_length <- 36
-# base_year <- reference_year
-# last_year_month <- "2023-11-01"
-
 calculate_rolling_indices_by_mdt <- function(base_year, last_year_month, window_length, mdt_df, grouping) {
 
     # Window length is a number of months, a multiple of 12
@@ -594,6 +614,12 @@ calculate_rolling_indices_by_mdt <- function(base_year, last_year_month, window_
     # by_area
     # by_sub_area
     # by_trp
+  
+    # Test:
+    # mdt_df <- mdt_validated
+    # window_length <- 36
+    # base_year <- reference_year
+    # last_year_month <- "2023-11-01"
 
     least_number_of_month_enums <-
       dplyr::case_when(
@@ -736,7 +762,7 @@ calculate_rolling_indices_by_mdt <- function(base_year, last_year_month, window_
 
     return(index_df_final)
 
-  }
+}
 
 
 ## MDT old 2 ----

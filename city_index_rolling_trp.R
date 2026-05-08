@@ -1,22 +1,15 @@
 ## All possible window indices for TRP ----
 
-if(city_number == 960) {
+if(toll_data_is_included) {
 
-  trp_names <-
-    trp_names |> 
-    dplyr::left_join(
-      toll_meta_data <- readr::read_rds(file = "bomdata_trondheim/trd_toll_stations.rds") |> 
-        dplyr::select(trp_id_2 = trp_id, nvdb_id),
-      by = join_by(trp_id == nvdb_id)
-    ) |> 
-    dplyr::mutate(
-      trp_id = dplyr::case_when(
-        is.na(trp_id_2) ~ trp_id,
-        TRUE ~ trp_id_2
-      )
-    ) |> 
-    dplyr::select(-trp_id_2)
+  trp_names_here <-
+    this_citys_trps_all_adt_final |> 
+    dplyr::select(
+      trp_id = autopass_id, nvdb_id = trp_id, name
+    )
   
+}else{
+  trp_names_here <- trp_names
 }
 
 
@@ -24,7 +17,7 @@ if(city_number == 960) {
 all_12_month_trp_indices <-
   calculate_rolling_indices(12, grouping = "by_trp") |>
   dplyr::left_join(
-    trp_names,
+    trp_names_here,
     by = "trp_id"
   ) |>
   dplyr::mutate(
@@ -106,7 +99,7 @@ if(nrow(all_36_month_trp_indices > 0)){
   all_36_month_trp_indices <-
     all_36_month_trp_indices |>
     dplyr::left_join(
-      trp_names,
+      trp_names_here,
       by = "trp_id"
     ) |>
     dplyr::mutate(
@@ -137,6 +130,35 @@ if(nrow(all_36_month_trp_indices > 0)){
 
   }
 
+if(toll_data_is_included) {
+
+  all_12_month_trp_indices <-
+    all_12_month_trp_indices |> 
+    dplyr::left_join(
+      trp_names_here |> 
+        dplyr::select(
+          -name
+        ),
+        by = "trp_id"
+    ) |> 
+    dplyr::select(-trp_id) |> 
+    dplyr::rename(trp_id = nvdb_id) |> 
+    dplyr::relocate(trp_id)
+  
+  all_36_month_trp_indices <-
+    all_36_month_trp_indices |> 
+    dplyr::left_join(
+      trp_names_here |> 
+        dplyr::select(
+          -name
+        ),
+        by = "trp_id"
+    ) |> 
+    dplyr::select(-trp_id) |> 
+    dplyr::rename(trp_id = nvdb_id) |> 
+    dplyr::relocate(trp_id)
+  
+}
 
 # Write
 list(

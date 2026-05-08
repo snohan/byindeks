@@ -301,12 +301,10 @@ create_point_adt_map_trondheim <- function(all_point_info_df) {
   palett_stasjonstype <-
     leaflet::colorFactor(
       palette = c("#db3b99", "#444f55"),
-      domain = c("Bomstasjon", "Trafikkregistrering")
+      domain = c("AutoPASS bomstasjon", "Trafikkregistrering")
     )
 
-  palett_adt <-
-    leaflet::colorNumeric(palette = "Greens",
-                 domain = NULL)
+  palett_adt <- leaflet::colorNumeric(palette = "Greens", domain = NULL)
 
   point_adt_map <-
     all_point_info_df |>
@@ -1068,8 +1066,8 @@ create_city_index_table_ci <- function(city_info) {
     ) |>
     dplyr::mutate(
       period_text = paste0(year_from_to, " ", period),
-      ci_lower_text = as.character(ci_lower) |> stringr::str_replace("\\.", ","),
-      ci_upper_text = as.character(ci_upper) |> stringr::str_replace("\\.", ","),
+      ci_lower_text = as.character(round(ci_lower, 1)) |> stringr::str_replace("\\.", ","),
+      ci_upper_text = as.character(round(ci_upper, 1)) |> stringr::str_replace("\\.", ","),
       ci = paste0("(", ci_lower_text, ", ", ci_upper_text, ")")
     ) |>
     dplyr::select(

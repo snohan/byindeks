@@ -42,6 +42,7 @@ tolling_data_daily_tidy <-
   dplyr::filter(!(trp_id == "60" & date %in% ymd(c("2025-10-26")))) |>
   dplyr::filter(!(trp_id == "61" & date %in% ymd(c("2023-06-20")))) |>
   dplyr::filter(!(trp_id == "62" & date %in% ymd(c("2023-04-12", "2023-04-13")))) |>
+  dplyr::filter(!(trp_id == "62" & date %in% ymd(c("2026-04-25", "2026-04-26")))) |>
   dplyr::filter(!(trp_id == "63")) |>
   dplyr::filter(!(trp_id == "64" & date %in% ymd(c("2023-06-23")))) |>
   dplyr::filter(!(trp_id == "67" & date %in% ymd(c("2023-06-27", "2023-06-28")))) |>

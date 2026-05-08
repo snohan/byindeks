@@ -1,6 +1,8 @@
 ---
 format: 
   pdf:
+    pdf-engine: xelatex
+    papersize: A4
     toc: true
     number-sections: true
     toc-title: Innhold
@@ -54,7 +56,7 @@ source("rmd_setup.R")
 
 
 # Choose city number:
-city_number <- 1952
+city_number <- 960
 
 ## Meta info
 city_number_county_name <- 
@@ -100,11 +102,7 @@ all_point_info <-
 
 
 ## Yearly index
-city_info <- readr::read_rds(paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")) 
-
-if(city_number == 960) {
-  city_info <- city_info |> dplyr::filter(length_range == "lette")
-}
+city_info <- readr::read_rds(paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds"))
 
 latest_month <- 
   city_info |> 
@@ -384,7 +382,7 @@ if(city_number == 960) {
       i = 1,
       j = 2,
       value = flextable::as_paragraph(
-        c("B er bomstasjon, T er trafikkregistreringspunkt.")
+        c("A er AutoPASS bomstasjon, T er trafikkregistreringspunkt.")
       ),
       ref_symbols = c("a"),
       part = "header"
@@ -411,9 +409,10 @@ Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene i
 # Punktet Meådalen på E14 mellom Stjørdal og Meråker er utelatt fra kartvisningen.
 
 if(city_number == 960) {
-  all_point_info |>
-   dplyr::filter(trp_id != "18672V578623") |> # avoid map being too zoomed out
-   create_point_adt_map_trondheim()
+  the_map <-
+    all_point_info |>
+    dplyr::filter(trp_id != "18672V578623") |> # avoid map being too zoomed out
+    create_point_adt_map_trondheim()
 }else{
   the_map <-
     all_point_info |>

@@ -60,7 +60,7 @@ counties <- readr::read_rds("counties.rds")
 # City numbers
 # Refy City  Cnum  Chkd Resp
 # 2016 Busk  1952   04 Snorre
-# 2016 Gren   955   03 Snorre
+# 2016 Gren   955   04 Snorre
 
 # 2017 NJær   952   04 Snorre
 # 2018 Oslo   959   04 Trond
@@ -79,7 +79,7 @@ counties <- readr::read_rds("counties.rds")
 # Choose
 index_year <- 2026
 latest_published_month <- 3
-city_number <- 1952
+city_number <- 960
 # End choose
 
 new_month_year <-
@@ -249,11 +249,10 @@ if(toll_data_is_included){
 
 city_trps <- pointindex[[1]]
 
-# if(city_number == 955) {
-#   # Need to keep TRPs in Bamble that used to be included
-#   city_trps <- c(city_trps, "00344V521377", "86022V521170")
-#   # Turns out they are included in API response anyway
-# }
+# Need to keep previously included TRPs in Grenland
+if(city_number == 955) {
+  city_trps <- c(city_trps, "55265V521064", "00344V521377", "86022V521170")
+}
 
 # TRD: Removing Tungasletta Ystgaard
 # NGL: Removing periodic Hauge bru (originally included by mistake)

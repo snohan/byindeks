@@ -66,7 +66,7 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "march" # English!
+month_string <- "april" # English!
 year_number <- 2026
 
 apar_data_for_month <-
@@ -74,7 +74,7 @@ apar_data_for_month <-
     tolling_station_ids_apar,
     ~ get_apar_data(
         dataset_id = trondheim_apar_id,
-        station_code = .,
+        autopass_station_id = .,
         month_string = month_string,
         year_number = year_number
     )
@@ -143,52 +143,42 @@ apar_data_hourly <-
   )
 
 
-# Daily ----
-# Quality check: look first at daily traffic per lane
-# If anything strange, look at hourly
-
+## Daily by lane ----
 tolling_data_daily_lane <-
-  dplyr::bind_rows(
-    #data_2019_2021_hourly,
-    apar_data_hourly
-  ) %>%
+  apar_data_hourly |> 
   dplyr::filter(
     trp_id %in% tolling_station_ids_original
-  ) %>%
-  dplyr::group_by(
-    trp_id,
-    lane,
-    date,
-    class
-  ) %>%
+  ) |> 
   dplyr::summarise(
     traffic = sum(traffic),
-    .groups = "drop"
-  ) %>%
+    .by = c(trp_id, lane, date, class)
+  ) |> 
   dplyr::mutate(
     date = lubridate::as_date(date),
+    weekday = lubridate::wday(date, week_start = 1),
     day = lubridate::mday(date),
     month = lubridate::floor_date(date, "month"),
-    year = lubridate::year(date)
-  ) #|>
-  #dplyr::bind_rows(
-  #  april_2021_daily
-  #)
+    first_wday = lubridate::wday(month, week_start = 1),
+    day_aligned_by_weekday = day + (first_wday - 1),
+    year = lubridate::year(date),
+    lane = factor(lane, levels = c("1", "3", "5", "7", "2", "4", "6", "8"))
+  )
 
+
+## Check ----
+kommune_bomer <- readr::read_rds(file = "bomdata_trondheim/trd_toll_stations.rds")
+
+# Ranheim is 72, 21 stations total
+plot_toll_station_data_per_lane(tolling_station_ids_original[21], c(2025, 2026), kommune_bomer)
+
+
+# Daily ----
 tolling_data_daily <-
   tolling_data_daily_lane |>
-  # Removing unknowns since they are not vehicles (presumably)
-  #dplyr::filter(
-  #  class != "ukjent"
-  #) |>
-  dplyr::group_by(
-    trp_id,
-    date,
-    class
-  ) %>%
   dplyr::summarise(
     traffic = sum(traffic),
-    .groups = "drop"
+    lanes = paste(sort(unique(lane)), collapse = ", "),
+    .by = c(trp_id, date, class)
   ) |>
   # Creating zeros to match corresponding non-zero hours ONLY NEEDED FOR HOURLY TRAFFIC
   # tidyr::complete(
@@ -206,18 +196,45 @@ tolling_data_daily <-
   )
 
 
-# Check ----
-# Plot to see if data are ok
-kommune_bomer <- readr::read_rds(file = "bomdata_trondheim/trd_toll_stations.rds")
-
-# Ranheim is 72, 21 stations
-plot_toll_station_data_per_lane(tolling_station_ids_original[21], 2026, kommune_bomer)
-
-
 # Exclusions
 source("bomdata_trondheim_exclusions.R")
 
-tolling_data_daily_total <-
+# tolling_data_daily_total <-
+#   tolling_data_daily_tidy |>
+#   dplyr::group_by(
+#     trp_id,
+#     date
+#   ) |>
+#   dplyr::summarise(
+#     traffic = sum(traffic),
+#     .groups = "drop"
+#   ) |>
+#   dplyr::mutate(
+#     day = lubridate::mday(date),
+#     month = lubridate::floor_date(date, "month"),
+#     year = lubridate::year(date),
+#     class = "alle"
+#   )
+
+# tolling_data_daily_all <-
+#   dplyr::bind_rows(
+#     tolling_data_daily_tidy,
+#     tolling_data_daily_total
+#   ) |>
+#   dplyr::arrange(
+#     trp_id,
+#     date,
+#     class
+#   )
+
+# readr::write_rds(
+#   tolling_data_daily_all,
+#   #file = "bomdata_trondheim/tolling_data_daily_2019-2021.rds"
+#   #file = "bomdata_trondheim/tolling_data_daily_2022-2024.rds"
+#   file = "bomdata_trondheim/tolling_data_daily_2025-2026.rds"
+# )
+
+tolling_data_daily_sum_classes <-
   tolling_data_daily_tidy |>
   dplyr::group_by(
     trp_id,
@@ -234,10 +251,10 @@ tolling_data_daily_total <-
     class = "alle"
   )
 
-tolling_data_daily_all <-
+tolling_data_daily_final <-
   dplyr::bind_rows(
     tolling_data_daily_tidy,
-    tolling_data_daily_total
+    tolling_data_daily_sum_classes
   ) |>
   dplyr::arrange(
     trp_id,
@@ -246,9 +263,7 @@ tolling_data_daily_all <-
   )
 
 readr::write_rds(
-  tolling_data_daily_all,
-  #file = "bomdata_trondheim/tolling_data_daily_2019-2021.rds"
-  #file = "bomdata_trondheim/tolling_data_daily_2022-2024.rds"
+  tolling_data_daily_final,
   file = "bomdata_trondheim/tolling_data_daily_2025-2026.rds"
 )
 
@@ -381,49 +396,9 @@ index_years <- c(2020:2026)
 tolling_station_indices <-
   purrr::map(
     index_years,
-    ~ calculate_monthly_index_for_tolling_stations_from_daily_traffic(tolling_data_daily_final, .x - 1, .x)
+    ~ calculate_monthly_index_for_tolling_stations_from_daily_traffic(tolling_data_daily_all_years, .x - 1, .x)
   ) |> 
   purrr::list_rbind()
-
-# As before:
-tolling_station_index_2020 <-
-  tolling_data_daily_all_years %>%
-  calculate_monthly_index_for_tolling_stations_from_daily_traffic(2019, 2020)
-
-tolling_station_index_2021 <-
-  tolling_data_daily_all_years %>%
-  calculate_monthly_index_for_tolling_stations_from_daily_traffic(2020, 2021)
-
-tolling_station_index_2022 <-
-  tolling_data_daily_all_years %>%
-  calculate_monthly_index_for_tolling_stations_from_daily_traffic(2021, 2022)
-
-tolling_station_index_2023 <-
-  tolling_data_daily_all_years %>%
-  calculate_monthly_index_for_tolling_stations_from_daily_traffic(2022, 2023)
-
-tolling_station_index_2024 <-
-  tolling_data_daily_all_years %>%
-  calculate_monthly_index_for_tolling_stations_from_daily_traffic(2023, 2024)
-
-tolling_station_index_2025 <-
-  tolling_data_daily_all_years %>%
-  calculate_monthly_index_for_tolling_stations_from_daily_traffic(2024, 2025)
-
-tolling_station_index_2026 <-
-  tolling_data_daily_all_years %>%
-  calculate_monthly_index_for_tolling_stations_from_daily_traffic(2025, 2026)
-
-tolling_station_indices <-
-  dplyr::bind_rows(
-    tolling_station_index_2020,
-    tolling_station_index_2021,
-    tolling_station_index_2022,
-    tolling_station_index_2023,
-    tolling_station_index_2024,
-    tolling_station_index_2025,
-    tolling_station_index_2026
-  )
 
 readr::write_rds(
   tolling_station_indices,
@@ -461,12 +436,9 @@ readr::write_rds(
 tolling_station_indices_latest_month_per_year <-
   tolling_station_indices |>
   dplyr::mutate(year = year(month_calc)) |>
-  dplyr::group_by(
-    year
-  ) |>
   dplyr::summarise(
     month = max(month_calc),
-    .groups = "drop"
+    .by = "year"
   )
 
 tolling_station_indices_yearly <-

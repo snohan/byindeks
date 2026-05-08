@@ -65,7 +65,7 @@ trp_id_msnr <-
   present_year <- 2026
   # month to be published now:
   index_month <- 4
-  city_number <- 1952
+  city_number <- 960
 }
 
 toll_data_is_included <- city_number %in% c(960, 19955)
@@ -164,7 +164,7 @@ trp_not_ok <-
 # TODO: look at sectional TRPs concurrently
 # TODO: in map, draw curve connecting sectional TRPs
 
-start_at <- 21
+start_at <- 36
 plot_mdt(start_at, 5)
 # Workaround as Positron won't show patterns
 ggplot2::ggsave(filename = "images/mdt_pattern_test.svg", width = 12, height = 12)
@@ -224,7 +224,7 @@ visualize_city_index_jackknife(all_12_month_indices, pseudo_observations)
 
 
 # Yearly index ----
-# Cities that include toll station data have their own script for yearly index: city_index_dataprep_toll.R
+# TOLL STATIONS? Cities that include toll station data have their own script for yearly index: city_index_dataprep_toll.R
 
 
 ## So-far TRUE ----

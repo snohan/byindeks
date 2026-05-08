@@ -10,6 +10,8 @@
 # City index
 # Excel file
 
+
+# Get data ----
 if(city_number == 960) {
 
   city_name <- "Trondheim"
@@ -54,7 +56,8 @@ if(city_number == 19955) {
 # Raw data from AutoPASS has trp_id = autopass_id
 
 
-# TRP index yearly ----
+# Yearly ----
+## TRP index yearly ----
 trp_toll_index_yearly <-
   trp_index_all |>
   dplyr::filter(
@@ -64,11 +67,17 @@ trp_toll_index_yearly <-
     length_excluded == FALSE
   ) |>
   # Need latest value per year
-  dplyr::filter(
-    period == "year_to_date"
-    # month == max(month)
-  ) |>
+  dplyr::filter(period == "year_to_date") |>
   dplyr::slice_max(month, by = c(trp_id, year)) |> 
+  # Some TRPs don't have value in latest month, so for the subsequent grouping to work as intended,
+  # set all months per year as the latest that appear in the data.
+  dplyr::mutate(
+    month_last = max(month),
+    .by = c(year)
+  ) |> 
+  dplyr::mutate(
+    month = lubridate::make_date(year = year, month = month_last)
+  ) |>
   dplyr::select(
     trp_id,
     year,
@@ -79,16 +88,6 @@ trp_toll_index_yearly <-
     coverage,
     index
   ) |>
-  dplyr::mutate(
-    # month = lubridate::make_date(year = year, month = month)
-    # In case some TRPs doesn't have December as latest month, and for the subsequent grouping to work as intended,
-    # name all months per year as December here for the yearly index.
-    # month = lubridate::make_date(year = year, month = 12),
-    month = dplyr::case_when(
-      year < present_year ~ lubridate::make_date(year = year, month = 12),
-      TRUE ~ lubridate::make_date(year = year, month = month)
-    )
-  ) |>
   dplyr::bind_rows(
     toll_index_yearly_raw |>
       dplyr::rename(
@@ -98,64 +97,8 @@ trp_toll_index_yearly <-
       dplyr::filter(length_range != "unknown")
   )
 
- trp_toll_index_yearly_short <-
-  trp_toll_index_yearly |>
-  dplyr::filter(length_range == "lette") |>
-  dplyr::select(trp_id, year, index) |>
-  dplyr::mutate(index = base::round(index, 2)) |> 
-  tidyr::pivot_wider(
-    names_from = year,
-    names_prefix = "index_",
-    values_from = index
-  )
 
-
-# Binding pointindices to all points
-this_citys_trps_all_adt_final_index <-
-  this_citys_trps_all_adt_final |>
-  dplyr::left_join(
-    trp_toll_index_yearly_short,
-    by = dplyr::join_by(autopass_id == trp_id)
-  ) |>
-  split_road_system_reference()
-
-# Delete?
-# trp_index_refyear <-
-#   this_citys_trps_all_adt_final_index |>
-#   dplyr::select(
-#     trp_id,
-#     tidyselect::starts_with("index")
-#   ) |>
-#   dplyr::filter(
-#     dplyr::if_all(
-#       .cols = tidyselect::starts_with("index"),
-#       .fns = ~ !is.na(.x)
-#     )
-#   ) |>
-#   dplyr::mutate(
-#     dplyr::across(
-#       .cols = tidyselect::starts_with("index"),
-#       .fns = ~ index_converter(.))
-#   ) |>
-#   dplyr::rowwise() |>
-#   dplyr::mutate(index = prod(c_across(tidyselect::starts_with("index")))) |>
-#   dplyr::mutate(index = round(100 * (index - 1), digits = 2)) |>
-#   dplyr::select(trp_id, index)
-
-# this_citys_trp_index_refyear <-
-#   this_citys_trps_all_adt_final_index |>
-#   dplyr::left_join(
-#     trp_index_refyear,
-#     by = "trp_id"
-#   )
-
-# readr::write_rds(
-#   this_citys_trp_index_refyear,
-#   file = paste0("data_indexpoints_tidy/indekspunkt_", city_number, ".rds")
-# )
-
-
-# City index yearly----
+## City index yearly ----
 city_index_yearly <-
   trp_toll_index_yearly |>
   dplyr::filter(!is.na(index)) |>
@@ -193,80 +136,63 @@ city_index_yearly_light <-
   city_index_yearly |>
   dplyr::ungroup() |>
   dplyr::filter(length_range == "lette") |>
-  dplyr::select(-standard_deviation)
+  dplyr::select(-standard_deviation, -length_range)
 
 
-## Chaining ----
+# Chained full years ----
 years_1_2 <-
   city_index_yearly_light |>
-  calculate_two_year_index() |>
-  dplyr::mutate(index_type = "chained")
+  calculate_two_year_index()
 
 years_1_3 <-
   dplyr::bind_rows(
     years_1_2,
     dplyr::slice(city_index_yearly_light, 3)
   ) |>
-  calculate_two_year_index() |>
-  dplyr::mutate(index_type = "chained")
+  calculate_two_year_index()
 
 years_1_4 <-
   dplyr::bind_rows(
     years_1_3,
     dplyr::slice(city_index_yearly_light, 4)
   ) |>
-  calculate_two_year_index() |>
-  dplyr::mutate(index_type = "chained")
+  calculate_two_year_index()
 
 years_1_5 <-
   dplyr::bind_rows(
     years_1_4,
     dplyr::slice(city_index_yearly_light, 5)
   ) |>
-  calculate_two_year_index() |>
-  dplyr::mutate(index_type = "chained")
+  calculate_two_year_index()
 
 years_1_6 <-
   dplyr::bind_rows(
     years_1_5,
     dplyr::slice(city_index_yearly_light, 6)
   ) |>
-  calculate_two_year_index() |>
-  dplyr::mutate(index_type = "chained")
+  calculate_two_year_index()
 
 # Skipping intermediate years, adding just from first to last
 city_index_yearly_all <-
   city_index_yearly_light |>
   dplyr::mutate(index_type = "direct") |>
-  # dplyr::bind_rows(
-  #   years_1_2,
-  #   years_1_3,
-  #   years_1_4,
-  #   years_1_5,
-  #   years_1_6
-  # ) |>
-  dplyr::mutate(
-    length_range = "lette",
-    year_from_to = paste0(year_base, "-", year),
-    area_name = city_name,
-    month_name_short = lubridate::month(month, label = TRUE),
-    period = paste0("jan-", month_name_short),
-    #ci_lower = round(index_p + stats::qt(0.025, n_trp) * standard_error, 1),
-    #ci_upper = round(index_p - stats::qt(0.025, n_trp) * standard_error, 1),
-    ci_lower = round(index_p - 1.96 * standard_error, 2),
-    ci_upper = round(index_p + 1.96 * standard_error, 2),
-    index_p = base::round(index_p, 2),
-    index_i = base::round(index_i, 2),
-    standard_error = base::round(standard_error, 2)
-  )
-
+  dplyr::bind_rows(
+    years_1_2,
+    years_1_3,
+    years_1_4,
+    years_1_5,
+    years_1_6
+  ) |>
+  tidy_city_index_df()
+  
 readr::write_rds(
   city_index_yearly_all,
   file = paste0("data_indexpoints_tidy/byindeks_", city_number, ".rds")
 )
 
 
-# City index monthly ----
+# Monthly ----
+## TRP index monthly ----
 trp_index_monthly <-
   trp_index_all |>
   dplyr::filter(
@@ -358,10 +284,12 @@ trp_index_monthly_wide <-
     name,
     road_category_and_number,
     year,
-    jan:mar
+    jan:des
   ) |>
   dplyr::arrange(road_category_and_number, name, year)
 
+
+## City index monthly ----
 city_index_monthly <-
   trp_toll_index_monthly |>
   dplyr::mutate(year = lubridate::year(month_object)) |>
@@ -393,8 +321,8 @@ readr::write_rds(
 )
 
 
-# City index so far ----
-# E.g. Q1 chained through all years
+# So far ----
+## TRP index so far ----
 trp_index_so_far <-
   trp_index_all |>
   dplyr::filter(
@@ -483,9 +411,7 @@ city_index_so_far <-
     year,
     month,
     length_range,
-    #month_object = city_month_object,
     n_trp,
-    standard_deviation,
     standard_error,
     index_i,
     index_p
@@ -535,6 +461,7 @@ so_far_years_1_7 <-
 # Skipping intermediate years, adding just from first to last
 city_index_so_far_all <-
   city_index_so_far |>
+  dplyr::mutate(index_type = "direct") |>
   dplyr::bind_rows(
     so_far_years_1_2,
     so_far_years_1_3,
@@ -543,17 +470,8 @@ city_index_so_far_all <-
     so_far_years_1_6,
     so_far_years_1_7
   ) |>
-  dplyr::mutate(
-    length_range = "lette",
-    year_from_to = paste0(year_base, "-", year),
-    area_name = "Trondheim",
-    month_object = lubridate::make_date(year = year, month = month),
-    period = "year_to_date",
-    month_name =
-      lubridate::month(month_object, label = TRUE, abbr = FALSE) |>
-      stringr::str_to_title()
-  )
-
+  tidy_city_index_df()
+  
 readr::write_rds(
   city_index_so_far_all,
   file = paste0("data_indexpoints_tidy/city_index_so_far_", city_number, ".rds")
