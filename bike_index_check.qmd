@@ -42,7 +42,7 @@ library(htmltools)
 
 # Point metadata from Traffic Data API
 # NB! source once per session
-source("bike_index_check_dataprep.R")
+# source("bike_index_check_dataprep.R")
 points <- readr::read_rds("trps.rds")
 ```
 
@@ -68,8 +68,8 @@ points <- readr::read_rds("trps.rds")
 
 # Choose
 index_year <- 2026
-index_month <- 2 # latest published
-city_number <- 13952
+index_month <- 3 # latest published
+city_number <- 6952
 
 new_month_name <- 
   lubridate::as_date(paste0(index_year, "-", index_month + 1, "-01")) |> 
