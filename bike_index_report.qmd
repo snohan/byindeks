@@ -1,6 +1,8 @@
 ---
 format: 
   pdf:
+    pdf-engine: xelatex
+    papersize: A4
     toc: true
     number-sections: true
     toc-title: Innhold
@@ -33,7 +35,7 @@ crossref:
 
 source("rmd_setup.R")
 
-last_published_month_number <- 12
+last_published_month_number <- 4
 
 index_all_years <-
   readr::read_rds(file = "data_indexpoints_tidy/bike_index_all_long.rds") |> 
@@ -128,9 +130,7 @@ I denne rapporten er det for hvert byområde inkludert en tabell over de aktuell
 #| fig-scap: "Registeringspunkter for sykkeltrafikk i Bergen."
 
 bike_trp_info |> 
-  dplyr::filter(
-    area_name == "Bergen"
-  ) |> 
+  dplyr::filter(area_name == "Bergen") |> 
   dplyr::mutate(adt = SUMMER) |> 
   create_point_adt_map("SDT")
 ```
@@ -270,6 +270,7 @@ table_bike_trps_with_sdt("Førde")
 table_index_chains("Førde")
 ```
 
+{{< pagebreak >}}
 
 ```{r}
 #| label: tbl-historic_matrix_frd
@@ -385,6 +386,7 @@ table_bike_trps_with_sdt("Kristiansand")
 table_index_chains("Kristiansand")
 ```
 
+{{< pagebreak >}}
 
 ```{r}
 #| label: tbl-historic_matrix_krs

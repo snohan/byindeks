@@ -8,8 +8,8 @@
 }
 
 # Index codes and years ----
-last_complete_year <- 2024
-last_complete_month_this_year <- 12
+last_complete_year <- 2025
+last_complete_month_this_year <- 4
 
 index_codes_and_reference_years <-
   tibble::tibble(
@@ -526,17 +526,26 @@ bike_trps <-
   dplyr::mutate(
     name = stringr::str_remove(name, " sykkeltellepunkt"),
     name = stringr::str_remove(name, " sykkelsøyle"),
+    name = stringr::str_remove(name, " sykkelveg"),
     name = stringr::str_remove(name, "sykkel "),
     name = stringr::str_remove(name, " \\(sykkel\\)"),
     name = stringr::str_remove(name, " \\(SYKKEL\\)"),
     name = stringr::str_remove(name, "-SYKKEL"),
+    name = stringr::str_remove(name, "SYKKEL"),
+    name = stringr::str_remove(name, "SYKKELTAVLE"),
     name = stringr::str_remove(name, "-sykkel"),
     name = stringr::str_remove(name, " sykkel"),
     name = stringr::str_remove(name, " Sykkel"),
     name = stringr::str_remove(name, "-Sykkel"),
     name = stringr::str_remove(name, "\\(Sykkel\\)"),
     name = stringr::str_remove(name, " ny"),
-    name = stringr::str_remove(name, " -$")
+    name = stringr::str_remove(name, " -$"),
+    name = stringr::str_remove(name, " -"),
+    name = stringr::str_remove(name, "tavle"),
+    name = stringr::str_remove(name, "TAVLE"),
+    name = stringr::str_remove(name, " mot "),
+    name = stringr::str_remove(name, " med "),
+    name = stringr::str_remove(name, "metrering")
   )
 
 
@@ -569,19 +578,21 @@ bike_trps <-
 
 bike_sdt <-
   dplyr::bind_rows(
-    get_sdt_for_trp_list(bike_trps$trp_id, 2020),
-    get_sdt_for_trp_list(bike_trps$trp_id, 2021),
+    # get_sdt_for_trp_list(bike_trps$trp_id, 2020),
+    # get_sdt_for_trp_list(bike_trps$trp_id, 2021),
     get_sdt_for_trp_list(bike_trps$trp_id, 2022),
     get_sdt_for_trp_list(bike_trps$trp_id, 2023),
     get_sdt_for_trp_list(bike_trps$trp_id, 2024),
-    get_sdt_for_trp_list(bike_trps$trp_id, 2025)
+    get_sdt_for_trp_list(bike_trps$trp_id, 2025),
+    get_sdt_for_trp_list(bike_trps$trp_id, 2026)
   )
 
 
 bike_sdt_wide <-
   bike_sdt |>
   dplyr::filter(
-    coverage >= 50
+    coverage >= 25,
+    sdt > 0
   ) |>
   dplyr::select(
     trp_id,
@@ -589,30 +600,42 @@ bike_sdt_wide <-
     season,
     sdt
   ) |>
+  dplyr::mutate(
+    sdt = dplyr::case_when(
+      sdt < 20 ~ sdt,
+      sdt < 100 ~ base::round(sdt / 5) * 5,
+      TRUE ~ base::round(sdt, -1)
+    )
+  ) |> 
+  dplyr::slice_max(
+    year,
+    by = c(trp_id, season),
+    with_ties = FALSE
+  ) |> 
+  dplyr::select(-year) |> 
   tidyr::pivot_wider(
     names_from = "season",
     values_from = "sdt"
   ) |>
   dplyr::arrange(
-    trp_id,
-    year
-  ) |>
-  dplyr::rowwise() |>
-  dplyr::mutate(
-    seasons_na = sum(is.na(dplyr::c_across(WINTER:FALL)))
-  ) |>
-  dplyr::ungroup() |>
-  dplyr::filter(
-    seasons_na == 0
-  ) |>
-  dplyr::slice_max(
-    year,
-    by = trp_id,
-    with_ties = FALSE
-  ) |>
-  dplyr::select(
-    -seasons_na
-  )
+    trp_id
+  ) #|>
+  # dplyr::rowwise() |>
+  # dplyr::mutate(
+  #   seasons_na = sum(is.na(dplyr::c_across(WINTER:FALL)))
+  # ) |>
+  # dplyr::ungroup() |>
+  # dplyr::filter(
+  #   seasons_na == 0
+  # ) |>
+  # dplyr::slice_max(
+  #   year,
+  #   by = trp_id,
+  #   with_ties = FALSE
+  # ) |>
+  # dplyr::select(
+  #   -seasons_na
+  # )
 
 bike_trp_sdt <-
   bike_trps |>

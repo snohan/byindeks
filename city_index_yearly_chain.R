@@ -54,14 +54,16 @@ city_index_yearly_all <-
     area_name = city_name,
     month_name_short = lubridate::month(month, label = TRUE),
     period = paste0("jan-", month_name_short),
-    index_p = round(index_p, 1),
-    ci_lower = round(index_p - 1.96 * standard_error, 1),
-    ci_upper = round(index_p + 1.96 * standard_error, 1)
+    index_p = round(index_p, 2),
+    index_i = round(index_i, 4),
+    ci_lower = round(index_p - 1.96 * standard_error, 2),
+    ci_upper = round(index_p + 1.96 * standard_error, 2)
   ) |>
   dplyr::select(
-    -standard_deviation,
-    -variance,
-    -sum_of_squared_weights
+    area_name,
+    year_base, year, year_from_to, month, month_name_short, period,
+    index_type,
+    n_trp, index_i, index_p, ci_lower, ci_upper
   )
 
 readr::write_rds(

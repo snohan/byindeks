@@ -65,7 +65,7 @@ trp_id_msnr <-
   present_year <- 2026
   # month to be published now:
   index_month <- 4
-  city_number <- 960
+  city_number <- 955
 }
 
 toll_data_is_included <- city_number %in% c(960, 19955)
@@ -204,7 +204,18 @@ all_rolling_indices_list <-
     all_36_month_indices
   )
 
-all_rolling_indices <- dplyr::bind_rows(all_rolling_indices_list)
+all_rolling_indices <- 
+  dplyr::bind_rows(all_rolling_indices_list) |> 
+  dplyr::mutate(
+    index_i = base::round(index_i, 4),
+    n_eff = base::round(n_eff, 1),
+    dplyr::across(c(index_p, sd_sample_p, standard_error_p, ci_lower, ci_upper), ~ base::round(.x, 2))
+  ) |> 
+  dplyr::select(
+    year, month_n, month_object, window, index_period,
+    index_i, index_p, ci_lower, ci_upper,
+    n_trp, n_eff, sd_sample_p, standard_error_p
+  )
 
 all_rolling_indices_list |>
   readr::write_rds(
@@ -229,27 +240,31 @@ visualize_city_index_jackknife(all_12_month_indices, pseudo_observations)
 
 ## So-far TRUE ----
 # Makes no sense if the index_month is 1 or 12, but just include it in the workflow anyway.
-so_far <- TRUE
-# TRP index
-source("city_index_trp_yearly.R")
+{
+  so_far <- TRUE
+  # TRP index
+  source("city_index_trp_yearly.R")
 
-# Sub area
-if(city_number == 959) {source("city_index_yearly_sub_area.R")}
+  # Sub area
+  if(city_number == 959) {source("city_index_yearly_sub_area.R")}
 
-# Whole area
-source("city_index_yearly.R")
+  # Whole area
+  source("city_index_yearly.R")
+}
 
 
 ## So-far FALSE ----
-so_far <- FALSE
-source("city_index_trp_yearly.R")
+{
+  so_far <- FALSE
+  source("city_index_trp_yearly.R")
 
-# Sub area
-if(city_number == 959) {source("city_index_yearly_sub_area.R")}
+  # Sub area
+  if(city_number == 959) {source("city_index_yearly_sub_area.R")}
 
-# Whole area
-source("city_index_yearly.R")
-# And then check last report to see if the numbers are still the same
+  # Whole area
+  source("city_index_yearly.R")
+  # And then check last report to see if the numbers are still the same
+}
 
 # TRP index by month for Excel
 source("city_index_trp_index_by_month.R")

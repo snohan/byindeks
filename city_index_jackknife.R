@@ -1,5 +1,5 @@
 ## Jackknife ----
-# Run calculate_rolling_indices for every sample with one TRP left out
+# Running calculate_rolling_indices for every sample with one TRP left out
 
 trp_mdt_ok_refyear_all <- trp_mdt_ok_refyear
 

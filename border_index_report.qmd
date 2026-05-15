@@ -1,6 +1,8 @@
 ---
 format: 
   pdf:
+    pdf-engine: xelatex
+    papersize: A4
     toc: true
     number-sections: true
     toc-title: Innhold
@@ -208,6 +210,8 @@ index_all_years |>
   create_monthly_index_lineplot()
 ```
 
+{{< pagebreak >}}
+
 De følgende tabellene viser tallgrunnlaget for figur @fig-lineplot_historic_2 og @fig-lineplot_historic_3. Indekstallene er en estimert samlet endring i trafikkmengde per måned, sammenlignet med samme måned året før. Usikkerheten i estimatet er synliggjort med standardfeil og standardavvik. Standardfeilen sier noe om hvor nære indeksen (som er et estimat) er den faktiske endringen i trafikken, mens standardavviket sier noe om hvor ulik trafikkendringen var på de ulike trafikkregistreringspunktene.
 
 {{< pagebreak >}}
@@ -300,6 +304,20 @@ index_for_table |>
   create_monthly_index_table()
 ```
 
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-monthly_index_table_2026
+#| tbl-cap: "Riksgrenseindeks per måned 2026."
+#| ft.arraystretch: 0.9
+
+index_for_table |> 
+  dplyr::filter(
+    period == "month",
+    year == 2026
+  ) |> 
+  create_monthly_index_table()
+```
 
 # Endring i trafikk per år
 2016 er sammenligningsåret for indeksen i 2017, og de påfølgende årsindeksene er alltid sammenlignet med året før. I tabellen nedenfor er årsindeksene gjengitt.

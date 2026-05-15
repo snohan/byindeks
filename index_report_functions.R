@@ -63,13 +63,7 @@ create_point_table_trd_2 <- function(all_point_info_df) {
     width(j = 1, 2) |>
     width(j = 2, 0.4) |>
     width(j = 3, 1.3)
-  #autofit() %>%
-  # padding(
-  #   j = 1,
-  #   padding.left = 20,
-  #   part = "all"
-  # ) |>
-  # height_all(height = .1)
+  
 }
 
 create_point_table_trd <- function(all_point_info_df) {
@@ -109,46 +103,49 @@ create_point_table_trd <- function(all_point_info_df) {
 table_bike_trps_with_sdt <- function(chosen_area_name) {
 
   bike_trp_info |>
-    dplyr::filter(
-      area_name == chosen_area_name
-    ) |>
-    dplyr::mutate(
-      name = stringr::str_trunc(name, 30, "right")
-    ) |>
+    dplyr::filter(area_name == chosen_area_name) |>
+    dplyr::mutate(name = stringr::str_trunc(name, 30, "right")) |>
     dplyr::select(
       name,
       road_category_and_number,
       municipality_name,
-      year,
       WINTER,
       SPRING,
       SUMMER,
       FALL
     ) |>
-    dplyr::arrange(
-      road_category_and_number
-    ) |>
+    dplyr::arrange(road_category_and_number) |>
     flextable() |>
-    colformat_double(j = 4, big.mark = "", digits = 0) |>
     set_header_labels(
       name = "Registreringspunkt",
       road_category_and_number = "Veg",
       municipality_name = "Kommune",
-      year = "År",
       WINTER = "Vinter",
       SPRING = "Vår",
       SUMMER = "Sommer",
       FALL = "Høst"
     ) |>
-    flextable::align(j = 4, align = "center", part = "all") |>
     bold(part = "header") |>
-    font(fontname = "Lucida Sans Unicode", part = "all")  |>
+    # font(fontname = "Lucida Sans Unicode", part = "all") |>
     fontsize(size = 7, part = "all") |>
     bg(bg = "#ED9300", part = "header") |>
     border_remove() |>
     hline_top(part = "header", border = borderline) |>
-    hline_bottom(part = "all", border = borderline) |>
-    autofit()
+    hline_bottom(part = "all", border = borderline) |> 
+    flextable::autofit() |> 
+    flextable::footnote(
+      i = 1,
+      j = 4,
+      value = flextable::as_paragraph(
+        c(" Her vises nyeste tilgjengelige SDT etter 2021 som har dekningsgrad over 25 %.")
+      ),
+      ref_symbols = c("a"),
+      part = "header"
+    )
+    # flextable::fontsize(
+    #   size = 8,
+    #   part = "footer"
+    # ) |> 
 }
 
 # For border index
@@ -1331,8 +1328,10 @@ table_historic_index <- function(index_df) {
     hline_bottom(part = "all", border = borderline) |>
     height_all(height = .2) |>
     fix_border_issues() |>
-    padding(padding.top = .3,
-            padding.bottom = .3) |> 
+    padding(
+      padding.top = .3,
+      padding.bottom = .3
+    ) |> 
     width(width = 0.5)
 }
 
@@ -2198,7 +2197,7 @@ table_index_chains <- function(chosen_name) {
     flextable::align(j = 2:4, align = "center", part = "all") |>
     flextable::align(j = 5, align = "center", part = "header") |>
     bold(part = "header") |>
-    font(fontname = "Lucida Sans Unicode", part = "all")  |>
+    # font(fontname = "Lucida Sans Unicode", part = "all")  |>
     bg(bg = "#ED9300", part = "header") |>
     border_remove() |>
     hline_top(part = "header", border = borderline) |>

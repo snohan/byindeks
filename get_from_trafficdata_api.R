@@ -2490,12 +2490,13 @@ get_sdt_for_trp_list <- function(trp_list, mdt_year) {
       )
     trp_count <- trp_count + 1
   }
-  trp_dt <- data_points %>%
-    dplyr::mutate(
-      sdt = round(sdt, digits = -1)
-    )
+  
+  # trp_dt <- data_points %>%
+  #   dplyr::mutate(
+  #     sdt = round(sdt, digits = -1)
+  #   )
 
-  return(trp_dt)
+  return(data_points)
 }
 
 

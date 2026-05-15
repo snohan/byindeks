@@ -1,6 +1,6 @@
 # TRP index by month for Excel
 
-if( city_number %in% c(1952, 955, 952, 959) ){
+if(city_number %in% c(1952, 955, 952, 959) ){
 
   trp_index_monthly_pre_2020 <-
     purrr::map_dfr(
@@ -52,7 +52,7 @@ trp_index_monthly_from_2020 <-
     index = index_short
   )
 
-if( !(city_number %in% c(1952, 955, 952, 959)) ){
+if(!(city_number %in% c(1952, 955, 952, 959)) ){
 
   trp_index_monthly <- trp_index_monthly_from_2020
 
@@ -68,6 +68,9 @@ if( !(city_number %in% c(1952, 955, 952, 959)) ){
 
 trp_index_monthly_wide <-
   trp_index_monthly |>
+  dplyr::mutate(
+    index = base::round(index, 2)
+  ) |> 
   tidyr::complete(
     trp_id,
     year,

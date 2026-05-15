@@ -7,7 +7,7 @@ source("get_from_nvdb_api.R")
 }
 
 # Get TRP and crossings metainfo ----
-latest_published_month <- 12
+latest_published_month <- 4
 
 counties <-
   get_counties() |>
@@ -239,7 +239,8 @@ index_2021 <- get_published_index_for_months(2952, 2021, 12)
 index_2022 <- get_published_index_for_months(2952, 2022, 12)
 index_2023 <- get_published_index_for_months(2952, 2023, 12)
 index_2024 <- get_published_index_for_months(2952, 2024, 12)
-index_2025 <- get_published_index_for_months(2952, 2025, latest_published_month)
+index_2025 <- get_published_index_for_months(2952, 2025, 12)
+index_2026 <- get_published_index_for_months(2952, 2026, latest_published_month)
 }
 
 {
@@ -251,7 +252,8 @@ pointindex_2021 <- get_published_pointindex_for_months_paginated(2952, 2021, 12)
 pointindex_2022 <- get_published_pointindex_for_months_paginated(2952, 2022, 12)
 pointindex_2023 <- get_published_pointindex_for_months_paginated(2952, 2023, 12)
 pointindex_2024 <- get_published_pointindex_for_months_paginated(2952, 2024, 12)
-pointindex_2025 <- get_published_pointindex_for_months_paginated(2952, 2025, latest_published_month)
+pointindex_2025 <- get_published_pointindex_for_months_paginated(2952, 2025, 12)
+pointindex_2026 <- get_published_pointindex_for_months_paginated(2952, 2026, latest_published_month)
 }
 
 pointindices <-
@@ -264,7 +266,8 @@ pointindices <-
     pointindex_2022[[2]],
     pointindex_2023[[2]],
     pointindex_2024[[2]],
-    pointindex_2025[[2]]
+    pointindex_2025[[2]],
+    pointindex_2026[[2]]
   )
 
 pointindices_all <-
@@ -367,7 +370,8 @@ index_for_table <-
     index_2022,
     index_2023,
     index_2024,
-    index_2025
+    index_2025,
+    index_2026
   ) |>
   dplyr::mutate(
     length_range =
@@ -427,7 +431,8 @@ index_all_years <-
     index_2022,
     index_2023,
     index_2024,
-    index_2025
+    index_2025,
+    index_2026
   ) |>
   dplyr::mutate(
     length_range =

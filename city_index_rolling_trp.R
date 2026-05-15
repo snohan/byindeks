@@ -178,5 +178,10 @@ all_rolling_trp_indices <-
   dplyr::bind_rows(
     all_12_month_trp_indices |> dplyr::mutate(window = "12_months"),
     all_36_month_trp_indices |> dplyr::mutate(window = "36_months")
-  )
+  ) |> 
+  dplyr::mutate(
+    dplyr::across(tidyselect::starts_with("mean_mdt"), ~ base::round(.x)),
+    dplyr::across(tidyselect::ends_with("index_p"), ~ base::round(.x, 2))
+  ) |> 
+  dplyr::relocate(window, .before = index_period)
   

@@ -126,7 +126,8 @@ trp_index_so_far_for_excel <-
     index
   ) |>
   dplyr::mutate(
-    index_period = paste0("index_", year - 1, "_", year)
+    index_period = paste0("index_", year - 1, "_", year),
+    index = base::round(index, 2)
   ) |> 
   tidyr::pivot_wider(
     id_cols = c(trp_id, name, road_category_and_number),
@@ -144,3 +145,4 @@ if(city_number == 16952) {
     dplyr::rename(index_2019_2022 = index_2021_2022)
   
 }
+
