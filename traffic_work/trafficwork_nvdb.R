@@ -7,8 +7,11 @@
   library(writexl)
 }
 
+the_year <- 2024
 
-# Get AADT-links ----
+
+# From NVDB ----
+# -2023
 # 3  Oslo
 # 30 Viken
 # 34 Innlandet
@@ -41,7 +44,7 @@
 # Counties
 fylker <- get_counties()
 
-last_day_of_year <- "2024-12-31"
+last_day_of_year <- paste0(the_year, "-12-31")
 
 t_03 <- get_aadt_by_area(3, "true", last_day_of_year)
 t_31 <- get_aadt_by_area(31, "true", last_day_of_year)
@@ -89,7 +92,7 @@ aadt_link_raw <-
   )
 
 
-# Calculate traffic work ----
+## Calculate traffic work ----
 traffic_work <-
   aadt_link_raw |>
   sf::st_drop_geometry() |>
@@ -156,7 +159,7 @@ writexl::write_xlsx(
 )
 
 
-# For weighting in VTI ----
+## For weighting in VTI ----
 jsonlite::write_json(
   traffic_work,
   path = "trafikkarbeid_2024.json",
@@ -164,9 +167,9 @@ jsonlite::write_json(
 )
 
 
-# Traffic work per use class ----
+## Traffic work per use class ----
 
-## AADT on links ----
+### AADT on links ----
 # Will use road reference as a very simplified geometry, as full geometry is too heavy computationally.
 
 last_day_of_year <- "2022-12-31"
@@ -240,7 +243,7 @@ aadt_link_raw_rf_tidy <-
   )
 
 
-## Use classes ----
+### Use classes ----
 # Read CSV fetched from vegkart.no
 # Roadnet selection: not walking and cycling, not roundabouts, just ERF
 # qury not based on date to ensure that all objects are included.
@@ -371,7 +374,7 @@ read_tidy_and_reduce_bk <- function(bk_file) {
 }
 
 
-### Bk10_50 ----
+#### Bk10_50 ----
 bk10_50_files <-
   base::list.files(
     "spesialuttak",
@@ -470,7 +473,7 @@ aadt_link_bk10_50 <-
 #     diff
 #   )
 
-#### Test ----
+##### Test ----
 # En trafikkmengdelenke ved Jonsvatnet som overlapper kun i krysset med en bk10_50-lenke
 # 1015060830
 
@@ -489,7 +492,7 @@ aadt_link_test <-
 # PASS! :)
 
 
-### Bk10_60 ----
+#### Bk10_60 ----
 bk10_60_files <-
   base::list.files(
     "spesialuttak",
@@ -628,3 +631,4 @@ traffic_work_bk10_60 <-
 
 ratio_bk10_60 <-
   traffic_work_bk10_60$traffic_work_mill_km / traffic_work_heavy$traffic_work_heavy_mill_km
+
