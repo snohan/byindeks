@@ -3,29 +3,14 @@
 -- SQL flavour: Trino
 -- https://trino.io/docs/current/language.html
 
-select *
-from
-(
-  select
-      trafikkmelding_nokkel,
-      hendelse_type,
-      hendelse_notat note,
-      hendelse_beskrivelse description,
-      date(hendelse_start_tidspunkt) date_start,
-      date(hendelse_slutt_tidspunkt) date_end,
-      date_diff('minute', hendelse_start_tidspunkt, hendelse_slutt_tidspunkt) duration,
-      hendelse_alle_kjoretoy_flagg all_vehicles
-  from silver.s_hbt.trafikkmelding
-  where date(hendelse_start_tidspunkt) between date('2025-02-01') and date('2025-03-01')
-)
-as events
-where duration > 60*24;
+-- Get data from s_hbt
 
-
-
+-- 1. Create schema
 create schema datalabs.d_traind_schema1
 with (location = 's3a://sagadpl-prod-analyse-traind/d_traind_scehma1');
 
+
+-- 2. Create views
 create or replace view datalabs.d_traind_schema1.events
     security invoker
     as
@@ -81,6 +66,8 @@ create or replace view datalabs.d_traind_schema1.events_wkb
            ST_YMin(ST_GeometryFromText(geografi)) as ymin
         from datalabs.d_traind_schema1.events;
 
+
+-- 3. Make the actual table with events
 create table datalabs.d_traind_schema1.events_full_4 as
 select * from datalabs.d_traind_schema1.events_wkb
 -- not aksellastrestriksjoner
@@ -88,7 +75,8 @@ where note not like '%ksellast%' and
 -- nightly work
 note not like '%mellom 2_:%';
 
--- do not need the extra geo columns
+-- do not need the extra geo columns, so will not use the _wkb view
+-- HERE EACH MONTH: MAKE NEW TABLE WITH MOST RECENT DATA
 create table datalabs.d_traind_schema1.events_20260504 as
 select * from datalabs.d_traind_schema1.events
 -- not aksellastrestriksjoner
@@ -97,7 +85,7 @@ where note not like '%ksellast%' and
 note not like '%mellom 2_:%';
 
 
-
+-- 4. Look at data quality
 select count(*) from datalabs.d_traind_schema1.events_full_4;
 
 select min(date_start) from datalabs.d_traind_schema1.events_full;
@@ -161,6 +149,8 @@ where trafikkmelding_nokkel like '1dd19a601962322ca527ff3521b5c75d%';
 --where date_start between date('2025-06-01') and date('2025-06-10') or
 --     date_end between date('2025-06-01') and date('2025-06-10');
 
-drop table datalabs.d_traind_schema1.events_full;
+
+-- 5. Clean up
+drop table datalabs.d_traind_schema1.events_20260102;
 drop view datalabs.d_traind_schema1.events_bare;
 
