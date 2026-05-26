@@ -1,19 +1,31 @@
 # Make one Excel file
-
-
 cities <-
   tibble::tibble(
     city_number = c(
       "952",
       "959",
       "8952",
-      "960"
+      "960",
+      "1952",
+      "955",
+      "16952",
+      "19953",
+      "18952",
+      "19954",
+      "20952"
     ),
     area_name = c(
       "Nord-Jæren",
       "Osloområdet",
       "Bergensområdet",
-      "Trondheimsområdet"
+      "Trondheimsområdet",
+      "Buskerudbyen",
+      "Grenland",
+      "Tromsø",
+      "Kristiansand",
+      "Nedre Glomma",
+      "Bodø",
+      "Ålesund"
     )
   )
 
@@ -47,29 +59,19 @@ all_rolling_indices <-
   purrr::list_rbind() |>
   dplyr::relocate(area_name)
 
-
-# aftenbladet <-
-#   all_rolling_indices |>
-#   dplyr::select(-city_number) |>
-#   dplyr::filter(
-#     window == "12_months",
-#     month_object <= "2023-08-01"
-#   )
-#
-# writexl::write_xlsx(
-#   aftenbladet,
-#   path = "spesialuttak/aftenbladet.xlsx"
-# )
-
-opa <-
-  all_rolling_indices |>
-  dplyr::select(-city_number) |>
+all_rolling_indices_chosen <-
+  all_rolling_indices |> 
   dplyr::filter(
-    window == "36_months",
-    month_object <= "2023-10-01"
+    window == "12_months",
+    month_object == "2026-04-01"
+  ) |> 
+  dplyr::select(
+    area_name,
+    index_period,
+    index_p, ci_lower, ci_upper, n_trp
   )
 
 writexl::write_xlsx(
-  opa,
-  path = "spesialuttak/bva_byindekser.xlsx"
+  all_rolling_indices_chosen,
+  path = "spesialuttak/byindekser_glidende_2026_T1.xlsx"
 )
