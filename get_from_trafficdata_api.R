@@ -626,34 +626,38 @@ get_trps_with_direction <- function() {
 }
 
 get_trps_latest_data <- function() {
-  # Get all traffic registration points
-  query_points <-
+
+  query <-
     "query trp_latest_data {
-  trafficRegistrationPoints {
-    id
-    latestData {
-      volumeByHour
-    }
-  }
-}"
+      trafficRegistrationPoints {
+        id
+        latestData {
+          volumeByHour
+        }
+      }
+    }"
 
-  myqueries <- Query$new()
-  myqueries$query("points", query_points)
+  my_query <- ghql::Query$new()$query(name = "my_query", query)
 
-  points <- cli$exec(myqueries$queries$points) %>%
-    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) %>%
-    as.data.frame() %>%
-    dplyr::rename(trp_id =
-                    data.trafficRegistrationPoints.id,
-                  latest_data_by_hour =
-                    data.trafficRegistrationPoints.latestData.volumeByHour
-    ) %>%
-    dplyr::mutate(latest_data_by_hour =
-                    floor_date(with_tz(ymd_hms(latest_data_by_hour)),
-                               unit = "hour")
+  response <-
+    cli$exec(my_query$my_query) |>
+    jsonlite::fromJSON(simplifyDataFrame = T, flatten = T) |> 
+    as.data.frame() |> 
+    dplyr::rename(
+      trp_id = data.trafficRegistrationPoints.id,
+      latest_data_by_hour = data.trafficRegistrationPoints.latestData.volumeByHour
+    ) |> 
+    dplyr::mutate(
+      latest_data_by_hour =
+        lubridate::floor_date(
+          lubridate::with_tz(
+            lubridate::ymd_hms(latest_data_by_hour)
+          ),
+          unit = "hour"
+        )
     )
 
-  return(points)
+  return(response)
 }
 
 
