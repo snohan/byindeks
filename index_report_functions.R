@@ -1601,7 +1601,7 @@ visualize_rolling_cmdt_indices_12_36 <- function(rolling_cmdt_df, title_text, su
     ) +
     ggplot2::geom_line() +
     ggplot2::geom_point() +
-    facet_grid(rows = vars(area)) +
+    ggplot2::facet_grid(rows = vars(area)) +
     ggplot2::scale_color_manual(
       values = c(
         "one" = "#008ec2",
@@ -1613,8 +1613,8 @@ visualize_rolling_cmdt_indices_12_36 <- function(rolling_cmdt_df, title_text, su
       ),
       name = "Glidende periode"
     ) +
-    theme_light() +
-    theme(
+    ggplot2::theme_light() +
+    ggplot2::theme(
       axis.text.x = element_text(vjust = 0.5, angle = 90),
       axis.title.y = element_text(
         margin = margin(t = 0, r = 10, b = 0, l = 0)),
@@ -1628,18 +1628,19 @@ visualize_rolling_cmdt_indices_12_36 <- function(rolling_cmdt_df, title_text, su
           lineheight = 1.5,
           vjust = 0
         ),
-      legend.position = "bottom"
+      legend.position = "bottom",
+      strip.text.y = element_text(color = "#444f55", face = "bold", angle = 90),
+      strip.background = element_rect(fill = "#dadada", color = "#dadada")
     ) +
     ggplot2::scale_x_continuous(
       name = NULL,
       breaks = x_breaks,
       labels = x_labels
     ) +
-    labs(
+    ggplot2::labs(
       x = NULL, y = "Endring i trafikkmengde (%)"
-      # caption = caption_text
     ) +
-    ggtitle(
+    ggplot2::ggtitle(
       title_text,
       subtitle = sub_text
     )

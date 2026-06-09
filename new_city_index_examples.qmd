@@ -36,21 +36,20 @@ base::Sys.setlocale(locale = "nb.utf8")
 svv_background_color <- "#F5F5F5"
 
 library(tidyverse)
-library(patchwork)
+# library(patchwork)
 library(flextable)
-library(vcd)
+# library(vcd)
 library(sf)
-library(igraph)
-library(tidygraph)
+# library(igraph)
+# library(tidygraph)
 library(htmltools)
 library(leaflet)
 library(RColorBrewer)
-library(leaflet)
 
 source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
 source("H:/Programmering/R/byindeks/traffic_link_functions.R")
 source("H:/Programmering/R/byindeks/index_report_functions.R")
-source("H:/Programmering/R/road_traffic_index/chain.R")
+source("H:/Programmering/R/road_traffic_index/trafikkindeks_metode/chain.R")
 
 flextable::set_flextable_defaults(
   decimal.mark = ",",
@@ -909,7 +908,6 @@ Indekstall for Bergen er beregnet med forbedret metode. Det aktuelle vegnettet e
 #| label: fig-map_bergen
 #| message: false
 #| fig-cap: !expr map_caption
-#| fig
 
 map_links_with_function_class(links_bergen) |> 
   addPolygons(
@@ -1558,3 +1556,32 @@ Regneeksemplene viser at forbedret metode har følgende egenskaper sammenlignet 
 - utnytter mer av tilgjengelige data
 - viser de samme trendene
 - representativiteten kan beskrives med flere målbare størrelser
+
+
+## Sammenligning av ett- og treårs glidende indeks
+
+```{r}
+#| label: plot_12_36_compare
+#| fig-cap: "Sammenligning av ett- og treårs glidende indeks"
+#| fig-width: 10
+#| fig-height: 7
+
+fig_improved_1y_3y <-
+  dplyr::bind_rows(
+    qmd_index_examples_cmdt_nj_chained  |> dplyr::mutate(area = "Nord-Jæren"),
+    qmd_index_examples_cmdt_brg         |> dplyr::mutate(area = "Bergensområdet"),
+    qmd_index_examples_cmdt_oslo        |> dplyr::mutate(area = "Osloområdet"),
+    qmd_index_examples_cmdt_trd         |> dplyr::mutate(area = "Trondheimsområdet")
+  ) |> 
+  dplyr::mutate(
+    area = base::factor(area, levels = c("Nord-Jæren", "Bergensområdet", "Osloområdet", "Trondheimsområdet"))
+  ) |> 
+  visualize_rolling_cmdt_indices_12_36("Glidende indeks, forbedret metode", NULL) +
+  ggplot2::theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  ) 
+
+fig_improved_1y_3y
+```
