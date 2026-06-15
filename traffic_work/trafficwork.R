@@ -6,6 +6,8 @@
   library(writexl)
 }
 
+fylker <- get_counties()
+
 traffic_work_from_traffic_links <- function(the_year) {
 
   traffic_links <-
@@ -106,15 +108,16 @@ traffic_work_county_road_category <-
   ) |>
   dplyr::rowwise() |>
   dplyr::mutate(
-    trafikkarbeid_ERF = sum(trafikkarbeid_ER, trafikkarbeid_F, na.rm = T)
+    trafikkarbeid_ERF = base::sum(trafikkarbeid_ER, trafikkarbeid_F, na.rm = T)
   ) |>
   dplyr::ungroup() |>
   dplyr::mutate(
-    prosentandel_ERF_landet = round(trafikkarbeid_ERF / sum(trafikkarbeid_ERF) * 100, 1)
+    prosentandel_ERF_landet = base::round(trafikkarbeid_ERF / base::sum(trafikkarbeid_ERF) * 100, 2),
+    .by = ar
   ) |>
   dplyr::left_join(
     fylker,
-    by = join_by(Fylkenr == county_number)
+    by = dplyr::join_by(Fylkenr == county_number)
   ) |>
   dplyr::arrange(geo_number) |> 
   dplyr::select(
@@ -124,6 +127,9 @@ traffic_work_county_road_category <-
     trafikkarbeid_F,
     trafikkarbeid_ERF,
     prosentandel_ERF_landet
+  ) |> 
+  dplyr::mutate(
+    dplyr::across(tidyselect::starts_with("trafikkarbeid"), ~ base::round(., 3))
   )
 
 traffic_work_country_road_category <-
@@ -132,11 +138,11 @@ traffic_work_country_road_category <-
     traffic_work_2025
   ) |>
   dplyr::summarise(
-    trafikkarbeid = base::sum(trafikkarbeid, na.rm = TRUE),
+    trafikkarbeid = base::sum(trafikkarbeid, na.rm = TRUE) |> base::round(3),
     .by = c(Vegkategori, ar)
   ) |> 
   dplyr::mutate(
-    prosentandel = round(trafikkarbeid / sum(trafikkarbeid) * 100, 1),
+    prosentandel = base::round(trafikkarbeid / sum(trafikkarbeid) * 100, 2),
     .by = ar
   )
 
