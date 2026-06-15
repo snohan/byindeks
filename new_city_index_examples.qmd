@@ -1339,6 +1339,7 @@ Vegnettet som overlapper med de sentrale tettstedene er vist i @fig-map_oslo.
 #| message: false
 #| fig-cap: !expr map_caption
 
+the_map <-
 map_links_with_function_class(links_oslo) |> 
   addPolygons(
     data = municipality_polygon_oslo,

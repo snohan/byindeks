@@ -1,5 +1,6 @@
-# Save last plot as SVG
 library(svglite)
+
+# Save last plot as SVG
 ggplot2::ggsave(
   # filename = "images/nj_chain_graph.svg",
   plot = trp_mdt_plot_36,
@@ -12,8 +13,8 @@ ggplot2::ggsave(
 # Save maps
 # Can not be used in PowerPoint
 htmlwidgets::saveWidget(
-  trd_map,
-  file = "images/trd_map.html"
+  the_map,
+  file = "images/trd_trp_map.html"
 )
 
 
@@ -21,7 +22,7 @@ htmlwidgets::saveWidget(
 library(mapview)
 mapview::mapshot2(
   the_map,
-  file = "images/osl_map.png"
+  file = "images/trd_trp_map.png"
 )
 
 # Put toghether

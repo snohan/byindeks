@@ -56,7 +56,7 @@ source("rmd_setup.R")
 
 
 # Choose city number:
-city_number <- 18952
+city_number <- 960
 
 ## Meta info
 city_number_county_name <- 
@@ -411,7 +411,7 @@ Kartet i figur @fig-map_trp viser plasseringen av trafikkregistreringspunktene i
 if(city_number == 960) {
   the_map <-
     all_point_info |>
-    dplyr::filter(trp_id != "18672V578623") |> # avoid map being too zoomed out
+    # dplyr::filter(trp_id != "18672V578623") |> # avoid map being too zoomed out
     create_point_adt_map_trondheim()
 }else{
   the_map <-
