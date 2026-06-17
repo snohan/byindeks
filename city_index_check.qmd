@@ -65,7 +65,7 @@ counties <- readr::read_rds("counties.rds")
 # 2017 NJær   952   04 Snorre
 # 2018 Oslo   959   04 Trond
 # 2018 Berg  8952   04 Trond
-# 2019 Tron   960   03 Snorre
+# 2019 Tron   960   04 Snorre
 # 2022 Trom 16952   04 Snorre
 # 2023 Kris 19953   04 Snorre
 # 2023 NGlo 18952   04 Trond
@@ -78,8 +78,8 @@ counties <- readr::read_rds("counties.rds")
 
 # Choose
 index_year <- 2026
-latest_published_month <- 3
-city_number <- 960
+latest_published_month <- 4
+city_number <- 952
 # End choose
 
 new_month_year <-
@@ -546,7 +546,7 @@ source("trp_index_wide_and_long.R")
 #| message: false
 
 events <- 
-  readr::read_rds("H:/my_data/events_20260310.rds") |> 
+  readr::read_rds("H:/my_data/events_20260617.rds") |> 
   sf::st_filter(area_polygon, .predicate = st_intersects)
 
 # Traffic links from Adm ----
