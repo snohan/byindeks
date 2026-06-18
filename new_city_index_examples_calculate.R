@@ -50,3 +50,38 @@ list(
   readr::write_rds(
     base::paste0("representativity/rolling_cmdt_index_", city_number, ".rds")
   )
+
+
+# Read back in to make shareable file formats ----
+# Case for summer students, report in web format, TRD
+# Need 3 files:
+# 1. TRPs
+# 2. Links
+# 3. Rolling index
+
+# 1
+# jsonlite::write_json(
+#   this_citys_trps_all_adt_final,
+#   path = base::paste0("index_trp_metadata/trp_", city_number, ".json"),
+#   prettify = TRUE
+# )
+
+
+# 2
+# links_in_area |> 
+#   dplyr::select(-road_system_references) |> 
+#   sf::st_write(dsn = "traffic_link_pop/links_trondheim.geojson")
+
+
+# 3
+# area_index <-
+#    readr::read_rds(
+#     base::paste0("representativity/rolling_cmdt_index_", city_number, ".rds")
+#   )
+
+# jsonlite::write_json(
+#   area_index[[1]],
+#   path = base::paste0("representativity/rolling_cmdt_index_", city_number, ".json"),
+#   prettify = TRUE
+# )
+

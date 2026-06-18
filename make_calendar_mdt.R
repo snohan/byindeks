@@ -28,9 +28,9 @@
 # 2019 Tron   960
 
 {
-  present_year <- 2025
-  index_month <- 12
-  city_number <- "960"
+  present_year <- 2026
+  index_month <- 5
+  city_number <- "959"
 }
 
 # City years
@@ -76,7 +76,7 @@ for(i in 1:length(city_trps)) {
       # From the beginning
       # years_from_reference_to_today,
       # Or just add new data
-      2025,
+      2026,
       ~ calculate_calendar_adjusted_mdt(city_trps[i], .x)
     ) |>
     purrr::list_rbind()
@@ -90,7 +90,7 @@ for(i in 1:length(city_trps)) {
           "_",
           city_trps[i],
           # For adding new data in a separate file
-          "_2025",
+          "_2026",
           ".rds"
         )
     )

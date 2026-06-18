@@ -65,7 +65,7 @@ trp_id_msnr <-
   present_year <- 2026
   # month to be published now:
   index_month <- 5
-  city_number <- 952
+  city_number <- 959
 }
 
 toll_data_is_included <- city_number %in% c(960, 19955)
@@ -164,7 +164,7 @@ trp_not_ok <-
 # TODO: look at sectional TRPs concurrently
 # TODO: in map, draw curve connecting sectional TRPs
 
-start_at <- 16
+start_at <- 56
 plot_mdt(start_at, 5)
 # Workaround as Positron won't show patterns
 # ggplot2::ggsave(filename = "images/mdt_pattern_test.svg", width = 12, height = 12)
@@ -246,7 +246,7 @@ visualize_city_index_jackknife(all_12_month_indices, pseudo_observations)
   source("city_index_trp_yearly.R")
 
   # Sub area
-  if(city_number == 959) {source("city_index_yearly_sub_area.R")}
+  # if(city_number == 959) {source("city_index_yearly_sub_area.R")}
 
   # Whole area
   source("city_index_yearly.R")
@@ -259,7 +259,7 @@ visualize_city_index_jackknife(all_12_month_indices, pseudo_observations)
   source("city_index_trp_yearly.R")
 
   # Sub area
-  if(city_number == 959) {source("city_index_yearly_sub_area.R")}
+  # if(city_number == 959) {source("city_index_yearly_sub_area.R")}
 
   # Whole area
   source("city_index_yearly.R")

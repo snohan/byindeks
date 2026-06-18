@@ -81,8 +81,8 @@ if(city_number %in% c(959)){
     punktindeks_maned = trp_index_monthly_wide,
     byindeks_aarlig = city_index_yearly_all,
     byindeks_hittil = city_index_yearly_all_so_far,
-    byindeks_aarlig_sub = city_index_yearly_all_sub,
-    byindeks_aarlig_sub_hittil = city_index_yearly_all_sub_so_far,
+    # byindeks_aarlig_sub = city_index_yearly_all_sub,
+    # byindeks_aarlig_sub_hittil = city_index_yearly_all_sub_so_far,
     punkt_glid_indeks = all_rolling_trp_indices,
     by_glid_indeks = all_rolling_indices,
     by_glid_indeks_sub = all_rolling_indices_sub
