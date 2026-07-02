@@ -1,3 +1,5 @@
+source("rmd_setup.R")
+source("get_from_trafficdata_api.R")
 source("get_from_nvdb_api.R")
 source("H:/Programmering/R/byindeks/split_road_system_reference.R")
 
@@ -88,3 +90,24 @@ readr::write_rds(
   bomstasjoner_bypakke_haugesund,
   file = "bomdata_haugesund/bomstasjoner_bypakke_haugesund.rds"
 )
+
+
+# Nord-Jæren ----
+bomstasjoner_nj <- 
+  dplyr::bind_rows(
+    get_tolling_stations(1103),
+    get_tolling_stations(1108),
+    get_tolling_stations(1124)
+  ) |> 
+  dplyr::left_join(kommune_info, by = "municipality_number") |> 
+  split_road_system_reference() |> 
+  dplyr::select(
+    trp_id, nvdb_id, name, road_reference, road_category_and_number, road_link_position, lat, lon, municipality_name
+  ) |> 
+  dplyr::arrange(trp_id)
+
+readr::write_rds(
+  bomstasjoner_nj,
+  file = "bomdata_nj/bomstasjoner_nj.rds"
+)
+

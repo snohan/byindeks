@@ -1,0 +1,297 @@
+---
+title: "Byindeks og bomstasjoner på Nord-Jæren"
+format: 
+  html:
+    css: svv.css
+    page-layout: full
+    number-sections: true
+    toc: true
+    toc-location: left
+    toc-title: "Innhold"
+    toc-expand: true
+    toc-depth: 2
+    df-print: paged
+    self-contained: true
+crossref:
+  fig-title: Figur
+  tbl-title: Tabell
+  title-delim: .
+  fig-prefix: figur
+  tbl-prefix: tabell
+editor: source
+knitr: 
+  opts_chunk: 
+    echo: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
+#| warning: false
+#| message: false
+  
+base::Sys.setlocale(locale = "nb.utf8")
+svv_background_color <- "#F5F5F5"
+
+library(tidyverse)
+library(flextable)
+library(sf)
+library(htmltools)
+library(leaflet)
+library(RColorBrewer)
+
+source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
+source("H:/Programmering/R/byindeks/traffic_link_functions.R")
+source("H:/Programmering/R/byindeks/index_report_functions.R")
+
+flextable::set_flextable_defaults(
+  decimal.mark = ",",
+  big.mark = " ",
+  na_str = ""
+)
+```
+
+
+```{r}
+#| label: data
+
+# Look at both today's and improved's index
+trp_index_19_25_today <-
+    dplyr::inner_join(
+        readr::read_rds("data_indexpoints_tidy/rolling_trp_indices_952.rds")[[1]] |> 
+        dplyr::filter(last_month_in_index == "2019-12-01") |> 
+        dplyr::select(trp_id, last_month_in_index, trp_index_p),
+        readr::read_rds("data_indexpoints_tidy/rolling_trp_indices_952.rds")[[1]] |> 
+        dplyr::filter(last_month_in_index == "2025-12-01") |> 
+        dplyr::select(trp_id, last_month_in_index, trp_index_p),
+        by = dplyr::join_by(trp_id)
+    ) |> 
+    dplyr::mutate(
+        trp_index_p = 100 * (1 - (1 + trp_index_p.x / 100) / (1 + trp_index_p.y / 100))
+    ) |> 
+    dplyr::select(trp_id, trp_index_p)
+
+trps_today <- 
+    readr::read_rds("index_trp_metadata/trp_952.rds") |> 
+    dplyr::inner_join(trp_index_19_25_today, by = "trp_id")
+
+# links_in_area <- 
+#     readr::read_rds("traffic_link_pop/links_nj.rds") |> 
+#     # Rege mangler
+#     dplyr::select(link_id, trp_id = point_id) |> 
+#     dplyr::inner_join(
+#         trps |> 
+#             dplyr::select(trp_id, name, road_category_and_number, trp_index_p),
+#         by = "trp_id"
+#     )
+
+# links <-
+#     sf::st_read("H:/Trafikkdata/trafikklenker/traffic_links_2025_2025-12-10.geojson") |>
+#     dplyr::select(
+#         link_id = id,
+#         countyIds,
+#         associatedTrpIds,
+#         tollStationIds
+#     )
+# links_2 <- filter_traffic_links_by_county(11)
+
+# points <- readr::read_rds("trps_for_city_index.rds")
+# trps_meta <- 
+#     points |> 
+#     dplyr::filter(trp_id %in% city_trps)
+# links_3 <- filter_links_with_trp()
+
+# Toll stations
+bomstasjoner_nj <- readr::read_rds("bomdata_nj/bomstasjoner_nj.rds")
+
+tollstation_index_2019_2025_month <- readr::read_rds("bomdata_nj/nj_bomstasjonsindeks_2019_2025.rds")
+
+tolldata_nj_2019_2025_year <-
+  tollstation_index_2019_2025_month |>
+  dplyr::summarise(
+    lmv_2019 = base::sum(lmv_2019, na.rm = TRUE),
+    lmv_2025 = base::sum(lmv_2025, na.rm = TRUE),
+    .by = trp_id
+  ) |> 
+  dplyr::mutate(
+    index_p = 100 * (lmv_2025 / lmv_2019 - 1)
+  )
+
+tolldata_index <-
+  tollstation_index_2019_2025_month |>
+  dplyr::summarise(
+    lmv_2019 = base::sum(lmv_2019, na.rm = TRUE),
+    lmv_2025 = base::sum(lmv_2025, na.rm = TRUE)
+  ) |> 
+  dplyr::mutate(
+    index_p = 100 * (lmv_2025 / lmv_2019 - 1)
+  )
+
+toll_station_index_for_table <-
+   tolldata_nj_2019_2025_year |> 
+   dplyr::left_join(
+    bomstasjoner_nj,
+    by = "trp_id"
+   ) |> 
+    dplyr::select(
+        punktnavn = name, 
+        veg = road_category_and_number, 
+        kommune = municipality_name, 
+        lat, lon,
+        indeks = index_p
+    ) |> 
+    dplyr::mutate(
+      datakilde = "AutoPASS"
+    )
+
+
+# Merge
+trps_and_toll_stations_today <-
+    trps_today |> 
+    dplyr::select(
+      punktnavn = name, 
+      veg = road_category_and_number, 
+      kommune = municipality_name, 
+      lat, lon,
+      indeks = trp_index_p
+    ) |> 
+    dplyr::mutate(
+      datakilde = "Trafikkregistrering"
+    ) |> 
+    dplyr::bind_rows(
+      toll_station_index_for_table
+    ) |> 
+    dplyr::relocate(
+      datakilde, .before = veg
+    ) |> 
+    dplyr::mutate(
+      indeks = base::round(indeks, 1)
+    )
+
+
+```
+
+# Bakgrunn
+Byindeksen estimerer endring i trafikk for lette kjøretøy. For Nord-Jæren er 2017 referanseår. Datagrunnlaget er hentet fra de 24 trafikkregistreringspunktene som ble valgt ut ved oppstart av nåværende byvekstavtale.
+
+Dagens bomsystem ble satt i drift i oktober 2018. For å sammenligne trafikkutviklingen i bomstasjonene med tallene fra byindeksen, er det derfor naturlig å sammenligne med trafikktall mellom 2019 og 2025.
+
+
+# Endring i bomstasjonene
+Ved å sammenligne trafikken i `r base::nrow(tolldata_nj_2019_2025_year)` bomstasjoner mellom 2019 og 2025, finner vi en samlet endring i antall passeringer på `r round(tolldata_index$index_p, 2)` %.
+
+
+# Byindeks med dagens metode
+Byindeksen viser en sammenhengende tidsserie med månedlige oppdateringer, hvor de siste 12 månedene er sammenlignet direkte med 2017. For å finne utviklingen fra 2019 til 2025, kan vi dekomponere indeksen for 2017-2019 fra 2017-2025:
+
+- byindeks 2017-2025: 7,42 % (1,0742)
+    - 15 punkt
+- byindeks 2017-2019: -1,91 % (0,9809)
+    - 17 punkt
+- byindeks 2019-2025: 9,52 % (1,0742/0,9809 = 1,0951)
+    - 15 punkt
+
+
+## Utvikling i punkt
+Vi kan se på utviklingen i de 15 punktene som var med i indeksen i både 2019 og 2025.
+
+```{r}
+#| label: trp_table
+#| tbl-cap: "Utviklingen i trafikkregistreringspunkt, 2019-2025."
+
+ trps_and_toll_stations_today |> 
+  dplyr::select(-lat, -lon) |> 
+  DT::datatable(
+    filter = "top",
+    rownames = FALSE,
+    escape = FALSE,
+    options = list(
+      dom = "ftip",
+      pageLength = 15,
+      autoWidth = TRUE
+    )
+  )
+```
+
+
+
+
+```{r}
+#| label: map_today
+
+# Given a df with info on each index point, including toll stations:
+# - name
+# - latlon
+# - stationtype
+# - percentage change
+
+palett_datakilde <-
+    leaflet::colorFactor(
+      palette = c("#7e03a8", "#f89540"),
+      domain = c("AutoPASS", "Trafikkregistrering")
+    )
+
+palett_indeks <- leaflet::colorNumeric(palette = "viridis", domain = trps_and_toll_stations_today$indeks)
+
+# map <-
+  trps_and_toll_stations_today |>
+    leaflet::leaflet(
+      width = "100%",
+      height = 1e3,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F
+        )
+    ) |>
+    leaflet::addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) |>
+    leaflet::addCircleMarkers(
+      lng = ~lon,
+      lat = ~lat,
+      radius = 11,
+      stroke = T,
+      weight = 4,
+      color = ~palett_datakilde(datakilde),
+      opacity = 0.9,
+      fill = T,
+      fillColor = ~palett_indeks(indeks),
+      fillOpacity = 0.8,
+      label = ~indeks,
+      labelOptions = 
+        leaflet::labelOptions(
+          noHide = TRUE, 
+          textOnly = TRUE, 
+          textsize = "16px",
+          direction = "top",
+          style = base::list(
+            "font-weight" = "bold"
+          )
+        )
+    ) |>
+    leaflet::addLegend(
+      position = "bottomleft",
+      pal = palett_datakilde,
+      values = ~datakilde,
+      title = "Datakilde",
+      opacity = 0.7
+    ) |>
+    leaflet::addLegend(
+      position = "bottomright",
+      pal = palett_indeks,
+      values = ~indeks,
+      bins = 5,
+      title = "Indeks (%)",
+      opacity = 0.7
+    )
+
+
+
+```
+
+
+# Byindeks med forbedret metode
+

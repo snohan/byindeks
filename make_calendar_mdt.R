@@ -30,7 +30,7 @@
 {
   present_year <- 2026
   index_month <- 5
-  city_number <- "959"
+  city_number <- "952"
 }
 
 # City years

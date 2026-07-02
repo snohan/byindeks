@@ -66,6 +66,9 @@ list(
 #   prettify = TRUE
 # )
 
+# NJ chained:
+
+
 
 # 2
 # links_in_area |> 
@@ -79,9 +82,15 @@ list(
 #     base::paste0("representativity/rolling_cmdt_index_", city_number, ".rds")
 #   )
 
-# jsonlite::write_json(
-#   area_index[[1]],
-#   path = base::paste0("representativity/rolling_cmdt_index_", city_number, ".json"),
-#   prettify = TRUE
-# )
+
+area_index <-
+   readr::read_rds(
+    base::paste0("representativity/rolling_cmdt_index_nj_chained.rds")
+  )
+
+jsonlite::write_json(
+  area_index[[1]],
+  path = base::paste0("representativity/rolling_cmdt_index_", city_number, ".json"),
+  prettify = TRUE
+)
 
