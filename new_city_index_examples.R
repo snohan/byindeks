@@ -311,9 +311,7 @@ nj_index_month_more_2 <-
       "59675V319722"  # Brualand: Avvikende verdi, ukjent årsak
     ))
   ) |>
-  dplyr::filter(
-    year >= 2019
-  ) |>
+  dplyr::filter(year >= 2019) |>
   calculate_area_index_month(population_size)
 
 area_index_one_year_nj_more_2 <- calculate_rolling_area_index_one_year(nj_index_month_more_2[[1]])
@@ -516,3 +514,81 @@ list(
   readr::write_rds(
     "representativity/rolling_cmdt_index_nj_chained.rds"
   )
+
+
+### With 2019 as reference year ----
+# Gathering CMDT for all chain parts
+ nj_month_indices_original_2019 <-
+  dplyr::bind_rows(
+    nj_index_month_more_2[[1]] |> 
+      dplyr::filter(
+        universal_year_period_id <= 112
+      ),
+    nj_index_month_more_3[[1]] |> 
+      dplyr::filter(
+        universal_year_period_id > 112
+      )
+  )
+
+nj_month_indices_original_with_chain_info_2019 <-
+  nj_month_indices_original_2019 |> 
+  dplyr::select(
+    universal_year_period_id, x_label, compared_to, period_name, index_i, var_i = var_robust_i
+  ) |> 
+  dplyr::left_join(
+    universal_calendar_periods |> 
+      dplyr::select(universal_year_period_id_chain = universal_year_period_id, year, period_name),
+    by = dplyr::join_by(compared_to == year, period_name)
+  ) |> 
+  dplyr::mutate(
+    # Need to chain each chain part in consecutive order, identifying the different parts:
+    chain_part = as.numeric(factor(compared_to))
+  )
+
+# Chain parts
+chain_part_1_2019 <- 
+  nj_month_indices_original_with_chain_info_2019 |> 
+  dplyr::filter(chain_part %in% c(1)) |> 
+  dplyr::select(
+    universal_year_period_id, x_label, period_name, compared_to, index_i, var_i
+  )
+
+chain_part_2_2019 <- 
+  nj_month_indices_original_with_chain_info_2019 |> 
+  dplyr::filter(
+    chain_part %in% c(1, 2)
+  ) |> 
+  chain_index_months() |> 
+  dplyr::select(
+    universal_year_period_id, x_label, period_name, compared_to, index_i, var_i
+  )
+
+nj_month_indices_chained_2019 <- 
+  dplyr::bind_rows(
+    chain_part_1_2019,
+    chain_part_2_2019
+  ) |> 
+  dplyr::select(
+    universal_year_period_id, x_label, period_name, compared_to, index_i, var_robust_i = var_i
+  )
+
+area_index_one_year_nj_chained_2019 <- calculate_rolling_area_index_one_year(nj_month_indices_chained_2019)
+
+
+# TRP index
+trp_index_2019_by_month <- 
+  nj_index_month_more_2[[2]] |> 
+  dplyr::filter(
+    !(trp_id %in% c(
+      "88125V320152", # Austrått
+      "89794V320138", # Hoveveien, negativ korrelasjon mellom denne og Austrått, vegarbeid i nærheten?
+      "58562V320296"  # Tanke Svilandsgate
+    ))
+  )
+
+trp_index_2019_rolling <- calculate_rolling_trp_index_one_year(trp_index_2019_by_month)
+
+readr::write_rds(
+  trp_index_2019_rolling,
+  "representativity/rolling_cmdt_trp_index_nj_2019.rds"
+)

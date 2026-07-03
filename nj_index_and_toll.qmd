@@ -57,6 +57,7 @@ flextable::set_flextable_defaults(
 #| label: data
 
 # Look at both today's and improved's index
+# Today's index method
 trp_index_19_25_today <-
     dplyr::inner_join(
         readr::read_rds("data_indexpoints_tidy/rolling_trp_indices_952.rds")[[1]] |> 
@@ -75,6 +76,20 @@ trp_index_19_25_today <-
 trps_today <- 
     readr::read_rds("index_trp_metadata/trp_952.rds") |> 
     dplyr::inner_join(trp_index_19_25_today, by = "trp_id")
+
+
+# Improved's index method
+trp_index_19_25_improved <-
+  readr::read_rds("representativity/rolling_cmdt_trp_index_nj_2019.rds") |> 
+  dplyr::filter(
+    universal_year_period_id == 140,
+    n_periods >= 6
+  ) |> 
+  dplyr::left_join(
+    readr::read_rds("trps_for_city_index.rds"),
+    by = "trp_id"
+  )
+
 
 # links_in_area <- 
 #     readr::read_rds("traffic_link_pop/links_nj.rds") |> 
@@ -169,6 +184,27 @@ trps_and_toll_stations_today <-
       indeks = base::round(indeks, 1)
     )
 
+trps_and_toll_stations_improved <-
+    trp_index_19_25_improved |> 
+    dplyr::select(
+      punktnavn = name, 
+      veg = road_category_and_number, 
+      kommune = municipality_name, 
+      lat, lon,
+      indeks = index_p
+    ) |> 
+    dplyr::mutate(
+      datakilde = "Trafikkregistrering"
+    ) |> 
+    dplyr::bind_rows(
+      toll_station_index_for_table
+    ) |> 
+    dplyr::relocate(
+      datakilde, .before = veg
+    ) |> 
+    dplyr::mutate(
+      indeks = base::round(indeks, 1)
+    )
 
 ```
 
@@ -197,7 +233,7 @@ Byindeksen viser en sammenhengende tidsserie med månedlige oppdateringer, hvor 
 Vi kan se på utviklingen i de 15 punktene som var med i indeksen i både 2019 og 2025.
 
 ```{r}
-#| label: trp_table
+#| label: trp_table_today
 #| tbl-cap: "Utviklingen i trafikkregistreringspunkt, 2019-2025."
 
  trps_and_toll_stations_today |> 
@@ -232,7 +268,7 @@ palett_datakilde <-
       domain = c("AutoPASS", "Trafikkregistrering")
     )
 
-palett_indeks <- leaflet::colorNumeric(palette = "viridis", domain = trps_and_toll_stations_today$indeks)
+palett_indeks_today <- leaflet::colorNumeric(palette = "viridis", domain = trps_and_toll_stations_today$indeks)
 
 # map <-
   trps_and_toll_stations_today |>
@@ -258,7 +294,7 @@ palett_indeks <- leaflet::colorNumeric(palette = "viridis", domain = trps_and_to
       color = ~palett_datakilde(datakilde),
       opacity = 0.9,
       fill = T,
-      fillColor = ~palett_indeks(indeks),
+      fillColor = ~palett_indeks_today(indeks),
       fillOpacity = 0.8,
       label = ~indeks,
       labelOptions = 
@@ -281,17 +317,100 @@ palett_indeks <- leaflet::colorNumeric(palette = "viridis", domain = trps_and_to
     ) |>
     leaflet::addLegend(
       position = "bottomright",
-      pal = palett_indeks,
+      pal = palett_indeks_today,
       values = ~indeks,
       bins = 5,
       title = "Indeks (%)",
       opacity = 0.7
     )
-
-
-
 ```
 
 
 # Byindeks med forbedret metode
+Byindeks beregnet med forbedret metode for perioden 2019-2025 viser i et regneeksempel en samlet trafikkøkning på 10,28 %. I denne beregningen inngår 75 trafikkregistreringspunkt.
 
+
+```{r}
+#| label: trp_table_improved
+#| tbl-cap: "Utviklingen i trafikkregistreringspunkt, 2019-2025."
+
+ trps_and_toll_stations_improved |> 
+  dplyr::select(-lat, -lon) |> 
+  DT::datatable(
+    filter = "top",
+    rownames = FALSE,
+    escape = FALSE,
+    options = list(
+      dom = "ftip",
+      pageLength = 15,
+      autoWidth = TRUE
+    )
+  )
+```
+
+
+```{r}
+#| label: map_improved
+
+# Given a df with info on each index point, including toll stations:
+# - name
+# - latlon
+# - stationtype
+# - percentage change
+
+palett_indeks_improved <- leaflet::colorNumeric(palette = "viridis", domain = trps_and_toll_stations_improved$indeks)
+
+# map <-
+  trps_and_toll_stations_improved |>
+    leaflet::leaflet(
+      width = "100%",
+      height = 1e3,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F
+        )
+    ) |>
+    leaflet::addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) |>
+    leaflet::addCircleMarkers(
+      lng = ~lon,
+      lat = ~lat,
+      radius = 11,
+      stroke = T,
+      weight = 4,
+      color = ~palett_datakilde(datakilde),
+      opacity = 0.9,
+      fill = T,
+      fillColor = ~palett_indeks_improved(indeks),
+      fillOpacity = 0.8,
+      label = ~indeks,
+      labelOptions = 
+        leaflet::labelOptions(
+          noHide = TRUE, 
+          textOnly = TRUE, 
+          textsize = "16px",
+          direction = "top",
+          style = base::list(
+            "font-weight" = "bold"
+          )
+        )
+    ) |>
+    leaflet::addLegend(
+      position = "bottomleft",
+      pal = palett_datakilde,
+      values = ~datakilde,
+      title = "Datakilde",
+      opacity = 0.7
+    ) |>
+    leaflet::addLegend(
+      position = "bottomright",
+      pal = palett_indeks_improved,
+      values = ~indeks,
+      bins = 5,
+      title = "Indeks (%)",
+      opacity = 0.7
+    )
+```

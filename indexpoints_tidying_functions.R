@@ -1223,6 +1223,92 @@ calculate_rolling_index_multiple_years <- function(one_year_rolling_index_df, n_
 
 }
 
+## TRP index ----
+calculate_rolling_trp_index_one_year <- function(trp_index_month_df) {
+
+  # Testing:
+  # trp_index_month_df <- trp_index_2019_by_month
+
+  trp_index_month_tidy <-
+    trp_index_month_df |>
+    dplyr::left_join(
+      period_weights,
+      by = dplyr::join_by(month == period_name)
+    ) |>
+    dplyr::select(
+      universal_year_period_id,
+      trp_id,
+      index_i = p_abi_i,
+      period_days
+    )
+
+  # One-year rolling index for all possible windows.
+  # One may choose start and end of the series by first filtering the df before calling this function.
+
+  first_start_id <- base::min(trp_index_month_tidy$universal_year_period_id)
+  last_start_id <- base::max(trp_index_month_tidy$universal_year_period_id - 13)
+  possible_window_starts <- c(first_start_id:last_start_id)
+  
+  compared_to_year_df <- 
+    universal_calendar_periods |> 
+    dplyr::filter(universal_year_period_id == (first_start_id - 1))
+
+  rolling_index <- tibble::tibble()
+
+  for(i in c(1:(base::length(possible_window_starts)))) {
+
+    window_ids <- c(possible_window_starts[i]:(possible_window_starts[i] + 13))
+
+    rolling_index_i <-
+      trp_index_month_tidy |>
+      dplyr::filter(
+        universal_year_period_id %in% window_ids
+      ) |>
+      dplyr::summarise(
+        # TODO: weighting by tw per period, instead of days - very important for bike index!
+        index_i = base::sum((period_days / base::sum(period_days)) * index_i),
+        index_p = 100 * (index_i - 1),
+        n_periods = n(),
+        # var_i = base::sum((period_days / base::sum(period_days))^2 * var_robust_i),
+        # sd_p = 100 * base::sqrt(var_i),
+        # em_p = base::round(-stats::qnorm(0.025) * sd_p, 4),
+        # ci_lower = index_p - em_p,
+        # ci_upper = index_p + em_p,
+        universal_year_period_id = window_ids[14],
+        .by = "trp_id"
+      ) |>
+      dplyr::left_join(
+        universal_calendar_periods,
+        by = dplyr::join_by(universal_year_period_id)
+      ) |>
+      dplyr::mutate(
+        compared_to = compared_to_year_df$year
+      ) |> 
+      dplyr::select(
+        trp_id,
+        universal_year_period_id,
+        x_label,
+        compared_to,
+        index_i,
+        index_p,
+        n_periods
+        # var_i,
+        # ci_lower,
+        # ci_upper
+      )
+
+    rolling_index <-
+      dplyr::bind_rows(
+        rolling_index,
+        rolling_index_i
+      )
+
+  }
+
+  return(rolling_index)
+
+}
+
 
 # Compare ----
 prepare_rolling_indexes_for_comparison <- function(rolling_index_df) {

@@ -42,17 +42,22 @@ tolldata_nj_month_bfin <-
   dplyr::mutate(
     month_no = lubridate::month(month_object),
     year = lubridate::year(month_object),
-    sum_class = (lmv + hmv),
-    lmv_ratio = lmv / sum_class,
-    no_class_lmv_ratio = no_class * lmv_ratio,
-    no_class_to_lmv = 
-      dplyr::case_when(
-        no_class_lmv_ratio - base::floor(no_class_lmv_ratio) < 0.5 ~ base::floor(no_class_lmv_ratio),
-        no_class_lmv_ratio - base::floor(no_class_lmv_ratio) >= 0.5 ~ base::ceiling(no_class_lmv_ratio)
-      ),
-    lmv_adj = lmv + no_class_to_lmv,
-    hmv_adj = hmv + (no_class - no_class_to_lmv)
+    # Need to incorporate class "ukjent"
+    # BFIN: add them to light and heavy by ratio
+    # sum_class = (lmv + hmv),
+    # lmv_ratio = lmv / sum_class,
+    # no_class_lmv_ratio = no_class * lmv_ratio,
+    # no_class_to_lmv = 
+    #   dplyr::case_when(
+    #     no_class_lmv_ratio - base::floor(no_class_lmv_ratio) < 0.5 ~ base::floor(no_class_lmv_ratio),
+    #     no_class_lmv_ratio - base::floor(no_class_lmv_ratio) >= 0.5 ~ base::ceiling(no_class_lmv_ratio)
+    #   ),
+    # lmv_adj = lmv + no_class_to_lmv,
+    # hmv_adj = hmv + (no_class - no_class_to_lmv)
     # diff_adj = sum_class + no_class - lmv_adj - hmv_adj # All zero! :)
+    # Ferde: "ukjent" are all light
+    lmv_adj = lmv + no_class,
+    hmv_adj = hmv
   ) |> 
   dplyr::select(
     trp_id, month_object, month_no, year,
@@ -62,7 +67,8 @@ tolldata_nj_month_bfin <-
   
 readr::write_rds(tolldata_nj_month_bfin, "bomdata_nj/nj_bomdata_bfin.rds")
 
-# 2021-05 ----
+# 2025 ----
+# CSV export from PowerBI
 tolldata_nj_month_2025 <-
   readr::read_csv("bomdata_nj/nj_bomdata_month_2025.csv") |> 
   dplyr::select(
