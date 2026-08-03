@@ -35,7 +35,7 @@ crossref:
 
 source("rmd_setup.R")
 
-last_published_month_number <- 4
+last_published_month_number <- 7
 
 index_all_years <-
   readr::read_rds(file = "data_indexpoints_tidy/bike_index_all_long.rds") |> 

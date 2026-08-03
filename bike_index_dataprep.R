@@ -9,7 +9,7 @@
 
 # Index codes and years ----
 last_complete_year <- 2025
-last_complete_month_this_year <- 4
+last_complete_month_this_year <- 7
 
 index_codes_and_reference_years <-
   tibble::tibble(
