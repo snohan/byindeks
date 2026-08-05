@@ -1,13 +1,16 @@
-# Road events (e.g. closures) dumped from GCP (SAGA 1)
+# Road events (e.g. closures) dumped from Saga
 
 library(tidyverse)
 library(sf)
 
 # Fetch selected events by SQL in Trino (Starburst?) using DataGrip in "traind" datalab
 
+date_suffix <- "20260804"
+
 events <-
   readr::read_csv(
-    "H:/my_data/events_20260617.csv"
+    paste0("H:/my_data/events_", date_suffix, ".csv")
+    # "H:/my_data/events_20260804.csv"
     #n_max = 20
   ) |> 
   dplyr::mutate(
@@ -37,15 +40,15 @@ events <-
   )
 
 # A look at "bevegelig"
-moving_events <-
-  events |> 
-  sf::st_drop_geometry() |> 
-  dplyr::filter(
-    !(stringr::str_detect(info_text, "evegelig") & stringr::str_detect(info_text, "tengt", negate = TRUE))
-  )
+# moving_events <-
+#   events |> 
+#   sf::st_drop_geometry() |> 
+#   dplyr::filter(
+#     !(stringr::str_detect(info_text, "evegelig") & stringr::str_detect(info_text, "tengt", negate = TRUE))
+#   )
 # Just keep them for now, though most of them probably won't matter.
 
 readr::write_rds(
   events,
-  "H:/my_data/events_20260617.rds"
+  paste0("H:/my_data/events_", date_suffix, ".rds")
 )
