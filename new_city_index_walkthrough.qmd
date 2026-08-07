@@ -35,6 +35,7 @@ knitr:
   
 base::Sys.setlocale(locale = "nb.utf8")
 svv_background_color <- "#F5F5F5"
+base::options(OutDec = ",")
 
 library(tidyverse)
 library(flextable)
@@ -46,6 +47,7 @@ library(RColorBrewer)
 source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
 source("H:/Programmering/R/byindeks/traffic_link_functions.R")
 source("H:/Programmering/R/byindeks/index_report_functions.R")
+source("split_road_system_reference.R")
 
 flextable::set_flextable_defaults(
   decimal.mark = ",",
@@ -57,68 +59,97 @@ flextable::set_flextable_defaults(
 
 ```{r}
 #| label: data
+#| warning: false
 
 links_nj <- readr::read_rds("representativity/link_population_nj.rds")
 links_nj_whole <- readr::read_rds("representativity/link_population_nj_whole.rds")
 urban_area_nj <- readr::read_rds("representativity/urban_area_nj.rds")
 agreement_area_nj <- readr::read_rds("representativity/agreement_area_nj.rds")
 municipality_polygon_nj <- readr::read_rds("traffic_link_pop/municipality_polygon_nj.rds")
+trps <- 
+  readr::read_rds("trps.rds") |> 
+  split_road_system_reference() |> 
+  dplyr::select(
+    trp_id, 
+    name, 
+    road_category_and_number, 
+    municipality_name, 
+    lat, lon
+  )
+
+nj_mdt_more_3 <- readr::read_rds("representativity/cmdt_index_nj_more_chained_p3_mdt.rds")
+
+nj_mdt_example <- 
+  nj_mdt_more_3 |> 
+  dplyr::filter(
+    year %in% c(2023, 2024),
+    month == "januar"
+  ) |> 
+  dplyr::mutate(
+    year_month = base::paste0(month, "_", year)
+  ) |> 
+  dplyr::select(
+    trp_id, function_class, length_m, year_month, mdt
+  ) |> 
+  tidyr::pivot_wider(
+    names_from = year_month,
+    values_from = mdt
+  ) |> 
+  dplyr::filter(
+    dplyr::if_all(
+      .cols = tidyselect::where(is.numeric),
+      .fns = ~ !base::is.na(.)
+    )
+  ) |> 
+  dplyr::mutate(
+    delta = januar_2024 - januar_2023,
+    index_p = 100 * (januar_2024 / januar_2023 - 1),
+    tw_2023 = januar_2023 * length_m,
+    tw_2024 = januar_2024 * length_m,
+    weight_0 = 1 / n(),
+    weight_v = januar_2023 / base::sum(januar_2023),
+    weight_w = januar_2023 * length_m / base::sum(januar_2023 * length_m)
+  ) |> 
+  dplyr::left_join(
+    trps, by = "trp_id"
+  )
 ```
 
 
 # Bakgrunn
-Byindeksen estimerer om trafikken i et byområde har økt eller minket når to tidsperioder sammenlignes. Formålet er å fange opp en generell trend i bruken av bil som persontransportmiddel. 
-
-Byindeksen brukes til oppfølging av byvekstavtaler og belønningsavtaler. Byvekstavtalene har mål om nullvekst i persontransport med bil:
+Byindeksen estimerer hvor mye trafikken i et byområde har økt eller minket mellom to tidsperioder. Byindeksen brukes til oppfølging av byvekstavtaler og belønningsavtaler, hvor det er mål om nullvekst i persontransport med bil:
 
 > I byområdene skal klimagassutslipp, kø, luftforurensning og støy reduseres gjennom effektiv arealbruk og ved at veksten i persontransporten tas med kollektivtransport, sykling og gange.
 
 Dette notatet vil vise hvordan en byindeks beregnes. Som eksempel benyttes byområdet på Nord-Jæren.
 
 
-# Fra trafikkdata i punkt til byindeks
-En byindeks beregnes som et estimat for den sanne endringen i trafikk, og baseres på registrert trafikkmengde fra et utvalg trafikkregistreringspunkt. Disse omtales gjerne som “indekspunkt”. Indekspunktene er geografisk fordelt på riks- og fylkesveger, samt på enkelte, viktige kommunale veger, slik at byindeksen gir et representativt bilde av trafikkutviklingen i byområdet. 
+# Fra trafikkregistreringer til byindeks
+Byindeksen estimerer den sanne endringen i trafikk. Datagrunnlaget består av trafikkregistreringer i et utvalg punkt. Disse indekspunktene er geografisk fordelt på riks- og fylkesveger, samt på enkelte, viktige kommunale veger, slik at byindeksen gir et representativt bilde av trafikkutviklingen i byområdet.
 
-Trafikkregistreringene benyttes til å telle opp antall passeringer per dag. Byindeksen vil bruke gjennomsnittlig antall passeringer per dag for hver kalendermåned, og dette kalles månedsdøgntrafikk (MDT). En måned vil ha ulikt antall yrke- og helgedøgn i forskjellige år, og siden trafikkmengden varierer med dagtype, beregnes MDT som en vektet sum av gjennomsnittlig yrke- og helgedøgnstrafikk.
+Siden byindeksen skal fokusere på persontrasnport med bil, er datagrunnlaget begrenset til kjøretøy klassifisert som lette kjøretøy, det vil si kjøretøy med tillatt totalvekt under 3,5 tonn. Motorsykler og lignende kjøretøy som moped og scooter registreres og inngår i datagrunnlaget på lik linje med andre lette kjøretøy.
 
-Datagrunnlaget for byindeksen begrenses til kjøretøy klassifisert som lette kjøretøy, det vil si kjøretøy med tillatt totalvekt under 3,5 tonn. Motorsykler og lignende kjøretøy som moped og scooter registreres og inngår i datagrunnlaget på lik linje med andre lette kjøretøy.
-
-Hva vi definerer som populasjonen er avgjørende for hva slags datagrunnlag og beregningsmetodikk som kan benyttes til byindeksen. Vegnettet i et byområde kan ses på som et sammenhengende nett av trafikklenker og kryss. En trafikklenke er en vegstrekning mellom to kryss der trafikkmengden er tilnærmet konstant langs hele sin lengde sett over et lengre tidsintervall, for eksempel et døgn. 
-
-Ethvert trafikkregistreringspunkt ligger på en gitt trafikklenke. Når vi skal vurdere om et utvalg indekspunkt er representative, så er det egentlig en vurdering av om indekspunktenes trafikklenker er representative for vegnettet i byområdet. Ved å se på alle trafikklenkene i området som populasjonen, kan vi se på trafikklenkene som har byindekspunkt som et utvalg fra denne. 
+For hvert indekspunkt beregnes først et gjennomsnittlig antall passeringer per dag for hver kalendermåned, og dette kalles månedsdøgntrafikk (MDT). En måned vil ha ulikt antall yrke- og helgedøgn i forskjellige år, og siden trafikkmengden varierer med dagtype, beregnes MDT som en vektet sum av gjennomsnittlig yrke- og helgedøgnstrafikk.
 
 
-## Årsaker til at trafikken endrer seg
-Det er ulike årsaker til at trafikkmengden endrer seg, og for en byindeks er legitime årsaker blant annet:
+## Områdeavgrensing
+Hvilket område byindeksen skal gjelde for og hvordan vi beskriver dette, er avgjørende for hva slags beregningsmetode som kan benyttes til byindeksen. Forbedret metode for byindeks tar utgangspunkt i at vegnettet i et byområde kan ses på som et sammenhengende nett av trafikklenker og kryss. En trafikklenke er en vegstrekning mellom to kryss der trafikkmengden er tilnærmet konstant langs hele sin lengde sett over et lengre tidsintervall, for eksempel et døgn. Et eksempel på trafikklenker er vist i @fig-map_traffic_link_example.
 
-- befolkningsøkning (eller nedgang)
-- generelle eller spesifikke restriksjoner på bilbruk i form av avgifter og lignende
-- tilgjengelighet på alternative transportformer (gange, sykling, kollektiv o.l.)
-- transportbehov (plassering av boligareal, arbeidsplasser, skole, handel-, service- og aktivitetstilbud etc.)
+```{r}
+#| label: fig-map_traffic_link_example
+#| message: false
+#| fig-cap: "To trafikklenker i Stavanger."
 
-Derimot skal ikke byindeksen påvirkes av:
+links_nj |> 
+  dplyr::filter(
+    link_id %in% c("0.0-1.0@319741", "0.0-1.0@320243")
+  ) |> 
+  map_links_with_function_class()
+```
 
-- midlertidige endringer i vegnettet
-- manglende data
-- utvalgsskjevheter
+Et nyttig mål på hvor mye trafikk som går i et område, er summen av antall kjørte kilometer på trafikklenkene der, og dette kalles trafikkarbeid. Trafikkarbeidet kan beregnes ved å multiplisere trafikklenkens lengde med trafikkmengden som går der, f.eks. ÅDT. Gjennom den årlige ÅDT-beleggingen tilknyttes det en ÅDT-verdi til alle trafikklenker.
 
-Utvalgsskjevhet oppstår når trafikklenkene i utvalget ikke representerer området godt nok med tanke på endring i trafikk. Et tiltak mot utvalgsskjevhet er å dele inn populasjonen i grupper, såkalte strata, og kreve at alle disse skal være representert. Gruppeinndelingen (også kalt stratifiseringen) må basere seg på en egenskap som er kjent ved alle trafikklenker. Dette beskrives nærmere i @sec-strata.
-
-
-## Endringer i vegnettet
-Vegnettet er i stadig endring. Det kan være midlertidige arbeider som stenger enkelte strekninger i kortere eller lengre perioder, eller det kan være helt nye veganlegg som åpnes. Endringer i vegnettet fører til at bilistene endrer sine rutevalg og dette kan berøre et større eller mindre antall av trafikklenkene. Trafikksituasjonen på disse trafikklenkene er da ikke lenger sammenlignbar med slik den var før, når formålet med sammenligningen er å finne en generell trend i trafikkutviklingen. Dette setter en begrensning på hvilke trafikklenker som kan være med i utvalget. 
-
-Trafikkarbeidet per trafikklenke gjelder for et årgangsvegnett. Dersom vegnettet endrer seg, vil også trafikkarbeidet endre seg. For referanseåret til en indeks må det defineres et årgangsvegnett, og alle indeksestimater for senere år må gjelde for et sammenlignbart vegnett. Det vil si at endringer i vegnettet må lukes ut av datagrunnlaget. Ved større vegnettsendringer, må det benyttes kjedet indeks.
-
-
-## Utvalgsmetode
-Plasseringen av dagens byindekspunkt er ikke helt tilfeldig, men er en kombinasjon av et beleilighetsutvalg og ekspertutvalg. Før byindeksen ble aktuell, fantes det allerede et antall trafikkregistreringspunkt i byområdene. Disse var plassert ut for ulike formål, men hovedsakelig for å innhente informasjon om trafikkmengden på de viktigste vegene. Enkelte av de eksisterende punktene ble valgt ut til indeksen fordi det var beleilig – de fantes allerede. Det ble så supplert med noen nye punkt der hvor det var behov for det, og plasseringen til disse ble skjønnsmessig vurdert, gjerne med tanke på geografisk spredning - altså som en form for ekspertutvalg. 
-
-Plasseringene er også i stor grad bestemt av praktiske hensyn til hvor det er mulig å ha kontinuerlige trafikkregistreringer med god datakvalitet. Praktiske føringer er blant andre tilgang på strøm, god trafikkflyt samt enkel og trygg tilkomst til teknisk installasjon.  Utvalget som en faktisk sitter igjen med for en gitt tidsperiode er også avhengig av datakvaliteten.
-
-
-# Geografisk avgrensing
-Hvilket område byindeksen skal være representativ for danner utgangspunktet for å definere en populasjon med trafikklenker. Byindeksen skal måle nullvekst i de mest sentrale delene i avtaleområdet og dette omfatter de største tettstedene og sentrale veger mellom disse. Veger med veldig lite trafikk og tilhørende kryss utelates. De minste kommunale vegene, som boliggater, utgjør en betydelig andel av antall kilometer veg i et byområde. Trafikkarbeidet på disse vegene utgjør antakelig en mindre andel av hele byområdets trafikkarbeid, da trafikkmengden på disse er relativt lav. De aller fleste turer som starter og slutter på en liten kommunal veg, vil tilbakelegge det meste av sitt trafikkarbeid på større kommunal-, riks- eller fylkesveger. Unntaket her er korte turer i nabolaget, og disse vil byindeksen ikke fange opp.
+Som avgrensing av området for en byindeks, er det tilstrekkelig å bestemme hvilke trafikklenker som skal inngå i det aktuelle vegnettet. Byindeksen skal måle nullvekst i de mest sentrale delene i avtaleområdet og dette omfatter de største tettstedene og sentrale veger mellom disse. Veger med veldig lite trafikk og tilhørende kryss utelates. De minste kommunale vegene, som boliggater, utgjør en betydelig andel av antall kilometer veg i et byområde, men trafikkarbeidet på disse vegene utgjør antakelig en mindre andel av hele byområdets trafikkarbeid, da trafikkmengden på disse er relativt lav. De aller fleste turer som starter og slutter på en liten kommunal veg, vil tilbakelegge det meste av sitt trafikkarbeid på større kommunal-, riks- eller fylkesveger. Unntaket her er korte turer i nabolaget, og disse vil byindeksen ikke fange opp.
 
 Følgende algoritme definerer trafikklenkepopulasjonen: 
 
@@ -135,10 +166,35 @@ Følgende algoritme definerer trafikklenkepopulasjonen:
 Tettstedspolygonene og rutenett for antall ansatte lages av Statistisk sentralbyrå (SSB) og oppdateres årlig. Begge disse datasettene er fritt tilgjengelig via nettportalen Geonorge.
 
 
-## Eksempel med Nord-Jæren
-Avtaleområdet for Nord-Jæren omfatter kommunene Randaberg og Sola slik de er i dag, samt de kommunegrensene som gjaldt for Stavanger og Sandnes fram til 2019, altså før kommunesammenslåingene som gjaldt fra 1. januar 2020.
+## Utvalg av punkt
+Ethvert trafikkregistreringspunkt ligger på en gitt trafikklenke. Når vi skal vurdere om et utvalg indekspunkt er representative, så er det egentlig en vurdering av om indekspunktenes trafikklenker er representative for vegnettet i byområdet. Ved å se på alle trafikklenkene i området som populasjonen, kan vi se på trafikklenker med byindekspunkt som et utvalg fra denne.
 
-Dersom alle trafikklenker i *avtaleområdet* tas med, blir trafikklenkepopulasjonen som vist i @fig-map_nj_whole.
+Plasseringen av dagens byindekspunkt er ikke helt tilfeldig, men er en kombinasjon av et beleilighetsutvalg og ekspertutvalg. Før byindeksen ble aktuell som konsept, fantes det allerede et antall trafikkregistreringspunkt i byområdene. Disse var plassert ut for ulike formål, men hovedsakelig for å innhente informasjon om trafikkmengden på de viktigste vegene. Enkelte av de eksisterende punktene ble valgt ut til indeksen fordi det var beleilig – de fantes allerede. Det ble så supplert med noen nye punkt der hvor det var behov for det, og plasseringen til disse ble skjønnsmessig vurdert, gjerne med tanke på geografisk spredning - altså som en form for ekspertutvalg. 
+
+Plasseringene er også i stor grad bestemt av praktiske hensyn til hvor det er mulig å ha kontinuerlige trafikkregistreringer med god datakvalitet. Praktiske føringer er blant andre tilgang på strøm, god trafikkflyt (som gir god registreringskvalitet) samt enkel og trygg tilkomst til teknisk installasjon for drift og vedlikehold. Utvalget som en faktisk sitter igjen med for en gitt tidsperiode er også avhengig av eventuelle endringer i vegnettet.
+
+
+## Årsaker til at trafikken endrer seg
+Det er ulike årsaker til at trafikkmengden endrer seg, og for en byindeks er legitime årsaker blant annet:
+
+- endret innbyggertall
+- generelle eller spesifikke restriksjoner på bilbruk i form av avgifter og lignende
+- tilgjengelighet på alternative transportformer (gange, sykling, kollektiv o.l.)
+- transportbehov (plassering av boligareal, arbeidsplasser, skole, handel-, service- og aktivitetstilbud o.l.)
+
+Derimot skal ikke byindeksen påvirkes av:
+
+- manglende data
+- endringer i vegnettet (vegarbeid, tunnelloppgraderinger o.l.)
+- utvalgsskjevheter
+
+Vegnettet er i stadig endring. Det kan være midlertidige arbeider som stenger enkelte strekninger i kortere eller lengre perioder, eller det kan være helt nye veganlegg som åpnes. Endringer i vegnettet fører til at bilistene endrer sine rutevalg og dette kan berøre et større eller mindre antall av trafikklenkene. Trafikksituasjonen på disse trafikklenkene er da ikke lenger sammenlignbar med slik den var før, når formålet med sammenligningen er å finne en generell trend i trafikkutviklingen. Dette setter en begrensning på hvilke indekspunkt som kan være med i beregningene.
+
+Utvalgsskjevhet oppstår når trafikklenkene i utvalget ikke representerer området godt nok med tanke på endring i trafikk. Et tiltak mot utvalgsskjevhet er å dele inn populasjonen i grupper, såkalte strata, og kreve at alle disse skal være representert. Gruppeinndelingen (også kalt stratifiseringen) må basere seg på en egenskap som er kjent ved alle trafikklenker. Dette beskrives nærmere i @sec-strata.
+
+
+## Eksempel med Nord-Jæren
+Avtaleområdet for Nord-Jæren omfatter kommunene Randaberg og Sola slik de er i dag, samt de kommunegrensene som gjaldt for Stavanger og Sandnes fram til 2019, altså før kommunesammenslåingene som gjaldt fra 1. januar 2020. Dersom alle trafikklenker i *avtaleområdet* tas med, blir trafikklenkepopulasjonen som vist i @fig-map_nj_whole.
 
 ```{r}
 #| label: fig-map_nj_whole
@@ -176,62 +232,76 @@ map_links_with_function_class(links_nj) |>
   )
 ```
 
-Med denne begrensningen går antall trafikklenker ned fra `r base::nrow(links_nj_whole)` til `r base::nrow(links_nj)`.
+Med denne områdeavgrensingen går antall trafikklenker ned fra `r base::nrow(links_nj_whole)` til `r base::nrow(links_nj)`. Hvilke trafikkregistreringspunkt som kan velges ut begrenses også til de mer sentralt plasserte. I de landlige ytterområdene finnes det få punkt, så avgrensingen fjerner utfordringen med å kunne representere disse delområdene på en god måte i beregningene uten å måtte investere i mange nye punkt. I @tbl-trp_count_nj vises statistikk for antall trafikklenker og trafikkarbeid for Nord-Jæren.
+
+```{r}
+#| label: tbl-trp_count_nj
+#| tbl-cap:  "Statistikk for trafikklenker på Nord-Jæren."
+
+table_link_statistics(links_nj)
+```
 
 
 # Beregning av byindeks
-Vi har som utgangspunkt et utvalg trafikklenker som har registrerte trafikkmengder for ulike år knyttet til seg. For å beregne en indeks mellom to år for hele området, må vi først vekte sammen trafikkmengdene fra utvalget av trafikklenker i hvert stratum. Deretter må stratumindeksene vektes sammen. I beregningen er det derfor to nivåer med vekting som er uavhengige av hverandre, og som har ulike formål:
+Utgangspunktet for en byindeksberegning er at vi har et utvalg trafikklenker med registrerte trafikkmengder for ulike år knyttet til seg. Funksjonsklasse benyttes til stratifisering for å motvirke utvalgsskjevhet. For å beregne en indeks mellom to år for hele området, må vi først vekte sammen trafikklenkene i hvert stratum. Deretter må stratumindeksene vektes sammen. I beregningen er det derfor to nivåer med vekting. Disse er uavhengige av hverandre og har ulike formål:
 
-- trafikklenkevekter: legge vekt på lenkenes størrelse
-- stratumvekter: justere for andelen som hvert stratum utgjør av populasjonen
+- vekting av trafikklenke: legge vekt på lenkens størrelse
+- vekting av strata: legge vekte på andelen som hver funksjonsklasse utgjør av vegnettet
 
 
 ## Vekting av trafikklenker
-For å vekte sammen et utvalg trafikklenker til en estimert områdeindeks, må en ta utgangspunkt i en variabel som kan knyttes til hver enkelt trafikklenke. Noen mulige valg er:
+For å vekte sammen et utvalg trafikklenker til en estimert områdeindeks for hver funksjonsklasse, må en ta utgangspunkt i en variabel som kan knyttes til hver enkelt trafikklenke. Noen mulige valg er:
 
-- trafikkmengde (kjøretøy eller kjøretøy per dag)
+- trafikkmengde (målt i antall kjøretøy eller kjøretøy per dag)
 - trafikkarbeid (kjøretøykilometer)
 - reisetid (kjøretøytimer)
 
 
 ### Trafikkmengdeindeks
-En trafikkmengdeindeks ses på som et vektet gjennomsnitt av elementære trafikkmengdeindekser hvor vektene er trafikkmengdene i basisperioden:
+Mellom to perioder $a$ og $b$ er en trafikkmengdeindeks for et område $P_{\text{tv},ab}$ et vektet gjennomsnitt av punktene $i$ sine trafikkmengdeindekser $P_{abi}$, hvor vektene $v_{ai}$ er basert på trafikkmengdene i basisperioden $p_{ai}$:
 
 $$
 \begin{aligned}
 P_{\text{tv},ab} &= \frac{\sum_i p_{bi}}{\sum_i p_{ai}} \\
 &= \frac{1}{\sum_i p_{ai}} \sum_i p_{bi} \frac{p_{ai}}{p_{ai}} \\
-&= \sum_i \frac{p_{ai}}{\sum_i p_{ai}} \frac{p_{bi}}{p_{ai}} = \sum_i v_{ai} P_{abi},
+&= \sum_i \frac{p_{ai}}{\sum_j p_{aj}} \frac{p_{bi}}{p_{ai}} = \sum_i v_{ai} P_{abi},
 \end{aligned}
 $$ {#eq-v_indeks_2}
 hvor trafikkmengdevektene er definert som
 
 $$
-v_{ai} = \frac{p_{ai}}{\sum_i^n p_{ai}}.
+v_{ai} = \frac{p_{ai}}{\sum_j^n p_{aj}}.
 $$
+
+Her er $p$ kalenderjustert, gjennomsnittlig døgntrafikk per måned (MDT).
 
 
 ### Trafikkarbeidsindeks
-Siden trafikklenkenes lengde er kjent, kan lenkenes trafikkarbeid enkelt beregnes når trafikkmengden er kjent. Dette kan benyttes som vekting i en indeks beregnet som
+I en trafikkarbeidsindeks sammenlignes trafikklenkenes summerte trafikkarbeid, hvor det er trafikklenkens lengde $q$ som brukes som vekting:
 
 $$
-\text{trafikkarbeidsindeks} = P_{\text{tw}}(p^a,p^b,q) = P_{\text{tw},ab} = \frac{\sum_i p_{bi} q_{i}}{\sum_i p_{ai} q_{i}},
+\begin{aligned}
+P_{\text{tw},ab} &= \frac{\sum_i p_{bi} q_{i}}{\sum_i p_{ai} q_{i}} \\
+&= \frac{1}{\sum_i p_{ai} q_{i}} \sum_i p_{bi} q_{i} \frac{p_{ai}}{p_{ai}} \\
+&= \sum_i \frac{p_{ai} q_{i}}{\sum_j p_{aj} q_{j}} \frac{p_{bi}}{p_{ai}} = \sum_i w_{ai} P_{abi},
+\end{aligned}
 $$ {#eq-w_indeks}
-hvor "tw" her står for "traffic work". Denne kan tolkes som forholdet mellom summert trafikkarbeid i de to periodene $(a, b)$. I denne trafikkindeksen er $p$ gjennomsnittlig døgntrafikk per måned (MDT) for hvert indekspunkt $i$, og $q$ er lengden til lenken som indekspunktet ligger på.
+hvor "tw" her står for "traffic work". Her er vektene $w$ definert som
 
+$$
+w_{ai} = \frac{p_{ai} q_i}{\sum_j^n p_{aj} q_j}.
+$$
 
 ### Reisetidsvektet trafikkindeks
-Det er også mulig å tenke seg at den samlede reisetiden som alle kjøretøy til sammen bruker ved å kjøre en trafikklenke er et mål på dens størrelse.
-
-En trafikklenke som får utvidet kapasitet med flere kjørefelt, kan få lavere summert reisetid samtidig som trafikkmengden og trafikkarbeidet øker. Dette kan ses på som et uttrykk for mer effektiv trafikkavvikling, snarere enn mindre trafikk og er derfor ikke i tråd med nullvekstmålet.
+Det er også mulig å tenke seg at den samlede reisetiden som alle kjøretøy til sammen bruker ved å kjøre en trafikklenke er et mål på dens størrelse. En trafikklenke som får utvidet kapasitet med flere kjørefelt, kan få lavere summert reisetid samtidig som trafikkmengden og trafikkarbeidet øker. Dette kan ses på som et uttrykk for mer effektiv trafikkavvikling, snarere enn mindre trafikk. Men dette er ikke en vekting i tråd med nullvekstmålet, og den vil ikke bli vurdert videre i dette notatet.
 
 
 ## Vekting av strata {#sec-strata}
-For å justere beregningene for utvalgsskjevhet, må det først beregnes en indeks for hvert stratum, og deretter må disse vektes sammen på en hensiktsmessig måte.
+For å justere beregningene for utvalgsskjevhet, må det først beregnes en indeks for hvert gruppe av trafikklenker, og deretter må disse vektes sammen på en hensiktsmessig måte.
 
-En oppdeling av populasjonen i ulike strata kan ha ulike formål:  
+En oppdeling av trafikklenkene i ulike grupper kan ha ulike formål:  
 
-- bedre representativitet (basert på korrelasjon eller geografisk spredning) 
+- bedre representativitet (gruppert basert på korrelasjon mellom variabel og målparameter, eller geografisk spredning) 
 - mindre usikkerhet (grupper med likere verdier) 
 - presise estimater i spesielle grupper (basert på faglig behov) 
 
@@ -261,27 +331,137 @@ Mulige stratifiseringsvariabler.
 
 En mulig variabel som bør ha god korrelasjon med endring i trafikkmengde er reisehensikt inndelt i minst to kategorier: arbeidsreiser (inkludert henting og levering) og fritidsreiser. Dette vil blant annet skille mellom hverdagstrafikk og helgeutfart, som typisk foregår på ulike deler av vegnettet. Dette vil også gjenspeiles i variasjonskurvene for trafikk, som viser hvordan trafikken på en trafikklenke varierer over døgnet, uka og året. Her vil ferieperiodene påsken, pinsen og juli utpeke seg som konvekse eller konkave perioder. Å kategorisere enhver trafikklenke etter formen på variasjonskurven vil kunne bli en nyttig egenskap til indeksberegninger. Dette er gjenstående arbeid. 
 
-Funksjonsklasse er den mest aktuelle variabelen som faktisk er lett tilgjengelig. Funksjonsklasse differensierer trafikklenkene med hensyn på hvilken funksjon vegen har eller er prioritert for. 
+Funksjonsklasse er den mest aktuelle variabelen som faktisk er lett tilgjengelig nå. Funksjonsklasse differensierer trafikklenkene med hensyn på hvilken funksjon vegen har eller er prioritert for. 
 
 
 ### Stratum per funksjonsklasse
-Det er aktuelt å benytte funksjonsklasse som stratifiseringsvariabel. Stratastørrelsen må bestemmes, og dermed også det enkelte stratums andel av området. Mulige mål på dette er:
+Forbedret metode for byindeks benytter funksjonsklasse som stratifiseringsvariabel. Stratumstørrelsen må bestemmes, og dermed også det enkelte stratums andel av området. Mulige mål på dette er:
 
 - antall trafikklenker
 - trafikkmengde (summert ÅDT)
 - trafikkarbeid (kjøretøykilometer)
 - summert reisetid (kjøretøytimer)
 
-Å telle opp antall trafikklenker i hver funksjonsklasse er enkelt, men en vekting med det relative antallet lenker i hver funksjonsklasse legger ikke direkte vekt på størrelsen til trafikken på lenkene. Eksempelvis kan det være like mange lenker i funksjonsklasse D som i A, men det vil være mye mindre trafikk på vegene der. En slik vekting kan derfør føre til at vi legger for stor vekt på mindre viktige veger.
+Å telle opp antall trafikklenker i hver funksjonsklasse er enkelt, men en vekting med det relative antallet lenker i hver funksjonsklasse legger ikke direkte vekt på størrelsen til trafikken på lenkene. Eksempelvis kan det være like mange lenker i funksjonsklasse D som i A, men det vil være mye mindre trafikk på vegene i D. En slik vekting kan derfør føre til at vi legger for stor vekt på mindre viktige veger.
 
-Legger vi sammen ÅDT på alle trafikklenkene, får vi et mål på størrelsen til hver  funksjonsklasse. Dette kan bli noe skjevt dersom trafikklenkene i en gitt funksjonsklasse er ganske korte, mens de i en annen er ganske lange. Dess mer en stykker opp vegnettet, dess større blir summen av ÅDT. Dette er derfor ikke en egnet måte å vekte strata på.
+Legger vi sammen ÅDT på alle trafikklenkene, får vi et mål på størrelsen til hver funksjonsklasse. Dette kan bli noe skjevt dersom trafikklenkene i en gitt funksjonsklasse er ganske korte, mens de i en annen er ganske lange. Dess mer en stykker opp vegnettet, dess større blir summen av ÅDT. Dette er derfor ikke en egnet måte å vekte strata på.
 
 Trafikkarbeid måles i antall kjørte kilometer, og summen av trafikkarbeidet på alle trafikklenker blir den samme uansett hvordan vegnettet stykkes opp i lenker. Det gjør at trafikkarbeid er en robust og velegnet størrelse å bruke til vekting av funksjonsklassene.
 
-Summert reisetid som vektingsvariabel vil legge vekt både på trafikkmengden og tiden brukt på kjøringen. En veg med mye trafikk og kø vil vektlegges mer enn enn veg med like mye trafikk som har bedre kapasitet. Reisetid for alle trafikklenker har vi ikke gode data på i skrivende stund.
+Summert reisetid som vektingsvariabel vil legge vekt både på trafikkmengden og tiden brukt på kjøringen. En veg med mye trafikk og kø vil vektlegges mer enn enn veg med like mye trafikk som har bedre kapasitet. Reisetid for alle trafikklenker har vi ikke gode data på i skrivende stund, og vil derfor ikke bli vurdert som vekt i dette notatet.
 
 
 ## Eksempel med Nord-Jæren
+Som regneeksempel vil vi her se på en indeks for januar fra 2023 til 2024. Det er `r base::nrow(nj_mdt_example)` indekspunkt med data denne måneden, og @tbl-nj_mdt_table viser noen av dem.
+
+```{r}
+#| label: tbl-nj_mdt_table
+#| tbl-cap: "Eksempel på punkt med MDT i januar 2023 og 2024. (F.kl. står for funksjonsklasse)."
+
+nj_mdt_example |> 
+  dplyr::filter(
+    trp_id %in% c("13715V2721330", "40696V1727469", "12478V320582", "57836V319878", "10569V2580836", "21556V319919", "03819V320689", "04873V320700", "05268V320136", "48362V320684")
+  ) |> 
+  dplyr::select(
+    name, road_category_and_number, function_class, length_m, januar_2023, januar_2024, delta, index_p
+  ) |> 
+  dplyr::arrange(function_class) |> 
+  flextable::flextable() |>
+  colformat_double(j = 4:7, digits = 0) |>
+  colformat_double(j = 8, digits = 1) |>
+  set_header_labels(
+      name = "Indekspunkt",
+      road_category_and_number = "Veg",
+      function_class = "F.kl.",
+      length_m = "Trafikklenkens lengde (m)",
+      januar_2023 = "MDT 2023",
+      januar_2024 = "MDT 2024",
+      delta = "Endring (MDT)",
+      index_p = "Endring (%)"
+    ) |>
+  bold(part = "header") |>
+  bg(bg = "#ED9300", part = "header")
+```
+
+```{r}
+#| label: fig-map_example
+#| warning: false
+#| fig-cap: "Trafikklenker med indekspunkt."
+
+link_index_example <- 
+  links_nj |> 
+  dplyr::select(link_id, trp_id = point_id) |> 
+  dplyr::inner_join(
+    nj_mdt_example |> dplyr::select(trp_id, name, road_category_and_number, index_p),
+    by = "trp_id"
+  ) |> 
+  dplyr::mutate(
+    label_text = 
+      paste(
+        name, ", ",
+        road_category_and_number, "<br/>",
+        format(index_p, digits = 1), " %"
+      ),
+    label_text = purrr::map(label_text, htmltools::HTML)
+  )
+
+color_scale = leaflet::colorNumeric(
+  palette = "viridis",
+  domain = nj_mdt_example$index_p
+)
+
+# map_nj_example <-
+  link_index_example |>
+  leaflet(
+    width = "100%",
+    height = 800,
+    options =
+      leafletOptions(
+        crs = nvdb_crs,
+        zoomControl = F
+      )
+  ) |>
+  addTiles(
+    urlTemplate = nvdb_map_url,
+    attribution = nvdb_map_attribution
+  ) |>
+  addPolylines(
+    label = ~label_text,
+    stroke = T,
+    color = ~ color_scale(index_p),
+    opacity = 1,
+    highlightOptions = highlightOptions(
+      bringToFront = TRUE,
+      sendToBack = FALSE,
+      color = "#636363",
+      opacity = 0.6
+    )
+  ) |> 
+  addLegend(
+    position = "bottomright",
+    pal = color_scale,
+    values = ~ index_p,
+    title = "Endring (%)",
+    opacity = 0.6
+  )
+```
+
+
+
+Visualiser de ulike vektene.
+
+### Uvektet indeks
+Det er en veldig enkel beregning å bruke gjennomsnittet av de prosentvise endringene på punktene. Da får vi en indeks på `r base::mean(nj_mdt_example$change) |> base::round(1)` %. Men med denne metoden er det åpenbart et problem at vi vekter punkter med lite og mye trafikk likt. Se for eksempel på punktene Jåtten og Solastrand sør. Disse to vil da vektes likt, selv om MDT ligger på hhv. omkring 50 000 og 4 000. Punkter med lite trafikk vil gjerne få en relativt høy prosentvis endring, selv om endringen i MDT er ganske liten. En uvektet indeks kan derfor bli dominert av endringene på de minst trafikkerte vegene.
+
+
+### Trafikkmengdeindeks
+Beregner vi en trafikkmengdeindeks, får vi `r (base::sum(nj_mdt_example$januar_2024) / base::sum(nj_mdt_example$januar_2023)) |> round(1) |> format(nsmall = 1)` %.
+
+
+### Trafikkarbeidsindeks
+Beregner vi en trafikkarbeidsindeks, får vi `r (base::sum(nj_mdt_example$tw_2024) / base::sum(nj_mdt_example$tw_2023)) |> round(1) |> format(nsmall = 1)` %.
+
+
 I regneeksemplene her vil vi bruke funksjonsklasse som stratifiseringsvariabel.
 
 Varianter:
@@ -292,5 +472,4 @@ Varianter:
 - trafikkarbeidsindeks med funksjonsklasse som stratifisering
 
 
-### Trafikkmengdeindeks
 

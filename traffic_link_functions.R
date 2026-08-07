@@ -492,9 +492,9 @@ table_link_statistics <- function(link_df) {
     colformat_double(j = 4, digits = 1) |>
     set_header_labels(
       quantity = "Størrelse",
-      population = "Populasjon",
-      sample = "Utvalg",
-      percentage = "Utvalgets andel (%)"
+      population = "I byområdet",
+      sample = "Med punkt",
+      percentage = "Med punkt, andel (%)"
     ) |>
     bold(part = "header") |>
     bg(bg = "#ED9300", part = "header")

@@ -323,7 +323,7 @@ cmdt_chain_2 <-
   )
 
 # Chain link 3: 2023-
-nj_index_month_more_3 <-
+nj_mdt_more_3 <-
   mdt_validated |>
   dplyr::filter(
     !(trp_id %in% c(
@@ -334,7 +334,16 @@ nj_index_month_more_3 <-
   ) |>
   dplyr::filter(
     year >= 2023
-  ) |>
+  ) 
+
+# For the walk through example
+readr::write_rds(
+  nj_mdt_more_3,
+  "representativity/cmdt_index_nj_more_chained_p3_mdt.rds"
+)
+
+nj_index_month_more_3 <-
+  nj_mdt_more_3 |>
   calculate_area_index_month(population_size)
 
 area_index_one_year_nj_more_3 <- calculate_rolling_area_index_one_year(nj_index_month_more_3[[1]])
