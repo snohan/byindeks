@@ -83,14 +83,14 @@ list(
 #   )
 
 
-area_index <-
-   readr::read_rds(
-    base::paste0("representativity/rolling_cmdt_index_nj_chained.rds")
-  )
+# area_index <-
+#    readr::read_rds(
+#     base::paste0("representativity/rolling_cmdt_index_nj_chained.rds")
+#   )
 
-jsonlite::write_json(
-  area_index[[1]],
-  path = base::paste0("representativity/rolling_cmdt_index_", city_number, ".json"),
-  prettify = TRUE
-)
+# jsonlite::write_json(
+#   area_index[[1]],
+#   path = base::paste0("representativity/rolling_cmdt_index_", city_number, ".json"),
+#   prettify = TRUE
+# )
 

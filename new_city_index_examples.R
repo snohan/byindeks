@@ -130,6 +130,11 @@ source("new_city_index_examples_calculate.R")
 
 source("new_city_index_examples_prepare.R")
 
+# In case of reference year being oct-sep, do this:
+
+# TODO!!!
+
+
 # missing <-
 #   this_citys_trps_all_adt_final |>
 #   dplyr::filter(
@@ -601,3 +606,21 @@ readr::write_rds(
   trp_index_2019_rolling,
   "representativity/rolling_cmdt_trp_index_nj_2019.rds"
 )
+
+
+## Chained and with toll data
+# Using okt17-sep18 as reference year
+
+# Chain part 1
+index_month_values_1 <-
+  mdt_validated |>
+  dplyr::filter(
+    universal_year_period_id >= 26
+  ) |> 
+  calculate_area_index_month(population_size)
+
+area_index_month_1 <- index_month_values_1[[1]]
+link_index_month <- index_month_values[[2]]
+
+area_index_one_year_1 <- calculate_rolling_area_index_one_year(area_index_month_1)
+

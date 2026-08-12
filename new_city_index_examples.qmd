@@ -142,6 +142,8 @@ qmd_index_examples_cmdt_nj_chained <-
   readr::read_rds("representativity/rolling_cmdt_index_nj_chained.rds") |>
   dplyr::bind_rows()
 
+# TODO: chained index that includes toll data
+
 qmd_indexes_official_nj <-
   readr::read_rds(file = paste0("data_indexpoints_tidy/rolling_indices_952.rds")) |>
   dplyr::bind_rows()
@@ -899,6 +901,12 @@ fig_nj_chained_3y <-
 
 fig_nj_chained_3y + ylim(-12, 14)
 ```
+
+
+## Kjedet indeks med data fra bomstasjoner
+Nord-Jæren fikk nye bomstasjoner 1. oktober 2018. Det er derfor ønskelig å sammenligne trafikken med det siste året før dette, altså perioden fra og med oktober 2017 til og med september 2018. Her vises resultater fra et regneeksempel hvor dette året er brukt som referanseår, samt at data fra bomstasjonene blir faset inn i indekskjeden fra og med det året de ble satt i drift.
+
+
 
 
 # Bergen

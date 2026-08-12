@@ -79,7 +79,7 @@ counties <- readr::read_rds("counties.rds")
 # Choose
 index_year <- 2026
 latest_published_month <- 4
-city_number <- 959
+city_number <- 952
 # End choose
 
 new_month_year <-
@@ -99,10 +99,25 @@ new_month_name <-
   lubridate::month(label = TRUE, abbr = FALSE) |> 
   stringr::str_to_title()
 
-# new_month_name_2 <-
-#   lubridate::as_date(paste0("2000-", (latest_published_month + 2) %% 12, "-01")) |>
-#   lubridate::month(label = TRUE, abbr = FALSE) |>
-#   stringr::str_to_title()
+new_month_name_2 <- 
+  lubridate::as_date(paste0(
+    "2000-", 
+    (latest_published_month + 2),# %% 12, 
+    "-01"
+    )
+  ) |> 
+  lubridate::month(label = TRUE, abbr = FALSE) |> 
+  stringr::str_to_title()
+
+new_month_name_3 <- 
+  lubridate::as_date(paste0(
+    "2000-", 
+    (latest_published_month + 3),# %% 12, 
+    "-01"
+    )
+  ) |> 
+  lubridate::month(label = TRUE, abbr = FALSE) |> 
+  stringr::str_to_title()
 
 source("city_reference_year.R")
 
@@ -428,43 +443,72 @@ if(toll_data_is_included){
   
 }
 
-# point_index_new_prepared_2 <-
-#   point_index_new %>%
-#   dplyr::filter(
-#     day_type == "ALL",
-#     period == "month",
-#     month == latest_published_month + 2
-#   ) %>%
-#   dplyr::select(
-#     trp_id,
-#     year,
-#     month,
-#     index_total_p,
-#     index_total_coverage,
-#     length_excluded,
-#     length_coverage,
-#     index_short,
-#     index_long
-#   )
-# 
-# if(toll_data_is_included){
-# 
-#   point_index_new_prepared_2 <-
-#     point_index_new_prepared_2 |>
-#     # TRD
-#     dplyr::bind_rows(
-#      tolling_station_indices_prepared_new_2
-#     )
-# 
-# }
+point_index_new_prepared_2 <-
+  point_index_new %>%
+  dplyr::filter(
+    day_type == "ALL",
+    period == "month",
+    month == latest_published_month + 2
+  ) %>%
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    index_total_p,
+    index_total_coverage,
+    length_excluded,
+    length_coverage,
+    index_short,
+    index_long
+  )
 
+if(toll_data_is_included){
+
+  point_index_new_prepared_2 <-
+    point_index_new_prepared_2 |>
+    # TRD
+    dplyr::bind_rows(
+     tolling_station_indices_prepared_new_2
+    )
+
+}
+
+point_index_new_prepared_3 <-
+  point_index_new %>%
+  dplyr::filter(
+    day_type == "ALL",
+    period == "month",
+    month == latest_published_month + 3
+  ) %>%
+  dplyr::select(
+    trp_id,
+    year,
+    month,
+    index_total_p,
+    index_total_coverage,
+    length_excluded,
+    length_coverage,
+    index_short,
+    index_long
+  )
+
+if(toll_data_is_included){
+
+  point_index_new_prepared_3 <-
+    point_index_new_prepared_3 |>
+    # TRD
+    dplyr::bind_rows(
+     tolling_station_indices_prepared_new_3
+    )
+
+}
 
 pointindex_prepared_all <- 
   dplyr::bind_rows(
     pointindex_prepared,
     point_index_new_prepared_1,
-    #point_index_new_prepared_2,
-    #point_index_new_prepared_3,
+    point_index_new_prepared_2,
+    point_index_new_prepared_3
     #point_index_new_prepared_4#,
     #point_index_new_prepared_5
   ) %>% 
@@ -506,33 +550,33 @@ city_trps_new_pointindex <-
     label_text = purrr::map(label_text, htmltools::HTML)
   )
 
-# city_trps_new_pointindex_2 <-
-#   trps_meta %>%
-#   dplyr::left_join(
-#     point_index_new_prepared_2,
-#     by = "trp_id"
-#   ) %>%
-#   dplyr::mutate(
-#     label_text =
-#       paste(name, ", ",
-#             road_category_and_number, "<br/>",
-#             index_total_p, " %", "<br/>",
-#             index_total_coverage, " %"),
-#     label_text = purrr::map(label_text, htmltools::HTML))
+city_trps_new_pointindex_2 <-
+  trps_meta %>%
+  dplyr::left_join(
+    point_index_new_prepared_2,
+    by = "trp_id"
+  ) %>%
+  dplyr::mutate(
+    label_text =
+      paste(name, ", ",
+            road_category_and_number, "<br/>",
+            index_total_p, " %", "<br/>",
+            index_total_coverage, " %"),
+    label_text = purrr::map(label_text, htmltools::HTML))
 
-# city_trps_new_pointindex_3 <- 
-#   trps_meta %>%
-#   dplyr::left_join(
-#     point_index_new_prepared_3,
-#       by = "trp_id"
-#   ) %>%
-#   dplyr::mutate(
-#     label_text =
-#       paste(name, ", ",
-#             road_category_and_number, "<br/>",
-#             index_total_p, " %", "<br/>",
-#             index_total_coverage, " %"),
-#     label_text = purrr::map(label_text, htmltools::HTML))
+city_trps_new_pointindex_3 <- 
+  trps_meta %>%
+  dplyr::left_join(
+    point_index_new_prepared_3,
+      by = "trp_id"
+  ) %>%
+  dplyr::mutate(
+    label_text =
+      paste(name, ", ",
+            road_category_and_number, "<br/>",
+            index_total_p, " %", "<br/>",
+            index_total_coverage, " %"),
+    label_text = purrr::map(label_text, htmltools::HTML))
 
 source("trp_index_wide_and_long.R")
 ```
@@ -546,7 +590,7 @@ source("trp_index_wide_and_long.R")
 #| message: false
 
 events <- 
-  readr::read_rds("H:/my_data/events_20260617.rds") |> 
+  readr::read_rds("H:/my_data/events_20260804.rds") |> 
   sf::st_filter(area_polygon, .predicate = st_intersects)
 
 # Traffic links from Adm ----
@@ -625,23 +669,25 @@ map_links_for_index_check(index_year - 1, index_year, latest_published_month + 1
 ```
 
 
+## `r new_month_name_2`
+
 ```{r}
 #| label: map_linkindex_and_events_2
 #| message: false
 
-# ## `r new_month_name_2`
-# links_with_events_and_pointindex_2 |> 
-#   map_pointindex_and_events()
+map_links_for_index_check(index_year - 1, index_year, latest_published_month + 2, point_index_new_prepared_2, 5)
 ```
 
+
+## `r new_month_name_3`
 
 ```{r}
 #| label: map_linkindex_and_events_3
 #| message: false
 
 ## `r new_month_name_3`
-# links_with_events_and_pointindex_3 |> 
-#   map_pointindex_and_events()
+
+map_links_for_index_check(index_year - 1, index_year, latest_published_month + 2, point_index_new_prepared_3, 5)
 ```
 
 

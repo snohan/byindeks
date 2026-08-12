@@ -862,22 +862,43 @@ calculate_all_rolling_indices_old <- function() {
 # Monthly city index based on whichever TRPs are available,
 # without considering their time representativeness by year.
 
-calculate_area_index_month <- function(trp_mdt_df, population_size_dbl, population_size_tw) {
+calculate_area_index_month <- function(trp_mdt_df, population_size_dbl) {
 
   # Testing:
-  # trp_mdt_df <- mdt_validated
+  # trp_mdt_df <- mdt_validated |> dplyr::filter(universal_year_period_id >= 26)
   # population_size_dbl <- population_size
   # population_size_tw <- population_size_tw_kkm
-  # i <- 1
+  # y <- 1
 
-  # For each month, need to inner join base year (a) and calculation year (b)
-  year_a <- base::min(trp_mdt_df$year)
-  calculation_years <- c((year_a + 1):base::max(trp_mdt_df$year))
+  # Generalize reference year (need not be calendar year)
+  # Find first month of reference year period: choice is made possible by filtering the trp_mdt_df before calling this function!
+  reference_year_start_universal_year_period_id <- base::min(trp_mdt_df$universal_year_period_id)
+  calculation_year_start_universal_year_period_ids <- 
+    base::seq(
+      reference_year_start_universal_year_period_id + 14, 
+      base::max(trp_mdt_df$universal_year_period_id),
+      by = 14
+    )
+  
+  reference_year_months <-
+    universal_calendar_periods |> 
+    dplyr::filter(
+      universal_year_period_id >= reference_year_start_universal_year_period_id,
+      universal_year_period_id <= reference_year_start_universal_year_period_id + 13
+    )
+  
+  reference_year_string <- 
+    base::paste0(
+      reference_year_months$x_label[1],
+      "-",
+      reference_year_months$x_label[14]
+    ) |> 
+    stringr::str_remove_all("\\s+")
 
   mdt_a <-
     trp_mdt_df |>
     dplyr::filter(
-      year == year_a
+      universal_year_period_id %in% c(reference_year_start_universal_year_period_id:(reference_year_start_universal_year_period_id + 13))
     ) |>
     dplyr::select(
       trp_id,
@@ -894,12 +915,14 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl, populati
   link_index_month <- tibble::tibble()
   area_index_month <- tibble::tibble()
 
-  for(y in 1:(base::length(calculation_years))) {
+  for(y in 1:(base::length(calculation_year_start_universal_year_period_ids))) {
+
+    z <- calculation_year_start_universal_year_period_ids[y]
 
     mdt_b <-
       trp_mdt_df |>
       dplyr::filter(
-        year == calculation_years[y]
+        universal_year_period_id %in% c(z:(z + 13))
       ) |>
       dplyr::select(
         trp_id,
@@ -1006,13 +1029,19 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl, populati
         by = dplyr::join_by(universal_year_period_id)
       ) |>
       dplyr::mutate(
-        compared_to = year_a
+        compared_to_uypid = universal_year_period_id - 14,
+        reference_period = reference_year_string
+      ) |> 
+      dplyr::left_join(
+        universal_calendar_periods |> dplyr::select(compared_to_uypid = universal_year_period_id, compared_to = x_label),
+        by = "compared_to_uypid"
       ) |> 
       dplyr::select(
         universal_year_period_id,
         x_label,
         compared_to,
         period_name,
+        reference_period,
         index_i,
         index_p,
         n_trp,
@@ -1081,7 +1110,6 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl, populati
 calculate_rolling_area_index_one_year <- function(area_index_month_df) {
 
   area_index_month_tidy <-
-    # nj_index_month_more_2[[1]] |> 
     area_index_month_df |>
     dplyr::left_join(
       period_weights,
@@ -1093,6 +1121,8 @@ calculate_rolling_area_index_one_year <- function(area_index_month_df) {
       var_robust_i,
       period_days
     )
+  
+  compared_to_period <- area_index_month_df$reference_period[1]
 
   # One-year rolling index for all possible windows.
   # One may choose start and end of the series by first filtering the df before calling this function.
@@ -1101,15 +1131,23 @@ calculate_rolling_area_index_one_year <- function(area_index_month_df) {
   last_start_id <- base::max(area_index_month_tidy$universal_year_period_id - 13)
   possible_window_starts <- c(first_start_id:last_start_id)
   
-  compared_to_year_df <- 
-    universal_calendar_periods |> 
-    dplyr::filter(universal_year_period_id == (first_start_id - 1))
+  # compared_to_year_df <- 
+  #   universal_calendar_periods |> 
+  #   dplyr::filter(universal_year_period_id == (first_start_id - 1))
 
   rolling_area_index <- tibble::tibble()
 
   for(i in c(1:(base::length(possible_window_starts)))) {
 
     window_ids <- c(possible_window_starts[i]:(possible_window_starts[i] + 13))
+
+    calculation_period <- 
+      base::paste0(
+      universal_calendar_periods |> dplyr::filter(universal_year_period_id == window_ids[1]) |> dplyr::pull(x_label),
+        "-",
+      universal_calendar_periods |> dplyr::filter(universal_year_period_id == window_ids[14]) |> dplyr::pull(x_label)
+      ) |> 
+      stringr::str_remove_all("\\s+")
 
     rolling_area_index_i <-
       area_index_month_tidy |>
@@ -1132,11 +1170,13 @@ calculate_rolling_area_index_one_year <- function(area_index_month_df) {
         by = dplyr::join_by(universal_year_period_id)
       ) |>
       dplyr::mutate(
-        compared_to = compared_to_year_df$year
+        calculation_period = calculation_period,
+        compared_to = compared_to_period
       ) |> 
       dplyr::select(
         universal_year_period_id,
         x_label,
+        calculation_period,
         compared_to,
         index_i,
         index_p,

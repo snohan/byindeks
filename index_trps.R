@@ -8,41 +8,49 @@
 }
 
 ## City IDs ----
-# Bergen 8952
-# Buskerudbyen 1952
-# Grenland 955
-# Kristiansand og omegn 957 kommune 956
-# Nedre Glomma 18952
-# Nord-Jæren 952
-# Oslo 959
-# Trondheim 960
-# Tromsø 961
-# Tromsø 2022 16952
-
-city_ids <- c(8952, 1952, 955, 957, 18952, 952, 959, 960, 16952)
-city_names <-
-  c(
-    "Bergensområdet",
-    "Buskerudbyen",
-    "Grenland",
-    "Kristiansandområdet",
-    "Nedre Glomma",
-    "Nord-Jæren",
-    "Osloområdet",
-    "Trondheimsområdet",
-    "Tromsø"
-  )
+# 2016:
+#   Buskerudbyen 1952
+#   Grenland 955
+# 2017:
+#   Nord-Jæren 952
+# 2018:
+#   Bergen 8952
+#   Oslo 959
+# 2019:
+#   Trondheim 960
+# 2022:
+#   Tromsø 2022 16952
+# 2023:
+#   Kristiansandsregionen 19953
+#   Nedre Glomma 18952
+# 2024:
+#   Bodø 19954
+#   Ålesund 20952
+# 2025:
+#   Haugesund 19955
 
 cities <-
-  tibble::tibble(
-    area_id = city_ids,
-    area_name = city_names
+  tibble::tribble(
+    ~area_id, ~area_name,
+    1952, "Buskerudbyen",
+    955, "Grenland",
+    952, "Nord-Jæren",
+    8952, "Bergensområdet",
+    959, "Osloområdet",
+    960, "Trondheimsområdet",
+    16952, "Tromsø",
+    19953, "Kristiansandsregionen",
+    18952, "Nedre Glomma",
+    19954, "Bodø",
+    20952, "Ålesund",
+    19955, "Haugesund"
   )
+
 
 ## TRP names ----
 city_index_trps <-
   purrr::map(
-    city_ids,
+    cities$area_id,
     ~ readr::read_rds(
       file = paste0(
         "index_trp_metadata/trp_",
@@ -89,4 +97,24 @@ city_index_trps <-
 writexl::write_xlsx(
   city_index_trps,
   "trafikkindekspunkt.xlsx"
+)
+
+
+# Find TRSs
+index_stations <-
+  city_index_trps |> 
+  dplyr::select(
+    trp_id
+  ) |> 
+  dplyr::left_join(
+    readr::read_rds("H:/Programmering/R/trafikkdata/trp_info/trs_trp_ids.rds") |> 
+      dplyr::select(trp_id, trs_id),
+    by = "trp_id"
+  ) |> 
+  dplyr::select(trs_id) |> 
+  dplyr::distinct()
+
+writexl::write_xlsx(
+  index_stations,
+  "trafikkindeksstasjoner.xlsx"
 )

@@ -1,6 +1,6 @@
 # Time ----
 present_year <- 2026
-index_month <- 5
+index_month <- 7
 source("set_time_references.R")
 
 
