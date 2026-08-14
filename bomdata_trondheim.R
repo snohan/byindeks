@@ -1,10 +1,11 @@
-# IN
+# FETCH
 # - Hourly traffic per class per lane per tolling station (APAR)
 # - Tolling station metadata (NVDB)
 
 # OUT
 # - Tolling station metadata tidied
 # - Tolling station MDT
+# - Tolling station CMDT
 # - Tolling station index by month
 # - Tolling station index by year
 
@@ -337,31 +338,33 @@ toll_nvdb_id <-
 
 source("calculate_cmdt_toll.R")
 
-{
-  tic()
-  for (i in 1:length(tolling_station_ids_original)) {
+calculate_cmdt_toll_for_all_stations(tolling_station_ids_original, years_from_reference_to_today, tolling_data_daily_all_years)
 
-    cmdt <-
-      purrr::map(
-        years_from_reference_to_today,
-        ~ calculate_cmdt_toll(tolling_station_ids_original[i], .x)
-      ) |>
-      purrr::list_rbind()
+# {
+#   tic()
+#   for (i in 1:length(tolling_station_ids_original)) {
 
-    cmdt |>
-      readr::write_rds(
-        file =
-          paste0(
-            "cmdt/cmdt_",
-            city_number,
-            "_",
-            tolling_station_ids_original[i],
-            ".rds"
-          )
-      )
-  }
-  toc()
-}
+#     cmdt <-
+#       purrr::map(
+#         years_from_reference_to_today,
+#         ~ calculate_cmdt_toll(tolling_station_ids_original[i], .x, tolling_data_daily_all_years)
+#       ) |>
+#       purrr::list_rbind()
+
+#     cmdt |>
+#       readr::write_rds(
+#         file =
+#           paste0(
+#             "cmdt/cmdt_",
+#             city_number,
+#             "_",
+#             tolling_station_ids_original[i],
+#             ".rds"
+#           )
+#       )
+#   }
+#   toc()
+# }
 
 
 # AADT ----

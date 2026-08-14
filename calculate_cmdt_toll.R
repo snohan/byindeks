@@ -1,6 +1,4 @@
-calculate_cmdt_toll <- function(toll_station_id, year_chosen) {
-
-  # Need to have the df "tolling_data_daily_all_years" in environment
+calculate_cmdt_toll <- function(toll_station_id, year_chosen, daily_data_df) {
 
   # Testing:
   #toll_station_id <- "51"
@@ -12,7 +10,7 @@ calculate_cmdt_toll <- function(toll_station_id, year_chosen) {
   n_days_in_calendar <- number_of_days(year_chosen)
 
   dt <-
-    tolling_data_daily_all_years |>
+    daily_data_df |>
     dplyr::filter(
       trp_id == toll_station_id,
       year == year_chosen
@@ -58,7 +56,7 @@ calculate_cmdt_toll <- function(toll_station_id, year_chosen) {
         .by = c(trp_id, length_class, month)
       ) |>
       dplyr::filter(
-        !(month == "påske" & n_days_in_data < 6),
+        !(month == "påske" & n_days_in_data != 11),
         !(month == "pinse" & n_days_in_data != 4)
       ) |>
       dplyr::arrange(month, length_class)
@@ -148,4 +146,36 @@ calculate_cmdt_toll <- function(toll_station_id, year_chosen) {
   }
 
   return(mdt)
+}
+
+
+calculate_cmdt_toll_for_all_stations <- function(toll_id_vector, years_vector, daily_data_df) {
+
+  tictoc::tic()
+  
+  for (i in 1:length(toll_id_vector)) {
+
+    cmdt <-
+      purrr::map(
+        years_vector,
+        ~ calculate_cmdt_toll(toll_id_vector[i], .x, daily_data_df)
+      ) |>
+      purrr::list_rbind()
+
+    cmdt |>
+      readr::write_rds(
+        file =
+          paste0(
+            "cmdt/cmdt_",
+            city_number,
+            "_",
+            toll_id_vector[i],
+            ".rds"
+          )
+      )
+  }
+  
+  tictoc::toc()
+
+
 }

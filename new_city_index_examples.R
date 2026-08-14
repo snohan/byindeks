@@ -608,10 +608,11 @@ readr::write_rds(
 )
 
 
-## Chained and with toll data
+## Chained and with toll data ----
 # Using okt17-sep18 as reference year
 
 # Chain part 1
+# okt17-sep18 -- okt18-sep19
 index_month_values_1 <-
   mdt_validated |>
   dplyr::filter(
@@ -620,7 +621,27 @@ index_month_values_1 <-
   calculate_area_index_month(population_size)
 
 area_index_month_1 <- index_month_values_1[[1]]
-link_index_month <- index_month_values[[2]]
+link_index_month_1 <- index_month_values_1[[2]]
 
 area_index_one_year_1 <- calculate_rolling_area_index_one_year(area_index_month_1)
 
+
+# Chain part 2
+# okt18-sep19 -- 2023
+index_month_values_2 <-
+  mdt_validated |>
+  dplyr::filter(
+    universal_year_period_id >= 40
+  ) |> 
+  calculate_area_index_month(population_size)
+
+
+
+# Chain part 3
+# 2023 -- 
+index_month_values_3 <-
+  mdt_validated |>
+  dplyr::filter(
+    universal_year_period_id >= 99
+  ) |> 
+  calculate_area_index_month(population_size)

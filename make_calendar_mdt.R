@@ -28,8 +28,8 @@
 # 2019 Tron   960
 
 {
-  present_year <- 2026
-  index_month <- 5
+  present_year <- 2024
+  index_month <- 12
   city_number <- "952"
 }
 
@@ -65,6 +65,7 @@ if(city_number == "952") {
 # First, make cMDT per TRP and store them in folder cMDT
 # cMDT
 # trp_number <- 88
+
 
 for(i in 1:length(city_trps)) {
   

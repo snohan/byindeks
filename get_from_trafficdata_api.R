@@ -1979,7 +1979,7 @@ calculate_calendar_adjusted_mdt <- function(trp_id, year) {
       dt |>
       dplyr::filter(
         total_coverage >= 99,
-        length_quality >= 99,
+        length_quality >= 97.5,
         length_range %in% c("[..,5.6)", "[5.6,..)")
       )
 
@@ -2029,7 +2029,8 @@ calculate_calendar_adjusted_mdt <- function(trp_id, year) {
         .by = c(trp_id, length_class, month)
       ) |>
       dplyr::filter(
-        !(month == "påske" & n_days_in_data < 6),
+        # Must have comlete periods
+        !(month == "påske" & n_days_in_data != 11),
         !(month == "pinse" & n_days_in_data != 4)
       ) |>
       dplyr::arrange(month, length_class)
