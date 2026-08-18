@@ -47,7 +47,7 @@ function_class_tw <-
 if(city_number == "952") {
 
   # In order to use more than the 23 TRPs
-  trp_weights <-
+  trp_weights_trp <-
     links_in_area |>
     sf::st_drop_geometry() |>
     dplyr::left_join(
@@ -55,13 +55,46 @@ if(city_number == "952") {
       by = "link_id"
     ) |>
     dplyr::filter(
-      !is.na(trp_id)
-    ) |>
+      !is.na(trp_id),
+      # Remove those that are to be replaced by toll stations
+      !(trp_id %in% c("03108V320583", "84064V320581", "13433V319582", "71787V2269011", "59675V319722"))
+    )  |>
     dplyr::select(
-      trp_id,
+      link_id, trp_id,
       length_m,
       trp_tw_ref_kkm = tw,
       function_class
+    )
+
+  trp_weights_toll <-
+    links_in_area |>
+    sf::st_drop_geometry() |>
+    dplyr::left_join(
+      link_toll_id,
+      by = "link_id"
+    ) |>
+    dplyr::filter(
+      !is.na(toll_id),
+      # Remove those that are to be replaced by TRPs
+      !(toll_id %in% c("906727259", "906727260", "906727269", "906727253", "906727243", "906727236", "906727240", "906727247", "906727233", "906727265", "906727251"))
+    ) |>
+    dplyr::select(
+      link_id, trp_id = toll_id,
+      length_m,
+      trp_tw_ref_kkm = tw,
+      function_class
+    ) 
+  
+  toll_stations_not_on_link <-
+    bomstasjoner_nj |> 
+    dplyr::filter(
+      !(nvdb_id %in% link_toll_id$toll_id)
+    )
+    
+  trp_weights <-
+    dplyr::bind_rows(
+      trp_weights_trp,
+      trp_weights_toll
     ) |>
     dplyr::mutate(
       length_m = base::round(length_m),
@@ -70,6 +103,12 @@ if(city_number == "952") {
     dplyr::left_join(
       function_class_tw,
       by = "function_class"
+    )  
+  
+  trp_info <-
+    dplyr::bind_rows(
+      bomstasjoner_nj |> dplyr::filter(nvdb_id %in% trp_weights$trp_id) |> dplyr::select(-trp_id) |> dplyr::rename(trp_id = nvdb_id),
+      points |> dplyr::filter(trp_id %in% trp_weights$trp_id) |> dplyr::select(-county_name)
     )
 
 }else{

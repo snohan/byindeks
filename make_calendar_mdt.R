@@ -28,8 +28,8 @@
 # 2019 Tron   960
 
 {
-  present_year <- 2024
-  index_month <- 12
+  present_year <- 2026
+  index_month <- 07
   city_number <- "952"
 }
 

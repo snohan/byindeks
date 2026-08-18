@@ -871,6 +871,82 @@ map_links_for_index_check <- function(base_year_dbl, calc_year_dbl, index_month_
 }
 
 
+map_link_index <- function(month_df, index_limit = 5) {
+
+
+  links_with_index <-
+    links_in_area |> 
+    dplyr::select(link_id) |> 
+    dplyr::left_join(
+      trp_weights |> dplyr::select(link_id, trp_id),
+      by = "link_id"
+    ) |> 
+    dplyr::inner_join(
+      month_df,
+      by = "trp_id"
+    ) |> 
+    dplyr::mutate(
+      info_text = 
+        purrr::map(
+          base::paste0(name, "<br/>", mdt_delta, "<br/>", format(p_abi_p, digits = 1), " %"), 
+          htmltools::HTML
+        )      
+    )
+
+  # Discrete scale for index
+  index_limit_text <- create_index_limit_text(index_limit)
+
+  palett_index_factor <-
+    leaflet::colorFactor(
+      palette = c("red", "#1D7721", "purple"),
+      levels = index_limit_text
+    )
+  
+  map <-
+    links_with_index |>
+    dplyr::rename(
+      index = p_abi_p
+    ) |>
+    add_index_factor_column(index_limit_text, index_limit) |> 
+    leaflet(
+      width = "100%",
+      height = 800,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F
+        )
+    ) |>
+    addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) |>
+    addPolylines(
+      label = ~info_text,
+      stroke = T,
+      opacity = 1,
+      color = ~palett_index_factor(index_factor),
+      highlightOptions = highlightOptions(
+        bringToFront = TRUE,
+        sendToBack = FALSE,
+        color = "#636363",
+        opacity = 0.6
+      )
+    ) |> 
+    addLegend(
+      "bottomright",
+      pal = palett_index_factor,
+      values = ~index_factor,
+      title = "Indeks",
+      opacity = 0.6,
+      labFormat = labelFormat(big.mark = " ")
+    )
+  
+  return(map)
+
+}
+
+
 map_links_with_trp <- function(link_df) {
 
   map <-

@@ -54,6 +54,14 @@
 
   link_id_weights_2024 <- readr::read_rds("traffic_link_pop/link_id_weights_2024.rds")
   link_trp_id <- readr::read_rds("traffic_link_pop/link_trp_id.rds")
+  link_toll_id <- readr::read_rds("traffic_link_pop/link_toll_id.rds") |> 
+    dplyr::bind_rows(
+      tibble::tibble(
+        link_id = c("0.0@2798059-1.0@3500119"),
+        toll_id = c("906727254")
+      )
+    )
+
   points <- readr::read_rds("trps_for_city_index.rds")
 }
 
@@ -615,8 +623,12 @@ readr::write_rds(
 # okt17-sep18 -- okt18-sep19
 index_month_values_1 <-
   mdt_validated |>
+  # dplyr::filter(
+  #   !(trp_id %in% c("13606V2303025", "89457V2303027", "88125V320152", "73355V319671") & universal_year_period_id == 40)
+  # ) |> 
   dplyr::filter(
-    universal_year_period_id >= 26
+    universal_year_period_id >= 26,
+    universal_year_period_id <= 53
   ) |> 
   calculate_area_index_month(population_size)
 
@@ -625,17 +637,43 @@ link_index_month_1 <- index_month_values_1[[2]]
 
 area_index_one_year_1 <- calculate_rolling_area_index_one_year(area_index_month_1)
 
+# Check
+library(leaflet)
+source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
+# Table each month
+month_to_check <-
+  link_index_month_1 |> 
+  dplyr::filter(
+    universal_year_period_id == 53
+  ) |> 
+  dplyr::left_join(
+    trp_info,
+    by = "trp_id"
+  ) |> 
+  dplyr::select(
+    trp_id, name, road_category_and_number, year_a, year_b, month, mdt_delta, p_abi_p, index_p
+  ) |> 
+  dplyr::arrange(p_abi_p)
+
+# Map each month
+map_link_index(month_to_check, 10)
+
+
 
 # Chain part 2
 # okt18-sep19 -- 2023
 index_month_values_2 <-
   mdt_validated |>
   dplyr::filter(
-    universal_year_period_id >= 40
+    universal_year_period_id >= 40,
+    universal_year_period_id <= 112
   ) |> 
   calculate_area_index_month(population_size)
 
+area_index_month_2 <- index_month_values_2[[1]]
+link_index_month_2 <- index_month_values_2[[2]]
 
+area_index_one_year_2 <- calculate_rolling_area_index_one_year(area_index_month_2)
 
 # Chain part 3
 # 2023 -- 
@@ -645,3 +683,8 @@ index_month_values_3 <-
     universal_year_period_id >= 99
   ) |> 
   calculate_area_index_month(population_size)
+
+area_index_month_3 <- index_month_values_3[[1]]
+link_index_month_3 <- index_month_values_3[[2]]
+
+area_index_one_year_3 <- calculate_rolling_area_index_one_year(area_index_month_3)

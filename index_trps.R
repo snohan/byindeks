@@ -96,7 +96,7 @@ city_index_trps <-
 
 writexl::write_xlsx(
   city_index_trps,
-  "trafikkindekspunkt.xlsx"
+  "spesialuttak/trafikkindekspunkt.xlsx"
 )
 
 
@@ -116,5 +116,29 @@ index_stations <-
 
 writexl::write_xlsx(
   index_stations,
-  "trafikkindeksstasjoner.xlsx"
+  "spesialuttak/trafikkindeksstasjoner.xlsx"
+)
+
+
+# Additional stations for new NJ
+index_stations <- readxl::read_excel("spesialuttak/trafikkindeksstasjoner.xlsx")
+
+index_stations_new_nj <-
+  tibble::tibble(
+    trp_id = city_trps
+  ) |> 
+  dplyr::left_join(
+    readr::read_rds("H:/Programmering/R/trafikkdata/trp_info/trs_trp_ids.rds") |> 
+      dplyr::select(trp_id, trs_id),
+    by = "trp_id"
+  ) |> 
+  dplyr::select(trs_id) |> 
+  dplyr::distinct() |> 
+  dplyr::filter(
+    !(trs_id %in% index_stations$trs_id)
+  )
+
+writexl::write_xlsx(
+  index_stations_new_nj,
+  "spesialuttak/trafikkindeksstasjoner_ny_nj.xlsx"
 )

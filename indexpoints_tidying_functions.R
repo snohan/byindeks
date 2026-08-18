@@ -963,6 +963,7 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl) {
       ) |>
       # Entities needed in each summation variable
       dplyr::mutate(
+        mdt_delta = mdt_b - mdt_a,
         p_abi_i = mdt_b / mdt_a,
         share_link_to_fcl = mdt_a * length_m / tw_fcl_observed_a,
         # Variance: Population model
@@ -1073,7 +1074,7 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl) {
       dplyr::select(
         trp_id,
         year_a, year_b, month, universal_year_period_id,
-        tw_fcl_population_share, share_link_to_fcl, p_abi_i,index_p
+        tw_fcl_population_share, share_link_to_fcl, mdt_delta, p_abi_i,index_p
       ) |>
       dplyr::mutate(
         p_abi_p = 100 * (p_abi_i - 1),

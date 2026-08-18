@@ -140,21 +140,6 @@ readr::write_rds(tolldata_nj_2019_2025_month, "bomdata_nj/nj_bomstasjonsindeks_2
 #    Ergo er det best å utelate bomstasjonen på Bybrua fra sammenligningen før 2023.
 # 3. Bomstasjonene på Jåsund og Tananger er snudd fra og med 25.11.2020. Ser ut til at tallene er sum liten og stor etter dette og ut april 2021. 
 #    Denne perioden må ekskluderes, men gitt at vi kan sammenligne motsatte retninger kan sammenlignes, kan stasjonene være med.
-# 4. Bomstasjoner og TRP som ligger på samme sted, og basert på data - hvilken bør velges?:
-#    402 og Tastatorget, bom
-#    102 og Bjergsted, trp (kø?)
-#    104 og Randabergveien, trp (kø?)
-#    114 og Bybrua sør, trp
-#    210 og Forus Gamleveien, trp
-#    301 og Strandgata nord, trp
-#    207 og Forus (hovedveg pluss ramper), trp
-#    310 og Hana ved Rovik, bom
-#    308 og Austrått, bom
-#    306 og Brualand, bom
-#    304 og Oalsgata, trp
-#    205 og Bærheim, trp
-#    502 og Solastrand sør, trp
-#    TRP er å foretrekke da disse har begge retninger
 
 
 # Daily data ----
@@ -164,14 +149,16 @@ bomstasjoner_nj <-
   dplyr::filter(
     # Remove Gausel bussvei, though traffic from this still is summed with the other Gausel toll station. 
     # This removal for listing and mapping purposes, and to avoid this data being counted twice.
-    !(nvdb_id %in% c("1026491363"))
+    !(nvdb_id %in% c("1026491363")),
+    # Skipping stations on Buøy and Hundvåg
+    trp_id < 800
   )
 
 
 ## 2019-2021 from Ferde ----
 nj_tolldata_daily_pre_2022 <- 
   purrr::map(
-    c("2019", "2020", "2021_jan_april", "2021_mai_des"),
+    c("2018", "2019", "2020", "2021_jan_april", "2021_mai_des"),
     ~ readxl::read_excel("bomdata_nj/nj_bomdata_daily_ferde.xlsx", sheet = .x, skip = 1, na = c("-"))
   ) |> 
   purrr::list_rbind()
@@ -285,11 +272,8 @@ hourly_data <-
     )
   )
 
-
-
-
 ## Daily by lane
-tolling_data_daily_lane <-
+tolling_data_daily_lane_raw <-
   hourly_data |> 
   # NB! 201, 801 and 802 is duplicated in all hourly files!!!
   dplyr::distinct() |> 
@@ -304,19 +288,26 @@ tolling_data_daily_lane <-
     month = lubridate::floor_date(date, "month"),
     first_wday = lubridate::wday(month, week_start = 1),
     day_aligned_by_weekday = day + (first_wday - 1),
-    year = lubridate::year(date),
+    year = lubridate::year(date)    
+  ) |> 
+  # The flipping of 107
+  dplyr::filter(
+    !(trp_id %in% c("107", "110", "114") & date >= ymd("2022-12-12") & lane == 1)
+  ) |> 
+  dplyr::mutate(
+    lane = 
+      dplyr::case_when(
+        trp_id %in% c("107", "110", "114") ~ as.factor(1),
+        TRUE ~ lane
+      ),
     lane = factor(lane, levels = c("1", "3", "5", "7", "2", "4", "6", "8"))
   )
 
+source("bomdata_nj_exclusions.R")
 
 ## Check daily by lane ----
-base::length(base::unique(bomstasjoner_nj$trp_id))
-plot_toll_station_data_per_lane(base::unique(bomstasjoner_nj$trp_id)[20], c(2019), bomstasjoner_nj)
-plot_toll_station_data_per_lane(base::unique(bomstasjoner_nj$trp_id)[20], c(2020), bomstasjoner_nj)
-plot_toll_station_data_per_lane(base::unique(bomstasjoner_nj$trp_id)[20], c(2021), bomstasjoner_nj)
+plot_toll_station_data_per_lane(base::unique(bomstasjoner_nj$trp_id)[40], c(2026), bomstasjoner_nj)
 
-
-# HERE! Friday 2026-08-14 14.20: continue checking all 40 stations
 
 ## Daily data
 tolling_data_daily <-
@@ -332,26 +323,10 @@ tolling_data_daily <-
     year = lubridate::year(date)
   )
 
-## Exclusions ----
-tolling_data_daily_tidy <-
-  tolling_data_daily |>
-  dplyr::filter(!(trp_id == "104" & date %in% ymd(c("2019-08-13", "2019-08-14", "2019-08-15")))) |> 
-  dplyr::filter(!(trp_id == "106" & date %in% ymd(c("2019-03-13", "2019-03-14")))) |> 
-  dplyr::filter(!(trp_id == "107" & date %in% ymd(c("2019-02-24", "2019-02-25")))) |> 
-  dplyr::filter(!(trp_id == "108" & date %in% ymd(c("2020-03-10")))) |> 
-  dplyr::filter(!(trp_id == "110" & date %in% ymd(c("2021-11-08", "2021-11-09", "2021-11-10", "2021-11-11")))) |> 
-  dplyr::filter(!(trp_id == "113" & date %in% ymd(c("2019-11-13")))) |> 
-  dplyr::filter(!(trp_id == "113" & date %in% seq.Date(as.Date("2021-06-08"), as.Date("2021-06-15"), 1))) |> 
-  dplyr::filter(!(trp_id == "114" & date %in% ymd(c("2020-10-09", "2020-10-10")))) |> 
-  dplyr::filter(!(trp_id == "201" & date %in% seq.Date(as.Date("2019-01-08"), as.Date("2019-01-15"), 1))) |> 
-  dplyr::filter(!(trp_id == "201" & date %in% ymd(c("2020-09-13")))) |> 
-  # dplyr::filter(!(trp_id == "54" & month == "2021-07-01")) |>
-  # dplyr::filter(!(trp_id == "54" & year == 2022)) |>
-
 
 ## Sum classes
 tolling_data_daily_sum_classes <-
-  tolling_data_daily_tidy |>
+  tolling_data_daily |>
   dplyr::group_by(
     trp_id,
     date
@@ -369,7 +344,7 @@ tolling_data_daily_sum_classes <-
 
 tolling_data_daily_final <-
   dplyr::bind_rows(
-    tolling_data_daily_tidy,
+    tolling_data_daily,
     tolling_data_daily_sum_classes
   ) |>
   dplyr::arrange(
@@ -380,7 +355,8 @@ tolling_data_daily_final <-
 
 readr::write_rds(
   tolling_data_daily_final,
-  file = "bomdata_nj/daily/nj_tolldata_daily_2019-2021.rds"
+  # file = "bomdata_nj/daily/nj_tolldata_daily_2018-2021.rds"
+  file = "bomdata_nj/daily/nj_tolldata_daily_2022-2026.rds"
 )
 
 
@@ -403,6 +379,10 @@ tolling_data_daily_all_years <-
       tolling_data_daily_all_years_files,
       readr::read_rds
     )
+  ) |> 
+  dplyr::filter(
+    # Skipping stations on Buøy and Hundvåg
+    trp_id < 800
   )
 
 
@@ -418,4 +398,80 @@ toll_nvdb_id <-
 
 source("calculate_cmdt_toll.R")
 
-calculate_cmdt_toll_for_all_stations(toll_nvdb_id, c(2019:2021), tolling_data_daily_all_years)
+calculate_cmdt_toll_for_all_stations(toll_nvdb_id$trp_id, c(2018:2026), tolling_data_daily_all_years)
+
+
+# Toll of TRP? ----
+# 4. Bomstasjoner og TRP som ligger på samme sted, og basert på data - hvilken bør velges:
+#    402 og Tastatorget, bom
+#    102 og Bjergsted, trp
+#    104 og Randabergveien, trp
+#    107 og Madlaveien ved Mosvatnet, trp
+#    114 og Bybrua sør, trp
+#    210 og Forus Gamleveien, trp
+#    301 og Strandgata nord, trp
+#    206 og Jåtten, trp
+#    207 og Forus (hovedveg pluss ramper), bom
+#    310 og Hana ved Rovik, bom
+#    308 og Austrått, trp
+#    306 og Brualand, bom
+#    304 og Oalsgata, trp
+#    205 og Bærheim, trp
+#    502 og Solastrand sør, trp
+#    TRP er å foretrekke da disse har begge retninger
+
+# TODO: Compare CMDT
+cmdt_city <- readr::read_rds("data_indexpoints_tidy/cmdt_952.rds")
+
+cmdt_compare <- 
+  cmdt_city |> 
+  dplyr::filter(
+    length_class == "korte",
+    trp_id %in% c("906727251", "12478V320582")
+  ) |> 
+  dplyr::left_join(
+    universal_calendar_periods,
+    by = dplyr::join_by(year, month == period_name)
+  )
+
+visualize_cmdt_comparison(cmdt_compare)
+
+visualize_cmdt_comparison <- function(cmdt_df) {
+
+  x_breaks_labels <-
+    cmdt_df |>
+    dplyr::filter(
+      stringr::str_detect(x_label, pattern = "apr|aug|des")
+    )
+
+  x_breaks <- x_breaks_labels |> purrr::pluck("universal_year_period_id")
+  x_labels <- x_breaks_labels |> purrr::pluck("x_label")
+
+  cmdt_df |>
+    ggplot2::ggplot(aes(x = universal_year_period_id, y = mdt, color = trp_id)) +
+    ggplot2::geom_line() +
+    ggplot2::geom_point() +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 90),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 10, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        )
+    ) +
+    ggplot2::scale_x_continuous(
+      name = NULL,
+      breaks = x_breaks,
+      labels = x_labels
+    ) +
+    labs(x = NULL, y = "CMDT") +
+    ggtitle("Sammenligning av kalenderjustert MDT")
+}

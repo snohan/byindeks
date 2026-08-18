@@ -7,7 +7,8 @@ plot_toll_station_data_per_lane <- function(toll_id_chosen, year_chosen, toll_st
   toll_station_name <-
     toll_station_info_df |>
     dplyr::filter(trp_id == toll_id_chosen) |>
-    dplyr::select(name) |>
+    dplyr::mutate(name_here = base::paste0(trp_id, " ", name)) |> 
+    dplyr::select(name_here) |>
     purrr::pluck(1)
 
   data_here <- 
@@ -39,7 +40,8 @@ plot_toll_station_data_per_lane <- function(toll_id_chosen, year_chosen, toll_st
   data_here |>
     ggplot2::ggplot(aes(day_aligned_by_weekday, traffic)) +
     ggplot2::geom_line(linewidth = 1, color = "#FF9600") +
-    ggplot2::geom_line(data = weekday_medians_repeated, color = "#DADADA") +
+    ggplot2::geom_point(color = "#FF9600", shape = 16, size = 4) +
+    ggplot2::geom_line(data = weekday_medians_repeated, color = "#1A1A1A") +
     ggplot2::facet_grid(
       rows = vars(month),
       cols = vars(lane)
