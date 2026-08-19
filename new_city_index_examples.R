@@ -13,9 +13,7 @@
 # Resolution in time:
 # - Month
 # - So far this year
-# - Last 12 months
-# - Last 24 months
-# - Last 36 months
+# - Last 12 months (possibly also multiples of 12, but not prioritized)
 
 # Resolution in day type
 # - working days
@@ -28,7 +26,7 @@
 # - all
 
 # How to compare methods:
-# - hard to make direct comparisons and attribute differences to specific parts of new method
+# - hard to make direct comparisons and attribute differences to specific parts of new method, since many things is done differently
 # - new versus old index results in different time resolutions, separated from new chaining strategies
 # - the impact of new chaining strategies leading to better representativity
 
@@ -55,28 +53,20 @@
   link_id_weights_2024 <- readr::read_rds("traffic_link_pop/link_id_weights_2024.rds")
   link_trp_id <- readr::read_rds("traffic_link_pop/link_trp_id.rds")
   link_toll_id <- readr::read_rds("traffic_link_pop/link_toll_id.rds") |> 
+    # Add links missing toll ids
     dplyr::bind_rows(
       tibble::tibble(
         link_id = c("0.0@2798059-1.0@3500119"),
         toll_id = c("906727254")
       )
     )
-
   points <- readr::read_rds("trps_for_city_index.rds")
 }
 
 
-# Relative importance ----
-# ind <- c(-2, 2, 2, 10)
-# ind_mean_centered <- ind - mean(ind)
-
-
 # Bergen ----
-{
-  city_number <- "8952"
-  links_in_area <- readr::read_rds("traffic_link_pop/links_bergen.rds")
-}
-
+city_number <- "8952"
+links_in_area <- readr::read_rds("traffic_link_pop/links_bergen.rds")
 source("new_city_index_examples_prepare.R")
 source("new_city_index_examples_calculate.R")
 
@@ -96,14 +86,10 @@ source("new_city_index_examples_calculate.R")
 
 
 # Oslo ----
-{
-  city_number <- "959"
-  links_in_area <- readr::read_rds("traffic_link_pop/links_oslo.rds")
-}
-
+city_number <- "959"
+links_in_area <- readr::read_rds("traffic_link_pop/links_oslo.rds")
 source("new_city_index_examples_prepare.R")
 source("new_city_index_examples_calculate.R")
-
 
 # missing <-
 #   this_citys_trps_all_adt_final |>
@@ -114,11 +100,8 @@ source("new_city_index_examples_calculate.R")
 
 
 # Trondheim ----
-{
-  city_number <- "960"
-  links_in_area <- readr::read_rds("traffic_link_pop/links_trondheim.rds")
-}
-
+city_number <- "960"
+links_in_area <- readr::read_rds("traffic_link_pop/links_trondheim.rds")
 source("new_city_index_examples_prepare.R")
 source("new_city_index_examples_calculate.R")
 
@@ -131,17 +114,9 @@ source("new_city_index_examples_calculate.R")
 
 
 # Nord-Jæren ----
-{
-  city_number <- "952"
-  links_in_area <- readr::read_rds("traffic_link_pop/links_nj.rds")
-}
-
+city_number <- "952"
+links_in_area <- readr::read_rds("traffic_link_pop/links_nj.rds")
 source("new_city_index_examples_prepare.R")
-
-# In case of reference year being oct-sep, do this:
-
-# TODO!!!
-
 
 # missing <-
 #   this_citys_trps_all_adt_final |>
@@ -198,7 +173,6 @@ nj_index_month <-
   calculate_area_index_month(population_size)
 
 area_index_one_year_nj <- calculate_rolling_area_index_one_year(nj_index_month[[1]])
-
 area_index_three_years_nj <- calculate_rolling_index_multiple_years(area_index_one_year_nj, 3)
 
 readr::write_rds(
@@ -251,7 +225,6 @@ nj_index_month_more <-
   calculate_area_index_month(population_size)
 
 area_index_one_year_nj_more <- calculate_rolling_area_index_one_year(nj_index_month_more[[1]])
-
 area_index_three_years_nj_more <- calculate_rolling_index_multiple_years(area_index_one_year_nj_more, 3)
 
 readr::write_rds(
@@ -288,8 +261,7 @@ list(
   )
 
 
-## Chained ----
-### Version done in 2025 ----
+## Chained, v. 2025 ----
 # Goal: have an index chain solely through the link years
 
 # Chain link 1: 2017-2019
@@ -410,7 +382,7 @@ index_chain_1_2_3 <-
   )
 
 
-### Version done in 2026 ----
+## Chained, v. 2026 ----
 # Goal: have a continuous rolling index time series
 # Must then chain each month
 
@@ -430,6 +402,7 @@ index_chain_1_2_3 <-
         universal_year_period_id > 112
       )
   )
+
 # Number of TRPs and representativity measures should be taken from this!
 readr::write_rds(
   nj_month_indices_original,
@@ -616,7 +589,7 @@ readr::write_rds(
 )
 
 
-## Chained and with toll data ----
+## Chained with toll data ----
 # Using okt17-sep18 as reference year
 
 # Chain part 1
@@ -636,29 +609,6 @@ area_index_month_1 <- index_month_values_1[[1]]
 link_index_month_1 <- index_month_values_1[[2]]
 
 area_index_one_year_1 <- calculate_rolling_area_index_one_year(area_index_month_1)
-
-# Check
-library(leaflet)
-source("H:/Programmering/R/byindeks/leaflet_nvdb_map_setup.R")
-# Table each month
-month_to_check <-
-  link_index_month_1 |> 
-  dplyr::filter(
-    universal_year_period_id == 53
-  ) |> 
-  dplyr::left_join(
-    trp_info,
-    by = "trp_id"
-  ) |> 
-  dplyr::select(
-    trp_id, name, road_category_and_number, year_a, year_b, month, mdt_delta, p_abi_p, index_p
-  ) |> 
-  dplyr::arrange(p_abi_p)
-
-# Map each month
-map_link_index(month_to_check, 10)
-
-
 
 # Chain part 2
 # okt18-sep19 -- 2023
@@ -688,3 +638,121 @@ area_index_month_3 <- index_month_values_3[[1]]
 link_index_month_3 <- index_month_values_3[[2]]
 
 area_index_one_year_3 <- calculate_rolling_area_index_one_year(area_index_month_3)
+
+# Chaining
+nj_month_indices_with_chain_info <-
+  dplyr::bind_rows(
+    area_index_month_1,
+    area_index_month_2,
+    area_index_month_3
+  ) |> 
+  dplyr::select(
+    universal_year_period_id, x_label, compared_to, period_name, compared_to_uypid, reference_period, index_i, var_i = var_robust_i
+  ) |> 
+  # Need to chain each chain part in consecutive order, identifying the different parts, in the correct order (chronological)
+  dplyr::mutate(
+    reference_period_uypid_start = base::min(compared_to_uypid),
+    .by = reference_period
+  ) |> 
+  dplyr::mutate(
+    chain_part = as.numeric(factor(reference_period_uypid_start))
+  )
+
+# Chain parts
+chain_part_1 <- 
+  nj_month_indices_with_chain_info |> 
+  dplyr::filter(chain_part %in% c(1)) |> 
+  dplyr::select(
+    universal_year_period_id, x_label, period_name, compared_to, compared_to_uypid, reference_period, index_i, var_i
+  )
+
+chain_part_2 <- 
+  nj_month_indices_with_chain_info |> 
+  dplyr::filter(chain_part %in% c(1, 2)) |> 
+  chain_index_months()
+
+chain_part_3 <-
+  dplyr::bind_rows(
+    chain_part_2 |> dplyr::mutate(chain_part = 2),
+    nj_month_indices_with_chain_info |> dplyr::filter(chain_part == 3) 
+  ) |> 
+  chain_index_months()
+
+nj_month_indices_chained <- 
+  dplyr::bind_rows(
+    chain_part_1,
+    chain_part_2,
+    chain_part_3
+  ) |> 
+  dplyr::rename(var_robust_i = var_i)
+
+area_index_one_year_nj_chained <- calculate_rolling_area_index_one_year(nj_month_indices_chained)
+
+area_index_one_year_nj_chained |>
+  dplyr::select(
+    universal_year_period_id,
+    x_label,
+    index_p,
+    ci_lower,
+    ci_upper
+  ) |>
+  readr::write_rds(
+    "representativity/rolling_cmdt_index_nj_chained_toll.rds"
+  )
+
+area_index_one_year_nj_chained |> 
+visualize_rolling_cmdt_index(
+    "Data: Statens vegvesen",
+    "Estimert endring i trafikkmengde siste glidende 1 år, forbedret metode",
+    paste0("Sammenlignet med 2017")
+  ) +
+  theme(
+    plot.background = element_rect(fill = svv_background_color),
+    panel.background = element_rect(fill = svv_background_color),
+    legend.background = element_rect(fill = svv_background_color)
+  ) +
+  ggplot2::scale_y_continuous(
+    limits = c(-14, 4), 
+    breaks = seq(-14, 4, by = 1)
+  ) 
+
+dplyr::bind_rows(
+  area_index_month_1,
+  area_index_month_2,
+  area_index_month_3
+) |> 
+dplyr::select(x_label, n_trp) |>
+dplyr::mutate(
+  x_label = as.factor(x_label) |> forcats::fct_inorder()
+) |>
+ggplot2::ggplot(aes(x = x_label, y = n_trp)) +
+ggplot2::geom_point(color = "#ed9300") +
+geom_line(group = '', color = "#ed9300") +
+theme_light() +
+theme(
+  axis.text.x = element_text(vjust = 0.5, angle = 90),
+  axis.title.y = element_text(
+    margin = margin(t = 0, r = 15, b = 0, l = 0)),
+  axis.title.x = element_text(
+    margin = margin(t = 15, r = 0, b = 0, l = 0)),
+  panel.grid.minor.x = element_blank(),
+  plot.caption =
+    element_text(
+      face = "italic",
+      size = 8,
+      lineheight = 1.5,
+      vjust = 0
+    ),
+  plot.background = element_rect(fill = svv_background_color),
+  panel.background = element_rect(fill = svv_background_color),
+  legend.background = element_rect(fill = svv_background_color),
+  legend.position = "bottom"
+) +
+ggplot2::scale_x_discrete(
+  name = NULL,
+  breaks = ~ dplyr::if_else(stringr::str_detect(.x, "des"), .x, "")
+) +
+labs(
+  x = NULL, y = "Antall punkt"
+) +
+ggtitle("Antall punkt")

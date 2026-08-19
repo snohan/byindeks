@@ -393,12 +393,13 @@ chain_index_months <- function(index_months_df) {
 
   # Test:
   # index_months_df <- 
-  #   nj_index_month_chained_all |> 
+  #   nj_month_indices_with_chain_info |> 
   #   dplyr::filter(
   #     chain_part %in% c(1, 2)
   #   )
+  # i <- 1
 
-  # Input must be restricted to just two consecutive chain parts
+  # TODO: Input must be restricted to just two consecutive chain parts
   
   months_to_be_chained <-
     index_months_df |> 
@@ -407,7 +408,8 @@ chain_index_months <- function(index_months_df) {
   first_chain_months <-
     index_months_df |> 
     dplyr::filter(
-      universal_year_period_id %in% months_to_be_chained$universal_year_period_id_chain
+      # universal_year_period_id %in% months_to_be_chained$universal_year_period_id_chain
+      universal_year_period_id %in% months_to_be_chained$compared_to_uypid
     )
 
   chained_months_df <- tibble::tibble()
@@ -440,11 +442,11 @@ chain_index_months <- function(index_months_df) {
       by = "universal_year_period_id"
     ) |> 
     dplyr::left_join(
-      first_chain_months |> dplyr::select(universal_year_period_id, compared_to),
+      first_chain_months |> dplyr::select(universal_year_period_id, compared_to, compared_to_uypid, reference_period),
       by = dplyr::join_by(compared_to_id == universal_year_period_id)
     ) |> 
     dplyr::select(
-      universal_year_period_id, x_label, compared_to, period_name, compared_ids, index_i, var_i
+      universal_year_period_id, x_label, period_name, compared_to, compared_to_uypid, reference_period, index_i, var_i
     )
 
   return(chained_months_tidy)
@@ -904,6 +906,7 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl) {
       trp_id,
       year_a = year,
       month,
+      compared_to_uypid = universal_year_period_id,
       mdt,
       length_m,
       fcl = function_class,
@@ -941,7 +944,7 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl) {
       ) |>
       dplyr::select(
         trp_id,
-        year_a, year_b, month, universal_year_period_id,
+        year_a, year_b, month, universal_year_period_id, compared_to_uypid,
         mdt_a, mdt_b,
         length_m, fcl, trp_tw_ref_kkm, tw_fcl_population_kkm, tw_fcl_population_share
       ) |>
@@ -987,7 +990,7 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl) {
         var_robust_fcl = (1 / base::sum(mdt_a * length_m)^2) * base::sum(var_robust_factor_trp * var_robust_diff),
         #
         tw_fcl_selection_ref = base::sum(trp_tw_ref_kkm),
-        .by = c(universal_year_period_id, fcl, tw_fcl_population_kkm, tw_fcl_population_share)
+        .by = c(universal_year_period_id, compared_to_uypid, fcl, tw_fcl_population_kkm, tw_fcl_population_share)
       ) |>
       dplyr::mutate(
         tw_selection_ref_share = tw_fcl_selection_ref / base::sum(tw_fcl_selection_ref),
@@ -1023,14 +1026,13 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl) {
         n_trp_perc = 100 * n_trp / population_size_dbl,
         tw_perc = 100 * base::sum(tw_fcl_selection_ref) / base::sum(tw_fcl_population_kkm),
         tvd = 100 * 0.5 * base::sum(tvd_diff),
-        .by = universal_year_period_id
+        .by = c(universal_year_period_id, compared_to_uypid)
       )  |>
       dplyr::left_join(
         universal_calendar_periods,
         by = dplyr::join_by(universal_year_period_id)
       ) |>
       dplyr::mutate(
-        compared_to_uypid = universal_year_period_id - 14,
         reference_period = reference_year_string
       ) |> 
       dplyr::left_join(
@@ -1042,6 +1044,7 @@ calculate_area_index_month <- function(trp_mdt_df, population_size_dbl) {
         x_label,
         compared_to,
         period_name,
+        compared_to_uypid,
         reference_period,
         index_i,
         index_p,
@@ -1666,9 +1669,43 @@ barplot_cmdt <- function(cmdt_df) {
 }
 
 
+visualize_cmdt_comparison <- function(cmdt_df) {
 
+  x_breaks_labels <-
+    cmdt_df |>
+    dplyr::filter(
+      stringr::str_detect(x_label, pattern = "apr|aug|des")
+    )
 
+  x_breaks <- x_breaks_labels |> purrr::pluck("universal_year_period_id")
+  x_labels <- x_breaks_labels |> purrr::pluck("x_label")
 
-
-
+  cmdt_df |>
+    ggplot2::ggplot(aes(x = universal_year_period_id, y = mdt, color = trp_id)) +
+    ggplot2::geom_line() +
+    ggplot2::geom_point() +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 90),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 10, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        )
+    ) +
+    ggplot2::scale_x_continuous(
+      name = NULL,
+      breaks = x_breaks,
+      labels = x_labels
+    ) +
+    labs(x = NULL, y = "CMDT") +
+    ggtitle("Sammenligning av kalenderjustert MDT")
+}
 

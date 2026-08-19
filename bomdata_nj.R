@@ -360,8 +360,6 @@ readr::write_rds(
 )
 
 
-
-
 ## Calculating CMDT ----
 # Gather all daily data
 tolling_data_daily_all_years_files <-
@@ -401,7 +399,7 @@ source("calculate_cmdt_toll.R")
 calculate_cmdt_toll_for_all_stations(toll_nvdb_id$trp_id, c(2018:2026), tolling_data_daily_all_years)
 
 
-# Toll of TRP? ----
+# Toll or TRP? ----
 # 4. Bomstasjoner og TRP som ligger på samme sted, og basert på data - hvilken bør velges:
 #    402 og Tastatorget, bom
 #    102 og Bjergsted, trp
@@ -436,42 +434,3 @@ cmdt_compare <-
 
 visualize_cmdt_comparison(cmdt_compare)
 
-visualize_cmdt_comparison <- function(cmdt_df) {
-
-  x_breaks_labels <-
-    cmdt_df |>
-    dplyr::filter(
-      stringr::str_detect(x_label, pattern = "apr|aug|des")
-    )
-
-  x_breaks <- x_breaks_labels |> purrr::pluck("universal_year_period_id")
-  x_labels <- x_breaks_labels |> purrr::pluck("x_label")
-
-  cmdt_df |>
-    ggplot2::ggplot(aes(x = universal_year_period_id, y = mdt, color = trp_id)) +
-    ggplot2::geom_line() +
-    ggplot2::geom_point() +
-    theme_light() +
-    theme(
-      axis.text.x = element_text(vjust = 0.5, angle = 90),
-      axis.title.y = element_text(
-        margin = margin(t = 0, r = 10, b = 0, l = 0)),
-      axis.title.x = element_text(
-        margin = margin(t = 15, r = 0, b = 0, l = 0)),
-      panel.grid.minor.x = element_blank(),
-      plot.caption =
-        element_text(
-          face = "italic",
-          size = 8,
-          lineheight = 1.5,
-          vjust = 0
-        )
-    ) +
-    ggplot2::scale_x_continuous(
-      name = NULL,
-      breaks = x_breaks,
-      labels = x_labels
-    ) +
-    labs(x = NULL, y = "CMDT") +
-    ggtitle("Sammenligning av kalenderjustert MDT")
-}
