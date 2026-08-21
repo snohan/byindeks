@@ -4,7 +4,8 @@ library(svglite)
 ggplot2::ggsave(
   # filename = "images/nj_chain_graph.svg",
   # plot = trp_mdt_plot_36,
-  filename = "images/nj_chained_toll.svg",
+  # filename = "images/nj_chained_toll.svg",
+  filename = "images/nj_chained_toll_points.svg",
   # filename = "images/mdt_pattern_test.svg",
   width = 8, height = 5
 )

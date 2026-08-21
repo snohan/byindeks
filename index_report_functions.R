@@ -1,3 +1,4 @@
+library(patchwork)
 # Utils ----
 borderline <- officer::fp_border(color = "black", style = "solid", width = 1)
 
@@ -1595,10 +1596,35 @@ visualize_city_36_mdt_index <- function(city_36_month_df, caption_text, title_te
 }
 
 
-visualize_rolling_cmdt_index <- function(rolling_cmdt_df, caption_text, title_text, sub_text) {
+visualize_trp_cmdt_index <- function(link_index_month_df, trp_no) {
 
+  # trp_no: numeric vector giving n trps
+
+  # Test:
+  # link_index_month_df <- link_index_month_2
+  # trp_no <- c(1)
+
+  trp_ids <- link_index_month_df$trp_id |> unique()
+
+  link_index_month_df_with_labels <-
+    link_index_month_df |> 
+    dplyr::filter(
+      trp_id %in% trp_ids[trp_no]
+    ) |> 
+    dplyr::left_join(
+      universal_calendar_periods |> dplyr::select(universal_year_period_id, x_label),
+      by = "universal_year_period_id"
+    ) |> 
+    dplyr::left_join(
+      dplyr::bind_rows(
+        points |> dplyr::mutate(road_and_name = paste0(road_category_and_number, " ", name)) |> dplyr::select(trp_id, road_and_name),
+        bomstasjoner_nj |> dplyr::mutate(road_and_name = paste0(road_category_and_number, " ", name)) |> dplyr::select(trp_id = nvdb_id, road_and_name)
+      ),
+      by = "trp_id"
+    )
+  
   x_breaks_labels <-
-    rolling_cmdt_df |>
+    link_index_month_df_with_labels |>
     dplyr::filter(
       stringr::str_detect(x_label, pattern = "apr|aug|des")
     )
@@ -1606,7 +1632,115 @@ visualize_rolling_cmdt_index <- function(rolling_cmdt_df, caption_text, title_te
   x_breaks <- x_breaks_labels |> purrr::pluck("universal_year_period_id")
   x_labels <- x_breaks_labels |> purrr::pluck("x_label")
 
+  # print(paste0("Visualizing TRP no. ", trp_no, " of ", length(trp_ids), "."))
+  
+  plot_index <- 
+    link_index_month_df_with_labels |>
+    ggplot2::ggplot(aes(x = universal_year_period_id, y = p_abi_p, color = road_and_name)) +
+    ggplot2::geom_line() +
+    ggplot2::geom_point() +
+    ggplot2::geom_hline(
+      yintercept = 0,
+      color = "#58b02c",
+      linewidth = 0.8,
+      alpha = 0.3
+    ) +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 90),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 10, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        )
+    ) +
+    ggplot2::scale_colour_brewer(
+      name = NULL,
+      palette = "Set1"
+    ) +
+    ggplot2::scale_x_continuous(
+      name = NULL,
+      breaks = x_breaks,
+      labels = x_labels
+    ) +
+    labs(x = NULL, y = "Endring i trafikkmengde (%)")
+
+  plot_mdt_delta <- 
+    link_index_month_df_with_labels |>
+    ggplot2::ggplot(aes(x = universal_year_period_id, y = mdt_delta, color = road_and_name)) +
+    ggplot2::geom_hline(
+      yintercept = 0,
+      color = "#58b02c",
+      linewidth = 0.8,
+      alpha = 0.3
+    ) +
+    ggplot2::geom_line() +
+    ggplot2::geom_point() +
+    theme_light() +
+    theme(
+      axis.text.x = element_text(vjust = 0.5, angle = 90),
+      axis.title.y = element_text(
+        margin = margin(t = 0, r = 10, b = 0, l = 0)),
+      axis.title.x = element_text(
+        margin = margin(t = 15, r = 0, b = 0, l = 0)),
+      panel.grid.minor.x = element_blank(),
+      plot.caption =
+        element_text(
+          face = "italic",
+          size = 8,
+          lineheight = 1.5,
+          vjust = 0
+        )
+    ) +
+    ggplot2::scale_colour_brewer(
+      name = NULL,
+      palette = "Set1"
+    ) +
+    ggplot2::scale_x_continuous(
+      name = NULL,
+      breaks = x_breaks,
+      labels = x_labels
+    ) +
+    labs(x = NULL, y = "Avvik i MDT")
+
+  return(plot_index / plot_mdt_delta)
+
+}
+
+
+visualize_rolling_cmdt_index <- function(rolling_cmdt_df, caption_text, title_text, sub_text) {
+
+  # Add a first row for the reference year with zero values
+  reference_year_zero_values <-
+    tibble::tibble(
+      universal_year_period_id = base::min(rolling_cmdt_df$universal_year_period_id) - 14,
+      index_p = 0,
+      ci_lower = NULL, ci_upper = NULL
+    ) |> 
+    dplyr::left_join(
+      universal_calendar_periods |> dplyr::select(universal_year_period_id, x_label),
+      by = "universal_year_period_id"
+    )
+
+  x_breaks_labels <-
+    rolling_cmdt_df |>
+    dplyr::filter(
+      stringr::str_detect(x_label, pattern = "apr|aug|des")
+    ) |> 
+    dplyr::bind_rows(reference_year_zero_values)
+
+  x_breaks <- x_breaks_labels |> purrr::pluck("universal_year_period_id")
+  x_labels <- x_breaks_labels |> purrr::pluck("x_label")
+
   rolling_cmdt_df |>
+    dplyr::bind_rows(reference_year_zero_values) |> 
     ggplot2::ggplot(aes(x = universal_year_period_id, y = index_p)) +
     ggplot2::geom_hline(
       yintercept = 0,
@@ -1625,8 +1759,8 @@ visualize_rolling_cmdt_index <- function(rolling_cmdt_df, caption_text, title_te
     ) +
     ggplot2::geom_line(color = "#ED9300") +
     ggplot2::geom_point(color = "#ED9300") +
-    theme_light() +
-    theme(
+    ggplot2::theme_light() +
+    ggplot2::theme(
       axis.text.x = element_text(vjust = 0.5, angle = 90),
       axis.title.y = element_text(
         margin = margin(t = 0, r = 10, b = 0, l = 0)),
@@ -1646,12 +1780,10 @@ visualize_rolling_cmdt_index <- function(rolling_cmdt_df, caption_text, title_te
       breaks = x_breaks,
       labels = x_labels
     ) +
-    labs(
+    ggplot2::labs(
       x = NULL, y = "Endring i trafikkmengde (%)",
-      caption = caption_text) +
-    ggtitle(
-      title_text,
-      subtitle = sub_text
+      title = title_text, subtitle = sub_text,
+      caption = caption_text
     )
 }
 

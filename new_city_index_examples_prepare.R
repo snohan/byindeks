@@ -143,5 +143,7 @@ mdt_filtered <-
   ) |>
   dplyr::filter(length_class == "korte")
 
+
+# Exclusions ----
 # To get the mdt_validated df
 source("exclude_cmdt.R")

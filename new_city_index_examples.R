@@ -116,6 +116,7 @@ source("new_city_index_examples_calculate.R")
 # Nord-Jæren ----
 city_number <- "952"
 links_in_area <- readr::read_rds("traffic_link_pop/links_nj.rds")
+source("bomdata_nj_stations.R")
 source("new_city_index_examples_prepare.R")
 
 # missing <-
@@ -608,7 +609,7 @@ index_month_values_1 <-
 area_index_month_1 <- index_month_values_1[[1]]
 link_index_month_1 <- index_month_values_1[[2]]
 
-area_index_one_year_1 <- calculate_rolling_area_index_one_year(area_index_month_1)
+# area_index_one_year_1 <- calculate_rolling_area_index_one_year(area_index_month_1)
 
 # Chain part 2
 # okt18-sep19 -- 2023
@@ -618,28 +619,75 @@ index_month_values_2 <-
     universal_year_period_id >= 40,
     universal_year_period_id <= 112
   ) |> 
+  dplyr::filter(
+    # Eiganestunnelen
+    !(trp_id %in% c("906727263", "906727262", "22231V320583", "906727257", "45342V320223", "50749V319525", "55507V319881", "71535V319524") & universal_year_period_id >= 61),
+    # Ryfylketunnelen
+    !(trp_id %in% c("12478V320582", "906727246", "40696V1727469", "41451V320581", "50741V1727509", "35382V1727514", "64040V320581", "66678V320582", "81631V1727485", "93189V320582")),
+    !(trp_id %in% c("16074V319868", "906727238") & universal_year_period_id >= 100), # Strandgata
+    !(trp_id %in% c("906727244", "71798V319583") & universal_year_period_id >= 94), # Ukjent
+    !(trp_id %in% c("906727237") & universal_year_period_id == 40), # Kobling fv.-E39 ved Hove
+    !(trp_id %in% c("906727237", "88125V320152") & universal_year_period_id >= 91), # Ukjent, Hoveveien?
+    !(trp_id %in% c("35382V1727514") & universal_year_period_id %in% c(87:91)), # Ukjent
+    # Lite data
+    !(trp_id %in% c("89794V320138"))
+  ) |> 
   calculate_area_index_month(population_size)
 
 area_index_month_2 <- index_month_values_2[[1]]
 link_index_month_2 <- index_month_values_2[[2]]
 
-area_index_one_year_2 <- calculate_rolling_area_index_one_year(area_index_month_2)
+# area_index_one_year_2 <- calculate_rolling_area_index_one_year(area_index_month_2)
 
 # Chain part 3
 # 2023 -- 
 index_month_values_3 <-
-  mdt_validated |>
+  # Need to include some TRPs that was deemed unusable in 
+  # mdt_validated |>
+  mdt_filtered |>
+  dplyr::left_join(
+    universal_calendar_periods |>
+      dplyr::select(
+        universal_year_period_id,
+        year,
+        period_name
+      ),
+    by = dplyr::join_by(year, month == period_name)
+  ) |>
+  dplyr::inner_join(
+    # "inner" works as a filter here!
+    trp_weights, # NB! these TRPs are filtered by urban area
+    by = dplyr::join_by(trp_id)
+  ) |>
+  dplyr::mutate(
+    month = base::factor(month, levels = period_names)
+  ) |> 
   dplyr::filter(
     universal_year_period_id >= 99
+  ) |> 
+  dplyr::filter(
+    # !(trp_id %in% c("05268V320136")), # Ukjent, Somaveien, bussveg?
+    !(trp_id %in% c("12478V320582", "906727244")), # Ukjent, bussveg?
+    !(trp_id %in% c("89794V320138")), # Ukjent, Hoveveien unormal hele 2023
+    !(trp_id %in% c("906727264") & universal_year_period_id %in% c(124:131)), # Ukjent
+    !(trp_id %in% c("57279V320244") & universal_year_period_id %in% c(122:132)), # Arbeider nord for Storhaugtunnelen
+    !(trp_id %in% c("906727246") & universal_year_period_id %in% c(119)), # Ukjent
+    !(trp_id %in% c("906727267") & universal_year_period_id >= 139), # Ukjent
+    !(trp_id %in% c("64040V320581") & universal_year_period_id >= 138), # E39 Somaveien, ulikt antall vindinger på sløyfer
+    !(trp_id %in% c("86207V319742") & universal_year_period_id >= 125), # Lagårdsveien, ulikt antall vindinger på sløyfer?
+    !(trp_id %in% c("58562V320296") & universal_year_period_id %in% c(122:149)), # Arbeider ved Bjergsted
+    !(trp_id %in% c("71535V319524") & universal_year_period_id %in% c(124:131)), # Lassa
+    !(trp_id %in% c("73355V319671") & universal_year_period_id %in% c(142:149)), # Austråttunnelen
+    !(trp_id %in% c("906727234") & universal_year_period_id >= 142) # Ukjent
   ) |> 
   calculate_area_index_month(population_size)
 
 area_index_month_3 <- index_month_values_3[[1]]
 link_index_month_3 <- index_month_values_3[[2]]
 
-area_index_one_year_3 <- calculate_rolling_area_index_one_year(area_index_month_3)
+# area_index_one_year_3 <- calculate_rolling_area_index_one_year(area_index_month_3)
 
-# Chaining
+### Chaining ----
 nj_month_indices_with_chain_info <-
   dplyr::bind_rows(
     area_index_month_1,
@@ -700,11 +748,13 @@ area_index_one_year_nj_chained |>
     "representativity/rolling_cmdt_index_nj_chained_toll.rds"
   )
 
+
+### Rolling index plot ----
 area_index_one_year_nj_chained |> 
 visualize_rolling_cmdt_index(
-    "Data: Statens vegvesen",
-    "Estimert endring i trafikkmengde siste glidende 1 år, forbedret metode",
-    paste0("Sammenlignet med 2017")
+    "Data: Statens vegvesen, Rogaland fylkeskommune",
+    "Estimert endring i trafikkmengde, forbedret metode",
+    paste0("Siste år sammenlignet med okt17-sep18")
   ) +
   theme(
     plot.background = element_rect(fill = svv_background_color),
@@ -712,10 +762,12 @@ visualize_rolling_cmdt_index(
     legend.background = element_rect(fill = svv_background_color)
   ) +
   ggplot2::scale_y_continuous(
-    limits = c(-14, 4), 
-    breaks = seq(-14, 4, by = 1)
-  ) 
+    limits = c(-18, 3), 
+    breaks = seq(-18, 3, by = 1)
+  )
 
+
+### N points plot ----
 dplyr::bind_rows(
   area_index_month_1,
   area_index_month_2,
@@ -752,7 +804,140 @@ ggplot2::scale_x_discrete(
   name = NULL,
   breaks = ~ dplyr::if_else(stringr::str_detect(.x, "des"), .x, "")
 ) +
-labs(
-  x = NULL, y = "Antall punkt"
+ggplot2::labs(
+  x = NULL, y = "Antall punkt", 
+  title = "Antall indekspunkt", subtitle = "Forbedret metode, kjedet indeks inkludert bomstasjoner, Nord-Jæren"
+)
+
+# Stacked barplot depicting number of toll and trps
+dplyr::bind_rows(
+  link_index_month_1,
+  link_index_month_2,
+  link_index_month_3
+) |> 
+  dplyr::select(trp_id, universal_year_period_id) |> 
+  dplyr::left_join(
+    universal_calendar_periods |> dplyr::mutate(x_label = as.factor(x_label) |> forcats::fct_inorder()),
+    by = "universal_year_period_id"
+  ) |> 
+  dplyr::left_join(
+    dplyr::bind_rows(
+      points |> dplyr::select(trp_id) |> dplyr::mutate(source = "Trafikkdata"),
+      bomstasjoner_nj |> dplyr::select(trp_id = nvdb_id) |> dplyr::mutate(source = "AutoPASS")
+    ),
+    by = "trp_id"
+  ) |> 
+  dplyr::select(x_label, source) |> 
+  ggplot2::ggplot(aes(x = x_label, fill = source)) +
+  ggplot2::geom_bar() +
+  theme_light() +
+theme(
+  axis.text.x = element_text(vjust = 0.5, angle = 90),
+  axis.title.y = element_text(
+    margin = margin(t = 0, r = 15, b = 0, l = 0)),
+  axis.title.x = element_text(
+    margin = margin(t = 15, r = 0, b = 0, l = 0)),
+  panel.grid.minor.x = element_blank(),
+  plot.caption =
+    element_text(
+      face = "italic",
+      size = 8,
+      lineheight = 1.5,
+      vjust = 0
+    ),
+  plot.background = element_rect(fill = svv_background_color),
+  panel.background = element_rect(fill = svv_background_color),
+  legend.background = element_rect(fill = svv_background_color),
+  legend.position = "bottom"
 ) +
-ggtitle("Antall punkt")
+ggplot2::scale_x_discrete(
+  name = NULL,
+  breaks = ~ dplyr::if_else(stringr::str_detect(.x, "des"), .x, "")
+) +
+ggplot2::labs(
+  x = NULL, y = "Antall punkt", 
+  title = "Antall indekspunkt", subtitle = "Forbedret metode, kjedet indeks inkludert bomstasjoner, Nord-Jæren"
+)
+
+
+### Which points? ----
+# Tables
+# Wide with months as columns, but years as rows
+# A column that gives chain part
+# Need name and road, but not latlon
+point_indexes <-
+  dplyr::bind_rows(
+    link_index_month_1 |> 
+      dplyr::mutate(
+        start_of_reference_period = base::min(universal_year_period_id) - 14,
+        end_of_reference_period = base::min(universal_year_period_id) - 1
+      ),
+      link_index_month_2 |> 
+      dplyr::mutate(
+        start_of_reference_period = base::min(universal_year_period_id) - 14,
+        end_of_reference_period = base::min(universal_year_period_id) - 1
+      ),
+      link_index_month_3 |> 
+      dplyr::mutate(
+        start_of_reference_period = base::min(universal_year_period_id) - 14,
+        end_of_reference_period = base::min(universal_year_period_id) - 1
+      )
+  ) |> 
+  dplyr::left_join(
+    universal_calendar_periods |> dplyr::select(universal_year_period_id, x_label_start = x_label),
+    by = dplyr::join_by(start_of_reference_period == universal_year_period_id)
+  ) |> 
+  dplyr::left_join(
+    universal_calendar_periods |> dplyr::select(universal_year_period_id, x_label_end = x_label),
+    by = dplyr::join_by(end_of_reference_period == universal_year_period_id)
+  ) |> 
+  dplyr::mutate(
+    reference_period = base::paste0(x_label_start, "_", x_label_end) |> stringr::str_remove_all("\\s+"),
+    p_abi_p = base::round(p_abi_p, 2)
+  ) |> 
+  dplyr::select(
+    trp_id, year_b, month, p_abi_p, reference_period
+  )
+
+point_indexes_wide <-
+  point_indexes |> 
+  tidyr::pivot_wider(
+    names_from = month,
+    values_from = p_abi_p
+  ) |> 
+  dplyr::left_join(
+    dplyr::bind_rows(
+      points |> dplyr::select(trp_id, name, road_category_and_number) |> dplyr::mutate(source = "Trafikkdata"),
+      bomstasjoner_nj |> dplyr::select(trp_id = nvdb_id, name, road_category_and_number) |> dplyr::mutate(source = "AutoPASS")
+    ),
+    by = "trp_id"
+  ) |> 
+  dplyr::select(trp_id, name, road_category_and_number, source, reference_period, year = year_b, all_of(period_names)) |> 
+  dplyr::arrange(road_category_and_number, name, year)
+
+writexl::write_xlsx(
+  point_indexes_wide,
+  "spesialuttak/nj_punktindeks_regneeksempel.xlsx"
+)
+
+
+
+# Maps
+# Need a df with unique points in each chain part
+# latlon
+point_indexes_for_map <-
+  point_indexes |> 
+  dplyr::select(trp_id, reference_period) |> 
+  dplyr::distinct() |> 
+  dplyr::left_join(
+    dplyr::bind_rows(
+      points |> dplyr::select(trp_id, name, road_category_and_number, lat, lon) |> dplyr::mutate(source = "Trafikkregistrering"),
+      bomstasjoner_nj |> dplyr::select(trp_id = nvdb_id, name, road_category_and_number, lat, lon) |> dplyr::mutate(source = "AutoPASS")
+    ),
+    by = "trp_id"
+  )
+
+readr::write_rds(
+  point_indexes_for_map,
+  "representativity/nj_updated_example_with_toll.rds"
+)

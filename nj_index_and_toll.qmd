@@ -206,6 +206,13 @@ trps_and_toll_stations_improved <-
       indeks = base::round(indeks, 1)
     )
 
+
+#
+point_indexes_for_map_updated_example <- 
+readr::read_rds(
+  "representativity/nj_updated_example_with_toll.rds"
+) |> 
+  dplyr::rename(datakilde = source)
 ```
 
 # Bakgrunn
@@ -413,4 +420,187 @@ palett_indeks_improved <- leaflet::colorNumeric(palette = "viridis", domain = tr
       title = "Indeks (%)",
       opacity = 0.7
     )
+```
+
+
+# Nytt regneeksempel med bomstasjoner
+
+
+## Okt17-sep18 til okt18-sep19
+```{r}
+#| label: map_improved_toll_1
+
+# Given a df with info on each index point, including toll stations:
+# - name
+# - latlon
+# - stationtype
+# - percentage change
+
+# map <-
+  point_indexes_for_map_updated_example |>
+    dplyr::filter(
+      reference_period == "okt17_sep18"
+    ) |> 
+    leaflet::leaflet(
+      width = "100%",
+      height = 1e3,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F
+        )
+    ) |>
+    leaflet::addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) |>
+    leaflet::addCircleMarkers(
+      lng = ~lon,
+      lat = ~lat,
+      radius = 11,
+      stroke = T,
+      weight = 4,
+      color = ~palett_datakilde(datakilde),
+      opacity = 0.9,
+      fill = T,
+      fillOpacity = 0.8,
+      # label = ~indeks,
+      labelOptions = 
+        leaflet::labelOptions(
+          noHide = TRUE, 
+          textOnly = TRUE, 
+          textsize = "16px",
+          direction = "top",
+          style = base::list(
+            "font-weight" = "bold"
+          )
+        )
+    ) |>
+    leaflet::addLegend(
+      position = "bottomleft",
+      pal = palett_datakilde,
+      values = ~datakilde,
+      title = "Datakilde",
+      opacity = 0.7
+    ) 
+```
+
+
+## Okt18-sep19 til 2023
+```{r}
+#| label: map_improved_toll_2
+
+# Given a df with info on each index point, including toll stations:
+# - name
+# - latlon
+# - stationtype
+# - percentage change
+
+# map <-
+  point_indexes_for_map_updated_example |>
+    dplyr::filter(
+      reference_period == "okt18_sep19"
+    ) |> 
+    leaflet::leaflet(
+      width = "100%",
+      height = 1e3,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F
+        )
+    ) |>
+    leaflet::addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) |>
+    leaflet::addCircleMarkers(
+      lng = ~lon,
+      lat = ~lat,
+      radius = 11,
+      stroke = T,
+      weight = 4,
+      color = ~palett_datakilde(datakilde),
+      opacity = 0.9,
+      fill = T,
+      fillOpacity = 0.8,
+      # label = ~indeks,
+      labelOptions = 
+        leaflet::labelOptions(
+          noHide = TRUE, 
+          textOnly = TRUE, 
+          textsize = "16px",
+          direction = "top",
+          style = base::list(
+            "font-weight" = "bold"
+          )
+        )
+    ) |>
+    leaflet::addLegend(
+      position = "bottomleft",
+      pal = palett_datakilde,
+      values = ~datakilde,
+      title = "Datakilde",
+      opacity = 0.7
+    ) 
+```
+
+
+## 2023 og framover
+```{r}
+#| label: map_improved_toll_3
+
+# Given a df with info on each index point, including toll stations:
+# - name
+# - latlon
+# - stationtype
+# - percentage change
+
+# map <-
+  point_indexes_for_map_updated_example |>
+    dplyr::filter(
+      reference_period == "jan23_des23"
+    ) |> 
+    leaflet::leaflet(
+      width = "100%",
+      height = 1e3,
+      options =
+        leafletOptions(
+          crs = nvdb_crs,
+          zoomControl = F
+        )
+    ) |>
+    leaflet::addTiles(
+      urlTemplate = nvdb_map_url,
+      attribution = nvdb_map_attribution
+    ) |>
+    leaflet::addCircleMarkers(
+      lng = ~lon,
+      lat = ~lat,
+      radius = 11,
+      stroke = T,
+      weight = 4,
+      color = ~palett_datakilde(datakilde),
+      opacity = 0.9,
+      fill = T,
+      fillOpacity = 0.8,
+      # label = ~indeks,
+      labelOptions = 
+        leaflet::labelOptions(
+          noHide = TRUE, 
+          textOnly = TRUE, 
+          textsize = "16px",
+          direction = "top",
+          style = base::list(
+            "font-weight" = "bold"
+          )
+        )
+    ) |>
+    leaflet::addLegend(
+      position = "bottomleft",
+      pal = palett_datakilde,
+      values = ~datakilde,
+      title = "Datakilde",
+      opacity = 0.7
+    ) 
 ```
