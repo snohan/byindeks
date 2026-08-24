@@ -63,7 +63,8 @@ city_index_yearly_all <-
     area_name,
     year_base, year, year_from_to, month, month_name_short, period,
     index_type,
-    n_trp, index_i, index_p, ci_lower, ci_upper
+    n_trp, index_i, index_p, 
+    standard_error, ci_lower, ci_upper
   )
 
 readr::write_rds(
