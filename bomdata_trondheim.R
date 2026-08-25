@@ -67,60 +67,62 @@ tolling_station_ids_apar <-
   )
 
 # Fetch all data for all trp_ids for a month, and store
-month_string <- "april" # English!
-year_number <- 2026
+{
+  month_string <- "july" # English!
+  year_number <- 2026
 
-apar_data_for_month <-
-  purrr::map_dfr(
-    tolling_station_ids_apar,
-    ~ get_apar_data(
-        dataset_id = trondheim_apar_id,
-        autopass_station_id = .,
-        month_string = month_string,
-        year_number = year_number
+  apar_data_for_month <-
+    purrr::map_dfr(
+      tolling_station_ids_apar,
+      ~ get_apar_data(
+          dataset_id = trondheim_apar_id,
+          autopass_station_id = .,
+          month_string = month_string,
+          year_number = year_number
+      )
+    )
+
+  apar_data_for_month_tidy <-
+    apar_data_for_month |>
+    dplyr::select(
+      trp_id = toll_station_code,
+      lane,
+      date,
+      hour = hour_start,
+      class = vehicle_class_ID,
+      traffic
+    ) |>
+    dplyr::mutate(
+      trp_id =
+        dplyr::case_when(
+          # Split Klett og Røddeveien
+          trp_id == "51" & lane %in% c("3", "4") ~ "512",
+          # Merge "Kroppanbrua" (the misnomer...)
+          trp_id == "57" ~ "56",
+          # Keep consistent Ranheim ID in data
+          trp_id == "1" ~ "72",
+          TRUE ~ trp_id
+        ),
+      class =
+        dplyr::case_when(
+          class == "1" ~ "lette",
+          class == "2" ~ "tunge",
+          TRUE ~ "ukjent"
+        ),
+      traffic = as.numeric(traffic)
+    )
+
+  readr::write_rds(
+    apar_data_for_month_tidy,
+    file = paste0(
+      "H:/Programmering/R/byindeks/bomdata_trondheim/raw_apar_2021-5_/apar_trd_",
+      year_number,
+      "-",
+      month_string,
+      ".rds"
     )
   )
-
-apar_data_for_month_tidy <-
-  apar_data_for_month |>
-  dplyr::select(
-    trp_id = toll_station_code,
-    lane,
-    date,
-    hour = hour_start,
-    class = vehicle_class_ID,
-    traffic
-  ) |>
-  dplyr::mutate(
-    trp_id =
-      dplyr::case_when(
-        # Split Klett og Røddeveien
-        trp_id == "51" & lane %in% c("3", "4") ~ "512",
-        # Merge "Kroppanbrua" (the misnomer...)
-        trp_id == "57" ~ "56",
-        # Keep consistent Ranheim ID in data
-        trp_id == "1" ~ "72",
-        TRUE ~ trp_id
-      ),
-    class =
-      dplyr::case_when(
-        class == "1" ~ "lette",
-        class == "2" ~ "tunge",
-        TRUE ~ "ukjent"
-      ),
-    traffic = as.numeric(traffic)
-  )
-
-readr::write_rds(
-  apar_data_for_month_tidy,
-  file = paste0(
-    "H:/Programmering/R/byindeks/bomdata_trondheim/raw_apar_2021-5_/apar_trd_",
-    year_number,
-    "-",
-    month_string
-  )
-)
-
+}
 
 ### Gather all hourly APAR data ----
 apar_files <-
@@ -170,7 +172,7 @@ tolling_data_daily_lane <-
 kommune_bomer <- readr::read_rds(file = "bomdata_trondheim/trd_toll_stations.rds")
 
 # Ranheim is 72, 21 stations total
-plot_toll_station_data_per_lane(tolling_station_ids_original[21], c(2025, 2026), kommune_bomer)
+plot_toll_station_data_per_lane(tolling_station_ids_original[20], c(2026), kommune_bomer)
 
 
 # Daily ----

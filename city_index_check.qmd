@@ -62,13 +62,13 @@ counties <- readr::read_rds("counties.rds")
 # 2016 Busk  1952   04 Snorre
 # 2016 Gren   955   04 Snorre
 
-# 2017 NJær   952   05 Snorre
-# 2018 Oslo   959   05 Trond
-# 2018 Berg  8952   04 Trond
-# 2019 Tron   960   04 Snorre
-# 2022 Trom 16952   04 Snorre
-# 2023 Kris 19953   04 Snorre
-# 2023 NGlo 18952   04 Trond
+# 2017 NJær   952   07 Snorre
+# 2018 Oslo   959   07 Trond
+# 2018 Berg  8952   07 Trond
+# 2019 Tron   960   07 Snorre
+# 2022 Trom 16952   07 Snorre
+# 2023 Kris 19953   07 Snorre
+# 2023 NGlo 18952   07 Trond
 
 # 2024 Aale 20952   04 Snorre
 # 2025 Haug 19955   03 Snorre
@@ -79,7 +79,7 @@ counties <- readr::read_rds("counties.rds")
 # Choose
 index_year <- 2026
 latest_published_month <- 4
-city_number <- 952
+city_number <- 960
 # End choose
 
 new_month_year <-
@@ -255,6 +255,14 @@ if(toll_data_is_included){
     tolling_station_indices_prepared |>
     dplyr::filter(month == (latest_published_month + 1)) 
 # %% 12
+
+tolling_station_indices_prepared_new_2 <-
+    tolling_station_indices_prepared |>
+    dplyr::filter(month == (latest_published_month + 2)) 
+
+tolling_station_indices_prepared_new_3 <-
+  tolling_station_indices_prepared |>
+  dplyr::filter(month == (latest_published_month + 3)) 
 }
 ```
 

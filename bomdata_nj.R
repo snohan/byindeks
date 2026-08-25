@@ -4,6 +4,7 @@ source("apar.R")
 source("toll_station_functions.R")
 
 
+#
 # Monthly data ----
 # A preliminary analysis
 
@@ -196,8 +197,8 @@ tolling_data_daily_lane <-
 
 ## 2022- from Autopass Analytics ----
 {
-  month_string <- "july" # English!
-  year_number <- 2026
+  month_string <- "may" # English!
+  year_number <- 2022
 
   apar_data_for_month <-
     purrr::map_dfr(
@@ -298,7 +299,7 @@ tolling_data_daily_lane_raw <-
 source("bomdata_nj_exclusions.R")
 
 ## Check daily by lane ----
-plot_toll_station_data_per_lane(base::unique(bomstasjoner_nj$trp_id)[40], c(2026), bomstasjoner_nj)
+plot_toll_station_data_per_lane(base::unique(bomstasjoner_nj$trp_id)[1], c(2022), bomstasjoner_nj)
 
 
 ## Daily data
