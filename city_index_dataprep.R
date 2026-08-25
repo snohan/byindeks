@@ -65,7 +65,7 @@ trp_id_msnr <-
   present_year <- 2026
   # month to be published now:
   index_month <- 7
-  city_number <- 960
+  city_number <- 20952
 }
 
 toll_data_is_included <- city_number %in% c(960, 19955)
@@ -164,7 +164,7 @@ trp_not_ok <-
 # TODO: look at sectional TRPs concurrently
 # TODO: in map, draw curve connecting sectional TRPs
 
-start_at <- 36
+start_at <- 1
 plot_mdt(start_at, 5)
 # Workaround as Positron won't show patterns
 # ggplot2::ggsave(filename = "images/mdt_pattern_test.svg", width = 12, height = 12)
@@ -199,9 +199,9 @@ trp_mdt_plot_36 |> plotly::ggplotly()
 
 all_rolling_indices_list <-
   list(
-    all_12_month_indices,
-    all_24_month_indices,
-    all_36_month_indices
+    all_12_month_indices
+    # all_24_month_indices,
+    # all_36_month_indices
   )
 
 all_rolling_indices <- 

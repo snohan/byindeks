@@ -79,7 +79,7 @@ counties <- readr::read_rds("counties.rds")
 # Choose
 index_year <- 2026
 latest_published_month <- 4
-city_number <- 960
+city_number <- 20952
 # End choose
 
 new_month_year <-
