@@ -53,7 +53,7 @@
   link_id_weights_2024 <- readr::read_rds("traffic_link_pop/link_id_weights_2024.rds")
   link_trp_id <- readr::read_rds("traffic_link_pop/link_trp_id.rds")
   link_toll_id <- readr::read_rds("traffic_link_pop/link_toll_id.rds") |> 
-    # Add links missing toll ids
+    # Add links that are missing their toll ids
     dplyr::bind_rows(
       tibble::tibble(
         link_id = c("0.0@2798059-1.0@3500119"),
@@ -593,6 +593,8 @@ readr::write_rds(
 ## Chained with toll data ----
 # Using okt17-sep18 as reference year
 
+source("exclude_cmdt_extra.R")
+
 # Chain part 1
 # okt17-sep18 -- okt18-sep19
 index_month_values_1 <-
@@ -619,25 +621,12 @@ index_month_values_2 <-
     universal_year_period_id >= 40,
     universal_year_period_id <= 112
   ) |> 
-  dplyr::filter(
-    # Eiganestunnelen
-    !(trp_id %in% c("906727263", "906727262", "22231V320583", "906727257", "45342V320223", "50749V319525", "55507V319881", "71535V319524") & universal_year_period_id >= 61),
-    # Ryfylketunnelen
-    !(trp_id %in% c("12478V320582", "906727246", "40696V1727469", "41451V320581", "50741V1727509", "35382V1727514", "64040V320581", "66678V320582", "81631V1727485", "93189V320582")),
-    !(trp_id %in% c("16074V319868", "906727238") & universal_year_period_id >= 100), # Strandgata
-    !(trp_id %in% c("906727244", "71798V319583") & universal_year_period_id >= 94), # Ukjent
-    !(trp_id %in% c("906727237") & universal_year_period_id == 40), # Kobling fv.-E39 ved Hove
-    !(trp_id %in% c("906727237", "88125V320152") & universal_year_period_id >= 91), # Ukjent, Hoveveien?
-    !(trp_id %in% c("35382V1727514") & universal_year_period_id %in% c(87:91)), # Ukjent
-    # Lite data
-    !(trp_id %in% c("89794V320138"))
-  ) |> 
+  # exclude_periods(exclusions_nj_okt18_sep19__2023) |> 
   calculate_area_index_month(population_size)
 
 area_index_month_2 <- index_month_values_2[[1]]
 link_index_month_2 <- index_month_values_2[[2]]
 
-# area_index_one_year_2 <- calculate_rolling_area_index_one_year(area_index_month_2)
 
 # Chain part 3
 # 2023 -- 
@@ -665,21 +654,7 @@ index_month_values_3 <-
   dplyr::filter(
     universal_year_period_id >= 99
   ) |> 
-  dplyr::filter(
-    # !(trp_id %in% c("05268V320136")), # Ukjent, Somaveien, bussveg?
-    !(trp_id %in% c("12478V320582", "906727244")), # Ukjent, bussveg?
-    !(trp_id %in% c("89794V320138")), # Ukjent, Hoveveien unormal hele 2023
-    !(trp_id %in% c("906727264") & universal_year_period_id %in% c(124:131)), # Ukjent
-    !(trp_id %in% c("57279V320244") & universal_year_period_id %in% c(122:132)), # Arbeider nord for Storhaugtunnelen
-    !(trp_id %in% c("906727246") & universal_year_period_id %in% c(119)), # Ukjent
-    !(trp_id %in% c("906727267") & universal_year_period_id >= 139), # Ukjent
-    !(trp_id %in% c("64040V320581") & universal_year_period_id >= 138), # E39 Somaveien, ulikt antall vindinger på sløyfer
-    !(trp_id %in% c("86207V319742") & universal_year_period_id >= 125), # Lagårdsveien, ulikt antall vindinger på sløyfer?
-    !(trp_id %in% c("58562V320296") & universal_year_period_id %in% c(122:149)), # Arbeider ved Bjergsted
-    !(trp_id %in% c("71535V319524") & universal_year_period_id %in% c(124:131)), # Lassa
-    !(trp_id %in% c("73355V319671") & universal_year_period_id %in% c(142:149)), # Austråttunnelen
-    !(trp_id %in% c("906727234") & universal_year_period_id >= 142) # Ukjent
-  ) |> 
+  # exclude_periods(exclusions_nj_2023__) |> 
   calculate_area_index_month(population_size)
 
 area_index_month_3 <- index_month_values_3[[1]]
@@ -745,7 +720,7 @@ area_index_one_year_nj_chained |>
     ci_upper
   ) |>
   readr::write_rds(
-    "representativity/rolling_cmdt_index_nj_chained_toll.rds"
+    "representativity/rolling_cmdt_index_nj_chained_toll_no_exclusions.rds"
   )
 
 
@@ -753,7 +728,7 @@ area_index_one_year_nj_chained |>
 area_index_one_year_nj_chained |> 
 visualize_rolling_cmdt_index(
     "Data: Statens vegvesen, Rogaland fylkeskommune",
-    "Estimert endring i trafikkmengde, forbedret metode",
+    "Estimert endring i trafikkmengde, forbedret metode, ingen ekskluderinger",
     paste0("Siste år sammenlignet med okt17-sep18")
   ) +
   theme(
@@ -762,8 +737,8 @@ visualize_rolling_cmdt_index(
     legend.background = element_rect(fill = svv_background_color)
   ) +
   ggplot2::scale_y_continuous(
-    limits = c(-18, 3), 
-    breaks = seq(-18, 3, by = 1)
+    limits = c(-18, 6), 
+    breaks = seq(-18, 6, by = 1)
   )
 
 
@@ -920,6 +895,46 @@ writexl::write_xlsx(
   "spesialuttak/nj_punktindeks_regneeksempel.xlsx"
 )
 
+# The exclusions
+nj_exclusions <-
+  dplyr::bind_rows(
+    exclusions_nj_okt18_sep19__2023 |> dplyr::mutate(indeksperiode = "(okt 18-sep 19) - 2023"),
+    exclusions_nj_2023__ |> dplyr::mutate(indeksperiode = "2023 - ")
+  ) |> 
+  dplyr::left_join(
+    dplyr::bind_rows(
+      points |> dplyr::select(trp_id, name, road_category_and_number),
+      bomstasjoner_nj |> dplyr::select(trp_id = nvdb_id, name, road_category_and_number)
+    ),
+    by = "trp_id"
+  ) |> 
+  dplyr::left_join(
+    universal_calendar_periods |> dplyr::select(universal_year_period_id, x_label_start = x_label),
+    by = dplyr::join_by(uyp_start == universal_year_period_id)
+  ) |> 
+  dplyr::left_join(
+    universal_calendar_periods |> dplyr::select(universal_year_period_id, x_label_end = x_label),
+    by = dplyr::join_by(uyp_end == universal_year_period_id)
+  ) |> 
+  dplyr::mutate(
+    ekskludert =
+      dplyr::case_when(
+        is.na(x_label_start) & is.na(x_label_end) ~ "Hele indeksperioden",
+        !is.na(x_label_start) & is.na(x_label_end) ~ base::paste0("Fom ", x_label_start, " og ut indeksperioden"),
+        !is.na(x_label_start) & !is.na(x_label_end) ~ base::paste0("Fom ", x_label_start, " tom ", x_label_end)
+      )
+  ) |> 
+  dplyr::select(
+    indeksperiode,
+    hendelse = text,
+    punkt_id = trp_id, punktnavn = name, veg = road_category_and_number,
+    ekskludert
+  )
+
+writexl::write_xlsx(
+  nj_exclusions,
+  "spesialuttak/nj_regneeksempel_ekskluderinger.xlsx"
+)
 
 
 # Maps
