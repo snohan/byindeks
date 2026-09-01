@@ -5,7 +5,7 @@ library(sf)
 
 # Fetch selected events by SQL in Trino (Starburst?) using DataGrip in "traind" datalab
 
-date_suffix <- "20260804"
+date_suffix <- "20260901"
 
 events <-
   readr::read_csv(

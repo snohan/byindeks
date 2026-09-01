@@ -116,6 +116,9 @@ source("new_city_index_examples_calculate.R")
 # Nord-Jæren ----
 city_number <- "952"
 links_in_area <- readr::read_rds("traffic_link_pop/links_nj.rds")
+# Test without traffic work weights per link
+links_in_area <- links_in_area |> dplyr::mutate(length_m = 1)
+
 source("bomdata_nj_stations.R")
 source("new_city_index_examples_prepare.R")
 
@@ -595,45 +598,9 @@ readr::write_rds(
 
 source("exclude_cmdt_extra.R")
 
-# Chain part 1
-# okt17-sep18 -- okt18-sep19
-index_month_values_1 <-
-  mdt_validated |>
-  # dplyr::filter(
-  #   !(trp_id %in% c("13606V2303025", "89457V2303027", "88125V320152", "73355V319671") & universal_year_period_id == 40)
-  # ) |> 
-  dplyr::filter(
-    universal_year_period_id >= 26,
-    universal_year_period_id <= 53
-  ) |> 
-  calculate_area_index_month(population_size)
-
-area_index_month_1 <- index_month_values_1[[1]]
-link_index_month_1 <- index_month_values_1[[2]]
-
-# area_index_one_year_1 <- calculate_rolling_area_index_one_year(area_index_month_1)
-
-# Chain part 2
-# okt18-sep19 -- 2023
-index_month_values_2 <-
-  mdt_validated |>
-  dplyr::filter(
-    universal_year_period_id >= 40,
-    universal_year_period_id <= 112
-  ) |> 
-  # exclude_periods(exclusions_nj_okt18_sep19__2023) |> 
-  calculate_area_index_month(population_size)
-
-area_index_month_2 <- index_month_values_2[[1]]
-link_index_month_2 <- index_month_values_2[[2]]
-
-
-# Chain part 3
-# 2023 -- 
-index_month_values_3 <-
-  # Need to include some TRPs that was deemed unusable in 
-  # mdt_validated |>
-  mdt_filtered |>
+# Need to include some TRPs that was deemed unusable in former index (mdt_validated)
+mdt_validated_nj <-
+  mdt_filtered |>  
   dplyr::left_join(
     universal_calendar_periods |>
       dplyr::select(
@@ -650,11 +617,49 @@ index_month_values_3 <-
   ) |>
   dplyr::mutate(
     month = base::factor(month, levels = period_names)
+  )
+
+
+# Chain part 1
+# okt17-sep18 -- okt18-sep19
+index_month_values_1 <-
+  mdt_validated |>
+  # mdt_validated_nj |>
+  dplyr::filter(
+    universal_year_period_id >= 26,
+    universal_year_period_id <= 53
   ) |> 
+  exclude_periods(exclusions_nj_okt17_sep18__nj_okt18_sep19) |> 
+  calculate_area_index_month(population_size)
+
+area_index_month_1 <- index_month_values_1[[1]]
+link_index_month_1 <- index_month_values_1[[2]]
+
+# area_index_one_year_1 <- calculate_rolling_area_index_one_year(area_index_month_1)
+
+# Chain part 2
+# okt18-sep19 -- 2023
+index_month_values_2 <-
+  mdt_validated_nj |>
+  dplyr::filter(
+    universal_year_period_id >= 40,
+    universal_year_period_id <= 112
+  ) |> 
+  exclude_periods(exclusions_nj_okt18_sep19__2023) |> 
+  calculate_area_index_month(population_size)
+
+area_index_month_2 <- index_month_values_2[[1]]
+link_index_month_2 <- index_month_values_2[[2]]
+
+
+# Chain part 3
+# 2023 -- 
+index_month_values_3_x <-
+  mdt_validated_nj |>
   dplyr::filter(
     universal_year_period_id >= 99
   ) |> 
-  # exclude_periods(exclusions_nj_2023__) |> 
+  exclude_periods(exclusions_nj_2023__) |> 
   calculate_area_index_month(population_size)
 
 area_index_month_3 <- index_month_values_3[[1]]
@@ -735,11 +740,11 @@ visualize_rolling_cmdt_index(
     plot.background = element_rect(fill = svv_background_color),
     panel.background = element_rect(fill = svv_background_color),
     legend.background = element_rect(fill = svv_background_color)
-  ) +
-  ggplot2::scale_y_continuous(
-    limits = c(-18, 6), 
-    breaks = seq(-18, 6, by = 1)
-  )
+  ) 
+  # ggplot2::scale_y_continuous(
+  #   limits = c(-18, 6), 
+  #   breaks = seq(-18, 6, by = 1)
+  # )
 
 
 ### N points plot ----
@@ -896,8 +901,19 @@ writexl::write_xlsx(
 )
 
 # The exclusions
+# Check which exclusions are used in today's index:
+# mdt_manual_exclusions_here <-
+#   mdt_manual_exclusions |> 
+#   dplyr::filter(
+#     trp_id %in% trp_weights$trp_id
+#   ) |> 
+#   dplyr::select(
+#     trp_id, uyp_start = from_universal_year_period_id, uyp_end = to_universal_year_period_id
+#   )
+
 nj_exclusions <-
   dplyr::bind_rows(
+    exclusions_nj_okt17_sep18__nj_okt18_sep19 |> dplyr::mutate(indeksperiode = "(okt 17-sep 18) - (okt 18-sep 19)"),
     exclusions_nj_okt18_sep19__2023 |> dplyr::mutate(indeksperiode = "(okt 18-sep 19) - 2023"),
     exclusions_nj_2023__ |> dplyr::mutate(indeksperiode = "2023 - ")
   ) |> 

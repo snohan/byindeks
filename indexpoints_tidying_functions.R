@@ -867,13 +867,20 @@ calculate_all_rolling_indices_old <- function() {
 calculate_area_index_month <- function(trp_mdt_df, population_size_dbl) {
 
   # Testing:
+  trp_mdt_df <- 
+    mdt_validated_nj |>
+    dplyr::filter(
+      universal_year_period_id >= 26,
+      universal_year_period_id <= 53
+    )
   # trp_mdt_df <- mdt_validated |> dplyr::filter(universal_year_period_id >= 26)
   # population_size_dbl <- population_size
   # population_size_tw <- population_size_tw_kkm
-  # y <- 1
+  y <- 1
 
-  # Generalize reference year (need not be calendar year)
-  # Find first month of reference year period: choice is made possible by filtering the trp_mdt_df before calling this function!
+  # Generalized reference year (need not be calendar year):
+  # find first month of reference year period: 
+  # choice is made possible by filtering the trp_mdt_df before calling this function!
   reference_year_start_universal_year_period_id <- base::min(trp_mdt_df$universal_year_period_id)
   calculation_year_start_universal_year_period_ids <- 
     base::seq(
