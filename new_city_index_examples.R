@@ -116,8 +116,11 @@ source("new_city_index_examples_calculate.R")
 # Nord-Jæren ----
 city_number <- "952"
 links_in_area <- readr::read_rds("traffic_link_pop/links_nj.rds")
+
+# !!! 
 # Test without traffic work weights per link
-links_in_area <- links_in_area |> dplyr::mutate(length_m = 1)
+# links_in_area <- links_in_area |> dplyr::mutate(length_m = 1)
+# !!!
 
 source("bomdata_nj_stations.R")
 source("new_city_index_examples_prepare.R")
@@ -660,6 +663,7 @@ index_month_values_3_x <-
     universal_year_period_id >= 99
   ) |> 
   exclude_periods(exclusions_nj_2023__) |> 
+  exclude_periods(exclusions_nj_equipment_2023__) |> 
   calculate_area_index_month(population_size)
 
 area_index_month_3 <- index_month_values_3[[1]]
@@ -972,3 +976,4 @@ readr::write_rds(
   point_indexes_for_map,
   "representativity/nj_updated_example_with_toll.rds"
 )
+

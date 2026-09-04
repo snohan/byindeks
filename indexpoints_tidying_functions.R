@@ -618,10 +618,10 @@ calculate_rolling_indices_by_mdt <- function(base_year, last_year_month, window_
     # by_trp
   
     # Test:
-    # mdt_df <- mdt_validated
-    # window_length <- 36
-    # base_year <- reference_year
-    # last_year_month <- "2023-11-01"
+    mdt_df <- mdt_validated
+    window_length <- 12
+    base_year <- reference_year
+    last_year_month <- "2025-12-01"
 
     least_number_of_month_enums <-
       dplyr::case_when(
@@ -767,6 +767,89 @@ calculate_rolling_indices_by_mdt <- function(base_year, last_year_month, window_
 }
 
 
+index_mdt_to_excel <- function(mdt_df, last_year_month, file_path) {
+
+  # Testing:
+  # mdt_df <- mdt_validated
+  # last_year_month <- "2025-12-01"
+
+  last_year_month <- lubridate::as_date(last_year_month)
+
+  mdts_here <-
+    dplyr::bind_rows(
+      mdt_df |>
+      dplyr::filter(
+        year_month %in%
+          base::seq.Date(
+            from = last_year_month - base::months(12 - 1),
+            to = last_year_month,
+            by = "month"
+          )
+      ) |> dplyr::mutate(year_x = "b"),
+      mdt_df |> dplyr::filter(year == base_year) |> dplyr::mutate(year_x = "a")
+    )  |>
+    dplyr::filter(
+      coverage >= 50,
+      length_quality >= 98.5
+    )
+    
+  mdt_in_window <-
+    mdts_here |> 
+    dplyr::select(trp_id, year, month, mdt) |> 
+    tidyr::complete(trp_id, year, month) |> 
+    dplyr::mutate(
+      n_months = base::sum(!is.na(mdt)),
+      mean_mdt = base::mean(mdt, na.rm = TRUE),
+      .by = c(trp_id, year)
+    ) |> 
+    tidyr::pivot_wider(
+      names_from = month,
+      names_prefix = "m_",
+      values_from = mdt
+    ) |> 
+    dplyr::left_join(
+      points,
+      by = "trp_id"
+    ) |> 
+    dplyr::select(
+      trp_id, name, road_category_and_number, municipality_name,
+      year, tidyselect::starts_with("m_"), n_months, mean_mdt
+    )
+  
+  mdt_means <-
+    mdt_in_window |> 
+    dplyr::select(
+      trp_id, name, road_category_and_number, municipality_name,
+      year, n_months, mean_mdt
+    ) |> 
+    dplyr::left_join(
+      mdts_here |> dplyr::select(year, year_x) |> dplyr::distinct(),
+      by = "year"
+    ) |> 
+    dplyr::mutate(
+      enough_months = n_months >= 9
+    ) |> 
+    dplyr::mutate(
+      enough_months_both = base::all(enough_months),
+      .by = "trp_id"
+    ) |> 
+    dplyr::select(-n_months, -enough_months, - year) |> 
+    tidyr::pivot_wider(
+      names_from = year_x,
+      values_from = c(mean_mdt)
+    ) |> 
+    dplyr::mutate(
+      endring_i_prosent = 100 * (b / a - 1)
+    )
+  
+  base::list(
+    maaned = mdt_in_window,
+    aar = mdt_means
+  ) |>   
+  writexl::write_xlsx(file_path)
+
+}
+
 ## MDT old 2 ----
 # calculate_rolling_indices <- function(window_length, grouping = "by_area") {
 
@@ -867,16 +950,16 @@ calculate_all_rolling_indices_old <- function() {
 calculate_area_index_month <- function(trp_mdt_df, population_size_dbl) {
 
   # Testing:
-  trp_mdt_df <- 
-    mdt_validated_nj |>
-    dplyr::filter(
-      universal_year_period_id >= 26,
-      universal_year_period_id <= 53
-    )
+  # trp_mdt_df <- 
+  #   mdt_validated_nj |>
+  #   dplyr::filter(
+  #     universal_year_period_id >= 26,
+  #     universal_year_period_id <= 53
+  #   )
   # trp_mdt_df <- mdt_validated |> dplyr::filter(universal_year_period_id >= 26)
   # population_size_dbl <- population_size
   # population_size_tw <- population_size_tw_kkm
-  y <- 1
+  # y <- 1
 
   # Generalized reference year (need not be calendar year):
   # find first month of reference year period: 

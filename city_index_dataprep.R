@@ -64,8 +64,8 @@ trp_id_msnr <-
 {
   present_year <- 2026
   # month to be published now:
-  index_month <- 7
-  city_number <- 20952
+  index_month <- 4
+  city_number <- 952
 }
 
 toll_data_is_included <- city_number %in% c(960, 19955)
@@ -144,7 +144,7 @@ source("city_index_dataprep_mdt.R")
 
 
 ## Check validity ----
-# Exclude trp-months
+# Exclude trp-months, get mdt_validated
 source("exclude_trp_mdts_list.R")
 
 trp_mdt_ok_refyear <-
@@ -164,17 +164,25 @@ trp_not_ok <-
 # TODO: look at sectional TRPs concurrently
 # TODO: in map, draw curve connecting sectional TRPs
 
-start_at <- 1
+start_at <- 21
 plot_mdt(start_at, 5)
-# Workaround as Positron won't show patterns
-# ggplot2::ggsave(filename = "images/mdt_pattern_test.svg", width = 12, height = 12)
 # plot_heavy_percentage(start_at)
 
+# Updated mdt_validated if you made any changes to the exclusion Excel sheet
 source("exclude_trp_mdts_list.R")
 
 # source("mdt_check.R")
 # plot_mdt_comparisons |> plotly::ggplotly()
 
+# An example in Excel:
+# index_mdt_to_excel(mdt_validated, "2025-12-01", "spesialuttak/nj_dagens_metode_eksempel.xlsx")
+# index_mdt_to_excel(
+#   mdt_filtered |> 
+#     dplyr::filter(
+#       !(trp_id == "74250V319516" & year_month == "2023-08-01"),
+#       !(trp_id == "71787V2269011" & year_month == "2024-03-01")
+#     ), 
+#   "2025-12-01", "spesialuttak/nj_dagens_meotde_eksempel_uten_ekskl.xlsx")
 
 ## Rolling indices ----
 all_12_month_indices <- calculate_rolling_indices(12)
@@ -199,9 +207,9 @@ trp_mdt_plot_36 |> plotly::ggplotly()
 
 all_rolling_indices_list <-
   list(
-    all_12_month_indices
-    # all_24_month_indices,
-    # all_36_month_indices
+    all_12_month_indices,
+    all_24_month_indices,
+    all_36_month_indices
   )
 
 all_rolling_indices <- 

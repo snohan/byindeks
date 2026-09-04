@@ -94,10 +94,14 @@ exclusions_nj_2023__ <-
     table_exclusions("Arbeider nord for Storhaugtunnelen", c("57279V320244"), 122, 132),
     table_exclusions("Ukjent", c("906727246"), 119, 119),
     table_exclusions("Ukjent", c("906727267"), 139),
-    table_exclusions("Feil antall vindinger på sensorene", c("64040V320581"), 138),
-    table_exclusions("Feil antall vindinger på sensorene?", c("86207V319742"), 125),
     table_exclusions("Arbeider ved Bjergsted", c("58562V320296"), 122, 149),
     table_exclusions("Lassa", c("71535V319524"), 124, 131),
     table_exclusions("Ukjent", c("73355V319671"), 142, 149),
     table_exclusions("Ukjent", c("906727234"), 142)
+  )
+
+exclusions_nj_equipment_2023__ <-
+  dplyr::bind_rows(
+    table_exclusions("Feil antall vindinger på sensorene", c("64040V320581"), 138),
+    table_exclusions("Feil antall vindinger på sensorene?", c("86207V319742"), 125)
   )

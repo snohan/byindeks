@@ -5,8 +5,6 @@ mdt_manual_exclusions <-
     "trp_mdt_manual_exclusions.xlsx"
   )
 
-# TODO: keep months as number, put easter as 34 and pentecost as 56
-
 
 # Add metainfo to Excel ----
 points <- readr::read_rds("trps_for_city_index.rds")
