@@ -618,10 +618,11 @@ calculate_rolling_indices_by_mdt <- function(base_year, last_year_month, window_
     # by_trp
   
     # Test:
-    mdt_df <- mdt_validated
-    window_length <- 12
-    base_year <- reference_year
-    last_year_month <- "2025-12-01"
+    # mdt_df <- mdt_validated
+    # window_length <- 12
+    # base_year <- reference_year
+    # last_year_month <- "2025-12-01"
+    # grouping = "by_trp"
 
     least_number_of_month_enums <-
       dplyr::case_when(

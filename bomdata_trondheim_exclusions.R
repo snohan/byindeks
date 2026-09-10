@@ -45,12 +45,13 @@ tolling_data_daily_tidy <-
   dplyr::filter(!(trp_id == "62" & date %in% ymd(c("2026-04-25", "2026-04-26")))) |>
   dplyr::filter(!(trp_id == "63")) |>
   dplyr::filter(!(trp_id == "64" & date %in% ymd(c("2023-06-23")))) |>
-  dplyr::filter(!(trp_id == "66" & month == "2026-06-01")) |>
-  dplyr::filter(!(trp_id == "66" & month == "2026-07-01")) |>
+  dplyr::filter(!(trp_id == "66" & month %in% seq.Date(as.Date("2026-06-01"), as.Date("2026-08-01"), by = "month"))) |>
   dplyr::filter(!(trp_id == "67" & date %in% ymd(c("2023-06-27", "2023-06-28")))) |>
   dplyr::filter(!(trp_id == "67" & date %in% seq.Date(as.Date("2025-02-24"), as.Date("2025-03-09"), 1))) |>
   dplyr::filter(!(trp_id == "67" & date %in% seq.Date(as.Date("2025-05-12"), as.Date("2025-10-31"), 1))) |>
+  dplyr::filter(!(trp_id == "67" & month %in% seq.Date(as.Date("2025-08-01"), as.Date("2027-12-01"), by = "month"))) |>
   dplyr::filter(!(trp_id == "68" & date %in% seq.Date(as.Date("2025-02-24"), as.Date("2025-03-09"), 1))) |>
+  dplyr::filter(!(trp_id == "68" & month %in% seq.Date(as.Date("2025-08-01"), as.Date("2027-12-01"), by = "month"))) |>
   dplyr::filter(!(trp_id == "69" & date %in% ymd(c("2023-07-04", "2023-07-05")))) |>
   dplyr::filter(!(trp_id == "72" & month == "2021-04-01")) |>
   dplyr::filter(!(trp_id == "72" & date %in% ymd(c("2025-11-09", "2025-11-10", "2025-11-15", "2025-11-16", "2025-11-17")))) |>

@@ -64,8 +64,8 @@ trp_id_msnr <-
 {
   present_year <- 2026
   # month to be published now:
-  index_month <- 4
-  city_number <- 952
+  index_month <- 8
+  city_number <- 960
 }
 
 toll_data_is_included <- city_number %in% c(960, 19955)
@@ -164,7 +164,7 @@ trp_not_ok <-
 # TODO: look at sectional TRPs concurrently
 # TODO: in map, draw curve connecting sectional TRPs
 
-start_at <- 21
+start_at <- 36
 plot_mdt(start_at, 5)
 # plot_heavy_percentage(start_at)
 

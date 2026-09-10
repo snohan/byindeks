@@ -24,6 +24,7 @@ if(city_number %in% c(19954, 20952)){
   list(
     punkt_adt = trp_info_adt,
     punktindeks_maned = trp_index_monthly_wide,
+    punktindeks_aar = trp_index_so_far_for_excel,
     byindeks_aarlig = city_index_yearly_all,
     byindeks_hittil = city_index_yearly_all_so_far,
     by_glid_indeks = all_rolling_indices

@@ -68,7 +68,7 @@ tolling_station_ids_apar <-
 
 # Fetch all data for all trp_ids for a month, and store
 {
-  month_string <- "july" # English!
+  month_string <- "august" # English!
   year_number <- 2026
 
   apar_data_for_month <-
@@ -172,7 +172,7 @@ tolling_data_daily_lane <-
 kommune_bomer <- readr::read_rds(file = "bomdata_trondheim/trd_toll_stations.rds")
 
 # Ranheim is 72, 21 stations total
-plot_toll_station_data_per_lane(tolling_station_ids_original[20], c(2026), kommune_bomer)
+plot_toll_station_data_per_lane(tolling_station_ids_original[21], c(2026), kommune_bomer)
 
 
 # Daily ----
