@@ -91,6 +91,10 @@ links_in_area <- readr::read_rds("traffic_link_pop/links_oslo.rds")
 source("new_city_index_examples_prepare.R")
 source("new_city_index_examples_calculate.R")
 
+# links_in_area |> 
+#   dplyr::select(-road_system_references) |> 
+#   sf::st_write("spesialuttak/oslo_trafikklenker.geojson")
+
 # missing <-
 #   this_citys_trps_all_adt_final |>
 #   dplyr::filter(
