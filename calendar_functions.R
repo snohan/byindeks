@@ -149,6 +149,7 @@ make_complete_calendar_year <- function(year) {
 
   # year: Int!
 
+  holidays <- find_holidays(year)
   easter_days <- find_easter_days(year)
   pentecost_days <- find_pentecost_days(year)
 
@@ -170,7 +171,13 @@ make_complete_calendar_year <- function(year) {
           date %in% pentecost_days ~ "pinse",
           TRUE ~ month
         ),
-      month = base::factor(month, levels = period_names)
+      month = base::factor(month, levels = period_names),
+      non_working_day =
+        dplyr::case_when(
+          weekday %in% c(6, 7) ~ TRUE,
+          date %in% c(holidays, easter_days, pentecost_days) ~ TRUE,
+          TRUE ~ FALSE
+        )
     )
 
 }

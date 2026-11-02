@@ -3312,7 +3312,7 @@ get_dt_by_length_for_trp <- function(trp_id, from, to) {
       cli$exec(my_query$my_query, input_variables) |>
       jsonlite::fromJSON(simplifyDataFrame = T, flatten = T)
 
-    source("api_error_message.R")
+    #source("api_error_message.R")
 
     # If no data or no length data, return empty tibble
     if(base::length(response$data$trafficData$volume$byDay$edges) == 0){
@@ -3361,7 +3361,9 @@ get_dt_by_length_for_trp <- function(trp_id, from, to) {
         length_quality = data.trafficData.volume.byDay.edges.node.total.volumeNumbers.validLength
       ) |>
       dplyr::mutate(
-        from = lubridate::as_date(from),
+        # from = lubridate::as_date(from),
+        # Bugfix 2026-10-30:
+        from = stringr::str_sub(from, 1, 10) |> lubridate::as_date(),
         # Assume high quality if NorTraf (coverage does not exist)
         total_coverage =
           dplyr::case_when(

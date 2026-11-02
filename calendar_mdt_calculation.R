@@ -74,9 +74,9 @@ for(i in 1:length(city_trps)) {
 
   cmdt <-
     purrr::map(
-      # From the beginning
+      # From the beginning:
       # years_from_reference_to_today,
-      # Or just add new data
+      # Or just add new data:
       2026,
       ~ calculate_calendar_adjusted_mdt(city_trps[i], .x)
     ) |>
